@@ -28,7 +28,7 @@ class FrontendLoginControllerTest extends UnitTestCase
 {
     protected $resetSingletonInstances = true;
 
-    public function setUp()
+    public function setUp(): void
     {
         $GLOBALS['TSFE'] = new \stdClass();
         parent::setUp();

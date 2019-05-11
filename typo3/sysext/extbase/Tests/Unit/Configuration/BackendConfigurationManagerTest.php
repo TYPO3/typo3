@@ -36,8 +36,9 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * Sets up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->backendConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
             ['getTypoScriptSetup'],

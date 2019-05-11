@@ -40,19 +40,19 @@ class LinkGeneratorTest extends AbstractTestCase
      */
     private $internalRequestContext;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         static::initializeDatabaseSnapshot();
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         static::destroyDatabaseSnapshot();
         parent::tearDownAfterClass();
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -100,7 +100,7 @@ class LinkGeneratorTest extends AbstractTestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->internalRequestContext);
         parent::tearDown();

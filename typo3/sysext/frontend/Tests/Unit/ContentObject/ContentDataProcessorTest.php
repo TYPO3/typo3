@@ -35,6 +35,7 @@ class ContentDataProcessorTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->contentDataProcessor = new ContentDataProcessor();
     }
 

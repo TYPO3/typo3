@@ -32,7 +32,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

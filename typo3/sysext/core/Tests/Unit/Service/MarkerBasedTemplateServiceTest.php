@@ -44,6 +44,7 @@ class MarkerBasedTemplateServiceTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());

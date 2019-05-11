@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class DebugUtilityTest extends UnitTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         DebugUtility::usePlainTextOutput(true);
@@ -42,7 +42,7 @@ class DebugUtilityTest extends UnitTestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<script>alert(\'Hello world!\')</script>',
             $output
         );
@@ -61,7 +61,7 @@ class DebugUtilityTest extends UnitTestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '&lt;script&gt;alert(\'Hello world!\')&lt;/script&gt;',
             $output
         );

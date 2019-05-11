@@ -27,8 +27,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TcaFlexPrepareTest extends UnitTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         // Suppress cache foo in xml helpers of GeneralUtility
         /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
@@ -37,7 +38,7 @@ class TcaFlexPrepareTest extends UnitTestCase
         $cacheManagerProphecy->getCache(Argument::cetera())->willReturn($cacheFrontendProphecy->reveal());
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

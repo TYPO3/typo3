@@ -94,11 +94,11 @@ class HrefLangGeneratorTest extends FunctionalTestCase
         $content = $stream->getContents();
 
         foreach ($expectedTags as $expectedTag) {
-            self::assertContains($expectedTag, $content);
+            self::assertStringContainsString($expectedTag, $content);
         }
 
         foreach ($notExpectedTags as $notExpectedTag) {
-            self::assertNotContains($notExpectedTag, $content);
+            self::assertStringNotContainsString($notExpectedTag, $content);
         }
     }
 

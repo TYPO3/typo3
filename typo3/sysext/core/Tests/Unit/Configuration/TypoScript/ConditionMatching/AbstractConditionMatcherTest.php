@@ -55,6 +55,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         require_once 'Fixtures/ConditionMatcherUserFuncs.php';
 
         $this->resetSingletonInstances = true;

@@ -38,7 +38,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
     /**
      * Clean up after tests
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

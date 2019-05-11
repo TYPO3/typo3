@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCa
  */
 class SpecialLanguagesTest extends AbstractDataHandlerActionTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->backendUser->workspace = 0;

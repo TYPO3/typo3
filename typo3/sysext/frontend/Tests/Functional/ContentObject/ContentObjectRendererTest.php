@@ -32,7 +32,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

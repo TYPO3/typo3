@@ -34,8 +34,9 @@ class ListUtilityTest extends UnitTestCase
 
     /**
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getMockBuilder(ListUtility::class)
             ->setMethods(['emitPackagesMayHaveChangedSignal'])
             ->getMock();

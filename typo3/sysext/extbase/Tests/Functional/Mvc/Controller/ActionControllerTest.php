@@ -44,7 +44,7 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
      */
     protected $controller;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

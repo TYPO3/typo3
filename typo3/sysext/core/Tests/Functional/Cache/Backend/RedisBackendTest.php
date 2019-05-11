@@ -32,8 +32,9 @@ class RedisBackendTest extends FunctionalTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+
         // Note this functional does NOT call parent::setUp() since it does
         // not need a full blown instance and database
         if (!getenv('typo3TestingRedisHost')) {

@@ -55,8 +55,9 @@ class WidgetRequestBuilderTest extends UnitTestCase
     /**
      *
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->widgetRequestBuilder = $this->getAccessibleMock(WidgetRequestBuilder::class, ['setArgumentsFromRawRequestData']);
         $this->mockWidgetRequest = $this->createMock(WidgetRequest::class);
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);

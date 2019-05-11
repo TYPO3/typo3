@@ -41,8 +41,9 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * Set up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $proxyClassName = $this->buildAccessibleProxy(AbstractMenuContentObject::class);
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
         $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
@@ -56,7 +57,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * Reset singleton instances
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

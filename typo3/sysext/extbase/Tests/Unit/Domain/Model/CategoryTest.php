@@ -26,8 +26,9 @@ class CategoryTest extends UnitTestCase
      */
     protected $fixture;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\Category();
     }
 

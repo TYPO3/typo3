@@ -35,7 +35,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $cObjBackup;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();

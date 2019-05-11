@@ -31,7 +31,7 @@ class ImageMagickFileTest extends FunctionalTestCase
      */
     private $directory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -52,7 +52,7 @@ class ImageMagickFileTest extends FunctionalTestCase
         $this->directory = vfsStream::setup('root', null, $structure);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->directory);
         parent::tearDown();

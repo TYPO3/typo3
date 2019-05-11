@@ -37,8 +37,9 @@ class PackageManagerTest extends UnitTestCase
     /**
      * Sets up this test case
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         vfsStream::setup('Test');
 
         /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */

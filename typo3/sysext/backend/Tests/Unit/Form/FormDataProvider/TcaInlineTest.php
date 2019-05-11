@@ -29,8 +29,9 @@ class TcaInlineTest extends UnitTestCase
      */
     protected $beUserProphecy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $this->beUserProphecy->reveal();
     }

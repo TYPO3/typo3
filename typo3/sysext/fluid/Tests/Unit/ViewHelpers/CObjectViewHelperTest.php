@@ -52,7 +52,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
     /**
      * Set up the fixture
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = new CObjectViewHelper();

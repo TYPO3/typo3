@@ -128,6 +128,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['SIM_ACCESS_TIME'] = 1534278180;
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
@@ -1213,12 +1214,12 @@ class ContentObjectRendererTest extends UnitTestCase
             'default label values for wrong label input' => [
                 '2 min',
                 121,
-                10,
+                '10',
             ],
             'default singular label values for wrong label input' => [
                 '1 year',
                 31536000,
-                10,
+                '10',
             ]
         ];
     }
@@ -4877,17 +4878,17 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->stdWrap_debugData($content);
         $out = ob_get_clean();
         $this->assertSame($result, $content);
-        $this->assertContains('$cObj->data', $out);
-        $this->assertContains($value, $out);
-        $this->assertNotContains($altValue, $out);
+        $this->assertStringContainsString('$cObj->data', $out);
+        $this->assertStringContainsString($value, $out);
+        $this->assertStringNotContainsString($altValue, $out);
         // By adding alternative data both are returned together.
         $this->subject->alternativeData = [$key => $altValue];
         ob_start();
         $this->subject->stdWrap_debugData($content);
         $out = ob_get_clean();
-        $this->assertNotContains('$cObj->alternativeData', $out);
-        $this->assertContains($value, $out);
-        $this->assertContains($altValue, $out);
+        $this->assertStringNotContainsString('$cObj->alternativeData', $out);
+        $this->assertStringContainsString($value, $out);
+        $this->assertStringContainsString($altValue, $out);
     }
 
     /**
@@ -4934,11 +4935,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->stdWrap_debugFunc($content, $conf);
         $out = ob_get_clean();
         $this->assertSame($result, $content);
-        $this->assertContains($content, $out);
+        $this->assertStringContainsString($content, $out);
         if ($expectArray) {
-            $this->assertContains('=>', $out);
+            $this->assertStringContainsString('=>', $out);
         } else {
-            $this->assertNotContains('=>', $out);
+            $this->assertStringNotContainsString('=>', $out);
         }
     }
 

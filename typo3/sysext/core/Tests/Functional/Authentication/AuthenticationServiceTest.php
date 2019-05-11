@@ -28,7 +28,7 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new AuthenticationService();
         $this->subject->setLogger(new NullLogger());
@@ -54,11 +54,8 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\
             'enable_clause' => '',
             'username_column' => 'username',
         ];
-        $expected = [
-            'username' => 'test1',
-            'deleted' => 0
-        ];
         $result = $this->subject->getUser();
-        $this->assertArraySubset($expected, $result);
+        $this->assertSame('test1', $result['username']);
+        $this->assertSame(0, (int)$result['deleted']);
     }
 }

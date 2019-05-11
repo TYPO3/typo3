@@ -53,7 +53,7 @@ class ControllerArgumentsMappingTest extends \TYPO3\TestingFramework\Core\Functi
      */
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

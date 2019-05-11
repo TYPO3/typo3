@@ -35,7 +35,7 @@ class InlineStackProcessorTest extends UnitTestCase
     /**
      * Set up
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);

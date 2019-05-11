@@ -58,7 +58,7 @@ class RendererRegistryTest extends UnitTestCase
         $rendererRegistry = $this->getTestRendererRegistry([[$rendererClass, $rendererObject]]);
 
         $rendererRegistry->registerRendererClass($rendererClass);
-        $this->assertContains($rendererObject, $rendererRegistry->getRendererInstances(), '', false, false);
+        $this->assertContains($rendererObject, $rendererRegistry->getRendererInstances());
     }
 
     /**

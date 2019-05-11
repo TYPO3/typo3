@@ -47,7 +47,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
      * Set up for set up the backend user, initialize the language object
      * and creating the Export instance
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -59,7 +59,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
     /**
      * Tear down for remove of the test files
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->testFilesToDelete as $absoluteFileName) {
             if (@is_file($absoluteFileName)) {

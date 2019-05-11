@@ -27,7 +27,7 @@ class MemcachedBackendTest extends FunctionalTestCase
     /**
      * Sets up this test case
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         // Note this functional does NOT call parent::setUp() since it does
         // not need a full blown instance and database

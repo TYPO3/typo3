@@ -33,8 +33,9 @@ class DownloadQueueTest extends UnitTestCase
 
     /**
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, ['dummy']);
         $this->extensionMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
             ->setMethods(['dummy'])

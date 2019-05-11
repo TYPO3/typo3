@@ -170,7 +170,7 @@ class LogRecordTest extends UnitTestCase
     {
         $dataArray = ['foo' => 'bar'];
         $record = $this->getRecord(['data' => $dataArray]);
-        $this->assertContains(json_encode($dataArray), (string)$record);
+        $this->assertStringContainsString(json_encode($dataArray), (string)$record);
     }
 
     /**
@@ -180,6 +180,6 @@ class LogRecordTest extends UnitTestCase
     {
         $dataArray = ['exception' => new \Exception('foo', 1476049451)];
         $record = $this->getRecord(['data' => $dataArray]);
-        $this->assertContains('Exception: foo', (string)$record);
+        $this->assertStringContainsString('Exception: foo', (string)$record);
     }
 }

@@ -42,7 +42,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

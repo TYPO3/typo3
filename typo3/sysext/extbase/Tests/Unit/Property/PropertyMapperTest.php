@@ -40,8 +40,9 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * Sets up this test case
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->mockConfigurationBuilder = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationBuilder::class);
         $this->mockConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
     }

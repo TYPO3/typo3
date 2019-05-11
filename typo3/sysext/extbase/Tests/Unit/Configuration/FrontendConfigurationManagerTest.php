@@ -49,6 +49,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $this->mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)

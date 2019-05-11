@@ -30,7 +30,7 @@ class AddonRegistryTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = $this->getAccessibleMock(AddonRegistry::class, ['dummy'], [], '', false);
         $this->registerAddons();

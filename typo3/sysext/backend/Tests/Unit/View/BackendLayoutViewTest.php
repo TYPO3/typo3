@@ -29,8 +29,9 @@ class BackendLayoutViewTest extends UnitTestCase
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->backendLayoutView = $this->getAccessibleMock(
             \TYPO3\CMS\Backend\View\BackendLayoutView::class,
             ['getPage', 'getRootLine'],

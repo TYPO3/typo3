@@ -37,7 +37,7 @@ class Typo3DbBackendTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();

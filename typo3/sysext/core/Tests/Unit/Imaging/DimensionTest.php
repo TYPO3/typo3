@@ -40,8 +40,9 @@ class DimensionTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = new \TYPO3\CMS\Core\Imaging\Dimension(Icon::SIZE_DEFAULT);
     }
 
@@ -52,7 +53,7 @@ class DimensionTest extends UnitTestCase
     {
         $value = $this->subject->getWidth();
         $this->assertEquals($this->width, $value);
-        $this->assertInternalType('int', $value);
+        $this->assertIsInt($value);
     }
 
     /**
@@ -62,6 +63,6 @@ class DimensionTest extends UnitTestCase
     {
         $value = $this->subject->getHeight();
         $this->assertEquals($this->height, $value);
-        $this->assertInternalType('int', $value);
+        $this->assertIsInt($value);
     }
 }

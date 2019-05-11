@@ -53,7 +53,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

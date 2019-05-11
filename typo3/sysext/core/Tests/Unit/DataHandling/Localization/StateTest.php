@@ -28,8 +28,9 @@ class StateTest extends UnitTestCase
     /**
      * Set up the tests
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TCA'] = [];
     }
 

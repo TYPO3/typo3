@@ -44,8 +44,9 @@ class ContainerTest extends UnitTestCase
      */
     protected $logger;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->logger = $this->getMockBuilder(Logger::class)
             ->setMethods(['notice'])
             ->disableOriginalConstructor()

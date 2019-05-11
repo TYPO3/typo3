@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormProtectionFactoryTest extends UnitTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         FormProtectionFactory::purgeInstances();
         parent::tearDown();

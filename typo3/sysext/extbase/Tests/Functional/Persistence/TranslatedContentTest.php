@@ -81,7 +81,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importScenarioDataSet('LiveDefaultPages');
@@ -96,7 +96,7 @@ class TranslatedContentTest extends AbstractDataHandlerActionTestCase
         ]);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->objectManager);
         unset($this->contentRepository);

@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  * The TYPO3 project - inspiring people to share!
  */
 
-use PHPUnit\Framework\Constraint\IsType;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Tests\Unit\CronCommand\AccessibleProxies\NormalizeCommandAccessibleProxy;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -516,7 +515,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeMonthReturnsInteger($monthName, $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
-        $this->assertInternalType(IsType::TYPE_INT, $result);
+        $this->assertIsInt($result);
     }
 
     /**
@@ -619,7 +618,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
-        $this->assertInternalType(IsType::TYPE_INT, $result);
+        $this->assertIsInt($result);
     }
 
     /**

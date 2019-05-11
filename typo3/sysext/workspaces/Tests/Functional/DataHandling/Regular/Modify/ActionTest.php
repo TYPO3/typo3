@@ -312,7 +312,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('deletePage');
 
         $response = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId, false);
-        $this->assertContains('PageNotFoundException', $response->getError());
+        $this->assertStringContainsString('PageNotFoundException', $response->getError());
     }
 
     /**
@@ -325,7 +325,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('deleteContentAndPage');
 
         $response = $this->getFrontendResponse(self::VALUE_PageId, 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId, false);
-        $this->assertContains('PageNotFoundException', $response->getError());
+        $this->assertStringContainsString('PageNotFoundException', $response->getError());
     }
 
     /**
@@ -455,7 +455,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('createContentAndCopyDraftPage');
 
         $resultLive = $this->getFrontendResult($this->recordIds['copiedPageId']);
-        $this->assertContains('Reason: ID was not an accessible page', $resultLive['stdout']);
+        $this->assertStringContainsString('Reason: ID was not an accessible page', $resultLive['stdout']);
         $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
             ->setTable(static::TABLE_Content)->setField('header')->setValues('Testing #1'));
@@ -488,7 +488,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('createPageAndCopyDraftParentPage');
 
         $resultLive = $this->getFrontendResult($this->recordIds['copiedPageId']);
-        $this->assertContains('Reason: ID was not an accessible page', $resultLive['stdout']);
+        $this->assertStringContainsString('Reason: ID was not an accessible page', $resultLive['stdout']);
         $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
             ->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
@@ -521,7 +521,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('createNestedPagesAndCopyDraftParentPage');
 
         $resultLive = $this->getFrontendResult($this->recordIds['copiedPageId']);
-        $this->assertContains('Reason: ID was not an accessible page', $resultLive['stdout']);
+        $this->assertStringContainsString('Reason: ID was not an accessible page', $resultLive['stdout']);
         $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
             ->setTable(static::TABLE_Page)->setField('title')->setValues('Testing #1'));
@@ -554,7 +554,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('deleteContentAndCopyDraftPage');
 
         $resultLive = $this->getFrontendResult($this->recordIds['copiedPageId']);
-        $this->assertContains('Reason: ID was not an accessible page', $resultLive['stdout']);
+        $this->assertStringContainsString('Reason: ID was not an accessible page', $resultLive['stdout']);
         $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
@@ -590,7 +590,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('changeContentSortingAndCopyDraftPage');
 
         $resultLive = $this->getFrontendResult($this->recordIds['copiedPageId']);
-        $this->assertContains('Reason: ID was not an accessible page', $resultLive['stdout']);
+        $this->assertStringContainsString('Reason: ID was not an accessible page', $resultLive['stdout']);
         $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSectionsDraft, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
@@ -623,7 +623,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('moveContentAndCopyDraftPage');
 
         $resultLive = $this->getFrontendResult($this->recordIds['copiedPageId']);
-        $this->assertContains('Reason: ID was not an accessible page', $resultLive['stdout']);
+        $this->assertStringContainsString('Reason: ID was not an accessible page', $resultLive['stdout']);
         $responseSectionsDraft = $this->getFrontendResponse($this->recordIds['copiedPageId'], 0, static::VALUE_BackendUserId, static::VALUE_WorkspaceId)->getResponseSections();
         $this->assertThat($responseSectionsDraft, $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));

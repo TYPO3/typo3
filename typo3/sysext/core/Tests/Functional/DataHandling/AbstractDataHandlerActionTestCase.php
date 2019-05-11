@@ -80,7 +80,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      */
     protected $backendUser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -92,7 +92,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->assertErrorLogEntries();
         unset($this->actionService);

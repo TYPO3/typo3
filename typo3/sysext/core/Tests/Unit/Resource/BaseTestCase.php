@@ -31,7 +31,7 @@ abstract class BaseTestCase extends UnitTestCase
 
     protected $vfsContents = [];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->mountDir = $this->getUniqueId('mount-');

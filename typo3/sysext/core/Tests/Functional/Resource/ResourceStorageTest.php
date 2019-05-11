@@ -29,12 +29,13 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
  */
 class ResourceStorageTest extends FunctionalTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // cleanup manually created folders
         foreach (glob(Environment::getPublicPath() . '/fileadmin/*') as $folderToRemove) {
             GeneralUtility::rmdir($folderToRemove, true);
         }
+        parent::tearDown();
     }
 
     /**

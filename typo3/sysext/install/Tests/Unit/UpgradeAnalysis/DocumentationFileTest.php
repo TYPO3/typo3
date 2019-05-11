@@ -43,8 +43,9 @@ class DocumentationFileTest extends UnitTestCase
     /**
      * set up test environment
      */
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $content_12345 = [
             '====',
             'Breaking: #12345 - Issue',

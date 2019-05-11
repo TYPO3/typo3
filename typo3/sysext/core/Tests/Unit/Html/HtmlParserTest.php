@@ -31,6 +31,7 @@ class HtmlParserTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = new HtmlParser();
     }
 
@@ -307,38 +308,38 @@ class HtmlParserTest extends UnitTestCase
     public function emptyTagsDataProvider(): array
     {
         return [
-            [0, null, false, '<h1></h1>', '<h1></h1>'],
-            [1, null, false, '<h1></h1>', ''],
-            [1, null, false, '<h1>hallo</h1>', '<h1>hallo</h1>'],
-            [1, null, false, '<h1 class="something"></h1>', ''],
-            [1, null, false, '<h1 class="something"></h1><h2></h2>', ''],
-            [1, 'h2', false, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'],
-            [1, 'h2, h1', false, '<h1 class="something"></h1><h2></h2>', ''],
-            [1, null, false, '<div><p></p></div>', ''],
-            [1, null, false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'],
-            [1, null, true, '<div><p>&nbsp;&nbsp;</p></div>', ''],
-            [1, null, true, '<div>&nbsp;&nbsp;<p></p></div>', ''],
-            [1, null, false, '<div>Some content<p></p></div>', '<div>Some content</div>'],
-            [1, null, true, '<div>Some content<p></p></div>', '<div>Some content</div>'],
-            [1, null, false, '<div>Some content</div>', '<div>Some content</div>'],
-            [1, null, true, '<div>Some content</div>', '<div>Some content</div>'],
-            [1, null, false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
-            [1, null, true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
-            [0, '', false, '<h1></h1>', '<h1></h1>'],
-            [1, '', false, '<h1></h1>', ''],
-            [1, '', false, '<h1>hallo</h1>', '<h1>hallo</h1>'],
-            [1, '', false, '<h1 class="something"></h1>', ''],
-            [1, '', false, '<h1 class="something"></h1><h2></h2>', ''],
-            [1, '', false, '<div><p></p></div>', ''],
-            [1, '', false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'],
-            [1, '', true, '<div><p>&nbsp;&nbsp;</p></div>', ''],
-            [1, '', true, '<div>&nbsp;&nbsp;<p></p></div>', ''],
-            [1, '', false, '<div>Some content<p></p></div>', '<div>Some content</div>'],
-            [1, '', true, '<div>Some content<p></p></div>', '<div>Some content</div>'],
-            [1, '', false, '<div>Some content</div>', '<div>Some content</div>'],
-            [1, '', true, '<div>Some content</div>', '<div>Some content</div>'],
-            [1, '', false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
-            [1, '', true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
+            [false, null, false, '<h1></h1>', '<h1></h1>'],
+            [true, null, false, '<h1></h1>', ''],
+            [true, null, false, '<h1>hallo</h1>', '<h1>hallo</h1>'],
+            [true, null, false, '<h1 class="something"></h1>', ''],
+            [true, null, false, '<h1 class="something"></h1><h2></h2>', ''],
+            [true, 'h2', false, '<h1 class="something"></h1><h2></h2>', '<h1 class="something"></h1>'],
+            [true, 'h2, h1', false, '<h1 class="something"></h1><h2></h2>', ''],
+            [true, null, false, '<div><p></p></div>', ''],
+            [true, null, false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'],
+            [true, null, true, '<div><p>&nbsp;&nbsp;</p></div>', ''],
+            [true, null, true, '<div>&nbsp;&nbsp;<p></p></div>', ''],
+            [true, null, false, '<div>Some content<p></p></div>', '<div>Some content</div>'],
+            [true, null, true, '<div>Some content<p></p></div>', '<div>Some content</div>'],
+            [true, null, false, '<div>Some content</div>', '<div>Some content</div>'],
+            [true, null, true, '<div>Some content</div>', '<div>Some content</div>'],
+            [true, null, false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
+            [true, null, true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
+            [false, '', false, '<h1></h1>', '<h1></h1>'],
+            [true, '', false, '<h1></h1>', ''],
+            [true, '', false, '<h1>hallo</h1>', '<h1>hallo</h1>'],
+            [true, '', false, '<h1 class="something"></h1>', ''],
+            [true, '', false, '<h1 class="something"></h1><h2></h2>', ''],
+            [true, '', false, '<div><p></p></div>', ''],
+            [true, '', false, '<div><p>&nbsp;</p></div>', '<div><p>&nbsp;</p></div>'],
+            [true, '', true, '<div><p>&nbsp;&nbsp;</p></div>', ''],
+            [true, '', true, '<div>&nbsp;&nbsp;<p></p></div>', ''],
+            [true, '', false, '<div>Some content<p></p></div>', '<div>Some content</div>'],
+            [true, '', true, '<div>Some content<p></p></div>', '<div>Some content</div>'],
+            [true, '', false, '<div>Some content</div>', '<div>Some content</div>'],
+            [true, '', true, '<div>Some content</div>', '<div>Some content</div>'],
+            [true, '', false, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
+            [true, '', true, '<a href="#skiplinks">Skiplinks </a><b></b>', '<a href="#skiplinks">Skiplinks </a>'],
         ];
     }
 

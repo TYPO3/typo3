@@ -47,7 +47,7 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

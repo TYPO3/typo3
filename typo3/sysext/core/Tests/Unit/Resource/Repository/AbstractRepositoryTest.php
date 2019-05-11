@@ -50,8 +50,9 @@ class AbstractRepositoryTest extends UnitTestCase
         return $queryBuilderProphet;
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getMockForAbstractClass(AbstractRepository::class, [], '', false);
     }
 

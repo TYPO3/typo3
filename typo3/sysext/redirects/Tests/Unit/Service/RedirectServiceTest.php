@@ -46,7 +46,7 @@ class RedirectServiceTest extends UnitTestCase
      */
     protected $redirectService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $loggerProphecy = $this->prophesize(LoggerInterface::class);

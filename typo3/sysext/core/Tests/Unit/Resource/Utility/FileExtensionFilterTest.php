@@ -28,7 +28,7 @@ class FileExtensionFilterTest extends UnitTestCase
     /**
      * Cleans up this test suite.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

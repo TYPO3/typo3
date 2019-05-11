@@ -37,8 +37,9 @@ class ObjectAccessTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->dummyObject = new DummyClassWithGettersAndSetters();
         $this->dummyObject->setProperty('string1');
         $this->dummyObject->setAnotherProperty(42);
@@ -314,7 +315,9 @@ class ObjectAccessTest extends UnitTestCase
         $dateTimeZone = new \DateTimeZone('+2');
         $gettablePropertyNames = ObjectAccess::getGettablePropertyNames($dateTimeZone);
         $expectedPropertyNames = ['location', 'name'];
-        $this->assertArraySubset($expectedPropertyNames, $gettablePropertyNames);
+        foreach ($expectedPropertyNames as $expectedPropertyName) {
+            $this->assertContains($expectedPropertyName, $gettablePropertyNames);
+        }
     }
 
     /**

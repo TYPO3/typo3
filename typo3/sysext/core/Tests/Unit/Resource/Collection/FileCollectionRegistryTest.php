@@ -24,8 +24,9 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
      */
     protected $testSubject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->initializeTestSubject();
     }
 

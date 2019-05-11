@@ -28,7 +28,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = new RadioViewHelper();
@@ -89,7 +89,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -116,7 +116,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -143,7 +143,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -170,7 +170,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -197,7 +197,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -234,7 +234,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="2" />',
             $result
         );
@@ -262,7 +262,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" class="error" />',
             $result
         );
@@ -289,7 +289,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" class="f3-form-error" />',
             $result
         );
@@ -317,7 +317,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<input class="css_class f3-form-error" type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );

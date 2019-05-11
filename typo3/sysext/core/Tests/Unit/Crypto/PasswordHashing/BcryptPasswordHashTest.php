@@ -31,8 +31,9 @@ class BcryptPasswordHashTest extends UnitTestCase
     /**
      * Sets up the fixtures for this testcase.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         // Set a low cost to speed up tests
         $options = [
             'cost' => 10,

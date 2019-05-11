@@ -33,8 +33,9 @@ class LocallangXmlParserTest extends UnitTestCase
     /**
      * Prepares the environment before running a test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
@@ -49,7 +50,7 @@ class LocallangXmlParserTest extends UnitTestCase
     /**
      * Cleans up the environment after running a test.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

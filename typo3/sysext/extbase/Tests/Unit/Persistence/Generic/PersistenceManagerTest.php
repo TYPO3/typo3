@@ -45,6 +45,7 @@ class PersistenceManagerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
     }
 

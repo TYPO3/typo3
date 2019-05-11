@@ -207,7 +207,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
         $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
-        $this->assertInternalType('array', $node->getStatus());
+        $this->assertIsArray($node->getStatus());
     }
 
     /**
@@ -533,7 +533,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $this->assertInternalType('array', $node->_call('fixSelf'));
+        $this->assertIsArray($node->_call('fixSelf'));
     }
 
     /**

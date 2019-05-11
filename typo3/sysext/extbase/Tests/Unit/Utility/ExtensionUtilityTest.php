@@ -26,8 +26,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ExtensionUtilityTest extends UnitTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $GLOBALS['TSFE']->tmpl->setup = [];
@@ -69,12 +70,12 @@ class ExtensionUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertContains('
+        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        $this->assertStringContainsString('
 	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
-        $this->assertNotContains('USER_INT', $staticTypoScript);
+        $this->assertStringNotContainsString('USER_INT', $staticTypoScript);
     }
 
     /**
@@ -86,7 +87,7 @@ class ExtensionUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', [FirstController::class => 'index']);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
     }
 
     /**
@@ -100,8 +101,8 @@ class ExtensionUtilityTest extends UnitTestCase
             FirstController::class => 'index'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertContains('
+        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        $this->assertStringContainsString('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
@@ -156,8 +157,8 @@ class ExtensionUtilityTest extends UnitTestCase
             FirstController::class => 'index,show'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertContains('
+        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        $this->assertStringContainsString('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
@@ -187,8 +188,8 @@ class ExtensionUtilityTest extends UnitTestCase
             FirstController::class => 'new,show'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertContains('
+        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        $this->assertStringContainsString('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
@@ -363,7 +364,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);
 
-        $this->assertContains($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']);
+        $this->assertEquals($typeConverterClassName, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters'][0]);
         $this->assertEquals(1, count($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['typeConverters']));
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerTypeConverter($typeConverterClassName);

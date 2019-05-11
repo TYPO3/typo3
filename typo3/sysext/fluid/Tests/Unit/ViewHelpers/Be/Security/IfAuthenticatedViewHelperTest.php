@@ -29,7 +29,7 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $viewHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['BE_USER'] = new \stdClass();
@@ -38,9 +38,10 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->initializeArguments();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($GLOBALS['BE_USER']);
+        parent::tearDown();
     }
 
     /**

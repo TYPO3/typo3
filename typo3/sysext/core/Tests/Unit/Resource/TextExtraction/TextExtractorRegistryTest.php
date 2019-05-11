@@ -57,7 +57,7 @@ class TextExtractorRegistryTest extends UnitTestCase
         $textExtractorRegistry = $this->getTextExtractorRegistry([[$textExtractorClass, $textExtractorInstance]]);
 
         $textExtractorRegistry->registerTextExtractor($textExtractorClass);
-        $this->assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances(), '', false, false);
+        $this->assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances());
     }
 
     /**

@@ -60,6 +60,7 @@ class TemplateServiceTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['SIM_ACCESS_TIME'] = time();
         $GLOBALS['ACCESS_TIME'] = time();
         $this->packageManagerProphecy = $this->prophesize(PackageManager::class);

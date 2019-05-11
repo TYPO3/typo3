@@ -40,8 +40,9 @@ class DispatcherTest extends UnitTestCase
      */
     protected $signalSlotDispatcher;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $accessibleClassName = $this->getAccessibleMock(Dispatcher::class, ['dummy']);
         $this->signalSlotDispatcher = new $accessibleClassName();
     }

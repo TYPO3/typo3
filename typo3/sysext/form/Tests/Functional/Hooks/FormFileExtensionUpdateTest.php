@@ -71,7 +71,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
      */
     private $storageFolder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -94,7 +94,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
         $this->storageFolder = $storage->createFolder($folderIdentifier);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->storageFolder->delete(true);
         parent::tearDown();

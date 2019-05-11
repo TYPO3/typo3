@@ -38,13 +38,14 @@ class CronCommandTest extends UnitTestCase
      * current timezone setting, set it to UTC explicitly and reconstitute it
      * again in tearDown()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->timezoneBackup = date_default_timezone_get();
         date_default_timezone_set('UTC');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         date_default_timezone_set($this->timezoneBackup);
         parent::tearDown();
@@ -324,7 +325,7 @@ class CronCommandTest extends UnitTestCase
     public function getTimestampReturnsInteger()
     {
         $instance = new CronCommand('* * * * *');
-        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_INT, $instance->getTimestamp());
+        $this->assertIsInt($instance->getTimestamp());
     }
 
     /**
@@ -333,6 +334,6 @@ class CronCommandTest extends UnitTestCase
     public function getCronCommandSectionsReturnsArray()
     {
         $instance = new CronCommand('* * * * *');
-        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $instance->getCronCommandSections());
+        $this->assertIsArray($instance->getCronCommandSections());
     }
 }

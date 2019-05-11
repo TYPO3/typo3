@@ -26,8 +26,9 @@ class FileMountTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
     }
 

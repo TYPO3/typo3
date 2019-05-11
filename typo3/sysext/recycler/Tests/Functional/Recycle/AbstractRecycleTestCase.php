@@ -37,7 +37,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\TestingFramework\Core\Func
      * Set up for set up the backend user, initialize the language object
      * and creating the Export instance
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../Fixtures/Database/be_groups.xml');

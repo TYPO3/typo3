@@ -60,6 +60,7 @@ class PageResolverTest extends UnitTestCase
     {
         $this->markTestSkipped('Has to be adjusted');
 
+        parent::setUp();
         $this->controller = $this->getAccessibleMock(TypoScriptFrontendController::class, ['getSiteScript', 'determineId', 'isBackendUserLoggedIn'], [], '', false);
 
         // A request handler which expects a site with some more details are found.

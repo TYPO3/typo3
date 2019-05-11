@@ -315,7 +315,7 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
      * The implementation is optional and depends on the underlying persistence backend.
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if (method_exists($this->backend, 'tearDown')) {
             $this->backend->tearDown();

@@ -90,28 +90,28 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
 
         $renderedString = $subject->render();
 
-        $this->assertContains($expectedPrologueString, $renderedString);
-        $this->assertContains($expectedTitleString, $renderedString);
-        $this->assertContains($expectedCharsetString, $renderedString);
-        $this->assertContains($expectedFavouriteIconPartOne, $renderedString);
-        $this->assertContains($expectedBaseUrlString, $renderedString);
-        $this->assertContains($expectedInlineCommentString, $renderedString);
-        $this->assertContains($expectedHeaderData, $renderedString);
+        $this->assertStringContainsString($expectedPrologueString, $renderedString);
+        $this->assertStringContainsString($expectedTitleString, $renderedString);
+        $this->assertStringContainsString($expectedCharsetString, $renderedString);
+        $this->assertStringContainsString($expectedFavouriteIconPartOne, $renderedString);
+        $this->assertStringContainsString($expectedBaseUrlString, $renderedString);
+        $this->assertStringContainsString($expectedInlineCommentString, $renderedString);
+        $this->assertStringContainsString($expectedHeaderData, $renderedString);
         $this->assertRegExp($expectedJsLibraryRegExp, $renderedString);
         $this->assertRegExp($expectedJsFileRegExp, $renderedString);
-        $this->assertContains($expectedJsInlineCodeString, $renderedString);
-        $this->assertContains($expectedCssFileString, $renderedString);
-        $this->assertContains($expectedCssInlineBlockOnTopString, $renderedString);
-        $this->assertContains($expectedBodyContent, $renderedString);
-        $this->assertContains('<meta property="og:type" content="foobar" />', $renderedString);
-        $this->assertContains('<meta name="author" content="foobar" />', $renderedString);
-        $this->assertContains('<meta http-equiv="refresh" content="5" />', $renderedString);
-        $this->assertContains('<meta name="dc.author" content="&lt;evil tag&gt;" />', $renderedString);
-        $this->assertNotContains('<meta name="randomtag" content="foobar">', $renderedString);
-        $this->assertNotContains('<meta name="randomtag" content="foobar" />', $renderedString);
-        $this->assertContains('<meta name="generator" content="TYPO3 CMS" />', $renderedString);
-        $this->assertContains('<meta property="og:image" content="/path/to/image1.jpg" />', $renderedString);
-        $this->assertContains('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
+        $this->assertStringContainsString($expectedJsInlineCodeString, $renderedString);
+        $this->assertStringContainsString($expectedCssFileString, $renderedString);
+        $this->assertStringContainsString($expectedCssInlineBlockOnTopString, $renderedString);
+        $this->assertStringContainsString($expectedBodyContent, $renderedString);
+        $this->assertStringContainsString('<meta property="og:type" content="foobar" />', $renderedString);
+        $this->assertStringContainsString('<meta name="author" content="foobar" />', $renderedString);
+        $this->assertStringContainsString('<meta http-equiv="refresh" content="5" />', $renderedString);
+        $this->assertStringContainsString('<meta name="dc.author" content="&lt;evil tag&gt;" />', $renderedString);
+        $this->assertStringNotContainsString('<meta name="randomtag" content="foobar">', $renderedString);
+        $this->assertStringNotContainsString('<meta name="randomtag" content="foobar" />', $renderedString);
+        $this->assertStringContainsString('<meta name="generator" content="TYPO3 CMS" />', $renderedString);
+        $this->assertStringContainsString('<meta property="og:image" content="/path/to/image1.jpg" />', $renderedString);
+        $this->assertStringContainsString('<meta property="og:image" content="/path/to/image2.jpg" />', $renderedString);
     }
 
     /**
@@ -165,13 +165,13 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
 
         $renderedString = $subject->render(PageRenderer::PART_FOOTER);
 
-        $this->assertContains($expectedFooterData, $renderedString);
+        $this->assertStringContainsString($expectedFooterData, $renderedString);
         $this->assertRegExp($expectedJsFooterLibraryRegExp, $renderedString);
         $this->assertRegExp($expectedJsFooterRegExp, $renderedString);
-        $this->assertContains($expectedJsFooterInlineCodeString, $renderedString);
-        $this->assertContains($expectedInlineLabelReturnValue, $renderedString);
-        $this->assertContains($expectedLanguageLabel1, $renderedString);
-        $this->assertContains($expectedLanguageLabel2, $renderedString);
-        $this->assertContains($expectedInlineSettingsReturnValue, $renderedString);
+        $this->assertStringContainsString($expectedJsFooterInlineCodeString, $renderedString);
+        $this->assertStringContainsString($expectedInlineLabelReturnValue, $renderedString);
+        $this->assertStringContainsString($expectedLanguageLabel1, $renderedString);
+        $this->assertStringContainsString($expectedLanguageLabel2, $renderedString);
+        $this->assertStringContainsString($expectedInlineSettingsReturnValue, $renderedString);
     }
 }

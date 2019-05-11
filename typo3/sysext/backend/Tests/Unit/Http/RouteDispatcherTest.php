@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RouteDispatcherTest extends UnitTestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         FormProtectionFactory::purgeInstances();
         GeneralUtility::purgeInstances();

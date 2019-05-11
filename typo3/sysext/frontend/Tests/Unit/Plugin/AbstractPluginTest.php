@@ -44,7 +44,7 @@ class AbstractPluginTest extends UnitTestCase
     /**
      * Sets up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

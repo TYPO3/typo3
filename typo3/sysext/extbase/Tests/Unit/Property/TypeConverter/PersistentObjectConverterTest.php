@@ -60,8 +60,9 @@ class PersistentObjectConverterTest extends UnitTestCase
      * @throws \PHPUnit\Framework\Exception
      * @throws \RuntimeException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->converter = new PersistentObjectConverter();
         $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);

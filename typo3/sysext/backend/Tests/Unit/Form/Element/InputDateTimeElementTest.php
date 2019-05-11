@@ -41,7 +41,7 @@ class InputDateTimeElementTest extends UnitTestCase
      * current timezone setting, set it to UTC explicitly and reconstitute it
      * again in tearDown()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->timezoneBackup = date_default_timezone_get();
     }
@@ -49,7 +49,7 @@ class InputDateTimeElementTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         date_default_timezone_set($this->timezoneBackup);
         parent::tearDown();
@@ -133,6 +133,6 @@ class InputDateTimeElementTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $subject = new InputDateTimeElement($nodeFactoryProphecy->reveal(), $data);
         $result = $subject->render();
-        $this->assertContains('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
+        $this->assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
     }
 }

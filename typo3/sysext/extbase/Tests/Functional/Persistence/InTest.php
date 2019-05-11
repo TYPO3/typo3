@@ -46,7 +46,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

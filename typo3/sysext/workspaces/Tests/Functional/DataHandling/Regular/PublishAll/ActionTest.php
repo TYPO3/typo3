@@ -298,7 +298,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('deletePage');
 
         $response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, false);
-        $this->assertContains('PageNotFoundException', $response->getError());
+        $this->assertStringContainsString('PageNotFoundException', $response->getError());
     }
 
     /**
@@ -312,7 +312,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
         $this->assertAssertionDataSet('deleteContentAndPage');
 
         $response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, false);
-        $this->assertContains('PageNotFoundException', $response->getError());
+        $this->assertStringContainsString('PageNotFoundException', $response->getError());
     }
 
     /**

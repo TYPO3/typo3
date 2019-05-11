@@ -29,8 +29,9 @@ class DebugExceptionHandlerTest extends UnitTestCase
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Error\DebugExceptionHandler::class)
             ->setMethods(['sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
@@ -48,7 +49,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertContains(htmlspecialchars($message), $output);
-        $this->assertNotContains($message, $output);
+        $this->assertStringContainsString(htmlspecialchars($message), $output);
+        $this->assertStringNotContainsString($message, $output);
     }
 }

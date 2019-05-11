@@ -34,7 +34,7 @@ class DefaultTcaSchemaTest extends UnitTestCase
      */
     protected $subject;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->subject = $this->getAccessibleMock(DefaultTcaSchema::class, ['tableRunsOnSqlite']);

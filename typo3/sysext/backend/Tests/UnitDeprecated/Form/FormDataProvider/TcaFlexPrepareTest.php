@@ -42,8 +42,9 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         // Suppress cache foo in xml helpers of GeneralUtility
         /** @var CacheManager|ObjectProphecy $cacheManagerProphecy */
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
@@ -57,7 +58,7 @@ class TcaFlexPrepareTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

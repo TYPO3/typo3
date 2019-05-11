@@ -37,7 +37,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->collectionRecord = [
@@ -94,7 +94,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         $method = new \ReflectionMethod(CategoryCollection::class, 'getCollectedRecords');
         $method->setAccessible(true);
         $records = $method->invoke($subject);
-        $this->assertInternalType('array', $records);
+        $this->assertIsArray($records);
         $this->assertEmpty($records);
     }
 

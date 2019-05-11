@@ -44,6 +44,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);

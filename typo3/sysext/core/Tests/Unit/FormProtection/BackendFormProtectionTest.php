@@ -42,8 +42,9 @@ class BackendFormProtectionTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->backendUserMock = $this->createMock(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::class);
         $this->backendUserMock->user['uid'] = 1;
         $this->registryMock = $this->createMock(Registry::class);

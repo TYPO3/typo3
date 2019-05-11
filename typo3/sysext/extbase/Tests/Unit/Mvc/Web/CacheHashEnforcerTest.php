@@ -36,8 +36,9 @@ class CacheHashEnforcerTest extends UnitTestCase
      */
     protected $frontendControllerMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->frontendControllerMock = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
         $this->frontendControllerMock->id = 42;
         $cacheHashCalculator = new CacheHashCalculator();

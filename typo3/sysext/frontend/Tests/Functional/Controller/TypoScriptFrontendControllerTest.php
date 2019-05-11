@@ -28,7 +28,7 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     protected $tsFrontendController;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/fixtures.xml');

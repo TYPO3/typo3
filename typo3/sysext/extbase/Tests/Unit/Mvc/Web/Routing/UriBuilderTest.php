@@ -71,8 +71,9 @@ class UriBuilderTest extends UnitTestCase
      * @throws \InvalidArgumentException
      * @throws \PHPUnit\Framework\Exception
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $this->mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $this->mockRequest = $this->createMock(Request::class);

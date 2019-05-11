@@ -37,7 +37,7 @@ class BackendUserConfigurationTest extends UnitTestCase
     /**
      * Set up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var BackendUserAuthentication|\Prophecy\Prophecy\ObjectProphecy */
         $this->backendUser = $this->prophesize(BackendUserAuthentication::class);

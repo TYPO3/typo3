@@ -52,6 +52,12 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         $this->fixtureDirFromTest = GeneralUtility::fixWindowsFilePath(__DIR__ . '/ResourceCompressorTest/Fixtures/');
     }
 
+    public function tearDown(): void
+    {
+        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory();
+        parent::tearDown();
+    }
+
     /**
      * @test
      */
@@ -105,7 +111,6 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
         );
         self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(Environment::getPublicPath() . '/' . $mergedFile['file']), $expected);
     }
-
     /**
      * @test
      */
@@ -140,11 +145,5 @@ class ResourceCompressorIntegrationTest extends BaseTestCase
             $this->fixtureDirFromTest . 'expected' . DIRECTORY_SEPARATOR . 'merged-css_input_with_import_non_root.css'
         );
         self::assertStringEqualsFile(GeneralUtility::fixWindowsFilePath(Environment::getPublicPath() . '/' . $mergedFile['file']), $expected);
-    }
-
-    public function tearDown(): void
-    {
-        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $this->resourceCompressor->getTargetDirectory();
-        parent::tearDown();
     }
 }

@@ -24,8 +24,9 @@ class IntegerValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator::class;
 
-    public function setup()
+    public function setup(): void
     {
+        parent::setUp();
         $this->validator = $this->getMockBuilder($this->validatorClassName)
             ->setMethods(['translateErrorMessage'])
             ->getMock();

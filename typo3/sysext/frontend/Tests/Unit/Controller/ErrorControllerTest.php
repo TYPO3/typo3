@@ -35,7 +35,7 @@ class ErrorControllerTest extends UnitTestCase
     /**
      * Purge possibly left over instances
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();
@@ -175,7 +175,7 @@ X-TYPO3-Additional-Header: Banana Stand',
             $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
             $this->assertEquals($expectedResponseDetails['reasonPhrase'], $response->getReasonPhrase());
             if (isset($expectedResponseDetails['content'])) {
-                $this->assertContains($expectedResponseDetails['content'], $response->getBody()->getContents());
+                $this->assertStringContainsString($expectedResponseDetails['content'], $response->getBody()->getContents());
             }
             $this->assertEquals($expectedResponseDetails['headers'], $response->getHeaders());
         }
@@ -265,7 +265,7 @@ X-TYPO3-Additional-Header: Banana Stand';
             $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
             $this->assertEquals($expectedResponseDetails['reasonPhrase'], $response->getReasonPhrase());
             if (isset($expectedResponseDetails['content'])) {
-                $this->assertContains($expectedResponseDetails['content'], $response->getBody()->getContents());
+                $this->assertStringContainsString($expectedResponseDetails['content'], $response->getBody()->getContents());
             }
             $this->assertEquals($expectedResponseDetails['headers'], $response->getHeaders());
         }
@@ -422,7 +422,7 @@ X-TYPO3-Additional-Header: Banana Stand',
             $this->assertEquals($expectedResponseDetails['statusCode'], $response->getStatusCode());
             $this->assertEquals($expectedResponseDetails['reasonPhrase'], $response->getReasonPhrase());
             if (isset($expectedResponseDetails['content'])) {
-                $this->assertContains($expectedResponseDetails['content'], $response->getBody()->getContents());
+                $this->assertStringContainsString($expectedResponseDetails['content'], $response->getBody()->getContents());
             }
             $this->assertEquals($expectedResponseDetails['headers'], $response->getHeaders());
         }

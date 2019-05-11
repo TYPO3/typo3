@@ -37,6 +37,7 @@ class FileBackendTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('Foo'));
     }
@@ -801,7 +802,7 @@ class FileBackendTest extends UnitTestCase
         $expectedEntry = 'BackendFileTest2';
 
         $actualEntries = $backend->findIdentifiersByTag('UnitTestTag%special');
-        $this->assertInternalType('array', $actualEntries);
+        $this->assertIsArray($actualEntries);
         $this->assertEquals($expectedEntry, array_pop($actualEntries));
     }
 

@@ -49,8 +49,9 @@ class ProcessedFileTest extends UnitTestCase
     /**
      * @throws \PHPUnit\Framework\Exception
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
 

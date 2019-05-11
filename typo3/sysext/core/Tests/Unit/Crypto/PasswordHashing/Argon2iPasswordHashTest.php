@@ -31,8 +31,9 @@ class Argon2iPasswordHashTest extends UnitTestCase
     /**
      * Sets up the subject for this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $options = [
             'memory_cost' => 1024,
             'time_cost' => 2,

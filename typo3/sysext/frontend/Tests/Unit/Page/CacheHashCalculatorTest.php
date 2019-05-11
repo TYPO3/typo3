@@ -28,8 +28,9 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
         $this->subject = $this->getMockBuilder(CacheHashCalculator::class)
             ->setMethods(['foo'])
@@ -131,11 +132,11 @@ class CacheHashCalculatorTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \RuntimeException
-     * @expectedExceptionCode 1467983513
      */
     public function generateForParametersThrowsExceptionWhenIdIsNotSpecified()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1467983513);
         $this->subject->generateForParameters('&key=x');
     }
 

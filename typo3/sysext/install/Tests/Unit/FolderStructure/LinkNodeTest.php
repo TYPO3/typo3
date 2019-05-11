@@ -114,7 +114,7 @@ class LinkNodeTest extends UnitTestCase
         );
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $this->assertInternalType('array', $node->getStatus());
+        $this->assertIsArray($node->getStatus());
     }
 
     /**

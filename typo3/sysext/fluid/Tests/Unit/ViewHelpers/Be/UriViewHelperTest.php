@@ -41,7 +41,7 @@ class UriViewHelperTest extends ViewHelperBaseTestcase
     /**
      * setUp function
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = new UriViewHelper();

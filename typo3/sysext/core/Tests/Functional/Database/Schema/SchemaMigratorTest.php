@@ -59,7 +59,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->subject = GeneralUtility::makeInstance(SchemaMigrator::class);
@@ -72,7 +72,7 @@ class SchemaMigratorTest extends FunctionalTestCase
     /**
      * Tears down this test suite.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

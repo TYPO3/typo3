@@ -32,8 +32,9 @@ class AbstractRestrictionTestCase extends UnitTestCase
     /**
      * Create a new database connection mock object for every test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         /** @var Connection|\Prophecy\Prophecy\ObjectProphecy $connection */
         $connection = $this->prophesize(Connection::class);
         $connection->quoteIdentifier(Argument::cetera())->will(function ($args) {

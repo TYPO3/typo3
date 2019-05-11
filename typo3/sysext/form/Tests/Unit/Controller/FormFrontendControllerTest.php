@@ -31,8 +31,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FormFrontendControllerTest extends UnitTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
@@ -41,7 +42,7 @@ class FormFrontendControllerTest extends UnitTestCase
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

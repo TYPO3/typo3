@@ -31,8 +31,9 @@ class RequestTest extends UnitTestCase
      */
     protected $request;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->request = new Request();
     }
 
@@ -348,7 +349,7 @@ class RequestTest extends UnitTestCase
         $request = new Request('http://example.com');
         $headers = $request->getHeaders();
         $this->assertArrayHasKey('host', $headers);
-        $this->assertContains('example.com', $headers['host']);
+        $this->assertTrue(in_array('example.com', $headers['host']));
     }
 
     /**
@@ -406,7 +407,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new Request('http://example.com');
         $header = $request->getHeaderLine('host');
-        $this->assertContains('example.com', $header);
+        $this->assertStringContainsString('example.com', $header);
     }
 
     /**

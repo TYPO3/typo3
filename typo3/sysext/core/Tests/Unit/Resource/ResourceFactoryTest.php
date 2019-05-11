@@ -41,15 +41,16 @@ class ResourceFactoryTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['dummy'], [], '', false);
     }
 
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->filesCreated as $file) {
             unlink($file);

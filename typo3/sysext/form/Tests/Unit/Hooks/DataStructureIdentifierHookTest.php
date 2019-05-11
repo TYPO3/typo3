@@ -38,8 +38,9 @@ class DataStructureIdentifierHookTest extends UnitTestCase
     /**
      * Set up
      */
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('cache_runtime')->willReturn($cacheProphecy->reveal());

@@ -147,7 +147,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $node->expects($this->any())->method('isDirectory')->will($this->returnValue(true));
         $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
         $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $this->assertInternalType('array', $node->getStatus());
+        $this->assertIsArray($node->getStatus());
     }
 
     /**

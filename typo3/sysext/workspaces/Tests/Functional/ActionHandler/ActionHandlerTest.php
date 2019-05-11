@@ -29,7 +29,7 @@ class ActionHandlerTest extends \TYPO3\TestingFramework\Core\Functional\Function
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->setUpBackendUserFromFixture(1);

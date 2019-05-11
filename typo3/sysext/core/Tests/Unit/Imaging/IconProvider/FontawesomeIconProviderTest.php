@@ -36,8 +36,9 @@ class FontawesomeIconProviderTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = new \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider();
         $this->icon = GeneralUtility::makeInstance(Icon::class);
         $this->icon->setIdentifier('foo');

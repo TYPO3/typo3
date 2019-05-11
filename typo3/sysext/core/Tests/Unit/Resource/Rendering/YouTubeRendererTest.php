@@ -34,7 +34,7 @@ class YouTubeRendererTest extends UnitTestCase
     /**
      * Set up the test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $_SERVER['HTTP_HOST'] = 'test.server.org';

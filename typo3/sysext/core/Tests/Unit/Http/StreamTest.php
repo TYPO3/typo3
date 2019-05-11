@@ -30,8 +30,9 @@ class StreamTest extends UnitTestCase
      */
     protected $stream;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->stream = new Stream('php://memory', 'wb+');
     }
 

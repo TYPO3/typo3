@@ -41,8 +41,9 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $this->subject->_set('context', new Context());
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
@@ -65,8 +66,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $GLOBALS['TSFE'] = $this->setupTsfeMockForHeaderFooterReplacementCheck();
         $GLOBALS['TSFE']->INTincScript();
-        $this->assertContains('headerData', $GLOBALS['TSFE']->content);
-        $this->assertContains('footerData', $GLOBALS['TSFE']->content);
+        $this->assertStringContainsString('headerData', $GLOBALS['TSFE']->content);
+        $this->assertStringContainsString('footerData', $GLOBALS['TSFE']->content);
     }
 
     /**

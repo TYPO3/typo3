@@ -34,8 +34,9 @@ class CleanerFieldProviderTest extends UnitTestCase
     /**
      * Sets up an instance of \TYPO3\CMS\Recycler\Task\CleanerFieldProvider
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $languageServiceMock = $this->getMockBuilder(LanguageService::class)
             ->setMethods(['sL'])
             ->disableOriginalConstructor()

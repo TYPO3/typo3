@@ -33,8 +33,9 @@ class RenderingContextTest extends UnitTestCase
      */
     protected $renderingContext;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['dummy']);
     }
 

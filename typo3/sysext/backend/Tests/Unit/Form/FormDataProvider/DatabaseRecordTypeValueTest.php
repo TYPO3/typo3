@@ -27,7 +27,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = $this->getMockBuilder(DatabaseRecordTypeValue::class)
             ->setMethods(['getDatabaseRow'])

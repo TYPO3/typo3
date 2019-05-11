@@ -41,7 +41,7 @@ class FormInlineAjaxControllerTest extends FunctionalTestCase
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

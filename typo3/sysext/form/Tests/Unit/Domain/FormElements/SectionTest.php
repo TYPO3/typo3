@@ -37,7 +37,7 @@ class SectionTest extends UnitTestCase
     /**
      * @before
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->sectionInstance = new Section(self::$IDENTIFIER, self::$TYPE);

@@ -32,7 +32,7 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
     /**
      * setUp function
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, ['renderChildren']);

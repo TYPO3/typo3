@@ -35,7 +35,7 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\Func
      */
     private $validatorResolver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

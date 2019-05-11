@@ -37,8 +37,9 @@ class OpenDocumentServiceTest extends UnitTestCase
     /**
      * Set up this test case
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->backendUser = $this->prophesize(BackendUserAuthentication::class);
         $this->subject = new OpenDocumentService($this->backendUser->reveal());
     }

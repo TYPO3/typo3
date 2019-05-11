@@ -36,7 +36,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

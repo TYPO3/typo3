@@ -64,7 +64,7 @@ class FlexFormToolsTest extends UnitTestCase
     /**
      * Set up
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         // Underlying static GeneralUtility::xml2array() uses caches that have to be mocked here

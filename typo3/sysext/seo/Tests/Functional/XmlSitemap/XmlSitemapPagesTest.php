@@ -42,7 +42,7 @@ class XmlSitemapPagesTest extends AbstractTestCase
      */
     protected $response;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-sitemap.xml');

@@ -39,8 +39,9 @@ class CleanerTaskTest extends UnitTestCase
     /**
      * sets up an instance of \TYPO3\CMS\Recycler\Task\CleanerTask
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getMockBuilder(CleanerTask::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()

@@ -54,6 +54,7 @@ class SiteResolverTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, ['dummy'], [], '', false);
 
         // A request handler which expects a site to be found.

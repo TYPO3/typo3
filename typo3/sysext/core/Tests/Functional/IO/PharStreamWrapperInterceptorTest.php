@@ -30,7 +30,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_resources/bundle.phar' => 'fileadmin/bundle.phar',
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         if (!in_array('phar', stream_get_wrappers())) {
@@ -71,7 +71,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     {
         $path = $this->instancePath . '/' . $path;
         $handle = opendir('phar://' . $path);
-        self::assertInternalType('resource', $handle);
+        self::assertIsResource($handle);
     }
 
     /**
@@ -290,7 +290,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     {
         $allowedPath = $this->instancePath . '/typo3conf/ext/test_resources/bundle.phar';
         $handle = fopen('phar://' . $allowedPath . '/Resources/content.txt', 'r');
-        self::assertInternalType('resource', $handle);
+        self::assertIsResource($handle);
     }
 
     /**

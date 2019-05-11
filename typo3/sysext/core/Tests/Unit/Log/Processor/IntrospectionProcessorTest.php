@@ -59,8 +59,9 @@ class IntrospectionProcessorTest extends UnitTestCase
     /**
      * Sets up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->processor = $this->getAccessibleMock(
             \TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor::class,
             ['getDebugBacktrace', 'formatDebugBacktrace']

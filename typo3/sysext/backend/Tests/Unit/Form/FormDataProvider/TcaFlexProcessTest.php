@@ -33,8 +33,9 @@ class TcaFlexProcessTest extends UnitTestCase
      */
     protected $backendUserProphecy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         /** @var BackendUserAuthentication|ObjectProphecy backendUserProphecy */
         $this->backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
         $GLOBALS['BE_USER'] = $this->backendUserProphecy->reveal();

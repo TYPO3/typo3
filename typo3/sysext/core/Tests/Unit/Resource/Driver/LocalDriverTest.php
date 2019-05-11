@@ -157,7 +157,7 @@ class LocalDriverTest extends BaseTestCase
         ];
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
-        $this->assertNotContains('//', $basePath);
+        $this->assertStringNotContainsString('//', $basePath);
     }
 
     /**
@@ -173,7 +173,7 @@ class LocalDriverTest extends BaseTestCase
         ];
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
-        $this->assertNotContains('/../', $basePath);
+        $this->assertStringNotContainsString('/../', $basePath);
     }
 
     /**
@@ -989,7 +989,7 @@ class LocalDriverTest extends BaseTestCase
         $subject = $this->createDriver();
         $filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile.ext'));
         $this->testFilesToDelete[] = $filePath;
-        $this->assertContains('/typo3temp/var/transient/', $filePath);
+        $this->assertStringContainsString('/typo3temp/var/transient/', $filePath);
         $this->assertEquals($fileContents, file_get_contents($filePath));
     }
 

@@ -29,8 +29,9 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * Set up testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getAccessibleMock(\TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::class, ['dummy']);
     }
 
@@ -114,7 +115,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         unset($GLOBALS['TYPO3_MISC']);
         $this->subject->_call('initializeGlobalVariables');
-        $this->assertInternalType('array', $GLOBALS['TYPO3_MISC']);
+        $this->assertIsArray($GLOBALS['TYPO3_MISC']);
     }
 
     /**
@@ -124,7 +125,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         unset($GLOBALS['T3_VAR']);
         $this->subject->_call('initializeGlobalVariables');
-        $this->assertInternalType('array', $GLOBALS['T3_VAR']);
+        $this->assertIsArray($GLOBALS['T3_VAR']);
     }
 
     /**
@@ -134,7 +135,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         unset($GLOBALS['T3_SERVICES']);
         $this->subject->_call('initializeGlobalVariables');
-        $this->assertInternalType('array', $GLOBALS['T3_SERVICES']);
+        $this->assertIsArray($GLOBALS['T3_SERVICES']);
     }
 
     /**

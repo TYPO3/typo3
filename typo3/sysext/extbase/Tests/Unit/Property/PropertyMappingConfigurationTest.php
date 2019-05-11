@@ -29,8 +29,9 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * Initialization
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
     }
 

@@ -54,8 +54,9 @@ class PropertyMappingConfigurationTest extends UnitTestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|ProcessingRule */
     protected $processingRule;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         // Property Mapping Configuration
         $this->extbasePropertyMappingConfiguration = $this->getMockBuilder(ExtbasePropertyMappingConfiguration::class)
             ->setMethods(['setTypeConverterOptions'])

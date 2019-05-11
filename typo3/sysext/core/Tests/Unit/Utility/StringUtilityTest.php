@@ -217,7 +217,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function getUniqueIdReturnsIdWithoutDot()
     {
-        $this->assertNotContains('.', StringUtility::getUniqueId());
+        $this->assertStringNotContainsString('.', StringUtility::getUniqueId());
     }
 
     /**

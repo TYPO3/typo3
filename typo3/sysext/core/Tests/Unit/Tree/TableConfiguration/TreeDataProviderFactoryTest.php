@@ -32,6 +32,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = new TreeDataProviderFactory();
         $GLOBALS['TCA'] = [];
         $GLOBALS['TCA']['foo'] = [];

@@ -32,7 +32,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

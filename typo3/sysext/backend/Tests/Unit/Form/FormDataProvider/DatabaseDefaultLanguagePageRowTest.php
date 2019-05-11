@@ -28,7 +28,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] = 'l10n_parent';
         $this->subject = $this->getMockBuilder(DatabaseDefaultLanguagePageRow::class)

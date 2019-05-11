@@ -31,7 +31,7 @@ class ApcuBackendTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         // APCu module is called apcu, but options are prefixed with apc
         if (!extension_loaded('apcu') || !(bool)ini_get('apc.enabled') || !(bool)ini_get('apc.enable_cli')) {

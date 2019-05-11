@@ -25,14 +25,6 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
     protected $assertionDataSetDirectory = 'typo3/sysext/workspaces/Tests/Functional/DataHandling/IRRE/CSV/PublishAll/DataSet/';
 
     /**
-     * Parent content records
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * @test
      * @see DataSet/createParentContentRecord.csv
      */
@@ -234,7 +226,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
         $this->assertAssertionDataSet('deletePage');
 
         $response = $this->getFrontendResponse(self::VALUE_PageId, 0, 0, 0, false);
-        $this->assertContains('PageNotFoundException', $response->getError());
+        $this->assertStringContainsString('PageNotFoundException', $response->getError());
     }
 
     /**

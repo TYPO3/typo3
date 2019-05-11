@@ -41,6 +41,7 @@ class TypoScriptParserTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $accessibleClassName = $this->buildAccessibleProxy(TypoScriptParser::class);
         $this->typoScriptParser = new $accessibleClassName();
     }
@@ -463,8 +464,8 @@ class TypoScriptParserTest extends UnitTestCase
         GeneralUtility::addInstance(ConditionMatcher::class, $p->reveal());
 
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
-        $this->assertContains('foo = bar', $resolvedIncludeLines);
-        $this->assertNotContains('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
+        $this->assertStringContainsString('foo = bar', $resolvedIncludeLines);
+        $this->assertStringNotContainsString('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
     }
 
     /**

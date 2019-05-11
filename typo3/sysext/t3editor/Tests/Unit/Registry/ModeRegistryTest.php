@@ -30,7 +30,7 @@ class ModeRegistryTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = $this->getAccessibleMock(ModeRegistry::class, ['dummy'], [], '', false);
     }

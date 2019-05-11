@@ -46,8 +46,9 @@ class QueryFactoryTest extends UnitTestCase
      */
     protected $dataMap;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         /** @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $this->objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
 

@@ -30,8 +30,9 @@ class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
     /**
      * Initializes the mock object.
      */
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->subject = new TcaInlineIsOnSymmetricSide();
     }
 

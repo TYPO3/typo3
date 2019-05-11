@@ -46,7 +46,7 @@ class TableBuilderTest extends UnitTestCase
     /**
      * Setup test subject
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $sqlFile = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', 'tablebuilder.sql']));

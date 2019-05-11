@@ -37,11 +37,11 @@ class BootstrapRendererTest extends UnitTestCase
             FlashMessage::NOTICE
         );
         $output = $rendererClass->render([$flashMessage]);
-        $this->assertContains('<div class="typo3-messages">', $output);
-        $this->assertContains('<div class="alert alert-notice">', $output);
-        $this->assertContains('<div class="media-body">', $output);
-        $this->assertContains('<h4 class="alert-title">messageTitle</h4>', $output);
-        $this->assertContains('<p class="alert-message">messageBody</p>', $output);
+        $this->assertStringContainsString('<div class="typo3-messages">', $output);
+        $this->assertStringContainsString('<div class="alert alert-notice">', $output);
+        $this->assertStringContainsString('<div class="media-body">', $output);
+        $this->assertStringContainsString('<h4 class="alert-title">messageTitle</h4>', $output);
+        $this->assertStringContainsString('<p class="alert-message">messageBody</p>', $output);
     }
 
     /**
@@ -57,10 +57,10 @@ class BootstrapRendererTest extends UnitTestCase
             FlashMessage::NOTICE
         );
         $output = $rendererClass->render([$flashMessage]);
-        $this->assertContains('<div class="typo3-messages">', $output);
-        $this->assertContains('<div class="alert alert-notice">', $output);
-        $this->assertContains('<div class="media-body">', $output);
-        $this->assertContains('<p class="alert-message">messageBody</p>', $output);
-        $this->assertNotContains('<h4 class="alert-title">messageTitle</h4>', $output);
+        $this->assertStringContainsString('<div class="typo3-messages">', $output);
+        $this->assertStringContainsString('<div class="alert alert-notice">', $output);
+        $this->assertStringContainsString('<div class="media-body">', $output);
+        $this->assertStringContainsString('<p class="alert-message">messageBody</p>', $output);
+        $this->assertStringNotContainsString('<h4 class="alert-title">messageTitle</h4>', $output);
     }
 }

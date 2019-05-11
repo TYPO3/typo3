@@ -48,8 +48,9 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         // Default LANG prophecy just returns incoming value as label if calling ->sL()
         $languageServiceProphecy = $this->prophesize(LanguageService::class);
         $languageServiceProphecy->loadSingleTableDescription(Argument::cetera())->willReturn(null);
@@ -70,7 +71,7 @@ class TcaSelectItemsTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
         parent::tearDown();

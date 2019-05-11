@@ -37,7 +37,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
     /**
      * Sets up this test case
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->flashMessageQueue = $this->prophesize(FlashMessageQueue::class);

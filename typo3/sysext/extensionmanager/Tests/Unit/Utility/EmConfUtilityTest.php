@@ -34,7 +34,7 @@ class EmConfUtilityTest extends UnitTestCase
         ];
         $fixture = new EmConfUtility();
         $emConf = $fixture->constructEmConf($extensionData);
-        $this->assertContains('Extension Manager/Repository config file for ext', $emConf);
+        $this->assertStringContainsString('Extension Manager/Repository config file for ext', $emConf);
     }
 
     /**

@@ -48,8 +48,9 @@ class ObjectConverterTest extends UnitTestCase
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);

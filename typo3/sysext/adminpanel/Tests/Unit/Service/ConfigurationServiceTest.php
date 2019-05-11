@@ -18,7 +18,7 @@ class ConfigurationServiceTest extends UnitTestCase
      */
     protected $beUserProphecy;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->beUserProphecy = $this->prophesize(BackendUserAuthentication::class);

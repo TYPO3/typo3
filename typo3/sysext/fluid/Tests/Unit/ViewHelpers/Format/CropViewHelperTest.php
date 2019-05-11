@@ -34,7 +34,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $mockContentObject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->mockContentObject = $this->createMock(ContentObjectRenderer::class);

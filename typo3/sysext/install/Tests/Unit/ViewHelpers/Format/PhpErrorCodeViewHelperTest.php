@@ -29,7 +29,7 @@ class PhpErrorCodeViewHelperTest extends ViewHelperBaseTestcase
     /**
      * Setup the test case scenario
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Install\ViewHelpers\Format\PhpErrorCodeViewHelper::class, ['dummy']);

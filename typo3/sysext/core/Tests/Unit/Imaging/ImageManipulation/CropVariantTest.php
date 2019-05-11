@@ -69,7 +69,7 @@ class CropVariantTest extends UnitTestCase
 
     private static $expectedConfig = [];
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
         self::$expectedConfig = array_merge(['id' => 'default'], self::$tca);

@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class SiteDatabaseEditRowTest extends UnitTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->backupEnvironment = true;
         parent::setUp();

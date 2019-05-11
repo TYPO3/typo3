@@ -56,7 +56,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
     /**
      * Sets up this test suite.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

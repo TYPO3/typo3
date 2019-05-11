@@ -58,8 +58,9 @@ class TranslationServiceTest extends UnitTestCase
     /**
      * Set up
      */
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->resetSingletonInstances = true;
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());

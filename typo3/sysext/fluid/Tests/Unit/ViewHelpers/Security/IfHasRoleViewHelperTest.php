@@ -37,7 +37,7 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $context;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->context = GeneralUtility::makeInstance(Context::class);
@@ -53,9 +53,10 @@ class IfHasRoleViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->initializeArguments();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::removeSingletonInstance(Context::class, $this->context);
+        parent::tearDown();
     }
 
     /**

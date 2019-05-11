@@ -31,7 +31,7 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         'typo3/sysext/impexp/Tests/Functional/Fixtures/Folders/fileadmin/user_upload' => 'fileadmin/user_upload'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

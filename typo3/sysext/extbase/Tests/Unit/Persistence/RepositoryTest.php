@@ -70,8 +70,9 @@ class RepositoryTest extends UnitTestCase
      */
     protected $mockConfigurationManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->mockQueryFactory = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory::class);
         $this->mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
         $this->mockQuerySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);

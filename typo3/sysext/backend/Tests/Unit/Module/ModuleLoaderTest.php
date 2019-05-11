@@ -22,8 +22,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ModuleLoaderTest extends UnitTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['LANG'] = new \stdClass();
         $GLOBALS['LANG']->lang = 'it';
     }

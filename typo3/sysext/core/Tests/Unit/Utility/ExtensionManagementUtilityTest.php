@@ -45,15 +45,16 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->backUpPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager(null);

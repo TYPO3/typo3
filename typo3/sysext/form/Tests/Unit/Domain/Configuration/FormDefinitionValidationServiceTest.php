@@ -25,10 +25,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FormDefinitionValidationServiceTest extends UnitTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
+    }
+
+    public function tearDown(): void
+    {
+        GeneralUtility::resetSingletonInstances([]);
+        parent::tearDown();
     }
 
     /**
@@ -596,11 +602,5 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
                 $validationDto
             ],
         ];
-    }
-
-    public function tearDown()
-    {
-        GeneralUtility::resetSingletonInstances([]);
-        parent::tearDown();
     }
 }

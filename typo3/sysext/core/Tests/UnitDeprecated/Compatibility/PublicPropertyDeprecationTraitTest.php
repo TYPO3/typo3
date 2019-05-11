@@ -35,8 +35,9 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
      * Creating the test fixture, an anonymous class with different kinds
      * of properties to test access for.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->fixture = new class {
             use PublicPropertyDeprecationTrait;
             private $deprecatedPublicProperties = [

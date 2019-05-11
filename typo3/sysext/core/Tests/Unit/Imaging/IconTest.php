@@ -46,8 +46,9 @@ class IconTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
@@ -58,7 +59,7 @@ class IconTest extends UnitTestCase
         $this->subject = $iconFactory->getIcon($this->iconIdentifier, Icon::SIZE_SMALL, $this->overlayIdentifier, IconState::cast(IconState::STATE_DISABLED));
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // Drop cache manager singleton again
         GeneralUtility::purgeInstances();

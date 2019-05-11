@@ -43,8 +43,9 @@ class CommandRegistryTest extends UnitTestCase
     /**
      * Set up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $commandMockClass = $this->getMockClass(Command::class, ['dummy']);
         $this->rootDirectory = vfsStream::setup('root', null, [
             'package1' => [

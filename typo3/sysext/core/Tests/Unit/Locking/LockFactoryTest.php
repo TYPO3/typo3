@@ -35,8 +35,9 @@ class LockFactoryTest extends UnitTestCase
     /**
      * Set up the tests
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->mockFactory = $this->getAccessibleMock(LockFactory::class, ['dummy']);
     }
 

@@ -38,7 +38,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $mockConfigurationManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->mockExtensionService = $this->createMock(ExtensionService::class);

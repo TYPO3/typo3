@@ -40,7 +40,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType()
     {
         $factory = new MenuContentObjectFactory;
-        $this->assertInternalType('object', $factory->getMenuObjectByType('TMENU'));
+        $this->assertIsObject($factory->getMenuObjectByType('TMENU'));
     }
 
     /**
@@ -49,7 +49,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType()
     {
         $factory = new MenuContentObjectFactory;
-        $this->assertInternalType('object', $factory->getMenuObjectByType('tmenu'));
+        $this->assertIsObject($factory->getMenuObjectByType('tmenu'));
     }
 
     /**

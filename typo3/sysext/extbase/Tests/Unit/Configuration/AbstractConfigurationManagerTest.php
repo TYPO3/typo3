@@ -120,6 +120,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
             [

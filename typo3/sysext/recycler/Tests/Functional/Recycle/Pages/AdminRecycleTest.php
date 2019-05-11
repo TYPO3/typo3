@@ -29,7 +29,7 @@ class AdminRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abst
     /**
      * Set up the test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../../Fixtures/Database/pages.xml');
@@ -47,7 +47,7 @@ class AdminRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abst
         $this->assertCount(1, $deletedPages);
         $this->assertArrayHasKey('pages', $deletedPages);
         $this->assertCount(3, $deletedPages['pages']);
-        $this->assertArraySubset($assertData, $deletedPages);
+        $this->assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
     }
 
     /**
@@ -60,6 +60,6 @@ class AdminRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abst
         $this->assertCount(1, $deletedPages);
         $this->assertArrayHasKey('pages', $deletedPages);
         $this->assertCount(4, $deletedPages['pages']);
-        $this->assertArraySubset($assertData, $deletedPages);
+        $this->assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
     }
 }

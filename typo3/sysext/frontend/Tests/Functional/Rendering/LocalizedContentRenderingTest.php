@@ -103,7 +103,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
         'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
@@ -121,61 +121,61 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode =',
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback',
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = content_fallback;1,0',
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
@@ -304,7 +304,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -328,7 +328,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -352,7 +352,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -376,7 +376,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -400,7 +400,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -420,7 +420,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             // Expected behaviour:
             // Not translated element #2 is shown because sys_language_overlay = 1 (with sys_language_overlay = hideNonTranslated, it would be hidden)
@@ -442,7 +442,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             // Expected behaviour:
             // Same as config.sys_language_mode = content_fallback because we're requesting language 1, so no additional fallback possible
@@ -465,7 +465,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -485,7 +485,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -505,7 +505,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                     ],
                 ],
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of hideNonTranslated
@@ -675,7 +675,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 0,
                 'sys_language_content' => 0,
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 0,
+                'sys_language_contentOL' => '0',
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -698,7 +698,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 0,
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0,
+                'sys_language_contentOL' => '0',
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -725,7 +725,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0,
+                'sys_language_contentOL' => '0',
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
@@ -735,7 +735,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 0,
+                'sys_language_contentOL' => '0',
                 'statusCode' => 404,
             ],
             [
@@ -755,7 +755,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 0,
+                'sys_language_contentOL' => '0',
             ],
             5 => [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -778,7 +778,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 0,
                 'sys_language_content' => 0,
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 1,
+                'sys_language_contentOL' => '1',
             ],
             //falling back to default language
             [
@@ -802,7 +802,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 0,
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1,
+                'sys_language_contentOL' => '1',
             ],
             //Dutch elements are shown because of the content fallback 1,0 - first Dutch, then default language
             //note that '[DK] Without default language' is NOT shown - due to overlays (fetch default language and overlay it with translations)
@@ -827,7 +827,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 1,
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1,
+                'sys_language_contentOL' => '1',
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
@@ -837,7 +837,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 1,
+                'sys_language_contentOL' => '1',
                 'statusCode' => 404
             ],
             [
@@ -861,7 +861,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                 'sys_language_uid' => 2,
                 'sys_language_content' => 2,
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 1,
+                'sys_language_contentOL' => '1',
             ],
             10 => [
                 'typoScript' => 'config.sys_language_overlay = hideNonTranslated
@@ -1036,42 +1036,42 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                                 config.sys_language_mode =',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = strict',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 0
                                 config.sys_language_mode = ignore',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', '[PL] Without default language'],
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 0
+                'sys_language_contentOL' => '0'
             ],
             5 => [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode =',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'sys_language_mode' => '',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             // Expected behaviour:
             // Not translated element #2 is shown because sys_language_overlay = 1 (with sys_language_overlay = hideNonTranslated, it would be hidden)
@@ -1080,7 +1080,7 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                                 config.sys_language_mode = content_fallback',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             // Expected behaviour:
             // Element #3 is not translated in PL and it is translated in DK. It's not shown as content_fallback is not related to single CE level
@@ -1090,21 +1090,21 @@ class LocalizedContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional\Dat
                                 config.sys_language_mode = content_fallback;1,0',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'sys_language_mode' => 'content_fallback',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = strict',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'sys_language_mode' => 'strict',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             [
                 'typoScript' => 'config.sys_language_overlay = 1
                                 config.sys_language_mode = ignore',
                 'visibleRecordHeaders' => ['[Translate to Polski:] Regular Element #1', 'Regular Element #2', 'Regular Element #3'],
                 'sys_language_mode' => 'ignore',
-                'sys_language_contentOL' => 1
+                'sys_language_contentOL' => '1'
             ],
             // Expected behaviour:
             // Non translated default language elements are not shown, because of hideNonTranslated

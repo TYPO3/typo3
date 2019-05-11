@@ -57,7 +57,7 @@ class FileControllerTest extends UnitTestCase
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fileResourceMock = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\File::class)
             ->setMethods(['toArray', 'getModificationTime', 'getExtension'])

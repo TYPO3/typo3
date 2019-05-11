@@ -33,8 +33,9 @@ class IconRegistryTest extends UnitTestCase
      */
     protected $notRegisteredIconIdentifier = 'my-super-unregistered-identifier';
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
@@ -43,7 +44,7 @@ class IconRegistryTest extends UnitTestCase
         $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // Drop cache manager singleton again
         GeneralUtility::purgeInstances();
@@ -133,7 +134,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentiefiers()
     {
-        $this->assertInternalType('array', (new IconRegistry)->getAllRegisteredIconIdentifiers());
+        $this->assertIsArray((new IconRegistry)->getAllRegisteredIconIdentifiers());
     }
 
     /**
@@ -142,7 +143,7 @@ class IconRegistryTest extends UnitTestCase
     public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers()
     {
         $result = (new IconRegistry)->getAllRegisteredIconIdentifiers();
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertContains('default-not-found', $result);
     }
 

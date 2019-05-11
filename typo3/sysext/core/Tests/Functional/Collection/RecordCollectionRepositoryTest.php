@@ -38,7 +38,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -48,7 +48,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         $this->testTableName = $this->getUniqueId('tx_testtable');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

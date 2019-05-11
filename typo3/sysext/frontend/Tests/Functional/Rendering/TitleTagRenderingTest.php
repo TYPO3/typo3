@@ -40,7 +40,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet('EXT:frontend/Tests/Functional/Fixtures/pages-title-tag.xml');

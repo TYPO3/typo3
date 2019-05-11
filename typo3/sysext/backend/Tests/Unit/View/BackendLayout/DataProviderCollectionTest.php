@@ -29,8 +29,9 @@ class DataProviderCollectionTest extends UnitTestCase
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->dataProviderCollection = new \TYPO3\CMS\Backend\View\BackendLayout\DataProviderCollection();
     }
 

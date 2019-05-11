@@ -47,7 +47,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
         parent::setUp();
@@ -56,7 +56,7 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backupPackageManager);
         parent::tearDown();

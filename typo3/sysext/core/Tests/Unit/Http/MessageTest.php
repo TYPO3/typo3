@@ -35,8 +35,9 @@ class MessageTest extends UnitTestCase
      */
     protected $message;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->stream = new Stream('php://memory', 'wb+');
         $this->message = (new Message())->withBody($this->stream);
     }

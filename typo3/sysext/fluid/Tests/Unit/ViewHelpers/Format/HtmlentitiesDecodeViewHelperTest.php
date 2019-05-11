@@ -34,7 +34,7 @@ class HtmlentitiesDecodeViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $defaultArguments;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->viewHelper = new HtmlentitiesDecodeViewHelper();

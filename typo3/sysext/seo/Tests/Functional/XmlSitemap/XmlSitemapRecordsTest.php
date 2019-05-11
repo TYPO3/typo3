@@ -33,7 +33,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
         'seo'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-sitemap.xml');
@@ -83,11 +83,11 @@ class XmlSitemapRecordsTest extends AbstractTestCase
         $content = $stream->getContents();
 
         foreach ($expectedEntries as $expectedEntry) {
-            self::assertContains($expectedEntry, $content);
+            self::assertStringContainsString($expectedEntry, $content);
         }
 
         foreach ($notExpectedEntries as $notExpectedEntry) {
-            self::assertNotContains($notExpectedEntry, $content);
+            self::assertStringNotContainsString($notExpectedEntry, $content);
         }
 
         $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
@@ -148,8 +148,8 @@ class XmlSitemapRecordsTest extends AbstractTestCase
         $stream->rewind();
         $content = $stream->getContents();
 
-        self::assertContains('<changefreq>hourly</changefreq>', $content);
-        self::assertContains('<priority>0.7</priority>', $content);
+        self::assertStringContainsString('<changefreq>hourly</changefreq>', $content);
+        self::assertStringContainsString('<priority>0.7</priority>', $content);
 
         $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
     }

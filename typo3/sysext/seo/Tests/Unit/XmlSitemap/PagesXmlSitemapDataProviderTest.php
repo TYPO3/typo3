@@ -28,8 +28,9 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
      */
     protected $items;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->items = [
             [
                 'loc' => 'https://yourdomain.com/page-1',

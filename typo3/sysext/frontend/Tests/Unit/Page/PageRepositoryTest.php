@@ -49,8 +49,9 @@ class PageRepositoryTest extends UnitTestCase
     /**
      * Sets up this testcase
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, ['getMultipleGroupsWhereClause'], [], '', false);
         $this->pageSelectObject->_set('context', new Context());
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));

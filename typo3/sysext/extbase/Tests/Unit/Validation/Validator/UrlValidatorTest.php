@@ -32,8 +32,9 @@ class UrlValidatorTest extends UnitTestCase
      */
     protected $validator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->validator = $this->getMockBuilder($this->validatorClassName)
             ->setMethods(['translateErrorMessage'])
             ->getMock();

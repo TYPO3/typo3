@@ -28,12 +28,13 @@ class UploadedFileTest extends UnitTestCase
 {
     protected $tmpFile;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->tmpFile = null;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (is_scalar($this->tmpFile) && file_exists($this->tmpFile)) {
             unlink($this->tmpFile);

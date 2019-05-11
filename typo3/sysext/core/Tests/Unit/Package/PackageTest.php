@@ -25,8 +25,9 @@ class PackageTest extends UnitTestCase
 {
     /**
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         vfsStream::setup('Packages');
     }
 

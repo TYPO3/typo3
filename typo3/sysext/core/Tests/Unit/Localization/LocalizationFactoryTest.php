@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LocalizationFactoryTest extends UnitTestCase
 {
-    public function tearDown()
+    public function tearDown(): void
     {
         // Drop created singletons again
         GeneralUtility::purgeInstances();

@@ -31,7 +31,7 @@ class XmlSitemapIndexTest extends AbstractTestCase
         'core', 'frontend', 'seo'
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-sitemap.xml');

@@ -52,7 +52,7 @@ class LoginControllerTest extends UnitTestCase
     /**
      * @throws \InvalidArgumentException
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->loginControllerMock = $this->getAccessibleMock(LoginController::class, ['dummy'], [], '', false);
     }

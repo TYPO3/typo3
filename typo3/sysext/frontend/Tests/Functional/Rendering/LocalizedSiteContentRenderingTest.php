@@ -139,7 +139,7 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
         'PL' => ['id' => 3, 'title' => 'Polski', 'locale' => 'pl_PL.UTF8'],
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

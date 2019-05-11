@@ -27,7 +27,7 @@ class DatabaseParentPageRowTest extends UnitTestCase
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = $this->getMockBuilder(DatabaseParentPageRow::class)
             ->setMethods(['getDatabaseRow'])

@@ -31,8 +31,9 @@ class ServerRequestTest extends UnitTestCase
      */
     protected $request;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->request = new ServerRequest();
     }
 

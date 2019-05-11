@@ -83,8 +83,9 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
     /**
 
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->viewHelper = $this->getAccessibleMock(AbstractWidgetViewHelper::class, ['validateArguments', 'initialize', 'callRenderMethod', 'getWidgetConfiguration', 'getRenderingContext']);
         $this->mockExtensionService = $this->createMock(ExtensionService::class);
         $this->viewHelper->_set('extensionService', $this->mockExtensionService);

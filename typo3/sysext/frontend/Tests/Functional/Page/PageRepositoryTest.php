@@ -30,7 +30,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 {
     protected $coreExtensionsToLoad = ['frontend'];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
@@ -115,7 +115,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $subject = new PageRepository();
         $row = $subject->getPageOverlay(4, 1);
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertCount(0, $row);
     }
 
@@ -142,7 +142,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $subject = new PageRepository();
         $orig = $subject->getPage(4);
         $row = $subject->getPageOverlay($orig, 1);
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertEquals(4, $row['uid']);
         $this->assertEquals('Dummy 1-4', $row['title']);//original title
     }
@@ -156,7 +156,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1]);
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertCount(1, $rows);
         $this->assertArrayHasKey(0, $rows);
 
@@ -176,7 +176,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1, 5]);
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(0, $rows);
         $this->assertArrayHasKey(1, $rows);
@@ -203,7 +203,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1, 4, 5, 8]);
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(0, $rows);
         $this->assertArrayHasKey(2, $rows);
@@ -229,7 +229,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([$origRow]);
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertCount(1, $rows);
         $this->assertArrayHasKey(0, $rows);
 
@@ -253,7 +253,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1 => $orig1, 5 => $orig2]);
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertCount(2, $rows);
         $this->assertArrayHasKey(1, $rows);
         $this->assertArrayHasKey(5, $rows);
@@ -285,7 +285,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([$orig1, $orig2, $orig3]);
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertCount(3, $rows);
         $this->assertArrayHasKey(0, $rows);
         $this->assertArrayHasKey(1, $rows);
@@ -540,7 +540,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     protected function assertOverlayRow($row)
     {
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
 
         $this->assertArrayHasKey('_PAGES_OVERLAY', $row);
         $this->assertArrayHasKey('_PAGES_OVERLAY_UID', $row);
@@ -551,7 +551,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
     protected function assertNotOverlayRow($row)
     {
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
 
         $this->assertFalse(isset($row['_PAGES_OVERLAY']));
         $this->assertFalse(isset($row['_PAGES_OVERLAY_UID']));

@@ -34,7 +34,7 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorRegistry = $this->getMockExtractorRegistry([[$extractorClass, $extractorObject]]);
 
         $extractorRegistry->registerExtractionService($extractorClass);
-        $this->assertContains($extractorObject, $extractorRegistry->getExtractors(), '', false, false);
+        $this->assertContains($extractorObject, $extractorRegistry->getExtractors());
     }
 
     /**

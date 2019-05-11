@@ -32,6 +32,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->createSubjectWithMockedMethods(
             [
                 'getDefaultConfigurationFileLocation',

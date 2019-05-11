@@ -29,7 +29,7 @@ abstract class FormFieldViewHelperBaseTestcase extends ViewHelperBaseTestcase
 
     /**
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);

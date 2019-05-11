@@ -47,6 +47,7 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         // A request handler which expects a site to be found.
         $this->siteFoundRequestHandler = new class implements RequestHandlerInterface {
             public function handle(ServerRequestInterface $request): ResponseInterface

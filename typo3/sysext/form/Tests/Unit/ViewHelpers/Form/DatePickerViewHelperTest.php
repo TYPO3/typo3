@@ -32,8 +32,9 @@ class DatePickerViewHelperTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getAccessibleMock(DatePickerViewHelper::class, [
             'dummy'
         ], [], '', false);

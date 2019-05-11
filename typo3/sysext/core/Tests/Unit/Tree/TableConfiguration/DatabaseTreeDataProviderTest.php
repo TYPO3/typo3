@@ -44,8 +44,9 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->treeData = new TreeNode();
     }
 

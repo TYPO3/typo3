@@ -30,7 +30,7 @@ class EnumTypeTest extends UnitTestCase
     /**
      * Set up the test subject
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         if (!Type::hasType(EnumType::TYPE)) {

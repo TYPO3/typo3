@@ -72,6 +72,7 @@ class RequestBuilderTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->requestBuilder = $this->getAccessibleMock(RequestBuilder::class, ['dummy']);
         $this->configuration = [
             'userFunc' => 'Tx_Extbase_Dispatcher->dispatch',

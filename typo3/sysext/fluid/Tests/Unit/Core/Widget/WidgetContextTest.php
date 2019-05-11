@@ -29,8 +29,9 @@ class WidgetContextTest extends UnitTestCase
     /**
 
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->widgetContext = new \TYPO3\CMS\Fluid\Core\Widget\WidgetContext();
     }
 

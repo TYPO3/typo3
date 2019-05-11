@@ -31,8 +31,9 @@ class CacheServiceTest extends UnitTestCase
      */
     protected $cacheManagerMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->cacheService = new \TYPO3\CMS\Extbase\Service\CacheService();
         $this->cacheManagerMock = $this->createMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $this->cacheService->injectCacheManager($this->cacheManagerMock);

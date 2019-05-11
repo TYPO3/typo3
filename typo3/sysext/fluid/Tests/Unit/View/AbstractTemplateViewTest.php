@@ -43,8 +43,9 @@ class AbstractTemplateViewTest extends UnitTestCase
     /**
      * Sets up this test case
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->viewHelperVariableContainer = $this->getMockBuilder(ViewHelperVariableContainer::class)
             ->setMethods(['setView'])
             ->getMock();

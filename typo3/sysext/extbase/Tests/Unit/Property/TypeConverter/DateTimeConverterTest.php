@@ -28,8 +28,9 @@ class DateTimeConverterTest extends UnitTestCase
      */
     protected $converter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter();
     }
 

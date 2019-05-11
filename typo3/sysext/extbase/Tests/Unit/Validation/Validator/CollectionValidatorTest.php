@@ -47,8 +47,9 @@ class CollectionValidatorTest extends UnitTestCase
         return $this->getAccessibleMock($this->validatorClassName, $mockedMethods, [$options], '', true);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->mockValidatorResolver = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Validation\ValidatorResolver::class,
             ['createValidator', 'buildBaseValidatorConjunction', 'getBaseValidatorConjunction']

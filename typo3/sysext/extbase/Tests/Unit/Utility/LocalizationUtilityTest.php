@@ -50,8 +50,9 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * Prepare class mocking some dependencies
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->languageFilePath = $this->getLanguageFilePath('core');
         $this->LOCAL_LANG = [
             $this->languageFilePath => [
@@ -181,7 +182,7 @@ class LocalizationUtilityTest extends UnitTestCase
     /**
      * Reset static properties
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 

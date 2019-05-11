@@ -24,8 +24,9 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     protected $validatorClassName = \TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator::class;
 
-    public function setup()
+    public function setup(): void
     {
+        parent::setUp();
         $this->validator = $this->getMockBuilder($this->validatorClassName)
             ->setMethods(['translateErrorMessage'])
             ->getMock();

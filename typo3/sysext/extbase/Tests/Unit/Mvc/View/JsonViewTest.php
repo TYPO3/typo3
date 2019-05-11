@@ -49,6 +49,7 @@ class JsonViewTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->view = $this->getMockBuilder(JsonView::class)
             ->setMethods(['loadConfigurationFromYamlFile'])
             ->getMock();

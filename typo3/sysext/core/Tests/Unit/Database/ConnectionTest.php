@@ -48,7 +48,7 @@ class ConnectionTest extends UnitTestCase
     /**
      * Create a new database connection mock object for every test.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

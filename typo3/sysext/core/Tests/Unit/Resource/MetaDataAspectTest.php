@@ -43,6 +43,7 @@ class MetaDataAspectTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
         $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(12));
     }

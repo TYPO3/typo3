@@ -30,13 +30,14 @@ class TcaRecordTitleTest extends UnitTestCase
      */
     protected $timeZone;
 
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $this->timeZone = date_default_timezone_get();
         date_default_timezone_set('UTC');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         date_default_timezone_set($this->timeZone);
         parent::tearDown();

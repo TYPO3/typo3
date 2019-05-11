@@ -48,6 +48,7 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $this->environmentService = $this->createMock(EnvironmentService::class);
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject = new ImageService($this->environmentService, $resourceFactory);

@@ -49,8 +49,9 @@ class ExtensionStatusTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
         /** @var $mockRepositoryRepository RepositoryRepository|\PHPUnit_Framework_MockObject_MockObject */
         $this->mockRepositoryRepository = $this->getMockBuilder(RepositoryRepository::class)
@@ -77,7 +78,7 @@ class ExtensionStatusTest extends UnitTestCase
             ->setMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->assertInternalType('array', $report->getStatus());
+        $this->assertIsArray($report->getStatus());
     }
 
     /**

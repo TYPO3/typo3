@@ -50,8 +50,9 @@ class InstallUtilityTest extends UnitTestCase
 
     /**
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->extensionKey = 'dummy';
         $this->extensionData = [
             'key' => $this->extensionKey,
@@ -91,22 +92,20 @@ class InstallUtilityTest extends UnitTestCase
             ->will($this->returnCallback([$this, 'getExtensionData']));
     }
 
+    protected function tearDown(): void
+    {
+        foreach ($this->fakedExtensions as $fakeExtkey => $fakeExtension) {
+            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $fakeExtkey;
+        }
+        parent::tearDown();
+    }
+
     /**
      * @return array
      */
     public function getExtensionData(): array
     {
         return $this->extensionData;
-    }
-
-    /**
-     */
-    protected function tearDown()
-    {
-        foreach ($this->fakedExtensions as $fakeExtkey => $fakeExtension) {
-            $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $fakeExtkey;
-        }
-        parent::tearDown();
     }
 
     /**

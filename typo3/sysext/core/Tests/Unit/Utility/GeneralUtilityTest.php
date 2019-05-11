@@ -65,7 +65,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount = 0;
@@ -77,7 +77,7 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * Tear down
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
         if ($this->backupPackageManager) {
@@ -2186,7 +2186,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $filePath = GeneralUtility::tempnam('foo');
         $this->testFilesToDelete[] = $filePath;
-        $this->assertNotContains('\\', $filePath);
+        $this->assertStringNotContainsString('\\', $filePath);
     }
 
     /**
@@ -2289,7 +2289,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getDirsReturnsArrayOfDirectoriesFromGivenDirectory()
     {
         $directories = GeneralUtility::get_dirs(Environment::getLegacyConfigPath() . '/');
-        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $directories);
+        $this->assertIsArray($directories);
     }
 
     /**
@@ -3227,7 +3227,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        $this->assertContains('testA.txt', $files);
+        $this->assertTrue(in_array('testA.txt', $files));
     }
 
     /**
@@ -3237,7 +3237,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        $this->assertContains('.secret.txt', $files);
+        $this->assertTrue(in_array('.secret.txt', $files));
     }
 
     /**
@@ -3271,10 +3271,10 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, $fileExtensions);
-        $this->assertContains('double.setup.typoscript', $files);
-        $this->assertContains('testA.txt', $files);
-        $this->assertContains('test.js', $files);
-        $this->assertContains('test.css', $files);
+        $this->assertTrue(in_array('double.setup.typoscript', $files));
+        $this->assertTrue(in_array('testA.txt', $files));
+        $this->assertTrue(in_array('test.js', $files));
+        $this->assertTrue(in_array('test.css', $files));
     }
 
     /**
@@ -3284,9 +3284,9 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
-        $this->assertContains('testA.txt', $files);
-        $this->assertContains('test.js', $files);
-        $this->assertNotContains('test.css', $files);
+        $this->assertTrue(in_array('testA.txt', $files));
+        $this->assertTrue(in_array('test.js', $files));
+        $this->assertFalse(in_array('test.css', $files));
     }
 
     /**
@@ -3296,8 +3296,8 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, '', false, '', 'excludeMe.*');
-        $this->assertContains('test.js', $files);
-        $this->assertNotContains('excludeMe.txt', $files);
+        $this->assertTrue(in_array('test.js', $files));
+        $this->assertFalse(in_array('excludeMe.txt', $files));
     }
 
     /**
@@ -3306,9 +3306,11 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirCanPrependPath()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $this->assertContains(
-            $vfsStreamUrl . '/testA.txt',
-            GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
+        $this->assertTrue(
+            in_array(
+                $vfsStreamUrl . '/testA.txt',
+                GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
+        )
         );
     }
 
@@ -3362,9 +3364,11 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirDoesNotFindDirectories()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $this->assertNotContains(
-            'subDirectory',
-            GeneralUtility::getFilesInDir($vfsStreamUrl)
+        $this->assertFalse(
+            in_array(
+                'subDirectory',
+                GeneralUtility::getFilesInDir($vfsStreamUrl)
+        )
         );
     }
 
@@ -3378,8 +3382,8 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        $this->assertNotContains('..', $files);
-        $this->assertNotContains('.', $files);
+        $this->assertFalse(in_array('..', $files));
+        $this->assertFalse(in_array('.', $files));
     }
 
     ///////////////////////////////
@@ -3398,7 +3402,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directoryCreated = is_dir($directory);
         rmdir($directory);
         $this->assertTrue($directoryCreated);
-        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $fileInfo);
+        $this->assertIsArray($fileInfo);
         $this->assertEquals($directoryPath, $fileInfo['path']);
         $this->assertEquals($directoryName, $fileInfo['file']);
         $this->assertEquals($directoryName, $fileInfo['filebody']);
@@ -3413,7 +3417,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $testFile = 'fileadmin/media/someFile.png';
         $fileInfo = GeneralUtility::split_fileref($testFile);
-        $this->assertInternalType(\PHPUnit\Framework\Constraint\IsType::TYPE_ARRAY, $fileInfo);
+        $this->assertIsArray($fileInfo);
         $this->assertEquals('fileadmin/media/', $fileInfo['path']);
         $this->assertEquals('someFile.png', $fileInfo['file']);
         $this->assertEquals('someFile', $fileInfo['filebody']);
@@ -4591,7 +4595,7 @@ class GeneralUtilityTest extends UnitTestCase
                     </field>
                 </data>
             </T3:T3FlexForms>';
-        $this->assertContains('No memory', GeneralUtility::xml2array($input));
+        $this->assertStringContainsString('No memory', GeneralUtility::xml2array($input));
     }
 
     /**

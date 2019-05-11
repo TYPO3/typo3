@@ -62,7 +62,7 @@ class TransportFactoryTest extends UnitTestCase
         $this->assertInstanceOf(\Swift_FileSpool::class, $spool);
 
         $path = $spool->getPath();
-        $this->assertContains($mailSettings['transport_spool_filepath'], $path);
+        $this->assertStringContainsString($mailSettings['transport_spool_filepath'], $path);
     }
 
     /**

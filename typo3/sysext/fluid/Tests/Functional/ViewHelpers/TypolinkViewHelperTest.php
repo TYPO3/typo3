@@ -29,7 +29,7 @@ class TypolinkViewHelperTest extends \TYPO3\TestingFramework\Core\Functional\Fun
      */
     protected $coreExtensionsToLoad = ['fluid'];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

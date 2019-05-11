@@ -56,8 +56,9 @@ class DataHandlerTest extends UnitTestCase
     /**
      * Set up the tests
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TCA'] = [];
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());

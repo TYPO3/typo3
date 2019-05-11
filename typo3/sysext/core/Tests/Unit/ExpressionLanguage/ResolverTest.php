@@ -33,7 +33,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ResolverTest extends UnitTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->resetSingletonInstances = true;

@@ -40,7 +40,7 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
 
     protected $resetSingletonInstances = true;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->timezone = @date_default_timezone_get();
@@ -49,7 +49,7 @@ class DateViewHelperTest extends ViewHelperBaseTestcase
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         date_default_timezone_set($this->timezone);
         parent::tearDown();

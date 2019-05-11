@@ -49,8 +49,9 @@ class ExtensionServiceTest extends UnitTestCase
      */
     protected $resetSingletonInstances = true;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $this->extensionService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Service\ExtensionService::class, ['dummy']);
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::class);

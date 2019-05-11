@@ -38,6 +38,7 @@ class CategoryRegistryTest extends UnitTestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = 'pages';
         $GLOBALS['TCA']['pages']['columns'] = [];
         $this->subject = new CategoryRegistry();
@@ -260,7 +261,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertContains('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
+            $this->assertStringContainsString('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
     }
 
@@ -273,7 +274,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertNotContains('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
+            $this->assertStringNotContainsString('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
     }
 

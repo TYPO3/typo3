@@ -38,8 +38,9 @@ class ServicesListReportTest extends UnitTestCase
     /**
      * SetUp
      */
-    public function setUp()
+    public function setUp(): void
     {
+        parent::setUp();
         $GLOBALS['LANG'] = $this->languageServiceProphecy()->reveal();
         $this->subject = new ServicesListReport(
             $this->reportControllerProphecy()->reveal()

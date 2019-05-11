@@ -45,7 +45,7 @@ class AspectFactoryTest extends UnitTestCase
      */
     protected $aspectMockClass;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->languageProphecy = $this->prophesize(
@@ -64,7 +64,7 @@ class AspectFactoryTest extends UnitTestCase
         $this->subject = new AspectFactory();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->subject, $this->languageProphecy);
         parent::tearDown();

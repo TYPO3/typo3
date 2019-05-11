@@ -29,8 +29,9 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     /**
      * Sets up this test case.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->subject = $this->getMockBuilder(\TYPO3\CMS\Core\Error\ProductionExceptionHandler::class)
             ->setMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
@@ -49,8 +50,8 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertContains(htmlspecialchars($message), $output);
-        $this->assertNotContains($message, $output);
+        $this->assertStringContainsString(htmlspecialchars($message), $output);
+        $this->assertStringNotContainsString($message, $output);
     }
 
     /**
@@ -69,7 +70,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertContains(htmlspecialchars($title), $output);
-        $this->assertNotContains($title, $output);
+        $this->assertStringContainsString(htmlspecialchars($title), $output);
+        $this->assertStringNotContainsString($title, $output);
     }
 }

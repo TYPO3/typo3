@@ -26,8 +26,9 @@ class ResultTest extends UnitTestCase
      */
     protected $result;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        parent::setUp();
         $this->result = new \TYPO3\CMS\Extbase\Error\Result();
     }
 
