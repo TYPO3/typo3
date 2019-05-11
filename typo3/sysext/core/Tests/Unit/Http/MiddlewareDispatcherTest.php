@@ -137,7 +137,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
         MiddlewareFixture::$hasBeenInstantiated = false;
         $dispatcher = new MiddlewareDispatcher($kernel);
         $dispatcher->lazy(\stdClass::class);
-        $response = $dispatcher->handle(new ServerRequest);
+        $dispatcher->handle(new ServerRequest);
     }
 
     /**
