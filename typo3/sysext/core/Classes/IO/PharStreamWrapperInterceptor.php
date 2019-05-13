@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\PharStreamWrapper\Assertable;
 use TYPO3\PharStreamWrapper\Exception;
 use TYPO3\PharStreamWrapper\Manager;
+use TYPO3\PharStreamWrapper\Resolver\PharInvocationResolver;
 
 class PharStreamWrapperInterceptor implements Assertable
 {
@@ -48,7 +49,7 @@ class PharStreamWrapperInterceptor implements Assertable
      */
     protected function isAllowed(string $path): bool
     {
-        $invocation = Manager::instance()->resolve($path);
+        $invocation = Manager::instance()->resolve($path, PharInvocationResolver::RESOLVE_ALIAS);
         if ($invocation === null) {
             return false;
         }
