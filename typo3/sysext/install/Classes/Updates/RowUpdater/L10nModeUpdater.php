@@ -135,7 +135,11 @@ class L10nModeUpdater implements RowUpdaterInterface
 
         // simulate modifying a parent record to trigger dependent updates
         if (in_array('exclude', $tablePayload['fieldModes'], true)) {
-            $record = $this->getRow($tableName, $liveId);
+            if ($liveId !== $currentId) {
+                $record = $this->getRow($tableName, $liveId);
+            } else {
+                $record = $inputRow;
+            }
             foreach ($tablePayload['fieldModes'] as $fieldName => $fieldMode) {
                 if ($fieldMode !== 'exclude') {
                     continue;
