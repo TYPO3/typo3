@@ -437,7 +437,7 @@ class InlineControlContainer extends AbstractContainer
      * Wraps a text with an anchor and returns the HTML representation.
      *
      * @param string $text The text to be wrapped by an anchor
-     * @param string $link  The link to be used in the anchor
+     * @param string $link The link to be used in the anchor
      * @param array $attributes Array of attributes to be used in the anchor
      * @return string The wrapped text as HTML representation
      */
@@ -467,6 +467,7 @@ class InlineControlContainer extends AbstractContainer
         $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . $foreign_table;
         $mode = 'db';
         $showUpload = false;
+        $showByUrl = false;
         $elementBrowserEnabled = true;
         if (!empty($inlineConfiguration['appearance']['createNewRelationLinkTitle'])) {
             $createNewRelationText = htmlspecialchars($languageService->sL($inlineConfiguration['appearance']['createNewRelationLinkTitle']));
@@ -479,9 +480,13 @@ class InlineControlContainer extends AbstractContainer
             }
             if ($mode === 'file') {
                 $showUpload = true;
+                $showByUrl = true;
             }
             if (isset($inlineConfiguration['appearance']['fileUploadAllowed'])) {
                 $showUpload = (bool)$inlineConfiguration['appearance']['fileUploadAllowed'];
+            }
+            if (isset($inlineConfiguration['appearance']['fileByUrlAllowed'])) {
+                $showByUrl = (bool)$inlineConfiguration['appearance']['fileByUrlAllowed'];
             }
             if (isset($groupFieldConfiguration['appearance']['elementBrowserAllowed'])) {
                 $allowed = $groupFieldConfiguration['appearance']['elementBrowserAllowed'];
@@ -511,7 +516,7 @@ class InlineControlContainer extends AbstractContainer
         if (!empty($allowedArray)) {
             $onlineMediaAllowed = array_intersect($allowedArray, $onlineMediaAllowed);
         }
-        if ($showUpload && $isDirectFileUploadEnabled) {
+        if (($showUpload || $showByUrl) && $isDirectFileUploadEnabled) {
             $folder = $backendUser->getDefaultUploadFolder(
                 $this->data['parentPageRow']['uid'],
                 $this->data['tableName'],
@@ -521,8 +526,9 @@ class InlineControlContainer extends AbstractContainer
                 $folder instanceof Folder
                 && $folder->getStorage()->checkUserActionPermission('add', 'File')
             ) {
-                $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
-                $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton"
+                if ($showUpload) {
+                    $maxFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
+                    $item .= ' <a href="#" class="btn btn-default t3js-drag-uploader inlineNewFileUploadButton"
 					' . $buttonStyle . '
 					data-dropzone-target="#' . htmlspecialchars(StringUtility::escapeCssSelector($currentStructureDomObjectIdPrefix)) . '"
 					data-insert-dropzone-before="1"
@@ -531,12 +537,13 @@ class InlineControlContainer extends AbstractContainer
 					data-target-folder="' . htmlspecialchars($folder->getCombinedIdentifier()) . '"
 					data-max-file-size="' . htmlspecialchars($maxFileSize) . '"
 					>';
-                $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
-                $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
-                $item .= '</a>';
+                    $item .= $this->iconFactory->getIcon('actions-upload', Icon::SIZE_SMALL)->render() . ' ';
+                    $item .= htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:file_upload.select-and-submit'));
+                    $item .= '</a>';
 
-                $this->requireJsModules[] = ['TYPO3/CMS/Backend/DragUploader' => 'function(dragUploader){dragUploader.initialize()}'];
-                if (!empty($onlineMediaAllowed)) {
+                    $this->requireJsModules[] = ['TYPO3/CMS/Backend/DragUploader' => 'function(dragUploader){dragUploader.initialize()}'];
+                }
+                if (!empty($onlineMediaAllowed) && $showByUrl) {
                     $buttonStyle = '';
                     if (isset($inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'])) {
                         $buttonStyle = ' style="' . $inlineConfiguration['inline']['inlineOnlineMediaAddButtonStyle'] . '"';
