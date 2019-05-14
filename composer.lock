@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b05126bc9b4ed088c9d8771245846625",
+    "content-hash": "d2fb17662a3d483385e72f9cd8937b60",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -2455,20 +2455,19 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v3.1.1",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf"
+                "reference": "df7609a2f6cc4013d7bd12f1a2412d127b28f771"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf",
-                "reference": "fff6f5e037882f816cd41a9f5ccd8d8f97bfdebf",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/df7609a2f6cc4013d7bd12f1a2412d127b28f771",
+                "reference": "df7609a2f6cc4013d7bd12f1a2412d127b28f771",
                 "shasum": ""
             },
             "require": {
-                "ext-fileinfo": "*",
                 "ext-json": "*",
                 "php": "^7.0"
             },
@@ -2476,7 +2475,15 @@
                 "ext-xdebug": "*",
                 "phpunit/phpunit": "^6.5"
             },
+            "suggest": {
+                "ext-fileinfo": "For PHP builtin file type guessing, otherwise uses internal processing"
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "v3.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "TYPO3\\PharStreamWrapper\\": "src/"
@@ -2494,7 +2501,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2019-05-05T17:30:25+00:00"
+            "time": "2019-05-14T13:14:14+00:00"
         },
         {
             "name": "typo3fluid/fluid",
@@ -5357,7 +5364,7 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
-    "prefer-lowest": true,
+    "prefer-lowest": false,
     "platform": {
         "php": "^7.2",
         "ext-pdo": "*",
