@@ -890,7 +890,7 @@ abstract public class AbstractCoreSpec {
                         "grunt lint"
                     ),
                 new ScriptTask()
-                    .description("Run grunt scripts")
+                    .description("Run grunt build")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
@@ -906,26 +906,15 @@ abstract public class AbstractCoreSpec {
                         "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
                         "}\n" +
                         "\n" +
-                        "grunt scripts"
+                        "grunt build"
                     ),
                 new ScriptTask()
-                    .description("Run grunt css")
+                    .description("add changed files and show final status")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
                     .inlineBody(
                         this.getScriptTaskBashInlineBody() +
-                        "function grunt() {\n" +
-                        "    docker run \\\n" +
-                        "        -u ${HOST_UID} \\\n" +
-                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
-                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
-                        "        -e HOME=${HOME} \\\n" +
-                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
-                        "        --rm \\\n" +
-                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
-                        "        bin/bash -c \"cd ${PWD}/Build; ./node_modules/grunt/bin/grunt $*\"\n" +
-                        "}\n" +
-                        "\n" +
-                        "grunt css"
+                        "git add *\n" +
+                        "git status"
                     ),
                 new ScriptTask()
                     .description("git status to check for changed files after build-js")
