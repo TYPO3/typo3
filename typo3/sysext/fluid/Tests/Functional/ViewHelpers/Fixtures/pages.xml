@@ -2,6 +2,7 @@
 <dataset>
 	<pages>
 		<uid>1</uid>
-		<title>Seitentitel</title>
+		<title>Root Page Title</title>
+		<slug>/</slug>
 	</pages>
 </dataset>

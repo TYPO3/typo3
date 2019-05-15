@@ -1,3 +1,4 @@
+config.absRefPrefix =
 page = PAGE
 page {
   includeCSS {

@@ -3,13 +3,29 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class UriPrefixRenderingTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
     /**
      * @var string[]
      */
@@ -23,7 +39,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         'extensionJS' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.autocomplete.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.png',
-        'localLink' => '1',
     ];
 
     /**
@@ -37,7 +52,6 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         'extensionJS' => 'typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.autocomplete.js',
         'externalJS' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js',
         'localImage' => 'typo3/sysext/frontend/Resources/Public/Icons/Extension.png',
-        'localLink' => 'index.php?id=1',
     ];
 
     /**
@@ -54,10 +68,24 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/AdditionalConfiguration.php' => 'typo3conf/AdditionalConfiguration.php',
     ];
 
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US'],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->importDataSet('EXT:frontend/Tests/Functional/Fixtures/pages.xml');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+            [
+                $this->buildErrorHandlingConfiguration('Fluid', [404])
+            ]
+        );
         $this->setUpFrontendRootPage(
             1,
             ['EXT:frontend/Tests/Functional/Rendering/Fixtures/UriPrefixRenderingTest.typoscript']
@@ -320,7 +348,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                     [
                         preg_quote($candidate, '#'),
                         preg_quote($pathInfo['filename'], '#'),
-                        preg_quote($pathInfo['extension'], '#'),
+                        preg_quote($pathInfo['extension'] ?? '', '#'),
                     ],
                     $expectation
                 );

@@ -109,14 +109,15 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function copyParentContentToLanguageWithAllChildren()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyParentContentToLanguageWithAllChildren();
         $this->assertAssertionDataSet('copyParentContentToLanguageWAllChildren');
 
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/ExtbaseJsonRenderer.typoscript',
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.typoscript'
-        ]);
+        // Set up "dk" to not have overlays
+        $languageConfiguration = $this->siteLanguageConfiguration;
+        $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
+        $this->setUpFrontendSite(1, $languageConfiguration);
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections('Default', 'Extbase:list()');
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentHotel)
@@ -129,6 +130,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function localizeParentContentWithAllChildren()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentWithAllChildren();
         $this->assertAssertionDataSet('localizeParentContentWAllChildren');
 
@@ -144,6 +147,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function localizeParentContentWithLanguageSynchronization()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizeParentContentSynchronization');
 
@@ -159,6 +164,9 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function localizeParentContentChainLanguageSynchronizationSource()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageIdSecond);
         parent::localizeParentContentChainLanguageSynchronizationSource();
         $this->assertAssertionDataSet('localizeParentContentChainLanguageSynchronizationSource');
 
@@ -174,6 +182,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentAndCreateNestedChildrenWithLanguageSynchronization();
         $this->assertAssertionDataSet('localizeParentContentNCreateNestedChildrenWLanguageSynchronization');
 
@@ -189,6 +199,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function localizeParentContentAndSetInvalidChildReferenceWithLanguageSynchronization()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentAndSetInvalidChildReferenceWithLanguageSynchronization();
         // the assertion is the same as for localizeParentContentWithLanguageSynchronization()
         $this->assertAssertionDataSet('localizeParentContentSynchronization');
@@ -205,6 +217,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function localizeParentContentAndSetInvalidChildReferenceWithLateLanguageSynchronization()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeParentContentAndSetInvalidChildReferenceWithLateLanguageSynchronization();
         // the assertion is the same as for localizeParentContentWithLanguageSynchronization()
         $this->assertAssertionDataSet('localizeParentContentSynchronization');
@@ -377,6 +391,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildren()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::createAndLocalizeParentContentWithHotelAndOfferChildren();
         $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildren');
 
@@ -397,6 +413,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\IRRE\Fore
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::createAndLocalizeParentContentWithHotelAndOfferChildrenWithoutSortByConfiguration();
         $this->assertAssertionDataSet('createNLocalizeParentContentNHotelNOfferChildrenWOSortBy');
 

@@ -86,13 +86,14 @@ class ActionTest extends AbstractActionTestCase
      */
     public function copyContentToLanguage()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguage();
         $this->assertAssertionDataSet('copyContentToLanguage');
 
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.typoscript'
-        ]);
+        $languageConfiguration = $this->siteLanguageConfiguration;
+        $languageConfiguration[1]['fallbackType'] = 'free';
+        $this->setUpFrontendSite(1, $languageConfiguration);
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #2'));
@@ -108,6 +109,8 @@ class ActionTest extends AbstractActionTestCase
      */
     public function localizeContent()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeContent();
         $this->assertAssertionDataSet('localizeContent');
 

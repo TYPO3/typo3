@@ -17,16 +17,14 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Controller\Page;
  */
 
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
+use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
 /**
  * Test case for TYPO3\CMS\Backend\Controller\Page\LocalizationController
  */
-class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 {
     /**
      * @var string
@@ -37,11 +35,6 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
      * @var LocalizationController|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $subject;
-
-    /**
-     * @var \TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService
-     */
-    protected $actionService;
 
     /**
      * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -60,15 +53,11 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
     {
         parent::setUp();
 
-        $this->backendUser = $this->setUpBackendUserFromFixture(1);
-        $this->backendUser->workspace = 0;
-
-        Bootstrap::initializeLanguageObject();
-        $this->actionService = GeneralUtility::makeInstance(ActionService::class);
-
         $this->importDataSet(__DIR__ . '/Fixtures/pages.xml');
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_language.xml');
         $this->importDataSet(ORIGINAL_ROOT . 'typo3/sysext/backend/Tests/Functional/Controller/Page/Fixtures/tt_content-default-language.xml');
+        $this->setUpFrontendRootPage(1);
+        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
 
         $this->subject = $this->getMockBuilder(LocalizationController::class)
             ->setMethods(['getPageColumns'])
@@ -304,15 +293,5 @@ class LocalizationControllerTest extends \TYPO3\TestingFramework\Core\Functional
         }
 
         return $recordLocalizeSummary['records'];
-    }
-
-    /**
-     * @param string $dataSetName
-     */
-    protected function assertAssertionDataSet(string $dataSetName)
-    {
-        $fileName = rtrim($this->assertionDataSetDirectory, '/') . '/' . $dataSetName . '.csv';
-        $fileName = GeneralUtility::getFileAbsFileName($fileName);
-        $this->assertCSVDataSet($fileName);
     }
 }

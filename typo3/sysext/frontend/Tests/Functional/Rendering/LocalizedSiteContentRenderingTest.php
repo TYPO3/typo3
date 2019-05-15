@@ -730,7 +730,7 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
 
         //Expected behaviour:
         //Setting sys_language_mode to different values doesn't influence the result as the requested page is translated to Polish,
-        //Page title is always [PL]Page, and both sys_language_content and sys_language_uid are always 3
+        //Page title is always [PL]Page, and both languageId/contentId are always 3
         return [
             [
                 'languageConfiguration' => [

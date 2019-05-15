@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Rendering;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -48,10 +49,46 @@ class TitleTagRenderingTest extends FunctionalTestCase
             1,
             ['EXT:frontend/Tests/Functional/Rendering/Fixtures/TitleTagRenderingTest.typoscript']
         );
+        $this->setUpFrontendSite(1);
         $this->setSiteTitleToTemplateRecord(
             1,
             'Site Title'
         );
+    }
+
+    /**
+     * Create a simple site config for the tests that
+     * call a frontend page.
+     *
+     * @param int $pageId
+     */
+    protected function setUpFrontendSite(int $pageId)
+    {
+        $configuration = [
+            'rootPageId' => $pageId,
+            'base' => '/',
+            'languages' => [
+                [
+                    'title' => 'English',
+                    'enabled' => true,
+                    'languageId' => '0',
+                    'base' => '/',
+                    'typo3Language' => 'default',
+                    'locale' => 'en_US.UTF-8',
+                    'iso-639-1' => 'en',
+                    'navigationTitle' => '',
+                    'hreflang' => '',
+                    'direction' => '',
+                    'flag' => 'us',
+                ]
+            ],
+            'errorHandling' => [],
+            'routes' => [],
+        ];
+        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
+        $yamlFileContents = Yaml::dump($configuration, 99, 2);
+        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
+        GeneralUtility::writeFile($fileName, $yamlFileContents);
     }
 
     public function titleTagDataProvider(): array

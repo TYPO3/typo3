@@ -326,6 +326,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Man
      */
     public function localizeCategoryOfRelation()
     {
+        // Create and publish translated page first
+        $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->publishRecord(self::TABLE_Page, $translatedPageResult[self::TABLE_Page][self::VALUE_PageId]);
         parent::localizeCategoryOfRelation();
         $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['localizedCategoryId']);
         $this->assertAssertionDataSet('localizeCategoryOfRelation');

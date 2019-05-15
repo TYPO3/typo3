@@ -278,6 +278,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
      */
     public function localizeCategoryOfRelation()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeCategoryOfRelation();
         $this->assertAssertionDataSet('localizeCategoryOfRelation');
 

@@ -48,6 +48,7 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
         $this->importScenarioDataSet('LiveDefaultElements');
 
         $this->setUpFrontendRootPage(1, ['typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript']);
+        $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
     }
 
     /**

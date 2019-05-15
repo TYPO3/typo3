@@ -126,6 +126,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
      */
     public function localizeParentContentWithAllChildren()
     {
+        // Create and publish translated page first
+        $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->publishRecord(self::TABLE_Page, $translatedPageResult[self::TABLE_Page][self::VALUE_PageId]);
         parent::localizeParentContentWithAllChildren();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->assertAssertionDataSet('localizeParentContentWAllChildren');
@@ -344,6 +347,9 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\IRR
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildren()
     {
+        // Create and publish translated page first
+        $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->publishRecord(self::TABLE_Page, $translatedPageResult[self::TABLE_Page][self::VALUE_PageId]);
         parent::createAndLocalizeParentContentWithHotelAndOfferChildren();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);

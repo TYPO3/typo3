@@ -270,6 +270,8 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Sel
      */
     public function localizeElementOfRelation()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeElementOfRelation();
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertAssertionDataSet('localizeElementOfRelation');

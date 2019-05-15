@@ -5,6 +5,7 @@
         <pid>0</pid>
         <title>Root 1</title>
         <deleted>0</deleted>
+        <slug>/</slug>
         <perms_everybody>15</perms_everybody>
     </pages>
     <pages>

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
@@ -80,6 +82,37 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
      */
     protected $backendUser;
 
+    /**
+     * Default Site Configuration
+     * @var array
+     */
+    protected $siteLanguageConfiguration = [
+        1 => [
+            'title' => 'Dansk',
+            'enabled' => true,
+            'languageId' => 1,
+            'base' => '/dk/',
+            'typo3Language' => 'dk',
+            'locale' => 'da_DK.UTF-8',
+            'iso-639-1' => 'da',
+            'flag' => 'dk',
+            'fallbackType' => 'fallback',
+            'fallbacks' => '0'
+        ],
+        2 => [
+            'title' => 'Deutsch',
+            'enabled' => true,
+            'languageId' => 2,
+            'base' => '/de/',
+            'typo3Language' => 'de',
+            'locale' => 'de_DE.UTF-8',
+            'iso-639-1' => 'de',
+            'flag' => 'de',
+            'fallbackType' => 'fallback',
+            'fallbacks' => '1,0'
+        ],
+    ];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -98,6 +131,49 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         unset($this->actionService);
         unset($this->recordIds);
         parent::tearDown();
+    }
+
+    /**
+     * Create a simple site config for the tests that
+     * call a frontend page.
+     *
+     * @param int $pageId
+     * @param array $additionalLanguages
+     */
+    protected function setUpFrontendSite(int $pageId, array $additionalLanguages = [])
+    {
+        $languages = [
+            0 => [
+                'title' => 'English',
+                'enabled' => true,
+                'languageId' => 0,
+                'base' => '/',
+                'typo3Language' => 'default',
+                'locale' => 'en_US.UTF-8',
+                'iso-639-1' => 'en',
+                'navigationTitle' => '',
+                'hreflang' => '',
+                'direction' => '',
+                'flag' => 'us',
+            ]
+        ];
+        $languages = array_merge($languages, $additionalLanguages);
+        $configuration = [
+            'rootPageId' => $pageId,
+            'base' => '/',
+            'languages' => $languages,
+            'errorHandling' => [],
+            'routes' => [],
+        ];
+        GeneralUtility::mkdir_deep($this->instancePath . '/typo3conf/sites/testing/');
+        $yamlFileContents = Yaml::dump($configuration, 99, 2);
+        $fileName = $this->instancePath . '/typo3conf/sites/testing/config.yaml';
+        GeneralUtility::writeFile($fileName, $yamlFileContents);
+        // Ensure that no other site configuration was cached before
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_core');
+        if ($cache->has('site-configuration')) {
+            $cache->remove('site-configuration');
+        }
     }
 
     /**

@@ -14,11 +14,20 @@ namespace TYPO3\CMS\Fluid\Tests\Functional\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class TemplatesPathsTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    /**
+     * @var array
+     */
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
     /**
      * @var array
      */
@@ -68,6 +77,16 @@ class TemplatesPathsTest extends FunctionalTestCase
         parent::setUp();
 
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/pages.xml');
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+            [
+                $this->buildErrorHandlingConfiguration('Fluid', [404])
+            ]
+        );
         $this->setUpFrontendRootPage(1, ['EXT:fluid_test/Configuration/TypoScript/Basic.ts']);
     }
 
@@ -298,7 +317,7 @@ class TemplatesPathsTest extends FunctionalTestCase
     protected function fetchFrontendResponseBody(array $requestArguments): string
     {
         $response = $this->executeFrontendRequest(
-            (new InternalRequest())->withQueryParameters($requestArguments)
+            (new InternalRequest('https://website.local/en/'))->withQueryParameters($requestArguments)
         );
 
         return (string)$response->getBody();

@@ -241,13 +241,16 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Group\Abs
      */
     public function copyContentToLanguageOfRelation()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::copyContentToLanguageOfRelation();
         $this->assertAssertionDataSet('copyContentToLanguageOfRelation');
 
-        $this->setUpFrontendRootPage(1, [
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
-            'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRendererNoOverlay.typoscript'
-        ]);
+        // Set up "dk" to not have overlays
+        $languageConfiguration = $this->siteLanguageConfiguration;
+        $languageConfiguration[self::VALUE_LanguageId]['fallbackType'] = 'free';
+        $this->setUpFrontendSite(1, $languageConfiguration);
+
         $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId)->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['localizedContentId'])->setRecordField(self::FIELD_ContentElement)
@@ -322,6 +325,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Group\Abs
      */
     public function localizeElementOfRelation()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeElementOfRelation();
         $this->assertAssertionDataSet('localizeElementOfRelation');
 

@@ -84,6 +84,19 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             'jane-blog-acme-com',
             $this->buildSiteConfiguration(2120, 'https://blog.acme.com/jane/')
         );
+        $this->writeSiteConfiguration(
+            'archive-acme-com',
+            $this->buildSiteConfiguration(3000, 'https://archive.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', 'https://archive.acme.com/fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN'])
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'common-collection',
+            $this->buildSiteConfiguration(7000, 'https://common.acme.com/')
+        );
 
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
@@ -288,11 +301,11 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1411, 0, 'https://acme.fr/acme-dans-votre-region/groupes'],
             ['https://acme.us/', 1100, 1412, 0, 'https://acme.ca/acme-dans-votre-quebec/groupes'],
             // acme.com -> archive (outside site)
-            ['https://acme.us/', 1100, 3100, 0, '/index.php?id=3100&L=0'],
-            ['https://acme.us/', 1100, 3100, 1, '/index.php?id=3100&L=1'],
-            ['https://acme.us/', 1100, 3100, 2, '/index.php?id=3100&L=2'],
-            ['https://acme.us/', 1100, 3101, 0, '/index.php?id=3100&L=1'],
-            ['https://acme.us/', 1100, 3102, 0, '/index.php?id=3100&L=2'],
+            ['https://acme.us/', 1100, 3100, 0, 'https://archive.acme.com/archive/statistics'],
+            ['https://acme.us/', 1100, 3100, 1, 'https://archive.acme.com/fr/archive/statistics'],
+            ['https://acme.us/', 1100, 3100, 2, 'https://archive.acme.com/ca/archive/statistics'],
+            ['https://acme.us/', 1100, 3101, 0, 'https://archive.acme.com/fr/archive/statistics'],
+            ['https://acme.us/', 1100, 3102, 0, 'https://archive.acme.com/ca/archive/statistics'],
             // blog.acme.com -> acme.com (different site)
             ['https://blog.acme.com/', 2100, 1100, 0, 'https://acme.us/welcome'],
             ['https://blog.acme.com/', 2100, 1100, 1, 'https://acme.fr/bienvenue'],
@@ -300,11 +313,11 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1101, 0, 'https://acme.fr/bienvenue'],
             ['https://blog.acme.com/', 2100, 1102, 0, 'https://acme.ca/bienvenue'],
             // blog.acme.com -> archive (outside site)
-            ['https://blog.acme.com/', 2100, 3100, 0, '/index.php?id=3100&L=0'],
-            ['https://blog.acme.com/', 2100, 3100, 1, '/index.php?id=3100&L=1'],
-            ['https://blog.acme.com/', 2100, 3100, 2, '/index.php?id=3100&L=2'],
-            ['https://blog.acme.com/', 2100, 3101, 0, '/index.php?id=3100&L=1'],
-            ['https://blog.acme.com/', 2100, 3102, 0, '/index.php?id=3100&L=2'],
+            ['https://blog.acme.com/', 2100, 3100, 0, 'https://archive.acme.com/archive/statistics'],
+            ['https://blog.acme.com/', 2100, 3100, 1, 'https://archive.acme.com/fr/archive/statistics'],
+            ['https://blog.acme.com/', 2100, 3100, 2, 'https://archive.acme.com/ca/archive/statistics'],
+            ['https://blog.acme.com/', 2100, 3101, 0, 'https://archive.acme.com/fr/archive/statistics'],
+            ['https://blog.acme.com/', 2100, 3102, 0, 'https://archive.acme.com/ca/archive/statistics'],
             // blog.acme.com -> products.acme.com (different sub-site)
             ['https://blog.acme.com/', 2100, 1300, 0, 'https://products.acme.com/products'],
             ['https://blog.acme.com/', 2100, 1310, 0, 'https://products.acme.com/products/planets'],
@@ -335,33 +348,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
                         'language' => $targetLanguageId,
-                    ])
-                ]),
-            $this->internalRequestContext
-        );
-
-        static::assertSame($expectation, (string)$response->getBody());
-    }
-
-    /**
-     * @param string $hostPrefix
-     * @param int $sourcePageId
-     * @param int $targetPageId
-     * @param int $targetLanguageId
-     * @param string $expectation
-     *
-     * @test
-     * @dataProvider linkIsGeneratedForLanguageDataProvider
-     */
-    public function linkIsGeneratedForLanguageWithLegacyProperty(string $hostPrefix, int $sourcePageId, int $targetPageId, int $targetLanguageId, string $expectation)
-    {
-        $response = $this->executeFrontendRequest(
-            (new InternalRequest($hostPrefix))
-                ->withPageId($sourcePageId)
-                ->withInstructions([
-                    $this->createTypoLinkUrlInstruction([
-                        'parameter' => $targetPageId,
-                        'additionalParams' => '&L=' . $targetLanguageId,
                     ])
                 ]),
             $this->internalRequestContext
@@ -706,15 +692,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'Markets',
-                                'link' => '/index.php?id=7110&MP=7100-1700',
+                                'link' => 'https://common.acme.com/common/markets?MP=7100-1700',
                             ],
                             [
                                 'title' => 'Products',
-                                'link' => '/index.php?id=7120&MP=7100-1700',
+                                'link' => 'https://common.acme.com/common/products?MP=7100-1700',
                             ],
                             [
                                 'title' => 'Partners',
-                                'link' => '/index.php?id=7130&MP=7100-1700',
+                                'link' => 'https://common.acme.com/common/partners?MP=7100-1700',
                             ],
                         ],
                     ],
@@ -747,15 +733,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             'children' => [
                                 [
                                     'title' => 'Markets',
-                                    'link' => '/index.php?id=7110&MP=7100-2700',
+                                    'link' => 'https://common.acme.com/common/markets?MP=7100-2700',
                                 ],
                                 [
                                     'title' => 'Products',
-                                    'link' => '/index.php?id=7120&MP=7100-2700',
+                                    'link' => 'https://common.acme.com/common/products?MP=7100-2700',
                                 ],
                                 [
                                     'title' => 'Partners',
-                                    'link' => '/index.php?id=7130&MP=7100-2700',
+                                    'link' => 'https://common.acme.com/common/partners?MP=7100-2700',
                                 ],
                             ],
                         ],

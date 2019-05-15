@@ -287,6 +287,8 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Select\Ab
      */
     public function localizeElementOfRelation()
     {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage('pages', self::VALUE_PageId, self::VALUE_LanguageId);
         parent::localizeElementOfRelation();
         $this->assertAssertionDataSet('localizeElementOfRelation');
 
