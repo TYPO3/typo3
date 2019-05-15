@@ -835,7 +835,7 @@ class EditDocumentController
         }
 
         // Always use live workspace record uid for the preview
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ?? false && $recordArray['t3ver_oid'] > 0) {
+        if (BackendUtility::isTableWorkspaceEnabled($table) && $recordArray['t3ver_oid'] > 0) {
             $recordId = $recordArray['t3ver_oid'];
         }
 
