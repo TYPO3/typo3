@@ -291,4 +291,24 @@ return [
             'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'TYPO3_MISC\'][\'microtime_start\']' => [
+        'restFiles' => [
+            'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'TYPO3_MISC\'][\'microtime_end\']' => [
+        'restFiles' => [
+            'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'TYPO3_MISC\'][\'microtime_BE_USER_start\']' => [
+        'restFiles' => [
+            'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'TYPO3_MISC\'][\'microtime_BE_USER_end\']' => [
+        'restFiles' => [
+            'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
+        ],
+    ],
 ];

@@ -21,6 +21,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Initializes the time tracker (singleton) for the whole TYPO3 Frontend
@@ -38,14 +39,38 @@ class TimeTrackerInitialization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+        $timeTrackingEnabled = $this->isBackendUserCookieSet($request);
         $timeTracker = GeneralUtility::makeInstance(
             TimeTracker::class,
-            !empty($request->getCookieParams()[$configuredCookieName])
+            $timeTrackingEnabled
         );
-        $timeTracker->start();
+        $timeTracker->start(microtime(true));
         $timeTracker->push('');
 
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+
+        // Finish time tracking
+        $timeTracker->pull();
+        $timeTracker->finish();
+
+        if ($this->isDebugModeEnabled()) {
+            return $response->withHeader('X-TYPO3-Parsetime', $timeTracker->getParseTime() . 'ms');
+        }
+        return $response;
+    }
+
+    protected function isBackendUserCookieSet(ServerRequestInterface $request): bool
+    {
+        $configuredCookieName = trim($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieName']) ?: 'be_typo_user';
+        return !empty($request->getCookieParams()[$configuredCookieName]);
+    }
+
+    protected function isDebugModeEnabled(): bool
+    {
+        $controller = $GLOBALS['TSFE'];
+        if ($controller instanceof TypoScriptFrontendController && !empty($controller->config['config']['debug'] ?? false)) {
+            return true;
+        }
+        return !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
     }
 }

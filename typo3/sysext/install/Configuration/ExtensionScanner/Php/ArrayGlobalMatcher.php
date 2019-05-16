@@ -31,4 +31,9 @@ return [
             'Breaking-87567-GlobalVariableTBE_TEMPLATERemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_MISC\']' => [
+        'restFiles' => [
+            'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
+        ],
+    ],
 ];

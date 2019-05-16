@@ -111,16 +111,6 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeGlobalVariablesSetsGlobalTypo3MiscArray()
-    {
-        unset($GLOBALS['TYPO3_MISC']);
-        $this->subject->_call('initializeGlobalVariables');
-        $this->assertIsArray($GLOBALS['TYPO3_MISC']);
-    }
-
-    /**
-     * @test
-     */
     public function initializeGlobalVariablesSetsGlobalT3VarArray()
     {
         unset($GLOBALS['T3_VAR']);
@@ -163,16 +153,6 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         unset($GLOBALS[$variable]);
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
         $this->assertTrue(isset($GLOBALS[$variable]));
-    }
-
-    /**
-     * @test
-     */
-    public function initializeGlobalTimeTrackingVariablesSetsGlobalTypo3MiscMicrotimeStart()
-    {
-        unset($GLOBALS['TYPO3_MISC']['microtime_start']);
-        $this->subject->_call('initializeGlobalTimeTrackingVariables');
-        $this->assertTrue(isset($GLOBALS['TYPO3_MISC']['microtime_start']));
     }
 
     /**

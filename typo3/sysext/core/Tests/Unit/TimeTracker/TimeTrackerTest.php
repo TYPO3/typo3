@@ -26,14 +26,8 @@ class TimeTrackerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParseTimeReturnsZeroOrOneIfNoValuesAreSet()
+    public function getParseTimeReturnsZeroOrOneIfNoValuesAreSet(): void
     {
-        unset(
-            $GLOBALS['TYPO3_MISC']['microtime_end'],
-            $GLOBALS['TYPO3_MISC']['microtime_start'],
-            $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'],
-            $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end']
-        );
         $parseTime = (new TimeTracker())->getParseTime();
         self::assertLessThanOrEqual(1, $parseTime);
     }
@@ -41,42 +35,12 @@ class TimeTrackerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getParseTimeReturnsTotalParseTimeInMillisecondsWithoutBeUserInitialization()
+    public function getParseTimeReturnsTotalParseTimeInMilliseconds(): void
     {
-        $baseValue = time();
-        $GLOBALS['TYPO3_MISC']['microtime_start'] = $baseValue;
-        $GLOBALS['TYPO3_MISC']['microtime_end'] = $baseValue + 10;
-        $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = $baseValue + 1;
-        $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = $baseValue + 3;
-        $parseTime = (new TimeTracker())->getParseTime();
-        self::assertSame(8000, $parseTime);
-    }
-
-    /**
-     * @test
-     */
-    public function getParseTimeReturnsParseTimeIfOnlyOneBeUserTimeWasSet()
-    {
-        $baseValue = time();
-        $GLOBALS['TYPO3_MISC']['microtime_start'] = $baseValue;
-        $GLOBALS['TYPO3_MISC']['microtime_end'] = $baseValue + 10;
-        $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = $baseValue + 1;
-        $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = 0;
-        $parseTime = (new TimeTracker())->getParseTime();
-        self::assertSame(10000, $parseTime);
-    }
-
-    /**
-     * @test
-     */
-    public function getParseTimeReturnsParseTimeIfNoBeUserTimeWasSet()
-    {
-        $baseValue = time();
-        $GLOBALS['TYPO3_MISC']['microtime_start'] = $baseValue;
-        $GLOBALS['TYPO3_MISC']['microtime_end'] = $baseValue + 10;
-        $GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = 0;
-        $GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] = 0;
-        $parseTime = (new TimeTracker())->getParseTime();
-        self::assertSame(10000, $parseTime);
+        $subject = new TimeTracker();
+        $subject->start();
+        sleep(1);
+        $subject->finish();
+        self::assertLessThan(1010, $subject->getParseTime());
     }
 }

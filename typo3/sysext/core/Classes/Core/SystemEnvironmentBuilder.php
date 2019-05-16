@@ -207,7 +207,6 @@ class SystemEnvironmentBuilder
     protected static function initializeGlobalVariables()
     {
         // Unset variable(s) in global scope (security issue #13959)
-        $GLOBALS['TYPO3_MISC'] = [];
         $GLOBALS['T3_VAR'] = [];
         $GLOBALS['T3_SERVICES'] = [];
     }
@@ -218,8 +217,6 @@ class SystemEnvironmentBuilder
      */
     protected static function initializeGlobalTimeTrackingVariables()
     {
-        // Microtime of (nearly) script start
-        $GLOBALS['TYPO3_MISC']['microtime_start'] = microtime(true);
         // EXEC_TIME is set so that the rest of the script has a common value for the script execution time
         $GLOBALS['EXEC_TIME'] = time();
         // $ACCESS_TIME is a common time in minutes for access control

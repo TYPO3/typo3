@@ -39,6 +39,13 @@ class TimeTracker implements SingletonInterface
     public $starttime = 0;
 
     /**
+     * Is set via finish() with the millisecond time when the request handler is finished.
+     *
+     * @var int
+     */
+    protected $finishtime = 0;
+
+    /**
      * Log Rendering flag. If set, ->push() and ->pull() is called from the cObj->cObjGetSingle().
      * This determines whether or not the TypoScript parsing activity is logged. But it also slows down the rendering
      *
@@ -142,13 +149,16 @@ class TimeTracker implements SingletonInterface
 
     /**
      * Sets the starting time
+     *
+     * @see finish()
+     * @param float|null $starttime
      */
-    public function start()
+    public function start(?float $starttime = null)
     {
         if (!$this->isEnabled) {
             return;
         }
-        $this->starttime = $this->getMilliseconds();
+        $this->starttime = $this->getMilliseconds($starttime);
     }
 
     /**
@@ -281,7 +291,7 @@ class TimeTracker implements SingletonInterface
         if (!isset($microtime)) {
             $microtime = microtime(true);
         }
-        return round($microtime * 1000);
+        return (int)round($microtime * 1000);
     }
 
     /**
@@ -296,27 +306,31 @@ class TimeTracker implements SingletonInterface
     }
 
     /**
-     * Get total parse time in milliseconds(without backend user initialization)
+     * Usually called when the page generation and output is prepared.
+     *
+     * @see start()
+     */
+    public function finish(): void
+    {
+        if ($this->isEnabled) {
+            $this->finishtime = microtime(true);
+        }
+    }
+
+    /**
+     * Get total parse time in milliseconds
      *
      * @return int
      */
     public function getParseTime(): int
     {
-        // Compensates for the time consumed with Back end user initialization.
-        $processStart = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_start'] ?? null);
-
-        $beUserInitializationStart = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] ?? null);
-        $beUserInitializationEnd = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_BE_USER_end'] ?? null);
-        $beUserInitialization = $beUserInitializationEnd - $beUserInitializationStart;
-
-        $processEnd = $this->getMilliseconds($GLOBALS['TYPO3_MISC']['microtime_end'] ?? null);
-        $totalParseTime = $processEnd - $processStart;
-
-        if ($beUserInitialization > 0) {
-            $totalParseTime -= $beUserInitialization;
+        if (!$this->starttime) {
+            $this->start(microtime(true));
         }
-
-        return $totalParseTime;
+        if (!$this->finishtime) {
+            $this->finish();
+        }
+        return $this->getDifferenceToStarttime($this->finishtime ?? null);
     }
 
     /*******************************************

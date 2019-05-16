@@ -154,26 +154,17 @@ class RequestHandler implements RequestHandlerInterface
         // Store session data for fe_users
         $controller->fe_user->storeSessionData();
 
-        // Statistics
-        $GLOBALS['TYPO3_MISC']['microtime_end'] = microtime(true);
-        if ($isOutputting && ($controller->config['config']['debug'] ?? !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']))) {
-            $response = $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
-        }
-
         // Hook for "end-of-frontend"
         $_params = ['pObj' => &$controller];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_eofe'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $controller);
         }
 
-        // Finish time tracking (started in TYPO3\CMS\Frontend\Middleware\TimeTrackerInitialization)
-        $this->timeTracker->pull();
-
         if ($isOutputting) {
             $response->getBody()->write($controller->content);
+            return $response;
         }
-
-        return $isOutputting ? $response : new NullResponse();
+        return new NullResponse();
     }
 
     /**
