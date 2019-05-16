@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,9 +35,13 @@ class ConditionMatcher extends AbstractConditionMatcher
     public function __construct(Context $context = null)
     {
         $pageId = $this->pageId ?? $this->determinePageId();
-
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->rootline = BackendUtility::BEgetRootLine($pageId, '', true) ?? [];
+        $this->rootline = BackendUtility::BEgetRootLine($pageId, '', true);
+        $this->initializeExpressionLanguageResolver();
+    }
+
+    protected function updateExpressionLanguageVariables(): void
+    {
         $treeLevel = $this->rootline ? count($this->rootline) - 1 : 0;
         $tree = new \stdClass();
         $tree->level = $treeLevel;
@@ -48,20 +51,16 @@ class ConditionMatcher extends AbstractConditionMatcher
         $backendUserAspect = $this->context->getAspect('backend.user');
         $backend = new \stdClass();
         $backend->user = new \stdClass();
-        $backend->user->isAdmin = $backendUserAspect->get('isAdmin') ?? false;
-        $backend->user->isLoggedIn = $backendUserAspect->get('isLoggedIn') ?? false;
-        $backend->user->userId = $backendUserAspect->get('id') ?? 0;
+        $backend->user->isAdmin = $backendUserAspect->get('isAdmin');
+        $backend->user->isLoggedIn = $backendUserAspect->get('isLoggedIn');
+        $backend->user->userId = $backendUserAspect->get('id');
         $backend->user->userGroupList = implode(',', $backendUserAspect->get('groupIds'));
 
-        $this->expressionLanguageResolver = GeneralUtility::makeInstance(
-            Resolver::class,
-            'typoscript',
-            [
-                'tree' => $tree,
-                'backend' => $backend,
-                'page' => BackendUtility::getRecord('pages', $pageId) ?? [],
-            ]
-        );
+        $this->expressionLanguageResolverVariables = [
+            'tree' => $tree,
+            'backend' => $backend,
+            'page' => BackendUtility::getRecord('pages', $this->pageId ?? $this->determinePageId()) ?: [],
+        ];
     }
 
     /**

@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptCondition
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Matching TypoScript conditions
@@ -68,6 +69,27 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
     protected $expressionLanguageResolver;
 
     /**
+     * @var array
+     */
+    protected $expressionLanguageResolverVariables = [];
+
+    protected function initializeExpressionLanguageResolver(): void
+    {
+        $this->updateExpressionLanguageVariables();
+        $this->expressionLanguageResolver = GeneralUtility::makeInstance(
+            Resolver::class,
+            'typoscript',
+            $this->expressionLanguageResolverVariables
+        );
+    }
+
+    protected function updateExpressionLanguageVariables(): void
+    {
+        // deliberately empty and not "abstract" due to backwards compatibility
+        // implement this method in derived classes
+    }
+
+    /**
      * Sets the id of the page to evaluate conditions for.
      *
      * @param int $pageId Id of the page (must be positive)
@@ -77,6 +99,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
         if (is_int($pageId) && $pageId > 0) {
             $this->pageId = $pageId;
         }
+        $this->initializeExpressionLanguageResolver();
     }
 
     /**
@@ -99,6 +122,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
         if (!empty($rootline)) {
             $this->rootline = $rootline;
         }
+        $this->initializeExpressionLanguageResolver();
     }
 
     /**
