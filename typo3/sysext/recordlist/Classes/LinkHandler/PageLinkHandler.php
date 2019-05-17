@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Recordlist\LinkHandler;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -158,9 +159,15 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 ->select('*')
                 ->from('tt_content')
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->in(
+                            'sys_language_uid',
+                            $queryBuilder->createNamedParameter([$activePageRecord['sys_language_uid'], -1], Connection::PARAM_INT_ARRAY)
+                        )
                     )
                 )
                 ->orderBy('colPos')
