@@ -52,7 +52,6 @@ a decimal value between 0 and 1.
                            tx_extension_pi1.controller = News
                            tx_extension_pi1.action = detail
                         }
-                        useCacheHash = 1
                      }
                   }
                }

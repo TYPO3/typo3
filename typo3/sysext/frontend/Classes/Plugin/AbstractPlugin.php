@@ -388,7 +388,6 @@ class AbstractPlugin
     public function pi_linkTP($str, $urlParameters = [], $cache = false, $altPageId = 0)
     {
         $conf = [];
-        $conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
         $conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
         $conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $this->frontendController->id);
         $conf['additionalParams'] = $this->conf['parent.']['addParams'] . HttpUtility::buildQueryString($urlParameters, '&', true) . $this->pi_moreParams;

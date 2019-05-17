@@ -1606,7 +1606,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $uri = $this->controllerContext->getUriBuilder()
                 ->setTargetPageUid($pageUid)
                 ->setTargetPageType($row['data_page_type'])
-                ->setUseCacheHash(true)
                 ->setArguments($urlParameters)
                 ->build();
 

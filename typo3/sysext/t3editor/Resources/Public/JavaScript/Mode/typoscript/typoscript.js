@@ -891,7 +891,6 @@
         'upper': kw('upper'),
         'url': A,
         'us': B,
-        'useCacheHash': kw('useCacheHash'),
         'useLargestItemX': kw('useLargestItemX'),
         'useLargestItemY': kw('useLargestItemY'),
         'USER': kw('USER'),

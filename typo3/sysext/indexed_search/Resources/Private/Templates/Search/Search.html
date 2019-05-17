@@ -35,7 +35,7 @@
                             <f:for each="{result.affectedSections}" as="sectionData" key="sectionId">
                                 <tr>
                                     <td width="100%">--&gt;&nbsp;
-                                        <f:link.page section="anchor_{sectionId}" addQueryString="1" noCacheHash="1"
+                                        <f:link.page section="anchor_{sectionId}" addQueryString="1"
                                                                 argumentsToBeExcludedFromQueryString="{0: 'id'}">
                                             <f:if condition="{sectionData.0}">
                                                 <f:then>{sectionData.0}</f:then>

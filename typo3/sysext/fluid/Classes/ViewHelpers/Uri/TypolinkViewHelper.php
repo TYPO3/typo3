@@ -40,7 +40,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Full parameter usage::
  *
- *    <f:uri.typolink parameter="{link}" additionalParams="&u=b" useCacheHash="true" />
+ *    <f:uri.typolink parameter="{link}" additionalParams="&u=b" />
  *
  * ``index.php?id=19&X=y&u=b``
  */
@@ -55,7 +55,8 @@ class TypolinkViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
-        $this->registerArgument('useCacheHash', 'bool', '', false, false);
+        // @deprecated
+        $this->registerArgument('useCacheHash', 'bool', 'Deprecated: You should not need this.', false);
         $this->registerArgument('addQueryString', 'bool', '', false, false);
         $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
         $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
@@ -71,9 +72,11 @@ class TypolinkViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        if (isset($arguments['useCacheHash'])) {
+            trigger_error('Using the argument "noCacheHash" in <f:uri.typolink> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
+        }
         $parameter = $arguments['parameter'];
         $additionalParams = $arguments['additionalParams'];
-        $useCacheHash = $arguments['useCacheHash'];
         $addQueryString = $arguments['addQueryString'];
         $addQueryStringMethod = $arguments['addQueryStringMethod'];
         $addQueryStringExclude = $arguments['addQueryStringExclude'];
@@ -85,7 +88,6 @@ class TypolinkViewHelper extends AbstractViewHelper
             $content = $contentObject->typoLink_URL(
                 [
                     'parameter' => self::createTypolinkParameterFromArguments($parameter, $additionalParams),
-                    'useCacheHash' => $useCacheHash,
                     'addQueryString' => $addQueryString,
                     'addQueryString.' => [
                         'method' => $addQueryStringMethod,

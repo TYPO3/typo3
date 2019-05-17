@@ -110,8 +110,7 @@ class UriBuilderTest extends UnitTestCase
             ->setLinkAccessRestrictedPages(true)
             ->setTargetPageUid(123)
             ->setTargetPageType(321)
-            ->setNoCache(true)
-            ->setUseCacheHash(false);
+            ->setNoCache(true);
         $this->assertEquals(['test' => 'arguments'], $this->uriBuilder->getArguments());
         $this->assertEquals('testSection', $this->uriBuilder->getSection());
         $this->assertEquals('testFormat', $this->uriBuilder->getFormat());
@@ -125,7 +124,6 @@ class UriBuilderTest extends UnitTestCase
         $this->assertEquals(123, $this->uriBuilder->getTargetPageUid());
         $this->assertEquals(321, $this->uriBuilder->getTargetPageType());
         $this->assertEquals(true, $this->uriBuilder->getNoCache());
-        $this->assertEquals(false, $this->uriBuilder->getUseCacheHash());
     }
 
     /**
@@ -199,16 +197,6 @@ class UriBuilderTest extends UnitTestCase
         $expectedArguments = ['tx_someextension_somepluginnamefromrequest' => ['controller' => 'SomeController']];
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
         $this->assertEquals($expectedArguments, $this->uriBuilder->getArguments());
-    }
-
-    /**
-     * @test
-     */
-    public function uriForDoesNotDisableCacheHashForNonCacheableActions()
-    {
-        $this->mockExtensionService->expects($this->any())->method('isActionCacheable')->will($this->returnValue(false));
-        $this->uriBuilder->uriFor('someNonCacheableAction', [], 'SomeController', 'SomeExtension');
-        $this->assertTrue($this->uriBuilder->getUseCacheHash());
     }
 
     /**
@@ -572,7 +560,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function resetSetsAllOptionsToTheirDefaultValue()
     {
-        $this->uriBuilder->setArguments(['test' => 'arguments'])->setSection('testSection')->setFormat('someFormat')->setCreateAbsoluteUri(true)->setAddQueryString(true)->setArgumentsToBeExcludedFromQueryString(['test' => 'addQueryStringExcludeArguments'])->setAddQueryStringMethod(null)->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(true)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(true)->setUseCacheHash(false);
+        $this->uriBuilder->setArguments(['test' => 'arguments'])->setSection('testSection')->setFormat('someFormat')->setCreateAbsoluteUri(true)->setAddQueryString(true)->setArgumentsToBeExcludedFromQueryString(['test' => 'addQueryStringExcludeArguments'])->setAddQueryStringMethod(null)->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(true)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(true);
         $this->uriBuilder->reset();
         $this->assertEquals([], $this->uriBuilder->getArguments());
         $this->assertEquals('', $this->uriBuilder->getSection());
@@ -586,7 +574,6 @@ class UriBuilderTest extends UnitTestCase
         $this->assertEquals(null, $this->uriBuilder->getTargetPageUid());
         $this->assertEquals(0, $this->uriBuilder->getTargetPageType());
         $this->assertEquals(false, $this->uriBuilder->getNoCache());
-        $this->assertEquals(true, $this->uriBuilder->getUseCacheHash());
     }
 
     /**
@@ -596,7 +583,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $GLOBALS['TSFE']->id = 123;
         $this->uriBuilder->setTargetPageUid(321);
-        $expectedConfiguration = ['parameter' => 321, 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => 321];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -607,7 +594,7 @@ class UriBuilderTest extends UnitTestCase
     public function buildTypolinkConfigurationUsesCurrentPageUidIfTargetPageUidIsNotSet()
     {
         $GLOBALS['TSFE']->id = 123;
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => 123];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -619,7 +606,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setArguments(['foo' => 'bar', 'baz' => ['extbase' => 'fluid']]);
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&foo=bar&baz%5Bextbase%5D=fluid'];
+        $expectedConfiguration = ['parameter' => 123, 'additionalParams' => '&foo=bar&baz%5Bextbase%5D=fluid'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -631,7 +618,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setAddQueryString(true);
-        $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1, 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -644,7 +631,7 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setAddQueryString(true);
         $this->uriBuilder->setAddQueryStringMethod('GET,POST');
-        $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1, 'addQueryString.' => ['method' => 'GET,POST'], 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => 123, 'addQueryString' => 1, 'addQueryString.' => ['method' => 'GET,POST']];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -660,7 +647,7 @@ class UriBuilderTest extends UnitTestCase
         $mockDomainObject2->_set('uid', '321');
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setArguments(['someDomainObject' => $mockDomainObject1, 'baz' => ['someOtherDomainObject' => $mockDomainObject2]]);
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'additionalParams' => '&someDomainObject=123&baz%5BsomeOtherDomainObject%5D=321'];
+        $expectedConfiguration = ['parameter' => 123, 'additionalParams' => '&someDomainObject=123&baz%5BsomeOtherDomainObject%5D=321'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -683,7 +670,7 @@ class UriBuilderTest extends UnitTestCase
             ->with('SomeExtensionNameFromRequest', 'txt')
             ->will($this->returnValue(2));
 
-        $expectedConfiguration = ['parameter' => '123,2', 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => '123,2'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -704,7 +691,7 @@ class UriBuilderTest extends UnitTestCase
             ->with(null, 'txt')
             ->will($this->returnValue(0));
 
-        $expectedConfiguration = ['parameter' => '123,0', 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => '123,0'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
 
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
@@ -727,7 +714,7 @@ class UriBuilderTest extends UnitTestCase
             ->with(null, 'txt')
             ->will($this->returnValue(0));
 
-        $expectedConfiguration = ['parameter' => '123,0', 'useCacheHash' => 1];
+        $expectedConfiguration = ['parameter' => '123,0'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
 
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
@@ -748,23 +735,11 @@ class UriBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function buildTypolinkConfigurationDoesNotSetUseCacheHashOptionIfUseCacheHashIsDisabled()
-    {
-        $this->uriBuilder->setTargetPageUid(123);
-        $this->uriBuilder->setUseCacheHash(false);
-        $expectedConfiguration = ['parameter' => 123];
-        $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
-        $this->assertEquals($expectedConfiguration, $actualConfiguration);
-    }
-
-    /**
-     * @test
-     */
     public function buildTypolinkConfigurationConsidersSection()
     {
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setSection('SomeSection');
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'section' => 'SomeSection'];
+        $expectedConfiguration = ['parameter' => 123, 'section' => 'SomeSection'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }
@@ -776,7 +751,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setLinkAccessRestrictedPages(true);
-        $expectedConfiguration = ['parameter' => 123, 'useCacheHash' => 1, 'linkAccessRestrictedPages' => 1];
+        $expectedConfiguration = ['parameter' => 123, 'linkAccessRestrictedPages' => 1];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
         $this->assertEquals($expectedConfiguration, $actualConfiguration);
     }

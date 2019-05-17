@@ -410,8 +410,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
                         'parameter' => $targetPageId,
-                        'additionalParams' => '&testing[value]=1',
-                        'useCacheHash' => 1,
+                        'additionalParams' => '&testing[value]=1'
                     ])
                 ]),
             $this->internalRequestContext

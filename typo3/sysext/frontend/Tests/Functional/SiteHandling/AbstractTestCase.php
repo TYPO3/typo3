@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Fixtures\LinkHandlingController;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\Internal\ArrayValueInstruction;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -168,32 +166,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
             'Array was not empty as expected, but contained these items:' . LF
             . '* ' . implode(LF . '* ', $items)
         );
-    }
-
-    /**
-     * @param string $uri
-     * @return string
-     */
-    protected static function generateCacheHash(string $uri): string
-    {
-        if (!isset($GLOBALS['TYPO3_CONF_VARS'])) {
-            $GLOBALS['TYPO3_CONF_VARS'] = [];
-        }
-
-        $configuration = $GLOBALS['TYPO3_CONF_VARS'];
-        ArrayUtility::mergeRecursiveWithOverrule(
-            $GLOBALS['TYPO3_CONF_VARS'],
-            static::TYPO3_CONF_VARS
-        );
-
-        $calculator = new CacheHashCalculator();
-        $parameters = $calculator->getRelevantParameters(
-            parse_url($uri, PHP_URL_QUERY)
-        );
-        $cacheHash = $calculator->calculateCacheHash($parameters);
-
-        $GLOBALS['TYPO3_CONF_VARS'] = $configuration;
-        return $cacheHash;
     }
 
     /**

@@ -4140,4 +4140,18 @@ return [
             'Breaking-87305-UseConstructorInjectionInDataMapper.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->setUseCacheHash' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-88406-SetCacheHashnoCacheHashOptionsInViewHelpersAndUriBuilder.rst'
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder->getUseCacheHash' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-88406-SetCacheHashnoCacheHashOptionsInViewHelpersAndUriBuilder.rst'
+        ],
+    ],
 ];

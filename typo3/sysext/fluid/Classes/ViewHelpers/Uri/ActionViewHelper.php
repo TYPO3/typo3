@@ -47,8 +47,9 @@ class ActionViewHelper extends AbstractViewHelper
         $this->registerArgument('pluginName', 'string', 'Target plugin. If empty, the current plugin name is used');
         $this->registerArgument('pageUid', 'int', 'Target page. See TypoLink destination');
         $this->registerArgument('pageType', 'int', 'Type of the target page. See typolink.parameter', false, 0);
-        $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.', false, false);
-        $this->registerArgument('noCacheHash', 'bool', 'Set this to suppress the cHash query parameter created by TypoLink. You should not need this.', false, false);
+        $this->registerArgument('noCache', 'bool', 'Set this to disable caching for the target page. You should not need this.', false, null);
+        // @deprecated
+        $this->registerArgument('noCacheHash', 'bool', 'Deprecated: Set this to suppress the cHash query parameter created by TypoLink. You should not need this.', false, null);
         $this->registerArgument('section', 'string', 'The anchor to be added to the URI', false, '');
         $this->registerArgument('format', 'string', 'The requested format, e.g. ".html', false, '');
         $this->registerArgument('linkAccessRestrictedPages', 'bool', 'If set, links pointing to access restricted pages will still link to the page even though the page cannot be accessed.', false, false);
@@ -70,7 +71,9 @@ class ActionViewHelper extends AbstractViewHelper
         $pageUid = $arguments['pageUid'];
         $pageType = $arguments['pageType'];
         $noCache = $arguments['noCache'];
-        $noCacheHash = $arguments['noCacheHash'];
+        if (isset($arguments['noCacheHash'])) {
+            trigger_error('Using the argument "noCacheHash" in <f:uri.action> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
+        }
         $section = $arguments['section'];
         $format = $arguments['format'];
         $linkAccessRestrictedPages = $arguments['linkAccessRestrictedPages'];
@@ -90,7 +93,6 @@ class ActionViewHelper extends AbstractViewHelper
             ->setTargetPageUid($pageUid)
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)
-            ->setUseCacheHash(!$noCacheHash)
             ->setSection($section)
             ->setFormat($format)
             ->setLinkAccessRestrictedPages($linkAccessRestrictedPages)

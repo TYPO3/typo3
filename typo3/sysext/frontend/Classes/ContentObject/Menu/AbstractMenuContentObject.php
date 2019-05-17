@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
@@ -29,7 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
 
@@ -177,14 +175,6 @@ abstract class AbstractMenuContentObject
      * @var string
      */
     protected $alternativeMenuTempArray = '';
-
-    /**
-     * TRUE to use cHash in generated link (normally only for the language
-     * selector and if parameters exist in the URL).
-     *
-     * @var bool
-     */
-    protected $useCacheHash = false;
 
     /**
      * Array key of the parentMenuItem in the parentMenuArr, if this menu is a subMenu.
@@ -358,8 +348,6 @@ abstract class AbstractMenuContentObject
         if (!$this->id) {
             return;
         }
-
-        $this->useCacheHash = false;
 
         // Initializing showAccessRestrictedPages
         $SAVED_where_groupAccess = '';
@@ -623,7 +611,6 @@ abstract class AbstractMenuContentObject
                     [],
                     true
                 );
-                $this->analyzeCacheHashRequirements($getVars);
             }
             // Adding menu item:
             $menuItems[] = array_merge(
@@ -1150,31 +1137,6 @@ abstract class AbstractMenuContentObject
             }
         }
         return $menuItems;
-    }
-
-    /**
-     * Analyzes the parameters to find if the link needs a cHash parameter.
-     *
-     * @param string $queryString
-     */
-    protected function analyzeCacheHashRequirements($queryString)
-    {
-        $parameters = GeneralUtility::explodeUrl2Array($queryString);
-        if (!empty($parameters)) {
-            if (!isset($parameters['id'])) {
-                $queryString .= '&id=' . $this->getTypoScriptFrontendController()->id;
-            }
-            /** @var CacheHashCalculator $cacheHashCalculator */
-            $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
-            $cHashParameters = $cacheHashCalculator->getRelevantParameters($queryString);
-            if (count($cHashParameters) > 1) {
-                $this->useCacheHash = (
-                    $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] ||
-                    !isset($parameters['no_cache']) ||
-                    !$parameters['no_cache']
-                );
-            }
-        }
     }
 
     /**
@@ -1991,9 +1953,6 @@ abstract class AbstractMenuContentObject
         // "_PAGES_OVERLAY_REQUESTEDLANGUAGE" for more details
         if (isset($page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'])) {
             $conf['language'] = $page['_PAGES_OVERLAY_REQUESTEDLANGUAGE'];
-        }
-        if ($this->useCacheHash) {
-            $conf['useCacheHash'] = true;
         }
         if ($oTarget) {
             $conf['target'] = $oTarget;

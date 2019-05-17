@@ -94,7 +94,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                     'typolink.' => [
                         'parameter' => '42',
                         'ATagParams' => '',
-                        'useCacheHash' => false,
                         'addQueryString' => $addQueryString,
                         'addQueryString.' => [
                             'method' => $addQueryStringMethod,

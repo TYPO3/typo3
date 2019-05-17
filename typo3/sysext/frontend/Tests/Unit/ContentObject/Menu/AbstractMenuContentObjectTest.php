@@ -370,13 +370,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter without access protected setting' => [
                 [
                     'parameter' => 1,
-                    'linkAccessRestrictedPages' => false,
-                    'useCacheHash' => true
+                    'linkAccessRestrictedPages' => false
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
                 ['uid' => 1],
                 '',
                 0,
@@ -385,13 +383,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with access protected setting' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true,
-                    'useCacheHash' => true
+                    'linkAccessRestrictedPages' => true
                 ],
                 [
                     'showAccessRestrictedPages' => true
                 ],
-                true,
                 ['uid' => 10],
                 '',
                 0,
@@ -400,13 +396,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with access protected setting "NONE" casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true,
-                    'useCacheHash' => true
+                    'linkAccessRestrictedPages' => true
                 ],
                 [
                     'showAccessRestrictedPages' => 'NONE'
                 ],
-                true,
                 ['uid' => 10],
                 '',
                 0,
@@ -415,13 +409,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'standard parameter with access protected setting (int)67 casts to boolean linkAccessRestrictedPages (delegates resolving to typoLink method internals)' => [
                 [
                     'parameter' => 10,
-                    'linkAccessRestrictedPages' => true,
-                    'useCacheHash' => true
+                    'linkAccessRestrictedPages' => true
                 ],
                 [
                     'showAccessRestrictedPages' => 67
                 ],
-                true,
                 ['uid' => 10],
                 '',
                 0,
@@ -431,13 +423,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => 1,
                     'target' => '_blank',
-                    'linkAccessRestrictedPages' => false,
-                    'useCacheHash' => true
+                    'linkAccessRestrictedPages' => false
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
                 ['uid' => 1],
                 '_blank',
                 0,
@@ -446,13 +436,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
             'parameter with typeOverride=10' => [
                 [
                     'parameter' => '10,10',
-                    'linkAccessRestrictedPages' => false,
-                    'useCacheHash' => true
+                    'linkAccessRestrictedPages' => false
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
                 ['uid' => 10],
                 '',
                 '',
@@ -462,13 +450,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => '10,10',
                     'linkAccessRestrictedPages' => false,
-                    'useCacheHash' => true,
                     'target' => '_self'
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
                 ['uid' => 10],
                 '_self',
                 '',
@@ -478,13 +464,11 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'parameter' => 20,
                     'linkAccessRestrictedPages' => false,
-                    'useCacheHash' => true,
                     'target' => '_self'
                 ],
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                true,
                 ['uid' => 20],
                 '_self',
                 '',
@@ -501,7 +485,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                false,
                 [
                     'uid' => 10,
                     'sectionIndex_uid' => 'section-name'
@@ -520,7 +503,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                false,
                 [
                     'uid' => 10,
                     'sectionIndex_uid' => 'section-name'
@@ -538,7 +520,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
                 [
                     'showAccessRestrictedPages' => false
                 ],
-                false,
                 [
                     'uid' => 10,
                     'sectionIndex_uid' => 'section-name'
@@ -556,14 +537,13 @@ class AbstractMenuContentObjectTest extends UnitTestCase
      * @dataProvider menuTypoLinkCreatesExpectedTypoLinkConfiurationDataProvider
      * @param array $expected
      * @param array $mconf
-     * @param bool $useCacheHash
      * @param array $page
      * @param mixed $oTarget
      * @param string $addParams
      * @param string $typeOverride
      * @param int $overrideId
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, $useCacheHash, array $page, $oTarget, $addParams = '', $typeOverride = '', int $overrideId = null)
+    public function menuTypoLinkCreatesExpectedTypoLinkConfiguration(array $expected, array $mconf, array $page, $oTarget, $addParams = '', $typeOverride = '', int $overrideId = null)
     {
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['typoLink'])
@@ -571,7 +551,6 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $cObject->expects($this->once())->method('typoLink')->with('|', $expected);
         $this->subject->_set('parent_cObj', $cObject);
         $this->subject->_set('mconf', $mconf);
-        $this->subject->_set('useCacheHash', $useCacheHash);
         $this->subject->_call('menuTypoLink', $page, $oTarget, $addParams, $typeOverride, $overrideId);
     }
 }

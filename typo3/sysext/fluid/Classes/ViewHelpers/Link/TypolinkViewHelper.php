@@ -76,7 +76,8 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('title', 'string', '', false, '');
         $this->registerArgument('additionalParams', 'string', '', false, '');
         $this->registerArgument('additionalAttributes', 'array', '', false, []);
-        $this->registerArgument('useCacheHash', 'bool', '', false, false);
+        // @deprecated
+        $this->registerArgument('useCacheHash', 'bool', '', false, null);
         $this->registerArgument('addQueryString', 'bool', '', false, false);
         $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
         $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
@@ -95,13 +96,15 @@ class TypolinkViewHelper extends AbstractViewHelper
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
+        if (isset($arguments['useCacheHash'])) {
+            trigger_error('Using the argument "useCacheHash" in <f:link.typolink> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
+        }
         $parameter = $arguments['parameter'] ?? '';
         $target = $arguments['target'] ?? '';
         $class = $arguments['class'] ?? '';
         $title = $arguments['title'] ?? '';
         $additionalParams = $arguments['additionalParams'] ?? '';
         $additionalAttributes = $arguments['additionalAttributes'] ?? [];
-        $useCacheHash = $arguments['useCacheHash'] ?? false;
         $addQueryString = $arguments['addQueryString'] ?? false;
         $addQueryStringMethod = $arguments['addQueryStringMethod'] ?? 'GET';
         $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
@@ -130,7 +133,6 @@ class TypolinkViewHelper extends AbstractViewHelper
                     'typolink.' => [
                         'parameter' => $typolinkParameter,
                         'ATagParams' => $aTagParams,
-                        'useCacheHash' => $useCacheHash,
                         'addQueryString' => $addQueryString,
                         'addQueryString.' => [
                             'method' => $addQueryStringMethod,

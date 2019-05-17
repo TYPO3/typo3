@@ -112,11 +112,6 @@ class UriBuilder
     protected $noCache = false;
 
     /**
-     * @var bool
-     */
-    protected $useCacheHash = true;
-
-    /**
      * @var string
      */
     protected $format = '';
@@ -446,7 +441,6 @@ class UriBuilder
 
     /**
      * by default FALSE; if TRUE, &no_cache=1 will be appended to the URI
-     * This overrules the useCacheHash setting
      *
      * @param bool $noCache
      * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
@@ -474,7 +468,7 @@ class UriBuilder
      */
     public function setUseCacheHash($useCacheHash)
     {
-        $this->useCacheHash = (bool)$useCacheHash;
+        trigger_error('Calling UriBuilder->setUseCacheHash() will be removed in TYPO3 v11.0. TYPO3 Core routing is taking care of handling this argument. Simply remove the line to avoid the notice.', E_USER_DEPRECATED);
         return $this;
     }
 
@@ -483,7 +477,8 @@ class UriBuilder
      */
     public function getUseCacheHash()
     {
-        return $this->useCacheHash;
+        trigger_error('Calling UriBuilder->getUseCacheHash() will be removed in TYPO3 v11.0. TYPO3 Core routing is taking care of handling this argument. Simply remove the line to avoid the notice.', E_USER_DEPRECATED);
+        return true;
     }
 
     /**
@@ -516,7 +511,6 @@ class UriBuilder
         $this->targetPageUid = null;
         $this->targetPageType = 0;
         $this->noCache = false;
-        $this->useCacheHash = true;
         $this->argumentPrefix = null;
         return $this;
     }
@@ -616,7 +610,7 @@ class UriBuilder
     /**
      * Builds the URI, backend flavour
      * The resulting URI is relative and starts with "index.php".
-     * The settings pageUid, pageType, noCache, useCacheHash & linkAccessRestrictedPages
+     * The settings pageUid, pageType, noCache & linkAccessRestrictedPages
      * will be ignored in the backend.
      *
      * @return string The URI
@@ -745,8 +739,6 @@ class UriBuilder
         }
         if ($this->noCache === true) {
             $typolinkConfiguration['no_cache'] = 1;
-        } elseif ($this->useCacheHash) {
-            $typolinkConfiguration['useCacheHash'] = 1;
         }
         if ($this->section !== '') {
             $typolinkConfiguration['section'] = $this->section;

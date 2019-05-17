@@ -16,7 +16,6 @@ plugin.tx_seo {
               fieldToParameterMap {
                 uid = tx_example_content[id]
               }
-              useCacheHash = 1
             }
           }
         }

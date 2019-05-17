@@ -48,7 +48,6 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -860,15 +859,7 @@ class EditDocumentController
             $linkParameters = array_replace($linkParameters, $additionalGetParameters);
         }
 
-        if (!empty($previewConfiguration['useCacheHash'])) {
-            $cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
-            $fullLinkParameters = HttpUtility::buildQueryString(array_merge($linkParameters, ['id' => $previewPageId]), '&');
-            $cacheHashParameters = $cacheHashCalculator->getRelevantParameters($fullLinkParameters);
-            $linkParameters['cHash'] = $cacheHashCalculator->calculateCacheHash($cacheHashParameters);
-        } else {
-            $linkParameters['no_cache'] = 1;
-        }
-
+        $linkParameters['no_cache'] = 1;
         return HttpUtility::buildQueryString($linkParameters, '&');
     }
 
