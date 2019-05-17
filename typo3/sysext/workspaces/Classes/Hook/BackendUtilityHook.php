@@ -44,7 +44,7 @@ class BackendUtilityHook
     public function preProcess(&$pageUid, $backPath, $rootLine, $anchorSection, &$viewScript, $additionalGetVars, $switchFocus)
     {
         if ($GLOBALS['BE_USER']->workspace !== 0) {
-            $viewScript = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForWorkspaceSplitPreview((int)$pageUid, false);
+            $viewScript = (string)GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForWorkspaceSplitPreview((int)$pageUid);
             $viewScript .= $additionalGetVars ?: '';
         }
     }

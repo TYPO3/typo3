@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Workspaces\Preview;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -24,9 +25,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -77,12 +78,7 @@ class PreviewUriBuilder
             $uri = $site->getRouter()->generateUri($uid, ['ADMCMD_prev' => $previewKeyword, '_language' => $language], '');
             return (string)$uri;
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
-            $linkParams = [
-                'ADMCMD_prev' => $previewKeyword,
-                'id' => $uid,
-                'L' => $languageId
-            ];
-            return BackendUtility::getViewDomain($uid) . '/index.php?' . HttpUtility::buildQueryString($linkParams);
+            throw new UnableToLinkToPageException('The page ' . $uid . ' had no proper connection to a site, no link could be built.', 1559794916);
         }
     }
 
@@ -108,24 +104,21 @@ class PreviewUriBuilder
      * Generates a workspace split-bar preview link.
      *
      * @param int $uid The ID of the record to be linked
-     * @param bool $addDomain Parameter to decide if domain should be added to the generated link, FALSE per default
-     * @return string the preview link without the trailing '/'
+     * @return UriInterface
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    public function buildUriForWorkspaceSplitPreview(int $uid, bool $addDomain = false): string
+    public function buildUriForWorkspaceSplitPreview(int $uid): UriInterface
     {
         // In case a $pageUid is submitted we need to make sure it points to a live-page
         if ($uid > 0) {
             $uid = $this->getLivePageUid($uid);
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        // the actual uid will be appended directly in BackendUtility Hook
-        $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
-        if ($addDomain === true) {
-            $viewScript = $uriBuilder->buildUriFromRoute('workspace_previewcontrols', ['id' => $uid]);
-            return BackendUtility::getViewDomain($uid) . 'index.php?redirect_url=' . urlencode((string)$viewScript);
-        }
-        return (string)$viewScript;
+        return $uriBuilder->buildUriFromRoute(
+            'workspace_previewcontrols',
+            ['id' => $uid],
+            UriBuilder::ABSOLUTE_URL
+        );
     }
 
     /**

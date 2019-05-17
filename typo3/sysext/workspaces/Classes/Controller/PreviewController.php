@@ -24,9 +24,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -121,9 +121,6 @@ class PreviewController
         // Remove the GET parameters related to the workspaces module
         unset($queryParameters['route'], $queryParameters['token'], $queryParameters['previewWS']);
 
-        // Assemble a query string from the retrieved parameters
-        $queryString = HttpUtility::buildQueryString($queryParameters, '&');
-
         // fetch the next and previous stage
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
@@ -163,12 +160,7 @@ class PreviewController
             $parameters['ADMCMD_prev'] = 'IGNORE';
             $wsUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {
-            // Base URL for frontend preview links
-            $previewBaseUrl = BackendUtility::getViewDomain($this->pageId) . '/index.php?' . $queryString;
-            if (!WorkspaceService::isNewPage($this->pageId)) {
-                $liveUrl = $previewBaseUrl . '&ADMCMD_noBeUser=1&ADMCMD_prev=IGNORE';
-            }
-            $wsUrl = $previewBaseUrl . '&ADMCMD_prev=IGNORE&ADMCMD_view=1&ADMCMD_editIcons=1';
+            throw new UnableToLinkToPageException('The page ' . $this->pageId . ' had no proper connection to a site, no link could be built.', 1559794913);
         }
 
         // Build the "list view" link to the review controller

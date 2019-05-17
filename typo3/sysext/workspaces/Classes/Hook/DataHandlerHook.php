@@ -614,7 +614,7 @@ class DataHandlerHook
             }
             unset($tempEmailMessage);
 
-            $markers['###SPLITTED_PREVIEW_LINK###'] = $previewUriBuilder->buildUriForWorkspaceSplitPreview((int)$elementUid, true);
+            $markers['###SPLITTED_PREVIEW_LINK###'] = (string)$previewUriBuilder->buildUriForWorkspaceSplitPreview((int)$elementUid);
             // Hook for preprocessing of the content for formmails:
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] ?? [] as $className) {
                 $_procObj = GeneralUtility::makeInstance($className);

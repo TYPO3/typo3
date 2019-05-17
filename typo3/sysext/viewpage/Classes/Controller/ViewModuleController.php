@@ -291,17 +291,6 @@ class ViewModuleController
     }
 
     /**
-     * Get domain name for requested page id
-     *
-     * @param int $pageId
-     * @return string|null Domain name from TCEMAIN.previewDomain, NULL if not configured
-     */
-    protected function getDomainName(int $pageId)
-    {
-        return BackendUtility::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
-    }
-
-    /**
      * Get available presets for page id
      *
      * @param int $pageId

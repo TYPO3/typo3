@@ -917,4 +917,11 @@ return [
             'Deprecation-88569-LocalesinitializeInFavorOfRegularSingletonInstance.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-88499-BackendUtilitygetViewDomain.rst',
+        ],
+    ],
 ];

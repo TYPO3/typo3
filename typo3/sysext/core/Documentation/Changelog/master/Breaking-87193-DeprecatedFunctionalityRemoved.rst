@@ -1239,6 +1239,7 @@ The following user TSconfig options have been dropped:
 * `RTE.proc.keepPDIVattribs`
 * `RTE.proc.dontRemoveUnknownTags_db`
 * `options.clearCache.system`
+* `TCEMAIN.previewDomain`
 
 
 The following TypoScript options have been dropped:

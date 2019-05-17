@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
-use TYPO3\CMS\Redirects\Service\UrlService;
 use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
@@ -108,7 +107,6 @@ class ManagementController
             'hosts' => $redirectRepository->findHostsOfRedirects(),
             'statusCodes' => $redirectRepository->findStatusCodesOfRedirects(),
             'demand' => $demand,
-            'defaultUrl' => GeneralUtility::makeInstance(UrlService::class)->getDefaultUrl(),
             'showHitCounter' => GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('redirects.hitCount'),
             'pagination' => $this->preparePagination($demand, $count),
         ]);

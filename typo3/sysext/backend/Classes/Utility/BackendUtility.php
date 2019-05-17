@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -2306,15 +2308,19 @@ class BackendUtility
         $additionalGetVars = '',
         $switchFocus = true
     ) {
-        $previewUrl = self::getPreviewUrl(
-            $pageUid,
-            $backPath,
-            $rootLine,
-            $anchorSection,
-            $alternativeUrl,
-            $additionalGetVars,
-            $switchFocus
-        );
+        try {
+            $previewUrl = self::getPreviewUrl(
+                $pageUid,
+                $backPath,
+                $rootLine,
+                $anchorSection,
+                $alternativeUrl,
+                $additionalGetVars,
+                $switchFocus
+            );
+        } catch (UnableToLinkToPageException $e) {
+            return '';
+        }
 
         $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($previewUrl) . ',\'newTYPO3frontendWindow\');'
             . ($switchFocus ? 'previewWin.focus();' : '') . LF
@@ -2380,21 +2386,25 @@ class BackendUtility
             $rootLine = $rootLine ?? BackendUtility::BEgetRootLine($pageUid);
             try {
                 $site = $siteFinder->getSiteByPageId((int)$pageUid, $rootLine);
-                // Create a multi-dimensional array out of the additional get vars
-                $additionalQueryParams = [];
-                parse_str($additionalGetVars, $additionalQueryParams);
-                if (isset($additionalQueryParams['L'])) {
-                    $additionalQueryParams['_language'] = $additionalQueryParams['_language'] ?? $additionalQueryParams['L'];
-                    unset($additionalQueryParams['L']);
-                }
+            } catch (SiteNotFoundException $e) {
+                throw new UnableToLinkToPageException('The page ' . $pageUid . ' had no proper connection to a site, no link could be built.', 1559794919);
+            }
+            // Create a multi-dimensional array out of the additional get vars
+            $additionalQueryParams = [];
+            parse_str($additionalGetVars, $additionalQueryParams);
+            if (isset($additionalQueryParams['L'])) {
+                $additionalQueryParams['_language'] = $additionalQueryParams['_language'] ?? $additionalQueryParams['L'];
+                unset($additionalQueryParams['L']);
+            }
+            try {
                 $previewUrl = (string)$site->getRouter()->generateUri(
                     $pageUid,
                     $additionalQueryParams,
                     $anchorSection,
                     RouterInterface::ABSOLUTE_URL
                 );
-            } catch (SiteNotFoundException | \InvalidArgumentException | InvalidRouteArgumentsException $e) {
-                $previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
+            } catch (\InvalidArgumentException | InvalidRouteArgumentsException $e) {
+                throw new UnableToLinkToPageException('The page ' . $pageUid . ' had no proper connection to a site, no link could be built.', 1559794914);
             }
         }
 
@@ -2480,95 +2490,37 @@ class BackendUtility
     }
 
     /**
-     * Creates the view-on-click preview URL without any alternative URL.
-     *
-     * @param int $pageUid Page UID
-     * @param array $rootLine If rootline is supplied, the function will look for the first found domain record and use that URL instead
-     * @param string $anchorSection Optional anchor to the URL
-     * @param string $additionalGetVars Additional GET variables.
-     * @param string $viewScript The path to the script used to view the page
-     *
-     * @return string The preview URL
-     */
-    protected static function createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript)
-    {
-        // Look if a fixed preview language should be added:
-        $beUser = static::getBackendUserAuthentication();
-        $viewLanguageOrder = (string)($beUser->getTSConfig()['options.']['view.']['languageOrder'] ?? '');
-
-        if (!empty($viewLanguageOrder)) {
-            $suffix = '';
-            // Find allowed languages (if none, all are allowed!)
-            $allowedLanguages = null;
-            if (!$beUser->isAdmin() && $beUser->groupData['allowed_languages'] !== '') {
-                $allowedLanguages = array_flip(explode(',', $beUser->groupData['allowed_languages']));
-            }
-            // Traverse the view order, match first occurrence:
-            $languageOrder = GeneralUtility::intExplode(',', $viewLanguageOrder);
-            foreach ($languageOrder as $langUid) {
-                if (is_array($allowedLanguages) && !empty($allowedLanguages)) {
-                    // Choose if set.
-                    if (isset($allowedLanguages[$langUid])) {
-                        $suffix = '&L=' . $langUid;
-                        break;
-                    }
-                } else {
-                    // All allowed since no lang. are listed.
-                    $suffix = '&L=' . $langUid;
-                    break;
-                }
-            }
-            // Add it
-            $additionalGetVars .= $suffix;
-        }
-
-        // Check a mount point needs to be previewed
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $mountPointInfo = $pageRepository->getMountPointInfo($pageUid);
-
-        if ($mountPointInfo && $mountPointInfo['overlay']) {
-            $pageUid = $mountPointInfo['mount_pid'];
-            $additionalGetVars .= '&MP=' . $mountPointInfo['MPvar'];
-        }
-        $viewDomain = self::getViewDomain($pageUid, $rootLine);
-
-        return $viewDomain . $viewScript . $pageUid . $additionalGetVars . $anchorSection;
-    }
-
-    /**
      * Builds the frontend view domain for a given page ID with a given root
      * line.
      *
      * @param int $pageId The page ID to use, must be > 0
      * @param array|null $rootLine The root line structure to use
      * @return string The full domain including the protocol http:// or https://, but without the trailing '/'
+     * @deprecated since TYPO3 v10.0, will be removed in TYPO3 v11.0. Use PageRouter instead.
      */
     public static function getViewDomain($pageId, $rootLine = null)
     {
+        trigger_error('BackendUtility::getViewDomain() will be removed in TYPO3 v11.0. Use a Site and its PageRouter to link to a page directly', E_USER_DEPRECATED);
         $domain = rtrim(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
         if (!is_array($rootLine)) {
             $rootLine = self::BEgetRootLine($pageId);
         }
         // Checks alternate domains
         if (!empty($rootLine)) {
-            $protocol = GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https' : 'http';
-            $previewDomainConfig = self::getPagesTSconfig($pageId)['TCEMAIN.']['previewDomain'] ?? '';
-            $domainName = null;
-            if (!empty($previewDomainConfig)) {
-                if (strpos($previewDomainConfig, '://') !== false) {
-                    list($protocol, $domainName) = explode('://', $previewDomainConfig);
-                } else {
-                    $domainName = $previewDomainConfig;
+            try {
+                $site = GeneralUtility::makeInstance(SiteFinder::class)
+                    ->getSiteByPageId((int)$pageId, $rootLine);
+                $uri = $site->getBase();
+            } catch (SiteNotFoundException $e) {
+                // Just use the current domain
+                $uri = new Uri($domain);
+                // Append port number if lockSSLPort is not the standard port 443
+                $portNumber = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
+                if ($portNumber > 0 && $portNumber !== 443 && $portNumber < 65536 && $uri->getScheme() === 'https') {
+                    $uri = $uri->withPort((int)$portNumber);
                 }
             }
-            if ($domainName) {
-                $domain = $protocol . '://' . $domainName;
-            }
-            // Append port number if lockSSLPort is not the standard port 443
-            $portNumber = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSLPort'];
-            if ($portNumber > 0 && $portNumber !== 443 && $portNumber < 65536 && $protocol === 'https') {
-                $domain .= ':' . strval($portNumber);
-            }
+            return (string)$uri;
         }
         return $domain;
     }

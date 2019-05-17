@@ -114,7 +114,7 @@
                                         <span class="btn btn-default disabled"><core:icon identifier="empty-empty" /></span>
                                     </f:then>
                                     <f:else>
-                                        <f:link.external class="btn btn-default" uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: defaultUrl, else: redirect.source_host)}{redirect.source_path}" target="_blank">
+                                        <f:link.external class="btn btn-default" uri="{f:if(condition: '{redirect.source_host} == \'*\'', then: '', else: redirect.source_host)}{redirect.source_path}" target="_blank">
                                             <core:icon identifier="actions-view-page" />
                                         </f:link.external>
                                     </f:else>

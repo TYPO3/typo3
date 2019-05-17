@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -775,9 +776,10 @@ class EditDocumentController
         $previewPageId = $this->getPreviewPageId();
         $previewPageRootLine = BackendUtility::BEgetRootLine($previewPageId);
         $anchorSection = $this->getPreviewUrlAnchorSection();
-        $previewUrlParameters = $this->getPreviewUrlParameters($previewPageId);
 
-        return '
+        try {
+            $previewUrlParameters = $this->getPreviewUrlParameters($previewPageId);
+            return '
             if (window.opener) {
                 '
                 . BackendUtility::viewOnClick(
@@ -789,7 +791,7 @@ class EditDocumentController
                     $previewUrlParameters,
                     false
                 )
-            . '
+                . '
             } else {
             '
                 . BackendUtility::viewOnClick(
@@ -800,8 +802,11 @@ class EditDocumentController
                     $this->viewUrl,
                     $previewUrlParameters
                 )
-            . '
+                . '
             }';
+        } catch (UnableToLinkToPageException $e) {
+            return '';
+        }
     }
 
     /**
@@ -1406,35 +1411,39 @@ class EditDocumentController
                 || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])
             ) {
                 $previewPageId = $this->getPreviewPageId();
-                $previewUrl = BackendUtility::getPreviewUrl(
-                    $previewPageId,
-                    '',
-                    BackendUtility::BEgetRootLine($previewPageId),
-                    $this->getPreviewUrlAnchorSection(),
-                    $this->viewUrl,
-                    $this->getPreviewUrlParameters($previewPageId)
-                );
+                try {
+                    $previewUrl = BackendUtility::getPreviewUrl(
+                        $previewPageId,
+                        '',
+                        BackendUtility::BEgetRootLine($previewPageId),
+                        $this->getPreviewUrlAnchorSection(),
+                        $this->viewUrl,
+                        $this->getPreviewUrlParameters($previewPageId)
+                    );
 
-                $viewButton = $buttonBar->makeLinkButton()
-                    ->setHref($previewUrl)
-                    ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
-                        'actions-view',
-                        Icon::SIZE_SMALL
-                    ))
-                    ->setShowLabelText(true)
-                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'));
+                    $viewButton = $buttonBar->makeLinkButton()
+                        ->setHref($previewUrl)
+                        ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
+                            'actions-view',
+                            Icon::SIZE_SMALL
+                        ))
+                        ->setShowLabelText(true)
+                        ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'));
 
-                if (!$this->isSavedRecord) {
-                    if ($this->firstEl['table'] === 'pages') {
-                        $viewButton->setDataAttributes(['is-new' => '']);
+                    if (!$this->isSavedRecord) {
+                        if ($this->firstEl['table'] === 'pages') {
+                            $viewButton->setDataAttributes(['is-new' => '']);
+                        }
                     }
-                }
 
-                if ($classNames !== '') {
-                    $viewButton->setClasses($classNames);
-                }
+                    if ($classNames !== '') {
+                        $viewButton->setClasses($classNames);
+                    }
 
-                $buttonBar->addButton($viewButton, $position, $group);
+                    $buttonBar->addButton($viewButton, $position, $group);
+                } catch (UnableToLinkToPageException $e) {
+                    // Do not add any button
+                }
             }
         }
     }
