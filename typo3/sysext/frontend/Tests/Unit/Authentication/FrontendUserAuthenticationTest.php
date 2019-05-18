@@ -235,7 +235,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->assertEmpty($subject->getSessionData($uniqueSessionId));
         $this->assertEmpty($subject->user);
         $subject->setSessionData('foo', 'bar');
-        $this->assertNotNull('sessionData', $subject->getSessionData('foo'));
+        $this->assertNotNull($subject->getSessionData('foo'));
 
         // Suppress "headers already sent" errors - phpunit does that internally already
         $prev = error_reporting(0);
