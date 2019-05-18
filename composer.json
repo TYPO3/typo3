@@ -68,7 +68,7 @@
 		"webmozart/assert": "^1.0"
 	},
 	"require-dev": {
-		"codeception/codeception": "^2.5.4",
+		"codeception/codeception": "^2.5.4 || ^3",
 		"friendsofphp/php-cs-fixer": "^2.12.2",
 		"phpspec/prophecy": "^1.7.5",
 		"typo3/cms-styleguide": "~10.0.2",
