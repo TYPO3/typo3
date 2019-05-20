@@ -46,6 +46,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
@@ -2120,7 +2121,7 @@ class DatabaseRecordList
             $disableDelete = (bool)\trim($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? '0');
             if ($permsEdit && !$disableDelete && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)) {
                 // Check if the record version is in "deleted" state, because that will switch the action to "restore"
-                if ($backendUser->workspace > 0 && isset($row['t3ver_state']) && (int)$row['t3ver_state'] === 2) {
+                if ($backendUser->workspace > 0 && isset($row['t3ver_state']) && VersionState::cast($row['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     $actionName = 'restore';
                     $refCountMsg = '';
                 } else {

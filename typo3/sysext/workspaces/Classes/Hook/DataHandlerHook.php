@@ -212,7 +212,7 @@ class DataHandlerHook
                             ->getConnectionForTable($table)
                             ->update(
                                 $table,
-                                ['t3ver_state' => 2],
+                                ['t3ver_state' => VersionState::DELETE_PLACEHOLDER],
                                 ['uid' => $id]
                             );
 
