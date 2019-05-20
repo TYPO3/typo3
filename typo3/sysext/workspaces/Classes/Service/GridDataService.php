@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
@@ -530,13 +531,13 @@ class GridDataService implements LoggerAwareInterface
             $hiddenState = 'unhidden';
         }
         switch ($stateId) {
-            case -1:
+            case VersionState::NEW_PLACEHOLDER_VERSION:
                 $state = 'new';
                 break;
-            case 2:
+            case VersionState::DELETE_PLACEHOLDER:
                 $state = 'deleted';
                 break;
-            case 4:
+            case VersionState::MOVE_POINTER:
                 $state = 'moved';
                 break;
             default:
