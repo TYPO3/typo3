@@ -71,9 +71,8 @@ class ConditionMatcher extends AbstractConditionMatcher
      * the accordant conditions (e.g. PIDinRootline) will return "FALSE"
      *
      * @return int The determined page id or otherwise 0
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
-    protected function determinePageId()
+    private function determinePageId(): int
     {
         $pageId = 0;
         $editStatement = GeneralUtility::_GP('edit');
@@ -114,9 +113,8 @@ class ConditionMatcher extends AbstractConditionMatcher
      * @param int $id Id of the accordant record
      * @param bool $ignoreTable Whether to ignore the page, if TRUE a positive
      * @return int Id of the page the record is persisted on
-     * @deprecated since TYPO3 v9.4, will be removed in TYPO3 v10.0.
      */
-    protected function getPageIdByRecord($table, $id, $ignoreTable = false)
+    private function getPageIdByRecord($table, $id, $ignoreTable = false): int
     {
         $pageId = 0;
         $id = (int)$id;
@@ -125,7 +123,7 @@ class ConditionMatcher extends AbstractConditionMatcher
                 $pageId = $id;
             } else {
                 $record = BackendUtility::getRecordWSOL($table, abs($id), '*', '', false);
-                $pageId = $record['pid'];
+                $pageId = (int)$record['pid'];
             }
         }
         return $pageId;

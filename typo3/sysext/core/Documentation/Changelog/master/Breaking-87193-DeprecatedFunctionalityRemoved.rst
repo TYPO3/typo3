@@ -210,6 +210,8 @@ The following PHP class methods that have been previously deprecated for v9 have
 * :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->isUserLoggedIn()`
 * :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->isAdminUser()`
 * :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getBackendUserAuthentication()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->determinePageId()`
+* :php:`TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher->getPageIdByRecord()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\MoveElementController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->main()`
 * :php:`TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController->removeInvalidElements()`
