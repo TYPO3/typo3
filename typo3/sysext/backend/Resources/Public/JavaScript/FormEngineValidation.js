@@ -16,7 +16,7 @@
  * Contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
  * @internal
  */
-define(['jquery', 'moment'], function($, moment) {
+define(['jquery', 'moment', 'TYPO3/CMS/Backend/Hashing/Md5'], function($, moment, Md5) {
 
   /**
    * The main FormEngineValidation object
@@ -431,7 +431,7 @@ define(['jquery', 'moment'], function($, moment) {
         break;
       case 'md5':
         if (value !== '') {
-          returnValue = MD5(value);
+          returnValue = Md5.hash(value);
         }
         break;
       case 'upper':

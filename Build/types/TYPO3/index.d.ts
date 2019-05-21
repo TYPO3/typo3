@@ -104,7 +104,6 @@ declare module 'TYPO3/CMS/Backend/Wizard' {
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
-  MD5: any;
   $: any;
   startInModule: Array<string>;
   inline: {

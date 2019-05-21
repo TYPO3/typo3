@@ -14,6 +14,7 @@
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
+import Md5 = require('TYPO3/CMS/Backend/Hashing/Md5');
 
 /**
  * Module: TYPO3/CMS/Filelist/ContextMenuActions
@@ -108,7 +109,7 @@ class ContextMenuActions {
   }
 
   public static copyFile(table: string, uid: string): void {
-    const shortMD5 = top.MD5(uid).substring(0, 10);
+    const shortMD5 = Md5.hash(uid).substring(0, 10);
     let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + encodeURIComponent(uid) + '&CB[setCopyMode]=1';
     $.ajax(url).always((): void => {
@@ -117,7 +118,7 @@ class ContextMenuActions {
   }
 
   public static copyReleaseFile(table: string, uid: string): void {
-    const shortMD5 = top.MD5(uid).substring(0, 10);
+    const shortMD5 = Md5.hash(uid).substring(0, 10);
     let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     url += '&CB[el][_FILE%7C' + shortMD5 + ']=0&CB[setCopyMode]=1';
     $.ajax(url).always((): void => {
@@ -126,7 +127,7 @@ class ContextMenuActions {
   }
 
   public static cutFile(table: string, uid: string): void {
-    const shortMD5 = top.MD5(uid).substring(0, 10);
+    const shortMD5 = Md5.hash(uid).substring(0, 10);
     let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + encodeURIComponent(uid);
     $.ajax(url).always((): void => {
@@ -135,7 +136,7 @@ class ContextMenuActions {
   }
 
   public static cutReleaseFile(table: string, uid: string): void {
-    const shortMD5 = top.MD5(uid).substring(0, 10);
+    const shortMD5 = Md5.hash(uid).substring(0, 10);
     let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
     url += '&CB[el][_FILE%7C' + shortMD5 + ']=0';
     $.ajax(url).always((): void => {
