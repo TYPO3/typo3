@@ -9,7 +9,7 @@ See :issue:`87726`
 Description
 ===========
 
-The Hook `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']` is extended to validiade the given password.
+The Hook `$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed']` is extended to validate the given password.
 In the Hook you can set a custom validation Message.
 
 
