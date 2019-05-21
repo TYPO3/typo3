@@ -89,6 +89,7 @@ abstract class AbstractButtonViewHelper extends AbstractViewHelper
 
     private static function addDefaultAttributes(AbstractButton $button, array $arguments, RenderingContextInterface $renderingContext): void
     {
+        $button->setShowLabelText($arguments['showLabel']);
         if (isset($arguments['title'])) {
             $button->setTitle($arguments['title']);
         }
