@@ -106,7 +106,6 @@ class BackendController
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         // Add default BE javascript
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
-        $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.evalfield.js');
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
