@@ -149,7 +149,7 @@ class BackendUserConfiguration
 
         foreach ($subkeys as $subkey) {
             if (isset($configuration[$subkey])) {
-                $configuration = &$configuration[$subkey];
+                $configuration = &$configuration->$subkey;
             } else {
                 $configuration = [];
                 break;
@@ -175,7 +175,7 @@ class BackendUserConfiguration
             if ($subkey === $lastKey) {
                 $configuration[$subkey] = $value;
             } else {
-                $configuration = &$configuration[$subkey];
+                $configuration = &$configuration->$subkey;
             }
         }
     }
