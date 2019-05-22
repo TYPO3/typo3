@@ -158,31 +158,6 @@ class PageArguments implements RouteResultInterface
 
     /**
      * @param array $queryArguments
-     * @return static
-     * @internal this is internal due to the issue that a PageArgument should not be modified, but must be within TYPO3 Core currently.
-     */
-    public function withQueryArguments(array $queryArguments): self
-    {
-        $queryArguments = $this->sort($queryArguments);
-        if ($this->queryArguments === $queryArguments) {
-            return $this;
-        }
-        // in case query arguments would override route arguments,
-        // the state is considered as dirty (since it's not distinct)
-        // thus, route arguments take precedence over query arguments
-        $additionalQueryArguments = $this->diff($queryArguments, $this->routeArguments);
-        $dirty = $additionalQueryArguments !== $queryArguments;
-        // apply changes
-        $target = clone $this;
-        $target->dirty = $this->dirty || $dirty;
-        $target->queryArguments = $queryArguments;
-        $target->arguments = array_replace_recursive($target->arguments, $additionalQueryArguments);
-        $target->updateDynamicArguments();
-        return $target;
-    }
-
-    /**
-     * @param array $queryArguments
      */
     protected function updateQueryArguments(array $queryArguments)
     {

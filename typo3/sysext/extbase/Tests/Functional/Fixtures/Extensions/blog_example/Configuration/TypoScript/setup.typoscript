@@ -58,9 +58,6 @@ tx_blogexample_plaintext {
 		disableAllHeaderCode = 1
 		additionalHeaders.10.header = Content-Type: text/plain
 		additionalHeaders.10.replace = 1
-		defaultGetVars {
-			tx_blogexample_postlist.format = txt
-		}
 	}
 }
 
@@ -68,6 +65,5 @@ tx_blogexample_plaintext {
 [globalVar = TYPO3_CONF_VARS|EXTCONF|blog_example|registerSinglePlugin > 0]
 	tx_blogexample_plaintext {
 		10.pluginName = Pi1
-		#config.defaultGetVars =
 	}
 [end]

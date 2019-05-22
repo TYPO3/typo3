@@ -1904,14 +1904,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($this->config['config']['no_cache']) {
             $this->set_no_cache('config.no_cache is set');
         }
-        // Merge GET with defaultGetVars
-        // Please note that this code will get removed in TYPO3 v10.0 as it is done in the PSR-15 middleware.
-        if (!empty($this->config['config']['defaultGetVars.'])) {
-            $modifiedGetVars = GeneralUtility::removeDotsFromTS($this->config['config']['defaultGetVars.']);
-            ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, GeneralUtility::_GET());
-            $_GET = $modifiedGetVars;
-            $GLOBALS['HTTP_GET_VARS'] = $modifiedGetVars;
-        }
 
         // Auto-configure settings when a site is configured
         $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';

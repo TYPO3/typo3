@@ -20,9 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
-use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -71,23 +69,6 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
         // Get config if not already gotten
         // After this, we should have a valid config-array ready
         $this->controller->getConfigArray();
-
-        // Merge Query Parameters with config.defaultGetVars
-        // This is done in getConfigArray as well, but does not override the current middleware request object
-        // Since we want to stay in sync with this, the option needs to be set as well.
-        $pageArguments = $request->getAttribute('routing');
-        if (!empty($this->controller->config['config']['defaultGetVars.'] ?? null)) {
-            $modifiedGetVars = GeneralUtility::removeDotsFromTS($this->controller->config['config']['defaultGetVars.']);
-            if ($pageArguments instanceof PageArguments) {
-                $pageArguments = $pageArguments->withQueryArguments($modifiedGetVars);
-                $this->controller->setPageArguments($pageArguments);
-                $request = $request->withAttribute('routing', $pageArguments);
-            }
-            if (!empty($request->getQueryParams())) {
-                ArrayUtility::mergeRecursiveWithOverrule($modifiedGetVars, $request->getQueryParams());
-            }
-            $request = $request->withQueryParams($modifiedGetVars);
-        }
 
         // Setting language and locale
         $this->timeTracker->push('Setting language and locale');

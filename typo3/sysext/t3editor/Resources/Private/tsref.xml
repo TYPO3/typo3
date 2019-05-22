@@ -294,21 +294,6 @@ This value is overridden by the value set in the page-record (field="cache_timeo
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="defaultGetVars" type="array">
-			<description><![CDATA[Allows to set default values for GET parameters. Default value is taken only if the GET parameter isn't defined. Array notation is done with dots, e.g.:
-
-test[var1] will be written as text.var1
-
-Example:
-
-config.defaultgetVars {
-    test.var1.var2.p3 = 15
-    L = 3
-}
-			]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="disableAllHeaderCode" type="boolean">
 			<description><![CDATA[If this is set, none of the features of the PAGE-object is processed and the content of the page will be the result of the cObject array (1,2,3,4...) of the PAGE-object.  This means that the result of the cObject should include everything from the <HTML> .... to the </HTML> tag !!
 Use this feature in templates supplying other content-types than HTML. That could be an image or a WAP-page!]]></description>

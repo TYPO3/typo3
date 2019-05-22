@@ -1244,7 +1244,7 @@ The following user TSconfig options have been dropped:
 The following TypoScript options have been dropped:
 
 * `config.concatenateJsAndCss`
-* `config.typolinkEnableLinksAcrossDomains`
+* `config.defaultGetVars`
 * `config.language`
 * `config.locale_all`
 * `config.sys_language_isocode`
@@ -1253,8 +1253,9 @@ The following TypoScript options have been dropped:
 * `config.sys_language_overlay`
 * `config.sys_language_uid`
 * `config.titleTagFunction`
-* `config.typolinkCheckRootline`
 * `config.tx_extbase.objects`
+* `config.typolinkCheckRootline`
+* `config.typolinkEnableLinksAcrossDomains`
 * `config.USERNAME_substToken`
 * `config.USERUID_substToken`
 * `FILE`
