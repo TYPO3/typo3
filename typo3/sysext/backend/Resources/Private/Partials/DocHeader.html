@@ -1,39 +1,36 @@
 <div class="module-loading-indicator"></div>
 <div class="module-docheader t3js-module-docheader">
     <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation row">
+        <f:variable name="columnCssClass">module-docheader-bar-column-left col-xs-12 text-right</f:variable>
         <f:if condition="{docHeader.menus}">
-            <f:then>
-                <f:if condition="{docHeader.menus->f:count()} > 1">
-                    <f:then>
-                        <div class="module-docheader-bar-column-left col-xs-12 col-sm-5 col-md-6 col-lg-4">
-                            <div class="form-inline row">
-                                <f:for each="{docHeader.menus}" as="menu">
-                                    <div class="form-group form-group-sm col-xs-6">
-                                        <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
-                                    </div>
-                                </f:for>
-                            </div>
+            <f:if condition="{docHeader.menus -> f:count()} > 1">
+                <f:then>
+                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-xs-12 col-sm-7 col-md-6 col-lg-8 text-right</f:variable>
+                    <div class="module-docheader-bar-column-left col-xs-12 col-sm-5 col-md-6 col-lg-4">
+                        <div class="form-inline row">
+                            <f:for each="{docHeader.menus}" as="menu">
+                                <div class="form-group form-group-sm col-xs-6">
+                                    <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
+                                </div>
+                            </f:for>
                         </div>
-                        <div class="module-docheader-bar-column-right col-xs-12 col-sm-7 col-md-6 col-lg-8 text-right">
-                    </f:then>
-                    <f:else>
-                        <div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
-                            <div class="form-inline">
-                                <f:for each="{docHeader.menus}" as="menu">
-                                    <div class="form-group form-group-sm">
-                                        <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
-                                    </div>
-                                </f:for>
-                            </div>
+                    </div>
+                </f:then>
+                <f:else>
+                    <f:variable name="columnCssClass">module-docheader-bar-column-right col-xs-12 col-sm-9 text-right</f:variable>
+                    <div class="module-docheader-bar-column-left col-xs-12 col-sm-3">
+                        <div class="form-inline">
+                            <f:for each="{docHeader.menus}" as="menu">
+                                <div class="form-group form-group-sm">
+                                    <f:render partial="Menus/SelectBoxJumpMenu" arguments="{menu:menu}"/>
+                                </div>
+                            </f:for>
                         </div>
-                        <div class="module-docheader-bar-column-right col-xs-12 col-sm-9 text-right">
-                    </f:else>
-                </f:if>
-            </f:then>
-            <f:else>
-                <div class="module-docheader-bar-column-left col-xs-12 text-right">
-            </f:else>
+                    </div>
+                </f:else>
+            </f:if>
         </f:if>
+        <div class="{columnCssClass}">
             <f:if condition="{docHeader.metaInformation.recordInformation}">
                 <span class="typo3-docheader-pagePath">
                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path"/>: <f:format.raw>{docHeader.metaInformation.path}</f:format.raw>
