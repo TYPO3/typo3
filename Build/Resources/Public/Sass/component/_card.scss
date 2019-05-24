@@ -295,6 +295,13 @@ a.card:hover {
 }
 
 //
+// Disabled Cards
+//
+.card-disabled {
+    opacity: 0.4;
+}
+
+//
 // Components
 //
 .card-image,

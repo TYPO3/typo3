@@ -33,18 +33,21 @@
 			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/ClearTypo3tempFiles">Scan temporary files</a>
 		</div>
 	</div>
-	<div class="card card-size-fixed-small">
+	<div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
 		<f:render partial="Card/Header" arguments="{ title: 'Rebuild PHP Autoload Information', subtitle: 'Caching', icon: 'Icons/modules/install-clear-autoload.svg'}" />
 		<div class="card-content">
 			<p class="card-text">Resets autoload information for all active third party extensions.</p>
 		</div>
 		<f:if condition="{composerMode}">
 			<f:then>
-				<div class="card-footer text-muted">Reset autoloading via Composer</div>
+				<div class="card-footer text-muted">
+					You can't use this feature, because your installation is in composer mode.
+					Guide: <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/Autoloading/Index.html#loading-classes-with-composer-mode" target="_blank">Composer dumpautoload</a>.
+				</div>
 			</f:then>
 			<f:else>
 				<div class="card-footer">
-					<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/DumpAutoload">Dump autoload</a>
+					<a href="#" class="btn btn-primary " data-inline="1"  data-require="TYPO3/CMS/Install/Module/DumpAutoload">Dump autoload</a>
 				</div>
 			</f:else>
 		</f:if>

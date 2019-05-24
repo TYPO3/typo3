@@ -3,14 +3,24 @@
 <h1>Upgrade</h1>
 
 <div class="card-container">
-	<div class="card card-size-fixed-small">
+	<div class="card card-size-fixed-small {f:if(condition:'{composerMode}', then: 'card-disabled')}">
 		<f:render partial="Card/Header" arguments="{ title: 'Update TYPO3 Core', subtitle: 'Core Upgrade', icon: 'Icons/modules/install-update.svg'}" />
 		<div class="card-content">
 			<p class="card-text">Update your TYPO3 installation (support for symbolic links required).</p>
 		</div>
-		<div class="card-footer">
-			<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/CoreUpdate">Update Core</a>
-		</div>
+		<f:if condition="{composerMode}">
+			<f:then>
+				<div class="card-footer text-muted">
+					You can't use this feature, because your installation is in composer mode.
+					Guide: <a href="https://docs.typo3.org/m/typo3/guide-installation/master/en-us/Upgrade/InstallTheNewSource/Index.html" target="_blank">install the new source</a>.
+				</div>
+			</f:then>
+			<f:else>
+				<div class="card-footer">
+					<a href="#" class="btn btn-default" data-require="TYPO3/CMS/Install/Module/CoreUpdate">Update Core</a>
+				</div>
+			</f:else>
+		</f:if>
 	</div>
 	<div class="card card-size-fixed-small">
 		<f:render partial="Card/Header" arguments="{ title: 'Upgrade Wizard', subtitle: 'Core Upgrade', icon: 'Icons/modules/install-wizards.svg'}" />
