@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -163,9 +164,33 @@ class CObjectViewHelper extends AbstractViewHelper
                 1540246570
             );
         }
-        $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'] ?? []);
+        $content = self::renderContentObject($contentObjectRenderer, $setup, $typoscriptObjectPath, $lastSegment);
         if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             static::resetFrontendEnvironment();
+        }
+        return $content;
+    }
+
+    /**
+     * Renders single content object and increases time tracker stack pointer
+     *
+     * @param ContentObjectRenderer $contentObjectRenderer
+     * @param array $setup
+     * @param string $typoscriptObjectPath
+     * @param string $lastSegment
+     * @return string
+     */
+    protected static function renderContentObject(ContentObjectRenderer $contentObjectRenderer, array $setup, string $typoscriptObjectPath, string $lastSegment): string
+    {
+        $timeTracker = GeneralUtility::makeInstance(TimeTracker::class);
+        if ($timeTracker->LR) {
+            $timeTracker->push('/f:cObject/', '<' . $typoscriptObjectPath);
+        }
+        $timeTracker->incStackPointer();
+        $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'] ?? [], $typoscriptObjectPath);
+        $timeTracker->decStackPointer();
+        if ($timeTracker->LR) {
+            $timeTracker->pull($content);
         }
         return $content;
     }

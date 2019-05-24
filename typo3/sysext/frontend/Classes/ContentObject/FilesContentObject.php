@@ -80,7 +80,7 @@ class FilesContentObject extends AbstractContentObject
                 $GLOBALS['TSFE']->register['FILE_NUM_CURRENT'] = $fileObjectCounter;
             }
             $this->cObj->setCurrentFile($fileObject);
-            $content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.']);
+            $content .= $this->cObj->cObjGetSingle($splitConf[$key]['renderObj'], $splitConf[$key]['renderObj.'], 'renderObj');
             $fileObjectCounter++;
         }
 

@@ -78,7 +78,8 @@ class TypoScriptService
             if (isset($configuration[$keyWithoutDot]) && isset($configuration[$keyWithoutDot . '.'])) {
                 $value = $this->getTypoScriptFrontendController()->cObj->cObjGetSingle(
                     $configuration[$keyWithoutDot],
-                    $configuration[$keyWithoutDot . '.']
+                    $configuration[$keyWithoutDot . '.'],
+                    $keyWithoutDot
                 );
                 $configuration[$keyWithoutDot] = $value;
             } elseif (!isset($configuration[$keyWithoutDot]) && isset($configuration[$keyWithoutDot . '.'])) {
