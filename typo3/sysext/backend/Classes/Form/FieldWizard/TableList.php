@@ -41,9 +41,7 @@ class TableList extends AbstractNode
         $config = $parameterArray['fieldConf']['config'];
         $itemName = $parameterArray['itemFormElName'];
 
-        if (!isset($config['allowed']) || !is_string($config['allowed']) || empty($config['allowed'])
-            || !isset($config['internal_type']) || $config['internal_type'] !== 'db'
-        ) {
+        if (empty($config['allowed']) || !is_string($config['allowed']) || !isset($config['internal_type']) || $config['internal_type'] !== 'db') {
             // No handling if the field has no, or funny "allowed" setting, and if internal_type is not "db"
             return $result;
         }
@@ -59,13 +57,7 @@ class TableList extends AbstractNode
                 $allowedTablesHtml[] = '</span>';
             } else {
                 $label = $languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']);
-                $onClick = [];
-                $onClick[] = 'setFormValueOpenBrowser(';
-                $onClick[] =    '\'db\',';
-                $onClick[] =    GeneralUtility::quoteJSvalue($itemName . '|||' . $tableName);
-                $onClick[] = ');';
-                $onClick[] = 'return false;';
-                $allowedTablesHtml[] = '<a href="#" onClick="' . htmlspecialchars(implode('', $onClick)) . '" class="btn btn-default">';
+                $allowedTablesHtml[] = '<a href="#" class="btn btn-default t3js-element-browser" data-mode="db" data-params="' . htmlspecialchars($itemName . '|||' . $tableName) . '">';
                 $allowedTablesHtml[] =  $iconFactory->getIconForRecord($tableName, [], Icon::SIZE_SMALL)->render();
                 $allowedTablesHtml[] =  htmlspecialchars($label);
                 $allowedTablesHtml[] = '</a>';

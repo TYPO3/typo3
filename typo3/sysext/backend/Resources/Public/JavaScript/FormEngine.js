@@ -537,6 +537,15 @@ define(['jquery',
       FormEngine.toggleCheckboxField($(this));
     }).on('change', function(event) {
       $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
+    }).on('click', '.t3js-element-browser', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const $me = $(e.currentTarget);
+      const mode = $me.data('mode');
+      const params = $me.data('params');
+
+      FormEngine.openPopupWindow(mode, params);
     });
   };
 

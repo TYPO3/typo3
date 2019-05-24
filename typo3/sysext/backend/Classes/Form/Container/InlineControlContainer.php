@@ -498,7 +498,7 @@ class InlineControlContainer extends AbstractContainer
         $item = '';
         if ($elementBrowserEnabled) {
             $item .= '
-			<a href="#" class="btn btn-default t3js-insert-record-button" data-mode="' . htmlspecialchars($mode) . '" data-params="' . htmlspecialchars($browserParams) . '"
+			<a href="#" class="btn btn-default t3js-element-browser" data-mode="' . htmlspecialchars($mode) . '" data-params="' . htmlspecialchars($browserParams) . '"
 				' . $buttonStyle . ' title="' . $createNewRelationText . '">
 				' . $this->iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)->render() . '
 				' . $createNewRelationText . '

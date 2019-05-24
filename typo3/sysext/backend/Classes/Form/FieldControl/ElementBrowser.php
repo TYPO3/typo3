@@ -71,17 +71,14 @@ class ElementBrowser extends AbstractNode
         if (is_array($config['appearance']) && isset($config['appearance']['elementBrowserAllowed'])) {
             $elementBrowserAllowed = $config['appearance']['elementBrowserAllowed'];
         }
-        $elementBrowserOnClick = 'setFormValueOpenBrowser('
-                . GeneralUtility::quoteJSvalue($elementBrowserType) . ','
-                . GeneralUtility::quoteJSvalue($elementName . '|||' . $elementBrowserAllowed . '|' . $elementBrowserOnClickInline)
-            . ');'
-            . ' return false;';
 
         return [
             'iconIdentifier' => 'actions-insert-record',
             'title' => $title,
             'linkAttributes' => [
-                'onClick' => $elementBrowserOnClick,
+                'class' => 't3js-element-browser',
+                'data-mode' => htmlspecialchars($elementBrowserType),
+                'data-params' => htmlspecialchars($elementName . '|||' . $elementBrowserAllowed . '|' . $elementBrowserOnClickInline)
             ],
         ];
     }

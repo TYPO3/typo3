@@ -31,7 +31,6 @@ enum Selectors {
   controlSectionSelector = '.t3js-formengine-irre-control',
   createNewRecordButtonSelector = '.t3js-create-new-button',
   createNewRecordBySelectorSelector = '.t3js-create-new-selector',
-  insertRecordButtonSelector = '.t3js-insert-record-button',
   deleteRecordButtonSelector = '.t3js-editform-delete-inline-record',
   enableDisableRecordButtonSelector = '.t3js-toggle-visibility-button',
   infoWindowButton = '[data-action="infowindow"]',
@@ -140,24 +139,6 @@ class InlineControlContainer {
     e.stopImmediatePropagation();
 
     InfoWindow.showItem(target.dataset.infoTable, target.dataset.infoUid);
-  }
-
-  /**
-   * @param {Event} e
-   */
-  private static registerInsertRecordButton(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.insertRecordButtonSelector)) === null) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    const mode = target.dataset.mode;
-    const params = target.dataset.params;
-
-    FormEngine.openPopupWindow(mode, params);
   }
 
   /**
@@ -273,7 +254,6 @@ class InlineControlContainer {
       this.registerSort(e);
       this.registerCreateRecordButton(e);
       this.registerCreateRecordBySelector(e);
-      InlineControlContainer.registerInsertRecordButton(e);
       this.registerEnableDisableButton(e);
       InlineControlContainer.registerInfoButton(e);
       this.registerDeleteButton(e);
