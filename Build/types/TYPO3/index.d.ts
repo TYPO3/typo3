@@ -110,7 +110,6 @@ interface Window {
   inline: {
     delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void,
   };
-  rawurlencode: Function;
   require: Function;
   list_frame: Window;
   jump: Function;

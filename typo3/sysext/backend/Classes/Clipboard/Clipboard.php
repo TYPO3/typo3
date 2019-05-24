@@ -284,7 +284,7 @@ class Clipboard
                     'label' => $this->clLabel('edit', 'rm'),
                     'uri' => '#',
                     'additionalAttributes' => [
-                        'onclick' => htmlspecialchars('window.location.href=' . GeneralUtility::quoteJSvalue($this->editUrl() . '&returnUrl=') . '+top.rawurlencode(window.location.href);'),
+                        'onclick' => htmlspecialchars('window.location.href=' . GeneralUtility::quoteJSvalue($this->editUrl() . '&returnUrl=') . '+encodeURIComponent(window.location.href);'),
                     ]
                 ];
             }

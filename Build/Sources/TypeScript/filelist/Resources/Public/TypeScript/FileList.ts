@@ -43,8 +43,8 @@ class Filelist {
         const $element = $(event.currentTarget);
         const url = $element.attr('href');
         let redirectUrl = (url)
-          ? top.rawurlencode(url)
-          : top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+          ? encodeURIComponent(url)
+          : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
 
         top.list_frame.location.href = url + '&redirect=' + redirectUrl;
       });

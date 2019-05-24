@@ -27,8 +27,8 @@ class FileDelete {
         const $anchorElement = $(e.currentTarget);
         let redirectUrl = $anchorElement.data('redirectUrl');
         redirectUrl = (redirectUrl)
-          ? top.rawurlencode(redirectUrl)
-          : top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+          ? encodeURIComponent(redirectUrl)
+          : encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
 
         const identifier = $anchorElement.data('identifier');
         const deleteType = $anchorElement.data('deleteType');

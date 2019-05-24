@@ -36,6 +36,7 @@ function jump(url, modName, mainModName, pageId) {
  * Function similar to PHPs  rawurlencode();
  */
 function rawurlencode(str) {
+  console.warn('top.rawurlencode() has been marked as deprecated, consider using encodeURIComponent() instead.');
   var output = encodeURIComponent(str);
   output = str_replace("*", "%2A", output);
   output = str_replace("+", "%2B", output);
@@ -49,6 +50,7 @@ function rawurlencode(str) {
  * String-replace function
  */
 function str_replace(match, replace, string) {	//
+  console.warn('top.str_replace() has been marked as deprecated, consider using .replace() instead.');
   var input = "" + string;
   var matchStr = "" + match;
   if (!matchStr) {

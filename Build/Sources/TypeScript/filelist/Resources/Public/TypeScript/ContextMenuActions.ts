@@ -22,19 +22,19 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
  * @exports TYPO3/CMS/Filelist/ContextMenuActions
  */
 class ContextMenuActions {
-  public static getReturnUrl(): void {
-    return top.rawurlencode(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
+  public static getReturnUrl(): string {
+    return encodeURIComponent(top.list_frame.document.location.pathname + top.list_frame.document.location.search);
   }
 
   public static renameFile(table: string, uid: string): void {
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileRename.moduleUrl + '&target=' + top.rawurlencode(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      top.TYPO3.settings.FileRename.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
   public static editFile(table: string, uid: string): void {
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileEdit.moduleUrl + '&target=' + top.rawurlencode(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      top.TYPO3.settings.FileEdit.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -57,13 +57,13 @@ class ContextMenuActions {
 
   public static uploadFile(table: string, uid: string): void {
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileUpload.moduleUrl + '&target=' + top.rawurlencode(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      top.TYPO3.settings.FileUpload.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
   public static createFile(table: string, uid: string): void {
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.FileCreate.moduleUrl + '&target=' + top.rawurlencode(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
+      top.TYPO3.settings.FileCreate.moduleUrl + '&target=' + encodeURIComponent(uid) + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }
 
@@ -72,7 +72,7 @@ class ContextMenuActions {
     const performDelete = () => {
       top.TYPO3.Backend.ContentContainer.setUrl(
         top.TYPO3.settings.FileCommit.moduleUrl
-        + '&data[delete][0][data]=' + top.rawurlencode(uid)
+        + '&data[delete][0][data]=' + encodeURIComponent(uid)
         + '&data[delete][0][redirect]=' + ContextMenuActions.getReturnUrl(),
       );
     };
@@ -110,7 +110,7 @@ class ContextMenuActions {
   public static copyFile(table: string, uid: string): void {
     const shortMD5 = top.MD5(uid).substring(0, 10);
     let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
-    url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + top.rawurlencode(uid) + '&CB[setCopyMode]=1';
+    url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + encodeURIComponent(uid) + '&CB[setCopyMode]=1';
     $.ajax(url).always((): void => {
       top.TYPO3.Backend.ContentContainer.refresh(true);
     });
@@ -128,7 +128,7 @@ class ContextMenuActions {
   public static cutFile(table: string, uid: string): void {
     const shortMD5 = top.MD5(uid).substring(0, 10);
     let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
-    url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + top.rawurlencode(uid);
+    url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + encodeURIComponent(uid);
     $.ajax(url).always((): void => {
       top.TYPO3.Backend.ContentContainer.refresh(true);
     });
@@ -149,7 +149,7 @@ class ContextMenuActions {
     const performPaste = (): void => {
       top.TYPO3.Backend.ContentContainer.setUrl(
         top.TYPO3.settings.FileCommit.moduleUrl
-        + '&CB[paste]=FILE|' + top.rawurlencode(uid)
+        + '&CB[paste]=FILE|' + encodeURIComponent(uid)
         + '&CB[pad]=normal&redirect=' + ContextMenuActions.getReturnUrl(),
       );
     };
@@ -187,8 +187,8 @@ class ContextMenuActions {
     const target = $(this).data('drop-target');
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.FileCommit.moduleUrl
-      + '&file[' + mode + '][0][data]=' + top.rawurlencode(uid)
-      + '&file[' + mode + '][0][target]=' + top.rawurlencode(target)
+      + '&file[' + mode + '][0][data]=' + encodeURIComponent(uid)
+      + '&file[' + mode + '][0][target]=' + encodeURIComponent(target)
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     );
   }
