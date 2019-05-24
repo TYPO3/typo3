@@ -162,7 +162,7 @@ class FluidTemplateContentObject extends AbstractContentObject
             $this->view->setTemplate($templateName);
         } elseif (!empty($conf['template']) && !empty($conf['template.'])) {
             // Fetch the Fluid template by template cObject
-            $templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.']);
+            $templateSource = $this->cObj->cObjGetSingle($conf['template'], $conf['template.'], 'template');
             if ($templateSource === '') {
                 throw new ContentRenderingException(
                     'Could not find template source for ' . $conf['template'],
@@ -319,7 +319,7 @@ class FluidTemplateContentObject extends AbstractContentObject
                 continue;
             }
             if (!in_array($variableName, $reservedVariables)) {
-                $variables[$variableName] = $this->cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName . '.']);
+                $variables[$variableName] = $this->cObj->cObjGetSingle($cObjType, $variablesToProcess[$variableName . '.'], 'variables.' . $variableName);
             } else {
                 throw new \InvalidArgumentException(
                     'Cannot use reserved name "' . $variableName . '" as variable name in FLUIDTEMPLATE.',

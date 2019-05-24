@@ -110,7 +110,7 @@ class ConfirmationFinisher extends AbstractFinisher
             }
             $this->contentObjectRenderer->start([$contentElementUid], '');
             $this->contentObjectRenderer->setCurrentVal((string)$contentElementUid);
-            $message = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+            $message = $this->contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'], $lastSegment);
         } else {
             $message = $this->parseOption('message');
         }
