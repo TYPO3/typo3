@@ -195,11 +195,18 @@ class RichTextElement extends AbstractFormElement
             $externalPlugins .= '\'\');';
         }
 
+        $jsonConfiguration = json_encode($configuration);
+
+        // Make a hash of the configuration and append it to CKEDITOR.timestamp
+        // This will mitigate browser caching issue when plugins are updated
+        $configurationHash = GeneralUtility::shortMD5($jsonConfiguration);
+
         return 'function(CKEDITOR) {
+                CKEDITOR.timestamp += "-' . $configurationHash . '";
                 ' . $externalPlugins . '
                 require([\'jquery\', \'TYPO3/CMS/Backend/FormEngine\'], function($, FormEngine) {
                     $(function(){
-                        CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
+                        CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
                         CKEDITOR.instances["' . $fieldId . '"].on(\'change\', function() {
                             CKEDITOR.instances["' . $fieldId . '"].updateElement();
                             FormEngine.Validation.validate();
@@ -207,11 +214,11 @@ class RichTextElement extends AbstractFormElement
                         });
                         $(document).on(\'inline:sorting-changed\', function() {
                             CKEDITOR.instances["' . $fieldId . '"].destroy();
-                            CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
+                            CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
                         });
                         $(document).on(\'flexform:sorting-changed\', function() {
                             CKEDITOR.instances["' . $fieldId . '"].destroy();
-                            CKEDITOR.replace("' . $fieldId . '", ' . json_encode($configuration) . ');
+                            CKEDITOR.replace("' . $fieldId . '", ' . $jsonConfiguration . ');
                         });
                     });
                 });
