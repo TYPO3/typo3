@@ -72,6 +72,7 @@ function str_replace(match, replace, string) {	//
  * Opens plain window with url
  */
 function openUrlInWindow(url, windowName) {	//
+  console.warn('top.openUrlInWindow() has been marked as deprecated.');
   regularWindow = window.open(
     url,
     windowName,
