@@ -1,4 +1,4 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{info.noCache}">
 
     <f:if condition="{info.imagesOnPage.total} > 0">
@@ -24,6 +24,9 @@
                     <f:for each="{info.imagesOnPage.files}" as="file">
                         <tr>
                             <th scope="row" class="typo3-adminPanel-table-cell-key">
+                                <a href="{file.name}" class="typo3-adminPanel-table-cell-key-icon" target="_blank" title="{f:translate(key:'LLL:EXT:adminpanel/Resources/Private/Language/locallang.xlf:button.view')}">
+                                    <core:icon identifier="actions-window-open" alternativeMarkupIdentifier="inline"/>
+                                </a>
                                 {file.name}
                             </th>
                             <td>
