@@ -28,7 +28,11 @@ class PreviewModuleTest extends UnitTestCase
                 (int)(new \DateTime('2018-01-01 12:00:15 UTC'))->getTimestamp(),
                 (int)(new \DateTime('2018-01-01 12:00:00 UTC'))->getTimestamp(),
             ],
-
+            'timestamp_1970' => [
+                (string)(new \DateTime('1970-01-01 00:00:15 UTC'))->getTimestamp(),
+                (int)(new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
+                (int)(new \DateTime('1970-01-01 00:00:60 UTC'))->getTimestamp(),
+            ],
         ];
     }
 
