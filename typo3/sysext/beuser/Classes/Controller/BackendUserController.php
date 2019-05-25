@@ -256,6 +256,20 @@ class BackendUserController extends ActionController
             $this->getBackendUserAuthentication()->uc['recentSwitchedToUsers'] = $this->generateListOfMostRecentSwitchedUsers($targetUser['uid']);
             $this->getBackendUserAuthentication()->writeUC();
 
+            // User switch   written to log
+            $this->getBackendUserAuthentication()->writelog(
+                255,
+                2,
+                0,
+                1,
+                'User %s switched to user %s (be_users:%s)',
+                [
+                    $this->getBackendUserAuthentication()->user['username'],
+                    $targetUser['username'],
+                    $targetUser['uid'],
+                ]
+            );
+
             $sessionBackend = $this->getSessionBackend();
             $sessionBackend->update(
                 $this->getBackendUserAuthentication()->getSessionId(),
