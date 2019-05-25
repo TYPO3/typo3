@@ -699,6 +699,15 @@ body.typo3-adminPanel-noscroll {
         width: 19%;
     }
 
+    .typo3-adminPanel-table-cell-key-icon {
+        white-space: nowrap;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
     .typo3-adminPanel-table-cell-space {
         width: 100%;
     }
