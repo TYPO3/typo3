@@ -240,6 +240,7 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         }
         if ($date !== false) {
             $simTime = $date->getTimestamp();
+            $simTime = max($simTime, 60);
         }
         return $simTime ?? null;
     }
