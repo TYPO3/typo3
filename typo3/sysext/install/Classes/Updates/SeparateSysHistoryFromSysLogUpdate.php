@@ -162,11 +162,11 @@ class SeparateSysHistoryFromSysLogUpdate implements UpgradeWizardInterface
             switch ($row['action']) {
                 // Insert
                 case 1:
-                    $store->addRecord($row['tablename'], $row['recuid'], $logData);
+                    $store->addRecord($row['tablename'], (int)$row['recuid'], $logData);
                     break;
                 case 3:
                     // Delete
-                    $store->deleteRecord($row['tablename'], $row['recuid']);
+                    $store->deleteRecord($row['tablename'], (int)$row['recuid']);
                     break;
             }
         }
