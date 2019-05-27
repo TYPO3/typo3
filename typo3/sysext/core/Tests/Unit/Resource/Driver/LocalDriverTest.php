@@ -1066,7 +1066,7 @@ class LocalDriverTest extends BaseTestCase
     public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider(): array
     {
         $data = [];
-        // On some OS, the posix_* functions do not exits
+        // On some OS, the posix_* functions do not exist
         if (function_exists('posix_getgid')) {
             $data = [
                 'current group, readable/writable' => [

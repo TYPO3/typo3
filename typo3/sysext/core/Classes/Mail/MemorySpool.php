@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Small wrapper for \Swift_MemorySpool
  *
  * Because TYPO3 doesn't offer a terminate signal or hook,
- * and taking in account the risk that extensions do some redirects or even exits,
+ * and taking in account the risk that extensions do some redirects or even exit,
  * we simply use the destructor of a singleton class which should be pretty much
  * at the end of a request.
  *
