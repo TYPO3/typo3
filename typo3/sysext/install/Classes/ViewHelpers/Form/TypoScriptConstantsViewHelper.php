@@ -98,13 +98,12 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
      */
     protected function renderColorPicker(array $configuration): string
     {
-        $elementId = 'em-' . $configuration['name'];
         $elementName = $this->getName($configuration);
 
         // configure the field
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', $elementId);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $elementName);
         $this->tag->addAttribute('data-formengine-input-name', $elementName);
         $this->tag->addAttribute('class', 'form-control');
@@ -134,7 +133,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control t3js-emconf-offset');
         if ($configuration['value'] !== null) {
@@ -153,7 +152,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control t3js-emconf-wrap');
         if ($configuration['value'] !== null) {
@@ -171,7 +170,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     protected function renderOptionSelect(array $configuration): string
     {
         $this->tag->setTagName('select');
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
         $optionValueArray = $configuration['generic'];
@@ -198,7 +197,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'number');
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
         $this->tag->addAttribute('min', '0');
@@ -218,7 +217,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'number');
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
         if ($configuration['value'] !== null) {
@@ -237,7 +236,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     {
         $this->tag->setTagName('input');
         $this->tag->addAttribute('type', 'text');
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('class', 'form-control');
         if ($configuration['value'] !== null) {
@@ -268,7 +267,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         $this->tag->addAttribute('type', 'checkbox');
         $this->tag->addAttribute('name', $this->getName($configuration));
         $this->tag->addAttribute('value', 1);
-        $this->tag->addAttribute('id', 'em-' . $configuration['name']);
+        $this->addIdAttribute($configuration);
         if ($configuration['value'] == 1) {
             $this->tag->addAttribute('checked', 'checked');
         }
@@ -313,8 +312,11 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     protected function renderHiddenFieldForEmptyValue(array $configuration): string
     {
         $hiddenFieldNames = [];
-        if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
-            $hiddenFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'renderedHiddenFields');
+
+        // check for already set hidden field within current extension
+        $variableKey = 'renderedHiddenFields-' . $configuration['extensionKey'];
+        if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, $variableKey)) {
+            $hiddenFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, $variableKey);
         }
         $fieldName = $this->getName($configuration);
         if (substr($fieldName, -2) === '[]') {
@@ -322,7 +324,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         }
         if (!in_array($fieldName, $hiddenFieldNames)) {
             $hiddenFieldNames[] = $fieldName;
-            $this->viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'renderedHiddenFields', $hiddenFieldNames);
+            $this->viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, $variableKey, $hiddenFieldNames);
             return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="0" />';
         }
         return '';
@@ -334,5 +336,18 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Build and add id-attribute from $configuration
+     *
+     * @param array $configuration
+     */
+    protected function addIdAttribute(array $configuration): void
+    {
+        $this->tag->addAttribute(
+            'id',
+            'em-' . $configuration['extensionKey'] . '-' . $this->getName($configuration)
+        );
     }
 }
