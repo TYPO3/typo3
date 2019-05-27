@@ -226,6 +226,7 @@ class ExtensionConfigurationService
             ) {
                 $theConstants[$configurationOptionName]['subcat_label'] = $this->subCategories[$configurationOption['subcat_name']][0];
             }
+            $theConstants[$configurationOptionName]['extensionKey'] = $extensionKey;
         }
         return $theConstants;
     }
