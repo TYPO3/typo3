@@ -1511,7 +1511,7 @@ class PageLayoutView implements LoggerAwareInterface
                     // Get values:
                     $Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
                     // Attach edit icon
-                    if ($this->doEdit && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)) {
+                    if ($this->doEdit) {
                         $urlParameters = [
                             'edit' => [
                                 $table => [
