@@ -736,7 +736,7 @@ class PageLayoutController
         if ($this->id && $access) {
             // Initialize permission settings:
             $this->CALC_PERMS = $this->getBackendUser()->calcPerms($this->pageinfo);
-            $this->EDIT_CONTENT = $this->isContentEditable();
+            $this->EDIT_CONTENT = $this->isContentEditable($this->current_sys_language);
 
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 
@@ -784,7 +784,7 @@ class PageLayoutController
             if ($this->MOD_SETTINGS['function'] == 1 || $this->MOD_SETTINGS['function'] == 2) {
                 $content .= '<form action="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'imagemode' => $this->imagemode])) . '" id="PageLayoutController" method="post">';
                 // Page title
-                $content .= '<h1 class="t3js-title-inlineedit">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
+                $content .= '<h1 class="' . ($this->isPageEditable($this->current_sys_language) ? 't3js-title-inlineedit' : '') . '">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
                 // All other listings
                 $content .= $this->renderContent();
             }
@@ -1022,7 +1022,7 @@ class PageLayoutController
         }
         if (empty($this->modTSconfig['properties']['disableIconToolbar'])) {
             // Edit page properties and page language overlay icons
-            if ($this->isPageEditable() && $this->getBackendUser()->checkLanguageAccess(0)) {
+            if ($this->isPageEditable(0)) {
                 /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
                 $normalizedParams = $request->getAttribute('normalizedParams');
                 // Edit localized pages only when one specific language is selected
@@ -1198,47 +1198,35 @@ class PageLayoutController
     /**
      * Check if page can be edited by current user
      *
+     * @param int|null $languageId
      * @return bool
      */
-    protected function isPageEditable(): bool
+    protected function isPageEditable(int $languageId): bool
     {
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT);
-    }
 
-    /**
-     * Check if page can be edited by current user
-     *
-     * @return bool
-     */
-    protected function pageIsNotLockedForEditors(): bool
-    {
-        return $this->isPageEditable();
+        return !$this->pageinfo['editlock']
+            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT)
+            && $this->getBackendUser()->checkLanguageAccess($languageId);
     }
 
     /**
      * Check if content can be edited by current user
      *
+     * @param int $languageId
      * @return bool
      */
-    protected function isContentEditable(): bool
+    protected function isContentEditable(int $languageId): bool
     {
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
-    }
 
-    /**
-     * Check if content can be edited by current user
-     *
-     * @return bool
-     */
-    protected function contentIsNotLockedForEditors(): bool
-    {
-        return $this->isContentEditable();
+        return !$this->pageinfo['editlock']
+            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+            && $this->getBackendUser()->checkLanguageAccess($languageId);
     }
 
     /**
