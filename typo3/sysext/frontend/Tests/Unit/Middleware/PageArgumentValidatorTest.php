@@ -76,8 +76,6 @@ class PageArgumentValidatorTest extends UnitTestCase
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=XYZ';
         $expectedResult = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
-        $this->controller->id = 13;
-        $this->controller->cHash = 'XYZ';
 
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'XYZ'], ['parameter-from' => 'path']);
 
@@ -98,10 +96,55 @@ class PageArgumentValidatorTest extends UnitTestCase
     public function givenCacheHashNotMatchingCalculatedCacheHashTriggers404(): void
     {
         $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=YAZ';
-        $this->controller->id = 13;
-        $this->controller->cHash = 'XYZ';
 
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'XYZ', 'dynamic' => 'argument'], ['parameter-from' => 'path']);
+
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $request = $request->withAttribute('routing', $pageArguments);
+
+        $subject = new PageArgumentValidator($this->controller);
+        $response = $subject->process($request, $this->responseOutputHandler);
+        static::assertEquals(404, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function noPageArgumentsReturnsErrorResponse()
+    {
+        $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
+        $request = new ServerRequest($incomingUrl, 'GET');
+
+        $subject = new PageArgumentValidator($this->controller);
+        $response = $subject->process($request, $this->responseOutputHandler);
+        static::assertEquals(404, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function staticPageArgumentsSkipProcessingAndReturnsSuccess()
+    {
+        $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
+
+        $pageArguments = new PageArguments(13, '1', [], ['parameter-from' => 'path']);
+
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $request = $request->withAttribute('routing', $pageArguments);
+
+        $subject = new PageArgumentValidator($this->controller);
+        $response = $subject->process($request, $this->responseOutputHandler);
+        static::assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function invalidCacheHashWithDynamicArgumentsTriggers404()
+    {
+        $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
+
+        $pageArguments = new PageArguments(13, '1', ['cHash' => 'coolio', 'download' => true], ['parameter-from' => 'path']);
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);

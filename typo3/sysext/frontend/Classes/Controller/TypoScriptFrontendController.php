@@ -63,6 +63,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
@@ -1562,6 +1563,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function setPageArguments(PageArguments $pageArguments)
     {
         $this->pageArguments = $pageArguments;
+        $queryParams = $pageArguments->getDynamicArguments();
+        // Calculated hash is stored in $this->cHash_array.
+        // This is used to cache pages with more parameters than just id and type.
+        if (!empty($queryParams) && $pageArguments->getArguments()['cHash'] ?? false) {
+            $queryParams['id'] = $pageArguments->getPageId();
+            $this->cHash_array = GeneralUtility::makeInstance(CacheHashCalculator::class)
+                ->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+        } else {
+            $this->cHash_array = [];
+        }
     }
 
     /**

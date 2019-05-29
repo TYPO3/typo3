@@ -31,6 +31,7 @@ final class PageAccessFailureReasons
     public const RENDERING_INSTRUCTIONS_NOT_CONFIGURED = 'rendering_instructions.type';
 
     // Validation errors
+    public const INVALID_PAGE_ARGUMENTS = 'page.invalid_arguments';
     public const CACHEHASH_COMPARISON_FAILED = 'cache_hash.comparison';
     public const CACHEHASH_EMPTY = 'cache_hash.empty';
 
@@ -62,6 +63,7 @@ final class PageAccessFailureReasons
         self::RENDERING_INSTRUCTIONS_NOT_FOUND => 'No TypoScript template found',
         self::RENDERING_INSTRUCTIONS_NOT_CONFIGURED => 'The page is not configured',
 
+        self::INVALID_PAGE_ARGUMENTS => 'Page Arguments could not be resolved',
         self::CACHEHASH_COMPARISON_FAILED => 'Request parameters could not be validated (&cHash comparison failed)',
         self::CACHEHASH_EMPTY => 'Request parameters could not be validated (&cHash empty)',
 
