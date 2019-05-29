@@ -41,3 +41,4 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 
 // Register BackendLayoutDataProvider for PageTs
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['BackendLayoutDataProvider']['pagets'] = \TYPO3\CMS\Backend\Provider\PageTsBackendLayoutDataProvider::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['backendUserLogin']['sendEmailOnLogin'] = \TYPO3\CMS\Backend\Security\EmailLoginNotification::class . '->emailAtLogin';
