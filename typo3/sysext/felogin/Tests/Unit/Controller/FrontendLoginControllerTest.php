@@ -16,6 +16,9 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  */
 
 use TYPO3\CMS\Core\Authentication\LoginType;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Felogin\Controller\FrontendLoginController;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -30,6 +33,7 @@ class FrontendLoginControllerTest extends UnitTestCase
 
     public function setUp(): void
     {
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('language', new SiteLanguage(0, 'en_US', new Uri('/'), ['typo3Language' => 'en']));
         $GLOBALS['TSFE'] = new \stdClass();
         parent::setUp();
     }

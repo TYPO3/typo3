@@ -454,10 +454,6 @@ config.inlineStyle2TempFile = 1]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="language_alt" type="string">
-			<description><![CDATA[If "config.language" (above) is used, this can be set to another language key which will be used for labels if a label was not found for the main language. For instance a brazil portuguese website might specify "pt" as alternative language which means the portuguese label will be shown if none was available in the main language, brazil portuguese. This feature makes sense if one language is incompletely translated and close to another language.]]></description>
-			<default><![CDATA[
-]]></default>
 		</property>
 		<property name="linkVars" type="string">
 			<description><![CDATA[HTTP_GET_VARS, which should be passed on with links in TYPO3. This is compiled into a string stored in $GLOBALS["TSFE"]->linkVars

@@ -263,25 +263,15 @@ class AbstractPlugin
                 $this->frontendController->reqCHash();
             }
         }
-        $siteLanguage = $this->getCurrentSiteLanguage();
-        if ($siteLanguage) {
-            $this->LLkey = $siteLanguage->getTypo3Language();
-        } elseif (!empty($this->frontendController->config['config']['language'])) {
-            $this->LLkey = $this->frontendController->config['config']['language'];
-        }
+        $this->LLkey = $this->getCurrentSiteLanguage()->getTypo3Language();
 
-        if (empty($this->frontendController->config['config']['language_alt'])) {
-            /** @var Locales $locales */
-            $locales = GeneralUtility::makeInstance(Locales::class);
-            if (in_array($this->LLkey, $locales->getLocales())) {
-                $this->altLLkey = '';
-                foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
-                    $this->altLLkey .= $language . ',';
-                }
-                $this->altLLkey = rtrim($this->altLLkey, ',');
+        /** @var Locales $locales */
+        $locales = GeneralUtility::makeInstance(Locales::class);
+        if (in_array($this->LLkey, $locales->getLocales())) {
+            foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
+                $this->altLLkey .= $language . ',';
             }
-        } else {
-            $this->altLLkey = $this->frontendController->config['config']['language_alt'];
+            $this->altLLkey = rtrim($this->altLLkey, ',');
         }
     }
 

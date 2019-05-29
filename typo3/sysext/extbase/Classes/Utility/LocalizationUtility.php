@@ -63,7 +63,7 @@ class LocalizationUtility
      * @param string|null $extensionName The name of the extension
      * @param array $arguments The arguments of the extension, being passed over to vsprintf
      * @param string $languageKey The language key or null for using the current language from the system
-     * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found. If null and we are in the frontend, then the language_alt from TypoScript setup will be used
+     * @param string[] $alternativeLanguageKeys The alternative language keys if no translation was found.
      * @return string|null The value from LOCAL_LANG or null if no translation was found.
      */
     public static function translate(string $key, ?string $extensionName = null, array $arguments = null, string $languageKey = null, array $alternativeLanguageKeys = null): ?string
@@ -180,8 +180,7 @@ class LocalizationUtility
     }
 
     /**
-     * Sets the currently active language/language_alt keys.
-     * Default values are "default" for language key and an empty array for language_alt key.
+     * Sets the currently active language keys.
      *
      * @return array
      */
@@ -192,25 +191,15 @@ class LocalizationUtility
             'alternativeLanguageKeys' => [],
         ];
         if (TYPO3_MODE === 'FE') {
-            $tsfe = static::getTypoScriptFrontendController();
             $siteLanguage = self::getCurrentSiteLanguage();
 
-            // Get values from site language, which takes precedence over TypoScript settings
-            if ($siteLanguage instanceof SiteLanguage) {
-                $languageKeys['languageKey'] = $siteLanguage->getTypo3Language();
-            } elseif (isset($tsfe->config['config']['language'])) {
-                $languageKeys['languageKey'] = $tsfe->config['config']['language'];
-                if (isset($tsfe->config['config']['language_alt'])) {
-                    $languageKeys['alternativeLanguageKeys'] = $tsfe->config['config']['language_alt'];
-                }
-            }
+            // Get values from site language
+            $languageKeys['languageKey'] = $siteLanguage->getTypo3Language();
 
-            if (empty($languageKeys['alternativeLanguageKeys'])) {
-                $locales = GeneralUtility::makeInstance(Locales::class);
-                if (in_array($languageKeys['languageKey'], $locales->getLocales())) {
-                    foreach ($locales->getLocaleDependencies($languageKeys['languageKey']) as $language) {
-                        $languageKeys['alternativeLanguageKeys'] = $language;
-                    }
+            $locales = GeneralUtility::makeInstance(Locales::class);
+            if (in_array($languageKeys['languageKey'], $locales->getLocales())) {
+                foreach ($locales->getLocaleDependencies($languageKeys['languageKey']) as $language) {
+                    $languageKeys['alternativeLanguageKeys'] = $language;
                 }
             }
         } elseif (!empty($GLOBALS['BE_USER']->uc['lang'])) {
@@ -320,14 +309,6 @@ class LocalizationUtility
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('language', null);
         }
         return null;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-     */
-    protected static function getTypoScriptFrontendController(): \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 
     /**

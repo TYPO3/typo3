@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Advanced translations
@@ -550,8 +549,7 @@ class TranslationService implements SingletonInterface
     }
 
     /**
-     * Sets the currently active language/language_alt keys.
-     * Default values are "default" for language key and "" for language_alt key.
+     * Sets the currently active language keys.
      */
     protected function setLanguageKeys()
     {
@@ -559,18 +557,9 @@ class TranslationService implements SingletonInterface
 
         $this->alternativeLanguageKeys = [];
         if (TYPO3_MODE === 'FE') {
-            $tsfe = $this->getTypoScriptFrontendController();
+            $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
 
-            if ($this->getCurrentSiteLanguage() instanceof SiteLanguage) {
-                $this->languageKey = $this->getCurrentSiteLanguage()->getTypo3Language();
-            } elseif (isset($tsfe->config['config']['language'])) {
-                $this->languageKey = $tsfe->config['config']['language'];
-                if (isset($tsfe->config['config']['language_alt'])) {
-                    $this->alternativeLanguageKeys[] = $tsfe->config['config']['language_alt'];
-                }
-            }
-
-            if ($this->languageKey !== 'default' && empty($this->alternativeLanguageKeys)) {
+            if ($this->languageKey !== 'default') {
                 /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
                 $locales = GeneralUtility::makeInstance(Locales::class);
                 if (in_array($this->languageKey, $locales->getLocales(), true)) {
@@ -700,13 +689,5 @@ class TranslationService implements SingletonInterface
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
     }
 }

@@ -505,8 +505,6 @@
         'labelStdWrap': kw('labelStdWrap'),
         'labelWrap': kw('labelWrap'),
         'lang': kw('lang'),
-        'language': B,
-        'language_alt': kw('language_alt'),
         'languageField': kw('languageField'),
         'layout': A,
         'left': kw('left'),

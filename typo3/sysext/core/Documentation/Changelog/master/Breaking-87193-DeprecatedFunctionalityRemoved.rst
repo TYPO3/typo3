@@ -1246,6 +1246,7 @@ The following TypoScript options have been dropped:
 * `config.concatenateJsAndCss`
 * `config.defaultGetVars`
 * `config.language`
+* `config.language_alt`
 * `config.locale_all`
 * `config.sys_language_isocode`
 * `config.sys_language_isocode_default`
