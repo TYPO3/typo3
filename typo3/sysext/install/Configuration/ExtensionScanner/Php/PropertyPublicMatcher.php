@@ -529,4 +529,29 @@ return [
             'Breaking-87511-RemoveViewFormatToObjectNameMapProperty.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->get_name' => [
+        'restFiles' => [
+            'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getFallBack' => [
+        'restFiles' => [
+            'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->getMethodEnabled' => [
+        'restFiles' => [
+            'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Authentication\AbstractUserAuthentication->get_URL_ID' => [
+        'restFiles' => [
+            'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getMethodUrlIdToken' => [
+        'restFiles' => [
+            'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
+        ],
+    ],
 ];

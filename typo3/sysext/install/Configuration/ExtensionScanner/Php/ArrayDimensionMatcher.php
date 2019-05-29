@@ -286,4 +286,9 @@ return [
             'Breaking-87936-TCAForSysHistoryRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'get_url_id_token\']' => [
+        'restFiles' => [
+            'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
+        ],
+    ],
 ];

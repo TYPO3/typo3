@@ -54,12 +54,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $name = '';
 
     /**
-     * Session/GET-var name
-     * @var string
-     */
-    public $get_name = '';
-
-    /**
      * Table in database with user data
      * @var string
      */
@@ -198,14 +192,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public $sendNoCacheHeaders = true;
 
     /**
-     * If this is set, authentication is also accepted by $_GET.
-     * Notice that the identification is NOT 128bit MD5 hash but reduced.
-     * This is done in order to minimize the size for mobile-devices, such as WAP-phones
-     * @var bool
-     */
-    public $getFallBack = false;
-
-    /**
      * The ident-hash is normally 32 characters and should be!
      * But if you are making sites for WAP-devices or other low-bandwidth stuff,
      * you may shorten the length.
@@ -214,13 +200,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @var int
      */
     public $hash_length = 32;
-
-    /**
-     * Setting this flag TRUE lets user-authentication happen from GET_VARS if
-     * POST_VARS are not set. Thus you may supply username/password with the URL.
-     * @var bool
-     */
-    public $getMethodEnabled = false;
 
     /**
      * If set to 4, the session will be locked to the user's IP address (all four numbers).
@@ -282,14 +261,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @internal
      */
     public $user;
-
-    /**
-     * Will be added to the url (eg. '&login=ab7ef8d...')
-     * GET-auth-var if getFallBack is TRUE. Should be inserted in links!
-     * @var string
-     * @internal
-     */
-    public $get_URL_ID = '';
 
     /**
      * Will be set to TRUE if a new session ID was created
@@ -371,21 +342,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             throw new Exception('No loginType defined, should be set explicitly by subclass', 1476045345);
         }
         $this->logger->debug('## Beginning of auth logging.');
-        // Init vars.
-        $mode = '';
         $this->newSessionID = false;
-        // $id is set to ses_id if cookie is present. Else set to FALSE, which will start a new session
+        // $id is set to ses_id if cookie is present. Otherwise a new session will start
         $id = $this->getCookie($this->name);
         $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
-
-        // If fallback to get mode....
-        if (!$id && $this->getFallBack && $this->get_name) {
-            $id = isset($_GET[$this->get_name]) ? GeneralUtility::_GET($this->get_name) : '';
-            if (strlen($id) != $this->hash_length) {
-                $id = '';
-            }
-            $mode = 'get';
-        }
 
         // If new session or client tries to fix session...
         if (!$id || !$this->isExistingSessionRecord($id)) {
@@ -396,10 +356,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         }
         // Internal var 'id' is set
         $this->id = $id;
-        // If fallback to get mode....
-        if ($mode === 'get' && $this->getFallBack && $this->get_name) {
-            $this->get_URL_ID = '&' . $this->get_name . '=' . $id;
-        }
+
         // Make certain that NO user is set initially
         $this->user = null;
         // Set all possible headers that could ensure that the script is not cached on the client-side
@@ -1302,15 +1259,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function getLoginFormData()
     {
-        $loginData = [];
-        $loginData['status'] = GeneralUtility::_GP($this->formfield_status);
-        if ($this->getMethodEnabled) {
-            $loginData['uname'] = GeneralUtility::_GP($this->formfield_uname);
-            $loginData['uident'] = GeneralUtility::_GP($this->formfield_uident);
-        } else {
-            $loginData['uname'] = GeneralUtility::_POST($this->formfield_uname);
-            $loginData['uident'] = GeneralUtility::_POST($this->formfield_uident);
-        }
+        $loginData = [
+            'status' => GeneralUtility::_GP($this->formfield_status),
+            'uname'  => GeneralUtility::_POST($this->formfield_uname),
+            'uident' => GeneralUtility::_POST($this->formfield_uident)
+        ];
         // Only process the login data if a login is requested
         if ($loginData['status'] === LoginType::LOGIN) {
             $loginData = $this->processLoginData($loginData);

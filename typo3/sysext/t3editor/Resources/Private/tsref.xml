@@ -379,17 +379,6 @@ Useful if you run a template with special content at - say &type=95 - but still 
 			<description><![CDATA[If set, then frontend editing is enabled (requires EXT:frontend_editing being installed).]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
-		<property name="ftu" type="boolean">
-			<description><![CDATA[If set, the "&ftu=...." GET-fallback identification is inserted.
-"&ftu=[hash]" is always inserted in the links on the first page a user hits. If it turns out in the next hit that the user has cookies enabled, this variable is not set anymore as the cookies does the job. If no cookies is accepted the "ftu" remains set for all links on the site and thereby we can still track the user.
-
-You should not set this feature if grabber-spiders like Teleport are going to grab your site!
-You should not set this feature if you want search-engines to index your site.
-
-You can also ignore this feature if you're certain, website users will use cookies.
- "ftu" means fe_typo_user ("fe" is "frontend").]]></description>
-			<default><![CDATA[false]]></default>
-		</property>
 		<property name="headerComment " type="string">
 			<description><![CDATA[The content is added before the "TYPO3 Content Management Framework" comment in the <head> section of the page. Use this to insert a note like that "Programmed by My-Agency" ...]]></description>
 			<default><![CDATA[

@@ -299,16 +299,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $newHash = '';
 
     /**
-     * If config.ftu (Frontend Track User) is set in TypoScript for the current
-     * page, the string value of this var is substituted in the rendered source-code
-     * with the string, '&ftu=[token...]' which enables GET-method usertracking as
-     * opposed to cookie based
-     * @var string
-     * @internal
-     */
-    public $getMethodUrlIdToken = '';
-
-    /**
      * This flag is set before inclusion of RequestHandler IF no_cache is set. If this
      * flag is set after the inclusion of RequestHandler, no_cache is forced to be set.
      * This is done in order to make sure that php-code from pagegen does not falsely
@@ -1907,7 +1897,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Auto-configure settings when a site is configured
         $this->config['config']['absRefPrefix'] = $this->config['config']['absRefPrefix'] ?? 'auto';
-        $this->setUrlIdToken();
 
         // Hook for postProcessing the configuration array
         $params = ['config' => &$this->config['config']];
@@ -2132,19 +2121,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->fetch_the_id();
                 $this->tmpl->rootLine = array_reverse($this->rootLine);
             }
-        }
-    }
-
-    /**
-     * Sets the URL_ID_TOKEN in the internal var, $this->getMethodUrlIdToken
-     * This feature allows sessions to use a GET-parameter instead of a cookie.
-     */
-    protected function setUrlIdToken()
-    {
-        if ($this->config['config']['ftu']) {
-            $this->getMethodUrlIdToken = $GLOBALS['TYPO3_CONF_VARS']['FE']['get_url_id_token'];
-        } else {
-            $this->getMethodUrlIdToken = '';
         }
     }
 
@@ -3051,11 +3027,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $search = [];
         $replace = [];
-        // Substitutes get_URL_ID in case of GET-fallback
-        if ($this->getMethodUrlIdToken) {
-            $search[] = $this->getMethodUrlIdToken;
-            $replace[] = $this->fe_user->get_URL_ID;
-        }
         // Hook for supplying custom search/replace data
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'] ?? [] as $_funcRef) {
             $_params = [

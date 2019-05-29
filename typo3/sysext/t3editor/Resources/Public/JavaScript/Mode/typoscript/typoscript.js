@@ -374,7 +374,6 @@
         'forceTypeValue': kw('forceTypeValue'),
         'FORM': kw('FORM'),
         'format': kw('format'),
-        'ftu': kw('ftu'),
         'function': kw('function'),
         'Functions': A,
         'gamma': kw('gamma'),

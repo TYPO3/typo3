@@ -116,7 +116,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->dontSetCookie = true;
 
         $this->name = self::getCookieName();
-        $this->get_name = 'ftu';
         $this->loginType = 'FE';
         $this->user_table = 'fe_users';
         $this->username_column = 'username';
@@ -133,8 +132,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         $this->formfield_uident = 'pass';
         $this->formfield_status = 'logintype';
         $this->sendNoCacheHeaders = false;
-        $this->getFallBack = true;
-        $this->getMethodEnabled = true;
         $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'];
         $this->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
         $this->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
@@ -219,11 +216,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     {
         $loginData = parent::getLoginFormData();
         if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
-            if ($this->getMethodEnabled) {
-                $isPermanent = GeneralUtility::_GP($this->formfield_permanent);
-            } else {
-                $isPermanent = GeneralUtility::_POST($this->formfield_permanent);
-            }
+            $isPermanent = GeneralUtility::_POST($this->formfield_permanent);
             if (strlen($isPermanent) != 1) {
                 $isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
             } elseif (!$isPermanent) {

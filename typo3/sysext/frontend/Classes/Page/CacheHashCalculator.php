@@ -187,7 +187,7 @@ class CacheHashCalculator implements SingletonInterface
      */
     protected function isCoreParameter($key)
     {
-        return $key === 'id' || $key === 'type' || $key === 'no_cache' || $key === 'cHash' || $key === 'MP' || $key === 'ftu';
+        return $key === 'id' || $key === 'type' || $key === 'no_cache' || $key === 'cHash' || $key === 'MP';
     }
 
     /**

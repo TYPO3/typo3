@@ -146,6 +146,8 @@ class SilentConfigurationUpgradeService
         'FE/pageNotFound_handling_accessdeniedheader',
         'FE/pageUnavailable_handling',
         'FE/pageUnavailable_handling_statheader',
+        // #88458
+        'FE/get_url_id_token'
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)
