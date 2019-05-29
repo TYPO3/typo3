@@ -74,9 +74,7 @@ abstract class AbstractApplication implements ApplicationInterface
             }
 
             foreach ($response->getHeaders() as $name => $values) {
-                foreach ($values as $value) {
-                    header($name . ': ' . $value, false);
-                }
+                header($name . ': ' . implode(', ', $values));
             }
         }
         $body = $response->getBody();
