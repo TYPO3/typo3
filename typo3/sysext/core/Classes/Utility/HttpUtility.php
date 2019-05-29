@@ -192,9 +192,17 @@ class HttpUtility
      */
     public static function idn_to_ascii(string $domain)
     {
-        if (defined('INTL_IDNA_VARIANT_UTS46')) {
+        if (defined('INTL_IDNA_VARIANT_UTS46') && !defined('TYPO3_IDN_TO_ASCII_USE_COMPAT')) {
             return idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         }
-        return idn_to_ascii($domain);
+        // This is done due to some heavy old systems where native functionality is there, but does not support UTS46 yet.
+        if (!defined('TYPO3_IDN_TO_ASCII_USE_COMPAT')) {
+            define('TYPO3_IDN_TO_ASCII_USE_COMPAT', true);
+        }
+        if (!defined('INTL_IDNA_VARIANT_UTS46')) {
+            define('INTL_IDNA_VARIANT_UTS46', 1);
+        }
+        $result = [];
+        return \Symfony\Polyfill\Intl\Idn\Idn::idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46, $result);
     }
 }
