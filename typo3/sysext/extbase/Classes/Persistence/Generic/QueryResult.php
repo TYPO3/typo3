@@ -264,6 +264,7 @@ class QueryResult implements QueryResultInterface
     {
         $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->persistenceManager = $objectManager->get(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
+        $this->dataMapper = $objectManager->get(DataMapper::class);
     }
 
     /**
