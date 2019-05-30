@@ -414,6 +414,8 @@ class ExtendedFileUtility extends BasicFileUtility
                         } else {
                             $brokenReferences[] = $fileReferenceRow['ref_uid'];
                         }
+                    } else {
+                        $shortcutContent[] = '[record:' . $fileReferenceRow['tablename'] . ':' . $fileReferenceRow['recuid'] . ']';
                     }
                 }
                 if (!empty($brokenReferences)) {
