@@ -108,7 +108,7 @@ class ToolbarItemProvider
             $systemInformationToolbarItem->addSystemInformation(
                 $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:systeminformation.lastRunLabel'),
                 $message,
-                'extensions-scheduler-run-task',
+                'actions-play',
                 $severity
             );
         }
