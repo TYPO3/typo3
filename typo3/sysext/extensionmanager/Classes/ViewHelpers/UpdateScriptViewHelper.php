@@ -70,7 +70,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
             );
             $this->tag->addAttribute('href', $uri);
             $this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.update.script', 'extensionmanager'));
-            $this->tag->setContent($iconFactory->getIcon('extensions-extensionmanager-update-script', Icon::SIZE_SMALL)->render());
+            $this->tag->setContent($iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render());
             $tag = $this->tag->render();
         } else {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render() . '</span>';

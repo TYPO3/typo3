@@ -164,17 +164,17 @@ $tca = [
                     [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.1',
                         1,
-                        'filemetadata-status-1'
+                        'actions-check'
                     ],
                     [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.2',
                         2,
-                        'filemetadata-status-2'
+                        'actions-clock'
                     ],
                     [
                         'LLL:EXT:filemetadata/Resources/Private/Language/locallang_tca.xlf:sys_file_metadata.status.3',
                         3,
-                        'filemetadata-status-3'
+                        'actions-view'
                     ],
                 ],
                 'fieldWizard' => [
