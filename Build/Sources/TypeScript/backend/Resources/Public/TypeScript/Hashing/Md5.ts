@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+/*! Based on http://www.webtoolkit.info/javascript_md5.html */
+
 class Md5 {
   public static hash(value: string): string {
     let x;
