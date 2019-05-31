@@ -563,7 +563,8 @@ class InlineControlContainer extends AbstractContainer
 
         $item = '<div class="form-control-wrap">' . $item . '</div>';
         $allowedList = '';
-        $allowedLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.allowedFileExtensions'));
+        $allowedLabelKey = ($mode === 'file') ? 'allowedFileExtensions' : 'allowedRelations';
+        $allowedLabel = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:cm.' . $allowedLabelKey));
         foreach ($allowedArray as $allowedItem) {
             $allowedList .= '<span class="label label-success">' . strtoupper($allowedItem) . '</span> ';
         }
