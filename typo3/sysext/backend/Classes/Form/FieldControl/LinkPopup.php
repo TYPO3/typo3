@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Renders the icon with link parameters to open the element browser.
@@ -37,7 +38,6 @@ class LinkPopup extends AbstractNode
 
         $parameterArray = $this->data['parameterArray'];
         $itemName = $parameterArray['itemFormElName'];
-        $windowOpenParameters = $options['windowOpenParameters'] ?? 'height=800,width=1000,status=0,menubar=0,scrollbars=1';
 
         $linkBrowserArguments = [];
         if (isset($options['blindLinkOptions'])) {
@@ -66,27 +66,19 @@ class LinkPopup extends AbstractNode
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('wizard_link', $urlParameters);
-        $onClick = [];
-        $onClick[] = 'this.blur();';
-        $onClick[] = 'vHWin=window.open(';
-        $onClick[] =    GeneralUtility::quoteJSvalue($url);
-        $onClick[] =    '+\'&P[currentValue]=\'+TBE_EDITOR.rawurlencode(';
-        $onClick[] =        'document.editform[' . GeneralUtility::quoteJSvalue($itemName) . '].value';
-        $onClick[] =    ')';
-        $onClick[] =    '+\'&P[currentSelectedValues]=\'+TBE_EDITOR.curSelected(';
-        $onClick[] =        GeneralUtility::quoteJSvalue($itemName);
-        $onClick[] =    '),';
-        $onClick[] =    '\'\',';
-        $onClick[] =    GeneralUtility::quoteJSvalue($windowOpenParameters);
-        $onClick[] = ');';
-        $onClick[] = 'vHWin.focus();';
-        $onClick[] = 'return false;';
+
+        $id = StringUtility::getUniqueId('t3js-formengine-fieldcontrol-');
 
         return [
             'iconIdentifier' => 'actions-wizard-link',
             'title' => $title,
             'linkAttributes' => [
-                'onClick' => implode('', $onClick),
+                'id' => htmlspecialchars($id),
+                'href' => $url,
+                'data-item-name' => htmlspecialchars($itemName),
+            ],
+            'requireJsModules' => [
+                ['TYPO3/CMS/Backend/FormEngine/FieldControl/LinkPopup' => 'function(LinkPopup) {new LinkPopup(' . GeneralUtility::quoteJSvalue('#' . $id) . ');}'],
             ],
         ];
     }

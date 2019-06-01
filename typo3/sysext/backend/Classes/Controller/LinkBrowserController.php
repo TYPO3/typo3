@@ -66,7 +66,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
         unset($this->parameters['fieldChangeFunc']['alert']);
         $update = [];
         foreach ($this->parameters['fieldChangeFunc'] as $v) {
-            $update[] = 'parent.opener.' . $v;
+            $update[] = 'FormEngineLinkBrowserAdapter.getParent().' . $v;
         }
         $inlineJS = implode(LF, $update);
 
