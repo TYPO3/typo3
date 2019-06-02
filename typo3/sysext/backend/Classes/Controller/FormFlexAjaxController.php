@@ -134,11 +134,6 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
             'scriptCall' => [],
         ];
 
-        if (!empty($newContainerResult['additionalJavaScriptSubmit'])) {
-            $additionalJavaScriptSubmit = implode('', $newContainerResult['additionalJavaScriptSubmit']);
-            $additionalJavaScriptSubmit = str_replace([CR, LF], '', $additionalJavaScriptSubmit);
-            $jsonResult['scriptCall'][] = 'TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJavaScriptSubmit) . '");';
-        }
         foreach ($newContainerResult['additionalJavaScriptPost'] as $singleAdditionalJavaScriptPost) {
             $jsonResult['scriptCall'][] = $singleAdditionalJavaScriptPost;
         }

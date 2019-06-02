@@ -1881,7 +1881,6 @@ class EditDocumentController
                 enctype="multipart/form-data"
                 name="editform"
                 id="EditDocumentController"
-                onsubmit="TBE_EDITOR.checkAndDoSubmit(1); return false;"
             >
             ' . $editForm . '
             <input type="hidden" name="returnUrl" value="' . htmlspecialchars($this->retUrl) . '" />

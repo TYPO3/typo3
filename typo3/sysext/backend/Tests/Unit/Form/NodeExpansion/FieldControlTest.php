@@ -96,7 +96,6 @@ class FieldControlTest extends UnitTestCase
             'additionalJavaScriptPost' => [
                 'someJavaScript',
             ],
-            'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],

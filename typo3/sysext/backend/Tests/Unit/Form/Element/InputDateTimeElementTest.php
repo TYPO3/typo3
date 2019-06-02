@@ -115,7 +115,6 @@ class InputDateTimeElementTest extends UnitTestCase
         $abstractNode = $this->prophesize(AbstractNode::class);
         $abstractNode->render(Argument::cetera())->willReturn([
             'additionalJavaScriptPost' => [],
-            'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
             'stylesheetFiles' => [],
         ]);

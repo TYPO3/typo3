@@ -60,14 +60,6 @@ class FormResultCompiler
     protected $additionalJavaScriptPost = [];
 
     /**
-     * Additional JavaScript executed on submit; If you set "OK" variable it will raise an error
-     * about RTEs not being loaded and offer to block further submission.
-     *
-     * @var array
-     */
-    protected $additionalJavaScriptSubmit = [];
-
-    /**
      * Additional language label files to include.
      *
      * @var array
@@ -99,9 +91,6 @@ class FormResultCompiler
         foreach ($resultArray['additionalJavaScriptPost'] as $element) {
             $this->additionalJavaScriptPost[] = $element;
         }
-        foreach ($resultArray['additionalJavaScriptSubmit'] as $element) {
-            $this->additionalJavaScriptSubmit[] = $element;
-        }
         if (!empty($resultArray['requireJsModules'])) {
             foreach ($resultArray['requireJsModules'] as $module) {
                 $moduleName = null;
@@ -112,11 +101,8 @@ class FormResultCompiler
                     $callback = null;
                 } elseif (is_array($module)) {
                     // if $module is an array, callback is possible
-                    foreach ($module as $key => $value) {
-                        $moduleName = $key;
-                        $callback = $value;
-                        break;
-                    }
+                    $callback = reset($module);
+                    $moduleName = key($module);
                 }
                 if ($moduleName !== null) {
                     if (!empty($this->requireJsModules[$moduleName]) && $callback !== null) {
@@ -251,19 +237,11 @@ class FormResultCompiler
             'FormEngine.remainingCharacters'    => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.remainingCharacters'),
         ]);
 
-        $out = LF . 'TBE_EDITOR.doSaveFieldName = "' . ($this->doSaveFieldName ? addslashes($this->doSaveFieldName) : '') . '";';
-
         // Add JS required for inline fields
         if (!empty($this->inlineData)) {
             $pageRenderer->addInlineSettingArray('FormEngineInline', $this->inlineData);
         }
-        // $this->additionalJS_submit:
-        if ($this->additionalJavaScriptSubmit) {
-            $additionalJS_submit = implode('', $this->additionalJavaScriptSubmit);
-            $additionalJS_submit = str_replace([CR, LF], '', $additionalJS_submit);
-            $out .= 'TBE_EDITOR.addActionChecks("submit", "' . addslashes($additionalJS_submit) . '");';
-        }
-        $out .= LF . implode(LF, $this->additionalJavaScriptPost);
+        $out = LF . implode(LF, $this->additionalJavaScriptPost);
 
         return $html . LF . "\t" . GeneralUtility::wrapJS($out);
     }

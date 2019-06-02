@@ -525,7 +525,6 @@ define(['jquery',
       e.preventDefault();
       FormEngine.deleteAction(e, FormEngine.deleteActionCallback);
     }).on('click', '.t3js-editform-submitButton', function(event) {
-      // remember the clicked submit button. we need to know that in TBE_EDITOR.submitForm();
       var $me = $(this),
         name = $me.data('name') || this.name,
         $elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', '1');
@@ -1233,8 +1232,12 @@ define(['jquery',
    * @param {Number} mode
    */
   FormEngine.initialize = function(browserUrl, mode) {
-    // This is required to register the click handler
-    DocumentSaveActions.getInstance();
+    DocumentSaveActions.getInstance().addPreSubmitCallback(function() {
+      $('[data-active-password]:not([type="password"])').each(function(index, element) {
+        element.setAttribute('type', 'password');
+        element.blur();
+      });
+    });
 
     FormEngine.browserUrl = browserUrl;
     FormEngine.Validation.setUsMode(mode);

@@ -32,13 +32,10 @@ var TBE_EDITOR = {
   elements: {},
   nested: {'field': {}, 'level': {}},
   ignoreElements: [],
-  actionChecks: {submit: []},
   customEvalFunctions: {},
 
   formname: 'editform',
   isChanged: 0,
-
-  doSaveFieldName: 0,
 
   labels: {},
 
@@ -59,13 +56,6 @@ var TBE_EDITOR = {
 
     return result;
   },
-  checkElements: function() {
-    return (document.getElementsByClassName('has-error').length == 0);
-  },
-  addActionChecks: function(type, checks) {
-    TBE_EDITOR.actionChecks[type].push(checks);
-  },
-
   fieldChanged_fName: function(fName, el) {
     var idx = 2;
     var table = TBE_EDITOR.split(fName, "[", idx);
@@ -100,90 +90,6 @@ var TBE_EDITOR = {
       return 0;
     }
     return TBE_EDITOR.isChanged;
-  },
-  checkAndDoSubmit: function(sendAlert) {
-    if (TBE_EDITOR.checkSubmit(sendAlert)) {
-      TBE_EDITOR.submitForm();
-    }
-  },
-  /**
-   * Checks if the form can be submitted according to any possible restrains like required values, item numbers etc.
-   * Returns true if the form can be submitted, otherwise false (and might issue an alert message, if "sendAlert" is 1)
-   * If "sendAlert" is false, no error message will be shown upon false return value (if "1" then it will).
-   * If "sendAlert" is "-1" then the function will ALWAYS return true regardless of constraints (except if login has expired) - this is used in the case where a form field change requests a form update and where it is accepted that constraints are not observed (form layout might change so other fields are shown...)
-   */
-  checkSubmit: function(sendAlert) {
-    var funcIndex, funcMax, funcRes;
-    var OK = 1;
-    var STOP = 0;
-
-    // $this->additionalJS_submit:
-    if (TBE_EDITOR.actionChecks && TBE_EDITOR.actionChecks.submit) {
-      for (funcIndex = 0, funcMax = TBE_EDITOR.actionChecks.submit.length; funcIndex < funcMax; funcIndex++) {
-        try {
-          eval(TBE_EDITOR.actionChecks.submit[funcIndex]);
-        } catch (error) {
-        }
-      }
-    }
-
-    if (STOP) {
-      // return false immediately, if the code in additionalJS_submit set STOP variable.
-      return false;
-    }
-
-    if (!OK) {
-      if (!confirm(unescape("SYSTEM ERROR: One or more Rich Text Editors on the page could not be contacted. This IS an error, although it should not be regular.\nYou can save the form now by pressing OK, but you will loose the Rich Text Editor content if you do.\n\nPlease report the error to your administrator if it persists."))) {
-        return false;
-      } else {
-        OK = 1;
-      }
-    }
-    if (!TBE_EDITOR.checkElements()) {
-      OK = 0;
-    }
-
-    if (OK || sendAlert == -1) {
-      return true;
-    } else {
-      if (sendAlert) {
-        var t = (opener != null && typeof opener.top.TYPO3 !== 'undefined' ? opener.top : top);
-        t.TYPO3.Modal.confirm(
-          t.TYPO3.lang['alert'] || 'Alert',
-          TYPO3.lang['FormEngine.fieldsMissing'],
-          t.TYPO3.Severity.error,
-          [
-            {
-              text: t.TYPO3.lang['button.ok'] || 'OK',
-              active: true,
-              btnClass: 'btn-default',
-              name: 'ok'
-            }
-          ]
-        ).on('button.clicked', function(e) {
-          t.TYPO3.Modal.dismiss();
-        });
-      }
-      return false;
-    }
-  },
-  submitForm: function() {
-    if (TBE_EDITOR.doSaveFieldName) {
-      document[TBE_EDITOR.formname][TBE_EDITOR.doSaveFieldName].value = 1;
-    }
-    // Set a short timeout to allow other JS processes to complete, in particular those from
-    // EXT:backend/Resources/Public/JavaScript/FormEngine.js (reference: http://forge.typo3.org/issues/58755).
-    // TODO: This should be solved in a better way when this script is refactored.
-    window.setTimeout(function() {
-      var formElement = document.getElementsByName(TBE_EDITOR.formname).item(0);
-      $('[data-active-password]:not([type=password])').each(
-        function(index, element) {
-          element.setAttribute('type', 'password');
-          element.blur();
-        }
-      );
-      formElement.submit();
-    }, 100);
   },
   split: function(theStr1, delim, index) {
     var theStr = "" + theStr1;
@@ -250,8 +156,6 @@ var TBE_EDITOR_isChanged = TBE_EDITOR.isChanged;
 var TBE_EDITOR_fieldChanged_fName = TBE_EDITOR.fieldChanged_fName;
 var TBE_EDITOR_fieldChanged = TBE_EDITOR.fieldChanged;
 var TBE_EDITOR_isFormChanged = TBE_EDITOR.isFormChanged;
-var TBE_EDITOR_checkAndDoSubmit = TBE_EDITOR.checkAndDoSubmit;
-var TBE_EDITOR_checkSubmit = TBE_EDITOR.checkSubmit;
 var TBE_EDITOR_submitForm = TBE_EDITOR.submitForm;
 var TBE_EDITOR_split = TBE_EDITOR.split;
 var TBE_EDITOR_curSelected = TBE_EDITOR.curSelected;

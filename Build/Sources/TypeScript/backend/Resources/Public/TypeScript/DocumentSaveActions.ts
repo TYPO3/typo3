@@ -106,6 +106,7 @@ class DocumentSaveActions {
         });
 
         if ((e.currentTarget.tagName === 'A' || $me.attr('form')) && !e.isDefaultPrevented()) {
+          $form.find('[name="doSave"]').val('1');
           $form.submit();
           e.preventDefault();
         }

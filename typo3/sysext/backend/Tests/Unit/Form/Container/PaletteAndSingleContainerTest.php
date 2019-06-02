@@ -37,7 +37,6 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
         $singleFieldContainerReturn = [
             'additionalJavaScriptPost' => [],
-            'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
@@ -94,7 +93,6 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
         $singleFieldContainerReturn = [
             'additionalJavaScriptPost' => [],
-            'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
@@ -152,7 +150,6 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
         $singleFieldContainerReturn = [
             'additionalJavaScriptPost' => [],
-            'additionalJavaScriptSubmit' => [],
             'additionalHiddenFields' => [],
             'additionalInlineLanguageLabelFiles' => [],
             'stylesheetFiles' => [],
