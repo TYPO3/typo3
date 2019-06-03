@@ -50,11 +50,17 @@ class SiteResolverTest extends UnitTestCase
     protected $siteFoundRequestHandler;
 
     /**
+     * @var string
+     */
+    protected $originalLocale;
+
+    /**
      * Set up
      */
     protected function setUp(): void
     {
         parent::setUp();
+        $this->originalLocale = setlocale(LC_COLLATE, 0);
         $this->siteFinder = $this->getAccessibleMock(SiteFinder::class, ['dummy'], [], '', false);
 
         // A request handler which expects a site to be found.
@@ -81,6 +87,13 @@ class SiteResolverTest extends UnitTestCase
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+    }
+
+    protected function tearDown(): void
+    {
+        // restore locale to original setting
+        setlocale(LC_COLLATE, $this->originalLocale);
+        parent::tearDown();
     }
 
     /**
