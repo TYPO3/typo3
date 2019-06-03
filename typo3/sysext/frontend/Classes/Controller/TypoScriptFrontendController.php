@@ -240,12 +240,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $tmpl;
 
     /**
-     * Is set to the time-to-live time of cached pages. If FALSE, default is
-     * 60*60*24, which is 24 hours.
-     * @var bool|int
+     * Is set to the time-to-live time of cached pages. Default is 60*60*24, which is 24 hours.
+     *
+     * @var int
      * @internal
      */
-    protected $cacheTimeOutDefault = false;
+    protected $cacheTimeOutDefault = 86400;
 
     /**
      * Set internally if cached content is fetched from the database.
@@ -1859,6 +1859,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     if (!isset($this->config['config']['compressJs'])) {
                         $this->config['config']['compressJs'] = 0;
                     }
+                    // Setting default cache_timeout
+                    if (isset($this->config['config']['cache_period'])) {
+                        $this->set_cache_timeout_default((int)$this->config['config']['cache_period']);
+                    }
+
                     // Processing for the config_array:
                     $this->config['rootLine'] = $this->tmpl->rootLine;
                     // Class for render Header and Footer parts
@@ -2491,8 +2496,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
         $this->newHash = $this->getHash();
 
-        // Setting cache_timeout_default. May be overridden by PHP include scripts.
-        $this->cacheTimeOutDefault = (int)($this->config['config']['cache_period'] ?? 0);
         // Page is generated
         $this->no_cacheBeforePageGen = $this->no_cache;
     }
@@ -3311,7 +3314,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function set_cache_timeout_default($seconds)
     {
-        $this->cacheTimeOutDefault = (int)$seconds;
+        $seconds = (int)$seconds;
+        if ($seconds > 0) {
+            $this->cacheTimeOutDefault = $seconds;
+        }
     }
 
     /**
@@ -3329,12 +3335,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             if ($this->page['cache_timeout']) {
                 // Cache period was set for the page:
                 $cacheTimeout = $this->page['cache_timeout'];
-            } elseif ($this->cacheTimeOutDefault) {
-                // Cache period was set for the whole site:
-                $cacheTimeout = $this->cacheTimeOutDefault;
             } else {
-                // No cache period set at all, so we take one day (60*60*24 seconds = 86400 seconds):
-                $cacheTimeout = 86400;
+                // Cache period was set via TypoScript "config.cache_period",
+                // otherwise it's the default of 24 hours
+                $cacheTimeout = $this->cacheTimeOutDefault;
             }
             if (!empty($this->config['config']['cache_clearAtMidnight'])) {
                 $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
