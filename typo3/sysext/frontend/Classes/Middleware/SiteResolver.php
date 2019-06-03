@@ -19,8 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -60,6 +62,9 @@ class SiteResolver implements MiddlewareInterface
         $request = $request->withAttribute('site', $routeResult->getSite());
         $request = $request->withAttribute('language', $routeResult->getLanguage());
         $request = $request->withAttribute('routing', $routeResult);
+        if ($routeResult->getLanguage() instanceof SiteLanguage) {
+            Locales::setSystemLocaleFromSiteLanguage($routeResult->getLanguage());
+        }
         return $handler->handle($request);
     }
 }

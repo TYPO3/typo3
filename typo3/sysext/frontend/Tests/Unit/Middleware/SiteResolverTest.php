@@ -93,6 +93,8 @@ class SiteResolverTest extends UnitTestCase
     {
         // restore locale to original setting
         setlocale(LC_COLLATE, $this->originalLocale);
+        setlocale(LC_MONETARY, $this->originalLocale);
+        setlocale(LC_TIME, $this->originalLocale);
         parent::tearDown();
     }
 

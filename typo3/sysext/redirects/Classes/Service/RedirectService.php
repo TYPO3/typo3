@@ -282,7 +282,6 @@ class RedirectService implements LoggerAwareInterface
         $controller->calculateLinkVars($queryParams);
         $controller->getConfigArray();
         $controller->settingLanguage();
-        $controller->settingLocale();
         $controller->newCObj();
         return $controller;
     }

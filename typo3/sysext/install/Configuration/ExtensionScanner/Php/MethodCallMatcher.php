@@ -4154,4 +4154,11 @@ return [
             'Deprecation-88406-SetCacheHashnoCacheHashOptionsInViewHelpersAndUriBuilder.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->settingLocale' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-88473-TypoScriptFrontendController-settingLocale.rst'
+        ],
+    ],
 ];

@@ -2079,29 +2079,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
     /**
      * Setting locale for frontend rendering
+     * @deprecated will be removed in TYPO3 v11.0. Use Locales::setSystemLocaleFromSiteLanguage() instead.
      */
     public function settingLocale()
     {
+        trigger_error('TSFE->settingLocale() will be removed in TYPO3 v11.0. Use Locales::setSystemLocaleFromSiteLanguage() instead, as this functionality is independent of TSFE.', E_USER_DEPRECATED);
         $siteLanguage = $this->getCurrentSiteLanguage();
-        $locale = $siteLanguage->getLocale();
-        if ($locale) {
-            $availableLocales = GeneralUtility::trimExplode(',', $locale, true);
-            // If LC_NUMERIC is set e.g. to 'de_DE' PHP parses float values locale-aware resulting in strings with comma
-            // as decimal point which causes problems with value conversions - so we set all locale types except LC_NUMERIC
-            // @see https://bugs.php.net/bug.php?id=53711
-            $locale = setlocale(LC_COLLATE, ...$availableLocales);
-            if ($locale) {
-                // As str_* methods are locale aware and turkish has no upper case I
-                // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
-                // @see http://bugs.php.net/bug.php?id=35050
-                if (strpos($locale, 'tr') !== 0) {
-                    setlocale(LC_CTYPE, ...$availableLocales);
-                }
-                setlocale(LC_MONETARY, ...$availableLocales);
-                setlocale(LC_TIME, ...$availableLocales);
-            } else {
-                $this->getTimeTracker()->setTSlogMessage('Locale "' . htmlspecialchars($locale) . '" not found.', 3);
-            }
+        if ($siteLanguage->getLocale() && !Locales::setSystemLocaleFromSiteLanguage($siteLanguage)) {
+            $this->getTimeTracker()->setTSlogMessage('Locale "' . htmlspecialchars($siteLanguage->getLocale()) . '" not found.', 3);
         }
     }
 

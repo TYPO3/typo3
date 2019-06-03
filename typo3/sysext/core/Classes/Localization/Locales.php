@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -255,5 +257,42 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
             $selectedLanguage = 'default';
         }
         return $selectedLanguage;
+    }
+
+    /**
+     * Setting locale based on a SiteLanguage's defined locale.
+     * Used for frontend rendering, previously set within TSFE->settingLocale
+     *
+     * @param SiteLanguage $siteLanguage
+     * @return bool whether the locale was found on the system (and could be set properly) or not
+     */
+    public static function setSystemLocaleFromSiteLanguage(SiteLanguage $siteLanguage): bool
+    {
+        $locale = $siteLanguage->getLocale();
+        // No locale was given, so return false;
+        if (!$locale) {
+            return false;
+        }
+        $availableLocales = GeneralUtility::trimExplode(',', $locale, true);
+        // If LC_NUMERIC is set e.g. to 'de_DE' PHP parses float values locale-aware resulting in strings with comma
+        // as decimal point which causes problems with value conversions - so we set all locale types except LC_NUMERIC
+        // @see https://bugs.php.net/bug.php?id=53711
+        $locale = setlocale(LC_COLLATE, ...$availableLocales);
+        if ($locale) {
+            // As str_* methods are locale aware and turkish has no upper case I
+            // Class autoloading and other checks depending on case changing break with turkish locale LC_CTYPE
+            // @see http://bugs.php.net/bug.php?id=35050
+            if (strpos($locale, 'tr') !== 0) {
+                setlocale(LC_CTYPE, ...$availableLocales);
+            }
+            setlocale(LC_MONETARY, ...$availableLocales);
+            setlocale(LC_TIME, ...$availableLocales);
+        } else {
+            GeneralUtility::makeInstance(LogManager::class)
+                ->getLogger(__CLASS__)
+                ->error('Locale "' . htmlspecialchars($siteLanguage->getLocale()) . '" not found.');
+            return false;
+        }
+        return true;
     }
 }
