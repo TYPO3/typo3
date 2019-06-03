@@ -171,7 +171,7 @@ class FileWriterTest extends UnitTestCase
 
         $this->createWriter('encoded-data')->writeLog($recordWithData);
         $logFileContents = trim(file_get_contents($this->getDefaultFileName('encoded-data')));
-        $this->assertContains($expectedResult, $logFileContents);
+        $this->assertStringContainsString($expectedResult, $logFileContents);
     }
 
     /**
