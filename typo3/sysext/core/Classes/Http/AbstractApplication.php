@@ -26,6 +26,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 abstract class AbstractApplication implements ApplicationInterface
 {
+    private const MULTI_LINE_HEADERS = [
+        'set-cookie',
+    ];
+
     /**
      * @var string
      */
@@ -74,7 +78,13 @@ abstract class AbstractApplication implements ApplicationInterface
             }
 
             foreach ($response->getHeaders() as $name => $values) {
-                header($name . ': ' . implode(', ', $values));
+                if (in_array(strtolower($name), self::MULTI_LINE_HEADERS, true)) {
+                    foreach ($values as $value) {
+                        header($name . ': ' . $value, false);
+                    }
+                } else {
+                    header($name . ': ' . implode(', ', $values));
+                }
             }
         }
         $body = $response->getBody();
