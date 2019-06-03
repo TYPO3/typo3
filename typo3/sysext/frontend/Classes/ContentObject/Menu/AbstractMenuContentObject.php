@@ -190,6 +190,22 @@ abstract class AbstractMenuContentObject
      */
     protected $parentMenuArr;
 
+    protected const customItemStates = [
+        // IFSUB is TRUE if there exist submenu items to the current item
+        'IFSUB',
+        'ACT',
+        // ACTIFSUB is TRUE if there exist submenu items to the current item and the current item is active
+        'ACTIFSUB',
+        // CUR is TRUE if the current page equals the item here!
+        'CUR',
+        // CURIFSUB is TRUE if there exist submenu items to the current item and the current page equals the item here!
+        'CURIFSUB',
+        'USR',
+        'SPC',
+        'USERDEF1',
+        'USERDEF2'
+    ];
+
     /**
      * The initialization of the object. This just sets some internal variables.
      *
@@ -1224,162 +1240,27 @@ abstract class AbstractMenuContentObject
         }
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $NOconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['NO.'], $splitCount);
-        // Prepare IFSUB settings, overriding normal settings
-        // IFSUB is TRUE if there exist submenu items to the current item
-        if (!empty($this->mconf['IFSUB'])) {
-            $IFSUBconf = null;
+
+        // Prepare custom states settings, overriding normal settings
+        foreach (self::customItemStates as $state) {
+            if (empty($this->mconf[$state])) {
+                continue;
+            }
+            $customConfiguration = null;
             foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('IFSUB', $key)) {
-                    // if this is the first IFSUB element, we must generate IFSUB.
-                    if ($IFSUBconf === null) {
-                        $IFSUBconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['IFSUB.'], $splitCount);
+                if ($this->isItemState($state, $key)) {
+                    // if this is the first element of type $state, we must generate the custom configuration.
+                    if ($customConfiguration === null) {
+                        $customConfiguration = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf[$state . '.'], $splitCount);
                     }
-                    // Substitute normal with ifsub
-                    if (isset($IFSUBconf[$key])) {
-                        $NOconf[$key] = $IFSUBconf[$key];
+                    // Substitute normal with the custom (e.g. IFSUB)
+                    if (isset($customConfiguration[$key])) {
+                        $NOconf[$key] = $customConfiguration[$key];
                     }
                 }
             }
         }
-        // Prepare active settings, overriding normal settings
-        if (!empty($this->mconf['ACT'])) {
-            $ACTconf = null;
-            // Find active
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('ACT', $key)) {
-                    // If this is the first 'active', we must generate ACT.
-                    if ($ACTconf === null) {
-                        $ACTconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['ACT.'], $splitCount);
-                    }
-                    // Substitute normal with active
-                    if (isset($ACTconf[$key])) {
-                        $NOconf[$key] = $ACTconf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare ACT (active)/IFSUB settings, overriding normal settings
-        // ACTIFSUB is TRUE if there exist submenu items to the current item and the current item is active
-        if (!empty($this->mconf['ACTIFSUB'])) {
-            $ACTIFSUBconf = null;
-            // Find active
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('ACTIFSUB', $key)) {
-                    // If this is the first 'active', we must generate ACTIFSUB.
-                    if ($ACTIFSUBconf === null) {
-                        $ACTIFSUBconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['ACTIFSUB.'], $splitCount);
-                    }
-                    // Substitute normal with active
-                    if (isset($ACTIFSUBconf[$key])) {
-                        $NOconf[$key] = $ACTIFSUBconf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare CUR (current) settings, overriding normal settings
-        // CUR is TRUE if the current page equals the item here!
-        if (!empty($this->mconf['CUR'])) {
-            $CURconf = null;
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('CUR', $key)) {
-                    // if this is the first 'current', we must generate CUR. Basically this control is just inherited
-                    // from the other implementations as current would only exist one time and that's it
-                    // (unless you use special-features of HMENU)
-                    if ($CURconf === null) {
-                        $CURconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['CUR.'], $splitCount);
-                    }
-                    // Substitute normal with current
-                    if (isset($CURconf[$key])) {
-                        $NOconf[$key] = $CURconf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare CUR (current)/IFSUB settings, overriding normal settings
-        // CURIFSUB is TRUE if there exist submenu items to the current item and the current page equals the item here!
-        if (!empty($this->mconf['CURIFSUB'])) {
-            $CURIFSUBconf = null;
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('CURIFSUB', $key)) {
-                    // If this is the first 'current', we must generate CURIFSUB.
-                    if ($CURIFSUBconf === null) {
-                        $CURIFSUBconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['CURIFSUB.'], $splitCount);
-                    }
-                    // Substitute normal with active
-                    if ($CURIFSUBconf[$key]) {
-                        $NOconf[$key] = $CURIFSUBconf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare active settings, overriding normal settings
-        if (!empty($this->mconf['USR'])) {
-            $USRconf = null;
-            // Find active
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('USR', $key)) {
-                    // if this is the first active, we must generate USR.
-                    if ($USRconf === null) {
-                        $USRconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['USR.'], $splitCount);
-                    }
-                    // Substitute normal with active
-                    if ($USRconf[$key]) {
-                        $NOconf[$key] = $USRconf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare spacer settings, overriding normal settings
-        if (!empty($this->mconf['SPC'])) {
-            $SPCconf = null;
-            // Find spacers
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('SPC', $key)) {
-                    // If this is the first spacer, we must generate SPC.
-                    if ($SPCconf === null) {
-                        $SPCconf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['SPC.'], $splitCount);
-                    }
-                    // Substitute normal with spacer
-                    if (isset($SPCconf[$key])) {
-                        $NOconf[$key] = $SPCconf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare Userdefined settings
-        if (!empty($this->mconf['USERDEF1'])) {
-            $USERDEF1conf = null;
-            // Find active
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('USERDEF1', $key)) {
-                    // If this is the first active, we must generate USERDEF1.
-                    if ($USERDEF1conf === null) {
-                        $USERDEF1conf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['USERDEF1.'], $splitCount);
-                    }
-                    // Substitute normal with active
-                    if (isset($USERDEF1conf[$key])) {
-                        $NOconf[$key] = $USERDEF1conf[$key];
-                    }
-                }
-            }
-        }
-        // Prepare Userdefined settings
-        if (!empty($this->mconf['USERDEF2'])) {
-            $USERDEF2conf = null;
-            // Find active
-            foreach ($NOconf as $key => $val) {
-                if ($this->isItemState('USERDEF2', $key)) {
-                    // If this is the first active, we must generate USERDEF2.
-                    if ($USERDEF2conf === null) {
-                        $USERDEF2conf = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf['USERDEF2.'], $splitCount);
-                    }
-                    // Substitute normal with active
-                    if (isset($USERDEF2conf[$key])) {
-                        $NOconf[$key] = $USERDEF2conf[$key];
-                    }
-                }
-            }
-        }
+
         return $NOconf;
     }
 
