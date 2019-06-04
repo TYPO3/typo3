@@ -15,19 +15,17 @@ namespace TYPO3\CMS\Core\Localization;
  */
 
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Locales.
- *
- * Used to define backend system languages
+ * Locales. Used to define TYPO3- system languages
  * When adding new keys, remember to:
  * - Update 'setup' extension labels (sysext/setup/Resources/Private/Language/locallang.xlf)
  * That's it!
  */
-class Locales implements \TYPO3\CMS\Core\SingletonInterface
+class Locales implements SingletonInterface
 {
     /**
      * Supported TYPO3 languages with locales
@@ -118,18 +116,15 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
     ];
 
     /**
-     * Mapping for backward compatibility codes
-     *
-     * @var array
-     */
-    protected $isoMapping;
-
-    /**
      * Dependencies for locales
+     * This is a reverse mapping for the built-in languages within $this->languages that contain 5-letter codes.
      *
      * @var array
      */
-    protected $localeDependencies;
+    protected $localeDependencies = [
+        'pt_BR' => ['pt'],
+        'fr_CA' => ['fr']
+    ];
 
     /**
      * Initializes the languages.
@@ -137,24 +132,24 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
      */
     public static function initialize(): Locales
     {
-        /** @var Locales $instance */
         $instance = GeneralUtility::makeInstance(self::class);
-        $instance->isoMapping = array_flip($instance->isoReverseMapping);
         // Allow user-defined locales
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['user'] ?? [] as $locale => $name) {
             if (!isset($instance->languages[$locale])) {
                 $instance->languages[$locale] = $name;
             }
-        }
-        // Initializes the locale dependencies with TYPO3 supported locales
-        $instance->localeDependencies = [];
-        foreach ($instance->languages as $locale => $name) {
+            // Initializes the locale dependencies with TYPO3 supported locales
             if (strlen($locale) === 5) {
                 $instance->localeDependencies[$locale] = [substr($locale, 0, 2)];
             }
         }
         // Merge user-provided locale dependencies
-        ArrayUtility::mergeRecursiveWithOverrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] ?? []);
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'] ?? null)) {
+            $instance->localeDependencies = array_replace_recursive(
+                $instance->localeDependencies,
+                $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']
+            );
+        }
         return $instance;
     }
 
@@ -185,7 +180,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getIsoMapping()
     {
-        return $this->isoMapping;
+        return array_flip($this->isoReverseMapping);
     }
 
     /**
