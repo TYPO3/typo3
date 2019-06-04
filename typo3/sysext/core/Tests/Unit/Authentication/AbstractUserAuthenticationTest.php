@@ -61,7 +61,9 @@ class AbstractUserAuthenticationTest extends UnitTestCase
         /** @var $mock \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication */
         $mock = $this->getMockBuilder(AbstractUserAuthentication::class)
             ->setMethods(['dummy'])
+            ->disableOriginalConstructor()
             ->getMock();
+        $mock->loginType = 'BE';
         $mock->checkPid = true;
         $mock->checkPid_value = null;
         $mock->user_table = 'be_users';
@@ -76,7 +78,8 @@ class AbstractUserAuthenticationTest extends UnitTestCase
     {
         $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.2; rv:22.0) Gecko/20130405 Firefox/23.0';
         $_SERVER['HTTPS'] = 'on';
-        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class);
+        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class, [], '', false);
+        $subject->_set('loginType', 'BE');
         $result = $subject->_call('getHttpHeaders');
         $this->assertEquals($result['Pragma'], 'no-cache');
     }
@@ -88,7 +91,7 @@ class AbstractUserAuthenticationTest extends UnitTestCase
     {
         $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US)';
         $_SERVER['HTTPS'] = 'on';
-        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class);
+        $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class, [], '', false);
         $result = $subject->_call('getHttpHeaders');
         $this->assertEquals($result['Pragma'], 'private');
     }

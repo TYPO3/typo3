@@ -55,13 +55,11 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      * Replacement for AbstactUserAuthentication::start()
      *
      * We do not need support for sessions, cookies, $_GET-modes, the postUserLookup hook or
-     * a database connectiona during CLI Bootstrap
+     * a database connection during CLI Bootstrap
      */
     public function start()
     {
-        $this->logger->debug('## Beginning of auth logging.');
-        // svConfig is unused, but we set it, as the property is public and might be used by extensions
-        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
+        // do nothing
     }
 
     /**
@@ -71,6 +69,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
      */
     public function checkAuthentication()
     {
+        // do nothing
     }
 
     /**

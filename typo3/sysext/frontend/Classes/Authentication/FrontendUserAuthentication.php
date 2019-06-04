@@ -26,6 +26,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FrontendUserAuthentication extends AbstractUserAuthentication
 {
     /**
+     * Login type, used for services.
+     * @var string
+     */
+    public $loginType = 'FE';
+
+    /**
+     * Form field with login-name
+     * @var string
+     */
+    public $formfield_uname = 'user';
+
+    /**
+     * Form field with password
+     * @var string
+     */
+    public $formfield_uident = 'pass';
+
+    /**
+     * Form field with status: *'login', 'logout'. If empty login is not verified.
+     * @var string
+     */
+    public $formfield_status = 'logintype';
+
+    /**
      * form field with 0 or 1
      * 1 = permanent login enabled
      * 0 = session is valid for a browser session only
@@ -50,6 +74,36 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public $sessionTimeout = 6000;
 
     /**
+     * Table in database with user data
+     * @var string
+     */
+    public $user_table = 'fe_users';
+
+    /**
+     * Column for login-name
+     * @var string
+     */
+    public $username_column = 'username';
+
+    /**
+     * Column for password
+     * @var string
+     */
+    public $userident_column = 'password';
+
+    /**
+     * Column for user-id
+     * @var string
+     */
+    public $userid_column = 'uid';
+
+    /**
+     * Column name for last login timestamp
+     * @var string
+     */
+    public $lastLogin_column = 'lastlogin';
+
+    /**
      * @var string
      */
     public $usergroup_column = 'usergroup';
@@ -58,6 +112,17 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * @var string
      */
     public $usergroup_table = 'fe_groups';
+
+    /**
+     * Enable field columns of user table
+     * @var array
+     */
+    public $enablecolumns = [
+        'deleted' => 'deleted',
+        'disabled' => 'disable',
+        'starttime' => 'starttime',
+        'endtime' => 'endtime'
+    ];
 
     /**
      * @var array
@@ -105,37 +170,35 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     protected $loginHidden = false;
 
     /**
-     * Default constructor.
+     * Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
+     * Disable cookie by default, will be activated if saveSessionData() is called,
+     * a user is logging-in or an existing session is found
+     * @var bool
      */
+    public $dontSetCookie = true;
+
+    /**
+     * Send no-cache headers (disabled by default, if no fixed session is there)
+     * @var bool
+     */
+    public $sendNoCacheHeaders = false;
+
     public function __construct()
     {
-        parent::__construct();
-
-        // Disable cookie by default, will be activated if saveSessionData() is called,
-        // a user is logging-in or an existing session is found
-        $this->dontSetCookie = true;
-
         $this->name = self::getCookieName();
-        $this->loginType = 'FE';
-        $this->user_table = 'fe_users';
-        $this->username_column = 'username';
-        $this->userident_column = 'password';
-        $this->userid_column = 'uid';
-        $this->lastLogin_column = 'lastlogin';
-        $this->enablecolumns = [
-            'deleted' => 'deleted',
-            'disabled' => 'disable',
-            'starttime' => 'starttime',
-            'endtime' => 'endtime'
-        ];
-        $this->formfield_uname = 'user';
-        $this->formfield_uident = 'pass';
-        $this->formfield_status = 'logintype';
-        $this->sendNoCacheHeaders = false;
         $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'];
         $this->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
         $this->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
         $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionTimeout'];
+        if ($this->sessionTimeout > 0 && $this->sessionTimeout < $this->lifetime) {
+            // If server session timeout is non-zero but less than client session timeout: Copy this value instead.
+            $this->sessionTimeout = $this->lifetime;
+        }
+        $this->sessionDataLifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'];
+        if ($this->sessionDataLifetime <= 0) {
+            $this->sessionDataLifetime = 86400;
+        }
+        parent::__construct();
     }
 
     /**
@@ -150,24 +213,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             $configuredCookieName = 'fe_typo_user';
         }
         return $configuredCookieName;
-    }
-
-    /**
-     * Starts a user session
-     *
-     * @see AbstractUserAuthentication::start()
-     */
-    public function start()
-    {
-        if ($this->sessionTimeout > 0 && $this->sessionTimeout < $this->lifetime) {
-            // If server session timeout is non-zero but less than client session timeout: Copy this value instead.
-            $this->sessionTimeout = $this->lifetime;
-        }
-        $this->sessionDataLifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionDataLifetime'];
-        if ($this->sessionDataLifetime <= 0) {
-            $this->sessionDataLifetime = 86400;
-        }
-        parent::start();
     }
 
     /**

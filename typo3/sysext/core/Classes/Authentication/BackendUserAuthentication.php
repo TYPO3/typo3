@@ -286,16 +286,21 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     ];
 
     /**
+     * Login type, used for services.
+     * @var string
+     */
+    public $loginType = 'BE';
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        parent::__construct();
         $this->name = self::getCookieName();
-        $this->loginType = 'BE';
         $this->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
         $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
+        parent::__construct();
     }
 
     /**

@@ -162,10 +162,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     /**
      * GarbageCollection
      * Purge all server session data older than $gc_time seconds.
-     * 0 = default to $this->sessionTimeout or use 86400 seconds (1 day) if $this->sessionTimeout == 0
+     * if $this->sessionTimeout > 0, then the session timeout is used instead.
      * @var int
      */
-    public $gc_time = 0;
+    public $gc_time = 86400;
 
     /**
      * Probability for garbage collection to be run (in percent)
@@ -317,11 +317,20 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
     /**
      * Initialize some important variables
+     *
+     * @throws Exception
      */
     public function __construct()
     {
-        // This function has to stay even if it's empty
-        // Implementations of that abstract class might call parent::__construct();
+        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
+        // If there is a custom session timeout, use this instead of the 1d default gc time.
+        if ($this->sessionTimeout > 0) {
+            $this->gc_time = $this->sessionTimeout;
+        }
+        // Backend or frontend login - used for auth services
+        if (empty($this->loginType)) {
+            throw new Exception('No loginType defined, must be set explicitly by subclass', 1476045345);
+        }
     }
 
     /**
@@ -332,33 +341,22 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * c) Lookup a session attached to a user and check timeout etc.
      * d) Garbage collection, setting of no-cache headers.
      * If a user is authenticated the database record of the user (array) will be set in the ->user internal variable.
-     *
-     * @throws Exception
      */
     public function start()
     {
-        // Backend or frontend login - used for auth services
-        if (empty($this->loginType)) {
-            throw new Exception('No loginType defined, should be set explicitly by subclass', 1476045345);
-        }
         $this->logger->debug('## Beginning of auth logging.');
         $this->newSessionID = false;
-        // $id is set to ses_id if cookie is present. Otherwise a new session will start
-        $id = $this->getCookie($this->name);
-        $this->svConfig = $GLOBALS['TYPO3_CONF_VARS']['SVCONF']['auth'] ?? [];
-
-        // If new session or client tries to fix session...
-        if (!$id || !$this->isExistingSessionRecord($id)) {
-            // New random session-$id is made
-            $id = $this->createSessionId();
-            // New session
-            $this->newSessionID = true;
-        }
-        // Internal var 'id' is set
-        $this->id = $id;
-
         // Make certain that NO user is set initially
         $this->user = null;
+        // sessionID is set to ses_id if cookie is present. Otherwise a new session will start
+        $this->id = $this->getCookie($this->name);
+
+        // If new session or client tries to fix session...
+        if (!$this->isExistingSessionRecord($this->id)) {
+            $this->id = $this->createSessionId();
+            $this->newSessionID = true;
+        }
+
         // Set all possible headers that could ensure that the script is not cached on the client-side
         $this->sendHttpHeaders();
         // Load user session, check to see if anyone has submitted login-information and if so authenticate
@@ -374,11 +372,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 'pObj' => $this,
             ];
             GeneralUtility::callUserFunction($funcName, $_params, $this);
-        }
-        // Set $this->gc_time if not explicitly specified
-        if ($this->gc_time === 0) {
-            // Default to 86400 seconds (1 day) if $this->sessionTimeout is 0
-            $this->gc_time = $this->sessionTimeout === 0 ? 86400 : $this->sessionTimeout;
         }
         // If we're lucky we'll get to clean up old sessions
         if (rand() % 100 <= $this->gc_probability) {
@@ -1035,6 +1028,9 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      */
     public function isExistingSessionRecord($id)
     {
+        if (empty($id)) {
+            return false;
+        }
         try {
             $sessionRecord = $this->getSessionBackend()->get($id);
             if (empty($sessionRecord)) {
