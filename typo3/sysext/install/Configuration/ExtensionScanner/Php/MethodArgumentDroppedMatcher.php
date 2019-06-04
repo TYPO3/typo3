@@ -229,4 +229,10 @@ return [
             'Breaking-88574-4thParameterOfPageRepository-enableFieldsRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Localization\LanguageService->includeLLFile' => [
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-88567-GLOBALS_LOCAL_LANG.rst',
+        ],
+    ],
 ];

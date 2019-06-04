@@ -36,4 +36,9 @@ return [
             'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'LOCAL_LANG\']' => [
+        'restFiles' => [
+            'Deprecation-88567-GLOBALS_LOCAL_LANG.rst',
+        ],
+    ],
 ];

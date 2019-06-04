@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -152,10 +151,7 @@ class NewContentElementController
     {
         $lang = $this->getLanguageService();
         $lang->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-        $LOCAL_LANG_orig = $GLOBALS['LOCAL_LANG'];
         $lang->includeLLFile('EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf');
-        ArrayUtility::mergeRecursiveWithOverrule($LOCAL_LANG_orig, $GLOBALS['LOCAL_LANG']);
-        $GLOBALS['LOCAL_LANG'] = $LOCAL_LANG_orig;
 
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
