@@ -22,6 +22,56 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteLanguageTest extends UnitTestCase
 {
+    public function languageFallbackIdConversionDataProvider()
+    {
+        return [
+            'no fallback set' => [
+                null,
+                []
+            ],
+            'fallback given as empty string returns no fallback' => [
+                '',
+                []
+            ],
+            'fallback to default language as string returns proper fallback' => [
+                '0',
+                [0]
+            ],
+            'fallback to multiple languages as string returns proper fallback' => [
+                '3,0',
+                [3, 0]
+            ],
+            'fallback to default language as array returns proper fallback' => [
+                ['0'],
+                [0]
+            ],
+            'fallback to multiple languages as array returns proper fallback' => [
+                ['3', '0'],
+                [3, 0]
+            ],
+            'fallback to multiple languages as array with integers returns proper fallback' => [
+                [3, 0],
+                [3, 0]
+            ],
+
+        ];
+    }
+
+    /**
+     * @dataProvider languageFallbackIdConversionDataProvider
+     * @test
+     * @param string|array|null $input
+     * @param array $expected
+     */
+    public function languageFallbackIdConversion($input, array $expected)
+    {
+        $configuration = [
+            'fallbacks' => $input
+        ];
+        $subject = new SiteLanguage(1, 'fr', new Uri('/'), $configuration);
+        $this->assertSame($expected, $subject->getFallbackLanguageIds());
+    }
+
     /**
      * @test
      */
