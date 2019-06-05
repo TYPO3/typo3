@@ -869,7 +869,6 @@ class DataHandlerHook
         // Preserve states:
         $t3ver_state = [];
         $t3ver_state['swapVersion'] = $swapVersion['t3ver_state'];
-        $t3ver_state['curVersion'] = $curVersion['t3ver_state'];
         // Modify offline version to become online:
         $tmp_wsid = $swapVersion['t3ver_wsid'];
         // Set pid for ONLINE
@@ -1066,9 +1065,8 @@ class DataHandlerHook
 
             // Clear cache:
             $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
-            // Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
-            if (!$swapIntoWS && $t3ver_state['curVersion'] > 0) {
-                // For delete + completely delete!
+            // If not swapped, delete the record from the database
+            if (!$swapIntoWS) {
                 $dataHandler->deleteEl($table, $swapWith, true, true);
             }
 
