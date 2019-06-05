@@ -37,7 +37,7 @@ class LogLevelTest extends UnitTestCase
      */
     public function isValidLevelDoesNotValidateInvalidLevels()
     {
-        $invalidLevels = [-1, 8, 1.5, 'string', [], new \stdClass(), false, null];
+        $invalidLevels = [-1, 8];
         foreach ($invalidLevels as $invalidLevel) {
             $this->assertFalse(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($invalidLevel));
         }
@@ -51,12 +51,6 @@ class LogLevelTest extends UnitTestCase
         return [
             'negative integer' => [-1],
             'higher level than expected' => [8],
-            'float' => [1.5],
-            'string' => ['string'],
-            'array' => [[]],
-            'object' => [new \stdClass()],
-            'boolean FALSE' => [false],
-            'NULL' => [null]
         ];
     }
 
@@ -78,14 +72,5 @@ class LogLevelTest extends UnitTestCase
     public function normalizeLevelConvertsValidLevelFromStringToInteger()
     {
         $this->assertEquals(7, \TYPO3\CMS\Core\Log\LogLevel::normalizeLevel('debug'));
-    }
-
-    /**
-     * @test
-     */
-    public function normalizeLevelDoesNotConvertInvalidLevel()
-    {
-        $levelString = 'invalid';
-        $this->assertEquals($levelString, \TYPO3\CMS\Core\Log\LogLevel::normalizeLevel($levelString));
     }
 }

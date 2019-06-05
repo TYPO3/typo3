@@ -109,10 +109,10 @@ class LogRecordTest extends UnitTestCase
     public function setLevelValidatesLevel()
     {
         $this->expectException(\Psr\Log\InvalidArgumentException::class);
-        $this->expectExceptionCode(1321637121);
+        $this->expectExceptionCode(1550247164);
 
         $record = $this->getRecord();
-        $record->setLevel(100);
+        $record->setLevel('foo');
     }
 
     /**

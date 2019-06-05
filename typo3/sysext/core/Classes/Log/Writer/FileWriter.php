@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -145,7 +144,7 @@ class FileWriter extends AbstractWriter
     public function writeLog(LogRecord $record)
     {
         $timestamp = date('r', (int)$record->getCreated());
-        $levelName = LogLevel::getName($record->getLevel());
+        $levelName = strtoupper($record->getLevel());
         $data = '';
         $recordData = $record->getData();
         if (!empty($recordData)) {

@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
@@ -131,7 +133,7 @@ class SyslogWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record)
     {
-        if (false === syslog($record->getLevel(), $this->getMessageForSyslog($record))) {
+        if (false === syslog(LogLevel::normalizeLevel($record->getLevel()), $this->getMessageForSyslog($record))) {
             throw new \RuntimeException('Could not write log record to syslog', 1345036337);
         }
         return $this;

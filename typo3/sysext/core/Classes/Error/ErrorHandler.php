@@ -147,7 +147,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
             return true;
         }
         if ($this->logger) {
-            $this->logger->log(LogLevel::NOTICE - $severity, $message);
+            $this->logger->log(LogLevel::normalizeLevel(LogLevel::NOTICE) - $severity, $message);
         }
 
         // Write error message to TSlog (admin panel)

@@ -13,7 +13,6 @@ namespace TYPO3\CMS\Core\Log\Writer;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
@@ -30,7 +29,7 @@ class PhpErrorLogWriter extends AbstractWriter
      */
     public function writeLog(LogRecord $record)
     {
-        $levelName = LogLevel::getName($record->getLevel());
+        $levelName = strtoupper($record->getLevel());
         $data = '';
         $recordData = $record->getData();
         if (!empty($recordData)) {

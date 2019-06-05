@@ -33,13 +33,13 @@ class DatabaseWriterTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'request_id' => '5862c0e7838ac',
             'time_micro' => 1469740000.0,
             'component' => 'aComponent',
-            'level' => LogLevel::DEBUG,
+            'level' => LogLevel::normalizeLevel(LogLevel::DEBUG),
             'message' => 'aMessage',
             'data' => ''
         ];
         $logRecord = new LogRecord(
             $logRecordData['component'],
-            $logRecordData['level'],
+            LogLevel::DEBUG,
             $logRecordData['message'],
             [],
             $logRecordData['request_id']

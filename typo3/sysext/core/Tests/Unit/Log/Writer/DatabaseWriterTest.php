@@ -14,10 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
-use TYPO3\CMS\Core\Database\Connection;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,37 +29,12 @@ class DatabaseWriterTest extends UnitTestCase
     public function getTableReturnsPreviouslySetTable()
     {
         $logTable = $this->getUniqueId('logtable_');
-        /** @var \TYPO3\CMS\Core\Log\Writer\DatabaseWriter|\PHPUnit_Framework_MockObject_MockObject $subject */
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class)
+        /** @var DatabaseWriter|MockObject $subject */
+        $subject = $this->getMockBuilder(DatabaseWriter::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setLogTable($logTable);
         $this->assertSame($logTable, $subject->getLogTable());
-    }
-
-    /**
-     * @test
-     */
-    public function writeLogInsertsToSpecifiedTable()
-    {
-        $logTable = $this->getUniqueId('logtable_');
-
-        $connectionProphecy = $this->prophesize(Connection::class);
-        $connectionPoolProphecy = $this->prophesize(ConnectionPool::class);
-        $connectionPoolProphecy->getConnectionForTable(Argument::cetera())->willReturn($connectionProphecy->reveal());
-
-        GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
-        $logRecordMock = $this->createMock(\TYPO3\CMS\Core\Log\LogRecord::class);
-        $subject = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class)
-            ->setMethods(['dummy'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $subject->setLogTable($logTable);
-
-        // $logTable should end up as first insert argument
-        $connectionProphecy->insert($logTable, Argument::cetera())->willReturn(1);
-
-        $subject->writeLog($logRecordMock);
     }
 }

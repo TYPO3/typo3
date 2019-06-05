@@ -204,7 +204,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
         // Validate the config
         foreach ($result as $level => $unused) {
             try {
-                LogLevel::validateLevel($level);
+                LogLevel::validateLevel(LogLevel::normalizeLevel($level));
             } catch (\Psr\Log\InvalidArgumentException $e) {
                 throw new \Psr\Log\InvalidArgumentException('The given severity level "' . htmlspecialchars($level) . '" for ' . $configurationKey . ' of logger "' . $loggerName . '" is not valid.', 1326406447);
             }

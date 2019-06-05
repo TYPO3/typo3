@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,7 +75,7 @@ class DatabaseWriter extends AbstractWriter
             'request_id' => $record->getRequestId(),
             'time_micro' => $record->getCreated(),
             'component' => $record->getComponent(),
-            'level' => $record->getLevel(),
+            'level' => LogLevel::normalizeLevel($record->getLevel()),
             'message' => $record->getMessage(),
             'data' => $data
         ];

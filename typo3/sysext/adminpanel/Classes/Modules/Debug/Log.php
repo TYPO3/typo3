@@ -36,7 +36,10 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class Log extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface, ModuleSettingsProviderInterface, InitializableInterface
 {
-    protected $logLevel = LogLevel::INFO;
+    /**
+     * @var int
+     */
+    protected $logLevel;
 
     /**
      * @var ConfigurationService
@@ -45,6 +48,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
 
     public function __construct()
     {
+        $this->logLevel = LogLevel::normalizeLevel(LogLevel::INFO);
         $this->configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
     }
 
@@ -73,8 +77,9 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
      */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
+        $maxLevel = LogLevel::normalizeLevel(LogLevel::DEBUG);
         $levels = [];
-        for ($i = 1; $i <= LogLevel::DEBUG; $i++) {
+        for ($i = 1; $i <= $maxLevel; $i++) {
             $levels[] = [
                 'level' => $i,
                 'levelName' => LogLevel::getName($i),
@@ -110,8 +115,9 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths(['EXT:adminpanel/Resources/Private/Partials']);
 
+        $maxLevel = LogLevel::normalizeLevel(LogLevel::DEBUG);
         $levels = [];
-        for ($i = 1; $i <= LogLevel::DEBUG; $i++) {
+        for ($i = 1; $i <= $maxLevel; $i++) {
             $levels[] = [
                 'level' => $i,
                 'levelName' => LogLevel::getName($i),
@@ -187,10 +193,11 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
 
     protected function setLoggingConfigRecursive(array $logConfig): array
     {
+        $maxLevel = LogLevel::normalizeLevel(LogLevel::DEBUG);
         foreach ($logConfig as $key => $value) {
             if ($key === 'writerConfiguration') {
                 $logConfig[$key] = $value;
-                $logConfig[$key][LogLevel::DEBUG][InMemoryLogWriter::class] = [];
+                $logConfig[$key][$maxLevel][InMemoryLogWriter::class] = [];
             } elseif (is_array($value)) {
                 $logConfig[$key] = $this->setLoggingConfigRecursive($value);
             }

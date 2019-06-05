@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogRecord;
 
 /**
@@ -56,7 +57,7 @@ class DebugModule extends AbstractModule implements ShortInfoProviderInterface
     public function getShortInfo(): string
     {
         $errorsAndWarnings = array_filter(InMemoryLogWriter::$log, function (LogRecord $entry) {
-            return $entry->getLevel() <= 4;
+            return LogLevel::normalizeLevel($entry->getLevel()) <= 4;
         });
         return sprintf($this->getLanguageService()->sL(
             'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:module.shortinfo'
