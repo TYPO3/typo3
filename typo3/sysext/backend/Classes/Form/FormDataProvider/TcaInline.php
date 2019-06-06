@@ -123,7 +123,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
      * @param string $fieldName Current handle field name
      * @return array Modified item array
      */
-    protected function resolveRelatedRecords(array $result, $fieldName)
+    protected function resolveRelatedRecordsOverlays(array $result, $fieldName)
     {
         $childTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
 
@@ -137,6 +137,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             );
         }
         $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfLocalizedOverlay);
+        $connectedUidsOfLocalizedOverlay = $this->getWorkspacedUids($connectedUidsOfLocalizedOverlay, $childTableName);
         if ($result['inlineCompileExistingChildren']) {
             $tableNameWithDefaultRecords = $result['tableName'];
             $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
@@ -145,6 +146,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 $result['defaultLanguageRow']['uid'],
                 $result['defaultLanguageRow'][$fieldName]
             );
+            $connectedUidsOfDefaultLanguageRecord = $this->getWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
 
             $showPossible = $result['processedTca']['columns'][$fieldName]['config']['appearance']['showPossibleLocalizationRecords'];
 
@@ -199,6 +201,40 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             }
         }
 
+        return $result;
+    }
+
+    /**
+     * Substitute the value in databaseRow of this inline field with an array
+     * that contains the databaseRows of currently connected records and some meta information.
+     *
+     * @param array $result Result array
+     * @param string $fieldName Current handle field name
+     * @return array Modified item array
+     */
+    protected function resolveRelatedRecords(array $result, $fieldName)
+    {
+        if ($result['defaultLanguageRow'] !== null) {
+            return $this->resolveRelatedRecordsOverlays($result, $fieldName);
+        }
+
+        $childTableName = $result['processedTca']['columns'][$fieldName]['config']['foreign_table'];
+        $connectedUidsOfDefaultLanguageRecord = $this->resolveConnectedRecordUids(
+            $result['processedTca']['columns'][$fieldName]['config'],
+            $result['tableName'],
+            $result['databaseRow']['uid'],
+            $result['databaseRow'][$fieldName]
+        );
+        $result['databaseRow'][$fieldName] = implode(',', $connectedUidsOfDefaultLanguageRecord);
+
+        $connectedUidsOfDefaultLanguageRecord = $this->getWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
+
+        if ($result['inlineCompileExistingChildren']) {
+            foreach ($connectedUidsOfDefaultLanguageRecord as $uid) {
+                $compiledChild = $this->compileChild($result, $fieldName, $uid);
+                $result['processedTca']['columns'][$fieldName]['children'][] = $compiledChild;
+            }
+        }
         return $result;
     }
 
