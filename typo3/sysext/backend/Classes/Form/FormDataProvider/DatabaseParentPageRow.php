@@ -36,6 +36,9 @@ class DatabaseParentPageRow extends AbstractDatabaseRecordProvider implements Fo
             if ($result['vanillaUid'] < 0) {
                 // vanillaUid points to a neighbor record in same table - get its record and its pid from there to find parent record
                 $neighborRow = $this->getRecordFromDatabase($result['tableName'], abs($result['vanillaUid']));
+                if (!empty($neighborRow['t3ver_oid'])) {
+                    $neighborRow = $this->getRecordFromDatabase($result['tableName'], (int)$neighborRow['t3ver_oid']);
+                }
                 $result['neighborRow'] = $neighborRow;
                 // uid of page the record is located in
                 $neighborRowPid = (int)$neighborRow['pid'];

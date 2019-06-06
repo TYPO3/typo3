@@ -171,7 +171,11 @@ class ElementInformationController
             } else {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $this->uid);
                 if ($this->row) {
-                    $this->pageInfo = BackendUtility::readPageAccess($this->row['pid'], $this->permsClause);
+                    // Find the correct "pid" when a versionized record is given, otherwise "pid = -1" always fails
+                    if (!empty($this->row['t3ver_oid'])) {
+                        $t3OrigRow = BackendUtility::getRecord($this->table, (int)$this->row['t3ver_oid']);
+                        $this->pageInfo = BackendUtility::readPageAccess((int)$t3OrigRow['pid'], $this->permsClause);
+                    }
                     $this->access = is_array($this->pageInfo);
                 }
             }
