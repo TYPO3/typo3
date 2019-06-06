@@ -175,7 +175,7 @@ class BasicFileUtility
             $theTempFileBody = preg_replace('/_[0-9][0-9]$/', '', $origFileInfo['filebody']);
             // This removes _xx if appended to the file
             $theOrigExt = $origFileInfo['realFileext'] ? '.' . $origFileInfo['realFileext'] : '';
-            for ($a = 1; $a < $this->maxNumber; $a++) {
+            for ($a = 1; $a <= $this->maxNumber + 1; $a++) {
                 if ($a <= $this->maxNumber) {
                     // First we try to append numbers
                     $insert = '_' . sprintf('%02d', $a);
