@@ -70,6 +70,7 @@ class CreateAdmin extends AbstractInteractableModule {
           'userName': this.findInModal('.t3js-createAdmin-user').val(),
           'userPassword': this.findInModal('.t3js-createAdmin-password').val(),
           'userPasswordCheck': this.findInModal('.t3js-createAdmin-password-check').val(),
+          'userEmail': this.findInModal('.t3js-createAdmin-email').val(),
           'userSystemMaintainer': (this.findInModal('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0,
         },
       },
@@ -94,6 +95,7 @@ class CreateAdmin extends AbstractInteractableModule {
     this.findInModal('.t3js-createAdmin-user').val('');
     this.findInModal('.t3js-createAdmin-password').val('');
     this.findInModal('.t3js-createAdmin-password-check').val('');
+    this.findInModal('.t3js-createAdmin-email').val('');
     this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
   }
 }

@@ -635,6 +635,7 @@ class InstallerController
         $username = (string)$postValues['username'] !== '' ? $postValues['username'] : 'admin';
         // Check password and return early if not good enough
         $password = $postValues['password'];
+        $email = $postValues['email'] ?? '';
         if (empty($password) || strlen($password) < 8) {
             $messages[] = new FlashMessage(
                 'You are setting an important password here! It gives an attacker full control over your instance if cracked.'
@@ -674,6 +675,7 @@ class InstallerController
         $adminUserFields = [
             'username' => $username,
             'password' => $this->getHashedPassword($password),
+            'email' => GeneralUtility::validEmail($email) ? $email : '',
             'admin' => 1,
             'tstamp' => $GLOBALS['EXEC_TIME'],
             'crdate' => $GLOBALS['EXEC_TIME']

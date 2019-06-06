@@ -481,6 +481,7 @@ class MaintenanceController extends AbstractController
         $username = preg_replace('/\\s/i', '', $request->getParsedBody()['install']['userName']);
         $password = $request->getParsedBody()['install']['userPassword'];
         $passwordCheck = $request->getParsedBody()['install']['userPasswordCheck'];
+        $email = $request->getParsedBody()['install']['userEmail'] ?? '';
         $isSystemMaintainer = ((bool)$request->getParsedBody()['install']['userSystemMaintainer'] == '1') ? true : false;
 
         $messages = new FlashMessageQueue('install');
@@ -527,6 +528,9 @@ class MaintenanceController extends AbstractController
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'crdate' => $GLOBALS['EXEC_TIME']
                 ];
+                if (GeneralUtility::validEmail($email)) {
+                    $adminUserFields['email'] = $email;
+                }
                 $connectionPool->getConnectionForTable('be_users')->insert('be_users', $adminUserFields);
 
                 if ($isSystemMaintainer) {
