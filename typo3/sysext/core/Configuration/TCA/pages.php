@@ -394,7 +394,6 @@ return [
         ],
         'nav_hide' => [
             'exclude' => true,
-            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:pages.nav_hide_toggle',
             'config' => [
                 'type' => 'check',
@@ -405,6 +404,9 @@ return [
                         1 => '',
                         'invertStateDisplay' => true
                     ]
+                ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
                 ],
             ]
         ],
@@ -630,7 +632,6 @@ return [
         ],
         'content_from_pid' => [
             'exclude' => true,
-            'l10n_mode' => 'prefixLangTitle',
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.content_from_pid',
             'config' => [
                 'type' => 'group',
@@ -645,8 +646,11 @@ return [
                         'addWhere' => ' AND pages.uid != ###THIS_UID###'
                     ]
                 ],
-                'default' => 0
-            ]
+                'default' => 0,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true
+                ],
+            ],
         ],
         'mount_pid' => [
             'l10n_mode' => 'exclude',
