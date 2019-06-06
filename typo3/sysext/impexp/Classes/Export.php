@@ -728,32 +728,6 @@ class Export extends ImportExport
         $this->dat['files'][$fI['ID']] = $fileRec;
         // For soft references, do further processing:
         if ($recordRef === '_SOFTREF_') {
-            // RTE files?
-            if ($RTEoriginal = $this->getRTEoriginalFilename(PathUtility::basename($fI['ID_absFile']))) {
-                $RTEoriginal_absPath = PathUtility::dirname($fI['ID_absFile']) . '/' . $RTEoriginal;
-                if (@is_file($RTEoriginal_absPath)) {
-                    $RTEoriginal_ID = md5($RTEoriginal_absPath);
-                    $fileInfo = stat($RTEoriginal_absPath);
-                    $fileRec = [];
-                    $fileRec['filename'] = PathUtility::basename($RTEoriginal_absPath);
-                    $fileRec['filemtime'] = $fileInfo['mtime'];
-                    $fileRec['record_ref'] = '_RTE_COPY_ID:' . $fI['ID'];
-                    $this->dat['header']['files'][$fI['ID']]['RTE_ORIG_ID'] = $RTEoriginal_ID;
-                    // Setting this data in the header
-                    $this->dat['header']['files'][$RTEoriginal_ID] = $fileRec;
-                    $fileMd5 = md5_file($RTEoriginal_absPath);
-                    if (!$this->saveFilesOutsideExportFile) {
-                        // ... and finally add the heavy stuff:
-                        $fileRec['content'] = file_get_contents($RTEoriginal_absPath);
-                    } else {
-                        GeneralUtility::upload_copy_move($RTEoriginal_absPath, $this->getTemporaryFilesPathForExport() . $fileMd5);
-                    }
-                    $fileRec['content_md5'] = $fileMd5;
-                    $this->dat['files'][$RTEoriginal_ID] = $fileRec;
-                } else {
-                    $this->error('RTE original file "' . PathUtility::stripPathSitePrefix($RTEoriginal_absPath) . '" was not found!');
-                }
-            }
             // Files with external media?
             // This is only done with files grabbed by a softreference parser since it is deemed improbable that hard-referenced files should undergo this treatment.
             $html_fI = pathinfo(PathUtility::basename($fI['ID_absFile']));

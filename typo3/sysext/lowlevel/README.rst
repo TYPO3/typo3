@@ -112,11 +112,6 @@ case there is an optimal order that ensures you don't have to run the tests all 
   - After the "deleted" tool since we cannot clean-up deleted records and to make sure nothing unimportant
     is cleaned up.
 
-- `[base command] cleanup:rteimages`
-
-  - Will be affected by flushed deleted records, versions and orphans so must be run after any of those tests.
-
-
 
 Executed anytime
 ----------------
@@ -143,7 +138,6 @@ report could look like this::
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:missingrelations --update-refindex -vv
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:flexforms -vv
-	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:rteimages --update-refindex -vv
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:missingfiles --update-refindex -vv
 	[typo3_site_directory]/typo3/sysext/core/bin/typo3 cleanup:lostfiles --update-refindex -vv
 
@@ -166,7 +160,6 @@ Example script for checking your installation
     ./typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v
     ./typo3/sysext/core/bin/typo3 cleanup:missingrelations -vv
     ./typo3/sysext/core/bin/typo3 cleanup:flexforms -vv
-    ./typo3/sysext/core/bin/typo3 cleanup:rteimages -vv
     ./typo3/sysext/core/bin/typo3 cleanup:missingfiles -vv
     ./typo3/sysext/core/bin/typo3 cleanup:lostfiles -vv
 
@@ -183,7 +176,6 @@ Example script for cleaning your installation
     ./typo3/sysext/core/bin/typo3 cleanup:deletedrecords -v
     ./typo3/sysext/core/bin/typo3 cleanup:missingrelations -vv  --update-refindex
     ./typo3/sysext/core/bin/typo3 cleanup:flexforms -vv
-    ./typo3/sysext/core/bin/typo3 cleanup:rteimages -vv
     ./typo3/sysext/core/bin/typo3 cleanup:missingfiles --update-refindex
     ./typo3/sysext/core/bin/typo3 cleanup:lostfiles -vv  --update-refindex
 

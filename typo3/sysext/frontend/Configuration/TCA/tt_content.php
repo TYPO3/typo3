@@ -582,7 +582,7 @@ return [
                 'type' => 'text',
                 'cols' => '80',
                 'rows' => '15',
-                'softref' => 'typolink_tag,images,email[subst],url',
+                'softref' => 'typolink_tag,email[subst],url',
                 'search' => [
                     'andWhere' => '{#CType}=\'text\' OR {#CType}=\'textpic\' OR {#CType}=\'textmedia\''
                 ]

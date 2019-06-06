@@ -1075,7 +1075,6 @@ return [
         // Backend Configuration.
         'languageDebug' => false,
         'fileadminDir' => 'fileadmin/',
-        'RTE_imageStorageDir' => 'uploads/',
         'lockRootPath' => '',
         'userHomePath' => '',
         'groupHomePath' => '',
@@ -1379,7 +1378,6 @@ return [
             'softRefParser' => [
                 'substitute' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'notify' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
-                'images' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'typolink' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'typolink_tag' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,
                 'ext_fileref' => \TYPO3\CMS\Core\Database\SoftReferenceIndex::class,

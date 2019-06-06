@@ -18,9 +18,6 @@ return [
     'cleanup:multiplereferencedfiles' => [
         'class' => \TYPO3\CMS\Lowlevel\Command\FilesWithMultipleReferencesCommand::class
     ],
-    'cleanup:rteimages' => [
-        'class' => \TYPO3\CMS\Lowlevel\Command\RteImagesCommand::class
-    ],
     'cleanup:missingrelations' => [
         'class' => \TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand::class
     ],

@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -132,7 +131,6 @@ class RemoteServer
         $diffReturnArray = [];
         $liveReturnArray = [];
         $diffUtility = $this->getDifferenceHandler();
-        $parseObj = GeneralUtility::makeInstance(RteHtmlParser::class);
         $liveRecord = BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
         $versionRecord = BackendUtility::getRecord($parameter->table, $parameter->uid);
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -230,7 +228,7 @@ class RemoteServer
                     $liveReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
-                        'content' => $parseObj->TS_images_rte($liveRecord[$fieldName])
+                        'content' => $liveRecord[$fieldName]
                     ];
                 }
             }

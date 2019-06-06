@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Finds files within uploads/ which are not needed anymore
@@ -44,7 +43,7 @@ class LostFilesCommand extends Command
 Assumptions:
 - a perfect integrity of the reference index table (always update the reference index table before using this tool!)
 - that all contents in the uploads folder are files attached to TCA records and exclusively managed by DataHandler through "group" type fields
-- index.html, .htaccess files and RTEmagic* image files (ignored)
+- index.html, .htaccess files (ignored)
 - Files found in deleted records are included (otherwise you would see a false list of lost files)
 
 The assumptions are not requirements by the TYPO3 API but reflects the de facto implementation of most TYPO3 installations and therefore a practical approach to cleaning up the uploads/ or costum folder.
@@ -201,11 +200,6 @@ If you want to get more detailed information, use the --verbose option.')
 
             // First, allow "index.html", ".htaccess" files since they are often used for good reasons
             if (substr($value, -11) === '/index.html' || substr($value, -10) === '/.htaccess') {
-                continue;
-            }
-
-            // If the file is a RTEmagic-image name and if so, we allow it
-            if (preg_match('/^RTEmagic[P|C]_/', PathUtility::basenameDuringBootstrap($value))) {
                 continue;
             }
 

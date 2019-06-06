@@ -147,7 +147,9 @@ class SilentConfigurationUpgradeService
         'FE/pageUnavailable_handling',
         'FE/pageUnavailable_handling_statheader',
         // #88458
-        'FE/get_url_id_token'
+        'FE/get_url_id_token',
+        // #88500
+        'BE/RTE_imageStorageDir',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

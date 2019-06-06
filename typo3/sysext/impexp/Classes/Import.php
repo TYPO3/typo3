@@ -1411,39 +1411,7 @@ class Import extends ImportExport
         if ($fileHeaderInfo = $this->dat['header']['files'][$cfg['file_ID']]) {
             // Initialize; Get directory prefix for file and find possible RTE filename
             $dirPrefix = PathUtility::dirname($relFileName) . '/';
-            $rteOrigName = $this->getRTEoriginalFilename(PathUtility::basename($relFileName));
-            // If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-            if ($rteOrigName && GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) {
-                // RTE:
-                // First, find unique RTE file name:
-                if (@is_dir(Environment::getPublicPath() . '/' . $dirPrefix)) {
-                    // From the "original" RTE filename, produce a new "original" destination filename which is unused.
-                    // Even if updated, the image should be unique. Currently the problem with this is that it leaves a lot of unused RTE images...
-                    $fileProcObj = $this->getFileProcObj();
-                    $origDestName = $fileProcObj->getUniqueName($rteOrigName, Environment::getPublicPath() . '/' . $dirPrefix);
-                    // Create copy file name:
-                    $pI = pathinfo($relFileName);
-                    $copyDestName = PathUtility::dirname($origDestName) . '/RTEmagicC_' . substr(PathUtility::basename($origDestName), 10) . '.' . $pI['extension'];
-                    if (
-                        !@is_file($copyDestName) && !@is_file($origDestName)
-                        && $origDestName === GeneralUtility::getFileAbsFileName($origDestName)
-                        && $copyDestName === GeneralUtility::getFileAbsFileName($copyDestName)
-                    ) {
-                        if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']]) {
-                            // Write the copy and original RTE file to the respective filenames:
-                            $this->writeFileVerify($copyDestName, $cfg['file_ID'], true);
-                            $this->writeFileVerify($origDestName, $fileHeaderInfo['RTE_ORIG_ID'], true);
-                            // Return the relative path of the copy file name:
-                            return PathUtility::stripPathSitePrefix($copyDestName);
-                        }
-                        $this->error('ERROR: Could not find original file ID');
-                    } else {
-                        $this->error('ERROR: The destination filenames "' . $copyDestName . '" and "' . $origDestName . '" either existed or have non-valid names');
-                    }
-                } else {
-                    $this->error('ERROR: "' . Environment::getPublicPath() . '/' . $dirPrefix . '" was not a directory, so could not process file "' . $relFileName . '"');
-                }
-            } elseif (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
+            if (GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
                 // File in fileadmin/ folder:
                 // Create file (and possible resources)
                 $newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, PathUtility::basename($relFileName), $cfg['file_ID'], $table, $uid);

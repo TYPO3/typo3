@@ -1171,25 +1171,6 @@ abstract class ImportExport
     }
 
     /**
-     * Creates the original file name for a copy-RTE image (magic type)
-     *
-     * @param string $string RTE copy filename, eg. "RTEmagicC_user_pm_icon_01.gif.gif
-     * @return string|null RTE original filename, eg. "RTEmagicP_user_pm_icon_01.gif". If the input filename was NOT prefixed RTEmagicC_ as RTE images would be, NULL is returned!
-     */
-    public function getRTEoriginalFilename($string)
-    {
-        // If "magic image":
-        if (GeneralUtility::isFirstPartOfStr($string, 'RTEmagicC_')) {
-            // Find original file:
-            $pI = pathinfo(substr($string, strlen('RTEmagicC_')));
-            $filename = substr($pI['basename'], 0, -strlen('.' . $pI['extension']));
-            $origFilePath = 'RTEmagicP_' . $filename;
-            return $origFilePath;
-        }
-        return null;
-    }
-
-    /**
      * Returns file processing object, initialized only once.
      *
      * @return ExtendedFileUtility File processor object

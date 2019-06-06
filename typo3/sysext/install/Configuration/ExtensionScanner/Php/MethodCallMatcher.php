@@ -4161,4 +4161,25 @@ return [
             'Deprecation-88473-TypoScriptFrontendController-settingLocale.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Database\SoftReferenceIndex->findRef_images' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst'
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->TS_images_rte' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst'
+        ],
+    ],
+    'TYPO3\CMS\Impexp\ImportExport->getRTEoriginalFilename' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst'
+        ],
+    ],
 ];

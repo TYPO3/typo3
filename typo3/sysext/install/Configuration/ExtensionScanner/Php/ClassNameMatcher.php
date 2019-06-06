@@ -1281,4 +1281,9 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Lowlevel\Command\RteImagesCommand' => [
+        'restFiles' => [
+            'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst'
+        ],
+    ],
 ];

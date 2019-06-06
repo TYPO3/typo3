@@ -119,9 +119,6 @@ class SoftReferenceIndex
                 ];
                 $retVal = $resultArray;
                 break;
-            case 'images':
-                $retVal = $this->findRef_images($content);
-                break;
             case 'typolink':
                 $retVal = $this->findRef_typolink($content, $spParams);
                 break;
@@ -141,47 +138,6 @@ class SoftReferenceIndex
                 $retVal = false;
         }
         return $retVal;
-    }
-
-    /**
-     * Finding image tags in the content.
-     * All images that are not from external URLs will be returned with an info text
-     * Will only return files in uploads/ folders which are prefixed with "RTEmagic[C|P]_" for substitution
-     * Any "clear.gif" images are ignored.
-     *
-     * @param string $content The input content to analyze
-     * @return array Result array on positive matches, see description above. Otherwise FALSE
-     */
-    public function findRef_images($content)
-    {
-        // Start HTML parser and split content by image tag:
-        $htmlParser = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Html\HtmlParser::class);
-        $splitContent = $htmlParser->splitTags('img', $content);
-        $elements = [];
-        // Traverse splitted parts:
-        foreach ($splitContent as $k => $v) {
-            if ($k % 2) {
-                // Get file reference:
-                $attribs = $htmlParser->get_tag_attributes($v);
-                $srcRef = htmlspecialchars_decode($attribs[0]['src']);
-                $pI = pathinfo($srcRef);
-                // If it looks like a local image, continue. Otherwise ignore it.
-                $absPath = GeneralUtility::getFileAbsFileName(Environment::getPublicPath() . '/' . $srcRef);
-                if (!$pI['scheme'] && !$pI['query'] && $absPath) {
-                    // Initialize the element entry with info text here:
-                    $elements[$k] = [];
-                    $elements[$k]['matchString'] = $v;
-                }
-            }
-        }
-        // Return result:
-        if (!empty($elements)) {
-            $resultArray = [
-                'content' => implode('', $splitContent),
-                'elements' => $elements
-            ];
-            return $resultArray;
-        }
     }
 
     /**

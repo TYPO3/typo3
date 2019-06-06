@@ -19,8 +19,6 @@ use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
-use TYPO3\CMS\Core\Resource;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -218,9 +216,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         case 'detectbrokenlinks':
                             $value = $this->removeBrokenLinkMarkers($value);
                             break;
-                        case 'ts_images':
-                            $value = $this->TS_images_db($value);
-                            break;
                         case 'ts_links':
                             $value = $this->TS_links_db($value);
                             break;
@@ -246,9 +241,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                     switch ($cmd) {
                         case 'detectbrokenlinks':
                             $value = $this->markBrokenLinks($value);
-                            break;
-                        case 'ts_images':
-                            $value = $this->TS_images_rte($value);
                             break;
                         case 'css_transform':
                             $value = $this->TS_transform_rte($value);
@@ -281,7 +273,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $modeList = implode(',', $modes);
 
         // Replace the shortcut "default" with all custom modes
-        $modeList = str_replace('default', 'detectbrokenlinks,css_transform,ts_images,ts_links', $modeList);
+        $modeList = str_replace('default', 'detectbrokenlinks,css_transform,ts_links', $modeList);
 
         // Make list unique
         $modes = array_unique(GeneralUtility::trimExplode(',', $modeList, true));
@@ -318,212 +310,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Specific RTE TRANSFORMATION functions
      *
      *************************************/
-    /**
-     * Transformation handler: 'ts_images' / direction: "db"
-     * Processing images inserted in the RTE.
-     * This is used when content goes from the RTE to the database.
-     * Images inserted in the RTE has an absolute URL applied to the src attribute. This URL is converted to a relative URL
-     * If it turns out that the URL is from another website than the current the image is read from that external URL and moved to the local server.
-     * Also "magic" images are processed here.
-     *
-     * @param string $value The content from RTE going to Database
-     * @return string Processed content
-     */
-    protected function TS_images_db($value)
-    {
-        // Split content by <img> tags and traverse the resulting array for processing:
-        $imgSplit = $this->splitTags('img', $value);
-        if (count($imgSplit) > 1) {
-            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-            $sitePath = str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
-            /** @var Resource\ResourceFactory $resourceFactory */
-            $resourceFactory = Resource\ResourceFactory::getInstance();
-            /** @var Resource\Service\MagicImageService $magicImageService */
-            $magicImageService = GeneralUtility::makeInstance(Resource\Service\MagicImageService::class);
-            $magicImageService->setMagicImageMaximumDimensions($this->tsConfig);
-            foreach ($imgSplit as $k => $v) {
-                // Image found, do processing:
-                if ($k % 2) {
-                    // Get attributes
-                    list($attribArray) = $this->get_tag_attributes($v, true);
-                    // It's always an absolute URL coming from the RTE into the Database.
-                    $absoluteUrl = trim($attribArray['src']);
-                    // Make path absolute if it is relative and we have a site path which is not '/'
-                    $pI = pathinfo($absoluteUrl);
-                    if ($sitePath && !$pI['scheme'] && GeneralUtility::isFirstPartOfStr($absoluteUrl, $sitePath)) {
-                        // If site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
-                        $absoluteUrl = substr($absoluteUrl, strlen($sitePath));
-                        $absoluteUrl = $siteUrl . $absoluteUrl;
-                    }
-                    // Image dimensions set in the img tag, if any
-                    $imgTagDimensions = $this->getWHFromAttribs($attribArray);
-                    if ($imgTagDimensions[0]) {
-                        $attribArray['width'] = $imgTagDimensions[0];
-                    }
-                    if ($imgTagDimensions[1]) {
-                        $attribArray['height'] = $imgTagDimensions[1];
-                    }
-                    $originalImageFile = null;
-                    if ($attribArray['data-htmlarea-file-uid']) {
-                        // An original image file uid is available
-                        try {
-                            /** @var Resource\File $originalImageFile */
-                            $originalImageFile = $resourceFactory->getFileObject((int)$attribArray['data-htmlarea-file-uid']);
-                        } catch (Resource\Exception\FileDoesNotExistException $fileDoesNotExistException) {
-                            // Log the fact the file could not be retrieved.
-                            $message = sprintf('Could not find file with uid "%s"', $attribArray['data-htmlarea-file-uid']);
-                            $this->logger->error($message);
-                        }
-                    }
-                    if ($originalImageFile instanceof Resource\File) {
-                        // Public url of local file is relative to the site url, absolute otherwise
-                        if ($absoluteUrl == $originalImageFile->getPublicUrl() || $absoluteUrl == $siteUrl . $originalImageFile->getPublicUrl()) {
-                            // This is a plain image, i.e. reference to the original image
-                            if ($this->procOptions['plainImageMode']) {
-                                // "plain image mode" is configured
-                                // Find the dimensions of the original image
-                                $imageInfo = [
-                                    $originalImageFile->getProperty('width'),
-                                    $originalImageFile->getProperty('height')
-                                ];
-                                if (!$imageInfo[0] || !$imageInfo[1]) {
-                                    $filePath = $originalImageFile->getForLocalProcessing(false);
-                                    $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $filePath);
-                                    $imageInfo = [
-                                        $imageInfoObject->getWidth(),
-                                        $imageInfoObject->getHeight()
-                                    ];
-                                }
-                                $attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
-                            }
-                        } else {
-                            // Magic image case: get a processed file with the requested configuration
-                            $imageConfiguration = [
-                                'width' => $imgTagDimensions[0],
-                                'height' => $imgTagDimensions[1]
-                            ];
-                            $magicImage = $magicImageService->createMagicImage($originalImageFile, $imageConfiguration);
-                            $attribArray['width'] = $magicImage->getProperty('width');
-                            $attribArray['height'] = $magicImage->getProperty('height');
-                            $attribArray['src'] = $magicImage->getPublicUrl();
-                        }
-                    } elseif (!GeneralUtility::isFirstPartOfStr($absoluteUrl, $siteUrl) && !$this->procOptions['dontFetchExtPictures'] && TYPO3_MODE === 'BE') {
-                        // External image from another URL: in that case, fetch image, unless the feature is disabled or we are not in backend mode
-                        // Fetch the external image
-                        $externalFile = GeneralUtility::getUrl($absoluteUrl);
-                        if ($externalFile) {
-                            $pU = parse_url($absoluteUrl);
-                            $pI = pathinfo($pU['path']);
-                            $extension = strtolower($pI['extension']);
-                            if ($extension === 'jpg' || $extension === 'jpeg' || $extension === 'gif' || $extension === 'png') {
-                                $fileName = GeneralUtility::shortMD5($absoluteUrl) . '.' . $pI['extension'];
-                                // We insert this image into the user default upload folder
-                                list($table, $field) = explode(':', $this->elRef);
-                                /** @var Resource\Folder $folder */
-                                $folder = $GLOBALS['BE_USER']->getDefaultUploadFolder($this->recPid, $table, $field);
-                                /** @var Resource\File $fileObject */
-                                $fileObject = $folder->createFile($fileName)->setContents($externalFile);
-                                $imageConfiguration = [
-                                    'width' => $attribArray['width'],
-                                    'height' => $attribArray['height']
-                                ];
-                                $magicImage = $magicImageService->createMagicImage($fileObject, $imageConfiguration);
-                                $attribArray['width'] = $magicImage->getProperty('width');
-                                $attribArray['height'] = $magicImage->getProperty('height');
-                                $attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-                                $attribArray['src'] = $magicImage->getPublicUrl();
-                            }
-                        }
-                    } elseif (GeneralUtility::isFirstPartOfStr($absoluteUrl, $siteUrl)) {
-                        // Finally, check image as local file (siteURL equals the one of the image)
-                        // Image has no data-htmlarea-file-uid attribute
-                        // Relative path, rawurldecoded for special characters.
-                        $path = rawurldecode(substr($absoluteUrl, strlen($siteUrl)));
-                        // Absolute filepath, locked to relative path of this project
-                        $filepath = GeneralUtility::getFileAbsFileName($path);
-                        // Check file existence (in relative directory to this installation!)
-                        if ($filepath && @is_file($filepath)) {
-                            // Treat it as a plain image
-                            if ($this->procOptions['plainImageMode']) {
-                                // If "plain image mode" has been configured
-                                // Find the original dimensions of the image
-                                $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $filepath);
-                                $imageInfo = [
-                                    $imageInfoObject->getWidth(),
-                                    $imageInfoObject->getHeight()
-                                ];
-                                $attribArray = $this->applyPlainImageModeSettings($imageInfo, $attribArray);
-                            }
-                            // Let's try to find a file uid for this image
-                            try {
-                                $fileOrFolderObject = $resourceFactory->retrieveFileOrFolderObject($path);
-                                if ($fileOrFolderObject instanceof Resource\FileInterface) {
-                                    $fileIdentifier = $fileOrFolderObject->getIdentifier();
-                                    /** @var Resource\AbstractFile $fileObject */
-                                    $fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
-                                    // @todo if the retrieved file is a processed file, get the original file...
-                                    $attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
-                                }
-                            } catch (Resource\Exception\ResourceDoesNotExistException $resourceDoesNotExistException) {
-                                // Nothing to be done if file/folder not found
-                            }
-                        }
-                    }
-                    // Remove width and height from style attribute
-                    $attribArray['style'] = preg_replace('/(?:^|[^-])(\\s*(?:width|height)\\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
-                    // Must have alt attribute
-                    if (!isset($attribArray['alt'])) {
-                        $attribArray['alt'] = '';
-                    }
-                    // Convert absolute to relative url
-                    if (GeneralUtility::isFirstPartOfStr($attribArray['src'], $siteUrl)) {
-                        $attribArray['src'] = substr($attribArray['src'], strlen($siteUrl));
-                    }
-                    $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, true, true) . ' />';
-                }
-            }
-        }
-        return implode('', $imgSplit);
-    }
-
-    /**
-     * Transformation handler: 'ts_images' / direction: "rte"
-     * Processing images from database content going into the RTE.
-     * Processing includes converting the src attribute to an absolute URL.
-     *
-     * @param string $value Content input
-     * @return string Content output
-     */
-    public function TS_images_rte($value)
-    {
-        // Split content by <img> tags and traverse the resulting array for processing:
-        $imgSplit = $this->splitTags('img', $value);
-        if (count($imgSplit) > 1) {
-            $siteUrl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-            $sitePath = str_replace(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'), '', $siteUrl);
-            foreach ($imgSplit as $k => $v) {
-                // Image found
-                if ($k % 2) {
-                    // Get the attributes of the img tag
-                    list($attribArray) = $this->get_tag_attributes($v, true);
-                    $absoluteUrl = trim($attribArray['src']);
-                    // Transform the src attribute into an absolute url, if it not already
-                    if (stripos($absoluteUrl, 'http') !== 0) {
-                        // If site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
-                        $attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
-                        $attribArray['src'] = $siteUrl . $attribArray['src'];
-                    }
-                    // Must have alt attribute
-                    if (!isset($attribArray['alt'])) {
-                        $attribArray['alt'] = '';
-                    }
-                    $imgSplit[$k] = '<img ' . GeneralUtility::implodeAttributes($attribArray, true, true) . ' />';
-                }
-            }
-        }
-        // Return processed content:
-        return implode('', $imgSplit);
-    }
 
     /**
      * Transformation handler: 'ts_links' / direction: "db"
@@ -960,41 +746,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             $h = $attribArray['height'];
         }
         return [(int)$w, (int)$h];
-    }
-
-    /**
-     * Apply plain image settings to the dimensions of the image
-     *
-     * @param array $imageInfo: info array of the image
-     * @param array $attribArray: array of attributes of an image tag
-     *
-     * @return array a modified attributes array
-     */
-    protected function applyPlainImageModeSettings($imageInfo, $attribArray)
-    {
-        if ($this->procOptions['plainImageMode']) {
-            // Perform corrections to aspect ratio based on configuration
-            switch ((string)$this->procOptions['plainImageMode']) {
-                case 'lockDimensions':
-                    $attribArray['width'] = $imageInfo[0];
-                    $attribArray['height'] = $imageInfo[1];
-                    break;
-                case 'lockRatioWhenSmaller':
-                    if ($attribArray['width'] > $imageInfo[0]) {
-                        $attribArray['width'] = $imageInfo[0];
-                    }
-                    if ($imageInfo[0] > 0) {
-                        $attribArray['height'] = round($attribArray['width'] * ($imageInfo[1] / $imageInfo[0]));
-                    }
-                    break;
-                case 'lockRatio':
-                    if ($imageInfo[0] > 0) {
-                        $attribArray['height'] = round($attribArray['width'] * ($imageInfo[1] / $imageInfo[0]));
-                    }
-                    break;
-            }
-        }
-        return $attribArray;
     }
 
     /**
