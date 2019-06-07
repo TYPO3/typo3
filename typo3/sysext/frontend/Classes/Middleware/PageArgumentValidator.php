@@ -102,15 +102,23 @@ class PageArgumentValidator implements MiddlewareInterface
     {
         if ($this->controller->cHash) {
             $queryParams['id'] = $this->controller->id;
-            $this->controller->cHash_array = $this->cacheHashCalculator->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
-            $cHash_calc = $this->cacheHashCalculator->calculateCacheHash($this->controller->cHash_array);
-            if (!hash_equals($cHash_calc, $this->controller->cHash)) {
+            $relevantParameters = $this->cacheHashCalculator->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
+            $this->controller->cHash_array = $relevantParameters;
+            $calculatedCacheHash = $this->cacheHashCalculator->calculateCacheHash($relevantParameters);
+            // cHash was given, but nothing to be calculated, so cHash is unset and all is good.
+            if (empty($relevantParameters)) {
+                $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->controller->cHash . '" is given but not needed. cHash is unset', 2);
+                // We do not need to update the query params as everything is checked via $TSFE->cHash, see $TSFE->reqCHash()
+                $this->controller->cHash = '';
+                return true;
+            }
+            if (!hash_equals($calculatedCacheHash, $this->controller->cHash)) {
                 // Early return to trigger the error controller
                 if ($pageNotFoundOnCacheHashError) {
                     return false;
                 }
                 $this->controller->no_cache = true;
-                $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->controller->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->controller->cHash_array)) . '"', 2);
+                $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->controller->cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->controller->cHash_array)) . '"', 2);
             }
             // No cHash is set, check if that is correct
         } elseif ($this->cacheHashCalculator->doParametersRequireCacheHash(HttpUtility::buildQueryString($queryParams))) {
