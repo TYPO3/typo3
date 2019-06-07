@@ -25,7 +25,7 @@ class ResetBackendUserUc implements InlineModuleInterface {
       url: Router.getUrl('resetBackendUserUc'),
       cache: false,
       beforeSend: (): void => {
-        $trigger.addClass('disabled');
+        $trigger.addClass('disabled').prop('disabled', true);
       },
       success: (data: any): void => {
         if (data.success === true && Array.isArray(data.status)) {
@@ -44,7 +44,7 @@ class ResetBackendUserUc implements InlineModuleInterface {
         Notification.error('Resetting backend user uc failed. Please check the system for missing database fields and try again.');
       },
       complete: (): void => {
-        $trigger.removeClass('disabled');
+        $trigger.removeClass('disabled').prop('disabled', false);
       },
     });
   }

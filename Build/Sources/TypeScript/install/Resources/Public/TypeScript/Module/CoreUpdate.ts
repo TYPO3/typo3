@@ -16,6 +16,7 @@ import * as $ from 'jquery';
 import Router = require('../Router');
 import FlashMessage = require('../Renderable/FlashMessage');
 import Severity = require('../Renderable/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 interface ActionItem {
@@ -68,7 +69,7 @@ class CoreUpdate extends AbstractInteractableModule {
   };
 
   private selectorOutput: string = '.t3js-coreUpdate-output';
-  private selectorTemplate: string = '.t3js-coreUpdate-buttonTemplate';
+  private updateButton: string = '.t3js-coreUpdate-button';
 
   /**
    * Clone of a DOM object acts as button template
@@ -81,18 +82,29 @@ class CoreUpdate extends AbstractInteractableModule {
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getData().done((): void => {
-      const buttonTemplateSection = currentModal.find(this.selectorTemplate);
-      this.buttonTemplate = buttonTemplateSection.children().clone();
+      this.buttonTemplate = this.findInModal(this.updateButton).clone();
     });
 
     currentModal.on('click', '.t3js-coreUpdate-init', (e: JQueryEventObject): void => {
       e.preventDefault();
       // Don't use jQuery's data() function, as the DOM is re-rendered and any set data attribute gets lost.
       // See showActionButton()
-      const action = $(e.target).attr('data-action');
+      const action = $(e.currentTarget).attr('data-action');
 
-      currentModal.find(this.selectorOutput).empty();
-      CoreUpdate.call(action);
+      this.findInModal(this.selectorOutput).empty();
+      switch (action) {
+        case 'checkForUpdate':
+          this.callAction('coreUpdateIsUpdateAvailable');
+          break;
+        case 'updateDevelopment':
+          this.update('development');
+          break;
+        case 'updateRegular':
+          this.update('regular');
+          break;
+        default:
+          throw 'Unknown update action "' + action + '"';
+      }
     });
   }
 
@@ -104,6 +116,7 @@ class CoreUpdate extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
         } else {
           Notification.error('Something went wrong');
         }
@@ -112,27 +125,6 @@ class CoreUpdate extends AbstractInteractableModule {
         Router.handleAjaxError(xhr, modalContent);
       },
     });
-  }
-
-  /**
-   * Internal action called by callAction()
-   */
-  private checkForUpdate(): void {
-    this.callAction('coreUpdateIsUpdateAvailable');
-  }
-
-  /**
-   * Internal action called by callAction()
-   */
-  private updateDevelopment(): void {
-    this.update('development');
-  }
-
-  /**
-   * Internal action called by callAction()
-   */
-  private updateRegular(): void {
-    this.update('regular');
   }
 
   /**
@@ -256,7 +248,7 @@ class CoreUpdate extends AbstractInteractableModule {
     if (title) {
       domButton.text(title);
     }
-    this.findInModal(this.selectorOutput).append(domButton);
+    this.findInModal(this.updateButton).replaceWith(domButton);
   }
 
   /**

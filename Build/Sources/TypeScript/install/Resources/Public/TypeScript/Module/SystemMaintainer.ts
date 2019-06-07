@@ -15,6 +15,7 @@ import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -56,7 +57,8 @@ class SystemMaintainer extends AbstractInteractableModule {
               Notification.success(element.title, element.message);
             });
           }
-          modalContent.html((data.html));
+          modalContent.html(data.html);
+          Modal.setButtons(data.buttons);
           if (Array.isArray(data.users)) {
             data.users.forEach((element: any): void => {
               let name = element.username;

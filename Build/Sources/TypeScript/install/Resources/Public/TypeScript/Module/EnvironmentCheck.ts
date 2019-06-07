@@ -18,6 +18,7 @@ import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
 import InfoBox = require('../Renderable/InfoBox');
 import Severity = require('../Renderable/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -46,11 +47,14 @@ class EnvironmentCheck extends AbstractInteractableModule {
     $errorBadge.text('').hide();
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     modalContent.find(this.selectorOutputContainer).empty().append(message);
+    this.findInModal(this.selectorExecuteTrigger).addClass('disabled').prop('disabled', true);
+
     $.ajax({
       url: Router.getUrl('environmentCheckGetStatus'),
       cache: false,
       success: (data: any): void => {
         modalContent.empty().append(data.html);
+        Modal.setButtons(data.buttons);
         let warningCount = 0;
         let errorCount = 0;
         if (data.success === true && typeof(data.status) === 'object') {

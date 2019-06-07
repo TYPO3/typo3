@@ -14,6 +14,7 @@
 import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -53,6 +54,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
           if (Array.isArray(data.stats) && data.stats.length > 0) {
             data.stats.forEach((element: any): void => {
               if (element.numberOfFiles > 0) {

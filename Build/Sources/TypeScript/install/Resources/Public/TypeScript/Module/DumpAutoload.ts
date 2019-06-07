@@ -25,7 +25,7 @@ class DumpAutoload implements InlineModuleInterface {
       url: Router.getUrl('dumpAutoload'),
       cache: false,
       beforeSend: (): void => {
-        $trigger.addClass('disabled');
+        $trigger.addClass('disabled').prop('disabled', true);
       },
       success: (data: any): void => {
         if (data.success === true && Array.isArray(data.status)) {
@@ -44,7 +44,7 @@ class DumpAutoload implements InlineModuleInterface {
         Notification.error('Dumping autoload files went wrong on the server side. Check the system for broken extensions and try again');
       },
       complete: (): void => {
-        $trigger.removeClass('disabled');
+        $trigger.removeClass('disabled').prop('disabled', false);
       },
     });
   }

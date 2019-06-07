@@ -16,6 +16,7 @@ import * as $ from 'jquery';
 import 'bootstrap';
 import AjaxQueue = require('../Ajax/AjaxQueue');
 import Router = require('../Router');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 interface FileData {
@@ -50,6 +51,7 @@ class ExtensionScanner extends AbstractInteractableModule {
   private selectorExtensionContainer: string = '.t3js-extensionScanner-extension';
   private selectorNumberOfFiles: string = '.t3js-extensionScanner-number-of-files';
   private selectorScanSingleTrigger: string = '.t3js-extensionScanner-scan-single';
+  private selectorExtensionScanButton: string = '.t3js-extensionScanner-scan-all';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -68,9 +70,10 @@ class ExtensionScanner extends AbstractInteractableModule {
       e.preventDefault();
       const extension = $(e.currentTarget).closest(this.selectorExtensionContainer).data('extension');
       this.scanSingleExtension(extension);
-    }).on('click', '.t3js-extensionScanner-scan-all', (e: JQueryEventObject): void => {
+    }).on('click', this.selectorExtensionScanButton, (e: JQueryEventObject): void => {
       // Scan all button
       e.preventDefault();
+      $(e.currentTarget).addClass('disabled').prop('disabled', true);
       const $extensions = currentModal.find(this.selectorExtensionContainer);
       this.scanAll($extensions);
     });
@@ -84,6 +87,7 @@ class ExtensionScanner extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
         } else {
           Notification.error('Something went wrong');
         }
@@ -149,6 +153,7 @@ class ExtensionScanner extends AbstractInteractableModule {
       .text(numberOfScannedExtensions + ' of ' + numberOfExtensions + ' scanned');
 
     if (numberOfScannedExtensions === numberOfExtensions) {
+      this.findInModal(this.selectorExtensionScanButton).removeClass('disabled').prop('disabled', false);
       Notification.success('Scan finished', 'All extensions have been scanned');
       AjaxQueue.add({
         url: Router.getUrl(),

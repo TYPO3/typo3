@@ -74,6 +74,12 @@ class SettingsController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-changeInstallToolPassword-change',
+                    'text' => 'Set new password',
+                ],
+            ],
         ]);
     }
 
@@ -164,6 +170,12 @@ class SettingsController extends AbstractController
             'status' => [],
             'users' => $users,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-systemMaintainer-write',
+                    'text' => 'Save system maintainer list',
+                ],
+            ],
         ]);
     }
 
@@ -246,6 +258,16 @@ class SettingsController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-localConfiguration-write',
+                    'text' => 'Write configuration',
+                ],
+                [
+                    'btnClass' => 'btn-default t3js-localConfiguration-toggleAll',
+                    'text' => 'Toggle All',
+                ],
+            ],
         ]);
     }
 
@@ -301,6 +323,12 @@ class SettingsController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-presets-activate',
+                    'text' => 'Activate preset',
+                ],
+            ],
         ]);
     }
 
@@ -437,6 +465,12 @@ class SettingsController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-features-save',
+                    'text' => 'Save',
+                ],
+            ],
         ]);
     }
 

@@ -248,15 +248,37 @@ class UpgradeController extends AbstractController
         $view = $this->initializeStandaloneView($request, 'Upgrade/CoreUpdate.html');
         $coreUpdateService = GeneralUtility::makeInstance(CoreUpdateService::class);
         $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
+
+        $coreUpdateEnabled = $coreUpdateService->isCoreUpdateEnabled();
+        $coreUpdateComposerMode = Environment::isComposerMode();
+        $coreUpdateIsReleasedVersion = $coreVersionService->isInstalledVersionAReleasedVersion();
+        $coreUpdateIsSymLinkedCore = is_link(Environment::getPublicPath() . '/typo3_src');
+        $isUpdatable = !$coreUpdateComposerMode && $coreUpdateEnabled && $coreUpdateIsReleasedVersion && $coreUpdateIsSymLinkedCore;
+
         $view->assignMultiple([
-            'coreUpdateEnabled' => $coreUpdateService->isCoreUpdateEnabled(),
-            'coreUpdateComposerMode' => Environment::isComposerMode(),
-            'coreUpdateIsReleasedVersion' => $coreVersionService->isInstalledVersionAReleasedVersion(),
-            'coreUpdateIsSymLinkedCore' => is_link(Environment::getPublicPath() . '/typo3_src'),
+            'coreIsUpdatable' => $isUpdatable,
+            'coreUpdateEnabled' => $coreUpdateEnabled,
+            'coreUpdateComposerMode' => $coreUpdateComposerMode,
+            'coreUpdateIsReleasedVersion' => $coreUpdateIsReleasedVersion,
+            'coreUpdateIsSymLinkedCore' => $coreUpdateIsSymLinkedCore,
         ]);
+
+        $buttons = [];
+        if ($isUpdatable) {
+            $buttons[] = [
+                'btnClass' => 'btn-warning t3js-coreUpdate-button t3js-coreUpdate-init',
+                'name' => 'coreUpdateCheckForUpdate',
+                'text' => 'Check for core updates',
+                'dataAttributes' => [
+                    'action' => 'checkForUpdate',
+                ],
+            ];
+        }
+
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => $buttons,
         ]);
     }
 
@@ -378,6 +400,16 @@ class UpgradeController extends AbstractController
             'success' => true,
             'extensions' => array_keys($this->packageManager->getActivePackages()),
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default disabled t3js-extensionCompatTester-check',
+                    'text' => 'Check extensions',
+                ],
+                [
+                    'btnClass' => 'btn-default hidden t3js-extensionCompatTester-uninstall',
+                    'text' => 'Uninstall extension',
+                ],
+            ],
         ]);
     }
 
@@ -485,6 +517,12 @@ class UpgradeController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-extensionScanner-scan-all',
+                    'text' => 'Scan all',
+                ],
+            ],
         ]);
     }
 
@@ -727,6 +765,12 @@ class UpgradeController extends AbstractController
             'success' => true,
             'status' => $messageQueue,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-tcaExtTablesCheck-check',
+                    'text' => 'Check loaded extensions',
+                ],
+            ],
         ]);
     }
 
@@ -755,6 +799,12 @@ class UpgradeController extends AbstractController
             'success' => true,
             'status' => $messageQueue,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-tcaMigrationsCheck-check',
+                    'text' => 'Check TCA Migrations',
+                ],
+            ],
         ]);
     }
 

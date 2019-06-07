@@ -95,6 +95,12 @@ class MaintenanceController extends AbstractController
                 'success' => true,
                 'stats' => (new Typo3tempFileService())->getDirectoryStatistics(),
                 'html' => $view->render(),
+                'buttons' => [
+                    [
+                        'btnClass' => 'btn-default t3js-clearTypo3temp-stats',
+                        'text' => 'Scan again',
+                    ],
+                ],
             ]
         );
     }
@@ -176,6 +182,15 @@ class MaintenanceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-databaseAnalyzer-analyze',
+                    'text' => 'Run database compare again',
+                ], [
+                    'btnClass' => 'btn-warning t3js-databaseAnalyzer-execute',
+                    'text' => 'Apply selected changes',
+                ],
+            ],
         ]);
     }
 
@@ -394,6 +409,12 @@ class MaintenanceController extends AbstractController
             'success' => true,
             'stats' => (new ClearTableService())->getTableStatistics(),
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-clearTables-stats',
+                    'text' => 'Scan again',
+                ],
+            ],
         ]);
     }
 
@@ -438,6 +459,12 @@ class MaintenanceController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-createAdmin-create',
+                    'text' => 'Create administrator user',
+                ],
+            ],
         ]);
     }
 

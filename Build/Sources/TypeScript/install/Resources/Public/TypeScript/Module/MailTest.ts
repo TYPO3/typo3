@@ -18,19 +18,20 @@ import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
 import Severity = require('../Renderable/Severity');
 import InfoBox = require('../Renderable/InfoBox');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
  * Module: TYPO3/CMS/Install/Module/CreateAdmin
  */
 class MailTest extends AbstractInteractableModule {
-  private selectorForm: string = '#t3js-mailTest-form';
   private selectorOutputContainer: string = '.t3js-mailTest-output';
+  private selectorMailTestButton: string = '.t3js-mailTest-execute';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getData();
-    currentModal.on('submit', this.selectorForm, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorMailTestButton, (e: JQueryEventObject): void => {
       e.preventDefault();
       this.send();
     });
@@ -44,6 +45,7 @@ class MailTest extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
         } else {
           Notification.error('Something went wrong');
         }

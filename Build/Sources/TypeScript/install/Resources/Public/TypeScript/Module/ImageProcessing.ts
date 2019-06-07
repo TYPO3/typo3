@@ -17,6 +17,7 @@ import 'bootstrap';
 import Router = require('../Router');
 import InfoBox = require('../Renderable/InfoBox');
 import Severity = require('../Renderable/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -48,6 +49,7 @@ class ImageProcessing extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
           this.runTests();
         } else {
           Notification.error('Something went wrong');
@@ -61,13 +63,17 @@ class ImageProcessing extends AbstractInteractableModule {
 
   private runTests(): void {
     const modalContent = this.getModalBody();
+    const $triggerButton = this.findInModal(this.selectorExecuteTrigger);
+    $triggerButton.addClass('disabled').prop('disabled', true);
+
     const $twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
+    const promises: Array<JQueryXHR> = [];
     modalContent.find(this.selectorTestContainer).each((index: number, element: any): void => {
       const $container: JQuery = $(element);
       const testType: string = $container.data('test');
       const message: any = InfoBox.render(Severity.loading, 'Loading...', '');
       $container.empty().html(message);
-      $.ajax({
+      promises.push($.ajax({
         url: Router.getUrl(testType),
         cache: false,
         success: (data: any): void => {
@@ -103,7 +109,11 @@ class ImageProcessing extends AbstractInteractableModule {
         error: (xhr: XMLHttpRequest): void => {
           Router.handleAjaxError(xhr, modalContent);
         },
-      });
+      }));
+    });
+
+    $.when.apply($, promises).done((): void => {
+      $triggerButton.removeClass('disabled').prop('disabled', false);
     });
   }
 }

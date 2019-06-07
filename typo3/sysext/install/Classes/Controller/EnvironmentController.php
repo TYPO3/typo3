@@ -125,6 +125,12 @@ class EnvironmentController extends AbstractController
                 'notice' => $messageQueue->getAllMessages(FlashMessage::NOTICE),
             ],
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-environmentCheck-execute',
+                    'text' => 'Run tests again',
+                ],
+            ],
         ]);
     }
 
@@ -157,6 +163,14 @@ class EnvironmentController extends AbstractController
 
         $view->assign('publicPath', Environment::getPublicPath());
 
+        $buttons = [];
+        if ($errorQueue->count() > 0) {
+            $buttons[] = [
+                'btnClass' => 'btn-default t3js-folderStructure-errors-fix',
+                'text' => 'Try to fix file and folder permissions',
+            ];
+        }
+
         return new JsonResponse([
             'success' => true,
             'errorStatus' => $errorQueue,
@@ -164,6 +178,7 @@ class EnvironmentController extends AbstractController
             'folderStructureFilePermissionStatus' => $permissionCheck->getMaskStatus('fileCreateMask'),
             'folderStructureDirectoryPermissionStatus' => $permissionCheck->getMaskStatus('folderCreateMask'),
             'html' => $view->render(),
+            'buttons' => $buttons,
         ]);
     }
 
@@ -200,6 +215,12 @@ class EnvironmentController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default t3js-mailTest-execute',
+                    'text' => 'Send test mail',
+                ],
+            ],
         ]);
     }
 
@@ -261,6 +282,12 @@ class EnvironmentController extends AbstractController
         return new JsonResponse([
             'success' => true,
             'html' => $view->render(),
+            'buttons' => [
+                [
+                    'btnClass' => 'btn-default disabled t3js-imageProcessing-execute',
+                    'text' => 'Run image tests again',
+                ],
+            ],
         ]);
     }
 

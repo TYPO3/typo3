@@ -25,7 +25,7 @@ class Cache implements InlineModuleInterface {
       url: Router.getUrl('cacheClearAll', 'maintenance'),
       cache: false,
       beforeSend: (): void => {
-        $trigger.addClass('disabled');
+        $trigger.addClass('disabled').prop('disabled', true);
       },
       success: (data: any): void => {
         if (data.success === true && Array.isArray(data.status)) {
@@ -46,7 +46,7 @@ class Cache implements InlineModuleInterface {
         );
       },
       complete: (): void => {
-        $trigger.removeClass('disabled');
+        $trigger.removeClass('disabled').prop('disabled', false);
       },
     });
   }

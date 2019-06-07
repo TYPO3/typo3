@@ -17,6 +17,7 @@ import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
 import Severity = require('../Renderable/Severity');
 import InfoBox = require('../Renderable/InfoBox');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -45,6 +46,7 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
       cache: false,
       success: (data: any): void => {
         modalContent.empty().append(data.html);
+        Modal.setButtons(data.buttons);
         if (data.success === true && Array.isArray(data.status)) {
           if (data.status.length > 0) {
             const aMessage: any = InfoBox.render(

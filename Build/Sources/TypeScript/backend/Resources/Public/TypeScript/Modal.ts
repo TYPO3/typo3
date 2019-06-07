@@ -280,6 +280,56 @@ class Modal {
   }
 
   /**
+   * Sets action buttons for the modal window or removed the footer, if no buttons are given.
+   *
+   * @param {Array<Button>} buttons
+   */
+  public setButtons(buttons: Array<Button>): JQuery {
+    if (buttons.length > 0) {
+      this.currentModal.find(Identifiers.footer).empty();
+
+      for (let i = 0; i < buttons.length; i++) {
+        const button = buttons[i];
+        const $button = $('<button />', {'class': 'btn'});
+        $button.html('<span>' + this.securityUtility.encodeHtml(button.text, false) + '</span>');
+        if (button.active) {
+          $button.addClass('t3js-active');
+        }
+        if (button.btnClass !== '') {
+          $button.addClass(button.btnClass);
+        }
+        if (button.name !== '') {
+          $button.attr('name', button.name);
+        }
+        if (button.trigger) {
+          $button.on('click', button.trigger);
+        }
+        if (button.dataAttributes) {
+          if (Object.keys(button.dataAttributes).length > 0) {
+            Object.keys(button.dataAttributes).map((value: string): any => {
+              $button.attr('data-' + value, button.dataAttributes[value]);
+            });
+          }
+        }
+        if (button.icon) {
+          $button.prepend('<span class="t3js-modal-icon-placeholder" data-icon="' + button.icon + '"></span>');
+        }
+        this.currentModal.find(Identifiers.footer).append($button);
+      }
+      this.currentModal.find(Identifiers.footer).show();
+      this.currentModal
+        .find(Identifiers.footer).find('button')
+        .on('click', (e: JQueryEventObject): void => {
+          $(e.currentTarget).trigger('button.clicked');
+        });
+    } else {
+      this.currentModal.find(Identifiers.footer).hide();
+    }
+
+    return this.currentModal;
+  }
+
+  /**
    * Initialize markup with data attributes
    *
    * @param {HTMLDocument} theDocument
@@ -386,45 +436,6 @@ class Modal {
       currentModal.find(Identifiers.body).append(configuration.content);
     }
 
-    // Add buttons
-    if (configuration.buttons.length > 0) {
-      for (let i = 0; i < configuration.buttons.length; i++) {
-        const button = configuration.buttons[i];
-        const $button = $('<button />', {'class': 'btn'});
-        $button.html('<span>' + this.securityUtility.encodeHtml(button.text, false) + '</span>');
-        if (button.active) {
-          $button.addClass('t3js-active');
-        }
-        if (button.btnClass !== '') {
-          $button.addClass(button.btnClass);
-        }
-        if (button.name !== '') {
-          $button.attr('name', button.name);
-        }
-        if (button.trigger) {
-          $button.on('click', button.trigger);
-        }
-        if (button.dataAttributes) {
-          if (Object.keys(button.dataAttributes).length > 0) {
-            Object.keys(button.dataAttributes).map((value: string): any => {
-              $button.attr('data-' + value, button.dataAttributes[value]);
-            });
-          }
-        }
-        if (button.icon) {
-          $button.prepend('<span class="t3js-modal-icon-placeholder" data-icon="' + button.icon + '"></span>');
-        }
-        currentModal.find(Identifiers.footer).append($button);
-      }
-      currentModal
-        .find(Identifiers.footer).find('button')
-        .on('click', (e: JQueryEventObject): void => {
-          $(e.currentTarget).trigger('button.clicked');
-        });
-    } else {
-      currentModal.find(Identifiers.footer).remove();
-    }
-
     currentModal.on('shown.bs.modal', (e: JQueryEventObject): void => {
       const $me = $(e.currentTarget);
       // focus the button which was configured as active button
@@ -455,6 +466,8 @@ class Modal {
     // When modal is opened/shown add it to Modal.instances and make it Modal.currentModal
     currentModal.on('show.bs.modal', (e: JQueryEventObject): void => {
       this.currentModal = $(e.currentTarget);
+      // Add buttons
+      this.setButtons(configuration.buttons);
       this.instances.push(this.currentModal);
     });
     currentModal.on('modal-dismiss', (e: JQueryEventObject): void => {

@@ -11,26 +11,15 @@
 </ul>
 
 <div class="t3js-coreUpdate-output">
-    <f:if condition="!{coreUpdateComposerMode} && {coreUpdateEnabled} && {coreUpdateIsReleasedVersion} && {coreUpdateIsSymLinkedCore}">
-        <f:then>
-            <div class="t3js-coreUpdate-buttonTemplate">
-                <button class="btn btn-warning t3js-coreUpdate-init" type="submit" name="coreUpdateCheckForUpdate"
-                    data-action="checkForUpdate"
-                >
-                    Check for core updates
-                </button>
-            </div>
-        </f:then>
-        <f:else>
-            <f:be.infobox title="This feature is disabled in this installation">
-                <p>
-                    <f:if condition="{coreUpdateComposerMode}">Composer Mode is active. Please update using composer commands.<br></f:if>
-                    <f:if condition="!{coreUpdateEnabled}">The environment variable was set <code>TYPO3_DISABLE_CORE_UPDATER=1</code>.<br></f:if>
-                    <f:if condition="!{coreUpdateIsReleasedVersion}">This system uses an unreleased TYPO3 core version.<br></f:if>
-                    <f:if condition="!{coreUpdateIsSymLinkedCore}">This action can only be used with a linked <code>typo3_src</code>.</f:if>
-                </p>
-            </f:be.infobox>
-        </f:else>
+    <f:if condition="!{coreIsUpdatable}">
+        <f:be.infobox title="This feature is disabled in this installation">
+            <p>
+                <f:if condition="{coreUpdateComposerMode}">Composer Mode is active. Please update using composer commands.<br></f:if>
+                <f:if condition="!{coreUpdateEnabled}">The environment variable was set <code>TYPO3_DISABLE_CORE_UPDATER=1</code>.<br></f:if>
+                <f:if condition="!{coreUpdateIsReleasedVersion}">This system uses an unreleased TYPO3 core version.<br></f:if>
+                <f:if condition="!{coreUpdateIsSymLinkedCore}">This action can only be used with a linked <code>typo3_src</code>.</f:if>
+            </p>
+        </f:be.infobox>
     </f:if>
 </div>
 

@@ -15,6 +15,7 @@ import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -55,6 +56,7 @@ class Presets extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
         } else {
           Notification.error('Something went wrong');
         }

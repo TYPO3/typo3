@@ -18,6 +18,7 @@ import ProgressBar = require('../Renderable/ProgressBar');
 import FlashMessage = require('../Renderable/FlashMessage');
 import Severity = require('../Renderable/Severity');
 import InfoBox = require('../Renderable/InfoBox');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 
 /**
  * Module: TYPO3/CMS/Install/Module/TcaMigrationsCheck
@@ -45,6 +46,7 @@ class TcaMigrationsCheck extends AbstractInteractableModule {
       cache: false,
       success: (data: any): void => {
         modalContent.empty().append(data.html);
+        Modal.setButtons(data.buttons);
         if (data.success === true && Array.isArray(data.status)) {
           if (data.status.length > 0) {
             const m: any = InfoBox.render(

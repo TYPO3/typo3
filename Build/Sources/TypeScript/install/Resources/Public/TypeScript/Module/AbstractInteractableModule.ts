@@ -14,6 +14,7 @@
 export abstract class AbstractInteractableModule {
   private readonly selectorModalBody: string = '.t3js-modal-body';
   private readonly selectorModalContent: string = '.t3js-module-content';
+  private readonly selectorModalFooter: string = '.t3js-modal-footer';
   protected currentModal: JQuery;
 
   abstract initialize(currentModal: JQuery): void;
@@ -24,6 +25,10 @@ export abstract class AbstractInteractableModule {
 
   protected getModuleContent(): JQuery {
     return this.findInModal(this.selectorModalContent);
+  }
+
+  protected getModalFooter(): JQuery {
+    return this.findInModal(this.selectorModalFooter);
   }
 
   protected findInModal(selector: string): JQuery {

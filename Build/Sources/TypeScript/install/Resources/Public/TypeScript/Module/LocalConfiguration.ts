@@ -15,6 +15,7 @@ import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -98,6 +99,7 @@ class LocalConfiguration extends AbstractInteractableModule {
             });
           }
           modalContent.html(data.html);
+          Modal.setButtons(data.buttons);
         }
       },
       error: (xhr: XMLHttpRequest): void => {

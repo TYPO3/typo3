@@ -18,6 +18,7 @@ import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
 import InfoBox = require('../Renderable/InfoBox');
 import Severity = require('../Renderable/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -45,6 +46,7 @@ class FolderStructure extends AbstractInteractableModule {
 
     currentModal.on('click', this.selectorErrorFixTrigger, (e: JQueryEventObject): void => {
       e.preventDefault();
+      $(e.currentTarget).addClass('disabled').prop('disabled', true);
       this.fix();
     });
   }
@@ -61,6 +63,7 @@ class FolderStructure extends AbstractInteractableModule {
       cache: false,
       success: (data: any): void => {
         modalContent.empty().append(data.html);
+        Modal.setButtons(data.buttons);
         if (data.success === true && Array.isArray(data.errorStatus)) {
           let errorCount = 0;
           if (data.errorStatus.length > 0) {

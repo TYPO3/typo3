@@ -18,6 +18,7 @@ import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
 import InfoBox = require('../Renderable/InfoBox');
 import Severity = require('../Renderable/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -33,8 +34,8 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     this.getLoadedExtensionList();
 
     currentModal.on('click', this.selectorCheckTrigger, (e: JQueryEventObject): void => {
-      currentModal.find(this.selectorUninstallTrigger).hide();
-      currentModal.find(this.selectorOutputContainer).empty();
+      this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
+      this.findInModal(this.selectorOutputContainer).empty();
       this.getLoadedExtensionList();
     });
     currentModal.on('click', this.selectorUninstallTrigger, (e: JQueryEventObject): void => {
@@ -43,9 +44,10 @@ class ExtensionCompatTester extends AbstractInteractableModule {
   }
 
   private getLoadedExtensionList(): void {
-    this.findInModal(this.selectorCheckTrigger).prop('disabled', true);
+    this.findInModal(this.selectorCheckTrigger).addClass('disabled').prop('disabled', true);
     this.findInModal('.modal-loading').hide();
     const modalContent = this.getModalBody();
+    const modalFooter = this.getModalFooter();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.append(message);
@@ -55,6 +57,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
       cache: false,
       success: (data: any): void => {
         modalContent.empty().append(data.html);
+        Modal.setButtons(data.buttons);
         const $innerOutputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
         const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
         $innerOutputContainer.append(progressBar);
@@ -88,13 +91,13 @@ class ExtensionCompatTester extends AbstractInteractableModule {
               'Loading ' + response.scope + ' of extension "' + response.extension + '" failed',
             );
             $innerOutputContainer.append(aMessage);
-            modalContent.find(this.selectorUninstallTrigger)
+            modalFooter.find(this.selectorUninstallTrigger)
               .text('Unload extension "' + response.extension + '"')
               .attr('data-extension', response.extension)
-              .show();
+              .removeClass('hidden');
           }).always((): void => {
             $innerOutputContainer.find('.alert-loading').remove();
-            this.findInModal(this.selectorCheckTrigger).prop('disabled', false);
+            this.findInModal(this.selectorCheckTrigger).removeClass('disabled').prop('disabled', false);
           });
         } else {
           Notification.error('Something went wrong');
@@ -182,7 +185,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
               modalContent.find(this.selectorOutputContainer).empty().append(aMessage);
             });
           }
-          $(this.selectorUninstallTrigger).hide();
+          this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
           this.getLoadedExtensionList();
         } else {
           Notification.error('Something went wrong');

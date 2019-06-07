@@ -15,19 +15,20 @@ import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import PasswordStrength = require('./PasswordStrength');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
  * Module: TYPO3/CMS/Install/Module/CreateAdmin
  */
 class CreateAdmin extends AbstractInteractableModule {
-  private selectorCreateForm: string = '#t3js-createAdmin-form';
+  private selectorAdminCreateButton: string = '.t3js-createAdmin-create';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getData();
 
-    currentModal.on('submit', this.selectorCreateForm, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorAdminCreateButton, (e: JQueryEventObject): void => {
       e.preventDefault();
       this.create();
     });
@@ -45,6 +46,7 @@ class CreateAdmin extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
         } else {
           Notification.error('Something went wrong');
         }

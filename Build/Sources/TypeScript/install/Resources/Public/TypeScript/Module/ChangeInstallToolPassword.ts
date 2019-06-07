@@ -15,19 +15,20 @@ import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import PasswordStrength = require('./PasswordStrength');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ChangeInstallToolPassword
  */
 class ChangeInstallToolPassword extends AbstractInteractableModule {
-  private selectorChangeForm: string = '#t3js-changeInstallToolPassword-form';
+  private selectorChangeButton: string = '.t3js-changeInstallToolPassword-change';
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
     this.getData();
 
-    currentModal.on('submit', this.selectorChangeForm, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorChangeButton, (e: JQueryEventObject): void => {
       e.preventDefault();
       this.change();
     });
@@ -44,6 +45,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
         } else {
           Notification.error('Something went wrong');
         }

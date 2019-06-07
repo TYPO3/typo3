@@ -17,6 +17,7 @@ import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
 import InfoBox = require('../Renderable/InfoBox');
 import Severity = require('../Renderable/Severity');
+import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
@@ -57,6 +58,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       success: (data: any): void => {
         if (data.success === true) {
           modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
           this.analyze();
         } else {
           Notification.error('Something went wrong');
@@ -70,9 +72,10 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
   private analyze(): void {
     const modalContent = this.getModalBody();
+    const modalFooter = this.getModalFooter();
     const outputContainer = modalContent.find(this.selectorOutputContainer);
-    const executeTrigger = modalContent.find(this.selectorExecuteTrigger);
-    const analyzeTrigger = modalContent.find(this.selectorAnalyzeTrigger);
+    const executeTrigger = modalFooter.find(this.selectorExecuteTrigger);
+    const analyzeTrigger = modalFooter.find(this.selectorAnalyzeTrigger);
 
     outputContainer.empty().append(ProgressBar.render(Severity.loading, 'Analyzing current database schema...', ''));
 
