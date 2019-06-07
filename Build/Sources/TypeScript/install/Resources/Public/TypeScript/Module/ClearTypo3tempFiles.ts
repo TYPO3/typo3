@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -19,9 +19,7 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/ClearTypo3tempFiles
  */
-class ClearTypo3tempFiles implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class ClearTypo3tempFiles extends AbstractInteractableModule {
   private selectorDeleteTrigger: string = '.t3js-clearTypo3temp-delete';
   private selectorOutputContainer: string = '.t3js-clearTypo3temp-output';
   private selectorStatContainer: string = '.t3js-clearTypo3temp-stat-container';
@@ -29,7 +27,6 @@ class ClearTypo3tempFiles implements InteractableModuleInterface {
   private selectorStatTemplate: string = '.t3js-clearTypo3temp-stat-template';
   private selectorStatNumberOfFiles: string = '.t3js-clearTypo3temp-stat-numberOfFiles';
   private selectorStatDirectory: string = '.t3js-clearTypo3temp-stat-directory';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -49,7 +46,7 @@ class ClearTypo3tempFiles implements InteractableModuleInterface {
   }
 
   private getStats(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('clearTypo3tempFilesStats'),
       cache: false,
@@ -79,8 +76,8 @@ class ClearTypo3tempFiles implements InteractableModuleInterface {
   }
 
   private delete(folder: string, storageUid: number): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('clear-typo3temp-delete-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('clear-typo3temp-delete-token');
     $.ajax({
       method: 'POST',
       url: Router.getUrl(),

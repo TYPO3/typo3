@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -20,13 +20,10 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/LocalConfiguration
  */
-class LocalConfiguration implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class LocalConfiguration extends AbstractInteractableModule {
   private selectorToggleAllTrigger: string = '.t3js-localConfiguration-toggleAll';
   private selectorWriteTrigger: string = '.t3js-localConfiguration-write';
   private selectorSearchTrigger: string = '.t3js-localConfiguration-search';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -39,7 +36,7 @@ class LocalConfiguration implements InteractableModuleInterface {
 
     // Expand / collapse "Toggle all" button
     currentModal.on('click', this.selectorToggleAllTrigger, (): void => {
-      const modalContent = this.currentModal.find(this.selectorModalBody);
+      const modalContent = this.getModalBody();
       const panels = modalContent.find('.panel-collapse');
       const action = (panels.eq(0).hasClass('in')) ? 'hide' : 'show';
       panels.collapse(action);
@@ -89,7 +86,7 @@ class LocalConfiguration implements InteractableModuleInterface {
   }
 
   private getContent(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('localConfigurationGetContent'),
       cache: false,
@@ -110,10 +107,10 @@ class LocalConfiguration implements InteractableModuleInterface {
   }
 
   private write(): void {
-    const modalContent: JQuery = this.currentModal.find(this.selectorModalBody);
-    const executeToken: JQuery = this.currentModal.find(this.selectorModuleContent).data('local-configuration-write-token');
+    const modalContent: JQuery = this.getModalBody();
+    const executeToken: JQuery = this.getModuleContent().data('local-configuration-write-token');
     const configurationValues: any = {};
-    this.currentModal.find('.t3js-localConfiguration-pathValue').each((i: number, element: any): void => {
+    this.findInModal('.t3js-localConfiguration-pathValue').each((i: number, element: any): void => {
       const $element: JQuery = $(element);
       if ($element.attr('type') === 'checkbox') {
         if (element.checked) {

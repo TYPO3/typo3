@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -19,17 +19,14 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/PhpInfo
  */
-class PhpInfo implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private currentModal: any = {};
-
+class PhpInfo extends AbstractInteractableModule {
   public initialize(currentModal: any): void {
     this.currentModal = currentModal;
     this.getData();
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('phpInfoGetData'),
       cache: false,

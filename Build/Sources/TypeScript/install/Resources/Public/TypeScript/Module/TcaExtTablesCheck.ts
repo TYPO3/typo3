@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
@@ -22,11 +22,9 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/TcaExtTablesCheck
  */
-class TcaExtTablesCheck implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
+class TcaExtTablesCheck extends AbstractInteractableModule {
   private selectorCheckTrigger: string = '.t3js-tcaExtTablesCheck-check';
   private selectorOutputContainer: string = '.t3js-tcaExtTablesCheck-output';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -38,7 +36,7 @@ class TcaExtTablesCheck implements InteractableModuleInterface {
   }
 
   private check(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     const $outputContainer = $(this.selectorOutputContainer);
     const m: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(m);

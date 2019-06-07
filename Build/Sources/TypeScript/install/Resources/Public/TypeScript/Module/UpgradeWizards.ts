@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -25,9 +25,7 @@ import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 /**
  * Module: TYPO3/CMS/Install/Module/UpgradeWizards
  */
-class UpgradeWizards implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class UpgradeWizards extends AbstractInteractableModule {
   private selectorOutputWizardsContainer: string = '.t3js-upgradeWizards-wizards-output';
   private selectorOutputDoneContainer: string = '.t3js-upgradeWizards-done-output';
   private selectorWizardsBlockingAddsTemplate: string = '.t3js-upgradeWizards-blocking-adds-template';
@@ -50,10 +48,10 @@ class UpgradeWizards implements InteractableModuleInterface {
   private selectorWizardsInputTitle: string = '.t3js-upgradeWizards-input-title';
   private selectorWizardsInputHtml: string = '.t3js-upgradeWizards-input-html';
   private selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
-  private currentModal: JQuery;
   private securityUtility: SecurityUtility;
 
   constructor() {
+    super();
     this.securityUtility = new SecurityUtility();
   }
 
@@ -99,7 +97,7 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private getData(): JQueryPromise<any> {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     return $.ajax({
       url: Router.getUrl('upgradeWizardsGetData'),
       cache: false,
@@ -118,8 +116,8 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private blockingUpgradesDatabaseCharsetTest(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Checking database charset...'));
     $.ajax({
       url: Router.getUrl('upgradeWizardsBlockingDatabaseCharsetTest'),
@@ -169,8 +167,8 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private blockingUpgradesDatabaseAdds(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Check for missing mandatory database tables and fields...'));
     $.ajax({
       url: Router.getUrl('upgradeWizardsBlockingDatabaseAdds'),
@@ -215,7 +213,7 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private blockingUpgradesDatabaseAddsExecute(): void {
-    const $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Adding database tables and fields...'));
     $.ajax({
       url: Router.getUrl('upgradeWizardsBlockingDatabaseExecute'),
@@ -243,8 +241,8 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private wizardsList(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     $outputContainer.append(UpgradeWizards.renderProgressBar('Loading upgrade wizards...'));
 
     $.ajax({
@@ -288,7 +286,7 @@ class UpgradeWizards implements InteractableModuleInterface {
             .find('span')
             .text(percent + '%');
           modalContent.find(this.selectorOutputWizardsContainer).append(list);
-          this.currentModal.find(this.selectorWizardsDoneRowMarkUndone).prop('disabled', false);
+          this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', false);
         } else {
           Notification.error('Something went wrong');
         }
@@ -300,9 +298,9 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private wizardInput(identifier: string, title: string): void {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-wizards-input-token');
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+    const executeToken = this.getModuleContent().data('upgrade-wizards-input-token');
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Loading "' + title + '"...'));
 
     modalContent.animate(
@@ -351,20 +349,20 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private wizardExecute(identifier: string, title: string): void {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-wizards-execute-token');
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const executeToken = this.getModuleContent().data('upgrade-wizards-execute-token');
+    const modalContent = this.getModalBody();
     const postData: any = {
       'install[action]': 'upgradeWizardsExecute',
       'install[token]': executeToken,
       'install[identifier]': identifier,
     };
-    $(this.currentModal.find(this.selectorOutputWizardsContainer + ' form').serializeArray()).each((index: number, element: any): void => {
+    $(this.findInModal(this.selectorOutputWizardsContainer + ' form').serializeArray()).each((index: number, element: any): void => {
       postData[element.name] = element.value;
     });
-    const $outputContainer = this.currentModal.find(this.selectorOutputWizardsContainer);
+    const $outputContainer = this.findInModal(this.selectorOutputWizardsContainer);
     // modalContent.find(this.selectorOutputWizardsContainer).empty();
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Executing "' + title + '"...'));
-    this.currentModal.find(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
+    this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
     $.ajax({
       method: 'POST',
       data: postData,
@@ -393,7 +391,7 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private doneUpgrades(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     const $outputContainer = modalContent.find(this.selectorOutputDoneContainer);
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Loading executed upgrade wizards...'));
 
@@ -432,7 +430,7 @@ class UpgradeWizards implements InteractableModuleInterface {
           }
           if (hasBodyContent) {
             modalContent.find(this.selectorOutputDoneContainer).append(body);
-            this.currentModal.find(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
+            this.findInModal(this.selectorWizardsDoneRowMarkUndone).prop('disabled', true);
           }
         } else {
           Notification.error('Something went wrong');
@@ -445,9 +443,9 @@ class UpgradeWizards implements InteractableModuleInterface {
   }
 
   private markUndone(identifier: string): void {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-wizards-mark-undone-token');
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputDoneContainer);
+    const executeToken = this.getModuleContent().data('upgrade-wizards-mark-undone-token');
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputDoneContainer);
     $outputContainer.empty().html(UpgradeWizards.renderProgressBar('Marking upgrade wizard as undone...'));
     $.ajax({
       url: Router.getUrl(),

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
@@ -22,11 +22,9 @@ import InfoBox = require('../Renderable/InfoBox');
 /**
  * Module: TYPO3/CMS/Install/Module/TcaMigrationsCheck
  */
-class TcaMigrationsCheck implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
+class TcaMigrationsCheck extends AbstractInteractableModule {
   private selectorCheckTrigger: string = '.t3js-tcaMigrationsCheck-check';
   private selectorOutputContainer: string = '.t3js-tcaMigrationsCheck-output';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -39,7 +37,7 @@ class TcaMigrationsCheck implements InteractableModuleInterface {
 
   private check(): void {
     const $outputContainer: JQuery = $(this.selectorOutputContainer);
-    const modalContent: JQuery = this.currentModal.find(this.selectorModalBody);
+    const modalContent: JQuery = this.getModalBody();
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
     $.ajax({

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -20,12 +20,9 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/ExtensionConfiguration
  */
-class ExtensionConfiguration implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class ExtensionConfiguration extends AbstractInteractableModule {
   private selectorFormListener: string = '.t3js-extensionConfiguration-form';
   private selectorSearchInput: string = '.t3js-extensionConfiguration-search';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -73,7 +70,7 @@ class ExtensionConfiguration implements InteractableModuleInterface {
   }
 
   private getContent(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('extensionConfigurationGetContent'),
       cache: false,
@@ -100,8 +97,8 @@ class ExtensionConfiguration implements InteractableModuleInterface {
    * @param {JQuery} $form The form of the current extension
    */
   private write($form: JQuery): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-configuration-write-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('extension-configuration-write-token');
     const extensionConfiguration: any = {};
     $.each($form.serializeArray(), (index: number, element: any): void => {
       extensionConfiguration[element.name] = element.value;
@@ -139,7 +136,7 @@ class ExtensionConfiguration implements InteractableModuleInterface {
    * configuration properties
    */
   private initializeWrap(): void {
-    this.currentModal.find('.t3js-emconf-offset').each((index: number, element: any): void => {
+    this.findInModal('.t3js-emconf-offset').each((index: number, element: any): void => {
       const $me = $(element);
       const $parent = $me.parent();
       const id = $me.attr('id');
@@ -182,7 +179,7 @@ class ExtensionConfiguration implements InteractableModuleInterface {
       });
     });
 
-    this.currentModal.find('.t3js-emconf-wrap').each((index: number, element: any): void => {
+    this.findInModal('.t3js-emconf-wrap').each((index: number, element: any): void => {
       const $me = $(element);
       const $parent = $me.parent();
       const id = $me.attr('id');

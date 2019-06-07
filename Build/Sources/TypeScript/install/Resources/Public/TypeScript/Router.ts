@@ -12,7 +12,7 @@
  */
 
 import {InlineModuleInterface} from './Module/InlineModuleInterface';
-import {InteractableModuleInterface} from './Module/InteractableModuleInterface';
+import {AbstractInteractableModule} from './Module/AbstractInteractableModule';
 import * as $ from 'jquery';
 import InfoBox = require('./Renderable/InfoBox');
 import Severity = require('./Renderable/Severity');
@@ -65,7 +65,7 @@ class Router {
             content: $('<div class="modal-loading">').append(icon),
             additionalCssClasses: ['install-tool-modal'],
             callback: (currentModal: any): void => {
-              require([requireModule], (aModule: InteractableModuleInterface): void => {
+              require([requireModule], (aModule: AbstractInteractableModule): void => {
                 aModule.initialize(currentModal);
               });
             },

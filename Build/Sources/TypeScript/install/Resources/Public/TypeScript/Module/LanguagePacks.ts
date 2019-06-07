@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -23,9 +23,7 @@ import Severity = require('../Renderable/Severity');
 /**
  * Module: TYPO3/CMS/Install/Module/LanguagePacks
  */
-class LanguagePacks implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class LanguagePacks extends AbstractInteractableModule {
   private selectorOutputContainer: string = '.t3js-languagePacks-output';
   private selectorContentContainer: string = '.t3js-languagePacks-mainContent';
   private selectorActivateLanguage: string = '.t3js-languagePacks-activateLanguage';
@@ -38,8 +36,6 @@ class LanguagePacks implements InteractableModuleInterface {
   private selectorLanguageUpdateIcon: string = '#t3js-languagePacks-languageUpdate-icon';
   private selectorExtensionPackMissesIcon: string = '#t3js-languagePacks-extensionPack-misses-icon';
   private selectorNotifications: string = '.t3js-languagePacks-notifications';
-
-  private currentModal: JQuery;
 
   private activeLanguages: Array<any> = [];
   private activeExtensions: Array<any> = [];
@@ -85,7 +81,7 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('languagePacksGetData'),
       cache: false,
@@ -113,8 +109,8 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private activateLanguage(iso: string): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputContainer);
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().append(message);
 
@@ -125,7 +121,7 @@ class LanguagePacks implements InteractableModuleInterface {
       data: {
         'install': {
           'action': 'languagePacksActivateLanguage',
-          'token': this.currentModal.find(this.selectorModuleContent).data('language-packs-activate-language-token'),
+          'token': this.getModuleContent().data('language-packs-activate-language-token'),
           'iso': iso,
         },
       },
@@ -153,8 +149,8 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private deactivateLanguage(iso: string): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputContainer);
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().append(message);
     $.ajax({
@@ -164,7 +160,7 @@ class LanguagePacks implements InteractableModuleInterface {
       data: {
         'install': {
           'action': 'languagePacksDeactivateLanguage',
-          'token': this.currentModal.find(this.selectorModuleContent).data('language-packs-deactivate-language-token'),
+          'token': this.getModuleContent().data('language-packs-deactivate-language-token'),
           'iso': iso,
         },
       },
@@ -192,8 +188,8 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private updatePacks(iso: string, extension: string): void {
-    const $outputContainer = this.currentModal.find(this.selectorOutputContainer);
-    const $contentContainer = this.currentModal.find(this.selectorContentContainer);
+    const $outputContainer = this.findInModal(this.selectorOutputContainer);
+    const $contentContainer = this.findInModal(this.selectorContentContainer);
     const isos = iso === undefined ? this.activeLanguages : [ iso ];
     let updateIsoTimes = true;
     let extensions = this.activeExtensions;
@@ -234,7 +230,7 @@ class LanguagePacks implements InteractableModuleInterface {
           data: {
             'install': {
               'action': 'languagePacksUpdatePack',
-              'token': this.currentModal.find(this.selectorModuleContent).data('language-packs-update-pack-token'),
+              'token': this.getModuleContent().data('language-packs-update-pack-token'),
               'iso': isoCode,
               'extension': extensionKey,
             },
@@ -271,8 +267,8 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private packUpdateDone(updateIsoTimes: boolean, isos: Array<any>): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputContainer);
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputContainer);
     if (this.packsUpdateDetails.handled === this.packsUpdateDetails.toHandle) {
       // All done - create summary, update 'last update' of iso list, render main view
       const message = InfoBox.render(
@@ -291,7 +287,7 @@ class LanguagePacks implements InteractableModuleInterface {
           data: {
             'install': {
               'action': 'languagePacksUpdateIsoTimes',
-              'token': this.currentModal.find(this.selectorModuleContent).data('language-packs-update-iso-times-token'),
+              'token': this.getModuleContent().data('language-packs-update-iso-times-token'),
               'isos': isos,
             },
           },
@@ -323,9 +319,9 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private languageMatrixHtml(data: any): string {
-    const activateIcon = this.currentModal.find(this.selectorActivateLanguageIcon).html();
-    const deactivateIcon = this.currentModal.find(this.selectorDeactivateLanguageIcon).html();
-    const updateIcon = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
+    const activateIcon = this.findInModal(this.selectorActivateLanguageIcon).html();
+    const deactivateIcon = this.findInModal(this.selectorDeactivateLanguageIcon).html();
+    const updateIcon = this.findInModal(this.selectorLanguageUpdateIcon).html();
     const $markupContainer = $('<div>');
 
     const $tbody = $('<tbody>');
@@ -401,8 +397,8 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private extensionMatrixHtml(data: any): any {
-    const packMissesIcon: string = this.currentModal.find(this.selectorExtensionPackMissesIcon).html();
-    const updateIcon: string = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
+    const packMissesIcon: string = this.findInModal(this.selectorExtensionPackMissesIcon).html();
+    const updateIcon: string = this.findInModal(this.selectorLanguageUpdateIcon).html();
     let tooltip: string = '';
     let extensionTitle: JQuery;
     let allPackagesExist: boolean = true;
@@ -500,7 +496,7 @@ class LanguagePacks implements InteractableModuleInterface {
   }
 
   private getNotificationBox(): JQuery {
-    return this.currentModal.find(this.selectorNotifications);
+    return this.findInModal(this.selectorNotifications);
   }
 
   private addNotification(notification: any): void {

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import PasswordStrength = require('./PasswordStrength');
@@ -20,11 +20,8 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/ChangeInstallToolPassword
  */
-class ChangeInstallToolPassword implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class ChangeInstallToolPassword extends AbstractInteractableModule {
   private selectorChangeForm: string = '#t3js-changeInstallToolPassword-form';
-  private currentModal: any = {};
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -40,7 +37,7 @@ class ChangeInstallToolPassword implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('changeInstallToolPasswordGetData'),
       cache: false,
@@ -58,8 +55,8 @@ class ChangeInstallToolPassword implements InteractableModuleInterface {
   }
 
   private change(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('install-tool-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('install-tool-token');
     $.ajax({
       url: Router.getUrl(),
       method: 'POST',
@@ -67,8 +64,8 @@ class ChangeInstallToolPassword implements InteractableModuleInterface {
         'install': {
           'action': 'changeInstallToolPassword',
           'token': executeToken,
-          'password': this.currentModal.find('.t3js-changeInstallToolPassword-password').val(),
-          'passwordCheck': this.currentModal.find('.t3js-changeInstallToolPassword-password-check').val(),
+          'password': this.findInModal('.t3js-changeInstallToolPassword-password').val(),
+          'passwordCheck': this.findInModal('.t3js-changeInstallToolPassword-password-check').val(),
         },
       },
       cache: false,
@@ -85,7 +82,7 @@ class ChangeInstallToolPassword implements InteractableModuleInterface {
         Router.handleAjaxError(xhr, modalContent);
       },
       complete: (): void => {
-        this.currentModal.find('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('');
+        this.findInModal('.t3js-changeInstallToolPassword-password,.t3js-changeInstallToolPassword-password-check').val('');
       },
     });
   }

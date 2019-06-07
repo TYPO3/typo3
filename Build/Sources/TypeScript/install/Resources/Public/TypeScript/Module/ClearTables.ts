@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -19,9 +19,7 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/ClearTables
  */
-class ClearTables implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class ClearTables extends AbstractInteractableModule {
   private selectorClearTrigger: string = '.t3js-clearTables-clear';
   private selectorStatsTrigger: string = '.t3js-clearTables-stats';
   private selectorOutputContainer: string = '.t3js-clearTables-output';
@@ -30,7 +28,6 @@ class ClearTables implements InteractableModuleInterface {
   private selectorStatDescription: string = '.t3js-clearTables-stat-description';
   private selectorStatRows: string = '.t3js-clearTables-stat-rows';
   private selectorStatName: string = '.t3js-clearTables-stat-name';
-  private currentModal: any = {};
 
   public initialize(currentModal: any): void {
     this.currentModal = currentModal;
@@ -50,7 +47,7 @@ class ClearTables implements InteractableModuleInterface {
   }
 
   private getStats(): void {
-    const modalContent: JQuery = this.currentModal.find(this.selectorModalBody);
+    const modalContent: JQuery = this.getModalBody();
     $.ajax({
       url: Router.getUrl('clearTablesStats'),
       cache: false,
@@ -80,8 +77,8 @@ class ClearTables implements InteractableModuleInterface {
   }
 
   private clear(table: string): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('clear-tables-clear-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('clear-tables-clear-token');
     $.ajax({
       url: Router.getUrl(),
       method: 'POST',

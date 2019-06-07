@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import FlashMessage = require('../Renderable/FlashMessage');
@@ -28,7 +28,7 @@ interface ActionQueue {
   [k: string]: ActionItem;
 }
 
-class CoreUpdate implements InteractableModuleInterface {
+class CoreUpdate extends AbstractInteractableModule {
   private actionQueue: ActionQueue = {
     coreUpdateIsUpdateAvailable: {
       loadingMessage: 'Checking for possible regular or security update',
@@ -67,7 +67,6 @@ class CoreUpdate implements InteractableModuleInterface {
     },
   };
 
-  private selectorModalBody: string = '.t3js-modal-body';
   private selectorOutput: string = '.t3js-coreUpdate-output';
   private selectorTemplate: string = '.t3js-coreUpdate-buttonTemplate';
 
@@ -75,8 +74,6 @@ class CoreUpdate implements InteractableModuleInterface {
    * Clone of a DOM object acts as button template
    */
   private buttonTemplate: any = null;
-
-  private currentModal: JQuery = null;
 
   /**
    * Fetching the templates out of the DOM
@@ -100,7 +97,7 @@ class CoreUpdate implements InteractableModuleInterface {
   }
 
   private getData(): JQueryXHR {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     return $.ajax({
       url: Router.getUrl('coreUpdateGetData'),
       cache: false,
@@ -177,7 +174,7 @@ class CoreUpdate implements InteractableModuleInterface {
         }
       },
       error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, this.currentModal.find(this.selectorModalBody));
+        Router.handleAjaxError(xhr, this.getModalBody());
       },
     });
   }
@@ -208,14 +205,14 @@ class CoreUpdate implements InteractableModuleInterface {
    */
   private addLoadingMessage(messageTitle: string): void {
     const domMessage = FlashMessage.render(Severity.loading, messageTitle);
-    this.currentModal.find(this.selectorOutput).append(domMessage);
+    this.findInModal(this.selectorOutput).append(domMessage);
   }
 
   /**
    * Remove an enabled loading message
    */
   private removeLoadingMessage(): void {
-    this.currentModal.find(this.selectorOutput).find('.alert-loading').remove();
+    this.findInModal(this.selectorOutput).find('.alert-loading').remove();
   }
 
   /**
@@ -259,7 +256,7 @@ class CoreUpdate implements InteractableModuleInterface {
     if (title) {
       domButton.text(title);
     }
-    this.currentModal.find(this.selectorOutput).append(domButton);
+    this.findInModal(this.selectorOutput).append(domButton);
   }
 
   /**
@@ -267,7 +264,7 @@ class CoreUpdate implements InteractableModuleInterface {
    */
   private addMessage(severity: number, title: string, message?: string): void {
     const domMessage = FlashMessage.render(severity, title, message);
-    this.currentModal.find(this.selectorOutput).append(domMessage);
+    this.findInModal(this.selectorOutput).append(domMessage);
   }
 }
 

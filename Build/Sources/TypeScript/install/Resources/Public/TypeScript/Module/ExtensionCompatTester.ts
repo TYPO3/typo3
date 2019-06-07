@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -23,13 +23,10 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/ExtensionCompatTester
  */
-class ExtensionCompatTester implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class ExtensionCompatTester extends AbstractInteractableModule {
   private selectorCheckTrigger: string = '.t3js-extensionCompatTester-check';
   private selectorUninstallTrigger: string = '.t3js-extensionCompatTester-uninstall';
   private selectorOutputContainer: string = '.t3js-extensionCompatTester-output';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -46,10 +43,10 @@ class ExtensionCompatTester implements InteractableModuleInterface {
   }
 
   private getLoadedExtensionList(): void {
-    this.currentModal.find(this.selectorCheckTrigger).prop('disabled', true);
-    this.currentModal.find('.modal-loading').hide();
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer = this.currentModal.find(this.selectorOutputContainer);
+    this.findInModal(this.selectorCheckTrigger).prop('disabled', true);
+    this.findInModal('.modal-loading').hide();
+    const modalContent = this.getModalBody();
+    const $outputContainer = this.findInModal(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.append(message);
 
@@ -58,7 +55,7 @@ class ExtensionCompatTester implements InteractableModuleInterface {
       cache: false,
       success: (data: any): void => {
         modalContent.empty().append(data.html);
-        const $innerOutputContainer: JQuery = this.currentModal.find(this.selectorOutputContainer);
+        const $innerOutputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
         const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
         $innerOutputContainer.append(progressBar);
 
@@ -97,7 +94,7 @@ class ExtensionCompatTester implements InteractableModuleInterface {
               .show();
           }).always((): void => {
             $innerOutputContainer.find('.alert-loading').remove();
-            this.currentModal.find(this.selectorCheckTrigger).prop('disabled', false);
+            this.findInModal(this.selectorCheckTrigger).prop('disabled', false);
           });
         } else {
           Notification.error('Something went wrong');
@@ -110,7 +107,7 @@ class ExtensionCompatTester implements InteractableModuleInterface {
   }
 
   private loadExtLocalconf(extension: string): JQueryPromise<{}> {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_localconf-token');
+    const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_localconf-token');
     const $ajax = $.ajax({
       url: Router.getUrl(),
       method: 'POST',
@@ -133,7 +130,7 @@ class ExtensionCompatTester implements InteractableModuleInterface {
   }
 
   private loadExtTables(extension: string): JQueryPromise<{}> {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-load-ext_tables-token');
+    const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_tables-token');
     const $ajax = $.ajax({
       url: Router.getUrl(),
       method: 'POST',
@@ -161,8 +158,8 @@ class ExtensionCompatTester implements InteractableModuleInterface {
    * @param extension string of extension(s) - may be comma separated
    */
   private uninstallExtension(extension: string): void {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-compat-tester-uninstall-extension-token');
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const executeToken = this.getModuleContent().data('extension-compat-tester-uninstall-extension-token');
+    const modalContent = this.getModalBody();
     const $outputContainer = $(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.append(message);

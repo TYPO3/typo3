@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -23,12 +23,10 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/EnvironmentCheck
  */
-class EnvironmentCheck implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
+class EnvironmentCheck extends AbstractInteractableModule {
   private selectorGridderBadge: string = '.t3js-environmentCheck-badge';
   private selectorExecuteTrigger: string = '.t3js-environmentCheck-execute';
   private selectorOutputContainer: string = '.t3js-environmentCheck-output';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -43,7 +41,7 @@ class EnvironmentCheck implements InteractableModuleInterface {
   }
 
   private runTests(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     const $errorBadge = $(this.selectorGridderBadge);
     $errorBadge.text('').hide();
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import ProgressBar = require('../Renderable/ProgressBar');
@@ -22,16 +22,13 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/DatabaseAnalyzer
  */
-class DatabaseAnalyzer implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class DatabaseAnalyzer extends AbstractInteractableModule {
   private selectorAnalyzeTrigger: string = '.t3js-databaseAnalyzer-analyze';
   private selectorExecuteTrigger: string = '.t3js-databaseAnalyzer-execute';
   private selectorOutputContainer: string = '.t3js-databaseAnalyzer-output';
   private selectorSuggestionBlock: string = '.t3js-databaseAnalyzer-suggestion-block';
   private selectorSuggestionList: string = '.t3js-databaseAnalyzer-suggestion-list';
   private selectorSuggestionLineTemplate: string = '.t3js-databaseAnalyzer-suggestion-line-template';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -53,7 +50,7 @@ class DatabaseAnalyzer implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('databaseAnalyzer'),
       cache: false,
@@ -72,7 +69,7 @@ class DatabaseAnalyzer implements InteractableModuleInterface {
   }
 
   private analyze(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     const outputContainer = modalContent.find(this.selectorOutputContainer);
     const executeTrigger = modalContent.find(this.selectorExecuteTrigger);
     const analyzeTrigger = modalContent.find(this.selectorAnalyzeTrigger);
@@ -151,8 +148,8 @@ class DatabaseAnalyzer implements InteractableModuleInterface {
   }
 
   private execute(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('database-analyzer-execute-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('database-analyzer-execute-token');
     const outputContainer = modalContent.find(this.selectorOutputContainer);
     const selectedHashes: Array<any> = [];
 

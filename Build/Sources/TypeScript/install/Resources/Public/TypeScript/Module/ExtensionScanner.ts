@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import AjaxQueue = require('../Ajax/AjaxQueue');
@@ -45,14 +45,11 @@ interface RestFile {
   file_hash: string;
 }
 
-class ExtensionScanner implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class ExtensionScanner extends AbstractInteractableModule {
   private listOfAffectedRestFileHashes: Array<any> = [];
   private selectorExtensionContainer: string = '.t3js-extensionScanner-extension';
   private selectorNumberOfFiles: string = '.t3js-extensionScanner-number-of-files';
   private selectorScanSingleTrigger: string = '.t3js-extensionScanner-scan-single';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -80,7 +77,7 @@ class ExtensionScanner implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     AjaxQueue.add({
       url: Router.getUrl('extensionScannerGetData'),
       cache: false,
@@ -102,7 +99,7 @@ class ExtensionScanner implements InteractableModuleInterface {
   }
 
   private scanAll($extensions: JQuery): void {
-    this.currentModal.find(this.selectorExtensionContainer)
+    this.findInModal(this.selectorExtensionContainer)
       .removeClass('panel-danger panel-warning panel-success')
       .find('.panel-progress-bar')
       .css('width', 0)
@@ -119,14 +116,14 @@ class ExtensionScanner implements InteractableModuleInterface {
   }
 
   private setStatusMessageForScan(extension: string, doneFiles: number, numberOfFiles: number): void {
-    this.currentModal.find(this.getExtensionSelector(extension))
+    this.findInModal(this.getExtensionSelector(extension))
       .find(this.selectorNumberOfFiles)
       .text('Checked ' + doneFiles + ' of ' + numberOfFiles + ' files');
   }
 
   private setProgressForScan(extension: string, doneFiles: number, numberOfFiles: number): void {
     const percent = (doneFiles / numberOfFiles) * 100;
-    this.currentModal.find(this.getExtensionSelector(extension))
+    this.findInModal(this.getExtensionSelector(extension))
       .find('.panel-progress-bar')
       .css('width', percent + '%')
       .attr('aria-valuenow', percent)
@@ -135,17 +132,17 @@ class ExtensionScanner implements InteractableModuleInterface {
   }
 
   private setProgressForAll(): void {
-    const numberOfExtensions: number = this.currentModal.find(this.selectorExtensionContainer).length;
-    const numberOfSuccess: number = this.currentModal.find(this.selectorExtensionContainer
+    const numberOfExtensions: number = this.findInModal(this.selectorExtensionContainer).length;
+    const numberOfSuccess: number = this.findInModal(this.selectorExtensionContainer
       + '.t3js-extensionscan-finished.panel-success').length;
-    const numberOfWarning: number = this.currentModal.find(this.selectorExtensionContainer
+    const numberOfWarning: number = this.findInModal(this.selectorExtensionContainer
       + '.t3js-extensionscan-finished.panel-warning').length;
-    const numberOfError: number = this.currentModal.find(this.selectorExtensionContainer
+    const numberOfError: number = this.findInModal(this.selectorExtensionContainer
       + '.t3js-extensionscan-finished.panel-danger').length;
     const numberOfScannedExtensions: number = numberOfSuccess + numberOfWarning + numberOfError;
     const percent: number = (numberOfScannedExtensions / numberOfExtensions) * 100;
-    const modalContent: JQuery = this.currentModal.find(this.selectorModalBody);
-    this.currentModal.find('.t3js-extensionScanner-progress-all-extension .progress-bar')
+    const modalContent: JQuery = this.getModalBody();
+    this.findInModal('.t3js-extensionScanner-progress-all-extension .progress-bar')
       .css('width', percent + '%')
       .attr('aria-valuenow', percent)
       .find('span')
@@ -159,7 +156,7 @@ class ExtensionScanner implements InteractableModuleInterface {
         data: {
           'install': {
             'action': 'extensionScannerMarkFullyScannedRestFiles',
-            'token': this.currentModal.find(this.selectorModuleContent).data('extension-scanner-mark-fully-scanned-rest-files-token'),
+            'token': this.getModuleContent().data('extension-scanner-mark-fully-scanned-rest-files-token'),
             'hashes': this.uniqueArray(this.listOfAffectedRestFileHashes),
           },
         },
@@ -189,9 +186,9 @@ class ExtensionScanner implements InteractableModuleInterface {
    * Handle a single extension scan
    */
   private scanSingleExtension(extension: string): void {
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('extension-scanner-files-token');
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $extensionContainer = this.currentModal.find(this.getExtensionSelector(extension));
+    const executeToken = this.getModuleContent().data('extension-scanner-files-token');
+    const modalContent = this.getModalBody();
+    const $extensionContainer = this.findInModal(this.getExtensionSelector(extension));
     const hitTemplate = '#t3js-extensionScanner-file-hit-template';
     const restTemplate = '#t3js-extensionScanner-file-hit-rest-template';
     let hitFound = false;
@@ -226,7 +223,7 @@ class ExtensionScanner implements InteractableModuleInterface {
                 data: {
                   'install': {
                     'action': 'extensionScannerScanFile',
-                    'token': this.currentModal.find(this.selectorModuleContent).data('extension-scanner-scan-file-token'),
+                    'token': this.getModuleContent().data('extension-scanner-scan-file-token'),
                     'extension': extension,
                     'file': file,
                   },

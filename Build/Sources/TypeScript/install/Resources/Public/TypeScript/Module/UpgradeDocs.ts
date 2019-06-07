@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -20,16 +20,13 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/UpgradeDocs
  */
-class UpgradeDocs implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class UpgradeDocs extends AbstractInteractableModule {
   private selectorRestFileItem: string = '.upgrade_analysis_item_to_filter';
   private selectorFulltextSearch: string = '.t3js-upgradeDocs-fulltext-search';
   private selectorChosenField: string = '.t3js-upgradeDocs-chosen-select';
   private selectorChangeLogsForVersionContainer: string = '.t3js-version-changes';
   private selectorChangeLogsForVersion: string = '.t3js-changelog-list';
 
-  private currentModal: JQuery;
   private chosenField: JQuery;
   private fulltextSearchField: JQuery;
 
@@ -81,7 +78,7 @@ class UpgradeDocs implements InteractableModuleInterface {
   }
 
   private getContent(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('upgradeDocsGetContent'),
       cache: false,
@@ -102,8 +99,8 @@ class UpgradeDocs implements InteractableModuleInterface {
 
   private loadChangelogs(): void {
     const promises: Array<any> = [];
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    this.currentModal.find(this.selectorChangeLogsForVersionContainer).each((index: number, el: any): void => {
+    const modalContent = this.getModalBody();
+    this.findInModal(this.selectorChangeLogsForVersionContainer).each((index: number, el: any): void => {
       const $request = $.ajax({
         url: Router.getUrl('upgradeDocsGetChangelogForVersion'),
         cache: false,
@@ -141,7 +138,7 @@ class UpgradeDocs implements InteractableModuleInterface {
   }
 
   private initializeFullTextSearch(): void {
-    this.fulltextSearchField = this.currentModal.find(this.selectorFulltextSearch);
+    this.fulltextSearchField = this.findInModal(this.selectorFulltextSearch);
     this.fulltextSearchField.clearable().focus();
     this.initializeChosenSelector();
     this.fulltextSearchField.on('keyup', (): void => {
@@ -150,7 +147,7 @@ class UpgradeDocs implements InteractableModuleInterface {
   }
 
   private initializeChosenSelector(): void {
-    this.chosenField = this.currentModal.find(this.selectorModalBody).find(this.selectorChosenField);
+    this.chosenField = this.getModalBody().find(this.selectorChosenField);
 
     const config: any = {
       '.chosen-select': {width: '100%', placeholder_text_multiple: 'tags'},
@@ -161,7 +158,7 @@ class UpgradeDocs implements InteractableModuleInterface {
     };
     for (const selector in config) {
       if (config.hasOwnProperty(selector)) {
-        this.currentModal.find(selector).chosen(config[selector]);
+        this.findInModal(selector).chosen(config[selector]);
       }
     }
     this.chosenField.on('change', (): void => {
@@ -174,7 +171,7 @@ class UpgradeDocs implements InteractableModuleInterface {
    */
   private appendItemsToChosenSelector(): void {
     let tagString = '';
-    $(this.currentModal.find(this.selectorRestFileItem)).each((index: number, element: any): void => {
+    $(this.findInModal(this.selectorRestFileItem)).each((index: number, element: any): void => {
       tagString += $(element).data('item-tags') + ',';
     });
     const tagArray = UpgradeDocs.trimExplodeAndUnique(',', tagString).sort((a: string, b: string): number => {
@@ -189,7 +186,7 @@ class UpgradeDocs implements InteractableModuleInterface {
   }
 
   private combinedFilterSearch(): boolean {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     const $items = modalContent.find('div.item');
     if (this.chosenField.val().length < 1 && this.fulltextSearchField.val().length < 1) {
       $('.panel-version:not(:first) > .panel-collapse').collapse('hide');
@@ -270,17 +267,17 @@ class UpgradeDocs implements InteractableModuleInterface {
    * Moves all documents that are either read or not affected
    */
   private moveNotRelevantDocuments($container: JQuery): void {
-    $container.find('[data-item-state="read"]').appendTo(this.currentModal.find('.panel-body-read'));
-    $container.find('[data-item-state="notAffected"]').appendTo(this.currentModal.find('.panel-body-not-affected'));
+    $container.find('[data-item-state="read"]').appendTo(this.findInModal('.panel-body-read'));
+    $container.find('[data-item-state="notAffected"]').appendTo(this.findInModal('.panel-body-not-affected'));
   }
 
   private markRead(element: any): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-docs-mark-read-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('upgrade-docs-mark-read-token');
     const $button = $(element).closest('a');
     $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
     $button.find('i').toggleClass('fa-check fa-ban');
-    $button.closest('.panel').appendTo(this.currentModal.find('.panel-body-read'));
+    $button.closest('.panel').appendTo(this.findInModal('.panel-body-read'));
     $.ajax({
       method: 'POST',
       url: Router.getUrl(),
@@ -298,13 +295,13 @@ class UpgradeDocs implements InteractableModuleInterface {
   }
 
   private unmarkRead(element: any): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('upgrade-docs-unmark-read-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('upgrade-docs-unmark-read-token');
     const $button = $(element).closest('a');
     const version = $button.closest('.panel').data('item-version');
     $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');
     $button.find('i').toggleClass('fa-check fa-ban');
-    $button.closest('.panel').appendTo(this.currentModal.find('*[data-group-version="' + version + '"] .panel-body'));
+    $button.closest('.panel').appendTo(this.findInModal('*[data-group-version="' + version + '"] .panel-body'));
     $.ajax({
       method: 'POST',
       url: Router.getUrl(),

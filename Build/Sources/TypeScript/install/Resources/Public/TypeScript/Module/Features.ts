@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
@@ -19,11 +19,8 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/Features
  */
-class Features implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-features-content';
+class Features extends AbstractInteractableModule {
   private selectorSaveTrigger: string = '.t3js-features-save';
-  private currentModal: any;
 
   public initialize(currentModal: any): void {
     this.currentModal = currentModal;
@@ -36,7 +33,7 @@ class Features implements InteractableModuleInterface {
   }
 
   private getContent(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('featuresGetContent'),
       cache: false,
@@ -54,10 +51,10 @@ class Features implements InteractableModuleInterface {
   }
 
   private save(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('features-save-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('features-save-token');
     const postData: any = {};
-    $(this.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each((index: number, element: any): void => {
+    $(this.findInModal('form').serializeArray()).each((index: number, element: any): void => {
       postData[element.name] = element.value;
     });
     postData['install[action]'] = 'featuresSave';

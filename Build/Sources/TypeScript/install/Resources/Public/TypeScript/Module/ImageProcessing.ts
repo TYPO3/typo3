@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -22,15 +22,13 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/ImageProcessing
  */
-class ImageProcessing implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
+class ImageProcessing extends AbstractInteractableModule {
   private selectorExecuteTrigger: string = '.t3js-imageProcessing-execute';
   private selectorTestContainer: string = '.t3js-imageProcessing-twinContainer';
   private selectorTwinImageTemplate: string = '.t3js-imageProcessing-twinImage-template';
   private selectorCommandContainer: string = '.t3js-imageProcessing-command';
   private selectorCommandText: string = '.t3js-imageProcessing-command-text';
   private selectorTwinImages: string = '.t3js-imageProcessing-images';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -43,7 +41,7 @@ class ImageProcessing implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('imageProcessingGetData'),
       cache: false,
@@ -62,8 +60,8 @@ class ImageProcessing implements InteractableModuleInterface {
   }
 
   private runTests(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const $twinImageTemplate = this.currentModal.find(this.selectorTwinImageTemplate);
+    const modalContent = this.getModalBody();
+    const $twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
     modalContent.find(this.selectorTestContainer).each((index: number, element: any): void => {
       const $container: JQuery = $(element);
       const testType: string = $container.data('test');

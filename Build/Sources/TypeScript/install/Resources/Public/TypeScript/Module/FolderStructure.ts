@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -23,8 +23,7 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/FolderStructure
  */
-class FolderStructure implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
+class FolderStructure extends AbstractInteractableModule {
   private selectorGridderBadge: string = '.t3js-folderStructure-badge';
   private selectorOutputContainer: string = '.t3js-folderStructure-output';
   private selectorErrorContainer: string = '.t3js-folderStructure-errors';
@@ -33,7 +32,6 @@ class FolderStructure implements InteractableModuleInterface {
   private selectorOkContainer: string = '.t3js-folderStructure-ok';
   private selectorOkList: string = '.t3js-folderStructure-ok-list';
   private selectorPermissionContainer: string = '.t3js-folderStructure-permissions';
-  private currentModal: JQuery;
 
   private static removeLoadingMessage($container: JQuery): void {
     $container.find('.alert-loading').remove();
@@ -52,7 +50,7 @@ class FolderStructure implements InteractableModuleInterface {
   }
 
   private getStatus(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     const $errorBadge = $(this.selectorGridderBadge);
     $errorBadge.text('').hide();
     modalContent.find(this.selectorOutputContainer).empty().append(
@@ -106,8 +104,8 @@ class FolderStructure implements InteractableModuleInterface {
   }
 
   private fix(): void {
-    const modalContent: JQuery = this.currentModal.find(this.selectorModalBody);
-    const $outputContainer: JQuery = this.currentModal.find(this.selectorOutputContainer);
+    const modalContent: JQuery = this.getModalBody();
+    const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
     $.ajax({

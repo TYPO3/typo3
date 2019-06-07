@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -20,13 +20,10 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/SystemMaintainer
  */
-class SystemMaintainer implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class SystemMaintainer extends AbstractInteractableModule {
   private selectorWriteTrigger: string = '.t3js-systemMaintainer-write';
   private selectorChosenContainer: string = '.t3js-systemMaintainer-chosen';
   private selectorChosenField: string = '.t3js-systemMaintainer-chosen-select';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -48,7 +45,7 @@ class SystemMaintainer implements InteractableModuleInterface {
   }
 
   private getList(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('systemMaintainerGetList'),
       cache: false,
@@ -96,9 +93,9 @@ class SystemMaintainer implements InteractableModuleInterface {
   }
 
   private write(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('system-maintainer-write-token');
-    const selectedUsers = this.currentModal.find(this.selectorChosenField).val();
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('system-maintainer-write-token');
+    const selectedUsers = this.findInModal(this.selectorChosenField).val();
     $.ajax({
       method: 'POST',
       url: Router.getUrl(),

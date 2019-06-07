@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -23,12 +23,9 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/CreateAdmin
  */
-class MailTest implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class MailTest extends AbstractInteractableModule {
   private selectorForm: string = '#t3js-mailTest-form';
   private selectorOutputContainer: string = '.t3js-mailTest-output';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -40,7 +37,7 @@ class MailTest implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('mailTestGetData'),
       cache: false,
@@ -58,8 +55,8 @@ class MailTest implements InteractableModuleInterface {
   }
 
   private send(): void {
-    const executeToken: string = this.currentModal.find(this.selectorModuleContent).data('mail-test-token');
-    const $outputContainer: JQuery = this.currentModal.find(this.selectorOutputContainer);
+    const executeToken: string = this.getModuleContent().data('mail-test-token');
+    const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
     $.ajax({
@@ -69,7 +66,7 @@ class MailTest implements InteractableModuleInterface {
         'install': {
           'action': 'mailTest',
           'token': executeToken,
-          'email': this.currentModal.find('.t3js-mailTest-email').val(),
+          'email': this.findInModal('.t3js-mailTest-email').val(),
         },
       },
       cache: false,

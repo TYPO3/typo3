@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
 import Router = require('../Router');
@@ -20,13 +20,10 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/Presets
  */
-class Presets implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-presets-content';
+class Presets extends AbstractInteractableModule {
   private selectorActivateTrigger: string = '.t3js-presets-activate';
   private selectorImageExecutable: string = '.t3js-presets-image-executable';
   private selectorImageExecutableTrigger: string = '.t3js-presets-image-executable-trigger';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -51,7 +48,7 @@ class Presets implements InteractableModuleInterface {
   }
 
   private getContent(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('presetsGetContent'),
       cache: false,
@@ -69,8 +66,8 @@ class Presets implements InteractableModuleInterface {
   }
 
   private getCustomImagePathContent(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const presetsContentToken = this.currentModal.find(this.selectorModuleContent).data('presets-content-token');
+    const modalContent = this.getModalBody();
+    const presetsContentToken = this.getModuleContent().data('presets-content-token');
     $.ajax({
       url: Router.getUrl(),
       method: 'POST',
@@ -80,7 +77,7 @@ class Presets implements InteractableModuleInterface {
           'action': 'presetsGetContent',
           'values': {
             'Image': {
-              'additionalSearchPath': this.currentModal.find(this.selectorImageExecutable).val(),
+              'additionalSearchPath': this.findInModal(this.selectorImageExecutable).val(),
             },
           },
         },
@@ -100,10 +97,10 @@ class Presets implements InteractableModuleInterface {
   }
 
   private activate(): void {
-    const modalContent: JQuery = this.currentModal.find(this.selectorModalBody);
-    const executeToken: string = this.currentModal.find(this.selectorModuleContent).data('presets-activate-token');
+    const modalContent: JQuery = this.getModalBody();
+    const executeToken: string = this.getModuleContent().data('presets-activate-token');
     const postData: any = {};
-    $(this.currentModal.find(this.selectorModuleContent + ' form').serializeArray()).each((index: number, element: any): void => {
+    $(this.findInModal('form').serializeArray()).each((index: number, element: any): void => {
       postData[element.name] = element.value;
     });
     postData['install[action]'] = 'presetsActivate';

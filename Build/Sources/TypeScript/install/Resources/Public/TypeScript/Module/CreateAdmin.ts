@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InteractableModuleInterface} from './InteractableModuleInterface';
+import {AbstractInteractableModule} from './AbstractInteractableModule';
 import * as $ from 'jquery';
 import Router = require('../Router');
 import PasswordStrength = require('./PasswordStrength');
@@ -20,11 +20,8 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
 /**
  * Module: TYPO3/CMS/Install/Module/CreateAdmin
  */
-class CreateAdmin implements InteractableModuleInterface {
-  private selectorModalBody: string = '.t3js-modal-body';
-  private selectorModuleContent: string = '.t3js-module-content';
+class CreateAdmin extends AbstractInteractableModule {
   private selectorCreateForm: string = '#t3js-createAdmin-form';
-  private currentModal: JQuery;
 
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
@@ -41,7 +38,7 @@ class CreateAdmin implements InteractableModuleInterface {
   }
 
   private getData(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
+    const modalContent = this.getModalBody();
     $.ajax({
       url: Router.getUrl('createAdminGetData'),
       cache: false,
@@ -59,8 +56,8 @@ class CreateAdmin implements InteractableModuleInterface {
   }
 
   private create(): void {
-    const modalContent = this.currentModal.find(this.selectorModalBody);
-    const executeToken = this.currentModal.find(this.selectorModuleContent).data('create-admin-token');
+    const modalContent = this.getModalBody();
+    const executeToken = this.getModuleContent().data('create-admin-token');
     $.ajax({
       url: Router.getUrl(),
       method: 'POST',
@@ -68,10 +65,10 @@ class CreateAdmin implements InteractableModuleInterface {
         'install': {
           'action': 'createAdmin',
           'token': executeToken,
-          'userName': this.currentModal.find('.t3js-createAdmin-user').val(),
-          'userPassword': this.currentModal.find('.t3js-createAdmin-password').val(),
-          'userPasswordCheck': this.currentModal.find('.t3js-createAdmin-password-check').val(),
-          'userSystemMaintainer': (this.currentModal.find('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0,
+          'userName': this.findInModal('.t3js-createAdmin-user').val(),
+          'userPassword': this.findInModal('.t3js-createAdmin-password').val(),
+          'userPasswordCheck': this.findInModal('.t3js-createAdmin-password-check').val(),
+          'userSystemMaintainer': (this.findInModal('.t3js-createAdmin-system-maintainer').is(':checked')) ? 1 : 0,
         },
       },
       cache: false,
@@ -92,10 +89,10 @@ class CreateAdmin implements InteractableModuleInterface {
         Router.handleAjaxError(xhr, modalContent);
       },
     });
-    this.currentModal.find('.t3js-createAdmin-user').val('');
-    this.currentModal.find('.t3js-createAdmin-password').val('');
-    this.currentModal.find('.t3js-createAdmin-password-check').val('');
-    this.currentModal.find('.t3js-createAdmin-system-maintainer').prop('checked', false);
+    this.findInModal('.t3js-createAdmin-user').val('');
+    this.findInModal('.t3js-createAdmin-password').val('');
+    this.findInModal('.t3js-createAdmin-password-check').val('');
+    this.findInModal('.t3js-createAdmin-system-maintainer').prop('checked', false);
   }
 }
 
