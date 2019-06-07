@@ -454,7 +454,6 @@ config.inlineStyle2TempFile = 1]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		</property>
 		<property name="linkVars" type="string">
 			<description><![CDATA[HTTP_GET_VARS, which should be passed on with links in TYPO3. This is compiled into a string stored in $GLOBALS["TSFE"]->linkVars
 
