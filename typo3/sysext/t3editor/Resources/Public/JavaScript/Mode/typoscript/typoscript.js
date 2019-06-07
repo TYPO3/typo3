@@ -1161,7 +1161,8 @@
       // (Less wasteful than consing up a hundred closures on every call.)
       cx.state = state;
       cx.stream = stream;
-      cx.marked = null, cx.cc = cc;
+      cx.marked = null;
+      cx.cc = cc;
       cx.style = style;
 
       if (!state.lexical.hasOwnProperty("align"))
@@ -1169,8 +1170,8 @@
 
       while (true) {
         var combinator = cc.length ? cc.pop() : statement;
-        if (combinator(type, content)) {
-          while (cc.length && cc[cc.length - 1].lex)
+        if (typeof combinator === 'function' && combinator(type, content)) {
+          while (cc.length && cc[cc.length - 1] && cc[cc.length - 1].lex)
             cc.pop()();
           if (cx.marked) return cx.marked;
           if (type === "variable" && inScope(state, content)) return "variable-2";
