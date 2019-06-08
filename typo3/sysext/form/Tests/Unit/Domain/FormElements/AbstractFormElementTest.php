@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
 use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement;
+use TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -139,15 +140,8 @@ class AbstractFormElementTest extends UnitTestCase
         $this->expectException(IdentifierNotValidException::class);
         $this->expectExceptionCode(1477082502);
 
-        $this->getAccessibleMockForAbstractClass(
-            AbstractFormElement::class,
-            ['', 'a_type'],
-            '',
-            true,
-            true,
-            true,
-            []
-        );
+        // GenericFormElement inherits from AbstractFormElement and serves as concrete implementation
+        new GenericFormElement('', 'a_type');
     }
 
     /**

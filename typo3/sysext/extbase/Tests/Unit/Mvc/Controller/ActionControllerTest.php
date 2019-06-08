@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -519,22 +520,22 @@ class ActionControllerTest extends UnitTestCase
      */
     public function rendersAndAssignsAssetsFromViewIntoPageRenderer($viewMock, $expectedHeader, $expectedFooter)
     {
-        $this->mockObjectManager = $this->createMock(ObjectManager::class);
-        $pageRendererMock = $this->getMockBuilder(PageRenderer::class)->setMethods(['addHeaderData', 'addFooterData'])->getMock();
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $pageRenderer = $this->prophesize(PageRenderer::class);
         if (!$viewMock instanceof FluidTemplateView) {
-            $this->mockObjectManager->expects($this->never())->method('get');
+            $objectManager->get(Argument::any())->shouldNotBeCalled();
         } else {
-            $this->mockObjectManager->expects($this->any())->method('get')->with(PageRenderer::class)->willReturn($pageRendererMock);
+            $objectManager->get(PageRenderer::class)->willReturn($pageRenderer->reveal());
         }
         if (!empty(trim($expectedHeader ?? ''))) {
-            $pageRendererMock->expects($this->once())->method('addHeaderData')->with($expectedHeader);
+            $pageRenderer->addHeaderData($expectedHeader)->shouldBeCalled();
         } else {
-            $pageRendererMock->expects($this->never())->method('addHeaderData');
+            $pageRenderer->addHeaderData(Argument::any())->shouldNotBeCalled();
         }
         if (!empty(trim($expectedFooter ?? ''))) {
-            $pageRendererMock->expects($this->once())->method('addFooterData')->with($expectedFooter);
+            $pageRenderer->addFooterData($expectedFooter)->shouldBeCalled();
         } else {
-            $pageRendererMock->expects($this->never())->method('addFooterData');
+            $pageRenderer->addFooterData(Argument::any())->shouldNotBeCalled();
         }
         $requestMock = $this->getMockBuilder(RequestInterface::class)->getMockForAbstractClass();
         $subject = new ActionController('');
@@ -543,7 +544,7 @@ class ActionControllerTest extends UnitTestCase
         $viewProperty->setValue($subject, $viewMock);
         $objectManagerProperty = new \ReflectionProperty($subject, 'objectManager');
         $objectManagerProperty->setAccessible(true);
-        $objectManagerProperty->setValue($subject, $this->mockObjectManager);
+        $objectManagerProperty->setValue($subject, $objectManager->reveal());
 
         $method = new \ReflectionMethod($subject, 'renderAssetsForRequest');
         $method->setAccessible(true);

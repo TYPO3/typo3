@@ -23,6 +23,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PagesXmlSitemapDataProviderTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var array
      */
@@ -66,7 +68,6 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
             '',
             true
         );
-        $subject->expects($this->any())->method('generateItems')->willReturn(null);
         $this->assertEquals($key, $subject->getKey());
     }
 

@@ -375,8 +375,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'uid' => 1,
             'username' => 'existingUserName'
         ]);
-        // Auth services can return true or 200
-        $authServiceMock->method('authUser')->willReturn(true);
+        // Auth services can return status codes: 0 (failed/abort), 100 (not responsible, continue), 200 (ok)
+        $authServiceMock->method('authUser')->willReturn(200);
         // We need to wrap the array to something thats is \Traversable, in PHP 7.1 we can use traversable pseudo type instead
         $subject->method('getAuthServices')->willReturn(new \ArrayIterator([$authServiceMock]));
 

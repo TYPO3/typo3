@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException;
+use TYPO3\CMS\Core\Tests\Unit\Log\Fixtures\WriterFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -32,6 +33,6 @@ class AbstractWriterTest extends UnitTestCase
         $invalidConfiguration = [
             'foo' => 'bar'
         ];
-        $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Writer\AbstractWriter::class, [$invalidConfiguration]);
+        new WriterFixture($invalidConfiguration);
     }
 }

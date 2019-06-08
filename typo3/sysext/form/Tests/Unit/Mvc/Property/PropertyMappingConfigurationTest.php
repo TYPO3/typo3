@@ -120,21 +120,10 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         $resourceFactory = $this->createMock(ResourceFactory::class);
 
         // Object Manager (in order to return mocked Resource Factory)
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects($this->any())
-            ->method('get')
-            ->willReturnMap([
-                [MimeTypeValidator::class, $mimeTypeValidator],
-                [ResourceFactory::class, $resourceFactory]
-            ]);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(MimeTypeValidator::class)->willReturn($mimeTypeValidator);
+        $objectManager->get(ResourceFactory::class)->willReturn($resourceFactory);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         // No validators
         $this->processingRule
@@ -172,19 +161,9 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         // Object Manager to return the MimeTypeValidator
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ObjectManager $objectManager */
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $objectManager
-            ->expects($this->any())
-            ->method('get')
-            ->with(MimeTypeValidator::class, $mimeTypes)
-            ->willReturn($mimeTypeValidator);
-
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(MimeTypeValidator::class, $mimeTypes)->willReturn($mimeTypeValidator);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         // Don't add any validators for now
         $this->processingRule

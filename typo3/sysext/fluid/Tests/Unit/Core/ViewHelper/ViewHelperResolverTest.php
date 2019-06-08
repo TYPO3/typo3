@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper;
@@ -25,21 +27,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ViewHelperResolverTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
     public function createViewHelperInstanceCreatesViewHelperInstanceUsingObjectManager()
     {
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->setMethods(['get'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $objectManager->expects($this->once())->method('get')->with('x')->willReturn(new \stdClass());
-        $resolver = $this->getMockBuilder(ViewHelperResolver::class)
-            ->setMethods(['getObjectManager'])
-            ->getMock();
-        $resolver->expects($this->once())->method('getObjectManager')->willReturn($objectManager);
-        $this->assertInstanceOf(\stdClass::class, $resolver->createViewHelperInstanceFromClassName('x'));
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get('x')->willReturn(new \stdClass());
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        $this->assertInstanceOf(\stdClass::class, (new ViewHelperResolver())->createViewHelperInstanceFromClassName('x'));
     }
 
     /**

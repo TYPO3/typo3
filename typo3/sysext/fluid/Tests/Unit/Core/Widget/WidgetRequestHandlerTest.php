@@ -13,10 +13,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Extbase\Mvc\Dispatcher;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequestBuilder;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -81,8 +82,9 @@ class WidgetRequestHandlerTest extends UnitTestCase
             ->setMethods(['build'])
             ->getMock();
         $requestBuilder->expects($this->once())->method('build')->willReturn($request);
-        $objectManager = $this->createMock(ObjectManagerInterface::class);
-        $objectManager->expects($this->once())->method('get')->willReturn($this->createMock(Response::class));
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $handler->injectObjectManager($objectManager->reveal());
+        $objectManager->get(\Prophecy\Argument::any())->willReturn($this->createMock(Response::class));
         $requestDispatcher = $this->getMockBuilder(Dispatcher::class)
             ->setMethods(['dispatch'])
             ->disableOriginalConstructor()
@@ -90,7 +92,6 @@ class WidgetRequestHandlerTest extends UnitTestCase
         $requestDispatcher->expects($this->once())->method('dispatch')->with($request);
         $this->inject($handler, 'widgetRequestBuilder', $requestBuilder);
         $this->inject($handler, 'dispatcher', $requestDispatcher);
-        $this->inject($handler, 'objectManager', $objectManager);
         $handler->handleRequest();
     }
 }

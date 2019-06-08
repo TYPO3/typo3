@@ -623,7 +623,7 @@ class ConfigurationServiceTest extends UnitTestCase
         $configurationService->expects($this->any())
             ->method('executeBuildFormDefinitionValidationConfigurationHooks')
             ->willReturnArgument(1);
-        $configurationService->expects($this->any())->method('setCacheEntry')->willReturn(null);
+        $configurationService->expects($this->any())->method('setCacheEntry');
 
         $this->assertSame(
             $expected,

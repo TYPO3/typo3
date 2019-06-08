@@ -282,9 +282,10 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
         $formDefinitionValidationService->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects($this->once())->method('get')->with(ConfigurationService::class)->willReturn($configurationService);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(ConfigurationService::class)->willReturn($configurationService);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         $returnedExceptionCode = -1;
         try {
@@ -338,9 +339,9 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
         $formDefinitionValidationService->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
-        $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects($this->once())->method('get')->with(ConfigurationService::class)->willReturn($configurationService);
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager);
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(ConfigurationService::class)->willReturn($configurationService);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
 
         $returnedExceptionCode = -1;
         try {

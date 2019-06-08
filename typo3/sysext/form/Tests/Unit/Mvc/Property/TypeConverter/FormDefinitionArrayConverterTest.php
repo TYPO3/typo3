@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
@@ -71,10 +72,9 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         ];
 
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['getFormDefinitionValidationService', 'retrieveSessionToken'], [], '', false);
-        $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['validateFormDefinitionProperties'], [], '', false);
-        $formDefinitionValidationService->expects($this->any())->method(
-            'validateFormDefinitionProperties'
-        )->willReturn(null);
+        $formDefinitionValidationService = $this->prophesize(FormDefinitionValidationService::class);
+        $formDefinitionValidationService->validateFormDefinitionProperties(Argument::cetera())->shouldBeCalled();
+        $formDefinitionValidationService->isPropertyValueEqualToHistoricalValue(Argument::cetera())->willReturn(true);
 
         $typeConverter->expects($this->any())->method(
             'retrieveSessionToken'
@@ -82,7 +82,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
 
         $typeConverter->expects($this->any())->method(
             'getFormDefinitionValidationService'
-        )->willReturn($formDefinitionValidationService);
+        )->willReturn($formDefinitionValidationService->reveal());
 
         $input = json_encode($data);
         $expected = [

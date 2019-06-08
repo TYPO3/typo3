@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager;
+use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -59,12 +60,9 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
 
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->with(ConfigurationService::class)
-            ->willReturn($configurationServiceProphecy->reveal());
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(Arguments::class)->willReturn(new Arguments());
+        $objectManager->get(ConfigurationService::class)->willReturn($configurationServiceProphecy->reveal());
 
         $sheetIdentifier = md5(
             implode('', [
@@ -117,7 +115,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ->willReturn($contentObject);
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->_set('objectManager', $objectManagerMock);
+        $mockController->injectObjectManager($objectManager->reveal());
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
             'finishersDefinition' => [
@@ -196,12 +194,9 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
 
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->with(ConfigurationService::class)
-            ->willReturn($configurationServiceProphecy->reveal());
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(Arguments::class)->willReturn(new Arguments());
+        $objectManager->get(ConfigurationService::class)->willReturn($configurationServiceProphecy->reveal());
 
         $sheetIdentifier = md5(
             implode('', [
@@ -254,7 +249,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ->willReturn($contentObject);
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->_set('objectManager', $objectManagerMock);
+        $mockController->injectObjectManager($objectManager->reveal());
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
             'finishersDefinition' => [
@@ -349,12 +344,9 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $configurationServiceProphecy = $this->prophesize(ConfigurationService::class);
 
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->with(ConfigurationService::class)
-            ->willReturn($configurationServiceProphecy->reveal());
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(Arguments::class)->willReturn(new Arguments());
+        $objectManager->get(ConfigurationService::class)->willReturn($configurationServiceProphecy->reveal());
 
         $sheetIdentifier = md5(
             implode('', [
@@ -407,7 +399,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ->willReturn($contentObject);
 
         $mockController->_set('configurationManager', $frontendConfigurationManager);
-        $mockController->_set('objectManager', $objectManagerMock);
+        $mockController->injectObjectManager($objectManager->reveal());
 
         $configurationServiceProphecy->getPrototypeConfiguration(Argument::cetera())->willReturn([
             'finishersDefinition' => [
@@ -497,14 +489,11 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);
 
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->with(TypoScriptService::class)
-            ->willReturn($typoScriptServiceProphecy->reveal());
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(Arguments::class)->willReturn(new Arguments());
+        $objectManager->get(TypoScriptService::class)->willReturn($typoScriptServiceProphecy->reveal());
 
-        $mockController->_set('objectManager', $objectManagerMock);
+        $mockController->injectObjectManager($objectManager->reveal());
 
         $typoScriptServiceProphecy
             ->resolvePossibleTypoScriptConfiguration(Argument::cetera())
@@ -569,14 +558,11 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $typoScriptServiceProphecy = $this->prophesize(TypoScriptService::class);
 
-        $objectManagerMock = $this->createMock(ObjectManager::class);
-        $objectManagerMock
-            ->expects($this->any())
-            ->method('get')
-            ->with(TypoScriptService::class)
-            ->willReturn($typoScriptServiceProphecy->reveal());
+        $objectManager = $this->prophesize(ObjectManager::class);
+        $objectManager->get(Arguments::class)->willReturn(new Arguments());
+        $objectManager->get(TypoScriptService::class)->willReturn($typoScriptServiceProphecy->reveal());
 
-        $mockController->_set('objectManager', $objectManagerMock);
+        $mockController->injectObjectManager($objectManager->reveal());
 
         $typoScriptServiceProphecy
             ->resolvePossibleTypoScriptConfiguration(Argument::cetera())
