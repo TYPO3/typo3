@@ -20,6 +20,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,8 +35,9 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 /**
  * This middleware validates given request parameters against the common "cHash" functionality.
  */
-class PageArgumentValidator implements MiddlewareInterface
+class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
 
     /**
      * The cHash Service class used for cHash related functionality
@@ -77,6 +81,14 @@ class PageArgumentValidator implements MiddlewareInterface
                 $queryParams = $request->getQueryParams();
             }
             if (!empty($queryParams) && !$this->evaluateCacheHashParameter($queryParams, $pageNotFoundOnValidationError)) {
+                // cHash was given, but nothing to be calculated, so let's do a redirect to the current page
+                // but without the cHash
+                if ($this->controller->cHash && empty($this->controller->cHash_array)) {
+                    $uri = $request->getUri();
+                    unset($queryParams['cHash']);
+                    $uri = $uri->withQuery(HttpUtility::buildQueryString($queryParams));
+                    return new RedirectResponse($uri, 308);
+                }
                 return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                     $request,
                     'Request parameters could not be validated (&cHash comparison failed)',
@@ -104,14 +116,12 @@ class PageArgumentValidator implements MiddlewareInterface
             $queryParams['id'] = $this->controller->id;
             $relevantParameters = $this->cacheHashCalculator->getRelevantParameters(HttpUtility::buildQueryString($queryParams));
             $this->controller->cHash_array = $relevantParameters;
-            $calculatedCacheHash = $this->cacheHashCalculator->calculateCacheHash($relevantParameters);
             // cHash was given, but nothing to be calculated, so cHash is unset and all is good.
             if (empty($relevantParameters)) {
-                $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $this->controller->cHash . '" is given but not needed. cHash is unset', 2);
-                // We do not need to update the query params as everything is checked via $TSFE->cHash, see $TSFE->reqCHash()
-                $this->controller->cHash = '';
-                return true;
+                $this->logger->notice('The incoming cHash "' . $this->controller->cHash . '" is given but not needed. cHash is unset');
+                return false;
             }
+            $calculatedCacheHash = $this->cacheHashCalculator->calculateCacheHash($relevantParameters);
             if (!hash_equals($calculatedCacheHash, $this->controller->cHash)) {
                 // Early return to trigger the error controller
                 if ($pageNotFoundOnCacheHashError) {

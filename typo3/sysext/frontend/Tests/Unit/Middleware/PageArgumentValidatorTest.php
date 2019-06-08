@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
@@ -71,9 +72,10 @@ class PageArgumentValidatorTest extends UnitTestCase
     /**
      * @test
      */
-    public function givenCacheHashWithoutRequiredParametersIgnoresCacheHashAndUnsetsCacheHash(): void
+    public function givenCacheHashWithoutRequiredParametersTriggersRedirect(): void
     {
-        $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
+        $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=XYZ';
+        $expectedResult = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
         $this->controller->id = 13;
         $this->controller->cHash = 'XYZ';
 
@@ -83,9 +85,11 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = $request->withAttribute('routing', $pageArguments);
 
         $subject = new PageArgumentValidator($this->controller);
+        $subject->setLogger(new NullLogger());
+
         $response = $subject->process($request, $this->responseOutputHandler);
-        static::assertEquals(200, $response->getStatusCode());
-        static::assertEquals('', $this->controller->cHash);
+        static::assertEquals(308, $response->getStatusCode());
+        static::assertEquals($expectedResult, $response->getHeader('Location')[0]);
     }
 
     /**
@@ -93,7 +97,7 @@ class PageArgumentValidatorTest extends UnitTestCase
      */
     public function givenCacheHashNotMatchingCalculatedCacheHashTriggers404(): void
     {
-        $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/';
+        $incomingUrl = 'https://example.com/lotus-flower/en/mr-magpie/bloom/?cHash=YAZ';
         $this->controller->id = 13;
         $this->controller->cHash = 'XYZ';
 
