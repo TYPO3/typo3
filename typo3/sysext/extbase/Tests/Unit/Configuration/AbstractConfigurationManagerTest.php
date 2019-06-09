@@ -106,10 +106,12 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      * @var array
      */
     protected $testSwitchableControllerActions = [
-        'Controller1' => [
+        'MyExtension\\Controller\\Controller1' => [
+            'alias' => 'Controller1',
             'actions' => ['action1', 'action2', 'action3']
         ],
-        'Controller2' => [
+        'MyExtension\\Controller\\Controller2' => [
+            'alias' => 'Controller2',
             'actions' => ['action4', 'action5', 'action6'],
             'nonCacheableActions' => ['action4', 'action6']
         ]
@@ -506,8 +508,56 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = [
-            'Controller1' => [
+            'MyExtension\\Controller\\Controller1' => [
+                'className' => 'MyExtension\\Controller\\Controller1',
+                'alias' => 'Controller1',
                 'actions' => ['action2', 'action1', 'action3']
+            ]
+        ];
+        $actualResult = $mergedConfiguration['controllerConfiguration'];
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
+    public function controllerOfSwitchableControllerActionsCanBeAFullyQualifiedClassName(): void
+    {
+        $configuration = [
+            'extensionName' => 'CurrentExtensionName',
+            'pluginName' => 'CurrentPluginName',
+            'switchableControllerActions' => [
+                'MyExtension\\Controller\\Controller1' => ['action2', 'action1', 'action3'],
+                '\\MyExtension\\Controller\\Controller2' => ['newAction2', 'action4', 'action5']
+            ]
+        ];
+        $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($configuration)->will($this->returnValue($configuration));
+        $this->abstractConfigurationManager->setConfiguration($configuration);
+        $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->with(
+            'CurrentExtensionName',
+            'CurrentPluginName'
+        )->will($this->returnValue($this->testPluginConfiguration));
+        $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with(
+            'CurrentExtensionName',
+            'CurrentPluginName'
+        )->will($this->returnValue($this->testSwitchableControllerActions));
+        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->will($this->returnCallback(function (
+            $a
+        ) {
+            return $a;
+        }));
+        $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
+        $expectedResult = [
+            'MyExtension\\Controller\\Controller1' => [
+                'className' => 'MyExtension\\Controller\\Controller1',
+                'alias' => 'Controller1',
+                'actions' => ['action2', 'action1', 'action3']
+            ],
+            'MyExtension\\Controller\\Controller2' => [
+                'className' => 'MyExtension\\Controller\\Controller2',
+                'alias' => 'Controller2',
+                'actions' => ['newAction2', 'action4', 'action5'],
+                'nonCacheableActions' => ['action4']
             ]
         ];
         $actualResult = $mergedConfiguration['controllerConfiguration'];
@@ -543,7 +593,9 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = [
-            'Controller1' => [
+            'MyExtension\\Controller\\Controller1' => [
+                'className' => 'MyExtension\\Controller\\Controller1',
+                'alias' => 'Controller1',
                 'actions' => ['action2', 'action1', 'action3', 'newAction']
             ]
         ];
@@ -614,10 +666,14 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         }));
         $mergedConfiguration = $this->abstractConfigurationManager->getConfiguration();
         $expectedResult = [
-            'Controller1' => [
+            'MyExtension\\Controller\\Controller1' => [
+                'className' => 'MyExtension\\Controller\\Controller1',
+                'alias' => 'Controller1',
                 'actions' => ['newAction', 'action1']
             ],
-            'Controller2' => [
+            'MyExtension\\Controller\\Controller2' => [
+                'className' => 'MyExtension\\Controller\\Controller2',
+                'alias' => 'Controller2',
                 'actions' => ['newAction2', 'action4', 'action5'],
                 'nonCacheableActions' => ['action4']
             ]

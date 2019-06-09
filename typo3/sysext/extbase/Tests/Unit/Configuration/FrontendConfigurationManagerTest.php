@@ -305,26 +305,32 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'pluginName' => 'Pi1',
             'extensionName' => 'SomeExtension',
             'controllerConfiguration' => [
-                'Controller1' => [
+                'MyExtension\\Controller\\Controller1' => [
+                    'alias' => 'Controller1',
                     'actions' => ['action1 , action2']
                 ],
-                'Controller2' => [
+                'MyExtension\\Controller\\Controller2' => [
+                    'alias' => 'Controller2',
                     'actions' => ['action2', 'action1', 'action3'],
                     'nonCacheableActions' => ['action2', 'action3']
                 ]
             ]
         ];
         $flexFormConfiguration = [
-            'switchableControllerActions' => 'Controller1  -> action2;Controller2->action3;  Controller2->action1'
+            'switchableControllerActions' => 'Controller1  -> action2;\\MyExtension\\Controller\\Controller2->action3;  Controller2->action1'
         ];
         $expectedResult = [
             'pluginName' => 'Pi1',
             'extensionName' => 'SomeExtension',
             'controllerConfiguration' => [
-                'Controller1' => [
+                'MyExtension\\Controller\\Controller1' => [
+                    'className' => 'MyExtension\\Controller\\Controller1',
+                    'alias' => 'Controller1',
                     'actions' => ['action2']
                 ],
-                'Controller2' => [
+                'MyExtension\\Controller\\Controller2' => [
+                    'className' => 'MyExtension\\Controller\\Controller2',
+                    'alias' => 'Controller2',
                     'actions' => ['action3', 'action1'],
                     'nonCacheableActions' => [1 => 'action3']
                 ]
