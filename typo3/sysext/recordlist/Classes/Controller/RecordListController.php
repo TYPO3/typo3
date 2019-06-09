@@ -347,11 +347,13 @@ class RecordListController
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $calcPerms = $backendUser->calcPerms($this->pageinfo);
         $userCanEditPage = $calcPerms & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
+        $pageActionsCallback = '';
         if ($userCanEditPage) {
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', 'function(PageActions) {
+            $pageActionsCallback = 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
-            }');
+            }';
         }
+        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Tooltip');
         // Apply predefined values for hidden checkboxes
         // Set predefined value for DisplayBigControlPanel:
