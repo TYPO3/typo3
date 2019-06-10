@@ -7,7 +7,7 @@ Have a look at our [detailed contribution walkthrough][1].
 
 If you like to contribute code, please use the [main git repository][2], all changes are
  processed in our [review system][3]. The [GitHub repository][4] is a synchronized
- mirror of the primary git repository and pull requests via GitHub are not supported at the moment.
+ mirror of the primary git repository, pull requests via GitHub will be moved to our review system automatically.
 
 If you like to contribute to our [documentation][5], use the "Edit me on GitHub" button
  in the top right of each manual or reference or just make a pull request in any of the repositories
