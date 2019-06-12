@@ -1237,6 +1237,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.bookmarksDelete">
 				<source>Delete bookmark</source>
 			</trans-unit>
+			<trans-unit id="toolbarItems.collapsePageTree">
+				<source>Collapse page tree</source>
+			</trans-unit>
 			<trans-unit id="toolbarItems.confirmBookmarksDelete">
 				<source>Do you really want to remove this bookmark?</source>
 			</trans-unit>
@@ -1251,6 +1254,9 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.help">
 				<source>Help</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.minMaxModuleMenu">
+				<source>Minimize/maximize module menu</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.search">
 				<source>Search</source>
