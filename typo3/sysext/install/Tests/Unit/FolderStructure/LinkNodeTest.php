@@ -112,7 +112,8 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
+        // do not use var path here, as link nodes get checked for public path as first part
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $this->assertIsArray($node->getStatus());
     }
@@ -130,7 +131,8 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
+        // do not use var path here, as link nodes get checked for public path as first part
+        $path = Environment::getPublicPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->once())->method('isWindowsOs')->will($this->returnValue(true));
         $statusArray = $node->getStatus();
@@ -150,7 +152,8 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
+        // do not use var path here, as link nodes get checked for public path as first part
+        $path = Environment::getPublicPath() . '/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(false));
         $node->expects($this->once())->method('exists')->will($this->returnValue(false));

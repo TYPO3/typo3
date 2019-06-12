@@ -382,8 +382,8 @@ class ConfigurationManagerTest extends UnitTestCase
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
 
-        $file = '../typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteFile = Environment::getLegacyConfigPath() . '/' . $file;
+        $file = $this->getUniqueId('test_');
+        $absoluteFile = Environment::getVarPath() . '/tests/' . $file;
         touch($absoluteFile);
         $this->testFilesToDelete[] = $absoluteFile;
         chmod($absoluteFile, 0444);
@@ -406,12 +406,12 @@ class ConfigurationManagerTest extends UnitTestCase
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
 
-        $directory = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteDirectory = Environment::getPublicPath() . '/' . $directory;
+        $directory = $this->getUniqueId('test_');
+        $absoluteDirectory = Environment::getVarPath() . '/tests/' . $directory;
         mkdir($absoluteDirectory);
 
-        $file = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteFile1 = Environment::getPublicPath() . '/' . $file;
+        $file = $this->getUniqueId('test_');
+        $absoluteFile1 = Environment::getVarPath() . '/tests/' . $file;
         touch($absoluteFile1);
         $this->testFilesToDelete[] = $absoluteFile1;
         $subject->_set('localConfigurationFile', $absoluteFile1);
@@ -473,11 +473,12 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
 
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['getLocalConfigurationFileLocation']);
 
-        $file = '../typo3temp/var/tests/' . $this->getUniqueId('test_');
-        $absoluteFile = Environment::getLegacyConfigPath() . '/' . $file;
+        $file = 'tests/' . $this->getUniqueId('test_');
+        $absoluteFile = Environment::getVarPath() . '/' . $file;
         touch($absoluteFile);
+        $subject->method('getLocalConfigurationFileLocation')->willReturn($absoluteFile);
         $this->testFilesToDelete[] = $absoluteFile;
         $subject->_set('localConfigurationFile', $file);
 
@@ -490,11 +491,14 @@ class ConfigurationManagerTest extends UnitTestCase
     public function createLocalConfigurationFromFactoryConfigurationWritesContentFromFactoryFile(): void
     {
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration']);
-        $subject->_set('localConfigurationFile', '../../typo3temp/var/tests/' . $this->getUniqueId('dummy_'));
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getLocalConfigurationFileLocation', 'getFactoryConfigurationFileLocation']);
+        $localConfigurationFile = '/tests/' . $this->getUniqueId('dummy_');
+        $subject->_set('localConfigurationFile', $localConfigurationFile);
+        $subject->method('getLocalConfigurationFileLocation')->willReturn(Environment::getVarPath() . '/' . $localConfigurationFile);
 
-        $factoryConfigurationFile = '../../typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
-        $factoryConfigurationAbsoluteFile = Environment::getFrameworkBasePath() . '/' . $factoryConfigurationFile;
+        $factoryConfigurationFile = 'tests/' . $this->getUniqueId('test_') . '.php';
+        $factoryConfigurationAbsoluteFile = Environment::getVarPath() . '/' . $factoryConfigurationFile;
+        $subject->method('getFactoryConfigurationFileLocation')->willReturn($factoryConfigurationAbsoluteFile);
         $uniqueContentString = $this->getUniqueId('string_');
         $validFactoryConfigurationFileContent =
             '<?php' . LF .
@@ -521,12 +525,14 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function createLocalConfigurationFromFactoryConfigurationMergesConfigurationWithAdditionalFactoryFile(): void
     {
-        /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
-        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration']);
-        $subject->_set('localConfigurationFile', '../../typo3temp/var/tests/' . $this->getUniqueId('dummy_'));
+        $subject = $this->getAccessibleMock(ConfigurationManager::class, ['writeLocalConfiguration', 'getLocalConfigurationFileLocation', 'getFactoryConfigurationFileLocation', 'getAdditionalFactoryConfigurationFileLocation']);
+        $localConfigurationFile = '/tests/' . $this->getUniqueId('dummy_');
+        $subject->_set('localConfigurationFile', $localConfigurationFile);
+        $subject->method('getLocalConfigurationFileLocation')->willReturn(Environment::getVarPath() . '/' . $localConfigurationFile);
 
-        $factoryConfigurationFile = '../../typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
-        $factoryConfigurationAbsoluteFile = Environment::getFrameworkBasePath() . '/' . $factoryConfigurationFile;
+        $factoryConfigurationFile = 'tests/' . $this->getUniqueId('test_') . '.php';
+        $factoryConfigurationAbsoluteFile = Environment::getVarPath() . '/' . $factoryConfigurationFile;
+        $subject->method('getFactoryConfigurationFileLocation')->willReturn($factoryConfigurationAbsoluteFile);
         $validFactoryConfigurationFileContent =
             '<?php' . LF .
             'return [];' . LF;
@@ -537,8 +543,9 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->testFilesToDelete[] = $factoryConfigurationAbsoluteFile;
         $subject->_set('factoryConfigurationFile', $factoryConfigurationFile);
 
-        $additionalFactoryConfigurationFile = '../typo3temp/var/tests/' . $this->getUniqueId('test_') . '.php';
-        $additionalFactoryConfigurationAbsoluteFile = Environment::getLegacyConfigPath() . '/' . $additionalFactoryConfigurationFile;
+        $additionalFactoryConfigurationFile = 'tests/' . $this->getUniqueId('test_') . '.php';
+        $additionalFactoryConfigurationAbsoluteFile = Environment::getVarPath() . '/' . $additionalFactoryConfigurationFile;
+        $subject->method('getAdditionalFactoryConfigurationFileLocation')->willReturn($additionalFactoryConfigurationAbsoluteFile);
         $uniqueContentString = $this->getUniqueId('string_');
         $validAdditionalFactoryConfigurationFileContent =
             '<?php' . LF .

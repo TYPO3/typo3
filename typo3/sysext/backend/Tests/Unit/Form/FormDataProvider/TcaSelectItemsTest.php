@@ -1212,7 +1212,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     public function addDataAddsFileItemsWithConfiguredFileFolder()
     {
-        $directory = $this->getUniqueId('typo3temp/var/tests/test-') . '/';
+        $directory = $this->getUniqueId('test-') . '/';
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],
@@ -1222,7 +1222,8 @@ class TcaSelectItemsTest extends UnitTestCase
                         'config' => [
                             'type' => 'select',
                             'renderType' => 'selectSingle',
-                            'fileFolder' => $directory,
+                            // use absolute path here to avoid fallback to public path as prefix
+                            'fileFolder' => Environment::getVarPath() . '/' . $directory,
                             'fileFolder_extList' => 'gif',
                             'fileFolder_recursions' => 1,
                         ],
@@ -1231,24 +1232,24 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        mkdir(Environment::getPublicPath() . '/' . $directory);
-        $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $directory;
-        touch(Environment::getPublicPath() . '/' . $directory . 'anImage.gif');
-        touch(Environment::getPublicPath() . '/' . $directory . 'aFile.txt');
-        mkdir(Environment::getPublicPath() . '/' . $directory . '/subdir');
-        touch(Environment::getPublicPath() . '/' . $directory . '/subdir/anotherImage.gif');
+        mkdir(Environment::getVarPath() . '/' . $directory);
+        $this->testFilesToDelete[] = Environment::getVarPath() . '/' . $directory;
+        touch(Environment::getVarPath() . '/' . $directory . 'anImage.gif');
+        touch(Environment::getVarPath() . '/' . $directory . 'aFile.txt');
+        mkdir(Environment::getVarPath() . '/' . $directory . '/subdir');
+        touch(Environment::getVarPath() . '/' . $directory . '/subdir/anotherImage.gif');
 
         $expectedItems = [
             0 => [
                 0 => 'anImage.gif',
                 1 => 'anImage.gif',
-                2 => Environment::getPublicPath() . '/' . $directory . 'anImage.gif',
+                2 => Environment::getVarPath() . '/' . $directory . 'anImage.gif',
                 3 => null,
             ],
             1 => [
                 0 => 'subdir/anotherImage.gif',
                 1 => 'subdir/anotherImage.gif',
-                2 => Environment::getPublicPath() . '/' . $directory . 'subdir/anotherImage.gif',
+                2 => Environment::getVarPath() . '/' . $directory . 'subdir/anotherImage.gif',
                 3 => null,
             ],
         ];

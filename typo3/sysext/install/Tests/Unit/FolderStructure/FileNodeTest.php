@@ -200,7 +200,8 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
+        // do not use var path here, as file nodes explicitly check for public path
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
         $node->expects($this->any())->method('isFile')->will($this->returnValue(true));

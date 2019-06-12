@@ -168,8 +168,12 @@ class LocalDriverTest extends BaseTestCase
         $subject = $this->createDriver();
 
         // This test checks if "/../" are properly filtered out (i.e. from "Base path" field of sys_file_storage)
+        $varPath = Environment::getVarPath();
+        $projectPath = Environment::getProjectPath();
+        $relativeVarPath = str_replace($projectPath, '', $varPath);
+        $segments = str_repeat('/..', substr_count($relativeVarPath, '/') + 1);
         $relativeDriverConfiguration = [
-            'basePath' => Environment::getVarPath() . '/tests/../../../typo3temp/var/tests/',
+            'basePath' => Environment::getVarPath() . '/tests' . $segments . $relativeVarPath . '/tests/',
         ];
         $basePath = $subject->_call('calculateBasePath', $relativeDriverConfiguration);
 
@@ -989,7 +993,7 @@ class LocalDriverTest extends BaseTestCase
         $subject = $this->createDriver();
         $filePath = GeneralUtility::fixWindowsFilePath($subject->_call('copyFileToTemporaryPath', '/someDir/someFile.ext'));
         $this->testFilesToDelete[] = $filePath;
-        $this->assertStringContainsString('/typo3temp/var/transient/', $filePath);
+        $this->assertStringContainsString(Environment::getVarPath() . '/transient/', $filePath);
         $this->assertEquals($fileContents, file_get_contents($filePath));
     }
 

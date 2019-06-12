@@ -2193,11 +2193,11 @@ class GeneralUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function tempnamReturnsAbsolutePathInsideDocumentRoot()
+    public function tempnamReturnsAbsolutePathInVarPath()
     {
         $filePath = GeneralUtility::tempnam('foo');
         $this->testFilesToDelete[] = $filePath;
-        $this->assertStringStartsWith(Environment::getPublicPath() . '/', $filePath);
+        $this->assertStringStartsWith(Environment::getVarPath() . '/transient/', $filePath);
     }
 
     //////////////////////////////////////
@@ -2823,16 +2823,16 @@ class GeneralUtilityTest extends UnitTestCase
     {
         return [
             'Default text file' => [
-                Environment::getPublicPath() . '/typo3temp/var/paranoid/android.txt',
+                Environment::getVarPath() . '/paranoid/android.txt',
             ],
             'Html file extension' => [
-                Environment::getPublicPath() . '/typo3temp/var/karma.html',
+                Environment::getVarPath() . '/karma.html',
             ],
             'No file extension' => [
-                Environment::getPublicPath() . '/typo3temp/var/no-surprises',
+                Environment::getVarPath() . '/no-surprises',
             ],
             'Deep directory' => [
-                Environment::getPublicPath() . '/typo3temp/var/climbing/up/the/walls',
+                Environment::getVarPath() . '/climbing/up/the/walls',
             ],
         ];
     }

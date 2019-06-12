@@ -117,7 +117,8 @@ class InstallUtilityTest extends UnitTestCase
     {
         $extKey = strtolower($this->getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
-        $relPath = 'typo3temp/var/tests/' . $extKey . '/';
+        $relativeVarPath = ltrim(str_replace(Environment::getProjectPath(), '', Environment::getVarPath()), '/');
+        $relPath = $relativeVarPath . '/tests/' . $extKey . '/';
         GeneralUtility::mkdir($absExtPath);
         $this->fakedExtensions[$extKey] = [
             'siteRelPath' => $relPath
@@ -248,7 +249,7 @@ class InstallUtilityTest extends UnitTestCase
     public function importT3DFileDoesNotImportFileIfAlreadyImported($fileName, $registryNameReturnsFalse, $registryNameReturnsTrue)
     {
         $extKey = $this->createFakeExtension();
-        $absPath = Environment::getPublicPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $absPath = Environment::getProjectPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
         GeneralUtility::mkdir($absPath . 'Initialisation');
         file_put_contents($absPath . 'Initialisation/' . $fileName, 'DUMMY');
         $registryMock = $this->getMockBuilder(Registry::class)

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
@@ -190,8 +191,9 @@ class RootNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
-        touch($path);
+        // do not use var path here, as root nodes get checked for public path as first part
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
+        GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->once())->method('exists')->will($this->returnValue(true));
@@ -215,8 +217,9 @@ class RootNodeTest extends UnitTestCase
             '',
             false
         );
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('dir_');
-        touch($path);
+        // do not use var path here, as root nodes get checked for public path as first part
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
+        GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
         $node->expects($this->any())->method('exists')->will($this->returnValue(true));
