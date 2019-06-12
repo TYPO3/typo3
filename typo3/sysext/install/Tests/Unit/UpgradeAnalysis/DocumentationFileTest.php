@@ -170,8 +170,8 @@ class DocumentationFileTest extends UnitTestCase
             'Important',
         ];
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/2.0'));
-        $key = md5('vfs://root/Changelog/2.0/Important-98574-Issue.rst');
-        self::assertEquals($expected, $result[$key]['tags']);
+        $firstResult = current($result);
+        self::assertEquals($expected, $firstResult['tags']);
     }
 
     /**

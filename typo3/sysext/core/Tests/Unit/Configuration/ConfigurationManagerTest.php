@@ -372,6 +372,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
     /**
      * @test
+     * @requires OSFAMILY Linux|Darwin
      */
     public function canWriteConfigurationReturnsFalseIfLocalConfigurationFileIsNotWritable(): void
     {

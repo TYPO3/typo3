@@ -1462,6 +1462,7 @@ class GeneralUtilityTest extends UnitTestCase
 
     /**
      * @test
+     * @requires OSFAMILY Linux|Darwin (path starts with a drive on Windows)
      */
     public function getIndpEnvTypo3SitePathReturnsStringStartingWithSlash()
     {

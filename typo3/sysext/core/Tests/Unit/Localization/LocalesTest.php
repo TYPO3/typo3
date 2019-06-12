@@ -115,6 +115,7 @@ class LocalesTest extends UnitTestCase
 
     /**
      * @test
+     * @requires OSFAMILY Linux|Darwin (setlocale does not check invalid locales on Windows)
      */
     public function setSystemLocaleFromSiteLanguageWithInvalidLocaleDoesNotSetLocale(): void
     {
