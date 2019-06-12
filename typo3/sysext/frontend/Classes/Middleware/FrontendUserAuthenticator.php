@@ -65,7 +65,14 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         // Register the frontend user as aspect
         $this->setFrontendUserAspect(GeneralUtility::makeInstance(Context::class), $frontendUser);
 
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+
+        // Store session data for fe_users if it still exists
+        if ($frontendUser instanceof FrontendUserAuthentication) {
+            $frontendUser->storeSessionData();
+        }
+
+        return $response;
     }
 
     /**

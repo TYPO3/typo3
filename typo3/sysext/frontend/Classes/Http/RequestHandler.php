@@ -151,8 +151,6 @@ class RequestHandler implements RequestHandlerInterface
             $controller->processContentForOutput();
             $this->timeTracker->pull();
         }
-        // Store session data for fe_users
-        $controller->fe_user->storeSessionData();
 
         // Hook for "end-of-frontend"
         $_params = ['pObj' => &$controller];
