@@ -307,14 +307,33 @@ class WorkspaceService implements SingletonInterface
         ];
 
         if ($pageList) {
-            $pidField = $table === 'pages' ? 'uid' : 'pid';
-            $constraints[] = $queryBuilder->expr()->in(
-                'B.' . $pidField,
-                $queryBuilder->createNamedParameter(
-                    GeneralUtility::intExplode(',', $pageList, true),
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
+            $pageIdRestriction = GeneralUtility::intExplode(',', $pageList, true);
+            if ($table === 'pages') {
+                $constraints[] = $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->in(
+                        'B.uid',
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    ),
+                    $queryBuilder->expr()->in(
+                        'B.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                );
+            } else {
+                $constraints[] = $queryBuilder->expr()->in(
+                    'B.pid',
+                    $queryBuilder->createNamedParameter(
+                        $pageIdRestriction,
+                        Connection::PARAM_INT_ARRAY
+                    )
+                );
+            }
         }
 
         if ($isTableLocalizable && MathUtility::canBeInterpretedAsInteger($language)) {
@@ -480,14 +499,33 @@ class WorkspaceService implements SingletonInterface
         }
 
         if ($pageList) {
-            $pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
-            $constraints[] = $queryBuilder->expr()->in(
-                $pidField,
-                $queryBuilder->createNamedParameter(
-                    GeneralUtility::intExplode(',', $pageList, true),
-                    Connection::PARAM_INT_ARRAY
-                )
-            );
+            $pageIdRestriction = GeneralUtility::intExplode(',', $pageList, true);
+            if ($table === 'pages') {
+                $constraints[] = $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->in(
+                        'B.uid',
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    ),
+                    $queryBuilder->expr()->in(
+                        'B.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter(
+                            $pageIdRestriction,
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    )
+                );
+            } else {
+                $constraints[] = $queryBuilder->expr()->in(
+                    'A.pid',
+                    $queryBuilder->createNamedParameter(
+                        $pageIdRestriction,
+                        Connection::PARAM_INT_ARRAY
+                    )
+                );
+            }
         }
 
         $rows = $queryBuilder
