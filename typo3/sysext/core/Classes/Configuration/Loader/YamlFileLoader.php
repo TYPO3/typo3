@@ -17,14 +17,16 @@ namespace TYPO3\CMS\Core\Configuration\Loader;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * A YAML file loader that allows to load YAML files, based on the Symfony/Yaml component
  *
  * In addition to just load a YAML file, it adds some special functionality.
  *
- * - A special "imports" key in the YAML file allows to include other YAML files recursively
- *   where the actual YAML file gets loaded after the import statements, which are interpreted at the very beginning
+ * - A special "imports" key in the YAML file allows to include other YAML files recursively.
+ *   The actual YAML file gets loaded after the import statements, which are interpreted first,
+ *   at the very beginning. Imports can be referenced with a relative path.
  *
  * - Merging configuration options of import files when having simple "lists" will add items to the list instead
  *   of overwriting them.
@@ -40,6 +42,11 @@ class YamlFileLoader
     public const PROCESS_IMPORTS = 2;
 
     /**
+     * @var int
+     */
+    private $flags;
+
+    /**
      * Loads and parses a YAML file, and returns an array with the found data
      *
      * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
@@ -48,39 +55,84 @@ class YamlFileLoader
      */
     public function load(string $fileName, int $flags = self::PROCESS_PLACEHOLDERS | self::PROCESS_IMPORTS): array
     {
-        $content = $this->getFileContents($fileName);
+        $this->flags = $flags;
+        return $this->loadAndParse($fileName, null);
+    }
+
+    /**
+     * Internal method which does all the logic. Built so it can be re-used recursively.
+     *
+     * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
+     * @param string|null $currentFileName when called recursively
+     * @return array the configuration as array
+     */
+    protected function loadAndParse(string $fileName, ?string $currentFileName): array
+    {
+        $sanitizedFileName = $this->getStreamlinedFileName($fileName, $currentFileName);
+        $content = $this->getFileContents($sanitizedFileName);
         $content = Yaml::parse($content);
 
         if (!is_array($content)) {
-            throw new \RuntimeException('YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?', 1497332874);
+            throw new \RuntimeException(
+                'YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?',
+                1497332874
+            );
         }
 
-        if (($flags & self::PROCESS_IMPORTS) === self::PROCESS_IMPORTS) {
-            $content = $this->processImports($content);
+        if ($this->hasFlag(self::PROCESS_IMPORTS)) {
+            $content = $this->processImports($content, $sanitizedFileName);
         }
-        if (($flags & self::PROCESS_PLACEHOLDERS) === self::PROCESS_PLACEHOLDERS) {
+        if ($this->hasFlag(self::PROCESS_PLACEHOLDERS)) {
             // Check for "%" placeholders
             $content = $this->processPlaceholders($content, $content);
         }
-
         return $content;
     }
 
     /**
      * Put into a separate method to ease the pains with unit tests
      *
-     * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
-     *
-     * @return string the contents of the file
-     * @throws \RuntimeException when the file was not accessible
+     * @param string $fileName
+     * @return string the contents
      */
     protected function getFileContents(string $fileName): string
     {
-        $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
+        return file_get_contents($fileName);
+    }
+
+    /**
+     * Fetches the absolute file name, but if a different file name is given, it is built relative to that.
+     *
+     * @param string $fileName either relative to TYPO3's base project folder or prefixed with EXT:...
+     * @param string|null $currentFileName when called recursively this contains the absolute file name of the file that included this file
+     * @return string the contents of the file
+     * @throws \RuntimeException when the file was not accessible
+     */
+    protected function getStreamlinedFileName(string $fileName, ?string $currentFileName): string
+    {
+        if (!empty($currentFileName)) {
+            if (strpos($fileName, 'EXT:') === 0 || GeneralUtility::isAbsPath($fileName)) {
+                $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
+            } else {
+                // Now this path is considered to be relative the current file name
+                $streamlinedFileName = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath(
+                    $currentFileName,
+                    $fileName
+                );
+                if (!GeneralUtility::isAllowedAbsPath($streamlinedFileName)) {
+                    throw new \RuntimeException(
+                        'Referencing a file which is outside of TYPO3s main folder',
+                        1560319866
+                    );
+                }
+            }
+        } else {
+            $streamlinedFileName = GeneralUtility::getFileAbsFileName($fileName);
+        }
         if (!$streamlinedFileName) {
             throw new \RuntimeException('YAML File "' . $fileName . '" could not be loaded', 1485784246);
         }
-        return file_get_contents($streamlinedFileName);
+        return $streamlinedFileName;
     }
 
     /**
@@ -106,14 +158,14 @@ class YamlFileLoader
      * Checks for the special "imports" key on the main level of a file,
      * which calls "load" recursively.
      * @param array $content
-     *
+     * @param string|null $fileName
      * @return array
      */
-    protected function processImports(array $content): array
+    protected function processImports(array $content, ?string $fileName): array
     {
         if (isset($content['imports']) && is_array($content['imports'])) {
             foreach ($content['imports'] as $import) {
-                $importedContent = $this->load($import['resource']);
+                $importedContent = $this->loadAndParse($import['resource'], $fileName);
                 // override the imported content with the one from the current file
                 $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
             }
@@ -192,5 +244,10 @@ class YamlFileLoader
     protected function isEnvPlaceholder($value): bool
     {
         return is_string($value) && (strpos($value, '%env(') !== false);
+    }
+
+    protected function hasFlag(int $flag): bool
+    {
+        return ($this->flags & $flag) === $flag;
     }
 }

@@ -46,7 +46,8 @@ betterthanbefore: 1
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);
@@ -86,11 +87,31 @@ betterthanbefore: 2
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
-        $subject->expects($this->at(0))->method('getFileContents')->with($fileName)->willReturn($fileContents);
-        $subject->expects($this->at(1))->method('getFileContents')->with($importFileName)->willReturn($importFileContents);
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects($this->at(0))->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
+        $subject->expects($this->at(1))->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $subject->expects($this->at(2))->method('getStreamlinedFileName')->with($importFileName, $fileName)->willReturn($importFileName);
+        $subject->expects($this->at(3))->method('getFileContents')->with($importFileName)->willReturn($importFileContents);
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);
+    }
+
+    /**
+     * Method checking for imports that they have been processed properly
+     * @test
+     */
+    public function loadWithImportAndRelativePaths()
+    {
+        $subject = new YamlFileLoader();
+        $result = $subject->load(__DIR__ . '/Fixtures/Berta.yaml');
+        $this->assertSame([
+            'enable' => [
+                'frontend' => false,
+                'json.api' => true,
+                'backend' => true,
+                'rest.api' => true,
+            ]
+        ], $result);
     }
 
     /**
@@ -122,7 +143,8 @@ betterthanbefore: \'%firstset.myinitialversion%\'
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);
@@ -180,7 +202,8 @@ betterthanbefore: \'%firstset.myinitialversion%\'
         $fileContents = $yamlContent;
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);
@@ -217,7 +240,8 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
         ];
 
         // Accessible mock to $subject since getFileContents calls GeneralUtility methods
-        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents']);
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects($this->once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects($this->once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);

@@ -1,0 +1,4 @@
+# This is a generic file for all inclusions
+enable:
+  frontend: true
+  json.api: true
