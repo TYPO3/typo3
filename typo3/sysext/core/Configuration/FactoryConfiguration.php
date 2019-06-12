@@ -8,7 +8,6 @@
 return [
     'BE' => [
         'explicitADmode' => 'explicitAllow',
-        'loginSecurityLevel' => 'normal',
     ],
     'DB' => [
         'Connections' => [
@@ -17,9 +16,6 @@ return [
                 'driver' => 'mysqli',
             ],
         ],
-    ],
-    'FE' => [
-        'loginSecurityLevel' => 'normal',
     ],
     'SYS' => [
         'sitename' => 'New TYPO3 site',
