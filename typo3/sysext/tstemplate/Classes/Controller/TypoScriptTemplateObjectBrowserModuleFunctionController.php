@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -61,20 +62,27 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
     protected $id;
 
     /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * Init, called from parent object
      *
      * @param TypoScriptTemplateModuleController $pObj
+     * @param ServerRequestInterface $request
      */
-    public function init($pObj)
+    public function init($pObj, ServerRequestInterface $request)
     {
         $this->pObj = $pObj;
+        $this->request = $request;
 
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->pObj->modMenu_dontValidateList .= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
         $this->pObj->modMenu_setDefaultList .= ',ts_browser_showComments';
         $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_objbrowser.xlf';
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
 
     /**
@@ -107,7 +115,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             'ts_browser_alphaSort' => '1'
         ];
         foreach (['setup', 'const'] as $bType) {
-            $addKey = GeneralUtility::_GET('addKey');
+            $addKey = $this->request->getQueryParams()['addKey'] ?? null;
             // If any plus-signs were clicked, it's registered.
             if (is_array($addKey)) {
                 reset($addKey);
@@ -159,10 +167,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
     public function main()
     {
         $lang = $this->getLanguageService();
-        $POST = GeneralUtility::_POST();
-
+        $POST = $this->request->getParsedBody();
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu();
+        $manyTemplatesMenu = $this->pObj->templateMenu($this->request);
         $template_uid = 0;
         if ($manyTemplatesMenu) {
             $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
@@ -233,7 +240,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                 }
             }
         }
-        $tsbr = GeneralUtility::_GET('tsbr');
+        $tsbr = $this->request->getQueryParams()['tsbr'] ?? null;
         $update = 0;
         if (is_array($tsbr)) {
             // If any plus-signs were clicked, it's registred.
@@ -253,7 +260,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         // This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
         $this->templateService->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
         // "sObj" is set by ExtendedTemplateService to edit single keys
-        $sObj = GeneralUtility::_GP('sObj');
+        $sObj = $this->request->getParsedBody()['sObj'] ?? $this->request->getQueryParams()['sObj'] ?? null;
         if (!empty($sObj) && $this->templateService->constantMode) {
             $this->templateService->constantMode = 'untouched';
         }
@@ -262,10 +269,11 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $this->templateService->ext_regLinenumbers = true;
         $this->templateService->ext_regComments = $this->pObj->MOD_SETTINGS['ts_browser_showComments'];
         $this->templateService->bType = $bType;
+        $breakPointLN = $this->request->getParsedBody()['breakPointLN'] ?? $this->request->getQueryParams()['breakPointLN'] ?? 0;
         if ($this->pObj->MOD_SETTINGS['ts_browser_type'] === 'const') {
-            $this->templateService->ext_constants_BRP = (int)GeneralUtility::_GP('breakPointLN');
+            $this->templateService->ext_constants_BRP = (int)$breakPointLN;
         } else {
-            $this->templateService->ext_config_BRP = (int)GeneralUtility::_GP('breakPointLN');
+            $this->templateService->ext_config_BRP = (int)$breakPointLN;
         }
         $this->templateService->generateConfig();
         if ($bType === 'setup') {
@@ -301,9 +309,9 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             }
         } else {
             $this->templateService->tsbrowser_depthKeys = $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType];
-            if (GeneralUtility::_POST('search') && GeneralUtility::_POST('search_field')) {
+            if (($this->request->getParsedBody()['search'] ?? false) && ($this->request->getParsedBody()['search_field'] ?? false)) {
                 // If any POST-vars are send, update the condition array
-                $searchString = GeneralUtility::_POST('search_field');
+                $searchString = $this->request->getParsedBody()['search_field'];
                 try {
                     $this->templateService->tsbrowser_depthKeys =
                         $this->templateService->ext_getSearchKeys(

@@ -129,13 +129,6 @@ class TypoScriptTemplateModuleController
     protected $extClassConf;
 
     /**
-     * Generally used for accumulating the output content of backend modules
-     *
-     * @var string
-     */
-    protected $content = '';
-
-    /**
      * May contain an instance of a 'Function menu module' which connects to this backend module.
      *
      * @see checkExtObj()
@@ -144,13 +137,16 @@ class TypoScriptTemplateModuleController
     protected $extObj;
 
     /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
-
         $this->moduleTemplate->addJavaScriptCode(
             'jumpToUrl',
             '
@@ -160,36 +156,69 @@ class TypoScriptTemplateModuleController
             }
             '
         );
+        $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
     }
 
     /**
-     * Init
+     * Generates the menu based on $this->MOD_MENU
+     *
+     * @throws \InvalidArgumentException
      */
-    protected function init()
+    protected function generateMenu()
     {
-        $this->menuConfig();
-        $this->handleExternalFunctionValue();
-        $this->id = (int)GeneralUtility::_GP('id');
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('WebFuncJumpMenu');
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        foreach ($this->MOD_MENU['function'] as $controller => $title) {
+            $item = $menu
+                ->makeMenuItem()
+                ->setHref(
+                    (string)$uriBuilder->buildUriFromRoute(
+                        $this->moduleName,
+                        [
+                            'id' => $this->id,
+                            'SET' => [
+                                'function' => $controller
+                            ]
+                        ]
+                    )
+                )
+                ->setTitle($title);
+            if ($controller === $this->MOD_SETTINGS['function']) {
+                $item->setActive(true);
+            }
+            $menu->addMenuItem($item);
+        }
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+    /**
+     * Injects the request object for the current request or subrequest
+     * Then checks for module functions that have hooked in, and renders menu etc.
+     *
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->request = $request;
+        $changedMenuSettings = $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [];
+        $this->menuConfig($changedMenuSettings);
+        // Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
+        $this->extClassConf = $this->getExternalItemConfig('web_ts', 'function', $this->MOD_SETTINGS['function']);
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-    }
 
-    /**
-     * Clear cache
-     */
-    protected function clearCache()
-    {
-        if (GeneralUtility::_GP('clear_all_cache')) {
+        // Checking for first level external objects
+        $this->checkExtObj($changedMenuSettings, $request);
+
+        // Clear the cache if requested
+        if (($request->getParsedBody()['clear_all_cache'] ?? $request->getQueryParams()['clear_all_cache'] ?? false)) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], []);
             $tce->clear_cacheCmd('all');
         }
-    }
 
-    /**
-     * Main
-     */
-    protected function main()
-    {
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
@@ -285,60 +314,7 @@ class TypoScriptTemplateModuleController
             // Setting up the buttons and markers for docheader
             $this->getButtons();
         }
-        $this->content = $view->render();
-    }
-
-    /**
-     * Generates the menu based on $this->MOD_MENU
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function generateMenu()
-    {
-        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $menu->setIdentifier('WebFuncJumpMenu');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        foreach ($this->MOD_MENU['function'] as $controller => $title) {
-            $item = $menu
-                ->makeMenuItem()
-                ->setHref(
-                    (string)$uriBuilder->buildUriFromRoute(
-                        $this->moduleName,
-                        [
-                            'id' => $this->id,
-                            'SET' => [
-                                'function' => $controller
-                            ]
-                        ]
-                    )
-                )
-                ->setTitle($title);
-            if ($controller === $this->MOD_SETTINGS['function']) {
-                $item->setActive(true);
-            }
-            $menu->addMenuItem($item);
-        }
-        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
-    }
-
-    /**
-     * Injects the request object for the current request or subrequest
-     * Then checks for module functions that have hooked in, and renders menu etc.
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->init();
-
-        // Checking for first level external objects
-        $this->checkExtObj();
-
-        $this->clearCache();
-        $this->main();
-
-        $this->moduleTemplate->setContent($this->content);
+        $this->moduleTemplate->setContent($view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -363,6 +339,7 @@ class TypoScriptTemplateModuleController
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-view-page', Icon::SIZE_SMALL));
             $buttonBar->addButton($viewButton, ButtonBar::BUTTON_POSITION_LEFT, 99);
 
+            $sObj = $this->request->getParsedBody()['sObj'] ?? $this->request->getQueryParams()['sObj'] ?? null;
             if ($this->extClassConf['name'] === TypoScriptTemplateInformationModuleFunctionController::class) {
                 // NEW button
                 $urlParameters = [
@@ -394,7 +371,7 @@ class TypoScriptTemplateModuleController
                     ->setShowLabelText(true);
                 $buttonBar->addButton($saveButton);
             } elseif ($this->extClassConf['name'] === TypoScriptTemplateObjectBrowserModuleFunctionController::class
-                && !empty(GeneralUtility::_GP('sObj'))
+                && !empty($sObj)
             ) {
                 // back button in edit mode of object browser. "sObj" is set by ExtendedTemplateService
                 $urlParameters = [
@@ -431,14 +408,15 @@ class TypoScriptTemplateModuleController
         $urlParameters = [
             'id' => $this->id
         ];
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $aHref = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         if ($onlyKey) {
-            $title = '<a href="' . htmlspecialchars($aHref . '&e[' . $onlyKey . ']=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController') . '">' . htmlspecialchars($title) . '</a>';
+            $urlParameters['e'] = [$onlyKey => 1];
         } else {
-            $title = '<a href="' . htmlspecialchars($aHref . '&e[constants]=1&e[config]=1&SET[function]=TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController') . '">' . htmlspecialchars($title) . '</a>';
+            $urlParameters['e'] = ['constants' => 1];
         }
-        return $title;
+        $urlParameters['SET'] = ['function' => 'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController'];
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $url = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
+        return '<a href="' . htmlspecialchars($url) . '">' . htmlspecialchars($title) . '</a>';
     }
 
     /**
@@ -494,9 +472,10 @@ class TypoScriptTemplateModuleController
     /**
      * Render template menu, called from client classes.
      *
+     * @param ServerRequestInterface $request
      * @return string
      */
-    public function templateMenu()
+    public function templateMenu(ServerRequestInterface $request)
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
@@ -509,7 +488,7 @@ class TypoScriptTemplateModuleController
         }
         $this->MOD_SETTINGS = BackendUtility::getModuleData(
             $this->MOD_MENU,
-            GeneralUtility::_GP('SET'),
+            $request->getParsedBody()['SET'] ?? $request->getQueryParams()['SET'] ?? [],
             'web_ts',
             '',
             $this->modMenu_dontValidateList,
@@ -535,14 +514,14 @@ class TypoScriptTemplateModuleController
         $recData = [];
         $tce = GeneralUtility::makeInstance(DataHandler::class);
 
-        if (GeneralUtility::_GP('createExtension')) {
+        if ($this->request->getParsedBody()['createExtension'] ?? $this->request->getQueryParams()['createExtension'] ?? false) {
             $recData['sys_template']['NEW'] = [
                 'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
                 'title' => '+ext'
             ];
             $tce->start($recData, []);
             $tce->process_datamap();
-        } elseif (GeneralUtility::_GP('newWebsite')) {
+        } elseif ($this->request->getParsedBody()['newWebsite'] ?? $this->request->getQueryParams()['newWebsite'] ?? false) {
             // Hook to handle row data, implemented for statictemplates
             $hookObject = $this->getHookObjectForAction('newStandardTemplateHandler');
             if (!empty($hookObject)) {
@@ -674,9 +653,10 @@ page.10.value = HELLO WORLD!
      * Then MOD_SETTINGS array is cleaned up (see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
      * Also loads the modTSconfig internal variable.
      *
-     * @see init(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
+     * @param array|string|null $changedSettings can be anything
+     * @see mainAction(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
      */
-    protected function menuConfig()
+    protected function menuConfig($changedSettings)
     {
         // Page / user TSconfig settings and blinding of menu-items
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_ts.'] ?? [];
@@ -687,7 +667,7 @@ page.10.value = HELLO WORLD!
                 unset($this->MOD_MENU['function'][$key]);
             }
         }
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', '', $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $changedSettings, 'web_ts', '', $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
     }
 
     /**
@@ -714,21 +694,6 @@ page.10.value = HELLO WORLD!
     }
 
     /**
-     * Loads $this->extClassConf with the configuration for the CURRENT function of the menu.
-     *
-     * @param string $MM_key The key to MOD_MENU for which to fetch configuration. 'function' is default since it is first and foremost used to get information per "extension object" (I think that is what its called)
-     * @param string $MS_value The value-key to fetch from the config array. If NULL (default) MOD_SETTINGS[$MM_key] will be used. This is useful if you want to force another function than the one defined in MOD_SETTINGS[function]. Call this in init() function of your Script Class: handleExternalFunctionValue('function', $forcedSubModKey)
-     * @see getExternalItemConfig(), init()
-     */
-    protected function handleExternalFunctionValue($MM_key = 'function', $MS_value = null)
-    {
-        if ($MS_value === null) {
-            $MS_value = $this->MOD_SETTINGS[$MM_key];
-        }
-        $this->extClassConf = $this->getExternalItemConfig('web_ts', $MM_key, $MS_value);
-    }
-
-    /**
      * Returns configuration values from the global variable $TBE_MODULES_EXT for the module given.
      * For example if the module is named "web_info" and the "function" key ($menuKey) of MOD_SETTINGS is "stat" ($value) then you will have the values of $TBE_MODULES_EXT['webinfo']['MOD_MENU']['function']['stat'] returned.
      *
@@ -736,7 +701,6 @@ page.10.value = HELLO WORLD!
      * @param string $menuKey Menu key, eg. "function" for the function menu. See $this->MOD_MENU
      * @param string $value Optionally the value-key to fetch from the array that would otherwise have been returned if this value was not set. Look source...
      * @return mixed The value from the TBE_MODULES_EXT array.
-     * @see handleExternalFunctionValue()
      */
     protected function getExternalItemConfig($modName, $menuKey, $value = '')
     {
@@ -755,22 +719,27 @@ page.10.value = HELLO WORLD!
      * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
      *
      * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
+     * @param array|string|null $changedSettings
+     * @param ServerRequestInterface $request
      */
-    protected function checkExtObj()
+    protected function checkExtObj($changedSettings, ServerRequestInterface $request)
     {
         if (is_array($this->extClassConf) && $this->extClassConf['name']) {
             $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
-            $this->extObj->init($this);
+            $this->extObj->init($this, $request);
             // Re-write:
-            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts', '', $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
+            $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, $changedSettings, 'web_ts', '', $this->modMenu_dontValidateList, $this->modMenu_setDefaultList);
         }
     }
 
     /**
-     * Calls the 'main' function inside the "Function menu module" if present
+     * Return the content of the 'main' function inside the "Function menu module" if present
+     *
+     * @return string
      */
-    protected function extObjContent()
+    protected function getExtObjContent()
     {
+        // Calls the 'main' function inside the "Function menu module" if present
         if ($this->extObj === null) {
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
@@ -782,26 +751,9 @@ page.10.value = HELLO WORLD!
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
-        } else {
-            if (is_callable([$this->extObj, 'main'])) {
-                $this->content .= $this->extObj->main();
-            }
+        } elseif (is_callable([$this->extObj, 'main'])) {
+            return $this->extObj->main();
         }
-    }
-
-    /**
-     * Return the content of the 'main' function inside the "Function menu module" if present
-     *
-     * @return string
-     */
-    protected function getExtObjContent()
-    {
-        $savedContent = $this->content;
-        $this->content = '';
-        $this->extObjContent();
-        $newContent = $this->content;
-        $this->content = $savedContent;
-        return $newContent;
     }
 
     /**

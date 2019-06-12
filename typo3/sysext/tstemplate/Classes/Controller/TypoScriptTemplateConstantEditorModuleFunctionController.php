@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -57,14 +58,21 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
     protected $id;
 
     /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * Init, called from parent object
      *
      * @param TypoScriptTemplateModuleController $pObj A reference to the parent (calling) object
+     * @param ServerRequestInterface $request
      */
-    public function init($pObj)
+    public function init($pObj, ServerRequestInterface $request)
     {
         $this->pObj = $pObj;
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->request = $request;
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
 
     /**
@@ -113,7 +121,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
         // Create extension template
         $this->pObj->createTemplate($this->id);
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu();
+        $manyTemplatesMenu = $this->pObj->templateMenu($this->request);
         $template_uid = 0;
         if ($manyTemplatesMenu) {
             $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
@@ -130,9 +138,9 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
 
             $saveId = $this->templateRow['_ORIG_uid'] ?: $this->templateRow['uid'];
             // Update template ?
-            if (GeneralUtility::_POST('_savedok')) {
+            if ($this->request->getParsedBody()['_savedok'] ?? false) {
                 $this->templateService->changed = 0;
-                $this->templateService->ext_procesInput(GeneralUtility::_POST(), [], $this->constants, $this->templateRow);
+                $this->templateService->ext_procesInput($this->request->getParsedBody(), [], $this->constants, $this->templateRow);
                 if ($this->templateService->changed) {
                     // Set the data to be saved
                     $recData = [];
@@ -150,7 +158,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
             }
             // Resetting the menu (start). I wonder if this in any way is a violation of the menu-system. Haven't checked. But need to do it here, because the menu is dependent on the categories available.
             $this->pObj->MOD_MENU['constant_editor_cat'] = $this->templateService->ext_getCategoryLabelArray();
-            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, GeneralUtility::_GP('SET'), 'web_ts');
+            $this->pObj->MOD_SETTINGS = BackendUtility::getModuleData($this->pObj->MOD_MENU, $this->request->getParsedBody()['SET'] ?? $this->request->getQueryParams()['SET'] ?? [], 'web_ts');
             // Resetting the menu (stop)
             $assigns['title'] = $this->pObj->linkWrapTemplateTitle($this->templateRow['title'], 'constants');
             if (!empty($this->pObj->MOD_MENU['constant_editor_cat'])) {

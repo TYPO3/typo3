@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,14 +50,21 @@ class TypoScriptTemplateInformationModuleFunctionController
     protected $id;
 
     /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * Init, called from parent object
      *
      * @param TypoScriptTemplateModuleController $pObj A reference to the parent (calling) object
+     * @param ServerRequestInterface $request
      */
-    public function init($pObj)
+    public function init($pObj, ServerRequestInterface $request)
     {
         $this->pObj = $pObj;
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->request = $request;
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
 
     /**
@@ -123,7 +131,7 @@ class TypoScriptTemplateInformationModuleFunctionController
     public function main()
     {
         // Checking for more than one template an if, set a menu...
-        $manyTemplatesMenu = $this->pObj->templateMenu();
+        $manyTemplatesMenu = $this->pObj->templateMenu($this->request);
         $template_uid = 0;
         if ($manyTemplatesMenu) {
             $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
@@ -137,7 +145,7 @@ class TypoScriptTemplateInformationModuleFunctionController
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // Create extension template
-        $newId = $this->pObj->createTemplate($this->id, $saveId);
+        $newId = $this->pObj->createTemplate($this->id, (int)$saveId);
         if ($newId) {
             // Switch to new template
             $urlParameters = [

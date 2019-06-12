@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Tstemplate\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
@@ -55,19 +56,26 @@ class TemplateAnalyzerModuleFunctionController
     protected $id;
 
     /**
+     * @var ServerRequestInterface
+     */
+    protected $request;
+
+    /**
      * Init, called from parent object
      *
      * @param TypoScriptTemplateModuleController $pObj
+     * @param ServerRequestInterface $request
      */
-    public function init($pObj)
+    public function init($pObj, ServerRequestInterface $request)
     {
         $this->pObj = $pObj;
+        $this->request = $request;
 
         // Setting MOD_MENU items as we need them for logging:
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->localLanguageFilePath = 'EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf';
         $this->pObj->modMenu_setDefaultList .= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
-        $this->id = (int)GeneralUtility::_GP('id');
+        $this->id = (int)($request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0);
     }
 
     /**
@@ -123,7 +131,7 @@ class TemplateAnalyzerModuleFunctionController
 
         $assigns = [];
         $template_uid = 0;
-        $assigns['manyTemplatesMenu'] = $this->pObj->templateMenu();
+        $assigns['manyTemplatesMenu'] = $this->pObj->templateMenu($this->request);
         $assigns['LLPrefix'] = 'LLL:' . $this->localLanguageFilePath . ':';
         if ($assigns['manyTemplatesMenu']) {
             $template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
@@ -155,7 +163,7 @@ class TemplateAnalyzerModuleFunctionController
         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $assigns['moduleLink'] = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
 
-        $assigns['template'] = $template = GeneralUtility::_GET('template');
+        $assigns['template'] = $template = ($this->request->getQueryParams()['template'] ?? null);
         $addParams = $template ? '&template=' . $template : '';
         $assigns['checkboxes'] = [
             'ts_analyzer_checkLinenum' => [
