@@ -45,7 +45,7 @@ abstract public class AbstractCoreSpec {
     protected static String projectName = "TYPO3 Core";
     protected static String projectKey = "CORE";
 
-    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.5.0";
+    protected String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=9.5.7";
 
     protected String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
