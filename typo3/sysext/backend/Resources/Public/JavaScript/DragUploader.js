@@ -336,7 +336,7 @@ define(['jquery',
             moment(
               askForOverride[i].uploaded.lastModified
                 ? askForOverride[i].uploaded.lastModified
-                : askForOverride[i].uploaded.lastModifiedDate,
+                : askForOverride[i].uploaded.lastModifiedDate
             ).format('YYYY-MM-DD HH:mm')
           ),
           $('<td />').append(
