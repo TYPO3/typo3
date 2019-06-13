@@ -268,6 +268,14 @@ class StageRecord extends AbstractRecord
     /**
      * @return bool
      */
+    public function hasDefaultRecipients(): bool
+    {
+        return $this->record['notification_defaults'] !== '';
+    }
+
+    /**
+     * @return bool
+     */
     public function hasPreselection()
     {
         return
@@ -275,6 +283,7 @@ class StageRecord extends AbstractRecord
             || $this->areMembersPreselected()
             || $this->areEditorsPreselected()
             || $this->areResponsiblePersonsPreselected()
+            || $this->hasDefaultRecipients()
         ;
     }
 
