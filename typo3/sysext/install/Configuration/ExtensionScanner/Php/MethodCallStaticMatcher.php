@@ -882,4 +882,25 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\VersionNumberUtility::splitVersionRange' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-88554-DeprecatedMethodsInVersionNumberUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\VersionNumberUtility::raiseVersionNumber' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-88554-DeprecatedMethodsInVersionNumberUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Utility\VersionNumberUtility::convertIntegerToVersionNumber' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-88554-DeprecatedMethodsInVersionNumberUtility.rst',
+        ],
+    ],
 ];

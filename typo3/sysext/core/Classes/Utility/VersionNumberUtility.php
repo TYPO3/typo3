@@ -45,9 +45,12 @@ class VersionNumberUtility
      * @param int $versionInteger Integer representation of version number
      * @return string Version number as format x.x.x
      * @throws \InvalidArgumentException if $versionInteger is not an integer
+     * @deprecated
      */
     public static function convertIntegerToVersionNumber($versionInteger)
     {
+        trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
+
         if (!is_int($versionInteger)) {
             throw new \InvalidArgumentException(\TYPO3\CMS\Core\Utility\VersionNumberUtility::class . '::convertIntegerToVersionNumber() supports an integer argument only!', 1334072223);
         }
@@ -69,9 +72,12 @@ class VersionNumberUtility
      *
      * @param string $version A string with a version range.
      * @return array
+     * @deprecated
      */
     public static function splitVersionRange($version)
     {
+        trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
+
         $versionRange = [];
         if (strstr($version, '-')) {
             $versionRange = explode('-', $version, 2);
@@ -172,9 +178,12 @@ class VersionNumberUtility
      * @param string $version (like 4.1.20)
      * @return string
      * @throws \TYPO3\CMS\Core\Exception
+     * @deprecated
      */
     public static function raiseVersionNumber($raise, $version)
     {
+        trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
+
         if (!in_array($raise, ['main', 'sub', 'dev'])) {
             throw new \TYPO3\CMS\Core\Exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
         }
