@@ -177,7 +177,6 @@ return [
         ],
         'edit_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
-            'displayCond' => 'FIELD:edit_allow_notificaton_settings:BIT:1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -215,7 +214,6 @@ return [
         ],
         'publish_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
-            'displayCond' => 'FIELD:publish_allow_notificaton_settings:BIT:1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
@@ -253,7 +251,6 @@ return [
         ],
         'execute_notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
-            'displayCond' => 'FIELD:execute_allow_notificaton_settings:BIT:1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
