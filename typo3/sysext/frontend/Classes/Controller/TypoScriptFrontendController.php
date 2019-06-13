@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -86,6 +87,11 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+
+    private $deprecatedPublicProperties = [
+        'sys_language_isocode' => 'Using $TSFE->sys_language_isocode will not be available anymore in TYPO3 v11.0. Use the current Site Language object and its method "getTwoLetterIsoCode()" instead.'
+    ];
 
     /**
      * The page id (int)
@@ -460,8 +466,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Is set to the iso code of the current language
      * @var string
+     * @deprecated don't use it anymore, as this is now within SiteLanguage->getTwoLetterIsoCode()
      */
-    public $sys_language_isocode = '';
+    protected $sys_language_isocode = '';
 
     /**
      * 'Global' Storage for various applications. Keys should be 'tx_'.extKey for
@@ -2065,6 +2072,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Finding the ISO code for the currently selected language
         // fetched by the sys_language record when not fetching content from the default language
+        // @deprecated - can be removed in TYPO3 v11.0
         $this->sys_language_isocode = $siteLanguage->getTwoLetterIsoCode();
 
         $_params = [];
@@ -2929,8 +2937,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $response = $response->withHeader('Content-Type', $this->contentType . '; charset=' . trim($this->metaCharset));
         }
         // Set header for content language unless disabled
-        if (empty($this->config['config']['disableLanguageHeader']) && !empty($this->sys_language_isocode)) {
-            $response = $response->withHeader('Content-Language', trim($this->sys_language_isocode));
+        $contentLanguage = $this->getCurrentSiteLanguage() instanceof SiteLanguage ? $this->getCurrentSiteLanguage()->getTwoLetterIsoCode() : '';
+        if (empty($this->config['config']['disableLanguageHeader']) && !empty($contentLanguage)) {
+            $response = $response->withHeader('Content-Language', trim($contentLanguage));
         }
         // Set cache related headers to client (used to enable proxy / client caching!)
         if (!empty($this->config['config']['sendCacheHeaders'])) {

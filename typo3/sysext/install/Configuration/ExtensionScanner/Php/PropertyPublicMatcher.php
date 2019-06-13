@@ -554,4 +554,9 @@ return [
             'Breaking-88458-RemovedFrontendTrackUserFtuFunctionality.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->sys_language_isocode' => [
+        'restFiles' => [
+            'Deprecation-88559-TSFE-sys_language_isocode.rst',
+        ],
+    ],
 ];
