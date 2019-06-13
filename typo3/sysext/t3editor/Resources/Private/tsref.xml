@@ -332,7 +332,7 @@ Use this feature in templates supplying other content-types than HTML. That coul
 
 Note that the keywords also change the way TYPO3 generates some of the XHTML tags to ensure valid XML. If you set doctype to a string, then you must also set config.xhtmlDoctype (see below).
 
-See "config.htmlTag_setParams" and "config.htmlTag_langKey" for more details on the effect on the html tag.
+See "config.htmlTag_setParams" for more details on the effect on the html tag.
 ]]></description>
 			<default><![CDATA[Default is a DOCTYPE like this:
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -383,29 +383,6 @@ Useful if you run a template with special content at - say &type=95 - but still 
 			<description><![CDATA[The content is added before the "TYPO3 Content Management Framework" comment in the <head> section of the page. Use this to insert a note like that "Programmed by My-Agency" ...]]></description>
 			<default><![CDATA[
 ]]></default>
-		</property>
-		<property name="htmlTag_dir" type="string">
-			<description><![CDATA[Sets text direction for whole document (useful for display of Arabic, Hebrew pages).
-
-Basically the value becomes the attribute value of "dir" for the <html> tag.
-
-Values:
-rtl = Right-To-Left (for Arabic / Hebrew)
-ltr = Left-To-Right (Default for other languages)
-
-Example:
-config.htmlTag_dir = rtl]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
-		<property name="htmlTag_langKey" type="string">
-			<description><![CDATA[Allows you to set the language value for the attributes "xml:lang" and "lang" in the <html> tag (when using "config.doctype = xhtml*").
-
-The values must follow the format specified in IETF RFC 3066
-
-Example:
-config.htmlTag_langKey = en-US]]></description>
-			<default><![CDATA[en]]></default>
 		</property>
 		<property name="htmlTag_setParams" type="string">
 			<description><![CDATA[Sets the attributes for the <html> tag on the page. If you set "config.doctype" to a keyword enabling XHTML then some attributes are already set. This property allows you to override any preset attributes with you own content if needed.

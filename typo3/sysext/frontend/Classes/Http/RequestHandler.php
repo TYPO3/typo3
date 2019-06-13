@@ -216,15 +216,10 @@ class RequestHandler implements RequestHandlerInterface
         // Reset the content variables:
         $controller->content = '';
         $htmlTagAttributes = [];
-        $htmlLang = $controller->config['config']['htmlTag_langKey'] ?? ($controller->sys_language_isocode ?: 'en');
-        $direction = $controller->config['config']['htmlTag_dir'] ?? null;
-        if ($siteLanguage !== null) {
-            $direction = $siteLanguage->getDirection();
-            $htmlLang = $siteLanguage->getTwoLetterIsoCode();
-        }
+        $htmlLang = $siteLanguage && $siteLanguage->getTwoLetterIsoCode() ? $siteLanguage->getTwoLetterIsoCode() : '';
 
-        if ($direction) {
-            $htmlTagAttributes['dir'] = htmlspecialchars($direction);
+        if ($siteLanguage && $siteLanguage->getDirection()) {
+            $htmlTagAttributes['dir'] = htmlspecialchars($siteLanguage->getDirection());
         }
         // Setting document type:
         $docTypeParts = [];
@@ -300,11 +295,13 @@ class RequestHandler implements RequestHandlerInterface
                 $pageRenderer->setMetaCharsetTag('<meta charset="|">');
             }
         }
-        if ($controller->xhtmlVersion) {
-            $htmlTagAttributes['xml:lang'] = $htmlLang;
-        }
-        if ($controller->xhtmlVersion < 110 || $doctype === 'html5') {
-            $htmlTagAttributes['lang'] = $htmlLang;
+        if ($htmlLang) {
+            if ($controller->xhtmlVersion) {
+                $htmlTagAttributes['xml:lang'] = $htmlLang;
+            }
+            if ($controller->xhtmlVersion < 110 || $doctype === 'html5') {
+                $htmlTagAttributes['lang'] = $htmlLang;
+            }
         }
         if ($controller->xhtmlVersion || $doctype === 'html5' && $xmlDocument) {
             // We add this to HTML5 to achieve a slightly better backwards compatibility

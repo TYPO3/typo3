@@ -419,8 +419,6 @@
         'HTMLparser': kw('HTMLparser'),
         'HTMLparser_tags': kw('HTMLparser_tags'),
         'htmlSpecialChars': kw('htmlSpecialChars'),
-        'htmlTag_dir': kw('htmlTag_dir'),
-        'htmlTag_langKey': kw('htmlTag_langKey'),
         'htmlTag_setParams': kw('htmlTag_setParams'),
         'http': kw('http'),
         'icon': kw('icon'),
