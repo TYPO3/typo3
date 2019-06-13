@@ -19,7 +19,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
-use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -44,6 +43,11 @@ class ConditionMatcher extends AbstractConditionMatcher
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->rootline = $this->determineRootline();
+        $this->initializeExpressionLanguageResolver();
+    }
+
+    protected function updateExpressionLanguageVariables(): void
+    {
         $tree = new \stdClass();
         $tree->level = $this->rootline ? count($this->rootline) - 1 : 0;
         $tree->rootLine = $this->rootline;
@@ -52,19 +56,15 @@ class ConditionMatcher extends AbstractConditionMatcher
         $frontendUserAspect = $this->context->getAspect('frontend.user');
         $frontend = new \stdClass();
         $frontend->user = new \stdClass();
-        $frontend->user->isLoggedIn = $frontendUserAspect->get('isLoggedIn') ?? false;
-        $frontend->user->userId = $frontendUserAspect->get('id') ?? 0;
+        $frontend->user->isLoggedIn = $frontendUserAspect->get('isLoggedIn');
+        $frontend->user->userId = $frontendUserAspect->get('id');
         $frontend->user->userGroupList = implode(',', $frontendUserAspect->get('groupIds'));
 
-        $this->expressionLanguageResolver = GeneralUtility::makeInstance(
-            Resolver::class,
-            'typoscript',
-            [
-                'tree' => $tree,
-                'frontend' => $frontend,
-                'page' => $this->getPage(),
-            ]
-        );
+        $this->expressionLanguageResolverVariables = [
+            'tree' => $tree,
+            'frontend' => $frontend,
+            'page' => $this->getPage(),
+        ];
     }
 
     /**

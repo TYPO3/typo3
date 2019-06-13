@@ -72,6 +72,27 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
     protected $expressionLanguageResolver;
 
     /**
+     * @var array
+     */
+    protected $expressionLanguageResolverVariables = [];
+
+    protected function initializeExpressionLanguageResolver(): void
+    {
+        $this->updateExpressionLanguageVariables();
+        $this->expressionLanguageResolver = GeneralUtility::makeInstance(
+            Resolver::class,
+            'typoscript',
+            $this->expressionLanguageResolverVariables
+        );
+    }
+
+    protected function updateExpressionLanguageVariables(): void
+    {
+        // deliberately empty and not "abstract" due to backwards compatibility
+        // implement this method in derived classes
+    }
+
+    /**
      * @return bool
      */
     protected function strictSyntaxEnabled(): bool
@@ -89,6 +110,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
         if (is_int($pageId) && $pageId > 0) {
             $this->pageId = $pageId;
         }
+        $this->initializeExpressionLanguageResolver();
     }
 
     /**
@@ -111,6 +133,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
         if (!empty($rootline)) {
             $this->rootline = $rootline;
         }
+        $this->initializeExpressionLanguageResolver();
     }
 
     /**
