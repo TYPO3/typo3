@@ -299,9 +299,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $newHash = '';
 
     /**
-     * This flag is set before inclusion of RequestHandler IF no_cache is set. If this
-     * flag is set after the inclusion of RequestHandler, no_cache is forced to be set.
-     * This is done in order to make sure that php-code from pagegen does not falsely
+     * This flag is set before the page is generated IF $this->no_cache is set. If this
+     * flag is set after the page content was generated, $this->no_cache is forced to be set.
+     * This is done in order to make sure that PHP code from Plugins / USER scripts does not falsely
      * clear the no_cache flag.
      * @var bool
      * @internal
@@ -399,7 +399,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public $fileTarget = '';
 
     /**
-     * If set, typolink() function encrypts email addresses. Is set in pagegen-class.
+     * If set, typolink() function encrypts email addresses.
      * @var string|int
      */
     public $spamProtectEmailAddresses = 0;
@@ -2473,7 +2473,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *
      *******************************************/
     /**
-     * Does some processing BEFORE the pagegen script is included.
+     * Does some processing BEFORE the page content is generated / built.
      */
     public function generatePage_preProcessing()
     {
@@ -2481,13 +2481,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // \TYPO3\CMS\Core\TypoScript\TemplateService::start() in the meantime, so this must be called again!
         $this->newHash = $this->getHash();
 
-        // Page is generated
+        // Used as a safety check in case a PHP script is falsely disabling $this->no_cache during page generation.
         $this->no_cacheBeforePageGen = $this->no_cache;
     }
 
     /**
-     * Previously located in static method in PageGenerator::init. Is solely used to set up TypoScript
-     * config. options and set properties in $TSFE for that.
+     * Sets up TypoScript "config." options and set properties in $TSFE.
      *
      * @param ServerRequestInterface $request
      */
@@ -2591,11 +2590,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Does some processing AFTER the pagegen script is included.
+     * Does processing of the content after the page content was generated.
+     *
      * This includes caching the page, indexing the page (if configured) and setting sysLastChanged
      */
     public function generatePage_postProcessing()
     {
+        $this->setAbsRefPrefix();
         // This is to ensure, that the page is NOT cached if the no_cache parameter was set before the page was generated. This is a safety precaution, as it could have been unset by some script.
         if ($this->no_cacheBeforePageGen) {
             $this->set_no_cache('no_cache has been set before the page was generated - safety check', true);

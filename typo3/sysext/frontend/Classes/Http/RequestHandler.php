@@ -123,7 +123,6 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
             $this->timeTracker->decStackPointer();
 
-            $controller->setAbsRefPrefix();
             $controller->generatePage_postProcessing();
             $this->timeTracker->pull();
         }
