@@ -94,7 +94,7 @@ shown above should be rewritten as follows::
 
    $formDefinition = $this->objectManager->get(FormDefinition::class, 'myForm', $prototypeConfiguration);
    $page1 = $formDefinition->createPage('page1');
-   $element1 = $page1->addElement('title', 'Text');
+   $element1 = $page1->createElement('title', 'Text');
 
 You might wonder how the system knows that the element ``Text`` is
 implemented by using a ``GenericFormElement``. This is configured in the
