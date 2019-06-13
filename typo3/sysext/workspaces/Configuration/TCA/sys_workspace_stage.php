@@ -58,7 +58,6 @@ return [
         ],
         'notification_defaults' => [
             'label' => 'LLL:EXT:workspaces/Resources/Private/Language/locallang_db.xlf:sys_workspace_stage.notification_defaults',
-            'displayCond' => 'FIELD:allow_notificaton_settings:BIT:1',
             'config' => [
                 'type' => 'group',
                 'internal_type' => 'db',
