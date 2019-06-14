@@ -31,8 +31,9 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
-use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -223,11 +224,11 @@ class ViewModuleController
             // Mount point overlay: Set new target page id and mp parameter
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
             $additionalGetVars = $this->getAdminCommand($pageId);
-            $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
             try {
-                $site = $siteMatcher->matchByPageId($pageId, $rootLine);
+                $site = $siteFinder->getSiteByPageId($pageId, $rootLine);
             } catch (SiteNotFoundException $e) {
-                $site = null;
+                $site = new NullSite();
             }
             $finalPageIdToShow = $pageId;
             $mountPointInformation = $pageRepository->getMountPointInfo($pageId);
@@ -359,7 +360,7 @@ class ViewModuleController
 
         try {
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId($pageId);
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
             $siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
 
             foreach ($siteLanguages as $siteLanguage) {

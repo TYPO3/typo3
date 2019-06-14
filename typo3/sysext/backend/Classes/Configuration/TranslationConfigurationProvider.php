@@ -20,7 +20,9 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,8 +41,12 @@ class TranslationConfigurationProvider
      */
     public function getSystemLanguages($pageId = 0)
     {
-        $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$pageId);
-        $siteLanguages = $siteMatcher->getAvailableLanguages($this->getBackendUserAuthentication(), true);
+        try {
+            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$pageId);
+        } catch (SiteNotFoundException $e) {
+            $site = new NullSite();
+        }
+        $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
 
         $languages = [];
         foreach ($siteLanguages as $id => $siteLanguage) {

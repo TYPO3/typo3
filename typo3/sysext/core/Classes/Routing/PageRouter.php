@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -386,13 +387,13 @@ class PageRouter implements RouterInterface
             ->execute();
 
         $pages = [];
-        $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         while ($row = $statement->fetch()) {
             $pageRepository->fixVersioningPid('pages', $row);
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
             try {
-                if ($siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
+                if ($siteFinder->getSiteByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
                     $pages[] = $row;
                 }
             } catch (SiteNotFoundException $e) {

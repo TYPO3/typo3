@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
-use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -616,9 +615,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             return $GLOBALS['TYPO3_REQUEST']->getAttribute('site', null);
         }
         if (MathUtility::canBeInterpretedAsInteger($GLOBALS['TSFE']->id) && $GLOBALS['TSFE']->id > 0) {
-            $matcher = GeneralUtility::makeInstance(SiteMatcher::class);
+            $finder = GeneralUtility::makeInstance(SiteFinder::class);
             try {
-                $site = $matcher->matchByPageId((int)$GLOBALS['TSFE']->id);
+                $site = $finder->getSiteByPageId((int)$GLOBALS['TSFE']->id);
             } catch (SiteNotFoundException $e) {
                 $site = null;
             }

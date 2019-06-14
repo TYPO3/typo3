@@ -17,8 +17,8 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\DataProcessing;
  */
 
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\DataProcessing\SiteProcessor;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -57,11 +57,11 @@ class SiteProcessorTest extends UnitTestCase
         $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
         $mockedContentObjectRenderer->expects($this->any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
-        $matcherMock = $this->getMockBuilder(SiteMatcher::class)->disableOriginalConstructor()->getMock();
-        $matcherMock->expects($this->any())->method('matchByPageId')->willThrowException(new SiteNotFoundException('message', 1550670118));
+        $finderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
+        $finderMock->expects($this->any())->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('message', 1550670118));
 
         $subject = $this->getAccessibleMock(SiteProcessor::class, ['getMatcher', 'getCurrentPageId'], []);
-        $subject->expects($this->any())->method('getMatcher')->willReturn($matcherMock);
+        $subject->expects($this->any())->method('getSiteFinder')->willReturn($finderMock);
         $subject->expects($this->any())->method('getCurrentPageId')->willReturn(1);
 
         $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
