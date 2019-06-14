@@ -13,6 +13,11 @@
     white-space: pre-wrap;
 }
 
+.text-wrap-allowed {
+    word-break: break-all;
+    overflow-wrap: break-word;
+}
+
 //
 // Lead text
 //
