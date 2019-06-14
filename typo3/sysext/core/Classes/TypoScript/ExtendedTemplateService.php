@@ -327,7 +327,6 @@ class ExtendedTemplateService extends TemplateService
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         // Register comments!
         $constants->regComments = true;
-        $constants->setup = $this->mergeConstantsFromPageTSconfig([]);
         /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         // Matches ALL conditions in TypoScript

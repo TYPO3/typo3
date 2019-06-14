@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
@@ -187,13 +186,6 @@ class TemplateService
      * @var array
      */
     protected $absoluteRootLine;
-
-    /**
-     * A pointer to the last entry in the rootline where a template was found.
-     *
-     * @var int
-     */
-    protected $outermostRootlineIndexWithTemplate = 0;
 
     /**
      * Array of arrays with title/uid of templates in hierarchy
@@ -561,7 +553,6 @@ class TemplateService
                     $this->versionOL($row);
                     if (is_array($row)) {
                         $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
-                        $this->outermostRootlineIndexWithTemplate = $a;
                     }
                 }
             }
@@ -592,7 +583,6 @@ class TemplateService
                 $this->versionOL($row);
                 if (is_array($row)) {
                     $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
-                    $this->outermostRootlineIndexWithTemplate = $a;
                 }
             }
             $this->rootLine[] = $this->absoluteRootLine[$a];
@@ -1006,7 +996,6 @@ class TemplateService
         /** @var Parser\TypoScriptParser $constants */
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
         $constants->breakPointLN = (int)$this->ext_constants_BRP;
-        $constants->setup = $this->mergeConstantsFromPageTSconfig([]);
         /** @var ConditionMatcher $matchObj */
         $matchObj = GeneralUtility::makeInstance(ConditionMatcher::class);
         $matchObj->setSimulateMatchConditions($this->matchAlternative);
@@ -1138,75 +1127,6 @@ class TemplateService
         }
 
         $this->processIncludesHasBeenRun = true;
-    }
-
-    /**
-     * Loads Page TSconfig until the outermost template record and parses the configuration - if TSFE.constants object path is found it is merged with the default data in here!
-     *
-     * @param array $constArray Constants array, default input.
-     * @return array Constants array, modified
-     * @todo Apply caching to the parsed Page TSconfig. This is done in the other similar functions for both frontend and backend. However, since this functions works for BOTH frontend and backend we will have to either write our own local caching function or (more likely) detect if we are in FE or BE and use caching functions accordingly. Not having caching affects mostly the backend modules inside the "Template" module since the overhead in the frontend is only seen when TypoScript templates are parsed anyways (after which point they are cached anyways...)
-     */
-    protected function mergeConstantsFromPageTSconfig($constArray)
-    {
-        $TSdataArray = [];
-        // Setting default configuration:
-        $TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
-        for ($a = 0; $a <= $this->outermostRootlineIndexWithTemplate; $a++) {
-            if (trim($this->absoluteRootLine[$a]['tsconfig_includes'])) {
-                $includeTsConfigFileList = GeneralUtility::trimExplode(
-                    ',',
-                    $this->absoluteRootLine[$a]['tsconfig_includes'],
-                    true
-                );
-
-                $TSdataArray = $this->mergeConstantsFromIncludedTsConfigFiles($includeTsConfigFileList, $TSdataArray);
-            }
-            $TSdataArray[] = $this->absoluteRootLine[$a]['TSconfig'];
-        }
-        // Parsing the user TS (or getting from cache)
-        $TSdataArray = Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
-        $userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-        /** @var Parser\TypoScriptParser $parseObj */
-        $parseObj = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
-        $parseObj->parse($userTS);
-        if (is_array($parseObj->setup['TSFE.']['constants.'])) {
-            ArrayUtility::mergeRecursiveWithOverrule($constArray, $parseObj->setup['TSFE.']['constants.']);
-        }
-
-        return $constArray;
-    }
-
-    /**
-     * Reads TSconfig defined in external files and appends it to the given TSconfig array (in this case only constants)
-     *
-     * @param array $filesToInclude The files to read constants from
-     * @param array $TSdataArray The TSconfig array the constants should be appended to
-     * @return array The TSconfig with the included constants appended
-     */
-    protected function mergeConstantsFromIncludedTsConfigFiles($filesToInclude, $TSdataArray)
-    {
-        foreach ($filesToInclude as $key => $file) {
-            if (strpos($file, 'EXT:') !== 0) {
-                continue;
-            }
-
-            list($extensionKey, $filePath) = explode('/', substr($file, 4), 2);
-
-            if ((string)$extensionKey === '' || !ExtensionManagementUtility::isLoaded($extensionKey)) {
-                continue;
-            }
-            if ((string)$filePath == '') {
-                continue;
-            }
-
-            $tsConfigFile = ExtensionManagementUtility::extPath($extensionKey) . $filePath;
-            if (file_exists($tsConfigFile)) {
-                $TSdataArray[] = file_get_contents($tsConfigFile);
-            }
-        }
-
-        return $TSdataArray;
     }
 
     /**
