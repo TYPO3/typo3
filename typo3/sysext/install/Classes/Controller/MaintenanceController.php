@@ -757,8 +757,8 @@ class MaintenanceController extends AbstractController
             ->execute();
         $messageQueue = new FlashMessageQueue('install');
         $messageQueue->enqueue(new FlashMessage(
-            'All backend users preferences has been reseted',
-            'Reset all backend users preferences'
+            'Preferences of all backend users have been reset',
+            'Reset preferences of all backend users'
         ));
         return new JsonResponse([
             'success' => true,
