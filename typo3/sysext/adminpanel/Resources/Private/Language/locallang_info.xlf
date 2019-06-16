@@ -48,6 +48,9 @@
             <trans-unit id="totalParsetime">
                 <source>Total parsetime</source>
             </trans-unit>
+            <trans-unit id="noUserInt">
+                <source>There are no USER_INT objects on this page.</source>
+            </trans-unit>
             <trans-unit id="key">
                 <source>Key</source>
             </trans-unit>
@@ -62,6 +65,9 @@
             </trans-unit>
             <trans-unit id="sub.request.label">
                 <source>REQUEST</source>
+            </trans-unit>
+            <trans-unit id="sub.userint.label">
+                <source>USER_INT</source>
             </trans-unit>
         </body>
     </file>

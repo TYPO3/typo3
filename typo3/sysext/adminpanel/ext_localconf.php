@@ -33,6 +33,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
             'phpinfo' => [
                 'module' => \TYPO3\CMS\Adminpanel\Modules\Info\PhpInformation::class,
             ],
+            'userint' => [
+                'module' => \TYPO3\CMS\Adminpanel\Modules\Info\UserIntInformation::class,
+            ],
         ],
     ],
     'debug' => [
