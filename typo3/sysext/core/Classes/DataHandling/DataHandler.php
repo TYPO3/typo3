@@ -3292,30 +3292,32 @@ class DataHandler implements LoggerAwareInterface
                     $this->checkValue_flex_procInData_travDS($dataValues[$key]['el'], $dataValues_current[$key]['el'], $uploadedFiles[$key]['el'], $DSelements[$key]['el'], $pParams, $callBackFunc, $structurePath . $key . '/el/', $workspaceOptions);
                 }
             } else {
+                // When having no specific sheets, it's "TCEforms.config", when having a sheet, it's just "config"
+                $fieldConfiguration = $dsConf['TCEforms']['config'] ?? $dsConf['config'] ?? null;
                 // init with value from config for passthrough fields
-                if (!empty($dsConf['TCEforms']['config']['type']) && $dsConf['TCEforms']['config']['type'] === 'passthrough') {
+                if (!empty($fieldConfiguration['type']) && $fieldConfiguration['type'] === 'passthrough') {
                     if (!empty($dataValues_current[$key]['vDEF'])) {
                         // If there is existing value, keep it
                         $dataValues[$key]['vDEF'] = $dataValues_current[$key]['vDEF'];
                     } elseif (
-                        !empty($dsConf['TCEforms']['config']['default'])
+                        !empty($fieldConfiguration['default'])
                         && isset($pParams[1])
                         && !MathUtility::canBeInterpretedAsInteger($pParams[1])
                     ) {
                         // If is new record and a default is specified for field, use it.
-                        $dataValues[$key]['vDEF'] = $dsConf['TCEforms']['config']['default'];
+                        $dataValues[$key]['vDEF'] = $fieldConfiguration['default'];
                     }
                 }
-                if (!is_array($dsConf['TCEforms']['config']) || !is_array($dataValues[$key])) {
+                if (!is_array($fieldConfiguration) || !is_array($dataValues[$key])) {
                     continue;
                 }
 
                 foreach ($dataValues[$key] as $vKey => $data) {
                     if ($callBackFunc) {
                         if (is_object($this->callBackObj)) {
-                            $res = $this->callBackObj->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
+                            $res = $this->callBackObj->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
                         } else {
-                            $res = $this->{$callBackFunc}($pParams, $dsConf['TCEforms']['config'], $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
+                            $res = $this->{$callBackFunc}($pParams, $fieldConfiguration, $dataValues[$key][$vKey], $dataValues_current[$key][$vKey], $uploadedFiles[$key][$vKey], $structurePath . $key . '/' . $vKey . '/', $workspaceOptions);
                         }
                     } else {
                         // Default
@@ -3326,7 +3328,7 @@ class DataHandler implements LoggerAwareInterface
                             'flexFormPath' => trim(rtrim($structurePath, '/') . '/' . $key . '/' . $vKey, '/'),
                         ];
 
-                        $res = $this->checkValue_SW([], $dataValues[$key][$vKey], $dsConf['TCEforms']['config'], $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
+                        $res = $this->checkValue_SW([], $dataValues[$key][$vKey], $fieldConfiguration, $CVtable, $CVid, $dataValues_current[$key][$vKey], $CVstatus, $CVrealPid, $CVrecFID, '', $uploadedFiles[$key][$vKey], $CVtscPID, $additionalData);
                     }
                     // Adding the value:
                     if (isset($res['value'])) {
