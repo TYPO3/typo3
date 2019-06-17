@@ -1,0 +1,50 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="panel panel-default panel-flat">
+    <div class="panel-heading" role="tab" id="headingSeven">
+        <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven" class="collapsed">
+                <span class="caret"></span>
+                Cache settings
+            </a>
+        </h4>
+    </div>
+    <div id="collapseSeven" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSeven">
+        <div class="panel-body">
+            <p>
+                TYPO3 features a flexible caching system with a default configuration that is ideal for most use cases.
+                Depending on your individual hosting setup, the performance of your TYPO3 instance can be optimized even further
+                by adjusting the storage type below.
+            </p>
+            <p>
+                Storing the caches in the database is usually the best choice for standard environments as well as for
+                installations where a network file system (NFS) is used and file system access impacts the performance and
+                should be avoided (high disk I/O).
+                The file-based storage for TYPO3 caches is more efficient in shared hosting environments or if a distributed
+                database is used.
+                For more complex, high-end installations, memory-based caches such as Redis or Memcached should be considered
+                which require additional configuration in &quot;LocalConfiguration.php&quot;.
+            </p>
+            <p>
+                To configure the storage type for each cache independently, custom cache settings can be configured.
+            </p>
+            <dl>
+                <dt>Page</dt>
+                <dd>Stores the content that can be cached of a single page.</dd>
+                <dt>Page Section</dt>
+                <dd>Stores TypoScript information, instructions how to generate a page and how data should be handled that cannot be cached.</dd>
+                <dt>Hash</dt>
+                <dd>Various internal information for generating pages, e.g. the structure of frontend menus.</dd>
+                <dt>Rootline</dt>
+                <dd>Stores all information of a &quot;rootline&quot; of pages (all pages up to the very first page in the page tree), including translated pages, start- and endtime. Also used for link generation and menus.</dd>
+                <dt>Image Sizes</dt>
+                <dd>Image sizes are stored separately to reduce file system access.</dd>
+            </dl>
+            <f:for each="{feature.presetsOrderedByPriority}" as="preset">
+                <f:render partial="Settings/Presets/{feature.name}/{preset.name}" arguments="{_all}" />
+            </f:for>
+        </div>
+    </div>
+</div>
+
+</html>
