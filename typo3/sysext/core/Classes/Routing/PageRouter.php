@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Routing;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Connection;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
@@ -25,11 +24,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\FrontendWorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
@@ -42,7 +37,6 @@ use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 
@@ -118,12 +112,15 @@ class PageRouter implements RouterInterface
         if (!($previousResult instanceof RouteResultInterface)) {
             throw new RouteNotFoundException('No previous result given. Cannot find a page for an empty route part', 1555303496);
         }
+
+        $candidateProvider = $this->getSlugCandidateProvider(GeneralUtility::makeInstance(Context::class));
+
         // Legacy URIs (?id=12345) takes precedence, no matter if a route is given
-        $requestId = (string)($request->getQueryParams()['id'] ?? '');
-        if (!empty($requestId)) {
-            if (!empty($page = $this->resolvePageId($requestId))) {
+        $requestId = (int)($request->getQueryParams()['id'] ?? 0);
+        if ($requestId > 0) {
+            if (!empty($pageId = $candidateProvider->getRealPageIdForPageIdAsPossibleCandidate($requestId))) {
                 return new PageArguments(
-                    (int)($page['l10n_parent'] ?: $page['uid']),
+                    $pageId,
                     (string)($request->getQueryParams()['type'] ?? '0'),
                     [],
                     [],
@@ -132,6 +129,7 @@ class PageRouter implements RouterInterface
             }
             throw new RouteNotFoundException('The requested page does not exist.', 1557839801);
         }
+
         $urlPath = $previousResult->getTail();
         // Remove the script name (e.g. index.php), if given
         if (!empty($urlPath)) {
@@ -144,38 +142,14 @@ class PageRouter implements RouterInterface
             }
         }
 
-        $prefixedUrlPath = '/' . trim($urlPath, '/');
-        $slugCandidates = $this->getCandidateSlugsFromRoutePath($urlPath ?: '/');
-        $pageCandidates = [];
         $language = $previousResult->getLanguage();
-        $languages = [$language->getLanguageId()];
-        if (!empty($language->getFallbackLanguageIds())) {
-            $languages = array_merge($languages, $language->getFallbackLanguageIds());
-        }
-        // Iterate all defined languages in their configured order to get matching page candidates somewhere in the language fallback chain
-        foreach ($languages as $languageId) {
-            $pageCandidatesFromSlugsAndLanguage = $this->getPagesFromDatabaseForCandidates($slugCandidates, $languageId);
-            // Determine whether fetched page candidates qualify for the request. The incoming URL is checked against all
-            // pages found for the current URL and language.
-            foreach ($pageCandidatesFromSlugsAndLanguage as $candidate) {
-                $slugCandidate = '/' . trim($candidate['slug'], '/');
-                if ($slugCandidate === '/' || strpos($prefixedUrlPath, $slugCandidate) === 0) {
-                    // The slug is a subpart of the requested URL, so it's a possible candidate
-                    if ($prefixedUrlPath === $slugCandidate) {
-                        // The requested URL matches exactly the found slug. We can't find a better match,
-                        // so use that page candidate and stop any further querying.
-                        $pageCandidates = [$candidate];
-                        break 2;
-                    }
+        $prefixedUrlPath = '/' . trim($urlPath, '/');
 
-                    $pageCandidates[] = $candidate;
-                }
-            }
-        }
+        $pageCandidates = $candidateProvider->getCandidatesForPath($prefixedUrlPath, $language);
 
         // Stop if there are no candidates
         if (empty($pageCandidates)) {
-            throw new RouteNotFoundException('No page candidates found for path "' . $urlPath . '"', 1538389999);
+            throw new RouteNotFoundException('No page candidates found for path "' . $prefixedUrlPath . '"', 1538389999);
         }
 
         $fullCollection = new RouteCollection();
@@ -348,93 +322,6 @@ class PageRouter implements RouterInterface
     }
 
     /**
-     * Check for records in the database which matches one of the slug candidates.
-     *
-     * @param array $slugCandidates
-     * @param int $languageId
-     * @return array
-     */
-    protected function getPagesFromDatabaseForCandidates(array $slugCandidates, int $languageId): array
-    {
-        $context = GeneralUtility::makeInstance(Context::class);
-        $searchLiveRecordsOnly = $context->getPropertyFromAspect('workspace', 'isLive');
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class, null, null, $searchLiveRecordsOnly));
-
-        $statement = $queryBuilder
-            ->select('uid', 'l10n_parent', 'pid', 'slug')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'sys_language_uid',
-                    $queryBuilder->createNamedParameter($languageId, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->in(
-                    'slug',
-                    $queryBuilder->createNamedParameter(
-                        $slugCandidates,
-                        Connection::PARAM_STR_ARRAY
-                    )
-                )
-            )
-            // Exact match will be first, that's important
-            ->orderBy('slug', 'desc')
-            ->execute();
-
-        $pages = [];
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-        $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
-        while ($row = $statement->fetch()) {
-            $pageRepository->fixVersioningPid('pages', $row);
-            $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
-            try {
-                if ($siteFinder->getSiteByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
-                    $pages[] = $row;
-                }
-            } catch (SiteNotFoundException $e) {
-            }
-        }
-        return $pages;
-    }
-
-    /**
-     * @param string $pageId
-     * @return array|null
-     */
-    protected function resolvePageId(string $pageId): ?array
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-        $queryBuilder
-            ->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class));
-
-        $statement = $queryBuilder
-            ->select('uid', 'l10n_parent', 'pid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'uid',
-                    $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                )
-            )
-            ->execute();
-
-        $page = $statement->fetch();
-        if (empty($page)) {
-            return null;
-        }
-        return $page;
-    }
-
-    /**
      * Fetch possible enhancers + aspects based on the current page configuration and the site configuration put
      * into "routeEnhancers"
      *
@@ -462,89 +349,6 @@ class PageRouter implements RouterInterface
             $enhancers[] = $enhancer;
         }
         return $enhancers;
-    }
-
-    /**
-     * Resolves decorating enhancers without having aspects assigned. These
-     * instances are used to pre-process URL path and MUST NOT be used for
-     * actually resolving or generating URL parameters.
-     *
-     * @return DecoratingEnhancerInterface[]
-     */
-    protected function getDecoratingEnhancers(): array
-    {
-        $enhancers = [];
-        foreach ($this->site->getConfiguration()['routeEnhancers'] ?? [] as $enhancerConfiguration) {
-            $enhancerType = $enhancerConfiguration['type'] ?? '';
-            $enhancer = $this->enhancerFactory->create($enhancerType, $enhancerConfiguration);
-            if ($enhancer instanceof DecoratingEnhancerInterface) {
-                $enhancers[] = $enhancer;
-            }
-        }
-        return $enhancers;
-    }
-
-    /**
-     * Gets all patterns that can be used to redecorate (undecorate) a
-     * potential previously decorated route path.
-     *
-     * @return string regular expression pattern capable of redecorating
-     */
-    protected function getRoutePathRedecorationPattern(): string
-    {
-        $decoratingEnhancers = $this->getDecoratingEnhancers();
-        if (empty($decoratingEnhancers)) {
-            return '';
-        }
-        $redecorationPatterns = array_map(
-            function (DecoratingEnhancerInterface $decorationEnhancers) {
-                $pattern = $decorationEnhancers->getRoutePathRedecorationPattern();
-                return '(?:' . $pattern . ')';
-            },
-            $decoratingEnhancers
-        );
-        return '(?P<decoration>' . implode('|', $redecorationPatterns) . ')';
-    }
-
-    /**
-     * Returns possible URL parts for a string like /home/about-us/offices/ or /home/about-us/offices.json
-     * to return.
-     *
-     * /home/about-us/offices/
-     * /home/about-us/offices.json
-     * /home/about-us/offices
-     * /home/about-us/
-     * /home/about-us
-     * /home/
-     * /home
-     * /
-     *
-     * @param string $routePath
-     * @return array
-     */
-    protected function getCandidateSlugsFromRoutePath(string $routePath): array
-    {
-        $redecorationPattern = $this->getRoutePathRedecorationPattern();
-        if (!empty($redecorationPattern) && preg_match('#' . $redecorationPattern . '#', $routePath, $matches)) {
-            $decoration = $matches['decoration'];
-            $decorationPattern = preg_quote($decoration, '#');
-            $routePath = preg_replace('#' . $decorationPattern . '$#', '', $routePath);
-        }
-
-        $candidatePathParts = [];
-        $pathParts = GeneralUtility::trimExplode('/', $routePath, true);
-        if (empty($pathParts)) {
-            return ['/'];
-        }
-
-        while (!empty($pathParts)) {
-            $prefix = '/' . implode('/', $pathParts);
-            $candidatePathParts[] = $prefix . '/';
-            $candidatePathParts[] = $prefix;
-            array_pop($pathParts);
-        }
-        $candidatePathParts[] = '/';
-        return $candidatePathParts;
     }
 
     /**
@@ -671,6 +475,16 @@ class PageRouter implements RouterInterface
         return array_intersect_key(
             $results,
             array_flip($route->compile()->getPathVariables())
+        );
+    }
+
+    protected function getSlugCandidateProvider(Context $context): PageSlugCandidateProvider
+    {
+        return GeneralUtility::makeInstance(
+            PageSlugCandidateProvider::class,
+            $context,
+            $this->site,
+            $this->enhancerFactory
         );
     }
 }
