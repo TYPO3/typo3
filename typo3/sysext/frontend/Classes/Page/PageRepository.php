@@ -174,7 +174,7 @@ class PageRepository implements LoggerAwareInterface
             // versioning preview (that means we are online!)
             $this->where_hid_del = ' AND ' . (string)$expressionBuilder->andX(
                 QueryHelper::stripLogicalOperatorPrefix(
-                    $this->enableFields('pages', $show_hidden, ['fe_group' => true], true)
+                    $this->enableFields('pages', $show_hidden, ['fe_group' => true])
                 ),
                 $expressionBuilder->lt('pages.doktype', 200)
             );
@@ -1222,11 +1222,10 @@ class PageRepository implements LoggerAwareInterface
      * @param string $table Table name found in the $GLOBALS['TCA'] array
      * @param int $show_hidden If $show_hidden is set (0/1), any hidden-fields in records are ignored. NOTICE: If you call this function, consider what to do with the show_hidden parameter. Maybe it should be set? See ContentObjectRenderer->enableFields where it's implemented correctly.
      * @param array $ignore_array Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
-     * @param bool $noVersionPreview If set, enableFields will be applied regardless of any versioning preview settings which might otherwise disable enableFields
      * @throws \InvalidArgumentException
      * @return string The clause starting like " AND ...=... AND ...=...
      */
-    public function enableFields($table, $show_hidden = -1, $ignore_array = [], $noVersionPreview = false)
+    public function enableFields($table, $show_hidden = -1, $ignore_array = [])
     {
         if ($show_hidden === -1) {
             // If show_hidden was not set from outside, use the current context
@@ -1244,7 +1243,7 @@ class PageRepository implements LoggerAwareInterface
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
             if ($ctrl['versioningWS'] ?? false) {
-                if (!$this->versioningWorkspaceId > 0) {
+                if ($this->versioningWorkspaceId === 0) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (that means we are online!)
                     $constraints[] = $expressionBuilder->lte(
@@ -1261,7 +1260,7 @@ class PageRepository implements LoggerAwareInterface
                 }
 
                 // Filter out versioned records
-                if (!$noVersionPreview && empty($ignore_array['pid'])) {
+                if (empty($ignore_array['pid'])) {
                     $constraints[] = $expressionBuilder->neq($table . '.pid', -1);
                 }
             }
@@ -1270,7 +1269,7 @@ class PageRepository implements LoggerAwareInterface
             if (is_array($ctrl['enablecolumns'])) {
                 // In case of versioning-preview, enableFields are ignored (checked in
                 // versionOL())
-                if ($this->versioningWorkspaceId <= 0 || !$ctrl['versioningWS'] || $noVersionPreview) {
+                if ($this->versioningWorkspaceId === 0 || !$ctrl['versioningWS']) {
                     if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);

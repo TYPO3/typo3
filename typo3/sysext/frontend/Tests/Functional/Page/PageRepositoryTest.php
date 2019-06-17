@@ -359,9 +359,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
         $expectedSQL = sprintf(
-            ' AND ((%s = 0) AND (%s <= 0) AND (%s = 0) AND (%s <= 123) AND ((%s = 0) OR (%s > 123))) AND (%s < 200)',
+            ' AND ((%s = 0) AND (%s <= 0) AND (%s <> -1) AND (%s = 0) AND (%s <= 123) AND ((%s = 0) OR (%s > 123))) AND (%s < 200)',
             $connection->quoteIdentifier('pages.deleted'),
             $connection->quoteIdentifier('pages.t3ver_state'),
+            $connection->quoteIdentifier('pages.pid'),
             $connection->quoteIdentifier('pages.hidden'),
             $connection->quoteIdentifier('pages.starttime'),
             $connection->quoteIdentifier('pages.endtime'),
@@ -504,37 +505,6 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             $conditions,
             $this->stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 2))'),
             'No versioning placeholders'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function enableFieldsDoesNotHideVersionedRecordsWhenCheckingVersionOverlays()
-    {
-        $table = $this->getUniqueId('aTable');
-        $GLOBALS['TCA'][$table] = [
-            'ctrl' => [
-                'versioningWS' => true
-            ]
-        ];
-
-        $subject = new PageRepository(new Context([
-            'workspace' => new WorkspaceAspect(23)
-        ]));
-
-        $conditions = $subject->enableFields($table, -1, [], true);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-
-        $this->assertThat(
-            $conditions,
-            $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
-            'No versioning placeholders'
-        );
-        $this->assertThat(
-            $conditions,
-            $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)')),
-            'No records from page -1'
         );
     }
 

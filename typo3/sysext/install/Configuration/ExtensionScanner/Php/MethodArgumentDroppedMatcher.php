@@ -223,4 +223,10 @@ return [
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Frontend\Page\PageRepository->enableFields' => [
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-88574-4thParameterOfPageRepository-enableFieldsRemoved.rst',
+        ],
+    ],
 ];
