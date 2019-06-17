@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -32,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class SiteConfiguration
+class SiteConfiguration implements SingletonInterface
 {
     /**
      * @var string
@@ -56,6 +57,14 @@ class SiteConfiguration
     protected $cacheIdentifier = 'site-configuration';
 
     /**
+     * Cache stores all configuration as Site objects, as long as they haven't been changed.
+     * This drastically improves performance as SiteFinder utilizes SiteConfiguration heavily
+     *
+     * @var array|null
+     */
+    protected $firstLevelCache;
+
+    /**
      * @param string $configPath
      */
     public function __construct(string $configPath)
@@ -65,6 +74,16 @@ class SiteConfiguration
 
     /**
      * Return all site objects which have been found in the filesystem.
+     *
+     * @return Site[]
+     */
+    public function getAllExistingSites(): array
+    {
+        return $this->firstLevelCache ?? $this->resolveAllExistingSites();
+    }
+
+    /**
+     * Resolve all site objects which have been found in the filesystem.
      *
      * @return Site[]
      */
@@ -78,6 +97,7 @@ class SiteConfiguration
                 $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration);
             }
         }
+        $this->firstLevelCache = $sites;
         return $sites;
     }
 
@@ -149,6 +169,7 @@ class SiteConfiguration
         }
         $yamlFileContents = Yaml::dump($configuration, 99, 2);
         GeneralUtility::writeFile($fileName, $yamlFileContents);
+        $this->firstLevelCache = null;
         $this->getCache()->remove($this->cacheIdentifier);
         $this->getCache()->remove('pseudo-sites');
     }
@@ -167,6 +188,7 @@ class SiteConfiguration
             throw new \RuntimeException('Unable to rename folder sites/' . $currentIdentifier, 1522491300);
         }
         $this->getCache()->remove($this->cacheIdentifier);
+        $this->firstLevelCache = null;
     }
 
     /**
@@ -178,7 +200,7 @@ class SiteConfiguration
      */
     public function delete(string $siteIdentifier): void
     {
-        $sites = $this->resolveAllExistingSites();
+        $sites = $this->getAllExistingSites();
         if (!isset($sites[$siteIdentifier])) {
             throw new SiteNotFoundException('Site configuration named ' . $siteIdentifier . ' not found.', 1522866183);
         }
@@ -189,6 +211,7 @@ class SiteConfiguration
         @unlink($fileName);
         $this->getCache()->remove($this->cacheIdentifier);
         $this->getCache()->remove('pseudo-sites');
+        $this->firstLevelCache = null;
     }
 
     /**

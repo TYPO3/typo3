@@ -43,11 +43,16 @@ class SiteFinder
 
     /**
      * Fetches all existing configurations as Site objects
+     *
+     * @param SiteConfiguration $siteConfiguration
      */
-    public function __construct()
+    public function __construct(SiteConfiguration $siteConfiguration = null)
     {
-        $reader = GeneralUtility::makeInstance(SiteConfiguration::class, Environment::getConfigPath() . '/sites');
-        $sites = $reader->resolveAllExistingSites();
+        $siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(
+            SiteConfiguration::class,
+            Environment::getConfigPath() . '/sites'
+        );
+        $sites = $siteConfiguration->getAllExistingSites();
         foreach ($sites as $identifier => $site) {
             $this->sites[$identifier] = $site;
             $this->mappingRootPageIdToIdentifier[$site->getRootPageId()] = $identifier;

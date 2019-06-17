@@ -29,6 +29,22 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SiteDatabaseEditRow implements FormDataProviderInterface
 {
     /**
+     * @var SiteConfiguration
+     */
+    protected $siteConfiguration;
+
+    /**
+     * @param SiteConfiguration $siteConfiguration
+     */
+    public function __construct(SiteConfiguration $siteConfiguration = null)
+    {
+        $this->siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(
+            SiteConfiguration::class,
+            Environment::getConfigPath() . '/sites'
+        );
+    }
+
+    /**
      * First level of ['customData']['siteData'] to ['databaseRow']
      *
      * @param array $result
@@ -42,7 +58,7 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
         }
 
         $tableName = $result['tableName'];
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class, $this->siteConfiguration);
         if ($tableName === 'site') {
             $rootPageId = (int)$result['vanillaUid'];
             $rowData = $this->getRawConfigurationForSiteWithRootPageId($siteFinder, $rootPageId);
@@ -80,11 +96,7 @@ class SiteDatabaseEditRow implements FormDataProviderInterface
     protected function getRawConfigurationForSiteWithRootPageId(SiteFinder $siteFinder, int $rootPageId): array
     {
         $site = $siteFinder->getSiteByRootPageId($rootPageId);
-        $siteConfiguration = GeneralUtility::makeInstance(
-            SiteConfiguration::class,
-            Environment::getConfigPath() . '/sites'
-        );
         // load config as it is stored on disk (without replacements)
-        return $siteConfiguration->load($site->getIdentifier());
+        return $this->siteConfiguration->load($site->getIdentifier());
     }
 }
