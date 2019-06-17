@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
-use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -102,7 +101,6 @@ class Bootstrap
         static::initializeRuntimeActivatedPackagesFromConfiguration($packageManager);
 
         static::setDefaultTimezone();
-        $locales = Locales::initialize();
         static::setMemoryLimit();
 
         $assetsCache = static::createCache('assets', $disableCaching);
@@ -131,7 +129,6 @@ class Bootstrap
             'cache.assets' => $assetsCache,
             CacheManager::class => $cacheManager,
             PackageManager::class => $packageManager,
-            Locales::class => $locales,
         ];
 
         return new class($defaultContainerEntries) implements ContainerInterface {

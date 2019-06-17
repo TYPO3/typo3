@@ -1929,8 +1929,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
 
-        Locales::initialize();
-
         $siteLanguage = $this->getCurrentSiteLanguage();
         if (!$siteLanguage) {
             throw new PageNotFoundException('Frontend cannot be displayed, as there is no language available', 1557924417);

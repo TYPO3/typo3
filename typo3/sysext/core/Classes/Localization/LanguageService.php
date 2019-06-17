@@ -90,10 +90,9 @@ class LanguageService
     public function init($languageKey)
     {
         // Find the requested language in this list based on the $languageKey
-        /** @var \TYPO3\CMS\Core\Localization\Locales $locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
         // Language is found. Configure it:
-        if (in_array($languageKey, $locales->getLocales())) {
+        if (in_array($languageKey, $locales->getLocales(), true)) {
             // The current language key
             $this->lang = $languageKey;
             $this->languageDependencies[] = $languageKey;

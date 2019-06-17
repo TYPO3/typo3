@@ -910,4 +910,11 @@ return [
             'Breaking-87957-DoNotMagicallyRegisterValidators.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Localization\Locales::initialize' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-88569-LocalesinitializeInFavorOfRegularSingletonInstance.rst',
+        ],
+    ],
 ];
