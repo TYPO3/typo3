@@ -60,7 +60,7 @@ class SiteProcessorTest extends UnitTestCase
         $finderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
         $finderMock->expects($this->any())->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('message', 1550670118));
 
-        $subject = $this->getAccessibleMock(SiteProcessor::class, ['getMatcher', 'getCurrentPageId'], []);
+        $subject = $this->getAccessibleMock(SiteProcessor::class, ['getSiteFinder', 'getCurrentPageId'], []);
         $subject->expects($this->any())->method('getSiteFinder')->willReturn($finderMock);
         $subject->expects($this->any())->method('getCurrentPageId')->willReturn(1);
 
