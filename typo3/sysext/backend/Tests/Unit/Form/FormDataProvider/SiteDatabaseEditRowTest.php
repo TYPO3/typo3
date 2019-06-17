@@ -55,7 +55,8 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'command' => 'new',
             'foo' => 'bar',
         ];
-        $this->assertSame($input, (new SiteDatabaseEditRow())->addData($input));
+        $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
+        $this->assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
     }
 
     /**
@@ -69,7 +70,8 @@ class SiteDatabaseEditRowTest extends UnitTestCase
                 'foo' => 'bar',
             ]
         ];
-        $this->assertSame($input, (new SiteDatabaseEditRow())->addData($input));
+        $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
+        $this->assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
     }
 
     /**
@@ -84,8 +86,9 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886234);
         $siteFinderProphecy = $this->prophesize(SiteFinder::class);
+        $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
         GeneralUtility::addInstance(SiteFinder::class, $siteFinderProphecy->reveal());
-        (new SiteDatabaseEditRow())->addData($input);
+        (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input);
     }
 
     /**
@@ -115,7 +118,6 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $siteProphecy->getIdentifier()->willReturn('testident');
         $siteConfiguration = $this->prophesize(SiteConfiguration::class);
         $siteConfiguration->load('testident')->willReturn($rowData);
-        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $expected = $input;
         $expected['databaseRow'] = [
@@ -126,7 +128,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'foo' => 'bar',
         ];
 
-        $this->assertEquals($expected, (new SiteDatabaseEditRow())->addData($input));
+        $this->assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
     }
 
     /**
@@ -151,11 +153,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $siteProphecy->getIdentifier()->willReturn('testident');
         $siteConfiguration = $this->prophesize(SiteConfiguration::class);
         $siteConfiguration->load('testident')->willReturn($rowData);
-        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
-        (new SiteDatabaseEditRow())->addData($input);
+        (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input);
     }
 
     /**
@@ -180,11 +181,10 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $siteProphecy->getIdentifier()->willReturn('testident');
         $siteConfiguration = $this->prophesize(SiteConfiguration::class);
         $siteConfiguration->load('testident')->willReturn($rowData);
-        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520886092);
-        (new SiteDatabaseEditRow())->addData($input);
+        (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input);
     }
 
     /**
@@ -213,7 +213,6 @@ class SiteDatabaseEditRowTest extends UnitTestCase
         $siteProphecy->getIdentifier()->willReturn('testident');
         $siteConfiguration = $this->prophesize(SiteConfiguration::class);
         $siteConfiguration->load('testident')->willReturn($rowData);
-        GeneralUtility::addInstance(SiteConfiguration::class, $siteConfiguration->reveal());
 
         $expected = $input;
         $expected['databaseRow'] = [
@@ -222,6 +221,6 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'pid' => 0,
         ];
 
-        $this->assertEquals($expected, (new SiteDatabaseEditRow())->addData($input));
+        $this->assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
     }
 }
