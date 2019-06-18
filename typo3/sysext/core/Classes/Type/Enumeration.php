@@ -168,7 +168,7 @@ abstract class Enumeration implements TypeInterface
     public static function getConstants($include_default = false)
     {
         static::loadValues();
-        $enumConstants = static::$enumConstants[get_called_class()];
+        $enumConstants = static::$enumConstants[static::class];
         if (!$include_default) {
             unset($enumConstants['__default']);
         }
@@ -179,13 +179,12 @@ abstract class Enumeration implements TypeInterface
      * Cast value to enumeration type
      *
      * @param mixed $value Value that has to be casted
-     * @return self
+     * @return static
      */
     public static function cast($value)
     {
-        $currentClass = get_called_class();
-        if (!is_object($value) || get_class($value) !== $currentClass) {
-            $value = new $currentClass($value);
+        if (!is_object($value) || get_class($value) !== static::class) {
+            $value = new static($value);
         }
         return $value;
     }
