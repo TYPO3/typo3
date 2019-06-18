@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+
 /**
  * This object stores the WidgetContext for the currently active widgets
  * of the current user, to make sure the WidgetContext is available in
@@ -49,7 +51,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function loadWidgetContexts()
     {
-        if (TYPO3_MODE === 'FE') {
+        if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $this->widgetContexts = unserialize($GLOBALS['TSFE']->fe_user->getKey('ses', $this->widgetContextsStorageKey));
         } else {
             $this->widgetContexts = isset($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]) ? unserialize($GLOBALS['BE_USER']->uc[$this->widgetContextsStorageKey]) : [];
@@ -90,7 +92,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function storeWidgetContexts()
     {
-        if (TYPO3_MODE === 'FE') {
+        if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
             $GLOBALS['TSFE']->fe_user->setKey('ses', $this->widgetContextsStorageKey, serialize($this->widgetContexts));
             $GLOBALS['TSFE']->fe_user->storeSessionData();
         } else {

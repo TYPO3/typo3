@@ -100,7 +100,7 @@ class CObjectViewHelper extends AbstractViewHelper
         $currentValueKey = $arguments['currentValueKey'];
         $table = $arguments['table'];
         $contentObjectRenderer = static::getContentObjectRenderer();
-        if (TYPO3_MODE === 'BE') {
+        if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             static::simulateFrontendEnvironment();
         }
         $currentValue = null;
@@ -135,7 +135,7 @@ class CObjectViewHelper extends AbstractViewHelper
             );
         }
         $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'] ?? []);
-        if (TYPO3_MODE === 'BE') {
+        if (!isset($GLOBALS['TSFE']) || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)) {
             static::resetFrontendEnvironment();
         }
         return $content;
