@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
-use TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -35,11 +34,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
  */
 class PreviewProcessing
 {
-    /**
-     * @var LocalImageProcessor
-     */
-    protected $processor;
-
     /**
      * @param ProcessedFile $processedFile
      * @return bool
@@ -227,17 +221,6 @@ class PreviewProcessing
         $options['noScale'] = $configuration['noScale'];
 
         return $options;
-    }
-
-    /**
-     * @return LocalImageProcessor
-     */
-    protected function getProcessor()
-    {
-        if (!$this->processor) {
-            $this->processor = GeneralUtility::makeInstance(LocalImageProcessor::class);
-        }
-        return $this->processor;
     }
 
     /**

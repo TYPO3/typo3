@@ -110,8 +110,7 @@ class FileProcessingService
         if ($processedFile->isNew() || (!$processedFile->usesOriginalFile() && !$processedFile->exists()) ||
             $processedFile->isOutdated()) {
             $task = $processedFile->getTask();
-            /** @var Resource\Processing\LocalImageProcessor $processor */
-            $processor = GeneralUtility::makeInstance(Resource\Processing\LocalImageProcessor::class);
+            $processor = $this->getProcessorByTask($task);
             $processor->processTask($task);
 
             if ($task->isExecuted() && $task->isSuccessful() && $processedFile->isProcessed()) {
@@ -120,6 +119,17 @@ class FileProcessingService
                 $processedFileRepository->add($processedFile);
             }
         }
+    }
+
+    /**
+     * @param Resource\Processing\TaskInterface $task
+     * @return Resource\Processing\ProcessorInterface
+     */
+    protected function getProcessorByTask(Resource\Processing\TaskInterface $task): Resource\Processing\ProcessorInterface
+    {
+        $processorRegistry = GeneralUtility::makeInstance(Resource\Processing\ProcessorRegistry::class);
+
+        return $processorRegistry->getProcessorByTask($task);
     }
 
     /**

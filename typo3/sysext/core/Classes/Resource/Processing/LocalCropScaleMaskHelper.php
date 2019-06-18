@@ -26,19 +26,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 class LocalCropScaleMaskHelper
 {
     /**
-     * @var LocalImageProcessor
-     */
-    protected $processor;
-
-    /**
-     * @param LocalImageProcessor $processor
-     */
-    public function __construct(LocalImageProcessor $processor)
-    {
-        $this->processor = $processor;
-    }
-
-    /**
      * This method actually does the processing of files locally
      *
      * Takes the original file (for remote storages this will be fetched from the remote server),

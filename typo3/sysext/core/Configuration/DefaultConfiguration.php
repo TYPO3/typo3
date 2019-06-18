@@ -242,6 +242,11 @@ return [
                     'filterHiddenFilesAndFolders'
                 ]
             ],
+            'processors' => [
+                'LocalImageProcessor' => [
+                    'className' => \TYPO3\CMS\Core\Resource\Processing\LocalImageProcessor::class,
+                ],
+            ],
             'processingTaskTypes' => [
                 'Image.Preview' => \TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask::class,
                 'Image.CropScaleMask' => \TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask::class
