@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="index.php?id=123">page link</f:link.action>
+ *    <a href="index.php?id=123">page link</a>
  *
  * (depending on the current page and your TS configuration)
  *
@@ -38,7 +38,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="index.php?id=1&foo=bar">page link</f:link.action>
+ *    <a href="index.php?id=1&foo=bar">page link</a>
  *
  * (depending on your TS configuration)
  *
@@ -48,7 +48,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="index.php?id=1&extension_key[foo]=bar">page link</f:link.action>
+ *    <a href="index.php?id=1&extension_key[foo]=bar">page link</a>
  *
  * (depending on your TS configuration)
  */
