@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "155080ceb9a0dcfd935465da24084676",
+    "content-hash": "d51c3aee99999de0ef61a76328527a60",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5960,16 +5960,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "5.0.9",
+            "version": "5.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "bf7a5b7f1bc481ec791716a7fa33e3ed94215bdc"
+                "reference": "63a0f97ee27607b93301dc6b322927fbe98185c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/bf7a5b7f1bc481ec791716a7fa33e3ed94215bdc",
-                "reference": "bf7a5b7f1bc481ec791716a7fa33e3ed94215bdc",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/63a0f97ee27607b93301dc6b322927fbe98185c5",
+                "reference": "63a0f97ee27607b93301dc6b322927fbe98185c5",
                 "shasum": ""
             },
             "require": {
@@ -6016,7 +6016,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-05-16T08:49:46+00:00"
+            "time": "2019-06-18T07:52:50+00:00"
         }
     ],
     "aliases": [],
