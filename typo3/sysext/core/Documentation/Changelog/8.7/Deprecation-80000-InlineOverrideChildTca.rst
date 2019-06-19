@@ -106,7 +106,7 @@ foreign_selector_fieldTcaOverride before and after transition to overrideChildTc
             'config' => [
                 'type' => 'inline',
                 'foreign_selector' => 'uid_local',
-                'overrideChildTca => [
+                'overrideChildTca' => [
                     'columns' => [
                         'uid_local' => [
                             'config' => [
