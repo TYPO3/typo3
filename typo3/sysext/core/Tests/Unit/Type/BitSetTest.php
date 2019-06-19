@@ -14,13 +14,13 @@ declare(strict_types = 1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\DataStructure;
+namespace TYPO3\CMS\Core\Tests\Unit\Type;
 
-use TYPO3\CMS\Core\DataStructure\BitSet;
+use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
- * Class TYPO3\CMS\Core\Tests\Unit\DataStructure\BitSetTest
+ * Test case.
  */
 class BitSetTest extends UnitTestCase
 {

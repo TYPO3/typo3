@@ -14,10 +14,10 @@ declare(strict_types = 1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\DataStructure;
+namespace TYPO3\CMS\Core\Type;
 
 /**
- * Class TYPO3\CMS\Core\DataStructure\BitSet
+ * Class TYPO3\CMS\Core\Type\BitSet
  */
 class BitSet
 {

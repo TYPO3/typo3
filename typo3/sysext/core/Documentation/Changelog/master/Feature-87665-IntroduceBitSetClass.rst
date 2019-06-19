@@ -9,7 +9,7 @@ See :issue:`87665`
 Description
 ===========
 
-To efficiently handle boolean flags, bit sets can be used. Therefore a new class :php:`\TYPO3\CMS\Core\DataStructure\BitSet` has been introduced.
+To efficiently handle boolean flags, bit sets can be used. Therefore a new class :php:`\TYPO3\CMS\Core\Type\BitSet` has been introduced.
 The bit set can be used standalone and accessed from the outside but it can also be used to create specific BitSet classes that extend the BitSet class.
 
 The functionality is best described by an example:
@@ -27,18 +27,18 @@ The functionality is best described by an example:
    define('PERMISSIONS_CONTENT_EDIT', 0b10000); // 16
    define('PERMISSIONS_ALL', 0b11111); // 31
 
-   $bitSet = new \TYPO3\CMS\Core\DataStructure\BitSet(PERMISSIONS_PAGE_SHOW | PERMISSIONS_PAGE_NEW);
+   $bitSet = new \TYPO3\CMS\Core\Type\BitSet(PERMISSIONS_PAGE_SHOW | PERMISSIONS_PAGE_NEW);
    $bitSet->get(PERMISSIONS_PAGE_SHOW); // true
    $bitSet->get(PERMISSIONS_CONTENT_EDIT); // false
 
-Another example shows how to possibly extend the :php:`\TYPO3\CMS\Core\DataStructure\BitSet` class.
+Another example shows how to possibly extend the :php:`\TYPO3\CMS\Core\Type\BitSet` class.
 
 ::
 
    <?php
    declare(strict_types = 1);
 
-   class Permissions extends \TYPO3\CMS\Core\DataStructure\BitSet
+   class Permissions extends \TYPO3\CMS\Core\Type\BitSet
    {
        public const NONE = 0b0; // 0
        public const PAGE_SHOW = 0b1; // 1
