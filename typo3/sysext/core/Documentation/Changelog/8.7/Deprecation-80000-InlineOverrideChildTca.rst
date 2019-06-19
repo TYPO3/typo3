@@ -64,7 +64,7 @@ foreign_types before and after transition to overrideChildTca:
         'aField' => [
             'config' => [
                 'type' => 'inline',
-                'overrideChildTca => [
+                'overrideChildTca' => [
                     'types' => [
                         'aForeignType' => [
                             'showitem' => 'aChildField',
