@@ -3655,14 +3655,6 @@ class GeneralUtility
         while ($info = ExtensionManagementUtility::findService($serviceType, $serviceSubType, $excludeServiceKeys)) {
             // provide information about requested service to service object
             $info = array_merge($info, $requestInfo);
-            // Check persistent object and if found, call directly and exit.
-            if (is_object($GLOBALS['T3_VAR']['makeInstanceService'][$info['className']])) {
-                // update request info in persistent object
-                $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->info = $info;
-                // reset service and return object
-                $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']]->reset();
-                return $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']];
-            }
             $obj = self::makeInstance($info['className']);
             if (is_object($obj)) {
                 if (!@is_callable([$obj, 'init'])) {
@@ -3672,8 +3664,6 @@ class GeneralUtility
                 $obj->info = $info;
                 // service available?
                 if ($obj->init()) {
-                    // create persistent object
-                    $GLOBALS['T3_VAR']['makeInstanceService'][$info['className']] = $obj;
                     return $obj;
                 }
                 $error = $obj->getLastErrorArray();
