@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Authentication;
  */
 
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Authentication\AuthenticationService;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
@@ -329,20 +330,14 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         }
         $groupDataArr = [];
         // Use 'auth' service to find the groups for the user
-        $serviceChain = '';
         $subType = 'getGroups' . $this->loginType;
-        while (is_object($serviceObj = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain))) {
-            $serviceChain .= ',' . $serviceObj->getServiceKey();
-            $serviceObj->initAuth($subType, [], $authInfo, $this);
+        /** @var AuthenticationService $serviceObj */
+        foreach ($this->getAuthServices($subType, [], $authInfo) as $serviceObj) {
             $groupData = $serviceObj->getGroups($this->user, $groupDataArr);
             if (is_array($groupData) && !empty($groupData)) {
                 // Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
                 $groupDataArr = $groupData + $groupDataArr;
             }
-            unset($serviceObj);
-        }
-        if ($serviceChain) {
-            $this->logger->debug($subType . ' auth services called: ' . $serviceChain);
         }
         if (empty($groupDataArr)) {
             $this->logger->debug('No usergroups found by services');
@@ -354,22 +349,18 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         foreach ($groupDataArr as $groupData) {
             // By default a group is valid
             $validGroup = true;
-            $serviceChain = '';
             $subType = 'authGroups' . $this->loginType;
-            while (is_object($serviceObj = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain))) {
-                $serviceChain .= ',' . $serviceObj->getServiceKey();
-                $serviceObj->initAuth($subType, [], $authInfo, $this);
+            foreach ($this->getAuthServices($subType, [], $authInfo) as $serviceObj) {
+                // we assume that the service defines the authGroup function
                 if (!$serviceObj->authGroup($this->user, $groupData)) {
                     $validGroup = false;
                     $this->logger->debug($subType . ' auth service did not auth group', [
                         'uid ' => $groupData['uid'],
-                        'title' => $groupData['title']
+                        'title' => $groupData['title'],
                     ]);
                     break;
                 }
-                unset($serviceObj);
             }
-            unset($serviceObj);
             if ($validGroup && (string)$groupData['uid'] !== '') {
                 $this->groupData['title'][$groupData['uid']] = $groupData['title'];
                 $this->groupData['uid'][$groupData['uid']] = $groupData['uid'];

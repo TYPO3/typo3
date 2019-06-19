@@ -610,6 +610,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             // Use 'auth' service to find the user
             // First found user will be used
             $subType = 'getUser' . $this->loginType;
+            /** @var AuthenticationService $serviceObj */
             foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                 if ($row = $serviceObj->getUser()) {
                     $tempuserArr[] = $row;
@@ -659,6 +660,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 $this->logger->debug('Auth user', $tempuser);
                 $subType = 'authUser' . $this->loginType;
 
+                /** @var AuthenticationService $serviceObj */
                 foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObj) {
                     if (($ret = $serviceObj->authUser($tempuser)) > 0) {
                         // If the service returns >=200 then no more checking is needed - useful for IP checking without password
@@ -1283,24 +1285,20 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $loginSecurityLevel = trim($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['loginSecurityLevel']) ?: 'normal';
         $passwordTransmissionStrategy = $passwordTransmissionStrategy ?: $loginSecurityLevel;
         $this->logger->debug('Login data before processing', $loginData);
-        $serviceChain = '';
         $subType = 'processLoginData' . $this->loginType;
         $authInfo = $this->getAuthInfoArray();
         $isLoginDataProcessed = false;
         $processedLoginData = $loginData;
-        while (is_object($serviceObject = GeneralUtility::makeInstanceService('auth', $subType, $serviceChain))) {
-            $serviceChain .= ',' . $serviceObject->getServiceKey();
-            $serviceObject->initAuth($subType, $loginData, $authInfo, $this);
+        /** @var AuthenticationService $serviceObject */
+        foreach ($this->getAuthServices($subType, $loginData, $authInfo) as $serviceObject) {
             $serviceResult = $serviceObject->processLoginData($processedLoginData, $passwordTransmissionStrategy);
             if (!empty($serviceResult)) {
                 $isLoginDataProcessed = true;
                 // If the service returns >=200 then no more processing is needed
                 if ((int)$serviceResult >= 200) {
-                    unset($serviceObject);
                     break;
                 }
             }
-            unset($serviceObject);
         }
         if ($isLoginDataProcessed) {
             $loginData = $processedLoginData;
