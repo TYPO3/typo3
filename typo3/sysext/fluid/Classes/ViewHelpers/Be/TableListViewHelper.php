@@ -136,7 +136,7 @@ class TableListViewHelper extends AbstractBackendViewHelper
         $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $dblist->pageRow = $pageinfo;
         if ($readOnly === false) {
-            $dblist->calcPerms = $GLOBALS['BE_USER']->calcPerms($pageinfo);
+            $dblist->calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageinfo));
         }
         $dblist->showClipboard = false;
         $dblist->disableSingleTableView = true;

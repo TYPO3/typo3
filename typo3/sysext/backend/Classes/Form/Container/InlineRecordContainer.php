@@ -445,14 +445,14 @@ class InlineRecordContainer extends AbstractContainer
         $isSysFileReferenceTable = $foreignTable === 'sys_file_reference';
         $enableManualSorting = $tcaTableCtrl['sortby'] || $inlineConfig['MM'] || !$data['isOnSymmetricSide']
             && $inlineConfig['foreign_sortby'] || $data['isOnSymmetricSide'] && $inlineConfig['symmetric_sortby'];
-        $calcPerms = $backendUser->calcPerms(BackendUtility::readPageAccess($rec['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)));
+        $calcPerms = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($rec['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW))));
         // If the listed table is 'pages' we have to request the permission settings for each page:
-        $localCalcPerms = false;
+        $localCalcPerms = new Permission(Permission::NOTHING);
         if ($isPagesTable) {
-            $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $rec['uid']));
+            $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $rec['uid'])));
         }
         // This expresses the edit permissions for this particular element:
-        $permsEdit = $isPagesTable && $localCalcPerms & Permission::PAGE_EDIT || !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT;
+        $permsEdit = ($isPagesTable && $localCalcPerms->editPagePermissionIsGranted()) || (!$isPagesTable && $calcPerms->editContentPermissionIsGranted());
         // Controls: Defines which controls should be shown
         $enabledControls = $inlineConfig['appearance']['enabledControls'];
         // Hook: Can disable/enable single controls for specific child records:
@@ -488,7 +488,7 @@ class InlineRecordContainer extends AbstractContainer
         if (!$isParentReadOnly && !$tcaTableCtrl['readOnly'] && !$data['isInlineDefaultLanguageRecordInLocalizedParentContext']) {
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row or if default values can depend on previous record):
             if ($enabledControls['new'] && ($enableManualSorting || $tcaTableCtrl['useColumnsForDefaultValues'])) {
-                if (!$isPagesTable && $calcPerms & Permission::CONTENT_EDIT || $isPagesTable && $calcPerms & Permission::PAGE_NEW) {
+                if (!$isPagesTable && $calcPerms->editContentPermissionIsGranted() || $isPagesTable && $calcPerms->createPagePermissionIsGranted()) {
                     $style = '';
                     if ($inlineConfig['inline']['inlineNewButtonStyle']) {
                         $style = ' style="' . $inlineConfig['inline']['inlineNewButtonStyle'] . '"';
@@ -563,9 +563,9 @@ class InlineRecordContainer extends AbstractContainer
                 }
             }
             // "Delete" link:
-            if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms & Permission::PAGE_DELETE
-                    || !$isPagesTable && $calcPerms & Permission::CONTENT_EDIT
-                    || $isSysFileReferenceTable && $calcPerms & Permission::PAGE_EDIT)
+            if ($enabledControls['delete'] && ($isPagesTable && $localCalcPerms->deletePagePermissionIsGranted()
+                    || !$isPagesTable && $calcPerms->editContentPermissionIsGranted()
+                    || $isSysFileReferenceTable && $calcPerms->editPagePermissionIsGranted())
             ) {
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:delete'));
                 $icon = $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render();

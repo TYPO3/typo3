@@ -40,14 +40,14 @@ class AbstractWizardController
         if (is_array($record)) {
             // If pages:
             if ($table === 'pages') {
-                $calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms($record);
-                $hasAccess = $calculatedPermissions & Permission::PAGE_EDIT;
+                $calculatedPermissions = new Permission($this->getBackendUserAuthentication()->calcPerms($record));
+                $hasAccess = $calculatedPermissions->editPagePermissionIsGranted();
             } else {
                 // Fetching pid-record first.
-                $calculatedPermissions = $this->getBackendUserAuthentication()->calcPerms(
+                $calculatedPermissions = new Permission($this->getBackendUserAuthentication()->calcPerms(
                     BackendUtility::getRecord('pages', $record['pid'])
-                );
-                $hasAccess = $calculatedPermissions & Permission::CONTENT_EDIT;
+                ));
+                $hasAccess = $calculatedPermissions->editContentPermissionIsGranted();
             }
             // Check internals regarding access:
             if ($hasAccess) {

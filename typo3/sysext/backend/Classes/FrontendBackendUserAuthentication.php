@@ -158,10 +158,10 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
                         $mayEdit = true;
                     }
                 } else {
-                    $perms = $this->calcPerms($GLOBALS['TSFE']->page);
+                    $perms = new Permission($this->calcPerms($GLOBALS['TSFE']->page));
                     $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
                     $allow = array_flip($types);
-                    $mayEdit = !empty($allow) && $perms & Permission::CONTENT_EDIT;
+                    $mayEdit = !empty($allow) && $perms->editContentPermissionIsGranted();
                 }
             }
         }
@@ -184,7 +184,7 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
             // Permissions
             $types = GeneralUtility::trimExplode(',', strtolower($conf['allow']), true);
             $allow = array_flip($types);
-            $perms = $this->calcPerms($GLOBALS['TSFE']->page);
+            $perms = new Permission($this->calcPerms($GLOBALS['TSFE']->page));
             if ($table === 'pages') {
                 // Rootpage
                 if (count($GLOBALS['TSFE']->config['rootLine']) === 1) {
@@ -192,15 +192,15 @@ class FrontendBackendUserAuthentication extends BackendUserAuthentication
                     unset($allow['hide']);
                     unset($allow['delete']);
                 }
-                if (!($perms & Permission::PAGE_EDIT) || !$this->checkLanguageAccess(0)) {
+                if (!$perms->editPagePermissionIsGranted() || !$this->checkLanguageAccess(0)) {
                     unset($allow['edit']);
                     unset($allow['move']);
                     unset($allow['hide']);
                 }
-                if (!($perms & Permission::PAGE_DELETE)) {
+                if (!$perms->deletePagePermissionIsGranted()) {
                     unset($allow['delete']);
                 }
-                if (!($perms & Permission::PAGE_NEW)) {
+                if (!$perms->createPagePermissionIsGranted()) {
                     unset($allow['new']);
                 }
             }

@@ -1515,6 +1515,9 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         while ($row = $res->fetch(\PDO::FETCH_ASSOC)) {
             $this->userGroups[$row['uid']] = $row;
         }
+
+        $permission = new Permission($this->user['options']);
+
         // Traversing records in the correct order
         foreach (explode(',', $grList) as $uid) {
             // Get row:
@@ -1531,11 +1534,11 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 // Add the group uid, current list to the internal arrays.
                 $this->includeGroupArray[] = $uid;
                 // Mount group database-mounts
-                if (($this->user['options'] & Permission::PAGE_SHOW) == 1) {
+                if ($permission->showPagePermissionIsGranted()) {
                     $this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
                 }
                 // Mount group file-mounts
-                if (($this->user['options'] & Permission::PAGE_EDIT) == 2) {
+                if ($permission->editPagePermissionIsGranted()) {
                     $this->dataLists['filemount_list'] .= ',' . $row['file_mountpoints'];
                 }
                 // The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
@@ -1774,7 +1777,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
 
             // Mount group home-dirs
-            if ((is_array($this->user) && $this->user['options'] & Permission::PAGE_EDIT) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
+            if ((new Permission($this->user['options'] ?? Permission::NOTHING))->editPagePermissionIsGranted() && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
                 // If groupHomePath is set, we attempt to mount it
                 [$groupHomeStorageUid, $groupHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
                 $groupHomeStorageUid = (int)$groupHomeStorageUid;
@@ -2131,7 +2134,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
             }
             switch ((string)$wsRec['uid']) {
                     case '0':
-                        $retVal = $this->groupData['workspace_perms'] & Permission::PAGE_SHOW
+                        $retVal = (new Permission($this->groupData['workspace_perms'] ?? Permission::NOTHING))->showPagePermissionIsGranted()
                             ? array_merge($wsRec, ['_ACCESS' => 'online'])
                             : false;
                         break;

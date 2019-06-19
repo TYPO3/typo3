@@ -239,13 +239,13 @@ class LiveSearch
     protected function getEditLink($tableName, $row)
     {
         $pageInfo = BackendUtility::readPageAccess($row['pid'], $this->userPermissions);
-        $calcPerms = $GLOBALS['BE_USER']->calcPerms($pageInfo);
+        $calcPerms = new Permission($GLOBALS['BE_USER']->calcPerms($pageInfo));
         $editLink = '';
         if ($tableName === 'pages') {
-            $localCalcPerms = $GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
-            $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
+            $localCalcPerms = new Permission($GLOBALS['BE_USER']->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
+            $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
         } else {
-            $permsEdit = $calcPerms & Permission::CONTENT_EDIT;
+            $permsEdit = $calcPerms->editContentPermissionIsGranted();
         }
         // "Edit" link - Only if permissions to edit the page-record of the content of the parent page ($this->id)
         if ($permsEdit) {

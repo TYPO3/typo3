@@ -6248,6 +6248,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid'])
     {
+        $permission = new Permission($perms);
         $cacheId = md5('doesRecordExist_pageLookUp_' . $id . '_' . $perms . '_' . implode(
             '_',
             $columns
@@ -6268,11 +6269,11 @@ class DataHandler implements LoggerAwareInterface
                 'uid',
                 $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)
             ));
-        if ($perms && !$this->admin) {
+        if (!$permission->nothingIsGranted() && !$this->admin) {
             $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($perms));
         }
         if (!$this->admin && $GLOBALS['TCA']['pages']['ctrl']['editlock'] &&
-            $perms & Permission::PAGE_EDIT + Permission::PAGE_DELETE + Permission::CONTENT_EDIT
+            ($permission->editPagePermissionIsGranted() || $permission->deletePagePermissionIsGranted() || $permission->editContentPermissionIsGranted())
         ) {
             $queryBuilder->andWhere($queryBuilder->expr()->eq(
                 $GLOBALS['TCA']['pages']['ctrl']['editlock'],

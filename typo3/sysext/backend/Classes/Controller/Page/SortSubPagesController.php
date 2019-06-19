@@ -121,9 +121,9 @@ class SortSubPagesController
             foreach ($pageRecords as $page) {
                 $pageWithPermissions = [];
                 $pageWithPermissions['record'] = $page;
-                $calculatedPermissions = $backendUser->calcPerms($page);
-                $pageWithPermissions['canEdit'] = $backendUser->isAdmin() || $calculatedPermissions & Permission::PAGE_EDIT;
-                $canSeePage = $backendUser->isAdmin() || $calculatedPermissions & Permission::PAGE_SHOW;
+                $calculatedPermissions = new Permission($backendUser->calcPerms($page));
+                $pageWithPermissions['canEdit'] = $backendUser->isAdmin() || $calculatedPermissions->editPagePermissionIsGranted();
+                $canSeePage = $backendUser->isAdmin() || $calculatedPermissions->showPagePermissionIsGranted();
                 if ($canSeePage) {
                     $subPages[] = $pageWithPermissions;
                 } else {

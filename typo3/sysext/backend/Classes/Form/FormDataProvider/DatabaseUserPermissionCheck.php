@@ -71,17 +71,17 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
 
         $exception = null;
         $userHasAccess = false;
-        $userPermissionOnPage = Permission::NOTHING;
+        $userPermissionOnPage = new Permission(Permission::NOTHING);
         if ($result['command'] === 'new') {
             // A new record is created. Access rights of parent record are important here
             // @todo: In case of new inline child, parentPageRow should probably be the
             // @todo: "inlineFirstPid" page - Maybe effectivePid and parentPageRow should be calculated differently then?
             if (is_array($result['parentPageRow'])) {
                 // Record is added below an existing page
-                $userPermissionOnPage = $backendUser->calcPerms($result['parentPageRow']);
+                $userPermissionOnPage = new Permission($backendUser->calcPerms($result['parentPageRow']));
                 if ($result['tableName'] === 'pages') {
                     // New page is created, user needs PAGE_NEW for this
-                    if ((bool)($userPermissionOnPage & Permission::PAGE_NEW)) {
+                    if ($userPermissionOnPage->createPagePermissionIsGranted()) {
                         $userHasAccess = true;
                     } else {
                         $exception = new AccessDeniedPageNewException(
@@ -91,7 +91,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
                     }
                 } else {
                     // A regular record is added, not a page. User needs CONTENT_EDIT permission
-                    if ((bool)($userPermissionOnPage & Permission::CONTENT_EDIT)) {
+                    if ($userPermissionOnPage->editContentPermissionIsGranted()) {
                         $userHasAccess = true;
                     } else {
                         $exception = new AccessDeniedContentEditException(
@@ -103,7 +103,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
                 // Non admin is creating a record on root node for a table that is actively allowed
                 $userHasAccess = true;
-                $userPermissionOnPage = Permission::ALL;
+                $userPermissionOnPage->set(Permission::ALL);
             } else {
                 // Non admin has no create permission on root node records
                 $exception = new AccessDeniedRootNodeException(
@@ -115,8 +115,8 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             // A page or a record on a page is edited
             if ($result['tableName'] === 'pages') {
                 // A page record is edited, check edit rights of this record directly
-                $userPermissionOnPage = $backendUser->calcPerms($result['defaultLanguagePageRow'] ?? $result['databaseRow']);
-                if ((bool)($userPermissionOnPage & Permission::PAGE_EDIT) && $backendUser->check('pagetypes_select', $result['databaseRow'][$result['processedTca']['ctrl']['type']])) {
+                $userPermissionOnPage = new Permission($backendUser->calcPerms($result['defaultLanguagePageRow'] ?? $result['databaseRow']));
+                if ($userPermissionOnPage->editPagePermissionIsGranted() && $backendUser->check('pagetypes_select', $result['databaseRow'][$result['processedTca']['ctrl']['type']])) {
                     $userHasAccess = true;
                 } else {
                     $exception = new AccessDeniedPageEditException(
@@ -128,8 +128,8 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
                 // A non page record is edited.
                 if (isset($result['parentPageRow']) && is_array($result['parentPageRow'])) {
                     // If there is a parent page row, check content edit right of user
-                    $userPermissionOnPage = $backendUser->calcPerms($result['parentPageRow']);
-                    if ((bool)($userPermissionOnPage & Permission::CONTENT_EDIT)) {
+                    $userPermissionOnPage = new Permission($backendUser->calcPerms($result['parentPageRow']));
+                    if ($userPermissionOnPage->editContentPermissionIsGranted()) {
                         $userHasAccess = true;
                     } else {
                         $exception = new AccessDeniedContentEditException(
@@ -140,7 +140,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
                 } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
                     // Non admin is editing a record on root node for a table that is actively allowed
                     $userHasAccess = true;
-                    $userPermissionOnPage = Permission::ALL;
+                    $userPermissionOnPage->set(Permission::ALL);
                 } else {
                     // Non admin has no edit permission on root node records
                     // @todo: This probably needs further handling, see http://review.typo3.org/40835
@@ -209,7 +209,7 @@ class DatabaseUserPermissionCheck implements FormDataProviderInterface
             throw $exception;
         }
 
-        $result['userPermissionOnPage'] = $userPermissionOnPage;
+        $result['userPermissionOnPage'] = $userPermissionOnPage->__toInt();
 
         return $result;
     }

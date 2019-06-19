@@ -1110,11 +1110,11 @@ class EditDocumentController
                                     $command === 'edit'
                                     || $command === 'new'
                                 ) {
-                                    $permission = $formData['userPermissionOnPage'];
+                                    $permission = new Permission($formData['userPermissionOnPage']);
                                     if ($formData['tableName'] === 'pages') {
-                                        $deleteAccess = $permission & Permission::PAGE_DELETE ? true : false;
+                                        $deleteAccess = $permission->get(Permission::PAGE_DELETE);
                                     } else {
-                                        $deleteAccess = $permission & Permission::CONTENT_EDIT ? true : false;
+                                        $deleteAccess = $permission->get(Permission::CONTENT_EDIT);
                                     }
                                 }
 

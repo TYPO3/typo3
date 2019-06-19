@@ -248,8 +248,8 @@ class RecordListController
         $access = is_array($this->pageinfo);
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
-        $calcPerms = $backendUser->calcPerms($this->pageinfo);
-        $userCanEditPage = $calcPerms & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
+        $calcPerms = new Permission($backendUser->calcPerms($this->pageinfo));
+        $userCanEditPage = $calcPerms->editPagePermissionIsGranted() && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
         $pageActionsCallback = null;
         if ($userCanEditPage) {
             $pageActionsCallback = 'function(PageActions) {

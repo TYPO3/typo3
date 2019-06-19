@@ -100,8 +100,8 @@ class NewMultiplePagesController
             'EXT:backend/Resources/Private/Templates/Page/NewPages.html'
         ));
 
-        $calculatedPermissions = $backendUser->calcPerms($pageRecord);
-        $canCreateNew = $backendUser->isAdmin() || $calculatedPermissions & Permission::PAGE_NEW;
+        $calculatedPermissions = new Permission($backendUser->calcPerms($pageRecord));
+        $canCreateNew = $backendUser->isAdmin() || $calculatedPermissions->createPagePermissionIsGranted();
 
         $view->assign('canCreateNew', $canCreateNew);
         $view->assign('maxTitleLength', $backendUser->uc['titleLen'] ?? 20);
@@ -119,8 +119,8 @@ class NewMultiplePagesController
                 $subPages = $this->getSubPagesOfPage($pageUid);
                 $visiblePages = [];
                 foreach ($subPages as $page) {
-                    $calculatedPermissions = $backendUser->calcPerms($page);
-                    if ($backendUser->isAdmin() || $calculatedPermissions & Permission::PAGE_SHOW) {
+                    $calculatedPermissions = new Permission($backendUser->calcPerms($page));
+                    if ($backendUser->isAdmin() || $calculatedPermissions->showPagePermissionIsGranted()) {
                         $visiblePages[] = $page;
                     }
                 }

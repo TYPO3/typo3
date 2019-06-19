@@ -277,7 +277,7 @@ class PageProvider extends RecordProvider
      */
     protected function initPermissions()
     {
-        $this->pagePermissions = $this->backendUser->calcPerms($this->record);
+        $this->pagePermissions = new Permission($this->backendUser->calcPerms($this->record));
         $this->languageAccess = $this->hasLanguageAccess();
     }
 

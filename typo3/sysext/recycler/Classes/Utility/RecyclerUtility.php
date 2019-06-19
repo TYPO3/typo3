@@ -58,12 +58,12 @@ class RecyclerUtility
         BackendUtility::fixVersioningPid($table, $calcPRec);
         if (is_array($calcPRec)) {
             if ($table === 'pages') {
-                $calculatedPermissions = $backendUser->calcPerms($calcPRec);
-                $hasAccess = (bool)($calculatedPermissions & Permission::PAGE_EDIT);
+                $calculatedPermissions = new Permission($backendUser->calcPerms($calcPRec));
+                $hasAccess = $calculatedPermissions->editPagePermissionIsGranted();
             } else {
-                $calculatedPermissions = $backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid']));
+                $calculatedPermissions = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid'])));
                 // Fetching pid-record first.
-                $hasAccess = (bool)($calculatedPermissions & Permission::CONTENT_EDIT);
+                $hasAccess = $calculatedPermissions->editContentPermissionIsGranted();
             }
             // Check internals regarding access:
             if ($hasAccess) {

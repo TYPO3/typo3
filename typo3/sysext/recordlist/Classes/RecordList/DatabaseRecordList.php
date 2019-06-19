@@ -289,9 +289,9 @@ class DatabaseRecordList
     /**
      * Some permissions...
      *
-     * @var int
+     * @var Permission
      */
-    public $calcPerms = 0;
+    public $calcPerms;
 
     /**
      * Mode for what happens when a user clicks the title of a record.
@@ -491,6 +491,7 @@ class DatabaseRecordList
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
+        $this->calcPerms = new Permission();
     }
 
     /**
@@ -506,7 +507,7 @@ class DatabaseRecordList
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
         // Get users permissions for this page record:
-        $localCalcPerms = $backendUser->calcPerms($this->pageRow);
+        $localCalcPerms = new Permission($backendUser->calcPerms($this->pageRow));
         // CSH
         if ((string)$this->id === '') {
             $fieldName = 'list_module_noId';
@@ -550,7 +551,7 @@ class DatabaseRecordList
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions() && $backendUser->checkLanguageAccess(0)) {
+            if ($localCalcPerms->editPagePermissionIsGranted() && !empty($this->id) && $this->editLockPermissions() && $backendUser->checkLanguageAccess(0)) {
                 // Edit
                 $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
@@ -561,7 +562,7 @@ class DatabaseRecordList
                 $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 20);
             }
             // Paste
-            if ($this->showClipboard && ($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
+            if ($this->showClipboard && ($localCalcPerms->createPagePermissionIsGranted() || $localCalcPerms->editContentPermissionIsGranted()) && $this->editLockPermissions()) {
                 $elFromTable = $this->clipObj->elFromTable('');
                 if (!empty($elFromTable)) {
                     $confirmMessage = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
@@ -1319,7 +1320,13 @@ class DatabaseRecordList
         // Traverse the fields:
         foreach ($this->fieldArray as $fCol) {
             // Calculate users permissions to edit records in the table:
-            $permsEdit = $this->calcPerms & ($table === 'pages' ? 2 : 16) && $this->overlayEditLockPermissions($table);
+            if ($table === 'pages') {
+                $permsEdit = $this->calcPerms->editPagePermissionIsGranted();
+            } else {
+                $permsEdit = $this->calcPerms->editContentPermissionIsGranted();
+            }
+
+            $permsEdit = $permsEdit && $this->overlayEditLockPermissions($table);
             switch ((string)$fCol) {
                 case '_PATH_':
                     // Path
@@ -1411,8 +1418,8 @@ class DatabaseRecordList
                     // Control panel:
                     if ($this->isEditable($table)) {
                         // If new records can be created on this page, add links:
-                        $permsAdditional = ($table === 'pages' ? 8 : 16);
-                        if ($this->calcPerms & $permsAdditional && $this->showNewRecLink($table)) {
+                        $permsAdditional = ($table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT);
+                        if ($this->calcPerms->isGranted($permsAdditional) && $this->showNewRecLink($table)) {
                             $spriteIcon = $table === 'pages'
                                 ? $this->iconFactory->getIcon('actions-page-new', Icon::SIZE_SMALL)
                                 : $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL);
@@ -1700,16 +1707,16 @@ class DatabaseRecordList
         $isL10nOverlay = $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] != 0;
         if ($table === 'pages') {
             // If the listed table is 'pages' we have to request the permission settings for each page.
-            $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
+            $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
         } else {
             // If the listed table is not 'pages' we have to request the permission settings from the parent page
-            $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid']));
+            $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid'])));
         }
         $permsEdit = $table === 'pages'
                      && $backendUser->checkLanguageAccess((int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']])
-                     && $localCalcPerms & Permission::PAGE_EDIT
+                     && $localCalcPerms->editPagePermissionIsGranted()
                      || $table !== 'pages'
-                        && $localCalcPerms & Permission::CONTENT_EDIT
+                        && $localCalcPerms->editContentPermissionIsGranted()
                         && $backendUser->recordEditAccessInternals($table, $row);
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
@@ -1810,7 +1817,8 @@ class DatabaseRecordList
             // "New record after" link (ONLY if the records in the table are sorted by a "sortby"-row
             // or if default values can depend on previous record):
             if (($GLOBALS['TCA'][$table]['ctrl']['sortby'] || $GLOBALS['TCA'][$table]['ctrl']['useColumnsForDefaultValues']) && $permsEdit) {
-                if ($table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT || $table === 'pages' && $this->calcPerms & Permission::PAGE_NEW) {
+                $neededPermission = $table === 'pages' ? Permission::PAGE_NEW : Permission::CONTENT_EDIT;
+                if ($this->calcPerms->isGranted($neededPermission)) {
                     if ($isL10nOverlay || $isDeletePlaceHolder) {
                         $this->addActionToCellGroup($cells, $this->spaceIcon, 'new');
                     } elseif ($this->showNewRecLink($table)) {
@@ -1886,7 +1894,7 @@ class DatabaseRecordList
             $disableDelete = (bool)\trim($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? '0');
             if ($permsEdit
                 && !$disableDelete
-                && ($table === 'pages' && $localCalcPerms & Permission::PAGE_DELETE || $table !== 'pages' && $this->calcPerms & Permission::CONTENT_EDIT)
+                && (($table === 'pages' && $localCalcPerms->deletePagePermissionIsGranted()) || ($table !== 'pages' && $this->calcPerms->editContentPermissionIsGranted()))
                 && !$this->isRecordCurrentBackendUser($table, $row)
                 && !$isDeletePlaceHolder
             ) {
@@ -1921,7 +1929,7 @@ class DatabaseRecordList
             // "Levels" links: Moving pages into new levels...
             if ($permsEdit && $table === 'pages' && !$this->searchLevels) {
                 // Up (Paste as the page right after the current parent page)
-                if ($this->calcPerms & Permission::PAGE_NEW) {
+                if ($this->calcPerms->createPagePermissionIsGranted()) {
                     if (!$isDeletePlaceHolder && !$isL10nOverlay) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
                         $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
@@ -1934,8 +1942,8 @@ class DatabaseRecordList
                 }
                 // Down (Paste as subpage to the page right above)
                 if (!$isL10nOverlay && !$isDeletePlaceHolder && $this->currentTable['prevUid'][$row['uid']]) {
-                    $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
-                    if ($localCalcPerms & Permission::PAGE_NEW) {
+                    $localCalcPerms = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']])));
+                    if ($localCalcPerms->createPagePermissionIsGranted()) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
                         $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
                         $moveRightAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('nextLevel')) . '">'
@@ -2067,10 +2075,10 @@ class DatabaseRecordList
 
                 // Check permission to cut page or content
                 if ($table === 'pages') {
-                    $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
-                    $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
+                    $localCalcPerms = new Permission($this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid'])));
+                    $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
                 } else {
-                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT;
+                    $permsEdit = $this->calcPerms->editContentPermissionIsGranted();
                 }
                 $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
@@ -3246,13 +3254,13 @@ class DatabaseRecordList
             case 'edit':
                 // If the listed table is 'pages' we have to request the permission settings for each page:
                 if ($table === 'pages') {
-                    $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(
+                    $localCalcPerms = new Permission($this->getBackendUserAuthentication()->calcPerms(
                         BackendUtility::getRecord('pages', $row['uid'])
-                    );
-                    $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
+                    ));
+                    $permsEdit = $localCalcPerms->editPagePermissionIsGranted();
                 } else {
                     $backendUser = $this->getBackendUserAuthentication();
-                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT && $backendUser->recordEditAccessInternals($table, $row);
+                    $permsEdit = $this->calcPerms->editContentPermissionIsGranted() && $backendUser->recordEditAccessInternals($table, $row);
                 }
                 // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
                 if ($permsEdit && $this->isEditable($table)) {

@@ -47,9 +47,9 @@ class RecordProvider extends AbstractProvider
     /**
      * Local cache for the result of BackendUserAuthentication::calcPerms()
      *
-     * @var int
+     * @var Permission
      */
-    protected $pagePermissions = 0;
+    protected $pagePermissions;
 
     /**
      * @var array
@@ -270,7 +270,7 @@ class RecordProvider extends AbstractProvider
     protected function initPermissions()
     {
         $this->pageRecord = BackendUtility::getRecord('pages', $this->record['pid']);
-        $this->pagePermissions = $this->backendUser->calcPerms($this->pageRecord);
+        $this->pagePermissions = new Permission($this->backendUser->calcPerms($this->pageRecord));
     }
 
     /**
@@ -282,7 +282,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function hasPagePermission(int $permission): bool
     {
-        return $this->backendUser->isAdmin() || ($this->pagePermissions & $permission) == $permission;
+        return $this->backendUser->isAdmin() || $this->pagePermissions->isGranted($permission);
     }
 
     /**

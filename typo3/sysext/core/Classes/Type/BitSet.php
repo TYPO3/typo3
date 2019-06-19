@@ -63,7 +63,7 @@ class BitSet
     /**
      * @var int
      */
-    private $set;
+    protected $set;
 
     /**
      * @param int $set
