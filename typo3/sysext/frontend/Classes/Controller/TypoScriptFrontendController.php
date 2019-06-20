@@ -3009,13 +3009,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         } else {
             /** @var PageRenderer $pageRenderer */
             $pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
-            $this->pageRenderer = $pageRenderer;
-            GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
+            $this->pageRenderer->updateState($pageRenderer->getState());
         }
         if (!empty($this->config['INTincScript_ext']['assetCollector'])) {
             /** @var AssetCollector $assetCollector */
             $assetCollector = unserialize($this->config['INTincScript_ext']['assetCollector'], ['allowed_classes' => [AssetCollector::class]]);
-            GeneralUtility::setSingletonInstance(AssetCollector::class, $assetCollector);
+            GeneralUtility::makeInstance(AssetCollector::class)->updateState($assetCollector->getState());
         }
 
         $this->recursivelyReplaceIntPlaceholdersInContent();
