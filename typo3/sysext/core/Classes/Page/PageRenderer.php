@@ -354,12 +354,45 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Set restored meta tag managers as singletons
-     * so that uncached plugins can use them to add or remove meta tags
+     * @param array $newState
+     * @internal
      */
-    public function __wakeup()
+    public function updateState(array $newState): void
     {
-        GeneralUtility::setSingletonInstance(get_class($this->metaTagRegistry), $this->metaTagRegistry);
+        foreach ($newState as $var => $value) {
+            switch ($var) {
+            case 'locales':
+                break;
+            case 'metaTagRegistry':
+                $this->metaTagRegistry->updateState($value);
+                break;
+            default:
+                $this->{$var} = $value;
+                break;
+            }
+        }
+    }
+
+    /**
+     * @return array
+     * @internal
+     */
+    public function getState(): array
+    {
+        $state = [];
+        foreach (get_object_vars($this) as $var => $value) {
+            switch ($var) {
+            case 'locales':
+                break;
+            case 'metaTagRegistry':
+                $state[$var] = $this->metaTagRegistry->getState();
+                break;
+            default:
+                $state[$var] = $value;
+                break;
+            }
+        }
+        return $state;
     }
 
     /**

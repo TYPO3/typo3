@@ -243,4 +243,28 @@ class AssetCollector implements SingletonInterface
         }
         return $currentPriorityAssets;
     }
+
+    /**
+     * @param array $newState
+     * @internal
+     */
+    public function updateState(array $newState): void
+    {
+        foreach ($newState as $var => $value) {
+            $this->{$var} = $value;
+        }
+    }
+
+    /**
+     * @return array
+     * @internal
+     */
+    public function getState(): array
+    {
+        $state = [];
+        foreach (get_object_vars($this) as $var => $value) {
+            $state[$var] = $value;
+        }
+        return $state;
+    }
 }

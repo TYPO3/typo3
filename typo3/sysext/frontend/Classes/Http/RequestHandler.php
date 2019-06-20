@@ -182,8 +182,10 @@ class RequestHandler implements RequestHandlerInterface
         $pageRenderer->addBodyContent(LF . $pageContent);
         if ($controller->isINTincScript()) {
             // Store the serialized pageRenderer in configuration
+            // @todo: serialize $pageRenderer->getState() in TYPO3 v11
             $controller->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
             // Store the serialized AssetCollector in configuration
+            // @todo: serialize $assetCollector->getState() in TYPO3 v11
             $controller->config['INTincScript_ext']['assetCollector'] = serialize(GeneralUtility::makeInstance(AssetCollector::class));
             // Render complete page, keep placeholders for JavaScript and CSS
             return $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey']);
