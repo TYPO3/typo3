@@ -23,9 +23,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  *
  * Extend this class when writing own sub modules
  */
-abstract class AbstractSubModule implements ModuleInterface
+abstract class AbstractSubModule implements ModuleInterface, ContentProviderInterface
 {
-
     /**
      * Returns LanguageService
      *

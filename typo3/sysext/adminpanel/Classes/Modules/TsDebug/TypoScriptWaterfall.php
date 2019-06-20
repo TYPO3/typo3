@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Adminpanel\Modules\TsDebug;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
-use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
@@ -36,7 +35,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal
  */
-class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherInterface, ContentProviderInterface, ModuleSettingsProviderInterface
+class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherInterface, ModuleSettingsProviderInterface
 {
     /**
      * @var ConfigurationService

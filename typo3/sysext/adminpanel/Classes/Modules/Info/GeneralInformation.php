@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Adminpanel\Modules\Info;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
-use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Context\Context;
@@ -34,7 +33,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * @internal
  */
-class GeneralInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface
+class GeneralInformation extends AbstractSubModule implements DataProviderInterface
 {
     /**
      * @inheritdoc
