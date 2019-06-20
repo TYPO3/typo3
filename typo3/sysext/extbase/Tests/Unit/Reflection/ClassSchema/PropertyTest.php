@@ -37,7 +37,7 @@ class PropertyTest extends UnitTestCase
     public function classSchemaDetectsPropertiesWithLazyAnnotation(): void
     {
         $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
-        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')->getAnnotationValue('lazy'));
+        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')->isLazy());
     }
 
     /**
@@ -71,8 +71,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithInjectAnnotation');
 
-        static::assertTrue($property->hasAnnotation('inject'));
-        static::assertTrue($property->getAnnotationValue('inject'));
+        static::assertTrue($property->isInjectProperty());
     }
 
     /**
@@ -83,8 +82,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithTransientAnnotation');
 
-        static::assertTrue($property->hasAnnotation('transient'));
-        static::assertTrue($property->getAnnotationValue('transient'));
+        static::assertTrue($property->isTransient());
     }
 
     /**
@@ -95,8 +93,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithCascadeAnnotation');
 
-        static::assertTrue($property->hasAnnotation('cascade'));
-        static::assertSame('remove', $property->getAnnotationValue('cascade'));
+        static::assertSame('remove', $property->getCascadeValue());
     }
 
     /**
@@ -107,8 +104,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithCascadeAnnotationWithoutVarAnnotation');
 
-        static::assertFalse($property->hasAnnotation('cascade'));
-        static::assertNull($property->getAnnotationValue('cascade'));
+        static::assertNull($property->getCascadeValue());
     }
 
     /**

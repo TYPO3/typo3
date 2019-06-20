@@ -39,6 +39,7 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchMethodException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema\PropertyCharacteristics;
 use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_;
 use TYPO3\CMS\Extbase\Reflection\PropertyInfo\Extractor\PhpDocPropertyTypeExtractor;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
@@ -94,11 +95,6 @@ class ClassSchema
      * @var array
      */
     private $methods = [];
-
-    /**
-     * @var array
-     */
-    private $injectProperties = [];
 
     /**
      * @var array
@@ -195,31 +191,25 @@ class ClassSchema
     {
         $annotationReader = new AnnotationReader();
 
+        $classHasInjectProperties = false;
         $defaultProperties = $reflectionClass->getDefaultProperties();
 
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
 
-            $this->properties[$propertyName] = [
-                'default'      => $reflectionProperty->isDefault(),
-                'defaultValue' => $defaultProperties[$propertyName] ?? null,
-                'private'      => $reflectionProperty->isPrivate(),
-                'protected'    => $reflectionProperty->isProtected(),
-                'public'       => $reflectionProperty->isPublic(),
-                'static'       => $reflectionProperty->isStatic(),
-                'type'         => null, // Extbase
-                'elementType'  => null, // Extbase
-                'annotations'  => [],
-                'tags'         => [],
-                'validators'   => []
-            ];
+            $propertyCharacteristicsBit = 0;
+            $propertyCharacteristicsBit += $reflectionProperty->isPrivate() ? PropertyCharacteristics::VISIBILITY_PRIVATE : 0;
+            $propertyCharacteristicsBit += $reflectionProperty->isProtected() ? PropertyCharacteristics::VISIBILITY_PROTECTED : 0;
+            $propertyCharacteristicsBit += $reflectionProperty->isPublic() ? PropertyCharacteristics::VISIBILITY_PUBLIC : 0;
+            $propertyCharacteristicsBit += $reflectionProperty->isStatic() ? PropertyCharacteristics::IS_STATIC : 0;
 
-            $this->properties[$propertyName]['annotations']['inject'] = false;
-            $this->properties[$propertyName]['annotations']['lazy'] = false;
-            $this->properties[$propertyName]['annotations']['transient'] = false;
-            $this->properties[$propertyName]['annotations']['type'] = null;
-            $this->properties[$propertyName]['annotations']['cascade'] = null;
-            $this->properties[$propertyName]['annotations']['dependency'] = null;
+            $this->properties[$propertyName] = [
+                'c' => null, // cascade
+                'd' => $defaultProperties[$propertyName] ?? null, // defaultValue
+                'e' => null, // elementType
+                't' => null, // type
+                'v' => [] // validators
+            ];
 
             $annotations = $annotationReader->getPropertyAnnotations($reflectionProperty);
 
@@ -232,7 +222,7 @@ class ClassSchema
                 foreach ($validateAnnotations as $validateAnnotation) {
                     $validatorObjectName = ValidatorClassNameResolver::resolve($validateAnnotation->validator);
 
-                    $this->properties[$propertyName]['validators'][] = [
+                    $this->properties[$propertyName]['v'][] = [
                         'name' => $validateAnnotation->validator,
                         'options' => $validateAnnotation->options,
                         'className' => $validatorObjectName,
@@ -241,15 +231,20 @@ class ClassSchema
             }
 
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Lazy::class) instanceof Lazy) {
-                $this->properties[$propertyName]['annotations']['lazy'] = true;
+                $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_LAZY;
             }
 
             if ($annotationReader->getPropertyAnnotation($reflectionProperty, Transient::class) instanceof Transient) {
-                $this->properties[$propertyName]['annotations']['transient'] = true;
+                $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_TRANSIENT;
             }
 
             $isInjectProperty = $propertyName !== 'settings'
                 && ($annotationReader->getPropertyAnnotation($reflectionProperty, Inject::class) instanceof Inject);
+
+            if ($isInjectProperty) {
+                $propertyCharacteristicsBit += PropertyCharacteristics::ANNOTATED_INJECT;
+                $classHasInjectProperties = true;
+            }
 
             /** @var Type[] $types */
             $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]);
@@ -259,19 +254,11 @@ class ClassSchema
                 && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade
             ) {
                 /** @var Cascade $annotation */
-                $this->properties[$propertyName]['annotations']['cascade'] = $annotation->value;
-            }
-
-            if ($isInjectProperty && ($type = $types[0]) instanceof Type) {
-                $this->properties[$propertyName]['annotations']['inject'] = true;
-                $this->properties[$propertyName]['annotations']['type'] = $type->getClassName();
-                $this->properties[$propertyName]['annotations']['dependency'] = $type->getClassName();
-
-                $this->injectProperties[] = $propertyName;
+                $this->properties[$propertyName]['c'] = $annotation->value;
             }
 
             if ($typesCount === 1) {
-                $this->properties[$propertyName]['type'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
+                $this->properties[$propertyName]['t'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
             } elseif ($typesCount === 2) {
                 [$type, $elementType] = $types;
                 $actualType = $type->getClassName() ?? $type->getBuiltinType();
@@ -281,13 +268,15 @@ class ClassSchema
                     && $elementType->getCollectionValueType() instanceof Type
                     && $elementType->getCollectionValueType()->getClassName() !== null
                 ) {
-                    $this->properties[$propertyName]['type'] = ltrim($actualType, '\\');
-                    $this->properties[$propertyName]['elementType'] = ltrim($elementType->getCollectionValueType()->getClassName(), '\\');
+                    $this->properties[$propertyName]['t'] = ltrim($actualType, '\\');
+                    $this->properties[$propertyName]['e'] = ltrim($elementType->getCollectionValueType()->getClassName(), '\\');
                 }
             }
+
+            $this->properties[$propertyName]['propertyCharacteristicsBit'] = $propertyCharacteristicsBit;
         }
 
-        if (count($this->injectProperties) > 0) {
+        if ($classHasInjectProperties) {
             $this->bitSet->set(self::BIT_CLASS_HAS_INJECT_PROPERTIES);
         }
     }
@@ -645,20 +634,18 @@ class ClassSchema
     }
 
     /**
-     * @return array
+     * @return array|Property[]
      */
     public function getInjectProperties(): array
     {
-        $injectProperties = [];
-        foreach ($this->injectProperties as $injectPropertyName) {
-            $injectProperties[$injectPropertyName] = $this->properties[$injectPropertyName]['annotations']['dependency'];
-        }
-
-        return $injectProperties;
+        return array_filter($this->buildPropertyObjects(), static function ($property) {
+            /** @var Property $property */
+            return $property->isInjectProperty();
+        });
     }
 
     /**
-     * @return array
+     * @return array|Property[]
      */
     private function buildPropertyObjects(): array
     {

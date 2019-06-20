@@ -200,8 +200,9 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
                 $instance->{$injectMethodName}($instanceToInject);
             }
         }
-        // todo: let getInjectProperties return Property objects
-        foreach ($classSchema->getInjectProperties() as $injectPropertyName => $classNameToInject) {
+        foreach ($classSchema->getInjectProperties() as $injectPropertyName => $injectProperty) {
+            $classNameToInject = $injectProperty->getType();
+
             $instanceToInject = $this->getInstanceInternal($classNameToInject);
             if ($classSchema->isSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
                 $this->getLogger()->notice('The singleton "' . $classSchema->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.');

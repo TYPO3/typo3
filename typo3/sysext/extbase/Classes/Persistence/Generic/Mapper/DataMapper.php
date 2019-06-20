@@ -351,7 +351,7 @@ class DataMapper
     public function fetchRelated(DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = true)
     {
         $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-        if ($enableLazyLoading === true && $property->getAnnotationValue('lazy') === true) {
+        if ($enableLazyLoading === true && $property->isLazy()) {
             if ($property->getType() === Persistence\ObjectStorage::class) {
                 $result = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class, $parentObject, $propertyName, $fieldValue, $this);
             } else {

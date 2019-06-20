@@ -122,16 +122,16 @@ class ClassSchemaTest extends UnitTestCase
 
         $injectProperties = $classSchema->getInjectProperties();
         static::assertArrayHasKey('propertyWithFullQualifiedClassName', $injectProperties);
-        static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']);
+        static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithFullQualifiedClassName']->getType());
 
         static::assertArrayHasKey('propertyWithRelativeClassName', $injectProperties);
-        static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithRelativeClassName']);
+        static::assertSame(Fixture\DummyClassWithInjectDoctrineAnnotation::class, $injectProperties['propertyWithRelativeClassName']->getType());
 
         static::assertArrayHasKey('propertyWithImportedClassName', $injectProperties);
-        static::assertSame(self::class, $injectProperties['propertyWithImportedClassName']);
+        static::assertSame(self::class, $injectProperties['propertyWithImportedClassName']->getType());
 
         static::assertArrayHasKey('propertyWithImportedAndAliasedClassName', $injectProperties);
-        static::assertSame(self::class, $injectProperties['propertyWithImportedAndAliasedClassName']);
+        static::assertSame(self::class, $injectProperties['propertyWithImportedAndAliasedClassName']->getType());
     }
 
     /**

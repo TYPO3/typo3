@@ -157,8 +157,9 @@ class PersistentObjectConverterTest extends UnitTestCase
         $mockSchema->expects($this->any())->method('getProperty')->with('thePropertyName')->will($this->returnValue(new ClassSchema\Property(
             'thePropertyName',
             [
-                'type' => 'TheTypeOfSubObject',
-                'elementType' => null
+                'propertyCharacteristicsBit' => 0,
+                't' => 'TheTypeOfSubObject',
+                'e' => null,
             ]
         )));
         $configuration = $this->buildConfiguration([]);

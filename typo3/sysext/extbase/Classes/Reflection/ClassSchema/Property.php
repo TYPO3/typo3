@@ -3,6 +3,19 @@ declare(strict_types = 1);
 
 namespace TYPO3\CMS\Extbase\Reflection\ClassSchema;
 
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
 /**
  * Class TYPO3\CMS\Extbase\Reflection\ClassSchema\Property
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -20,21 +33,26 @@ class Property
     private $definition;
 
     /**
+     * @var PropertyCharacteristics
+     */
+    private $characteristics;
+
+    /**
      * @param string $name
      * @param array $definition
      */
     public function __construct(string $name, array $definition)
     {
         $this->name = $name;
+        $this->characteristics = new PropertyCharacteristics($definition['propertyCharacteristicsBit']);
+        unset($definition['propertyCharacteristicsBit']);
 
         $defaults = [
-            'type' => null,
-            'elementType' => null,
-            'public' => false,
-            'protected' => false,
-            'private' => false,
-            'annotations' => [],
-            'validators' => [],
+            'c' => null, // cascade
+            'd' => null, // defaultValue
+            't' => null, // type
+            'e' => null, // elementType
+            'v' => [], // validators
         ];
 
         foreach ($defaults as $key => $defaultValue) {
@@ -63,7 +81,7 @@ class Property
      */
     public function getType(): ?string
     {
-        return $this->definition['type'];
+        return $this->definition['t'];
     }
 
     /**
@@ -78,7 +96,7 @@ class Property
      */
     public function getElementType(): ?string
     {
-        return $this->definition['elementType'];
+        return $this->definition['e'];
     }
 
     /**
@@ -86,7 +104,7 @@ class Property
      */
     public function isPublic(): bool
     {
-        return $this->definition['public'];
+        return $this->characteristics->get(PropertyCharacteristics::VISIBILITY_PUBLIC);
     }
 
     /**
@@ -94,7 +112,7 @@ class Property
      */
     public function isProtected(): bool
     {
-        return $this->definition['protected'];
+        return $this->characteristics->get(PropertyCharacteristics::VISIBILITY_PROTECTED);
     }
 
     /**
@@ -102,25 +120,31 @@ class Property
      */
     public function isPrivate(): bool
     {
-        return $this->definition['private'];
+        return $this->characteristics->get(PropertyCharacteristics::VISIBILITY_PRIVATE);
     }
 
     /**
-     * @param string $annotationKey
      * @return bool
      */
-    public function hasAnnotation(string $annotationKey): bool
+    public function isLazy(): bool
     {
-        return isset($this->definition['annotations'][$annotationKey]);
+        return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_LAZY);
     }
 
     /**
-     * @param string $annotationKey
-     * @return mixed
+     * @return bool
      */
-    public function getAnnotationValue(string $annotationKey)
+    public function isTransient(): bool
     {
-        return $this->definition['annotations'][$annotationKey] ?? null;
+        return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_TRANSIENT);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInjectProperty(): bool
+    {
+        return $this->characteristics->get(PropertyCharacteristics::ANNOTATED_INJECT);
     }
 
     /**
@@ -128,7 +152,7 @@ class Property
      */
     public function getValidators(): array
     {
-        return $this->definition['validators'];
+        return $this->definition['v'];
     }
 
     /**
@@ -136,6 +160,14 @@ class Property
      */
     public function getDefaultValue()
     {
-        return $this->definition['defaultValue'];
+        return $this->definition['d'];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCascadeValue(): ?string
+    {
+        return $this->definition['c'];
     }
 }

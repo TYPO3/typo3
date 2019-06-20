@@ -420,7 +420,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
         foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
             $this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
-            if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $property->getAnnotationValue('cascade') === 'remove') {
+            if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $property->getCascadeValue() === 'remove') {
                 $this->removeEntity($removedObject);
             }
         }
@@ -1044,7 +1044,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 continue;
             }
             $property = $classSchema->getProperty($propertyName);
-            if ($property->getAnnotationValue('cascade') === 'remove') {
+            if ($property->getCascadeValue() === 'remove') {
                 if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {
                         $this->removeEntity($containedObject);
