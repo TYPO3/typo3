@@ -17,7 +17,45 @@ declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Type;
 
 /**
- * Class TYPO3\CMS\Core\Type\BitSet
+ * The BitSet class is a helper class to manage bit sets. It eases the work with bits and bitwise
+ * operations by providing a reliable and tested API.
+ *
+ * The class can be used standalone or as a parent for more verbose classes that handle bit sets.
+ *
+ *
+ * The functionality is best described by an example:
+ *
+ * define('PERMISSIONS_NONE', 0b0); // 0
+ * define('PERMISSIONS_PAGE_SHOW', 0b1); // 1
+ * define('PERMISSIONS_PAGE_EDIT', 0b10); // 2
+ * define('PERMISSIONS_PAGE_DELETE', 0b100); // 4
+ *
+ * $bitSet = new \TYPO3\CMS\Core\Type\BitSet(PERMISSIONS_PAGE_SHOW | PERMISSIONS_PAGE_EDIT);
+ * $bitSet->get(PERMISSIONS_PAGE_SHOW); // true
+ * $bitSet->get(PERMISSIONS_PAGE_DELETE); // false
+ *
+ * Another example shows how to possibly extend the class:
+ *
+ * class Permissions extends \TYPO3\CMS\Core\Type\BitSet
+ * {
+ *     public const NONE = 0b0; // 0
+ *     public const PAGE_SHOW = 0b1; // 1
+ *
+ *     public function isGranted(int $permission): bool
+ *     {
+ *         return $this->get($permission);
+ *     }
+ *
+ *     public function grant(int $permission): void
+ *     {
+ *         $this->set($permission);
+ *     }
+ * }
+ *
+ * $permissions = new Permissions();
+ * $permissions->isGranted(Permissions::PAGE_SHOW); // false
+ * $permissions->grant(Permissions::PAGE_SHOW);
+ * $permissions->isGranted(Permissions::PAGE_SHOW); // true
  */
 class BitSet
 {
