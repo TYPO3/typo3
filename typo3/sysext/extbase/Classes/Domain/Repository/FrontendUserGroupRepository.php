@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Domain\Repository;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * A Frontend User Group Repository
  */
-class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class FrontendUserGroupRepository extends Repository
 {
 }

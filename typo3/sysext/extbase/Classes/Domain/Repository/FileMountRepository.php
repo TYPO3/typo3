@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Domain\Repository;
 
 /*
@@ -14,18 +16,18 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * Repository for \TYPO3\CMS\Extbase\Domain\Model\FileMount.
  */
-class FileMountRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class FileMountRepository extends Repository
 {
-    /**
-     * Initializes the repository.
-     */
     public function initializeObject()
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        /** @var Typo3QuerySettings $querySettings */
+        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($querySettings);
     }
