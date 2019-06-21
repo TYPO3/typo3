@@ -98,12 +98,11 @@ class BackendUserRepository extends BackendUserGroupRepository
         // @TODO: Refactor for real n:m relations
         if ($demand->getBackendUserGroup()) {
             $constraints[] = $query->logicalOr([
-                $query->equals('usergroup', (int)$demand->getBackendUserGroup()->getUid()),
-                $query->like('usergroup', (int)$demand->getBackendUserGroup()->getUid() . ',%'),
-                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()->getUid()),
-                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()->getUid() . ',%')
+                $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
+                $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
+                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
+                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%')
             ]);
-            $query->contains('usergroup', $demand->getBackendUserGroup());
         }
         $query->matching($query->logicalAnd($constraints));
         /** @var QueryResult $result */
