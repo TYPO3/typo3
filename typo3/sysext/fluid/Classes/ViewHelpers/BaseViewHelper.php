@@ -19,9 +19,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * ViewHelper which creates a <base href="..."></base> tag. The Base URI is taken from the
- * current request.
- * In TYPO3 Flow, you should always include this ViewHelper to make the links work.
+ * ViewHelper which creates a :html:`<base href="..."></base>` tag.
+ *
+ * The Base URI is taken from the current request.
  *
  * Examples
  * ========
@@ -34,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <base href="http://yourdomain.tld/" />
  *
- * (depending on your domain)
+ * Depending on your domain.
  */
 class BaseViewHelper extends AbstractViewHelper
 {

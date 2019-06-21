@@ -30,34 +30,55 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * Default::
+ * Default
+ * -------
+ *
+ * ::
  *
  *    <f:uri.image src="EXT:myext/Resources/Public/typo3_logo.png" />
  *
+ * Results in the following output within TYPO3 frontend:
+ *
  * ``typo3conf/ext/myext/Resources/Public/typo3_logo.png``
- * or (in BE mode):
+ *
+ * and the following output inside TYPO3 backend:
+ *
  * ``../typo3conf/ext/myext/Resources/Public/typo3_logo.png``
  *
- * Image Object::
+ * Image Object
+ * ------------
+ *
+ * ::
  *
  *    <f:uri.image image="{imageObject}" />
  *
- * ``fileadmin/images/image.png``
- * or (in BE mode):
+ * Results in the following output within TYPO3 frontend:
+ *
  * ``fileadmin/images/image.png``
  *
- * Inline notation::
+ * and the following output inside TYPO3 backend:
+ *
+ * ``fileadmin/images/image.png``
+ *
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {f:uri.image(src: 'EXT:myext/Resources/Public/typo3_logo.png', minWidth: 30, maxWidth: 40)}
  *
  * ``typo3temp/assets/images/[b4c0e7ed5c].png``
- * (depending on your TYPO3s encryption key)
  *
- * non existing image::
+ * Depending on your TYPO3s encryption key.
+ *
+ * Non existing image
+ * ------------------
+ *
+ * ::
  *
  *    <f:uri.image src="NonExistingImage.png" />
  *
- * Could not get image resource for "NonExistingImage.png".
+ * ``Could not get image resource for "NonExistingImage.png".``
  */
 class ImageViewHelper extends AbstractViewHelper
 {

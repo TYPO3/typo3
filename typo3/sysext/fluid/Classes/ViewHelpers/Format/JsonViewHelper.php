@@ -21,25 +21,35 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * Wrapper for PHPs json_encode function.
+ * Wrapper for PHPs :php:`json_encode` function.
+ * See https://www.php.net/manual/function.json-encode.php.
  *
  * Examples
  * ========
  *
- * encoding a view variable::
+ * Encoding a view variable
+ * ------------------------
+ *
+ * ::
  *
  *    {someArray -> f:format.json()}
  *
  * ``["array","values"]``
- * // depending on the value of {someArray}
+ * Depending on the value of ``{someArray}``.
  *
- * associative array::
+ * Associative array
+ * -----------------
+ *
+ * ::
  *
  *    {f:format.json(value: {foo: 'bar', bar: 'baz'})}
  *
  * ``{"foo":"bar","bar":"baz"}``
  *
- * non-associative array with forced object::
+ * Non associative array with forced object
+ * ----------------------------------------
+ *
+ * ::
  *
  *    {f:format.json(value: {0: 'bar', 1: 'baz'}, forceObject: true)}
  *
@@ -75,7 +85,7 @@ class JsonViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @see http://www.php.net/manual/en/function.json-encode.php
+     * @see https://www.php.net/manual/function.json-encode.php
      * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)

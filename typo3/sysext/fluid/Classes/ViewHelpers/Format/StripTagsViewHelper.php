@@ -19,38 +19,54 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * Removes tags from the given string (applying PHPs strip_tags() function)
- *
- * @see http://www.php.net/manual/function.strip-tags.php
+ * Removes tags from the given string (applying PHPs :php:`strip_tags()` function)
+ * See https://www.php.net/manual/function.strip-tags.php.
  *
  * Examples
  * ========
  *
- * default notation::
+ * Default notation
+ * ----------------
+ *
+ * ::
  *
  *    <f:format.stripTags>Some Text with <b>Tags</b> and an &Uuml;mlaut.</f:format.stripTags>
  *
- * Some Text with Tags and an &Uuml;mlaut. (strip_tags() applied. Note: encoded entities are not decoded)
+ * Some Text with Tags and an &Uuml;mlaut. :php:`strip_tags()` applied.
  *
- * default notation with allowedTags::
+ * .. note::
+ *    Encoded entities are not decoded.
  *
- *    <f:format.stripTags allowedTags="<p><span><div><script>"><p>paragraph</p><span>span</span><div>divider</div><iframe>iframe</iframe><script>script</script></f:format.stripTags>
+ * Default notation with allowedTags
+ * ---------------------------------
+ *
+ * ::
+ *
+ *    <f:format.stripTags allowedTags="<p><span><div><script>">
+ *        <p>paragraph</p><span>span</span><div>divider</div><iframe>iframe</iframe><script>script</script>
+ *    </f:format.stripTags>
  *
  * Output::
  *
  *    <p>paragraph</p><span>span</span><div>divider</div>iframe<script>script</script>
  *
- * inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {text -> f:format.stripTags()}
  *
- * Text without tags (strip_tags() applied)
+ * Text without tags :php:`strip_tags()` applied.
  *
- * inline notation with allowedTags::
+ * Inline notation with allowedTags
+ * --------------------------------
+ *
+ * ::
  *
  *    {text -> f:format.stripTags(allowedTags: "<p><span><div><script>")}
  *
- * Text with p, span, div and script Tags inside, all other tags are removed
+ * Text with p, span, div and script Tags inside, all other tags are removed.
  */
 class StripTagsViewHelper extends AbstractViewHelper
 {
@@ -88,7 +104,7 @@ unction');
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @see http://www.php.net/manual/function.strip-tags.php
+     * @see https://www.php.net/manual/function.strip-tags.php
      * @return string
      */
     public static function renderStatic(

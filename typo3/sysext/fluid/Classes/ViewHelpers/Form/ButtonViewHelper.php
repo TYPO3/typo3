@@ -30,7 +30,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * Disabled cancel button with some HTML5 attributes::
  *
- *    <f:form.button type="reset" name="buttonName" value="buttonValue" disabled="disabled" formmethod="post" formnovalidate="formnovalidate">Cancel</f:form.button>
+ *    <f:form.button type="reset" disabled="disabled"
+ *        name="buttonName" value="buttonValue"
+ *        formmethod="post" formnovalidate="formnovalidate"
+ *    >
+ *        Cancel
+ *    </f:form.button>
  *
  * Output::
  *

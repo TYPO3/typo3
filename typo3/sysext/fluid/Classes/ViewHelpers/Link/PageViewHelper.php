@@ -22,35 +22,44 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Examples
  * ========
  *
- * link to the current page::
+ * Link to the current page
+ * ------------------------
+ *
+ * ::
  *
  *    <f:link.page>page link</f:link.page>
  *
  * Output::
  *
- *    <a href="index.php?id=123">page link</a>
+ *    <a href="/page/path/name.html">page link</a>
  *
- * (depending on the current page and your TS configuration)
+ * Depending on current page, routing and page path configuration.
  *
- * query parameters::
+ * Query parameters
+ * ----------------
+ *
+ * ::
  *
  *    <f:link.page pageUid="1" additionalParams="{foo: 'bar'}">page link</f:link.page>
  *
  * Output::
  *
- *    <a href="index.php?id=1&foo=bar">page link</a>
+ *    <a href="/page/path/name.html?foo=bar">page link</a>
  *
- * (depending on your TS configuration)
+ * Depending on current page, routing and page path configuration.
  *
- * query parameters for extensions::
+ * Query parameters for extensions
+ * -------------------------------
+ *
+ * ::
  *
  *    <f:link.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}">page link</f:link.page>
  *
  * Output::
  *
- *    <a href="index.php?id=1&extension_key[foo]=bar">page link</a>
+ *    <a href="/page/path/name.html?extension_key[foo]=bar">page link</a>
  *
- * (depending on your TS configuration)
+ * Depending on current page, routing and page path configuration.
  */
 class PageViewHelper extends AbstractTagBasedViewHelper
 {

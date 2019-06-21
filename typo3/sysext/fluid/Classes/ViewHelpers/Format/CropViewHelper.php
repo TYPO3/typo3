@@ -27,36 +27,59 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * Defaults::
+ * Defaults
+ * --------
  *
- *    <f:format.crop maxCharacters="10">This is some very long text</f:format.crop>
+ * ::
  *
- * This is…
+ *    <f:format.crop maxCharacters="10">
+ *        This is some very long text
+ *    </f:format.crop>
  *
- * Custom suffix::
+ * ``This is…``
  *
- *    <f:format.crop maxCharacters="17" append="&nbsp;[more]">This is some very long text</f:format.crop>
+ * Custom suffix
+ * -------------
  *
- * This is some&nbsp;[more]
+ * ::
  *
- * Don't respect word boundaries::
+ *    <f:format.crop maxCharacters="17" append="&nbsp;[more]">
+ *        This is some very long text
+ *    </f:format.crop>
  *
- *    <f:format.crop maxCharacters="10" respectWordBoundaries="false">This is some very long text</f:format.crop>
+ * ``This is some&nbsp;[more]``
  *
- * This is so…
+ * Don't respect word boundaries
+ * -----------------------------
  *
- * Don't respect HTML tags::
+ * ::
  *
- *    <f:format.crop maxCharacters="28" respectWordBoundaries="false" respectHtml="false">This is some text with <strong>HTML</strong> tags</f:format.crop>
+ *    <f:format.crop maxCharacters="10" respectWordBoundaries="false">
+ *        This is some very long text
+ *    </f:format.crop>
  *
- * This is some text with <stro
+ * ``This is so…``
  *
- * Inline notation::
+ * Don't respect HTML tags
+ * -----------------------
+ *
+ * ::
+ *
+ *    <f:format.crop maxCharacters="28" respectWordBoundaries="false" respectHtml="false">
+ *        This is some text with <strong>HTML</strong> tags
+ *    </f:format.crop>
+ *
+ * ``This is some text with <stro``
+ *
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {someLongText -> f:format.crop(maxCharacters: 10)}
  *
- * someLongText cropped after 10 characters…
- * (depending on the value of {someLongText})
+ * ``someLongText cropped after 10 characters…``
+ * Depending on the value of ``{someLongText}``.
  */
 class CropViewHelper extends AbstractViewHelper
 {

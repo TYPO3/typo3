@@ -22,27 +22,38 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * A ViewHelper to create uris from fields supported by the link wizard
+ * A ViewHelper to create uris from fields supported by the link wizard.
  *
  * Example
  * =======
  *
  * ``{link}`` contains ``19 - - - &X=y``
- * Please note that due to the nature of typolink you have to provide a
- * full set of parameters if you use the parameter only. Target, class
- * and title will be discarded.
  *
- * minimal usage::
+ * Please note that due to the nature of typolink you have to provide a full
+ * set of parameters.
+ * If you use the parameter only, then target, class and title will be discarded.
+ *
+ * Minimal usage
+ * -------------
+ *
+ * ::
  *
  *    <f:uri.typolink parameter="{link}" />
  *
- * ``index.php?id=19&X=y``
+ * ``/page/path/name.html?X=y``
  *
- * Full parameter usage::
+ * Depending on routing and page path configuration.
+ *
+ * Full parameter usage
+ * --------------------
+ *
+ * ::
  *
  *    <f:uri.typolink parameter="{link}" additionalParams="&u=b" />
  *
- * ``index.php?id=19&X=y&u=b``
+ * ``/page/path/name.html?X=y&u=b``
+ *
+ * Depending on routing and page path configuration.
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {

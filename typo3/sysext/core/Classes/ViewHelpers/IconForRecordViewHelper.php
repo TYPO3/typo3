@@ -22,7 +22,22 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Displays icon for record
+ * Displays icon for record.
+ *
+ * Examples
+ * ========
+ *
+ * Default::
+ *
+ *    <core:iconForRecord table="tt_content" row="{record}" />
+ *
+ * Output::
+ *
+ *     <span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text">
+ *         <span class="icon-markup">
+ *             <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-text.svg" width="16" height="16">
+ *         </span>
+ *     </span>
  */
 class IconForRecordViewHelper extends AbstractViewHelper
 {

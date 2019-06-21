@@ -25,13 +25,19 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * Default::
+ * Default
+ * -------
+ *
+ * ::
  *
  *    <f:uri.external uri="http://www.typo3.org" />
  *
  * ``http://www.typo3.org``
  *
- * custom default scheme::
+ * Custom default scheme
+ * ---------------------
+ *
+ * ::
  *
  *    <f:uri.external uri="typo3.org" defaultScheme="ftp" />
  *

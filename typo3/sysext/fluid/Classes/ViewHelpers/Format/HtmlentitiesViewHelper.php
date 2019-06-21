@@ -18,23 +18,29 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * Applies htmlentities() escaping to a value
- * @see http://www.php.net/manual/function.htmlentities.php
+ * Applies :php:`htmlentities()` escaping to a value.
+ * See https://www.php.net/manual/function.htmlentities.php.
  *
  * Examples
  * ========
  *
- * default notation::
+ * Default notation
+ * ----------------
+ *
+ * ::
  *
  *    <f:format.htmlentities>{text}</f:format.htmlentities>
  *
- * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities (htmlentities applied).
+ * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities :php:`htmlentities` applied.
  *
- * inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {text -> f:format.htmlentities(encoding: 'ISO-8859-1')}
  *
- * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities (htmlentities applied).
+ * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities :php:`htmlentities` applied.
  */
 class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {
@@ -68,7 +74,7 @@ class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
     /**
      * Escapes special characters with their escaped counterparts as needed using PHPs htmlentities() function.
      *
-     * @see http://www.php.net/manual/function.htmlentities.php
+     * @see https://www.php.net/manual/function.htmlentities.php
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

@@ -38,7 +38,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    {namespace formvh=TYPO3\CMS\Form\ViewHelpers}
  *    <formvh:render factoryClass="NameOfYourCustomFactoryClass" />
  *
- * The factory class must implement {@link TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface}.
+ * The factory class must implement :php:`TYPO3\CMS\Form\Domain\Factory\FormFactoryInterface`.
  *
  * Scope: frontend
  */

@@ -19,25 +19,38 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * Formats a string using PHPs str_pad function.
- * @see http://www.php.net/manual/en/function.str_pad.php
+ * Formats a string using PHPs :php:`str_pad` function.
+ * See https://www.php.net/manual/function.str_pad.php.
  *
  * Examples
  * ========
  *
- * Defaults::
+ * Defaults
+ * --------
+ *
+ * ::
  *
  *    <f:format.padding padLength="10">TYPO3</f:format.padding>
  *
- * ``TYPO3     `` (note the trailing whitespace)
+ * Output::
  *
- * Specify padding string::
+ *     TYPO3␠␠␠␠␠
+ *
+ * ``TYPO3␠␠␠␠␠``
+ *
+ * Specify padding string
+ * ----------------------
+ *
+ * ::
  *
  *    <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
  *
  * ``TYPO3-=-=-``
  *
- * Specify padding type::
+ * Specify padding type
+ * --------------------
+ *
+ * ::
  *
  *    <f:format.padding padLength="10" padString="-" padType="both">TYPO3</f:format.padding>
  *

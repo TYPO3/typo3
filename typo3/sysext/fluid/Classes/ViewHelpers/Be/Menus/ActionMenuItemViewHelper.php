@@ -18,8 +18,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * ViewHelper which returns an option tag.
- * This ViewHelper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
- * Note: This ViewHelper is experimental!
+ * This ViewHelper only works in conjunction with :php:`\TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper`.
+ *
+ * .. note::
+ *    This ViewHelper is experimental!
  *
  * Examples
  * ========
@@ -32,7 +34,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *       <f:be.menus.actionMenuItem label="List Posts" controller="Post" action="index" arguments="{blog: blog}" />
  *    </f:be.menus.actionMenu>
  *
- * Selectbox with the options "Overview", "Create new Blog" and "List Posts"
+ * Selectbox with the options "Overview", "Create new Blog" and "List Posts".
  *
  * Localized::
  *
@@ -41,7 +43,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *       <f:be.menus.actionMenuItem label="{f:translate(key='create_blog')}" controller="Blog" action="new" />
  *    </f:be.menus.actionMenu>
  *
- * localized selectbox
+ * Localized selectbox.
  */
 class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
 {

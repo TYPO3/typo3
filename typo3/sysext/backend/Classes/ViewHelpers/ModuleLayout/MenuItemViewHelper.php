@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\View\Exception;
 
 /**
  * A ViewHelper for adding a menu item to a doc header menu.
- * It must be a child of <be:moduleLayout.menu>
+ * It must be a child of :ref:`<be:moduleLayout.menu> <typo3-backend-modulelayout-menu>`.
  *
  * Examples
  * ========
@@ -34,9 +34,9 @@ use TYPO3Fluid\Fluid\View\Exception;
  * Default::
  *
  *    <be:moduleLayout>
- *     <be:moduleLayout.menu identifier="MenuIdentifier">
- *          <be:moduleLayout.menuItem label="Menu item 1" uri="{f:uri.action(action: 'index')}"/>
- *     </be:moduleLayout.menu>
+ *        <be:moduleLayout.menu identifier="MenuIdentifier">
+ *            <be:moduleLayout.menuItem label="Menu item 1" uri="{f:uri.action(action: 'index')}"/>
+ *        </be:moduleLayout.menu>
  *    </be:moduleLayout>
  */
 class MenuItemViewHelper extends AbstractViewHelper

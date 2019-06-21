@@ -16,15 +16,17 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 
 /**
- * Simple paginate widget
- * Note: Make sure to include jQuery and jQuery UI in the HTML, like that::
+ * Simple autocomplete widget.
  *
- * <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
- * <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
- * <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" type="text/css" media="all" />
- * <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+ * .. note::
+ *     Make sure to include jQuery and jQuery UI in the HTML, like that::
  *
- * You can include the provided TS template that includes the above snippet to the pages headerData.
+ *         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+ *         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+ *         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/themes/base/jquery-ui.css" type="text/css" media="all" />
+ *         <link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />
+ *
+ * You can include the provided TypoScript template that includes the above snippet to the pages headerData.
  *
  * Examples
  * ========
@@ -38,7 +40,8 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  *
  *    <input type="text" id="name" />
  *
- * the input field and the required JavaScript for the Ajax communication (see Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
+ * The input field and the required JavaScript for the Ajax communication.
+ * See Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
  */
 class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
 {

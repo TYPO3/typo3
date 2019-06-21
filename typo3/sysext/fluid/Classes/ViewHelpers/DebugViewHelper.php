@@ -25,15 +25,28 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * Simple::
+ * Simple
+ * ------
+ *
+ * ::
  *
  *    <f:debug>{testVariables.array}</f:debug>
  *
  * foobarbazfoo
  *
- * All Features::
+ * All Features
+ * ------------
  *
- *    <f:debug title="My Title" maxDepth="5" blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}" plainText="true" ansiColors="false" inline="true" blacklistedPropertyNames="{0:'posts'}">{blogs}</f:debug>
+ * ::
+ *
+ *    <f:debug title="My Title" maxDepth="5"
+ *        blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}"
+ *        blacklistedPropertyNames="{0:'posts'}"
+ *        plainText="true" ansiColors="false"
+ *        inline="true"
+ *        >
+ *            {blogs}
+ *        </f:debug>
  *
  * [A HTML view of the var_dump]
  */

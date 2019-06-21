@@ -28,9 +28,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Example
  * =======
  *
- * {link} contains "19 _blank - "testtitle with whitespace" &X=y"
+ * ``{link}`` contains: ``19 _blank - "testtitle with whitespace" &X=y``.
  *
- * minimal usage::
+ * Minimal usage
+ * -------------
+ *
+ * ::
  *
  *    <f:link.typolink parameter="{link}">
  *       Linktext
@@ -38,21 +41,33 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * Output::
  *
- *    <a href="index.php?id=19&X=y" title="testtitle with whitespace" target="_blank">
+ *    <a href="/page/path/name.html?X=y" title="testtitle with whitespace" target="_blank">
  *       Linktext
  *    </a>
  *
- * Full parameter usage::
+ * Depending on current page, routing and page path configuration.
  *
- *    <f:link.typolink parameter="{link}" target="_blank" class="ico-class" title="some title" additionalParams="&u=b" additionalAttributes="{type:'button'}" useCacheHash="true">
+ * Full parameter usage
+ * --------------------
+ *
+ * ::
+ *
+ *    <f:link.typolink parameter="{link}" additionalParams="&u=b"
+ *        target="_blank"
+ *        class="ico-class" title="some title"
+ *        additionalAttributes="{type:'button'}"
+ *        useCacheHash="true"
+ *    >
  *       Linktext
  *    </f:link.typolink>
  *
  * Output::
  *
- *    <a href="index.php?id=19&X=y&u=b" title="some title" target="_blank" class="ico-class" type="button">
- *      Linktext
+ *    <a href="/page/path/name.html?X=y&u=b" title="some title" target="_blank" class="ico-class" type="button">
+ *        Linktext
  *    </a>
+ *
+ * Depending on routing and page path configuration.
  */
 class TypolinkViewHelper extends AbstractViewHelper
 {

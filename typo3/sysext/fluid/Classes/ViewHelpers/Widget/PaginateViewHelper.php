@@ -23,14 +23,20 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  * Examples
  * ========
  *
- * required arguments::
+ * Required arguments
+ * ------------------
+ *
+ * ::
  *
  *    <f:widget.paginate objects="{blogs}" as="paginatedBlogs">
  *       use {paginatedBlogs} as you used {blogs} before, most certainly inside
  *       a <f:for> loop.
  *    </f:widget.paginate>
  *
- * full configuration::
+ * Full configuration
+ * ------------------
+ *
+ * ::
  *
  *    <f:widget.paginate objects="{blogs}" as="paginatedBlogs" configuration="{itemsPerPage: 5, insertAbove: 1, insertBelow: 0, maximumNumberOfLinks: 10}">
  *       use {paginatedBlogs} as you used {blogs} before, most certainly inside

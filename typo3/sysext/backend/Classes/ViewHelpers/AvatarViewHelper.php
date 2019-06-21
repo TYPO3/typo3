@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Render the avatar img tag for a given backend user
+ * Render the avatar img tag for a given backend user.
  */
 class AvatarViewHelper extends AbstractViewHelper
 {

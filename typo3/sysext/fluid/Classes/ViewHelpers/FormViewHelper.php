@@ -15,16 +15,15 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 /**
- * Form ViewHelper. Generates a <form> Tag.
+ * Form ViewHelper. Generates a :html:`<form>` Tag.
  *
  * Basic usage
  * ===========
  *
- * Use <f:form> to output an HTML <form> tag which is targeted at the specified action, in the current controller and package.
- * It will submit the form data via a POST request. If you want to change this, use method="get" as an argument.
- * Example::
- *
- *    <f:form action="...">...</f:form>
+ * Use :html:`<f:form>` to output an HTML :html:`<form>` tag which is targeted
+ * at the specified action, in the current controller and package.
+ * It will submit the form data via a POST request. If you want to change this,
+ * use :html:`method="get"` as an argument.
  *
  * Examples
  * ========
@@ -46,7 +45,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  *       <f:form.textbox property="name" />
  *    </f:form>
  *
- * This automatically inserts the value of {customer.name} inside the textbox and adjusts the name of the textbox accordingly.
+ * This automatically inserts the value of ``{customer.name}`` inside the
+ * textbox and adjusts the name of the textbox accordingly.
  */
 class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper
 {

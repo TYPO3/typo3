@@ -28,8 +28,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <f:uri.action action="show" />
  *
- * ``index.php?id=123&tx_myextension_plugin[action]=show&tx_myextension_plugin[controller]=Standard&cHash=xyz``
- * (depending on the current page and your TS configuration)
+ * ``/page/path/name.html?tx_myextension_plugin[action]=show&tx_myextension_plugin[controller]=Standard&cHash=xyz``
+ *
+ * Depending on current page, routing and page path configuration.
  */
 class ActionViewHelper extends AbstractViewHelper
 {

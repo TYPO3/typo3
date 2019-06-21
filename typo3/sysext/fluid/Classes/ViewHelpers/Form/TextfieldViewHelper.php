@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * ViewHelper which creates a text field (<input type="text">).
+ * ViewHelper which creates a text field :html:`<input type="text">`.
  *
  * Examples
  * ========

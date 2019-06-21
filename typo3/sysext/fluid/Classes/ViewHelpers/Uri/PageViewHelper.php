@@ -24,26 +24,38 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * URI to the current page::
+ * URI to the current page
+ * -----------------------
+ *
+ * ::
  *
  *    <f:uri.page>page link</f:uri.page>
  *
- * ``index.php?id=123``
- * (depending on the current page and your TS configuration)
+ * ``/page/path/name.html``
  *
- * query parameters::
+ * Depending on current page, routing and page path configuration.
+ *
+ * Query parameters
+ * ----------------
+ *
+ * ::
  *
  *    <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
  *
- * ``index.php?id=1&foo=bar``
- * (depending on your TS configuration)
+ * ``/page/path/name.html?foo=bar``
  *
- * query parameters for extensions::
+ * Depending on current page, routing and page path configuration.
+ *
+ * Query parameters for extensions
+ * -------------------------------
+ *
+ * ::
  *
  *    <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
  *
- * ``index.php?id=1&extension_key[foo]=bar``
- * (depending on your TS configuration)
+ * ``/page/path/name.html?extension_key[foo]=bar``
+ *
+ * Depending on current page, routing and page path configuration.
  */
 class PageViewHelper extends AbstractViewHelper
 {

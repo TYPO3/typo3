@@ -23,14 +23,17 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Renders a string by passing it to a TYPO3 parseFunc.
- * You can either specify a path to the TypoScript setting or set the parseFunc options directly.
- * By default lib.parseFunc_RTE is used to parse the string.
+ * Renders a string by passing it to a TYPO3 `parseFunc`_.
+ * You can either specify a path to the TypoScript setting or set the `parseFunc`_ options directly.
+ * By default :ts:`lib.parseFunc_RTE` is used to parse the string.
  *
  * Examples
  * ========
  *
- * Default parameters::
+ * Default parameters
+ * ------------------
+ *
+ * ::
  *
  *    <f:format.html>foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
  *
@@ -38,9 +41,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <p class="bodytext">foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.</p>
  *
- * (depending on your TYPO3 setup)
+ * Depending on TYPO3 setup.
  *
- * Custom parseFunc::
+ * Custom parseFunc
+ * ----------------
+ *
+ * ::
  *
  *    <f:format.html parseFuncTSPath="lib.parseFunc">foo <b>bar</b>. Some <LINK 1>link</LINK>.</f:format.html>
  *
@@ -48,7 +54,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
  *
- * Inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {someText -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}
  *
@@ -56,7 +65,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    foo <b>bar</b>. Some <a href="index.php?id=1" >link</a>.
  *
- * @see https://docs.typo3.org/typo3cms/TyposcriptReference/Functions/Parsefunc/
+ * .. _parseFunc: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Functions/Parsefunc.html
  */
 class HtmlViewHelper extends AbstractViewHelper
 {

@@ -19,10 +19,15 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * ViewHelper which returns CSH (context sensitive help) button with icon
- * Note: The CSH button will only work, if the current BE user has the "Context Sensitive Help mode"
- * set to something else than "Display no help information" in the Users settings
- * Note: This ViewHelper is experimental!
+ * ViewHelper which returns CSH (context sensitive help) button with icon.
+ *
+ * .. note::
+ *    The CSH button will only work, if the current BE user has the "Context
+ *    Sensitive Help mode" set to something else than "Display no help
+ *    information" in the Users settings.
+ *
+ * .. note::
+ *    This ViewHelper is experimental!
  *
  * Examples
  * ========
@@ -45,7 +50,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  *       some text to link
  *    </f:be.buttons.csh>
  *
- * A link with text "some text to link" to link the help
+ * A link with text "some text to link" to link the help.
  */
 class CshViewHelper extends AbstractBackendViewHelper
 {

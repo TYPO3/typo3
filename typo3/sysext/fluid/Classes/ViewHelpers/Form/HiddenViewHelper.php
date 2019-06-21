@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * Renders an <input type="hidden" ...> tag.
+ * Renders an :html:`<input type="hidden" ...>` tag.
  *
  * Examples
  * ========
@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *    <input type="hidden" name="myHiddenValue" value="42" />
  *
  * You can also use the "property" attribute if you have bound an object to the form.
- * See <f:form> for more documentation.
+ * See :ref:`<f:form> <typo3-fluid-form>` for more documentation.
  */
 class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {

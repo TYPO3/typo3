@@ -15,12 +15,15 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * ViewHelper which creates a simple radio button (<input type="radio">).
+ * ViewHelper which creates a simple radio button :html:`<input type="radio">`.
  *
  * Examples
  * ========
  *
- * Example::
+ * Simple
+ * ------
+ *
+ * ::
  *
  *    <f:form.radio name="myRadioButton" value="someValue" />
  *
@@ -28,7 +31,10 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <input type="radio" name="myRadioButton" value="someValue" />
  *
- * Preselect::
+ * Preselect
+ * ---------
+ *
+ * ::
  *
  *    <f:form.radio name="myRadioButton" value="someValue" checked="{object.value} == 5" />
  *
@@ -36,9 +42,12 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  *    <input type="radio" name="myRadioButton" value="someValue" checked="checked" />
  *
- * (depending on $object)
+ * Depending on bound ``object`` to surrounding :ref:`f:form <typo3-fluid-form>`.
  *
- * Bind to object property::
+ * Bind to object property
+ * -----------------------
+ *
+ * ::
  *
  *    <f:form.radio property="newsletter" value="1" /> yes
  *    <f:form.radio property="newsletter" value="0" /> no
@@ -48,7 +57,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *    <input type="radio" name="user[newsletter]" value="1" checked="checked" /> yes
  *    <input type="radio" name="user[newsletter]" value="0" /> no
  *
- * (depending on property "newsletter")
+ * Depending on property ``newsletter``.
  */
 class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {

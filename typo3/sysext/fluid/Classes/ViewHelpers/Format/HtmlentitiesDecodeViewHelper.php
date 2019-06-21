@@ -18,23 +18,29 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * Applies html_entity_decode() to a value
- * @see http://www.php.net/html_entity_decode
+ * Applies :php:`html_entity_decode()` to a value.
+ * See https://www.php.net/html_entity_decode.
  *
  * Examples
  * ========
  *
- * default notation::
+ * Default notation
+ * ----------------
+ *
+ * ::
  *
  *    <f:format.htmlentitiesDecode>{text}</f:format.htmlentitiesDecode>
  *
- * Text with ``&amp;`` ``&quot;`` ``&lt;`` ``&gt;`` replaced by unescaped entities (html_entity_decode applied).
+ * Text with ``&amp;`` ``&quot;`` ``&lt;`` ``&gt;`` replaced by unescaped entities :php:`html_entity_decode` applied.
  *
- * inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {text -> f:format.htmlentitiesDecode(encoding: 'ISO-8859-1')}
  *
- * Text with ``&amp;`` ``&quot;`` ``&lt;`` ``&gt;`` replaced by unescaped entities (html_entity_decode applied).
+ * Text with ``&amp;`` ``&quot;`` ``&lt;`` ``&gt;`` replaced by unescaped entities :php:`html_entity_decode` applied.
  */
 class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {
@@ -68,7 +74,7 @@ class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
     /**
      * Converts all HTML entities to their applicable characters as needed using PHPs html_entity_decode() function.
      *
-     * @see http://www.php.net/html_entity_decode
+     * @see https://www.php.net/html_entity_decode
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

@@ -20,7 +20,9 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Email URI ViewHelper.
- * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
+ * Generates an email URI incorporating TYPO3s `spamProtectEmailAddresses`_ TypoScript setting.
+ *
+ * .. _spamProtectEmailAddresses: https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#spamprotectemailaddresses
  *
  * Example
  * =======
@@ -33,7 +35,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    javascript:linkTo_UnCryptMailto('ocknvq,hqqBdct0vnf');
  *
- * (depending on your spamProtectEmailAddresses-settings)
+ * Depending on `spamProtectEmailAddresses`_ setting.
  */
 class EmailViewHelper extends AbstractViewHelper
 {

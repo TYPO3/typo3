@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * A ViewHelper for adding a shortcut button to the doc header area.
- * It must be a child of <be:moduleLayout>
+ * It must be a child of :ref:`<be:moduleLayout> <typo3-backend-modulelayout>`.
  *
  * Examples
  * --------
@@ -32,7 +32,7 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
  * Default::
  *
  *    <be:moduleLayout>
- *      <be:moduleLayout.button.shortcutButton displayName="Shortcut label" />
+ *        <be:moduleLayout.button.shortcutButton displayName="Shortcut label" />
  *    </be:moduleLayout>
  */
 class ShortcutButtonViewHelper extends AbstractButtonViewHelper

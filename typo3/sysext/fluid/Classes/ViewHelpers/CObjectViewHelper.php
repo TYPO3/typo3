@@ -25,28 +25,56 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
 
 /**
  * This ViewHelper renders CObjects from the global TypoScript configuration.
- * NOTE: You have to ensure proper escaping (htmlspecialchars/intval/etc.) on your own!
+ *
+ * .. note::
+ *    You have to ensure proper escaping (htmlspecialchars/intval/etc.) on your own!
  *
  * Examples
  * ========
  *
- * Render lib object::
+ * Render lib object
+ * -----------------
+ *
+ * ::
  *
  *    <f:cObject typoscriptObjectPath="lib.someLibObject" />
  *
- * rendered lib.someLibObject
+ * Rendered :ts:`lib.someLibObject`.
  *
- * Specify cObject data & current value::
+ * Specify cObject data & current value
+ * ------------------------------------
+ *
+ * ::
  *
  *    <f:cObject typoscriptObjectPath="lib.customHeader" data="{article}" currentValueKey="title" />
  *
- * rendered lib.customHeader. data and current value will be available in TypoScript
+ * Rendered :ts:`lib.customHeader`. Data and current value will be available in TypoScript.
  *
- * inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {article -> f:cObject(typoscriptObjectPath: 'lib.customHeader')}
  *
- * rendered lib.customHeader. data will be available in TypoScript
+ * Rendered :ts:`lib.customHeader`. Data will be available in TypoScript.
+ *
+ * Accessing the data in TypoScript
+ * --------------------------------
+ *
+ * ::
+ *
+ *    lib.customHeader = COA
+ *    lib.customHeader {
+ *        10 = TEXT
+ *        10.field = author
+ *        20 = TEXT
+ *        20.current = 1
+ *    }
+ *
+ * When passing an object with ``{data}`` the properties of the object are accessable with :ts:`.field` in
+ * TypoScript. If only a single value is passed or the ``currentValueKey`` is specified :ts:`.current = 1`
+ * can be used in the TypoScript.
  */
 class CObjectViewHelper extends AbstractViewHelper
 {
