@@ -112,7 +112,7 @@ class Message
      */
     public function render(): string
     {
-        if (!empty($this->arguments)) {
+        if (count($this->arguments) > 0) {
             return vsprintf($this->message, $this->arguments);
         }
         return $this->message;

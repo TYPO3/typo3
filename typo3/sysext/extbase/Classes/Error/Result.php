@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Error;
 
 /*
@@ -13,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Error;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 /**
  * Result object for operations dealing with objects, such as the Property Mapper or the Validators.
  */
@@ -69,7 +72,7 @@ class Result
      *
      * @param Result $parent
      */
-    public function setParent(Result $parent)
+    public function setParent(Result $parent): void
     {
         if ($this->parent !== $parent) {
             $this->parent = $parent;
@@ -90,7 +93,7 @@ class Result
      *
      * @param Error $error
      */
-    public function addError(Error $error)
+    public function addError(Error $error): void
     {
         $this->errors[] = $error;
         $this->setErrorsExist();
@@ -101,7 +104,7 @@ class Result
      *
      * @param Warning $warning
      */
-    public function addWarning(Warning $warning)
+    public function addWarning(Warning $warning): void
     {
         $this->warnings[] = $warning;
         $this->setWarningsExist();
@@ -112,7 +115,7 @@ class Result
      *
      * @param Notice $notice
      */
-    public function addNotice(Notice $notice)
+    public function addNotice(Notice $notice): void
     {
         $this->notices[] = $notice;
         $this->setNoticesExist();
@@ -123,7 +126,7 @@ class Result
      *
      * @return Error[]
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -133,7 +136,7 @@ class Result
      *
      * @return Warning[]
      */
-    public function getWarnings()
+    public function getWarnings(): array
     {
         return $this->warnings;
     }
@@ -143,7 +146,7 @@ class Result
      *
      * @return Notice[]
      */
-    public function getNotices()
+    public function getNotices(): array
     {
         return $this->notices;
     }
@@ -153,7 +156,7 @@ class Result
      *
      * @return Error
      */
-    public function getFirstError()
+    public function getFirstError(): Error
     {
         reset($this->errors);
         return current($this->errors);
@@ -164,7 +167,7 @@ class Result
      *
      * @return Warning
      */
-    public function getFirstWarning()
+    public function getFirstWarning(): Warning
     {
         reset($this->warnings);
         return current($this->warnings);
@@ -175,7 +178,7 @@ class Result
      *
      * @return Notice
      */
-    public function getFirstNotice()
+    public function getFirstNotice(): Notice
     {
         reset($this->notices);
         return current($this->notices);
@@ -187,10 +190,10 @@ class Result
      * $result->forProperty('foo.bar')->getErrors() -- to get all errors
      * for property "foo.bar"
      *
-     * @param string $propertyPath
+     * @param string|null $propertyPath
      * @return Result
      */
-    public function forProperty($propertyPath)
+    public function forProperty(?string $propertyPath): Result
     {
         if ($propertyPath === '' || $propertyPath === null) {
             return $this;
@@ -206,14 +209,16 @@ class Result
     }
 
     /**
-     * Internal use only!
+     * @todo: consider making this method protected as it will and should not be called from an outside scope
      *
      * @param array $pathSegments
      * @return Result
+     *
+     * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function recurseThroughResult(array $pathSegments)
+    public function recurseThroughResult(array $pathSegments): Result
     {
-        if (empty($pathSegments)) {
+        if (count($pathSegments) === 0) {
             return $this;
         }
 
@@ -231,7 +236,7 @@ class Result
      * Sets the error cache to TRUE and propagates the information
      * upwards the Result-Object Tree
      */
-    protected function setErrorsExist()
+    protected function setErrorsExist(): void
     {
         $this->errorsExist = true;
         if ($this->parent !== null) {
@@ -243,7 +248,7 @@ class Result
      * Sets the warning cache to TRUE and propagates the information
      * upwards the Result-Object Tree
      */
-    protected function setWarningsExist()
+    protected function setWarningsExist(): void
     {
         $this->warningsExist = true;
         if ($this->parent !== null) {
@@ -255,7 +260,7 @@ class Result
      * Sets the notices cache to TRUE and propagates the information
      * upwards the Result-Object Tree
      */
-    protected function setNoticesExist()
+    protected function setNoticesExist(): void
     {
         $this->noticesExist = true;
         if ($this->parent !== null) {
@@ -268,7 +273,7 @@ class Result
      *
      * @return bool
      */
-    public function hasMessages()
+    public function hasMessages(): bool
     {
         return $this->errorsExist || $this->noticesExist || $this->warningsExist;
     }
@@ -276,7 +281,7 @@ class Result
     /**
      * Clears the result
      */
-    public function clear()
+    public function clear(): void
     {
         $this->errors = [];
         $this->notices = [];
@@ -290,33 +295,23 @@ class Result
     }
 
     /**
-     * Internal use only!
-     *
-     * @param string $propertyName
-     * @param string $checkerMethodName
-     * @return bool
-     */
-    protected function hasProperty($propertyName, $checkerMethodName)
-    {
-        if (!empty($this->{$propertyName})) {
-            return true;
-        }
-        foreach ($this->propertyResults as $subResult) {
-            if ($subResult->{$checkerMethodName}()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Does the current Result object have Errors? (Recursively)
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
-        return $this->hasProperty('errors', 'hasErrors');
+        if (count($this->errors) > 0) {
+            return true;
+        }
+
+        foreach ($this->propertyResults as $subResult) {
+            if ($subResult->hasErrors()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -324,9 +319,19 @@ class Result
      *
      * @return bool
      */
-    public function hasWarnings()
+    public function hasWarnings(): bool
     {
-        return $this->hasProperty('warnings', 'hasWarnings');
+        if (count($this->warnings) > 0) {
+            return true;
+        }
+
+        foreach ($this->propertyResults as $subResult) {
+            if ($subResult->hasWarnings()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -334,9 +339,19 @@ class Result
      *
      * @return bool
      */
-    public function hasNotices()
+    public function hasNotices(): bool
     {
-        return $this->hasProperty('notices', 'hasNotices');
+        if (count($this->notices) > 0) {
+            return true;
+        }
+
+        foreach ($this->propertyResults as $subResult) {
+            if ($subResult->hasNotices()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -346,10 +361,10 @@ class Result
      *
      * @return Error[]
      */
-    public function getFlattenedErrors()
+    public function getFlattenedErrors(): array
     {
         $result = [];
-        $this->flattenTree('errors', $result, []);
+        $this->flattenErrorTree($result, []);
         return $result;
     }
 
@@ -360,10 +375,10 @@ class Result
      *
      * @return Warning[]
      */
-    public function getFlattenedWarnings()
+    public function getFlattenedWarnings(): array
     {
         $result = [];
-        $this->flattenTree('warnings', $result, []);
+        $this->flattenWarningsTree($result, []);
         return $result;
     }
 
@@ -374,30 +389,57 @@ class Result
      *
      * @return Notice[]
      */
-    public function getFlattenedNotices()
+    public function getFlattenedNotices(): array
     {
         $result = [];
-        $this->flattenTree('notices', $result, []);
+        $this->flattenNoticesTree($result, []);
         return $result;
     }
 
     /**
-     * Only use internally!
-     *
-     * Flatten a tree of Result objects, based on a certain property.
-     *
-     * @param string $propertyName
      * @param array $result
      * @param array $level
      */
-    public function flattenTree($propertyName, &$result, $level)
+    protected function flattenErrorTree(array &$result, array $level): void
     {
-        if (!empty($this->$propertyName)) {
-            $result[implode('.', $level)] = $this->$propertyName;
+        if (count($this->errors) > 0) {
+            $result[implode('.', $level)] = $this->errors;
         }
         foreach ($this->propertyResults as $subPropertyName => $subResult) {
             $level[] = $subPropertyName;
-            $subResult->flattenTree($propertyName, $result, $level);
+            $subResult->flattenErrorTree($result, $level);
+            array_pop($level);
+        }
+    }
+
+    /**
+     * @param array $result
+     * @param array $level
+     */
+    protected function flattenWarningsTree(array &$result, array $level): void
+    {
+        if (count($this->warnings) > 0) {
+            $result[implode('.', $level)] = $this->warnings;
+        }
+        foreach ($this->propertyResults as $subPropertyName => $subResult) {
+            $level[] = $subPropertyName;
+            $subResult->flattenWarningsTree($result, $level);
+            array_pop($level);
+        }
+    }
+
+    /**
+     * @param array $result
+     * @param array $level
+     */
+    protected function flattenNoticesTree(array &$result, array $level): void
+    {
+        if (count($this->notices) > 0) {
+            $result[implode('.', $level)] = $this->notices;
+        }
+        foreach ($this->propertyResults as $subPropertyName => $subResult) {
+            $level[] = $subPropertyName;
+            $subResult->flattenNoticesTree($result, $level);
             array_pop($level);
         }
     }
@@ -407,7 +449,7 @@ class Result
      *
      * @param Result $otherResult
      */
-    public function merge(Result $otherResult)
+    public function merge(Result $otherResult): void
     {
         if ($otherResult->errorsExist) {
             $this->mergeProperty($otherResult, 'getErrors', 'addError');
@@ -437,10 +479,17 @@ class Result
      * @param string $getterName
      * @param string $adderName
      */
-    protected function mergeProperty(Result $otherResult, $getterName, $adderName)
+    protected function mergeProperty(Result $otherResult, string $getterName, string $adderName): void
     {
-        foreach ($otherResult->$getterName() as $messageInOtherResult) {
-            $this->$adderName($messageInOtherResult);
+        $getter = [$otherResult, $getterName];
+        $adder = [$this, $adderName];
+
+        if (!is_callable($getter) || !is_callable($adder)) {
+            return;
+        }
+
+        foreach ($getter() as $messageInOtherResult) {
+            $adder($messageInOtherResult);
         }
     }
 
@@ -449,7 +498,7 @@ class Result
      *
      * @return Result[]
      */
-    public function getSubResults()
+    public function getSubResults(): array
     {
         return $this->propertyResults;
     }
