@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * View Helper which creates a simple Password Text Box (<input type="password">).
+ * ViewHelper which creates a simple Password Text Box (<input type="password">).
  *
  * Examples
  * ========
@@ -57,7 +57,7 @@ class PasswordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
         $this->registerArgument(
             'errorClass',
             'string',
-            'CSS class to set if there are errors for this view helper',
+            'CSS class to set if there are errors for this ViewHelper',
             false,
             'f3-form-error'
         );

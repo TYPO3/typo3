@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
- * View helper for update script link
+ * ViewHelper for update script link
  * @internal
  */
 class UpdateScriptViewHelper extends ActionViewHelper

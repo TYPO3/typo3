@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * This view helper implements an ifAuthenticated/else condition for FE users/groups.
+ * This ViewHelper implements an ifAuthenticated/else condition for FE users/groups.
  *
  * Examples
  * ========

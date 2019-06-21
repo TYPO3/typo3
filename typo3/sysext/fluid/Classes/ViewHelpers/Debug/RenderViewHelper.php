@@ -37,7 +37,7 @@ class RenderViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * Initializes additional arguments available for this view helper.
+     * Initializes additional arguments available for this ViewHelper.
      */
     public function initializeArguments()
     {

@@ -17,9 +17,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * View helper which returns an option tag.
- * This view helper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
- * Note: This view helper is experimental!
+ * ViewHelper which returns an option tag.
+ * This ViewHelper only works in conjunction with \TYPO3\CMS\Fluid\ViewHelpers\Be\Menus\ActionMenuViewHelper
+ * Note: This ViewHelper is experimental!
  *
  * Examples
  * ========

@@ -59,7 +59,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerTagAttribute('size', 'int', 'The size of the select field');
         $this->registerTagAttribute('placeholder', 'string', 'Specifies a short hint that describes the expected value of an input element');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the select element should be disabled when the page loads');
-        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerArgument('initialDate', 'string', 'Initial time (@see http://www.php.net/manual/en/datetime.formats.php for supported formats)');
         $this->registerArgument('timeType', 'string', '"hour" or "minute"');
         $this->registerUniversalTagAttributes();

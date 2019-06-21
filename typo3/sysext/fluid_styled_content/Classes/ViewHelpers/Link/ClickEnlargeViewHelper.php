@@ -23,7 +23,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * A view helper for creating a link for an image popup.
+ * A ViewHelper for creating a link for an image popup.
  *
  * = Example =
  *

@@ -21,7 +21,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * A view helper for creating URIs to resources.
+ * A ViewHelper for creating URIs to resources.
  *
  * Examples
  * ========

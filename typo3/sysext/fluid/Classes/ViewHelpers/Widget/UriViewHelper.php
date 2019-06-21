@@ -19,7 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * A view helper for creating URIs to extbase actions within widgets.
+ * A ViewHelper for creating URIs to extbase actions within widgets.
  *
  * Examples
  * ========

@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
- * View Helper for rendering extension configuration forms
+ * ViewHelper for rendering extension configuration forms
  * @internal
  */
 class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
@@ -52,7 +52,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
     public $tagName = 'input';
 
     /**
-     * Initialize arguments of this view helper
+     * Initialize arguments of this ViewHelper
      */
     public function initializeArguments()
     {

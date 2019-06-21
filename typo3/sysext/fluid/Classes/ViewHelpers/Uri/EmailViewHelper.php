@@ -19,7 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Email URI view helper.
+ * Email URI ViewHelper.
  * Generates an email URI incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
  * Example

@@ -21,8 +21,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * View helper which returns the current page path as known from TYPO3 backend modules
- * Note: This view helper is experimental!
+ * ViewHelper which returns the current page path as known from TYPO3 backend modules
+ * Note: This ViewHelper is experimental!
  *
  * Examples
  * ========
@@ -37,7 +37,7 @@ class PagePathViewHelper extends AbstractBackendViewHelper
 {
 
     /**
-     * This view helper renders HTML, thus output must not be escaped
+     * This ViewHelper renders HTML, thus output must not be escaped
      *
      * @var bool
      */

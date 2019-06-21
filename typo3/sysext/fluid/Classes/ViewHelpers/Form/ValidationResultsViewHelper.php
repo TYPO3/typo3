@@ -19,7 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Validation results view helper
+ * Validation results ViewHelper
  *
  * Examples
  * ========

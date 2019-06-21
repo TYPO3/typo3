@@ -20,8 +20,8 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * View helper which returns shortcut button with icon
- * Note: This view helper is experimental!
+ * ViewHelper which returns shortcut button with icon
+ * Note: This ViewHelper is experimental!
  *
  * Examples
  * ========

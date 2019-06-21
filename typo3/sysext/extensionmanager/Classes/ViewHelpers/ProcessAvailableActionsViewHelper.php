@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * View helper to let 3rd-party extensions process the list of available
+ * ViewHelper to let 3rd-party extensions process the list of available
  * actions for a given extension.
  * @internal
  */
