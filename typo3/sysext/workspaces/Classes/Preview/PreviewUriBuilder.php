@@ -62,7 +62,6 @@ class PreviewUriBuilder
     public function buildUriForPage(int $uid, int $languageId = 0): string
     {
         $previewKeyword = $this->compilePreviewKeyword(
-            (int)$this->getBackendUser()->user['uid'],
             $this->getPreviewLinkLifetime() * 3600,
             $this->workspaceService->getCurrentWorkspace()
         );
@@ -206,12 +205,11 @@ class PreviewUriBuilder
     /**
      * Adds an entry to the sys_preview database table and return the preview keyword.
      *
-     * @param int $backendUserUid the user ID who created the preview link
      * @param int $ttl Time-To-Live for keyword
      * @param int|null $workspaceId Which workspace ID to preview.
      * @return string Returns keyword to use in URL for ADMCMD_prev=, a 32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]
      */
-    protected function compilePreviewKeyword(int $backendUserUid, int $ttl = 172800, int $workspaceId = null): string
+    protected function compilePreviewKeyword(int $ttl = 172800, int $workspaceId = null): string
     {
         $keyword = md5(uniqid(microtime(), true));
         GeneralUtility::makeInstance(ConnectionPool::class)
@@ -223,8 +221,7 @@ class PreviewUriBuilder
                     'tstamp' => $GLOBALS['EXEC_TIME'],
                     'endtime' => $GLOBALS['EXEC_TIME'] + $ttl,
                     'config' => json_encode([
-                        'fullWorkspace' => $workspaceId,
-                        'BEUSER_uid' => $backendUserUid
+                        'fullWorkspace' => $workspaceId
                     ])
                 ]
             );
