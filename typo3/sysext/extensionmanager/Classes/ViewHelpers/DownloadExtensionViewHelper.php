@@ -20,7 +20,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
- * view helper
+ * ViewHelper
  * @internal
  */
 class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper

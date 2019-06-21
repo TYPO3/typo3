@@ -19,7 +19,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * View helper which creates a <base href="..."></base> tag. The Base URI is taken from the
+ * ViewHelper which creates a <base href="..."></base> tag. The Base URI is taken from the
  * current request.
  * In TYPO3 Flow, you should always include this ViewHelper to make the links work.
  *

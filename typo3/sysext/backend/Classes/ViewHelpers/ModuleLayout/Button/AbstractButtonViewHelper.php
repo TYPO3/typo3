@@ -83,7 +83,7 @@ abstract class AbstractButtonViewHelper extends AbstractViewHelper
     private static function ensureProperNesting(ViewHelperVariableContainer $viewHelperVariableContainer): void
     {
         if (!$viewHelperVariableContainer->exists(ModuleLayoutViewHelper::class, ModuleTemplate::class)) {
-            throw new Exception(sprintf('%s must be nested in <f.be.moduleLayout> view helper', self::class), 1531216505);
+            throw new Exception(sprintf('%s must be nested in <f.be.moduleLayout> ViewHelper', self::class), 1531216505);
         }
     }
 

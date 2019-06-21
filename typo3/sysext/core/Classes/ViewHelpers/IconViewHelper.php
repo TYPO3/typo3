@@ -30,7 +30,7 @@ class IconViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * View helper returns HTML, thus we need to disable output escaping
+     * ViewHelper returns HTML, thus we need to disable output escaping
      *
      * @var bool
      */

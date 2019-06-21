@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * Render permission icon group (user / group / others) of the "Access" module.
  *
- * Most of that could be done in fluid directly, but this view helper
+ * Most of that could be done in fluid directly, but this ViewHelper
  * is much better performance wise.
  * @internal
  */

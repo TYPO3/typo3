@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  */
 
 /**
- * Form view helper. Generates a <form> Tag.
+ * Form ViewHelper. Generates a <form> Tag.
  *
  * Basic usage
  * ===========

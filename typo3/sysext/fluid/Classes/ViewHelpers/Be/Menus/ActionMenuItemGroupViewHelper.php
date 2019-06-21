@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 
 /**
- * View helper which groups options of an option tag.
+ * ViewHelper which groups options of an option tag.
  *
  * Example
  * =======

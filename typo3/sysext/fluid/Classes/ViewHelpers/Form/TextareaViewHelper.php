@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * Textarea view helper.
+ * Textarea ViewHelper.
  * The value of the text area needs to be set via the "value" attribute, as with all other form ViewHelpers.
  *
  * Examples
@@ -47,7 +47,7 @@ class TextareaViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
         $this->registerTagAttribute('cols', 'int', 'The number of columns of a text area');
         $this->registerTagAttribute('disabled', 'string', 'Specifies that the input element should be disabled when the page loads');
         $this->registerTagAttribute('placeholder', 'string', 'The placeholder of the textarea');
-        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerTagAttribute('readonly', 'string', 'The readonly attribute of the textarea', false);
         $this->registerArgument('required', 'bool', 'Specifies whether the textarea is required', false, false);
         $this->registerUniversalTagAttributes();

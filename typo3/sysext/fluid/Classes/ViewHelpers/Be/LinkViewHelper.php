@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A view helper for creating URIs to modules.
+ * A ViewHelper for creating URIs to modules.
  *
  * Examples
  * ========

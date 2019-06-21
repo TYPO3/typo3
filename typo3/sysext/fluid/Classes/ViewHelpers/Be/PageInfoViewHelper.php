@@ -22,8 +22,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * View helper which return page info icon as known from TYPO3 backend modules
- * Note: This view helper is experimental!
+ * ViewHelper which return page info icon as known from TYPO3 backend modules
+ * Note: This ViewHelper is experimental!
  *
  * Examples
  * ========
@@ -38,7 +38,7 @@ class PageInfoViewHelper extends AbstractBackendViewHelper
 {
 
     /**
-     * This view helper renders HTML, thus output must not be escaped
+     * This ViewHelper renders HTML, thus output must not be escaped
      *
      * @var bool
      */

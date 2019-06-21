@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Use this view helper to crop the text between its opening and closing tags.
+ * Use this ViewHelper to crop the text between its opening and closing tags.
  *
  * Examples
  * ========

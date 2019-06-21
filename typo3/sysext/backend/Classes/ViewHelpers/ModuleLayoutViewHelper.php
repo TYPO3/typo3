@@ -23,11 +23,11 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 use TYPO3Fluid\Fluid\View\Exception;
 
 /**
- * A view helper for having properly styled backend modules.
+ * A ViewHelper for having properly styled backend modules.
  * It is recommended to use it in Fluid Layouts.
  * It will render the required HTML for the doc header.
  * All module specific output and further configuration of the doc header
- * must be rendered as children of this view helper.
+ * must be rendered as children of this ViewHelper.
  *
  * Examples
  * ========

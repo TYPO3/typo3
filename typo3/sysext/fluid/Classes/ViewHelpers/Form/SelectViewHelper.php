@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * This view helper generates a <select> dropdown list for the use with a form.
+ * This ViewHelper generates a <select> dropdown list for the use with a form.
  *
  * Basic usage
  * ===========
@@ -107,7 +107,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->registerArgument('optionLabelField', 'string', 'If specified, will call the appropriate getter on each object to determine the label.');
         $this->registerArgument('sortByOptionLabel', 'boolean', 'If true, List will be sorted by label.', false, false);
         $this->registerArgument('selectAllByDefault', 'boolean', 'If specified options are selected if none was set before.', false, false);
-        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this view helper', false, 'f3-form-error');
+        $this->registerArgument('errorClass', 'string', 'CSS class to set if there are errors for this ViewHelper', false, 'f3-form-error');
         $this->registerArgument('prependOptionLabel', 'string', 'If specified, will provide an option at first position with the specified label.');
         $this->registerArgument('prependOptionValue', 'string', 'If specified, will provide an option at first position with the specified value.');
         $this->registerArgument('multiple', 'boolean', 'If set multiple options may be selected.', false, false);

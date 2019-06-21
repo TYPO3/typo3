@@ -23,7 +23,7 @@ use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * A view helper for adding a shortcut button to the doc header area.
+ * A ViewHelper for adding a shortcut button to the doc header area.
  * It must be a child of <be:moduleLayout>
  *
  * Examples

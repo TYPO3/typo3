@@ -20,8 +20,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * The abstract base class for all backend view helpers
- * Note: backend view helpers are still experimental!
+ * The abstract base class for all backend ViewHelpers
+ * Note: backend ViewHelpers are still experimental!
  */
 abstract class AbstractBackendViewHelper extends AbstractViewHelper
 {

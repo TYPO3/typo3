@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * View Helper which creates a simple checkbox (<input type="checkbox">).
+ * ViewHelper which creates a simple checkbox (<input type="checkbox">).
  *
  * Examples
  * ========
@@ -69,7 +69,7 @@ class CheckboxViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument(
             'errorClass',
             'string',
-            'CSS class to set if there are errors for this view helper',
+            'CSS class to set if there are errors for this ViewHelper',
             false,
             'f3-form-error'
         );
