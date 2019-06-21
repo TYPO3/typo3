@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,7 +14,6 @@ declare(strict_types = 1);
  *
  * The TYPO3 project - inspiring people to share!
  */
-namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
 
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,14 +31,14 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
         $classesConfigurationFactory = new ClassesConfigurationFactory();
 
         $classes = [
-            \TYPO3\CMS\Extbase\Persistence\Fixtures\Domain\Model\A::class => [
+            Fixture\Domain\Model\A::class => [
                 'properties' => [
                     'propertiesFromA' => [
                         'fieldName' => 'field_name_a'
                     ]
                 ]
             ],
-            \TYPO3\CMS\Extbase\Persistence\Fixtures\Domain\Model\B::class => [
+            Fixture\Domain\Model\B::class => [
                 'properties' => [
                     'propertiesFromA' => [
                         'fieldName' => 'field_name_z'
@@ -48,7 +48,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                     ]
                 ]
             ],
-            \TYPO3\CMS\Extbase\Persistence\Fixtures\Domain\Model\C::class => [
+            Fixture\Domain\Model\C::class => [
                 'properties' => [
                     'columnNameC' => [
                         'fieldName' => 'field_name_c'
@@ -64,14 +64,14 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
 
         static::assertSame(
             [
-                \TYPO3\CMS\Extbase\Persistence\Fixtures\Domain\Model\A::class => [
+                Fixture\Domain\Model\A::class => [
                     'properties' => [
                         'propertiesFromA' => [
                             'fieldName' => 'field_name_a'
                         ],
                     ]
                 ],
-                \TYPO3\CMS\Extbase\Persistence\Fixtures\Domain\Model\B::class => [
+                Fixture\Domain\Model\B::class => [
                     'properties' => [
                         'propertiesFromA' => [
                             // todo: this is flawed, we'd actually expect field_name_z here
@@ -83,7 +83,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
                         ],
                     ]
                 ],
-                \TYPO3\CMS\Extbase\Persistence\Fixtures\Domain\Model\C::class => [
+                Fixture\Domain\Model\C::class => [
                     'properties' => [
                         'columnNameC' => [
                             'fieldName' => 'field_name_c'
