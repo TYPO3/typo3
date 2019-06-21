@@ -1,0 +1,65 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{cacheEnabled}">
+    <f:then>
+        <p><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.cacheEnabled" /></p>
+        <p><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.cacheEnabled.extraInfo" /></p>
+    </f:then>
+    <f:else>
+        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.usedProvider" /></h2>
+        <div class="typo3-adminPanel-table-overflow">
+            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                <thead>
+                <tr>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.title" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{usedProvider.title}</td>
+                    <td>{usedProvider.providerUsed}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.skippedProviders" /></h2>
+        <div class="typo3-adminPanel-table-overflow">
+            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                <thead>
+                <tr>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.name" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{skippedProviders}" as="providerInformation">
+                    <tr>
+                        <td>{providerInformation.name}</td>
+                        <td>{providerInformation.skippedProvider}</td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+        <h2 class="typo3-adminPanel-headline"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.allProviders" /></h2>
+        <div class="typo3-adminPanel-table-overflow">
+            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                <thead>
+                <tr>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.name" /></th>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key"><f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.pageTitle.provider" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{orderedProviders}" as="providerInformation" key="name">
+                    <tr>
+                        <td>{name}</td>
+                        <td>{providerInformation.provider}</td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:else>
+</f:if>
+</html>

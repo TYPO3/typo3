@@ -58,6 +58,33 @@
 			<trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
 				<source>Total Time [ms]</source>
 			</trans-unit>
+			<trans-unit id="submodule.pageTitle.label">
+				<source>Page title</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.usedProvider">
+				<source>Used provider</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.provider">
+				<source>Provider</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.skippedProviders">
+				<source>Skipped providers (provided no title)</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.allProviders">
+				<source>All providers checked in order</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.cacheEnabled">
+				<source>It's not possible to retrieve the page title (providers) information when the page is cached.</source>
+			</trans-unit>
+			<trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo">
+				<source>Visit this page uncached, or disable the cache through this admin panel.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

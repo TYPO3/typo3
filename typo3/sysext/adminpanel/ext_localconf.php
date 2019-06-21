@@ -48,6 +48,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
             'queryInformation' => [
                 'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\QueryInformation::class,
             ],
+            'pageTitle' => [
+                'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\PageTitle::class,
+            ]
         ],
     ],
 ];
