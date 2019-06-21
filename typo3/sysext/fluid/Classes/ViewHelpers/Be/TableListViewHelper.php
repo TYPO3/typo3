@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * View helper which renders a record list as known from the TYPO3 list module
+ * ViewHelper which renders a record list as known from the TYPO3 list module
  * Note: This feature is experimental!
  *
  * Examples

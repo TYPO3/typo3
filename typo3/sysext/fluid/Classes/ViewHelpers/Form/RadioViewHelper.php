@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * View Helper which creates a simple radio button (<input type="radio">).
+ * ViewHelper which creates a simple radio button (<input type="radio">).
  *
  * Examples
  * ========
@@ -66,7 +66,7 @@ class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFiel
         $this->registerArgument(
             'errorClass',
             'string',
-            'CSS class to set if there are errors for this view helper',
+            'CSS class to set if there are errors for this ViewHelper',
             false,
             'f3-form-error'
         );

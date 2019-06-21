@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Be;
 use TYPO3\CMS\Extensionmanager\Controller\AbstractController;
 
 /**
- * Special view helper for the BE module of the Extension Manager. Loads JS code for triggering
+ * Special ViewHelper for the BE module of the Extension Manager. Loads JS code for triggering
  * refresh events.
  *
  * = Examples =
@@ -46,7 +46,7 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
      * Loads some JS inline code based on a list of triggers. This is used to reload the main
      * menu when modules are loaded/unloaded.
      *
-     * @return string This view helper does not return any content
+     * @return string This ViewHelper does not return any content
      * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */

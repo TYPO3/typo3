@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * This view helper implements an ifHasRole/else condition for FE users/groups.
+ * This ViewHelper implements an ifHasRole/else condition for FE users/groups.
  *
  * Examples
  * ========

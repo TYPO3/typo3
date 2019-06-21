@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 
 /**
- * Abstract Form View Helper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
+ * Abstract Form ViewHelper. Bundles functionality related to direct property access of objects in other Form ViewHelpers.
  *
  * If you set the "property" attribute to the name of the property to resolve from the object, this class will
  * automatically set the name and value of a form element.
@@ -319,7 +319,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     }
 
     /**
-     * Add an CSS class if this view helper has errors
+     * Add an CSS class if this ViewHelper has errors
      */
     protected function setErrorClassAttribute()
     {
@@ -341,7 +341,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     }
 
     /**
-     * Get errors for the property and form name of this view helper
+     * Get errors for the property and form name of this ViewHelper
      *
      * @return \TYPO3\CMS\Extbase\Error\Result Array of errors
      */

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers\Form;
  */
 
 /**
- * Extends the usual select view helper, but additionally translates
+ * Extends the usual select ViewHelper, but additionally translates
  * the select option labels
  *
  * Example:

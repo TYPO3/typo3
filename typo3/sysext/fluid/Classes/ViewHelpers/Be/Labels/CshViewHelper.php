@@ -20,10 +20,10 @@ use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * View helper which returns CSH (context sensitive help) label with icon hover
+ * ViewHelper which returns CSH (context sensitive help) label with icon hover
  * Note: The CSH label will only work, if the current BE user has the "Context Sensitive Help mode"
  * set to something else than "Display no help information" in the Users settings
- * Note: This view helper is experimental!
+ * Note: This ViewHelper is experimental!
  *
  * Examples
  * ========

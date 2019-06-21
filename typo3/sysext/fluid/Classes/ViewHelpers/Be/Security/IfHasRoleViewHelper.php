@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Security;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * This view helper implements an ifHasRole/else condition for BE users/groups.
+ * This ViewHelper implements an ifHasRole/else condition for BE users/groups.
  *
  * Examples
  * ========

@@ -20,7 +20,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * View helper for rendering a styled content infobox markup.
+ * ViewHelper for rendering a styled content infobox markup.
  *
  * States
  * ======

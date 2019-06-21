@@ -22,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * View helper which allows you to create extbase based modules in the style of TYPO3 default modules.
+ * ViewHelper which allows you to create extbase based modules in the style of TYPO3 default modules.
  *
  * Examples
  * ========

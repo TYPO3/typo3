@@ -25,7 +25,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 use TYPO3Fluid\Fluid\View\Exception;
 
 /**
- * A view helper for adding a menu to the doc header area.
+ * A ViewHelper for adding a menu to the doc header area.
  * It must be a child of <be:moduleLayout> and accepts
  * only <be:moduleLayout.menuItem> view helpers as children.
  *
@@ -86,10 +86,10 @@ class MenuViewHelper extends AbstractViewHelper
     private static function ensureProperNesting(ViewHelperVariableContainer $viewHelperVariableContainer): void
     {
         if (!$viewHelperVariableContainer->exists(ModuleLayoutViewHelper::class, ModuleTemplate::class)) {
-            throw new Exception(sprintf('%s must be nested in <f.be.moduleLayout> view helper', self::class), 1531235715);
+            throw new Exception(sprintf('%s must be nested in <f.be.moduleLayout> ViewHelper', self::class), 1531235715);
         }
         if ($viewHelperVariableContainer->exists(ModuleLayoutViewHelper::class, Menu::class)) {
-            throw new Exception(sprintf('%s can not be nested in <f.be.moduleLayout.menu> view helper', self::class), 1531235777);
+            throw new Exception(sprintf('%s can not be nested in <f.be.moduleLayout.menu> ViewHelper', self::class), 1531235777);
         }
     }
 }

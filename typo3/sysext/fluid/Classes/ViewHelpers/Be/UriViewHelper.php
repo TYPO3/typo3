@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A view helper for creating URIs to modules.
+ * A ViewHelper for creating URIs to modules.
  *
  * Examples
  * ========

@@ -19,9 +19,9 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * View helper which returns a select box, that can be used to switch between
+ * ViewHelper which returns a select box, that can be used to switch between
  * multiple actions and controllers and looks similar to TYPO3s funcMenu.
- * Note: This view helper is experimental!
+ * Note: This ViewHelper is experimental!
  *
  * Examples
  * ========

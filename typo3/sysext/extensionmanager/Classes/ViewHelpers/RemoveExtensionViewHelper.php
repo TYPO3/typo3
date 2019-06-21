@@ -20,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
- * view helper for displaying a remove extension link
+ * ViewHelper for displaying a remove extension link
  * @internal
  */
 class RemoveExtensionViewHelper extends ActionViewHelper

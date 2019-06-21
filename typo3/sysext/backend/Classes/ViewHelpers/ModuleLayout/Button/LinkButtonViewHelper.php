@@ -20,7 +20,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * A view helper for adding a link button to the doc header area.
+ * A ViewHelper for adding a link button to the doc header area.
  * It must be a child of <be:moduleLayout>
  *
  * Examples

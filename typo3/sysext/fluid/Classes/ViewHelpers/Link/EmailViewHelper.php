@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Email link view helper.
+ * Email link ViewHelper.
  * Generates an email link incorporating TYPO3s spamProtectEmailAddresses-settings.
  *
  * Examples
