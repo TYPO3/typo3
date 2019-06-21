@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Configuration\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Configuration\Exception;
+
 /**
  * A Parse Error exception
  */
-class ParseErrorException extends \TYPO3\CMS\Extbase\Configuration\Exception
+class ParseErrorException extends Exception
 {
 }

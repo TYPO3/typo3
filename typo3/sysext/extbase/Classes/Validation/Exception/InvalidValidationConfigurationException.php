@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Validation\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Validation\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Validation\Exception;
+
 /**
  * A "InvalidValidationConfiguration" Exception
  */
-class InvalidValidationConfigurationException extends \TYPO3\CMS\Extbase\Validation\Exception
+class InvalidValidationConfigurationException extends Exception
 {
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 
 /*
@@ -14,10 +16,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use RuntimeException;
+
 /**
  * Main exception thrown by classes in this package. May contain an error
  * message and/or another nested exception.
  */
-class RepositoryException extends \RuntimeException
+class RepositoryException extends RuntimeException
 {
 }

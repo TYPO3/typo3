@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 
 /*
@@ -14,17 +16,22 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Exception;
+
 /**
  * An "NotImplementedException" exception
  */
-class NotImplementedException extends \TYPO3\CMS\Extbase\Persistence\Exception
+class NotImplementedException extends Exception
 {
     /**
      * @param string $method
      * @param int $exceptionCode
      */
-    public function __construct($method, int $exceptionCode = null)
+    public function __construct(string $method, int $exceptionCode = null)
     {
-        parent::__construct(sprintf('Method %s is not supported by generic persistence"', $method), $exceptionCode ?? 1350213237);
+        parent::__construct(
+            sprintf('Method %s is not supported by generic persistence"', $method),
+            $exceptionCode ?? 1350213237
+        );
     }
 }

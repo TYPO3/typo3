@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Reflection\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Reflection\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Reflection\Exception;
+
 /**
  * An "Property not accessible" exception
  */
-class PropertyNotAccessibleException extends \TYPO3\CMS\Extbase\Reflection\Exception
+class PropertyNotAccessibleException extends Exception
 {
 }

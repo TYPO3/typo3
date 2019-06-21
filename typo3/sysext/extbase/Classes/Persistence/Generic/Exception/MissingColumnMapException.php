@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+
 /**
  * A "Missing ColumnMap" exception
  */
-class MissingColumnMapException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+class MissingColumnMapException extends Exception
 {
 }

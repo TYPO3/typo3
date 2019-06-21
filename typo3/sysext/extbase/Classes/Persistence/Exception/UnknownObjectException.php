@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Persistence\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Persistence\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Exception;
+
 /**
  * An "Unknown Object" exception
  */
-class UnknownObjectException extends \TYPO3\CMS\Extbase\Persistence\Exception
+class UnknownObjectException extends Exception
 {
 }

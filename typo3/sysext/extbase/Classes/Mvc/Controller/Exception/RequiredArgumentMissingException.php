@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Mvc\Controller\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Exception;
+
 /**
  * An "Invalid Argument Name" exception
  */
-class RequiredArgumentMissingException extends \TYPO3\CMS\Extbase\Mvc\Exception
+class RequiredArgumentMissingException extends Exception
 {
 }

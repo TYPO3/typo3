@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Security;
 
 /*
@@ -14,11 +16,13 @@ namespace TYPO3\CMS\Extbase\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Exception as ExtbaseException;
+
 /**
  * A hash service which should be used to generate and validate hashes.
  *
  * It will use some salt / encryption key in the future.
  */
-class Exception extends \TYPO3\CMS\Extbase\Exception
+class Exception extends ExtbaseException
 {
 }

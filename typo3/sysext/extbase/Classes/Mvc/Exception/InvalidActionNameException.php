@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Mvc\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Exception;
+
 /**
  * An "invalid action name" exception
  */
-class InvalidActionNameException extends \TYPO3\CMS\Extbase\Mvc\Exception
+class InvalidActionNameException extends Exception
 {
 }

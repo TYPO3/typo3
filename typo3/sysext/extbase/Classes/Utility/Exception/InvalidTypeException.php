@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Utility\Exception;
 
 /*
@@ -14,9 +16,11 @@ namespace TYPO3\CMS\Extbase\Utility\Exception;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Exception;
+
 /**
  * An Invalid Type Exception
  */
-class InvalidTypeException extends \TYPO3\CMS\Extbase\Exception
+class InvalidTypeException extends Exception
 {
 }
