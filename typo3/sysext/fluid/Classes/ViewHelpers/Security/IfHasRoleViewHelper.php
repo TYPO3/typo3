@@ -20,28 +20,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * This ViewHelper implements an ifHasRole/else condition for FE users/groups.
+ * This ViewHelper implements an ifHasRole/else condition for frontend groups.
  *
  * Examples
  * ========
  *
- * Basic usage::
+ * Basic usage
+ * -----------
+ *
+ * ::
  *
  *    <f:security.ifHasRole role="Administrator">
- *      This is being shown in case the current FE user belongs to a FE usergroup (aka role) titled "Administrator" (case sensitive)
+ *        This is being shown in case the current FE user belongs to a FE usergroup (aka role) titled "Administrator" (case sensitive)
  *    </f:security.ifHasRole>
  *
- * Everything inside the ``<f:ifHasRole>`` tag is being displayed if the logged in FE user belongs to the specified role.
+ * Everything inside the :html:`<f:security.ifHasRole>` tag is being displayed if the
+ * logged in frontend user belongs to the specified frontend user group.
+ * Comparison is done by comparing to title of the user groups.
  *
- * Using the usergroup uid as role identifier::
+ * Using the usergroup uid as role identifier
+ * ------------------------------------------
+ *
+ * ::
  *
  *    <f:security.ifHasRole role="1">
  *       This is being shown in case the current FE user belongs to a FE usergroup (aka role) with the uid "1"
  *    </f:security.ifHasRole>
  *
- * Everything inside the ``<f:ifHasRole>`` tag is being displayed if the logged in FE user belongs to the specified role.
+ * Everything inside the :html:`<f:security.ifHasRole>` tag is being displayed if the
+ * logged in frontend user belongs to the specified role. Comparison is done
+ * using the ``uid`` of frontend user groups.
  *
- * IfRole / then / else::
+ * IfRole / then / else
+ * --------------------
+ *
+ * ::
  *
  *    <f:security.ifHasRole role="Administrator">
  *       <f:then>
@@ -52,8 +65,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *       </f:else>
  *    </f:security.ifHasRole>
  *
- * Everything inside the "then" tag is displayed if the logged in FE user belongs to the specified role.
- * Otherwise, everything inside the "else"-tag is displayed.
+ * Everything inside the :html:`<f:then></f:then>` tag is displayed if the logged in FE user belongs to the specified role.
+ * Otherwise, everything inside the :html:`<f:else></f:else>` tag is displayed.
  */
 class IfHasRoleViewHelper extends AbstractConditionViewHelper
 {

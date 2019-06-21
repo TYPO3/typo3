@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * A ViewHelper which generates an <input type="file"> HTML element.
- * Make sure to set enctype="multipart/form-data" on the form!
+ * A ViewHelper which generates an :html:`<input type="file">` HTML element.
+ * Make sure to set ``enctype="multipart/form-data"`` on the form!
  *
  * Examples
  * ========

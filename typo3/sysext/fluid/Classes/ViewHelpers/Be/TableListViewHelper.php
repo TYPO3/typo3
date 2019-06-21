@@ -19,8 +19,10 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ViewHelper which renders a record list as known from the TYPO3 list module
- * Note: This feature is experimental!
+ * ViewHelper which renders a record list as known from the TYPO3 list module.
+ *
+ * .. note::
+ *    This feature is experimental!
  *
  * Examples
  * ========
@@ -30,15 +32,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *    <f:be.tableList tableName="fe_users" />
  *
  * List of all "Website user" records stored in the configured storage PID.
- * Records will be editable, if the current BE user has got edit rights for the table "fe_users".
+ * Records will be editable, if the current backend user has got edit rights for the table ``fe_users``.
+ *
  * Only the title column (username) will be shown.
+ *
  * Context menu is active.
  *
  * Full::
  *
- *    <f:be.tableList tableName="fe_users" fieldList="{0: 'name', 1: 'email'}" storagePid="1" levels="2" filter='foo' recordsPerPage="10" sortField="name" sortDescending="true" readOnly="true" enableClickMenu="false" clickTitleMode="info" />
+ *    <f:be.tableList tableName="fe_users" fieldList="{0: 'name', 1: 'email'}"
+ *        storagePid="1"
+ *        levels="2"
+ *        filter="foo"
+ *        recordsPerPage="10"
+ *        sortField="name"
+ *        sortDescending="true"
+ *        readOnly="true"
+ *        enableClickMenu="false"
+ *        clickTitleMode="info"
+ *        />
  *
- * List of "Website user" records with a text property of "foo" stored on PID 1 and two levels down.
+ * List of "Website user" records with a text property of ``foo`` stored on PID ``1`` and two levels down.
  * Clicking on a username will open the TYPO3 info popup for the respective record
  */
 class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper

@@ -35,7 +35,7 @@ use TYPO3Fluid\Fluid\View\Exception;
  * Default::
  *
  *    <be:moduleLayout>
- *     <f:render section="content" />
+ *       <f:render section="content" />
  *    </be:moduleLayout>
  *
  * Output::

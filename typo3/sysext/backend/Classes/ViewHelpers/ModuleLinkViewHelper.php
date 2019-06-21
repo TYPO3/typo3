@@ -23,7 +23,22 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Create internal link within backend app
+ * Create internal link within backend.
+ *
+ * Examples
+ * ========
+ *
+ * Default::
+ *
+ *     <form action="{be:moduleLink(route:'pages_new', arguments:'{id:pageUid}')}" method="post">
+ *         <!-- form content -->
+ *     </form>
+ *
+ * Output::
+ *
+ *     <form action="/pages/new" method="post">
+ *         <!-- form content -->
+ *     </form>
  */
 class ModuleLinkViewHelper extends AbstractViewHelper
 {

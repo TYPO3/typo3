@@ -26,15 +26,29 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * Defaults::
+ * Defaults
+ * --------
+ *
+ * ::
  *
  *    <link href="{f:uri.resource(path:'css/stylesheet.css')}" rel="stylesheet" />
  *
  * Output::
  *
- *    <link href="Resources/Packages/MyPackage/stylesheet.css" rel="stylesheet" />
+ *    <link href="typo3conf/ext/example_extension/Resources/Resources/Public/css/stylesheet.css" rel="stylesheet" />
  *
- * (depending on current package)
+ * Depending on current extension.
+ *
+ * With extension name
+ * -------------------
+ *
+ * ::
+ *
+ *    <link href="{f:uri.resource(path:'css/stylesheet.css', extensionName: 'AnotherExtension')}" rel="stylesheet" />
+ *
+ * Output::
+ *
+ *    <link href="typo3conf/ext/another_extension/Resources/Resources/Public/css/stylesheet.css" rel="stylesheet" />
  */
 class ResourceViewHelper extends AbstractViewHelper
 {

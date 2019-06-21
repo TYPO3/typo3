@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * The table argument is mandatory, it decides what record is to be created.
  *
- * The pid argument will put the new record on this page, if 0 given it will
+ * The pid argument will put the new record on this page, if ``0`` given it will
  * be placed to the root page.
  *
  * The uid argument accepts only negative values. If this is given, the new
@@ -37,7 +37,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * An exception will be thrown, if both uid and pid are given.
  * An exception will be thrown, if the uid argument is not a negative integer.
  *
- * To edit records, use the editRecordViewHelper
+ * To edit records, use the :ref:`<be:link.editRecordViewHelper> <typo3-backend-link-editrecord>`.
  *
  * Examples
  * ========
@@ -49,7 +49,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
- *      Edit record
+ *        Edit record
  *    </a>
  *
  * Link to create a new record of a_table on root page::
@@ -59,7 +59,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][]=new&returnUrl=foo/bar">
- *      Edit record
+ *        Edit record
  *    </a>
  *
  * Link to create a new record of a_table on page 17::
@@ -69,7 +69,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Output::
  *
  *    <a href="/typo3/index.php?route=/record/edit&edit[a_table][-17]=new&returnUrl=foo/bar">
- *      Edit record
+ *        Edit record
  *    </a>
  *
  * Link to create a new record then return back to the BE module "web_MyextensionList"::

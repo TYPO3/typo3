@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * pass the uid and table to FormEngine.
  *
  * The uid must be given as a positive integer.
- * For new records, use the newRecordViewHelper
+ * For new records, use the :ref:`<be:uri.newRecord> <typo3-backend-uri-newrecord>`.
  *
  * Examples
  * ========

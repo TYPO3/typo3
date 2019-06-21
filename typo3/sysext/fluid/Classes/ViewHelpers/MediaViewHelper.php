@@ -26,13 +26,16 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 /**
  * Render a given media file with the correct html tag.
  *
- * It asks the RendererRegister for the correct Renderer class and if not found it falls
- * back to the ImageViewHelper as that is the "Renderer" class for images in Fluid context.
+ * It asks the :php:`RendererRegistry` for the correct Renderer class and if not found it falls
+ * back to the :php:`ImageViewHelper` as that is the "Renderer" class for images in Fluid context.
  *
  * Examples
  * ========
  *
- * Image Object::
+ * Image Object
+ * ------------
+ *
+ * ::
  *
  *    <f:media file="{file}" width="400" height="375" />
  *
@@ -40,7 +43,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  *    <img alt="alt set in image record" src="fileadmin/_processed_/323223424.png" width="396" height="375" />
  *
- * MP4 Video Object::
+ * MP4 Video Object
+ * ----------------
+ *
+ * ::
  *
  *    <f:media file="{file}" width="400" height="375" />
  *
@@ -48,7 +54,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  *    <video width="400" height="375" controls><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
  *
- * MP4 Video Object with loop and autoplay option set::
+ * MP4 Video Object with loop and autoplay option set
+ * --------------------------------------------------
+ *
+ * ::
  *
  *    <f:media file="{file}" width="400" height="375" additionalConfig="{loop: '1', autoplay: '1'}" />
  *

@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * ViewHelper which creates a simple Password Text Box (<input type="password">).
+ * ViewHelper which creates a simple Password Text Box :html:`<input type="password">`.
  *
  * Examples
  * ========

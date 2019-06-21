@@ -28,15 +28,22 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *    <f:be.container>your module content</f:be.container>
  *
  * "your module content" wrapped with proper head & body tags.
- * Default backend CSS styles and JavaScript will be included
+ * Default backend CSS styles and JavaScript will be included.
  *
  * All options::
  *
- *    <f:be.container pageTitle="foo" includeCssFiles="{0: '{f:uri.resource(path:\'Css/Styles.css\')}'}" includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'}" addJsInlineLabels="{0: 'label1', 1: 'label2'}">your module content</f:be.container>
+ *    <f:be.container pageTitle="foo"
+ *        includeCssFiles="{0: '{f:uri.resource(path:\'Css/Styles.css\')}'}"
+ *        includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'}"
+ *        addJsInlineLabels="{0: 'label1', 1: 'label2'}"
+ *    >
+ *        your module content
+ *    </f:be.container>
  *
  * "your module content" wrapped with proper head & body tags.
- * Custom CSS file ``EXT:your_extension/Resources/Public/Css/styles.css`` and
- * JavaScript files ``EXT:your_extension/Resources/Public/JavaScript/Library1.js`` and ``EXT:your_extension/Resources/Public/JavaScript/Library2.js``
+ * Custom CSS file :file:`EXT:your_extension/Resources/Public/Css/styles.css` and
+ * JavaScript files :file:`EXT:your_extension/Resources/Public/JavaScript/Library1.js` and
+ * :file:`EXT:your_extension/Resources/Public/JavaScript/Library2.js`
  * will be loaded, plus some inline labels for usage in JS code.
  */
 class ContainerViewHelper extends AbstractBackendViewHelper

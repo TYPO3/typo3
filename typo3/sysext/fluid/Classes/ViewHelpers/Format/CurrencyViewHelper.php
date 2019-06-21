@@ -24,30 +24,55 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Examples
  * ========
  *
- * Defaults::
+ * Defaults
+ * --------
+ *
+ * ::
  *
  *    <f:format.currency>123.456</f:format.currency>
  *
- * ``123,46``
+ * Output::
  *
- * All parameters::
+ *     123,46
  *
- *    <f:format.currency currencySign="$" decimalSeparator="." thousandsSeparator="," prependCurrency="true" separateCurrency="false" decimals="2">54321</f:format.currency>
+ * All parameters
+ * --------------
  *
- * ``$54,321.00``
+ * ::
  *
- * Inline notation::
+ *    <f:format.currency decimalSeparator="." thousandsSeparator="," decimals="2"
+ *        currencySign="$" prependCurrency="true" separateCurrency="false"
+ *    >
+ *        54321
+ *    </f:format.currency>
  *
- *    {someNumber -> f:format.currency(thousandsSeparator: ',', currencySign: '€')}
+ * Output::
  *
- * ``54,321,00 €``
- * (depending on the value of {someNumber})
+ *     $54,321.00
  *
- * use dash for decimals without value::
+ * Inline notation
+ * ---------------
+ *
+ * ::
+ *
+ *    {someNumber -> f:format.currency(thousandsSeparator: ',', currencySign: 'EUR')}
+ *
+ * Output::
+ *
+ *    54,321,00 EUR
+ *
+ * Depending on the value of ``{someNumber}``.
+ *
+ * Use dash for decimals without value
+ * -----------------------------------
+ *
+ * ::
  *
  *    <f:format.currency useDash="true">123.00</f:format.currency>
  *
- * ``123,-``
+ * Output::
+ *
+ *     123,-
  */
 class CurrencyViewHelper extends AbstractViewHelper
 {

@@ -20,24 +20,33 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
- * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html (applying PHPs rawurlencode() function)
- * @see http://www.php.net/manual/function.rawurlencode.php
- * Note: The output is not escaped. You may have to ensure proper escaping on your own.
+ * Encodes the given string according to http://www.faqs.org/rfcs/rfc3986.html
+ * Applying PHPs :php:`rawurlencode()` function.
+ * See https://www.php.net/manual/function.rawurlencode.php.
+ *
+ * .. note::
+ *    The output is not escaped. You may have to ensure proper escaping on your own.
  *
  * Examples
  * ========
  *
- * default notation::
+ * Default notation
+ * ----------------
+ *
+ * ::
  *
  *    <f:format.rawurlencode>foo @+%/</f:format.rawurlencode>
  *
- * ``foo%20%40%2B%25%2F`` (rawurlencode() applied)
+ * ``foo%20%40%2B%25%2F`` :php:`rawurlencode()` applied.
  *
- * inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {text -> f:format.urlencode()}
  *
- * Url encoded text (rawurlencode() applied)
+ * Url encoded text :php:`rawurlencode()` applied.
  */
 class UrlencodeViewHelper extends AbstractViewHelper
 {
@@ -63,7 +72,7 @@ class UrlencodeViewHelper extends AbstractViewHelper
     /**
      * Escapes special characters with their escaped counterparts as needed using PHPs rawurlencode() function.
      *
-     * @see http://www.php.net/manual/function.rawurlencode.php
+     * @see https://www.php.net/manual/function.rawurlencode.php
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext

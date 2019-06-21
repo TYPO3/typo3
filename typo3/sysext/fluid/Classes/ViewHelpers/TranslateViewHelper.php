@@ -22,49 +22,63 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Translate a key from locallang. The files are loaded from the folder
- * "Resources/Private/Language/".
+ * :file:`Resources/Private/Language/`.
  *
  * Examples
  * ========
  *
- * Translate key::
+ * Translate key
+ * -------------
+ *
+ * ::
  *
  *    <f:translate key="key1" />
  *
- * value of key "key1" in the current website language
- *
- * Keep HTML tags::
- *
- *    <f:format.raw><f:translate key="htmlKey" /></f:format.raw>
- *
- * value of key "htmlKey" in the current website language, no htmlspecialchars applied
- *
- * Translate key from custom locallang file::
- *
- *    <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xlf:key1" />
- *
- * value of key "key1" in the current website language
- *
- * Inline notation with arguments and default value::
- *
- *    {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
- *
- * value of key "argumentsKey" in the current website language
- * with "%1" and "%2" are replaced by "dog" and "fox" (printf)
- * if the key is not found, the output is "default value"
- *
- * Inline notation with extension name::
- *
- *    {f:translate(key: 'someKey', extensionName: 'SomeExtensionName')}
- *
- * value of key "someKey" in the current website language
- * the locallang file of extension "some_extension_name" will be used
- *
- * Translate id as in TYPO3 Flow::
+ * Value of key "key1" in the current website language. Alternatively id can be used instead of
+ * key:
  *
  *    <f:translate id="key1" />
  *
- * value of id "key1" in the current website language
+ * This will output the same as above. If both id and key are set, id will take precedence.
+ *
+ * Keep HTML tags
+ * --------------
+ *
+ * ::
+ *
+ *    <f:format.raw><f:translate key="htmlKey" /></f:format.raw>
+ *
+ * Value of key "htmlKey" in the current website language, no :php:`htmlspecialchars` applied.
+ *
+ * Translate key from custom locallang file
+ * ----------------------------------------
+ *
+ * ::
+ *
+ *    <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xlf:key1" />
+ *
+ * Value of key "key1" in the current website language.
+ *
+ * Inline notation with arguments and default value
+ * ------------------------------------------------
+ *
+ * ::
+ *
+ *    {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
+ *
+ * Value of key "argumentsKey" in the current website language
+ * with "%1" and "%2" are replaced by "dog" and "fox" (:php:`printf`).
+ * If the key is not found, the output is "default value".
+ *
+ * Inline notation with extension name
+ * -----------------------------------
+ *
+ * ::
+ *
+ *    {f:translate(key: 'someKey', extensionName: 'SomeExtensionName')}
+ *
+ * Value of key "someKey" in the current website language.
+ * The locallang file of extension "some_extension_name" will be used.
  */
 class TranslateViewHelper extends AbstractViewHelper
 {
@@ -85,7 +99,7 @@ class TranslateViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('key', 'string', 'Translation Key');
-        $this->registerArgument('id', 'string', 'Translation Key compatible to TYPO3 Flow');
+        $this->registerArgument('id', 'string', 'Translation ID. Same as key.');
         $this->registerArgument('default', 'string', 'If the given locallang key could not be found, this value is used. If this argument is not set, child nodes will be used to render the default');
         $this->registerArgument('arguments', 'array', 'Arguments to be replaced in the resulting string');
         $this->registerArgument('extensionName', 'string', 'UpperCamelCased extension key (for example BlogExample)');
@@ -110,7 +124,7 @@ class TranslateViewHelper extends AbstractViewHelper
         $extensionName = $arguments['extensionName'];
         $translateArguments = $arguments['arguments'];
 
-        // Wrapper including a compatibility layer for TYPO3 Flow Translation
+        // Use key if id is empty.
         if ($id === null) {
             $id = $key;
         }
@@ -138,7 +152,7 @@ class TranslateViewHelper extends AbstractViewHelper
     /**
      * Wrapper call to static LocalizationUtility
      *
-     * @param string $id Translation Key compatible to TYPO3 Flow
+     * @param string $id Translation Key
      * @param string $extensionName UpperCamelCased extension key (for example BlogExample)
      * @param array $arguments Arguments to be replaced in the resulting string
      * @param string $languageKey Language key to use for this translation

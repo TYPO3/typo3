@@ -20,24 +20,30 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Resizes a given image (if required) and renders the respective img tag
+ * Resizes a given image (if required) and renders the respective img tag.
  *
  * Examples
  * ========
  *
- * Default::
+ * Default
+ * -------
+ *
+ * ::
  *
  *    <f:image src="EXT:myext/Resources/Public/typo3_logo.png" alt="alt text" />
  *
- * Output::
+ * Output in frontend::
  *
  *    <img alt="alt text" src="typo3conf/ext/myext/Resources/Public/typo3_logo.png" width="396" height="375" />
  *
- * or (in BE mode)::
+ * or in backend::
  *
  *    <img alt="alt text" src="../typo3conf/ext/viewhelpertest/Resources/Public/typo3_logo.png" width="396" height="375" />
  *
- * Image Object::
+ * Image Object
+ * ------------
+ *
+ * ::
  *
  *    <f:image image="{imageObject}" />
  *
@@ -45,7 +51,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  *    <img alt="alt set in image record" src="fileadmin/_processed_/323223424.png" width="396" height="375" />
  *
- * Inline notation::
+ * Inline notation
+ * ---------------
+ *
+ * ::
  *
  *    {f:image(src: 'EXT:viewhelpertest/Resources/Public/typo3_logo.png', alt: 'alt text', minWidth: 30, maxWidth: 40)}
  *
@@ -53,20 +62,26 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  *
  *    <img alt="alt text" src="../typo3temp/assets/images/f13d79a526.png" width="40" height="38" />
  *
- * (depending on your TYPO3s encryption key)
+ * Depending on your TYPO3s encryption key.
  *
- * Other resource type (e.g. PDF)::
+ * Other resource type (e.g. PDF)
+ * ------------------------------
+ *
+ * ::
  *
  *    <f:image src="fileadmin/user_upload/example.pdf" alt="foo" />
  *
- * If your graphics processing library is set up correctly then it will output a thumbnail of the first page of your PDF document.
+ * If your graphics processing library is set up correctly then it will output a thumbnail of the first page of your PDF document:
  * ``<img src="fileadmin/_processed_/1/2/csm_example_aabbcc112233.gif" width="200" height="284" alt="foo">``
  *
- * Non-existent image::
+ * Non-existent image
+ * ------------------
+ *
+ * ::
  *
  *    <f:image src="NonExistingImage.png" alt="foo" />
  *
- * Could not get image resource for "NonExistingImage.png".
+ * ``Could not get image resource for "NonExistingImage.png".``
  */
 class ImageViewHelper extends AbstractTagBasedViewHelper
 {

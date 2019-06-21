@@ -15,35 +15,38 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * This ViewHelper generates a <select> dropdown list for the use with a form.
+ * This ViewHelper generates a :html:`<select>` dropdown list for the use with a form.
  *
  * Basic usage
  * ===========
  *
- * The most straightforward way is to supply an associative array as the "options" parameter.
+ * The most straightforward way is to supply an associative array as the ``options`` parameter.
  * The array key is used as option key, and the value is used as human-readable name.
  *
  * Basic usage::
  *
  *    <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" />
  *
- * Pre-select a value
+ * Pre select a value
  * ------------------
  *
- * To pre-select a value, set "value" to the option key which should be selected.
+ * To pre select a value, set ``value`` to the option key which should be selected.
  * Default value::
  *
  *    <f:form.select name="paymentOptions" options="{payPal: 'PayPal International Services', visa: 'VISA Card'}" value="visa" />
  *
  * Generates a dropdown box like above, except that "VISA Card" is selected.
  *
- * If the select box is a multi-select box (multiple="1"), then "value" can be an array as well.
+ * If the select box is a multi-select box :html:`multiple="1"`, then "value" can be an array as well.
  *
  * Custom options and option group rendering
  * -----------------------------------------
  *
- * Child nodes can be used to create a completely custom set of ``<option>`` and ``<optgroup>`` tags in a way compatible with
- * the HMAC generation. To do so, leave out the ``options`` argument and use child ViewHelpers:
+ * Child nodes can be used to create a completely custom set of
+ * :html:`<option>` and :html:`<optgroup>` tags in a way compatible with the
+ * HMAC generation.
+ * To do so, leave out the ``options`` argument and use child ViewHelpers:
+ *
  * Custom options and optgroup::
  *
  *    <f:form.select name="myproperty">
@@ -55,30 +58,34 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *       </f:form.select.optgroup>
  *    </f:form.select>
  *
- * Note: do not use vanilla ``<option>`` or ``<optgroup>`` tags! They will invalidate the HMAC generation!
+ * .. note::
+ *    Do not use vanilla :html:`<option>` or :html:`<optgroup>` tags!
+ *    They will invalidate the HMAC generation!
  *
  * Usage on domain objects
  * -----------------------
  *
- * If you want to output domain objects, you can just pass them as array into the "options" parameter.
- * To define what domain object value should be used as option key, use the "optionValueField" variable. Same goes for optionLabelField.
- * If neither is given, the Identifier (UID/uid) and the __toString() method are tried as fallbacks.
+ * If you want to output domain objects, you can just pass them as array into the ``options`` parameter.
+ * To define what domain object value should be used as option key, use the ``optionValueField`` variable. Same goes for ``optionLabelField``.
+ * If neither is given, the Identifier (UID/uid) and the :php:`__toString()` method are tried as fallbacks.
  *
- * If the optionValueField variable is set, the getter named after that value is used to retrieve the option key.
- * If the optionLabelField variable is set, the getter named after that value is used to retrieve the option value.
+ * If the ``optionValueField`` variable is set, the getter named after that value is used to retrieve the option key.
+ * If the ``optionLabelField`` variable is set, the getter named after that value is used to retrieve the option value.
  *
- * If the prependOptionLabel variable is set, an option item is added in first position, bearing an empty string or -
- * If provided, the value of the prependOptionValue variable as value.
+ * If the ``prependOptionLabel`` variable is set, an option item is added in first position, bearing an empty string or -
+ * if provided, the value of the ``prependOptionValue`` variable as value.
  *
  * Domain objects::
  *
  *    <f:form.select name="users" options="{userArray}" optionValueField="id" optionLabelField="firstName" />
  *
- * In the above example, the userArray is an array of "User" domain objects, with no array key specified.
+ * In the above example, the ``userArray`` is an array of "User" domain objects, with no array key specified.
  *
- * So, in the above example, the method $user->getId() is called to retrieve the key, and $user->getFirstName() to retrieve the displayed value of each entry.
+ * So, in the above example, the method :php:`$user->getId()` is called to
+ * retrieve the key, and :php:`$user->getFirstName()` to retrieve the displayed
+ * value of each entry.
  *
- * The "value" property now expects a domain object, and tests for object equivalence.
+ * The ``value`` property now expects a domain object, and tests for object equivalence.
  */
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper
 {

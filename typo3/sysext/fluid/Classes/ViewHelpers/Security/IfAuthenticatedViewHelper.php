@@ -19,20 +19,27 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * This ViewHelper implements an ifAuthenticated/else condition for FE users/groups.
+ * This ViewHelper implements an ifAuthenticated/else condition for frontend users.
  *
  * Examples
  * ========
  *
- * Basic usage::
+ * Basic usage
+ * -----------
+ *
+ * ::
  *
  *    <f:security.ifAuthenticated>
  *       This is being shown whenever a FE user is logged in
  *    </f:security.ifAuthenticated>
  *
- * Everything inside the ``<f:ifAuthenticated>`` tag is being displayed if you are authenticated with any FE user account.
+ * Everything inside the :html:`<f:security.ifAuthenticated>` tag is being displayed if
+ * current frontend user is authenticated.
  *
- * IfAuthenticated / then / else::
+ * IfAuthenticated / then / else
+ * -----------------------------
+ *
+ * ::
  *
  *    <f:security.ifAuthenticated>
  *       <f:then>
@@ -43,8 +50,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
  *       </f:else>
  *    </f:security.ifAuthenticated>
  *
- * Everything inside the "then" tag is displayed if you have access.
- * Otherwise, everything inside the "else"-tag is displayed.
+ * Everything inside the :html:`<f:then></f:then>` tag is displayed if frontend user is authenticated.
+ * Otherwise, everything inside the :html:`<f:else></f:else>` tag is displayed.
  */
 class IfAuthenticatedViewHelper extends AbstractConditionViewHelper
 {

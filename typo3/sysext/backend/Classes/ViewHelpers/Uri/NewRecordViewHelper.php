@@ -28,7 +28,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  * The table argument is mandatory, it decides what record is to be created.
  *
- * The pid argument will put the new record on this page, if 0 given it will
+ * The pid argument will put the new record on this page, if ``0`` given it will
  * be placed to the root page.
  *
  * The uid argument accepts only negative values. If this is given, the new
@@ -39,7 +39,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * An exception will be thrown, if both uid and pid are given.
  * An exception will be thrown, if the uid argument is not a negative integer.
  *
- * To edit records, use the editRecordViewHelper
+ * To edit records, use the :ref:`<be:uri.editRecord> <typo3-backend-uri-editrecord>`.
  *
  * Examples
  * ========

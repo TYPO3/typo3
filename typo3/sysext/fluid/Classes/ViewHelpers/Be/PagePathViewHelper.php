@@ -20,8 +20,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
- * ViewHelper which returns the current page path as known from TYPO3 backend modules
- * Note: This ViewHelper is experimental!
+ * ViewHelper which returns the current page path as known from TYPO3 backend modules.
+ *
+ * .. note::
+ *    This ViewHelper is experimental!
  *
  * Examples
  * ========

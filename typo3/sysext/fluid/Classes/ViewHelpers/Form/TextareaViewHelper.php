@@ -15,8 +15,9 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  */
 
 /**
- * Textarea ViewHelper.
- * The value of the text area needs to be set via the "value" attribute, as with all other form ViewHelpers.
+ * Generates an :html:`<textarea>`.
+ *
+ * The value of the text area needs to be set via the ``value`` attribute, as with all other form ViewHelpers.
  *
  * Examples
  * ========
