@@ -234,10 +234,13 @@ class TcaRecordTitle implements FormDataProviderInterface
             return '';
         }
         $labelParts = [];
-        foreach ($value as $itemValue) {
-            $itemKey = array_search($itemValue, array_column($fieldConfig['items'], 1));
-            if ($itemKey !== false) {
-                $labelParts[] = $fieldConfig['items'][$itemKey][0];
+        if (!empty($fieldConfig['items'])) {
+            $listOfValues = array_column($fieldConfig['items'], 1);
+            foreach ($value as $itemValue) {
+                $itemKey = array_search($itemValue, $listOfValues);
+                if ($itemKey !== false) {
+                    $labelParts[] = $fieldConfig['items'][$itemKey][0];
+                }
             }
         }
         $title = implode(', ', $labelParts);
