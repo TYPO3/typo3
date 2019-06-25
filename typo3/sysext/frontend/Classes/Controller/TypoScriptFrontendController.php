@@ -3182,9 +3182,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                                 && (string)$includeTsConfigFilename !== ''
                                 && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
                             ) {
-                                $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey)
-                                    . $includeTsConfigFilename;
-                                if (file_exists($includeTsConfigFileAndPath)) {
+                                $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
+                                $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
+                                if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
                                     $TSdataArray[] = file_get_contents($includeTsConfigFileAndPath);
                                 }
                             }

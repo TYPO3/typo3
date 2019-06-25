@@ -742,9 +742,9 @@ class BackendUtility
                             && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
                             && (string)$includeTsConfigFilename !== ''
                         ) {
-                            $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
-                                $includeTsConfigFilename;
-                            if (file_exists($includeTsConfigFileAndPath)) {
+                            $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
+                            $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
+                            if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
                                 $tsDataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
                             }
                         }
