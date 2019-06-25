@@ -1048,6 +1048,7 @@ abstract class AbstractUserAuthentication
         if ($this->id) {
             $this->getSessionBackend()->remove($this->id);
         }
+        $this->sessionData = [];
         $this->user = null;
     }
 

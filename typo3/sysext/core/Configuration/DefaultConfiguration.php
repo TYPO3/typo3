@@ -71,6 +71,9 @@ return [
         ],
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
+        'features' => [
+            'security.frontend.keepSessionDataOnLogout' => false,
+        ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
         'encryptionKey' => '',

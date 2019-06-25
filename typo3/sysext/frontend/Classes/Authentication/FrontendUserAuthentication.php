@@ -441,7 +441,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * Thereby the current user (if any) is effectively logged out!
      * Additionally the cookie is removed, but only if there is no session data.
      * If session data exists, only the user information is removed and the session
-     * gets converted into an anonymous session.
+     * gets converted into an anonymous session if the feature toggle
+     * "security.frontend.keepSessionDataOnLogout" is set to true (default: false).
      */
     protected function performLogoff()
     {
@@ -455,12 +456,12 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
             // Leave uncaught, will unset cookie later in this method
         }
 
-        if (!empty($sessionData)) {
+        if (!empty($sessionData) && $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['security.frontend.keepSessionDataOnLogout']) {
             // Regenerate session as anonymous
             $this->regenerateSessionId($oldSession, true);
-        } else {
             $this->user = null;
-            $this->getSessionBackend()->remove($this->id);
+        } else {
+            parent::performLogoff();
             if ($this->isCookieSet()) {
                 $this->removeCookie($this->name);
             }
