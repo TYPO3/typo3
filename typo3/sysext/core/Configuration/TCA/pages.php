@@ -139,6 +139,7 @@ return [
         'TSconfig' => [
             'exclude' => true,
             'label' => 'TSconfig:',
+            'displayCond' => 'HIDE_FOR_NON_ADMINS',
             'config' => [
                 'type' => 'text',
                 'cols' => 40,
@@ -794,6 +795,7 @@ return [
         'tsconfig_includes' => [
             'exclude' => true,
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.tsconfig_includes',
+            'displayCond' => 'HIDE_FOR_NON_ADMINS',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',

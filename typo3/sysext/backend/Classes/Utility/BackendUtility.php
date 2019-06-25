@@ -1269,12 +1269,12 @@ class BackendUtility
                                 2
                             );
                         if ((string)$includeTsConfigFileExtensionKey !== ''
-                                && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
-                                && (string)$includeTsConfigFilename !== ''
-                            ) {
-                            $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey) .
-                                    $includeTsConfigFilename;
-                            if (file_exists($includeTsConfigFileAndPath)) {
+                            && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
+                            && (string)$includeTsConfigFilename !== ''
+                        ) {
+                            $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
+                            $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
+                            if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
                                 $TSdataArray['uid_' . $v['uid'] . '_static_' . $key] = file_get_contents($includeTsConfigFileAndPath);
                             }
                         }

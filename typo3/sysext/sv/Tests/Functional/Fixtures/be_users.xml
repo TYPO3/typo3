@@ -2,20 +2,36 @@
 <dataset>
     <be_users>
         <uid>1</uid>
-        <pid>1</pid>
+        <pid>0</pid>
         <username>admin</username>
         <deleted>0</deleted>
+        <admin>1</admin>
+        <disableIPlock>1</disableIPlock>
     </be_users>
     <be_users>
         <uid>2</uid>
-        <pid>1</pid>
+        <pid>0</pid>
         <username>test1</username>
         <deleted>1</deleted>
+        <admin>0</admin>
+        <disableIPlock>1</disableIPlock>
     </be_users>
     <be_users>
         <uid>3</uid>
-        <pid>1</pid>
+        <pid>0</pid>
         <username>test1</username>
         <deleted>0</deleted>
+        <admin>0</admin>
+        <disableIPlock>1</disableIPlock>
+    </be_users>
+    <be_users>
+        <uid>9</uid>
+        <pid>0</pid>
+        <username>editor</username>
+        <usergroup>9</usergroup>
+        <deleted>0</deleted>
+        <admin>0</admin>
+        <options>3</options>
+        <disableIPlock>1</disableIPlock>
     </be_users>
 </dataset>

@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Http\UrlHandlerInterface;
@@ -4090,9 +4091,9 @@ class TypoScriptFrontendController
                                 && (string)$includeTsConfigFilename !== ''
                                 && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
                             ) {
-                                $includeTsConfigFileAndPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey)
-                                    . $includeTsConfigFilename;
-                                if (file_exists($includeTsConfigFileAndPath)) {
+                                $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
+                                $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
+                                if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
                                     $TSdataArray[] = file_get_contents($includeTsConfigFileAndPath);
                                 }
                             }
