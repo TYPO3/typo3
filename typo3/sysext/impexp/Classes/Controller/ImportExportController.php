@@ -415,7 +415,7 @@ class ImportExportController
             case 'import':
                 $backendUser = $this->getBackendUser();
                 $isEnabledForNonAdmin = (bool)($backendUser->getTSConfig()['options.']['impexp.']['enableImportForNonAdminUser'] ?? false);
-                if (!$backendUser->isAdmin() && $isEnabledForNonAdmin) {
+                if (!$backendUser->isAdmin() && !$isEnabledForNonAdmin) {
                     throw new \RuntimeException(
                         'Import module is disabled for non admin users and '
                         . 'userTsConfig options.impexp.enableImportForNonAdminUser is not enabled.',
