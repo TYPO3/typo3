@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Connection;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
@@ -541,23 +542,35 @@ class ElementInformationController
         /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
+
+        $predicates = [
+            $queryBuilder->expr()->eq(
+                'ref_table',
+                $queryBuilder->createNamedParameter($selectTable, \PDO::PARAM_STR)
+            ),
+            $queryBuilder->expr()->eq(
+                'ref_uid',
+                $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
+            ),
+            $queryBuilder->expr()->eq(
+                'deleted',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
+            )
+        ];
+
+        $backendUser = $this->getBackendUser();
+        if (!$backendUser->isAdmin()) {
+            $allowedSelectTables = GeneralUtility::trimExplode(',', $backendUser->groupData['tables_select']);
+            $predicates[] = $queryBuilder->expr()->in(
+                'tablename',
+                $queryBuilder->createNamedParameter($allowedSelectTables, Connection::PARAM_STR_ARRAY)
+            );
+        }
+
         $rows = $queryBuilder
             ->select('*')
             ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'ref_table',
-                    $queryBuilder->createNamedParameter($selectTable, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'ref_uid',
-                    $queryBuilder->createNamedParameter($selectUid, \PDO::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'deleted',
-                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
-                )
-            )
+            ->where(...$predicates)
             ->execute()
             ->fetchAll();
 
@@ -569,9 +582,14 @@ class ElementInformationController
                     return;
                 }
             }
+
             $line = [];
             $record = BackendUtility::getRecord($row['tablename'], $row['recuid']);
             if ($record) {
+                BackendUtility::fixVersioningPid($row['tablename'], $record);
+                if (!$this->canAccessPage($row['tablename'], $record)) {
+                    continue;
+                }
                 $parentRecord = BackendUtility::getRecord('pages', $record['pid']);
                 $parentRecordTitle = is_array($parentRecord)
                     ? BackendUtility::getRecordTitle('pages', $parentRecord)
@@ -619,19 +637,31 @@ class ElementInformationController
         /** @var $queryBuilder \TYPO3\CMS\Core\Database\Query\QueryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
+
+        $predicates = [
+            $queryBuilder->expr()->eq(
+                'tablename',
+                $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
+            ),
+            $queryBuilder->expr()->eq(
+                'recuid',
+                $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
+            )
+        ];
+
+        $backendUser = $this->getBackendUser();
+        if (!$backendUser->isAdmin()) {
+            $allowedSelectTables = GeneralUtility::trimExplode(',', $backendUser->groupData['tables_select']);
+            $predicates[] = $queryBuilder->expr()->in(
+                'ref_table',
+                $queryBuilder->createNamedParameter($allowedSelectTables, Connection::PARAM_STR_ARRAY)
+            );
+        }
+
         $rows = $queryBuilder
             ->select('*')
             ->from('sys_refindex')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($table, \PDO::PARAM_STR)
-                ),
-                $queryBuilder->expr()->eq(
-                    'recuid',
-                    $queryBuilder->createNamedParameter($ref, \PDO::PARAM_INT)
-                )
-            )
+            ->where(...$predicates)
             ->execute()
             ->fetchAll();
 
@@ -640,6 +670,10 @@ class ElementInformationController
             $line = [];
             $record = BackendUtility::getRecord($row['ref_table'], $row['ref_uid']);
             if ($record) {
+                BackendUtility::fixVersioningPid($row['ref_table'], $record);
+                if (!$this->canAccessPage($row['ref_table'], $record)) {
+                    continue;
+                }
                 $urlParameters = [
                     'edit' => [
                         $row['ref_table'] => [
@@ -699,6 +733,18 @@ class ElementInformationController
             'softref_key' => '',
             'sorting' => $fileReference['sorting_foreign']
         ];
+    }
+
+    /**
+     * @param string $tableName Name of the table
+     * @param array $record Record to be checked (ensure pid is resolved for workspaces)
+     * @return bool
+     */
+    protected function canAccessPage(string $tableName, array $record): bool
+    {
+        $recordPid = (int)($tableName === 'pages' ? $record['uid'] : $record['pid']);
+        return $this->getBackendUser()->isInWebMount($recordPid)
+            || $recordPid === 0 && !empty($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction']);
     }
 
     /**
