@@ -4939,7 +4939,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 return $linkText;
             }
         } elseif (in_array(strtolower(trim($linkHandlerKeyword)), ['javascript', 'data'], true)) {
-            // Disallow direct javascript: or data: links
+            // Disallow insecure scheme's like javascript: or data:
             return $linkText;
         } else {
             $linkParameter = $linkParameterParts['url'];

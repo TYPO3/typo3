@@ -90,7 +90,22 @@ class UrlLinkHandlerTest extends UnitTestCase
                     'url' => 'sftp://nice:andsecret@www.have.you:23/ever?did=this'
                 ],
                 'sftp://nice:andsecret@www.have.you:23/ever?did=this'
-            ]
+            ],
+            'tel URL' => [
+                ['url' => 'tel:+1-2345-6789'],
+                ['url' => 'tel:+1-2345-6789'],
+                'tel:+1-2345-6789'
+            ],
+            'javascript URL (denied)' => [
+                ['url' => 'javascript:alert(\'XSS\')'],
+                ['url' => ''],
+                ''
+            ],
+            'data URL (denied)' => [
+                ['url' => 'data:text/html;base64,SGVsbG8sIFdvcmxkIQ%3D%3D'],
+                ['url' => ''],
+                ''
+            ],
         ];
     }
 
