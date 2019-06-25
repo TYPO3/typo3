@@ -76,6 +76,7 @@ return [
             'unifiedPageTranslationHandling' => false,
             'TypoScript.strictSyntax' => true,
             'simplifiedControllerActionDispatching' => false,
+            'security.frontend.keepSessionDataOnLogout' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

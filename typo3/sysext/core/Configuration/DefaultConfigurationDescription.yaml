@@ -227,6 +227,9 @@ SYS:
               simplifiedControllerActionDispatching:
                 type: bool
                 description: 'If on, controller actions of backend modules and eID scripts do not receive a deprecated prepared response object as second argument. Enabling this feature slightly improves performance.'
+              security.frontend.keepSessionDataOnLogout:
+                type: bool
+                description: 'If on, session data is kept in an anonymous session after frontend user logged out. As this is a potential security risk, it is recommended to disable this option if not specifically needed.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

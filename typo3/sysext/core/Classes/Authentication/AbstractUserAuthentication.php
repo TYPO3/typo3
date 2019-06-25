@@ -1054,6 +1054,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($this->id) {
             $this->getSessionBackend()->remove($this->id);
         }
+        $this->sessionData = [];
         $this->user = null;
     }
 
