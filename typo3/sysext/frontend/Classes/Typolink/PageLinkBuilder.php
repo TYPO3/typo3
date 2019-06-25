@@ -174,7 +174,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $siteOfTargetPage = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$page['uid']);
             $currentSite = $this->getCurrentSite();
         } catch (SiteNotFoundException $e) {
-            // Usually happens in tests, as Pseudo Sites should be available everywhere.
+            // Usually happens in tests, as sites with configuration should be available everywhere.
             $siteOfTargetPage = null;
             $currentSite = null;
         }

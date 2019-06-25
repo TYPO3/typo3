@@ -171,7 +171,6 @@ class SiteConfiguration implements SingletonInterface
         GeneralUtility::writeFile($fileName, $yamlFileContents);
         $this->firstLevelCache = null;
         $this->getCache()->remove($this->cacheIdentifier);
-        $this->getCache()->remove('pseudo-sites');
     }
 
     /**
@@ -210,7 +209,6 @@ class SiteConfiguration implements SingletonInterface
         }
         @unlink($fileName);
         $this->getCache()->remove($this->cacheIdentifier);
-        $this->getCache()->remove('pseudo-sites');
         $this->firstLevelCache = null;
     }
 

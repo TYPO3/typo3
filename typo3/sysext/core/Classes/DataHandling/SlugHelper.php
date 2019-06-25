@@ -311,7 +311,7 @@ class SlugHelper
                 );
             } catch (SiteNotFoundException $exception) {
                 // In case not site is found, the record is not
-                // organized in any site or pseudo-site
+                // organized in any site
                 continue;
             }
             if ($siteOfExistingRecord->getRootPageId() === $siteOfCurrentRecord->getRootPageId()) {

@@ -84,9 +84,6 @@ class SiteMatcher implements SingletonInterface
      * If it isn't the quest continues by validating the whole request URL and validating against
      * all available site records (and their language prefixes).
      *
-     * If none is found, the "legacy" handling is checked for - checking for all pseudo-sites with
-     * a sys_domain record, and match against them.
-     *
      * @param ServerRequestInterface $request
      * @return RouteResultInterface
      */

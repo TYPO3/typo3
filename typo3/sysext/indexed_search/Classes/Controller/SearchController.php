@@ -1113,7 +1113,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     $allOptions[$language->getLanguageId()] = $language->getNavigationTitle() ?? $language->getTitle();
                 }
             } catch (SiteNotFoundException $e) {
-                // No Site or pseudo site found, no options
+                // No Site found, no options
                 $allOptions = [];
             }
 
