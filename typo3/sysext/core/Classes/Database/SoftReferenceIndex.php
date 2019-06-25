@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Database;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 
@@ -68,7 +69,7 @@ use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
  * - 'email' : Email highlight
  * - 'url' : URL highlights (with a scheme)
  */
-class SoftReferenceIndex
+class SoftReferenceIndex implements SingletonInterface
 {
     /**
      * @var string

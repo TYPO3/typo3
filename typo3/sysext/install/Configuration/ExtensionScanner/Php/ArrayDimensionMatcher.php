@@ -311,4 +311,9 @@ return [
             'Breaking-88498-GlobalDataForTimeTrackerStatisticsRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'T3_VAR\'][\'softRefParser\']' => [
+        'restFiles' => [
+            'Breaking-88638-StreamlinedSoftRefParserReferenceLookup.rst',
+        ],
+    ],
 ];

@@ -3140,28 +3140,18 @@ class BackendUtility
 
     /**
      * Returns soft-reference parser for the softRef processing type
-     * Usage: $softRefObj = &BackendUtility::softRefParserObj('[parser key]');
+     * Usage: $softRefObj = BackendUtility::softRefParserObj('[parser key]');
      *
      * @param string $spKey softRef parser key
-     * @return mixed If available, returns Soft link parser object.
+     * @return mixed If available, returns Soft link parser object, otherwise false.
      */
-    public static function &softRefParserObj($spKey)
+    public static function softRefParserObj($spKey)
     {
-        // If no softRef parser object has been set previously, try to create it:
-        if (!isset($GLOBALS['T3_VAR']['softRefParser'][$spKey])) {
-            // Set the object string to blank by default:
-            $GLOBALS['T3_VAR']['softRefParser'][$spKey] = '';
-            // Now, try to create parser object:
-            $objRef = null;
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey])) {
-                $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey];
-                if ($className) {
-                    $GLOBALS['T3_VAR']['softRefParser'][$spKey] = GeneralUtility::makeInstance($className);
-                }
-            }
+        $className = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['softRefParser'][$spKey] ?? false;
+        if ($className) {
+            return GeneralUtility::makeInstance($className);
         }
-        // Return RTE object (if any!)
-        return $GLOBALS['T3_VAR']['softRefParser'][$spKey];
+        return false;
     }
 
     /**
