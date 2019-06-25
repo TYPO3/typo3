@@ -1448,7 +1448,10 @@ class DataHandler
                 $lookUpTable = $table === 'pages_language_overlay' ? 'pages' : $table;
                 $originalLanguageRecord = $this->recordInfo($lookUpTable, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
                 BackendUtility::workspaceOL($lookUpTable, $originalLanguageRecord);
-                $originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
+                $originalLanguage_diffStorage = unserialize(
+                    $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']],
+                    ['allowed_classes' => false]
+                );
             }
         }
         $this->checkValue_currentRecord = $checkValueRecord;
