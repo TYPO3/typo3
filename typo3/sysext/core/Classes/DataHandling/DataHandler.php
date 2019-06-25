@@ -1335,7 +1335,10 @@ class DataHandler implements LoggerAwareInterface
         ) {
             $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']], '*');
             BackendUtility::workspaceOL($table, $originalLanguageRecord);
-            $originalLanguage_diffStorage = unserialize($currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']]);
+            $originalLanguage_diffStorage = unserialize(
+                $currentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigDiffSourceField']],
+                ['allowed_classes' => false]
+            );
         }
 
         $this->checkValue_currentRecord = $checkValueRecord;
