@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <be_groups>
+        <uid>9</uid>
+        <pid>0</pid>
+        <title>editors</title>
+        <deleted>0</deleted>
+        <db_mountpoints>1</db_mountpoints>
+        <tables_select>pages,tt_content</tables_select>
+        <tables_modify>pages,tt_content</tables_modify>
+        <non_exclude_fields>pages:title,pages:TSconfig,tt_content:header,tt_content:CType,tt_content:bodytext</non_exclude_fields>
+    </be_groups>
+</dataset>
