@@ -14,17 +14,20 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Service\AbstractService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Authentication services class
  */
-class AbstractAuthenticationService extends AbstractService
+class AbstractAuthenticationService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * User object
      *
@@ -73,6 +76,11 @@ class AbstractAuthenticationService extends AbstractService
      * @var bool
      */
     public $writeAttemptLog = false;
+
+    /**
+     * @var array service description array
+     */
+    public $info = [];
 
     /**
      * Initialize authentication service
@@ -151,5 +159,82 @@ class AbstractAuthenticationService extends AbstractService
                 ->fetch();
         }
         return $user;
+    }
+
+    /**
+     * Initialization of the service.
+     * This is a stub as needed by GeneralUtility::makeInstanceService()
+     * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
+     */
+    public function init(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Resets the service.
+     * This is a stub as needed by GeneralUtility::makeInstanceService()
+     * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
+     */
+    public function reset()
+    {
+        // nothing to do
+    }
+
+    /**
+     * Returns the service key of the service
+     *
+     * @return string Service key
+     * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
+     */
+    public function getServiceKey()
+    {
+        return $this->info['serviceKey'];
+    }
+
+    /**
+     * Returns the title of the service
+     *
+     * @return string Service title
+     * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
+     */
+    public function getServiceTitle()
+    {
+        return $this->info['title'];
+    }
+
+    /**
+     * Returns service configuration values from the $TYPO3_CONF_VARS['SVCONF'] array
+     *
+     * @param string $optionName Name of the config option
+     * @param mixed $defaultValue Default configuration if no special config is available
+     * @param bool $includeDefaultConfig If set the 'default' config will be returned if no special config for this service is available (default: TRUE)
+     * @return mixed Configuration value for the service
+     * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
+     */
+    public function getServiceOption($optionName, $defaultValue = '', $includeDefaultConfig = true)
+    {
+        $config = null;
+        $serviceType = $this->info['serviceType'] ?? '';
+        $serviceKey = $this->info['serviceKey'] ?? '';
+        $svOptions = $GLOBALS['TYPO3_CONF_VARS']['SVCONF'][$serviceType] ?? [];
+        if (isset($svOptions[$serviceKey][$optionName])) {
+            $config = $svOptions[$serviceKey][$optionName];
+        } elseif ($includeDefaultConfig && isset($svOptions['default'][$optionName])) {
+            $config = $svOptions['default'][$optionName];
+        }
+        if (!isset($config)) {
+            $config = $defaultValue;
+        }
+        return $config;
+    }
+
+    /**
+     * @return array
+     * @internal this is part of the Service API which should be avoided to be used and only used within TYPO3 internally
+     */
+    public function getLastErrorArray(): array
+    {
+        return [];
     }
 }
