@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Core\TypoScript;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
@@ -28,6 +27,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Template object that is responsible for generating the TypoScript template based on template records.
@@ -950,22 +950,14 @@ class TemplateService
 
     /**
      * Creating versioning overlay of a sys_template record.
-     * This will use either frontend or backend overlay functionality depending on environment.
      *
      * @param array $row Row to overlay (passed by reference)
      */
     protected function versionOL(&$row)
     {
-        // Distinguish frontend and backend call:
-        // To do the fronted call a full frontend is required, just checking for
-        // TYPO3_MODE === 'FE' is not enough. This could otherwise lead to fatals in
-        // eId scripts that run in frontend scope, but do not have a full blown frontend.
-        if (is_object($this->getTypoScriptFrontendController()) && property_exists($this->getTypoScriptFrontendController(), 'sys_page') && method_exists($this->getTypoScriptFrontendController()->sys_page, 'versionOL')) {
-            // Frontend
-            $this->getTypoScriptFrontendController()->sys_page->versionOL('sys_template', $row);
-        } else {
-            // Backend
-            BackendUtility::workspaceOL('sys_template', $row);
+        if ($this->context->getPropertyFromAspect('workspace', 'isOffline')) {
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $this->context);
+            $pageRepository->versionOL('sys_template', $row);
         }
     }
 
