@@ -74,6 +74,7 @@ return [
         'features' => [
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
+            'security.frontend.keepSessionDataOnLogout' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
