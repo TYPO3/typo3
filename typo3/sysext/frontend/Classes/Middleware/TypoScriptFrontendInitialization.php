@@ -19,14 +19,26 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
  * Creates an instance of TypoScriptFrontendController and makes this globally available
  * via $GLOBALS['TSFE'].
  *
- * @internal this middleware might get removed in TYPO3 v10.0.
+ * In addition, determineId builds up the rootline based on a valid frontend-user authentication and
+ * Backend permissions if previewing.
+ *
+ * @internal this middleware might get removed in TYPO3 v11.0.
  */
 class TypoScriptFrontendInitialization implements MiddlewareInterface
 {
@@ -39,19 +51,61 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            null,
-            $request->getParsedBody()['id'] ?? $request->getQueryParams()['id'] ?? 0,
-            $request->getParsedBody()['type'] ?? $request->getQueryParams()['type'] ?? 0,
-            null,
-            $request->getParsedBody()['cHash'] ?? $request->getQueryParams()['cHash'] ?? '',
-            null,
-            $request->getParsedBody()['MP'] ?? $request->getQueryParams()['MP'] ?? ''
-        );
-        if ($request->getParsedBody()['no_cache'] ?? $request->getQueryParams()['no_cache'] ?? false) {
-            $GLOBALS['TSFE']->set_no_cache('&no_cache=1 has been supplied, so caching is disabled! URL: "' . (string)$request->getUri() . '"');
+        $GLOBALS['TYPO3_REQUEST'] = $request;
+        /** @var Site $site */
+        $site = $request->getAttribute('site', null);
+        $pageArguments = $request->getAttribute('routing', null);
+        if (!$pageArguments instanceof PageArguments) {
+            // Page Arguments must be set in order to validate. This middleware only works if PageArguments
+            // is available, and is usually combined with the Page Resolver middleware
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'Page Arguments could not be resolved',
+                ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
+            );
         }
+        $context = GeneralUtility::makeInstance(Context::class);
+
+        $controller = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            $context,
+            $site,
+            $request->getAttribute('language', $site->getDefaultLanguage()),
+            $pageArguments,
+            $request->getAttribute('frontend.user', null)
+        );
+        if ($pageArguments->getArguments()['no_cache'] ?? $request->getParsedBody()['no_cache'] ?? false) {
+            $controller->set_no_cache('&no_cache=1 has been supplied, so caching is disabled! URL: "' . (string)$request->getUri() . '"');
+        }
+        // Usually only set by the PageArgumentValidator
+        if ($request->getAttribute('noCache', false)) {
+            $controller->no_cache = 1;
+        }
+
+        $controller->determineId();
+
+        // No access? Then remove user and re-evaluate the page id
+        if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)) {
+            unset($GLOBALS['BE_USER']);
+            // Register an empty backend user as aspect
+            $this->setBackendUserAspect($context, null);
+            $controller->determineId();
+        }
+
+        // Make TSFE globally available
+        $GLOBALS['TSFE'] = $controller;
         return $handler->handle($request);
+    }
+
+    /**
+     * Register the backend user as aspect
+     *
+     * @param Context $context
+     * @param BackendUserAuthentication|null $user
+     */
+    protected function setBackendUserAspect(Context $context, ?BackendUserAuthentication $user): void
+    {
+        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 }

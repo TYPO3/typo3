@@ -493,8 +493,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
 
-        $subject = new TypoScriptFrontendController(null, 1, 0);
-        $subject->generatePageTitle();
-        $this->assertSame($pageTitle, $subject->indexedDocTitle);
+        $this->subject->generatePageTitle();
+        $this->assertSame($pageTitle, $this->subject->indexedDocTitle);
     }
 }

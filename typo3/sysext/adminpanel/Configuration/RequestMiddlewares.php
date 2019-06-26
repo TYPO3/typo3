@@ -14,10 +14,10 @@ return [
             'target' => \TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator::class,
             'before' => [
                 'typo3/cms-frontend/prepare-tsfe-rendering',
-                'typo3/cms-frontend/page-resolver'
+                'typo3/cms-frontend/tsfe',
+                'typo3/cms-frontend/page-resolver',
             ],
             'after' => [
-                'typo3/cms-frontend/tsfe',
                 'typo3/cms-frontend/authentication',
                 'typo3/cms-frontend/backend-user-authentication',
             ]
@@ -29,7 +29,7 @@ return [
                 'typo3/cms-frontend/backend-user-authentication',
             ],
             'before' => [
-                'typo3/cms-frontend/site'
+                'typo3/cms-frontend/tsfe'
             ]
         ],
         'typo3/cms-adminpanel/data-persister' => [

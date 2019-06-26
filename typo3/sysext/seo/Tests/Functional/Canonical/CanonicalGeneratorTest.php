@@ -17,6 +17,9 @@ namespace TYPO3\CMS\Seo\Tests\Functional\Canonical;
  */
 
 use Psr\Log\NullLogger;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -45,17 +48,25 @@ class CanonicalGeneratorTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/')
         );
+        $_SERVER['HTTP_HOST'] = 'localhost';
+        $_SERVER['REQUEST_URI'] = '/';
+        GeneralUtility::flushInternalRuntimeCaches();
     }
 
     protected function initTypoScriptFrontendController(int $uid): TypoScriptFrontendController
     {
-        $typoScriptFrontendController = new TypoScriptFrontendController(null, $uid, 0);
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('website-local');
+        $typoScriptFrontendController = new TypoScriptFrontendController(
+            GeneralUtility::makeInstance(Context::class),
+            $site,
+            $site->getDefaultLanguage(),
+            new PageArguments($uid, '0', [])
+        );
         $typoScriptFrontendController->cObj = new ContentObjectRenderer();
         $typoScriptFrontendController->cObj->setLogger(new NullLogger());
         $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         $typoScriptFrontendController->getPageAndRootlineWithDomain(1);
-        $GLOBALS['TSFE'] = $typoScriptFrontendController;
         return $typoScriptFrontendController;
     }
 

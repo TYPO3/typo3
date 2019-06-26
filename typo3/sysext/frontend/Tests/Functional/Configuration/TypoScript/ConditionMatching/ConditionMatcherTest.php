@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -445,11 +446,26 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     protected function setupFrontendController(int $pageId): void
     {
+        $site = new Site('angelo', 13, [
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'title' => 'United States',
+                    'locale' => 'en_US.UTF-8',
+                ],
+                [
+                    'languageId' => 2,
+                    'title' => 'UK',
+                    'locale' => 'en_UK.UTF-8',
+                ]
+            ]
+        ]);
         $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
-            null,
-            $pageId,
-            0
+            GeneralUtility::makeInstance(Context::class),
+            $site,
+            $site->getLanguageById(0),
+            new PageArguments($pageId, '0', [])
         );
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);

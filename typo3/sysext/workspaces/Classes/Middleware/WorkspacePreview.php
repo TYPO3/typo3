@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
@@ -64,6 +65,7 @@ class WorkspacePreview implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $addInformationAboutDisabledCache = false;
         $keyword = $this->getPreviewInputCode($request);
         if ($keyword) {
             switch ($keyword) {
@@ -75,13 +77,14 @@ class WorkspacePreview implements MiddlewareInterface
                     $message = $this->getLogoutTemplateMessage($request->getQueryParams()['returnUrl'] ?? '');
                     return new HtmlResponse($message);
                 default:
+                    $pageArguments = $request->getAttribute('routing', null);
                     // A keyword was found in a query parameter or in a cookie
                     // If the keyword is valid, activate a BE User and override any existing BE Users
                     $configuration = $this->getPreviewConfigurationFromRequest($request, $keyword);
-                    if (is_array($configuration) && $configuration['fullWorkspace'] > 0) {
+                    if (is_array($configuration) && $configuration['fullWorkspace'] > 0 && $pageArguments instanceof PageArguments) {
                         $previewUser = $this->initializePreviewUser(
                             (int)$configuration['fullWorkspace'],
-                            $GLOBALS['TSFE']->id
+                            $pageArguments->getPageId()
                         );
                         if ($previewUser) {
                             $GLOBALS['BE_USER'] = $previewUser;
@@ -100,10 +103,16 @@ class WorkspacePreview implements MiddlewareInterface
             // Register the backend user as aspect
             $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), null);
             // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
-            $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
+            $request = $request->withAttribute('noCache', true);
+            $addInformationAboutDisabledCache = true;
         }
 
         $response = $handler->handle($request);
+
+        // Caching is disabled, because otherwise generated URLs could include the ADMCMD_noBeUser parameter
+        if ($addInformationAboutDisabledCache) {
+            $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
+        }
 
         // Add a info box to the frontend content
         if ($GLOBALS['TSFE']->doWorkspacePreview() && $GLOBALS['TSFE']->isOutputting()) {

@@ -36,15 +36,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * a different middleware later-on might unset the BE_USER as he/she is not allowed to preview a certain
  * page due to rights management. As this can only happen once the page ID is resolved, this will happen
  * after the routing middleware.
- *
- * Currently, this middleware depends on the availability of $GLOBALS['TSFE'], however, this is solely
- * due to backwards-compatibility and will be disabled in the future.
  */
 class BackendUserAuthenticator implements MiddlewareInterface
 {
     /**
-     * Creates a frontend user authentication object, tries to authenticate a user
-     * and stores the object in $GLOBALS['TSFE']->fe_user.
+     * Creates a backend user authentication object, tries to authenticate a user
      *
      * @param ServerRequestInterface $request
      * @param RequestHandlerInterface $handler

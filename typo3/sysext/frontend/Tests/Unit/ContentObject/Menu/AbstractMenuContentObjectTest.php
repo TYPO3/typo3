@@ -22,6 +22,9 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
@@ -44,10 +47,22 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com', 'GET');
         $proxyClassName = $this->buildAccessibleProxy(AbstractMenuContentObject::class);
         $this->subject = $this->getMockForAbstractClass($proxyClassName);
+        $site = new Site('test', 1, [
+            'base' => 'https://www.example.com',
+            'languages' => [
+                [
+                    'languageId' => 0,
+                    'title' => 'English',
+                    'locale' => 'en_UK',
+                    'base' => '/'
+                ]
+            ]
+        ]);
         $GLOBALS['TSFE'] = $this->getMockBuilder(\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::class)
-            ->setConstructorArgs([$GLOBALS['TYPO3_CONF_VARS'], 1, 1])
+            ->setConstructorArgs([new Context(), $site, $site->getDefaultLanguage(), new PageArguments(1, '1', [])])
             ->setMethods(['initCaches'])
             ->getMock();
         $GLOBALS['TSFE']->cObj = new ContentObjectRenderer();

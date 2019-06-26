@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Frontend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface as PsrRequestHandlerInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -29,7 +29,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  *
  * Do all necessary preparation steps for rendering
  *
- * @internal this middleware might get removed in TYPO3 v10.0.
+ * @internal this middleware might get removed in TYPO3 v10.x.
  */
 class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
 {
@@ -53,10 +53,10 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      * Initialize TypoScriptFrontendController to the point right before rendering of the page is triggered
      *
      * @param ServerRequestInterface $request
-     * @param PsrRequestHandlerInterface $handler
+     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, PsrRequestHandlerInterface $handler): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // as long as TSFE throws errors with the global object, this needs to be set, but
         // should be removed later-on once TypoScript Condition Matcher is built with the current request object.

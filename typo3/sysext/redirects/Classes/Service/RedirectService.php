@@ -18,11 +18,13 @@ namespace TYPO3\CMS\Redirects\Service;
 use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -285,11 +287,13 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function bootFrontendController(?SiteInterface $site, array $queryParams): TypoScriptFrontendController
     {
+        $pageId = $site ? $site->getRootPageId() : ($GLOBALS['TSFE'] ? $GLOBALS['TSFE']->id : 0);
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
-            null,
-            $site ? $site->getRootPageId() : $GLOBALS['TSFE']->id,
-            0
+            GeneralUtility::makeInstance(Context::class),
+            $site,
+            $site->getDefaultLanguage(),
+            new PageArguments((int)$pageId, '0', [])
         );
         $controller->fe_user = $GLOBALS['TSFE']->fe_user ?? null;
         $controller->fetch_the_id();

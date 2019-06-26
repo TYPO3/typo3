@@ -28,7 +28,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  * Checks mount points, shortcuts and redirects to the target.
  * Alternatively, checks if the current page is an redirect to an external page
  *
- * @internal this middleware might get removed in TYPO3 v10.0.
+ * @internal this middleware might get removed in TYPO3 v10.x.
  */
 class ShortcutAndMountPointRedirect implements MiddlewareInterface
 {

@@ -120,7 +120,7 @@ class Uri implements UriInterface
         $uriParts = parse_url($uri);
 
         if ($uriParts === false) {
-            throw new \InvalidArgumentException('The parsedUri string appears to be malformed', 1436717322);
+            throw new \InvalidArgumentException('The parsedUri "' . $uri . '" appears to be malformed', 1436717322);
         }
 
         if (isset($uriParts['scheme'])) {

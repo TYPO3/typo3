@@ -47,16 +47,12 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
     protected $cacheHashCalculator;
 
     /**
-     * @var TypoScriptFrontendController
+     * @var bool will be used to set $TSFE->no_cache later-on
      */
-    protected $controller;
+    protected $disableCache = false;
 
-    /**
-     * @param TypoScriptFrontendController|null $controller
-     */
-    public function __construct(TypoScriptFrontendController $controller = null)
+    public function __construct()
     {
-        $this->controller = $controller ?? $GLOBALS['TSFE'];
         $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
     }
 
@@ -69,6 +65,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $this->disableCache = (bool)$request->getAttribute('noCache', false);
         $pageNotFoundOnValidationError = (bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError'] ?? true);
         /** @var PageArguments $pageArguments */
         $pageArguments = $request->getAttribute('routing', null);
@@ -81,7 +78,12 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
                 ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
             );
         }
-        if ($this->controller->no_cache && !$pageNotFoundOnValidationError) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter'] ?? true) {
+            $cachingDisabledByRequest = false;
+        } else {
+            $cachingDisabledByRequest = $pageArguments->getArguments()['no_cache'] ?? $request->getParsedBody()['no_cache'] ?? false;
+        }
+        if (($cachingDisabledByRequest || $this->disableCache) && !$pageNotFoundOnValidationError) {
             // No need to test anything if caching was already disabled.
             return $handler->handle($request);
         }
@@ -116,6 +118,8 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
                 );
             }
         }
+
+        $request = $request->withAttribute('noCache', $this->disableCache);
         return $handler->handle($request);
     }
 
@@ -153,7 +157,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
             return false;
         }
         // Caching is disabled now (but no 404)
-        $this->controller->no_cache = true;
+        $this->disableCache = true;
         $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($relevantParameters)) . '"', 2);
         return true;
     }
@@ -177,7 +181,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
             return false;
         }
         // Caching is disabled now (but no 404)
-        $this->controller->no_cache = true;
+        $this->disableCache = true;
         $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
         return true;
     }

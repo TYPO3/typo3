@@ -14,39 +14,72 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Typolink\PageLinkBuilder;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  */
-class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ContentObjectRendererTest extends FunctionalTestCase
 {
+    use SiteBasedTestTrait;
+
+    /**
+     * @var array[]
+     */
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
+    ];
+
     /**
      * @var ContentObjectRenderer
      */
     protected $subject;
 
+    /**
+     * @var TypoScriptFrontendController
+     */
+    protected $typoScriptFrontendController;
+
     protected function setUp(): void
     {
         parent::setUp();
-
-        $typoScriptFrontendController = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            null,
-            1,
-            0
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en/'),
+            ],
+            [
+                $this->buildErrorHandlingConfiguration('Fluid', [404])
+            ]
         );
-        $typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
-        $typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
-        $GLOBALS['TSFE'] = $typoScriptFrontendController;
+        $_SERVER['HTTP_HOST'] = 'example.com';
+        $_SERVER['REQUEST_URI'] = '/en/';
+        $_GET['id'] = 1;
+        GeneralUtility::flushInternalRuntimeCaches();
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByIdentifier('test');
 
-        $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        $this->typoScriptFrontendController = GeneralUtility::makeInstance(
+            TypoScriptFrontendController::class,
+            GeneralUtility::makeInstance(Context::class),
+            $site,
+            $site->getDefaultLanguage(),
+            new PageArguments(1, '0', [])
+        );
+        $this->typoScriptFrontendController->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        $this->typoScriptFrontendController->tmpl = GeneralUtility::makeInstance(TemplateService::class);
+        $this->subject = GeneralUtility::makeInstance(ContentObjectRenderer::class, $this->typoScriptFrontendController);
     }
 
     /**
@@ -201,7 +234,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     public function getQueryCallsGetTreeListWithNegativeValuesIfRecursiveIsSet()
     {
-        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList']);
+        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList'], [$this->typoScriptFrontendController]);
         $this->subject->start([], 'tt_content');
 
         $conf = [
@@ -226,9 +259,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Functional\
      */
     public function getQueryCallsGetTreeListWithCurrentPageIfThisIsSet()
     {
-        $GLOBALS['TSFE']->id = 27;
+        $this->typoScriptFrontendController->id = 27;
 
-        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList']);
+        $this->subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['getTreeList'], [$this->typoScriptFrontendController]);
         $this->subject->start([], 'tt_content');
 
         $conf = [
