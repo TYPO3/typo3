@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -243,11 +244,11 @@ class EnvironmentController extends AbstractController
         } else {
             $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
             $mailMessage
-                ->addTo($recipient)
-                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-                ->setSubject($this->getEmailSubject())
-                ->setBody('<html><body>html test content</body></html>', 'text/html')
-                ->addPart('plain test content', 'text/plain')
+                ->to($recipient)
+                ->from(new NamedAddress($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+                ->subject($this->getEmailSubject())
+                ->html('<html><body>html test content</body></html>')
+                ->text('plain test content')
                 ->send();
             $messages->enqueue(new FlashMessage(
                 'Recipient: ' . $recipient,

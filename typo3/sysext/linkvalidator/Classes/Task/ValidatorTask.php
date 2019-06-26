@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -451,7 +452,6 @@ class ValidatorTask extends AbstractTask
             unset($params);
         }
         $content = $this->templateService->substituteMarkerArray($content, $markerArray, '###|###', true, true);
-        /** @var MailMessage $mail */
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         if (empty($modTsConfig['mail.']['fromemail'])) {
             $modTsConfig['mail.']['fromemail'] = MailUtility::getSystemFromAddress();
@@ -460,7 +460,7 @@ class ValidatorTask extends AbstractTask
             $modTsConfig['mail.']['fromname'] = MailUtility::getSystemFromName();
         }
         if (GeneralUtility::validEmail($modTsConfig['mail.']['fromemail'])) {
-            $mail->setFrom([$modTsConfig['mail.']['fromemail'] => $modTsConfig['mail.']['fromname']]);
+            $mail->from(new NamedAddress($modTsConfig['mail.']['fromemail'], $modTsConfig['mail.']['fromname']));
         } else {
             throw new \Exception(
                 $lang->sL($this->languageFile . ':tasks.error.invalidFromEmail'),
@@ -468,10 +468,10 @@ class ValidatorTask extends AbstractTask
             );
         }
         if (GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
-            $mail->setReplyTo([$modTsConfig['mail.']['replytoemail'] => $modTsConfig['mail.']['replytoname']]);
+            $mail->replyTo(new NamedAddress($modTsConfig['mail.']['replytoemail'], $modTsConfig['mail.']['replytoname']));
         }
         if (!empty($modTsConfig['mail.']['subject'])) {
-            $mail->setSubject($modTsConfig['mail.']['subject']);
+            $mail->subject($modTsConfig['mail.']['subject']);
         } else {
             throw new \Exception(
                 $lang->sL($this->languageFile . ':tasks.error.noSubject'),
@@ -499,15 +499,13 @@ class ValidatorTask extends AbstractTask
             }
         }
         if (is_array($validEmailList) && !empty($validEmailList)) {
-            $mail->setTo($validEmailList);
-        } else {
-            $sendEmail = false;
+            $mail
+                ->to(...$validEmailList)
+                ->html($content)
+                ->send();
+            return true;
         }
-        if ($sendEmail) {
-            $mail->setBody($content, 'text/html');
-            $mail->send();
-        }
-        return $sendEmail;
+        return false;
     }
 
     /**

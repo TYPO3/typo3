@@ -18,6 +18,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -5690,13 +5691,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $senderName = trim($senderName);
         $senderAddress = trim($senderAddress);
         if ($senderName !== '' && $senderAddress !== '') {
-            $mail->setFrom([$senderAddress => $senderName]);
+            $mail->from(new NamedAddress($senderAddress, $senderName));
         } elseif ($senderAddress !== '') {
-            $mail->setFrom([$senderAddress]);
+            $mail->from($senderAddress);
         }
         $parsedReplyTo = MailUtility::parseAddresses($replyTo);
         if (!empty($parsedReplyTo)) {
-            $mail->setReplyTo($parsedReplyTo);
+            $mail->replyTo($parsedReplyTo);
         }
         $message = trim($message);
         if ($message !== '') {
@@ -5706,9 +5707,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $plainMessage = trim($messageParts[1]);
             $parsedRecipients = MailUtility::parseAddresses($recipients);
             if (!empty($parsedRecipients)) {
-                $mail->setTo($parsedRecipients)
-                    ->setSubject($subject)
-                    ->setBody($plainMessage);
+                $mail->to(...$parsedRecipients)
+                    ->subject($subject)
+                    ->text($plainMessage);
                 $mail->send();
             }
             $parsedCc = MailUtility::parseAddresses($cc);
@@ -5717,12 +5718,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 /** @var MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
                 if (!empty($parsedReplyTo)) {
-                    $mail->setReplyTo($parsedReplyTo);
+                    $mail->replyTo($parsedReplyTo);
                 }
-                $mail->setFrom($from)
-                    ->setTo($parsedCc)
-                    ->setSubject($subject)
-                    ->setBody($plainMessage);
+                $mail->from($from)
+                    ->to(...$parsedCc)
+                    ->subject($subject)
+                    ->text($plainMessage);
                 $mail->send();
             }
             return true;

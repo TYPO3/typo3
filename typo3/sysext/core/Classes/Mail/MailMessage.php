@@ -14,16 +14,20 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\MailUtility;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\NamedAddress;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Adapter for Swift_Mailer to be used by TYPO3 extensions
+ * Adapter for Symfony Mime to be used by TYPO3 extensions, also provides
+ * some backwards-compatibility for previous TYPO3 installations where
+ * send() was baked into the MailMessage object.
  */
-class MailMessage extends \Swift_Message
+class MailMessage extends Email
 {
     /**
-     * @var \TYPO3\CMS\Core\Mail\Mailer
+     * @var Mailer
      */
     protected $mailer;
 
@@ -40,40 +44,30 @@ class MailMessage extends \Swift_Message
     protected $sent = false;
 
     /**
-     * Holds the failed recipients after the message has been sent
-     *
-     * @var array
-     */
-    protected $failedRecipients = [];
-
-    /**
      */
     private function initializeMailer()
     {
-        $this->mailer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\Mailer::class);
+        $this->mailer = GeneralUtility::makeInstance(Mailer::class);
     }
 
     /**
      * Sends the message.
      *
-     * @return int the number of recipients who were accepted for delivery
+     * This is a short-hand method. It is however more useful to create
+     * a Mailer instance which can be used via Mailer->send($message);
+     *
+     * @return bool whether the message was accepted or not
      */
     public function send()
     {
-        // Ensure to always have a From: header set
-        if (empty($this->getFrom())) {
-            $this->setFrom(MailUtility::getSystemFrom());
-        }
-        if (empty($this->getReplyTo())) {
-            $replyTo = MailUtility::getSystemReplyTo();
-            if (!empty($replyTo)) {
-                $this->setReplyTo($replyTo);
-            }
-        }
         $this->initializeMailer();
-        $this->sent = true;
-        $this->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
-        return $this->mailer->send($this, $this->failedRecipients);
+        $this->sent = false;
+        $this->mailer->send($this);
+        $sentMessage = $this->mailer->getSentMessage();
+        if ($sentMessage) {
+            $this->sent = true;
+        }
+        return $this->sent;
     }
 
     /**
@@ -87,25 +81,42 @@ class MailMessage extends \Swift_Message
     }
 
     /**
-     * Returns the recipients for which the mail was not accepted for delivery.
+     * compatibility methods to allow for associative arrays as [name => email address]
+     * as it was possible in TYPO3 v9 / SwiftMailer.
      *
-     * @return array the recipients who were not accepted for delivery
+     * Also, ensure to switch to NamedAddress objects and the ->subject()/->from() methods directly
+     * to directly use the new API.
      */
-    public function getFailedRecipients()
+
+    /**
+     * Set the subject of the message.
+     *
+     * @param string $subject
+     */
+    public function setSubject($subject)
     {
-        return $this->failedRecipients;
+        $this->subject($subject);
+    }
+
+    /**
+     * Set the origination date of the message as a UNIX timestamp.
+     *
+     * @param int $date
+     */
+    public function setDate($date)
+    {
+        $this->date(new \DateTime('@' . $date));
     }
 
     /**
      * Set the return-path (the bounce address) of this message.
      *
      * @param string $address
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setReturnPath($address)
     {
-        $address = $this->idnaEncodeAddresses($address);
-        return parent::setReturnPath($address);
+        return $this->returnPath($address);
     }
 
     /**
@@ -115,12 +126,12 @@ class MailMessage extends \Swift_Message
      *
      * @param string $address
      * @param string $name optional
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setSender($address, $name = null)
     {
-        $address = $this->idnaEncodeAddresses($address);
-        return parent::setSender($address, $name);
+        $address = $this->convertNamedAddress($address, $name);
+        return $this->sender($address);
     }
 
     /**
@@ -133,12 +144,12 @@ class MailMessage extends \Swift_Message
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setFrom($addresses, $name = null)
     {
-        $addresses = $this->idnaEncodeAddresses($addresses);
-        return parent::setFrom($addresses, $name);
+        $addresses = $this->convertNamedAddress($addresses, $name);
+        return $this->from($addresses, $name);
     }
 
     /**
@@ -151,12 +162,12 @@ class MailMessage extends \Swift_Message
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setReplyTo($addresses, $name = null)
     {
-        $addresses = $this->idnaEncodeAddresses($addresses);
-        return parent::setReplyTo($addresses, $name);
+        $addresses = $this->convertNamedAddress($addresses, $name);
+        return $this->replyTo($addresses);
     }
 
     /**
@@ -170,12 +181,12 @@ class MailMessage extends \Swift_Message
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setTo($addresses, $name = null)
     {
-        $addresses = $this->idnaEncodeAddresses($addresses);
-        return parent::setTo($addresses, $name);
+        $addresses = $this->convertNamedAddress($addresses, $name);
+        return $this->to($addresses);
     }
 
     /**
@@ -186,12 +197,12 @@ class MailMessage extends \Swift_Message
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setCc($addresses, $name = null)
     {
-        $addresses = $this->idnaEncodeAddresses($addresses);
-        return parent::setCc($addresses, $name);
+        $addresses = $this->convertNamedAddress($addresses, $name);
+        return $this->cc($addresses);
     }
 
     /**
@@ -202,43 +213,60 @@ class MailMessage extends \Swift_Message
      *
      * @param string|array $addresses
      * @param string $name optional
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setBcc($addresses, $name = null)
     {
-        $addresses = $this->idnaEncodeAddresses($addresses);
-        return parent::setBcc($addresses, $name);
+        $addresses = $this->convertNamedAddress($addresses, $name);
+        return $this->bcc($addresses);
     }
 
     /**
      * Ask for a delivery receipt from the recipient to be sent to $addresses.
      *
      * @param array $addresses
-     * @return \TYPO3\CMS\Core\Mail\MailMessage
+     * @return MailMessage
      */
     public function setReadReceiptTo($addresses)
     {
-        $addresses = $this->idnaEncodeAddresses($addresses);
-        return parent::setReadReceiptTo($addresses);
+        $addresses = $this->convertNamedAddress($addresses);
+        return $this->setReadReceiptTo($addresses);
     }
 
     /**
-     * IDNA encode email addresses. Accepts addresses in all formats that SwiftMailer supports
+     * Converts Adresses into Address/NamedAddress objects.
+     *
+     * @param string|array $args
+     * @return string|array
+     */
+    protected function convertNamedAddress(...$args)
+    {
+        if (isset($args[1])) {
+            return new NamedAddress($args[0], $args[1]);
+        }
+        if (is_string($args[0]) || is_array($args[0])) {
+            return $this->convertAddresses($args[0]);
+        }
+        return $this->convertAddresses($args);
+    }
+
+    /**
+     * Converts Adresses into Address/NamedAddress objects.
      *
      * @param string|array $addresses
      * @return string|array
      */
-    protected function idnaEncodeAddresses($addresses)
+    protected function convertAddresses($addresses)
     {
         if (!is_array($addresses)) {
-            return $this->idnaEncodeAddress($addresses);
+            return Address::create($addresses);
         }
         $newAddresses = [];
         foreach ($addresses as $email => $name) {
-            if (ctype_digit($email)) {
-                $newAddresses[] = $this->idnaEncodeAddress($name);
+            if (is_numeric($email) || ctype_digit($email)) {
+                $newAddresses[] = Address::create($name);
             } else {
-                $newAddresses[$this->idnaEncodeAddress($email)] = $name;
+                $newAddresses[] = new NamedAddress($email, $name);
             }
         }
 
@@ -246,28 +274,52 @@ class MailMessage extends \Swift_Message
     }
 
     /**
-     * IDNA encode the domain part of an email address if it contains non ASCII characters
-     *
-     * @param mixed $email
-     * @return mixed
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail
+     * compatibility methods to allow for associative arrays as [name => email address]
+     * as it was possible in TYPO3 v9 / SwiftMailer.
      */
-    protected function idnaEncodeAddress($email)
-    {
-        // Early return in case input is not a string
-        if (!is_string($email)) {
-            return $email;
-        }
-        // Split on the last "@" since addresses like "foo@bar"@example.org are valid
-        $atPosition = strrpos($email, '@');
-        if (!$atPosition || $atPosition + 1 === strlen($email)) {
-            // Return if no @ found or it is placed at the very beginning or end of the email
-            return $email;
-        }
-        $domain = substr($email, $atPosition + 1);
-        $local = substr($email, 0, $atPosition);
-        $domain = (string)HttpUtility::idn_to_ascii($domain);
 
-        return $local . '@' . $domain;
+    /**
+     * @inheritdoc
+     */
+    public function addFrom(...$addresses)
+    {
+        $addresses = $this->convertNamedAddress(...$addresses);
+        return parent::addFrom(...$addresses);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addReplyTo(...$addresses)
+    {
+        $addresses = $this->convertNamedAddress(...$addresses);
+        return parent::addReplyTo(...$addresses);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addTo(...$addresses)
+    {
+        $addresses = $this->convertNamedAddress(...$addresses);
+        return parent::addTo(...$addresses);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addCc(...$addresses)
+    {
+        $addresses = $this->convertNamedAddress(...$addresses);
+        return parent::addCc(...$addresses);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addBcc(...$addresses)
+    {
+        $addresses = $this->convertNamedAddress(...$addresses);
+        return parent::addBcc(...$addresses);
     }
 }

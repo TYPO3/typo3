@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures;
+declare(strict_types = 1);
+namespace TYPO3\CMS\Core\Mail;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,19 +15,18 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Mail\MboxTransport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 
 /**
- * Fixture fake transport
+ * Used to implement backwards-compatible spooling
  */
-class FakeTransportFixture extends MboxTransport
+interface DelayedTransportInterface extends TransportInterface
 {
     /**
-     * Constructor
+     * Sends messages using the given transport instance
      *
-     * @param string $settings
+     * @param TransportInterface $transport
+     * @return int the number of messages sent
      */
-    public function __construct($settings)
-    {
-    }
+    public function flushQueue(TransportInterface $transport): int;
 }

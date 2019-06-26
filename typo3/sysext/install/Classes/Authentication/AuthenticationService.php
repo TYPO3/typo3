@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -74,10 +75,10 @@ class AuthenticationService
         if ($warningEmailAddress) {
             $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
             $mailMessage
-                ->addTo($warningEmailAddress)
-                ->setSubject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-                ->setBody('There has been an Install Tool login at TYPO3 site'
+                ->to($warningEmailAddress)
+                ->subject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
+                ->from(new NamedAddress($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+                ->text('There has been an Install Tool login at TYPO3 site'
                     . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
                     . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
                     . ' from remote address \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\'')
@@ -95,10 +96,10 @@ class AuthenticationService
         if ($warningEmailAddress) {
             $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
             $mailMessage
-                ->addTo($warningEmailAddress)
-                ->setSubject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-                ->setBody('There has been an Install Tool login attempt at TYPO3 site'
+                ->to($warningEmailAddress)
+                ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
+                ->from(new NamedAddress($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+                ->text('There has been an Install Tool login attempt at TYPO3 site'
                     . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
                     . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
                     . ' The last 5 characters of the MD5 hash of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''

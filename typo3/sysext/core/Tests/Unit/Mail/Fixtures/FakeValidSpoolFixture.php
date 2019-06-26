@@ -14,10 +14,16 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mailer\SentMessage;
+use Symfony\Component\Mailer\SmtpEnvelope;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mime\RawMessage;
+use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
+
 /**
  * Fixture fake valid spool
  */
-class FakeValidSpoolFixture implements \Swift_Spool
+class FakeValidSpoolFixture implements DelayedTransportInterface
 {
     private $settings;
 
@@ -31,23 +37,13 @@ class FakeValidSpoolFixture implements \Swift_Spool
         return $this->settings;
     }
 
-    public function start()
+    public function send(RawMessage $message, SmtpEnvelope $envelope = null): ?SentMessage
     {
+        // dont do anything
     }
 
-    public function stop()
+    public function flushQueue(TransportInterface $transport): int
     {
-    }
-
-    public function isStarted()
-    {
-    }
-
-    public function queueMessage(\Swift_Mime_Message $message)
-    {
-    }
-
-    public function flushQueue(\Swift_Transport $transport, &$failedRecipients = null)
-    {
+        return 1;
     }
 }

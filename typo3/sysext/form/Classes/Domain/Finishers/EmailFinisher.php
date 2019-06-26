@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -104,20 +105,20 @@ class EmailFinisher extends AbstractFinisher
 
         $mail = $this->objectManager->get(MailMessage::class);
 
-        $mail->setFrom([$senderAddress => $senderName])
-            ->setTo($recipients)
-            ->setSubject($subject);
+        $mail->from(new NamedAddress($senderAddress, $senderName))
+            ->to(...$recipients)
+            ->subject($subject);
 
         if (!empty($replyToRecipients)) {
-            $mail->setReplyTo($replyToRecipients);
+            $mail->replyTo(...$replyToRecipients);
         }
 
         if (!empty($carbonCopyRecipients)) {
-            $mail->setCc($carbonCopyRecipients);
+            $mail->cc(...$carbonCopyRecipients);
         }
 
         if (!empty($blindCarbonCopyRecipients)) {
-            $mail->setBcc($blindCarbonCopyRecipients);
+            $mail->bcc(...$blindCarbonCopyRecipients);
         }
 
         $formRuntime = $this->finisherContext->getFormRuntime();
@@ -146,10 +147,10 @@ class EmailFinisher extends AbstractFinisher
             $standaloneView = $this->initializeStandaloneView($formRuntime, $part['format']);
             $message = $standaloneView->render();
 
-            if ($i > 0) {
-                $mail->addPart($message, $part['contentType']);
+            if ($part['contentType'] === 'text/plain') {
+                $mail->text($message);
             } else {
-                $mail->setBody($message, $part['contentType']);
+                $mail->html($message);
             }
         }
 
@@ -170,7 +171,7 @@ class EmailFinisher extends AbstractFinisher
                         $file = $file->getOriginalResource();
                     }
 
-                    $mail->attach(\Swift_Attachment::newInstance($file->getContents(), $file->getName(), $file->getMimeType()));
+                    $mail->attach($file->getContents(), $file->getName(), $file->getMimeType());
                 }
             }
         }

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Support\Extension;
  */
 
 use Codeception\Event\SuiteEvent;
+use Symfony\Component\Mailer\Transport\NullTransport;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
@@ -62,6 +63,11 @@ class BackendCoreEnvironment extends BackendEnvironment
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/tx_extensionmanager_domain_model_extension.xml',
             'PACKAGE:typo3/testing-framework/Resources/Core/Acceptance/Fixtures/tx_extensionmanager_domain_model_repository.xml',
         ],
+        'configurationToUseInTestInstance' => [
+            'MAIL' => [
+                'transport' => NullTransport::class
+            ]
+        ]
     ];
 
     /**

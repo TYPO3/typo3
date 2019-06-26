@@ -15,9 +15,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
+use TYPO3\CMS\Core\Mail\FileSpool;
 use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
+use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeFileSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeInvalidSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeValidSpoolFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -35,10 +39,10 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsSwiftSpoolTransportUsingSwiftFileSpool(): void
+    public function getReturnsSpoolTransportUsingFileSpool(): void
     {
         $mailSettings = [
-            'transport' => 'mail',
+            'transport' => 'sendmail',
             'transport_smtp_server' => 'localhost:25',
             'transport_smtp_encrypt' => '',
             'transport_smtp_username' => '',
@@ -52,23 +56,20 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         // Register fixture class
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\Swift_FileSpool::class]['className'] = Fixtures\FakeFileSpoolFixture::class;
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FileSpool::class]['className'] = Fixtures\FakeFileSpoolFixture::class;
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
+        $this->assertInstanceOf(DelayedTransportInterface::class, $transport);
+        $this->assertInstanceOf(FakeFileSpoolFixture::class, $transport);
 
-        /** @var Fixtures\FakeFileSpoolFixture $spool */
-        $spool = $transport->getSpool();
-        $this->assertInstanceOf(\Swift_FileSpool::class, $spool);
-
-        $path = $spool->getPath();
+        $path = $transport->getPath();
         $this->assertStringContainsString($mailSettings['transport_spool_filepath'], $path);
     }
 
     /**
      * @test
      */
-    public function getReturnsSwiftSpoolTransportUsingSwiftMemorySpool(): void
+    public function getReturnsSpoolTransportUsingMemorySpool(): void
     {
         $mailSettings = [
             'transport' => 'mail',
@@ -88,20 +89,17 @@ class TransportFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][MemorySpool::class]['className'] = Fixtures\FakeMemorySpoolFixture::class;
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
-
-        /** @var \Swift_MemorySpool $spool */
-        $spool = $transport->getSpool();
-        $this->assertInstanceOf(\Swift_MemorySpool::class, $spool);
+        $this->assertInstanceOf(DelayedTransportInterface::class, $transport);
+        $this->assertInstanceOf(MemorySpool::class, $transport);
     }
 
     /**
      * @test
      */
-    public function getReturnsSwiftSpoolTransportUsingCustomSpool(): void
+    public function getReturnsSpoolTransportUsingCustomSpool(): void
     {
         $mailSettings = [
-            'transport' => 'mail',
+            'transport' => 'sendmail',
             'transport_smtp_server' => 'localhost:25',
             'transport_smtp_encrypt' => '',
             'transport_smtp_username' => '',
@@ -115,13 +113,10 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(\Swift_SpoolTransport::class, $transport);
+        $this->assertInstanceOf(DelayedTransportInterface::class, $transport);
+        $this->assertInstanceOf(Fixtures\FakeValidSpoolFixture::class, $transport);
 
-        /** @var Fixtures\FakeValidSpoolFixture $spool */
-        $spool = $transport->getSpool();
-        $this->assertInstanceOf(Fixtures\FakeValidSpoolFixture::class, $spool);
-
-        $this->assertSame($mailSettings, $spool->getSettings());
+        $this->assertSame($mailSettings, $transport->getSettings());
     }
 
     /**
@@ -129,7 +124,6 @@ class TransportFactoryTest extends UnitTestCase
      */
     public function getThrowsRuntimeExceptionForInvalidCustomSpool(): void
     {
-        $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1466799482);
 
         $mailSettings = [
@@ -152,10 +146,10 @@ class TransportFactoryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReturnsSwiftMailTransport(): void
+    public function getReturnsMailerTransportInterface(): void
     {
         $mailSettings = [
-            'transport' => 'mail',
+            'transport' => 'smtp',
             'transport_smtp_server' => 'localhost:25',
             'transport_smtp_encrypt' => '',
             'transport_smtp_username' => '',
@@ -169,6 +163,6 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(\Swift_MailTransport::class, $transport);
+        $this->assertInstanceOf(TransportInterface::class, $transport);
     }
 }

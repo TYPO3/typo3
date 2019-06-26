@@ -14,18 +14,20 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Mail\FileSpool;
+
 /**
  * Fixture fake valid spool
  */
-class FakeFileSpoolFixture extends \Swift_FileSpool
+class FakeFileSpoolFixture extends FileSpool
 {
     public function __construct($path)
     {
-        $this->_path = $path;
+        $this->path = $path;
     }
 
     public function getPath(): string
     {
-        return $this->_path;
+        return $this->path;
     }
 }

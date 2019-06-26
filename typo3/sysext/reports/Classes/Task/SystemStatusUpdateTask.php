@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Reports\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -102,7 +103,7 @@ class SystemStatusUpdateTask extends AbstractTask
         $notificationEmails = GeneralUtility::trimExplode(LF, $this->notificationEmail, true);
         $sendEmailsTo = [];
         foreach ($notificationEmails as $notificationEmail) {
-            $sendEmailsTo[] = $notificationEmail;
+            $sendEmailsTo[] = new Address($notificationEmail);
         }
         $subject = sprintf($this->getLanguageService()->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $message = $this->getNotificationAll() ? $this->getLanguageService()->getLL('status_allNotification') : $this->getLanguageService()->getLL('status_problemNotification');
@@ -112,12 +113,12 @@ class SystemStatusUpdateTask extends AbstractTask
         $message .= $this->getLanguageService()->getLL('status_updateTask_email_issues') . ': ' . CRLF;
         $message .= implode(CRLF, $systemIssues);
         $message .= CRLF . CRLF;
-        /** @var MailMessage $mail */
-        $mail = GeneralUtility::makeInstance(MailMessage::class);
-        $mail->setTo($sendEmailsTo);
-        $mail->setSubject($subject);
-        $mail->setBody($message);
-        $mail->send();
+
+        GeneralUtility::makeInstance(MailMessage::class)
+            ->to(...$sendEmailsTo)
+            ->subject($subject)
+            ->text($message)
+            ->send();
     }
 
     /**

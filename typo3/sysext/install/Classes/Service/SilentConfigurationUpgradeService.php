@@ -183,6 +183,7 @@ class SilentConfigurationUpgradeService
         $this->migrateDisplayErrorsSetting();
         $this->migrateSaltedPasswordsSettings();
         $this->migrateCachingFrameworkCaches();
+        $this->migrateMailSettingsToSendmail();
 
         // Should run at the end to prevent obsolete settings are removed before migration
         $this->removeObsoleteLocalConfigurationSettings();
@@ -1072,6 +1073,26 @@ class SilentConfigurationUpgradeService
 
             if ($hasBeenModified) {
                 $confManager->setLocalConfigurationValueByPath('SYS/caching/cacheConfigurations', $newConfig);
+                $this->throwConfigurationChangedException();
+            }
+        } catch (MissingArrayPathException $e) {
+            // no change inside the LocalConfiguration.php found, so nothing needs to be modified
+        }
+    }
+
+    /**
+     * Migrates "mail" to "sendmail" as "mail" (PHP's built-in mail() method) is not supported anymore
+     * with Symfony components.
+     * See #88643
+     */
+    protected function migrateMailSettingsToSendmail()
+    {
+        $confManager = $this->configurationManager;
+        try {
+            $transport = (array)$confManager->getLocalConfigurationValueByPath('MAIL/transport');
+            if ($transport === 'mail') {
+                $confManager->setLocalConfigurationValueByPath('MAIL/transport', 'sendmail');
+                $confManager->setLocalConfigurationValueByPath('MAIL/transport_sendmail_command', (string)@ini_get('sendmail_path'));
                 $this->throwConfigurationChangedException();
             }
         } catch (MissingArrayPathException $e) {

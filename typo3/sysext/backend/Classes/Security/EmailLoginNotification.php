@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -83,19 +84,19 @@ class EmailLoginNotification
     }
 
     /**
-     * Sends an email and returns the number of recipients accepting the email.
+     * Sends an email.
      *
      * @param string $recipient
      * @param string $subject
      * @param string $body
-     * @return int number of recipients that successfully accepted the email
      */
-    protected function sendEmail(string $recipient, string $subject, string $body): int
+    protected function sendEmail(string $recipient, string $subject, string $body): void
     {
-        return GeneralUtility::makeInstance(MailMessage::class)
-            ->setTo($recipient)
-            ->setSubject($subject)
-            ->setBody($body)
+        $recipients = explode(',', $recipient);
+        GeneralUtility::makeInstance(MailMessage::class)
+            ->to(...$recipients)
+            ->subject($subject)
+            ->text($body)
             ->send();
     }
 

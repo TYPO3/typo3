@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
@@ -27,6 +29,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -661,16 +664,15 @@ class DataHandlerHook
                 $emailSubject = $templateService->substituteMarkerArray($emailSubject, $markers, '', true, true);
                 $emailMessage = $templateService->substituteMarkerArray($emailMessage, $markers, '', true, true);
                 // Send an email to the recipient
-                /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
-                $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
+                $mail = GeneralUtility::makeInstance(MailMessage::class);
                 if (!empty($recipientData['realName'])) {
-                    $recipient = [$recipientData['email'] => $recipientData['realName']];
+                    $recipient = new NamedAddress($recipientData['email'], $recipientData['realName']);
                 } else {
-                    $recipient = $recipientData['email'];
+                    $recipient = new Address($recipientData['email']);
                 }
-                $mail->setTo($recipient)
-                    ->setSubject($emailSubject)
-                    ->setBody($emailMessage);
+                $mail->to($recipient)
+                    ->subject($emailSubject)
+                    ->html($emailMessage);
                 $mail->send();
             }
             $emailRecipients = implode(',', $emailRecipients);

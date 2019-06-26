@@ -16,11 +16,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  */
 
 use Prophecy\Argument;
+use Symfony\Component\Mailer\Transport\NullTransport;
+use Symfony\Component\Mailer\Transport\SendmailTransport;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\TransportFactory;
-use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeTransportFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -57,10 +60,10 @@ class MailerTest extends UnitTestCase
     public function injectedSettingsAreNotReplacedByGlobalSettings()
     {
         $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
-        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail'];
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs'];
 
         $transportFactory = $this->prophesize(TransportFactory::class);
-        $transportFactory->get(Argument::any())->willReturn($this->prophesize(\Swift_Transport::class));
+        $transportFactory->get(Argument::any())->willReturn($this->prophesize(SendmailTransport::class));
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
@@ -73,10 +76,10 @@ class MailerTest extends UnitTestCase
      */
     public function globalSettingsAreUsedIfNoSettingsAreInjected()
     {
-        $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail']);
+        $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs']);
         $this->subject->__construct();
         $transportFactory = $this->prophesize(TransportFactory::class);
-        $transportFactory->get(Argument::any())->willReturn($this->prophesize(\Swift_Transport::class));
+        $transportFactory->get(Argument::any())->willReturn($this->prophesize(SendmailTransport::class));
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory->reveal());
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
@@ -93,9 +96,8 @@ class MailerTest extends UnitTestCase
     {
         return [
             'smtp but no host' => [['transport' => 'smtp']],
-            'sendmail but no command' => [['transport' => 'sendmail']],
             'mbox but no file' => [['transport' => 'mbox']],
-            'no instance of Swift_Transport' => [['transport' => ErrorPageController::class]]
+            'no instance of TransportInterface' => [['transport' => ErrorPageController::class]]
         ];
     }
 
@@ -118,7 +120,7 @@ class MailerTest extends UnitTestCase
      */
     public function providingCorrectClassnameDoesNotThrowException()
     {
-        $this->subject->injectMailSettings(['transport' => FakeTransportFixture::class]);
+        $this->subject->injectMailSettings(['transport' => NullTransport::class]);
         $this->subject->__construct();
     }
 
@@ -129,7 +131,7 @@ class MailerTest extends UnitTestCase
     {
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost']);
         $this->subject->__construct();
-        $port = $this->subject->getTransport()->getPort();
+        $port = $this->subject->getTransport()->getStream()->getPort();
         $this->assertEquals(25, $port);
     }
 
@@ -140,7 +142,7 @@ class MailerTest extends UnitTestCase
     {
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:']);
         $this->subject->__construct();
-        $port = $this->subject->getTransport()->getPort();
+        $port = $this->subject->getTransport()->getStream()->getPort();
         $this->assertEquals(25, $port);
     }
 
@@ -151,7 +153,7 @@ class MailerTest extends UnitTestCase
     {
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345']);
         $this->subject->__construct();
-        $port = $this->subject->getTransport()->getPort();
+        $port = $this->subject->getTransport()->getStream()->getPort();
         $this->assertEquals(12345, $port);
     }
 
@@ -164,8 +166,8 @@ class MailerTest extends UnitTestCase
         $this->subject->injectMailSettings($settings);
         $transport = $this->subject->getRealTransport();
 
-        $this->assertInstanceOf(\Swift_Transport::class, $transport);
-        $this->assertNotInstanceOf(\Swift_SpoolTransport::class, $transport);
+        $this->assertInstanceOf(TransportInterface::class, $transport);
+        $this->assertNotInstanceOf(DelayedTransportInterface::class, $transport);
     }
 
     /**
@@ -177,11 +179,11 @@ class MailerTest extends UnitTestCase
     {
         return [
             'without spool' => [[
-                'transport' => 'mail',
+                'transport' => 'sendmail',
                 'spool' => '',
             ]],
             'with spool' => [[
-                'transport' => 'mail',
+                'transport' => 'sendmail',
                 'spool' => 'memory',
             ]],
         ];

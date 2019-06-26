@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\RawMessage;
+
 /**
  * Fixture fake invalid spool
  */
@@ -31,23 +33,7 @@ class FakeInvalidSpoolFixture
         return $this->settings;
     }
 
-    public function start()
-    {
-    }
-
-    public function stop()
-    {
-    }
-
-    public function isStarted()
-    {
-    }
-
-    public function queueMessage(\Swift_Mime_Message $message)
-    {
-    }
-
-    public function flushQueue(\Swift_Transport $transport, &$failedRecipients = null)
+    public function queueMessage(RawMessage $message)
     {
     }
 }
