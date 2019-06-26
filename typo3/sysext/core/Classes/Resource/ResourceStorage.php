@@ -3202,6 +3202,10 @@ class ResourceStorage implements ResourceStorageInterface
         if ($file instanceof ProcessedFile) {
             return null;
         }
+        // if the storage is not browsable we cannot fetch the parent folder of the file so no recycler handling is possible
+        if (!$this->isBrowsable()) {
+            return null;
+        }
 
         $recyclerFolder = null;
         $folder = $file->getParentFolder();
