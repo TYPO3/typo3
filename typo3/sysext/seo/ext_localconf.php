@@ -25,7 +25,6 @@ unset($metaTagManagerRegistry);
         seo {
             provider = TYPO3\CMS\Seo\PageTitle\SeoTitlePageTitleProvider
             before = record
-            after = altPageTitle
         }
     }
 '));
