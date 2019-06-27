@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>Page with twitter_card</title>
+        <twitter_card>summary</twitter_card>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>Page with twitter_card and typoscript</title>
+        <twitter_card>summary</twitter_card>
+        <deleted>0</deleted>
+    </pages>
+    <pages>
+        <uid>3</uid>
+        <pid>1</pid>
+        <title>Page with twitter_card and typoscript with replace</title>
+        <twitter_card>summary</twitter_card>
+        <deleted>0</deleted>
+    </pages>
+</dataset>

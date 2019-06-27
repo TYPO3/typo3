@@ -56,7 +56,7 @@ $tca = [
         ],
         'twittercards' => [
             'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.palettes.twittercards',
-            'showitem' => 'twitter_title, --linebreak--, twitter_description, --linebreak--, twitter_image',
+            'showitem' => 'twitter_title, --linebreak--, twitter_description, --linebreak--, twitter_image, --linebreak--, twitter_card',
         ],
     ],
     'columns' => [
@@ -268,6 +268,19 @@ $tca = [
                 ],
                 $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
             )
+        ],
+        'twitter_card' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'default' => 'summary',
+                'items' => [
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary', 'summary'],
+                    ['LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.twitter_card.summary_large_image', 'summary_large_image'],
+                ]
+            ]
         ],
     ],
 ];

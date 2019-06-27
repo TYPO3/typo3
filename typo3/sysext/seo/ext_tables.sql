@@ -11,6 +11,7 @@ CREATE TABLE pages (
 	twitter_title varchar(255) DEFAULT '' NOT NULL,
 	twitter_description text,
 	twitter_image int(11) unsigned DEFAULT '0' NOT NULL,
+	twitter_card varchar(255) DEFAULT '' NOT NULL,
 	canonical_link varchar(2048) DEFAULT '' NOT NULL,
 	sitemap_priority decimal(1,1) DEFAULT '0.5' NOT NULL,
 	sitemap_changefreq varchar(10) DEFAULT '' NOT NULL,

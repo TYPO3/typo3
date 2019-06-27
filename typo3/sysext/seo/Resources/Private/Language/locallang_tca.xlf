@@ -52,6 +52,15 @@
 			<trans-unit id="pages.twitter_image">
 				<source>Image</source>
 			</trans-unit>
+			<trans-unit id="pages.twitter_card">
+				<source>Type of card to show</source>
+			</trans-unit>
+			<trans-unit id="pages.twitter_card.summary">
+				<source>Summary Card</source>
+			</trans-unit>
+			<trans-unit id="pages.twitter_card.summary_large_image">
+				<source>Summary Card with a large image</source>
+			</trans-unit>
 			<trans-unit id="pages.palettes.canonical">
 				<source>Canonical</source>
 			</trans-unit>
