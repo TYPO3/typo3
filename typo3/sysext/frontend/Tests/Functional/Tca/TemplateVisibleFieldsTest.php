@@ -29,7 +29,6 @@ class TemplateVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\
         'description',
         'clear',
         'root',
-        'nextLevel',
         'includeStaticAfterBasedOn',
         'include_static_file',
         'basedOn',

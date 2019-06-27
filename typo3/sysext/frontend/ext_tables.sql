@@ -82,7 +82,6 @@ CREATE TABLE sys_template (
 	include_static_file text,
 	constants text,
 	config text,
-	nextLevel varchar(5) DEFAULT '' NOT NULL,
 	basedOn tinytext,
 	includeStaticAfterBasedOn tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	static_file_mode tinyint(4) unsigned DEFAULT '0' NOT NULL,

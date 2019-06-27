@@ -24,9 +24,6 @@
 			<trans-unit id="rootline">
 				<source>Rootline</source>
 			</trans-unit>
-			<trans-unit id="nextLevel">
-				<source>Next Level</source>
-			</trans-unit>
 			<trans-unit id="templateHierarchy">
 				<source>Template hierarchy</source>
 			</trans-unit>

@@ -489,9 +489,6 @@
 			<trans-unit id="sys_template.resources">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="sys_template.nextLevel">
-				<source>Template on Next Level</source>
-			</trans-unit>
 			<trans-unit id="sys_template.include_static_file">
 				<source>Include static (from extensions)</source>
 			</trans-unit>

@@ -679,7 +679,6 @@ class ExtendedTemplateService extends TemplateService
 							<td align="center">' . ($row['clConst'] ? $statusCheckedIcon : '') . '</td>
 							<td align="center">' . ($row['pid'] ?: '') . '</td>
 							<td align="center">' . ($RL >= 0 ? $RL : '') . '</td>
-							<td>' . ($row['next'] ? $row['next'] : '') . '</td>
 						</tr>';
             if ($deeper) {
                 $keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<span class="treeline-icon treeline-icon-' . $LN . '"></span>'), $keyArray);

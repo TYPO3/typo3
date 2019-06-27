@@ -160,13 +160,6 @@ class TemplateService
     protected $hierarchyInfoToRoot = [];
 
     /**
-     * Next-level flag (see runThroughTemplates())
-     *
-     * @var int
-     */
-    protected $nextLevel = 0;
-
-    /**
      * The Page UID of the root page
      *
      * @var int
@@ -535,28 +528,6 @@ class TemplateService
         $c = count($this->absoluteRootLine);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_template');
         for ($a = 0; $a < $c; $a++) {
-            // If some template loaded before has set a template-id for the next level, then load this template first!
-            if ($this->nextLevel) {
-                $queryBuilder->setRestrictions($this->queryBuilderRestrictions);
-                $queryResult = $queryBuilder
-                    ->select('*')
-                    ->from('sys_template')
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'uid',
-                            $queryBuilder->createNamedParameter($this->nextLevel, \PDO::PARAM_INT)
-                        )
-                    )
-                    ->execute();
-                $this->nextLevel = 0;
-                if ($row = $queryResult->fetch()) {
-                    $this->versionOL($row);
-                    if (is_array($row)) {
-                        $this->processTemplate($row, 'sys_' . $row['uid'], $this->absoluteRootLine[$a]['uid'], 'sys_' . $row['uid']);
-                    }
-                }
-            }
-
             $where = [
                 $queryBuilder->expr()->eq(
                     'pid',
@@ -702,7 +673,6 @@ class TemplateService
         // Creating hierarchy information; Used by backend analysis tools
         $this->hierarchyInfo[] = ($this->hierarchyInfoToRoot[] = [
             'root' => trim($row['root'] ?? ''),
-            'next' => $row['nextLevel'] ?? null,
             'clConst' => $clConst,
             'clConf' => $clConf,
             'templateID' => $templateID,
@@ -726,12 +696,6 @@ class TemplateService
         if (trim($row['root'] ?? null)) {
             $this->rootId = $pid;
             $this->rootLine = [];
-        }
-        // If a template is set to be active on the next level set this internal value to point to this UID. (See runThroughTemplates())
-        if ($row['nextLevel'] ?? null) {
-            $this->nextLevel = $row['nextLevel'];
-        } else {
-            $this->nextLevel = 0;
         }
     }
 
@@ -1240,7 +1204,6 @@ class TemplateService
             $rootTemplateId = $this->hierarchyInfo[count($this->hierarchyInfo) - 1]['templateID'] ?? null;
             $defaultTemplateInfo = [
                 'root' => '',
-                'next' => '',
                 'clConst' => '',
                 'clConf' => '',
                 'templateID' => '_defaultTypoScript_',

@@ -27,7 +27,7 @@ return [
         'searchFields' => 'title,constants,config'
     ],
     'interface' => [
-        'showRecordFieldList' => 'title,clear,root,basedOn,nextLevel,sitetitle,description,hidden,starttime,endtime'
+        'showRecordFieldList' => 'title,clear,root,basedOn,sitetitle,description,hidden,starttime,endtime'
     ],
     'columns' => [
         'title' => [
@@ -123,18 +123,6 @@ return [
                 'softref' => 'email[subst],url[subst]'
             ],
         ],
-        'nextLevel' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.nextLevel',
-            'config' => [
-                'type' => 'group',
-                'internal_type' => 'db',
-                'allowed' => 'sys_template',
-                'size' => 1,
-                'maxitems' => 1,
-                'minitems' => 0,
-                'default' => '',
-            ]
-        ],
         'include_static_file' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.include_static_file',
             'config' => [
@@ -229,7 +217,7 @@ return [
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
                 title, sitetitle, constants, config,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.options,
-                clear, root, nextLevel,
+                clear, root,
             --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.tabs.include,
                 includeStaticAfterBasedOn, include_static_file, basedOn, static_file_mode,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
