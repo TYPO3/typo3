@@ -31,19 +31,28 @@ imports and works as follows:
 	@import 'EXT:myproject/Configuration/TypoScript/'
 
 The main benefits of `@import` over using `<INCLUDE_TYPOSCRIPT>` are:
+
 - Less error-prone when adding statements to TypoScript
+
 - Easier to read what should be included (files, folders - instead of `FILE:` and `DIR:` syntax)
+
 - @import is more speaking than a pseudo-XML syntax
 
 The following rules apply:
+
 - If multiple files are found, the file name is important in which order the files (sorted
 alphabetically by filename)
+
 - Recursive inclusion of files (@import within @import is possible)
+
 - It is not possible to use a condition as possible with <INCLUDE_TYPOSCRIPT condition=""> as its
 sole purpose is to include files, which happens before the actual real condition matching happens,
 and the INCLUDE_TYPOSCRIPT condition syntax is a conceptual mistake, and should be avoided.
+
 - Both `<INCLUDE_TYPOSCRIPT>` and `@import` can work side-by-side in the same project
+
 - If a directory is included, it will not include files recursively
+
 - Quoting of the filename is necessary, both double quotes (") and single tickst (') can be used
 
 The syntax is designed to stay, and @import is not intended to be extended with more logic in the
