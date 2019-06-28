@@ -712,12 +712,13 @@ class NewRecordController
                             $_EXTKEY = '';
                             if ($nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
                                 // Try to extract extension name
-                                if (strpos($v['ctrl']['title'], 'LLL:EXT:') === 0) {
-                                    $_EXTKEY = substr($v['ctrl']['title'], 8);
+                                $title = (string)($v['ctrl']['title'] ?? '');
+                                if (strpos($title, 'LLL:EXT:') === 0) {
+                                    $_EXTKEY = substr($title, 8);
                                     $_EXTKEY = substr($_EXTKEY, 0, strpos($_EXTKEY, '/'));
                                     if ($_EXTKEY !== '') {
                                         // First try to get localisation of extension title
-                                        $temp = explode(':', substr($v['ctrl']['title'], 9 + strlen($_EXTKEY)));
+                                        $temp = explode(':', substr($title, 9 + strlen($_EXTKEY)));
                                         $langFile = $temp[0];
                                         $thisTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
                                         // If no localisation available, read title from ext_emconf.php
