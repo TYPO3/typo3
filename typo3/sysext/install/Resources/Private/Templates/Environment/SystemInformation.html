@@ -7,9 +7,9 @@
 	</tr>
 	<tr>
 		<td>PHP version:</td>
-		<td><strong>
-			<i:constant name="PHP_VERSION"/>
-		</strong></td>
+		<td class="text-wrap-allowed">
+			<strong><i:constant name="PHP_VERSION"/></strong>
+		</td>
 	</tr>
 	<tr>
 		<td>PHP CGI detected:</td>
@@ -40,7 +40,9 @@
 							</li>
 						</f:else>
 					</f:if>
-					<li><strong>Version:</strong> {connection.version}</li>
+					<li class="text-wrap-allowed">
+						<strong>Version:</strong> {connection.version}
+					</li>
 					<li><strong>Tables:</strong> {connection.numberOfTables}</li>
 					<f:if condition="{connection.numberOfMappedTables}">
 						<f:then>
