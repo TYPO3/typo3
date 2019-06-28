@@ -32,11 +32,12 @@ var setFormValueOpenBrowser,
  */
 define(['jquery',
   'TYPO3/CMS/Backend/FormEngineValidation',
+  'TYPO3/CMS/Backend/DocumentSaveActions',
   'TYPO3/CMS/Backend/Modal',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/BackendException',
   'TYPO3/CMS/Backend/Event/InteractionRequestMap'
-], function($, FormEngineValidation, Modal, Severity, BackendException, InteractionRequestMap) {
+], function($, FormEngineValidation, DocumentSaveActions, Modal, Severity, BackendException, InteractionRequestMap) {
 
   /**
    * @param {InteractionRequest} interactionRequest
@@ -1209,6 +1210,9 @@ define(['jquery',
    * @param {Number} mode
    */
   FormEngine.initialize = function(browserUrl, mode) {
+    // This is required to register the click handler
+    DocumentSaveActions.getInstance();
+
     FormEngine.browserUrl = browserUrl;
     FormEngine.Validation.setUsMode(mode);
 

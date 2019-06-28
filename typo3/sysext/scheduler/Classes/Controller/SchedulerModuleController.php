@@ -141,7 +141,6 @@ class SchedulerModuleController
         $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
 
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/SplitButtons');
     }
 
     /**

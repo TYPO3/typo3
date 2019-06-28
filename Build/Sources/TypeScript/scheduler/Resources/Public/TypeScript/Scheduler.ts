@@ -13,7 +13,7 @@
 
 import * as $ from 'jquery';
 import 'datatables';
-import SplitButtons = require('TYPO3/CMS/Backend/SplitButtons');
+import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -31,7 +31,7 @@ class Scheduler {
     this.initializeEvents();
     this.initializeDefaultStates();
 
-    SplitButtons.addPreSubmitCallback((): void => {
+    DocumentSaveActions.getInstance().addPreSubmitCallback((): void => {
       let taskClass = $('#task_class').val();
       taskClass = taskClass.toLowerCase().replace(/\\/g, '-');
 

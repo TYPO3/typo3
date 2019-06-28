@@ -14,7 +14,6 @@
 import * as $ from 'jquery';
 import * as NProgress from 'nprogress';
 import Modal = require('TYPO3/CMS/Backend/Modal');
-import SplitButtons = require('TYPO3/CMS/Backend/SplitButtons');
 import Tooltip = require('TYPO3/CMS/Backend/Tooltip');
 import Severity = require('TYPO3/CMS/Backend/Severity');
 import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
@@ -93,16 +92,6 @@ class ExtensionManager {
 
       $(document).on('click', '.t3-button-action-installdistribution', (): void => {
         NProgress.start();
-      });
-
-      SplitButtons.addPreSubmitCallback((e: JQueryEventObject): void => {
-        if ($(e.target).hasClass('t3js-save-close')) {
-          $('#configurationform').append($('<input />', {
-            type: 'hidden',
-            name: 'tx_extensionmanager_tools_extensionmanagerextensionmanager[action]',
-            value: 'saveAndClose',
-          }));
-        }
       });
 
       this.Repository.initDom();
