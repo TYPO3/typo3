@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Configuration\Loader;
  */
 
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -114,7 +115,7 @@ class YamlFileLoader
             foreach ($content['imports'] as $import) {
                 $importedContent = $this->load($import['resource']);
                 // override the imported content with the one from the current file
-                $content = $this->merge($importedContent, $content);
+                $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);
             }
             unset($content['imports']);
         }
@@ -191,46 +192,5 @@ class YamlFileLoader
     protected function isEnvPlaceholder($value): bool
     {
         return is_string($value) && (strpos($value, '%env(') !== false);
-    }
-
-    /**
-     * Same as array_replace_recursive except that when in simple arrays (= YAML lists), the entries are
-     * appended (array_merge)
-     *
-     * @param array $val1
-     * @param array $val2
-     *
-     * @return array
-     */
-    protected function merge(array $val1, array $val2): array
-    {
-        // Simple lists get merged / added up
-        if (count(array_filter(array_keys($val1), 'is_int')) === count($val1)) {
-            return array_merge($val1, $val2);
-        }
-        foreach ($val1 as $k => $v) {
-            // The key also exists in second array, if it is a simple value
-            // then $val2 will override the value, where an array is calling merge() recursively.
-            if (isset($val2[$k])) {
-                if (is_array($v) && isset($val2[$k])) {
-                    if (is_array($val2[$k])) {
-                        $val1[$k] = $this->merge($v, $val2[$k]);
-                    } else {
-                        $val1[$k] = $val2[$k];
-                    }
-                } else {
-                    $val1[$k] = $val2[$k];
-                }
-                unset($val2[$k]);
-            }
-        }
-        // If there are properties in the second array left, they are added up
-        if (!empty($val2)) {
-            foreach ($val2 as $k => $v) {
-                $val1[$k] = $v;
-            }
-        }
-
-        return $val1;
     }
 }
