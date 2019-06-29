@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 /*
@@ -61,6 +62,7 @@ class RichtextTest extends UnitTestCase
             'proc.' => [
                 'overruleMode' => 'myTransformation',
             ],
+            'preset' => 'default',
             'classes' => [
                 'aClass' => 'aConfig',
             ],
@@ -110,6 +112,7 @@ class RichtextTest extends UnitTestCase
             'proc.' => [
                 'overruleMode' => 'myTransformation',
             ],
+            'preset' => 'default',
             'classes' => [
                 'aClass' => 'aConfig',
             ],
@@ -147,6 +150,7 @@ class RichtextTest extends UnitTestCase
                 'aClass' => 'aConfig',
             ],
             'removeComments' => '1',
+            'preset' => 'default',
             'classes' => [
                 'aClass' => 'aConfig',
             ],
@@ -195,6 +199,7 @@ class RichtextTest extends UnitTestCase
                     'contentsCss' => 'my.css'
                 ]
             ],
+            'preset' => 'default',
             'classes' => [
                 'aClass' => 'anotherConfig',
             ],
@@ -258,6 +263,7 @@ class RichtextTest extends UnitTestCase
                     'contentsCss' => 'my.css'
                 ]
             ],
+            'preset' => 'default',
             // Config without pagets dots
             'classes' => [
                 'aClass' => 'aThirdConfig',
@@ -334,6 +340,7 @@ class RichtextTest extends UnitTestCase
                     'contentsCss' => 'your.css'
                 ]
             ],
+            'preset' => 'default',
             // Config without pagets dots
             'classes' => [
                 'aClass' => 'aTypeSpecifcConfig',
@@ -398,17 +405,338 @@ class RichtextTest extends UnitTestCase
                     'width' => 200
                 ],
             ],
-            'preset' => 'default',
             'editor.' => [
                 'config.' => [
                     'width' => 200
                 ],
             ],
+            'preset' => 'default',
             'proc.' => [
                 'overruleMode' => 'default',
             ],
         ];
 
+        self::assertSame($expected, $output);
+    }
+
+    /**
+     * @return array
+     */
+    public function dataProviderGetConfigurationFindPresetInPageTsOverridesPreset()
+    {
+        return [
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                    'richtextConfiguration' => 'testRteConfigTca'
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'default.' => [
+                        'preset' => 'testRteConfigTsconfigDefault',
+                    ],
+                    'config.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'preset' => 'testRteConfigTsconfigAField'
+                            ]
+                        ]
+                    ]
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigAField',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'Preset of testRteConfig* in three place TCA',
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'default.' => [
+                        'preset' => 'testRteConfigTsconfigDefault',
+                    ],
+                    'config.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'preset' => 'testRteConfigTsconfigAField'
+                            ]
+                        ]
+                    ]
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigAField',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'Preset of testRteConfig* in two place TCA, lowest is pagetsconfig definition for field of table',
+
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                    'richtextConfiguration' => 'testRteConfigTca'
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'default.' => [
+                        'preset' => 'testRteConfigTsconfigDefault',
+                    ],
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTca',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'Preset of testRteConfig* in two place TCA, lowest is definition in tca',
+
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                    'richtextConfiguration' => 'testRteConfigTca'
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTca',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'single Preset of testRteConfig* defined in TCA',
+
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'default.' => [
+                        'preset' => 'testRteConfigTsconfigDefault',
+                    ],
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigDefault',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'single Preset of testRteConfig* defined in Pagetesconfig for default of RTE',
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                    'richtextConfiguration' => 'testRteConfigTca'
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'config.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'preset' => 'testRteConfigTsconfigAField'
+                            ]
+                        ]
+                    ]
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigAField',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'single Preset of testRteConfig* defined in Pagetesconfig for field of table ',
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                    'richtextConfiguration' => 'testRteConfigTca'
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'default.' => [
+                        'preset' => 'testRteConfigTsconfigDefault',
+                    ],
+                    'config.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'preset' => 'testRteConfigTsconfigAField',
+                                'types.' => [
+                                    'textmedia.' => [
+                                        'preset' => 'testRteConfigTsconfigATypes',
+                                    ],
+                                ],
+                            ]
+                        ]
+                    ],
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigATypes',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'Preset of testRteConfigTsconfigA* in four place TCA',
+            ],
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'config.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'preset' => 'testRteConfigTsconfigAField',
+                                'types.' => [
+                                    'textmedia.' => [
+                                        'preset' => 'testRteConfigTsconfigATypes',
+                                    ],
+                                ],
+                            ]
+                        ]
+                    ],
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigATypes',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'the preset for CType in pagetsconfig is more reliable than preset for field of tables',
+            ],
+
+            [
+                'fieldConfig' => [
+                    'type' => 'text',
+                    'enableRichtext' => true,
+                ],
+                'pageTsConfig' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'config.' => [
+                        'aTable.' => [
+                            'aField.' => [
+                                'preset' => 'testRteConfigTsconfigAField',
+                                'types.' => [
+                                    'textmedia.' => [
+                                        'preset' => 'testRteConfigTsconfigATypes',
+                                    ],
+                                ],
+                            ]
+                        ],
+                    ],
+                ],
+                'expected' => [
+                    'classes.' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'preset' => 'testRteConfigTsconfigATypes',
+                    'classes' => [
+                        'aClass' => 'aConfig',
+                    ],
+                    'proc.' => [
+                        'overruleMode' => 'default',
+                    ],
+                ],
+                'message' => 'the recordtype overrules the definition of an table-field',
+            ],
+
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderGetConfigurationFindPresetInPageTsOverridesPreset
+     * @test
+     */
+    public function getConfigurationFindPresetInPageTsOverridesPreset($fieldConfig, $pageTsConfig, $expected, $message)
+    {
+        // Accessible mock to $subject since getRtePageTsConfigOfPid calls BackendUtility::getPagesTSconfig()
+        // which can't be mocked in a sane way
+        $subject = $this->getAccessibleMock(Richtext::class, ['getRtePageTsConfigOfPid'], [], '', false);
+        $subject->expects(self::once())->method('getRtePageTsConfigOfPid')->with(42)->willReturn($pageTsConfig);
+        $output = $subject->getConfiguration('aTable', 'aField', 42, 'textmedia', $fieldConfig);
         self::assertSame($expected, $output);
     }
 }

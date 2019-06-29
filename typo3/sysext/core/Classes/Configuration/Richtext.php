@@ -57,10 +57,12 @@ class Richtext
         $pageTs = $this->getPageTsConfiguration($table, $field, $pid, $recordType);
 
         // determine which preset to use
-        $usePreset = $pageTs['preset'] ?? $tcaFieldConf['richtextConfiguration'] ?? 'default';
+        $pageTs['preset'] = $pageTs['fieldSpecificPreset'] ?? $tcaFieldConf['richtextConfiguration'] ?? $pageTs['generalPreset'] ?? 'default';
+        unset($pageTs['fieldSpecificPreset']);
+        unset($pageTs['generalPreset']);
 
         // load configuration from preset
-        $configuration = $this->loadConfigurationFromPreset($usePreset);
+        $configuration = $this->loadConfigurationFromPreset($pageTs['preset']);
 
         // overlay preset configuration with pageTs
         ArrayUtility::mergeRecursiveWithOverrule(
@@ -170,6 +172,9 @@ class Richtext
         // Load PageTSconfig configuration
         $fullPageTsConfig = $this->getRtePageTsConfigOfPid($pid);
         $defaultPageTsConfigOverrides = $fullPageTsConfig['default.'] ?? null;
+
+        $defaultPageTsConfigOverrides['generalPreset'] = $fullPageTsConfig['default.']['preset'] ?? null;
+
         $fieldSpecificPageTsConfigOverrides = $fullPageTsConfig['config.'][$table . '.'][$field . '.'] ?? null;
         unset($fullPageTsConfig['default.'], $fullPageTsConfig['config.']);
 
@@ -180,6 +185,9 @@ class Richtext
         if (is_array($defaultPageTsConfigOverrides)) {
             ArrayUtility::mergeRecursiveWithOverrule($rtePageTsConfiguration, $defaultPageTsConfigOverrides);
         }
+
+        $rtePageTsConfiguration['fieldSpecificPreset'] = $fieldSpecificPageTsConfigOverrides['types.'][$recordType . '.']['preset'] ??
+            $fieldSpecificPageTsConfigOverrides['preset'] ?? null;
 
         // Then overload with RTE.config.tt_content.bodytext
         if (is_array($fieldSpecificPageTsConfigOverrides)) {
@@ -199,6 +207,8 @@ class Richtext
                 );
             }
         }
+
+        unset($rtePageTsConfiguration['preset']);
 
         return $rtePageTsConfiguration;
     }

@@ -76,7 +76,6 @@ return [
                 'cols' => 48,
                 'rows' => 5,
                 'enableRichtext' => true,
-                'richtextConfiguration' => 'default',
             ],
         ]
     ],

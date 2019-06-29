@@ -1388,7 +1388,6 @@ return [
                 'bodytext' => [
                     'config' => [
                         'enableRichtext' => true,
-                        'richtextConfiguration' => 'default'
                     ]
                 ]
             ]
@@ -1422,7 +1421,6 @@ return [
                 'bodytext' => [
                     'config' => [
                         'enableRichtext' => true,
-                        'richtextConfiguration' => 'default'
                     ]
                 ]
             ]
@@ -1456,7 +1454,6 @@ return [
                 'bodytext' => [
                     'config' => [
                         'enableRichtext' => true,
-                        'richtextConfiguration' => 'default'
                     ]
                 ]
             ]
