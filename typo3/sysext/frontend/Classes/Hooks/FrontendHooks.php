@@ -34,7 +34,7 @@ class FrontendHooks
      */
     public function displayPreviewInfoMessage($params, TypoScriptFrontendController $controller)
     {
-        if (!$controller->fePreview || $controller->doWorkspacePreview()) {
+        if (!$controller->fePreview || $controller->doWorkspacePreview() || ($controller->config['config']['disablePreviewNotification'] ?? false)) {
             return;
         }
         if ($controller->config['config']['message_preview']) {
