@@ -34,7 +34,7 @@ The base of a site can be changed depending on a condition. Typical examples are
 This is an example where the default site has base variants, but also a translation (in this case German)
 has a custom domain or sub-domain instead of a first part of the path segment of the URL.
 
-:yaml:
+.. code-block:: yaml
 
     rootPageId: 1
     base: 'https://www.example.com/'
