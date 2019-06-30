@@ -219,39 +219,11 @@ class FormResultCompiler
         }
         $backendUser = $this->getBackendUserAuthentication();
 
-        // define the window size of the element browser etc.
-        $popupWindowWidth  = 800;
-        $popupWindowHeight = 600;
-        $popupWindowSize = trim($backendUser->getTSConfig()['options.']['popupWindowSize'] ?? '');
-        if (!empty($popupWindowSize)) {
-            list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
-        }
-
-        // define the window size of the popups within the RTE
-        $rtePopupWindowSize = trim($backendUser->getTSConfig()['options.']['rte.']['popupWindowSize'] ?? '');
-        if (!empty($rtePopupWindowSize)) {
-            list($rtePopupWindowWidth, $rtePopupWindowHeight) = GeneralUtility::trimExplode('x', $rtePopupWindowSize);
-        }
-        $rtePopupWindowWidth  = !empty($rtePopupWindowWidth) ? (int)$rtePopupWindowWidth : $popupWindowWidth;
-        $rtePopupWindowHeight = !empty($rtePopupWindowHeight) ? (int)$rtePopupWindowHeight : $popupWindowHeight;
-
         // Make textareas resizable and flexible ("autogrow" in height)
         $textareaSettings = [
             'autosize'  => (bool)$backendUser->uc['resizeTextareas_Flexible'],
-            'RTEPopupWindow' => [
-                'width' => $rtePopupWindowWidth,
-                'height' => $rtePopupWindowHeight
-            ]
         ];
         $pageRenderer->addInlineSettingArray('Textarea', $textareaSettings);
-
-        $popupSettings = [
-            'PopupWindow' => [
-                'width' => $popupWindowWidth,
-                'height' => $popupWindowHeight
-            ]
-        ];
-        $pageRenderer->addInlineSettingArray('Popup', $popupSettings);
 
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/jsfunc.tbe_editor.js');
         // Needed for FormEngine manipulation (date picker)

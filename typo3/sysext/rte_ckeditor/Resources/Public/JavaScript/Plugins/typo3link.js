@@ -80,7 +80,6 @@
     openElementBrowser(
       editor,
       editor.lang.link.toolbar,
-      TYPO3.settings.Textarea.RTEPopupWindow.height,
       makeUrlFromModulePath(
         editor,
         editor.config.typo3link.routeUrl,
@@ -111,10 +110,9 @@
    *
    * @param {Object} editor The CKEditor instance
    * @param {String} title The window title (will be localized here)
-   * @param {Integer} height The height of the containing iframe
    * @param {String} url The url to load ino the iframe
    */
-  function openElementBrowser(editor, title, height, url) {
+  function openElementBrowser(editor, title, url) {
     require([
       'jquery',
       'TYPO3/CMS/Backend/Modal'

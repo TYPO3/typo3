@@ -123,23 +123,11 @@ class FormEditorController extends AbstractBackendController
 
         $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:form/Resources/Private/Language/locallang_formEditor_failSafeErrorHandling_javascript.xlf');
 
-        $popupWindowWidth  = 700;
-        $popupWindowHeight = 750;
-        $popupWindowSize = \trim($this->getBackendUser()->getTSConfig()['options.']['popupWindowSize'] ?? '');
-        if (!empty($popupWindowSize)) {
-            list($popupWindowWidth, $popupWindowHeight) = GeneralUtility::intExplode('x', $popupWindowSize);
-        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $addInlineSettings = [
             'FormEditor' => [
                 'typo3WinBrowserUrl' => (string)$uriBuilder->buildUriFromRoute('wizard_element_browser'),
             ],
-            'Popup' => [
-                'PopupWindow' => [
-                    'width' => $popupWindowWidth,
-                    'height' => $popupWindowHeight
-                ],
-            ]
         ];
 
         $addInlineSettings = array_replace_recursive(
