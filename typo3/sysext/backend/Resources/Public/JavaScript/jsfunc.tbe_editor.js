@@ -44,21 +44,6 @@ var TBE_EDITOR = {
 
   clearBeforeSettingFormValueFromBrowseWin: [],
 
-  // Handling of data structures:
-  removeElement: function(record) {
-    if (TBE_EDITOR.elements && TBE_EDITOR.elements[record]) {
-      delete(TBE_EDITOR.elements[record]);
-    }
-  },
-  removeElementArray: function(removeStack) {
-    if (removeStack && removeStack.length) {
-      TBE_EDITOR.ignoreElements = removeStack;
-      for (var i = removeStack.length; i >= 0; i--) {
-        TBE_EDITOR.removeElement(removeStack[i]);
-      }
-      TBE_EDITOR.ignoreElements = [];
-    }
-  },
   getElement: function(record, field, type) {
     var result = null;
     var element;
