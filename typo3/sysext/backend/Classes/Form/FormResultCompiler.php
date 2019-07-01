@@ -201,7 +201,10 @@ class FormResultCompiler
         $html = implode(LF, $this->hiddenFieldAccum);
         $pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
         // load the main module for FormEngine with all important JS functions
-        $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = 'function(FormEngine) {
+        if (!is_array($this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] ?? null)) {
+            $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'] = [$this->requireJsModules['TYPO3/CMS/Backend/FormEngine']];
+        }
+        $this->requireJsModules['TYPO3/CMS/Backend/FormEngine'][] = 'function(FormEngine) {
 			FormEngine.initialize(
 				' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser')) . ',
 				' . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? '1' : '0') . '
