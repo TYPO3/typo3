@@ -110,43 +110,14 @@ class SingleFieldContainer extends AbstractContainer
             $parameterArray['itemFormElValue'] = $this->data['defaultLanguageRow'][$fieldName];
         }
 
-        if (strpos($this->data['processedTca']['ctrl']['type'], ':') === false) {
-            $typeField = $this->data['processedTca']['ctrl']['type'];
-        } else {
-            $typeField = substr($this->data['processedTca']['ctrl']['type'], 0, strpos($this->data['processedTca']['ctrl']['type'], ':'));
-        }
-        // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
-        // This is used for eg. "type" fields and others configured with "onChange"
-        if (!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField
-            || isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload'
-        ) {
-            if ($backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
-                        . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
-                        . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
-                    . ')'
-                    . '.on('
-                        . '"button.clicked",'
-                        . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
-                    . ');';
-            } else {
-                $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm() };';
-            }
-        } else {
-            $alertMsgOnChange = '';
-        }
-
         // JavaScript code for event handlers:
         $parameterArray['fieldChangeFunc'] = [];
         $parameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged('
-                . GeneralUtility::quoteJSvalue($table) . ','
-                . GeneralUtility::quoteJSvalue($row['uid']) . ','
-                . GeneralUtility::quoteJSvalue($fieldName) . ','
-                . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
+            . GeneralUtility::quoteJSvalue($table) . ','
+            . GeneralUtility::quoteJSvalue($row['uid']) . ','
+            . GeneralUtility::quoteJSvalue($fieldName) . ','
+            . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName'])
             . ');';
-        if ($alertMsgOnChange) {
-            $parameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
-        }
 
         // If this is the child of an inline type and it is the field creating the label
         if ($this->isInlineChildAndLabelField($table, $fieldName)) {
@@ -178,6 +149,25 @@ class SingleFieldContainer extends AbstractContainer
             $options['renderType'] = $parameterArray['fieldConf']['config']['type'];
         }
         $resultArray = $this->nodeFactory->create($options)->render();
+
+        if (strpos($this->data['processedTca']['ctrl']['type'], ':') === false) {
+            $typeField = $this->data['processedTca']['ctrl']['type'];
+        } else {
+            $typeField = substr($this->data['processedTca']['ctrl']['type'], 0, strpos($this->data['processedTca']['ctrl']['type'], ':'));
+        }
+
+        // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
+        // This is used for eg. "type" fields and others configured with "onChange"
+        if ((!empty($this->data['processedTca']['ctrl']['type']) && $fieldName === $typeField)
+            || (isset($parameterArray['fieldConf']['onChange']) && $parameterArray['fieldConf']['onChange'] === 'reload')
+        ) {
+            $showConfirmation = $backendUser->jsConfirmation(JsConfirmation::TYPE_CHANGE) ? 'true' : 'false';
+
+            $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine' => 'function (FormEngine) {'
+                . 'FormEngine.requestConfirmationOnFieldChange(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', ' . $showConfirmation . ');'
+                . '}'];
+        }
+
         return $resultArray;
     }
 

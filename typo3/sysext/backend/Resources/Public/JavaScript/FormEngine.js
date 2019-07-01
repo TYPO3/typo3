@@ -1190,9 +1190,8 @@ define(['jquery',
           callback.call(null, true);
         } else if (e.target.name === 'save') {
           $('form[name=' + FormEngine.formName + ']').append($elem);
-          $('input[name=doSave]').val(1);
           Modal.dismiss();
-          document.editform.submit();
+          FormEngine.saveDocument();
         }
       });
     } else {
@@ -1222,6 +1221,28 @@ define(['jquery',
       return false;
     }
     return true;
+  };
+
+  FormEngine.requestConfirmationOnFieldChange = function(fieldName, showConfirmation) {
+    const $field = FormEngine.getFieldElement(fieldName);
+    $field.on('change', function() {
+      if (showConfirmation) {
+        const $modal = Modal.confirm(
+          TYPO3.lang['FormEngine.refreshRequiredTitle'],
+          TYPO3.lang['FormEngine.refreshRequiredContent']
+        );
+
+        $modal.on('button.clicked', function(e) {
+          if (e.target.name === 'ok') {
+            FormEngine.saveDocument();
+          }
+
+          Modal.dismiss();
+        });
+      } else {
+        FormEngine.saveDocument();
+      }
+    });
   };
 
   /**
@@ -1268,9 +1289,8 @@ define(['jquery',
         break;
       case 'save':
         $('form[name=' + FormEngine.formName + ']').append($actionElement);
-        $('input[name=doSave]').val(1);
         window.open('', 'newTYPO3frontendWindow');
-        document.editform.submit();
+        FormEngine.saveDocument();
         break;
     }
   };
@@ -1368,8 +1388,7 @@ define(['jquery',
         break;
       case 'yes':
         $form.append($actionElement);
-        $('input[name=doSave]').val(1);
-        document.editform.submit();
+        FormEngine.saveDocument();
         break;
     }
   };
@@ -1461,8 +1480,7 @@ define(['jquery',
         break;
       case 'yes':
         $form.append($actionElement);
-        $('input[name=doSave]').val(1);
-        document.editform.submit();
+        FormEngine.saveDocument();
         break;
     }
   };
@@ -1589,6 +1607,11 @@ define(['jquery',
    */
   FormEngine.closeDocument = function() {
     document.editform.closeDoc.value = 1;
+    document.editform.submit();
+  };
+
+  FormEngine.saveDocument = function() {
+    document.editform.doSave.value = 1;
     document.editform.submit();
   };
 
