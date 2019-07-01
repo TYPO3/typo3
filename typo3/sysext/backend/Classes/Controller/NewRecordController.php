@@ -402,7 +402,7 @@ class NewRecordController
     protected function renderPositionTree(): ?ResponseInterface
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language');
+            ->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
