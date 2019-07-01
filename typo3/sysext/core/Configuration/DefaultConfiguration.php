@@ -380,18 +380,13 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class => [
@@ -634,17 +629,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class => [
@@ -885,18 +874,13 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                         ],
                     ],
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class => [
-                        'depends' => [
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class
-                        ],
-                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowInitializeNew::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\UserTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\PageTsConfig::class,
                             \TYPO3\CMS\Backend\Form\FormDataProvider\InitializeProcessedTca::class,
-                            \TYPO3\CMS\Backend\Form\FormDataProvider\ParentPageTca::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\InlineOverrideChildTca::class,
                         ],
                     ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUniqueUidNewRow::class => [
