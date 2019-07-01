@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -1053,23 +1055,33 @@ class TcaSelectItemsTest extends UnitTestCase
                     ],
                 ],
             ],
-            'systemLanguageRows' => [
-                0 => [
-                    'title' => 'aLangTitle',
-                    'uid' => 42,
-                    'flagIconIdentifier' => 'aFlag.gif',
-                ],
-            ],
         ];
 
         $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
         GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
+        $siteFinder = $this->prophesize(SiteFinder::class);
+        $siteFinder->getAllSites()->willReturn([
+            new Site('test', 13, [
+                'base' => '/',
+                'languages' => [
+                    [
+                        'title' => 'French',
+                        'languageId' => 13,
+                        'base' => '/fr/',
+                        'locale' => 'fr_FR',
+                        'flag' => 'aFlag.gif'
+                    ]
+                ]
+            ])
+        ]);
+        GeneralUtility::addInstance(SiteFinder::class, $siteFinder->reveal());
+
         $expectedItems = [
             0 => [
-                0 => 'aLangTitle',
-                1 => 42,
-                2 => 'aFlag.gif',
+                0 => 'French [Site: test]',
+                1 => 13,
+                2 => 'flags-aFlag.gif',
                 3 => null,
             ],
         ];
