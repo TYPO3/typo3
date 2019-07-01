@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 /*
@@ -93,7 +95,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $className The class name you want to fetch the Data Map for
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
      */
-    public function buildDataMap($className)
+    public function buildDataMap(string $className): DataMap
     {
         $className = ltrim($className, '\\');
         if (isset($this->dataMaps[$className])) {
@@ -119,7 +121,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException
      * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
      */
-    protected function buildDataMapInternal($className)
+    protected function buildDataMapInternal(string $className): DataMap
     {
         if (!class_exists($className)) {
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException(
@@ -175,7 +177,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $className
      * @return string The table name
      */
-    protected function resolveTableName($className)
+    protected function resolveTableName(string $className): string
     {
         $className = ltrim($className, '\\');
         $classNameParts = explode('\\', $className);
@@ -194,9 +196,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * Returns the TCA ctrl section of the specified table; or NULL if not set
      *
      * @param string $tableName An optional table name to fetch the columns definition from
-     * @return array The TCA columns definition
+     * @return array|null The TCA columns definition
      */
-    protected function getControlSection($tableName)
+    protected function getControlSection(string $tableName): ?array
     {
         return (isset($GLOBALS['TCA'][$tableName]['ctrl']) && is_array($GLOBALS['TCA'][$tableName]['ctrl']))
             ? $GLOBALS['TCA'][$tableName]['ctrl']
@@ -209,7 +211,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $tableName An optional table name to fetch the columns definition from
      * @return array The TCA columns definition
      */
-    protected function getColumnsDefinition($tableName)
+    protected function getColumnsDefinition(string $tableName): array
     {
         return is_array($GLOBALS['TCA'][$tableName]['columns']) ? $GLOBALS['TCA'][$tableName]['columns'] : [];
     }
@@ -219,7 +221,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string $tableName
      * @return DataMap
      */
-    protected function addMetaDataColumnNames(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap, $tableName)
+    protected function addMetaDataColumnNames(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap, string $tableName): DataMap
     {
         $controlSection = $GLOBALS['TCA'][$tableName]['ctrl'];
         $dataMap->setPageIdColumnName('pid');
@@ -275,8 +277,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param array $columnConfiguration
      * @return ColumnMap
      */
-    protected function setType(ColumnMap $columnMap, $columnConfiguration)
+    protected function setType(ColumnMap $columnMap, array $columnConfiguration): ColumnMap
     {
+        // todo: this method should only be called with proper arguments which means that the TCA integrity check should
+        // todo: take place outside this method.
+
         $tableColumnType = $columnConfiguration['type'] ?? null;
         $columnMap->setType(\TYPO3\CMS\Core\DataHandling\TableColumnType::cast($tableColumnType));
         $tableColumnSubType = $columnConfiguration['internal_type'] ?? null;
@@ -295,7 +300,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param string|null $elementType
      * @return ColumnMap
      */
-    protected function setRelations(ColumnMap $columnMap, $columnConfiguration, ?string $type, ?string $elementType)
+    protected function setRelations(ColumnMap $columnMap, ?array $columnConfiguration, ?string $type, ?string $elementType): ColumnMap
     {
         if (isset($columnConfiguration)) {
             if (isset($columnConfiguration['MM'])) {
@@ -335,8 +340,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setFieldEvaluations(ColumnMap $columnMap, array $columnConfiguration = null)
+    protected function setFieldEvaluations(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
+        // todo: this method should only be called with proper arguments which means that the TCA integrity check should
+        // todo: take place outside this method.
+
         if (!empty($columnConfiguration['eval'])) {
             $fieldEvaluations = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['eval'], true);
             $dateTimeTypes = QueryHelper::getDateTimeTypes();
@@ -357,8 +365,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setOneToOneRelation(ColumnMap $columnMap, array $columnConfiguration = null)
+    protected function setOneToOneRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
+        // todo: this method should only be called with proper arguments which means that the TCA integrity check should
+        // todo: take place outside this method.
+
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_ONE);
         $columnMap->setChildTableName($columnConfiguration['foreign_table']);
         // todo: don't update column map if value(s) isn't/aren't set.
@@ -380,8 +391,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @param array|null $columnConfiguration The column configuration from $TCA
      * @return ColumnMap
      */
-    protected function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null)
+    protected function setOneToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
+        // todo: this method should only be called with proper arguments which means that the TCA integrity check should
+        // todo: take place outside this method.
+
         $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_MANY);
         $columnMap->setChildTableName($columnConfiguration['foreign_table']);
         // todo: don't update column map if value(s) isn't/aren't set.
@@ -404,8 +418,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
      * @return ColumnMap
      */
-    protected function setManyToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null)
+    protected function setManyToManyRelation(ColumnMap $columnMap, array $columnConfiguration = null): ColumnMap
     {
+        // todo: this method should only be called with proper arguments which means that the TCA integrity check should
+        // todo: take place outside this method.
+
         if (isset($columnConfiguration['MM'])) {
             $columnMap->setTypeOfRelation(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -430,9 +447,13 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
                 $columnMap->setChildSortByFieldName('sorting');
             }
         } else {
+            // todo: this else part is actually superfluous because \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::setRelations
+            // todo: only calls this method if $columnConfiguration['MM'] is set.
+
             throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException('The given information to build a many-to-many-relation was not sufficient. Check your TCA definitions. mm-relations with IRRE must have at least a defined "MM" or "foreign_selector".', 1268817963);
         }
-        if ($this->getControlSection($columnMap->getRelationTableName()) !== null) {
+        $relationTableName = $columnMap->getRelationTableName();
+        if ($relationTableName !== null && $this->getControlSection($relationTableName) !== null) {
             $columnMap->setRelationTablePageIdColumnName('pid');
         }
         return $columnMap;
@@ -446,7 +467,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @return ColumnMap
      */
-    protected function createColumnMap($columnName, $propertyName)
+    protected function createColumnMap(string $columnName, string $propertyName): ColumnMap
     {
         return $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class, $columnName, $propertyName);
     }
