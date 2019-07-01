@@ -41,4 +41,9 @@ return [
             'Deprecation-88567-GLOBALS_LOCAL_LANG.rst',
         ],
     ],
+    '$GLOBALS[\'T3_VAR\']' => [
+        'restFiles' => [
+            'Breaking-88660-GLOBALST3_VARRemoved.rst',
+        ],
+    ],
 ];

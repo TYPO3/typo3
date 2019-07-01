@@ -111,16 +111,6 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     /**
      * @test
      */
-    public function initializeGlobalVariablesSetsGlobalT3VarArray()
-    {
-        unset($GLOBALS['T3_VAR']);
-        $this->subject->_call('initializeGlobalVariables');
-        $this->assertIsArray($GLOBALS['T3_VAR']);
-    }
-
-    /**
-     * @test
-     */
     public function initializeGlobalVariablesSetsGlobalT3ServicesArray()
     {
         unset($GLOBALS['T3_SERVICES']);

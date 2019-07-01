@@ -954,7 +954,6 @@ class Indexer
     {
         $localPath = '';
         $pathFunctions = [
-            'createLocalPathFromT3vars',
             'createLocalPathUsingAbsRefPrefix',
             'createLocalPathUsingDomainURL',
             'createLocalPathFromAbsoluteURL',
@@ -964,30 +963,6 @@ class Indexer
             $localPath = $this->{$functionName}($sourcePath);
             if ($localPath != '') {
                 break;
-            }
-        }
-        return $localPath;
-    }
-
-    /**
-     * Attempts to create a local file path from T3VARs. This is useful for
-     * various download extensions that hide actual file name but still want the
-     * file to be indexed.
-     *
-     * @param string $sourcePath
-     * @return string
-     */
-    protected function createLocalPathFromT3vars($sourcePath)
-    {
-        $localPath = '';
-        $indexLocalFiles = $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] ?? null;
-        if (is_array($indexLocalFiles)) {
-            $md5 = GeneralUtility::shortMD5($sourcePath);
-            // Note: not using self::isAllowedLocalFile here because this method
-            // is allowed to index files outside of the web site (for example,
-            // protected downloads)
-            if (isset($indexLocalFiles[$md5]) && is_file($indexLocalFiles[$md5])) {
-                $localPath = $indexLocalFiles[$md5];
             }
         }
         return $localPath;

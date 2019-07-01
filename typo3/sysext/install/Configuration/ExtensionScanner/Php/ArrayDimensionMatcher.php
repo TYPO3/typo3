@@ -316,4 +316,9 @@ return [
             'Breaking-88638-StreamlinedSoftRefParserReferenceLookup.rst',
         ],
     ],
+    '$GLOBALS[\'T3_VAR\'][\'ext\'][\'indexed_search\'][\'indexLocalFiles\']' => [
+        'restFiles' => [
+            'Breaking-88660-GLOBALST3_VARRemoved.rst',
+        ],
+    ],
 ];

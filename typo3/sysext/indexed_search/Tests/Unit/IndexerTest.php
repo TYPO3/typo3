@@ -45,23 +45,6 @@ class IndexerTest extends UnitTestCase
     /**
      * @test
      */
-    public function extractHyperLinksReturnsCorrectFileUsingT3Vars()
-    {
-        $temporaryFileName = tempnam(Environment::getVarPath() . '/tests/', 't3unit-');
-        $this->testFilesToDelete[] = $temporaryFileName;
-        $html = 'test <a href="testfile">test</a> test';
-        $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = [
-            \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $temporaryFileName,
-        ];
-        $subject = new Indexer();
-        $result = $subject->extractHyperLinks($html);
-        $this->assertEquals(1, count($result));
-        $this->assertEquals($temporaryFileName, $result[0]['localPath']);
-    }
-
-    /**
-     * @test
-     */
     public function extractHyperLinksReturnsCorrectPathWithBaseUrl()
     {
         $baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
