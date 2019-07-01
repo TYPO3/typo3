@@ -22,16 +22,14 @@ class ContextMenuActions {
   public exportT3d(table: string, uid: number): void {
     if (table === 'pages') {
       top.TYPO3.Backend.ContentContainer.setUrl(
-        top.TYPO3.settings.ImportExport.moduleUrl +
-        '&tx_impexp[action]=export&' +
-        'id=0&tx_impexp[pagetree][id]=' + uid +
+        top.TYPO3.settings.ImportExport.exportModuleUrl +
+        '&id=0&tx_impexp[pagetree][id]=' + uid +
         '&tx_impexp[pagetree][levels]=0' +
         '&tx_impexp[pagetree][tables][]=_ALL',
       );
     } else {
       top.TYPO3.Backend.ContentContainer.setUrl(
-        top.TYPO3.settings.ImportExport.moduleUrl +
-        '&tx_impexp[action]=export' +
+        top.TYPO3.settings.ImportExport.exportModuleUrl +
         '&tx_impexp[record][]=' + table + ':' + uid +
         '&tx_impexp[external_ref][tables][]=_ALL',
       );
@@ -40,9 +38,9 @@ class ContextMenuActions {
 
   public importT3d(table: string, uid: number): void {
     top.TYPO3.Backend.ContentContainer.setUrl(
-      top.TYPO3.settings.ImportExport.moduleUrl +
+      top.TYPO3.settings.ImportExport.importModuleUrl +
       '&id=' + uid +
-      '&table=' + table + '&tx_impexp[action]=import',
+      '&table=' + table,
     );
   }
 }

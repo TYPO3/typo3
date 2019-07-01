@@ -726,7 +726,7 @@ class DatabaseRecordList
                     . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL)->render() . '</a>';
                 // Export
                 if (ExtensionManagementUtility::isLoaded('impexp')) {
-                    $url = (string)$uriBuilder->buildUriFromRoute('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
+                    $url = (string)$uriBuilder->buildUriFromRoute('tx_impexp_export');
                     $buttons['export'] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]='
                             . rawurlencode($this->table . ':' . $this->id)) . '" title="'
                         . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export')) . '">'
@@ -868,7 +868,7 @@ class DatabaseRecordList
                 $buttonBar->addButton($csvButton, ButtonBar::BUTTON_POSITION_LEFT, 40);
                 // Export
                 if (ExtensionManagementUtility::isLoaded('impexp')) {
-                    $url = (string)$uriBuilder->buildUriFromRoute('xMOD_tximpexp', ['tx_impexp[action]' => 'export']);
+                    $url = (string)$uriBuilder->buildUriFromRoute('tx_impexp_export');
                     $exportButton = $buttonBar->makeLinkButton()
                         ->setHref($url . '&tx_impexp[list][]=' . rawurlencode($this->table . ':' . $this->id))
                         ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export'))

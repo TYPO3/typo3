@@ -3,6 +3,8 @@
 <f:layout name="Default" />
 
 <f:section name="content">
+    <h1><f:translate key="title_export" /></h1>
+
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active">
             <a class="text-capitalize" href="#export-configuration" aria-controls="export-configuration" role="tab" data-toggle="tab">
@@ -64,7 +66,6 @@
             </div>
         </f:if>
     </div>
-    <f:form.hidden name="tx_impexp[action]" value="export" />
 
     <f:render partial="ContentOverview" arguments="{_all}"/>
 </f:section>

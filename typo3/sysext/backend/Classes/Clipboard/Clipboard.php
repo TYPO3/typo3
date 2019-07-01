@@ -272,7 +272,7 @@ class Clipboard
             // Import / Export link:
             if (ExtensionManagementUtility::isLoaded('impexp')) {
                 $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $url = $uriBuilder->buildUriFromRoute('xMOD_tximpexp', $this->exportClipElementParameters());
+                $url = $uriBuilder->buildUriFromRoute('tx_impexp_export', $this->exportClipElementParameters());
                 $optionArray[] = [
                     'label' => $this->clLabel('export', 'rm'),
                     'uri' => (string)$url
@@ -756,7 +756,6 @@ class Clipboard
         // Init
         $pad = $this->current;
         $params = [];
-        $params['tx_impexp']['action'] = 'export';
         // Traverse items:
         if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
