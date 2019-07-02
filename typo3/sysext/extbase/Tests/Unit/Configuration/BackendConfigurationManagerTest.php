@@ -23,6 +23,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendConfigurationManagerTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
@@ -306,7 +308,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreExtendedIfRecursiveSearchIsConfigured()
     {
-        $storagePid = '1,2,3';
+        $storagePids = [1, 2, 3];
         $recursive = 99;
 
         /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
@@ -327,8 +329,8 @@ class BackendConfigurationManagerTest extends UnitTestCase
             ->will($this->onConsecutiveCalls('4', '', '5,6'));
         GeneralUtility::addInstance(QueryGenerator::class, $queryGenerator);
 
-        $expectedResult = '4,5,6';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+        $expectedResult = [4, 5, 6];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -337,7 +339,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreExtendedIfRecursiveSearchIsConfiguredAndWithPidIncludedForNegativePid()
     {
-        $storagePid = '1,2,-3';
+        $storagePids = [1, 2, -3];
         $recursive = 99;
 
         /** @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication|ObjectProphecy $beUserAuthentication */
@@ -358,8 +360,8 @@ class BackendConfigurationManagerTest extends UnitTestCase
             ->will($this->onConsecutiveCalls('4', '', '3,5,6'));
         GeneralUtility::addInstance(QueryGenerator::class, $queryGenerator);
 
-        $expectedResult = '4,3,5,6';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+        $expectedResult = [4, 3, 5, 6];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -368,7 +370,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured()
     {
-        $storagePid = '1,2,3';
+        $storagePids = [1, 2, 3];
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
@@ -378,8 +380,8 @@ class BackendConfigurationManagerTest extends UnitTestCase
             false
         );
 
-        $expectedResult = '1,2,3';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid);
+        $expectedResult = [1, 2, 3];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -388,7 +390,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels()
     {
-        $storagePid = '1,2,3';
+        $storagePids = [1, 2, 3];
         $recursive = 0;
 
         $abstractConfigurationManager = $this->getAccessibleMock(
@@ -399,8 +401,8 @@ class BackendConfigurationManagerTest extends UnitTestCase
             false
         );
 
-        $expectedResult = '1,2,3';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+        $expectedResult = [1, 2, 3];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         $this->assertEquals($expectedResult, $actualResult);
     }
 }

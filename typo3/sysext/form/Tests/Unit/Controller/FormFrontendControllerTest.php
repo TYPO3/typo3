@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Controller\FormFrontendController;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Mvc\Configuration\TypoScriptService;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -74,7 +75,7 @@ class FormFrontendControllerTest extends UnitTestCase
         );
 
         $flexFormTools = new FlexFormTools;
-        $contentObject = new \stdClass();
+        $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
                 'data' => [
@@ -208,7 +209,7 @@ class FormFrontendControllerTest extends UnitTestCase
         );
 
         $flexFormTools = new FlexFormTools;
-        $contentObject = new \stdClass();
+        $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
                 'data' => [
@@ -358,7 +359,7 @@ class FormFrontendControllerTest extends UnitTestCase
         );
 
         $flexFormTools = new FlexFormTools;
-        $contentObject = new \stdClass();
+        $contentObject = new ContentObjectRenderer();
         $contentObject->data = [
             'pi_flexform' => $flexFormTools->flexArray2Xml([
                 'data' => [

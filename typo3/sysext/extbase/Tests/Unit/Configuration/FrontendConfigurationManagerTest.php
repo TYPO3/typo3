@@ -29,6 +29,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FrontendConfigurationManagerTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -412,7 +414,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreExtendedIfRecursiveSearchIsConfigured(): void
     {
-        $storagePid = '3,5,9';
+        $storagePids = [3, 5, 9];
         $recursive = 99;
         /** @var $abstractConfigurationManager FrontendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
@@ -435,8 +437,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ->will($this->onConsecutiveCalls('4', '', '898,12'));
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
-        $expectedResult = '4,898,12';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+        $expectedResult = [4, 898, 12];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -445,7 +447,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreExtendedIfRecursiveSearchIsConfiguredAndWithPidIncludedForNegativePid(): void
     {
-        $storagePid = '-3,5,9';
+        $storagePids = [-3, 5, 9];
         $recursive = 99;
         /** @var $abstractConfigurationManager FrontendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
@@ -468,8 +470,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ->will($this->onConsecutiveCalls('3,4', '', '898,12'));
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
-        $expectedResult = '3,4,898,12';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+        $expectedResult = [3, 4, 898, 12];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -478,7 +480,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreNotExtendedIfRecursiveSearchIsNotConfigured(): void
     {
-        $storagePid = '1,2,3';
+        $storagePids = [1, 2, 3];
 
         /** @var $abstractConfigurationManager FrontendConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
@@ -499,8 +501,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $cObjectMock->expects($this->never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
-        $expectedResult = '1,2,3';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid);
+        $expectedResult = [1, 2, 3];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -509,7 +511,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function storagePidsAreNotExtendedIfRecursiveSearchIsConfiguredForZeroLevels(): void
     {
-        $storagePid = '1,2,3';
+        $storagePids = [1, 2, 3];
         $recursive = 0;
 
         $abstractConfigurationManager = $this->getAccessibleMock(
@@ -531,8 +533,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $cObjectMock->expects($this->never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
-        $expectedResult = '1,2,3';
-        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePid, $recursive);
+        $expectedResult = [1, 2, 3];
+        $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
         $this->assertEquals($expectedResult, $actualResult);
     }
 

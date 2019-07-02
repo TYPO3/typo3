@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Configuration;
 
 /*
@@ -52,9 +54,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
         $this->initializeConcreteConfigurationManager();
     }
 
-    /**
-     */
-    protected function initializeConcreteConfigurationManager()
+    protected function initializeConcreteConfigurationManager(): void
     {
         if ($this->environmentService->isEnvironmentInFrontendMode()) {
             $this->concreteConfigurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::class);
@@ -66,15 +66,15 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
     /**
      * @param \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject
      */
-    public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject = null)
+    public function setContentObject(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $contentObject): void
     {
         $this->concreteConfigurationManager->setContentObject($contentObject);
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer|null
      */
-    public function getContentObject()
+    public function getContentObject(): ?\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
     {
         return $this->concreteConfigurationManager->getContentObject();
     }
@@ -85,7 +85,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
      *
      * @param array $configuration The new configuration
      */
-    public function setConfiguration(array $configuration = [])
+    public function setConfiguration(array $configuration = []): void
     {
         $this->concreteConfigurationManager->setConfiguration($configuration);
     }
@@ -107,7 +107,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
      * @throws Exception\InvalidConfigurationTypeException
      * @return array The configuration
      */
-    public function getConfiguration($configurationType, $extensionName = null, $pluginName = null)
+    public function getConfiguration(string $configurationType, string $extensionName = null, string $pluginName = null): array
     {
         switch ($configurationType) {
             case self::CONFIGURATION_TYPE_SETTINGS:
@@ -132,7 +132,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
      * @param string $featureName
      * @return bool
      */
-    public function isFeatureEnabled($featureName)
+    public function isFeatureEnabled(string $featureName): bool
     {
         $configuration = $this->getConfiguration(self::CONFIGURATION_TYPE_FRAMEWORK);
         return (bool)(isset($configuration['features'][$featureName]) && $configuration['features'][$featureName]);

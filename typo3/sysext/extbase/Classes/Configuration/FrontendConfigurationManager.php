@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Configuration;
 
 /*
@@ -52,9 +54,9 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      *
      * @return array the raw TypoScript setup
      */
-    public function getTypoScriptSetup()
+    public function getTypoScriptSetup(): array
     {
-        return $GLOBALS['TSFE']->tmpl->setup;
+        return $GLOBALS['TSFE']->tmpl->setup ?? [];
     }
 
     /**
@@ -65,7 +67,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param string $pluginName
      * @return array
      */
-    protected function getPluginConfiguration($extensionName, $pluginName = null)
+    protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array
     {
         $setup = $this->getTypoScriptSetup();
         $pluginConfiguration = [];
@@ -95,7 +97,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param string $pluginName
      * @return array
      */
-    protected function getSwitchableControllerActions($extensionName, $pluginName)
+    protected function getSwitchableControllerActions(string $extensionName, string $pluginName): array
     {
         $switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
         if (!is_array($switchableControllerActions)) {
@@ -112,7 +114,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param array $frameworkConfiguration The framework configuration to modify
      * @return array the modified framework configuration
      */
-    protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration)
+    protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration): array
     {
         $frameworkConfiguration = $this->overrideStoragePidIfStartingPointIsSet($frameworkConfiguration);
         $frameworkConfiguration = $this->overrideConfigurationFromPlugin($frameworkConfiguration);
@@ -127,7 +129,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param array $frameworkConfiguration the framework configurations
      * @return array the framework configuration with overridden storagePid
      */
-    protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration)
+    protected function overrideStoragePidIfStartingPointIsSet(array $frameworkConfiguration): array
     {
         $pages = $this->contentObject->data['pages'];
         if (is_string($pages) && $pages !== '') {
@@ -159,7 +161,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param array $frameworkConfiguration the framework configuration
      * @return array the framework configuration with overridden data from typoscript
      */
-    protected function overrideConfigurationFromPlugin(array $frameworkConfiguration)
+    protected function overrideConfigurationFromPlugin(array $frameworkConfiguration): array
     {
         $setup = $this->getTypoScriptSetup();
         $pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
@@ -180,7 +182,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param array $frameworkConfiguration the framework configuration
      * @return array the framework configuration with overridden data from flexForm
      */
-    protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration)
+    protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration): array
     {
         $flexFormConfiguration = $this->contentObject->data['pi_flexform'];
         if (is_string($flexFormConfiguration)) {
@@ -207,7 +209,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param string $configurationPartName The name of the configuration part which should be merged.
      * @return array the processed framework configuration
      */
-    protected function mergeConfigurationIntoFrameworkConfiguration(array $frameworkConfiguration, array $configuration, $configurationPartName)
+    protected function mergeConfigurationIntoFrameworkConfiguration(array $frameworkConfiguration, array $configuration, string $configurationPartName): array
     {
         if (isset($configuration[$configurationPartName]) && is_array($configuration[$configurationPartName])) {
             if (isset($frameworkConfiguration[$configurationPartName]) && is_array($frameworkConfiguration[$configurationPartName])) {
@@ -227,7 +229,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @throws Exception\ParseErrorException
      * @return array the modified framework configuration, if needed
      */
-    protected function overrideSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration)
+    protected function overrideSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration): array
     {
         if (!isset($flexFormConfiguration['switchableControllerActions']) || is_array($flexFormConfiguration['switchableControllerActions'])) {
             return $frameworkConfiguration;
@@ -252,24 +254,25 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     /**
      * Returns a comma separated list of storagePid that are below a certain storage pid.
      *
-     * @param string $storagePid Storage PID to start at; multiple PIDs possible as comma-separated list
+     * @param array|int[] $storagePids Storage PIDs to start at; multiple PIDs possible as comma-separated list
      * @param int $recursionDepth Maximum number of levels to search, 0 to disable recursive lookup
-     * @return string storage PIDs
+     * @return array|int[] storage PIDs
      */
-    protected function getRecursiveStoragePids($storagePid, $recursionDepth = 0)
+    protected function getRecursiveStoragePids(array $storagePids, int $recursionDepth = 0): array
     {
+        array_map('intval', $storagePids);
+
         if ($recursionDepth <= 0) {
-            return $storagePid;
+            return $storagePids;
         }
 
-        $recursiveStoragePids = '';
-        $storagePids = GeneralUtility::intExplode(',', $storagePid);
+        $recursiveStoragePids = [];
         foreach ($storagePids as $startPid) {
             $pids = $this->getContentObject()->getTreeList($startPid, $recursionDepth, 0);
-            if ((string)$pids !== '') {
-                $recursiveStoragePids .= $pids . ',';
+            foreach (GeneralUtility::intExplode(',', $pids, true) as $pid) {
+                $recursiveStoragePids[] = $pid;
             }
         }
-        return rtrim($recursiveStoragePids, ',');
+        return array_unique($recursiveStoragePids);
     }
 }

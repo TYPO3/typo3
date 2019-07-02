@@ -585,7 +585,7 @@ class TranslationService implements SingletonInterface
         $frameworkConfiguration = $this->getConfigurationManager()
             ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'form');
 
-        if (!is_array($frameworkConfiguration['_LOCAL_LANG'])) {
+        if (!is_array($frameworkConfiguration['_LOCAL_LANG'] ?? null)) {
             return;
         }
         $this->LOCAL_LANG_UNSET = [];

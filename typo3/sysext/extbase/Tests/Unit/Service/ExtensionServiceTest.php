@@ -247,7 +247,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized()
     {
-        $this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(null));
+        $this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue([]));
         $this->assertNull($this->extensionService->getTargetPidByPlugin('ExtensionName', 'PluginName'));
     }
 

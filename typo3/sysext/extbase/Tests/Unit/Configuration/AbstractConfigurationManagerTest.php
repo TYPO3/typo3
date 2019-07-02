@@ -27,6 +27,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractConfigurationManagerTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
@@ -243,9 +245,9 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'persistence' => [
                 'storagePid' => '123'
             ],
-            'controllerConfiguration' => null
+            'controllerConfiguration' => []
         ];
-        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->with($expectedResult)->will($this->returnValue($expectedResult));
+        $this->abstractConfigurationManager->expects($this->once())->method('getContextSpecificFrameworkConfiguration')->with($expectedResult)->willReturn($expectedResult);
         $actualResult = $this->abstractConfigurationManager->getConfiguration();
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -277,7 +279,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'persistence' => [
                 'storagePid' => '123'
             ],
-            'controllerConfiguration' => null
+            'controllerConfiguration' => []
         ];
         $this->abstractConfigurationManager->expects($this->never())->method('getContextSpecificFrameworkConfiguration');
         $actualResult = $this->abstractConfigurationManager->getConfiguration('SomeExtensionName', 'SomePluginName');
@@ -367,7 +369,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             ]
         ];
         $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->will($this->returnValue($pluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getRecursiveStoragePids')->with('-1');
+        $this->abstractConfigurationManager->expects($this->once())->method('getRecursiveStoragePids')->with([-1]);
         $this->abstractConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
     }
 
@@ -383,7 +385,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             ]
         ];
         $this->abstractConfigurationManager->expects($this->once())->method('getPluginConfiguration')->will($this->returnValue($pluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getRecursiveStoragePids')->with('-1,-25');
+        $this->abstractConfigurationManager->expects($this->once())->method('getRecursiveStoragePids')->with([-1, -25]);
         $this->abstractConfigurationManager->getConfiguration('SomeOtherExtensionName', 'SomeOtherCurrentPluginName');
     }
 

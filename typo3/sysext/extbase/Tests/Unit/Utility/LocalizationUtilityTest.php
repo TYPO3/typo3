@@ -301,6 +301,10 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateTestWithBackendUserLanguage($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
     {
+        $this->configurationManagerInterfaceProphecy
+            ->getConfiguration('Framework', 'core', null)
+            ->willReturn([]);
+
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
@@ -328,6 +332,10 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateTestWithExplicitLanguageParameters($key, $languageKey, $expected, array $altLanguageKeys = [], array $arguments = null)
     {
+        $this->configurationManagerInterfaceProphecy
+            ->getConfiguration('Framework', 'core', null)
+            ->willReturn([]);
+
         $reflectionClass = new \ReflectionClass(LocalizationUtility::class);
 
         $property = $reflectionClass->getProperty('LOCAL_LANG');
