@@ -862,43 +862,53 @@ class ArrayUtility
     }
 
     /**
+     * Check whether the array has non-integer keys. If there is at least one string key, $array will be
+     * regarded as an associative array.
+     *
+     * @param array $array
+     * @return bool True in case a string key was found.
+     * @internal
+     */
+    public static function isAssociative(array $array): bool
+    {
+        return count(array_filter(array_keys($array), 'is_string')) > 0;
+    }
+
+    /**
      * Same as array_replace_recursive except that when in simple arrays (= YAML lists), the entries are
      * appended (array_merge). The second array takes precedence in case of equal sub arrays.
      *
-     * @param array $val1
-     * @param array $val2
+     * @param array $array1
+     * @param array $array2
      * @return array
      * @internal
      */
-    public static function replaceAndAppendScalarValuesRecursive(array $val1, array $val2): array
+    public static function replaceAndAppendScalarValuesRecursive(array $array1, array $array2): array
     {
         // Simple lists get merged / added up
-        if (count(array_filter(array_keys($val1), 'is_int')) === count($val1)) {
-            return array_merge($val1, $val2);
+        if (!self::isAssociative($array1)) {
+            return array_merge($array1, $array2);
         }
-        foreach ($val1 as $k => $v) {
+        foreach ($array1 as $k => $v) {
             // The key also exists in second array, if it is a simple value
-            // then $val2 will override the value, where an array is calling mergeYaml() recursively.
-            if (isset($val2[$k])) {
-                if (is_array($v) && isset($val2[$k])) {
-                    if (is_array($val2[$k])) {
-                        $val1[$k] = self::replaceAndAppendScalarValuesRecursive($v, $val2[$k]);
-                    } else {
-                        $val1[$k] = $val2[$k];
-                    }
+            // then $array2 will override the value, where an array is calling
+            // replaceAndAppendScalarValuesRecursive() recursively.
+            if (isset($array2[$k])) {
+                if (is_array($v) && is_array($array2[$k])) {
+                    $array1[$k] = self::replaceAndAppendScalarValuesRecursive($v, $array2[$k]);
                 } else {
-                    $val1[$k] = $val2[$k];
+                    $array1[$k] = $array2[$k];
                 }
-                unset($val2[$k]);
+                unset($array2[$k]);
             }
         }
         // If there are properties in the second array left, they are added up
-        if (!empty($val2)) {
-            foreach ($val2 as $k => $v) {
-                $val1[$k] = $v;
+        if (!empty($array2)) {
+            foreach ($array2 as $k => $v) {
+                $array1[$k] = $v;
             }
         }
 
-        return $val1;
+        return $array1;
     }
 }

@@ -2993,6 +2993,51 @@ class ArrayUtilityTest extends UnitTestCase
     }
 
     /**
+     * Data provider for isAssociativeCorrectlyFindsStringKeys
+     * @return array
+     */
+    public function isAssociativeCorrectlyFindsStringKeysDataProvider()
+    {
+        return [
+            'array without string keys' => [
+                [
+                    0 => 'value 0',
+                    1 => 'value 1'
+                ],
+                false
+            ],
+            'array with only string keys' => [
+                [
+                    'key 0' => 'value 0',
+                    'key 1' => 'value 1'
+                ],
+                true
+            ],
+            'array with mixed keys' => [
+                [
+                    0 => 'value 0',
+                    1 => 'value 1',
+                    'key 2' => 'value 2',
+                    'key 3' => 'value 3'
+                ],
+                true
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider isAssociativeCorrectlyFindsStringKeysDataProvider
+     * @param array $array
+     * @param bool  $expectedResult
+     */
+    public function isAssociativeCorrectlyFindsStringKeys(array $array, bool $expectedResult)
+    {
+        $result = ArrayUtility::isAssociative($array);
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
      * Data provider for replaceAndAppendScalarValuesRecursiveCorrectlyMergesArrays
      * @return array
      */
