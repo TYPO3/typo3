@@ -20,19 +20,21 @@ use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use TYPO3\CMS\Core\Resource\ResourceCompressor;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * TYPO3 pageRender class
  * This class render the HTML of a webpage, usable for BE and FE
  */
-class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
+class PageRenderer implements SingletonInterface
 {
     // Constants for the part to be rendered
     const PART_COMPLETE = 0;
@@ -73,7 +75,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $moveJsFromHeaderToFooter = false;
 
     /**
-     * @var \TYPO3\CMS\Core\Localization\Locales
+     * @var Locales
      */
     protected $locales;
 
@@ -94,7 +96,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     protected $languageDependencies = [];
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\ResourceCompressor
+     * @var ResourceCompressor
      */
     protected $compressor;
 
@@ -333,7 +335,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct($templateFile = '')
     {
         $this->reset();
-        $this->locales = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\Locales::class);
+        $this->locales = GeneralUtility::makeInstance(Locales::class);
         if ($templateFile !== '') {
             $this->templateFile = $templateFile;
         }
@@ -1705,7 +1707,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      * of uncached content objects (USER_INT, COA_INT)
      *
      * @param string $cachedPageContent
-     * @param string $substituteHash The hash that is used for the placehoder markers
+     * @param string $substituteHash The hash that is used for the variables
      * @internal
      * @return string
      */
@@ -2448,12 +2450,12 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns instance of \TYPO3\CMS\Core\Resource\ResourceCompressor
      *
-     * @return \TYPO3\CMS\Core\Resource\ResourceCompressor
+     * @return ResourceCompressor
      */
     protected function getCompressor()
     {
         if ($this->compressor === null) {
-            $this->compressor = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\ResourceCompressor::class);
+            $this->compressor = GeneralUtility::makeInstance(ResourceCompressor::class);
         }
         return $this->compressor;
     }
@@ -2513,7 +2515,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $file
      * @return string
-     * @see TypoScriptFrontendController::setAbsRefPrefix()
+     * @see \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController::setAbsRefPrefix()
      */
     protected function getAbsoluteWebPath(string $file): string
     {
@@ -2521,16 +2523,6 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface
             return $file;
         }
         return PathUtility::getAbsoluteWebPath($file);
-    }
-
-    /**
-     * Returns global frontend controller
-     *
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController()
-    {
-        return $GLOBALS['TSFE'];
     }
 
     /*****************************************************/
