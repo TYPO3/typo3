@@ -884,7 +884,7 @@ class GeneralUtility
      */
     public static function idnaEncode($value)
     {
-        trigger_error(__CLASS__ . ':' . __METHOD__ . ' will be removed in TYPO3 v11.0. Use PHPs native "idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)" function directly instead.', E_USER_DEPRECATED);
+        trigger_error(__METHOD__ . ' will be removed in TYPO3 v11.0. Use PHPs native "idn_to_ascii($domain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)" function directly instead.', E_USER_DEPRECATED);
         // Early return in case input is not a string or empty
         if (!is_string($value) || empty($value)) {
             return (string)$value;
