@@ -80,7 +80,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request->setArgument(
             '__referrer',
-            ['@request' => $this->getHashService()->appendHmac(serialize($referrerRequest))]
+            ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
 
         while (!$request->isDispatched()) {
@@ -143,7 +143,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $referrerRequest['@action'] = 'testForm';
         $request->setArgument(
             '__referrer',
-            ['@request' => $this->getHashService()->appendHmac(serialize($referrerRequest))]
+            ['@request' => $this->getHashService()->appendHmac(json_encode($referrerRequest))]
         );
 
         while (!$request->isDispatched()) {

@@ -187,12 +187,8 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request
     public function getReferringRequest()
     {
         if (isset($this->internalArguments['__referrer']['@request'])) {
-            $referrerArray = unserialize($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['@request']));
+            $referrerArray = json_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['@request']), true);
             $arguments = [];
-            if (isset($this->internalArguments['__referrer']['arguments'])) {
-                // This case is kept for compatibility in 7.6 and 6.2, but will be removed in 8
-                $arguments = unserialize(base64_decode($this->hashService->validateAndStripHmac($this->internalArguments['__referrer']['arguments'])));
-            }
             // todo: Creating a referring request object here with a new statement is strange.
             // todo: As request objects have inject methods and are still meant to be created via object manager,
             // todo: this creates a partly non functional object. This is ok here as only the arguments matter, but

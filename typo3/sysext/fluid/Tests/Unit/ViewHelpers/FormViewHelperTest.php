@@ -258,7 +258,6 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $expectedResult =  \chr(10) . '<input type="hidden" name="__referrer[@extension]" value="extensionName" />'
             . \chr(10) . '<input type="hidden" name="__referrer[@controller]" value="controllerName" />'
             . \chr(10) . '<input type="hidden" name="__referrer[@action]" value="controllerActionName" />'
-            . \chr(10) . '<input type="hidden" name="__referrer[arguments]" value="" />'
             . \chr(10) . '<input type="hidden" name="__referrer[@request]" value="" />' . \chr(10);
         $viewHelper->_set('tag', $this->tagBuilder);
         $this->assertEquals($expectedResult, $hiddenFields);

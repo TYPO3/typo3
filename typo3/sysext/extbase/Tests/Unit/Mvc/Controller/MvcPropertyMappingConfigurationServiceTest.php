@@ -159,14 +159,14 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $hashService = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class))
             ->setMethods(['appendHmac'])
             ->getMock();
-        $hashService->expects($this->once())->method('appendHmac')->with(serialize($formFieldArray))->will($this->returnValue(serialize($formFieldArray) . $mockHash));
+        $hashService->expects($this->once())->method('appendHmac')->with(json_encode($formFieldArray))->will($this->returnValue(json_encode($formFieldArray) . $mockHash));
 
         $requestHashService = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class))
             ->setMethods(['dummy'])
             ->getMock();
         $requestHashService->_set('hashService', $hashService);
 
-        $expected = serialize($formFieldArray) . $mockHash;
+        $expected = json_encode($formFieldArray) . $mockHash;
         $actual = $requestHashService->_call('serializeAndHashFormFieldArray', $formFieldArray);
         $this->assertEquals($expected, $actual);
     }
@@ -302,7 +302,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $mockHashService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Security\Cryptography\HashService::class)
             ->setMethods(['validateAndStripHmac'])
             ->getMock();
-        $mockHashService->expects($this->once())->method('validateAndStripHmac')->with('fooTrustedProperties')->will($this->returnValue(serialize($trustedProperties)));
+        $mockHashService->expects($this->once())->method('validateAndStripHmac')->with('fooTrustedProperties')->will($this->returnValue(json_encode($trustedProperties)));
 
         $requestHashService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, ['dummy']);
         $requestHashService->_set('hashService', $mockHashService);

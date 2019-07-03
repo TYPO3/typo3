@@ -107,7 +107,7 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
      */
     protected function serializeAndHashFormFieldArray(array $formFieldArray)
     {
-        $serializedFormFieldArray = serialize($formFieldArray);
+        $serializedFormFieldArray = json_encode($formFieldArray);
         return $this->hashService->appendHmac($serializedFormFieldArray);
     }
 
@@ -126,7 +126,7 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
         }
 
         $serializedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
-        $trustedProperties = unserialize($serializedTrustedProperties);
+        $trustedProperties = json_decode($serializedTrustedProperties, true);
         foreach ($trustedProperties as $propertyName => $propertyConfiguration) {
             if (!$controllerArguments->hasArgument($propertyName)) {
                 continue;
