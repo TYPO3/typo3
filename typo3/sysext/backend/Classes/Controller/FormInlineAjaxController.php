@@ -406,7 +406,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             // Save states back to database
             if (is_array($inlineView[$topTable][$topUid][$currentTable])) {
                 $inlineView[$topTable][$topUid][$currentTable] = array_unique($inlineView[$topTable][$topUid][$currentTable]);
-                $backendUser->uc['inlineView'] = serialize($inlineView);
+                $backendUser->uc['inlineView'] = json_encode($inlineView);
                 $backendUser->writeUC();
             }
         }
@@ -614,7 +614,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             return [];
         }
 
-        $inlineView = unserialize($backendUser->uc['inlineView']);
+        $inlineView = json_decode($backendUser->uc['inlineView'], true);
         if (!is_array($inlineView)) {
             $inlineView = [];
         }
@@ -624,7 +624,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
     /**
      * Method to check whether the backend user has the property inline view for the current IRRE item.
-     * In existing or old IRRE items the attribute may not exist, then the unserialize will fail.
+     * In existing or old IRRE items the attribute may not exist, then the json_decode will fail.
      *
      * @param BackendUserAuthentication $backendUser
      * @return bool

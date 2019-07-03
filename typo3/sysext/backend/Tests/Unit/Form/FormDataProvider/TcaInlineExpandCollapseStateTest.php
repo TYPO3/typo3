@@ -53,7 +53,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
         ];
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->uc = [
-            'inlineView' => serialize($inlineState),
+            'inlineView' => json_encode($inlineState),
         ];
         $expected = $input;
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];
@@ -97,7 +97,7 @@ class TcaInlineExpandCollapseStateTest extends UnitTestCase
         ];
         $GLOBALS['BE_USER'] = new \stdClass();
         $GLOBALS['BE_USER']->uc = [
-            'inlineView' => serialize($inlineState),
+            'inlineView' => json_encode($inlineState),
         ];
         $expected = $input;
         $expected['inlineExpandCollapseStateArray'] = $inlineState['aParentTable'][5];

@@ -589,7 +589,7 @@ abstract class AbstractTreeView
     public function initializePositionSaving()
     {
         // Get stored tree structure:
-        $this->stored = unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
+        $this->stored = json_decode($this->BE_USER->uc['browseTrees'][$this->treeName], true);
         // PM action
         // (If an plus/minus icon has been clicked, the PM GET var is sent and we
         // must update the stored positions in the tree):
@@ -617,7 +617,7 @@ abstract class AbstractTreeView
      */
     public function savePosition()
     {
-        $this->BE_USER->uc['browseTrees'][$this->treeName] = serialize($this->stored);
+        $this->BE_USER->uc['browseTrees'][$this->treeName] = json_encode($this->stored);
         $this->BE_USER->writeUC();
     }
 

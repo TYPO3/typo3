@@ -147,7 +147,7 @@ class FormEngineUtility
     {
         $backendUser = static::getBackendUserAuthentication();
         if (isset($uc['inlineView']) && is_array($uc['inlineView'])) {
-            $inlineView = (array)unserialize($backendUser->uc['inlineView']);
+            $inlineView = (array)json_decode($backendUser->uc['inlineView'], true);
             foreach ($uc['inlineView'] as $topTable => $topRecords) {
                 foreach ($topRecords as $topUid => $childElements) {
                     foreach ($childElements as $childTable => $childRecords) {
@@ -173,7 +173,7 @@ class FormEngineUtility
                     }
                 }
             }
-            $backendUser->uc['inlineView'] = serialize($inlineView);
+            $backendUser->uc['inlineView'] = json_encode($inlineView);
             $backendUser->writeUC();
         }
     }

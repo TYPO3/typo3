@@ -588,7 +588,7 @@ class FolderTreeView extends AbstractTreeView
     public function initializePositionSaving()
     {
         // Get stored tree structure:
-        $this->stored = unserialize($this->BE_USER->uc['browseTrees'][$this->treeName]);
+        $this->stored = json_decode($this->BE_USER->uc['browseTrees'][$this->treeName], true);
         $this->getShortHashNumberForStorage();
         // PM action:
         // (If an plus/minus icon has been clicked,

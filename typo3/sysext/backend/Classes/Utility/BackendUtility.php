@@ -480,7 +480,7 @@ class BackendUtility
         if ($clearExpansion) {
             $expandedPages = [];
         } else {
-            $expandedPages = unserialize($beUser->uc['browseTrees']['browsePages']);
+            $expandedPages = json_decode($beUser->uc['browseTrees']['browsePages'], true);
         }
         // Get rootline:
         $rL = self::BEgetRootLine($pid);
@@ -498,7 +498,7 @@ class BackendUtility
             $expandedPages[$mountIndex][$rLDat['uid']] = 1;
         }
         // Write back:
-        $beUser->uc['browseTrees']['browsePages'] = serialize($expandedPages);
+        $beUser->uc['browseTrees']['browsePages'] = json_encode($expandedPages);
         $beUser->writeUC();
     }
 

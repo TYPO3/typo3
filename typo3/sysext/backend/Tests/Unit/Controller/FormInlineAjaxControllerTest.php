@@ -242,7 +242,7 @@ class FormInlineAjaxControllerTest extends UnitTestCase
     public function getInlineExpandCollapseStateArrayWillUnserializeUCInlineViewPropertyAsAnArrayWithData(): void
     {
         $backendUserProphecy = $this->prophesize(BackendUserAuthentication::class);
-        $backendUserProphecy->uc = ['inlineView' => serialize(['foo' => 'bar'])];
+        $backendUserProphecy->uc = ['inlineView' => json_encode(['foo' => 'bar'])];
         $backendUser = $backendUserProphecy->reveal();
 
         $mockObject = $this->getAccessibleMock(
