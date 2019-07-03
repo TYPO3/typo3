@@ -324,19 +324,12 @@ EXT:impexp/Resources/Public/Images/cshimages/update.png</source>
 			<trans-unit id="options.details" xml:space="preserve">
 				<source>&lt;b&gt;Do not show differences in records&lt;/b&gt;
 When a structure has been imported you will see a difference view of all records which tells you whether the written content matched the import data or if not, what changed. In many cases content &lt;i&gt;should&lt;/i&gt; change (eg. relations and file references) so it is not an error if you see red and green values. Basically the difference view is a feature you can use for visual validation of the import success. It brings piece-of-mind to those who is enlightened to understand what it tells... :-)
-Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.
-
-&lt;b&gt;Allow to write banned file extensions (eg. PHP scripts), if any&lt;/b&gt;
-Also an option for admins-only; Allows PHP-files (for example from soft references in TypoScript templates) to be written to the system. This is normally not allowed behavior for security reasons.</source>
+Green strings represent the actual written data while red represents the original value from the import file and black represents data that is the same.</source>
 			</trans-unit>
 			<trans-unit id="_options.image" xml:space="preserve">
 				<source>EXT:impexp/Resources/Public/Images/cshimages/impexp_misc3.png,
 EXT:impexp/Resources/Public/Images/cshimages/phpext.png</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="options.image_descr" xml:space="preserve">
-				<source>Options for import.
-Here you are told that this PHP file cannot be allowed - because you didn't select the option "Allow to write banned file extensions (eg. PHP scripts), if any"</source>
 			</trans-unit>
 			<trans-unit id="action.alttitle">
 				<source>Import Action</source>

@@ -1541,7 +1541,7 @@ class Import extends ImportExport
             }
         }
         $fI = GeneralUtility::split_fileref($fileName);
-        if (!$fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file']) && (!$this->allowPHPScripts || !$this->getBackendUser()->isAdmin())) {
+        if (!$fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file'])) {
             $this->error('ERROR: Filename "' . $fileName . '" failed against extension check or deny-pattern!');
             return false;
         }

@@ -139,13 +139,6 @@ abstract class ImportExport
     public $showDiff = false;
 
     /**
-     * If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
-     *
-     * @var bool
-     */
-    public $allowPHPScripts = false;
-
-    /**
      * Array of values to substitute in editable softreferences.
      *
      * @var array
@@ -771,11 +764,11 @@ abstract class ImportExport
                 $fileProcObj = $this->getFileProcObj();
                 if ($fileProcObj->actionPerms['addFile']) {
                     $testFI = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fI['relFileName']);
-                    if (!$this->allowPHPScripts && !$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
+                    if (!$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
                         $pInfo['msg'] .= 'File extension was not allowed!';
                     }
                 } else {
-                    $pInfo['msg'] = 'You user profile does not allow you to create files on the server!';
+                    $pInfo['msg'] = 'Your user profile does not allow you to create files on the server!';
                 }
             }
             $pInfo['showDiffContent'] = PathUtility::stripPathSitePrefix($this->fileIDMap[$ID]);

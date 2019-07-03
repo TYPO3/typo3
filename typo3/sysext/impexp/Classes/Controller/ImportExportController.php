@@ -818,7 +818,6 @@ class ImportExportController
             $import->global_ignore_pid = $inData['global_ignore_pid'];
             $import->force_all_UIDS = $inData['force_all_UIDS'];
             $import->showDiff = !$inData['notShowDiff'];
-            $import->allowPHPScripts = $inData['allowPHPScripts'];
             $import->softrefInputValues = $inData['softrefInputValues'];
 
             // OUTPUT creation:

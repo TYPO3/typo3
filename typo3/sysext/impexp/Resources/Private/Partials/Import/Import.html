@@ -43,13 +43,6 @@
     <p class="help-block">(<f:translate key="importdata_greenValuesAreFrom" />)</p>
 </div>
 <f:if condition="{isAdmin}">
-    <div class="form-group">
-        <label for="checkAllowPHPScripts">
-            <f:form.checkbox name="tx_impexp[allowPHPScripts]" id="checkAllowPHPScripts" value="1"
-                                            checked="{inData.allowPHPScripts} == 1" />
-            <f:translate key="importdata_allowToWriteBanned" />
-        </label>
-    </div>
     <f:if condition="!{inData.do_update}">
         <div class="form-group">
             <label for="checkForce_all_UIDS">
