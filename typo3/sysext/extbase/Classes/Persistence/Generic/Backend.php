@@ -619,8 +619,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     {
         if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
             $result = $this->getUidOfAlreadyPersistedValueObject($object);
-            if ($result !== false) {
-                $object->_setProperty('uid', (int)$result);
+            if ($result !== null) {
+                $object->_setProperty('uid', $result);
                 return;
             }
         }
@@ -708,7 +708,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Tests, if the given Value Object already exists in the storage backend and if so, it returns the uid.
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object The object to be tested
-     * @return mixed The matching uid if an object was found, else FALSE
+     * @return int|null The matching uid if an object was found, else null
      */
     protected function getUidOfAlreadyPersistedValueObject(\TYPO3\CMS\Extbase\DomainObject\AbstractValueObject $object)
     {
@@ -776,11 +776,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         if (is_array($relationTableMatchFields)) {
             $row = array_merge($relationTableMatchFields, $row);
         }
-        $res = $this->storageBackend->updateRelationTableRow(
+        $this->storageBackend->updateRelationTableRow(
             $relationTableName,
             $row
         );
-        return $res;
+        return true;
     }
 
     /**
@@ -802,8 +802,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         if (is_array($relationTableMatchFields)) {
             $relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
         }
-        $res = $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
-        return $res;
+        $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
+        return true;
     }
 
     /**
@@ -827,8 +827,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
         if (is_array($relationTableMatchFields)) {
             $relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
         }
-        $res = $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
-        return $res;
+        $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
+        return true;
     }
 
     /**
@@ -905,15 +905,14 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 $row['uid'] = $object->_getProperty('_localizedUid');
             }
         }
-        $res = $this->storageBackend->updateRow($dataMap->getTableName(), $row);
-        if ($res === true) {
-            $this->emitAfterUpdateObjectSignal($object);
-        }
+        $this->storageBackend->updateRow($dataMap->getTableName(), $row);
+        $this->emitAfterUpdateObjectSignal($object);
+
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
             $this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $row['uid']);
         }
-        return $res;
+        return true;
     }
 
     /**
@@ -1003,13 +1002,12 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
                 $deletedColumnName => 1
             ];
             $this->addCommonDateFieldsToRow($object, $row);
-            $res = $this->storageBackend->updateRow($tableName, $row);
+            $this->storageBackend->updateRow($tableName, $row);
         } else {
-            $res = $this->storageBackend->removeRow($tableName, ['uid' => $object->getUid()]);
+            $this->storageBackend->removeRow($tableName, ['uid' => $object->getUid()]);
         }
-        if ($res === true) {
-            $this->emitAfterRemoveObjectSignal($object);
-        }
+        $this->emitAfterRemoveObjectSignal($object);
+
         $this->removeRelatedObjects($object);
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {

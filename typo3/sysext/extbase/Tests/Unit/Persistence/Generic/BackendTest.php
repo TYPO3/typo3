@@ -66,6 +66,10 @@ class BackendTest extends UnitTestCase
 
         $columnMap
             ->expects($this->once())
+            ->method('getRelationTableName')
+            ->will($this->returnValue('myTable'));
+        $columnMap
+            ->expects($this->once())
             ->method('getRelationTableMatchFields')
             ->will($this->returnValue($mmMatchFields));
         $columnMap
@@ -83,7 +87,7 @@ class BackendTest extends UnitTestCase
         $storageBackend
             ->expects($this->once())
             ->method('addRow')
-            ->with(null, $expectedRow, true);
+            ->with('myTable', $expectedRow, true);
 
         $fixture->_set('dataMapFactory', $dataMapFactory);
         $fixture->_set('storageBackend', $storageBackend);
