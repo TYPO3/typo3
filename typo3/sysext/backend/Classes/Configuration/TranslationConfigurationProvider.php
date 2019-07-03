@@ -51,8 +51,13 @@ class TranslationConfigurationProvider
     public function getSystemLanguages($pageId = 0)
     {
         try {
-            $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$pageId);
-            $siteLanguages = $siteMatcher->getAvailableLanguages($this->getBackendUserAuthentication(), true);
+            $site = GeneralUtility::makeInstance(SiteMatcher::class)->matchByPageId((int)$pageId);
+            $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
+
+            if (!isset($siteLanguages[0])) {
+                $siteLanguages[0] = $site->getDefaultLanguage();
+                ksort($siteLanguages);
+            }
 
             $languages = [];
             foreach ($siteLanguages as $id => $siteLanguage) {
