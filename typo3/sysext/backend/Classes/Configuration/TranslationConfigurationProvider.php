@@ -47,6 +47,10 @@ class TranslationConfigurationProvider
             $site = new NullSite();
         }
         $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
+        if (!isset($siteLanguages[0])) {
+            $siteLanguages[0] = $site->getDefaultLanguage();
+            ksort($siteLanguages);
+        }
 
         $languages = [];
         foreach ($siteLanguages as $id => $siteLanguage) {
