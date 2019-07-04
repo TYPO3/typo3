@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Mvc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
+
 /**
  * Analyzes the raw request and delivers a request handler which can handle it.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -26,9 +28,9 @@ class RequestHandlerResolver
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     * @var \TYPO3\CMS\Extbase\Configuration\RequestHandlersConfiguration
      */
-    protected $configurationManager;
+    private $requestHandlersConfiguration;
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -39,11 +41,11 @@ class RequestHandlerResolver
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     * @param RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function __construct(RequestHandlersConfigurationFactory $requestHandlersConfigurationFactory)
     {
-        $this->configurationManager = $configurationManager;
+        $this->requestHandlersConfiguration = $requestHandlersConfigurationFactory->createRequestHandlersConfiguration();
     }
 
     /**
@@ -55,9 +57,9 @@ class RequestHandlerResolver
      */
     public function resolveRequestHandler()
     {
-        $availableRequestHandlerClassNames = $this->getRegisteredRequestHandlerClassNames();
         $suitableRequestHandlers = [];
-        foreach ($availableRequestHandlerClassNames as $requestHandlerClassName) {
+        foreach ($this->requestHandlersConfiguration->getRegisteredRequestHandlers() as $requestHandlerClassName) {
+            /** @var RequestHandlerInterface $requestHandler */
             $requestHandler = $this->objectManager->get($requestHandlerClassName);
             if ($requestHandler->canHandleRequest()) {
                 $priority = $requestHandler->getPriority();
@@ -72,16 +74,5 @@ class RequestHandlerResolver
         }
         ksort($suitableRequestHandlers);
         return array_pop($suitableRequestHandlers);
-    }
-
-    /**
-     * Returns a list of all registered request handlers.
-     *
-     * @return array
-     */
-    public function getRegisteredRequestHandlerClassNames()
-    {
-        $settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        return is_array($settings['mvc']['requestHandlers']) ? $settings['mvc']['requestHandlers'] : [];
     }
 }

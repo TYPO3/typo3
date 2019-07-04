@@ -247,63 +247,6 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getContextSpecificFrameworkConfigurationReturnsUnmodifiedFrameworkConfigurationIfRequestHandlersAreConfigured()
-    {
-        $frameworkConfiguration = [
-            'pluginName' => 'Pi1',
-            'extensionName' => 'SomeExtension',
-            'foo' => [
-                'bar' => [
-                    'baz' => 'Foo'
-                ]
-            ],
-            'mvc' => [
-                'requestHandlers' => [
-                    \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class => 'SomeRequestHandler'
-                ]
-            ]
-        ];
-        $expectedResult = $frameworkConfiguration;
-        $actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
-    public function getContextSpecificFrameworkConfigurationSetsDefaultRequestHandlersIfRequestHandlersAreNotConfigured()
-    {
-        $frameworkConfiguration = [
-            'pluginName' => 'Pi1',
-            'extensionName' => 'SomeExtension',
-            'foo' => [
-                'bar' => [
-                    'baz' => 'Foo'
-                ]
-            ]
-        ];
-        $expectedResult = [
-            'pluginName' => 'Pi1',
-            'extensionName' => 'SomeExtension',
-            'foo' => [
-                'bar' => [
-                    'baz' => 'Foo'
-                ]
-            ],
-            'mvc' => [
-                'requestHandlers' => [
-                    \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class => \TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::class,
-                    \TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler::class => \TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler::class
-                ]
-            ]
-        ];
-        $actualResult = $this->backendConfigurationManager->_call('getContextSpecificFrameworkConfiguration', $frameworkConfiguration);
-        $this->assertEquals($expectedResult, $actualResult);
-    }
-
-    /**
-     * @test
-     */
     public function storagePidsAreExtendedIfRecursiveSearchIsConfigured()
     {
         $storagePids = [1, 2, 3];

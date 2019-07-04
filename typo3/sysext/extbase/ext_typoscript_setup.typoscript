@@ -1,9 +1,5 @@
 config.tx_extbase {
 	mvc {
-		requestHandlers {
-			TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler
-			TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler = TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler
-		}
 		throwPageNotFoundExceptionIfActionCantBeResolved = 0
 	}
 	persistence{

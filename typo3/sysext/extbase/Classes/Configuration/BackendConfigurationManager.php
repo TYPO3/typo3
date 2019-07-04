@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\BackendRequestHandler;
-use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
 
 /**
  * A general purpose configuration manager used in backend mode.
@@ -239,12 +237,6 @@ class BackendConfigurationManager extends AbstractConfigurationManager
      */
     protected function getContextSpecificFrameworkConfiguration(array $frameworkConfiguration): array
     {
-        if (!isset($frameworkConfiguration['mvc']['requestHandlers'])) {
-            $frameworkConfiguration['mvc']['requestHandlers'] = [
-                FrontendRequestHandler::class => FrontendRequestHandler::class,
-                BackendRequestHandler::class => BackendRequestHandler::class
-            ];
-        }
         return $frameworkConfiguration;
     }
 

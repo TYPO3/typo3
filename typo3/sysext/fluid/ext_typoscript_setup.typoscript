@@ -15,11 +15,3 @@ fluidAjaxWidgetResponse {
 		userFunc = TYPO3\CMS\Fluid\Core\Widget\Bootstrap->run
 	}
 }
-
-config.tx_extbase {
-	mvc {
-		requestHandlers {
-			TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler = TYPO3\CMS\Fluid\Core\Widget\WidgetRequestHandler
-		}
-	}
-}

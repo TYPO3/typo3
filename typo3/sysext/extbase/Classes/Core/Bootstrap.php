@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\RequestHandlersConfigurationFactory;
 use TYPO3\CMS\Extbase\Mvc\Web\Response as ExtbaseResponse;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 
@@ -84,6 +85,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         $this->initializeObjectManager();
         $this->initializeConfiguration($configuration);
         $this->initializePersistenceClassesConfiguration();
+        $this->initializeRequestHandlersConfiguration();
         $this->initializePersistence();
     }
 
@@ -127,6 +129,16 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         GeneralUtility::makeInstance(ClassesConfigurationFactory::class, $cacheManager)
             ->createClassesConfiguration();
+    }
+
+    /**
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
+     */
+    private function initializeRequestHandlersConfiguration(): void
+    {
+        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
+        GeneralUtility::makeInstance(RequestHandlersConfigurationFactory::class, $cacheManager)
+            ->createRequestHandlersConfiguration();
     }
 
     /**
