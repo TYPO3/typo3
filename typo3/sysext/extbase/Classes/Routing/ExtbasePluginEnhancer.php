@@ -94,9 +94,7 @@ class ExtbasePluginEnhancer extends PluginEnhancer
             $compiledRoute = $route->compile();
             $variables = $compiledRoute->getPathVariables();
             $variables = array_flip($variables);
-            $requirements = array_filter($namespacedRequirements, function ($key) use ($variables) {
-                return isset($variables[$key]);
-            }, ARRAY_FILTER_USE_KEY);
+            $requirements = $this->deflateParameters($route, [$this->namespace => $this->configuration['requirements']]);
             $route->setRequirements($requirements);
         }
         return $route;
