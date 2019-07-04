@@ -6,3 +6,6 @@ services:
 
   TYPO3\CMS\Info\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Info\Controller\InfoModuleController:
+    tags: ['backend.controller']

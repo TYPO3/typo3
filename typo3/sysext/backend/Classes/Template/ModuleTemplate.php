@@ -143,6 +143,11 @@ class ModuleTemplate
     protected $iconFactory;
 
     /**
+     * @var FlashMessageService
+     */
+    protected $flashMessageService;
+
+    /**
      * Module ID
      *
      * @var string
@@ -247,18 +252,25 @@ class ModuleTemplate
      * Class constructor
      * Sets up view and property objects
      *
+     * @param PageRenderer $pageRenderer
+     * @param IconFactory $iconFactory
+     * @param FlashMessageService $flashMessageService
      * @throws InvalidTemplateResourceException In case a template is invalid
      */
-    public function __construct()
-    {
+    public function __construct(
+        PageRenderer $pageRenderer,
+        IconFactory $iconFactory,
+        FlashMessageService $flashMessageService
+    ) {
         $this->view = GeneralUtility::makeInstance(StandaloneView::class);
         $this->view->setPartialRootPaths($this->partialRootPaths);
         $this->view->setTemplateRootPaths($this->templateRootPaths);
         $this->view->setLayoutRootPaths($this->layoutRootPaths);
         $this->view->setTemplate($this->templateFile);
-        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $this->pageRenderer = $pageRenderer;
+        $this->iconFactory = $iconFactory;
+        $this->flashMessageService = $flashMessageService;
         $this->docHeaderComponent = GeneralUtility::makeInstance(DocHeaderComponent::class);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
@@ -703,9 +715,7 @@ class ModuleTemplate
     protected function getFlashMessageQueue()
     {
         if (!isset($this->flashMessageQueue)) {
-            /** @var FlashMessageService $service */
-            $service = GeneralUtility::makeInstance(FlashMessageService::class);
-            $this->flashMessageQueue = $service->getMessageQueueByIdentifier();
+            $this->flashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
         }
         return $this->flashMessageQueue;
     }

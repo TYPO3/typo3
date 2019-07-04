@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Info\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -60,6 +61,21 @@ class InfoModuleController
      * @var StandaloneView
      */
     protected $view;
+
+    /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
+     * @var FlashMessageService
+     */
+    protected $flashMessageService;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var int Value of the GET/POST var 'id'
@@ -144,9 +160,17 @@ class InfoModuleController
     /**
      * Constructor
      */
-    public function __construct()
-    {
-        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+    public function __construct(
+        ModuleTemplate $moduleTemplate,
+        UriBuilder $uriBuilder,
+        FlashMessageService $flashMessageService,
+        ContainerInterface $container
+    ) {
+        $this->moduleTemplate = $moduleTemplate;
+        $this->uriBuilder = $uriBuilder;
+        $this->flashMessageService = $flashMessageService;
+        $this->container = $container;
+
         $languageService = $this->getLanguageService();
         $languageService->includeLLFile('EXT:info/Resources/Private/Language/locallang_mod_web_info.xlf');
     }
@@ -195,8 +219,7 @@ class InfoModuleController
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
             $this->view = $this->getFluidTemplateObject();
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->view->assign('moduleName', (string)$uriBuilder->buildUriFromRoute($this->moduleName));
+            $this->view->assign('moduleName', (string)$this->uriBuilder->buildUriFromRoute($this->moduleName));
             $this->view->assign('functionMenuModuleContent', $this->getExtObjContent());
             // Setting up the buttons and markers for doc header
             $this->getButtons();
@@ -282,12 +305,11 @@ class InfoModuleController
     {
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('WebInfoJumpMenu');
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($this->MOD_MENU['function'] as $controller => $title) {
             $item = $menu
                 ->makeMenuItem()
                 ->setHref(
-                    (string)$uriBuilder->buildUriFromRoute(
+                    (string)$this->uriBuilder->buildUriFromRoute(
                         $this->moduleName,
                         [
                             'id' => $this->id,
@@ -412,7 +434,11 @@ class InfoModuleController
     protected function checkExtObj()
     {
         if (is_array($this->extClassConf) && $this->extClassConf['name']) {
-            $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            if ($this->container->has($this->extClassConf['name'])) {
+                $this->extObj = $this->container->get($this->extClassConf['name']);
+            } else {
+                $this->extObj = GeneralUtility::makeInstance($this->extClassConf['name']);
+            }
             if (is_callable([$this->extObj, 'init'])) {
                 $this->extObj->init($this);
             }
@@ -434,9 +460,8 @@ class InfoModuleController
                 $languageService->getLL('title'),
                 FlashMessage::ERROR
             );
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             if (is_callable([$this->extObj, 'main'])) {
