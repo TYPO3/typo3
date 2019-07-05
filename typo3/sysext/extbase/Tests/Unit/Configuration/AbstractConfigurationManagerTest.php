@@ -27,8 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractConfigurationManagerTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
-
     /**
      * @var AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */

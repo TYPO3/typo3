@@ -29,8 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FrontendConfigurationManagerTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
-
     /**
      * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
      */

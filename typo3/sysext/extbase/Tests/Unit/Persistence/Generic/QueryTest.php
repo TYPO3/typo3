@@ -21,8 +21,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class QueryTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
-
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Query|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */

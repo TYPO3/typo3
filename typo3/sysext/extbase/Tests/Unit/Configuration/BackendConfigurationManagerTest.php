@@ -23,8 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendConfigurationManagerTest extends UnitTestCase
 {
-    protected $resetSingletonInstances = true;
-
     /**
      * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
