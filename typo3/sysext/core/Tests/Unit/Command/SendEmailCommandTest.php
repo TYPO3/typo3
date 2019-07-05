@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Command;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Command\SendEmailCommand;
+use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -30,16 +33,9 @@ class SendEmailCommandTest extends UnitTestCase
      */
     public function executeWillFlushTheQueue()
     {
-        $realTransport = $this->getMockBuilder(\Swift_Transport::class)->getMock();
-
-        $spool = $this->getMockBuilder(\Swift_Spool::class)->getMock();
-        $spool
-            ->expects($this->once())
-            ->method('flushQueue')
-            ->with($realTransport)
-            ->will($this->returnValue(5))
-        ;
-        $spoolTransport = new \Swift_Transport_SpoolTransport(new \Swift_Events_SimpleEventDispatcher(), $spool);
+        $delayedTransportProphecy = $this->prophesize(DelayedTransportInterface::class);
+        $delayedTransportProphecy->flushQueue(Argument::any())->willReturn(5);
+        $realTransportProphecy = $this->prophesize(TransportInterface::class);
 
         $mailer = $this->getMockBuilder(Mailer::class)
             ->disableOriginalConstructor()
@@ -49,16 +45,16 @@ class SendEmailCommandTest extends UnitTestCase
         $mailer
             ->expects($this->any())
             ->method('getTransport')
-            ->will($this->returnValue($spoolTransport));
+            ->will($this->returnValue($delayedTransportProphecy->reveal()));
 
         $mailer
             ->expects($this->any())
             ->method('getRealTransport')
-            ->will($this->returnValue($realTransport));
+            ->will($this->returnValue($realTransportProphecy->reveal()));
 
         /** @var SendEmailCommand|\PHPUnit_Framework_MockObject_MockObject $command */
         $command = $this->getMockBuilder(SendEmailCommand::class)
-            ->setConstructorArgs(['swiftmailer:spool:send'])
+            ->setConstructorArgs(['mailer:spool:send'])
             ->setMethods(['getMailer'])
             ->getMock();
 
