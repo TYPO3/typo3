@@ -590,6 +590,8 @@ class RecordListController
         $this->site = $request->getAttribute('site');
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUserAuthentication(), false, (int)$this->id);
         BackendUtility::lockRecords();
+        // @deprecated  since TYPO3 v9, will be removed in TYPO3 v10.0. Can be removed along with $this->doc. Still used in DatabaseRecordList
+        $GLOBALS['SOBE'] = $this;
         $this->init();
         $this->clearCache();
         $this->main($request);
