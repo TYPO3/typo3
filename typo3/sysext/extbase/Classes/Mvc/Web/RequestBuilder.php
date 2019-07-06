@@ -200,6 +200,12 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
 
         $controllerClassName = $this->resolveControllerClassName($parameters);
         $actionName = $this->resolveActionName($controllerClassName, $parameters);
+
+        $baseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        if ($this->environmentService->isEnvironmentInBackendMode()) {
+            $baseUri .= TYPO3_mainDir;
+        }
+
         /** @var \TYPO3\CMS\Extbase\Mvc\Web\Request $request */
         $request = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Web\Request::class);
         $request->setPluginName($this->pluginName);
@@ -209,7 +215,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface
         $request->setControllerActionName($actionName);
         // @todo Use Environment
         $request->setRequestUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $request->setBaseUri(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+        $request->setBaseUri($baseUri);
         $request->setMethod($this->environmentService->getServerRequestMethod());
         if (isset($parameters['format']) && is_string($parameters['format']) && $parameters['format'] !== '') {
             $request->setFormat(filter_var($parameters['format'], FILTER_SANITIZE_STRING));

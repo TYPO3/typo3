@@ -103,8 +103,10 @@ class RequestBuilderTest extends UnitTestCase
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->mockExtensionService = $this->createMock(ExtensionService::class);
         $this->mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
-            ->setMethods(['getServerRequestMethod'])
+            ->setMethods(['getServerRequestMethod', 'isEnvironmentInFrontendMode', 'isEnvironmentInBackendMode'])
             ->getMock();
+        $this->mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $this->mockEnvironmentService->expects($this->any())->method('isEnvironmentInBackendMode')->willReturn(false);
     }
 
     /**

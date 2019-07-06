@@ -19,7 +19,9 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
 use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
+use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3Fluid\Fluid\View\TemplateView;
@@ -38,6 +40,11 @@ class ActionController extends AbstractController
      * @var \TYPO3\CMS\Extbase\Service\CacheService
      */
     protected $cacheService;
+
+    /**
+     * @var HashService;
+     */
+    protected $hashService;
 
     /**
      * The current view, as resolved by resolveView()
@@ -101,6 +108,14 @@ class ActionController extends AbstractController
     public function injectCacheService(\TYPO3\CMS\Extbase\Service\CacheService $cacheService)
     {
         $this->cacheService = $cacheService;
+    }
+
+    /**
+     * @param HashService $hashService
+     */
+    public function injectHashService(HashService $hashService)
+    {
+        $this->hashService = $hashService;
     }
 
     /**
@@ -519,7 +534,18 @@ class ActionController extends AbstractController
      */
     protected function forwardToReferringRequest()
     {
-        $referringRequest = $this->request->getReferringRequest();
+        $referringRequest = null;
+        $referringRequestArguments = $this->request->getInternalArguments()['__referrer']['@request'] ?? null;
+        if (is_string($referringRequestArguments)) {
+            $referrerArray = json_decode(
+                $this->hashService->validateAndStripHmac($referringRequestArguments),
+                true
+            );
+            $arguments = [];
+            $referringRequest = new ReferringRequest();
+            $referringRequest->setArguments(array_replace_recursive($arguments, $referrerArray));
+        }
+
         if ($referringRequest !== null) {
             $originalRequest = clone $this->request;
             $this->request->setOriginalRequest($originalRequest);

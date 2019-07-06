@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Widget;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Service\EnvironmentService;
 use TYPO3\CMS\Fluid\Core\Widget\AjaxWidgetContextHolder;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetContext;
 use TYPO3\CMS\Fluid\Core\Widget\WidgetRequest;
@@ -66,6 +67,10 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $this->mockWidgetContext = $this->createMock(WidgetContext::class);
         $this->mockAjaxWidgetContextHolder = $this->createMock(AjaxWidgetContextHolder::class);
         $this->widgetRequestBuilder->injectAjaxWidgetContextHolder($this->mockAjaxWidgetContextHolder);
+        $environmentServiceMock = $this->createMock(EnvironmentService::class);
+        $environmentServiceMock->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $environmentServiceMock->expects($this->any())->method('isEnvironmentInBackendMode')->willReturn(false);
+        $this->widgetRequestBuilder->injectEnvironmentService($environmentServiceMock);
     }
 
     /**

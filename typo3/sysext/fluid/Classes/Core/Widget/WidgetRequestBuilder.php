@@ -44,9 +44,14 @@ class WidgetRequestBuilder extends RequestBuilder
      */
     public function build(): RequestInterface
     {
+        $baseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
+        if ($this->environmentService->isEnvironmentInBackendMode()) {
+            $baseUri .= TYPO3_mainDir;
+        }
+
         $request = $this->objectManager->get(WidgetRequest::class);
         $request->setRequestUri(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $request->setBaseUri(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+        $request->setBaseUri($baseUri);
         $request->setMethod($_SERVER['REQUEST_METHOD'] ?? null);
         if (strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
             $request->setArguments(GeneralUtility::_POST());
