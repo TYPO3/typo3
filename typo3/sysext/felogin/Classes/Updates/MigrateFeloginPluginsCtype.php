@@ -112,7 +112,7 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      * @return bool
      */
     public function updateNecessary(): bool {
-        // Which content type should be search for?
+        // Which content type should be searched for
         $CType = $this->isExtbase() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
 
         /** @var QueryBuilder $queryBuilder */
