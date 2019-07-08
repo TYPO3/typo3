@@ -272,16 +272,19 @@ class EmailFinisher extends AbstractFinisher
             $recipients[$singleAddress] = $singleAddressName ?: '';
         }
 
-        // Drop entries without mail address
-        $recipients = array_filter($recipients, function ($value, $key) {
-            if (MathUtility::canBeInterpretedAsInteger($key)) {
-                return !empty($value);
+        $addresses = [];
+        foreach ($recipients as $address => $name) {
+            if (MathUtility::canBeInterpretedAsInteger($address)) {
+                $address = $name;
+                $name = '';
             }
-
-            return !empty($key);
-        }, ARRAY_FILTER_USE_BOTH);
-
-        return $recipients;
+            // Drop entries without mail address
+            if (empty($address)) {
+                continue;
+            }
+            $addresses[] = new NamedAddress($address, $name);
+        }
+        return $addresses;
     }
 
     /**
