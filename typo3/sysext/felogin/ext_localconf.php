@@ -54,4 +54,6 @@ defined('TYPO3_MODE') or die();
     // Add migration wizard
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Felogin\Updates\MigrateFeloginPlugins::class]
         = \TYPO3\CMS\Felogin\Updates\MigrateFeloginPlugins::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][\TYPO3\CMS\Felogin\Updates\MigrateFeloginPluginsCtype::class]
+        = \TYPO3\CMS\Felogin\Updates\MigrateFeloginPluginsCtype::class;
 })();
