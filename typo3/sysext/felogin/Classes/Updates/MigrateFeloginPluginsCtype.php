@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace TYPO3\CMS\Felogin\Updates;
 
@@ -17,16 +17,15 @@ namespace TYPO3\CMS\Felogin\Updates;
  */
 
 use TYPO3\CMS\Core\Configuration\Features;
-use TYPO3\CMS\Install\Updates\RepeatableInterface;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Updates\RepeatableInterface;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableInterface
 {
-
     private const CTYPE_PIBASE = 'login';
     private const CTYPE_EXTBASE = 'felogin_login';
 
@@ -36,7 +35,8 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return string
      */
-    public function getIdentifier(): string {
+    public function getIdentifier(): string
+    {
         return self::class;
     }
 
@@ -45,7 +45,8 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return string
      */
-    public function getTitle(): string {
+    public function getTitle(): string
+    {
         return 'Migrate felogin plugins to use extbase CType';
     }
 
@@ -54,8 +55,9 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return string
      */
-    public function getDescription(): string {
-        return  'This wizard migrates existing front end plugins of the extension felogin from piBase key to ' .
+    public function getDescription(): string
+    {
+        return 'This wizard migrates existing front end plugins of the extension felogin from piBase key to ' .
             'the new Extbase "CType"';
     }
 
@@ -66,7 +68,8 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return bool
      */
-    public function executeUpdate(): bool {
+    public function executeUpdate(): bool
+    {
         $oldCType = $this->isExtbase() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
         $newCType = $this->isExtbase() ? self::CTYPE_EXTBASE : self::CTYPE_PIBASE;
 
@@ -111,7 +114,8 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return bool
      */
-    public function updateNecessary(): bool {
+    public function updateNecessary(): bool
+    {
         // Which content type should be searched for
         $CType = $this->isExtbase() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
 
@@ -136,7 +140,8 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return string[]
      */
-    public function getPrerequisites(): array {
+    public function getPrerequisites(): array
+    {
         return [
             MigrateFeloginPlugins::class
         ];
@@ -147,7 +152,8 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return bool
      */
-    protected function isExtbase():bool {
+    protected function isExtbase(): bool
+    {
         return GeneralUtility::makeInstance(Features::class)
             ->isFeatureEnabled('felogin.extbase');
     }
