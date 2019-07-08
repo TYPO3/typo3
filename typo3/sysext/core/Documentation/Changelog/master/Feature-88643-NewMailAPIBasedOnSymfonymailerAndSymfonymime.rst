@@ -27,12 +27,12 @@ by automatically detecting the sendmail path by checking PHP.ini settings, but
 should be reviewed on update.
 
 In addition, the MailMessage API to create Email messages now inherits from
-:php:`Symfony\Mail\Email` instead of `Swift_Message`, and adds certain shortcuts
+:php:`Symfony\Mail\Email` instead of :php:`Swift_Message`, and adds certain shortcuts
 and more flexibility, but is also stricter in validation.
 
 Especially custom extensions using the MailMessage API need to be evaluated,
 as it is not possible anymore to add multiple email addresses as a simple associative
-array but rather a NamedAddress object or a simple Address object from symfony/mime.
+array but rather a NamedAddress object or a simple Address object from "symfony/mime".
 
 All existing Swiftmailer-based transports which TYPO3 supports natively have been
 replaced by Symfony-based transport APIs.
@@ -53,7 +53,7 @@ class extends from.
 
 An example implementation within a third-party extension:
 
-:php:
+.. code-block:: php
 
     $email = GeneralUtility::makeInstance(MailMessage::class)
          ->to(new Address('benni@typo3.org'), new NamedAddress('benni@typo3.org', 'Benni Mack'))
@@ -66,7 +66,7 @@ An example implementation within a third-party extension:
 It is however also possible to re-use a Mailer instance, also adding custom Mailer
 settings via a custom Transport for special cases.
 
-:php:
+.. code-block:: php
 
     $mailer = GeneralUtility::makeInstance(Mailer::class)
 
