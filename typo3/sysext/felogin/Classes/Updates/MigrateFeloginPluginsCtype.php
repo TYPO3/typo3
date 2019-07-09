@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Felogin\Updates;
 
@@ -70,38 +70,21 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      */
     public function executeUpdate(): bool
     {
-        $oldCType = $this->isExtbase() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
-        $newCType = $this->isExtbase() ? self::CTYPE_EXTBASE : self::CTYPE_PIBASE;
-
         // Get all tt_content data for login plugins and update their CTypes and Flexforms settings
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tt_content');
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $connection->createQueryBuilder();
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        $statement = $queryBuilder
-            ->select('uid')
-            ->from('tt_content')
+        $queryBuilder
+            ->update('tt_content')
+            ->set('CType', $this->getNewCType())
             ->where(
                 $queryBuilder->expr()->eq(
                     'CType',
-                    $queryBuilder->createNamedParameter($oldCType)
+                    $queryBuilder->createNamedParameter($this->getOldCType())
                 )
             )
             ->execute();
-
-        while ($record = $statement->fetch()) {
-            $queryBuilder = $connection->createQueryBuilder();
-            $queryBuilder->update('tt_content')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'uid',
-                        $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
-                    )
-                )
-                ->set('CType', $newCType)
-                ->execute();
-        }
 
         return true;
     }
@@ -116,16 +99,13 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      */
     public function updateNecessary(): bool
     {
-        // Which content type should be searched for
-        $CType = $this->isExtbase() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
-
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $elementCount = $queryBuilder->count('uid')
             ->from('tt_content')
             ->where(
-                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($CType))
+                $queryBuilder->expr()->eq('CType', $queryBuilder->createNamedParameter($this->getOldCType()))
             )
             ->execute()->fetchColumn();
 
@@ -152,9 +132,29 @@ class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableIn
      *
      * @return bool
      */
-    protected function isExtbase(): bool
+    protected function isExtbaseFeatureEnabled(): bool
     {
         return GeneralUtility::makeInstance(Features::class)
             ->isFeatureEnabled('felogin.extbase');
+    }
+
+    /**
+     * Returns the CType that should be replaced by new CType
+     *
+     * @return string
+     */
+    private function getOldCType(): string
+    {
+        return $this->isExtbaseFeatureEnabled() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
+    }
+
+    /**
+     * Decide which content CType should be used for the current feature toggle state
+     *
+     * @return string
+     */
+    private function getNewCType(): string
+    {
+        return $this->isExtbaseFeatureEnabled() ? self::CTYPE_EXTBASE : self::CTYPE_PIBASE;
     }
 }
