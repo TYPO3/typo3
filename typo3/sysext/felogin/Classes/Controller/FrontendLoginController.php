@@ -266,14 +266,14 @@ class FrontendLoginController extends AbstractPlugin
                     // Generate an email with the hashed link
                     $error = $this->generateAndSendHash($row);
                 } elseif ($this->conf['exposeNonexistentUserInForgotPasswordDialog']) {
-                    $error = $this->pi_getLL('ll_forgot_reset_message_error');
+                    $error = $this->pi_getLL('forgot_reset_message_error');
                 }
                 // Generate message
                 if ($error) {
                     $markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap($error, $this->conf['forgotErrorMessage_stdWrap.']);
                 } else {
                     $markerArray['###STATUS_MESSAGE###'] = $this->cObj->stdWrap(
-                        $this->pi_getLL('ll_forgot_reset_message_emailSent'),
+                        $this->pi_getLL('forgot_reset_message_emailSent'),
                         $this->conf['forgotResetMessageEmailSentMessage_stdWrap.']
                     );
                 }
@@ -287,7 +287,7 @@ class FrontendLoginController extends AbstractPlugin
             $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText('forgot_reset_message', $this->conf['forgotMessage_stdWrap.']);
             $markerArray['###BACKLINK_LOGIN###'] = '';
         }
-        $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')), []);
+        $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(htmlspecialchars($this->pi_getLL('forgot_header_backToLogin')), []);
         $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('forgot_header', $this->conf['forgotHeader_stdWrap.']);
         $markerArray['###LEGEND###'] = htmlspecialchars($this->pi_getLL('legend', $this->pi_getLL('reset_password')));
         $markerArray['###ACTION_URI###'] = $this->getPageLink('', [$this->prefixId . '[forgot]' => 1], true);
@@ -295,7 +295,7 @@ class FrontendLoginController extends AbstractPlugin
         $markerArray['###FORGOT_PASSWORD_ENTEREMAIL###'] = htmlspecialchars($this->pi_getLL('forgot_password_enterEmail'));
         $markerArray['###FORGOT_EMAIL###'] = $this->prefixId . '[forgot_email]';
         $markerArray['###SEND_PASSWORD###'] = htmlspecialchars($this->pi_getLL('reset_password'));
-        $markerArray['###DATA_LABEL###'] = htmlspecialchars($this->pi_getLL('ll_enter_your_data'));
+        $markerArray['###DATA_LABEL###'] = htmlspecialchars($this->pi_getLL('enter_your_data'));
         $markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
         // Generate hash
         $hash = md5($this->generatePassword(3));
@@ -417,7 +417,7 @@ class FrontendLoginController extends AbstractPlugin
                             $done = true;
                             $subpartArray['###CHANGEPASSWORD_FORM###'] = '';
                             $markerArray['###BACKLINK_LOGIN###'] = $this->getPageLink(
-                                htmlspecialchars($this->pi_getLL('ll_forgot_header_backToLogin')),
+                                htmlspecialchars($this->pi_getLL('forgot_header_backToLogin')),
                                 [$this->prefixId . '[redirectReferrer]' => 'off']
                             );
                         }
@@ -499,9 +499,9 @@ class FrontendLoginController extends AbstractPlugin
             $link = $this->frontendController->baseUrlWrap($link);
         } else {
             // No prefix is set, return the error
-            return $this->pi_getLL('ll_change_password_nolinkprefix_message');
+            return $this->pi_getLL('change_password_nolinkprefix_message');
         }
-        $msg = sprintf($this->pi_getLL('ll_forgot_validate_reset_password'), $user['username'], $link, $validEndString);
+        $msg = sprintf($this->pi_getLL('forgot_validate_reset_password'), $user['username'], $link, $validEndString);
         // Add hook for extra processing of mail message
         $params = [
             'message' => &$msg,
@@ -652,7 +652,7 @@ class FrontendLoginController extends AbstractPlugin
         $markerArray = array_merge($markerArray, $this->getUserFieldMarkers());
         if ($this->conf['showForgotPasswordLink']) {
             $linkpartArray['###FORGOT_PASSWORD_LINK###'] = explode('|', $this->getPageLink('|', [$this->prefixId . '[forgot]' => 1]));
-            $markerArray['###FORGOT_PASSWORD###'] = htmlspecialchars($this->pi_getLL('ll_forgot_header'));
+            $markerArray['###FORGOT_PASSWORD###'] = htmlspecialchars($this->pi_getLL('forgot_header'));
         } else {
             $subpartArray['###FORGOTP_VALID###'] = '';
         }
@@ -996,7 +996,7 @@ class FrontendLoginController extends AbstractPlugin
      */
     protected function getDisplayText($label, $stdWrapArray = [])
     {
-        $text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL('ll_' . $label), $stdWrapArray);
+        $text = $this->flexFormValue($label, 's_messages') ? $this->cObj->stdWrap($this->flexFormValue($label, 's_messages'), $stdWrapArray) : $this->cObj->stdWrap($this->pi_getLL($label), $stdWrapArray);
         $replace = $this->getUserFieldMarkers();
         return strtr($text, $replace);
     }
