@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace TYPO3\CMS\Felogin\Controller;
 
@@ -18,9 +18,11 @@ namespace TYPO3\CMS\Felogin\Controller;
 
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 /**
  * Used for plugin login
@@ -54,6 +56,8 @@ class LoginController extends ActionController
      * user overview for logged in users
      *
      * @param bool $showLoginMessage
+     * @throws StopActionException
+     * @throws AspectNotFoundException
      */
     public function overviewAction(bool $showLoginMessage = false): void
     {
@@ -113,6 +117,7 @@ class LoginController extends ActionController
      *
      * @param bool $userLoggedIn
      * @param string $loginType
+     * @throws StopActionException
      */
     protected function handleForwards(bool $userLoggedIn, string $loginType): void
     {
@@ -129,6 +134,7 @@ class LoginController extends ActionController
      * check if the user is logged in
      *
      * @return bool
+     * @throws AspectNotFoundException
      */
     protected function isUserLoggedIn(): bool
     {

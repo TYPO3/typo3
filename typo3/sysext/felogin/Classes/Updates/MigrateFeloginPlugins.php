@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Felogin\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Class MigrateFeloginPlugins
+ *
  * @internal
  */
 class MigrateFeloginPlugins implements UpgradeWizardInterface
@@ -119,7 +121,7 @@ class MigrateFeloginPlugins implements UpgradeWizardInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($record['uid'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($record['uid'], PDO::PARAM_INT)
                     )
                 )
                 ->set('pi_flexform', $this->migrateFlexformSettings($record['pi_flexform']))

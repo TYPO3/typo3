@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Used to check if a referrer or a redirect URL is valid to be used as within Frontend Logins
  * for redirects.
+ *
  * @internal for now as it might get adopted for further streamlining against other validation paradigms
  */
 class RedirectUrlValidator implements LoggerAwareInterface
@@ -68,6 +69,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
         }
         // URL is not allowed
         $this->logger->warning('Url "' . $value . '" was not accepted.');
+
         return false;
     }
 
@@ -82,6 +84,7 @@ class RedirectUrlValidator implements LoggerAwareInterface
     {
         $urlWithoutSchema = preg_replace('#^https?://#', '', $url);
         $siteUrlWithoutSchema = preg_replace('#^https?://#', '', GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
+
         return strpos($urlWithoutSchema . '/', GeneralUtility::getIndpEnv('HTTP_HOST') . '/') === 0
             && strpos($urlWithoutSchema, $siteUrlWithoutSchema) === 0;
     }
@@ -102,11 +105,13 @@ class RedirectUrlValidator implements LoggerAwareInterface
             $host = $parsedUrl['host'];
             try {
                 $site = $this->siteFinder->getSiteByPageId($this->pageId);
+
                 return $site->getBase()->getHost() === $host;
             } catch (SiteNotFoundException $e) {
                 // nothing found
             }
         }
+
         return false;
     }
 
@@ -123,9 +128,14 @@ class RedirectUrlValidator implements LoggerAwareInterface
             $parsedUrl = @parse_url($url);
             if ($parsedUrl !== false && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
                 // If the relative URL starts with a slash, we need to check if it's within the current site path
-                return $parsedUrl['path'][0] !== '/' || GeneralUtility::isFirstPartOfStr($parsedUrl['path'], GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+                return $parsedUrl['path'][0] !== '/' || GeneralUtility::isFirstPartOfStr(
+                        $parsedUrl['path'], GeneralUtility::getIndpEnv(
+                        'TYPO3_SITE_PATH'
+                    )
+                    );
             }
         }
+
         return false;
     }
 }

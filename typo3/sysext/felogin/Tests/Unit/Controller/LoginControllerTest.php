@@ -37,6 +37,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class LoginControllerTest extends UnitTestCase
 {
+    /**
+     * @var bool Reset singletons created by subject
+     */
     protected $resetSingletonInstances = true;
 
     /**
