@@ -3,36 +3,36 @@
 	<file t3:id="1415814821" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="felogin">
 		<header/>
 		<body>
-			<trans-unit id="ll_welcome_header">
+			<trans-unit id="welcome_header">
 				<source>User login</source>
 			</trans-unit>
-			<trans-unit id="ll_welcome_message">
+			<trans-unit id="welcome_message">
 				<source>Enter your username and password here in order to log in on the website</source>
 			</trans-unit>
-			<trans-unit id="ll_logout_header">
+			<trans-unit id="logout_header">
 				<source>You have logged out.</source>
 			</trans-unit>
-			<trans-unit id="ll_logout_message">
+			<trans-unit id="logout_message">
 				<source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
 			</trans-unit>
-			<trans-unit id="ll_error_header">
+			<trans-unit id="error_header">
 				<source>Login failure</source>
 			</trans-unit>
-			<trans-unit id="ll_error_message" xml:space="preserve">
+			<trans-unit id="error_message" xml:space="preserve">
 				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
 Be certain that you enter them precisely as they are, including upper/lower case.
 Another possibility is that cookies might be disabled in your web browser.</source>
 			</trans-unit>
-			<trans-unit id="ll_success_header">
+			<trans-unit id="success_header">
 				<source>Login successful</source>
 			</trans-unit>
-			<trans-unit id="ll_success_message">
+			<trans-unit id="success_message">
 				<source>You are now logged in as '###USER###'</source>
 			</trans-unit>
-			<trans-unit id="ll_status_header">
+			<trans-unit id="status_header">
 				<source>Current status</source>
 			</trans-unit>
-			<trans-unit id="ll_status_message">
+			<trans-unit id="status_message">
 				<source>This is your current status</source>
 			</trans-unit>
 			<trans-unit id="cookie_warning">
@@ -59,25 +59,25 @@ Another possibility is that cookies might be disabled in your web browser.</sour
 			<trans-unit id="reset_password">
 				<source>Reset Password</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_header">
+			<trans-unit id="change_password_header">
 				<source>Change your password</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_message">
+			<trans-unit id="change_password_message">
 				<source>Please enter your new password twice. Password needs a minimum length of %s chars.</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_nolinkprefix_message">
+			<trans-unit id="change_password_nolinkprefix_message">
 				<source>Error: there is no prefix for the link. Please set one of the following in your typoscript template: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_notvalid_message">
+			<trans-unit id="change_password_notvalid_message">
 				<source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_notequal_message">
+			<trans-unit id="change_password_notequal_message">
 				<source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_tooshort_message">
+			<trans-unit id="change_password_tooshort_message">
 				<source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
 			</trans-unit>
-			<trans-unit id="ll_change_password_done_message">
+			<trans-unit id="change_password_done_message">
 				<source>Your password has been saved. You can now login with your new password.</source>
 			</trans-unit>
 			<trans-unit id="change_password">
@@ -92,23 +92,23 @@ Another possibility is that cookies might be disabled in your web browser.</sour
 			<trans-unit id="your_email">
 				<source>Your email</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_header">
+			<trans-unit id="forgot_header">
 				<source>Forgot your password?</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_email_password" xml:space="preserve">
+			<trans-unit id="forgot_email_password" xml:space="preserve">
 				<source>Your password
 Hi %s
 
 Your username is "%s"
 Your password is "%s"</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_email_nopassword" xml:space="preserve">
+			<trans-unit id="forgot_email_nopassword" xml:space="preserve">
 				<source>Your password
 Hi %s
 
 We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_validate_reset_password" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password" xml:space="preserve">
 				<source>Your new password
 Dear %s,
 
@@ -117,25 +117,25 @@ This email was sent in response to your request to reset your password. Please c
 
 For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_message">
+			<trans-unit id="forgot_message">
 				<source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_message_emailSent">
+			<trans-unit id="forgot_message_emailSent">
 				<source>Your password has now been sent to the email address %s</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_reset_message">
+			<trans-unit id="forgot_reset_message">
 				<source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_reset_message_emailSent">
+			<trans-unit id="forgot_reset_message_emailSent">
 				<source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_reset_message_error">
+			<trans-unit id="forgot_reset_message_error">
 				<source>Your account or email address does not exist.</source>
 			</trans-unit>
-			<trans-unit id="ll_forgot_header_backToLogin">
+			<trans-unit id="forgot_header_backToLogin">
 				<source>Return to login form</source>
 			</trans-unit>
-			<trans-unit id="ll_enter_your_data">
+			<trans-unit id="enter_your_data">
 				<source>Username or email address</source>
 			</trans-unit>
 		</body>
