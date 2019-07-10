@@ -2275,6 +2275,9 @@ class DatabaseRecordList
         if (!$this->moduleData['clipBoard']) {
             return '';
         }
+        if (!$this->isEditable($table)) {
+            return '';
+        }
         $cells = [];
         $cells['pasteAfter'] = ($cells['pasteInto'] = $this->spaceIcon);
         // Enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
@@ -2864,7 +2867,7 @@ class DatabaseRecordList
     /**
      * @param bool $isEditable
      */
-    public function setIsEditable($isEditable)
+    public function setIsEditable(bool $isEditable): void
     {
         $this->editable = $isEditable;
     }
@@ -2874,9 +2877,9 @@ class DatabaseRecordList
      * @param string $table
      * @return bool
      */
-    public function isEditable($table)
+    public function isEditable(string $table): bool
     {
-        return $GLOBALS['TCA'][$table]['ctrl']['readOnly'] || $this->editable;
+        return !empty($GLOBALS['TCA'][$table]['ctrl']['readOnly']) ? false : $this->editable;
     }
 
     /**
