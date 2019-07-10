@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -98,13 +97,6 @@ class PageLayoutController
      * @var string
      */
     protected $returnUrl;
-
-    /**
-     * Clear-cache flag - if set, clears page cache for current id.
-     *
-     * @var bool
-     */
-    protected $clear_cache;
 
     /**
      * PopView id - for opening a window with the page
@@ -264,7 +256,6 @@ class PageLayoutController
     {
         $GLOBALS['SOBE'] = $this;
         $this->init($request);
-        $this->clearCache();
         $this->main($request);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
@@ -293,7 +284,6 @@ class PageLayoutController
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $this->pointer = $parsedBody['pointer'] ?? $queryParams['pointer'] ?? null;
         $this->imagemode = $parsedBody['imagemode'] ?? $queryParams['imagemode'] ?? null;
-        $this->clear_cache = $parsedBody['clear_cache'] ?? $queryParams['clear_cache'] ?? null;
         $this->popView = $parsedBody['popView'] ?? $queryParams['popView'] ?? null;
         $this->search_field = $parsedBody['search_field'] ?? $queryParams['search_field'] ?? null;
         $this->search_levels = $parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? null;
@@ -461,18 +451,6 @@ class PageLayoutController
             $this->MOD_SETTINGS['function'] = $defaultKey;
         }
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
-    }
-
-    /**
-     * Clears page cache for the current id, $this->id
-     */
-    protected function clearCache(): void
-    {
-        if ($this->clear_cache && !empty($this->pageinfo)) {
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([], []);
-            $dataHandler->clear_cacheCmd($this->id);
-        }
     }
 
     /**
@@ -670,6 +648,7 @@ class PageLayoutController
      */
     protected function main(ServerRequestInterface $request): void
     {
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
         $lang = $this->getLanguageService();
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
@@ -949,7 +928,9 @@ class PageLayoutController
         // Cache
         if (empty($this->modTSconfig['properties']['disableAdvanced'])) {
             $clearCacheButton = $this->buttonBar->makeLinkButton()
-                ->setHref((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->pageinfo['uid'], 'clear_cache' => '1']))
+                ->setHref('#')
+                ->setDataAttributes(['id' => $this->pageinfo['uid']])
+                ->setClasses('t3js-clear-page-cache')
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache'))
                 ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
             $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);

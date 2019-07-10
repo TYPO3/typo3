@@ -6,6 +6,15 @@
 			<trans-unit id="error.linkHandlerTitleMissing">
 				<source>[title missing]</source>
 			</trans-unit>
+			<trans-unit id="clearcache.title">
+				<source>Page cache</source>
+			</trans-unit>
+			<trans-unit id="clearcache.message.success">
+				<source>Successfully cleared page cache</source>
+			</trans-unit>
+			<trans-unit id="clearcache.message.error">
+				<source>Page cache could not cleared</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

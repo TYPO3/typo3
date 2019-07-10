@@ -17,6 +17,7 @@ import InfoWindow = require('./InfoWindow');
 import Modal = require('./Modal');
 import ModuleMenu = require('./ModuleMenu');
 import Viewport = require('./Viewport');
+import Notification = require('TYPO3/CMS/Backend/Notification');
 
 /**
  * @exports TYPO3/CMS/Backend/ContextMenuActions
@@ -291,9 +292,23 @@ class ContextMenuActions {
    * @param {number} uid uid of the page
    */
   public static clearCache(table: string, uid: number): void {
-    const url = top.TYPO3.settings.WebLayout.moduleUrl
-      + '&id=' + uid + '&clear_cache=1';
-    $.ajax(url);
+    $.ajax({
+      url: TYPO3.settings.ajaxUrls.web_list_clearpagecache + '&id=' + uid,
+      cache: false,
+      dataType: 'json',
+      success: (data: any): void => {
+        if (data.success === true) {
+          Notification.success(data.title, data.message, 1);
+        } else {
+          Notification.error(data.title, data.message, 1);
+        }
+      },
+      error: (): void => {
+        Notification.error(
+            'Clearing page caches went wrong on the server side.',
+        );
+      },
+    });
   }
 
   /**

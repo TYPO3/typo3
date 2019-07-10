@@ -96,13 +96,6 @@ class RecordListController
     protected $returnUrl;
 
     /**
-     * Clear-cache flag - if set, clears page cache for current id.
-     *
-     * @var bool
-     */
-    protected $clear_cache;
-
-    /**
      * Command: Eg. "delete" or "setCB" (for DataHandler / clipboard operations)
      *
      * @var string
@@ -201,6 +194,7 @@ class RecordListController
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
+        $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
     }
 
     /**
@@ -222,7 +216,6 @@ class RecordListController
         $this->search_levels = (int)GeneralUtility::_GP('search_levels');
         $this->showLimit = GeneralUtility::_GP('showLimit');
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->clear_cache = GeneralUtility::_GP('clear_cache');
         $this->cmd = GeneralUtility::_GP('cmd');
         $this->cmd_table = GeneralUtility::_GP('cmd_table');
         $sessionData['search_field'] = $this->search_field;
@@ -247,18 +240,6 @@ class RecordListController
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
         // Clean up settings:
         $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_list');
-    }
-
-    /**
-     * Clears page cache for the current id, $this->id
-     */
-    protected function clearCache()
-    {
-        if ($this->clear_cache) {
-            $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->start([], []);
-            $tce->clear_cacheCmd($this->id);
-        }
     }
 
     /**
@@ -593,7 +574,6 @@ class RecordListController
         // @deprecated  since TYPO3 v9, will be removed in TYPO3 v10.0. Can be removed along with $this->doc. Still used in DatabaseRecordList
         $GLOBALS['SOBE'] = $this;
         $this->init();
-        $this->clearCache();
         $this->main($request);
         $this->moduleTemplate->setContent($this->content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
