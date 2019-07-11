@@ -16,7 +16,7 @@ CKEDITOR.plugins.add("softhyphen", {
     // create command "insertSoftHyphen" which inserts the invisible html tag `&shy;`
     editor.addCommand('insertSoftHyphen', {
       exec: function (editor) {
-        editor.insertHtml('&shy;');
+        editor.insertHtml('&shy;', 'text');
       }
     });
 
