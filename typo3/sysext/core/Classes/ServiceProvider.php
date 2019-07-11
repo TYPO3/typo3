@@ -33,6 +33,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Cache\CacheManager::class => [ static::class, 'getCacheManager' ],
             Console\CommandApplication::class => [ static::class, 'getConsoleCommandApplication' ],
+            Context\Context::class => [ static::class, 'getContext' ],
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Service\DependencyOrderingService::class => [ static::class, 'getDependencyOrderingService' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
@@ -63,12 +64,17 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getConsoleCommandApplication(ContainerInterface $container): Console\CommandApplication
     {
-        return new Console\CommandApplication;
+        return new Console\CommandApplication($container->get(Context\Context::class));
     }
 
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService
     {
         return new Service\DependencyOrderingService;
+    }
+
+    public static function getContext(ContainerInterface $container): Context\Context
+    {
+        return new Context\Context;
     }
 
     public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver

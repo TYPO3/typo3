@@ -52,8 +52,18 @@ class UserAspect implements AspectInterface
      */
     public function __construct(AbstractUserAuthentication $user = null, array $alternativeGroups = null)
     {
-        $this->user = $user ?? (object)['user' => []];
+        $this->user = $user ?? $this->createPseudoUser();
         $this->groups = $alternativeGroups;
+    }
+
+    /**
+     * @return object
+     */
+    private function createPseudoUser(): object
+    {
+        $user = new \stdClass;
+        $user->user = [];
+        return $user;
     }
 
     /**

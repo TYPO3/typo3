@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
@@ -54,7 +55,7 @@ class ServiceProvider extends AbstractServiceProvider
         $dispatcher->lazy(Middleware\Installer::class);
         $dispatcher->add($container->get(Middleware\Maintenance::class));
 
-        return new Http\Application($dispatcher);
+        return new Http\Application($dispatcher, $container->get(Context::class));
     }
 
     public static function getNotFoundRequestHandler(ContainerInterface $container): Http\NotFoundRequestHandler

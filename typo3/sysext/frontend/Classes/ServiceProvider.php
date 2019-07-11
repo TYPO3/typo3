@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
@@ -49,7 +50,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get('frontend.middlewares'),
             $container
         );
-        return new Http\Application($requestHandler, $container->get(ConfigurationManager::class));
+        return new Http\Application(
+            $requestHandler,
+            $container->get(ConfigurationManager::class),
+            $container->get(Context::class)
+        );
     }
 
     public static function getRequestHandler(ContainerInterface $container): Http\RequestHandler

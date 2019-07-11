@@ -66,28 +66,6 @@ class Context implements SingletonInterface
                 $this->aspects[$name] = $defaultAspect;
             }
         }
-        // Ensure the default aspects are set, this is mostly necessary for tests to not set up everything
-        if (!$this->hasAspect('date')) {
-            $this->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
-        }
-        if (!$this->hasAspect('visibility')) {
-            $this->setAspect('visibility', new VisibilityAspect());
-        }
-        if (!$this->hasAspect('backend.user')) {
-            $this->setAspect('backend.user', new UserAspect());
-        }
-        if (!$this->hasAspect('frontend.user')) {
-            $this->setAspect('frontend.user', new UserAspect());
-        }
-        if (!$this->hasAspect('workspace')) {
-            $this->setAspect('workspace', new WorkspaceAspect());
-        }
-        if (!$this->hasAspect('language')) {
-            $this->setAspect('language', new LanguageAspect());
-        }
-        if (!$this->hasAspect('typoscript')) {
-            $this->setAspect('typoscript', new TypoScriptAspect());
-        }
     }
 
     /**
@@ -98,7 +76,19 @@ class Context implements SingletonInterface
      */
     public function hasAspect(string $name): bool
     {
-        return isset($this->aspects[$name]);
+        switch ($name) {
+        // Ensure the default aspects are available, this is mostly necessary for tests to not set up everything
+        case 'date':
+        case 'visibility':
+        case 'backend.user':
+        case 'frontend.user':
+        case 'workspace':
+        case 'language':
+        case 'typoscript':
+            return true;
+        default:
+            return isset($this->aspects[$name]);
+        }
     }
 
     /**
@@ -110,8 +100,33 @@ class Context implements SingletonInterface
      */
     public function getAspect(string $name): AspectInterface
     {
-        if (!$this->hasAspect($name)) {
-            throw new AspectNotFoundException('No aspect named "' . $name . '" found.', 1527777641);
+        if (!isset($this->aspects[$name])) {
+            // Ensure the default aspects are available, this is mostly necessary for tests to not set up everything
+            switch ($name) {
+            case 'date':
+                $this->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
+                break;
+            case 'visibility':
+                $this->setAspect('visibility', new VisibilityAspect());
+                break;
+            case 'backend.user':
+                $this->setAspect('backend.user', new UserAspect());
+                break;
+            case 'frontend.user':
+                $this->setAspect('frontend.user', new UserAspect());
+                break;
+            case 'workspace':
+                $this->setAspect('workspace', new WorkspaceAspect());
+                break;
+            case 'language':
+                $this->setAspect('language', new LanguageAspect());
+                break;
+            case 'typoscript':
+                $this->setAspect('typoscript', new TypoScriptAspect());
+                break;
+            default:
+                throw new AspectNotFoundException('No aspect named "' . $name . '" found.', 1527777641);
+            }
         }
         return $this->aspects[$name];
     }
@@ -131,7 +146,7 @@ class Context implements SingletonInterface
             throw new AspectNotFoundException('No aspect named "' . $name . '" found.', 1527777868);
         }
         try {
-            return $this->aspects[$name]->get($property);
+            return $this->getAspect($name)->get($property);
         } catch (AspectPropertyNotFoundException $e) {
             return $default;
         }

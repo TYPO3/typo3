@@ -29,8 +29,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CommandApplication implements ApplicationInterface
 {
-    public function __construct()
+    /**
+     * @var Context
+     */
+    protected $context;
+
+    public function __construct(Context $context)
     {
+        $this->context = $context;
         $this->checkEnvironmentOrDie();
     }
 
@@ -62,15 +68,12 @@ class CommandApplication implements ApplicationInterface
 
     /**
      * Initializes the Context used for accessing data and finding out the current state of the application
-     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
      */
-    protected function initializeContext()
+    protected function initializeContext(): void
     {
-        GeneralUtility::makeInstance(Context::class, [
-            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
-            'visibility' => new VisibilityAspect(true, true),
-            'workspace' => new WorkspaceAspect(0),
-            'backend.user' => new UserAspect(null),
-        ]);
+        $this->context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
+        $this->context->setAspect('visibility', new VisibilityAspect(true, true));
+        $this->context->setAspect('workspace', new WorkspaceAspect(0));
+        $this->context->setAspect('backend.user', new UserAspect(null));
     }
 }

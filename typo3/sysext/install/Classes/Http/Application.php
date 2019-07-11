@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Install Tool
@@ -32,17 +31,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Application extends AbstractApplication
 {
     /**
-     * @param RequestHandlerInterface $requestHandler
+     * @var Context
      */
-    public function __construct(RequestHandlerInterface $requestHandler)
-    {
+    protected $context;
+
+    public function __construct(
+        RequestHandlerInterface $requestHandler,
+        Context $context
+    ) {
         $this->requestHandler = $requestHandler;
+        $this->context = $context;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->initializeContext();
@@ -51,15 +51,12 @@ class Application extends AbstractApplication
 
     /**
      * Initializes the Context used for accessing data and finding out the current state of the application
-     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
      */
-    protected function initializeContext()
+    protected function initializeContext(): void
     {
-        GeneralUtility::makeInstance(Context::class, [
-            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
-            'visibility' => new VisibilityAspect(true, true, true),
-            'workspace' => new WorkspaceAspect(0),
-            'backend.user' => new UserAspect(),
-        ]);
+        $this->context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
+        $this->context->setAspect('visibility', new VisibilityAspect(true, true, true));
+        $this->context->setAspect('workspace', new WorkspaceAspect(0));
+        $this->context->setAspect('backend.user', new UserAspect());
     }
 }

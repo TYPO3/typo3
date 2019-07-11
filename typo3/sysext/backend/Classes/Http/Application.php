@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\AbstractApplication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Backend (HTTP requests)
@@ -38,19 +37,20 @@ class Application extends AbstractApplication
     protected $configurationManager;
 
     /**
-     * @param RequestHandlerInterface $requestHandler
-     * @param ConfigurationManager $configurationManager
+     * @var Context
      */
-    public function __construct(RequestHandlerInterface $requestHandler, ConfigurationManager $configurationManager)
-    {
+    protected $context;
+
+    public function __construct(
+        RequestHandlerInterface $requestHandler,
+        ConfigurationManager $configurationManager,
+        Context $context
+    ) {
         $this->requestHandler = $requestHandler;
         $this->configurationManager = $configurationManager;
+        $this->context = $context;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (!$this->checkIfEssentialConfigurationExists()) {
@@ -84,13 +84,10 @@ class Application extends AbstractApplication
 
     /**
      * Initializes the Context used for accessing data and finding out the current state of the application
-     * Will be moved to a DI-like concept once introduced, for now, this is a singleton
      */
-    protected function initializeContext()
+    protected function initializeContext(): void
     {
-        GeneralUtility::makeInstance(Context::class, [
-            'date' => new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])),
-            'visibility' => new VisibilityAspect(true, true)
-        ]);
+        $this->context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['EXEC_TIME'])));
+        $this->context->setAspect('visibility', new VisibilityAspect(true, true));
     }
 }
