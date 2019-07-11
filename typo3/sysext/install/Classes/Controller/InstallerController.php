@@ -797,7 +797,7 @@ page.10.value (
 page.100 =< styles.content.get',
                         'description' => 'This is an Empty Site Package TypoScript template.
 
-For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via <INCLUDE_TYPOSCRIPT: source="FILE:EXT:site_myproject/Configuration/TypoScript/setup.typoscript">.'
+For each website you need a TypoScript template on the main page of your website (on the top level). For better maintenance all TypoScript should be extracted into external files via @import \'EXT:site_myproject/Configuration/TypoScript/setup.typoscript\''
                     ]
                 );
 
