@@ -16,7 +16,14 @@
  * Contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
  * @internal
  */
-define(['jquery', 'moment', 'TYPO3/CMS/Backend/Hashing/Md5'], function($, moment, Md5) {
+define([
+  'jquery',
+  'moment',
+  'TYPO3/CMS/Backend/Hashing/Md5',
+  'TYPO3/CMS/Backend/DocumentSaveActions',
+  'TYPO3/CMS/Backend/Modal',
+  'TYPO3/CMS/Backend/Severity'
+], function($, moment, Md5, DocumentSaveActions, Modal, Severity) {
 
   /**
    * The main FormEngineValidation object
@@ -51,6 +58,8 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Hashing/Md5'], function($, moment
         FormEngineValidation.validate();
         FormEngineValidation.markFieldAsChanged($(this));
       });
+
+      FormEngineValidation.registerSubmitCallback();
     });
 
     var today = new Date();
@@ -1019,6 +1028,30 @@ define(['jquery', 'moment', 'TYPO3/CMS/Backend/Hashing/Md5'], function($, moment
     }
     return result;
   };
+
+  FormEngineValidation.registerSubmitCallback = function () {
+    DocumentSaveActions.getInstance().addPreSubmitCallback(function (e) {
+      if ($('.' + FormEngineValidation.errorClass).length > 0) {
+        Modal.confirm(
+          TYPO3.lang.alert || 'Alert',
+          TYPO3.lang['FormEngine.fieldsMissing'],
+          Severity.error,
+          [
+            {
+              text: TYPO3.lang['button.ok'] || 'OK',
+              active: true,
+              btnClass: 'btn-default',
+              name: 'ok',
+            },
+          ]
+        ).on('button.clicked', function () {
+          Modal.dismiss();
+        });
+
+        e.stopImmediatePropagation();
+      }
+    });
+  }
 
   return FormEngineValidation;
 });
