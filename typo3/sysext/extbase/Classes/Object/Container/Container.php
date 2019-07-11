@@ -17,9 +17,11 @@ namespace TYPO3\CMS\Extbase\Object\Container;
  */
 
 use Doctrine\Instantiator\InstantiatorInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -28,10 +30,17 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
  * Internal TYPO3 Dependency Injection container
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Container implements \TYPO3\CMS\Core\SingletonInterface
+class Container implements SingletonInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const SCOPE_PROTOTYPE = 1;
     const SCOPE_SINGLETON = 2;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $psrContainer;
 
     /**
      * registered alternative implementations of a class
@@ -64,6 +73,14 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      * @var ReflectionService
      */
     private $reflectionService;
+
+    /**
+     * @param ContainerInterface $psrContainer
+     */
+    public function __construct(ContainerInterface $psrContainer)
+    {
+        $this->psrContainer = $psrContainer;
+    }
 
     /**
      * Internal method to create the class instantiator, extracted to be mockable
@@ -121,15 +138,15 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
     protected function getInstanceInternal(string $className, ...$givenConstructorArguments): object
     {
         $className = $this->getImplementationClassName($className);
-        if ($className === \TYPO3\CMS\Extbase\Object\Container\Container::class) {
-            return $this;
+
+        if ($givenConstructorArguments === [] && $this->psrContainer->has($className)) {
+            $instance = $this->psrContainer->get($className);
+            if (!is_object($instance)) {
+                throw new \TYPO3\CMS\Extbase\Object\Exception('PSR-11 container returned non object for class name "' . $className . '".', 1562240407);
+            }
+            return $instance;
         }
-        if ($className === \TYPO3\CMS\Core\Cache\CacheManager::class) {
-            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
-        }
-        if ($className === \TYPO3\CMS\Core\Package\PackageManager::class) {
-            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
-        }
+
         $className = \TYPO3\CMS\Core\Core\ClassLoadingInformation::getClassNameForAlias($className);
         if (isset($this->singletonInstances[$className])) {
             if (!empty($givenConstructorArguments)) {
@@ -236,6 +253,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $className
      * @param string $alternativeClassName
+     * @todo deprecate in favor of core DI configuration (aliases/overrides)
      */
     public function registerImplementation(string $className, string $alternativeClassName): void
     {
@@ -336,7 +354,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getLogger(): LoggerInterface
     {
-        return GeneralUtility::makeInstance(LogManager::class)->getLogger(static::class);
+        return $this->logger;
     }
 
     /**
@@ -349,6 +367,6 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getReflectionService(): ReflectionService
     {
-        return $this->reflectionService ?? ($this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class, GeneralUtility::makeInstance(CacheManager::class)));
+        return $this->reflectionService ?? ($this->reflectionService = $this->psrContainer->get(ReflectionService::class));
     }
 }

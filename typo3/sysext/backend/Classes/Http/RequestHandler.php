@@ -36,6 +36,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RequestHandler implements RequestHandlerInterface
 {
     /**
+     * @var RouteDispatcher
+     */
+    protected $dispatcher;
+
+    /**
+     * @param RouteDispatcher $dispatcher
+     */
+    public function __construct(RouteDispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
+    /**
      * Sets the global GET and POST to the values, so if people access $_GET and $_POST
      * Within hooks starting NOW (e.g. cObject), they get the "enriched" data from query params.
      *
@@ -76,8 +89,7 @@ class RequestHandler implements RequestHandlerInterface
         $this->resetGlobalsToCurrentRequest($request);
         try {
             // Check if the router has the available route and dispatch.
-            $dispatcher = GeneralUtility::makeInstance(RouteDispatcher::class);
-            return $dispatcher->dispatch($request);
+            return $this->dispatcher->dispatch($request);
         } catch (InvalidRequestTokenException $e) {
             // When token was invalid redirect to login
             $loginPage = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('login');

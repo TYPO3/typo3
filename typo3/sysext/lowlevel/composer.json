@@ -27,6 +27,7 @@
 		},
 		"typo3/cms": {
 			"Package": {
+				"serviceProvider": "TYPO3\\CMS\\Lowlevel\\ServiceProvider",
 				"partOfFactoryDefault": true
 			},
 			"extension-key": "lowlevel"

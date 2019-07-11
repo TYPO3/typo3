@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\DriverManager;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -51,6 +52,7 @@ use TYPO3\CMS\Install\Configuration\FeatureManager;
 use TYPO3\CMS\Install\FolderStructure\DefaultFactory;
 use TYPO3\CMS\Install\Service\EnableFileService;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\SystemEnvironment\Check;
 use TYPO3\CMS\Install\SystemEnvironment\SetupCheck;
@@ -1165,9 +1167,9 @@ For each website you need a TypoScript template on the main page of your website
         // Will load ext_localconf and ext_tables. This is pretty safe here since we are
         // in first install (database empty), so it is very likely that no extension is loaded
         // that could trigger a fatal at this point.
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $container = $this->loadExtLocalconfDatabaseAndExtTables();
 
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
+        $sqlReader = $container->get(SqlReader::class);
         $sqlCode = $sqlReader->getTablesDefinitionString(true);
         $schemaMigrationService = GeneralUtility::makeInstance(SchemaMigrator::class);
         $createTableStatements = $sqlReader->getCreateTableStatementArray($sqlCode);
@@ -1199,13 +1201,12 @@ For each website you need a TypoScript template on the main page of your website
      *
      * Those actions can potentially fatal if some old extension is loaded that triggers
      * a fatal in ext_localconf or ext_tables code! Use only if really needed.
+     *
+     * @return ContainerInterface
      */
-    protected function loadExtLocalconfDatabaseAndExtTables()
+    protected function loadExtLocalconfDatabaseAndExtTables(): ContainerInterface
     {
-        Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
-        Bootstrap::unsetReservedGlobalVariables();
-        Bootstrap::loadBaseTca(false);
-        Bootstrap::loadExtTables(false);
+        return GeneralUtility::makeInstance(LateBootService::class)->loadExtLocalconfDatabaseAndExtTables();
     }
 
     /**

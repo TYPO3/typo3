@@ -249,7 +249,14 @@ class DataMapperTest extends UnitTestCase
         $classSchema1 = new ClassSchema(Fixture\DummyParentEntity::class);
         $identifier = 1;
 
-        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session(new Container());
+        $psrContainer = $this->getMockBuilder(\Psr\Container\ContainerInterface::class)
+            ->setMethods(['has', 'get'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $psrContainer->expects($this->any())->method('has')->will($this->returnValue(false));
+        $container = new Container($psrContainer);
+
+        $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session(new Container($psrContainer));
         $session->registerObject($child, $identifier);
 
         $mockReflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)

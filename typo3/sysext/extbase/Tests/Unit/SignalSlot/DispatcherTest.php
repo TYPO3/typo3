@@ -15,7 +15,8 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Log\Logger;
+use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
@@ -36,6 +37,11 @@ class DispatcherTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
+     * @var ObjectManagerInterface|ObjectProphecy
+     */
+    protected $objectManagerProphecy;
+
+    /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $signalSlotDispatcher;
@@ -43,8 +49,12 @@ class DispatcherTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $accessibleClassName = $this->getAccessibleMock(Dispatcher::class, ['dummy']);
-        $this->signalSlotDispatcher = new $accessibleClassName();
+        $this->objectManagerProphecy = $this->prophesize(ObjectManagerInterface::class);
+
+        $this->signalSlotDispatcher = new Dispatcher(
+            $this->objectManagerProphecy->reveal(),
+            $this->prophesize(LoggerInterface::class)->reveal()
+        );
     }
 
     /**
@@ -121,13 +131,8 @@ class DispatcherTest extends UnitTestCase
     {
         $slotClassName = OnlyClassNameSpecifiedFixture::class;
         $mockSlot = new OnlyClassNameSpecifiedFixture();
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(true));
-        $mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
+        $this->objectManagerProphecy->isRegistered($slotClassName)->willReturn(true);
+        $this->objectManagerProphecy->get($slotClassName)->willReturn($mockSlot);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
         $this->assertSame($mockSlot->arguments, ['bar', 'quux']);
@@ -138,10 +143,6 @@ class DispatcherTest extends UnitTestCase
      */
     public function dispatchHandsOverArgumentsReturnedByAFormerSlot()
     {
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
-
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects($this->once())
             ->method('slot')
@@ -167,10 +168,6 @@ class DispatcherTest extends UnitTestCase
      */
     public function dispatchHandsOverArgumentsReturnedByAFormerSlotWithoutInterferingWithSignalSlotInformation()
     {
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
-
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects($this->once())
             ->method('slot')
@@ -196,10 +193,6 @@ class DispatcherTest extends UnitTestCase
      */
     public function dispatchHandsOverFormerArgumentsIfPreviousSlotDoesNotReturnAnything()
     {
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
-
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects($this->once())
             ->method('slot')
@@ -232,9 +225,6 @@ class DispatcherTest extends UnitTestCase
     {
         $this->expectException(InvalidSlotReturnException::class);
         $this->expectExceptionCode(1376683067);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
 
         $mockSlot = $this->createMock(SlotFixture::class);
         $mockSlot->expects($this->once())
@@ -256,9 +246,6 @@ class DispatcherTest extends UnitTestCase
     {
         $this->expectException(InvalidSlotReturnException::class);
         $this->expectExceptionCode(1376683066);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
 
         $mockSlot = $this->createMock(SlotFixture::class);
         $mockSlot->expects($this->once())
@@ -280,12 +267,7 @@ class DispatcherTest extends UnitTestCase
     {
         $this->expectException(InvalidSlotException::class);
         $this->expectExceptionCode(1245673367);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->once())->method('isRegistered')->with('NonExistingClassName')->will($this->returnValue(false));
-        $this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
+        $this->objectManagerProphecy->isRegistered('NonExistingClassName')->willReturn(false);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', 'NonExistingClassName', 'slot', true);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', []);
     }
@@ -299,13 +281,8 @@ class DispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1245673368);
         $slotClassName = SlotMethodDoesNotExistFixture::class;
         $mockSlot = new SlotMethodDoesNotExistFixture();
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(true));
-        $mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
-        $this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
+        $this->objectManagerProphecy->isRegistered($slotClassName)->willReturn(true);
+        $this->objectManagerProphecy->get($slotClassName)->willReturn($mockSlot);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'unknownMethodName', true);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
         $this->assertSame($mockSlot->arguments, ['bar', 'quux']);
@@ -320,12 +297,7 @@ class DispatcherTest extends UnitTestCase
         $mockSlot = function () use (&$arguments) {
             $arguments = func_get_args();
         };
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, '', true);
-        $this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
         $this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', ['bar', 'quux']);
         $this->assertSame(['bar', 'quux', 'SignalClassName::methodName'], $arguments);
     }
@@ -367,21 +339,5 @@ class DispatcherTest extends UnitTestCase
             new \stdClass()
         ];
         $this->assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
-    }
-
-    /**
-     * @test
-     */
-    public function dispatchThrowsInvalidSlotExceptionIfObjectManagerOfSignalSlotDispatcherIsNotSet()
-    {
-        $this->expectException(InvalidSlotException::class);
-        $this->expectExceptionCode(1298113624);
-        $this->signalSlotDispatcher->_set('isInitialized', true);
-        $mockLogger = $this->createMock(Logger::class);
-        $this->signalSlotDispatcher->_set('logger', $mockLogger);
-        $this->signalSlotDispatcher->_set('objectManager', null);
-        $this->signalSlotDispatcher->_set('slots', ['ClassA' => ['emitSomeSignal' => [[]]]]);
-
-        $this->assertSame(null, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
     }
 }

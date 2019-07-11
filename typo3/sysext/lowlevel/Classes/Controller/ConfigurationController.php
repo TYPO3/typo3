@@ -15,18 +15,15 @@ namespace TYPO3\CMS\Lowlevel\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -38,6 +35,16 @@ use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
  */
 class ConfigurationController
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Available trees to render.
      *  * label is an LLL identifier
@@ -220,17 +227,12 @@ class ConfigurationController
         } elseif ($selectedTreeDetails['type'] === 'httpMiddlewareStacks') {
             // Keep the order of the keys
             $sortKeysByName = false;
-            $stackResolver = GeneralUtility::makeInstance(
-                MiddlewareStackResolver::class,
-                GeneralUtility::makeInstance(PackageManager::class),
-                GeneralUtility::makeInstance(DependencyOrderingService::class),
-                GeneralUtility::makeInstance(CacheManager::class)->getCache('core')
-            );
             $renderArray = [];
             foreach (['frontend', 'backend'] as $stackName) {
                 // reversing the array allows the admin to read the stack from top to bottom
-                $renderArray[$stackName] = array_reverse($stackResolver->resolve($stackName));
+                $renderArray[$stackName] = array_reverse($this->container->get($stackName . '.middlewares'));
             }
+            $renderArray['raw'] = $this->container->get('middlewares');
         } elseif ($selectedTreeDetails['type'] === 'siteConfiguration') {
             $renderArray = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
         } else {

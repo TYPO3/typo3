@@ -41,6 +41,22 @@ class RedirectService implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
+     * @var RedirectCacheService
+     */
+    protected $redirectCacheService;
+
+    /**
+     * @var LinkService
+     */
+    protected $linkService;
+
+    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService)
+    {
+        $this->redirectCacheService = $redirectCacheService;
+        $this->linkService = $linkService;
+    }
+
+    /**
      * Checks against all available redirects "flat" or "regexp", and against starttime/endtime
      *
      * @param string $domain
@@ -118,7 +134,7 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function fetchRedirects(): array
     {
-        return GeneralUtility::makeInstance(RedirectCacheService::class)->getRedirects();
+        return $this->redirectCacheService->getRedirects();
     }
 
     /**
@@ -130,10 +146,8 @@ class RedirectService implements LoggerAwareInterface
      */
     protected function resolveLinkDetailsFromLinkTarget(string $redirectTarget): array
     {
-        // build the target URL, take force SSL into account etc.
-        $linkService = GeneralUtility::makeInstance(LinkService::class);
         try {
-            $linkDetails = $linkService->resolve($redirectTarget);
+            $linkDetails = $this->linkService->resolve($redirectTarget);
             switch ($linkDetails['type']) {
                 case LinkService::TYPE_URL:
                     // all set up, nothing to do

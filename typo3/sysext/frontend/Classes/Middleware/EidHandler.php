@@ -20,10 +20,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Exception;
-use TYPO3\CMS\Core\Http\Dispatcher;
+use TYPO3\CMS\Core\Http\DispatcherInterface;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Lightweight alternative to regular frontend requests; used when $_GET[eID] is set.
@@ -34,6 +33,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class EidHandler implements MiddlewareInterface
 {
+    /**
+     * @var DispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
+     * @param DispatcherInterface $dispatcher
+     */
+    public function __construct(DispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
+
     /**
      * Dispatches the request to the corresponding eID class or eID script
      *
@@ -58,8 +70,7 @@ class EidHandler implements MiddlewareInterface
             return (new Response())->withStatus(404, 'eID not registered');
         }
 
-        $dispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $request = $request->withAttribute('target', $target);
-        return $dispatcher->dispatch($request) ?? new NullResponse();
+        return $this->dispatcher->dispatch($request) ?? new NullResponse();
     }
 }

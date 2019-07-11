@@ -20,6 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Install\Controller\UpgradeController;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -74,9 +75,13 @@ class UpgradeControllerTest extends UnitTestCase
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $lateBootServiceMock = $this->getMockBuilder(LateBootService::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         /** @var UpgradeController|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(UpgradeController::class)
-            ->setConstructorArgs([$packageManagerMock])
+            ->setConstructorArgs([$packageManagerMock, $lateBootServiceMock])
             ->setMethods(['getDocumentationFiles', 'initializeStandaloneView'])
             ->getMock();
 

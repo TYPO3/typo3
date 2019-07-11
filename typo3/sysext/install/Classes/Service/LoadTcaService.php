@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Install\Service;
 
 use TYPO3\CMS\Core\Category\CategoryRegistry;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service for loading the TCA
@@ -24,6 +23,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class LoadTcaService
 {
+    /**
+     * @var LateBootService
+     */
+    private $lateBootService;
+
+    public function __construct(LateBootService $lateBootService)
+    {
+        $this->lateBootService = $lateBootService;
+    }
+
     /**
      * Load TCA
      * Mostly a copy of ExtensionManagementUtility to include TCA without migrations.
@@ -35,9 +44,12 @@ class LoadTcaService
      */
     public function loadExtensionTablesWithoutMigration()
     {
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+
         $GLOBALS['TCA'] = [];
 
-        $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
+        $activePackages = $container->get(PackageManager::class)->getActivePackages();
 
         // First load "full table" files from Configuration/TCA
         foreach ($activePackages as $package) {
@@ -80,6 +92,8 @@ class LoadTcaService
                 }
             }
         }
+
+        $this->lateBootService->makeCurrent(null, $backup);
     }
 
     /**
@@ -89,7 +103,10 @@ class LoadTcaService
      */
     public function loadSingleExtTablesFile(string $extensionKey)
     {
-        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $container = $this->lateBootService->getContainer();
+        $backup = $this->lateBootService->makeCurrent($container);
+
+        $packageManager = $container->get(PackageManager::class);
         try {
             $package = $packageManager->getPackage($extensionKey);
         } catch (\TYPO3\CMS\Core\Package\Exception\UnknownPackageException $e) {
@@ -104,5 +121,7 @@ class LoadTcaService
         if (@file_exists($extTablesPath)) {
             require $extTablesPath;
         }
+
+        $this->lateBootService->makeCurrent(null, $backup);
     }
 }

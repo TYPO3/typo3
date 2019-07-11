@@ -1,0 +1,36 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Extbase\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Extbase\Core\BootstrapInterface:
+    alias: TYPO3\CMS\Extbase\Core\Bootstrap
+
+  TYPO3\CMS\Extbase\Core\Bootstrap:
+    public: true
+    shared: false
+
+  TYPO3\CMS\Extbase\Object\ObjectManagerInterface:
+    alias: TYPO3\CMS\Extbase\Object\ObjectManager
+
+  # formerly in EXT:extbase/ext_localconf.php
+  TYPO3\CMS\Extbase\Persistence\QueryInterface:
+    alias: TYPO3\CMS\Extbase\Persistence\Generic\Query
+  TYPO3\CMS\Extbase\Persistence\QueryResultInterface:
+    alias: TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+  TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface:
+    alias: TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
+  TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface:
+    alias: TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend
+  TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface:
+    alias: TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
+
+  # Set incompatible classes to null, these require (runtime) parametrized
+  # prototype instantiation
+  TYPO3\CMS\Extbase\Persistence\Generic\Query: ~
+  TYPO3\CMS\Extbase\Persistence\Generic\QueryResult: ~
+  TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings: ~

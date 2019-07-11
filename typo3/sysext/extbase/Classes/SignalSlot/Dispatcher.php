@@ -17,9 +17,7 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  */
 
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
@@ -29,12 +27,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
-     * @var bool
-     */
-    protected $isInitialized = false;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
 
@@ -53,21 +46,13 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     protected $logger;
 
     /**
-     * Initializes this object.
-     *
-     * This method needs to be used as an alternative to inject aspects.
-     * Since this dispatcher is used very early when the ObjectManager
-     * is not fully initialized (especially concerning caching framework),
-     * this is the only way.
+     * @param ObjectManagerInterface $objectManager
+     * @param LoggerInterface $logger
      */
-    public function initializeObject(): void
+    public function __construct(ObjectManagerInterface $objectManager, LoggerInterface $logger)
     {
-        if (!$this->isInitialized) {
-            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $logManager = GeneralUtility::makeInstance(LogManager::class);
-            $this->logger = $logManager->getLogger(self::class);
-            $this->isInitialized = true;
-        }
+        $this->objectManager = $objectManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -120,7 +105,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function dispatch(string $signalClassName, string $signalName, array $signalArguments = [])
     {
-        $this->initializeObject();
         $this->logger->debug(
             'Triggered signal ' . $signalClassName . ' ' . $signalName,
             [
@@ -136,9 +120,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
             if (isset($slotInformation['object'])) {
                 $object = $slotInformation['object'];
             } else {
-                if (!isset($this->objectManager)) {
-                    throw new Exception\InvalidSlotException(sprintf('Cannot dispatch %s::%s to class %s. The object manager is not yet available in the Signal Slot Dispatcher and therefore it cannot dispatch classes.', $signalClassName, $signalName, $slotInformation['class'] ?? ''), 1298113624);
-                }
                 if (!$this->objectManager->isRegistered($slotInformation['class'])) {
                     throw new Exception\InvalidSlotException('The given class "' . $slotInformation['class'] . '" is not a registered object.', 1245673367);
                 }

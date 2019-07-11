@@ -17,17 +17,13 @@ namespace TYPO3\CMS\Install\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\AbstractApplication;
-use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Middleware\Installer;
-use TYPO3\CMS\Install\Middleware\Maintenance;
 
 /**
  * Entry point for the TYPO3 Install Tool
@@ -36,36 +32,11 @@ use TYPO3\CMS\Install\Middleware\Maintenance;
 class Application extends AbstractApplication
 {
     /**
-     * @var string
-     */
-    protected $requestHandler = NotFoundRequestHandler::class;
-
-    /**
-     * @var ConfigurationManager
-     */
-    protected $configurationManager;
-
-    /**
-     * @param ConfigurationManager $configurationManager
-     */
-    public function __construct(ConfigurationManager $configurationManager)
-    {
-        $this->configurationManager = $configurationManager;
-    }
-
-    /**
      * @param RequestHandlerInterface $requestHandler
-     * @return MiddlewareDispatcher
      */
-    protected function createMiddlewareDispatcher(RequestHandlerInterface $requestHandler): MiddlewareDispatcher
+    public function __construct(RequestHandlerInterface $requestHandler)
     {
-        $dispatcher = new MiddlewareDispatcher($requestHandler);
-
-        // Stack of middlewares, executed LIFO
-        $dispatcher->lazy(Installer::class);
-        $dispatcher->add(GeneralUtility::makeInstance(Maintenance::class, $this->configurationManager));
-
-        return $dispatcher;
+        $this->requestHandler = $requestHandler;
     }
 
     /**

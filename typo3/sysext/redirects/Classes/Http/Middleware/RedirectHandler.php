@@ -39,6 +39,16 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
+     * @var RedirectService
+     */
+    protected $redirectService;
+
+    public function __construct(RedirectService $redirectService)
+    {
+        $this->redirectService = $redirectService;
+    }
+
+    /**
      * First hook within the Frontend Request handling
      *
      * @param ServerRequestInterface $request
@@ -47,9 +57,8 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $redirectService = GeneralUtility::makeInstance(RedirectService::class);
         $port = $request->getUri()->getPort();
-        $matchedRedirect = $redirectService->matchRedirect(
+        $matchedRedirect = $this->redirectService->matchRedirect(
             $request->getUri()->getHost() . ($port ? ':' . $port : ''),
             $request->getUri()->getPath(),
             $request->getUri()->getQuery() ?? ''
@@ -57,7 +66,7 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
 
         // If the matched redirect is found, resolve it, and check further
         if (is_array($matchedRedirect)) {
-            $url = $redirectService->getTargetUrl($matchedRedirect, $request->getQueryParams(), $request->getAttribute('site', null));
+            $url = $this->redirectService->getTargetUrl($matchedRedirect, $request->getQueryParams(), $request->getAttribute('site', null));
             if ($url instanceof UriInterface) {
                 $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => $url]);
                 $response = $this->buildRedirectResponse($url, $matchedRedirect);

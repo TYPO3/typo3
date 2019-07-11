@@ -25,6 +25,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
 use TYPO3\CMS\Install\Updates\ChattyInterface;
 use TYPO3\CMS\Install\Updates\ConfirmableInterface;
@@ -60,10 +61,7 @@ class UpgradeWizardRunCommand extends Command
      */
     protected function bootstrap(): void
     {
-        Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
-        Bootstrap::unsetReservedGlobalVariables();
-        Bootstrap::loadBaseTca(false);
-        Bootstrap::loadExtTables(false);
+        GeneralUtility::makeInstance(LateBootService::class)->loadExtLocalconfDatabaseAndExtTables();
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         Bootstrap::initializeBackendAuthentication();
         $this->upgradeWizardsService = new UpgradeWizardsService();

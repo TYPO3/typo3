@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -206,5 +207,35 @@ class MiddlewareDispatcherTest extends UnitTestCase
 
         $this->assertSame(204, $response->getStatusCode());
         $this->assertSame(['nested', 'outer'], $response->getHeader('X-TRACE'));
+    }
+
+    /**
+     * @test
+     */
+    public function fetchesMiddlewareFromContainer()
+    {
+        $kernel = new class implements RequestHandlerInterface {
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return new Response;
+            }
+        };
+
+        $middleware = new class implements MiddlewareInterface {
+            public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+            {
+                return (new Response)->withStatus(404);
+            }
+        };
+
+        $containerProphecy = $this->prophesize();
+        $containerProphecy->willImplement(ContainerInterface::class);
+        $containerProphecy->has('somemiddlewarename')->willReturn(true);
+        $containerProphecy->get('somemiddlewarename')->willReturn($middleware);
+
+        $dispatcher = new MiddlewareDispatcher($kernel, ['somemiddlewarename'], $containerProphecy->reveal());
+        $response = $dispatcher->handle(new ServerRequest);
+
+        $this->assertSame(404, $response->getStatusCode());
     }
 }

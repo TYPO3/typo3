@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Middleware;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -56,6 +57,11 @@ class Maintenance implements MiddlewareInterface
     protected $configurationManager;
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
      * @var array List of valid controllers
      */
     protected $controllers = [
@@ -71,9 +77,10 @@ class Maintenance implements MiddlewareInterface
     /**
      * @param ConfigurationManager $configurationManager
      */
-    public function __construct(ConfigurationManager $configurationManager)
+    public function __construct(ConfigurationManager $configurationManager, ContainerInterface $container)
     {
         $this->configurationManager = $configurationManager;
+        $this->container = $container;
     }
 
     /**
@@ -188,8 +195,9 @@ class Maintenance implements MiddlewareInterface
                 );
             }
             $this->recreatePackageStatesFileIfMissing();
+            $className = $this->controllers[$controllerName];
             /** @var AbstractController $controller */
-            $controller = new $this->controllers[$controllerName];
+            $controller = $this->container->has($className) ? $this->container->get($className) : new $className;
             if (!method_exists($controller, $action)) {
                 throw new \RuntimeException(
                     'Unknown action method ' . $action . ' in controller ' . $controllerName,

@@ -15,9 +15,9 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
@@ -28,9 +28,9 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 class MiddlewareStackResolver
 {
     /**
-     * @var PackageManager
+     * @var ContainerInterface
      */
-    protected $packageManager;
+    protected $container;
 
     /**
      * @var DependencyOrderingService
@@ -43,11 +43,11 @@ class MiddlewareStackResolver
     protected $cache;
 
     public function __construct(
-        PackageManager $packageManager,
+        ContainerInterface $container,
         DependencyOrderingService $dependencyOrderingService,
         PhpFrontendCache $cache
     ) {
-        $this->packageManager = $packageManager;
+        $this->container = $container;
         $this->dependencyOrderingService = $dependencyOrderingService;
         $this->cache = $cache;
     }
@@ -85,24 +85,13 @@ class MiddlewareStackResolver
     }
 
     /**
-     * Loop over all packages and check for a Configuration/RequestMiddlewares.php file
+     * Lazy load configuration from the container
      *
      * @return array
      */
     protected function loadConfiguration(): array
     {
-        $packages = $this->packageManager->getActivePackages();
-        $allMiddlewares = [[]];
-        foreach ($packages as $package) {
-            $packageConfiguration = $package->getPackagePath() . 'Configuration/RequestMiddlewares.php';
-            if (file_exists($packageConfiguration)) {
-                $middlewaresInPackage = require $packageConfiguration;
-                if (is_array($middlewaresInPackage)) {
-                    $allMiddlewares[] = $middlewaresInPackage;
-                }
-            }
-        }
-        return array_replace_recursive(...$allMiddlewares);
+        return $this->container->get('middlewares');
     }
 
     /**

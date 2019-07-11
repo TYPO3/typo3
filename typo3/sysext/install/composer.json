@@ -31,6 +31,7 @@
 		},
 		"typo3/cms": {
 			"Package": {
+				"serviceProvider": "TYPO3\\CMS\\Install\\ServiceProvider",
 				"protected": true,
 				"partOfFactoryDefault": true,
 				"partOfMinimalUsableSystem": true

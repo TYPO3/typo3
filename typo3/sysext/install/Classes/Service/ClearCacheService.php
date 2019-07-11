@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,6 +24,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClearCacheService
 {
+    /**
+     * @var LateBootService
+     */
+    private $lateBootService;
+
+    public function __construct(LateBootService $lateBootService)
+    {
+        $this->lateBootService = $lateBootService;
+    }
+
     /**
      * This clear cache implementation follows a pretty brutal approach.
      * Goal is to reliably get rid of cache entries, even if some broken
@@ -64,14 +73,10 @@ class ClearCacheService
         }
 
         // From this point on, the code may fatal, if some broken extension is loaded.
-
-        // Use bootstrap to load all ext_localconf and ext_tables
-        Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
-        Bootstrap::unsetReservedGlobalVariables();
-        Bootstrap::loadBaseTca(false);
-        Bootstrap::loadExtTables(false);
+        $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
 
         // The cache manager is already instantiated in the install tool
+        // (both in the failsafe and the late boot container), but
         // with some hacked settings to disable caching of extbase and fluid.
         // We want a "fresh" object here to operate on a different cache setup.
         // cacheManager implements SingletonInterface, so the only way to get a "fresh"

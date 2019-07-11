@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Frontend\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController:
+    factory: ['TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', getGlobalInstance]
+    shared: false
+    autoconfigure: false
+    autowire: false
+
+  TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer:
+    public: true
+    shared: false

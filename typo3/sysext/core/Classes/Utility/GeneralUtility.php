@@ -15,10 +15,12 @@ namespace TYPO3\CMS\Core\Utility;
  */
 
 use GuzzleHttp\Exception\RequestException;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -50,6 +52,11 @@ class GeneralUtility
      * @var bool
      */
     protected static $allowHostHeaderValue = false;
+
+    /**
+     * @var ContainerInterface|null
+     */
+    protected static $container;
 
     /**
      * Singleton instances returned by makeInstance, using the class names as
@@ -3358,6 +3365,27 @@ class GeneralUtility
     }
 
     /**
+     * @param ContainerInterface $container
+     * @internal
+     */
+    public static function setContainer(ContainerInterface $container): void
+    {
+        self::$container = $container;
+    }
+
+    /**
+     * @return ContainerInterface
+     * @internal
+     */
+    public static function getContainer(): ContainerInterface
+    {
+        if (self::$container === null) {
+            throw new \LogicException('PSR-11 Container is not available', 1549404144);
+        }
+        return self::$container;
+    }
+
+    /**
      * Creates an instance of a class taking into account the class-extensions
      * API of TYPO3. USE THIS method instead of the PHP "new" keyword.
      * Eg. "$obj = new myclass;" should be "$obj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance("myclass")" instead!
@@ -3405,6 +3433,15 @@ class GeneralUtility
         ) {
             return array_shift(self::$nonSingletonInstances[$finalClassName]);
         }
+
+        // Read service and prototypes from the DI container, this is required to
+        // support classes that require dependency injection.
+        // We operate on the original class name on purpose, as class overrides
+        // are resolved inside the container
+        if (self::$container !== null && $constructorArguments === [] && self::$container->has($className)) {
+            return self::$container->get($className);
+        }
+
         // Create new instance and call constructor with parameters
         $instance = new $finalClassName(...$constructorArguments);
         // Register new singleton instance
@@ -3415,6 +3452,29 @@ class GeneralUtility
             $instance->setLogger(static::makeInstance(LogManager::class)->getLogger($className));
         }
         return $instance;
+    }
+
+    /**
+     * Creates a class taking implementation settings and class aliases into account.
+     *
+     * Intended to be used to create objects by the dependency injection
+     * container.
+     *
+     * @param string $className name of the class to instantiate
+     * @param array<int, mixed> $constructorArguments Arguments for the constructor
+     * @return object the created instance
+     * @internal
+     */
+    public static function makeInstanceForDi(string $className, ...$constructorArguments): object
+    {
+        $finalClassName = static::$finalClassNameCache[$className] ?? static::$finalClassNameCache[$className] = self::getClassName($className);
+
+        // Return singleton instance if it is already registered (currently required for unit and functional tests)
+        if (isset(self::$singletonInstances[$finalClassName])) {
+            return self::$singletonInstances[$finalClassName];
+        }
+        // Create new instance and call constructor with parameters
+        return new $finalClassName(...$constructorArguments);
     }
 
     /**
@@ -3616,6 +3676,7 @@ class GeneralUtility
      */
     public static function purgeInstances()
     {
+        self::$container = null;
         self::$singletonInstances = [];
         self::$nonSingletonInstances = [];
     }

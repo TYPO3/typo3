@@ -31,7 +31,9 @@
 		"psr/http-server-handler": "^1.0",
 		"psr/http-server-middleware": "^1.0",
 		"psr/log": "~1.0.0",
+		"symfony/config": "^4.1",
 		"symfony/console": "^4.1",
+		"symfony/dependency-injection": "^4.1",
 		"symfony/expression-language": "^4.1",
 		"symfony/finder": "^4.1",
 		"symfony/mailer": "^4.3",
@@ -81,6 +83,7 @@
 		},
 		"typo3/cms": {
 			"Package": {
+				"serviceProvider": "TYPO3\\CMS\\Core\\ServiceProvider",
 				"protected": true,
 				"partOfFactoryDefault": true,
 				"partOfMinimalUsableSystem": true

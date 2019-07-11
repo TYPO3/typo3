@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
@@ -34,25 +35,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Application extends AbstractApplication
 {
     /**
-     * @var string
-     */
-    protected $requestHandler = RequestHandler::class;
-
-    /**
-     * @var string
-     */
-    protected $middlewareStack = 'frontend';
-
-    /**
      * @var ConfigurationManager
      */
     protected $configurationManager;
 
     /**
+     * @param RequestHandlerInterface $requestHandler
      * @param ConfigurationManager $configurationManager
      */
-    public function __construct(ConfigurationManager $configurationManager)
+    public function __construct(RequestHandlerInterface $requestHandler, ConfigurationManager $configurationManager)
     {
+        $this->requestHandler = $requestHandler;
         $this->configurationManager = $configurationManager;
     }
 

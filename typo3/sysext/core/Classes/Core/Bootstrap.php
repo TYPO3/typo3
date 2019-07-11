@@ -18,7 +18,6 @@ use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -28,6 +27,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -79,31 +79,63 @@ class Bootstrap
             $failsafe = true;
         }
         static::populateLocalConfiguration($configurationManager);
+
+        $logManager = new LogManager($requestId);
+        // LogManager is used by the core ErrorHandler (using GeneralUtility::makeInstance),
+        // therefore we have to push the LogManager to GeneralUtility, in case there
+        // happen errors before we call GeneralUtility::setContainer().
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+
         static::initializeErrorHandling();
         static::initializeIO();
 
         $disableCaching = $failsafe ? true : false;
-
-        $logManager = new LogManager($requestId);
         $coreCache = static::createCache('core', $disableCaching);
         $packageManager = static::createPackageManager(
             $failsafe ? FailsafePackageManager::class : PackageManager::class,
             $coreCache
         );
 
-        // Push singleton instances to GeneralUtility and ExtensionManagementUtility
-        // They should be fetched through a container (later) but currently a PackageManager
+        // Push PackageManager instance to ExtensionManagementUtility
+        // Should be fetched through the container (later) but currently a PackageManager
         // singleton instance is required by PackageManager->activePackageDuringRuntime
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
-
         static::initializeRuntimeActivatedPackagesFromConfiguration($packageManager);
 
         static::setDefaultTimezone();
         static::setMemoryLimit();
 
         $assetsCache = static::createCache('assets', $disableCaching);
+
+        $bootState = new \stdClass;
+        $bootState->done = false;
+
+        $builder = new ContainerBuilder([
+            'env.is_unix' => Environment::isUnix(),
+            'env.is_windows' => Environment::isWindows(),
+            'env.is_cli' => Environment::isCli(),
+            'env.is_composer_mode' => Environment::isComposerMode(),
+
+            ClassLoader::class => $classLoader,
+            ApplicationContext::class => Environment::getContext(),
+            ConfigurationManager::class => $configurationManager,
+            LogManager::class => $logManager,
+            'cache.disabled' => $disableCaching,
+            'cache.core' => $coreCache,
+            'cache.assets' => $assetsCache,
+            PackageManager::class => $packageManager,
+
+            // @internal
+            'boot.state' => $bootState,
+        ]);
+
+        $container = $builder->createDependencyInjectionContainer($packageManager, $coreCache, $failsafe);
+
+        // Push the container to GeneralUtility as we want to make sure its
+        // makeInstance() method creates classes using the container from now on.
+        GeneralUtility::setContainer($container);
+
         if (!$failsafe) {
             IconRegistry::setCache($assetsCache);
             PageRenderer::setCache($assetsCache);
@@ -112,95 +144,9 @@ class Bootstrap
             static::loadBaseTca(true, $coreCache);
             static::checkEncryptionKey();
         }
+        $bootState->done = true;
 
-        // Create the global CacheManager singleton instance and inject early cache instances.
-        // This can be removed once we have a system wide dependency injection container, where
-        // the CacheManager instance could be created on demand (early cache instances would
-        // be injected as dependency from $defaultContainerEntries)
-        $cacheManager = static::createCacheManager($disableCaching, [$coreCache, $assetsCache]);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
-
-        $defaultContainerEntries = [
-            ClassLoader::class => $classLoader,
-            'request.id' => $requestId,
-            ConfigurationManager::class => $configurationManager,
-            LogManager::class => $logManager,
-            'cache.core' => $coreCache,
-            'cache.assets' => $assetsCache,
-            CacheManager::class => $cacheManager,
-            PackageManager::class => $packageManager,
-        ];
-
-        return new class($defaultContainerEntries) implements ContainerInterface {
-            /**
-             * @var array
-             */
-            private $entries;
-
-            /**
-             * @param array $entries
-             */
-            public function __construct(array $entries)
-            {
-                $this->entries = $entries;
-            }
-
-            /**
-             * @param string $id Identifier of the entry to look for.
-             * @return bool
-             */
-            public function has($id)
-            {
-                if (isset($this->entries[$id])) {
-                    return true;
-                }
-
-                switch ($id) {
-                case \TYPO3\CMS\Frontend\Http\Application::class:
-                case \TYPO3\CMS\Backend\Http\Application::class:
-                case \TYPO3\CMS\Install\Http\Application::class:
-                case \TYPO3\CMS\Core\Console\CommandApplication::class:
-                    return true;
-                }
-
-                return false;
-            }
-
-            /**
-             * Method get() as specified in ContainerInterface
-             *
-             * @param string $id
-             * @return mixed
-             * @throws NotFoundExceptionInterface
-             */
-            public function get($id)
-            {
-                $entry = null;
-
-                if (isset($this->entries[$id])) {
-                    return $this->entries[$id];
-                }
-
-                switch ($id) {
-                case \TYPO3\CMS\Frontend\Http\Application::class:
-                case \TYPO3\CMS\Backend\Http\Application::class:
-                case \TYPO3\CMS\Install\Http\Application::class:
-                    $entry = new $id($this->get(ConfigurationManager::class));
-                    break;
-                case \TYPO3\CMS\Core\Console\CommandApplication::class:
-                    $entry = new $id;
-                    break;
-                default:
-                    throw new class($id . ' not found', 1518638338) extends \Exception implements NotFoundExceptionInterface {
-                    };
-                    break;
-                }
-
-                $this->entries[$id] = $entry;
-
-                return $entry;
-            }
-        };
+        return $container;
     }
 
     /**
@@ -354,7 +300,7 @@ class Bootstrap
      * @return FrontendInterface
      * @internal
      */
-    protected static function createCache(string $identifier, bool $disableCaching = false): FrontendInterface
+    public static function createCache(string $identifier, bool $disableCaching = false): FrontendInterface
     {
         $configuration = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$identifier] ?? [];
 
@@ -384,26 +330,6 @@ class Bootstrap
         }
 
         return $frontendInstance;
-    }
-
-    /**
-     * Initialize caching framework, and re-initializes it (e.g. in the install tool) by recreating the instances
-     * again despite the Singleton instance
-     *
-     * @param bool $disableCaching
-     * @param array $defaultCaches
-     * @return CacheManager
-     * @internal This is not a public API method, do not use in own extensions
-     */
-    public static function createCacheManager(bool $disableCaching = false, array $defaultCaches = []): CacheManager
-    {
-        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'];
-        $cacheManager = new CacheManager($disableCaching);
-        $cacheManager->setCacheConfigurations($cacheConfigurations);
-        foreach ($defaultCaches as $cache) {
-            $cacheManager->registerCache($cache, $cacheConfigurations[$cache->getIdentifier()]['groups'] ?? ['all']);
-        }
-        return $cacheManager;
     }
 
     /**

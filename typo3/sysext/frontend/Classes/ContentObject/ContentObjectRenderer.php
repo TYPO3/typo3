@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\NamedAddress;
@@ -85,6 +86,11 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 class ContentObjectRenderer implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
     /**
      * @var array
@@ -451,11 +457,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * @param TypoScriptFrontendController $typoScriptFrontendController
+     * @param ContainerInterface $container
      */
-    public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null)
+    public function __construct(TypoScriptFrontendController $typoScriptFrontendController = null, ContainerInterface $container = null)
     {
         $this->typoScriptFrontendController = $typoScriptFrontendController;
         $this->contentObjectClassMap = $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'];
+        $this->container = $container;
     }
 
     /**
@@ -468,7 +476,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function __sleep()
     {
         $vars = get_object_vars($this);
-        unset($vars['typoScriptFrontendController'], $vars['logger']);
+        unset($vars['typoScriptFrontendController'], $vars['logger'], $vars['container']);
         if ($this->currentFile instanceof FileReference) {
             $this->currentFile = 'FileReference:' . $this->currentFile->getUid();
         } elseif ($this->currentFile instanceof File) {
@@ -502,6 +510,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             }
         }
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->container = GeneralUtility::getContainer();
     }
 
     /**
@@ -5527,7 +5536,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
         if (count($parts) === 2) {
             // Check whether PHP class is available
             if (class_exists($parts[0])) {
-                $classObj = GeneralUtility::makeInstance($parts[0]);
+                if ($this->container && $this->container->has($parts[0])) {
+                    $classObj = $this->container->get($parts[0]);
+                } else {
+                    $classObj = GeneralUtility::makeInstance($parts[0]);
+                }
                 if (is_object($classObj) && method_exists($classObj, $parts[1])) {
                     $classObj->cObj = $this;
                     $content = call_user_func_array([

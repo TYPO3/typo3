@@ -1,0 +1,30 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Core\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
+    tags: ['container.env_var_processor']
+
+  TYPO3\CMS\Core\Configuration\SiteConfiguration:
+    arguments:
+      $configPath: "%env(TYPO3:configPath)%/sites"
+
+  TYPO3\CMS\Core\Package\PackageManager:
+    autoconfigure: false
+
+  TYPO3\CMS\Core\Package\FailsafePackageManager:
+    autoconfigure: false
+
+  TYPO3\CMS\Core\Package\UnitTestPackageManager:
+    autoconfigure: false
+
+  TYPO3\CMS\Core\Http\MiddlewareDispatcher:
+    autoconfigure: false
+
+  TYPO3\CMS\Core\Database\Schema\SqlReader:
+    public: true

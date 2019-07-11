@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -38,13 +39,21 @@ class MiddlewareDispatcher implements RequestHandlerInterface
     protected $tip;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @param RequestHandlerInterface $kernel
      * @param array $middlewares
+     * @param ContainerInterface $container
      */
     public function __construct(
         RequestHandlerInterface $kernel,
-        array $middlewares = []
+        array $middlewares = [],
+        ContainerInterface $container = null
     ) {
+        $this->container = $container;
         $this->seedMiddlewareStack($kernel);
 
         foreach ($middlewares as $middleware) {
@@ -115,22 +124,28 @@ class MiddlewareDispatcher implements RequestHandlerInterface
      *
      * @param string $middleware
      */
-    public function lazy(string $middleware)
+    public function lazy(string $middleware): void
     {
         $next = $this->tip;
-        $this->tip = new class($middleware, $next) implements RequestHandlerInterface {
+        $this->tip = new class($middleware, $next, $this->container) implements RequestHandlerInterface {
             private $middleware;
             private $next;
+            private $container;
 
-            public function __construct(string $middleware, RequestHandlerInterface $next)
+            public function __construct(string $middleware, RequestHandlerInterface $next, ContainerInterface $container = null)
             {
                 $this->middleware = $middleware;
                 $this->next = $next;
+                $this->container = $container;
             }
 
             public function handle(ServerRequestInterface $request): ResponseInterface
             {
-                $middleware = GeneralUtility::makeInstance($this->middleware);
+                if ($this->container !== null && $this->container->has($this->middleware)) {
+                    $middleware = $this->container->get($this->middleware);
+                } else {
+                    $middleware = GeneralUtility::makeInstance($this->middleware);
+                }
 
                 if (!$middleware instanceof MiddlewareInterface) {
                     throw new \InvalidArgumentException(get_class($middleware) . ' does not implement ' . MiddlewareInterface::class, 1516821342);

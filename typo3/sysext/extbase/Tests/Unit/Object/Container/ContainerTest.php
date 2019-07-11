@@ -51,11 +51,23 @@ class ContainerTest extends UnitTestCase
             ->setMethods(['notice'])
             ->disableOriginalConstructor()
             ->getMock();
+        $reflectionService = new \TYPO3\CMS\Extbase\Reflection\ReflectionService;
+
+        $notFoundException = new class extends \Exception implements \Psr\Container\NotFoundExceptionInterface {
+        };
+
+        $psrContainer = $this->getMockBuilder(\Psr\Container\ContainerInterface::class)
+            ->setMethods(['has', 'get'])
+            ->getMock();
+        $psrContainer->expects($this->any())->method('has')->will($this->returnValue(false));
+        $psrContainer->expects($this->any())->method('get')->will($this->throwException($notFoundException));
 
         $this->subject = $this->getMockBuilder(Container::class)
-            ->setMethods(['getLogger'])
+            ->setConstructorArgs([$psrContainer])
+            ->setMethods(['getLogger', 'getReflectionService'])
             ->getMock();
         $this->subject->expects($this->any())->method('getLogger')->will($this->returnValue($this->logger));
+        $this->subject->expects($this->any())->method('getReflectionService')->will($this->returnValue($reflectionService));
     }
 
     /**
@@ -957,8 +969,7 @@ class ContainerTest extends UnitTestCase
      */
     public function getInstanceInjectsPublicProperties()
     {
-        $container = new Container();
-        $object = $container->getInstance(PublicPropertyInjectClass::class);
+        $object = $this->subject->getInstance(PublicPropertyInjectClass::class);
         self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->foo);
     }
 
@@ -967,8 +978,7 @@ class ContainerTest extends UnitTestCase
      */
     public function getInstanceInjectsProtectedProperties()
     {
-        $container = new Container();
-        $object = $container->getInstance(ProtectedPropertyInjectClass::class);
+        $object = $this->subject->getInstance(ProtectedPropertyInjectClass::class);
         self::assertInstanceOf(ArgumentTestClassForPublicPropertyInjection::class, $object->getFoo());
     }
 }

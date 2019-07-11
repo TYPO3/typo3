@@ -16,10 +16,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  */
 
 use Prophecy\Argument;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
-use TYPO3\CMS\Core\Package\Package;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -33,12 +32,14 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsMiddlewareStack()
     {
-        $package1 = $this->prophesize(Package::class);
-        $package1->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package1/');
-        $package2 = $this->prophesize(Package::class);
-        $package2->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package2/');
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
+        $middlewares =  array_replace_recursive(
+            [],
+            require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
+            require __DIR__ . '/Fixtures/Package2/Configuration/RequestMiddlewares.php'
+        );
+        $containerProphecy = $this->prophesize();
+        $containerProphecy->willImplement(ContainerInterface::class);
+        $containerProphecy->get('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
         $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
@@ -46,7 +47,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
 
         $subject = new MiddlewareStackResolver(
-            $packageManagerProphecy->reveal(),
+            $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
             $phpFrontendCacheProphecy->reveal()
         );
@@ -62,8 +63,10 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsEmptyMiddlewareStackForZeroPackages()
     {
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $packageManagerProphecy->getActivePackages()->willReturn([]);
+        $middlewares = [];
+        $containerProphecy = $this->prophesize();
+        $containerProphecy->willImplement(ContainerInterface::class);
+        $containerProphecy->get('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
         $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
@@ -71,7 +74,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
 
         $subject = new MiddlewareStackResolver(
-            $packageManagerProphecy->reveal(),
+            $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
             $phpFrontendCacheProphecy->reveal()
         );
@@ -85,12 +88,14 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsDisablingAMiddleware()
     {
-        $package1 = $this->prophesize(Package::class);
-        $package1->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package1/');
-        $package2 = $this->prophesize(Package::class);
-        $package2->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package2Disables1/');
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
+        $middlewares =  array_replace_recursive(
+            [],
+            require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
+            require __DIR__ . '/Fixtures/Package2Disables1/Configuration/RequestMiddlewares.php'
+        );
+        $containerProphecy = $this->prophesize();
+        $containerProphecy->willImplement(ContainerInterface::class);
+        $containerProphecy->get('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
         $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
@@ -98,7 +103,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
 
         $subject = new MiddlewareStackResolver(
-            $packageManagerProphecy->reveal(),
+            $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
             $phpFrontendCacheProphecy->reveal()
         );
@@ -114,12 +119,14 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsReplacingAMiddleware()
     {
-        $package1 = $this->prophesize(Package::class);
-        $package1->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package1/');
-        $package2 = $this->prophesize(Package::class);
-        $package2->getPackagePath()->willReturn(__DIR__ . '/Fixtures/Package2Replaces1/');
-        $packageManagerProphecy = $this->prophesize(PackageManager::class);
-        $packageManagerProphecy->getActivePackages()->willReturn([$package1->reveal(), $package2->reveal()]);
+        $middlewares =  array_replace_recursive(
+            [],
+            require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
+            require __DIR__ . '/Fixtures/Package2Replaces1/Configuration/RequestMiddlewares.php'
+        );
+        $containerProphecy = $this->prophesize();
+        $containerProphecy->willImplement(ContainerInterface::class);
+        $containerProphecy->get('middlewares')->willReturn($middlewares);
         $dependencyOrderingServiceProphecy = $this->prophesize(DependencyOrderingService::class);
         $dependencyOrderingServiceProphecy->orderByDependencies(Argument::cetera())->willReturnArgument(0);
         $phpFrontendCacheProphecy = $this->prophesize(PhpFrontend::class);
@@ -127,7 +134,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
         $phpFrontendCacheProphecy->set(Argument::cetera())->willReturn(false);
 
         $subject = new MiddlewareStackResolver(
-            $packageManagerProphecy->reveal(),
+            $containerProphecy->reveal(),
             $dependencyOrderingServiceProphecy->reveal(),
             $phpFrontendCacheProphecy->reveal()
         );

@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -31,30 +30,9 @@ abstract class AbstractApplication implements ApplicationInterface
     ];
 
     /**
-     * @var string
+     * @var RequestHandlerInterface|null
      */
-    protected $requestHandler = '';
-
-    /**
-     * @var string
-     */
-    protected $middlewareStack = '';
-
-    /**
-     * @param RequestHandlerInterface $requestHandler
-     * @return MiddlewareDispatcher
-     */
-    protected function createMiddlewareDispatcher(RequestHandlerInterface $requestHandler): MiddlewareDispatcher
-    {
-        $resolver = new MiddlewareStackResolver(
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Service\DependencyOrderingService::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('core')
-        );
-        $middlewares = $resolver->resolve($this->middlewareStack);
-
-        return new MiddlewareDispatcher($requestHandler, $middlewares);
-    }
+    protected $requestHandler;
 
     /**
      * Outputs content
@@ -102,10 +80,7 @@ abstract class AbstractApplication implements ApplicationInterface
      */
     protected function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $requestHandler = GeneralUtility::makeInstance($this->requestHandler);
-        $dispatcher = $this->createMiddlewareDispatcher($requestHandler);
-
-        return $dispatcher->handle($request);
+        return $this->requestHandler->handle($request);
     }
 
     /**
