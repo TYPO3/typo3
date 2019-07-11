@@ -121,6 +121,16 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
 
         $formData['parameterArray']['itemFormElName'] = 'data[' . $tableName . '][' . $formData['databaseRow']['uid'] . '][' . $fieldName . ']';
 
+        // JavaScript code for event handlers:
+        // @todo: see if we can get rid of this - used in group elements, and also for the "reload" on type field changes
+        $formData['parameterArray']['fieldChangeFunc'] = [];
+        $formData['parameterArray']['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged('
+            . GeneralUtility::quoteJSvalue($tableName)
+            . ',' . GeneralUtility::quoteJSvalue($formData['databaseRow']['uid'])
+            . ',' . GeneralUtility::quoteJSvalue($fieldName)
+            . ',' . GeneralUtility::quoteJSvalue($formData['parameterArray']['itemFormElName'])
+            . ');';
+
         // @todo: check GroupElement for usage of elementBaseName ... maybe kick that thing?
 
         // Feed resulting form data to container structure to render HTML and other result data
