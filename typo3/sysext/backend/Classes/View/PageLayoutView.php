@@ -2989,9 +2989,6 @@ class PageLayoutView implements LoggerAwareInterface
         $this->sortRev = GeneralUtility::_GP('sortRev');
         $this->displayFields = GeneralUtility::_GP('displayFields');
         $this->duplicateField = GeneralUtility::_GP('duplicateField');
-        if (GeneralUtility::_GP('justLocalized')) {
-            $this->localizationRedirect(GeneralUtility::_GP('justLocalized'));
-        }
         // Init dynamic vars:
         $this->counter = 0;
         $this->JScode = '';
@@ -3814,56 +3811,6 @@ class PageLayoutView implements LoggerAwareInterface
             }
         }
         return $fieldListArr;
-    }
-
-    /**
-     * Redirects to FormEngine if a record is just localized.
-     *
-     * @param string $justLocalized String with table, orig uid and language separated by ":
-     */
-    public function localizationRedirect($justLocalized)
-    {
-        list($table, $orig_uid, $language) = explode(':', $justLocalized);
-        if ($GLOBALS['TCA'][$table]
-            && $GLOBALS['TCA'][$table]['ctrl']['languageField']
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-        ) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-            $localizedRecordUid = $queryBuilder->select('uid')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($language, \PDO::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($orig_uid, \PDO::PARAM_INT)
-                    )
-                )
-                ->setMaxResults(1)
-                ->execute()
-                ->fetchColumn();
-
-            if ($localizedRecordUid !== false) {
-                // Create parameters and finally run the classic page module for creating a new page translation
-                $url = $this->listURL();
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $editUserAccountUrl = (string)$uriBuilder->buildUriFromRoute(
-                    'record_edit',
-                    [
-                        'edit[' . $table . '][' . $localizedRecordUid . ']' => 'edit',
-                        'returnUrl' => $url
-                    ]
-                );
-                HttpUtility::redirect($editUserAccountUrl);
-            }
-        }
     }
 
     /**
