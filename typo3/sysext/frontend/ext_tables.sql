@@ -95,7 +95,7 @@ CREATE TABLE sys_template (
 CREATE TABLE tt_content (
 	CType varchar(255) DEFAULT '' NOT NULL,
 	header varchar(255) DEFAULT '' NOT NULL,
-	header_position varchar(6) DEFAULT '' NOT NULL,
+	header_position varchar(255) DEFAULT '' NOT NULL,
 	rowDescription text,
 	bodytext mediumtext,
 	bullets_type tinyint(3) unsigned DEFAULT '0' NOT NULL,
