@@ -884,7 +884,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier . 'A', 'data', ['tag']);
         $subject->set($identifier . 'B', 'data', ['tag']);
-        $redis->delete('identData:' . $identifier . 'A');
+        $redis->del('identData:' . $identifier . 'A');
         $subject->collectGarbage();
         $result = $redis->exists('identData:' . $identifier . 'B');
         if (is_int($result)) {
@@ -904,7 +904,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier . 'A', 'data', ['tag']);
         $subject->set($identifier . 'B', 'data', ['tag']);
-        $redis->delete('identData:' . $identifier . 'A');
+        $redis->del('identData:' . $identifier . 'A');
         $subject->collectGarbage();
         $expectedResult = [false, true];
         $resultA = $redis->exists('identTags:' . $identifier . 'A');
@@ -934,7 +934,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier . 'A', 'data', ['tag1', 'tag2']);
         $subject->set($identifier . 'B', 'data', ['tag2']);
-        $redis->delete('identData:' . $identifier . 'A');
+        $redis->del('identData:' . $identifier . 'A');
         $subject->collectGarbage();
         $expectedResult = [
             [],
