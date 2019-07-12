@@ -21,8 +21,8 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * PHP module. Redis is a noSQL database with very good scaling characteristics
  * in proportion to the amount of entries and data size.
  *
- * @see http://code.google.com/p/redis/
- * @see http://github.com/owlient/phpredis
+ * @see https://redis.io/
+ * @see https://github.com/phpredis/phpredis
  * @api
  */
 class RedisBackend extends AbstractBackend implements TaggableBackendInterface
@@ -37,7 +37,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      * To save these additional calls on every set(),
      * we just make every entry volatile and treat a high number as "unlimited"
      *
-     * @see http://code.google.com/p/redis/wiki/ExpireCommand
+     * @see https://redis.io/commands/expire
      * @var int Faked unlimited lifetime
      */
     const FAKED_UNLIMITED_LIFETIME = 31536000;
@@ -342,8 +342,8 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
             if (!empty($removeTags) || !empty($addTags)) {
                 $queue = $this->redis->multi(\Redis::PIPELINE);
                 foreach ($removeTags as $tag) {
-                    $queue->sRemove(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier, $tag);
-                    $queue->sRemove(self::TAG_IDENTIFIERS_PREFIX . $tag, $entryIdentifier);
+                    $queue->sRem(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier, $tag);
+                    $queue->sRem(self::TAG_IDENTIFIERS_PREFIX . $tag, $entryIdentifier);
                 }
                 foreach ($addTags as $tag) {
                     $queue->sAdd(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier, $tag);
@@ -419,9 +419,9 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
                 $assignedTags = $this->redis->sMembers(self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier);
                 $queue = $this->redis->multi(\Redis::PIPELINE);
                 foreach ($assignedTags as $tag) {
-                    $queue->sRemove(self::TAG_IDENTIFIERS_PREFIX . $tag, $entryIdentifier);
+                    $queue->sRem(self::TAG_IDENTIFIERS_PREFIX . $tag, $entryIdentifier);
                 }
-                $queue->delete(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier, self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier);
+                $queue->del(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier, self::IDENTIFIER_TAGS_PREFIX . $entryIdentifier);
                 $queue->exec();
                 $elementsDeleted = true;
             }
@@ -502,16 +502,16 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
      */
     public function collectGarbage()
     {
-        $identifierToTagsKeys = $this->redis->getKeys(self::IDENTIFIER_TAGS_PREFIX . '*');
+        $identifierToTagsKeys = $this->redis->keys(self::IDENTIFIER_TAGS_PREFIX . '*');
         foreach ($identifierToTagsKeys as $identifierToTagsKey) {
             list(, $identifier) = explode(':', $identifierToTagsKey);
             // Check if the data entry still exists
             if (!$this->redis->exists((self::IDENTIFIER_DATA_PREFIX . $identifier))) {
                 $tagsToRemoveIdentifierFrom = $this->redis->sMembers($identifierToTagsKey);
                 $queue = $this->redis->multi(\Redis::PIPELINE);
-                $queue->delete($identifierToTagsKey);
+                $queue->del($identifierToTagsKey);
                 foreach ($tagsToRemoveIdentifierFrom as $tag) {
-                    $queue->sRemove(self::TAG_IDENTIFIERS_PREFIX . $tag, $identifier);
+                    $queue->sRem(self::TAG_IDENTIFIERS_PREFIX . $tag, $identifier);
                 }
                 $queue->exec();
             }
@@ -554,7 +554,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         foreach ($tagToIdentifiersSetsToRemoveIdentifiersFrom as $tagToIdentifiersSet) {
             $queue->sDiffStore(self::TAG_IDENTIFIERS_PREFIX . $tagToIdentifiersSet, self::TAG_IDENTIFIERS_PREFIX . $tagToIdentifiersSet, $uniqueTempKey);
         }
-        $queue->delete(array_merge($prefixedKeysToDelete, $prefixedIdentifierToTagsKeysToDelete));
+        $queue->del(array_merge($prefixedKeysToDelete, $prefixedIdentifierToTagsKeysToDelete));
         $queue->exec();
     }
 

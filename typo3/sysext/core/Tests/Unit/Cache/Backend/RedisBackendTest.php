@@ -920,7 +920,7 @@ class RedisBackendTest extends UnitTestCase
         $identifier = $this->getUniqueId('identifier');
         $this->backend->set($identifier . 'A', 'data', ['tag']);
         $this->backend->set($identifier . 'B', 'data', ['tag']);
-        $this->redis->delete('identData:' . $identifier . 'A');
+        $this->redis->del('identData:' . $identifier . 'A');
         $this->backend->collectGarbage();
         $result = $this->redis->exists('identData:' . $identifier . 'B');
         if (is_int($result)) {
@@ -940,7 +940,7 @@ class RedisBackendTest extends UnitTestCase
         $identifier = $this->getUniqueId('identifier');
         $this->backend->set($identifier . 'A', 'data', ['tag']);
         $this->backend->set($identifier . 'B', 'data', ['tag']);
-        $this->redis->delete('identData:' . $identifier . 'A');
+        $this->redis->del('identData:' . $identifier . 'A');
         $this->backend->collectGarbage();
         $expectedResult = [false, true];
         $resultA = $this->redis->exists('identTags:' . $identifier . 'A');
@@ -970,7 +970,7 @@ class RedisBackendTest extends UnitTestCase
         $identifier = $this->getUniqueId('identifier');
         $this->backend->set($identifier . 'A', 'data', ['tag1', 'tag2']);
         $this->backend->set($identifier . 'B', 'data', ['tag2']);
-        $this->redis->delete('identData:' . $identifier . 'A');
+        $this->redis->del('identData:' . $identifier . 'A');
         $this->backend->collectGarbage();
         $expectedResult = [
             [],

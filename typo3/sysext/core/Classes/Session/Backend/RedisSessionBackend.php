@@ -146,7 +146,7 @@ class RedisSessionBackend implements SessionBackendInterface
     {
         $this->initializeConnection();
 
-        return $this->redis->delete($this->getSessionKeyName($sessionId)) >= 1;
+        return $this->redis->del($this->getSessionKeyName($sessionId)) >= 1;
     }
 
     /**
@@ -222,11 +222,11 @@ class RedisSessionBackend implements SessionBackendInterface
         foreach ($this->getAll() as $sessionRecord) {
             if ($sessionRecord['ses_anonymous']) {
                 if ($maximumAnonymousLifetime > 0 && ($sessionRecord['ses_tstamp'] + $maximumAnonymousLifetime) < $GLOBALS['EXEC_TIME']) {
-                    $this->redis->delete($this->getSessionKeyName($sessionRecord['ses_id']));
+                    $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
                 }
             } else {
                 if (($sessionRecord['ses_tstamp'] + $maximumLifetime) < $GLOBALS['EXEC_TIME']) {
-                    $this->redis->delete($this->getSessionKeyName($sessionRecord['ses_id']));
+                    $this->redis->del($this->getSessionKeyName($sessionRecord['ses_id']));
                 }
             }
         }
@@ -307,7 +307,7 @@ class RedisSessionBackend implements SessionBackendInterface
             }
         }
 
-        $encodedSessions = $this->redis->getMultiple($keys);
+        $encodedSessions = $this->redis->mGet($keys);
         if (!is_array($encodedSessions)) {
             return [];
         }
