@@ -74,7 +74,8 @@ var TBE_EDITOR = {
     // modify the "field has changed" info by adding a class to the container element (based on palette or main field)
     var $formField = $('[name="' + el + '"]');
     var $humanReadableField = $('[data-formengine-input-name="' + el + '"]');
-    if (!$formField.is($humanReadableField)) {
+    if ($humanReadableField.length > 0 && !$formField.is($humanReadableField)) {
+      $humanReadableField.get(0).dispatchEvent(new Event('change', {bubbles: true, cancelable: true}));
       $humanReadableField.triggerHandler('change');
     }
     // add class to palette field
