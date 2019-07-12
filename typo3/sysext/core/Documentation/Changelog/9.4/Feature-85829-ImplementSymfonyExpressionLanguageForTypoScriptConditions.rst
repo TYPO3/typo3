@@ -25,8 +25,8 @@ Here are some examples to understand the power of the expression language:
    # This condition matches if current page uid is between 18 and 45
    [END]
 
-   [userId in [1,5,7]]
-   # This condition matches if current logged in user has the uid 1, 5 or 7
+   [frontend.user.userId in [1,5,7]]
+   # This condition matches if current logged in frontend user has the uid 1, 5 or 7
    [END]
 
    [not ("foo" matches "/bar/")]
