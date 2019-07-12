@@ -192,6 +192,14 @@ class DatabaseRecordList
     public $itemsLimitPerTable = 20;
 
     /**
+     * Module data
+     *
+     * @internal
+     * @var array
+     */
+    protected $moduleData =  [];
+
+    /**
      * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
      *
      * @var array
@@ -621,7 +629,7 @@ class DatabaseRecordList
      */
     public function getButtons()
     {
-        $module = $this->getModule();
+        $modulePageTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
         $buttons = [
@@ -655,8 +663,8 @@ class DatabaseRecordList
         if (isset($this->id)) {
             // View Exclude doktypes 254,255 Configuration:
             // mod.web_list.noViewWithDokTypes = 254,255
-            if (isset($module->modTSconfig['properties']['noViewWithDokTypes'])) {
-                $noViewDokTypes = GeneralUtility::trimExplode(',', $module->modTSconfig['properties']['noViewWithDokTypes'], true);
+            if (isset($modulePageTsConfig['noViewWithDokTypes'])) {
+                $noViewDokTypes = GeneralUtility::trimExplode(',', $modulePageTsConfig['noViewWithDokTypes'], true);
             } else {
                 //default exclusion: doktype 254 (folder), 255 (recycler)
                 $noViewDokTypes = [
@@ -671,7 +679,7 @@ class DatabaseRecordList
                     . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
             }
             // New record on pages that are not locked by editlock
-            if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
+            if (!$modulePageTsConfig['noCreateRecordsLink'] && $this->editLockPermissions()) {
                 $onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id])) . ');');
                 $buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
                     . htmlspecialchars($lang->getLL('newRecordGeneral')) . '">'
@@ -708,9 +716,9 @@ class DatabaseRecordList
             $buttons['cache'] = '<a href="#" data-id="' . $this->id . '" class="t3js-clear-page-cache" title="'
                 . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache')) . '">'
                 . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
-            if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
-                || (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
-                    && !$module->modTSconfig['properties']['noExportRecordsLinks']))
+            if ($this->table && (!isset($modulePageTsConfig['noExportRecordsLinks'])
+                || (isset($modulePageTsConfig['noExportRecordsLinks'])
+                    && !$modulePageTsConfig['properties']['noExportRecordsLinks']))
             ) {
                 // CSV
                 $buttons['csv'] = '<a href="' . htmlspecialchars($this->listURL() . '&csv=1') . '" title="'
@@ -757,7 +765,7 @@ class DatabaseRecordList
     public function getDocHeaderButtons(ModuleTemplate $moduleTemplate)
     {
         $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $module = $this->getModule();
+        $modulePageTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
         // Get users permissions for this page record:
@@ -779,8 +787,8 @@ class DatabaseRecordList
         if (isset($this->id)) {
             // View Exclude doktypes 254,255 Configuration:
             // mod.web_list.noViewWithDokTypes = 254,255
-            if (isset($module->modTSconfig['properties']['noViewWithDokTypes'])) {
-                $noViewDokTypes = GeneralUtility::trimExplode(',', $module->modTSconfig['properties']['noViewWithDokTypes'], true);
+            if (isset($modulePageTsConfig['noViewWithDokTypes'])) {
+                $noViewDokTypes = GeneralUtility::trimExplode(',', $modulePageTsConfig['noViewWithDokTypes'], true);
             } else {
                 //default exclusion: doktype 254 (folder), 255 (recycler)
                 $noViewDokTypes = [
@@ -789,7 +797,7 @@ class DatabaseRecordList
                 ];
             }
             // New record on pages that are not locked by editlock
-            if (!$module->modTSconfig['properties']['noCreateRecordsLink'] && $this->editLockPermissions()) {
+            if (!$modulePageTsConfig['noCreateRecordsLink'] && $this->editLockPermissions()) {
                 $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id])) . ');';
                 $newRecordButton = $buttonBar->makeLinkButton()
                     ->setHref('#')
@@ -848,9 +856,9 @@ class DatabaseRecordList
                     ->setIcon($this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL));
                 $buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT);
             }
-            if ($this->table && (!isset($module->modTSconfig['properties']['noExportRecordsLinks'])
-                || (isset($module->modTSconfig['properties']['noExportRecordsLinks'])
-                    && !$module->modTSconfig['properties']['noExportRecordsLinks']))
+            if ($this->table && (!isset($modulePageTsConfig['noExportRecordsLinks'])
+                || (isset($modulePageTsConfig['noExportRecordsLinks'])
+                    && !$modulePageTsConfig['noExportRecordsLinks']))
             ) {
                 // CSV
                 $csvButton = $buttonBar->makeLinkButton()
@@ -1512,7 +1520,7 @@ class DatabaseRecordList
         $this->addElement_tdCssClass[$titleCol] = 'col-title col-responsive' . $localizationMarkerClass;
         $this->addElement_tdCssClass['__label'] = $this->addElement_tdCssClass[$titleCol];
         $this->addElement_tdCssClass['_CONTROL_'] = 'col-control';
-        if ($this->getModule()->MOD_SETTINGS['clipBoard']) {
+        if ($this->moduleData['clipBoard']) {
             $this->addElement_tdCssClass['_CLIPBOARD_'] = 'col-clipboard';
         }
         $this->addElement_tdCssClass['_PATH_'] = 'col-path';
@@ -1602,7 +1610,7 @@ class DatabaseRecordList
                     $theData[$fCol] = htmlspecialchars($lang->getLL('Localize'));
                     break;
                 case '_CLIPBOARD_':
-                    if (!$this->getModule()->MOD_SETTINGS['clipBoard']) {
+                    if (!$this->moduleData['clipBoard']) {
                         break;
                     }
                     // Clipboard:
@@ -1944,7 +1952,6 @@ class DatabaseRecordList
     {
         $backendUser = $this->getBackendUserAuthentication();
         $userTsConfig = $backendUser->getTSConfig();
-        $module = $this->getModule();
         $rowUid = $row['uid'];
         if (ExtensionManagementUtility::isLoaded('workspaces') && isset($row['_ORIG_uid'])) {
             $rowUid = $row['_ORIG_uid'];
@@ -2237,7 +2244,7 @@ class DatabaseRecordList
         }
         $output = '<!-- CONTROL PANEL: ' . $table . ':' . $row['uid'] . ' -->';
         foreach ($cells as $classification => $actions) {
-            $visibilityClass = ($classification !== 'primary' && !$module->MOD_SETTINGS['bigControlPanel'] ? 'collapsed' : 'expanded');
+            $visibilityClass = ($classification !== 'primary' && !$this->moduleData['bigControlPanel'] ? 'collapsed' : 'expanded');
             if ($visibilityClass === 'collapsed') {
                 $cellOutput = '';
                 foreach ($actions as $action) {
@@ -2265,7 +2272,7 @@ class DatabaseRecordList
     public function makeClip($table, $row)
     {
         // Return blank, if disabled:
-        if (!$this->getModule()->MOD_SETTINGS['clipBoard']) {
+        if (!$this->moduleData['clipBoard']) {
             return '';
         }
         $cells = [];
@@ -2910,11 +2917,15 @@ class DatabaseRecordList
     }
 
     /**
-     * @return object
+     * Set the module data
+     *
+     * See BackendUtility::getModuleData
+     *
+     * @param array $moduleData
      */
-    protected function getModule()
+    public function setModuleData(array $moduleData = []): void
     {
-        return $GLOBALS['SOBE'];
+        $this->moduleData = $moduleData;
     }
 
     /**

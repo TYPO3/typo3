@@ -120,7 +120,7 @@ class RecordListController
      * Module TSconfig
      *
      * @var array
-     * @internal Still used by DatabaseRecordList via $GLOBALS['SOBE']
+     * @internal
      */
     public $modTSconfig;
 
@@ -142,7 +142,7 @@ class RecordListController
      * Module settings (session variable)
      *
      * @var string[]
-     * @internal Still used by DatabaseRecordList via $GLOBALS['SOBE']
+     * @internal
      */
     public $MOD_SETTINGS = [];
 
@@ -287,6 +287,7 @@ class RecordListController
         // Initialize the dblist object:
         $dblist = GeneralUtility::makeInstance(DatabaseRecordList::class);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $dblist->setModuleData($this->MOD_SETTINGS ?? []);
         $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_list');
         $dblist->calcPerms = $calcPerms;
         $dblist->thumbs = $backendUser->uc['thumbnailsByDefault'];
@@ -571,8 +572,6 @@ class RecordListController
         $this->site = $request->getAttribute('site');
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUserAuthentication(), false, (int)$this->id);
         BackendUtility::lockRecords();
-        // @deprecated  since TYPO3 v9, will be removed in TYPO3 v10.0. Can be removed along with $this->doc. Still used in DatabaseRecordList
-        $GLOBALS['SOBE'] = $this;
         $this->init();
         $this->main($request);
         $this->moduleTemplate->setContent($this->content);
