@@ -473,20 +473,6 @@ tt_content:sectionIndex</source>
 			<trans-unit id="records.description">
 				<source>Insert records to be displayed on this page.</source>
 			</trans-unit>
-			<trans-unit id="spaceBefore.description">
-				<source>Top Margin (in pixels) inserts whitespace &lt;em&gt;before&lt;/em&gt; this Content Element.</source>
-			</trans-unit>
-			<trans-unit id="_spaceBefore.seeAlso" xml:space="preserve">
-				<source>tt_content:spaceAfter</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="spaceAfter.description">
-				<source>Bottom Margin (in pixels) inserts whitespace &lt;em&gt;after&lt;/em&gt; this Content Element.</source>
-			</trans-unit>
-			<trans-unit id="_spaceAfter.seeAlso" xml:space="preserve">
-				<source>tt_content:spaceBefore</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="sectionIndex.description">
 				<source>If set, the Content Element will appear in Section Menus.</source>
 			</trans-unit>

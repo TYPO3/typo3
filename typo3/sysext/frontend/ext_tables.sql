@@ -111,8 +111,6 @@ CREATE TABLE tt_content (
 	layout int(11) unsigned DEFAULT '0' NOT NULL,
 	frame_class varchar(60) DEFAULT 'default' NOT NULL,
 	cols int(11) unsigned DEFAULT '0' NOT NULL,
-	spaceBefore smallint(5) unsigned DEFAULT '0' NOT NULL,
-	spaceAfter smallint(5) unsigned DEFAULT '0' NOT NULL,
 	space_before_class varchar(60) DEFAULT '' NOT NULL,
 	space_after_class varchar(60) DEFAULT '' NOT NULL,
 	records text,

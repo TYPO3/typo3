@@ -372,7 +372,7 @@ class QueryGenerator
         $this->queryConfig = array(
         array(
         'operator' => 'AND',
-        'type' => 'FIELD_spaceBefore',
+        'type' => 'FIELD_space_before_class',
         ),
         array(
         'operator' => 'AND',
@@ -385,7 +385,7 @@ class QueryGenerator
         'nl' => array(
         array(
         'operator' => 'AND',
-        'type' => 'FIELD_spaceBefore',
+        'type' => 'FIELD_space_before_class',
         'negate' => 1,
         'inputValue' => 'foo foo'
         ),

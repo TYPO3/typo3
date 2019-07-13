@@ -784,8 +784,6 @@
         'sorting': kw('sorting'),
         'source': kw('source'),
         'space': kw('space'),
-        'spaceAfter': kw('spaceAfter'),
-        'spaceBefore': kw('spaceBefore'),
         'spaceBelowAbove': kw('spaceBelowAbove'),
         'spaceLeft': kw('spaceLeft'),
         'spaceRight': kw('spaceRight'),

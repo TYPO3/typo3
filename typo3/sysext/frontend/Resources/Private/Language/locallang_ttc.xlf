@@ -501,18 +501,6 @@
 			<trans-unit id="records_formlabel">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="spaceBefore">
-				<source>Before</source>
-			</trans-unit>
-			<trans-unit id="spaceBefore_formlabel">
-				<source>Top Margin</source>
-			</trans-unit>
-			<trans-unit id="spaceAfter">
-				<source>After</source>
-			</trans-unit>
-			<trans-unit id="spaceAfter_formlabel">
-				<source>Bottom Margin</source>
-			</trans-unit>
 			<trans-unit id="space_before_class">
 				<source>Space Before</source>
 			</trans-unit>
