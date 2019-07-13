@@ -55,7 +55,7 @@ The new request workflow looks like this (simplified):
 3. Resolving Site configuration and Language from URL if possible
 4. Resolving logged-in Backend User Authentication for previewing hidden pages or languages
 5. Authentication of Website Users ("Frontend Users")
-6. Executing various static routes and redirct functionality
+6. Executing various static routes and redirect functionality
 7. Resolving Target Page ID and URL parameters based on Routing, Validation of Page Arguments based on "cHash"
 8. Setting up global $TSFE object, injecting previously resolved settings into TSFE.
 9. Resolving the Rootline for the page
