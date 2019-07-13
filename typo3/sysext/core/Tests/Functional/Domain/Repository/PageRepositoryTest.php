@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Tests\Functional\Page;
+namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -19,9 +19,9 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
-use TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface;
 
 /**
  * Test case
@@ -33,7 +33,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet(__DIR__ . '/../Fixtures/pages.xml');
+        $this->importDataSet(__DIR__ . '/../../Fixtures/pages.xml');
     }
 
     /**

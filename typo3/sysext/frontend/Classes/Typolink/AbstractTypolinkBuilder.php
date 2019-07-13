@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Typolink;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Abstract class to provide proper helper for most types necessary

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Page;
+namespace TYPO3\CMS\Core\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -24,7 +24,7 @@ interface PageRepositoryGetPageHookInterface
      *
      * @param int $uid The page ID
      * @param bool $disableGroupAccessCheck If set, the check for group access is disabled. VERY rarely used
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent object
+     * @param PageRepository $parentObject Parent object
      */
     public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, PageRepository $parentObject);
 }

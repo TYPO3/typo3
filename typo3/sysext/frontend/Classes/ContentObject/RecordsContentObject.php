@@ -15,10 +15,10 @@ namespace TYPO3\CMS\Frontend\ContentObject;
  */
 
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Category\Collection\CategoryCollection;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * Contains RECORDS class object.

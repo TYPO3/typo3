@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Page;
+namespace TYPO3\CMS\Core\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 /**
- * Interface for classes which hook into \TYPO3\CMS\Frontend\Page\PageRepository
+ * Interface for classes which hook into \TYPO3\CMS\Core\Domain\Repository\PageRepository
  */
 interface PageRepositoryGetRecordOverlayHookInterface
 {
@@ -26,7 +26,7 @@ interface PageRepositoryGetRecordOverlayHookInterface
      * @param array $row
      * @param int $sys_language_content
      * @param string $OLmode
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
+     * @param PageRepository $parent
      */
     public function getRecordOverlay_preProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 
@@ -37,7 +37,7 @@ interface PageRepositoryGetRecordOverlayHookInterface
      * @param array $row
      * @param int $sys_language_content
      * @param string $OLmode
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent
+     * @param PageRepository $parent
      */
     public function getRecordOverlay_postProcess($table, &$row, &$sys_language_content, $OLmode, PageRepository $parent);
 }

@@ -16,10 +16,10 @@ namespace TYPO3\CMS\Seo\Canonical;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Utility\CanonicalizationUtility;
 
 /**

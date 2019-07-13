@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
+namespace TYPO3\CMS\Core\Tests\Unit\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  */
 
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -23,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PageRepositoryTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var PageRepository|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $pageSelectObject;
 
@@ -52,7 +53,7 @@ class PageRepositoryTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->pageSelectObject = $this->getAccessibleMock(\TYPO3\CMS\Frontend\Page\PageRepository::class, ['getMultipleGroupsWhereClause'], [], '', false);
+        $this->pageSelectObject = $this->getAccessibleMock(PageRepository::class, ['getMultipleGroupsWhereClause'], [], '', false);
         $this->pageSelectObject->_set('context', new Context());
         $this->pageSelectObject->expects($this->any())->method('getMultipleGroupsWhereClause')->will($this->returnValue(' AND 1=1'));
     }
@@ -66,7 +67,7 @@ class PageRepositoryTest extends UnitTestCase
     public function getExtUrlForDokType3UsesTheSameValue()
     {
         $this->assertEquals('http://www.example.com', $this->pageSelectObject->getExtURL([
-            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => 'http://www.example.com'
         ]));
     }
@@ -77,7 +78,7 @@ class PageRepositoryTest extends UnitTestCase
     public function getExtUrlForDokType3PrependsSiteUrl()
     {
         $this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'hello/world/', $this->pageSelectObject->getExtURL([
-            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => 'hello/world/'
         ]));
     }
@@ -88,7 +89,7 @@ class PageRepositoryTest extends UnitTestCase
     public function getExtUrlForDokType3AssumesAbsoluteUrl()
     {
         $this->assertEquals('/hello/world/', $this->pageSelectObject->getExtURL([
-            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => '/hello/world/'
         ]));
     }
@@ -99,7 +100,7 @@ class PageRepositoryTest extends UnitTestCase
     public function getExtUrlForDokType3UsesEmailAsSameValue()
     {
         $this->assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
-            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => 'mailto:mail@typo3-test.com'
         ]));
     }
@@ -110,7 +111,7 @@ class PageRepositoryTest extends UnitTestCase
     public function getExtUrlForDokType3UsesValidEmailWithoutProtocolAsEmail()
     {
         $this->assertEquals('mailto:mail@typo3-test.com', $this->pageSelectObject->getExtURL([
-            'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK,
+            'doktype' => PageRepository::DOKTYPE_LINK,
             'url' => 'mail@typo3-test.com'
         ]));
     }

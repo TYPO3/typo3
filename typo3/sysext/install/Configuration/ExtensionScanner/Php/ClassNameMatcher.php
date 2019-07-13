@@ -1281,4 +1281,29 @@ return [
             'Breaking-88500-RTEImageHandlingFunctionalityDropped.rst'
         ],
     ],
+    'TYPO3\CMS\Frontend\Page\PageRepository' => [
+        'restFiles' => [
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepositoryGetPageHookInterface' => [
+        'restFiles' => [
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepositoryGetPageOverlayHookInterface' => [
+        'restFiles' => [
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepositoryGetRecordOverlayHookInterface' => [
+        'restFiles' => [
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Page\PageRepositoryInitHookInterface' => [
+        'restFiles' => [
+            'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
+        ],
+    ],
 ];

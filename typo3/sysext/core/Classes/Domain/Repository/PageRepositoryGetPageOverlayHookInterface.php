@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Page;
+namespace TYPO3\CMS\Core\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Frontend\Page;
  */
 
 /**
- * Interface for classes which hook into \TYPO3\CMS\Frontend\Page\PageRepository
+ * Interface for classes which hook into \TYPO3\CMS\Core\Domain\Repository\PageRepository
  */
 interface PageRepositoryGetPageOverlayHookInterface
 {
@@ -24,7 +24,7 @@ interface PageRepositoryGetPageOverlayHookInterface
      *
      * @param array $pageInput The page record
      * @param int $lUid The overlay language
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parent The calling parent object
+     * @param PageRepository $parent The calling parent object
      */
     public function getPageOverlay_preProcess(&$pageInput, &$lUid, PageRepository $parent);
 }

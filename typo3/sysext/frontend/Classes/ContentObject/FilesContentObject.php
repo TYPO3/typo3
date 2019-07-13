@@ -199,7 +199,7 @@ class FilesContentObject extends AbstractContentObject
     }
 
     /**
-     * @return \TYPO3\CMS\Frontend\Page\PageRepository
+     * @return \TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     protected function getPageRepository()
     {

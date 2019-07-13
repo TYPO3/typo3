@@ -297,6 +297,6 @@ $GLOBALS['TCA']['pages'] = array_replace_recursive($GLOBALS['TCA']['pages'], $tc
     --div--;LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.tabs.socialmedia,
         --palette--;;opengraph,
         --palette--;;twittercards',
-    (string)\TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT,
+    (string)\TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT,
     'after:title'
 );

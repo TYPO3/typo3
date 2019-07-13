@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Page;
+namespace TYPO3\CMS\Core\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.

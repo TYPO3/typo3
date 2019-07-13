@@ -47,7 +47,7 @@ class DataMapper
     /**
      * A reference to the page select object providing methods to perform language and work space overlays
      *
-     * @var \TYPO3\CMS\Frontend\Page\PageRepository
+     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
      */
     protected $pageSelectObject;
 

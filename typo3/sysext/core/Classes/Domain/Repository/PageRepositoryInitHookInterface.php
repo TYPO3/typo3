@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Page;
+namespace TYPO3\CMS\Core\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,7 +22,7 @@ interface PageRepositoryInitHookInterface
     /**
      * Modifies the DB params
      *
-     * @param \TYPO3\CMS\Frontend\Page\PageRepository $parentObject Parent object
+     * @param PageRepository $parentObject Parent object
      */
     public function init_postProcess(PageRepository $parentObject);
 }

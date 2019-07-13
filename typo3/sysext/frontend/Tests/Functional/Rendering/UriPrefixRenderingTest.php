@@ -75,7 +75,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importDataSet('EXT:frontend/Tests/Functional/Fixtures/pages.xml');
+        $this->importDataSet('EXT:core/Tests/Functional/Fixtures/pages.xml');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),

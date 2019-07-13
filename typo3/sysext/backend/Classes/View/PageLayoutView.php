@@ -1797,7 +1797,7 @@ class PageLayoutView implements LoggerAwareInterface
                     break;
                 case 'shortcut':
                 case 'shortcut_mode':
-                    if ((int)$row['doktype'] === \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) {
+                    if ((int)$row['doktype'] === \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT) {
                         $theData[$field] = $this->getPagesTableFieldValue($field, $row);
                     }
                     break;

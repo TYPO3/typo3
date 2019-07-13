@@ -19,10 +19,10 @@ use ExtbaseTeam\BlogExample\Domain\Model\Post;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Service\EnvironmentService;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
