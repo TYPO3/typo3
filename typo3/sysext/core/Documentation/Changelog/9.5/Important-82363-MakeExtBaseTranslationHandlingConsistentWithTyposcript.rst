@@ -16,7 +16,7 @@ The new behaviour is controlled by the Extbase feature switch :typoscript:`consi
 
      config.tx_extbase.features.consistentTranslationOverlayHandling = 1
 
-The new behaviour is default in TYPO3 v9. The feature switch will be removed in TYPO3 v10, so there will be just
+The new behaviour is enabled by default in TYPO3 v9. The feature switch will be removed in TYPO3 v10, so there will be just
 one way of fetching records.
 You can override the setting using normal TypoScript.
 
@@ -91,28 +91,28 @@ Following examples show how to query data in Extbase in different scenarios, ind
 
    Now (:ts:`consistentTranslationOverlayHandling = 1`):
 
-   ::
+.. code-block:: php
 
-      $querySettings = $query->getQuerySettings();
-      $querySettings->setLanguageUid(1);
-      $querySettings->setLanguageOverlayMode(false);
+    $querySettings = $query->getQuerySettings();
+    $querySettings->setLanguageUid(1);
+    $querySettings->setLanguageOverlayMode(false);
 
 2) Fetch records from the language uid=1, with overlay, but hide non-translated records
    Previously (:ts:`consistentTranslationOverlayHandling = 0`):
 
-   ::
+.. code-block:: php
 
-      $querySettings = $query->getQuerySettings();
-      $querySettings->setLanguageUid(1);
-      $querySettings->setLanguageMode('strict');
+    $querySettings = $query->getQuerySettings();
+    $querySettings->setLanguageUid(1);
+    $querySettings->setLanguageMode('strict');
 
    Now (:ts:`consistentTranslationOverlayHandling = 1`):
 
-   ::
+.. code-block:: php
 
-      $querySettings = $query->getQuerySettings();
-      $querySettings->setLanguageUid(1);
-      $querySettings->setLanguageOverlayMode('hideNonTranslated');
+    $querySettings = $query->getQuerySettings();
+    $querySettings->setLanguageUid(1);
+    $querySettings->setLanguageOverlayMode('hideNonTranslated');
 
 
 +------------------------+-------------------------------------------------------------------------------------------------+----------------------------------------------+------------------------------+
@@ -216,8 +216,8 @@ Summary of the important code changes
    It allows for filtering and sorting by translated values. See :php:`Typo3DbQueryParser->getLanguageStatement()`
 
 
-Most important known issues (ones this patch doesn't solve)
-===========================================================
+Most important known issues (this patch doesn't solve)
+======================================================
 
 - Persistence session uses the same key for default language record and the translation - https://forge.typo3.org/issues/59992
 - Extbase allows to fetch deleted/hidden records - https://forge.typo3.org/issues/86307

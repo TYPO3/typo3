@@ -10,16 +10,16 @@ See :issue:`86365`
 Description
 ===========
 
-Page-based routing is now flexible by adding enhancers to Routes that are generated or resolved with parameters, which
+Page-based routing is now flexible by adding enhancers to routes that are generated or resolved with parameters, which
 were previously appended as GET parameters.
 
 An enhancer creates variants of a specific page-base route for a specific purpose (e.g. one plugin, one Extbase plugin)
-and enhance the existing route path which can contain flexible values, so-called "placeholders".
+and enhances the existing route path which can contain flexible values, so-called "placeholders".
 
-On top, aspects can be registered to a specific enhancer to modify a specific placeholder, like static speaking names
+On top, aspects can be registered to a specific enhancer to modify a specific placeholder, like static human readable names
 within the route path, or dynamically generated.
 
-To give you an overview of what the distinction is, we take a regular page which is available under
+To give you an overview of what the distinction is, we take a regular page which is available at
 
 `https://www.example.com/path-to/my-page`
 
@@ -67,7 +67,7 @@ Within a configuration, an enhancer always evaluates the following properties:
 Simple Enhancer
 ---------------
 
-The Simple Enhancer works with various route arguments to map them to a argument to be used later-on.
+The Simple Enhancer works with various route arguments to map them to an argument to be used later-on.
 
 `index.php?id=13&category=241&tag=Benni`
 results in
@@ -122,7 +122,7 @@ namespace.
 The Plugin Enhancer explicitly sets exactly one additional variant for a specific use-case. In case of Frontend Login,
 we would need to set up multiple configurations of Plugin Enhancer for forgot and recover passwords.
 
-::
+.. code-block:: yaml
 
    routeEnhancers:
      ForgotPassword:
@@ -154,7 +154,7 @@ Extbase Plugin Enhancer
 -----------------------
 
 When creating extbase plugins, it is very common to have multiple controller/action combinations. The Extbase Plugin
-Enhancer is therefore an extension to the regular Plugin Enhancer, except for the functionality that multiple variants
+Enhancer is therefore an extension to the regular Plugin Enhancer, providing the functionality that multiple variants
 are generated, typically built on the amount of controller/action pairs.
 
 The `namespace` option is omitted, as this is built with `extension` and `plugin` name.
@@ -173,7 +173,7 @@ And generate the following URLs
 * `https://www.example.com/path-to/my-page/detail/13`
 * `https://www.example.com/path-to/my-page/archive/2018/8`
 
-::
+.. code-block:: yaml
 
    routeEnhancers:
      NewsPlugin:
@@ -220,11 +220,11 @@ StaticValueMapper
 
 The StaticValueMapper replaces values simply on a 1:1 mapping list of an argument into a speaking segment, useful
 for a checkout process to define the steps into "cart", "shipping", "billing", "overview" and "finish", or in a
-simpler example to create speaking segments for all available months.
+simpler example to create human readable segments for all available months.
 
 The configuration could look like this:
 
-::
+.. code-block:: yaml
 
    routeEnhancers:
      NewsArchive:
@@ -255,12 +255,12 @@ The configuration could look like this:
              december: 12
 
 
-You'll see the placeholder "month" where the aspect replaces the value to a speaking segment.
+You'll see the placeholder "month" where the aspect replaces the value to a human readable url path segment.
 
 It is possible to add an optional `localeMap` to that aspect to use the locale of a value to use in multi-language
 setups.
 
-::
+.. code-block:: yaml
 
     routeEnhancers:
       NewsArchive:
@@ -315,6 +315,8 @@ good example where a route path is modified but is not affected by arguments.
 
 The configuration could look like this::
 
+.. code-block:: yaml
+
    routeEnhancers:
      NewsArchive:
        type: Extbase
@@ -342,9 +344,9 @@ StaticRangeMapper
 -----------------
 
 A static range mapper allows to avoid the `cHash` and narrow down the available possibilities for a placeholder,
-and to explicitly define a range for a value, which is recommended for all kinds of pagination functionalities.
+and to explicitly define a range for a value, which is recommended for all kinds of pagination functionality.
 
-::
+.. code-block:: yaml
 
    routeEnhancers:
      NewsPlugin:
@@ -373,6 +375,8 @@ PersistedAliasMapper
 
 If an extension ships with a slug field, or a different field used for the speaking URL path, this database field
 can be used to build the URL::
+
+.. code-block:: yaml
 
     routeEnhancers:
       NewsPlugin:
@@ -408,7 +412,7 @@ When a placeholder should be fetched from multiple fields of the database, the P
 It allows to combine various fields into one variable, ensuring a unique value by e.g. adding the UID to the field
 without having the need of adding a custom slug field to the system.
 
-::
+.. code-block:: yaml
 
    routeEnhancers:
      Blog:

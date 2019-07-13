@@ -22,7 +22,7 @@ should not be called any longer:
 Impact
 ======
 
-Calling one of the above methods from an external object triggers a PHP :php:`E_USER_DEPRECATED` error.
+Calling one of the above methods from an external object will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

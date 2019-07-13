@@ -9,8 +9,8 @@ See :issue:`86179`
 Description
 ===========
 
-Method :php:`TYPO3\CMS\Backend\Controller\BackendController->render()` has been set from
-public to protected and should not be called any longer.
+Method :php:`TYPO3\CMS\Backend\Controller\BackendController->render()` has changed visibility
+from public to protected and should not be called any longer.
 
 
 Impact

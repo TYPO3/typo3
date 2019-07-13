@@ -39,7 +39,7 @@ should not be used any longer in hooks of that class.
 Impact
 ======
 
-Calling one of the above properties or methods from a third party object triggers a PHP :php:`E_USER_DEPRECATED` error.
+Calling one of the above properties or methods from a third party object will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

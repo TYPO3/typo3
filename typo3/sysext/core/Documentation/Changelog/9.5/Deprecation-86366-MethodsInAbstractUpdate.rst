@@ -14,22 +14,22 @@ upgrade wizards has been implemented, that allows running "old" wizards
 on CLI (enabling extension authors to support both TYPO3 v8 and TYPO3 v9 with one
 wizard).
 
-The following methods have been marked as deprecated and will be removed with TYPO3 v10:
+The following methods of class :php:`TYPO3\CMS\Install\Updates\AbstractUpdate` have been marked as deprecated and will be removed with TYPO3 v10:
 
-* [not scanned] :php:`AbstractUpdate::getTitle()`
-* [not scanned] :php:`AbstractUpdate::setTitle()`
-* [not scanned] :php:`AbstractUpdate::getIdentifier()`
-* [not scanned] :php:`AbstractUpdate::setIdentifier()`
-* [not scanned] :php:`AbstractUpdate::getDescription()`
-* :php:`AbstractUpdate::executeUpdate()`
-* :php:`AbstractUpdate::updateNecessary()`
-* :php:`AbstractUpdate::getPrerequisites()`
-* :php:`AbstractUpdate::setOutput()`
-* :php:`AbstractUpdate::shouldRenderWizard()`
-* :php:`AbstractUpdate::checkIfTableExists()`
-* :php:`AbstractUpdate::installExtensions()`
-* :php:`AbstractUpdate::markWizardAsDone()`
-* :php:`AbstractUpdate::isWizardDone()`
+* [not scanned] :php:`getTitle()`
+* [not scanned] :php:`setTitle()`
+* [not scanned] :php:`getIdentifier()`
+* [not scanned] :php:`setIdentifier()`
+* [not scanned] :php:`getDescription()`
+* :php:`executeUpdate()`
+* :php:`updateNecessary()`
+* :php:`getPrerequisites()`
+* :php:`setOutput()`
+* :php:`shouldRenderWizard()`
+* :php:`checkIfTableExists()`
+* :php:`installExtensions()`
+* :php:`markWizardAsDone()`
+* :php:`isWizardDone()`
 
 The class itself has also been marked as deprecated, construction will trigger a PHP :php:`E_USER_DEPRECATED` error.
 

@@ -15,7 +15,7 @@ disabled via flags. When editing the site configuration through the backend inte
 of environment variables needs to be disabled to be able to add environment configuration through
 the interface.
 
-The format for environment variables is `%env(ENV_NAME)%`. Environment variables may be used to replace
+The format for environment variables is :yaml:`%env(ENV_NAME)%`. Environment variables may be used to replace
 complete values or parts of a value.
 
 
@@ -34,6 +34,6 @@ Example usage in site configuration:
 
 .. code-block:: yaml
 
-	base: 'https://%env(BASE_DOMAIN)%/'
+    base: 'https://%env(BASE_DOMAIN)%/'
 
 .. index:: Backend, ext:core

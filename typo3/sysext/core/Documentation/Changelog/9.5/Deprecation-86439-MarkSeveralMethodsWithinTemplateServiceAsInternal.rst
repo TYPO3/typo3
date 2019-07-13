@@ -9,7 +9,7 @@ See :issue:`86439`
 Description
 ===========
 
-The following methods in :php:`\TYPO3\CMS\Core\TypoScript\TemplateService` have been marked as protected:
+The following methods in :php:`TYPO3\CMS\Core\TypoScript\TemplateService` have been marked as protected:
 
 * :php:`prependStaticExtra()`
 * :php:`versionOL()`

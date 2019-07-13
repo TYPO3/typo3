@@ -48,7 +48,7 @@ changed their visibility from public to protected and should not be called any l
 Impact
 ======
 
-Calling one of the above methods from an external object triggers a PHP :php:`E_USER_DEPRECATED` error.
+Calling one of the above methods from an external object will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
@@ -63,7 +63,7 @@ Migration
 =========
 
 Single task should no longer rely on having an instance of :php:`TaskModuleController` set as
-:php:`$GLOBALS['SOBE'], an instance of the object in given as first constructor argument.
+:php:`$GLOBALS['SOBE'], an instance of the object is given as first constructor argument.
 
 Properties and methods that have been set to protected should be calculated internally instead.
 

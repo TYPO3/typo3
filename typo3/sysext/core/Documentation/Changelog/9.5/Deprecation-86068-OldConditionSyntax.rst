@@ -23,7 +23,8 @@ Using the old condition syntax will trigger a PHP :php:`E_USER_DEPRECATED` error
 Also the combination of multiple condition blocks with :typoscript:`AND`, :typoscript:`OR`, :typoscript:`&&` and :typoscript:`||` has been
 marked as deprecated and will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
-If this is not possible yet to fully migrate to Symfony expression language, the feature flag :php:`[SYS][features][TypoScript.strictSyntax]` can be disabled via Settings -> Configure Installation-Wide Options or directly in :file:`LocalConfiguration.php`.
+If it is not possible yet to fully migrate to Symfony expression language, the feature flag :php:`[SYS][features][TypoScript.strictSyntax]`
+can be disabled via Settings -> Configure Installation-Wide Options or directly in :file:`LocalConfiguration.php`.
 
 
 Affected Installations

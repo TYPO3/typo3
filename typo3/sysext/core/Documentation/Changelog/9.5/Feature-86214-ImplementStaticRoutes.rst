@@ -11,8 +11,8 @@ Description
 ===========
 
 The site configuration module now has configuration options to add static routes on a per site basis.
-Take the following example: In a multi-site installation you want to have different robots.txt files for each site that
-should be reachable at /robots.txt on each site. You can now add a static route "robots.txt" to your site and
+Take the following example: In a multi-site installation you want to have different :file:`robots.txt` files for each site that
+should be reachable at ``/robots.txt`` on each site. You can now add a static route "robots.txt" to your site and
 define which content should be delivered.
 
 The TYPO3 SEO extension provides a sitemap for TYPO3 out of the box, but it's only reachable at a specific page type.

@@ -15,15 +15,15 @@ Example:
 
 .. code-block:: typoscript
 
-	page.10 = TEXT
-	page.10.data = site:base
-	page.10.wrap = This is your base URL: |
+    page.10 = TEXT
+    page.10.data = site:base
+    page.10.wrap = This is your base URL: |
 
 Where :typoscript:`site` is the keyword for accessing an aspect, and the following parts are the configuration key(s) to access.
 
 .. code-block:: typoscript
 
-	data = site:customConfigKey.nested.value
+    data = site:customConfigKey.nested.value
 
 Impact
 ======
