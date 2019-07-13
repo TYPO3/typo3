@@ -97,13 +97,6 @@ Example value: "&amp;showUid=###UID###"</source>
 				<source>index_config:table2index</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="chashcalc.description">
-				<source>If checked, the URL in the search result for records will be encoded with a "&amp;cHash" parameter to make it cacheable. Use only if supported by the plugin!</source>
-			</trans-unit>
-			<trans-unit id="_chashcalc.seeAlso">
-				<source>index_config:table2index</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="recordsbatch.description">
 				<source>Enter how many records to index for each instance of the indexing process (how many per minute). Default is 100 records.</source>
 			</trans-unit>

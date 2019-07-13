@@ -462,7 +462,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $resultData['headerOnly'] = $headerOnly;
         $resultData['CSSsuffix'] = $specRowConf['CSSsuffix'] ? '-' . $specRowConf['CSSsuffix'] : '';
         if ($this->multiplePagesType($row['item_type'])) {
-            $dat = unserialize($row['cHashParams']);
+            $dat = json_decode($row['static_page_arguments'], true);
             $pp = explode('-', $dat['key']);
             if ($pp[0] != $pp[1]) {
                 $resultData['titleaddition'] = ', ' . LocalizationUtility::translate('result.page', 'IndexedSearch') . ' ' . $dat['key'];
@@ -484,7 +484,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             } else {
                 // Suspicious, so linking to page instead...
                 $copiedRow = $row;
-                unset($copiedRow['cHashParams']);
+                unset($copiedRow['static_page_arguments']);
                 $title = $this->linkPageATagWrap(
                     htmlspecialchars($title),
                     $this->linkPage($row['page_id'], $copiedRow)
@@ -535,7 +535,6 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $pathLinkData = $this->linkPage(
                 $pathId,
                 [
-                    'cHashParams' => $row['cHashParams'],
                     'data_page_type' => $row['data_page_type'],
                     'data_page_mp' => $pathMP,
                     'sys_language_uid' => $row['sys_language_uid'],
@@ -1329,9 +1328,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     {
         $pageLanguage = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'contentId', 0);
         // Parameters for link
-        $urlParameters = (array)unserialize($row['cHashParams']);
+        $urlParameters = [];
         if ($row['static_page_arguments'] !== null) {
-            $urlParameters = array_replace_recursive($urlParameters, json_decode($row['static_page_arguments'], true));
+            $urlParameters = json_decode($row['static_page_arguments'], true);
         }
         // Add &type and &MP variable:
         if ($row['data_page_mp']) {

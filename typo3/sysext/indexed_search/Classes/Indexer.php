@@ -24,7 +24,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -182,15 +181,6 @@ class Indexer
     public $indexExternalUrl_content = '';
 
     /**
-     * cHash params array
-     *
-     * @var array
-     */
-    public $cHashParams = [];
-
-    /**
-     * cHashparams array
-     *
      * @var int
      */
     public $freqRange = 32000;
@@ -288,10 +278,6 @@ class Indexer
                             // MP variable, if any (Mount Points)
                             // Group list
                             $this->conf['gr_list'] = implode(',', GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('frontend.user', 'groupIds', [0, -1]));
-                            // cHash string for additional parameters
-                            $this->conf['cHash'] = $pObj->cHash;
-                            // cHash array with additional parameters
-                            $this->conf['cHash_array'] = $pObj->cHash_array;
                             // page arguments array
                             $this->conf['staticPageArguments'] = [];
                             /** @var PageArguments $pageArguments */
@@ -361,10 +347,9 @@ class Indexer
      * @param int $sys_language_uid sys_language uid, typically &L=
      * @param string $MP The MP variable (Mount Points), &MP=
      * @param array $uidRL Rootline array of only UIDs.
-     * @param array $cHash_array Array of GET variables to register with this indexing
-     * @param bool $createCHash If set, calculates a cHash value from the $cHash_array. Probably you will not do that since such cases are indexed through the frontend and the idea of this interface is to index non-cacheable pages from the backend!
+     * @param array $queryArguments Array of GET variables to register with this indexing
      */
-    public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $cHash_array = [], $createCHash = false)
+    public function backend_initIndexer($id, $type, $sys_language_uid, $MP, $uidRL, $queryArguments = [])
     {
         // Setting up internal configuration from config array:
         $this->conf = [];
@@ -379,17 +364,7 @@ class Indexer
         // MP variable, if any (Mount Points) (string)
         $this->conf['gr_list'] = '0,-1';
         // Group list (hardcoded for now...)
-        // cHash values:
-        if ($createCHash) {
-            /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHash */
-            $cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
-            $this->conf['cHash'] = $cacheHash->generateForParameters(HttpUtility::buildQueryString($cHash_array));
-        } else {
-            $this->conf['cHash'] = '';
-        }
-        // cHash string for additional parameters
-        $this->conf['cHash_array'] = $cHash_array;
-        // Array of the additional parameters
+        $this->conf['staticPageArguments'] = $queryArguments;
         // Set to defaults
         $this->conf['freeIndexUid'] = 0;
         $this->conf['freeIndexSetId'] = 0;
@@ -472,15 +447,6 @@ class Indexer
      */
     public function init()
     {
-        // Initializing:
-        $this->cHashParams = $this->conf['cHash_array'];
-        if (is_array($this->cHashParams) && !empty($this->cHashParams)) {
-            if ($this->conf['cHash']) {
-                // Add this so that URL's come out right...
-                $this->cHashParams['cHash'] = $this->conf['cHash'];
-            }
-            unset($this->cHashParams['encryptionKey']);
-        }
         // Setting phash / phash_grouping which identifies the indexed page based on some of these variables:
         $this->setT3Hashes();
         // Indexer configuration from Extension Manager interface:
@@ -1421,7 +1387,6 @@ class Indexer
         $fields = [
             'phash' => $this->hash['phash'],
             'phash_grouping' => $this->hash['phash_grouping'],
-            'cHashParams' => serialize($this->cHashParams),
             'static_page_arguments' => json_encode($this->conf['staticPageArguments']),
             'contentHash' => $this->content_md5h,
             'data_page_id' => $this->conf['id'],
@@ -1450,8 +1415,7 @@ class Indexer
                 ->getConnectionForTable('index_phash');
             $connection->insert(
                 'index_phash',
-                $fields,
-                ['cHashParams' => Connection::PARAM_LOB]
+                $fields
             );
         }
         // PROCESSING index_section
@@ -1476,8 +1440,7 @@ class Indexer
         if ($this->indexerConfig['debugMode']) {
             $fields = [
                 'phash' => $this->hash['phash'],
-                'debuginfo' => serialize([
-                    'cHashParams' => $this->cHashParams,
+                'debuginfo' => json_encode([
                     'external_parsers initialized' => array_keys($this->external_parsers),
                     'conf' => array_merge($this->conf, ['content' => substr($this->conf['content'], 0, 1000)]),
                     'contentParts' => array_merge($this->contentParts, ['body' => substr($this->contentParts['body'], 0, 1000)]),
@@ -1574,7 +1537,7 @@ class Indexer
      *
      * @param array $hash Array with phash and phash_grouping keys for file
      * @param string $file File name
-     * @param array $subinfo Array of "cHashParams" for files: This is for instance the page index for a PDF file (other document types it will be a zero)
+     * @param array $subinfo Array of "static_page_arguments" for files: This is for instance the page index for a PDF file (other document types it will be a zero)
      * @param string $ext File extension determining the type of media.
      * @param int $mtime Modification time of file.
      * @param int $ctime Creation time of file.
@@ -1595,7 +1558,7 @@ class Indexer
         $fields = [
             'phash' => $hash['phash'],
             'phash_grouping' => $hash['phash_grouping'],
-            'cHashParams' => serialize($subinfo),
+            'static_page_arguments' => json_encode($subinfo),
             'contentHash' => $content_md5h,
             'data_filename' => $file,
             'item_type' => $storeItemType,
@@ -1618,8 +1581,7 @@ class Indexer
                 ->getConnectionForTable('index_phash');
             $connection->insert(
                 'index_phash',
-                $fields,
-                ['cHashParams' => Connection::PARAM_LOB]
+                $fields
             );
         }
         // PROCESSING index_fulltext
@@ -1640,8 +1602,8 @@ class Indexer
         if ($this->indexerConfig['debugMode']) {
             $fields = [
                 'phash' => $hash['phash'],
-                'debuginfo' => serialize([
-                    'cHashParams' => $subinfo,
+                'debuginfo' => json_encode([
+                    'static_page_arguments' => $subinfo,
                     'contentParts' => array_merge($contentParts, ['body' => substr($contentParts['body'], 0, 1000)]),
                     'logs' => $this->internal_log,
                     'lexer' => $this->lexerObj->debugString
@@ -2203,7 +2165,6 @@ class Indexer
             'type' => (int)$this->conf['type'],
             'sys_lang' => (int)$this->conf['sys_language_uid'],
             'MP' => (string)$this->conf['MP'],
-            'cHash' => $this->cHashParams,
             'staticPageArguments' => $this->conf['staticPageArguments'],
         ];
         // Set grouping hash (Identifies a "page" combined of id, type, language, mountpoint and cHash parameters):

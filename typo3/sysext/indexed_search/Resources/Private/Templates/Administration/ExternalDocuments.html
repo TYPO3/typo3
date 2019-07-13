@@ -16,7 +16,7 @@
                     <th><f:translate key="field.parseTime" /></th>
                     <th><f:translate key="field.groups" /></th>
                     <th><f:translate key="field.sub" /></th>
-                    <th><f:translate key="field.cHash" /></th>
+                    <th><f:translate key="field.staticPageArguments" /></th>
                     <th><f:translate key="field.pHash" /></th>
                     <th><f:translate key="field.path" /></th>
                 </tr>
@@ -49,8 +49,8 @@
                         <td>{data.numberOfSections}/{data.grList.0.pcount}/{data.numberOfFulltext}</td>
                         <td>{data.pcount}</td>
                         <td>
-                            <f:if condition="{data.cHashParams}">
-                                <f:for each="{data.cHashParams}" as="value" key="key">
+                            <f:if condition="{data.static_page_arguments}">
+                                <f:for each="{data.static_page_arguments}" as="value" key="key">
                                     {key}={value}<br>
                                 </f:for>
                             </f:if>

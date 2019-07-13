@@ -145,7 +145,7 @@ class AdministrationRepository
             ->groupBy(
                 'phash_grouping',
                 'phash',
-                'cHashParams',
+                'static_page_arguments',
                 'data_filename',
                 'data_page_id',
                 'data_page_type',
@@ -329,7 +329,7 @@ class AdministrationRepository
             ->groupBy(
                 'phash_grouping',
                 'phash',
-                'cHashParams',
+                'static_page_arguments',
                 'data_filename',
                 'data_page_id',
                 'data_page_type',
@@ -445,13 +445,11 @@ class AdministrationRepository
     protected function addAdditionalInformation(array &$row)
     {
         $grListRec = $this->getGrlistRecord($row['phash']);
-        $unserializedCHashParams = unserialize($row['cHashParams']);
         $row['static_page_arguments'] = $row['static_page_arguments'] ? json_decode($row['static_page_arguments'], true) : null;
 
         $row['numberOfWords'] = $this->getNumberOfWords($row['phash']);
         $row['numberOfSections'] = $this->getNumberOfSections($row['phash']);
         $row['numberOfFulltext'] = $this->getNumberOfFulltextRecords($row['phash']);
-        $row['cHashParams'] = !empty($unserializedCHashParams) ? $unserializedCHashParams : '';
         $row['grList'] = $grListRec;
     }
 
@@ -496,7 +494,7 @@ class AdministrationRepository
                 'ISEC.uniqid',
                 'IP.phash',
                 'IP.phash_grouping',
-                'IP.cHashParams',
+                'IP.static_page_arguments',
                 'IP.data_filename',
                 'IP.data_page_id',
                 'IP.data_page_type',
@@ -531,7 +529,7 @@ class AdministrationRepository
             ->groupBy(
                 'IP.phash',
                 'IP.phash_grouping',
-                'IP.cHashParams',
+                'IP.static_page_arguments',
                 'IP.data_filename',
                 'IP.data_page_id',
                 'IP.data_page_type',

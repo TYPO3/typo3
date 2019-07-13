@@ -1470,6 +1470,7 @@ The following database fields have been removed:
 
 * `pages.alias`
 * `pages.t3ver_label`
+* `index_phash.cHashParams`
 * `index_phash.data_page_reg1`
 * `sys_category.t3ver_label`
 * `sys_collection.t3ver_label`

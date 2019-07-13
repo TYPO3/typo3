@@ -81,7 +81,7 @@ class CrawlerHook
                     // Prepare indexer (make instance, initialize it, set special features for indexing parameterized content - probably none of this should be changed by you) [DON'T CHANGE]:
                     /** @var Indexer $indexerObj */
                     $indexerObj = GeneralUtility::makeInstance(Indexer::class);
-                    $indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams, false);
+                    $indexerObj->backend_initIndexer($cfgRec['pid'], 0, $sys_language_uid, '', $rl, $GETparams);
                     $indexerObj->backend_setFreeIndexUid($cfgRec['uid'], $cfgRec['set_id']);
                     $indexerObj->forceIndexing = true;
                     // Indexing the content of the item (see \TYPO3\CMS\IndexedSearch\Indexer::backend_indexAsTYPO3Page() for options)

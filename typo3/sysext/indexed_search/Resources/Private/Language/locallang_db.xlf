@@ -54,9 +54,6 @@
 			<trans-unit id="index_config.externalUrl">
 				<source>External URL (eg. "http://www.domain.org/")</source>
 			</trans-unit>
-			<trans-unit id="index_config.chashcalc">
-				<source>Calculate cHash (force caching)?</source>
-			</trans-unit>
 			<trans-unit id="index_config.filepath">
 				<source>Filepath</source>
 			</trans-unit>

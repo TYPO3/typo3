@@ -5,7 +5,6 @@
 CREATE TABLE index_phash (
   phash int(11) DEFAULT '0' NOT NULL,
   phash_grouping int(11) DEFAULT '0' NOT NULL,
-  cHashParams blob,
   static_page_arguments blob,
   data_filename varchar(1024) DEFAULT '' NOT NULL,
   data_page_id int(11) unsigned DEFAULT '0' NOT NULL,
@@ -141,7 +140,6 @@ CREATE TABLE index_config (
   fieldlist varchar(255) DEFAULT '' NOT NULL,
   externalUrl varchar(255) DEFAULT '' NOT NULL,
   indexcfgs text,
-  chashcalc tinyint(3) unsigned DEFAULT '0' NOT NULL,
   filepath varchar(255) DEFAULT '' NOT NULL,
   extensions varchar(255) DEFAULT '' NOT NULL,
 

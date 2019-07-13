@@ -19,7 +19,7 @@ the TYPO3 indexer MUST take the following into account:
 - Only cached pages can be indexed.Pages with dynamic content - such as
   search pages etc - should supply their own search engine for lookup in
   specific tables. Another option is to selectively allow certain of
-  those "dynamic" pages to be cached anyway (see the cHashParams
+  those "dynamic" pages to be cached anyway (see the static_page_arguments
   concept used by some plugins)
 
 - Pages in more than one language must be indexed separately as
@@ -27,13 +27,13 @@ the TYPO3 indexer MUST take the following into account:
 
 - Pages with message boards may have multiple indexed versions based on
   what is displayed on the page: The overview or a single message board
-  item? This is determined by the cHashParams value.
+  item? This is determined by the static_page_arguments value.
 
 - Pages with access restricted to must be observed!
 
 - Because pages can contain different content whether a user is logged
   in or not and even based on which groups he is a member of, a single
-  page (identified by the combination of id/type/language/cHashParams)
+  page (identified by the combination of id/type/language/static_page_arguments)
   may even be available in more than one indexed version based on the
   user-groups. But while the same page may have different content based
   on the user-groups (and so must be indexed once for each) such pages
@@ -61,7 +61,7 @@ picture below while reading the bulletlist here:
      (will be re-indexed on the next hit).
 
    - pHash: The "id" of the search row. The hash is calculated based on
-     id/type/language/MP/cHashParams/gr\_list of the page when indexed. For
+     id/type/language/MP/static_page_arguments/gr\_list of the page when indexed. For
      external media this is based on filepath/page-interval (for PDF's
      only)
 
@@ -80,8 +80,8 @@ picture below while reading the bulletlist here:
    - grlist: This is the gr\_list of the user which initiated the indexing
      operation.
 
-   - cHashParams: Additional parameters which are identifying the page in
-     addition to the id/type number which usually does that.
+   - static_page_arguments: Additional parameters which are identifying the
+     page in addition to the id/type number which usually does that.
 
 #. The page "Content elements" has one indexed version. The page-id of
    the root-page is "1" and the page on level-1 in the rootline had the
@@ -171,7 +171,7 @@ picture below while reading the bulletlist here:
    Several complex scenarios
 
 On the image below we are looking at another scenario. In this case
-the cHashParams is obviously used by the plugin "tt\_board". The
+the static_page_arguments is obviously used by the plugin "tt\_board". The
 plugin has been constructed so intelligently that it links to the
 messages in the message board without disabling the normal page-cache
 but rather sending the tt\_board\_uid parameter along with a so called
@@ -187,7 +187,7 @@ in the message board - it also means we can index the page!
 
 As you see the main board page showing the list of messages/threads
 ("Sourcream and Oni...") is indexed without any values for the
-parameter tt\_board\_uid (the cHashParams field is blank). Then it has
+parameter tt\_board\_uid (static_page_arguments). Then it has
 also been indexed one time for each display of a message. In a search
 result any of these five rows may appear as an independent result row
 - after all they are to be regarded as a single page with unique

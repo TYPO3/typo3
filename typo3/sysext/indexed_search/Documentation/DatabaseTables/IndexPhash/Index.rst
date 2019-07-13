@@ -32,14 +32,14 @@ phash
          This is a unique representation of the 'page' indexed.
 
          For TYPO3 pages this is a serialization of id,type,gr\_list (see
-         later), MP and cHashParams (which enables 'subcaching' with extra
+         later), MP and additional query parameters (which enables 'subcaching' with extra
          parameters). This concept is also used for TYPO3 caching (although the
          caching hash includes the all-array and thus takes the template into
          account, which this hash does not! It's expected that template changes
          through conditions would not seriously alter the page content)
 
          For external media this is a serialization of 1) unique filename id,
-         2) any subpage indication (parallel to cHashParams). gr\_list is NOT
+         2) any subpage indication (parallel to query parameters). gr\_list is NOT
          taken into consideration here!
 
 
@@ -113,18 +113,18 @@ tstamp
 
 
 
-.. _index-phash-chashparams:
+.. _index-phash-static_page_arguments:
 
-cHashParams
-"""""""""""
+static_page_arguments
+"""""""""""""""""""""
 
 .. container:: table-row
 
    Field
-         cHashParams
+         static_page_arguments
 
    Description
-         The cHashParams.
+         The Static Page Arguments - URL parameter that are used for caching.
 
          For TYPO3 pages: These are used to re-generate the actual url of the
          TYPO3 page in question

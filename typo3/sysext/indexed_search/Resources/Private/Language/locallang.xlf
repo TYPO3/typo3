@@ -363,9 +363,6 @@ All search words are converted to lowercase.
 			<trans-unit id="field.sub">
 				<source>Sub</source>
 			</trans-unit>
-			<trans-unit id="field.cHash">
-				<source>Chash</source>
-			</trans-unit>
 			<trans-unit id="field.staticPageArguments">
 				<source>Static Page Arguments</source>
 			</trans-unit>

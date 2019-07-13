@@ -287,7 +287,7 @@ class AdministrationController extends ActionController
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_debug');
         $debugRow = $queryBuilder
-            ->select('*')
+            ->select('debuginfo')
             ->from('index_debug')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -296,11 +296,11 @@ class AdministrationController extends ActionController
                 )
             )
             ->execute()
-            ->fetchAll();
+            ->fetch();
         $debugInfo = [];
         $lexer = '';
         if (is_array($debugRow)) {
-            $debugInfo = unserialize($debugRow[0]['debuginfo']);
+            $debugInfo = json_decode($debugRow['debuginfo'], true);
             $lexer = $debugInfo['lexer'];
             unset($debugInfo['lexer']);
         }

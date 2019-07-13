@@ -559,4 +559,9 @@ return [
             'Deprecation-88559-TSFE-sys_language_isocode.rst',
         ],
     ],
+    'TYPO3\CMS\IndexedSearch\Indexer->cHashParams' => [
+        'restFiles' => [
+            'Breaking-88741-CHashCalculationInIndexedSearchRemoved.rst',
+        ],
+    ],
 ];
