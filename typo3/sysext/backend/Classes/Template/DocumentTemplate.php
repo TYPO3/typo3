@@ -417,7 +417,6 @@ function jumpToUrl(URL) {
 
         $headerStart = '<!DOCTYPE html>';
         $this->pageRenderer->setXmlPrologAndDocType($headerStart);
-        header('Content-Type:text/html;charset=utf-8');
         $this->pageRenderer->setCharSet('utf-8');
         $this->pageRenderer->setMetaTag('name', 'generator', $this->generator());
         $this->pageRenderer->setMetaTag('name', 'robots', 'noindex,follow');
