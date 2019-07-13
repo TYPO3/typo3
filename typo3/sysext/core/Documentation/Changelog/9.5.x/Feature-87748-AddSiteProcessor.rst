@@ -9,7 +9,7 @@ See :issue:`87748`
 Description
 ===========
 
-A new Site Processor has been introduced which can be used to fetch data from the site entity
+A new Site Processor :php:`TYPO3\CMS\Frontend\DataProcessing\SiteProcessor` has been introduced which can be used to fetch data from the site entity.
 
 .. code-block:: typoscript
 

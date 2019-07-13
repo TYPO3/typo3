@@ -14,15 +14,15 @@ content in a different language than the default language (sys_language_uid=0).
 
 The functionality of "fallbackChain" can now be defined in any kind of fallback type (see below).
 
-The "fallbackChain" checks access / availability of a page translation of a language. And if
+The "fallbackChain" checks access / availability of a page translation of a language. If
 this language does not exist, TYPO3 checks for other languages, and uses this language then
 for showing content.
 
 This results in three different kinds of rendering modes ("Fallback Type") for content in
-translated content, however it is necessary to understand the overlay concept when fetching
+translated pages, however it is necessary to understand the overlay concept when fetching
 content in TYPO3 Frontend.
 
-Using "language overlays" means that the default language records are fetched at first.
+Using "language overlays" means that the default language records are fetched first.
 Also, various "enable fields" (e.g. hidden / frontend user groups etc) are evaluated for the
 default language. Each record then is "overlaid" with the record of the target language.
 
@@ -40,7 +40,7 @@ This mode is typically used for 1:1 translations of fully different languages li
 "English" (default) and "Danish" (translation).
 
 2. "fallback" -- Fetch records from default language, and checks for a translation of
-each record. If the record has no translation, the default language is still shown.
+each record. If the record has no translation, the default language is shown.
 
 This scenario is usually used when the default language is "German" but the translation
 is "Swiss-German" where only different content elements are translated, but the rest is
@@ -57,8 +57,8 @@ are added in language "Swahili".
 Impact
 ======
 
-Existing installations with site configuration "fallback" will also now render the non-translated
-content (un-localized records).
+Existing installations with site configuration "fallback" will now render the non-translated
+content (un-localized records), too.
 
 Regardless of the fallback type, records without localization parent, and records set to "-1"
 (All Languages) are always fetched.

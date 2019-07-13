@@ -9,24 +9,24 @@ See :issue:`86047`
 Description
 ===========
 
-The following properties have changed their visibility from public to protected.
+The following properties of class :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have changed their visibility from public to protected and should not be called any longer.
 
-* :php:`TypoScriptFrontendController->pageAccessFailureHistory`
-* :php:`TypoScriptFrontendController->workspacePreview` (not in use anymore)
-* :php:`TypoScriptFrontendController->ADMCMD_preview_BEUSER_uid` (not in use anymore)
-* :php:`TypoScriptFrontendController->debug` (not in use anymore)
-* :php:`TypoScriptFrontendController->MP_defaults` (not in use anymore outside of TSFE)
-* :php:`TypoScriptFrontendController->loginAllowedInBranch` (use checkIfLoginAllowedInBranch())
+* :php:`pageAccessFailureHistory`
+* :php:`workspacePreview` (not in use anymore)
+* :php:`ADMCMD_preview_BEUSER_uid` (not in use anymore)
+* :php:`debug` (not in use anymore)
+* :php:`MP_defaults` (not in use anymore outside of TSFE)
+* :php:`loginAllowedInBranch` (use checkIfLoginAllowedInBranch())
 
-The following methods have changed their signature to be protected, as their purpose is to be called from
+The following methods  of class :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have changed their visibility from public to protected, as their purpose is to be called from
 within :php:`TypoScriptFrontendController`.
 
-* :php:`TypoScriptFrontendController->tempPageCacheContent()`
-* :php:`TypoScriptFrontendController->realPageCacheContent()`
-* :php:`TypoScriptFrontendController->setPageCacheContent()`
-* :php:`TypoScriptFrontendController->clearPageCacheContent_pidList()`
-* :php:`TypoScriptFrontendController->setSysLastChanged()`
-* :php:`TypoScriptFrontendController->contentStrReplace()`
+* :php:`tempPageCacheContent()`
+* :php:`realPageCacheContent()`
+* :php:`setPageCacheContent()`
+* :php:`clearPageCacheContent_pidList()`
+* :php:`setSysLastChanged()`
+* :php:`contentStrReplace()`
 
 
 Impact

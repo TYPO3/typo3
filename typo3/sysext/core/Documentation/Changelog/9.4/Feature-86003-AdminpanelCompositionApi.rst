@@ -268,10 +268,12 @@ Purpose
 Adminpanel module settings interface denotes that a module has own settings.
 
 The adminpanel knows two types of settings:
-* ModuleSettings are relevant for the module itself and its representation (for example the log module provides
-  settings where displayed log level and grouping of the module can be configured)
-* PageSettings are relevant for rendering the page (for example the preview module provides settings showing or
-  hiding hidden content elements or simulating a specific rendering time)
+
+* ModuleSettings are relevant for the module itself and its representation (for example the log module provides settings
+  where displayed log level and grouping of the module can be configured)
+
+* PageSettings are relevant for rendering the page (for example the preview module provides settings showing or hiding
+  hidden content elements or simulating a specific rendering time)
 
 If a module provides settings relevant to its own content, use this interface.
 
@@ -354,8 +356,10 @@ Purpose
 Adminpanel page settings interface denotes that a module has settings regarding the page rendering.
 
 The adminpanel knows two types of settings:
+
 * ModuleSettings are relevant for the module itself and its representation (for example the log module provides settings
   where displayed log level and grouping of the module can be configured)
+
 * PageSettings are relevant for rendering the page (for example the preview module provides settings showing or hiding
   hidden content elements or simulating a specific rendering time)
 

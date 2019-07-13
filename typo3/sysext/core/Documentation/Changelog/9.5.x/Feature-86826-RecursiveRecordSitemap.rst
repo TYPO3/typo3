@@ -9,9 +9,9 @@ See :issue:`86826`
 Description
 ===========
 
-The :php:`RecordsXmlSitemapDataProvider` supports now the configuration `recursive` to include
+The class :php:`TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider` supports now the configuration `recursive` to include
 records not only from provided list of page ids but also its subpages.
-`recursive` refers to the number of levels taken into account beyond the `pid` page. (default: 0)
+:typoscript:`recursive` refers to the number of levels taken into account beyond the `pid` page. (default: 0)
 
 Impact
 ======
@@ -37,12 +37,10 @@ A full example:
                      fieldToParameterMap {
                         uid = tx_news_pi1[news]
                      }
-
                      additionalGetParameters {
                         tx_news_pi1.controller = News
                         tx_news_pi1.action = detail
                      }
-
                      useCacheHash = 1
                   }
                }
@@ -50,6 +48,6 @@ A full example:
          }
       }
    }
-}
 
-.. index:: Frontend, ext:seo, NotScanned
+
+.. index:: Frontend, ext:seo

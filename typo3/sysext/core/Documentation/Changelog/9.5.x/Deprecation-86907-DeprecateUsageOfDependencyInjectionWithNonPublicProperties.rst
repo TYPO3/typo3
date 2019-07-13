@@ -9,15 +9,17 @@ See :issue:`86907`
 Description
 ===========
 
-The dependency injection via properties has been deprecated for all properties that are non public.
+The dependency injection via properties has been marked as deprecated for all properties that are non public.
 
-While there are several reasons not to use property injection at all there is one specific drawback with non public properties. To be able to inject dependencies into non public properties, said properties have to be made accessible during runtime. As that process is quite slow and expensive and non cachable, it should not be used at all.
+While there are several reasons not to use property injection at all there is one specific drawback with non public properties.
+To be able to inject dependencies into non public properties, said properties have to be made accessible during runtime.
+As that process is quite slow and expensive and non cachable, it should not be used at all.
 
 
 Impact
 ======
 
-Dependency injection will no longer work with non public properties
+Dependency injection will no longer work with non public properties.
 
 
 Affected Installations

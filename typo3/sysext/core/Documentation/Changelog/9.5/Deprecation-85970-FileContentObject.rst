@@ -9,15 +9,15 @@ See :issue:`85970`
 Description
 ===========
 
-The cObject FILE mixed concerns (rendering an image, or dumping file contents), and
+The cObject :typoscript:`FILE` mixed concerns (rendering an image, or dumping file contents), and
 rather became low-level since Fluid's rise in rendering Frontend.
 
-FILE shows an image if the file is jpg,jpeg,gif,png (but not SVG), and if has a
-different file ending, it will check if the file is less than 1MB, it will get its contents
+:typoscript:`FILE` shows an image if the file is jpg,jpeg,gif,png (but not SVG). If a
+different file ending is detected, it will check if the file is less than 1MB, and will get its contents
 and output that. If the file is 1 byte bigger, nothing is done.
 Fluid offers more flexibility nowadays.
 
-Thus, cObject FILE will be removed in TYPO3 v10.
+Thus, cObject :typoscript:`FILE` will be removed in TYPO3 v10.
 
 
 Impact

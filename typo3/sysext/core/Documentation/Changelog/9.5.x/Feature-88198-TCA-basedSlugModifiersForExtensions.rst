@@ -17,7 +17,7 @@ Hooks can be registered via
 
     $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config']['generatorOptions']['postModifiers'][] = My\Class::class . '->method';
 
-in `EXT:myextension/Configuration/TCA/Overrides/table.php`, where $tableName can be a table like `pages` and
+in :file:`EXT:myextension/Configuration/TCA/Overrides/table.php`, where $tableName can be a table like `pages` and
 `$fieldName` matches the slug field name, e.g. `slug`.
 
 .. code-block:: php
@@ -45,7 +45,7 @@ All hooks need to return the modified slug value.
 Impact
 ======
 
-Any extension now allows to modify a specific slug, for instance only for a specific part of the page tree.
+Any extension can modify a specific slug, for instance only for a specific part of the page tree.
 
 It is also possible for extensions to implement custom functionality like "Do not include in slug generation" as known from RealURL.
 

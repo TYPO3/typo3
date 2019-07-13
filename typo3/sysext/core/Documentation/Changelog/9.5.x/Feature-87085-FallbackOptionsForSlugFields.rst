@@ -12,8 +12,8 @@ Description
 In case of SEO optimizations and the daily work of an editor, now it is possible to define a list of fields in the slug
 configuration as nested array:
 
-
 .. code-block:: php
+
    'columns' => [
       'slug' => [
          'config' => [
@@ -27,6 +27,7 @@ configuration as nested array:
 The fallback field can also be combined with other fields:
 
 .. code-block:: php
+
    'columns' => [
       'slug' => [
          'config' => [

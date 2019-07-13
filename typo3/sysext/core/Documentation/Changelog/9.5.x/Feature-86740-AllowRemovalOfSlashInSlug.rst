@@ -18,8 +18,9 @@ Impact
 
 Especially for enhancing the site configuration it might be useful to set the configuration.
 
-Full example
+Easy example
 ------------
+
 By using the following configuration, slashes are removed from the slug.
 
 .. code-block:: php
@@ -39,6 +40,7 @@ By using the following configuration, slashes are removed from the slug.
 
 Advanced examples
 -----------------
+
 The following configuration uses more replacements:
 
 .. code-block:: php
@@ -59,4 +61,4 @@ The following configuration uses more replacements:
 
 This will change the provided slug `Some Job in city1/city2 (f/m)` to `some-job-in-city1-city2`.
 
-.. index:: Frontend, ext:core, NotScanned
+.. index:: Frontend, ext:core

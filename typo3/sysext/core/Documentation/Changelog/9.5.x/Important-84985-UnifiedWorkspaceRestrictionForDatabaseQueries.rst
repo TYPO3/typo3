@@ -16,9 +16,9 @@ workspace.
 
 As an important note and limitation of any workspace-related restrictions, fetching the exact
 records need to be handled after the SQL results are fetched, by overlaying the records with
-`BackendUtility::getRecordWSOL()`, `PageRepository->versionOL()` or `PlainDataResolver`.
+:php:`BackendUtility::getRecordWSOL()`, :php:`PageRepository->versionOL()` or `PlainDataResolver`.
 
 For now, the WorkspaceRestriction must be used explicitly in various contexts and is not applied
 automatically.
 
-.. index:: Database, PHP-API, NotScanned
+.. index:: Database, PHP-API

@@ -14,7 +14,7 @@ from public to protected.
 Some additional functionality has been marked as deprecated, as this has been replaced with the new RTE configuration
 since TYPO3 v8.
 
-The following properties have changed visibility to protected:
+The following properties have changed visibility from public to protected and should not be called any longer:
 
 * :php:`blockElementList`
 * :php:`recPid`
@@ -25,7 +25,7 @@ The following properties have changed visibility to protected:
 * :php:`getKeepTags_cache`
 * :php:`allowedClasses`
 
-The following public methods have changed visibility to protected:
+The following methods have changed visibility from public to protected and should not be called any longer:
 
 * :php:`TS_images_db()`
 * :php:`TS_links_db()`

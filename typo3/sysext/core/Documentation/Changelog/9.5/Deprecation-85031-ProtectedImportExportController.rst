@@ -9,47 +9,47 @@ See :issue:`85031`
 Description
 ===========
 
-The following properties changed their visibility from public to protected and should not be called any longer:
+The following properties of class :php:`TYPO3\CMS\Impexp\Controller\ImportExportController` changed their visibility from public to protected and should not be called any longer:
 
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->pageinfo`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->id`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->perms_clause`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extObj`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->doc`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->content`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extClassConf`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modMenu_setDefaultList`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modMenu_dontValidateList`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modMenu_type`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->modTSconfig`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->MOD_SETTINGS`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->MOD_MENU`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->CMD`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->MCONF`
+* [not scanned] :php:`pageinfo`
+* [not scanned] :php:`id`
+* [not scanned] :php:`perms_clause`
+* [not scanned] :php:`extObj`
+* [not scanned] :php:`doc`
+* [not scanned] :php:`content`
+* [not scanned] :php:`extClassConf`
+* [not scanned] :php:`modMenu_setDefaultList`
+* [not scanned] :php:`modMenu_dontValidateList`
+* [not scanned] :php:`modMenu_type`
+* [not scanned] :php:`modTSconfig`
+* [not scanned] :php:`MOD_SETTINGS`
+* [not scanned] :php:`MOD_MENU`
+* [not scanned] :php:`CMD`
+* [not scanned] :php:`MCONF`
 
-The following methods changed their visibility from public to protected and should not be called any longer:
+The following methods of class :php:`TYPO3\CMS\Impexp\Controller\ImportExportController` changed their visibility from public to protected and should not be called any longer:
 
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->init()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->main()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->exportData()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->addRecordsForPid()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->exec_listQueryPid()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeConfigurationForm()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeAdvancedOptionsForm()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->makeSaveForm()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->importData()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->checkUpload()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->getTableSelectOptions()`
-* :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->filterPageIds()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->getExtObjContent()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extObjContent()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->extObjHeader()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->checkSubExtObj()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->checkExtObj()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->getExternalItemConfig()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->handleExternalFunctionValue()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->mergeExternalItems()`
-* [not scanned] :php:`TYPO3\CMS\Impexp\Controller\ImportExportController->menuConfig()`
+* [not scanned] :php:`init()`
+* [not scanned] :php:`main()`
+* [not scanned] :php:`exportData()`
+* :php:`addRecordsForPid()`
+* :php:`exec_listQueryPid()`
+* :php:`makeConfigurationForm()`
+* :php:`makeAdvancedOptionsForm()`
+* :php:`makeSaveForm()`
+* [not scanned] :php:`importData()`
+* [not scanned] :php:`checkUpload()`
+* :php:`getTableSelectOptions()`
+* :php:`filterPageIds()`
+* [not scanned] :php:`getExtObjContent()`
+* [not scanned] :php:`extObjContent()`
+* [not scanned] :php:`extObjHeader()`
+* [not scanned] :php:`checkSubExtObj()`
+* [not scanned] :php:`checkExtObj()`
+* [not scanned] :php:`getExternalItemConfig()`
+* [not scanned] :php:`handleExternalFunctionValue()`
+* [not scanned] :php:`mergeExternalItems()`
+* [not scanned] :php:`menuConfig()`
 
 Additionally, the assignment of an object instance of class :php:`ImportExportController` as
 :php:`GLOBALS['SOBE']` has been marked as deprecated and will not be set anymore in TYPO3 v10.

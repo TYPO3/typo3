@@ -11,16 +11,6 @@
    :local:
    :depth: 1
 
-Breaking Changes
-================
-
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
-
-   Breaking-*
-
 Features
 ========
 

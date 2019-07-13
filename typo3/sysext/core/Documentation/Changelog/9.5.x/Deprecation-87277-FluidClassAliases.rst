@@ -13,7 +13,7 @@ Since introduction of the standalone package typo3fluid/fluid, the TYPO3 core pr
 for the moved classes to ease usage in extensions.
 These class aliases will be dropped in TYPO3 v10.
 
-The following class aliases are deprecated:
+The following class aliases have been marked as deprecated and should no longer be used:
 
 * :php:`TYPO3\CMS\Fluid\Core\Compiler\TemplateCompiler`
 * :php:`TYPO3\CMS\Fluid\Core\Exception`
@@ -48,16 +48,16 @@ Extensions and third party packages using the :php:`TYPO3\CMS\Fluid` namespace m
 by the stand alone Fluid package change.
 If aliased class names are used, there will be fatal PHP Errors after update to TYPO3 v10.
 
+The extension scanner will find usage of these classes.
 
 Affected Installations
 ======================
 
 All installations that use the :php:`TYPO3\CMS\Fluid` namespace for class aliases.
 
-
 Migration
 =========
 
-Migrate to the original classes in namespace :php:`TYPO3Fluid\Fluid\`.
+Migrate to the original classes in namespace :php:`TYPO3Fluid\Fluid`.
 
 .. index:: PHP-API, FullyScanned, ext:fluid
