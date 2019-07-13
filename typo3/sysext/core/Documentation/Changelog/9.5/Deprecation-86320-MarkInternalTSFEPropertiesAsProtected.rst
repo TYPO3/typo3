@@ -9,19 +9,20 @@ See :issue:`86320`
 Description
 ===========
 
-The following properties have changed their visibility to be protected from public. The properties are only used and needed internally.
+The following properties of class :php:`TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController` have changed their visibility to be protected from public and should not be called any longer.
+The properties are only used and needed internally.
 
-* :php:`TypoScriptFrontendController->loginAllowedInBranch_mode`
-* :php:`TypoScriptFrontendController->cacheTimeOutDefault`
-* :php:`TypoScriptFrontendController->cacheContentFlag`
-* :php:`TypoScriptFrontendController->cacheExpires`
-* :php:`TypoScriptFrontendController->isClientCachable`
-* :php:`TypoScriptFrontendController->no_cacheBeforePageGen`
-* :php:`TypoScriptFrontendController->tempContent`
-* :php:`TypoScriptFrontendController->pagesTSconfig`
-* :php:`TypoScriptFrontendController->uniqueCounter`
-* :php:`TypoScriptFrontendController->uniqueString`
-* :php:`TypoScriptFrontendController->lang`
+* :php:`loginAllowedInBranch_mode`
+* :php:`cacheTimeOutDefault`
+* :php:`cacheContentFlag`
+* :php:`cacheExpires`
+* :php:`isClientCachable`
+* :php:`no_cacheBeforePageGen`
+* :php:`tempContent`
+* :php:`pagesTSconfig`
+* :php:`uniqueCounter`
+* :php:`uniqueString`
+* :php:`lang`
 
 
 Impact

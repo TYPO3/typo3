@@ -9,7 +9,7 @@ See :issue:`86338`
 Description
 ===========
 
-The :php:`PageRepository::init()` method is now called implicitly within the constructor.
+The method :php:`TYPO3\CMS\Frontend\Page\PageRepository::init()` is now called implicitly within the constructor.
 
 
 Impact
@@ -21,12 +21,12 @@ Calling the method will trigger a PHP :php:`E_USER_DEPRECATED` error.
 Affected Installations
 ======================
 
-Any TYPO3 installation with extensions directly calling the :php:`PageRepository::init()` method.
+Any TYPO3 installation with extensions directly calling :php:`TYPO3\CMS\Frontend\Page\PageRepository::init()`.
 
 
 Migration
 =========
 
-Remove the call to the :php:`PageRepository::init()` function. The constructor is taking care of calling the method.
+Remove the method call. The constructor is taking care of calling the method.
 
 .. index:: ext:frontend, NotScanned

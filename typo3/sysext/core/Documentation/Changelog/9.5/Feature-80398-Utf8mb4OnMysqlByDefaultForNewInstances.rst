@@ -28,7 +28,7 @@ length, which is 3 bytes per character for a utf8 (utf8mb3), but 4 bytes for utf
 the maximum index length is 3*255 + 1 = 766 bytes which fits into 767, but with utf8mb4, this
 is 4*255 + 1 = 1021 bytes, which exceeds the maximum length and leads to SQL errors when setting
 such an index.
-This scenario gets more complex with combined indexes and may need manual investigation when
+This scenario gets more complex with combined indices and may need manual investigation when
 upgrading an existing instance from from `utf8` to `utf8mb4`. One solution is to restrict the
 index length in ext_tables.sql of the affected extension: :php:`KEY myKey (myField(191))`, which
 in this case leads to 4*191 + 1 = 764 bytes as maximum used length.

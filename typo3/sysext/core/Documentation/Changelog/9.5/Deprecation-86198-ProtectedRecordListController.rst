@@ -9,38 +9,44 @@ See :issue:`86198`
 Description
 ===========
 
-The following properties changed their visibility from public to protected and should not be called any longer:
+The following properties of class :php:`TYPO3\CMS\Recordlist\Controller\RecordListController` changed their visibility from public
+to protected and should not be called any longer:
 
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->id`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->pointer`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->table`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->search_field`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->search_levels`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->showLimit`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->returnUrl`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->clear_cache`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->cmd`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->cmd_table`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->perms_clause`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->pageinfo`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->MOD_MENU`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->content`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->body`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->imagemode`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->doc`
+* :php:`id`
+* :php:`pointer`
+* :php:`table`
+* :php:`search_field`
+* :php:`search_levels`
+* :php:`showLimit`
+* :php:`returnUrl`
+* :php:`clear_cache`
+* :php:`cmd`
+* :php:`cmd_table`
+* :php:`perms_clause`
+* :php:`pageinfo`
+* :php:`MOD_MENU`
+* :php:`content`
+* :php:`body`
+* :php:`imagemode`
+* :php:`doc`
 
-The following methods changed their visibility from public to protected and should not be called any longer:
+The following methods of class :php:`TYPO3\CMS\Recordlist\Controller\RecordListController` changed their visibility from public
+to protected and should not be called any longer:
 
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->init()`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->menuConfig()`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->clearCache()`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->main()`
-* :php:`TYPO3\CMS\Recordlist\Controller\RecordListController->getModuleTemplate()`
+* :php:`init()`
+* :php:`menuConfig()`
+* :php:`clearCache()`
+* :php:`main()`
+* :php:`getModuleTemplate()`
 
-Additionally, the two hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']`
-and :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']` changed their signature:
-The second argument, an instance of the parent object :php:`RecordListController` will be dropped in TYPO3 v10. Use the instance of the PSR-7
-:php:`ServerRequestInterface` is provided as array key :php:`request` of the first argument.
+Additionally, the two hooks
+
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']`
+* :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`
+
+changed their signature:
+The second argument, an instance of the parent object :php:`RecordListController` will be removed in TYPO3 v10. Use the instance of the PSR-7
+:php:`ServerRequestInterface` that is provided as array key :php:`request` of the first argument.
 
 Furthermore, the assignment of an object instance of class :php:`RecordListController` as
 :php:`GLOBALS['SOBE']` has been marked as deprecated and will not be set anymore in TYPO3 v10.
@@ -49,7 +55,7 @@ Furthermore, the assignment of an object instance of class :php:`RecordListContr
 Impact
 ======
 
-Calling one of the above methods or accessing above properties triggers a PHP :php:`E_USER_DEPRECATED` error.
+Calling one of the above methods or accessing above properties will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations
@@ -58,7 +64,7 @@ Affected Installations
 Instances are usually only affected if an extension registers a hook for
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawHeaderHook']` or
 :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/Modules/Recordlist/index.php']['drawFooterHook']`. They will
-work as before in TYPO3 v9, but using a property or calling a method of the provided parent object triggers a PHP :php:`E_USER_DEPRECATED` error.
+work as before in TYPO3 v9, but using a property or calling a method of the provided parent object will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Migration

@@ -12,11 +12,11 @@ Description
 The new TCA type slug field now hard-codes a slash as a prefix for all pages, as this is
 mandatory for URL resolving and ensuring a uniqueness within a site.
 
-However, for slug types within regular records, it is not necessary to do so, therefore, the slash
+However, for slug types within regular records, it is not necessary to do so, therefore the slash
 is never prepended on a "regular" slug field.
 
 If - in some special cases - the "slug" field should contain a slash (due to e.g. nested categories
-with speaking segments), a new option `prependSlash` is added to TCA type slug.
+with human readable url path segments), a new option `prependSlash` is added to TCA type slug.
 
 
 Impact
@@ -26,7 +26,7 @@ Third-party extensions using the slug field now receive a slug value without a s
 can use this as a regular - sanitized - slug field. It is however recommended to use the
 `uniqueInPid` eval option to ensure uniqueness.
 
-If a nested record structure is given, it is recommended to use the new option `prependSlash`
+If a nested record structure is given, it is recommended to use the new option :php:`prependSlash`
 by setting it to :php:`true`.
 
 .. code-block:: php

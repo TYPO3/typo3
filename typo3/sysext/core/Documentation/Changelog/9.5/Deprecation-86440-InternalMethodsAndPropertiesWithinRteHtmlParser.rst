@@ -9,8 +9,8 @@ See :issue:`86440`
 Description
 ===========
 
-Several methods and properties in class :php:`TYPO3\CMS\Core\Html\RteHtmlParser` have been changed
-from public to protected visibility.
+Several methods and properties in class :php:`TYPO3\CMS\Core\Html\RteHtmlParser` have changed visibility
+from public to protected.
 Some additional functionality has been marked as deprecated, as this has been replaced with the new RTE configuration
 since TYPO3 v8.
 

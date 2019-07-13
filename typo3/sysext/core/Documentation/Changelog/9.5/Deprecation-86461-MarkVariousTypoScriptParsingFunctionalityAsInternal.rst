@@ -9,7 +9,7 @@ See :issue:`86461`
 Description
 ===========
 
-The following properties and methods within :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
+The following properties and methods of class :php:`TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser`
 have changed visibility from public to protected as they are used for internal purpose:
 
 * :php:`raw`

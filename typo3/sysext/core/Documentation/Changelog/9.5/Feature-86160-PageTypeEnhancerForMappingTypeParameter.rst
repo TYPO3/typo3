@@ -71,11 +71,11 @@ The :yaml:`index` property is used when generating links on root-level page, thu
 Impact
 ======
 
-The TYPO3 Frontend-internal `&type` parameter can now also be part of a speaking URL with a simple
+The TYPO3 Frontend-internal `&type` parameter can now also be part of a human readable URL with a simple
 line of configuration.
 
 Please note that the implementation is a Decorator Enhancer, which means that the PageTypeEnhancer
 is only there for adding suffixes to an existing route / variant, but not to substitute something
-within the middle of a speaking URL segment.
+within the middle of a human readable URL segment.
 
 .. index:: Frontend

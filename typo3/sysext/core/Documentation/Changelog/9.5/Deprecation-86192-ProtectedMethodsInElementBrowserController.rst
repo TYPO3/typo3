@@ -18,7 +18,7 @@ changed their visibility from public to protected and should not be called any l
 Impact
 ======
 
-Calling the above method from an external object triggers a PHP :php:`E_USER_DEPRECATED` error.
+Calling the above method from an external object will trigger a PHP :php:`E_USER_DEPRECATED` error.
 
 
 Affected Installations

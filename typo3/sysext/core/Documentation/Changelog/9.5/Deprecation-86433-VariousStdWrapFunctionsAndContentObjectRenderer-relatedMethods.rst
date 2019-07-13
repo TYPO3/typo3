@@ -15,16 +15,16 @@ The following TypoScript :ts:`stdWrap` sub-properties and functions have been ma
 * :ts:`stdWrap.filelist`
 * :ts:`stdWrap.filelink`
 
-In conjunction with the properties, the following methods have been deprecated:
+In conjunction with the properties, the following methods of class :php:`TYPO3\CMS\Frontend\ContentObjectRenderer` have been marked as deprecated:
 
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->stdWrap_addParams()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->stdWrap_filelink()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->stdWrap_filelist()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->addParams()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->filelink()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->filelist()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->typolinkWrap()`
-* :php:`TYPO3\CMS\Frontend\ContentObjectRenderer->currentPageUrl()`
+* :php:`stdWrap_addParams()`
+* :php:`stdWrap_filelink()`
+* :php:`stdWrap_filelist()`
+* :php:`addParams()`
+* :php:`filelink()`
+* :php:`filelist()`
+* :php:`typolinkWrap()`
+* :php:`currentPageUrl()`
 
 These functions were part of TYPO3 Core due to legacy functionality related
 to ContentObject "TABLE" and "CSS Styled Content".
