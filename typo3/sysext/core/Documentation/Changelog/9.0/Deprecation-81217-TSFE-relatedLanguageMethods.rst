@@ -40,7 +40,7 @@ of the Frontend rendering engine as a replacement for :php:`getLLL()`.
 If you are not doing anything special on language initialization, the call to :php:`initLLvars()` 
 can likely be dropped. If you need to influence language initialization yourself, you can use the 
 hooks :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess']`
- or :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess']`.
+or :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess']`.
 
 For doing special logic, it is recommend to set up a custom instance of :php:`LanguageService`
 which holds all functionality directly.

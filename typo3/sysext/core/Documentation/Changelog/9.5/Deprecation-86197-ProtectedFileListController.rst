@@ -9,27 +9,28 @@ See :issue:`86197`
 Description
 ===========
 
-The following properties changed their visibility from public to protected and should not be called any longer:
+The following properties of class :php:`TYPO3\CMS\Filelist\Controller\FileListController` changed their visibility from public to protected and should not be called any longer:
 
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->MOD_MENU`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->MOD_SETTINGS`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->doc`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->id`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->pointer`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->table`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->imagemode`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->cmd`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->filelist`
+* :php:`MOD_MENU`
+* :php:`MOD_SETTINGS`
+* :php:`doc`
+* :php:`id`
+* :php:`pointer`
+* :php:`table`
+* :php:`imagemode`
+* :php:`cmd`
+* :php:`filelist`
 
-The following methods changed their visibility from public to protected and should not be called any longer:
+The following methods of class :php:`TYPO3\CMS\Filelist\Controller\FileListController`  changed their visibility from public to protected and should not be called any longer:
 
-* :php:`TYPO3\CMS\Beuser\Controller\BackendUserController->initializeView()`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->menuConfig()`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->initializeView()`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->initializeIndexAction()`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->indexAction()`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->missingFolderAction()`
-* :php:`TYPO3\CMS\Filelist\Controller\FileListController->searchAction()`
+* :php:`menuConfig()`
+* :php:`initializeView()`
+* :php:`initializeIndexAction()`
+* :php:`indexAction()`
+* :php:`missingFolderAction()`
+* :php:`searchAction()`
+
+Also, :php:`TYPO3\CMS\Beuser\Controller\BackendUserController->initializeView()` changed visibility from public to protected and should not be called any longer.
 
 Additionally, first constructor argument :php:`$fileListController` of class
 :php:`TYPO3\CMS\Filelist\FileList` is now optional, class property :php:`$fileListController`

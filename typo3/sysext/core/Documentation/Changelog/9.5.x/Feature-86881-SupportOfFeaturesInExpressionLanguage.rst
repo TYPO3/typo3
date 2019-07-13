@@ -9,8 +9,7 @@ See :issue:`86881`
 Description
 ===========
 
-With #83429 the core got support for feature toggles including a small API.
-This patch adds support for feature toggle check in the symfony expression language DefaultFunctionProvider.
+Support for feature toggle check in the symfony expression language DefaultFunctionProvider is provided.
 With the new function :typoscript:`feature()` the feature toggle can be checked.
 
 .. code-block:: typoscript
@@ -24,4 +23,4 @@ With the new function :typoscript:`feature()` the feature toggle can be checked.
    [END]
 
 
-.. index:: Backend, Frontend, TypoScript, ext:core, NotScanned
+.. index:: Backend, Frontend, TypoScript, ext:core

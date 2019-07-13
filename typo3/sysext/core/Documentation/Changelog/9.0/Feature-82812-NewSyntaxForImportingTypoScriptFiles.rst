@@ -18,17 +18,17 @@ imports and works as follows:
 
 .. code-block:: typoscript
 
-	# Import a single file
-	@import 'EXT:myproject/Configuration/TypoScript/randomfile.typoscript'
-	
-	# Import multiple files in a single directory, sorted by file name
-	@import 'EXT:myproject/Configuration/TypoScript/*.typoscript'
-	
-	# Import all files in a directory
-	@import 'EXT:myproject/Configuration/TypoScript/'
-	
-	# It's possible to omit the file ending, then "typoscript" is automatically added
-	@import 'EXT:myproject/Configuration/TypoScript/'
+    # Import a single file
+    @import 'EXT:myproject/Configuration/TypoScript/randomfile.typoscript'
+
+    # Import multiple files in a single directory, sorted by file name
+    @import 'EXT:myproject/Configuration/TypoScript/*.typoscript'
+
+    # Import all files in a directory
+    @import 'EXT:myproject/Configuration/TypoScript/'
+
+    # It's possible to omit the file ending, then "typoscript" is automatically added
+    @import 'EXT:myproject/Configuration/TypoScript/'
 
 The main benefits of `@import` over using `<INCLUDE_TYPOSCRIPT>` are:
 
@@ -40,14 +40,13 @@ The main benefits of `@import` over using `<INCLUDE_TYPOSCRIPT>` are:
 
 The following rules apply:
 
-- If multiple files are found, the file name is important in which order the files (sorted
-alphabetically by filename)
+- If multiple files are found, the file name is important in which order the files (sorted alphabetically by filename)
 
 - Recursive inclusion of files (@import within @import is possible)
 
 - It is not possible to use a condition as possible with <INCLUDE_TYPOSCRIPT condition=""> as its
-sole purpose is to include files, which happens before the actual real condition matching happens,
-and the INCLUDE_TYPOSCRIPT condition syntax is a conceptual mistake, and should be avoided.
+  sole purpose is to include files, which happens before the actual real condition matching happens,
+  and the INCLUDE_TYPOSCRIPT condition syntax is a conceptual mistake, and should be avoided.
 
 - Both `<INCLUDE_TYPOSCRIPT>` and `@import` can work side-by-side in the same project
 

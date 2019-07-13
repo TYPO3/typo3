@@ -73,7 +73,9 @@ The Simple Enhancer works with various route arguments to map them to an argumen
 results in
 `https://www.example.com/path-to/my-page/241/Benni`
 
-The configuration looks like this::
+The configuration looks like this:
+
+.. code-block:: yaml
 
    routeEnhancers:
      # Unique name for the enhancers, used internally for referencing
@@ -313,7 +315,7 @@ The enhanced part of a route path could be `/archive/{year}/{month}` - however, 
 possible to rename `/archive/` depending on the language that is given for this page translation. This modifier is a
 good example where a route path is modified but is not affected by arguments.
 
-The configuration could look like this::
+The configuration could look like this:
 
 .. code-block:: yaml
 
@@ -374,7 +376,7 @@ PersistedAliasMapper
 --------------------
 
 If an extension ships with a slug field, or a different field used for the speaking URL path, this database field
-can be used to build the URL::
+can be used to build the URL:
 
 .. code-block:: yaml
 
