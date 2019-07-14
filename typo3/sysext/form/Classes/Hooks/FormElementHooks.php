@@ -51,7 +51,7 @@ class FormElementHooks
                     GeneralUtility::makeInstance(ObjectManager::class)
                         ->get(
                             Error::class,
-                            TranslationService::getInstance()->translate('validation.error.1521293688', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
+                            TranslationService::getInstance()->translate('validation.error.1556283177', null, 'EXT:form/Resources/Private/Language/locallang.xlf'),
                             1556283177
                         )
                 );
