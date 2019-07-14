@@ -1139,12 +1139,11 @@ class DatabaseRecordList
                 // Render collapse button if in multi table mode
                 $collapseIcon = '';
                 if (!$this->table) {
-                    $href = htmlspecialchars($this->listURL() . '&collapse[' . $table . ']=' . ($tableCollapsed ? '0' : '1'));
                     $title = $tableCollapsed
                         ? htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.expandTable'))
                         : htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.collapseTable'));
                     $icon = '<span class="collapseIcon">' . $this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), Icon::SIZE_SMALL)->render() . '</span>';
-                    $collapseIcon = '<a href="' . $href . '" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($tableIdentifier) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">' . $icon . '</a>';
+                    $collapseIcon = '<a href="#" title="' . $title . '" class="pull-right t3js-toggle-recordlist" data-table="' . htmlspecialchars($tableIdentifier) . '" data-toggle="collapse" data-target="#recordlist-' . htmlspecialchars($tableIdentifier) . '">' . $icon . '</a>';
                 }
                 $tableHeader .= $theData[$titleCol] . $collapseIcon;
             }
@@ -3013,21 +3012,6 @@ class DatabaseRecordList
         $this->tablesCollapsed = is_array($backendUser->uc['moduleData']['list'])
             ? $backendUser->uc['moduleData']['list']
             : [];
-        $collapseOverride = GeneralUtility::_GP('collapse');
-        if (is_array($collapseOverride)) {
-            foreach ($collapseOverride as $collapseTable => $collapseValue) {
-                if (is_array($GLOBALS['TCA'][$collapseTable]) && ($collapseValue == 0 || $collapseValue == 1)) {
-                    $this->tablesCollapsed[$collapseTable] = $collapseValue;
-                }
-            }
-            // Save modified user uc
-            $backendUser->uc['moduleData']['list'] = $this->tablesCollapsed;
-            $backendUser->writeUC($backendUser->uc);
-            $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-            if ($returnUrl !== '') {
-                HttpUtility::redirect($returnUrl);
-            }
-        }
         $this->initializeLanguages();
     }
 
