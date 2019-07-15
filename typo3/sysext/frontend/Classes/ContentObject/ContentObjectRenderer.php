@@ -5440,24 +5440,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function getQueryArguments($conf, $overruleQueryArguments = [], $forceOverruleArguments = false)
     {
         $method = (string)($conf['method'] ?? '');
-        switch ($method) {
-            case 'GET':
-                $currentQueryArray = GeneralUtility::_GET();
-                break;
-            case 'POST':
-                $currentQueryArray = GeneralUtility::_POST();
-                break;
-            case 'GET,POST':
-                $currentQueryArray = GeneralUtility::_GET();
-                ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_POST());
-                break;
-            case 'POST,GET':
-                $currentQueryArray = GeneralUtility::_POST();
-                ArrayUtility::mergeRecursiveWithOverrule($currentQueryArray, GeneralUtility::_GET());
-                break;
-            default:
-                $currentQueryArray = [];
-                parse_str($this->getEnvironmentVariable('QUERY_STRING'), $currentQueryArray);
+        if ($method === 'POST') {
+            trigger_error('Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0', E_USER_WARNING);
+            return '';
+        }
+        if ($method === 'GET,POST' || $method === 'POST,GET') {
+            trigger_error('Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET', E_USER_WARNING);
+            $method = 'GET';
+        }
+        if ($method === 'GET') {
+            $currentQueryArray = GeneralUtility::_GET();
+        } else {
+            $currentQueryArray = [];
+            parse_str($this->getEnvironmentVariable('QUERY_STRING'), $currentQueryArray);
         }
         if ($conf['exclude'] ?? false) {
             $excludeString = str_replace(',', '&', $conf['exclude']);

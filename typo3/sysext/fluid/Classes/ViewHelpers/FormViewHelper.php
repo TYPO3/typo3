@@ -127,7 +127,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
         $this->registerArgument('absolute', 'bool', 'If set, an absolute action URI is rendered (only active if $actionUri is not set)', false, false);
         $this->registerArgument('addQueryString', 'bool', 'If set, the current query parameters will be kept in the action URI (only active if $actionUri is not set)', false, false);
         $this->registerArgument('argumentsToBeExcludedFromQueryString', 'array', 'arguments to be removed from the action URI. Only active if $addQueryString = TRUE and $actionUri is not set', false, []);
-        $this->registerArgument('addQueryStringMethod', 'string', 'Method to use when keeping query parameters (GET or POST, only active if $actionUri is not set', false, 'GET');
+        $this->registerArgument('addQueryStringMethod', 'string', 'Method to use when keeping query parameters (only active if $actionUri is not set)', false, 'GET');
         $this->registerArgument('fieldNamePrefix', 'string', 'Prefix that will be added to all field names within this form. If not set the prefix will be tx_yourExtension_plugin');
         $this->registerArgument('actionUri', 'string', 'can be used to overwrite the "action" attribute of the form tag');
         $this->registerArgument('objectName', 'string', 'name of the object that is bound to this form. If this argument is not specified, the name attribute of this form is used to determine the FormObjectName');

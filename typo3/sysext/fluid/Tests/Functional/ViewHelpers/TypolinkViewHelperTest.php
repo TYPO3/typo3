@@ -126,13 +126,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 'expected' => '<a href="/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d">This is a testlink</a> <a href="/en/">This is a testlink</a>',
                 'template' => 'link_typolink_viewhelper',
             ],
-            'link: with add query string and method POST' => [
-                'addQueryString' => true,
-                'addQueryStringMethod' => 'POST',
-                'addQueryStringExclude' => 'temp',
-                'expected' => '<a href="/en/">This is a testlink</a> <a href="/en/">This is a testlink</a>',
-                'template' => 'link_typolink_viewhelper',
-            ],
             'uri: default' => [
                 'addQueryString' => false,
                 'addQueryStringMethod' => 'GET',
@@ -152,13 +145,6 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 'addQueryStringMethod' => 'GET',
                 'addQueryStringExclude' => 'temp',
                 'expected' => '/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d /en/',
-                'template' => 'uri_typolink_viewhelper',
-            ],
-            'uri: with add query string and method POST' => [
-                'addQueryString' => true,
-                'addQueryStringMethod' => 'POST',
-                'addQueryStringExclude' => 'temp',
-                'expected' => '/en/ /en/',
                 'template' => 'uri_typolink_viewhelper',
             ],
         ];

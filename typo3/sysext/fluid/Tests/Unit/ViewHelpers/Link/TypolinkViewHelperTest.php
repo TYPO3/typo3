@@ -66,10 +66,10 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     /**
      * @test
      */
-    public function renderCallsStdWrapWithrightParameters()
+    public function renderCallsStdWrapWithRightParameters()
     {
         $addQueryString = true;
-        $addQueryStringMethod = 'GET,POST';
+        $addQueryStringMethod = 'GET';
         $addQueryStringExclude = 'cHash';
 
         $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));

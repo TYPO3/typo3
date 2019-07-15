@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
@@ -442,7 +443,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsOverrulesMultiDimensionalParameters(): void
     {
-        $_POST = [
+        $_GET = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => [
@@ -454,7 +455,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ]
         ];
         $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['method'] = 'POST';
+        $getQueryArgumentsConfiguration['method'] = 'GET';
         $getQueryArgumentsConfiguration['exclude'] = [];
         $getQueryArgumentsConfiguration['exclude'][] = 'key1';
         $getQueryArgumentsConfiguration['exclude'][] = 'key3[key31]';
@@ -487,7 +488,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
             $this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
         );
-        $_POST = [
+        $_GET = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => [
@@ -517,78 +518,54 @@ class ContentObjectRendererTest extends UnitTestCase
                 ]
             ]
         ];
+        // implicitly using default 'QUERY_STRING' as 'method'
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
         $this->assertEquals($expectedResult, $actualResult);
-        $getQueryArgumentsConfiguration['method'] = 'POST';
+        $getQueryArgumentsConfiguration['method'] = 'GET';
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @test
+     * @return array
      */
-    public function getQueryArgumentsWithMethodPostGetMergesParameters(): void
+    public function getQueryArgumentsHandlesRemovedMethodsDataProvider(): array
     {
-        $_POST = [
-            'key1' => 'POST1',
-            'key2' => 'POST2',
-            'key3' => [
-                'key31' => 'POST31',
-                'key32' => 'POST32',
-                'key33' => [
-                    'key331' => 'POST331',
-                    'key332' => 'POST332',
-                ]
-            ]
+        return [
+            'GET,POST' => [
+                'GET,POST',
+                'Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET',
+                '&common=GET&get=GET'
+            ],
+            'POST,GET' => [
+                'POST,GET',
+                'Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET',
+                '&common=GET&get=GET'
+            ],
+            'POST' => [
+                'POST',
+                'Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0',
+                ''
+            ],
         ];
-        $_GET = [
-            'key2' => 'GET2',
-            'key3' => [
-                'key32' => 'GET32',
-                'key33' => [
-                    'key331' => 'GET331',
-                ]
-            ]
-        ];
-        $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['method'] = 'POST,GET';
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=POST1&key2=GET2&key3[key31]=POST31&key3[key32]=GET32&key3[key33][key331]=GET331&key3[key33][key332]=POST332');
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
+     * @param string $method
+     * @param string $expectedMessage
+     * @param string $expectedResult
+     *
      * @test
+     * @dataProvider getQueryArgumentsHandlesRemovedMethodsDataProvider
      */
-    public function getQueryArgumentsWithMethodGetPostMergesParameters(): void
+    public function getQueryArgumentsHandlesRemovedMethods(string $method, string $expectedMessage, string $expectedResult): void
     {
-        $_GET = [
-            'key1' => 'GET1',
-            'key2' => 'GET2',
-            'key3' => [
-                'key31' => 'GET31',
-                'key32' => 'GET32',
-                'key33' => [
-                    'key331' => 'GET331',
-                    'key332' => 'GET332',
-                ]
-            ]
-        ];
-        $_POST = [
-            'key2' => 'POST2',
-            'key3' => [
-                'key32' => 'POST32',
-                'key33' => [
-                    'key331' => 'POST331',
-                ]
-            ]
-        ];
-        $getQueryArgumentsConfiguration = [];
-        $getQueryArgumentsConfiguration['method'] = 'GET,POST';
-        $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key1=GET1&key2=POST2&key3[key31]=GET31&key3[key32]=POST32&key3[key33][key331]=POST331&key3[key33][key332]=GET332');
-        $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        $this->assertEquals($expectedResult, $actualResult);
+        $_GET = ['common' => 'GET', 'get' => 'GET'];
+        $configuration = ['method' => $method];
+        $this->expectException(Warning::class);
+        $this->expectExceptionMessage($expectedMessage);
+        static::assertSame($expectedResult, $this->subject->getQueryArguments($configuration));
     }
 
     /**

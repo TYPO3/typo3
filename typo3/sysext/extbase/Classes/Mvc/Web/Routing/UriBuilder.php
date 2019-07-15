@@ -317,13 +317,13 @@ class UriBuilder
 
     /**
      * Sets the method to get the addQueryString parameters. Defaults to an empty string
-     * which results in calling GeneralUtility::getIndpEnv('QUERY_STRING').
+     * which results in using GeneralUtility::_GET(). Possible values are
      *
-     * Possible values are:
-     * - GET
-     * - POST
-     * - GET,POST
-     * - POST,GET
+     * + ''      -> uses GeneralUtility::_GET()
+     * + '0'     -> uses GeneralUtility::_GET()
+     * + 'GET'   -> uses GeneralUtility::_GET()
+     * + '<any>' -> uses parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'))
+     *              (<any> refers to literally everything else than previously mentioned values)
      *
      * @param string $addQueryStringMethod
      * @return static the current UriBuilder to allow method chaining
@@ -331,6 +331,13 @@ class UriBuilder
      */
     public function setAddQueryStringMethod(string $addQueryStringMethod): UriBuilder
     {
+        if ($addQueryStringMethod === 'POST') {
+            trigger_error('Assigning addQueryStringMethod = POST is not supported anymore since TYPO3 v10.0', E_USER_WARNING);
+            $addQueryStringMethod = null;
+        } elseif ($addQueryStringMethod === 'GET,POST' || $addQueryStringMethod === 'POST,GET') {
+            trigger_error('Assigning addQueryStringMethod = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET', E_USER_WARNING);
+            $addQueryStringMethod = 'GET';
+        }
         $this->addQueryStringMethod = $addQueryStringMethod;
         return $this;
     }
@@ -650,26 +657,11 @@ class UriBuilder
     {
         $arguments = [];
         if ($this->addQueryString === true) {
-            if ($this->addQueryStringMethod) {
-                switch ($this->addQueryStringMethod) {
-                    case 'GET':
-                        $arguments = GeneralUtility::_GET();
-                        break;
-                    case 'POST':
-                        $arguments = GeneralUtility::_POST();
-                        break;
-                    case 'GET,POST':
-                        $arguments = array_replace_recursive(GeneralUtility::_GET(), GeneralUtility::_POST());
-                        break;
-                    case 'POST,GET':
-                        $arguments = array_replace_recursive(GeneralUtility::_POST(), GeneralUtility::_GET());
-                        break;
-                    default:
-                        // Explode GET vars recursively
-                        parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $arguments);
-                }
-            } else {
+            if ($this->addQueryStringMethod === '' || $this->addQueryStringMethod === '0' || $this->addQueryStringMethod === 'GET') {
                 $arguments = GeneralUtility::_GET();
+            } else {
+                // Explode GET vars recursively
+                parse_str(GeneralUtility::getIndpEnv('QUERY_STRING'), $arguments);
             }
             foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
                 $argumentArrayToBeExcluded = [];
