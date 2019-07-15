@@ -42,9 +42,7 @@ class DatabaseLanguageRows implements FormDataProviderInterface
             $languageField = $result['processedTca']['ctrl']['languageField'];
             $fieldWithUidOfDefaultRecord = $result['processedTca']['ctrl']['transOrigPointerField'];
 
-            if (isset($result['databaseRow'][$languageField]) && $result['databaseRow'][$languageField] > 0
-                && isset($result['databaseRow'][$fieldWithUidOfDefaultRecord]) && $result['databaseRow'][$fieldWithUidOfDefaultRecord] > 0
-            ) {
+            if (!empty($result['databaseRow'][$languageField]) && !empty($result['databaseRow'][$fieldWithUidOfDefaultRecord])) {
                 // Table pages has its overlays in pages_language_overlay, this is accounted here
                 $tableNameWithDefaultRecords = $result['tableName'];
                 if ($tableNameWithDefaultRecords === 'pages_language_overlay') {
@@ -52,13 +50,16 @@ class DatabaseLanguageRows implements FormDataProviderInterface
                 }
 
                 // Default language record of localized record
+                $parentUid = is_array($result['databaseRow'][$fieldWithUidOfDefaultRecord])
+                    ? (int)$result['databaseRow'][$fieldWithUidOfDefaultRecord][0]['uid']
+                    : (int)$result['databaseRow'][$fieldWithUidOfDefaultRecord];
                 $defaultLanguageRow = $this->getRecordWorkspaceOverlay(
                     $tableNameWithDefaultRecords,
-                    (int)$result['databaseRow'][$fieldWithUidOfDefaultRecord]
+                    $parentUid
                 );
                 if (empty($defaultLanguageRow)) {
                     throw new DatabaseDefaultLanguageException(
-                        'Default language record with id ' . (int)$result['databaseRow'][$fieldWithUidOfDefaultRecord]
+                        'Default language record with id ' . $parentUid
                         . ' not found in table ' . $result['tableName'] . ' while editing record ' . $result['databaseRow']['uid'],
                         1438249426
                     );
