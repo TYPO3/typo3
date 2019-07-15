@@ -57,7 +57,7 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderWillNotProvideATagForNonValidLinkTarget()
     {
-        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(null));
+        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(''));
         $this->tagBuilder->expects($this->never())->method('render');
         $this->viewHelper->render();
     }

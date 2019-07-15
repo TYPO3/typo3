@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+
 /**
  * Form ViewHelper. Generates a :html:`<form>` Tag.
  *
@@ -199,28 +201,37 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
             if (isset($this->arguments['noCacheHash'])) {
                 trigger_error('Using the argument "noCacheHash" in <f:form> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
             }
-
-            $pageUid = (isset($this->arguments['pageUid']) && (int)$this->arguments['pageUid'] > 0) ? (int)$this->arguments['pageUid'] : null;
+            /** @var UriBuilder $uriBuilder */
             $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-            $formActionUri = $uriBuilder
+            $uriBuilder
                 ->reset()
-                ->setTargetPageUid($pageUid)
                 ->setTargetPageType($this->arguments['pageType'] ?? 0)
                 ->setNoCache($this->arguments['noCache'] ?? false)
                 ->setSection($this->arguments['section'] ?? '')
                 ->setCreateAbsoluteUri($this->arguments['absolute'] ?? false)
                 ->setArguments(isset($this->arguments['additionalParams']) ? (array)$this->arguments['additionalParams'] : [])
                 ->setAddQueryString($this->arguments['addQueryString'] ?? false)
-                ->setAddQueryStringMethod($this->arguments['addQueryStringMethod'] ?? null)
                 ->setArgumentsToBeExcludedFromQueryString(isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [])
                 ->setFormat($this->arguments['format'] ?? '')
-                ->uriFor(
-                    $this->arguments['action'] ?? null,
-                    $this->arguments['arguments'] ?? [],
-                    $this->arguments['controller'] ?? null,
-                    $this->arguments['extensionName'] ?? null,
-                    $this->arguments['pluginName'] ?? null
-                );
+            ;
+
+            $addQueryStringMethod = $this->arguments['addQueryStringMethod'] ?? null;
+            if (is_string($addQueryStringMethod)) {
+                $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
+            }
+
+            $pageUid = (int)($this->arguments['pageUid'] ?? 0);
+            if ($pageUid > 0) {
+                $uriBuilder->setTargetPageUid($pageUid);
+            }
+
+            $formActionUri = $uriBuilder->uriFor(
+                $this->arguments['action'] ?? null,
+                $this->arguments['arguments'] ?? [],
+                $this->arguments['controller'] ?? null,
+                $this->arguments['extensionName'] ?? null,
+                $this->arguments['pluginName'] ?? null
+            );
             $this->formActionUriArguments = $uriBuilder->getArguments();
         }
         $this->tag->addAttribute('action', $formActionUri);

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
 /**
@@ -61,6 +62,7 @@ class UpdateScriptViewHelper extends ActionViewHelper
         /** @var IconFactory $iconFactory */
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         if ($updateScriptUtility->checkUpdateScriptExists($extensionKey)) {
+            /** @var UriBuilder $uriBuilder */
             $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
             $action = 'show';
             $uri = $uriBuilder->reset()->uriFor(

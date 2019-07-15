@@ -47,6 +47,34 @@ While hardening Extbase classes, method signatures changed due to an enforced st
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::getContentObject`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::getConfiguration`
 - :php:`\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::isFeatureEnabled`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::reset()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::build()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::uriFor()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setAbsoluteUriScheme()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setAddQueryString()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setAddQueryStringMethod()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setArgumentPrefix()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setArguments()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setArgumentsToBeExcludedFromQueryString()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setCreateAbsoluteUri()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setFormat()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setLinkAccessRestrictedPages()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setNoCache()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setSection()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setTargetPageType()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setTargetPageUid()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::setUseCacheHash()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getAddQueryString()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getAddQueryStringMethod()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getArguments()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getArgumentsToBeExcludedFromQueryString()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getCreateAbsoluteUri()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getFormat()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getLinkAccessRestrictedPages()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getNoCache()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getSection()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getTargetPageUid()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::getUseCacheHash()`
 
 
 Impact

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
@@ -73,6 +74,7 @@ class ReloadSqlDataViewHelper extends ActionViewHelper
             $languageKey = 'extensionList.databaseImport';
         }
 
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uriBuilder->reset();
         $uri = $uriBuilder->uriFor('reloadExtensionData', ['extension' => $extension['key']], 'Action');

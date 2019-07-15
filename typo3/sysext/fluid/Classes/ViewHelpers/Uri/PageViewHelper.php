@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -102,8 +104,28 @@ class PageViewHelper extends AbstractViewHelper
         $argumentsToBeExcludedFromQueryString = $arguments['argumentsToBeExcludedFromQueryString'];
         $addQueryStringMethod = $arguments['addQueryStringMethod'];
 
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($pageType)->setNoCache($noCache)->setSection($section)->setLinkAccessRestrictedPages($linkAccessRestrictedPages)->setArguments($additionalParams)->setCreateAbsoluteUri($absolute)->setAddQueryString($addQueryString)->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)->setAddQueryStringMethod($addQueryStringMethod)->build();
-        return $uri;
+        $uri = $uriBuilder
+            ->reset()
+            ->setTargetPageType($pageType)
+            ->setNoCache($noCache)
+            ->setSection($section)
+            ->setLinkAccessRestrictedPages($linkAccessRestrictedPages)
+            ->setArguments($additionalParams)
+            ->setCreateAbsoluteUri($absolute)
+            ->setAddQueryString($addQueryString)
+            ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
+        ;
+
+        if (MathUtility::canBeInterpretedAsInteger($pageUid)) {
+            $uriBuilder->setTargetPageUid((int)$pageUid);
+        }
+
+        if (is_string($addQueryStringMethod)) {
+            $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
+        }
+
+        return $uri->build();
     }
 }

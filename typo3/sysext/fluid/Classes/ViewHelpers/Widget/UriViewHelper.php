@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -100,6 +101,7 @@ class UriViewHelper extends AbstractViewHelper
     protected static function getWidgetUri(RenderingContextInterface $renderingContext, array $arguments)
     {
         $controllerContext = $renderingContext->getControllerContext();
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $controllerContext->getUriBuilder();
         $argumentPrefix = $controllerContext->getRequest()->getArgumentPrefix();
         $parameters = $arguments['arguments'] ?? [];
@@ -112,13 +114,19 @@ class UriViewHelper extends AbstractViewHelper
         if (isset($arguments['useCacheHash'])) {
             trigger_error('Using the argument "useCacheHash" in <f:widget.uri> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
         }
-        return $uriBuilder->reset()
+        $uriBuilder->reset()
             ->setArguments([$argumentPrefix => $parameters])
             ->setSection($arguments['section'])
             ->setAddQueryString(true)
-            ->setAddQueryStringMethod($arguments['addQueryStringMethod'])
             ->setArgumentsToBeExcludedFromQueryString([$argumentPrefix, 'cHash'])
             ->setFormat($arguments['format'])
-            ->build();
+        ;
+
+        $addQueryStringMethod = $arguments['addQueryStringMethod'] ?? null;
+        if (is_string($addQueryStringMethod)) {
+            $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
+        }
+
+        return $uriBuilder->build();
     }
 }

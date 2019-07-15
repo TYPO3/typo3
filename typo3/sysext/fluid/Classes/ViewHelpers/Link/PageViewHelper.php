@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -109,9 +111,9 @@ class PageViewHelper extends AbstractTagBasedViewHelper
         $addQueryString = isset($this->arguments['addQueryString']) ? (bool)$this->arguments['addQueryString'] : false;
         $argumentsToBeExcludedFromQueryString = isset($this->arguments['argumentsToBeExcludedFromQueryString']) ? (array)$this->arguments['argumentsToBeExcludedFromQueryString'] : [];
         $addQueryStringMethod = $this->arguments['addQueryStringMethod'] ?? null;
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
-        $uri = $uriBuilder->reset()
-            ->setTargetPageUid($pageUid)
+        $uriBuilder->reset()
             ->setTargetPageType($pageType)
             ->setNoCache($noCache)
             ->setSection($section)
@@ -120,9 +122,18 @@ class PageViewHelper extends AbstractTagBasedViewHelper
             ->setCreateAbsoluteUri($absolute)
             ->setAddQueryString($addQueryString)
             ->setArgumentsToBeExcludedFromQueryString($argumentsToBeExcludedFromQueryString)
-            ->setAddQueryStringMethod($addQueryStringMethod)
-            ->build();
-        if ((string)$uri !== '') {
+        ;
+
+        if (MathUtility::canBeInterpretedAsInteger($pageUid)) {
+            $uriBuilder->setTargetPageUid((int)$pageUid);
+        }
+
+        if (is_string($addQueryStringMethod)) {
+            $uriBuilder->setAddQueryStringMethod($addQueryStringMethod);
+        }
+
+        $uri = $uriBuilder->build();
+        if ($uri !== '') {
             $this->tag->addAttribute('href', $uri);
             $this->tag->setContent($this->renderChildren());
             $this->tag->forceClosingTag(true);

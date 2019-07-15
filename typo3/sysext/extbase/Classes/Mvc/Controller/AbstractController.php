@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
@@ -281,7 +282,10 @@ abstract class AbstractController implements ControllerInterface
         if ($controllerName === null) {
             $controllerName = $this->request->getControllerName();
         }
-        $this->uriBuilder->reset()->setTargetPageUid($pageUid)->setCreateAbsoluteUri(true);
+        $this->uriBuilder->reset()->setCreateAbsoluteUri(true);
+        if (MathUtility::canBeInterpretedAsInteger($pageUid)) {
+            $this->uriBuilder->setTargetPageUid((int)$pageUid);
+        }
         if (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
             $this->uriBuilder->setAbsoluteUriScheme('https');
         }

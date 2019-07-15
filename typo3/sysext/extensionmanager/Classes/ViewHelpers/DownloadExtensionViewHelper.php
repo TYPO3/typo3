@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
@@ -79,6 +80,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\Abst
 			</li>';
         }
         $pathSelector .= '</ul>';
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $action = 'checkDependencies';
         $uriBuilder->reset();

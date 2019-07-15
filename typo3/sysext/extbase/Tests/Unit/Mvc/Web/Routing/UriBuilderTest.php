@@ -227,7 +227,6 @@ class UriBuilderTest extends UnitTestCase
         $_POST = [];
         $_POST['foo2'] = 'bar2';
         $this->uriBuilder->setAddQueryString(true);
-        $this->uriBuilder->setAddQueryStringMethod(null);
         $expectedResult = '/typo3/index.php?route=%2Ftest%2FPath&token=dummyToken&id=pageId&foo=bar';
         $actualResult = $this->uriBuilder->buildBackendUri();
         $this->assertEquals($expectedResult, $actualResult);
@@ -560,7 +559,22 @@ class UriBuilderTest extends UnitTestCase
      */
     public function resetSetsAllOptionsToTheirDefaultValue()
     {
-        $this->uriBuilder->setArguments(['test' => 'arguments'])->setSection('testSection')->setFormat('someFormat')->setCreateAbsoluteUri(true)->setAddQueryString(true)->setArgumentsToBeExcludedFromQueryString(['test' => 'addQueryStringExcludeArguments'])->setAddQueryStringMethod(null)->setArgumentPrefix('testArgumentPrefix')->setLinkAccessRestrictedPages(true)->setTargetPageUid(123)->setTargetPageType(321)->setNoCache(true);
+        $this->uriBuilder
+            ->setArguments(['test' => 'arguments'])
+            ->setSection('testSection')
+            ->setFormat('someFormat')
+            ->setCreateAbsoluteUri(true)
+            ->setAddQueryString(true)
+            ->setAddQueryStringMethod('test')
+            ->setArgumentsToBeExcludedFromQueryString(['test' => 'addQueryStringExcludeArguments'])
+            ->setLinkAccessRestrictedPages(true)
+            ->setTargetPageUid(123)
+            ->setTargetPageType(321)
+            ->setNoCache(true)
+            ->setArgumentPrefix('testArgumentPrefix')
+            ->setAbsoluteUriScheme('test')
+        ;
+
         $this->uriBuilder->reset();
         $this->assertEquals([], $this->uriBuilder->getArguments());
         $this->assertEquals('', $this->uriBuilder->getSection());
@@ -568,12 +582,14 @@ class UriBuilderTest extends UnitTestCase
         $this->assertEquals(false, $this->uriBuilder->getCreateAbsoluteUri());
         $this->assertEquals(false, $this->uriBuilder->getAddQueryString());
         $this->assertEquals([], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
-        $this->assertEquals(null, $this->uriBuilder->getAddQueryStringMethod());
-        $this->assertEquals(null, $this->uriBuilder->getArgumentPrefix());
+        $this->assertEquals('', $this->uriBuilder->getAddQueryStringMethod());
+        $this->assertEquals('', $this->uriBuilder->getArgumentPrefix());
         $this->assertEquals(false, $this->uriBuilder->getLinkAccessRestrictedPages());
         $this->assertEquals(null, $this->uriBuilder->getTargetPageUid());
         $this->assertEquals(0, $this->uriBuilder->getTargetPageType());
         $this->assertEquals(false, $this->uriBuilder->getNoCache());
+        $this->assertEquals(false, $this->uriBuilder->getNoCache());
+        $this->assertEquals(null, $this->uriBuilder->getAbsoluteUriScheme());
     }
 
     /**

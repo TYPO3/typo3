@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Menus;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -79,6 +80,7 @@ class ActionMenuItemViewHelper extends AbstractTagBasedViewHelper
         $action = $this->arguments['action'];
         $arguments = $this->arguments['arguments'];
 
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $uri = $uriBuilder->reset()->uriFor($action, $arguments, $controller);
         $this->tag->addAttribute('value', $uri);

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Extbase\Mvc\Web\Routing;
 
 /*
@@ -45,7 +47,7 @@ class UriBuilder
     protected $contentObject;
 
     /**
-     * @var Request
+     * @var Request|null
      */
     protected $request;
 
@@ -84,7 +86,7 @@ class UriBuilder
     /**
      * @var string
      */
-    protected $addQueryStringMethod;
+    protected $addQueryStringMethod = '';
 
     /**
      * @var array
@@ -97,7 +99,7 @@ class UriBuilder
     protected $linkAccessRestrictedPages = false;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $targetPageUid;
 
@@ -117,7 +119,7 @@ class UriBuilder
     protected $format = '';
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $argumentPrefix;
 
@@ -130,7 +132,7 @@ class UriBuilder
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
@@ -139,7 +141,7 @@ class UriBuilder
      * @param \TYPO3\CMS\Extbase\Service\ExtensionService $extensionService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService)
+    public function injectExtensionService(\TYPO3\CMS\Extbase\Service\ExtensionService $extensionService): void
     {
         $this->extensionService = $extensionService;
     }
@@ -148,7 +150,7 @@ class UriBuilder
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
+    public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService): void
     {
         $this->environmentService = $environmentService;
     }
@@ -157,7 +159,7 @@ class UriBuilder
      * Life-cycle method that is called by the DI container as soon as this object is completely built
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         $this->contentObject = $this->configurationManager->getContentObject();
     }
@@ -166,20 +168,20 @@ class UriBuilder
      * Sets the current request
      *
      * @param Request $request
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function setRequest(Request $request)
+    public function setRequest(Request $request): UriBuilder
     {
         $this->request = $request;
         return $this;
     }
 
     /**
-     * @return Request
+     * @return Request|null
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getRequest()
+    public function getRequest(): ?Request
     {
         return $this->request;
     }
@@ -190,9 +192,9 @@ class UriBuilder
      * array('prefix1' => array('foo' => 'bar')) gets "&prefix1[foo]=bar"
      *
      * @param array $arguments
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): UriBuilder
     {
         $this->arguments = $arguments;
         return $this;
@@ -200,8 +202,9 @@ class UriBuilder
 
     /**
      * @return array
+     * @internal
      */
-    public function getArguments()
+    public function getArguments(): array
     {
         return $this->arguments;
     }
@@ -210,9 +213,9 @@ class UriBuilder
      * If specified, adds a given HTML anchor to the URI (#...)
      *
      * @param string $section
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setSection($section)
+    public function setSection(string $section): UriBuilder
     {
         $this->section = $section;
         return $this;
@@ -220,8 +223,9 @@ class UriBuilder
 
     /**
      * @return string
+     * @internal
      */
-    public function getSection()
+    public function getSection(): string
     {
         return $this->section;
     }
@@ -230,9 +234,9 @@ class UriBuilder
      * Specifies the format of the target (e.g. "html" or "xml")
      *
      * @param string $format
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setFormat($format)
+    public function setFormat(string $format): UriBuilder
     {
         $this->format = $format;
         return $this;
@@ -240,8 +244,9 @@ class UriBuilder
 
     /**
      * @return string
+     * @internal
      */
-    public function getFormat()
+    public function getFormat(): string
     {
         return $this->format;
     }
@@ -250,9 +255,9 @@ class UriBuilder
      * If set, the URI is prepended with the current base URI. Defaults to FALSE.
      *
      * @param bool $createAbsoluteUri
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setCreateAbsoluteUri($createAbsoluteUri)
+    public function setCreateAbsoluteUri(bool $createAbsoluteUri): UriBuilder
     {
         $this->createAbsoluteUri = $createAbsoluteUri;
         return $this;
@@ -260,17 +265,18 @@ class UriBuilder
 
     /**
      * @return bool
+     * @internal
      */
-    public function getCreateAbsoluteUri()
+    public function getCreateAbsoluteUri(): bool
     {
         return $this->createAbsoluteUri;
     }
 
     /**
-     * @return string
+     * @return string|null
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getAbsoluteUriScheme()
+    public function getAbsoluteUriScheme(): ?string
     {
         return $this->absoluteUriScheme;
     }
@@ -279,10 +285,9 @@ class UriBuilder
      * Sets the scheme that should be used for absolute URIs in FE mode
      *
      * @param string $absoluteUriScheme the scheme to be used for absolute URIs
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setAbsoluteUriScheme($absoluteUriScheme)
+    public function setAbsoluteUriScheme(string $absoluteUriScheme): UriBuilder
     {
         $this->absoluteUriScheme = $absoluteUriScheme;
         return $this;
@@ -292,32 +297,39 @@ class UriBuilder
      * If set, the current query parameters will be merged with $this->arguments. Defaults to FALSE.
      *
      * @param bool $addQueryString
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      * @see TSref/typolink.addQueryString
      */
-    public function setAddQueryString($addQueryString)
+    public function setAddQueryString(bool $addQueryString): UriBuilder
     {
-        $this->addQueryString = (bool)$addQueryString;
+        $this->addQueryString = $addQueryString;
         return $this;
     }
 
     /**
      * @return bool
+     * @internal
      */
-    public function getAddQueryString()
+    public function getAddQueryString(): bool
     {
         return $this->addQueryString;
     }
 
     /**
-     * Sets the method to get the addQueryString parameters. Defaults undefined
-     * which results in using QUERY_STRING.
+     * Sets the method to get the addQueryString parameters. Defaults to an empty string
+     * which results in calling GeneralUtility::getIndpEnv('QUERY_STRING').
+     *
+     * Possible values are:
+     * - GET
+     * - POST
+     * - GET,POST
+     * - POST,GET
      *
      * @param string $addQueryStringMethod
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      * @see TSref/typolink.addQueryString.method
      */
-    public function setAddQueryStringMethod($addQueryStringMethod)
+    public function setAddQueryStringMethod(string $addQueryStringMethod): UriBuilder
     {
         $this->addQueryStringMethod = $addQueryStringMethod;
         return $this;
@@ -325,10 +337,11 @@ class UriBuilder
 
     /**
      * @return string
+     * @internal
      */
-    public function getAddQueryStringMethod()
+    public function getAddQueryStringMethod(): string
     {
-        return (string)$this->addQueryStringMethod;
+        return $this->addQueryStringMethod;
     }
 
     /**
@@ -336,11 +349,11 @@ class UriBuilder
      * Only active if addQueryString is set
      *
      * @param array $argumentsToBeExcludedFromQueryString
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      * @see TSref/typolink.addQueryString.exclude
      * @see setAddQueryString()
      */
-    public function setArgumentsToBeExcludedFromQueryString(array $argumentsToBeExcludedFromQueryString)
+    public function setArgumentsToBeExcludedFromQueryString(array $argumentsToBeExcludedFromQueryString): UriBuilder
     {
         $this->argumentsToBeExcludedFromQueryString = $argumentsToBeExcludedFromQueryString;
         return $this;
@@ -348,8 +361,9 @@ class UriBuilder
 
     /**
      * @return array
+     * @internal
      */
-    public function getArgumentsToBeExcludedFromQueryString()
+    public function getArgumentsToBeExcludedFromQueryString(): array
     {
         return $this->argumentsToBeExcludedFromQueryString;
     }
@@ -358,20 +372,19 @@ class UriBuilder
      * Specifies the prefix to be used for all arguments.
      *
      * @param string $argumentPrefix
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
-     * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setArgumentPrefix($argumentPrefix)
+    public function setArgumentPrefix(string $argumentPrefix): UriBuilder
     {
-        $this->argumentPrefix = (string)$argumentPrefix;
+        $this->argumentPrefix = $argumentPrefix;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getArgumentPrefix()
+    public function getArgumentPrefix(): ?string
     {
         return $this->argumentPrefix;
     }
@@ -380,18 +393,19 @@ class UriBuilder
      * If set, URIs for pages without access permissions will be created
      *
      * @param bool $linkAccessRestrictedPages
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setLinkAccessRestrictedPages($linkAccessRestrictedPages)
+    public function setLinkAccessRestrictedPages(bool $linkAccessRestrictedPages): UriBuilder
     {
-        $this->linkAccessRestrictedPages = (bool)$linkAccessRestrictedPages;
+        $this->linkAccessRestrictedPages = $linkAccessRestrictedPages;
         return $this;
     }
 
     /**
      * @return bool
+     * @internal
      */
-    public function getLinkAccessRestrictedPages()
+    public function getLinkAccessRestrictedPages(): bool
     {
         return $this->linkAccessRestrictedPages;
     }
@@ -400,9 +414,9 @@ class UriBuilder
      * Uid of the target page
      *
      * @param int $targetPageUid
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setTargetPageUid($targetPageUid)
+    public function setTargetPageUid(int $targetPageUid): UriBuilder
     {
         $this->targetPageUid = $targetPageUid;
         return $this;
@@ -411,9 +425,10 @@ class UriBuilder
     /**
      * returns $this->targetPageUid.
      *
-     * @return int
+     * @return int|null
+     * @internal
      */
-    public function getTargetPageUid()
+    public function getTargetPageUid(): ?int
     {
         return $this->targetPageUid;
     }
@@ -422,11 +437,11 @@ class UriBuilder
      * Sets the page type of the target URI. Defaults to 0
      *
      * @param int $targetPageType
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setTargetPageType($targetPageType)
+    public function setTargetPageType(int $targetPageType): UriBuilder
     {
-        $this->targetPageType = (int)$targetPageType;
+        $this->targetPageType = $targetPageType;
         return $this;
     }
 
@@ -434,7 +449,7 @@ class UriBuilder
      * @return int
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getTargetPageType()
+    public function getTargetPageType(): int
     {
         return $this->targetPageType;
     }
@@ -443,18 +458,19 @@ class UriBuilder
      * by default FALSE; if TRUE, &no_cache=1 will be appended to the URI
      *
      * @param bool $noCache
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setNoCache($noCache)
+    public function setNoCache(bool $noCache): UriBuilder
     {
-        $this->noCache = (bool)$noCache;
+        $this->noCache = $noCache;
         return $this;
     }
 
     /**
      * @return bool
+     * @internal
      */
-    public function getNoCache()
+    public function getNoCache(): bool
     {
         return $this->noCache;
     }
@@ -463,10 +479,9 @@ class UriBuilder
      * by default TRUE; if FALSE, no cHash parameter will be appended to the URI
      * If noCache is set, this setting will be ignored.
      *
-     * @param bool $useCacheHash
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function setUseCacheHash($useCacheHash)
+    public function setUseCacheHash(): UriBuilder
     {
         trigger_error('Calling UriBuilder->setUseCacheHash() will be removed in TYPO3 v11.0. TYPO3 Core routing is taking care of handling this argument. Simply remove the line to avoid the notice.', E_USER_DEPRECATED);
         return $this;
@@ -474,8 +489,9 @@ class UriBuilder
 
     /**
      * @return bool
+     * @internal
      */
-    public function getUseCacheHash()
+    public function getUseCacheHash(): bool
     {
         trigger_error('Calling UriBuilder->getUseCacheHash() will be removed in TYPO3 v11.0. TYPO3 Core routing is taking care of handling this argument. Simply remove the line to avoid the notice.', E_USER_DEPRECATED);
         return true;
@@ -488,7 +504,7 @@ class UriBuilder
      * @return array The last arguments
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function getLastArguments()
+    public function getLastArguments(): array
     {
         return $this->lastArguments;
     }
@@ -496,22 +512,28 @@ class UriBuilder
     /**
      * Resets all UriBuilder options to their default value
      *
-     * @return \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder the current UriBuilder to allow method chaining
+     * @return static the current UriBuilder to allow method chaining
      */
-    public function reset()
+    public function reset(): UriBuilder
     {
         $this->arguments = [];
         $this->section = '';
         $this->format = '';
         $this->createAbsoluteUri = false;
         $this->addQueryString = false;
-        $this->addQueryStringMethod = null;
+        $this->addQueryStringMethod = '';
         $this->argumentsToBeExcludedFromQueryString = [];
         $this->linkAccessRestrictedPages = false;
         $this->targetPageUid = null;
         $this->targetPageType = 0;
         $this->noCache = false;
         $this->argumentPrefix = null;
+        $this->absoluteUriScheme = null;
+        /*
+         * $this->request MUST NOT be reset here because the request is actually a hard dependency and not part
+         * of the internal state of this object.
+         * todo: consider making the request a constructor dependency or get rid of it's usage
+         */
         return $this;
     }
 
@@ -519,16 +541,23 @@ class UriBuilder
      * Creates an URI used for linking to an Extbase action.
      * Works in Frontend and Backend mode of TYPO3.
      *
-     * @param string $actionName Name of the action to be called
-     * @param array $controllerArguments Additional query parameters. Will be "namespaced" and merged with $this->arguments.
-     * @param string $controllerName Name of the target controller. If not set, current ControllerName is used.
-     * @param string $extensionName Name of the target extension, without underscores. If not set, current ExtensionName is used.
-     * @param string $pluginName Name of the target plugin. If not set, current PluginName is used.
+     * @param string|null $actionName Name of the action to be called
+     * @param array|null $controllerArguments Additional query parameters. Will be "namespaced" and merged with $this->arguments.
+     * @param string|null $controllerName Name of the target controller. If not set, current ControllerName is used.
+     * @param string|null $extensionName Name of the target extension, without underscores. If not set, current ExtensionName is used.
+     * @param string|null $pluginName Name of the target plugin. If not set, current PluginName is used.
      * @return string the rendered URI
      * @see build()
      */
-    public function uriFor($actionName = null, $controllerArguments = [], $controllerName = null, $extensionName = null, $pluginName = null)
-    {
+    public function uriFor(
+        ?string $actionName = null,
+        ?array $controllerArguments = null,
+        ?string $controllerName = null,
+        ?string $extensionName = null,
+        ?string $pluginName = null
+    ): string {
+        $controllerArguments = $controllerArguments ?? [];
+
         if ($actionName !== null) {
             $controllerArguments['action'] = $actionName;
         }
@@ -576,7 +605,7 @@ class UriBuilder
      * @param string $pluginName target plugin name
      * @return array
      */
-    protected function removeDefaultControllerAndAction(array $controllerArguments, $extensionName, $pluginName)
+    protected function removeDefaultControllerAndAction(array $controllerArguments, string $extensionName, string $pluginName): array
     {
         $defaultControllerName = $this->extensionService->getDefaultControllerNameByPlugin($extensionName, $pluginName);
         if (isset($controllerArguments['action'])) {
@@ -599,7 +628,7 @@ class UriBuilder
      * @see buildBackendUri()
      * @see buildFrontendUri()
      */
-    public function build()
+    public function build(): string
     {
         if ($this->environmentService->isEnvironmentInBackendMode()) {
             return $this->buildBackendUri();
@@ -615,8 +644,9 @@ class UriBuilder
      *
      * @return string The URI
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getQueryArguments
      */
-    public function buildBackendUri()
+    public function buildBackendUri(): string
     {
         $arguments = [];
         if ($this->addQueryString === true) {
@@ -692,7 +722,7 @@ class UriBuilder
      * @see buildTypolinkConfiguration()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function buildFrontendUri()
+    public function buildFrontendUri(): string
     {
         $typolinkConfiguration = $this->buildTypolinkConfiguration();
         if ($this->createAbsoluteUri === true) {
@@ -701,7 +731,9 @@ class UriBuilder
                 $typolinkConfiguration['forceAbsoluteUrl.']['scheme'] = $this->absoluteUriScheme;
             }
         }
-        $uri = $this->contentObject->typoLink_URL($typolinkConfiguration);
+        // Other than stated in the doc block, typoLink_URL does not always return a string
+        // Thus, we explicitly cast to string here.
+        $uri = (string)$this->contentObject->typoLink_URL($typolinkConfiguration);
         return $uri;
     }
 
@@ -711,7 +743,7 @@ class UriBuilder
      * @return array typolink configuration array
      * @see TSref/typolink
      */
-    protected function buildTypolinkConfiguration()
+    protected function buildTypolinkConfiguration(): array
     {
         $typolinkConfiguration = [];
         $typolinkConfiguration['parameter'] = $this->targetPageUid ?? $GLOBALS['TSFE']->id;
@@ -733,7 +765,7 @@ class UriBuilder
                     'exclude' => implode(',', $this->argumentsToBeExcludedFromQueryString)
                 ];
             }
-            if ($this->addQueryStringMethod) {
+            if ($this->addQueryStringMethod !== '') {
                 $typolinkConfiguration['addQueryString.']['method'] = $this->addQueryStringMethod;
             }
         }
@@ -757,7 +789,7 @@ class UriBuilder
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
      * @return array The modified arguments array
      */
-    protected function convertDomainObjectsToIdentityArrays(array $arguments)
+    protected function convertDomainObjectsToIdentityArrays(array $arguments): array
     {
         foreach ($arguments as $argumentKey => $argumentValue) {
             // if we have a LazyLoadingProxy here, make sure to get the real instance for further processing
@@ -789,7 +821,7 @@ class UriBuilder
      * @param \Iterator $iterator
      * @return array
      */
-    protected function convertIteratorToArray(\Iterator $iterator)
+    protected function convertIteratorToArray(\Iterator $iterator): array
     {
         if (method_exists($iterator, 'toArray')) {
             $array = $iterator->toArray();
@@ -807,7 +839,7 @@ class UriBuilder
      * @todo Refactore this into convertDomainObjectsToIdentityArrays()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
-    public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object)
+    public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object): array
     {
         $result = [];
         foreach ($object->_getProperties() as $propertyName => $propertyValue) {

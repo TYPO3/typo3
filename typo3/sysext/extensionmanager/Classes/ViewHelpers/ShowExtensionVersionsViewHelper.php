@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper;
 
@@ -47,6 +48,7 @@ class ShowExtensionVersionsViewHelper extends ActionViewHelper
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
 
+        /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->renderingContext->getControllerContext()->getUriBuilder();
         $action = 'showAllVersions';
         $uri = $uriBuilder->reset()->uriFor($action, [
