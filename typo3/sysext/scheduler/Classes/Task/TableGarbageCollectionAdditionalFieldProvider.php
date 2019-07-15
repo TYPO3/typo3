@@ -129,7 +129,7 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
         // Add table drop down html
         $fieldHtml[] = '<select class="form-control" name="' . $fieldName . '"' . $disabled . ' id="' . $fieldId . '">' . implode(LF, $options) . '</select>';
         // Add js array for default 'number of days' values
-        $fieldHtml[] = '<script type="text/javascript">/*<![CDATA[*/<!--';
+        $fieldHtml[] = '<script>/*<![CDATA[*/<!--';
         $fieldHtml[] = 'var defaultNumberOfDays = ' . json_encode($this->defaultNumberOfDays) . ';';
         $fieldHtml[] = '// -->/*]]>*/</script>';
         $fieldConfiguration = [

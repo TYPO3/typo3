@@ -247,6 +247,7 @@ class RequestHandler implements RequestHandlerInterface
         }
         // Part 2: DTD
         $doctype = $controller->config['config']['doctype'] ?? null;
+        $defaultTypeAttributeForJavaScript = 'text/javascript';
         if ($doctype) {
             switch ($doctype) {
                 case 'xhtml_trans':
@@ -275,6 +276,7 @@ class RequestHandler implements RequestHandlerInterface
     "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">';
                     break;
                 case 'html5':
+                    $defaultTypeAttributeForJavaScript = '';
                     $docTypeParts[] = '<!DOCTYPE html>';
                     if ($xmlDocument) {
                         $pageRenderer->setMetaCharsetTag('<meta charset="|" />');
@@ -294,6 +296,7 @@ class RequestHandler implements RequestHandlerInterface
             } else {
                 $pageRenderer->setMetaCharsetTag('<meta charset="|">');
             }
+            $defaultTypeAttributeForJavaScript = '';
         }
         if ($htmlLang) {
             if ($controller->xhtmlVersion) {
@@ -497,10 +500,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSLibs.'][$key . '.'];
-                        $type = $jsFileConfig['type'];
-                        if (!$type) {
-                            $type = 'text/javascript';
-                        }
+                        $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossOrigin = $jsFileConfig['crossorigin'];
                         if (!$crossOrigin && $jsFileConfig['integrity'] && $jsFileConfig['external']) {
                             $crossOrigin = 'anonymous';
@@ -541,10 +541,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsFileConfig = &$controller->pSetup['includeJSFooterlibs.'][$key . '.'];
-                        $type = $jsFileConfig['type'];
-                        if (!$type) {
-                            $type = 'text/javascript';
-                        }
+                        $type = $jsFileConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossorigin = $jsFileConfig['crossorigin'];
                         if (!$crossorigin && $jsFileConfig['integrity'] && $jsFileConfig['external']) {
                             $crossorigin = 'anonymous';
@@ -586,10 +583,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsConfig = &$controller->pSetup['includeJS.'][$key . '.'];
-                        $type = $jsConfig['type'];
-                        if (!$type) {
-                            $type = 'text/javascript';
-                        }
+                        $type = $jsConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossorigin = $jsConfig['crossorigin'];
                         if (!$crossorigin && $jsConfig['integrity'] && $jsConfig['external']) {
                             $crossorigin = 'anonymous';
@@ -629,10 +623,7 @@ class RequestHandler implements RequestHandlerInterface
                     }
                     if ($ss) {
                         $jsConfig = &$controller->pSetup['includeJSFooter.'][$key . '.'];
-                        $type = $jsConfig['type'];
-                        if (!$type) {
-                            $type = 'text/javascript';
-                        }
+                        $type = $jsConfig['type'] ?? $defaultTypeAttributeForJavaScript;
                         $crossorigin = $jsConfig['crossorigin'];
                         if (!$crossorigin && $jsConfig['integrity'] && $jsConfig['external']) {
                             $crossorigin = 'anonymous';
@@ -802,7 +793,7 @@ class RequestHandler implements RequestHandlerInterface
                 $pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $controller->config['config']['compressJs']);
             }
             if (trim($scriptJsCode . $inlineJS)) {
-                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($scriptJsCode . $inlineJS), 'text/javascript', $controller->config['config']['compressJs']);
+                $pageRenderer->addJsFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($scriptJsCode . $inlineJS), $defaultTypeAttributeForJavaScript, $controller->config['config']['compressJs']);
             }
             if ($inlineFooterJs) {
                 $inlineFooterJSint = '';
@@ -810,7 +801,7 @@ class RequestHandler implements RequestHandlerInterface
                 if ($inlineFooterJSint) {
                     $pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $controller->config['config']['compressJs']);
                 }
-                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), 'text/javascript', $controller->config['config']['compressJs']);
+                $pageRenderer->addJsFooterFile(GeneralUtility::writeJavaScriptContentToTemporaryFile($inlineFooterJs), $defaultTypeAttributeForJavaScript, $controller->config['config']['compressJs']);
             }
         } else {
             // Include only inlineJS

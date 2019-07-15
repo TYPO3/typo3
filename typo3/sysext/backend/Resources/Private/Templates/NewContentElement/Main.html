@@ -5,7 +5,7 @@
             <f:form.hidden name="defValues" value="" />
             <f:if condition="{onClickEvent}">
                 <f:then>
-                    <script type="text/javascript">
+                    <script>
                         function goToalt_doc() {<f:format.raw>{onClickEvent}</f:format.raw>}
                     </script>
                     {renderedTabs -> f:format.raw()}

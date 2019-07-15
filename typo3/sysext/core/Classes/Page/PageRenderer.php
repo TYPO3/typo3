@@ -1019,11 +1019,8 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      */
-    public function addJsLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
     {
-        if (!$type) {
-            $type = 'text/javascript';
-        }
         if (!in_array(strtolower($name), $this->jsLibs)) {
             $this->jsLibs[strtolower($name)] = [
                 'file' => $file,
@@ -1058,11 +1055,8 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      */
-    public function addJsFooterLibrary($name, $file, $type = 'text/javascript', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsFooterLibrary($name, $file, $type = '', $compress = false, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
     {
-        if (!$type) {
-            $type = 'text/javascript';
-        }
         $name .= '_jsFooterLibrary';
         if (!in_array(strtolower($name), $this->jsLibs)) {
             $this->jsLibs[strtolower($name)] = [
@@ -1097,11 +1091,8 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      */
-    public function addJsFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
     {
-        if (!$type) {
-            $type = 'text/javascript';
-        }
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
                 'file' => $file,
@@ -1135,11 +1126,8 @@ class PageRenderer implements SingletonInterface
      * @param bool $defer Flag if property 'defer="defer"' should be added to JavaScript tags
      * @param string $crossorigin CORS settings attribute
      */
-    public function addJsFooterFile($file, $type = 'text/javascript', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
+    public function addJsFooterFile($file, $type = '', $compress = true, $forceOnTop = false, $allWrap = '', $excludeFromConcatenation = false, $splitChar = '|', $async = false, $integrity = '', $defer = false, $crossorigin = '')
     {
-        if (!$type) {
-            $type = 'text/javascript';
-        }
         if (!isset($this->jsFiles[$file])) {
             $this->jsFiles[$file] = [
                 'file' => $file,
@@ -1448,14 +1436,14 @@ class PageRenderer implements SingletonInterface
         // directly after that, include the require.js file
         $html .= '<script src="'
             . $this->processJsFile($this->requireJsPath . 'require.js')
-            . '" type="text/javascript"></script>' . LF;
+            . '"></script>' . LF;
 
         if (!empty($requireJsConfig['typo3BaseUrl'])) {
             $html .= '<script src="'
                 . $this->processJsFile(
                     'EXT:core/Resources/Public/JavaScript/requirejs-loader.js'
                 )
-                . '" type="text/javascript"></script>' . LF;
+                . '"></script>' . LF;
         }
 
         return $html;
@@ -2165,11 +2153,12 @@ class PageRenderer implements SingletonInterface
         if (!empty($this->jsFiles)) {
             foreach ($this->jsFiles as $file => $properties) {
                 $file = $this->getStreamlinedFileName($file);
+                $type = $properties['type'] ? ' type="' . htmlspecialchars($properties['type']) . '"' : '';
                 $async = $properties['async'] ? ' async="async"' : '';
                 $defer = $properties['defer'] ? ' defer="defer"' : '';
                 $integrity = $properties['integrity'] ? ' integrity="' . htmlspecialchars($properties['integrity']) . '"' : '';
                 $crossorigin = $properties['crossorigin'] ? ' crossorigin="' . htmlspecialchars($properties['crossorigin']) . '"' : '';
-                $tag = '<script src="' . htmlspecialchars($file) . '" type="' . htmlspecialchars($properties['type']) . '"' . $async . $defer . $integrity . $crossorigin . '></script>';
+                $tag = '<script src="' . htmlspecialchars($file) . '"' . $type . $async . $defer . $integrity . $crossorigin . '></script>';
                 if ($properties['allWrap']) {
                     $wrapArr = explode($properties['splitChar'] ?: '|', $properties['allWrap'], 2);
                     $tag = $wrapArr[0] . $tag . $wrapArr[1];

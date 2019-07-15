@@ -3,7 +3,7 @@
 </f:if>
 
 <f:if condition="{configuration.insertAbove} || {configuration.insertBelow}">
-    <script type="text/javascript">
+    <script>
         function goToPage(formObject) {
             var formField = formObject.elements['paginator-target-page'];
             var url = formField.dataset.url;

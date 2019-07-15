@@ -74,6 +74,9 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addJsFile('fileadmin/test.js', 'text/javascript', false, false, 'wrapBeforeXwrapAfter', false, 'X');
         $expectedJsFileRegExp = '#wrapBefore<script src="fileadmin/test\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>wrapAfter#';
 
+        $subject->addJsFile('fileadmin/test-plain.js', '', false, false, 'wrapBeforeXwrapAfter', false, 'X');
+        $expectedJsFileWithoutTypeRegExp = '#wrapBefore<script src="fileadmin/test-plain\\.(js|\\d+\\.js|js\\?\\d+)"></script>wrapAfter#';
+
         $jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . $this->getUniqueId('jsInline-') . '"';
         $subject->addJsInlineCode($this->getUniqueId(), $jsInlineCode);
 
@@ -99,6 +102,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $this->assertStringContainsString($expectedHeaderData, $renderedString);
         $this->assertRegExp($expectedJsLibraryRegExp, $renderedString);
         $this->assertRegExp($expectedJsFileRegExp, $renderedString);
+        $this->assertRegExp($expectedJsFileWithoutTypeRegExp, $renderedString);
         $this->assertStringContainsString($expectedJsInlineCodeString, $renderedString);
         $this->assertStringContainsString($expectedCssFileString, $renderedString);
         $this->assertStringContainsString($expectedCssInlineBlockOnTopString, $renderedString);

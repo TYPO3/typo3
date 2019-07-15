@@ -2907,8 +2907,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             : $this->additionalJavaScript;
         $additionalJavaScript = trim($additionalJavaScript);
         if ($jsCode !== '' || $additionalJavaScript !== '') {
+            $doctype = $controller->config['config']['doctype'] ?? 'html5';
+            $scriptAttribute = $doctype === 'html5' ? '' : ' type="text/javascript"';
+
             $this->additionalHeaderData['JSCode'] = '
-<script type="text/javascript">
+<script' . $scriptAttribute . '>
 	/*<![CDATA[*/
 <!--
 ' . $additionalJavaScript . '

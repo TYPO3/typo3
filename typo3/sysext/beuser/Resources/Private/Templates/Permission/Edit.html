@@ -96,7 +96,7 @@
     </p>
     <p><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:def" /></p>
 
-    <script type="text/javascript">
+    <script>
         require(["jquery", "TYPO3/CMS/Beuser/Permissions"], function($, Permissions) {
             Permissions.setCheck("check[perms_user]", "tx_beuser_system_beusertxpermission[data][pages][{id}][perms_user]");
             Permissions.setCheck("check[perms_group]", "tx_beuser_system_beusertxpermission[data][pages][{id}][perms_group]");

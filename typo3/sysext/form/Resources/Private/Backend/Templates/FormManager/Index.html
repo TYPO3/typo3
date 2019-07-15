@@ -2,7 +2,7 @@
 <f:layout name="FormManager" />
 <f:section name="MainContent">
 
-    <script type="text/javascript">
+    <script>
         require(['{dynamicRequireJsModules.app}', '{dynamicRequireJsModules.viewModel}'], function (formManagerApp, viewModel) {
             var FORMMANAGER_APP = formManagerApp.getInstance(
                 <f:format.htmlentitiesDecode>{formManagerAppInitialData}</f:format.htmlentitiesDecode>,

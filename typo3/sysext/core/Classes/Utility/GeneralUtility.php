@@ -1324,7 +1324,7 @@ class GeneralUtility
             if (preg_match('/^(\\t+)/', $string, $match)) {
                 $string = str_replace($match[1], "\t", $string);
             }
-            return '<script type="text/javascript">
+            return '<script>
 /*<![CDATA[*/
 ' . $string . '
 /*]]>*/

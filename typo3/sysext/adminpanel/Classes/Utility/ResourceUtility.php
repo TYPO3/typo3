@@ -111,7 +111,7 @@ class ResourceUtility
      */
     protected static function getJsTag(string $jsFileLocation): string
     {
-        $js = '<script type="text/javascript" src="' .
+        $js = '<script src="' .
               htmlspecialchars(
                   PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($jsFileLocation)),
                   ENT_QUOTES | ENT_HTML5

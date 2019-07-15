@@ -1877,7 +1877,7 @@ class DatabaseRecordList
         if ($renderPart === 'top') {
             // Add js to traverse a page select input to a pointer value
             $content = '
-<script type="text/javascript">
+<script>
 /*<![CDATA[*/
 	function calculatePointer(page) {
 		if (page > ' . $totalPages . ') {

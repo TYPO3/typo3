@@ -59,7 +59,7 @@ class EditController extends AbstractWizardController
      *
      * @var string
      */
-    protected $closeWindow = '<script language="javascript" type="text/javascript">close();</script>';
+    protected $closeWindow = '<script>close();</script>';
 
     /**
      * Injects the request object for the current request or subrequest

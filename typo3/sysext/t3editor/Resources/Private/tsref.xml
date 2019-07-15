@@ -4139,7 +4139,7 @@ The file definition must be a valid "resource" datatype, otherwise nothing is in
 
 Each file has optional properties:
 
-.type - setting the MIME type of the script (default: text/javascript)
+.type - setting the MIME type of the script (default: empty, set it to "text/javascript" for backwards-compatibility)
 
 .forceOnTop - boolean flag. If set, this file will be added on top of all other files.
 

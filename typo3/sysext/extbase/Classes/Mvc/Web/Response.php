@@ -267,7 +267,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * Adds an additional header data (something like
-     * '<script src="myext/Resources/JavaScript/my.js" type="text/javascript"></script>'
+     * '<script src="myext/Resources/JavaScript/my.js"></script>'
      * )
      *
      * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
