@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -122,7 +121,7 @@ class RecordListController
      * @var array
      * @internal
      */
-    public $modTSconfig;
+    protected $modTSconfig;
 
     /**
      * Current ids page record
@@ -144,14 +143,7 @@ class RecordListController
      * @var string[]
      * @internal
      */
-    public $MOD_SETTINGS = [];
-
-    /**
-     * Module output accumulation
-     *
-     * @var string
-     */
-    protected $content;
+    protected $MOD_SETTINGS = [];
 
     /**
      * @var string
@@ -176,11 +168,6 @@ class RecordListController
     protected $moduleTemplate;
 
     /**
-     * @var SiteInterface
-     */
-    protected $site;
-
-    /**
      * @var SiteLanguage[]
      */
     protected $siteLanguages = [];
@@ -195,43 +182,35 @@ class RecordListController
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/FieldSelectBox');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/Recordlist');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Recordlist/ClearCache');
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
     /**
      * Initializing the module
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function init()
+    protected function init(ServerRequestInterface $request): void
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
         $backendUser = $this->getBackendUserAuthentication();
         $this->perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
         // Get session data
         $sessionData = $backendUser->getSessionData(__CLASS__);
         $this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';
         // GPvars:
-        $this->id = (int)GeneralUtility::_GP('id');
-        $this->pointer = GeneralUtility::_GP('pointer');
-        $this->table = GeneralUtility::_GP('table');
-        $this->search_field = GeneralUtility::_GP('search_field');
-        $this->search_levels = (int)GeneralUtility::_GP('search_levels');
-        $this->showLimit = GeneralUtility::_GP('showLimit');
-        $this->returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-        $this->cmd = GeneralUtility::_GP('cmd');
-        $this->cmd_table = GeneralUtility::_GP('cmd_table');
+        $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
+        $this->pointer =  max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
+        $this->table = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
+        $this->search_field = (string)($parsedBody['search_field'] ?? $queryParams['search_field'] ?? '');
+        $this->search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? 0);
+        $this->showLimit = (int)($parsedBody['showLimit'] ?? $queryParams['showLimit'] ?? 0);
+        $this->returnUrl = GeneralUtility::sanitizeLocalUrl((string)($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? ''));
+        $this->cmd = (string)($parsedBody['cmd'] ?? $queryParams['cmd'] ?? '');
+        $this->cmd_table = (string)($parsedBody['cmd_table'] ?? $queryParams['cmd_table'] ?? '');
         $sessionData['search_field'] = $this->search_field;
         // Initialize menu
-        $this->menuConfig();
-        // Store session data
-        $backendUser->setAndSaveSessionData(self::class, $sessionData);
-        $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-    }
-
-    /**
-     * Initialize function menu array
-     */
-    protected function menuConfig()
-    {
-        // MENU-ITEMS:
         $this->MOD_MENU = [
             'bigControlPanel' => '',
             'clipBoard' => '',
@@ -239,15 +218,19 @@ class RecordListController
         // Loading module configuration:
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
         // Clean up settings:
-        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, GeneralUtility::_GP('SET'), 'web_list');
+        $this->MOD_SETTINGS = BackendUtility::getModuleData($this->MOD_MENU, (array)($parsedBody['SET'] ?? $queryParams['SET'] ?? []), 'web_list');
+        // Store session data
+        $backendUser->setAndSaveSessionData(self::class, $sessionData);
+        $this->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
     }
 
     /**
      * Main function, starting the rendering of the list.
      *
      * @param ServerRequestInterface $request
+     * @return string
      */
-    protected function main(ServerRequestInterface $request)
+    protected function main(ServerRequestInterface $request): string
     {
         $backendUser = $this->getBackendUserAuthentication();
         $lang = $this->getLanguageService();
@@ -360,7 +343,6 @@ class RecordListController
                 }
             }
             // Initialize the listing object, dblist, for rendering the list:
-            $this->pointer = max(0, (int)$this->pointer);
             $dblist->start($this->id, $this->table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
             $dblist->setDispFields();
             // Render the list of tables:
@@ -525,8 +507,9 @@ class RecordListController
         // Setting up the buttons for docheader
         $dblist->getDocHeaderButtons($this->moduleTemplate);
         // search box toolbar
+        $content = '';
         if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dblist->HTMLcode || !empty($dblist->searchString))) {
-            $this->content = $dblist->getSearchBox();
+            $content .= $dblist->getSearchBox();
             $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
 
             $searchButton = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar()->makeLinkButton();
@@ -547,7 +530,8 @@ class RecordListController
         }
 
         // Build the <body> for the module
-        $this->content .= $this->body;
+        $content .= $this->body;
+        return $content;
     }
 
     /**
@@ -559,12 +543,12 @@ class RecordListController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->site = $request->getAttribute('site');
-        $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUserAuthentication(), false, (int)$this->id);
+        $site = $request->getAttribute('site');
+        $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), false, (int)$this->id);
         BackendUtility::lockRecords();
-        $this->init();
-        $this->main($request);
-        $this->moduleTemplate->setContent($this->content);
+        $this->init($request);
+        $content =  $this->main($request);
+        $this->moduleTemplate->setContent($content);
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
