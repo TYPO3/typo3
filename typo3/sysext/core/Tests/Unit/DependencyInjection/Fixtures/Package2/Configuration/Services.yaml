@@ -1,0 +1,10 @@
+services:
+
+  package2.listener:
+    class: stdClass
+    tags:
+      - { name: event.listener,
+          event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent,
+          method: 'onEvent',
+          before: 'legacy-hook' }
+

@@ -20,6 +20,7 @@ use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use TYPO3\CMS\Core\Controller\ErrorPageController;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -48,8 +49,12 @@ class MailerTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $eventDispatcher = $this->prophesize(EventDispatcher::class);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
+        GeneralUtility::setSingletonInstance(EventDispatcher::class, $eventDispatcher->reveal());
+
         $this->subject = $this->getMockBuilder(Mailer::class)
-            ->setMethods(['emitPostInitializeMailerSignal'])
+            ->setMethods(null)
             ->disableOriginalConstructor()
             ->getMock();
     }

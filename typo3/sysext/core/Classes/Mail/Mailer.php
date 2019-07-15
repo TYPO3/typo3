@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Mail;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\SmtpEnvelope;
@@ -22,11 +23,11 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\NamedAddress;
 use Symfony\Component\Mime\RawMessage;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Exception as CoreException;
+use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Adapter for Symfony/Mailer to be used by TYPO3 extensions.
@@ -76,7 +77,7 @@ class Mailer implements MailerInterface
                 throw new CoreException($e->getMessage(), 1291068569);
             }
         }
-        $this->emitPostInitializeMailerSignal();
+        $this->getEventDispatcher()->dispatch(new AfterMailerInitializationEvent($this));
     }
 
     /**
@@ -184,30 +185,10 @@ class Mailer implements MailerInterface
     }
 
     /**
-     * Get the object manager
-     *
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(ObjectManager::class);
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        return $this->getObjectManager()->get(Dispatcher::class);
-    }
-
-    /**
      * Emits a signal after mailer initialization
      */
-    protected function emitPostInitializeMailerSignal()
+    protected function getEventDispatcher(): EventDispatcherInterface
     {
-        $this->getSignalSlotDispatcher()->dispatch(self::class, 'postInitializeMailer', [$this]);
+        return GeneralUtility::makeInstance(EventDispatcher::class);
     }
 }

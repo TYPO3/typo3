@@ -1,0 +1,10 @@
+services:
+
+  package3.listener:
+    class: stdClass
+    tags:
+      # overwrites listener2 from Package 1 by specifying the same identifier
+      - { name: event.listener,
+          identifier: 'legacy-hook',
+          event: TYPO3\CMS\Core\Foo\Event\TestEvent }
+

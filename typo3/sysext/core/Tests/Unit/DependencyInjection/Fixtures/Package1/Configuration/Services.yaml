@@ -1,0 +1,17 @@
+services:
+
+  package1.listener1:
+    class: stdClass
+    tags:
+      - { name: event.listener,
+          identifier: 'legacy-hook',
+          event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent,
+          before: 'unavailable' }
+
+  package1.listener2:
+    class: stdClass
+    tags:
+      - { name: event.listener,
+          identifier: 'legacy-hook',
+          event: TYPO3\CMS\Core\Foo\Event\TestEvent }
+

@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Configuration\SiteTcaConfiguration;
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -119,6 +120,10 @@ class ConfigurationController
         'siteConfiguration' => [
             'label' => 'siteConfiguration',
             'type' => 'siteConfiguration',
+        ],
+        'eventListeners' => [
+            'label' => 'eventListeners',
+            'type' => 'eventListeners',
         ],
     ];
 
@@ -235,6 +240,11 @@ class ConfigurationController
             $renderArray['raw'] = $this->container->get('middlewares');
         } elseif ($selectedTreeDetails['type'] === 'siteConfiguration') {
             $renderArray = GeneralUtility::makeInstance(SiteTcaConfiguration::class)->getTca();
+        } elseif ($selectedTreeDetails['type'] === 'eventListeners') {
+            // Keep the order of the keys
+            $sortKeysByName = false;
+            $listenerProvider = $this->container->get(ListenerProvider::class);
+            $renderArray = $listenerProvider->getAllListenerDefinitions();
         } else {
             throw new \RuntimeException('Unknown array type "' . $selectedTreeDetails['type'] . '"', 1507845662);
         }

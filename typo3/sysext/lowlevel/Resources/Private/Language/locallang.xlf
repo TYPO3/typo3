@@ -36,6 +36,9 @@
 			<trans-unit id="siteConfiguration">
 				<source>Site Configuration</source>
 			</trans-unit>
+			<trans-unit id="eventListeners">
+				<source>Event Listeners (PSR-14)</source>
+			</trans-unit>
 			<trans-unit id="t3services">
 				<source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
 			</trans-unit>
