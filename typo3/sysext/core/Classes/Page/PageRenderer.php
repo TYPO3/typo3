@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Page;
 
 use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
@@ -2367,12 +2366,8 @@ class PageRenderer implements SingletonInterface
                 ];
                 GeneralUtility::callUserFunction($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['cssConcatenateHandler'], $params, $this);
             } else {
-                $cssOptions = [];
-                if (TYPO3_MODE === 'BE') {
-                    $cssOptions = ['baseDirectories' => GeneralUtility::makeInstance(DocumentTemplate::class)->getSkinStylesheetDirectories()];
-                }
-                $this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs, $cssOptions);
-                $this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles, $cssOptions);
+                $this->cssLibs = $this->getCompressor()->concatenateCssFiles($this->cssLibs);
+                $this->cssFiles = $this->getCompressor()->concatenateCssFiles($this->cssFiles);
             }
         }
     }

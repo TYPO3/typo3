@@ -294,11 +294,11 @@ class ModuleTemplate
         if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
             $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
         }
+        // @see DocumentTemplate::addStyleSheetDirectory
         // Add all *.css files of the directory $path to the stylesheets
         foreach ($this->getRegisteredStylesheetFolders() as $folder) {
             // Read all files in directory and sort them alphabetically
-            $cssFiles = GeneralUtility::getFilesInDir($folder, 'css', true);
-            foreach ($cssFiles as $cssFile) {
+            foreach (GeneralUtility::getFilesInDir($folder, 'css', true) as $cssFile) {
                 $this->pageRenderer->addCssFile($cssFile);
             }
         }

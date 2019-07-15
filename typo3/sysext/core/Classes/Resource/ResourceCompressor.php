@@ -103,14 +103,10 @@ class ResourceCompressor
     /**
      * Concatenates the Stylesheet files
      *
-     * Options:
-     * baseDirectories If set, only include files below one of the base directories
-     *
      * @param array $cssFiles CSS files to process
-     * @param array $options Additional options
      * @return array CSS files
      */
-    public function concatenateCssFiles(array $cssFiles, array $options = [])
+    public function concatenateCssFiles(array $cssFiles)
     {
         $filesToIncludeByType = ['all' => []];
         foreach ($cssFiles as $key => $fileOptions) {
@@ -119,45 +115,34 @@ class ResourceCompressor
                 continue;
             }
             $filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
-            // if $options['baseDirectories'] set, we only include files below these directories
-            if (
-                !isset($options['baseDirectories'])
-                || $this->checkBaseDirectory(
-                    $filenameFromMainDir,
-                    array_merge($options['baseDirectories'], [$this->targetDirectory])
-                )
-            ) {
-                $type = isset($fileOptions['media']) ? strtolower($fileOptions['media']) : 'all';
-                if (!isset($filesToIncludeByType[$type])) {
-                    $filesToIncludeByType[$type] = [];
-                }
-                if (!empty($fileOptions['forceOnTop'])) {
-                    array_unshift($filesToIncludeByType[$type], $filenameFromMainDir);
-                } else {
-                    $filesToIncludeByType[$type][] = $filenameFromMainDir;
-                }
-                // remove the file from the incoming file array
-                unset($cssFiles[$key]);
+            $type = isset($fileOptions['media']) ? strtolower($fileOptions['media']) : 'all';
+            if (!isset($filesToIncludeByType[$type])) {
+                $filesToIncludeByType[$type] = [];
             }
+            if (!empty($fileOptions['forceOnTop'])) {
+                array_unshift($filesToIncludeByType[$type], $filenameFromMainDir);
+            } else {
+                $filesToIncludeByType[$type][] = $filenameFromMainDir;
+            }
+            // remove the file from the incoming file array
+            unset($cssFiles[$key]);
         }
-        if (!empty($filesToIncludeByType)) {
-            foreach ($filesToIncludeByType as $mediaOption => $filesToInclude) {
-                if (empty($filesToInclude)) {
-                    continue;
-                }
-                $targetFile = $this->createMergedCssFile($filesToInclude);
-                $concatenatedOptions = [
-                    'file' => $targetFile,
-                    'rel' => 'stylesheet',
-                    'media' => $mediaOption,
-                    'compress' => true,
-                    'excludeFromConcatenation' => true,
-                    'forceOnTop' => false,
-                    'allWrap' => ''
-                ];
-                // place the merged stylesheet on top of the stylesheets
-                $cssFiles = array_merge($cssFiles, [$targetFile => $concatenatedOptions]);
+        foreach ($filesToIncludeByType as $mediaOption => $filesToInclude) {
+            if (empty($filesToInclude)) {
+                continue;
             }
+            $targetFile = $this->createMergedCssFile($filesToInclude);
+            $concatenatedOptions = [
+                'file' => $targetFile,
+                'rel' => 'stylesheet',
+                'media' => $mediaOption,
+                'compress' => true,
+                'excludeFromConcatenation' => true,
+                'forceOnTop' => false,
+                'allWrap' => ''
+            ];
+            // place the merged stylesheet on top of the stylesheets
+            $cssFiles = array_merge($cssFiles, [$targetFile => $concatenatedOptions]);
         }
         return $cssFiles;
     }
@@ -447,6 +432,10 @@ class ResourceCompressor
 
         // if the file is an absolute reference within the docRoot
         $absolutePath = $docRoot . '/' . $fileNameWithoutSlash;
+        // if it is already an absolute path to the file
+        if (PathUtility::isAbsolutePath($filename)) {
+            $absolutePath = $filename;
+        }
         // Calling is_file without @ for a path starting with '../' causes a PHP Warning when using open_basedir restriction
         if (@is_file($absolutePath)) {
             if (strpos($absolutePath, $this->rootPath) === 0) {
