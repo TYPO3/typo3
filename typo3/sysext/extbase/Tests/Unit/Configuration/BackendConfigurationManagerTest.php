@@ -208,20 +208,20 @@ class BackendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSwitchableControllerActionsReturnsEmptyArrayByDefault()
+    public function getControllerConfigurationReturnsEmptyArrayByDefault()
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = null;
         $expectedResult = [];
-        $actualResult = $this->backendConfigurationManager->_call('getSwitchableControllerActions', 'SomeExtensionName', 'SomePluginName');
+        $actualResult = $this->backendConfigurationManager->_call('getControllerConfiguration', 'SomeExtensionName', 'SomePluginName');
         $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
      * @test
      */
-    public function getSwitchableControllerActionsReturnsConfigurationStoredInExtconf()
+    public function getControllerConfigurationReturnsConfigurationStoredInExtconf()
     {
-        $testSwitchableControllerActions = [
+        $controllerConfiguration = [
             'Controller1' => [
                 'actions' => [
                     'action1',
@@ -238,9 +238,9 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 ]
             ]
         ];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $testSwitchableControllerActions;
-        $expectedResult = $testSwitchableControllerActions;
-        $actualResult = $this->backendConfigurationManager->_call('getSwitchableControllerActions', 'SomeExtensionName', 'SomePluginName');
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $controllerConfiguration;
+        $expectedResult = $controllerConfiguration;
+        $actualResult = $this->backendConfigurationManager->_call('getControllerConfiguration', 'SomeExtensionName', 'SomePluginName');
         $this->assertEquals($expectedResult, $actualResult);
     }
 
@@ -259,7 +259,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'],
+            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false
@@ -290,7 +290,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions', 'getQueryGenerator'],
+            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration', 'getQueryGenerator'],
             [],
             '',
             false
@@ -315,7 +315,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'],
+            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false
@@ -336,7 +336,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getSwitchableControllerActions'],
+            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false

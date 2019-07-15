@@ -142,17 +142,17 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
             $frameworkConfiguration['persistence']['storagePid'] = $this->getDefaultBackendStoragePid();
         }
-        // only merge $this->configuration and override switchableControllerActions when retrieving configuration of the current plugin
+        // only merge $this->configuration and override controller configuration when retrieving configuration of the current plugin
         if ($extensionName === null || $extensionName === $this->extensionName && $pluginName === $this->pluginName) {
             $pluginConfiguration = $this->getPluginConfiguration((string)$this->extensionName, (string)$this->pluginName);
             \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($pluginConfiguration, $this->configuration);
-            $pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions((string)$this->extensionName, (string)$this->pluginName);
+            $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$this->extensionName, (string)$this->pluginName);
             if (isset($this->configuration['switchableControllerActions'])) {
-                $this->overrideSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
+                $this->overrideControllerConfigurationWithSwitchableControllerActions($pluginConfiguration, $this->configuration['switchableControllerActions']);
             }
         } else {
             $pluginConfiguration = $this->getPluginConfiguration((string)$extensionName, (string)$pluginName);
-            $pluginConfiguration['controllerConfiguration'] = $this->getSwitchableControllerActions((string)$extensionName, (string)$pluginName);
+            $pluginConfiguration['controllerConfiguration'] = $this->getControllerConfiguration((string)$extensionName, (string)$pluginName);
         }
         \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($frameworkConfiguration, $pluginConfiguration);
         // only load context specific configuration when retrieving configuration of the current plugin
@@ -242,14 +242,14 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      * @param array &$frameworkConfiguration
      * @param array $switchableControllerActions
      */
-    protected function overrideSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions): void
+    protected function overrideControllerConfigurationWithSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions): void
     {
         $controllerAliasToClass = [];
         foreach ($frameworkConfiguration['controllerConfiguration'] as $controllerClass => $controllerConfiguration) {
             $controllerAliasToClass[$controllerConfiguration['alias']] = $controllerClass;
         }
 
-        $overriddenSwitchableControllerActions = [];
+        $overriddenControllerConfiguration = [];
         foreach ($switchableControllerActions as $controllerName => $actions) {
             // Trim leading backslashes if a fully qualified controller class name with leading slashes is used.
             $controllerName = ltrim($controllerName, '\\');
@@ -293,15 +293,15 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
                 continue;
             }
 
-            if (!isset($overriddenSwitchableControllerActions[$controllerClassName])) {
-                $overriddenSwitchableControllerActions[$controllerClassName] = [
+            if (!isset($overriddenControllerConfiguration[$controllerClassName])) {
+                $overriddenControllerConfiguration[$controllerClassName] = [
                     'alias' => $controllerAlias,
                     'className' => $controllerClassName,
                     'actions' => []
                 ];
             }
-            $overriddenSwitchableControllerActions[$controllerClassName]['actions'] = array_merge(
-                $overriddenSwitchableControllerActions[$controllerClassName]['actions'],
+            $overriddenControllerConfiguration[$controllerClassName]['actions'] = array_merge(
+                $overriddenControllerConfiguration[$controllerClassName]['actions'],
                 $actions
             );
             $nonCacheableActions = $frameworkConfiguration['controllerConfiguration'][$controllerClassName]['nonCacheableActions'] ?? null;
@@ -312,10 +312,10 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
             }
             $overriddenNonCacheableActions = array_intersect($nonCacheableActions, $actions);
             if (!empty($overriddenNonCacheableActions)) {
-                $overriddenSwitchableControllerActions[$controllerClassName]['nonCacheableActions'] = $overriddenNonCacheableActions;
+                $overriddenControllerConfiguration[$controllerClassName]['nonCacheableActions'] = $overriddenNonCacheableActions;
             }
         }
-        $frameworkConfiguration['controllerConfiguration'] = $overriddenSwitchableControllerActions;
+        $frameworkConfiguration['controllerConfiguration'] = $overriddenControllerConfiguration;
     }
 
     /**
@@ -349,7 +349,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
     abstract protected function getPluginConfiguration(string $extensionName, string $pluginName = null): array;
 
     /**
-     * Returns the configured controller/action pairs of the specified plugin/module in the format
+     * Returns the configured controller/action configuration of the specified plugin/module in the format
      * array(
      * 'Controller1' => array('action1', 'action2'),
      * 'Controller2' => array('action3', 'action4')
@@ -359,7 +359,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      * @param string $pluginName in FE mode this is the specified plugin name, in BE mode this is the full module signature
      * @return array
      */
-    abstract protected function getSwitchableControllerActions(string $extensionName, string $pluginName): array;
+    abstract protected function getControllerConfiguration(string $extensionName, string $pluginName): array;
 
     /**
      * The implementation of the methods to return a list of storagePid that are below a certain

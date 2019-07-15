@@ -87,7 +87,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     }
 
     /**
-     * Returns the configured controller/action pairs of the specified plugin in the format
+     * Returns the configured controller/action configuration of the specified plugin in the format
      * array(
      * 'Controller1' => array('action1', 'action2'),
      * 'Controller2' => array('action3', 'action4')
@@ -97,13 +97,13 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param string $pluginName
      * @return array
      */
-    protected function getSwitchableControllerActions(string $extensionName, string $pluginName): array
+    protected function getControllerConfiguration(string $extensionName, string $pluginName): array
     {
-        $switchableControllerActions = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
-        if (!is_array($switchableControllerActions)) {
-            $switchableControllerActions = [];
+        $controllerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
+        if (!is_array($controllerConfiguration)) {
+            $controllerConfiguration = [];
         }
-        return $switchableControllerActions;
+        return $controllerConfiguration;
     }
 
     /**
@@ -177,7 +177,8 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 
     /**
      * Overrides configuration settings from flexForms.
-     * This merges the whole flexForm data, and overrides switchable controller actions.
+     * This merges the whole flexForm data, and overrides the controller configuration with possibly configured
+     * switchable controller actions.
      *
      * @param array $frameworkConfiguration the framework configuration
      * @return array the framework configuration with overridden data from flexForm
@@ -196,7 +197,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'settings');
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'persistence');
             $frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $flexFormConfiguration, 'view');
-            $frameworkConfiguration = $this->overrideSwitchableControllerActionsFromFlexForm($frameworkConfiguration, $flexFormConfiguration);
+            $frameworkConfiguration = $this->overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm($frameworkConfiguration, $flexFormConfiguration);
         }
         return $frameworkConfiguration;
     }
@@ -222,14 +223,15 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
     }
 
     /**
-     * Overrides the switchable controller actions from the flexForm.
+     * Overrides the controller configuration with possibly registered switchable controller actions of the flex form
+     * configuration.
      *
      * @param array $frameworkConfiguration The original framework configuration
      * @param array $flexFormConfiguration The full flexForm configuration
      * @throws Exception\ParseErrorException
      * @return array the modified framework configuration, if needed
      */
-    protected function overrideSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration): array
+    protected function overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration): array
     {
         if (!isset($flexFormConfiguration['switchableControllerActions']) || is_array($flexFormConfiguration['switchableControllerActions'])) {
             return $frameworkConfiguration;
@@ -237,16 +239,16 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         // As "," is the flexForm field value delimiter, we need to use ";" as in-field delimiter. That's why we need to replace ; by  , first.
         // The expected format is: "Controller1->action2;Controller2->action3;Controller2->action1"
         $switchableControllerActionPartsFromFlexForm = GeneralUtility::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), true);
-        $newSwitchableControllerActionsFromFlexForm = [];
+        $overriddenControllerConfiguration = [];
         foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
             list($controller, $action) = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
             if (empty($controller) || empty($action)) {
                 throw new \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
             }
-            $newSwitchableControllerActionsFromFlexForm[$controller][] = $action;
+            $overriddenControllerConfiguration[$controller][] = $action;
         }
-        if (!empty($newSwitchableControllerActionsFromFlexForm)) {
-            $this->overrideSwitchableControllerActions($frameworkConfiguration, $newSwitchableControllerActionsFromFlexForm);
+        if (!empty($overriddenControllerConfiguration)) {
+            $this->overrideControllerConfigurationWithSwitchableControllerActions($frameworkConfiguration, $overriddenControllerConfiguration);
         }
         return $frameworkConfiguration;
     }

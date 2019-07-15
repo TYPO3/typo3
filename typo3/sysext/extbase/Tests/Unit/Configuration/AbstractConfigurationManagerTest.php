@@ -129,7 +129,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions',
+                'getControllerConfiguration',
                 'getRecursiveStoragePids'
             ],
             [],
@@ -399,11 +399,11 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions',
+                'getControllerConfiguration',
                 'getRecursiveStoragePids'
             ],
             [],
@@ -413,7 +413,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration(['switchableControllerActions' => ['overriddenSwitchableControllerActions']]);
         $abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue([]));
-        $abstractConfigurationManager->expects($this->never())->method('overrideSwitchableControllerActions');
+        $abstractConfigurationManager->expects($this->never())->method('overrideControllerConfigurationWithSwitchableControllerActions');
         $abstractConfigurationManager->getConfiguration('SomeExtensionName', 'SomePluginName');
     }
 
@@ -431,11 +431,11 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions',
+                'getControllerConfiguration',
                 'getRecursiveStoragePids'
             ],
             [],
@@ -446,7 +446,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration($configuration);
         $abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue([]));
-        $abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
+        $abstractConfigurationManager->expects($this->once())->method('overrideControllerConfigurationWithSwitchableControllerActions');
         $abstractConfigurationManager->getConfiguration('CurrentExtensionName', 'CurrentPluginName');
     }
 
@@ -460,11 +460,11 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions',
+                'getControllerConfiguration',
                 'getRecursiveStoragePids'
             ],
             [],
@@ -475,7 +475,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
         $abstractConfigurationManager->setConfiguration($configuration);
         $abstractConfigurationManager->expects($this->any())->method('getPluginConfiguration')->will($this->returnValue([]));
-        $abstractConfigurationManager->expects($this->once())->method('overrideSwitchableControllerActions');
+        $abstractConfigurationManager->expects($this->once())->method('overrideControllerConfigurationWithSwitchableControllerActions');
         $abstractConfigurationManager->getConfiguration();
     }
 
@@ -497,7 +497,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testPluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with(
+        $this->abstractConfigurationManager->expects($this->once())->method('getControllerConfiguration')->with(
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testSwitchableControllerActions));
@@ -582,7 +582,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testPluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with(
+        $this->abstractConfigurationManager->expects($this->once())->method('getControllerConfiguration')->with(
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testSwitchableControllerActions));
@@ -621,7 +621,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testPluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with(
+        $this->abstractConfigurationManager->expects($this->once())->method('getControllerConfiguration')->with(
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testSwitchableControllerActions));
@@ -655,7 +655,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testPluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with(
+        $this->abstractConfigurationManager->expects($this->once())->method('getControllerConfiguration')->with(
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testSwitchableControllerActions));

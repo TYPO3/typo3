@@ -223,12 +223,12 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSwitchableControllerActionsReturnsEmptyArrayByDefault(): void
+    public function getControllerConfigurationReturnsEmptyArrayByDefault(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = null;
         $expectedResult = [];
         $actualResult = $this->frontendConfigurationManager->_call(
-            'getSwitchableControllerActions',
+            'getControllerConfiguration',
             'SomeExtensionName',
             'SomePluginName'
         );
@@ -238,9 +238,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSwitchableControllerActionsReturnsConfigurationStoredInExtconf(): void
+    public function getControllerConfigurationReturnsConfigurationStoredInExtconf(): void
     {
-        $testSwitchableControllerActions = [
+        $controllerConfiguration = [
             'Controller1' => [
                 'actions' => [
                     'action1',
@@ -257,10 +257,10 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 ]
             ]
         ];
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['plugins']['SomePluginName']['controllers'] = $testSwitchableControllerActions;
-        $expectedResult = $testSwitchableControllerActions;
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['plugins']['SomePluginName']['controllers'] = $controllerConfiguration;
+        $expectedResult = $controllerConfiguration;
         $actualResult = $this->frontendConfigurationManager->_call(
-            'getSwitchableControllerActions',
+            'getControllerConfiguration',
             'SomeExtensionName',
             'SomePluginName'
         );
@@ -270,7 +270,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideSwitchableControllerActionsFromFlexFormReturnsUnchangedFrameworkConfigurationIfNoFlexFormConfigurationIsFound(
+    public function overrideControllerConfigurationWithSwitchableControllerActionsFromFlexFormReturnsUnchangedFrameworkConfigurationIfNoFlexFormConfigurationIsFound(
     ): void {
         $frameworkConfiguration = [
             'pluginName' => 'Pi1',
@@ -289,7 +289,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         ];
         $flexFormConfiguration = [];
         $actualResult = $this->frontendConfigurationManager->_call(
-            'overrideSwitchableControllerActionsFromFlexForm',
+            'overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm',
             $frameworkConfiguration,
             $flexFormConfiguration
         );
@@ -299,7 +299,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideSwitchableControllerActionsFromFlexFormMergesNonCacheableActions(): void
+    public function overrideControllerConfigurationWithSwitchableControllerActionsFromFlexFormMergesNonCacheableActions(): void
     {
         $frameworkConfiguration = [
             'pluginName' => 'Pi1',
@@ -337,7 +337,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ]
         ];
         $actualResult = $this->frontendConfigurationManager->_call(
-            'overrideSwitchableControllerActionsFromFlexForm',
+            'overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm',
             $frameworkConfiguration,
             $flexFormConfiguration
         );
@@ -347,7 +347,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function overrideSwitchableControllerActionsThrowsExceptionIfFlexFormConfigurationIsInvalid(): void
+    public function overrideControllerConfigurationWithSwitchableControllerActionsThrowsExceptionIfFlexFormConfigurationIsInvalid(): void
     {
         $this->expectException(ParseErrorException::class);
         $this->expectExceptionCode(1257146403);
@@ -368,7 +368,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'switchableControllerActions' => 'Controller1->;Controller2->action3;Controller2->action1'
         ];
         $this->frontendConfigurationManager->_call(
-            'overrideSwitchableControllerActionsFromFlexForm',
+            'overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm',
             $frameworkConfiguration,
             $flexFormConfiguration
         );
@@ -418,11 +418,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions'
+                'getControllerConfiguration'
             ],
             [],
             '',
@@ -451,11 +451,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions'
+                'getControllerConfiguration'
             ],
             [],
             '',
@@ -484,11 +484,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions'
+                'getControllerConfiguration'
             ],
             [],
             '',
@@ -515,11 +515,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $abstractConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
             [
-                'overrideSwitchableControllerActions',
+                'overrideControllerConfigurationWithSwitchableControllerActions',
                 'getContextSpecificFrameworkConfiguration',
                 'getTypoScriptSetup',
                 'getPluginConfiguration',
-                'getSwitchableControllerActions'
+                'getControllerConfiguration'
             ],
             [],
             '',

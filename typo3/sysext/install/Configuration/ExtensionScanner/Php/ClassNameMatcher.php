@@ -1306,4 +1306,9 @@ return [
             'Deprecation-88746-PageRepositoryPHPClassMovedFromFrontendToCoreExtension.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Configuration\AbstractConfigurationManager' => [
+        'restFiles' => [
+            'Breaking-88496-MethodGetSwitchableControllerActionsHasBeenRemoved.rst'
+        ],
+    ],
 ];
