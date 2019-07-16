@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\RecordList\RecordListGetTableHookInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -136,13 +135,6 @@ class DatabaseRecordList
     public $pageRow = [];
 
     /**
-     * Shared module configuration, used by localization features
-     *
-     * @var array
-     */
-    public $modSharedTSconfig = [];
-
-    /**
      * Contains page translation languages
      *
      * @var array
@@ -214,18 +206,6 @@ class DatabaseRecordList
     public $id;
 
     /**
-     * @var int
-     */
-    public $no_noWrap = 0;
-
-    /**
-     * Set to zero, if you don't want a left-margin with addElement function
-     *
-     * @var int
-     */
-    public $setLMargin = 1;
-
-    /**
      * Used for tracking duplicate values of fields
      *
      * @var string[]
@@ -252,13 +232,6 @@ class DatabaseRecordList
      * @var string
      */
     public $thisScript = '';
-
-    /**
-     * JavaScript code accumulation
-     *
-     * @var string
-     */
-    public $JScode = '';
 
     /**
      * @var TranslationConfigurationProvider
@@ -303,7 +276,7 @@ class DatabaseRecordList
      *
      * @var bool
      */
-    public $thumbs = 0;
+    public $thumbs = false;
 
     /**
      * Used for tracking next/prev uids
@@ -407,7 +380,7 @@ class DatabaseRecordList
      *
      * @var int
      */
-    public $searchLevels = '';
+    public $searchLevels = 0;
 
     /**
      * "LIMIT " in SQL...
@@ -422,13 +395,6 @@ class DatabaseRecordList
      * @var string
      */
     public $totalItems = '';
-
-    /**
-     * OBSOLETE - NOT USED ANYMORE. leftMargin
-     *
-     * @var int
-     */
-    public $leftMargin = 0;
 
     /**
      * TSconfig which overwrites TCA-Settings
@@ -619,141 +585,6 @@ class DatabaseRecordList
         $this->determineScriptUrl();
 
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-    }
-
-    /**
-     * Create the panel of buttons for submitting the form or otherwise perform
-     * operations.
-     *
-     * @return string[] All available buttons as an assoc. array
-     */
-    public function getButtons()
-    {
-        $modulePageTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        $backendUser = $this->getBackendUserAuthentication();
-        $lang = $this->getLanguageService();
-        $buttons = [
-            'csh' => '',
-            'view' => '',
-            'edit' => '',
-            'hide_unhide' => '',
-            'move' => '',
-            'new_record' => '',
-            'paste' => '',
-            'level_up' => '',
-            'cache' => '',
-            'reload' => '',
-            'shortcut' => '',
-            'back' => '',
-            'csv' => '',
-            'export' => ''
-        ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        // Get users permissions for this page record:
-        $localCalcPerms = $backendUser->calcPerms($this->pageRow);
-        // CSH
-        if ((string)$this->id === '') {
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_noId');
-        } elseif (!$this->id) {
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module_root');
-        } else {
-            $buttons['csh'] = BackendUtility::cshItem('xMOD_csh_corebe', 'list_module');
-        }
-        if (isset($this->id)) {
-            // View Exclude doktypes 254,255 Configuration:
-            // mod.web_list.noViewWithDokTypes = 254,255
-            if (isset($modulePageTsConfig['noViewWithDokTypes'])) {
-                $noViewDokTypes = GeneralUtility::trimExplode(',', $modulePageTsConfig['noViewWithDokTypes'], true);
-            } else {
-                //default exclusion: doktype 254 (folder), 255 (recycler)
-                $noViewDokTypes = [
-                    PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_RECYCLER
-                ];
-            }
-            if (!in_array($this->pageRow['doktype'], $noViewDokTypes)) {
-                $onClick = htmlspecialchars(BackendUtility::viewOnClick($this->id, '', BackendUtility::BEgetRootLine($this->id)));
-                $buttons['view'] = '<a href="#" onclick="' . $onClick . '" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">'
-                    . $this->iconFactory->getIcon('actions-document-view', Icon::SIZE_SMALL)->render() . '</a>';
-            }
-            // New record on pages that are not locked by editlock
-            if (!$modulePageTsConfig['noCreateRecordsLink'] && $this->editLockPermissions()) {
-                $onClick = htmlspecialchars('return jumpExt(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id])) . ');');
-                $buttons['new_record'] = '<a href="#" onclick="' . $onClick . '" title="'
-                    . htmlspecialchars($lang->getLL('newRecordGeneral')) . '">'
-                    . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
-            }
-            // If edit permissions are set, see
-            // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions() && $this->getBackendUserAuthentication()->checkLanguageAccess(0)) {
-                // Edit
-                $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
-                $onClick = htmlspecialchars(BackendUtility::editOnClick($params, '', -1));
-                $buttons['edit'] = '<a href="#" onclick="' . $onClick . '" title="' . htmlspecialchars($lang->getLL('editPage')) . '">'
-                    . $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render()
-                    . '</a>';
-            }
-            // Paste
-            if (($localCalcPerms & Permission::PAGE_NEW || $localCalcPerms & Permission::CONTENT_EDIT) && $this->editLockPermissions()) {
-                $elFromTable = $this->clipObj->elFromTable('');
-                if (!empty($elFromTable)) {
-                    $confirmText = $this->clipObj->confirmMsgText('pages', $this->pageRow, 'into', $elFromTable);
-                    $buttons['paste'] = '<a'
-                        . ' href="' . htmlspecialchars($this->clipObj->pasteUrl('', $this->id)) . '"'
-                        . ' title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
-                        . ' class="t3js-modal-trigger"'
-                        . ' data-severity="warning"'
-                        . ' data-title="' . htmlspecialchars($lang->getLL('clip_paste')) . '"'
-                        . ' data-content="' . htmlspecialchars($confirmText) . '"'
-                        . '>'
-                        . $this->iconFactory->getIcon('actions-document-paste-into', Icon::SIZE_SMALL)->render()
-                        . '</a>';
-                }
-            }
-            // Cache
-            $buttons['cache'] = '<a href="#" data-id="' . $this->id . '" class="t3js-clear-page-cache" title="'
-                . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.clear_cache')) . '">'
-                . $this->iconFactory->getIcon('actions-system-cache-clear', Icon::SIZE_SMALL)->render() . '</a>';
-            if ($this->table && (!isset($modulePageTsConfig['noExportRecordsLinks'])
-                || (isset($modulePageTsConfig['noExportRecordsLinks'])
-                    && !$modulePageTsConfig['properties']['noExportRecordsLinks']))
-            ) {
-                // CSV
-                $buttons['csv'] = '<a href="' . htmlspecialchars($this->listURL() . '&csv=1') . '" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.csv')) . '">'
-                    . $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL)->render() . '</a>';
-                // Export
-                if (ExtensionManagementUtility::isLoaded('impexp')) {
-                    $url = (string)$uriBuilder->buildUriFromRoute('tx_impexp_export');
-                    $buttons['export'] = '<a href="' . htmlspecialchars($url . '&tx_impexp[list][]='
-                            . rawurlencode($this->table . ':' . $this->id)) . '" title="'
-                        . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.export')) . '">'
-                        . $this->iconFactory->getIcon('actions-document-export-t3d', Icon::SIZE_SMALL)->render() . '</a>';
-                }
-            }
-            // Reload
-            $buttons['reload'] = '<a href="' . htmlspecialchars($this->listURL()) . '" title="'
-                . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.reload')) . '">'
-                . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
-            // Shortcut
-            if ($backendUser->mayMakeShortcut()) {
-                $buttons['shortcut'] = GeneralUtility::makeInstance(DocumentTemplate::class)->makeShortcutIcon(
-                    'id, M, imagemode, pointer, table, search_field, search_levels, showLimit, sortField, sortRev',
-                    implode(',', array_keys($this->MOD_MENU)),
-                    'web_list'
-                );
-            }
-            // Back
-            if ($this->returnUrl) {
-                $href = htmlspecialchars(GeneralUtility::linkThisUrl($this->returnUrl, ['id' => $this->id]));
-                $buttons['back'] = '<a href="' . $href . '" class="typo3-goBack" title="'
-                    . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')) . '">'
-                    . $this->iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL)->render() . '</a>';
-            }
-        }
-        return $buttons;
     }
 
     /**
@@ -1460,7 +1291,7 @@ class DatabaseRecordList
                     trim($row[$thumbsCol]) &&
                     preg_match('/(^|(.*(;|,)?))' . $thumbsCol . '(((;|,).*)|$)/', $visibleColumns) === 1
                 ) {
-                    $thumbCode = '<br />' . $this->thumbCode($row, $table, $thumbsCol);
+                    $thumbCode = '<br />' . BackendUtility::thumbCode($row, $table, $thumbsCol);
                     $theData[$fCol] .= $thumbCode;
                     $theData['__label'] .= $thumbCode;
                 }
@@ -2962,7 +2793,6 @@ class DatabaseRecordList
         $this->duplicateField = GeneralUtility::_GP('duplicateField');
         // Init dynamic vars:
         $this->counter = 0;
-        $this->JScode = '';
         $this->HTMLcode = '';
         // Limits
         if (isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
@@ -3237,19 +3067,6 @@ class DatabaseRecordList
         }
         // Setting result:
         $this->setFields = $dispFields;
-    }
-
-    /**
-     * Create thumbnail code for record/field
-     *
-     * @param mixed[] $row Record array
-     * @param string $table Table (record is from)
-     * @param string $field Field name for which thumbnail are to be rendered.
-     * @return string HTML for thumbnails, if any.
-     */
-    public function thumbCode($row, $table, $field)
-    {
-        return BackendUtility::thumbCode($row, $table, $field);
     }
 
     /**
@@ -3747,15 +3564,6 @@ class DatabaseRecordList
     }
 
     /**
-     * Returns "requestUri" - which is basically listURL
-     * @return string Content of ->listURL()
-     */
-    public function requestUri()
-    {
-        return $this->listURL();
-    }
-
-    /**
      * Makes the list of fields to select for a table
      *
      * @param string $table Table name
@@ -4013,7 +3821,6 @@ class DatabaseRecordList
     public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_2 = '', $colType = 'td')
     {
         $colType = ($colType === 'th') ? 'th' : 'td';
-        $noWrap = $this->no_noWrap ? '' : ' nowrap';
         // Start up:
         $l10nParent = isset($data['_l10nparent_']) ? (int)$data['_l10nparent_'] : 0;
         $out = '
@@ -4057,7 +3864,7 @@ class DatabaseRecordList
                         $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
                     }
                     $out .= '
-						<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+						<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
                 }
                 $lastKey = $vKey;
                 $c = 1;
@@ -4080,81 +3887,13 @@ class DatabaseRecordList
                 $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
             }
             $out .= '
-				<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+				<' . $colType . ' class="' . $cssClass . ' nowrap' . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
         }
         // End row
         $out .= '
 		</tr>';
         // Return row.
         return $out;
-    }
-
-    /**
-     * Dummy function, used to write the top of a table listing.
-     */
-    public function writeTop()
-    {
-    }
-
-    /**
-     * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
-     *
-     * @param string $table Table name
-     * @return array array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
-     */
-    public function fwd_rwd_nav($table = '')
-    {
-        $code = '';
-        if ($this->eCounter >= $this->firstElementNumber && $this->eCounter < $this->firstElementNumber + $this->iLimit) {
-            if ($this->firstElementNumber && $this->eCounter == $this->firstElementNumber) {
-                // 	Reverse
-                $theData = [];
-                $titleCol = $this->fieldArray[0];
-                $theData[$titleCol] = $this->fwd_rwd_HTML('fwd', $this->eCounter, $table);
-                $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
-            }
-            return [1, $code];
-        }
-        if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
-            // 	Forward
-            $theData = [];
-            $titleCol = $this->fieldArray[0];
-            $theData[$titleCol] = $this->fwd_rwd_HTML('rwd', $this->eCounter, $table);
-            $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
-        }
-        return [0, $code];
-    }
-
-    /**
-     * Creates the button with link to either forward or reverse
-     *
-     * @param string $type Type: "fwd" or "rwd
-     * @param int $pointer Pointer
-     * @param string $table Table name
-     * @return string
-     * @internal
-     */
-    public function fwd_rwd_HTML($type, $pointer, $table = '')
-    {
-        $content = '';
-        $tParam = $table ? '&table=' . rawurlencode($table) : '';
-        switch ($type) {
-            case 'fwd':
-                $href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-up',
-                    Icon::SIZE_SMALL
-                    )->render() . '</a> <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i>';
-                break;
-            case 'rwd':
-                $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-down',
-                    Icon::SIZE_SMALL
-                    )->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
-                break;
-        }
-        return $content;
     }
 
     /**

@@ -569,4 +569,29 @@ return [
             'Feature-88791-IntroducePreviewAspectInContext.rst',
         ],
     ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->modSharedTSconfig' => [
+        'restFiles' => [
+            'Breaking-88779-RecordListRemoveUnusedCode.rst',
+        ],
+    ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->no_noWrap' => [
+        'restFiles' => [
+            'Breaking-88779-RecordListRemoveUnusedCode.rst',
+        ],
+    ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->setLMargin' => [
+        'restFiles' => [
+            'Breaking-88779-RecordListRemoveUnusedCode.rst',
+        ],
+    ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->JScode' => [
+        'restFiles' => [
+            'Breaking-88779-RecordListRemoveUnusedCode.rst',
+        ],
+    ],
+    'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList->leftMargin' => [
+        'restFiles' => [
+            'Breaking-88779-RecordListRemoveUnusedCode.rst',
+        ],
+    ],
 ];
