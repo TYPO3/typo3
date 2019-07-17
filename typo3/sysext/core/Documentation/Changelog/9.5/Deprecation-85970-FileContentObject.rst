@@ -44,7 +44,7 @@ However due to the flexibility of custom cObjects, an extension author could jus
 the functionality in a custom extension within minutes.
 See this example for ext:frontend where the registration resides in :file:`ext_localconf.php`.
 
-.. codeblock:: php
+.. code-block:: php
 
    $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'] = array_merge(
       $GLOBALS['TYPO3_CONF_VARS']['FE']['ContentObjects'],
