@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
-use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -65,6 +64,7 @@ use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
@@ -89,11 +89,6 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
-    use PublicPropertyDeprecationTrait;
-
-    private $deprecatedPublicProperties = [
-        'sys_language_isocode' => 'Using $TSFE->sys_language_isocode will not be available anymore in TYPO3 v11.0. Use the current Site Language object and its method "getTwoLetterIsoCode()" instead.'
-    ];
 
     /**
      * The page id (int)
@@ -234,8 +229,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * page.
      * @var int
      * @internal
+     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, as this is now within PreviewAspect
      */
-    public $fePreview = 0;
+    protected $fePreview = 0;
 
     /**
      * Value that contains the simulated usergroup if any
@@ -478,7 +474,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Is set to the iso code of the current language
      * @var string
-     * @deprecated don't use it anymore, as this is now within SiteLanguage->getTwoLetterIsoCode()
+     * @deprecated will be removed in TYPO3 v11.0. don't use it anymore, as this is now within SiteLanguage->getTwoLetterIsoCode()
      */
     protected $sys_language_isocode = '';
 
@@ -721,6 +717,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             trigger_error('TypoScriptFrontendController requires a context object as first constructor argument in TYPO3 v11.0, now falling back to the global Context. This fallback layer will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
             $this->context = GeneralUtility::makeInstance(Context::class);
         }
+        if (!$this->context->hasAspect('frontend.preview')) {
+            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
+        }
     }
 
     /**
@@ -949,14 +948,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function clear_preview()
     {
-        if ($this->fePreview
+        if ($this->context->getPropertyFromAspect('frontend.preview', 'isPreview')
             || $GLOBALS['EXEC_TIME'] !== $GLOBALS['SIM_EXEC_TIME']
             || $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages', false)
             || $this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false)
         ) {
             $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
             $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
-            $this->fePreview = 0;
+            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
             $this->context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
             $this->context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
         }
@@ -988,13 +987,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // If there is a Backend login we are going to check for any preview settings
         $originalFrontendUserGroups = $this->applyPreviewSettings($this->getBackendUser());
         // If the front-end is showing a preview, caching MUST be disabled.
-        if ($this->fePreview) {
+        $isPreview = $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
+        if ($isPreview) {
             $this->disableCache();
         }
         // Now, get the id, validate access etc:
         $this->fetch_the_id();
         // Check if backend user has read access to this page. If not, recalculate the id.
-        if ($this->isBackendUserLoggedIn() && $this->fePreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
+        if ($this->isBackendUserLoggedIn() && $isPreview && !$this->getBackendUser()->doesUserHaveAccess($this->page, Permission::PAGE_SHOW)) {
             // Resetting
             $this->clear_preview();
             $this->fe_user->user[$this->fe_user->usergroup_column] = $originalFrontendUserGroups;
@@ -1031,7 +1031,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Evaluates admin panel or workspace settings to see if
      * visibility settings like
-     * - $fePreview
+     * - Preview Aspect: isPreview
      * - Visibility Aspect: includeHiddenPages
      * - Visibility Aspect: includeHiddenContent
      * - $simUserGroup
@@ -1053,7 +1053,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // The preview flag is set if the current page turns out to be hidden
         if ($this->id && $this->determineIdIsHiddenPage()) {
-            $this->fePreview = 1;
+            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
             /** @var VisibilityAspect $aspect */
             $aspect = $this->context->getAspect('visibility');
             $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $aspect->includeHiddenContent(), $aspect->includeDeletedRecords());
@@ -1061,7 +1061,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         // The preview flag will be set if an offline workspace will be previewed
         if ($this->whichWorkspace() > 0) {
-            $this->fePreview = 1;
+            $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
         }
         return $this->simUserGroup ? $originalFrontendUserGroup : null;
     }
@@ -2239,9 +2239,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         if ($languageAspect->getId() > 0) {
             $this->updateRootLinesWithTranslations();
         }
-
-        // @deprecated - can be removed in TYPO3 v11.0
-        $this->sys_language_isocode = $this->language->getTwoLetterIsoCode();
 
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_postProcess'] ?? [] as $_funcRef) {
@@ -3916,5 +3913,103 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPageArguments(): PageArguments
     {
         return $this->pageArguments;
+    }
+
+    /**
+     * Deprecation messages for TYPO3 10 - public properties of TSFE which have been (re)moved
+     */
+
+    /**
+     * Checks if the property of the given name is set.
+     *
+     * Unmarked protected properties must return false as usual.
+     * Marked properties are evaluated by isset().
+     *
+     * This method is not called for public properties.
+     *
+     * @param string $propertyName
+     * @return bool
+     */
+    public function __isset(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'sys_language_isocode':
+                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                return isset($this->$propertyName);
+            case 'fePreview':
+                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
+                return $this->context->hasAspect('frontend.preview');
+        }
+        return false;
+    }
+
+    /**
+     * Gets the value of the property of the given name if tagged.
+     *
+     * The evaluation is done in the assumption that this method is never
+     * reached for a public property.
+     *
+     * @param string $propertyName
+     * @return mixed
+     */
+    public function __get(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'sys_language_isocode':
+                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                return $this->sys_language_isocode ?? $this->language->getTwoLetterIsoCode();
+            case 'fePreview':
+                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
+                if ($this->context->hasAspect('frontend.preview')) {
+                    return $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
+                }
+                break;
+
+        }
+        return $this->$propertyName;
+    }
+
+    /**
+     * Sets the property of the given name if tagged.
+     *
+     * Additionally it's allowed to set unknown properties.
+     *
+     * The evaluation is done in the assumption that this method is never
+     * reached for a public property.
+     *
+     * @param string $propertyName
+     * @param mixed $propertyValue
+     */
+    public function __set(string $propertyName, $propertyValue)
+    {
+        switch ($propertyName) {
+            case 'sys_language_isocode':
+                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                break;
+            case 'fePreview':
+                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
+                $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, (bool)$propertyValue));
+                break;
+        }
+        $this->$propertyName = $propertyValue;
+    }
+
+    /**
+     * Unsets the property of the given name if tagged.
+     *
+     * @param string $propertyName
+     */
+    public function __unset(string $propertyName)
+    {
+        switch ($propertyName) {
+            case 'sys_language_isocode':
+                trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                break;
+            case 'fePreview':
+                trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
+                $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, false));
+                break;
+        }
+        unset($this->$propertyName);
     }
 }

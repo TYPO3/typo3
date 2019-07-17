@@ -564,4 +564,9 @@ return [
             'Breaking-88741-CHashCalculationInIndexedSearchRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->fePreview' => [
+        'restFiles' => [
+            'Feature-88791-IntroducePreviewAspectInContext.rst',
+        ],
+    ],
 ];

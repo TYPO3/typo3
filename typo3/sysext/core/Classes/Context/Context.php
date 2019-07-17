@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  * - frontend.user
  * - backend.user
  * - language
+ * - frontend.preview [if EXT:frontend is loaded]
  */
 class Context implements SingletonInterface
 {

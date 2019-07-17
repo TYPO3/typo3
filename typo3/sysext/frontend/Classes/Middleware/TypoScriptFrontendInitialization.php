@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -65,6 +66,7 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
             );
         }
         $context = GeneralUtility::makeInstance(Context::class);
+        $context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
 
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,

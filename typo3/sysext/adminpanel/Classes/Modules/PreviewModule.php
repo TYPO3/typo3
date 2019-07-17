@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -161,8 +162,10 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
     ): void {
         $context = GeneralUtility::makeInstance(Context::class);
         $typoScriptFrontendController = $this->getTypoScriptFrontendController();
-        $typoScriptFrontendController->clear_preview();
-        $typoScriptFrontendController->fePreview = 1;
+        $this->clearPreviewSettings($context);
+
+        // Set preview flag
+        $context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, true));
 
         // Modify visibility settings (hidden pages + hidden content)
         $context->setAspect(
@@ -208,7 +211,7 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             );
         }
         if (!$simulateUserGroup && !$simTime && !$showHiddenPages && !$showHiddenRecords) {
-            $typoScriptFrontendController->fePreview = 0;
+            $context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
         }
     }
 
@@ -243,6 +246,14 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             $simTime = max($simTime, 60);
         }
         return $simTime ?? null;
+    }
+
+    protected function clearPreviewSettings(Context $context): void
+    {
+        $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
+        $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
+        $context->setAspect('date', GeneralUtility::makeInstance(DateTimeAspect::class, new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
+        $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
     }
 
     /**
