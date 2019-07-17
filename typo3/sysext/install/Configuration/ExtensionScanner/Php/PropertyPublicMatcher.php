@@ -594,4 +594,16 @@ return [
             'Breaking-88779-RecordListRemoveUnusedCode.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->forceTemplateParsing' => [
+        'restFiles' => [
+            'Deprecation-88792-ForceTemplateParsingInTSFEAndTemplateServiceHasBeenDeprecated.rst',
+            'Feature-88792-AddTypoScriptAspectToHandleTypoScriptRenderingContextSettings.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\TypoScript\TemplateService->forceTemplateParsing' => [
+        'restFiles' => [
+            'Deprecation-88792-ForceTemplateParsingInTSFEAndTemplateServiceHasBeenDeprecated.rst',
+            'Feature-88792-AddTypoScriptAspectToHandleTypoScriptRenderingContextSettings.rst',
+        ],
+    ],
 ];

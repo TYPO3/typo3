@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\SingletonInterface;
  * - backend.user
  * - language
  * - frontend.preview [if EXT:frontend is loaded]
+ * - typoscript
  */
 class Context implements SingletonInterface
 {
@@ -83,6 +84,9 @@ class Context implements SingletonInterface
         }
         if (!$this->hasAspect('language')) {
             $this->setAspect('language', new LanguageAspect());
+        }
+        if (!$this->hasAspect('typoscript')) {
+            $this->setAspect('typoscript', new TypoScriptAspect());
         }
     }
 

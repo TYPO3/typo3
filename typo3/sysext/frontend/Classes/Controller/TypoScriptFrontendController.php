@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
+use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
@@ -326,8 +327,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Passed to TypoScript template class and tells it to force template rendering
      * @var bool
+     * @deprecated
      */
-    public $forceTemplateParsing = false;
+    private $forceTemplateParsing = false;
 
     /**
      * The array which cHash_calc is based on, see PageArgumentValidator class.
@@ -1999,11 +2001,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
-        if (empty($this->config) || is_array($this->config['INTincScript']) || $this->forceTemplateParsing) {
+        if (empty($this->config) || is_array($this->config['INTincScript']) || $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing')) {
             $timeTracker = $this->getTimeTracker();
             $timeTracker->push('Parse template');
-            // Force parsing, if set?:
-            $this->tmpl->forceTemplateParsing = $this->forceTemplateParsing;
             // Start parsing the TS template. Might return cached version.
             $this->tmpl->start($this->rootLine);
             $timeTracker->pull();
@@ -3939,6 +3939,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 return $this->context->hasAspect('frontend.preview');
+            case 'forceTemplateParsing':
+                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
+                return $this->context->hasAspect('typoscript') && $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing');
         }
         return false;
     }
@@ -3964,7 +3967,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     return $this->context->getPropertyFromAspect('frontend.preview', 'isPreview');
                 }
                 break;
-
+            case 'forceTemplateParsing':
+                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
+                if ($this->context->hasAspect('typoscript')) {
+                    return $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing');
+                }
+                break;
         }
         return $this->$propertyName;
     }
@@ -3990,6 +3998,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, (bool)$propertyValue));
                 break;
+            case 'forceTemplateParsing':
+                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
+                $this->context->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, (bool)$propertyValue));
+                break;
         }
         $this->$propertyName = $propertyValue;
     }
@@ -4008,6 +4020,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, false));
+                break;
+            case 'forceTemplateParsing':
+                trigger_error('Property $TSFE->forceTemplateParsing is not in use anymore as this information is now stored within the TypoScript aspect.', E_USER_DEPRECATED);
+                $this->context->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, false));
                 break;
         }
         unset($this->$propertyName);

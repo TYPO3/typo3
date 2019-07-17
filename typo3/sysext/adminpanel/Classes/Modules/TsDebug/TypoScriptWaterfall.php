@@ -25,6 +25,8 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -71,10 +73,11 @@ class TypoScriptWaterfall extends AbstractSubModule implements InitializableInte
     public function initializeModule(ServerRequestInterface $request): void
     {
         $typoScriptFrontend = $this->getTypoScriptFrontendController();
-        $typoScriptFrontend->forceTemplateParsing = $this->getConfigurationOption(
+        $forceTemplateParsing = $this->getConfigurationOption(
             'forceTemplateParsing'
         );
-        if ($typoScriptFrontend->forceTemplateParsing) {
+        if ($forceTemplateParsing) {
+            GeneralUtility::makeInstance(Context::class)->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, true));
             $typoScriptFrontend->set_no_cache('Admin Panel: Force template parsing', true);
         }
         $this->getTimeTracker()->LR = (bool)$this->getConfigurationOption('LR');
