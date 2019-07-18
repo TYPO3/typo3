@@ -53,7 +53,7 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
         $severity = Status::OK;
-        $validPassword = true;
+        $isDefaultPassword = false;
         $installToolPassword = $GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'];
         $hashInstance = null;
         $hashFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
@@ -61,13 +61,16 @@ class SecurityStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             $hashInstance = $hashFactory->get($installToolPassword, 'BE');
         } catch (InvalidPasswordHashException $e) {
             // $hashInstance stays null
+            $value = $this->getLanguageService()->getLL('status_wrongValue');
+            $message = $e->getMessage();
+            $severity = Status::ERROR;
         }
-        if ($installToolPassword !== '' && $hashInstance === null) {
-            $validPassword = !$hashFactory->checkPassword('joh316', $installToolPassword);
+        if ($installToolPassword !== '' && $hashInstance !== null) {
+            $isDefaultPassword = $hashInstance->checkPassword('joh316', $installToolPassword);
         } elseif ($installToolPassword === md5('joh316')) {
-            $validPassword = false;
+            $isDefaultPassword = true;
         }
-        if (!$validPassword) {
+        if ($isDefaultPassword) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = Status::ERROR;
             /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
