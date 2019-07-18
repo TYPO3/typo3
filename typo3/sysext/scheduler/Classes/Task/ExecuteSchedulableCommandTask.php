@@ -91,6 +91,34 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     }
 
     /**
+     * Return a text representation of the selected command and arguments
+     *
+     * @return string Information to display
+     */
+    public function getAdditionalInformation(): string
+    {
+        $label = $this->commandIdentifier;
+
+        try {
+            $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
+            $schedulableCommand = $commandRegistry->getCommandByIdentifier($this->commandIdentifier);
+        } catch (UnknownCommandException $e) {
+            return sprintf(
+                $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.unregisteredCommand'),
+                $this->commandIdentifier
+            );
+        }
+
+        $input = new ArrayInput($this->getArguments(), $schedulableCommand->getDefinition());
+        $arguments = $input->__toString();
+        if ($arguments !== '') {
+            $label .= ' ' . $arguments;
+        }
+
+        return $label;
+    }
+
+    /**
      * @return array
      */
     public function getArguments(): array
