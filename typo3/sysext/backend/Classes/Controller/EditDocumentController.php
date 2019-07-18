@@ -457,6 +457,7 @@ class EditDocumentController
         if (!is_array($this->defVals) && is_array($this->overrideVals)) {
             $this->defVals = $this->overrideVals;
         }
+        $this->addSlugFieldsToColumnsOnly($queryParams);
 
         // Set final return URL
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -491,6 +492,28 @@ class EditDocumentController
         $this->emitFunctionAfterSignal('preInit', $request);
 
         return null;
+    }
+
+    /**
+     * Always add required fields of slug field
+     *
+     * @param array $queryParams
+     */
+    protected function addSlugFieldsToColumnsOnly(array $queryParams): void
+    {
+        $data = $queryParams['edit'] ?? [];
+        $data = array_keys($data);
+        $table = reset($data);
+        if ($this->columnsOnly && $table !== false && isset($GLOBALS['TCA'][$table])) {
+            $fields = GeneralUtility::trimExplode(',', $this->columnsOnly, true);
+            foreach ($fields as $field) {
+                if (isset($GLOBALS['TCA'][$table]['columns'][$field]) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'slug') {
+                    foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['fields'] as $fields) {
+                        $this->columnsOnly .= ',' . (is_array($fields) ? implode(',', $fields) : $fields);
+                    }
+                }
+            }
+        }
     }
 
     /**
