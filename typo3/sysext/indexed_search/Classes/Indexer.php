@@ -403,6 +403,7 @@ class Indexer
         // Group list (hardcoded for now...)
         // cHash values:
         if ($createCHash) {
+            $cHash_array['id'] = $id;
             /* @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator $cacheHash */
             $cacheHash = GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Page\CacheHashCalculator::class);
             $this->conf['cHash'] = $cacheHash->generateForParameters(HttpUtility::buildQueryString($cHash_array));
