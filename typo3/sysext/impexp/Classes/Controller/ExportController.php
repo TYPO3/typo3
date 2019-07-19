@@ -202,7 +202,7 @@ class ExportController extends ImportExportController
             foreach ($inData['list'] as $ref) {
                 $rParts = explode(':', $ref);
                 if ($beUser->check('tables_select', $rParts[0])) {
-                    $statement = $this->exec_listQueryPid($rParts[0], $rParts[1]);
+                    $statement = $this->exec_listQueryPid($rParts[0], (int)$rParts[1]);
                     while ($subTrow = $statement->fetch()) {
                         $this->export->export_addRecord($rParts[0], $subTrow);
                     }
@@ -267,7 +267,7 @@ class ExportController extends ImportExportController
                 $flatList = $this->export->setPageTree($idH);
                 foreach ($flatList as $k => $value) {
                     $this->export->export_addRecord('pages', BackendUtility::getRecord('pages', $k));
-                    $this->addRecordsForPid($k, $inData['pagetree']['tables']);
+                    $this->addRecordsForPid((int)$k, $inData['pagetree']['tables']);
                 }
             }
         }
