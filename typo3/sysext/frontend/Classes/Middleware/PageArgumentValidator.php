@@ -47,13 +47,21 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
     protected $cacheHashCalculator;
 
     /**
+     * @var TimeTracker
+     */
+    protected $timeTracker;
+
+    /**
      * @var bool will be used to set $TSFE->no_cache later-on
      */
     protected $disableCache = false;
 
-    public function __construct()
-    {
-        $this->cacheHashCalculator = GeneralUtility::makeInstance(CacheHashCalculator::class);
+    public function __construct(
+        CacheHashCalculator $cacheHashCalculator,
+        TimeTracker $timeTracker
+    ) {
+        $this->cacheHashCalculator = $cacheHashCalculator;
+        $this->timeTracker = $timeTracker;
     }
 
     /**
@@ -158,7 +166,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
         }
         // Caching is disabled now (but no 404)
         $this->disableCache = true;
-        $this->getTimeTracker()->setTSlogMessage('The incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($relevantParameters)) . '"', 2);
+        $this->timeTracker->setTSlogMessage('The incoming cHash "' . $cHash . '" and calculated cHash "' . $calculatedCacheHash . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($relevantParameters)) . '"', 2);
         return true;
     }
 
@@ -182,15 +190,7 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
         }
         // Caching is disabled now (but no 404)
         $this->disableCache = true;
-        $this->getTimeTracker()->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
+        $this->timeTracker->setTSlogMessage('TSFE->reqCHash(): No &cHash parameter was sent for GET vars though required so caching is disabled', 2);
         return true;
-    }
-
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker(): TimeTracker
-    {
-        return GeneralUtility::makeInstance(TimeTracker::class);
     }
 }

@@ -37,9 +37,9 @@ class ShortcutAndMountPointRedirect implements MiddlewareInterface
      */
     private $controller;
 
-    public function __construct(TypoScriptFrontendController $controller = null)
+    public function __construct(TypoScriptFrontendController $controller)
     {
-        $this->controller = $controller ?: $GLOBALS['TSFE'];
+        $this->controller = $controller;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

@@ -50,6 +50,16 @@ class BackendUserAuthenticator implements MiddlewareInterface
     ];
 
     /**
+     * @var Context
+     */
+    protected $context;
+
+    public function __construct(Context $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
      * Calls the bootstrap process to set up $GLOBALS['BE_USER'] AND $GLOBALS['LANG']
      *
      * @param ServerRequestInterface $request
@@ -65,7 +75,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
         Bootstrap::initializeBackendAuthentication($this->isLoggedInBackendUserRequired($pathToRoute));
         Bootstrap::initializeLanguageObject();
         // Register the backend user as aspect
-        $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $GLOBALS['BE_USER']);
+        $this->setBackendUserAspect($GLOBALS['BE_USER']);
 
         return $handler->handle($request);
     }
@@ -85,12 +95,11 @@ class BackendUserAuthenticator implements MiddlewareInterface
     /**
      * Register the backend user as aspect
      *
-     * @param Context $context
      * @param BackendUserAuthentication $user
      */
-    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user)
+    protected function setBackendUserAspect(BackendUserAuthentication $user)
     {
-        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
+        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
     }
 }

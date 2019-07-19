@@ -22,6 +22,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\Middleware\SiteResolver;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteResolverTest extends UnitTestCase
@@ -34,7 +35,8 @@ class SiteResolverTest extends UnitTestCase
     {
         $incomingUrl = 'http://localhost:8080/typo3/index.php?route=/file/FilelistList/&token=d7d864db2b26c1d0f0537718b16890f336f4af2b&id=9831:/styleguide/';
 
-        $subject = new SiteResolver();
+        $siteMatcherProphecy = $this->prophesize(SiteMatcher::class);
+        $subject = new SiteResolver($siteMatcherProphecy->reveal());
 
         $incomingRequest = new ServerRequest($incomingUrl, 'GET');
         $incomingRequest = $incomingRequest->withQueryParams(['id' => '9831:/styleguide/']);

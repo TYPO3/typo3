@@ -38,6 +38,7 @@ class ServiceProvider extends AbstractServiceProvider
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Service\DependencyOrderingService::class => [ static::class, 'getDependencyOrderingService' ],
+            Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
         ];
     }
@@ -89,6 +90,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getContext(ContainerInterface $container): Context\Context
     {
         return new Context\Context;
+    }
+
+    public static function getPasswordHashFactory(ContainerInterface $container): Crypto\PasswordHashing\PasswordHashFactory
+    {
+        return new Crypto\PasswordHashing\PasswordHashFactory;
     }
 
     public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver

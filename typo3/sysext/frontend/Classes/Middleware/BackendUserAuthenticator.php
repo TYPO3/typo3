@@ -40,6 +40,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class BackendUserAuthenticator implements MiddlewareInterface
 {
     /**
+     * @var Context
+     */
+    protected $context;
+
+    public function __construct(Context $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
      * Creates a backend user authentication object, tries to authenticate a user
      *
      * @param ServerRequestInterface $request
@@ -63,7 +73,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
             Bootstrap::initializeLanguageObject();
             Bootstrap::initializeBackendRouter();
             Bootstrap::loadExtTables();
-            $this->setBackendUserAspect(GeneralUtility::makeInstance(Context::class), $GLOBALS['BE_USER']);
+            $this->setBackendUserAspect($GLOBALS['BE_USER']);
         }
 
         return $handler->handle($request);
@@ -116,12 +126,11 @@ class BackendUserAuthenticator implements MiddlewareInterface
     /**
      * Register the backend user as aspect
      *
-     * @param Context $context
      * @param BackendUserAuthentication|null $user
      */
-    protected function setBackendUserAspect(Context $context, BackendUserAuthentication $user)
+    protected function setBackendUserAspect(BackendUserAuthentication $user)
     {
-        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
+        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
     }
 }

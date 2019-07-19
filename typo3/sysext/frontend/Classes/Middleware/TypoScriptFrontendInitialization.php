@@ -44,6 +44,16 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 class TypoScriptFrontendInitialization implements MiddlewareInterface
 {
     /**
+     * @var Context
+     */
+    protected $context;
+
+    public function __construct(Context $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
      * Creates an instance of TSFE and sets it as a global variable.
      *
      * @param ServerRequestInterface $request
@@ -65,12 +75,11 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
                 ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
             );
         }
-        $context = GeneralUtility::makeInstance(Context::class);
-        $context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
+        $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class));
 
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
-            $context,
+            $this->context,
             $site,
             $request->getAttribute('language', $site->getDefaultLanguage()),
             $pageArguments,
@@ -90,7 +99,7 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
         if ($controller->isBackendUserLoggedIn() && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)) {
             unset($GLOBALS['BE_USER']);
             // Register an empty backend user as aspect
-            $this->setBackendUserAspect($context, null);
+            $this->setBackendUserAspect(null);
             $controller->determineId();
         }
 
@@ -102,12 +111,11 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
     /**
      * Register the backend user as aspect
      *
-     * @param Context $context
      * @param BackendUserAuthentication|null $user
      */
-    protected function setBackendUserAspect(Context $context, ?BackendUserAuthentication $user): void
+    protected function setBackendUserAspect(BackendUserAuthentication $user): void
     {
-        $context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
+        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
     }
 }

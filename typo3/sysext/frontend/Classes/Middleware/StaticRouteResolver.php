@@ -27,13 +27,30 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Resolves static routes - can return configured content directly or load content from file / urls
  */
 class StaticRouteResolver implements MiddlewareInterface
 {
+    /**
+     * @var RequestFactory
+     */
+    protected $requestFactory;
+
+    /**
+     * @var LinkService
+     */
+    protected $linkService;
+
+    public function __construct(
+        RequestFactory $requestFactory,
+        LinkService $linkService
+    ) {
+        $this->requestFactory = $requestFactory;
+        $this->linkService = $linkService;
+    }
+
     /**
      * Checks if there is a valid site with route configuration.
      *
@@ -83,8 +100,7 @@ class StaticRouteResolver implements MiddlewareInterface
      */
     protected function getFromUri(string $uri): array
     {
-        $requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
-        $response = $requestFactory->request($uri);
+        $response = $this->requestFactory->request($uri);
         $contentType = 'text/plain; charset=utf-8';
         $content = '';
         if ($response->getStatusCode() === 200) {
@@ -129,8 +145,7 @@ class StaticRouteResolver implements MiddlewareInterface
                 $contentType = 'text/plain; charset=utf-8';
                 break;
             case 'uri':
-                $linkService = GeneralUtility::makeInstance(LinkService::class);
-                $urlParams = $linkService->resolve($routeConfig['source']);
+                $urlParams = $this->linkService->resolve($routeConfig['source']);
                 if ($urlParams['type'] === 'url' || $urlParams['type'] === 'page') {
                     $uri = $urlParams['url'] ?? $this->getPageUri($request, $site, $urlParams);
                     [$content, $contentType] = $this->getFromUri($uri);

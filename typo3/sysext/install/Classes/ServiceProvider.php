@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
@@ -84,7 +85,9 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getMaintenanceMiddleware(ContainerInterface $container): Middleware\Maintenance
     {
         return new Middleware\Maintenance(
+            $container->get(PackageManager::class),
             $container->get(ConfigurationManager::class),
+            $container->get(PasswordHashFactory::class),
             $container
         );
     }

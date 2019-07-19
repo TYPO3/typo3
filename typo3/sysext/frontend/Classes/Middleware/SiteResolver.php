@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Identifies if a site is configured for the request, based on "id" and "L" GET/POST parameters, or the requested
@@ -40,12 +38,9 @@ class SiteResolver implements MiddlewareInterface
      */
     protected $matcher;
 
-    public function __construct(SiteMatcher $matcher = null)
+    public function __construct(SiteMatcher $matcher)
     {
-        $this->matcher = $matcher ?? GeneralUtility::makeInstance(
-            SiteMatcher::class,
-            GeneralUtility::makeInstance(SiteFinder::class)
-        );
+        $this->matcher = $matcher;
     }
 
     /**

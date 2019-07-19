@@ -148,6 +148,14 @@ class TimeTracker implements SingletonInterface
     }
 
     /**
+     * @param bool $isEnabled
+     */
+    public function setEnabled(bool $isEnabled = true)
+    {
+        $this->isEnabled = $isEnabled;
+    }
+
+    /**
      * Sets the starting time
      *
      * @see finish()

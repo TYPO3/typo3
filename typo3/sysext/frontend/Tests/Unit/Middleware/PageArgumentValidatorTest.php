@@ -24,24 +24,23 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Middleware\PageArgumentValidator;
 use TYPO3\CMS\Frontend\Middleware\PageResolver;
+use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageArgumentValidatorTest extends UnitTestCase
 {
     /**
-     * @var bool Reset singletons created by subject
+     * @var CacheHashCaluclator
      */
-    protected $resetSingletonInstances = true;
+    protected $cacheHashCalculator;
 
     /**
-     * @var TypoScriptFrontendController|AccessibleObjectInterface
+     * @var TimeTracker
      */
-    protected $controller;
+    protected $timeTrackerStub;
 
     /**
      * @var RequestHandlerInterface
@@ -56,9 +55,8 @@ class PageArgumentValidatorTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $timeTrackerStub = new TimeTracker(false);
-        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerStub);
-        $this->controller = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
+        $this->timeTrackerStub = new TimeTracker(false);
+        $this->cacheHashCalculator = new CacheHashCalculator;
 
         // A request handler which only runs through
         $this->responseOutputHandler = new class implements RequestHandlerInterface {
@@ -82,7 +80,7 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->controller);
+        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $subject->setLogger(new NullLogger());
 
         $response = $subject->process($request, $this->responseOutputHandler);
@@ -102,7 +100,7 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->controller);
+        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
         static::assertEquals(404, $response->getStatusCode());
     }
@@ -115,7 +113,7 @@ class PageArgumentValidatorTest extends UnitTestCase
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         $request = new ServerRequest($incomingUrl, 'GET');
 
-        $subject = new PageArgumentValidator($this->controller);
+        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
         static::assertEquals(404, $response->getStatusCode());
     }
@@ -132,7 +130,7 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->controller);
+        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
         static::assertEquals(200, $response->getStatusCode());
     }
@@ -149,7 +147,7 @@ class PageArgumentValidatorTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
 
-        $subject = new PageArgumentValidator($this->controller);
+        $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
         static::assertEquals(404, $response->getStatusCode());
     }

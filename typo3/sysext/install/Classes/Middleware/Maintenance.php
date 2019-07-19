@@ -29,9 +29,8 @@ use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageInterface;
-use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Authentication\AuthenticationService;
 use TYPO3\CMS\Install\Controller\AbstractController;
 use TYPO3\CMS\Install\Controller\EnvironmentController;
@@ -52,9 +51,19 @@ use TYPO3\CMS\Install\Service\SessionService;
 class Maintenance implements MiddlewareInterface
 {
     /**
+     * @var FailsafePackageManager
+     */
+    protected $packageManager;
+
+    /**
      * @var ConfigurationManager
      */
     protected $configurationManager;
+
+    /**
+     * @var PasswordHashFactory
+     */
+    protected $passwordHashFactory;
 
     /**
      * @var ContainerInterface
@@ -74,12 +83,15 @@ class Maintenance implements MiddlewareInterface
         'environment' => EnvironmentController::class,
     ];
 
-    /**
-     * @param ConfigurationManager $configurationManager
-     */
-    public function __construct(ConfigurationManager $configurationManager, ContainerInterface $container)
-    {
+    public function __construct(
+        FailsafePackageManager $packageManager,
+        ConfigurationManager $configurationManager,
+        PasswordHashFactory $passwordHashFactory,
+        ContainerInterface $container
+    ) {
+        $this->packageManager = $packageManager;
         $this->configurationManager = $configurationManager;
+        $this->passwordHashFactory = $passwordHashFactory;
         $this->container = $container;
     }
 
@@ -152,7 +164,7 @@ class Maintenance implements MiddlewareInterface
                         new FlashMessage('Please enter the install tool password', '', FlashMessage::ERROR)
                     );
                 } else {
-                    $hashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('BE');
+                    $hashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
                     $hashedPassword = $hashInstance->getHashedPassword($password);
                     $messageQueue = (new FlashMessageQueue('install'))->enqueue(
                         new FlashMessage(
@@ -328,18 +340,13 @@ class Maintenance implements MiddlewareInterface
     protected function recreatePackageStatesFileIfMissing(): void
     {
         if (!file_exists(Environment::getLegacyConfigPath() . '/PackageStates.php')) {
-            // We need a FailsafePackageManager at this moment, however this is given
-            // As Bootstrap is registering the FailsafePackageManager object as a singleton instance
-            // of the main PackageManager class. See \TYPO3\CMS\Core\Core\Bootstrap::init()
-            /** @var \TYPO3\CMS\Core\Package\FailsafePackageManager $packageManager */
-            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-            $packages = $packageManager->getAvailablePackages();
+            $packages = $this->packageManager->getAvailablePackages();
             foreach ($packages as $package) {
                 if ($package instanceof PackageInterface && $package->isPartOfMinimalUsableSystem()) {
-                    $packageManager->activatePackage($package->getPackageKey());
+                    $this->packageManager->activatePackage($package->getPackageKey());
                 }
             }
-            $packageManager->forceSortAndSavePackageStates();
+            $this->packageManager->forceSortAndSavePackageStates();
         }
     }
 }

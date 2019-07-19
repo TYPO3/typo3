@@ -31,6 +31,16 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 class FrontendUserAuthenticator implements MiddlewareInterface
 {
     /**
+     * @var Context
+     */
+    protected $context;
+
+    public function __construct(Context $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
      * Creates a frontend user authentication object, tries to authenticate a user and stores
      * it in the current request as attribute.
      *
@@ -59,7 +69,7 @@ class FrontendUserAuthenticator implements MiddlewareInterface
         $frontendUser->unpack_uc();
 
         // Register the frontend user as aspect and within the session
-        $this->setFrontendUserAspect(GeneralUtility::makeInstance(Context::class), $frontendUser);
+        $this->setFrontendUserAspect($frontendUser);
         $request = $request->withAttribute('frontend.user', $frontendUser);
 
         $response = $handler->handle($request);
@@ -112,11 +122,10 @@ class FrontendUserAuthenticator implements MiddlewareInterface
     /**
      * Register the frontend user as aspect
      *
-     * @param Context $context
      * @param AbstractUserAuthentication $user
      */
-    protected function setFrontendUserAspect(Context $context, AbstractUserAuthentication $user)
+    protected function setFrontendUserAspect(AbstractUserAuthentication $user)
     {
-        $context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
+        $this->context->setAspect('frontend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
     }
 }

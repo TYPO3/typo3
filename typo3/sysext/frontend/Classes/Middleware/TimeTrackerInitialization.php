@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -31,6 +30,16 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 class TimeTrackerInitialization implements MiddlewareInterface
 {
     /**
+     * @var TimeTracker
+     */
+    protected $timeTracker;
+
+    public function __construct(TimeTracker $timeTracker)
+    {
+        $this->timeTracker = $timeTracker;
+    }
+
+    /**
      * Starting time tracking (by setting up a singleton object)
      *
      * @param ServerRequestInterface $request
@@ -40,21 +49,18 @@ class TimeTrackerInitialization implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $timeTrackingEnabled = $this->isBackendUserCookieSet($request);
-        $timeTracker = GeneralUtility::makeInstance(
-            TimeTracker::class,
-            $timeTrackingEnabled
-        );
-        $timeTracker->start(microtime(true));
-        $timeTracker->push('');
+        $this->timeTracker->setEnabled($timeTrackingEnabled);
+        $this->timeTracker->start(microtime(true));
+        $this->timeTracker->push('');
 
         $response = $handler->handle($request);
 
         // Finish time tracking
-        $timeTracker->pull();
-        $timeTracker->finish();
+        $this->timeTracker->pull();
+        $this->timeTracker->finish();
 
         if ($this->isDebugModeEnabled()) {
-            return $response->withHeader('X-TYPO3-Parsetime', $timeTracker->getParseTime() . 'ms');
+            return $response->withHeader('X-TYPO3-Parsetime', $this->timeTracker->getParseTime() . 'ms');
         }
         return $response;
     }

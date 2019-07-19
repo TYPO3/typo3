@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
@@ -43,10 +42,10 @@ class PrepareTypoScriptFrontendRendering implements MiddlewareInterface
      */
     protected $timeTracker;
 
-    public function __construct(TypoScriptFrontendController $controller = null, TimeTracker $timeTracker = null)
+    public function __construct(TypoScriptFrontendController $controller, TimeTracker $timeTracker)
     {
-        $this->controller = $controller ?: $GLOBALS['TSFE'];
-        $this->timeTracker = $timeTracker ?: GeneralUtility::makeInstance(TimeTracker::class);
+        $this->controller = $controller;
+        $this->timeTracker = $timeTracker;
     }
 
     /**

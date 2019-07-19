@@ -32,6 +32,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SqlLogging implements MiddlewareInterface
 {
+    /**
+     * @var ConnectionPool
+     */
+    protected $connectionPool;
+
+    public function __construct(ConnectionPool $connectionPool)
+    {
+        $this->connectionPool = $connectionPool;
+    }
 
     /**
      * Enable SQL Logging as early as possible to catch all queries if the admin panel is active
@@ -42,8 +51,7 @@ class SqlLogging implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if (StateUtility::isActivatedForUser() && StateUtility::isOpen()) {
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-            $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+            $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
             $connection->getConfiguration()->setSQLLogger(GeneralUtility::makeInstance(DoctrineSqlLogger::class));
         }
         return $handler->handle($request);
