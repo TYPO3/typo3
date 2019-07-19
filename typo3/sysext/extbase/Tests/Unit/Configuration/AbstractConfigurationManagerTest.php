@@ -537,7 +537,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testPluginConfiguration));
-        $this->abstractConfigurationManager->expects($this->once())->method('getSwitchableControllerActions')->with(
+        $this->abstractConfigurationManager->expects($this->once())->method('getControllerConfiguration')->with(
             'CurrentExtensionName',
             'CurrentPluginName'
         )->will($this->returnValue($this->testSwitchableControllerActions));
