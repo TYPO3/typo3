@@ -189,7 +189,7 @@ class DateTimeConverterTest extends UnitTestCase
     {
         $date = $this->converter->convertFrom($source, 'DateTime', [], null);
         $this->assertInstanceOf('DateTime', $date);
-        $this->assertSame(strval($source), $date->format('U'));
+        $this->assertSame((string)$source, $date->format('U'));
     }
 
     /** Array to DateTime testcases  **/
@@ -203,7 +203,7 @@ class DateTimeConverterTest extends UnitTestCase
     {
         $date = $this->converter->convertFrom(['date' => $source], 'DateTime', [], null);
         $this->assertInstanceOf('DateTime', $date);
-        $this->assertSame(strval($source), $date->format('U'));
+        $this->assertSame((string)$source, $date->format('U'));
     }
 
     /**
@@ -409,7 +409,7 @@ class DateTimeConverterTest extends UnitTestCase
         if ($dateFormat === null) {
             $dateFormat = \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::DEFAULT_DATE_FORMAT;
         }
-        $dateAsString = isset($source['date']) ? strval($source['date']) : '';
+        $dateAsString = isset($source['date']) ? (string)$source['date'] : '';
         $this->assertSame($dateAsString, $date->format($dateFormat));
     }
 

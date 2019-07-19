@@ -32,8 +32,6 @@ class QueueController extends AbstractController
      */
     protected $defaultViewObjectName = \TYPO3\CMS\Extbase\Mvc\View\JsonView::class;
 
-    /**
-     */
     public function indexAction()
     {
         $calls = [];
@@ -47,8 +45,6 @@ class QueueController extends AbstractController
         $this->forward('process');
     }
 
-    /**
-     */
     public function processAction()
     {
         $call = $this->getQueueService()->shift();

@@ -109,8 +109,6 @@ class RequestBuilderTest extends UnitTestCase
         $this->mockEnvironmentService->expects($this->any())->method('isEnvironmentInBackendMode')->willReturn(false);
     }
 
-    /**
-     */
     protected function injectDependencies(): void
     {
         $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));

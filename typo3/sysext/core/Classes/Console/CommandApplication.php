@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class CommandApplication implements ApplicationInterface
 {
-    /**
-     */
     public function __construct()
     {
         $this->checkEnvironmentOrDie();

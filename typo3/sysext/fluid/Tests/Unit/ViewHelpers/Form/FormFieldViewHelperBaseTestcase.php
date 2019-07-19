@@ -27,8 +27,6 @@ abstract class FormFieldViewHelperBaseTestcase extends ViewHelperBaseTestcase
      */
     protected $mockConfigurationManager;
 
-    /**
-     */
     protected function setUp(): void
     {
         parent::setUp();

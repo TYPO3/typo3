@@ -107,8 +107,6 @@ class Indexer
         return $fileObject;
     }
 
-    /**
-     */
     public function processChangesInStorages()
     {
         // get all file-identifiers from the storage

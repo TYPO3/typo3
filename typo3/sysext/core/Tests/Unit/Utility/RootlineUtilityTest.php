@@ -59,9 +59,6 @@ class RootlineUtilityTest extends UnitTestCase
         $this->subject->expects(static::any())->method('resolvePageId')->willReturnArgument(0);
     }
 
-    /**
-     *
-     */
     protected function tearDown(): void
     {
         RootlineUtility::purgeCaches();

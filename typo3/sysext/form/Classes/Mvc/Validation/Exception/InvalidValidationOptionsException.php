@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Form\Mvc\Validation\Exception;
 
 use TYPO3\CMS\Form\Exception;
 
-/**
- */
 class InvalidValidationOptionsException extends Exception
 {
 }

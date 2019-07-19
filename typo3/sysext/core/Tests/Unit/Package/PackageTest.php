@@ -23,8 +23,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class PackageTest extends UnitTestCase
 {
-    /**
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,8 +42,6 @@ class PackageTest extends UnitTestCase
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
 
-    /**
-     */
     public function validPackageKeys()
     {
         return [
@@ -74,8 +70,6 @@ class PackageTest extends UnitTestCase
         $this->assertEquals($packageKey, $package->getPackageKey());
     }
 
-    /**
-     */
     public function invalidPackageKeys()
     {
         return [

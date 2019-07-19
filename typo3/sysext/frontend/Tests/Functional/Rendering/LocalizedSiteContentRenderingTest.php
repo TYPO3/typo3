@@ -126,7 +126,7 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
      *
      * @var int|null
      */
-    protected $expectedErrorLogEntries = null;
+    protected $expectedErrorLogEntries;
 
     /**
      * @var array

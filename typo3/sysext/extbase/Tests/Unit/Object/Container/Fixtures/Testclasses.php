@@ -164,9 +164,6 @@ class t3lib_object_tests_b_child extends \t3lib_object_tests_b
 {
 }
 
-/**
-
- */
 interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInterface
 {
 }
@@ -225,9 +222,6 @@ class t3lib_object_tests_cyclic1
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_cyclic2
 {
     /**
@@ -238,9 +232,6 @@ class t3lib_object_tests_cyclic2
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_cyclic1WithSetterDependency
 {
     /**
@@ -251,9 +242,6 @@ class t3lib_object_tests_cyclic1WithSetterDependency
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_cyclic2WithSetterDependency
 {
     /**
@@ -316,9 +304,6 @@ class t3lib_object_tests_injectsettings
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -335,9 +320,6 @@ class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\Singleton
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -367,9 +349,6 @@ class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\Singleton
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_resolveablecyclic3 implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -386,9 +365,6 @@ class t3lib_object_tests_resolveablecyclic3 implements \TYPO3\CMS\Core\Singleton
     }
 }
 
-/**
-
- */
 class t3lib_object_tests_class_with_injectsettings
 {
     /**
@@ -419,23 +395,15 @@ If a Singleton requires a Singleton for Injection -> allowed, autowiring active
 If a Prototype requires a Prototype for Injection -> allowed, autowiring active
 If a Prototype requires a Singleton for Injection -> allowed, autowiring active
  */
-/**
 
- */
 class t3lib_object_singleton implements \TYPO3\CMS\Core\SingletonInterface
 {
 }
 
-/**
-
- */
 class t3lib_object_prototype
 {
 }
 
-/**
-
- */
 class t3lib_object_singletonNeedsPrototype implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -452,9 +420,6 @@ class t3lib_object_singletonNeedsPrototype implements \TYPO3\CMS\Core\SingletonI
     }
 }
 
-/**
-
- */
 class t3lib_object_singletonNeedsSingleton implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -471,9 +436,6 @@ class t3lib_object_singletonNeedsSingleton implements \TYPO3\CMS\Core\SingletonI
     }
 }
 
-/**
-
- */
 class t3lib_object_prototypeNeedsPrototype
 {
     /**
@@ -490,9 +452,6 @@ class t3lib_object_prototypeNeedsPrototype
     }
 }
 
-/**
-
- */
 class t3lib_object_prototypeNeedsSingleton
 {
     /**
@@ -509,9 +468,6 @@ class t3lib_object_prototypeNeedsSingleton
     }
 }
 
-/**
-
- */
 class t3lib_object_singletonNeedsPrototypeInConstructor implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -523,9 +479,6 @@ class t3lib_object_singletonNeedsPrototypeInConstructor implements \TYPO3\CMS\Co
     }
 }
 
-/**
-
- */
 class t3lib_object_singletonNeedsSingletonInConstructor implements \TYPO3\CMS\Core\SingletonInterface
 {
     /**
@@ -537,9 +490,6 @@ class t3lib_object_singletonNeedsSingletonInConstructor implements \TYPO3\CMS\Co
     }
 }
 
-/**
-
- */
 class t3lib_object_prototypeNeedsPrototypeInConstructor
 {
     /**
@@ -551,9 +501,6 @@ class t3lib_object_prototypeNeedsPrototypeInConstructor
     }
 }
 
-/**
-
- */
 class t3lib_object_prototypeNeedsSingletonInConstructor
 {
     /**

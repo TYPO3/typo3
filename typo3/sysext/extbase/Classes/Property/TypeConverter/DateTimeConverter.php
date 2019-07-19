@@ -123,12 +123,12 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
         if (is_string($source)) {
             $dateAsString = $source;
         } elseif (is_int($source)) {
-            $dateAsString = strval($source);
+            $dateAsString = (string)$source;
         } else {
             if (isset($source['date']) && is_string($source['date'])) {
                 $dateAsString = $source['date'];
             } elseif (isset($source['date']) && is_int($source['date'])) {
-                $dateAsString = strval($source['date']);
+                $dateAsString = (string)$source['date'];
             } elseif ($this->isDatePartKeysProvided($source)) {
                 if ($source['day'] < 1 || $source['month'] < 1 || $source['year'] < 1) {
                     return new \TYPO3\CMS\Extbase\Error\Error('Could not convert the given date parts into a DateTime object because one or more parts were 0.', 1333032779);

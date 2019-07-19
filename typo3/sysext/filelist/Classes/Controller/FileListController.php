@@ -287,8 +287,6 @@ class FileListController extends ActionController
         $this->registerDocHeaderButtons();
     }
 
-    /**
-     */
     protected function initializeIndexAction()
     {
         // Apply predefined values for hidden checkboxes
@@ -323,8 +321,6 @@ class FileListController extends ActionController
         }
     }
 
-    /**
-     */
     protected function indexAction()
     {
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
@@ -468,8 +464,6 @@ class FileListController extends ActionController
         }
     }
 
-    /**
-     */
     protected function missingFolderAction()
     {
         if ($this->errorMessage) {

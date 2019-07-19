@@ -498,12 +498,12 @@ class GridDataService implements LoggerAwareInterface
                             }
                             break;
                         case 'change':
-                            if (stripos(strval($versionArray[$column]), str_replace('%', '', $filterText)) !== false) {
+                            if (stripos((string)$versionArray[$column], str_replace('%', '', $filterText)) !== false) {
                                 return true;
                             }
                             break;
                         default:
-                            if (stripos(strval($versionArray[$column]), $filterText) !== false) {
+                            if (stripos((string)$versionArray[$column], $filterText) !== false) {
                                 return true;
                             }
                     }

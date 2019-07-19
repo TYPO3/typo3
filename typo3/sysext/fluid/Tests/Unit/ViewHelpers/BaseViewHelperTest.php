@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 use TYPO3\CMS\Fluid\ViewHelpers\BaseViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
-/**
- */
 class BaseViewHelperTest extends ViewHelperBaseTestcase
 {
     /**

@@ -26,9 +26,6 @@ class WidgetContextTest extends UnitTestCase
      */
     protected $widgetContext;
 
-    /**
-
-     */
     protected function setUp(): void
     {
         parent::setUp();

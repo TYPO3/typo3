@@ -16,8 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Fixture;
 
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 
-/**
- */
 class ClassWithInjectProperties
 {
     /**

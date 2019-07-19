@@ -31,8 +31,6 @@ class DownloadQueueTest extends UnitTestCase
      */
     protected $extensionMock;
 
-    /**
-     */
     protected function setUp(): void
     {
         parent::setUp();

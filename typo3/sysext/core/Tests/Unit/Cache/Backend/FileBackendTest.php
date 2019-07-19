@@ -504,8 +504,6 @@ class FileBackendTest extends UnitTestCase
         $this->assertFileNotExists($pathAndFilename);
     }
 
-    /**
-     */
     public function invalidEntryIdentifiers(): array
     {
         return [

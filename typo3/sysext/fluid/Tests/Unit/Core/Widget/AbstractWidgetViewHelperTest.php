@@ -80,9 +80,6 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
      */
     protected $renderingContext;
 
-    /**
-
-     */
     protected function setUp(): void
     {
         parent::setUp();

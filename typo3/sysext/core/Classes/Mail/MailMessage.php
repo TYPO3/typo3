@@ -43,8 +43,6 @@ class MailMessage extends Email
      */
     protected $sent = false;
 
-    /**
-     */
     private function initializeMailer()
     {
         $this->mailer = GeneralUtility::makeInstance(Mailer::class);

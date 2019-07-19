@@ -37,8 +37,6 @@ class ArgumentTest extends UnitTestCase
 
     protected $mockConfiguration;
 
-    /**
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -40,9 +40,6 @@ class PersistenceManagerTest extends UnitTestCase
      */
     protected $mockObjectManager;
 
-    /**
-     *
-     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -107,8 +107,6 @@ abstract class AbstractElementBrowser
         }
     }
 
-    /**
-     */
     protected function initVariables()
     {
         $this->bparams = GeneralUtility::_GP('bparams');

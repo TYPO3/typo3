@@ -32,8 +32,6 @@ class ListUtilityTest extends UnitTestCase
      */
     protected $subject;
 
-    /**
-     */
     protected function setUp(): void
     {
         parent::setUp();

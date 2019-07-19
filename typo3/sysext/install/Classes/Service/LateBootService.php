@@ -42,7 +42,7 @@ class LateBootService
     /**
      * @var ContainerInterface
      */
-    private $container = null;
+    private $container;
 
     /**
      * @param ContainerBuilder $containerBuilder

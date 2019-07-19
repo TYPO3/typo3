@@ -53,9 +53,6 @@ class WidgetRequestBuilderTest extends UnitTestCase
      */
     protected $mockWidgetContext;
 
-    /**
-     *
-     */
     protected function setUp(): void
     {
         parent::setUp();

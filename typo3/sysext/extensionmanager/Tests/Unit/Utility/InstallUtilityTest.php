@@ -48,8 +48,6 @@ class InstallUtilityTest extends UnitTestCase
      */
     protected $installMock;
 
-    /**
-     */
     protected function setUp(): void
     {
         parent::setUp();
