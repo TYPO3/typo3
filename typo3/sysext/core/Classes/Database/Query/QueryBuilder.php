@@ -607,14 +607,15 @@ class QueryBuilder
      * @param string $key The column to set.
      * @param string $value The value, expression, placeholder, etc.
      * @param bool $createNamedParameter Automatically create a named parameter for the value
+     * @param int $type
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
-    public function set(string $key, $value, bool $createNamedParameter = true): QueryBuilder
+    public function set(string $key, $value, bool $createNamedParameter = true, int $type = \PDO::PARAM_STR): QueryBuilder
     {
         $this->concreteQueryBuilder->set(
             $this->quoteIdentifier($key),
-            $createNamedParameter ? $this->createNamedParameter($value) : $value
+            $createNamedParameter ? $this->createNamedParameter($value, $type) : $value
         );
 
         return $this;

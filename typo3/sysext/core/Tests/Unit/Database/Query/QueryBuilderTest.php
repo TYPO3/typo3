@@ -1349,4 +1349,43 @@ class QueryBuilderTest extends UnitTestCase
 
         $queryBuilder->resetRestrictions();
     }
+
+    /**
+     * @test
+     * @dataProvider createNamedParameterInput
+     * @param mixed $input
+     * @param int $type
+     */
+    public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, int $type): void
+    {
+        $this->connection->quoteIdentifier('aField')
+            ->willReturnArgument(0);
+        $concreteQueryBuilder = new \Doctrine\DBAL\Query\QueryBuilder($this->connection->reveal());
+
+        $subject = new QueryBuilder($this->connection->reveal(), null, $concreteQueryBuilder);
+        $subject->set('aField', $input, true, $type);
+        self::assertSame($type, $concreteQueryBuilder->getParameterType('dcValue1'));
+    }
+
+    public function createNamedParameterInput(): array
+    {
+        return [
+            'string input and output' => [
+                'aValue',
+                \PDO::PARAM_STR,
+            ],
+            'int input and string output' => [
+                17,
+                \PDO::PARAM_STR,
+            ],
+            'int input and int output' => [
+                17,
+                \PDO::PARAM_INT,
+            ],
+            'string input and array output' => [
+                'aValue',
+                Connection::PARAM_STR_ARRAY
+            ],
+        ];
+    }
 }
