@@ -15,29 +15,28 @@ Removed the last unused locallang files from EXT:lang.
 Impact
 ======
 
-Extensions or configuration that uses one of the following locallang files will not show a translation anymore.
+Extensions or configuration that use one of the following locallang files will not show a translation anymore.
 
-.. code-block:: php
 
-    'lang/Resources/Private/Language/locallang_alt_intro.xlf'
-    'lang/Resources/Private/Language/locallang_alt_doc.xlf'
-    'lang/Resources/Private/Language/locallang_login.xlf'
-    'lang/Resources/Private/Language/locallang_common.xlf'
-    'lang/Resources/Private/Language/locallang_core.xlf'
-    'lang/Resources/Private/Language/locallang_general.xlf'
-    'lang/Resources/Private/Language/locallang_misc.xlf'
-    'lang/Resources/Private/Language/locallang_mod_web_list.xlf'
-    'lang/Resources/Private/Language/locallang_tca.xlf'
-    'lang/Resources/Private/Language/locallang_tsfe.xlf'
-    'lang/Resources/Private/Language/locallang_wizards.xlf'
-    'lang/Resources/Private/Language/locallang_browse_links.xlf'
-    'lang/Resources/Private/Language/locallang_tcemain.xlf'
+* :file:`lang/Resources/Private/Language/locallang_alt_intro.xlf`
+* :file:`lang/Resources/Private/Language/locallang_alt_doc.xlf`
+* :file:`lang/Resources/Private/Language/locallang_login.xlf`
+* :file:`lang/Resources/Private/Language/locallang_common.xlf`
+* :file:`lang/Resources/Private/Language/locallang_core.xlf`
+* :file:`lang/Resources/Private/Language/locallang_general.xlf`
+* :file:`lang/Resources/Private/Language/locallang_misc.xlf`
+* :file:`lang/Resources/Private/Language/locallang_mod_web_list.xlf`
+* :file:`lang/Resources/Private/Language/locallang_tca.xlf`
+* :file:`lang/Resources/Private/Language/locallang_tsfe.xlf`
+* :file:`lang/Resources/Private/Language/locallang_wizards.xlf`
+* :file:`lang/Resources/Private/Language/locallang_browse_links.xlf`
+* :file:`lang/Resources/Private/Language/locallang_tcemain.xlf`
 
 
 Affected Installations
 ======================
 
-All extensions or configuration that still uses one of the mentioned locallang files.
+All extensions or configuration that still use any of the mentioned locallang files.
 
 
 Migration
