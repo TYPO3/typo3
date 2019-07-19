@@ -14,13 +14,6 @@ services:
     arguments:
       $configPath: "%env(TYPO3:configPath)%/sites"
 
-  TYPO3\CMS\Core\EventDispatcher\EventDispatcher:
-    arguments:
-      $listenerProvider: '@TYPO3\CMS\Core\EventDispatcher\ListenerProvider'
-
-  TYPO3\CMS\Core\EventDispatcher\ListenerProvider:
-    public: true
-
   TYPO3\CMS\Core\Package\PackageManager:
     autoconfigure: false
 
