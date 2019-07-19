@@ -19,25 +19,27 @@ namespace TYPO3\CMS\Adminpanel\ModuleApi;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Adminpanel interface to denote that a module has tasks to perform on initialization of the request
+ * Adminpanel interface to denote that a module has tasks to perform on initialization of the request and may enrich said request
  *
  * Modules that need to set data / options early in the rendering process to be able to collect data, should implement
  * this interface - for example the log module uses the initialization to register the admin panel log collection early
  * in the rendering process.
  *
+ * Modules that manipulate the request based on their configuration should also implement this interface.
+ *
  * Initialize is called in the PSR-15 middleware stack through admin panel initialisation via the AdminPanel MainController.
  *
  * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator::process()
  * @see \TYPO3\CMS\Adminpanel\Controller\MainController::initialize()
- * @deprecated Use RequestEnricherInterface instead
  */
-interface InitializableInterface
+interface RequestEnricherInterface
 {
     /**
-     * Initialize the module - runs early in a TYPO3 request
+     * Initialize the module - runs in the TYPO3 middleware stack at an early point
+     * may manipulate the current request
      *
      * @param ServerRequestInterface $request
-     * @deprecated
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
-    public function initializeModule(ServerRequestInterface $request): void;
+    public function enrich(ServerRequestInterface $request): ServerRequestInterface;
 }

@@ -18,15 +18,15 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
-use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-class CacheModule extends AbstractModule implements PageSettingsProviderInterface, InitializableInterface, ResourceProviderInterface
+class CacheModule extends AbstractModule implements PageSettingsProviderInterface, RequestEnricherInterface, ResourceProviderInterface
 {
     /**
      * @return string
@@ -49,16 +49,22 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $feCacheClear = $this->getBackendUser()->isAdmin() || $this->getBackendUser()->getTSConfig()['options.']['clearCache.']['pages'];
 
+        $pageId = 0;
+        $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing');
+        if ($pageArguments instanceof PageArguments) {
+            $pageId = $pageArguments->getPageId();
+        }
+
         $view->assignMultiple(
             [
                 'isEnabled' => $this->getBackendUser()->uc['AdminPanel']['display_cache'],
                 'noCache' => $this->getBackendUser()->uc['AdminPanel']['cache_noCache'],
-                'currentId' => $this->getTypoScriptFrontendController()->id,
+                'currentId' => $pageId,
                 'clearPageCacheUrl' => $feCacheClear ? (string)$uriBuilder->buildUriFromRoute('tce_db', ['cacheCmd' => 'pages']) : '',
                 'clearCurrentPageCacheUrl' => (string)$uriBuilder->buildUriFromRoute(
                     'tce_db',
                     [
-                        'cacheCmd' => $this->getTypoScriptFrontendController()->id,
+                        'cacheCmd' => $pageId,
                     ]
                 ),
             ]
@@ -87,19 +93,12 @@ class CacheModule extends AbstractModule implements PageSettingsProviderInterfac
     /**
      * @inheritdoc
      */
-    public function initializeModule(ServerRequestInterface $request): void
+    public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         if ($this->configurationService->getConfigurationOption('cache', 'noCache')) {
-            $this->getTypoScriptFrontendController()->set_no_cache('Admin Panel: No Caching', true);
+            $request = $request->withAttribute('noCache', true);
         }
-    }
-
-    /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
+        return $request;
     }
 
     /**

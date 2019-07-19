@@ -9,8 +9,6 @@ use TYPO3\CMS\Adminpanel\Modules\PreviewModule;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PreviewModuleTest extends UnitTestCase
@@ -47,8 +45,6 @@ class PreviewModuleTest extends UnitTestCase
     {
         $this->resetSingletonInstances = true;
         $request = $this->prophesize(ServerRequestInterface::class);
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE'] = $tsfe->reveal();
         $configurationService = $this->prophesize(ConfigurationService::class);
         $configurationService->getMainConfiguration()->willReturn([]);
         $configurationService->getConfigurationOption('preview', 'simulateDate')->willReturn($dateToSimulate);
@@ -57,7 +53,7 @@ class PreviewModuleTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService->reveal());
 
         $previewModule = new PreviewModule();
-        $previewModule->initializeModule($request->reveal());
+        $previewModule->enrich($request->reveal());
 
         self::assertSame($GLOBALS['SIM_EXEC_TIME'], $expectedExecTime, 'EXEC_TIME');
         self::assertSame($GLOBALS['SIM_ACCESS_TIME'], $expectedAccessTime, 'ACCESS_TIME');
@@ -70,10 +66,6 @@ class PreviewModuleTest extends UnitTestCase
     {
         $this->resetSingletonInstances = true;
         $request = $this->prophesize(ServerRequestInterface::class);
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $feUser = $this->prophesize(FrontendUserAuthentication::class);
-        $tsfe->fe_user = $feUser->reveal();
-        $GLOBALS['TSFE'] = $tsfe->reveal();
         $configurationService = $this->prophesize(ConfigurationService::class);
         $configurationService->getMainConfiguration()->willReturn([]);
         $configurationService->getConfigurationOption('preview', 'showHiddenPages')->willReturn('0');
@@ -87,7 +79,7 @@ class PreviewModuleTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ConfigurationService::class, $configurationService->reveal());
 
         $previewModule = new PreviewModule();
-        $previewModule->initializeModule($request->reveal());
+        $previewModule->enrich($request->reveal());
 
         $context->setAspect('frontend.user', Argument::any())->shouldHaveBeenCalled();
     }

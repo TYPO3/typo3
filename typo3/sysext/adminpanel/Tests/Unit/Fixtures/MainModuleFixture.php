@@ -16,12 +16,12 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
-use     Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
-use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\OnSubmitActorInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
@@ -30,7 +30,7 @@ class MainModuleFixture implements
     ModuleInterface,
     ShortInfoProviderInterface,
     SubmoduleProviderInterface,
-    InitializableInterface,
+    RequestEnricherInterface,
                ResourceProviderInterface,
     PageSettingsProviderInterface,
     OnSubmitActorInterface,
@@ -84,15 +84,6 @@ class MainModuleFixture implements
     public function getPageSettings(): string
     {
         return 'example settings';
-    }
-
-    /**
-     * Initialize the module - runs early in a TYPO3 request
-     *
-     * @param ServerRequestInterface $request
-     */
-    public function initializeModule(ServerRequestInterface $request): void
-    {
     }
 
     /**
@@ -166,5 +157,17 @@ class MainModuleFixture implements
     public function hasSubmoduleSettings(): bool
     {
         return false;
+    }
+
+    /**
+     * Initialize the module - runs in the TYPO3 middleware stack at an early point
+     * may manipulate the current request
+     *
+     * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
+     */
+    public function enrich(ServerRequestInterface $request): ServerRequestInterface
+    {
+        return $request;
     }
 }

@@ -18,24 +18,23 @@ namespace TYPO3\CMS\Adminpanel\Modules;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
-use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Adminpanel\Repositories\FrontendGroupsRepository;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Admin Panel Preview Module
  */
-class PreviewModule extends AbstractModule implements InitializableInterface, PageSettingsProviderInterface, ResourceProviderInterface
+class PreviewModule extends AbstractModule implements RequestEnricherInterface, PageSettingsProviderInterface, ResourceProviderInterface
 {
     /**
      * module configuration, set on initialize
@@ -73,7 +72,7 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
     /**
      * @inheritdoc
      */
-    public function initializeModule(ServerRequestInterface $request): void
+    public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         $this->config = [
             'showHiddenPages' => (bool)$this->getConfigOptionForModule('showHiddenPages'),
@@ -85,7 +84,7 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         if ($this->config['showFluidDebug']) {
             // forcibly unset fluid caching as it does not care about the tsfe based caching settings
             unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['fluid_template']['frontend']);
-            $GLOBALS['TSFE']->set_no_cache('Cache is disabled if fluid debugging is enabled', true);
+            $request = $request->withAttribute('noCache', true);
         }
         $this->initializeFrontendPreview(
             $this->config['showHiddenPages'],
@@ -93,6 +92,8 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
             $this->config['simulateDate'],
             $this->config['simulateUserGroup']
         );
+
+        return $request;
     }
 
     /**
@@ -107,10 +108,16 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
 
         $frontendGroupsRepository = GeneralUtility::makeInstance(FrontendGroupsRepository::class);
 
+        $pageId = 0;
+        $pageArguments = $GLOBALS['TYPO3_REQUEST']->getAttribute('routing');
+        if ($pageArguments instanceof PageArguments) {
+            $pageId = $pageArguments->getPageId();
+        }
+
         $view->assignMultiple(
             [
                 'show' => [
-                    'pageId' => (int)$this->getTypoScriptFrontendController()->id,
+                    'pageId' => $pageId,
                     'hiddenPages' => $this->config['showHiddenPages'],
                     'hiddenRecords' => $this->config['showHiddenRecords'],
                     'fluidDebug' => $this->config['showFluidDebug'],
@@ -138,14 +145,6 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
     }
 
     /**
-     * @return TypoScriptFrontendController
-     */
-    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
-    {
-        return $GLOBALS['TSFE'];
-    }
-
-    /**
      * Initialize frontend preview functionality incl.
      * simulation of users or time
      *
@@ -161,7 +160,6 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         int $simulateUserGroup
     ): void {
         $context = GeneralUtility::makeInstance(Context::class);
-        $typoScriptFrontendController = $this->getTypoScriptFrontendController();
         $this->clearPreviewSettings($context);
 
         // Set preview flag
@@ -191,21 +189,11 @@ class PreviewModule extends AbstractModule implements InitializableInterface, Pa
         }
         // simulate usergroup
         if ($simulateUserGroup) {
-            $typoScriptFrontendController->simUserGroup = $simulateUserGroup;
-            if (!$typoScriptFrontendController->fe_user instanceof FrontendUserAuthentication) {
-                $typoScriptFrontendController->fe_user = GeneralUtility::makeInstance(
-                    FrontendUserAuthentication::class
-                );
-            }
-            if (!is_array($typoScriptFrontendController->fe_user->user)) {
-                $typoScriptFrontendController->fe_user->user = [];
-            }
-            $typoScriptFrontendController->fe_user->user[$typoScriptFrontendController->fe_user->usergroup_column] = $simulateUserGroup;
             $context->setAspect(
                 'frontend.user',
                 GeneralUtility::makeInstance(
                     UserAspect::class,
-                    $typoScriptFrontendController->fe_user ?: null,
+                    null,
                     [$simulateUserGroup]
                 )
             );

@@ -21,9 +21,9 @@ use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
-use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,7 +34,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  *
  * @internal
  */
-class Log extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface, ModuleSettingsProviderInterface, InitializableInterface
+class Log extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface, ModuleSettingsProviderInterface, RequestEnricherInterface
 {
     /**
      * @var int
@@ -178,7 +178,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
     /**
      * @inheritdoc
      */
-    public function initializeModule(ServerRequestInterface $request): void
+    public function enrich(ServerRequestInterface $request): ServerRequestInterface
     {
         $this->logLevel = $this->getConfigOption('startLevel');
 
@@ -189,6 +189,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
         $GLOBALS['TYPO3_CONF_VARS']['LOG'] = array_filter(
             $configWithInMemoryWriter
         );
+        return $request;
     }
 
     protected function setLoggingConfigRecursive(array $logConfig): array

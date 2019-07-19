@@ -1311,4 +1311,10 @@ return [
             'Breaking-88496-MethodGetSwitchableControllerActionsHasBeenRemoved.rst'
         ],
     ],
+    'TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface' => [
+        'restFiles' => [
+            'Deprecation-88807-AdminPanelInitializableInterfaceHasBeenDeprecated.rst',
+            'Feature-88807-AdminPanelRequestEnricherInterfaceHasBeenIntroduced.rst',
+        ],
+    ],
 ];

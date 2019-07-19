@@ -24,7 +24,6 @@ use TYPO3\CMS\Adminpanel\Controller\MainController;
 use TYPO3\CMS\Adminpanel\Middleware\AdminPanelInitiator;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -59,14 +58,13 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication->reveal();
 
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE'] = $tsfe;
-
         $controller = $this->prophesize(MainController::class);
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());
         $handler = $this->prophesizeHandler();
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->withAttribute(Argument::cetera())->willReturn($request);
+        $controller->initialize($request->reveal())->willReturn($request);
+
         // Act
         $adminPanelInitiator = new AdminPanelInitiator();
         $adminPanelInitiator->process(
@@ -124,9 +122,6 @@ class AdminPanelInitiatorTest extends UnitTestCase
         $userAuthentication->getTSConfig()->willReturn($tsConfig);
         $userAuthentication->uc = $uc;
         $GLOBALS['BE_USER'] = $userAuthentication->reveal();
-
-        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
-        $GLOBALS['TSFE'] = $tsfe;
 
         $controller = $this->prophesize(MainController::class);
         GeneralUtility::setSingletonInstance(MainController::class, $controller->reveal());

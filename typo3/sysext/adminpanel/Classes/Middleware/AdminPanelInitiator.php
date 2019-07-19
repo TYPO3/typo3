@@ -48,7 +48,7 @@ class AdminPanelInitiator implements MiddlewareInterface
             $adminPanelController = GeneralUtility::makeInstance(
                 MainController::class
             );
-            $adminPanelController->initialize($request);
+            $request = $adminPanelController->initialize($request);
         }
         return $handler->handle($request);
     }

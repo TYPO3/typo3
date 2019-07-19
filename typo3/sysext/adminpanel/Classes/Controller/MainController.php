@@ -23,6 +23,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\PageSettingsProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\RequestEnricherInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\SubmoduleProviderInterface;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
@@ -89,16 +90,18 @@ class MainController implements SingletonInterface
      * Initializes settings for the admin panel.
      *
      * @param ServerRequestInterface $request
+     * @return ServerRequestInterface
      */
-    public function initialize(ServerRequestInterface $request): void
+    public function initialize(ServerRequestInterface $request): ServerRequestInterface
     {
         $this->modules = $this->moduleLoader->validateSortAndInitializeModules(
             $this->adminPanelModuleConfiguration
         );
 
         if (StateUtility::isActivatedForUser()) {
-            $this->initializeModules($request, $this->modules);
+            $request = $this->initializeModules($request, $this->modules);
         }
+        return $request;
     }
 
     /**
@@ -189,23 +192,30 @@ class MainController implements SingletonInterface
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface[] $modules
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
-    protected function initializeModules(ServerRequestInterface $request, array $modules): void
+    protected function initializeModules(ServerRequestInterface $request, array $modules): ServerRequestInterface
     {
         foreach ($modules as $module) {
             if (
-                ($module instanceof InitializableInterface)
+                ($module instanceof InitializableInterface || $module instanceof RequestEnricherInterface)
                 && (
                     (($module instanceof ConfigurableInterface) && $module->isEnabled())
                     || (!($module instanceof ConfigurableInterface))
                 )
             ) {
-                $module->initializeModule($request);
+                if ($module instanceof RequestEnricherInterface) {
+                    $request = $module->enrich($request);
+                } elseif ($module instanceof InitializableInterface) {
+                    $module->initializeModule($request);
+                    trigger_error('Method initializeModule is deprecated use RequestEnricherInterface::enrich instead.', E_USER_DEPRECATED);
+                }
             }
             if ($module instanceof SubmoduleProviderInterface) {
-                $this->initializeModules($request, $module->getSubModules());
+                $request = $this->initializeModules($request, $module->getSubModules());
             }
         }
+        return $request;
     }
 
     /**
