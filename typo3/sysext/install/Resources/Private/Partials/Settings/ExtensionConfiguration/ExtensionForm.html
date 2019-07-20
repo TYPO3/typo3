@@ -22,7 +22,7 @@
                     </f:for>
                 </ul>
 
-                <form action="#" name="configurationform" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
+                <form action="#" name="configurationform" autocomplete="off" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
                     <div class="tab-content">
                         <f:for each="{extensionData.configuration}" as="subcategories" key="categoryName" iteration="iteration">
                             <f:if condition="{categoryName}">
