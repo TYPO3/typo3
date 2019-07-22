@@ -724,17 +724,17 @@ class ImportExportController
                 $lang = $this->getLanguageService();
                 if ($saveFolder !== false && $saveFolder->checkActionPermission('write')) {
                     $temporaryFileName = GeneralUtility::tempnam('export');
-                    file_put_contents($temporaryFileName, $out);
+                    GeneralUtility::writeFile($temporaryFileName, $out);
                     $file = $saveFolder->addFile($temporaryFileName, $dlFile, 'replace');
                     if ($saveFilesOutsideExportFile) {
                         $filesFolderName = $dlFile . '.files';
                         $filesFolder = $saveFolder->createFolder($filesFolderName);
-                        $temporaryFolderForExport = ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->export->getTemporaryFilesPathForExport());
-                        $temporaryFilesForExport = $temporaryFolderForExport->getFiles();
+                        $temporaryFilesForExport = GeneralUtility::getFilesInDir($this->export->getTemporaryFilesPathForExport(), '', true);
                         foreach ($temporaryFilesForExport as $temporaryFileForExport) {
-                            $filesFolder->getStorage()->moveFile($temporaryFileForExport, $filesFolder);
+                            $filesFolder->addFile($temporaryFileForExport);
+                            GeneralUtility::unlink_tempfile($temporaryFileForExport);
                         }
-                        $temporaryFolderForExport->delete();
+                        GeneralUtility::rmdir($this->export->getTemporaryFilesPathForExport());
                     }
 
                     /** @var FlashMessage $flashMessage */
