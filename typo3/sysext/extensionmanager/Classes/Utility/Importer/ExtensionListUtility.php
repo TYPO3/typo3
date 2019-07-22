@@ -176,9 +176,9 @@ class ExtensionListUtility implements \SplObserver
         // This effectively reduces the number of extensions imported into this TYPO3 installation
         // by more than 70%. As long as the extensions.xml from TER includes these files, we need to "hack" this
         // within TYPO3 Core.
-        // For TYPO3 v10.0, this date could be set to 2017-04-04 (8 LTS release).
+        // For TYPO3 v11.0, this date could be set to 2018-10-02 (v9 LTS release).
         // Also see https://decisions.typo3.org/t/reduce-size-of-extension-manager-db-table/329/
-        $this->minimumDateToImport = strtotime('2015-11-10T00:00:00+00:00');
+        $this->minimumDateToImport = strtotime('2017-04-04T00:00:00+00:00');
     }
 
     /**
