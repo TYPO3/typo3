@@ -136,7 +136,7 @@ class EditDocumentController
      *
      * @var array
      * @todo: Will be set protected later, still used by ConditionMatcher
-     * @internal Will be removed / protected in TYPO3 v10.0 without further notice
+     * @internal Will be removed / protected in TYPO3 v10.x without further notice
      */
     public $data;
 
@@ -296,7 +296,7 @@ class EditDocumentController
      *
      * @var array
      * @todo: Will be set protected later, still used by ConditionMatcher
-     * @internal Will be removed / protected in TYPO3 v10.0 without further notice
+     * @internal Will be removed / protected in TYPO3 v10.x without further notice
      */
     public $elementsData;
 
@@ -2316,7 +2316,7 @@ class EditDocumentController
      */
     protected function compileStoreData(): void
     {
-        // @todo: Refactor in TYPO3 v10.0: This GeneralUtility method fiddles with _GP()
+        // @todo: Refactor in TYPO3 v10: This GeneralUtility method fiddles with _GP()
         $this->storeArray = GeneralUtility::compileSelectedGetVarsFromArray(
             'edit,defVals,overrideVals,columnsOnly,noView,workspace',
             $this->R_URL_getvars

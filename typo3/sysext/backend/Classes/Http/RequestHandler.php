@@ -55,7 +55,7 @@ class RequestHandler implements RequestHandlerInterface
      * This needs to be run after the request object has been enriched with modified GET/POST variables.
      *
      * @param ServerRequestInterface $request
-     * @internal this safety net will be removed in TYPO3 v10.0.
+     * @internal this safety net will be removed in TYPO3 v11.0.
      */
     protected function resetGlobalsToCurrentRequest(ServerRequestInterface $request)
     {

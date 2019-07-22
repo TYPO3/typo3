@@ -5441,11 +5441,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
     {
         $method = (string)($conf['method'] ?? '');
         if ($method === 'POST') {
-            trigger_error('Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0', E_USER_WARNING);
+            trigger_error('Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0.', E_USER_WARNING);
             return '';
         }
         if ($method === 'GET,POST' || $method === 'POST,GET') {
-            trigger_error('Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET', E_USER_WARNING);
+            trigger_error('Assigning typolink.addQueryString.method = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET.', E_USER_WARNING);
             $method = 'GET';
         }
         if ($method === 'GET') {

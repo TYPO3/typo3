@@ -332,10 +332,10 @@ class UriBuilder
     public function setAddQueryStringMethod(string $addQueryStringMethod): UriBuilder
     {
         if ($addQueryStringMethod === 'POST') {
-            trigger_error('Assigning addQueryStringMethod = POST is not supported anymore since TYPO3 v10.0', E_USER_WARNING);
+            trigger_error('Assigning addQueryStringMethod = POST is not supported anymore since TYPO3 v10.0.', E_USER_WARNING);
             $addQueryStringMethod = null;
         } elseif ($addQueryStringMethod === 'GET,POST' || $addQueryStringMethod === 'POST,GET') {
-            trigger_error('Assigning addQueryStringMethod = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET', E_USER_WARNING);
+            trigger_error('Assigning addQueryStringMethod = GET,POST or POST,GET is not supported anymore since TYPO3 v10.0 - falling back to GET.', E_USER_WARNING);
             $addQueryStringMethod = 'GET';
         }
         $this->addQueryStringMethod = $addQueryStringMethod;
