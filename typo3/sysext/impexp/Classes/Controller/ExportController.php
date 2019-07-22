@@ -34,8 +34,6 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -322,19 +320,17 @@ class ExportController extends ImportExportController
                 $lang = $this->getLanguageService();
                 if ($saveFolder instanceof Folder && $saveFolder->checkActionPermission('write')) {
                     $temporaryFileName = GeneralUtility::tempnam('export');
-                    file_put_contents($temporaryFileName, $out);
+                    GeneralUtility::writeFile($temporaryFileName, $out);
                     $file = $saveFolder->addFile($temporaryFileName, $dlFile, 'replace');
                     if ($saveFilesOutsideExportFile) {
                         $filesFolderName = $dlFile . '.files';
                         $filesFolder = $saveFolder->createFolder($filesFolderName);
-                        $temporaryFolderForExport = ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->export->getTemporaryFilesPathForExport());
-                        if ($temporaryFolderForExport instanceof ResourceInterface) {
-                            $temporaryFilesForExport = $temporaryFolderForExport->getFiles();
-                            foreach ($temporaryFilesForExport as $temporaryFileForExport) {
-                                $filesFolder->getStorage()->moveFile($temporaryFileForExport, $filesFolder);
-                            }
-                            $temporaryFolderForExport->delete();
+                        $temporaryFilesForExport = GeneralUtility::getFilesInDir($this->export->getTemporaryFilesPathForExport(), '', true);
+                        foreach ($temporaryFilesForExport as $temporaryFileForExport) {
+                            $filesFolder->addFile($temporaryFileForExport);
+                            GeneralUtility::unlink_tempfile($temporaryFileForExport);
                         }
+                        GeneralUtility::rmdir($this->export->getTemporaryFilesPathForExport());
                     }
 
                     /** @var FlashMessage $flashMessage */
