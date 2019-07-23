@@ -207,11 +207,6 @@
 								</td>
 								<td class="col-word-break">
 									<belog:formatDetails logEntry="{logItem}"/>
-									<f:if condition="{logItem.logData.history}">
-										<a href="{be:moduleLink(route: 'record_history', arguments: '{historyEntry: logItem.logData.history}')}" title="{f:translate(key: 'showHistory')}">
-											<core:icon identifier="actions-document-history-open" />
-										</a>
-									</f:if>
 									<f:if condition="{logItem.detailsNumber} > 0">
 										(msg#{logItem.type}.{logItem.action}.{logItem.detailsNumber})
 									</f:if>
@@ -226,6 +221,12 @@
 										<f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-danger">
 											<f:translate key="actions.delete"/>
 										</f:link.action>
+									</f:if>
+									<f:if condition="{logItem.logData.history}">
+										<a class="btn btn-default" href="{be:moduleLink(route: 'record_history', arguments: '{historyEntry: logItem.logData.history}')}" title="{f:translate(key: 'showHistory')}">
+											<core:icon identifier="actions-document-history-open" />
+											<f:translate id="showHistory" />
+										</a>
 									</f:if>
 								</td>
 							</tr>
