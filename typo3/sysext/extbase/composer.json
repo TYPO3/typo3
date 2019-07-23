@@ -17,7 +17,7 @@
 		"symfony/dependency-injection": "^4.1",
 		"symfony/property-access": "^4.2",
 		"symfony/property-info": "^4.2",
-		"typo3/cms-core": "10.0.*@dev",
+		"typo3/cms-core": "10.1.*@dev",
 		"webmozart/assert": "^1.0"
 	},
 	"suggest": {
@@ -31,7 +31,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "10.0.x-dev"
+			"dev-master": "10.1.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
