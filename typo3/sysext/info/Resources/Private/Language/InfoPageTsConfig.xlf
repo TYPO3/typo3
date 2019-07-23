@@ -27,9 +27,6 @@
 			<trans-unit id="tsconf_parts_1e" resname="tsconf_parts_1e">
 				<source>Module: Web&gt;Info</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1f" resname="tsconf_parts_1f">
-				<source>Module: Web&gt;Func</source>
-			</trans-unit>
 			<trans-unit id="tsconf_parts_1g" resname="tsconf_parts_1g">
 				<source>Module: Web&gt;Template</source>
 			</trans-unit>

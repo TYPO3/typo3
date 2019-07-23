@@ -176,9 +176,6 @@ class InfoPageTyposcriptConfigController
                     case '1e':
                         $pageTsConfig = $pageTsConfig['mod.']['web_info.'] ?? [];
                         break;
-                    case '1f':
-                        $pageTsConfig = $pageTsConfig['mod.']['web_func.'] ?? [];
-                        break;
                     case '1g':
                         $pageTsConfig = $pageTsConfig['mod.']['web_ts.'] ?? [];
                         break;
@@ -227,7 +224,6 @@ class InfoPageTyposcriptConfigController
                 '1c' => $lang->getLL('tsconf_parts_1c'),
                 '1d' => $lang->getLL('tsconf_parts_1d'),
                 '1e' => $lang->getLL('tsconf_parts_1e'),
-                '1f' => $lang->getLL('tsconf_parts_1f'),
                 '1g' => $lang->getLL('tsconf_parts_1g'),
                 2 => 'RTE.',
                 7 => 'TCAdefaults.',
