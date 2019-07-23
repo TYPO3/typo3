@@ -49,7 +49,7 @@ CSS Styled Content
 ------------------
 
 CSS Styled Content adds the missing :typoscript:`lib.stdheader` and everything works as
-before, no migration or adjustments to your code nessesary. Because :typoscript:`COA`
+before, no migration or adjustments to your code necessary. Because :typoscript:`COA`
 does not understand the option :typoscript:`templateName` it will simply be ignored.
 
 .. code-block:: typoscript

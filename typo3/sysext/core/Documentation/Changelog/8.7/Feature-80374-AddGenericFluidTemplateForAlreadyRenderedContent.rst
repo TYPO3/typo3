@@ -26,7 +26,7 @@ Template
    <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
    <f:layout name="Default" />
    <f:section name="Main">
-      <f:comment>This templates is used to provide nessesary functionality for external processed content and could be used across multiple sources, for example the frontend login content element.</f:comment>
+      <f:comment>This templates is used to provide necessary functionality for external processed content and could be used across multiple sources, for example the frontend login content element.</f:comment>
       {content -> f:format.raw()}
    </f:section>
    </html>

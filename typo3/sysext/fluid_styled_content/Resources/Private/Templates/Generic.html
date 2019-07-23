@@ -2,7 +2,7 @@
 <f:layout name="Default" />
 <f:section name="Main">
 
-    <f:comment>This templates is used to provide nessesary functionality for external processed content and could be used across multiple sources, for example the frontend login content element.</f:comment>
+    <f:comment>This templates is used to provide necessary functionality for external processed content and could be used across multiple sources, for example the frontend login content element.</f:comment>
     <f:if condition="{content}">
         <f:then>{content -> f:format.raw()}</f:then>
         <f:else><f:cObject typoscriptObjectPath="tt_content.{data.CType}.20" data="{data}" table="tt_content" /></f:else>
