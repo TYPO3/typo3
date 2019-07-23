@@ -6,3 +6,5 @@ services:
 
   TYPO3\CMS\Linkvalidator\:
     resource: '../Classes/*'
+    # Tasks require EXT:scheduler to be installed, ignore for now.
+    exclude: '../Classes/Task'

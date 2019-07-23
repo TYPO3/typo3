@@ -6,3 +6,6 @@ services:
 
   TYPO3\CMS\Extensionmanager\:
     resource: '../Classes/*'
+    # Tasks require EXT:scheduler, reports require
+    # EXT:reports to be installed, ignore for now.
+    exclude: '../Classes/{Task,Report}'
