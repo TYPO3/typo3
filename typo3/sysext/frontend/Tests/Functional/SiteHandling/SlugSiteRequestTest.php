@@ -103,6 +103,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         $domainPaths = [
             'https://website.local/',
             'https://website.local/?',
+            'https://website.local//',
         ];
 
         return $this->wrapInArray(
@@ -142,7 +143,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         $domainPaths = [
             'https://website.local/',
             'https://website.local/?',
-            'https://website.local/welcome',
+            'https://website.local//',
         ];
 
         return $this->wrapInArray(
@@ -273,9 +274,6 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->buildErrorHandlingConfiguration('Fluid', [404])
         );
 
-        $expectedStatusCode = 307;
-        $expectedHeaders = ['location' => ['https://website.local/en-en/']];
-
         $uri = 'https://website.local/any/invalid/slug';
         $response = $this->executeFrontendRequest(
             new InternalRequest($uri),
@@ -283,18 +281,13 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
 
         static::assertSame(
-            $expectedStatusCode,
+            404,
             $response->getStatusCode()
         );
-        static::assertSame(
-            $expectedHeaders,
-            $response->getHeaders()
+        static::assertStringContainsString(
+            'message: The requested page does not exist',
+            (string)$response->getBody()
         );
-        // @todo Expected page not found response (404) instead
-        // static::assertContains(
-        //     'message: The requested page does not exist',
-        //    (string)$response->getBody()
-        // );
     }
     /**
      * @test

@@ -50,8 +50,15 @@ class SiteBaseRedirectResolver implements MiddlewareInterface
         // Usually called when "https://www.example.com" was entered, but all sites have "https://www.example.com/lang-key/"
         // So a redirect to the first possible language is done.
         if ($site instanceof Site && !($language instanceof SiteLanguage)) {
-            $language = $site->getDefaultLanguage();
-            return new RedirectResponse($language->getBase(), 307);
+            if ($routeResult instanceof SiteRouteResult && $routeResult->getTail() === '') {
+                $language = $site->getDefaultLanguage();
+                return new RedirectResponse($language->getBase(), 307);
+            }
+            return GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
+                $request,
+                'The requested page does not exist',
+                ['code' => PageAccessFailureReasons::PAGE_NOT_FOUND]
+            );
         }
 
         // Language is found, and hidden but also not visible to the BE user, this needs to fail
