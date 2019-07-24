@@ -185,7 +185,13 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
         if ($response === null) {
             $content = '';
         } else {
-            $content = $response->shutdown();
+            /*
+             * Explicitly cast $content to string here as \TYPO3\CMS\Extbase\Mvc\ResponseInterface::shutdown does not
+             * use strict types yet and response objects possibly return other types than string.
+             *
+             * todo: remove the type cast when \TYPO3\CMS\Extbase\Mvc\ResponseInterface declares strict return types.
+             */
+            $content = (string)$response->shutdown();
             $this->resetSingletons();
             $this->cacheService->clearCachesOfRegisteredPageIds();
         }
