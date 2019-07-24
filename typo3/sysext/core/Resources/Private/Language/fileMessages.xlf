@@ -45,6 +45,9 @@
 			<trans-unit id="FileUtility.DirectoryRenamedFromTo">
 				<source>Directory renamed from "%s" to "%s".</source>
 			</trans-unit>
+			<trans-unit id="FileUtility.DirectoryRenamedFromToCharReplaced">
+				<source>Directory renamed from "%s" to "%s". Characters in the new directory name have been replaced.</source>
+			</trans-unit>
 			<trans-unit id="FileUtility.DirectoryRenamedSameName">
 				<source>Directory "%s" was not renamed. (Same name as before)</source>
 			</trans-unit>
