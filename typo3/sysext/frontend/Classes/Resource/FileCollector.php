@@ -98,12 +98,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
      */
     public function addFilesFromRelation($relationTable, $relationField, array $referenceRecord)
     {
-        if (is_object($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE']->sys_page)) {
-            $fileReferences = $this->getFileReferences($relationTable, $relationField, $referenceRecord);
-        } else {
-            $fileReferences = $this->getFileRepository()->findByRelation($relationTable, $relationField, $referenceRecord['uid']);
-        }
-
+        $fileReferences = $this->getFileReferences($relationTable, $relationField, $referenceRecord);
         if (!empty($fileReferences)) {
             $this->addFileObjects($fileReferences);
         }
@@ -280,7 +275,8 @@ class FileCollector implements \Countable, LoggerAwareInterface
     }
 
     /**
-     * Gets file references for a given record field.
+     * Gets file references for a given record field, also deal with translated elements,
+     * where file references could be attached.
      *
      * @param string $tableName Name of the table
      * @param string $fieldName Name of the field
