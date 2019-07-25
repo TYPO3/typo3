@@ -19,6 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The interface for a request handler for a console-based application
+ *
+ * @deprecated not in use any since TYPO3 v10.0, will be removed in TYPO3 v11.0
  */
 interface RequestHandlerInterface
 {

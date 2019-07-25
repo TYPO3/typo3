@@ -13,19 +13,24 @@ namespace TYPO3\CMS\Core\Console;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Entry point for the TYPO3 Command Line for Commands
- * Does not run the RequestHandler as this already runs an Application inside an Application which
- * is just way too much logic around simple CLI calls
+ * In addition to a simple Symfony Command, this also sets up a CLI user
  */
 class CommandApplication implements ApplicationInterface
 {
@@ -34,10 +39,22 @@ class CommandApplication implements ApplicationInterface
      */
     protected $context;
 
+    /**
+     * Instance of the symfony application
+     * @var Application
+     */
+    protected $application;
+
     public function __construct(Context $context)
     {
         $this->context = $context;
         $this->checkEnvironmentOrDie();
+        $this->application = new Application('TYPO3 CMS', sprintf(
+            '%s (Application Context: <comment>%s</comment>)',
+            TYPO3_version,
+            GeneralUtility::getApplicationContext()
+        ));
+        $this->application->setAutoExit(false);
     }
 
     /**
@@ -48,18 +65,33 @@ class CommandApplication implements ApplicationInterface
     public function run(callable $execute = null)
     {
         $this->initializeContext();
-        $handler = GeneralUtility::makeInstance(CommandRequestHandler::class);
-        $handler->handleRequest(new ArgvInput());
+
+        $input = new ArgvInput();
+        $output = new ConsoleOutput();
+
+        Bootstrap::initializeBackendRouter();
+        Bootstrap::loadExtTables();
+        // create the BE_USER object (not logged in yet)
+        Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
+        Bootstrap::initializeLanguageObject();
+        // Make sure output is not buffered, so command-line output and interaction can take place
+        ob_clean();
+
+        $this->populateAvailableCommands();
+
+        $exitCode = $this->application->run($input, $output);
 
         if ($execute !== null) {
             call_user_func($execute);
         }
+
+        exit($exitCode);
     }
 
     /**
      * Check the script is called from a cli environment.
      */
-    protected function checkEnvironmentOrDie()
+    protected function checkEnvironmentOrDie(): void
     {
         if (PHP_SAPI !== 'cli') {
             die('Not called from a command line interface (e.g. a shell or scheduler).' . LF);
@@ -75,5 +107,17 @@ class CommandApplication implements ApplicationInterface
         $this->context->setAspect('visibility', new VisibilityAspect(true, true));
         $this->context->setAspect('workspace', new WorkspaceAspect(0));
         $this->context->setAspect('backend.user', new UserAspect(null));
+    }
+
+    /**
+     * Put all available commands inside the application
+     */
+    protected function populateAvailableCommands(): void
+    {
+        $commands = GeneralUtility::makeInstance(CommandRegistry::class);
+        foreach ($commands as $commandName => $command) {
+            /** @var Command $command */
+            $this->application->add($command);
+        }
     }
 }
