@@ -136,15 +136,18 @@ class Bootstrap
         // makeInstance() method creates classes using the container from now on.
         GeneralUtility::setContainer($container);
 
-        if (!$failsafe) {
-            IconRegistry::setCache($assetsCache);
-            PageRenderer::setCache($assetsCache);
-            static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
-            static::unsetReservedGlobalVariables();
-            static::loadBaseTca(true, $coreCache);
-            static::checkEncryptionKey();
+        if ($failsafe) {
+            $bootState->done = true;
+            return $container;
         }
+
+        IconRegistry::setCache($assetsCache);
+        PageRenderer::setCache($assetsCache);
+        static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
+        static::unsetReservedGlobalVariables();
         $bootState->done = true;
+        static::loadBaseTca(true, $coreCache);
+        static::checkEncryptionKey();
 
         return $container;
     }
