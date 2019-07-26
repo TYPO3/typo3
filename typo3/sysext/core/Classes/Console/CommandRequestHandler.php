@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Console;
 
 /*
@@ -39,7 +40,11 @@ class CommandRequestHandler implements RequestHandlerInterface
      */
     public function __construct()
     {
-        $this->application = new Application('TYPO3 CMS', TYPO3_version);
+        $this->application = new Application('TYPO3 CMS', sprintf(
+            '%s (Application Context: <comment>%s</comment>)',
+            TYPO3_version,
+            GeneralUtility::getApplicationContext()
+        ));
     }
 
     /**
