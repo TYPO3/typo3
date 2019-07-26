@@ -1703,6 +1703,38 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Checks if getData() works with type "site" and base variants
+     *
+     * @test
+     */
+    public function getDataWithTypeSiteWithBaseVariants(): void
+    {
+        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
+        $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+        putenv('LOCAL_DEVELOPMENT=1');
+
+        $site = new Site('my-site', 123, [
+            'base' => 'http://prod.com',
+            'baseVariants' => [
+                [
+                    'base' => 'http://staging.com',
+                    'condition' => 'applicationContext == "Production/Staging"'
+                ],
+                [
+                    'base' => 'http://dev.com',
+                    'condition' => 'getenv("LOCAL_DEVELOPMENT") == 1'
+                ],
+            ]
+        ]);
+
+        $serverRequest = $this->prophesize(ServerRequestInterface::class);
+        $serverRequest->getAttribute('site')->willReturn($site);
+        $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
+        $this->assertEquals('http://dev.com', $this->subject->getData('site:base'));
+    }
+
+    /**
      * Checks if getData() works with type "siteLanguage"
      *
      * @test

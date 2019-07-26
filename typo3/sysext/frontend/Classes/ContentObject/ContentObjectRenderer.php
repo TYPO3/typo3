@@ -4711,6 +4711,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if ($site instanceof Site) {
                             if ($key === 'identifier') {
                                 $retVal = $site->getIdentifier();
+                            } elseif ($key === 'base') {
+                                $retVal = $site->getBase();
                             } else {
                                 try {
                                     $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
