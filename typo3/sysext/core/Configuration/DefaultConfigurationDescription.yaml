@@ -570,7 +570,10 @@ HTTP:
             description: 'Default timeout for connection. Exception will be thrown if connecting to remote host takes more than this number of seconds.'
         proxy:
             type: mixed
-            description: 'Mixed: Default proxy server as "proxy.example.org", multiple proxies for different protocols can be added separately as array, as well as authentication and port, see http://docs.guzzlephp.org/en/latest/request-options.html#proxy'
+            description: |
+              <p>Default single proxy server as &quot;proxy.example.org&quot;.</p>
+              <p>Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noopener noreferrer">the documentation</a> for details.</p>
+              <p>The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noopener noreferrer">the documentation</a> for details.</p>
         ssl_key:
             type: mixed
             description: 'Mixed: Local certificate and an optional passphrase, see http://docs.guzzlephp.org/en/latest/request-options.html#ssl-key'
