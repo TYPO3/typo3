@@ -42,13 +42,13 @@ class PageMovingPagePositionMap extends PagePositionMap
      * @param int $newPagePID New page id.
      * @return string Onclick attribute content
      */
-    public function onClickEvent($pid, $newPagePID)
+    public function getActionLink($pid, $newPagePID): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        return 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db', [
+        return (string)$uriBuilder->buildUriFromRoute('tce_db', [
             'cmd[pages][' . $this->moveUid . '][' . $this->moveOrCopy . ']' => $pid,
             'redirect' => $this->R_URI,
-        ])) . ';return false;';
+        ]);
     }
 
     /**

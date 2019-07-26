@@ -171,7 +171,7 @@ class PagePositionMap
                     if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
                         end($lines);
                         $margin = 'style="margin-left: ' . (($dat['invertedDepth'] - 1) * 16 + 9) . 'px;"';
-                        $lines[] = '<ul class="list-tree" ' . $margin . '><li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
+                        $lines[] = '<ul class="list-tree" ' . $margin . '><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
                     }
                 }
                 // If going down
@@ -183,7 +183,7 @@ class PagePositionMap
                     if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
                         $prevPid = -$prev_dat['row']['uid'];
                         end($lines);
-                        $lines[] = '<li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $prev_dat['row']['pid'])) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li>';
+                        $lines[] = '<li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $prev_dat['row']['pid'])) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li>';
                     }
                     // Then set the current prevPid
                     $prevPid = -$prev_dat['row']['pid'];
@@ -200,7 +200,7 @@ class PagePositionMap
             }
             // print arrow on the same level
             if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
-                $lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'])) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
+                $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $dat['row']['pid'])) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
             }
             // The line with the icon and title:
             $toolTip = BackendUtility::getRecordToolTip($dat['row'], 'pages');
@@ -212,7 +212,7 @@ class PagePositionMap
         $prev_dat = end($pageTree->tree);
         if ($prev_dat['row']['uid'] == $id) {
             if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
-                $lines[] = '<ul class="list-tree" style="margin-left: 25px"><li><span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($id, $id)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
+                $lines[] = '<ul class="list-tree" style="margin-left: 25px"><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span></li></ul>';
             }
         }
         for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
@@ -222,7 +222,7 @@ class PagePositionMap
                 if ($latestInvDepth < $dat['invertedDepth']) {
                     $lines[] = '</ul>';
                 }
-                $lines[] = '<span class="text-nowrap"><a href="#" onclick="' . htmlspecialchars($this->onClickEvent($prevPid, $dat['row']['pid'])) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
+                $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $dat['row']['pid'])) . '"><i class="t3-icon fa fa-long-arrow-left" title="' . $this->insertlabel() . '"></i></a></span>';
             }
         }
 
@@ -266,11 +266,11 @@ class PagePositionMap
      * @param int $newPagePID New page id.
      * @return string Onclick attribute content
      */
-    public function onClickEvent($pid, $newPagePID)
+    public function getActionLink($pid, $newPagePID): string
     {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $TSconfig = BackendUtility::getPagesTSconfig($newPagePID)['mod.']['newPageWizard.'] ?? [];
         if (isset($TSconfig['override']) && !empty($TSconfig['override'])) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = $uriBuilder->buildUriFromRoute(
                 $TSconfig['override'],
                 [
@@ -280,10 +280,18 @@ class PagePositionMap
                     'returnUrl'   => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ]
             );
-            return $this->clientContext . '.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
+            return (string)$url;
         }
-        $params = '&edit[pages][' . $pid . ']=new&returnNewPageId=1';
-        return BackendUtility::editOnClick($params, '', $this->R_URI);
+
+        return (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            'edit' => [
+                'pages' => [
+                    $pid => 'new',
+                ],
+            ],
+            'returnNewPageId' => '1',
+            'returnUrl' => $this->R_URI
+        ]);
     }
 
     /**

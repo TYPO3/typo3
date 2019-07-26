@@ -1849,8 +1849,9 @@ class PageLayoutView implements LoggerAwareInterface
         if ($this->tt_contentConfig['showCommands']) {
             // Edit whole of column:
             if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT) && $this->getBackendUser()->checkLanguageAccess(0)) {
-                $iconsArr['edit'] = '<a href="#" onclick="'
-                    . htmlspecialchars(BackendUtility::editOnClick($editParams)) . '" title="'
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+                $link = $uriBuilder->buildUriFromRoute('record_edit') . $editParams . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+                $iconsArr['edit'] = '<a href="' . htmlspecialchars($link) . '"  title="'
                     . htmlspecialchars($this->getLanguageService()->getLL('editColumn')) . '">'
                     . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
             }
@@ -2450,36 +2451,6 @@ class PageLayoutView implements LoggerAwareInterface
         }
 
         return $theNewButton;
-    }
-
-    /**
-     * Creates onclick-attribute content for a new content element
-     *
-     * @param int $id Page id where to create the element.
-     * @param int $colPos Preset: Column position value
-     * @param int $sys_language Preset: Sys language value
-     * @return string String for onclick attribute.
-     * @see getTable_tt_content()
-     */
-    public function newContentElementOnClick($id, $colPos, $sys_language)
-    {
-        if ($this->option_newWizard) {
-            $routeName = BackendUtility::getPagesTSconfig($id)['mod.']['newContentElementWizard.']['override']
-                ?? 'new_content_element_wizard';
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = $uriBuilder->buildUriFromRoute($routeName, [
-                'id' => $id,
-                'colPos' => $colPos,
-                'sys_language_uid' => $sys_language,
-                'uid_pid' => $id,
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            ]);
-            $onClick = 'window.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . ';';
-        } else {
-            $onClick = BackendUtility::editOnClick('&edit[tt_content][' . $id . ']=new&defVals[tt_content][colPos]='
-                . $colPos . '&defVals[tt_content][sys_language_uid]=' . $sys_language);
-        }
-        return $onClick;
     }
 
     /**
@@ -3560,106 +3531,6 @@ class PageLayoutView implements LoggerAwareInterface
             GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
         }
         return $fieldArray;
-    }
-
-    /**
-     * Returns the title (based on $code) of a table ($table) with the proper link around. For headers over tables.
-     * The link will cause the display of all extended mode or not for the table.
-     *
-     * @param string $table Table name
-     * @param string $code Table label
-     * @return string The linked table label
-     */
-    public function linkWrapTable($table, $code)
-    {
-        if ($this->table !== $table) {
-            return '<a href="' . htmlspecialchars(
-                $this->listURL('', $table, 'firstElementNumber')
-                ) . '">' . $code . '</a>';
-        }
-        return '<a href="' . htmlspecialchars(
-            $this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')
-            ) . '">' . $code . '</a>';
-    }
-
-    /**
-     * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for 'pages'-records a link to the level of that record...)
-     *
-     * @param string $table Table name
-     * @param int $uid Item uid
-     * @param string $code Item title (not htmlspecialchars()'ed yet)
-     * @param mixed[] $row Item row
-     * @return string The item title. Ready for HTML output (is htmlspecialchars()'ed)
-     */
-    public function linkWrapItems($table, $uid, $code, $row)
-    {
-        $lang = $this->getLanguageService();
-        $origCode = $code;
-        // If the title is blank, make a "no title" label:
-        if ((string)$code === '') {
-            $code = '<i>[' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')
-                ) . ']</i> - '
-                . htmlspecialchars(BackendUtility::getRecordTitle($table, $row));
-        } else {
-            $code = htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
-            if ($code != htmlspecialchars($origCode)) {
-                $code = '<span title="' . htmlspecialchars(
-                    $origCode,
-                    ENT_QUOTES,
-                    'UTF-8',
-                    false
-                    ) . '">' . $code . '</span>';
-            }
-        }
-        switch ((string)$this->clickTitleMode) {
-            case 'edit':
-                // If the listed table is 'pages' we have to request the permission settings for each page:
-                if ($table === 'pages') {
-                    $localCalcPerms = $this->getBackendUser()->calcPerms(
-                        BackendUtility::getRecord('pages', $row['uid'])
-                    );
-                    $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
-                } else {
-                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT;
-                }
-                // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
-                if ($permsEdit) {
-                    $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-                    $code = '<a href="#" onclick="' . htmlspecialchars(
-                        BackendUtility::editOnClick($params, '', -1)
-                        ) . '" title="' . htmlspecialchars($lang->getLL('edit')) . '">' . $code . '</a>';
-                }
-                break;
-            case 'show':
-                // "Show" link (only pages and tt_content elements)
-                if ($table === 'pages' || $table === 'tt_content') {
-                    $code = '<a href="#" onclick="' . htmlspecialchars(
-                        BackendUtility::viewOnClick(
-                            ($table === 'tt_content' ? $this->id . '#' . $row['uid'] : $row['uid'])
-                            )
-                        ) . '" title="' . htmlspecialchars(
-                            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')
-                        ) . '">' . $code . '</a>';
-                }
-                break;
-            case 'info':
-                // "Info": (All records)
-                $code = '<a href="#" onclick="' . htmlspecialchars(
-                    'top.TYPO3.InfoWindow.showItem(\'' . $table . '\', \'' . $row['uid'] . '\'); return false;'
-                    ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
-                break;
-            default:
-                // Output the label now:
-                if ($table === 'pages') {
-                    $code = '<a href="' . htmlspecialchars(
-                        $this->listURL($uid, '', 'firstElementNumber')
-                        ) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
-                } else {
-                    $code = $this->linkUrlMail($code, $origCode);
-                }
-        }
-        return $code;
     }
 
     /**

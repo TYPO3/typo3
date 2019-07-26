@@ -2274,9 +2274,11 @@ class BackendUtility
      * @param string $requestUri An optional returnUrl you can set - automatically set to REQUEST_URI.
      *
      * @return string
+     * @deprecated will be removed in TYPO3 v11.
      */
     public static function editOnClick($params, $_ = '', $requestUri = '')
     {
+        trigger_error(__METHOD__ . ' has been marked as deprecated and will be removed in TYPO3 v11. Consider using regular links and use the UriBuilder API instead.', E_USER_DEPRECATED);
         if ($requestUri == -1) {
             $returnUrl = 'T3_THIS_LOCATION';
         } else {

@@ -71,7 +71,6 @@ class EditDocumentController
     /**
      * An array looking approx like [tablename][list-of-ids]=command, eg. "&edit[pages][123]=edit".
      *
-     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
      * @var array
      */
     protected $editconf = [];

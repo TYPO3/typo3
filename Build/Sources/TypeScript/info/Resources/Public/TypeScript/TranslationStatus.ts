@@ -33,6 +33,13 @@ class TranslationStatus {
     const languageId = parseInt($me.data('lang'), 10);
     const $newButton = $('.t3js-language-new-' + languageId);
     const $selected = $('input[type="checkbox"][data-lang="' + languageId + '"]:checked');
+
+    const additionalArguments: string[] = [];
+    $selected.each((index: number, element: Element): void => {
+      additionalArguments.push('edit[pages][' + (<HTMLInputElement>element).dataset.uid + ']=new');
+    });
+    const updatedHref = $newButton.data('editUrl') + '&' + additionalArguments.join('&');
+    $newButton.attr('href', updatedHref);
     $newButton.toggleClass('disabled', $selected.length === 0);
   }
 }

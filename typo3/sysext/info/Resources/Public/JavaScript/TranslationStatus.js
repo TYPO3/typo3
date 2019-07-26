@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery"],function(t,e,n){"use strict";return new(function(){function t(){this.registerEvents()}return t.prototype.registerEvents=function(){n('input[type="checkbox"][data-lang]').on("change",this.toggleNewButton)},t.prototype.toggleNewButton=function(t){var e=n(t.currentTarget),r=parseInt(e.data("lang"),10),o=n(".t3js-language-new-"+r),a=n('input[type="checkbox"][data-lang="'+r+'"]:checked');o.toggleClass("disabled",0===a.length)},t}())});
+define(["require","exports","jquery"],function(t,e,n){"use strict";return new(function(){function t(){this.registerEvents()}return t.prototype.registerEvents=function(){n('input[type="checkbox"][data-lang]').on("change",this.toggleNewButton)},t.prototype.toggleNewButton=function(t){var e=n(t.currentTarget),a=parseInt(e.data("lang"),10),r=n(".t3js-language-new-"+a),i=n('input[type="checkbox"][data-lang="'+a+'"]:checked'),o=[];i.each(function(t,e){o.push("edit[pages]["+e.dataset.uid+"]=new")});var u=r.data("editUrl")+"&"+o.join("&");r.attr("href",u),r.toggleClass("disabled",0===i.length)},t}())});
