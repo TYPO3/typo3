@@ -341,12 +341,14 @@ class ConfigurationManager
             } else {
                 throw new \UnexpectedValueException('LocalConfiguration invalid.', 1349272276);
             }
-            if (@is_file($this->getAdditionalConfigurationFileLocation())) {
-                require $this->getAdditionalConfigurationFileLocation();
-            }
         } else {
-            // No LocalConfiguration (yet), load DefaultConfiguration only
+            // No LocalConfiguration (yet), load DefaultConfiguration
             $GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();
+        }
+
+        // Load AdditionalConfiguration
+        if (@is_file($this->getAdditionalConfigurationFileLocation())) {
+            require $this->getAdditionalConfigurationFileLocation();
         }
     }
 
