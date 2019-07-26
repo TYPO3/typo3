@@ -111,6 +111,7 @@ return [
                 'size' => 30,
                 'eval' => 'trim,required',
                 'placeholder' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_path.placeholder',
+                'max' => 2048
             ],
         ],
         'force_https' => [
@@ -173,6 +174,7 @@ return [
                         ],
                     ],
                 ],
+                'max' => 2048
             ],
         ],
         'target_statuscode' => [
