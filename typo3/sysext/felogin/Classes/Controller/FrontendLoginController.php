@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Felogin\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -21,10 +22,12 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Felogin\Validation\RedirectUrlValidator;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
@@ -513,7 +516,7 @@ class FrontendLoginController extends AbstractPlugin
             }
         }
         if ($user['email']) {
-            $this->cObj->sendNotifyEmail($msg, $user['email'], '', $this->conf['email_from'], $this->conf['email_fromName'], $this->conf['replyTo']);
+            $this->sendMail($msg, $user['email'], '', $this->conf['email_from'] ?? '', $this->conf['email_fromName'] ?? '', $this->conf['replyTo'] ?? '');
         }
 
         return '';
@@ -1033,5 +1036,62 @@ class FrontendLoginController extends AbstractPlugin
         $sessionManager = GeneralUtility::makeInstance(SessionManager::class);
         $sessionBackend = $sessionManager->getSessionBackend('FE');
         $sessionManager->invalidateAllSessionsByUserId($sessionBackend, $userId, $this->frontendController->fe_user);
+    }
+
+    /**
+     * Sends "forgot password" mail
+     *
+     * @param string $message The message content. If blank, no email is sent.
+     * @param string $recipients Comma list of recipient email addresses
+     * @param string $cc Email address of recipient of an extra mail. The same mail will be sent ONCE more; not using a CC header but sending twice.
+     * @param string $senderAddress "From" email address
+     * @param string $senderName Optional "From" name
+     * @param string $replyTo Optional "Reply-To" header email address.
+     * @return bool Returns TRUE if sent
+     */
+    protected function sendMail(string $message, string $recipients, string $cc, string $senderAddress, string $senderName = '', string $replyTo = ''): bool
+    {
+        if (trim($message) === '') {
+            return false;
+        }
+
+        $mail = GeneralUtility::makeInstance(MailMessage::class);
+        $senderName = trim($senderName);
+        $senderAddress = trim($senderAddress);
+        if ($senderName !== '' && $senderAddress !== '') {
+            $mail->from(new NamedAddress($senderAddress, $senderName));
+        } elseif ($senderAddress !== '') {
+            $mail->from($senderAddress);
+        }
+        $parsedReplyTo = MailUtility::parseAddresses($replyTo);
+        if (!empty($parsedReplyTo)) {
+            $mail->replyTo($parsedReplyTo);
+        }
+        // First line is subject
+        $messageParts = explode(LF, trim($message), 2);
+        $subject = trim($messageParts[0]);
+        $plainMessage = trim($messageParts[1]);
+        $parsedRecipients = MailUtility::parseAddresses($recipients);
+        if (!empty($parsedRecipients)) {
+            $mail->to(...$parsedRecipients)
+                ->subject($subject)
+                ->text($plainMessage);
+            $mail->send();
+        }
+        $parsedCc = MailUtility::parseAddresses($cc);
+        if (!empty($parsedCc)) {
+            $from = $mail->getFrom();
+            /** @var MailMessage $mail */
+            $mail = GeneralUtility::makeInstance(MailMessage::class);
+            if (!empty($parsedReplyTo)) {
+                $mail->replyTo($parsedReplyTo);
+            }
+            $mail->from($from)
+                ->to(...$parsedCc)
+                ->subject($subject)
+                ->text($plainMessage);
+            $mail->send();
+        }
+        return true;
     }
 }

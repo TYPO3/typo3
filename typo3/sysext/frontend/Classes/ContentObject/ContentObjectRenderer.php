@@ -5753,9 +5753,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $senderName Optional "From" name
      * @param string $replyTo Optional "Reply-To" header email address.
      * @return bool Returns TRUE if sent
+     * @deprecated ContentObjectRenderer::sendNotifyEmail is deprecated and will be removed in TYPO3 v11. Consider using the mail API directly
      */
     public function sendNotifyEmail($message, $recipients, $cc, $senderAddress, $senderName = '', $replyTo = '')
     {
+        trigger_error('ContentObjectRenderer::sendNotifyEmail is deprecated and will be removed in TYPO3 v11. Consider using the mail API directly.', E_USER_DEPRECATED);
         /** @var MailMessage $mail */
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         $senderName = trim($senderName);

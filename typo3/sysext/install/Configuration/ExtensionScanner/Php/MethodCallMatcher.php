@@ -4224,4 +4224,11 @@ return [
             'Breaking-88779-RecordListRemoveUnusedCode.rst'
         ],
     ],
+    '\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::sendNotifyEmail' => [
+        'numberOfMandatoryArguments' => 4,
+        'maximumNumberOfArguments' => 6,
+        'restFiles' => [
+            'Deprecation-88850-ContentObjectRendererSendNotifyEmail.rst'
+        ],
+    ],
 ];
