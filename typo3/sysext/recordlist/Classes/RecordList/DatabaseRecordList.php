@@ -2135,14 +2135,14 @@ class DatabaseRecordList
                     $cutIcon = $this->iconFactory->getIcon('actions-edit-cut-release', Icon::SIZE_SMALL);
                 }
 
-                $cells['copy'] = '<a class="btn btn-default" href="#" onclick="'
-                    . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB(
+                $cells['copy'] = '<a class="btn btn-default" href="'
+                    . htmlspecialchars($this->clipObj->selUrlDB(
                         $table,
                         $row['uid'],
                         1,
                         $isSel === 'copy',
-                        ['returnUrl' => '']
-                    )) . ');')
+                        ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                    ))
                     . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy')) . '">'
                     . $copyIcon->render() . '</a>';
 
@@ -2158,34 +2158,32 @@ class DatabaseRecordList
                 // If the listed table is 'pages' we have to request the permission settings for each page:
                 if ($table === 'pages') {
                     if ($permsEdit) {
-                        $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB(
+                        $cells['cut'] = '<a class="btn btn-default" href="'
+                        . htmlspecialchars($this->clipObj->selUrlDB(
                             $table,
                             $row['uid'],
                             0,
                             $isSel === 'cut',
-                            ['returnUrl' => '']
-                        )) . ');')
+                            ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                        ))
                         . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
                         . $cutIcon->render() . '</a>';
                     } else {
                         $cells['cut'] = $this->spaceIcon;
                     }
+                } elseif ($this->calcPerms & Permission::CONTENT_EDIT) {
+                    $cells['cut'] = '<a class="btn btn-default" href="'
+                    . htmlspecialchars($this->clipObj->selUrlDB(
+                        $table,
+                        $row['uid'],
+                        0,
+                        $isSel === 'cut',
+                        ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]
+                    ))
+                    . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
+                    . $cutIcon->render() . '</a>';
                 } else {
-                    if ($this->calcPerms & Permission::CONTENT_EDIT) {
-                        $cells['cut'] = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpSelf(' . GeneralUtility::quoteJSvalue($this->clipObj->selUrlDB(
-                            $table,
-                            $row['uid'],
-                            0,
-                            $isSel === 'cut',
-                            ['returnUrl' => '']
-                        )) . ');')
-                        . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.cut')) . '">'
-                        . $cutIcon->render() . '</a>';
-                    } else {
-                        $cells['cut'] = $this->spaceIcon;
-                    }
+                    $cells['cut'] = $this->spaceIcon;
                 }
             }
         } else {
