@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -60,12 +61,10 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             $mailBody = 'SCHEDULER TEST-TASK' . LF . '- - - - - - - - - - - - - - - -' . LF . 'UID: ' . $this->taskUid . LF . 'Sitename: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . LF . 'Site: ' . $site . LF . 'Called by: ' . $calledBy . LF . 'tstamp: ' . date('Y-m-d H:i:s') . ' [' . time() . ']' . LF . 'maxLifetime: ' . $this->scheduler->extConf['maxLifetime'] . LF . 'start: ' . date('Y-m-d H:i:s', $start) . ' [' . $start . ']' . LF . 'end: ' . (empty($end) ? '-' : date('Y-m-d H:i:s', $end) . ' [' . $end . ']') . LF . 'interval: ' . $interval . LF . 'multiple: ' . ($multiple ? 'yes' : 'no') . LF . 'cronCmd: ' . ($cronCmd ? $cronCmd : 'not used');
             // Prepare mailer and send the mail
             try {
-                /** @var \TYPO3\CMS\Core\Mail\MailMessage $mailer */
                 $mailer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mailer->setFrom([$this->email => 'SCHEDULER TEST-TASK']);
-                $mailer->setReplyTo([$this->email => 'SCHEDULER TEST-TASK']);
+                $mailer->from(new NamedAddress($this->email, 'SCHEDULER TEST-TASK'));
                 $mailer->setSubject('SCHEDULER TEST-TASK');
-                $mailer->setBody($mailBody);
+                $mailer->text($mailBody);
                 $mailer->setTo($this->email);
                 $mailsSend = $mailer->send();
                 $success = $mailsSend > 0;

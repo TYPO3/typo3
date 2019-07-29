@@ -2339,9 +2339,8 @@ This is a dump of the failures:
                         ) . ':  ' . @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
                     $email_body .= LF;
                 }
-                /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mail->setTo($email)->setSubject($subject)->setBody($email_body);
+                $mail->setTo($email)->subject($subject)->text($email_body);
                 $mail->send();
                 // Logout written to log
                 $this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$rowCount, $secondsBack, $email]);
