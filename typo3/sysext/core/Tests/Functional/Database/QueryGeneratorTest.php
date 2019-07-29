@@ -254,4 +254,76 @@ class QueryGeneratorTest extends FunctionalTestCase
 
         static::assertSame('3,5', $treeList);
     }
+
+    public function getQueryWithIdOrDateDataProvider(): array
+    {
+        return [
+            'pid 5134' => [
+                5134,
+                null,
+                "pid = '5134'",
+            ],
+            'unix timestamp' => [
+                1522863047,
+                null,
+                "pid = '1522863047'",
+            ],
+            'pid 5134 as string' => [
+                '5134',
+                null,
+                "pid = '5134'",
+            ],
+            'unix timestamp as string' => [
+                '1522863047',
+                null,
+                "pid = '1522863047'",
+            ],
+            'ISO 8601 date string' => [
+                '2018-04-04T17:30:47Z',
+                null,
+                "pid = '1522863047'",
+            ],
+            'pid 5134 and second input value 5135' => [
+                5134,
+                5135,
+                'pid >= 5134 AND pid <= 5135',
+                'comparison' => 100,
+            ],
+            'ISO 8601 date string as first and second input' => [
+                '2018-04-04T17:30:47Z',
+                '2018-04-04T17:30:48Z',
+                'pid >= 1522863047 AND pid <= 1522863048',
+                'comparison' => 100,
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider getQueryWithIdOrDateDataProvider
+     *
+     * @param mixed $inputValue
+     * @param mixed $inputValue1
+     * @param string $expected
+     * @param int $comparison
+     */
+    public function getQueryWithIdOrDate($inputValue, $inputValue1, string $expected, int $comparison = 64)
+    {
+        $GLOBALS['TCA'] = [];
+        $GLOBALS['TCA']['aTable'] = [];
+        $queryGenerator = new QueryGenerator();
+
+        $inputConf = [
+            [
+                'operator' => '',
+                'type' => 'FIELD_pid',
+                'comparison' => $comparison,
+                'inputValue' => $inputValue,
+                'inputValue1' => $inputValue1,
+            ],
+        ];
+
+        $queryGenerator->init('queryConfig', 'aTable');
+        $this->assertSame($expected, trim($queryGenerator->getQuery($inputConf), "\n\r"));
+    }
 }
