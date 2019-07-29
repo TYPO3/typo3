@@ -147,7 +147,7 @@ class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
         $dblist->script = $_SERVER['REQUEST_URI'];
         $dblist->generateList();
 
-        $js = 'var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
+        $js = '// @deprecated' . CRLF . 'var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI')));
         $html = GeneralUtility::wrapJS($js) . $dblist->HTMLcode;
 
         return $html;

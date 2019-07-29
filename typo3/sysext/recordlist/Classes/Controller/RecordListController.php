@@ -372,6 +372,7 @@ class RecordListController
                 'RecordListInlineJS',
                 '
 				function jumpExt(URL,anchor) {
+					console.warn(\'jumpExt() has been marked as deprecated. Consider using regular links instead.\');
 					var anc = anchor?anchor:"";
 					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
 					return false;

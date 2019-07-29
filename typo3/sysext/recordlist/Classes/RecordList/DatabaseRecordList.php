@@ -634,10 +634,8 @@ class DatabaseRecordList
             }
             // New record on pages that are not locked by editlock
             if (!$modulePageTsConfig['noCreateRecordsLink'] && $this->editLockPermissions()) {
-                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id])) . ');';
                 $newRecordButton = $buttonBar->makeLinkButton()
-                    ->setHref('#')
-                    ->setOnClick($onClick)
+                    ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $this->listURL()]))
                     ->setTitle($lang->getLL('newRecordGeneral'))
                     ->setIcon($this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL));
                 $buttonBar->addButton($newRecordButton, ButtonBar::BUTTON_POSITION_LEFT, 10);
@@ -1472,7 +1470,7 @@ class DatabaseRecordList
                         // The "edit marked" link:
                         $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit')
                             . '&edit[' . $table . '][{entityIdentifiers:editList}]=edit'
-                            . '&returnUrl={T3_THIS_LOCATION}';
+                            . '&returnUrl=' . rawurlencode($this->listURL());
                         $cells['edit'] = '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
                             . ' data-uri="' . htmlspecialchars($editUri) . '"'
                             . ' title="' . htmlspecialchars($lang->getLL('clip_editMarked')) . '">'
@@ -1562,7 +1560,7 @@ class DatabaseRecordList
                             $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit')
                                 . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
                                 . '&columnsOnly=' . implode(',', $this->fieldArray)
-                                . '&returnUrl={T3_THIS_LOCATION}';
+                                . '&returnUrl=' . rawurlencode($this->listURL());
                             $icon .= '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
                                 . ' data-uri="' . htmlspecialchars($editUri) . '"'
                                 . ' title="' . htmlspecialchars($lang->getLL('editShownColumns')) . '">'
@@ -1620,7 +1618,7 @@ class DatabaseRecordList
                             $editUri = (string)$this->uriBuilder->buildUriFromRoute('record_edit')
                                 . '&edit[' . $table . '][{' . $entityIdentifiers . '}]=edit'
                                 . '&columnsOnly=' . $fCol
-                                . '&returnUrl={T3_THIS_LOCATION}';
+                                . '&returnUrl=' . rawurlencode($this->listURL());
                             $iTitle = sprintf($lang->getLL('editThisColumn'), $sortLabel);
                             $theData[$fCol] .= '<a class="btn btn-default t3js-record-edit-multiple" href="#"'
                                 . ' data-uri="' . htmlspecialchars($editUri) . '"'
@@ -1854,10 +1852,14 @@ class DatabaseRecordList
             if ($isL10nOverlay) {
                 $moveAction = $this->spaceIcon;
             } else {
-                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('move_element') . '&table=' . $table . '&uid=' . $row['uid']) . ');';
                 $linkTitleLL = htmlspecialchars($this->getLanguageService()->getLL('move_' . ($table === 'tt_content' ? 'record' : 'page')));
                 $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-move', Icon::SIZE_SMALL) : $this->iconFactory->getIcon('actions-document-move', Icon::SIZE_SMALL));
-                $moveAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
+                $url = (string)$this->uriBuilder->buildUriFromRoute('move_element', [
+                    'table' => $table,
+                    'uid' => $row['uid'],
+                    'returnUrl' => $this->listURL(),
+                ]);
+                $moveAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . $linkTitleLL . '">' . $icon->render() . '</a>';
             }
             $this->addActionToCellGroup($cells, $moveAction, 'move');
         }
@@ -1865,9 +1867,11 @@ class DatabaseRecordList
         if ($this->isEditable($table)) {
             // "Revert" link (history/undo)
             if ((bool)\trim($userTsConfig['options.']['showHistory.'][$table] ?? $userTsConfig['options.']['showHistory'] ?? '1')) {
-                $moduleUrl = (string)$this->uriBuilder->buildUriFromRoute('record_history', ['element' => $table . ':' . $row['uid']]);
-                $onClick = 'return jumpExt(' . GeneralUtility::quoteJSvalue($moduleUrl) . ',\'#latest\');';
-                $historyAction = '<a class="btn btn-default" href="#" onclick="' . htmlspecialchars($onClick) . '" title="'
+                $moduleUrl = $this->uriBuilder->buildUriFromRoute('record_history', [
+                    'element' => $table . ':' . $row['uid'],
+                    'returnUrl' => $this->listURL(),
+                ]) . '#latest';
+                $historyAction = '<a class="btn btn-default" href="' . htmlspecialchars($moduleUrl) . '" title="'
                     . htmlspecialchars($this->getLanguageService()->getLL('history')) . '">'
                     . $this->iconFactory->getIcon('actions-document-history-open', Icon::SIZE_SMALL)->render() . '</a>';
                 $this->addActionToCellGroup($cells, $historyAction, 'history');
@@ -1909,9 +1913,8 @@ class DatabaseRecordList
                 if (!$isL10nOverlay && isset($this->currentTable['prev'][$row['uid']])) {
                     // Up
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prev'][$row['uid']];
-                    $moveUpAction = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                        . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveUp')) . '">'
+                    $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                    $moveUpAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveUp')) . '">'
                         . $this->iconFactory->getIcon('actions-move-up', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
                     $moveUpAction = $this->spaceIcon;
@@ -1921,9 +1924,8 @@ class DatabaseRecordList
                 if (!$isL10nOverlay && $this->currentTable['next'][$row['uid']]) {
                     // Down
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['next'][$row['uid']];
-                    $moveDownAction = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                        . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveDown')) . '">'
+                    $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                    $moveDownAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('moveDown')) . '">'
                         . $this->iconFactory->getIcon('actions-move-down', Icon::SIZE_SMALL)->render() . '</a>';
                 } else {
                     $moveDownAction = $this->spaceIcon;
@@ -2007,9 +2009,8 @@ class DatabaseRecordList
                 // Up (Paste as the page right after the current parent page)
                 if ($this->calcPerms & Permission::PAGE_NEW) {
                     $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . -$this->id;
-                    $moveLeftAction = '<a class="btn btn-default" href="#" onclick="'
-                        . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                        . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
+                    $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                    $moveLeftAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('prevLevel')) . '">'
                         . $this->iconFactory->getIcon('actions-move-left', Icon::SIZE_SMALL)->render() . '</a>';
                     $this->addActionToCellGroup($cells, $isL10nOverlay ? $this->spaceIcon : $moveLeftAction, 'moveLeft');
                 }
@@ -2018,9 +2019,8 @@ class DatabaseRecordList
                     $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
                     if ($localCalcPerms & Permission::PAGE_NEW) {
                         $params = '&cmd[' . $table . '][' . $row['uid'] . '][move]=' . $this->currentTable['prevUid'][$row['uid']];
-                        $moveRightAction = '<a class="btn btn-default" href="#" onclick="'
-                            . htmlspecialchars('return jumpToUrl(' . BackendUtility::getLinkToDataHandlerAction($params, -1) . ');')
-                            . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('nextLevel')) . '">'
+                        $url = BackendUtility::getLinkToDataHandlerAction($params, $this->listURL());
+                        $moveRightAction = '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('nextLevel')) . '">'
                             . $this->iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . '</a>';
                     } else {
                         $moveRightAction = $this->spaceIcon;
