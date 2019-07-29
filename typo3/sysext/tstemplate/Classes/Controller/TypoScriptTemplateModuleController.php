@@ -145,15 +145,6 @@ class TypoScriptTemplateModuleController
     public function __construct()
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->moduleTemplate->addJavaScriptCode(
-            'jumpToUrl',
-            '
-            function jumpToUrl(URL) {
-                window.location.href = URL;
-                return false;
-            }
-            '
-        );
         $this->getLanguageService()->includeLLFile('EXT:tstemplate/Resources/Private/Language/locallang.xlf');
     }
 

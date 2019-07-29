@@ -79,7 +79,7 @@ class ActionMenuViewHelper extends AbstractTagBasedViewHelper
      */
     public function render()
     {
-        $this->tag->addAttribute('onchange', 'jumpToUrl(this.options[this.selectedIndex].value, this);');
+        $this->tag->addAttribute('onchange', 'window.location.href = this.options[this.selectedIndex].value;');
         $options = '';
         foreach ($this->childNodes as $childNode) {
             if ($childNode instanceof ViewHelperNode) {

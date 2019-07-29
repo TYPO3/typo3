@@ -57,6 +57,6 @@ class ElementBrowserPageTreeView extends \TYPO3\CMS\Backend\Tree\View\ElementBro
         }
 
         $parameters = HttpUtility::buildQueryString($this->linkParameterProvider->getUrlParameters(['pid' => $v['uid']]));
-        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters)) . ');">' . $title . '</a>';
+        return '<a href="' . htmlspecialchars($this->getThisScript() . $parameters) . '">' . $title . '</a>';
     }
 }

@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Backend\Tree\View;
  */
 
 use TYPO3\CMS\Core\Resource\Folder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
 
@@ -67,8 +66,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
             $parameters = HttpUtility::buildQueryString(
                 $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()])
             );
-            $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters) . ');';
-            $theFolderIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+            $theFolderIcon = '<a href="' . htmlspecialchars($this->getThisScript() . $parameters) . '">' . $icon . '</a>';
         }
 
         return $theFolderIcon;
@@ -87,7 +85,7 @@ class ElementBrowserFolderTreeView extends FolderTreeView
         $parameters = HttpUtility::buildQueryString(
             $this->linkParameterProvider->getUrlParameters(['identifier' => $folderObject->getCombinedIdentifier()])
         );
-        return '<a href="#" onclick="return jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($this->getThisScript() . $parameters)) . ');">' . $title . '</a>';
+        return '<a href="' . htmlspecialchars($this->getThisScript() . $parameters) . '">' . $title . '</a>';
     }
 
     /**
@@ -119,8 +117,8 @@ class ElementBrowserFolderTreeView extends FolderTreeView
         $name = $bMark ? ' name=' . $bMark : '';
         $urlParameters = $this->linkParameterProvider->getUrlParameters([]);
         $urlParameters['PM'] = $cmd;
-        $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($this->getThisScript() . HttpUtility::buildQueryString($urlParameters)) . ',' . GeneralUtility::quoteJSvalue($anchor) . ');';
-        return '<a href="#"' . htmlspecialchars($name) . ' onclick="' . htmlspecialchars($aOnClick) . '">' . $icon . '</a>';
+        $url = $this->getThisScript() . HttpUtility::buildQueryString($urlParameters) . $anchor;
+        return '<a href="' . htmlspecialchars($url) . '"' . htmlspecialchars($name) . '>' . $icon . '</a>';
     }
 
     /**

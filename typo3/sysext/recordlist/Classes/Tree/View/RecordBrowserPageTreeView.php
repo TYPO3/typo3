@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Recordlist\Tree\View;
  */
 
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserPageTreeView;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 
 /**
@@ -102,10 +101,8 @@ class RecordBrowserPageTreeView extends ElementBrowserPageTreeView
     {
         $urlParameters = $this->linkParameterProvider->getUrlParameters(['pid' => (int)$record['uid']]);
         $url = $this->getThisScript() . HttpUtility::buildQueryString($urlParameters);
-        $aOnClick = 'return jumpToUrl(' . GeneralUtility::quoteJSvalue($url) . ');';
 
-        return '<span class="list-tree-title"><a href="#" onclick="' . htmlspecialchars($aOnClick) . '">'
-            . $title . '</a></span>';
+        return '<span class="list-tree-title"><a href="' . htmlspecialchars($url) . '">' . $title . '</a></span>';
     }
 
     /**

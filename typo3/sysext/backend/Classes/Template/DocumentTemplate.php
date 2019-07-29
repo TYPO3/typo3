@@ -71,6 +71,7 @@ class DocumentTemplate implements LoggerAwareInterface
      */
     public $JScodeArray = ['jumpToUrl' => '
 function jumpToUrl(URL) {
+	console.warn(\'jumpToUrl() has been marked as deprecated.\');
 	window.location.href = URL;
 	return false;
 }

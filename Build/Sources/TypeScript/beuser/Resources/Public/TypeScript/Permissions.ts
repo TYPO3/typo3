@@ -59,13 +59,6 @@ class Permissions {
   }
 
   /**
-   * wrapper function to call a URL in the current frame
-   */
-  public jumpToUrl = (url: string): void => {
-    window.location.href = url;
-  }
-
-  /**
    * Changes permissions by sending an AJAX request to the server
    */
   public setPermissions = ($element: JQuery): void => {

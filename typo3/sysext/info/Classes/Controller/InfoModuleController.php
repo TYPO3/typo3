@@ -209,10 +209,6 @@ class InfoModuleController
             $this->moduleTemplate->addJavaScriptCode(
                 'WebFuncInLineJS',
                 'if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';
-				function jumpToUrl(URL) {
-					window.location.href = URL;
-					return false;
-				}
 				'
             );
             // Setting up the context sensitive menu:

@@ -17,12 +17,6 @@ interface LinkAttributes {
   [s: string]: any;
 }
 
-declare global {
-  interface Window {
-    jumpToUrl: Function;
-  }
-}
-
 /**
  * Module: TYPO3/CMS/Recordlist/LinkBrowser
  * API for tooltip windows powered by Twitter Bootstrap.
@@ -51,26 +45,6 @@ class LinkBrowser {
         evt.preventDefault();
       });
     });
-
-    /**
-     * Global jumpTo function
-     *
-     * Used by tree implementation
-     *
-     * @param {String} URL
-     * @param {String} anchor
-     * @returns {Boolean}
-     */
-    window.jumpToUrl = (URL: string, anchor?: string) => {
-      if (URL.charAt(0) === '?') {
-        URL = this.thisScriptUrl + URL.substring(1);
-      }
-      const urlParameters = this.encodeGetParameters(this.urlParameters, '', URL);
-      const parameters = this.encodeGetParameters(this.getLinkAttributeValues(), 'linkAttributes', '');
-
-      window.location.href = URL + urlParameters + parameters + this.addOnParams + (typeof(anchor) === 'string' ? anchor : '');
-      return false;
-    };
   }
 
   public getLinkAttributeValues(): Object {

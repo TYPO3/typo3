@@ -378,6 +378,7 @@ class RecordListController
 					return false;
 				}
 				function jumpToUrl(URL) {
+					console.warn(\'jumpToUrl() has been marked as deprecated. Consider using regular links or window.location.href instead.\');
 					window.location.href = URL;
 					return false;
 				}

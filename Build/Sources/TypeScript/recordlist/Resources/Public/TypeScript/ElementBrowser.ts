@@ -29,7 +29,6 @@ declare global {
     list_frame: Window;
   }
   interface Window {
-    jumpToUrl: Function;
     setFormValueFromBrowseWin: Function;
     editform: any;
     content: any;
@@ -71,25 +70,6 @@ class ElementBrowser {
       this.rte.configuration = data.rteConfiguration;
       this.irre.objectId = data.irreObjectId;
     });
-
-    /**
-     * Global jumpTo function
-     *
-     * Used by tree implementation
-     *
-     * @param {String} URL
-     * @param {String} anchor
-     * @returns {Boolean}
-     */
-    window.jumpToUrl = (URL: string, anchor?: string): boolean => {
-      if (URL.charAt(0) === '?') {
-        URL = this.thisScriptUrl + URL.substring(1);
-      }
-      const add_mode = URL.indexOf('mode=') === -1 ? '&mode=' + encodeURIComponent(this.mode) : '';
-      window.location.href = URL + add_mode + (typeof (anchor) === 'string' ? anchor : '');
-      return false;
-    };
-
   }
 
   public setReferences(): boolean {

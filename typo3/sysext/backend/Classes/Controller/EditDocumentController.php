@@ -773,14 +773,9 @@ class EditDocumentController
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        // override the default jumpToUrl
         $this->moduleTemplate->addJavaScriptCode(
-            'jumpToUrl',
-            '
-            function deleteRecord(table,id,url) {
-                window.location.href = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('tce_db') . '&cmd[') . '+table+"]["+id+"][delete]=1&redirect="+escape(url);
-            }
-        ' . (isset($parsedBody['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
+            'previewCode',
+            (isset($parsedBody['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
         );
         // Set context sensitive menu
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');

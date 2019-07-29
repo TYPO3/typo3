@@ -372,17 +372,11 @@ abstract class AbstractLinkBrowserController
                 }
             }
 
-            if ($configuration['addParams']) {
-                $addParams = $configuration['addParams'];
-            } else {
-                $parameters = HttpUtility::buildQueryString($this->getUrlParameters(['act' => $identifier]), '?');
-                $addParams = 'onclick="jumpToUrl(' . htmlspecialchars(GeneralUtility::quoteJSvalue($parameters)) . ');return false;"';
-            }
             $menuDef[$identifier] = [
                 'isActive' => $isActive,
                 'label' => $configuration['label'],
-                'url' => '#',
-                'addParams' => $addParams,
+                'url' => $this->thisScript . HttpUtility::buildQueryString($this->getUrlParameters(['act' => $identifier]), '&'),
+                'addParams' => $configuration['addParams'] ?? '',
                 'before' => $configuration['displayBefore'],
                 'after' => $configuration['displayAfter']
             ];

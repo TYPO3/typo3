@@ -390,10 +390,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->view->getModuleTemplate()->addJavaScriptCode(
                 'FileListIndex',
                 'if (top.fsMod) top.fsMod.recentIds["file"] = "' . rawurlencode($this->id) . '";' . $this->filelist->CBfunctions() . '
-                function jumpToUrl(URL) {
-                    window.location.href = URL;
-                    return false;
-                }
                 '
             );
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/Filelist/FileDelete');
