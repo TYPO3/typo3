@@ -924,4 +924,11 @@ return [
             'Deprecation-88499-BackendUtilitygetViewDomain.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-88787-BackendUtilityEditOnClick.rst'
+        ],
+    ],
 ];
