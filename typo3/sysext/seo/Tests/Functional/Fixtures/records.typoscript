@@ -17,6 +17,38 @@ plugin.tx_seo {
             }
           }
         }
+        records_with_additional_where {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = sys_category
+            additionalWhere = (uid=1)
+            sortField = sorting
+            lastModifiedField = tstamp
+            pid = 11
+            url {
+              pageId = 1
+              fieldToParameterMap {
+                uid = tx_example_category[id]
+              }
+            }
+          }
+        }
+        records_with_additional_where_starting_with_logical_operator {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = sys_category
+            additionalWhere = AND (uid=2)
+            sortField = sorting
+            lastModifiedField = tstamp
+            pid = 11
+            url {
+              pageId = 1
+              fieldToParameterMap {
+                uid = tx_example_category[id]
+              }
+            }
+          }
+        }
       }
     }
   }
