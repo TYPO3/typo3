@@ -362,6 +362,7 @@ function jumpToUrl(URL) {
             'popViewId' => ''
         ]);
         $out = '
+	// @deprecated
 	var T3_RETURN_URL = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode(GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'))))) . ';
 	var T3_THIS_LOCATION = ' . GeneralUtility::quoteJSvalue(str_replace('%20', '', rawurlencode($thisLocation))) . '
 		';
