@@ -656,7 +656,7 @@ class DatabaseRecordList
             if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions()) {
                 // Edit
                 $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
-                $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=' . $this->makeReturnUrl();
+                $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
                 $editButton = $buttonBar->makeLinkButton()
                     ->setHref($editLink)
                     ->setTitle($lang->getLL('editPage'))
@@ -1549,7 +1549,7 @@ class DatabaseRecordList
                                 if ($table === 'pages') {
                                     $params .= '&overrideVals[pages][doktype]=' . (int)$this->pageRow['doktype'];
                                 }
-                                $newLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=' . $this->makeReturnUrl();
+                                $newLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
                                 $icon = '<a class="btn btn-default" href="' . htmlspecialchars($newLink) . '" title="' . htmlspecialchars($lang->getLL('new')) . '">' . $spriteIcon->render() . '</a>';
                             }
                         }
@@ -1837,7 +1837,7 @@ class DatabaseRecordList
                 $iconIdentifier = 'actions-page-open';
             }
             $overlayIdentifier = !$this->isEditable($table) ? 'overlay-readonly' : null;
-            $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=' . $this->makeReturnUrl();
+            $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
             $editAction = '<a class="btn btn-default" href="' . htmlspecialchars($editLink) . '"'
                 . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">' . $this->iconFactory->getIcon($iconIdentifier, Icon::SIZE_SMALL, $overlayIdentifier)->render() . '</a>';
         } else {
@@ -1897,7 +1897,7 @@ class DatabaseRecordList
                         if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
                             $titleLabel .= ($table === 'pages' ? 'Page' : 'Record');
                         }
-                        $newLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=' . $this->makeReturnUrl();
+                        $newLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
                         $newAction = '<a class="btn btn-default" href="' . htmlspecialchars($newLink) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($titleLabel)) . '">'
                             . $icon->render() . '</a>';
                         $this->addActionToCellGroup($cells, $newAction, 'new');
@@ -3449,7 +3449,7 @@ class DatabaseRecordList
                 // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
                 if ($permsEdit) {
                     $params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-                    $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . '&returnUrl=' . $this->makeReturnUrl();
+                    $editLink = $this->uriBuilder->buildUriFromRoute('record_edit') . $params . $this->makeReturnUrl();
                     $code = '<a href="' . htmlspecialchars($editLink) . '" title="' . htmlspecialchars($lang->getLL('edit')) . '">' . $code . '</a>';
                 }
                 break;
