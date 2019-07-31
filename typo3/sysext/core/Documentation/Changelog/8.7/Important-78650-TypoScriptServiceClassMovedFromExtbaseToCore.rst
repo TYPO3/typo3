@@ -15,4 +15,7 @@ to Extbase, and a lot of other system extensions are using the class.
 The old class name is still registered as a class alias, so extensions can call the class via
 the Extbase PHP namespace in TYPO3 v8 without any downsides.
 
+Hint: It can now be found via
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+
 .. index:: PHP-API, ext:extbase, TypoScript
