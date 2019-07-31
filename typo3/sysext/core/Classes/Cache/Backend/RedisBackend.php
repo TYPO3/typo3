@@ -155,7 +155,7 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
         $this->redis = new \Redis();
         try {
             if ($this->persistentConnection) {
-                $this->connected = $this->redis->pconnect($this->hostname, $this->port, $this->connectionTimeout);
+                $this->connected = $this->redis->pconnect($this->hostname, $this->port, $this->connectionTimeout, (string)$this->database);
             } else {
                 $this->connected = $this->redis->connect($this->hostname, $this->port, $this->connectionTimeout);
             }

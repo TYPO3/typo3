@@ -248,7 +248,9 @@ class RedisSessionBackend implements SessionBackendInterface, LoggerAwareInterfa
         try {
             $this->connected = $this->redis->pconnect(
                 $this->configuration['hostname'] ?? '127.0.0.1',
-                $this->configuration['port'] ?? 6379
+                $this->configuration['port'] ?? 6379,
+                0.0,
+                $this->identifier
             );
         } catch (\RedisException $e) {
             $this->logger->alert('Could not connect to redis server.', ['exception' => $e]);
