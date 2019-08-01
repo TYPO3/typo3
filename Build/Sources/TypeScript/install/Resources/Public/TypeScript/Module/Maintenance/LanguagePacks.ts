@@ -331,38 +331,42 @@ class LanguagePacks extends AbstractInteractableModule {
       if (active) {
         $tbody.append(
           $tr.append(
-            $('<td>').append(
-              $('<a>', {
-                'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
-                'data-iso': language.iso,
-                'data-toggle': 'tooltip',
-                'title': 'Deactivate',
-              }).append(deactivateIcon),
-              $('<a>', {
-                'class': 'btn btn-default t3js-languagePacks-update',
-                'data-iso': language.iso,
-                'data-toggle': 'tooltip',
-                'title': 'Download language packs',
-              }).append(updateIcon),
+            $('<td>').text(' ' + language.name).prepend(
+              $('<div />', {class: 'btn-group'}).append(
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-deactivateLanguage',
+                  'data-iso': language.iso,
+                  'data-toggle': 'tooltip',
+                  'title': 'Deactivate',
+                }).append(deactivateIcon),
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-update',
+                  'data-iso': language.iso,
+                  'data-toggle': 'tooltip',
+                  'title': 'Download language packs',
+                }).append(updateIcon),
+              ),
             ),
           ),
         );
       } else {
         $tbody.append(
           $tr.addClass('t3-languagePacks-inactive t3js-languagePacks-inactive').css({'display': 'none'}).append(
-            $('<td>').append(
-              $('<a>', {
-                'class': 'btn btn-default t3js-languagePacks-activateLanguage',
-                'data-iso': language.iso,
-                'data-toggle': 'tooltip',
-                'title': 'Activate',
-              }).append(activateIcon),
+            $('<td>').text(' ' + language.name).prepend(
+              $('<div />', {class: 'btn-group'}).append(
+                $('<a>', {
+                  'class': 'btn btn-default t3js-languagePacks-activateLanguage',
+                  'data-iso': language.iso,
+                  'data-toggle': 'tooltip',
+                  'title': 'Activate',
+                }).append(activateIcon),
+              ),
             ),
           ),
         );
       }
+
       $tr.append(
-        $('<td>').text(language.name),
         $('<td>').text(language.iso),
         $('<td>').text(language.dependencies.join(', ')),
         $('<td>').text(language.lastUpdate === null ? '' : language.lastUpdate),
@@ -375,16 +379,17 @@ class LanguagePacks extends AbstractInteractableModule {
         $('<thead>').append(
           $('<tr>').append(
             $('<th>').append(
-              $('<button>', {'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle', 'type': 'button'}).append(
-                $('<span>').append(activateIcon),
-                ' Add language',
-              ),
-              $('<button>', {'class': 'btn btn-default t3js-languagePacks-update', 'type': 'button'}).append(
-                $('<span>').append(updateIcon),
-                ' Update all',
+              $('<div />', {class: 'btn-group'}).append(
+                $('<button>', {'class': 'btn btn-default t3js-languagePacks-addLanguage-toggle', 'type': 'button'}).append(
+                  $('<span>').append(activateIcon),
+                  ' Add language',
+                ),
+                $('<button>', {'class': 'btn btn-default t3js-languagePacks-update', 'type': 'button'}).append(
+                  $('<span>').append(updateIcon),
+                  ' Update all',
+                ),
               ),
             ),
-            $('<th>').text('Language'),
             $('<th>').text('Locale'),
             $('<th>').text('Dependencies'),
             $('<th>').text('Last update'),
@@ -445,7 +450,7 @@ class LanguagePacks extends AbstractInteractableModule {
             'src': '../' + extension.icon,
             'alt': extension.title,
           }),
-          $('<span>').text(extension.title),
+          $('<span>').text(' ' + extension.title),
         );
       } else {
         extensionTitle = $('<span>').text(extension.title);
