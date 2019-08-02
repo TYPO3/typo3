@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Http;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -47,6 +48,14 @@ class RequestFactory
     {
         $httpOptions = $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
         $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
+
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']) && is_array($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'])) {
+            $stack = HandlerStack::create();
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'] ?? [] as $handler) {
+                $stack->push($handler);
+            }
+            $httpOptions['handler'] = $stack;
+        }
 
         return GeneralUtility::makeInstance(Client::class, $httpOptions);
     }

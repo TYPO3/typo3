@@ -1323,6 +1323,7 @@ return [
         'timeout' => 0,
         'verify' => true,
         'version' => '1.1',
+        'handler' => [], // Array of callables
         'headers' => [ // Additional HTTP headers sent by every request TYPO3 executes.
             'User-Agent' => 'TYPO3' // String: Default user agent. Defaults to TYPO3.
         ]
