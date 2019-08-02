@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,27 +42,56 @@ class TranslationConfigurationProvider
      */
     public function getSystemLanguages($pageId = 0)
     {
-        try {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$pageId);
-        } catch (SiteNotFoundException $e) {
-            $site = new NullSite();
+        $allSystemLanguages = [];
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        if ($pageId === 0) {
+            // Used for e.g. filelist, where there is no site selected
+            // This also means that there is no "-1" (All Languages) selectable.
+            $sites = $siteFinder->getAllSites();
+            foreach ($sites as $site) {
+                $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
+                    $allSystemLanguages,
+                    $site->getAvailableLanguages($this->getBackendUserAuthentication()),
+                    $site
+                );
+            }
+        } else {
+            try {
+                $site = $siteFinder->getSiteByPageId((int)$pageId);
+            } catch (SiteNotFoundException $e) {
+                $site = new NullSite();
+            }
+            $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
+            if (!isset($siteLanguages[0])) {
+                $siteLanguages[0] = $site->getDefaultLanguage();
+            }
+            $allSystemLanguages = $this->addSiteLanguagesToConsolidatedList(
+                $allSystemLanguages,
+                $siteLanguages,
+                $site
+            );
         }
-        $siteLanguages = $site->getAvailableLanguages($this->getBackendUserAuthentication(), true);
-        if (!isset($siteLanguages[0])) {
-            $siteLanguages[0] = $site->getDefaultLanguage();
-            ksort($siteLanguages);
-        }
+        ksort($allSystemLanguages);
+        return $allSystemLanguages;
+    }
 
-        $languages = [];
-        foreach ($siteLanguages as $id => $siteLanguage) {
-            $languages[$id] = [
-                'uid' => $id,
-                'title' => $siteLanguage->getTitle(),
-                'ISOcode' => $siteLanguage->getTwoLetterIsoCode(),
-                'flagIcon' => $siteLanguage->getFlagIdentifier(),
-            ];
+    protected function addSiteLanguagesToConsolidatedList(array $allSystemLanguages, array $languagesOfSpecificSite, SiteInterface $site): array
+    {
+        foreach ($languagesOfSpecificSite as $language) {
+            $languageId = $language->getLanguageId();
+            if (isset($allSystemLanguages[$languageId])) {
+                // Language already provided by another site, just add the label separately
+                $allSystemLanguages[$languageId]['title'] .= ', ' . $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']';
+            } else {
+                $allSystemLanguages[$languageId] = [
+                    'uid' => $languageId,
+                    'title' => $language->getTitle() . ' [Site: ' . $site->getIdentifier() . ']',
+                    'ISOcode' => $language->getTwoLetterIsoCode(),
+                    'flagIcon' => $language->getFlagIdentifier(),
+                ];
+            }
         }
-        return $languages;
+        return $allSystemLanguages;
     }
 
     /**
