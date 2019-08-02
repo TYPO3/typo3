@@ -26,6 +26,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent', 'TYPO3/CMS/Backend/Ico
     identifier: {
       entity: '.t3js-entity',
       toggle: '.t3js-toggle-recordlist',
+      localize: '.t3js-action-localize',
       icons: {
         collapse: 'actions-view-list-collapse',
         expand: 'actions-view-list-expand',
@@ -122,8 +123,15 @@ define(['jquery', 'TYPO3/CMS/Backend/Storage/Persistent', 'TYPO3/CMS/Backend/Ico
     window.location.href = uri;
   };
 
+  Recordlist.disableButton = function (event) {
+    var $me = $(event.currentTarget);
+
+    $me.prop('disable', true).addClass('disabled');
+  };
+
   $(document).on('click', Recordlist.identifier.toggle, Recordlist.toggleClick);
   $(document).on('click', Recordlist.identifier.icons.editMultiple, Recordlist.onEditMultiple);
+  $(document).on('click', Recordlist.identifier.localize, Recordlist.disableButton);
 
   return Recordlist;
 });

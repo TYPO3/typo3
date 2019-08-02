@@ -2504,7 +2504,8 @@ class DatabaseRecordList
                         $lC = $this->languageIconTitles[$lUid_OnPage]['title'];
                     }
                     $lC = '<a href="' . htmlspecialchars($href) . '" title="'
-                        . htmlspecialchars($language['title']) . '" class="btn btn-default">' . $lC . '</a> ';
+                        . htmlspecialchars($language['title']) . '" class="btn btn-default t3js-action-localize">'
+                        . $lC . '</a> ';
                     $lNew .= $lC;
                 }
             }
