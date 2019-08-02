@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
+use TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -29,13 +33,13 @@ class ArrayConverterTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\ArrayConverter();
+        $this->converter = new ArrayConverter();
     }
 
     /**
      * @test
      */
-    public function checkMetadata()
+    public function checkMetadata(): void
     {
         self::assertEquals(['array', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         self::assertEquals('array', $this->converter->getSupportedTargetType(), 'Target type does not match');
@@ -45,7 +49,7 @@ class ArrayConverterTest extends UnitTestCase
     /**
      * @test
      */
-    public function convertFromDoesNotModifyTheSourceArray()
+    public function convertFromDoesNotModifyTheSourceArray(): void
     {
         $sourceArray = ['Foo' => 'Bar', 'Baz'];
         self::assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
@@ -54,7 +58,7 @@ class ArrayConverterTest extends UnitTestCase
     /**
      * @return array
      */
-    public function stringToArrayDataProvider()
+    public function stringToArrayDataProvider(): array
     {
         return [
             'Empty string to empty array' => ['', []],
@@ -68,7 +72,7 @@ class ArrayConverterTest extends UnitTestCase
      * @param string $source
      * @param array $expectedResult
      */
-    public function canConvertFromEmptyString($source, $expectedResult)
+    public function canConvertFromEmptyString($source, $expectedResult): void
     {
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array'));
     }
@@ -76,11 +80,59 @@ class ArrayConverterTest extends UnitTestCase
     /**
      * @return array
      */
-    public function canConvertFromDataProvider()
+    public function stringToArrayWithConfigurationDataProvider(): array
+    {
+        return [
+            'Sentence with two spaces string converts to array, delimiter is space' => ['foo  bar', $this->getStringConf(' ', true), ['foo', 'bar']],
+            'String List with comma converts to array, delimiter: ,' => ['foo,bar', $this->getStringConf(','), ['foo', 'bar']],
+            'String List with comma converts to array; no empty: true, delimiter: ,' => ['foo,,bar', $this->getStringConf(',', true), ['foo', 'bar']],
+            'Long sentence splits into two parts; delimiter: space' => ['Foo bar is a long sentence', $this->getStringConf(' ', false, 2), ['Foo', 'bar is a long sentence']],
+            'All available configuration options' => ['This. Is. Awesome... Right?', $this->getStringConf('.', true, 4), ['This', 'Is', 'Awesome', 'Right?']]
+        ];
+    }
+
+    private function getStringConf(?string $delimiter = null, ?bool $removeEmptyValues = null, ?int $limit = null): PropertyMappingConfigurationInterface
+    {
+        $configuration = new PropertyMappingConfiguration();
+        if ($delimiter) {
+            $configuration->setTypeConverterOption(ArrayConverter::class, 'delimiter', $delimiter);
+        }
+        if ($removeEmptyValues) {
+            $configuration->setTypeConverterOption(ArrayConverter::class, 'removeEmptyValues', $removeEmptyValues);
+        }
+        if ($limit) {
+            $configuration->setTypeConverterOption(ArrayConverter::class, 'limit', $limit);
+        }
+        $configuration->setTypeConverterOptions(ArrayConverter::class, [
+            'delimiter' => $delimiter,
+            'removeEmptyValues' => $removeEmptyValues,
+            'limit' => $limit,
+        ]);
+        return $configuration;
+    }
+
+    /**
+     * @test
+     * @dataProvider stringToArrayWithConfigurationDataProvider
+     *
+     * @param string $source
+     * @param PropertyMappingConfigurationInterface $configuration
+     * @param array $expectedResult
+     */
+    public function canConvertWithConfigurationFromString($source, PropertyMappingConfigurationInterface $configuration, $expectedResult): void
+    {
+        self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array', [], $configuration));
+    }
+
+    /**
+     * @return array
+     */
+    public function canConvertFromDataProvider(): array
     {
         return [
             'Can convert empty string' => ['', true],
-            'Can not convert not empty string' => ['foo', false],
+            'Can convert not empty string' => ['foo', true],
+            'Can not convert number' => [12, false],
             'Can convert array' => [['foo'], true],
         ];
     }
@@ -92,8 +144,27 @@ class ArrayConverterTest extends UnitTestCase
      * @param mixed $source
      * @param bool $expectedResult
      */
-    public function canConvertFromReturnsCorrectBooleans($source, $expectedResult)
+    public function canConvertFromReturnsCorrectBooleans($source, $expectedResult): void
     {
         self::assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
+    }
+
+    /**
+     * @test
+     */
+    public function throwsTypeConverterExceptionIfDelimiterIsNotGiven(): void
+    {
+        $this->expectException(TypeConverterException::class);
+        $this->expectExceptionCode(1582877555);
+        $this->converter->convertFrom('foo', 'array', [], new PropertyMappingConfiguration());
+    }
+
+    /**
+     * @test
+     */
+    public function returnsSourceUnchangedIfNonEmptyValueWithNoConfigurationIsGiven(): void
+    {
+        $result = $this->converter->convertFrom('foo', 'array', [], null);
+        self::assertSame('foo', $result);
     }
 }

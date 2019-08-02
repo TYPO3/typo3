@@ -16,11 +16,18 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
+
 /**
- * Converter which transforms arrays to arrays.
+ * Converter which transforms strings/arrays to arrays.
  */
 class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter
 {
+    public const CONFIGURATION_DELIMITER = 'delimiter';
+    public const CONFIGURATION_REMOVE_EMPTY_VALUES = 'removeEmptyValues';
+    public const CONFIGURATION_LIMIT = 'limit';
+
     /**
      * @var string[]
      */
@@ -46,26 +53,38 @@ class ArrayConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractT
      */
     public function canConvertFrom($source, string $targetType): bool
     {
-        return (is_string($source) && $source === '') || is_array($source);
+        return is_string($source) || is_array($source);
     }
 
     /**
      * Convert from $source to $targetType, a noop if the source is an array.
      * If it is an empty string it will be converted to an empty array.
+     * If the type converter has a configuration, it can convert non-empty strings, too
      *
      * @param string|array $source
      * @param string $targetType
      * @param array $convertedChildProperties
      * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-     * @return array
+     * @return array|string
      */
     public function convertFrom($source, string $targetType, array $convertedChildProperties = [], \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null)
     {
-        if (is_string($source)) {
-            if ($source === '') {
-                $source = [];
-            }
+        if (!is_string($source)) {
+            return $source;
         }
+        if ($source === '') {
+            return [];
+        }
+        if ($configuration === null) {
+            return $source;
+        }
+        $delimiter = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_DELIMITER);
+        $removeEmptyValues = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_REMOVE_EMPTY_VALUES) ?? false;
+        $limit = $configuration->getConfigurationValue(self::class, self::CONFIGURATION_LIMIT) ?? 0;
+        if (!is_string($delimiter)) {
+            throw new TypeConverterException('No delimiter configured for ' . self::class . ' and non-empty value given.', 1582877555);
+        }
+        $source = GeneralUtility::trimExplode($delimiter, $source, $removeEmptyValues, $limit);
 
         return $source;
     }
