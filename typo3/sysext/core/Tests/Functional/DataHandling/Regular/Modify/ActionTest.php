@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\Modify;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * Functional test for the DataHandler
  */
@@ -426,6 +428,38 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\Regular\A
         $responseSections = $this->getFrontendResponse($this->recordIds['newPageId'])->getResponseSections();
         $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+    }
+
+    /**
+     * @test
+     * See DataSet/createPageRecordWithSlugOverrideConfiguration.csv
+     */
+    public function createPageWithSlugOverrideConfiguration(): void
+    {
+        // set default configuration
+        $GLOBALS['TCA']['pages']['columns']['slug']['config']['generatorOptions'] = [
+            'fields' => [
+                'title',
+            ],
+            'fieldSeparator' => '-',
+            'prefixParentPageSlug' => true,
+        ];
+        // set override for doktype default
+        $GLOBALS['TCA']['pages']['types'][PageRepository::DOKTYPE_DEFAULT]['columnsOverrides'] = [
+            'slug' => [
+                'config' => [
+                    'generatorOptions' => [
+                        'fields' => [
+                            'nav_title'
+                        ],
+                        'fieldSeparator' => '-',
+                        'prefixParentPageSlug' => true,
+                    ]
+                ]
+            ]
+        ];
+        parent::createPage();
+        $this->assertAssertionDataSet('createPageWithSlugOverrideConfiguration');
     }
 
     /**

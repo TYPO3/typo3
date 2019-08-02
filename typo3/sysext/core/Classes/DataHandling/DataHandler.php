@@ -1707,7 +1707,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Getting config for the field
-        $tcaFieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+        $tcaFieldConf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field);
 
         // Create $recFID only for those types that need it
         if (
@@ -1723,6 +1723,27 @@ class DataHandler implements LoggerAwareInterface
         // Perform processing:
         $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $this->uploadedFileArray[$table][$id][$field], $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
         return $res;
+    }
+
+    /**
+     * Use columns overrides for evaluation.
+     *
+     * Fetch the TCA ["config"] part for a specific field, including the columnsOverrides value.
+     * Used for checkValue purposes currently (as it takes the checkValue_currentRecord value).
+     *
+     * @param string $table
+     * @param string $field
+     * @return array
+     */
+    protected function resolveFieldConfigurationAndRespectColumnsOverrides(string $table, string $field): array
+    {
+        $tcaFieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
+        $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
+        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? null;
+        if ($columnsOverridesConfigOfField) {
+            ArrayUtility::mergeRecursiveWithOverrule($tcaFieldConf, $columnsOverridesConfigOfField);
+        }
+        return $tcaFieldConf;
     }
 
     /**
@@ -1873,12 +1894,8 @@ class DataHandler implements LoggerAwareInterface
         if ($this->dontProcessTransformations) {
             return $valueArray;
         }
-        $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
-        $columnsOverridesConfigOfField = $GLOBALS['TCA'][$table]['types'][$recordType]['columnsOverrides'][$field]['config'] ?? null;
-        if ($columnsOverridesConfigOfField) {
-            ArrayUtility::mergeRecursiveWithOverrule($tcaFieldConf, $columnsOverridesConfigOfField);
-        }
         if (isset($tcaFieldConf['enableRichtext']) && (bool)$tcaFieldConf['enableRichtext'] === true) {
+            $recordType = BackendUtility::getTCAtypeValue($table, $this->checkValue_currentRecord);
             $richtextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
             $richtextConfiguration = $richtextConfigurationProvider->getConfiguration($table, $field, $realPid, $recordType, $tcaFieldConf);
             $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
