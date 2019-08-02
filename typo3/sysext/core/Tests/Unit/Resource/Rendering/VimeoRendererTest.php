@@ -269,4 +269,18 @@ class VimeoRendererTest extends UnitTestCase
             $subject->render($fileResourceMock, '300m', '200')
         );
     }
+
+    /**
+     * @test
+     */
+    public function renderOutputWithApiIsCorrect()
+    {
+        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        $fileResourceMock = $this->createMock(File::class);
+
+        $this->assertSame(
+            '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
+            $this->subject->render($fileResourceMock, '300m', '200', ['api' => 1])
+        );
+    }
 }
