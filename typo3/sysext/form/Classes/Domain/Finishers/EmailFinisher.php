@@ -45,9 +45,9 @@ use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
  * - senderAddress (mandatory): Email address of the sender
  * - senderName: Human-readable name of the sender
  * - replyToRecipients: Email addresses and human-readable names of the reply-to recipients
- * - carbonCopyRecipients: Email addresses and human-redable names of the copy recipients
+ * - carbonCopyRecipients: Email addresses and human-readable names of the copy recipients
  * - blindCarbonCopyRecipients: Email addresses and human-readable names of the blind copy recipients
- * - format: format of the email (one of the FORMAT_* constants). By default mails are sent as HTML
+ * - format: Format of the email (one of the FORMAT_* constants). By default mails are sent as HTML.
  *
  * Scope: frontend
  */
@@ -198,7 +198,7 @@ class EmailFinisher extends AbstractFinisher
             if (!isset($this->options['templateName'])) {
                 throw new FinisherException('The option "templateName" must be set for the EmailFinisher.', 1327058829);
             }
-            // use local variable instead of augmenting the options to
+            // Use local variable instead of augmenting the options to
             // keep the format intact when sending multi-format mails
             $templateName = strtr($this->options['templateName'], [
                 '{@format}' => $format
