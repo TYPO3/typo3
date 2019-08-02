@@ -347,7 +347,7 @@ class RecordListController
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/AjaxDataHandler');
         $calcPerms = $backendUser->calcPerms($this->pageinfo);
         $userCanEditPage = $calcPerms & Permission::PAGE_EDIT && !empty($this->id) && ($backendUser->isAdmin() || (int)$this->pageinfo['editlock'] === 0);
-        $pageActionsCallback = '';
+        $pageActionsCallback = null;
         if ($userCanEditPage) {
             $pageActionsCallback = 'function(PageActions) {
                 PageActions.setPageId(' . (int)$this->id . ');
