@@ -30,11 +30,11 @@ define([
   return {
     selectorModalBody: '.t3js-modal-body',
     selectorModuleContent: '.t3js-module-content',
-    selectorRestFileItem: '.upgrade_analysis_item_to_filter',
     selectorFulltextSearch: '.t3js-upgradeDocs-fulltext-search',
     selectorChosenField: '.t3js-upgradeDocs-chosen-select',
     selectorChangeLogsForVersionContainer: '.t3js-version-changes',
     selectorChangeLogsForVersion: '.t3js-changelog-list',
+    selectorUpgradeDoc: '.t3js-upgrade-doc',
 
     chosenField: null,
     fulltextSearchField: null,
@@ -71,6 +71,10 @@ define([
     getContent: function() {
       var self = this;
       var modalContent = this.currentModal.find(this.selectorModalBody);
+      modalContent.on('show.bs.collapse', this.selectorUpgradeDoc, function (e) {
+        self.renderTags($(e.currentTarget));
+      });
+
       $.ajax({
         url: Router.getUrl('upgradeDocsGetContent'),
         cache: false,
@@ -107,7 +111,6 @@ define([
               var $panelGroup = $(el);
               var $container = $panelGroup.find(self.selectorChangeLogsForVersion);
               $container.html(data.html);
-              self.renderTags($container);
               self.moveNotRelevantDocuments($container);
 
               // Remove loading spinner form panel
@@ -165,7 +168,7 @@ define([
     appendItemsToChosenSelector: function() {
       var self = this;
       var tagString = '';
-      $(this.currentModal.find(this.selectorRestFileItem)).each(function() {
+      $(this.currentModal.find(this.selectorUpgradeDoc)).each(function() {
         tagString += $(this).data('item-tags') + ',';
       });
       var tagArray = this.trimExplodeAndUnique(',', tagString).sort(function(a, b) {
@@ -243,15 +246,14 @@ define([
       });
     },
 
-    renderTags: function($container) {
-      $.each($container.find(this.selectorRestFileItem), function() {
-        var $me = $(this);
-        var tags = $me.data('item-tags').split(',');
-        var $tagContainer = $me.find('.t3js-tags');
-        tags.forEach(function(value) {
+    renderTags: function($upgradeDocumentContainer) {
+      var $tagContainer = $upgradeDocumentContainer.find('.t3js-tags');
+      if ($tagContainer.children().length === 0) {
+        var tags = $upgradeDocumentContainer.data('item-tags').split(',');
+        tags.forEach(function (value) {
           $tagContainer.append($('<span />', {'class': 'label'}).text(value));
         });
-      });
+      }
     },
 
     /**
