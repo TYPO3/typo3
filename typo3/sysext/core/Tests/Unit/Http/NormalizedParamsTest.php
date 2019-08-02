@@ -36,7 +36,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 'www.domain.com'
             ],
-            'first HTTP_X_FORWARDED_HOST from configured proxy' => [
+            'first HTTP_X_FORWARDED_HOST from configured proxy, HTTP_HOST empty' => [
                 [
                     'HTTP_HOST' => '',
                     'REMOTE_ADDR' => '123.123.123.123',
@@ -44,6 +44,18 @@ class NormalizedParamsTest extends UnitTestCase
                 ],
                 [
                     'reverseProxyIP' => ' 123.123.123.123',
+                    'reverseProxyHeaderMultiValue' => 'first',
+                ],
+                'www.domain1.com',
+            ],
+            'first HTTP_X_FORWARDED_HOST from configured proxy, HTTP_HOST given' => [
+                [
+                    'HTTP_HOST' => 'www.domain.com',
+                    'REMOTE_ADDR' => '123.123.123.123',
+                    'HTTP_X_FORWARDED_HOST' => 'www.domain1.com, www.domain2.com,'
+                ],
+                [
+                    'reverseProxyIP' => '123.123.123.123',
                     'reverseProxyHeaderMultiValue' => 'first',
                 ],
                 'www.domain1.com',
