@@ -267,7 +267,6 @@ class TreeController
         if (trim($visibleText) === '') {
             $visibleText = htmlspecialchars('[' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title') . ']');
         }
-        $visibleText = GeneralUtility::fixed_lgd_cs($visibleText, (int)$this->getBackendUser()->uc['titleLen'] ?: 40);
 
         if ($this->addDomainName && $page['is_siteroot']) {
             $domain = $this->getDomainNameForPage($pageId);
