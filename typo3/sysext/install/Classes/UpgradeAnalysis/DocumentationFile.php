@@ -78,7 +78,7 @@ class DocumentationFile
         $finder = new Finder();
         $finder
             ->depth(0)
-            ->sortByName()
+            ->sortByName(true)
             ->in($path);
 
         $directories = [];
