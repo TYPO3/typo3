@@ -21,11 +21,11 @@ import Notification = require('TYPO3/CMS/Backend/Notification');
  * Module: TYPO3/CMS/Install/Module/UpgradeDocs
  */
 class UpgradeDocs extends AbstractInteractableModule {
-  private selectorRestFileItem: string = '.upgrade_analysis_item_to_filter';
   private selectorFulltextSearch: string = '.t3js-upgradeDocs-fulltext-search';
   private selectorChosenField: string = '.t3js-upgradeDocs-chosen-select';
   private selectorChangeLogsForVersionContainer: string = '.t3js-version-changes';
   private selectorChangeLogsForVersion: string = '.t3js-changelog-list';
+  private selectorUpgradeDoc: string = '.t3js-upgrade-doc';
 
   private chosenField: JQuery;
   private fulltextSearchField: JQuery;
@@ -79,6 +79,10 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private getContent(): void {
     const modalContent = this.getModalBody();
+    modalContent.on('show.bs.collapse', this.selectorUpgradeDoc, (e: JQueryEventObject): void => {
+      this.renderTags($(e.currentTarget));
+    });
+
     $.ajax({
       url: Router.getUrl('upgradeDocsGetContent'),
       cache: false,
@@ -114,7 +118,6 @@ class UpgradeDocs extends AbstractInteractableModule {
             const $panelGroup = $(el);
             const $container = $panelGroup.find(this.selectorChangeLogsForVersion);
             $container.html(data.html);
-            this.renderTags($container);
             this.moveNotRelevantDocuments($container);
 
             // Remove loading spinner form panel
@@ -171,7 +174,7 @@ class UpgradeDocs extends AbstractInteractableModule {
    */
   private appendItemsToChosenSelector(): void {
     let tagString = '';
-    $(this.findInModal(this.selectorRestFileItem)).each((index: number, element: any): void => {
+    $(this.findInModal(this.selectorUpgradeDoc)).each((index: number, element: any): void => {
       tagString += $(element).data('item-tags') + ',';
     });
     const tagArray = UpgradeDocs.trimExplodeAndUnique(',', tagString).sort((a: string, b: string): number => {
@@ -252,15 +255,14 @@ class UpgradeDocs extends AbstractInteractableModule {
     return true;
   }
 
-  private renderTags($container: any): void {
-    $.each($container.find(this.selectorRestFileItem), (index: number, element: any): void => {
-      const $me = $(element);
-      const tags = $me.data('item-tags').split(',');
-      const $tagContainer = $me.find('.t3js-tags');
+  private renderTags($upgradeDocumentContainer: any): void {
+    const $tagContainer = $upgradeDocumentContainer.find('.t3js-tags');
+    if ($tagContainer.children().length === 0) {
+      const tags = $upgradeDocumentContainer.data('item-tags').split(',');
       tags.forEach((value: string): void => {
         $tagContainer.append($('<span />', {'class': 'label'}).text(value));
       });
-    });
+    }
   }
 
   /**
