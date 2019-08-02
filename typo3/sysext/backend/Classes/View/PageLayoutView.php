@@ -842,7 +842,7 @@ class PageLayoutView implements LoggerAwareInterface
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
-        $pageActionsCallback = '';
+        $pageActionsCallback = null;
         if ($this->isPageEditable()) {
             $languageOverlayId = 0;
             $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->tt_contentConfig['sys_language_uid']);
