@@ -115,7 +115,8 @@ CREATE TABLE pages (
 	legacy_overlay_uid int(11) unsigned DEFAULT '0' NOT NULL,
 
 	KEY determineSiteRoot (is_siteroot),
-	KEY language_identifier (l10n_parent,sys_language_uid)
+	KEY language_identifier (l10n_parent,sys_language_uid),
+	KEY slug (slug(127))
 );
 
 #
