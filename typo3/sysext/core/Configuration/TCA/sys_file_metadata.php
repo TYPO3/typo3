@@ -24,9 +24,6 @@ return [
         ],
         'searchFields' => 'title,description,alternative'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'file, alternative, description, title'
-    ],
     'columns' => [
         'crdate' => [
             'config' => [

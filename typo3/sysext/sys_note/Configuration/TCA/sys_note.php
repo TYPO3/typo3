@@ -14,9 +14,6 @@ return [
         'sortby' => 'sorting',
         'searchFields' => 'subject,message'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'category,subject,message,personal'
-    ],
     'columns' => [
         'category' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.category',

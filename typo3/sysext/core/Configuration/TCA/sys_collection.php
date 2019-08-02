@@ -30,9 +30,6 @@ return [
             'fe_group' => 'fe_group'
         ],
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title, description, table_name, items'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

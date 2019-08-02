@@ -11,9 +11,6 @@ return [
             'default' => 'empty-icon'
         ]
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,description,wsdl_url_mirror_list_url,last_update,extension_count'
-    ],
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_repository.title',

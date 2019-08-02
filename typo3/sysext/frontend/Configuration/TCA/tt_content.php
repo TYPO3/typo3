@@ -61,7 +61,6 @@ return [
     ],
     'interface' => [
         'always_description' => 0,
-        'showRecordFieldList' => 'CType,header,rowDescription,header_link,bodytext,image,media,imagewidth,imageorient,records,colPos,starttime,endtime,fe_group'
     ],
     'columns' => [
         'CType' => [

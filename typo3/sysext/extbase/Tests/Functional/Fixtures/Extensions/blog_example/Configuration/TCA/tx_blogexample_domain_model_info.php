@@ -17,9 +17,6 @@ return [
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_tag.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden, name'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

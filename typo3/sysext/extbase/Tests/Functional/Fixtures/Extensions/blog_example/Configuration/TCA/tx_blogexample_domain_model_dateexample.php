@@ -12,9 +12,6 @@ return [
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_dateexample.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title, posts, administrator'
-    ],
     'columns' => [
         'datetime_text' => [
             'exclude' => 1,

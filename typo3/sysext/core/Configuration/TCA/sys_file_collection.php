@@ -28,9 +28,6 @@ return [
         ],
         'searchFields' => 'files,title'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,starttime,endtime,files,title,description'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

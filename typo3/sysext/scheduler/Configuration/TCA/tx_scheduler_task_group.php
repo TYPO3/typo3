@@ -18,9 +18,6 @@ return [
         ],
         'searchFields' => 'groupName'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden,groupName'
-    ],
     'columns' => [
         'groupName' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task_group.groupName',

@@ -20,9 +20,6 @@ return [
         'shadowColumnsForNewPlaceholders' => 'prices',
         'shadowColumnsForMovePlaceholders' => 'prices',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,prices'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

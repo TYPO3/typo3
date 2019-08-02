@@ -18,9 +18,6 @@ return [
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_person.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'firstname, lastname, email, avatar'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

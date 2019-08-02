@@ -17,9 +17,6 @@ return [
         ],
         'searchFields' => 'name,description'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'name,description,driver,processingfolder,configuration,auto_extract_metadata'
-    ],
     'columns' => [
         'name' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.name',

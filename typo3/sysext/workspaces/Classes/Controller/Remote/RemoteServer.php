@@ -138,12 +138,6 @@ class RemoteServer
         $icon_Workspace = $iconFactory->getIconForRecord($parameter->table, $versionRecord, Icon::SIZE_SMALL)->render();
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
-        if ($GLOBALS['TCA'][$parameter->table]) {
-            if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
-                $fieldsOfRecords = $GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList'];
-                $fieldsOfRecords = GeneralUtility::trimExplode(',', $fieldsOfRecords, true);
-            }
-        }
         foreach ($fieldsOfRecords as $fieldName) {
             if (empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])) {
                 continue;

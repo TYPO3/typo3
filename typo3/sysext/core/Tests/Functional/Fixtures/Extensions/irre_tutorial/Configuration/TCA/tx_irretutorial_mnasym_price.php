@@ -20,9 +20,6 @@ return [
         // @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
         // 'shadowColumnsForNewPlaceholders' => 'parentid',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,parentid,price'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

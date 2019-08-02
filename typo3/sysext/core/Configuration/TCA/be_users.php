@@ -27,9 +27,6 @@ return [
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'username,email,realName'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'username,description,usergroup,db_mountpoints,file_mountpoints,admin,options,file_permissions,userMods,lockToDomain,realName,email,disable,starttime,endtime,lastlogin'
-    ],
     'columns' => [
         'username' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.username',

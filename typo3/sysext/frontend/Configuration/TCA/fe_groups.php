@@ -19,9 +19,6 @@ return [
         'useColumnsForDefaultValues' => 'lockToDomain',
         'searchFields' => 'title,description'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,hidden,subgroup,lockToDomain,description'
-    ],
     'columns' => [
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',

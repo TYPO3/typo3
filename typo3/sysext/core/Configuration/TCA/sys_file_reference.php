@@ -35,9 +35,6 @@ return [
         ],
         'searchFields' => 'uid_local,uid_foreign,tablenames,fieldname,title,description'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden,uid_local,uid_foreign,tablenames,fieldname,sorting_foreign,table_local,title,description'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',

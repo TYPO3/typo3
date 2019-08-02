@@ -20,9 +20,6 @@ return [
         ],
         'searchFields' => 'title,content'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden,title,content,starttime,endtime'
-    ],
     'columns' => [
         'hidden' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.enabled',

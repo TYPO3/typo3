@@ -18,9 +18,6 @@ return [
         'versioningWS' => true,
         'origUid' => 't3_origuid',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l10n_parent,l10n_diffsource,hidden,title'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

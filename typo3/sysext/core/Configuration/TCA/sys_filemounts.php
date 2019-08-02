@@ -21,9 +21,6 @@ return [
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'title,path'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,hidden,path,base,description'
-    ],
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_filemounts.title',

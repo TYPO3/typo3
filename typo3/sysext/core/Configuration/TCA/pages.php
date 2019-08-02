@@ -64,7 +64,6 @@ return [
         'searchFields' => 'title,nav_title,subtitle,url,keywords,description,abstract,author,author_email'
     ],
     'interface' => [
-        'showRecordFieldList' => 'doktype,title,rowDescription,hidden,starttime,endtime,fe_group,url,target,shortcut,keywords,description,abstract,newUntil,lastUpdated,cache_timeout,cache_tags,backend_layout,backend_layout_next_level',
         'maxDBListItems' => 30,
         'maxSingleDBListItems' => 50
     ],

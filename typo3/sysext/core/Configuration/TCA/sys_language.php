@@ -18,9 +18,6 @@ return [
         ],
         'versioningWS_alwaysAllowLiveEdit' => true
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden,title'
-    ],
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',

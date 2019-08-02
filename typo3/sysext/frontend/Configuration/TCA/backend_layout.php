@@ -19,9 +19,6 @@ return [
         ],
         'selicon_field' => 'icon'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,config,description,hidden,icon'
-    ],
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:backend_layout.title',

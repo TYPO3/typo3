@@ -23,9 +23,6 @@ return [
         ],
         'searchFields' => 'name, type, mime_type, sha1'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'storage, name, type, mime_type, size, sha1, missing'
-    ],
     'columns' => [
         'fileinfo' => [
             'config' => [

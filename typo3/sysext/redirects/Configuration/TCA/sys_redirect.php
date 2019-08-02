@@ -27,9 +27,6 @@ return [
         ],
         'searchFields' => 'source_host,source_path,target,target_statuscode',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'disabled, source_host, source_path, respect_query_parameters, is_regexp, force_https, keep_query_parameters, target, target_statuscode, hitcount, lasthiton, disable_hitcount',
-    ],
     'types' => [
         '1' => [
             'showitem' => '

@@ -19,9 +19,6 @@ return [
         // @see http://forge.typo3.org/issues/29278 which solves it implicitly in the Core
         // 'shadowColumnsForNewPlaceholders' => 'hotelid',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l18n_parent,l18n_diffsource,hidden,title,hotelid,offerid,hotelsort,offersort'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

@@ -29,9 +29,6 @@ return [
             'ignoreRootLevelRestriction' => true,
         ]
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,description'
-    ],
     'types' => [
         '1' => [
             'showitem' => '

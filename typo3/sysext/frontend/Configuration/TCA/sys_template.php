@@ -26,9 +26,6 @@ return [
         ],
         'searchFields' => 'title,constants,config'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,clear,root,basedOn,sitetitle,description,hidden,starttime,endtime'
-    ],
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:sys_template.title',

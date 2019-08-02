@@ -22,9 +22,6 @@ return [
         'versioningWS_alwaysAllowLiveEdit' => true,
         'searchFields' => 'title'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title, db_mountpoints, file_mountpoints, file_permissions, tables_select, tables_modify, pagetypes_select, non_exclude_fields, groupMods, lockToDomain, description'
-    ],
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups.title',

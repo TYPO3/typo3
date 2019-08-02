@@ -16,18 +16,26 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
  */
 
 use Doctrine\DBAL\Connection;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
+use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -157,7 +165,7 @@ class ElementInformationController
     /**
      * Init database records (table)
      */
-    protected function initDatabaseRecord()
+    protected function initDatabaseRecord(): void
     {
         $this->type = 'db';
         $this->uid = (int)$this->uid;
@@ -187,7 +195,7 @@ class ElementInformationController
     /**
      * Init file/folder parameters
      */
-    protected function initFileOrFolderRecord()
+    protected function initFileOrFolderRecord(): void
     {
         $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->uid);
 
@@ -203,7 +211,7 @@ class ElementInformationController
 
             try {
                 $this->row = BackendUtility::getRecordWSOL($this->table, $fileOrFolderObject->getUid());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->row = [];
             }
         }
@@ -266,7 +274,7 @@ class ElementInformationController
     protected function getPageTitle(): array
     {
         $pageTitle = [
-            'title' => BackendUtility::getRecordTitle($this->table, $this->row, false)
+            'title' => BackendUtility::getRecordTitle($this->table, $this->row)
         ];
         if ($this->type === 'folder') {
             $pageTitle['table'] = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:folder');
@@ -299,8 +307,7 @@ class ElementInformationController
         if ($this->fileObject->isMissing()) {
             $preview['missingFile'] = $this->fileObject->getName();
         } else {
-            /** @var \TYPO3\CMS\Core\Resource\Rendering\RendererRegistry $rendererRegistry */
-            $rendererRegistry = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Resource\Rendering\RendererRegistry::class);
+            $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
             $fileExtension = $this->fileObject->getExtension();
             $preview['url'] = $this->fileObject->getPublicUrl(true);
@@ -400,11 +407,31 @@ class ElementInformationController
                     $thisRow['value'] = '';
                 }
             }
-            $propertiesForTable['extraFields'][] = $thisRow;
+            $propertiesForTable['extraFields'][$name] = $thisRow;
         }
 
         // Traverse the list of fields to display for the record:
-        $fieldList = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'], true);
+        $formDataGroup = GeneralUtility::makeInstance(TcaDatabaseRecord::class);
+        $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class, $formDataGroup);
+        $formDataCompilerInput = [
+            'command' => 'edit',
+            'tableName' => $this->table,
+            'vanillaUid' => (int)$this->row['uid'],
+        ];
+        try {
+            $result = $formDataCompiler->compile($formDataCompilerInput);
+            $fieldList = array_unique(array_values($result['columnsToProcess']));
+
+            $ctrlKeysOfUneededFields = ['origUid', 'transOrigPointerField', 'transOrigDiffSourceField'];
+            foreach ($ctrlKeysOfUneededFields as $field) {
+                if (($key = array_search($GLOBALS['TCA'][$this->table]['ctrl'][$field], $fieldList)) !== false) {
+                    unset($fieldList[$key]);
+                }
+            }
+        } catch (Exception $exception) {
+            $fieldList = [];
+        }
+
         foreach ($fieldList as $name) {
             $thisRow = [];
             $name = trim($name);
@@ -428,9 +455,11 @@ class ElementInformationController
             if ($isExcluded) {
                 continue;
             }
+            $label = $lang->sL(BackendUtility::getItemLabel($this->table, $name));
+            $label = $label ?: $name;
 
             $thisRow['fieldValue'] = BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, false, $uid);
-            $thisRow['fieldLabel'] = htmlspecialchars($lang->sL(BackendUtility::getItemLabel($this->table, $name)));
+            $thisRow['fieldLabel'] = htmlspecialchars($label);
             $propertiesForTable['fields'][] = $thisRow;
         }
         return $propertiesForTable;
@@ -469,7 +498,7 @@ class ElementInformationController
      * @param string $fieldName Column name
      * @return string label
      */
-    protected function getLabelForTableColumn($tableName, $fieldName)
+    protected function getLabelForTableColumn($tableName, $fieldName): string
     {
         if ($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label'] !== null) {
             $field = $this->getLanguageService()->sL($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['label']);
@@ -489,6 +518,7 @@ class ElementInformationController
      * @param int $uid
      * @param ServerRequestInterface $request
      * @return array
+     * @throws RouteNotFoundException
      */
     protected function getRecordActions($table, $uid, ServerRequestInterface $request): array
     {
@@ -506,8 +536,7 @@ class ElementInformationController
             ],
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
         ];
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $actions['recordEditUrl'] = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
 
         // History button
@@ -535,8 +564,9 @@ class ElementInformationController
      * @param string|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
      * @param ServerRequestInterface $request
      * @return array
+     * @throws RouteNotFoundException
      */
-    protected function makeRef($table, $ref, ServerRequestInterface $request)
+    protected function makeRef($table, $ref, ServerRequestInterface $request): array
     {
         $refLines = [];
         $lang = $this->getLanguageService();
@@ -548,7 +578,6 @@ class ElementInformationController
             $selectTable = $table;
             $selectUid = $ref;
         }
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
 
@@ -588,7 +617,7 @@ class ElementInformationController
             if ($row['tablename'] === 'sys_file_reference') {
                 $row = $this->transformFileReferenceToRecordReference($row);
                 if ($row['tablename'] === null || $row['recuid'] === null) {
-                    return;
+                    return [];
                 }
             }
 
@@ -611,8 +640,7 @@ class ElementInformationController
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
-                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
@@ -647,7 +675,6 @@ class ElementInformationController
         $refFromLines = [];
         $lang = $this->getLanguageService();
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_refindex');
 
@@ -695,8 +722,7 @@ class ElementInformationController
                     ],
                     'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                 ];
-                /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
                 $line['url'] = $url;
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['tablename'], $record, Icon::SIZE_SMALL)->render();
@@ -723,9 +749,8 @@ class ElementInformationController
      * @param array $referenceRecord
      * @return array
      */
-    protected function transformFileReferenceToRecordReference(array $referenceRecord)
+    protected function transformFileReferenceToRecordReference(array $referenceRecord): array
     {
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_reference');
         $queryBuilder->getRestrictions()->removeAll();
@@ -764,21 +789,17 @@ class ElementInformationController
     }
 
     /**
-     * Returns LanguageService
-     *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
     /**
-     * Returns the current BE user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

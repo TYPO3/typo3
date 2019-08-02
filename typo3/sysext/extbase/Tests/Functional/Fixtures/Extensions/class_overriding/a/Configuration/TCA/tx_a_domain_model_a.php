@@ -6,9 +6,6 @@ return [
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title'
-    ],
     'columns' => [
         'a' => [
             'label' => 'a',

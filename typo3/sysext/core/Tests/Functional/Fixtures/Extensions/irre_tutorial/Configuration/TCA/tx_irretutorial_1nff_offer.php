@@ -21,9 +21,6 @@ return [
         // 'shadowColumnsForNewPlaceholders' => 'parentid,parenttable',
         'shadowColumnsForMovePlaceholders' => 'parentid,parenttable,parentidentifier',
     ],
-    'interface' => [
-        'showRecordFieldList' => 'sys_language_uid,l18n_parent,l18n_diffsource,hidden,parentid,parenttable,title,prices'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,

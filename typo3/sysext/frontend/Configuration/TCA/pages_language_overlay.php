@@ -31,9 +31,6 @@ return [
         'adminOnly' => true,
         'searchFields' => 'title,subtitle,nav_title,keywords,description,abstract,author,author_email,url'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title,hidden,starttime,endtime,keywords,description,abstract'
-    ],
     'columns' => [
         'doktype' => $GLOBALS['TCA']['pages']['columns']['doktype'],
         'hidden' => [

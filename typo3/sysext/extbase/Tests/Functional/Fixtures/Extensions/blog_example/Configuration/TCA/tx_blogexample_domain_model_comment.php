@@ -13,9 +13,6 @@ return [
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'hidden, date, author, email, content'
-    ],
     'columns' => [
         'hidden' => [
             'exclude' => true,

@@ -20,7 +20,6 @@ return [
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif'
     ],
     'interface' => [
-        'showRecordFieldList' => 'title, date, author',
         'maxDBListItems' => 100,
         'maxSingleDBListItems' => 500
     ],

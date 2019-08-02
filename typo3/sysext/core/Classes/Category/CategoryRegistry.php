@@ -365,15 +365,6 @@ class CategoryRegistry implements SingletonInterface
                 $GLOBALS['TCA']['sys_category']['columns']['items']['config']['MM_oppositeUsage'][$tableName][] = $fieldName;
             }
 
-            // Add field to interface list per default (unless the 'interface' property is FALSE)
-            if (
-                (!isset($options['interface']) || $options['interface'])
-                && !empty($GLOBALS['TCA'][$tableName]['interface']['showRecordFieldList'])
-                && !GeneralUtility::inList($GLOBALS['TCA'][$tableName]['interface']['showRecordFieldList'], $fieldName)
-            ) {
-                $GLOBALS['TCA'][$tableName]['interface']['showRecordFieldList'] .= ',' . $fieldName;
-            }
-
             // Adding fields to an existing table definition
             ExtensionManagementUtility::addTCAcolumns($tableName, $columns);
         }

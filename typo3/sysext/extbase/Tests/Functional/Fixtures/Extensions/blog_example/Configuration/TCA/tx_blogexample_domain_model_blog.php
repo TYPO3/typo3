@@ -17,9 +17,6 @@ return [
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_blog.gif'
     ],
-    'interface' => [
-        'showRecordFieldList' => 'title, posts, administrator'
-    ],
     'columns' => [
         'sys_language_uid' => [
             'exclude' => true,
