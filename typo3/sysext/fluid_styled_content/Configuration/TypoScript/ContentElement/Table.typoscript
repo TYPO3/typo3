@@ -18,6 +18,13 @@ tt_content.table {
             fieldEnclosure.char.cObject {
                 field = table_enclosure
             }
+            fieldEnclosure {
+              if {
+                value = 0
+                equals.field = table_enclosure
+                negate = 1
+              }
+            }
             maximumColumns.field = cols
             as = table
         }
