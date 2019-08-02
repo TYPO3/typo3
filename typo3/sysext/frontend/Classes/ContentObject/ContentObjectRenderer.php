@@ -2466,8 +2466,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * encodeForJavaScriptValue
-     * Escapes content to be used inside JavaScript strings. No quotes are added around the value
-     * as this can easily be done in TypoScript
+     * Escapes content to be used inside JavaScript strings. Single quotes are added around the value.
      *
      * @param string $content Input value undergoing processing in this function
      * @return string The processed input value
