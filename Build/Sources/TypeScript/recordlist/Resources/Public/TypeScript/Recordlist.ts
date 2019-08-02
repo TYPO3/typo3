@@ -28,6 +28,7 @@ interface IconIdentifier {
 interface RecordlistIdentifier {
   entity: string;
   toggle: string;
+  localize: string;
   icons: IconIdentifier;
 }
 
@@ -40,6 +41,7 @@ class Recordlist {
   identifier: RecordlistIdentifier = {
     entity: '.t3js-entity',
     toggle: '.t3js-toggle-recordlist',
+    localize: '.t3js-action-localize',
     icons: {
       collapse: 'actions-view-list-collapse',
       expand: 'actions-view-list-expand',
@@ -50,6 +52,7 @@ class Recordlist {
   constructor() {
     $(document).on('click', this.identifier.toggle, this.toggleClick);
     $(document).on('click', this.identifier.icons.editMultiple, this.onEditMultiple);
+    $(document).on('click', this.identifier.localize, this.disableButton);
   }
 
   public toggleClick = (e: JQueryEventObject): void => {
@@ -136,6 +139,12 @@ class Recordlist {
     });
 
     window.location.href = uri;
+  }
+
+  private disableButton = (event: JQueryEventObject): void => {
+    const $me = $(event.currentTarget);
+
+    $me.prop('disable', true).addClass('disabled');
   }
 }
 
