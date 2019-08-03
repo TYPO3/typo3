@@ -351,7 +351,7 @@ class DataMapperTest extends UnitTestCase
     public function getPlainValueReturnsCorrectDateTimeFormat()
     {
         /** @var DataMapper $subject */
-        $subject = $this->createPartialMock(DataMapper::class, ['dummy']);
+        $subject = $this->createPartialMock(DataMapper::class, []);
 
         $columnMap = new ColumnMap('column_name', 'propertyName');
         $columnMap->setDateTimeStorageFormat('datetime');
@@ -369,7 +369,7 @@ class DataMapperTest extends UnitTestCase
     public function getPlainValueReturnsExpectedValues($expectedValue, $input)
     {
         /** @var DataMapper $dataMapper */
-        $dataMapper = $this->createPartialMock(DataMapper::class, ['dummy']);
+        $dataMapper = $this->createPartialMock(DataMapper::class, []);
 
         $this->assertSame($expectedValue, $dataMapper->getPlainValue($input));
     }
@@ -407,7 +407,7 @@ class DataMapperTest extends UnitTestCase
         $this->expectExceptionCode(1274799934);
 
         /** @var DataMapper $dataMapper */
-        $dataMapper = $this->createPartialMock(DataMapper::class, ['dummy']);
+        $dataMapper = $this->createPartialMock(DataMapper::class, []);
         $input = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class);
         $input->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($dataMapper));
         $dataMapper->getPlainValue($input);
@@ -419,7 +419,7 @@ class DataMapperTest extends UnitTestCase
     public function getPlainValueCallsGetUidOnDomainObjectInterfaceInput()
     {
         /** @var DataMapper $dataMapper */
-        $dataMapper = $this->createPartialMock(DataMapper::class, ['dummy']);
+        $dataMapper = $this->createPartialMock(DataMapper::class, []);
         $input = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
 
         $input->expects($this->once())->method('getUid')->will($this->returnValue(23));

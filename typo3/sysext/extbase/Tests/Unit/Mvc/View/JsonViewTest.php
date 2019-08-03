@@ -115,13 +115,28 @@ class JsonViewTest extends UnitTestCase
         $output[] = [$object, $configuration, $expected, 'array of objects should be serialized'];
 
         $properties = ['foo' => 'bar', 'prohibited' => 'xxx'];
-        $nestedObject = $this->getMockBuilder($this->getUniqueId('Test'))
-            ->setMethods(['getName', 'getPath', 'getProperties', 'getOther'])
-            ->getMock();
-        $nestedObject->expects($this->any())->method('getName')->will($this->returnValue('name'));
-        $nestedObject->expects($this->any())->method('getPath')->will($this->returnValue('path'));
-        $nestedObject->expects($this->any())->method('getProperties')->will($this->returnValue($properties));
-        $nestedObject->expects($this->never())->method('getOther');
+        $nestedObject = new class($properties) {
+            private $properties;
+            private $prohibited;
+            public function __construct($properties)
+            {
+                $this->properties = $properties;
+            }
+            public function getName()
+            {
+                return 'name';
+            }
+
+            public function getPath()
+            {
+                return 'path';
+            }
+
+            public function getProperties()
+            {
+                return $this->properties;
+            }
+        };
         $object = $nestedObject;
         $configuration = [
             '_only' => ['name', 'path', 'properties'],
