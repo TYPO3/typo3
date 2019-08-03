@@ -922,7 +922,7 @@ class PageRepository implements LoggerAwareInterface
         if (!empty($sortField)) {
             $orderBy = QueryHelper::parseOrderBy($sortField);
             foreach ($orderBy as $order) {
-                $res->orderBy(...$order);
+                $res->addOrderBy($order[0], $order[1] ?? 'ASC');
             }
         }
         $result = $res->execute();
