@@ -354,7 +354,6 @@ return [
                 ],
                 'exclusiveKeys' => '-1,-2',
                 'foreign_table' => 'fe_groups',
-                'enableMultiSelectFilterTextfield' => true
             ]
         ],
         'extendToSubpages' => [
@@ -893,8 +892,7 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'size' => 10,
                 'items' => [],
-                'enableMultiSelectFilterTextfield' => true,
-                'softref' => 'ext_fileref'
+                'softref' => 'ext_fileref',
             ]
         ],
     ],

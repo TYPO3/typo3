@@ -50,7 +50,6 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'sys_filemounts',
                 'foreign_table_where' => ' AND sys_filemounts.pid=0',
                 'size' => 3,
@@ -249,7 +248,6 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
-                'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'be_groups',
                 'foreign_table_where' => 'AND NOT(be_groups.uid = ###THIS_UID###)',
                 'size' => 5,

@@ -20,8 +20,7 @@ enum Selectors {
 }
 
 /**
- * Select field filter functions, see TCA option "enableMultiSelectFilterTextfield"
- * and "multiSelectFilterItems"
+ * Select field filter functions, see TCA option "multiSelectFilterItems"
  */
 class SelectBoxFilter {
   private selectElement: HTMLSelectElement = null;

@@ -426,4 +426,57 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertSame($expectation, $subject->migrate($tca));
     }
+
+    /**
+     * @test
+     */
+    public function removeEnableMultiSelectFilterTextfieldConfigurationIsRemoved()
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                            'enableMultiSelectFilterTextfield' => false,
+                        ],
+                    ],
+                    'bField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                    'cField' => [
+                        'config' => [
+                            'type' => 'select',
+                            'enableMultiSelectFilterTextfield' => true,
+                        ],
+                    ],
+                ]
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                    'bField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                    'cField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $subject = new TcaMigration();
+        $this->assertEquals($expected, $subject->migrate($input));
+    }
 }

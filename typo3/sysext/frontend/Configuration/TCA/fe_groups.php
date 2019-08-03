@@ -56,7 +56,6 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
                 'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###)',
-                'enableMultiSelectFilterTextfield' => true,
                 'size' => 6,
                 'autoSizeMax' => 10,
                 'minitems' => 0,

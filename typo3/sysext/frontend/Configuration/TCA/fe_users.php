@@ -50,7 +50,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
-                'enableMultiSelectFilterTextfield' => true,
                 'size' => 6,
                 'minitems' => 1,
                 'maxitems' => 50

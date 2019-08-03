@@ -52,6 +52,7 @@ class TcaMigration
         $tca = $this->removeSelIconFieldPath($tca);
         $tca = $this->removeSetToDefaultOnCopy($tca);
         $tca = $this->sanitizeControlSectionIntegrity($tca);
+        $tca = $this->removeEnableMultiSelectFilterTextfieldConfiguration($tca);
 
         return $tca;
     }
@@ -167,6 +168,32 @@ class TcaMigration
                 . ' not used anymore and has been removed automatically in'
                 . ' order to avoid negative side-effects.';
             unset($tca['pages_language_overlay']);
+        }
+        return $tca;
+    }
+
+    /**
+     * Removes configuration removeEnableMultiSelectFilterTextfield
+     *
+     * @param array $tca
+     * @return array the modified TCA structure
+     */
+    protected function removeEnableMultiSelectFilterTextfieldConfiguration(array $tca): array
+    {
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (!isset($fieldConfig['config']['enableMultiSelectFilterTextfield'])) {
+                    continue;
+                }
+
+                $this->messages[] = 'The TCA setting \'enableMultiSelectFilterTextfield\' is deprecated '
+                    . ' and should be removed from TCA for ' . $table . '[\'columns\']'
+                    . '[\'' . $fieldName . '\'][\'config\'][\'enableMultiSelectFilterTextfield\']';
+                unset($fieldConfig['config']['enableMultiSelectFilterTextfield']);
+            }
         }
         return $tca;
     }

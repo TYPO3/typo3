@@ -150,15 +150,13 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
         }
 
         // Html stuff for filter and select filter on top of right side of multi select boxes
-        $filterTextfield = [];
-        if ($config['enableMultiSelectFilterTextfield']) {
-            $filterTextfield[] = '<span class="input-group input-group-sm">';
-            $filterTextfield[] =    '<span class="input-group-addon">';
-            $filterTextfield[] =        '<span class="fa fa-filter"></span>';
-            $filterTextfield[] =    '</span>';
-            $filterTextfield[] =    '<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
-            $filterTextfield[] = '</span>';
-        }
+        $filterTextfield[] = '<span class="input-group input-group-sm">';
+        $filterTextfield[] =    '<span class="input-group-addon">';
+        $filterTextfield[] =        '<span class="fa fa-filter"></span>';
+        $filterTextfield[] =    '</span>';
+        $filterTextfield[] =    '<input class="t3js-formengine-multiselect-filter-textfield form-control" value="">';
+        $filterTextfield[] = '</span>';
+
         $filterDropDownOptions = [];
         if (isset($config['multiSelectFilterItems']) && is_array($config['multiSelectFilterItems']) && count($config['multiSelectFilterItems']) > 1) {
             foreach ($config['multiSelectFilterItems'] as $optionElement) {
@@ -171,28 +169,22 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
             }
         }
         $filterHtml = [];
-        if (!empty($filterTextfield) || !empty($filterDropDownOptions)) {
-            $filterHtml[] = '<div class="form-multigroup-item-wizard">';
-            if (!empty($filterTextfield) && !empty($filterDropDownOptions)) {
-                $filterHtml[] = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">';
-                $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
-                $filterHtml[] =         '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">';
-                $filterHtml[] =             implode(LF, $filterDropDownOptions);
-                $filterHtml[] =         '</select>';
-                $filterHtml[] =     '</div>';
-                $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
-                $filterHtml[] =         implode(LF, $filterTextfield);
-                $filterHtml[] =     '</div>';
-                $filterHtml[] = '</div>';
-            } elseif (!empty($filterTextfield)) {
-                $filterHtml[] = implode(LF, $filterTextfield);
-            } else {
-                $filterHtml[] = '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">';
-                $filterHtml[] =     implode(LF, $filterDropDownOptions);
-                $filterHtml[] = '</select>';
-            }
+        $filterHtml[] = '<div class="form-multigroup-item-wizard">';
+        if (!empty($filterDropDownOptions)) {
+            $filterHtml[] = '<div class="t3js-formengine-multiselect-filter-container form-multigroup-wrap">';
+            $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
+            $filterHtml[] =         '<select class="form-control input-sm t3js-formengine-multiselect-filter-dropdown">';
+            $filterHtml[] =             implode(LF, $filterDropDownOptions);
+            $filterHtml[] =         '</select>';
+            $filterHtml[] =     '</div>';
+            $filterHtml[] =     '<div class="form-multigroup-item form-multigroup-element">';
+            $filterHtml[] =         implode(LF, $filterTextfield);
+            $filterHtml[] =     '</div>';
             $filterHtml[] = '</div>';
+        } else {
+            $filterHtml[] = implode(LF, $filterTextfield);
         }
+        $filterHtml[] = '</div>';
 
         $classes = [];
         $classes[] = 'form-control';
