@@ -2877,7 +2877,7 @@ class DatabaseRecordList
     /**
      * @param bool $isEditable
      */
-    public function setIsEditable(bool $isEditable): void
+    public function setIsEditable($isEditable)
     {
         $this->editable = $isEditable;
     }
@@ -2887,7 +2887,7 @@ class DatabaseRecordList
      * @param string $table
      * @return bool
      */
-    public function isEditable(string $table): bool
+    public function isEditable($table)
     {
         return !empty($GLOBALS['TCA'][$table]['ctrl']['readOnly']) ? false : $this->editable;
     }
