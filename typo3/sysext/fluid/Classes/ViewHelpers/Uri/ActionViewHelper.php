@@ -111,11 +111,11 @@ class ActionViewHelper extends AbstractViewHelper
         $uriBuilder->reset();
 
         if ($pageUid > 0) {
-            $uriBuilder->setTargetPageType($pageUid);
+            $uriBuilder->setTargetPageUid($pageUid);
         }
 
         if ($pageType > 0) {
-            $uriBuilder->setTargetPageUid($pageType);
+            $uriBuilder->setTargetPageType($pageType);
         }
 
         if ($noCache === true) {
