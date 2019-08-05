@@ -623,11 +623,11 @@ class QueryView
                 $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $queryBuilder->count('*')->from($table);
                 $likes = [];
-                $excapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
+                $escapedLikeString = '%' . $queryBuilder->escapeLikeWildcards($swords) . '%';
                 foreach ($fields as $field) {
                     $likes[] = $queryBuilder->expr()->like(
                         $field,
-                        $queryBuilder->createNamedParameter($excapedLikeString, \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                     );
                 }
                 $count = $queryBuilder->orWhere(...$likes)->execute()->fetchColumn(0);
@@ -642,7 +642,7 @@ class QueryView
                     foreach ($fields as $field) {
                         $likes[] = $queryBuilder->expr()->like(
                             $field,
-                            $queryBuilder->createNamedParameter($excapedLikeString, \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter($escapedLikeString, \PDO::PARAM_STR)
                         );
                     }
                     $statement = $queryBuilder->orWhere(...$likes)->execute();
