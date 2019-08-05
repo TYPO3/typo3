@@ -165,7 +165,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
             // Create links for adding the folder:
             $aTag = '<a href="#" data-folder-id="' . htmlspecialchars($subFolderIdentifier) . '" data-close="0">';
             $aTag_alt = '<a href="#" data-folder-id="' . htmlspecialchars($subFolderIdentifier) . '" data-close="1">';
-            if (strstr($subFolderIdentifier, ',') || strstr($subFolderIdentifier, '|')) {
+            if (strpos($subFolderIdentifier, ',') !== false || strpos($subFolderIdentifier, '|') !== false) {
                 // In case an invalid character is in the filepath, display error message:
                 $errorMessage = sprintf(htmlspecialchars($lang->getLL('invalidChar')), ', |');
                 $aTag = '<a href="#" class="t3js-folderIdError" data-message="' . $errorMessage . '">';

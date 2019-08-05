@@ -190,7 +190,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
             $comments = $node->getAttribute('comments');
             if (!empty($comments)) {
                 foreach ($comments as $comment) {
-                    if (strstr($comment->getText(), '@extensionScannerIgnoreLine') !== false) {
+                    if (strpos($comment->getText(), '@extensionScannerIgnoreLine') !== false) {
                         $this->isCurrentLineIgnored = true;
                         $currentLineIsIgnored = true;
                         break;
@@ -218,7 +218,7 @@ abstract class AbstractCoreMatcher extends NodeVisitorAbstract implements CodeSc
             $comments = $node->getAttribute('comments');
             if (!empty($comments)) {
                 foreach ($comments as $comment) {
-                    if (strstr($comment->getText(), '@extensionScannerIgnoreFile') !== false) {
+                    if (strpos($comment->getText(), '@extensionScannerIgnoreFile') !== false) {
                         $this->isFullFileIgnored = true;
                         $currentFileIsIgnored = true;
                         break;

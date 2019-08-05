@@ -257,7 +257,7 @@ class ExtensionConfigurationService
                 }
                 $parts = explode(';', $line);
                 foreach ($parts as $par) {
-                    if (strstr($par, '=')) {
+                    if (strpos($par, '=') !== false) {
                         $keyValPair = explode('=', $par, 2);
                         switch (trim(strtolower($keyValPair[0]))) {
                             case 'type':

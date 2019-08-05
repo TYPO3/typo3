@@ -839,7 +839,7 @@ class Check implements CheckInterface
     protected function isWindowsOs()
     {
         $windowsOs = false;
-        if (!stristr(PHP_OS, 'darwin') && stristr(PHP_OS, 'win')) {
+        if (stripos(PHP_OS, 'darwin') === false && stripos(PHP_OS, 'win') !== false) {
             $windowsOs = true;
         }
         return $windowsOs;

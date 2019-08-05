@@ -577,15 +577,15 @@ class ExtendedTemplateService extends TemplateService
                 }
             } else {
                 // The value has matched
-                if (stristr($arr[$key], $searchString)) {
+                if (stripos($arr[$key], $searchString) !== false) {
                     $this->tsbrowser_searchKeys[$depth] += 2;
                 }
                 // The key has matches
-                if (stristr($key, $searchString)) {
+                if (stripos($key, $searchString) !== false) {
                     $this->tsbrowser_searchKeys[$depth] += 4;
                 }
                 // Just open this subtree if the parent key has matched the search
-                if (stristr($depth_in, $searchString)) {
+                if (stripos($depth_in, $searchString) !== false) {
                     $this->tsbrowser_searchKeys[$depth] = 1;
                 }
             }
@@ -920,7 +920,7 @@ class ExtendedTemplateService extends TemplateService
                 }
                 $parts = explode(';', $line);
                 foreach ($parts as $par) {
-                    if (strstr($par, '=')) {
+                    if (strpos($par, '=') !== false) {
                         $keyValPair = explode('=', $par, 2);
                         switch (trim(strtolower($keyValPair[0]))) {
                             case 'type':

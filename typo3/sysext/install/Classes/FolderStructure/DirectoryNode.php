@@ -46,7 +46,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
         $this->parent = $parent;
 
         // Ensure name is a single segment, but not a path like foo/bar or an absolute path /foo
-        if (strstr($structure['name'], '/') !== false) {
+        if (strpos($structure['name'], '/') !== false) {
             throw new Exception\InvalidArgumentException(
                 'Directory name must not contain forward slash',
                 1366226639

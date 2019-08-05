@@ -440,7 +440,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
         $acs = false;
-        if (!strstr($conf['access'], 'admin') && $conf['name']) {
+        if (strpos($conf['access'], 'admin') === false && $conf['name']) {
             $acs = $this->check('modules', $conf['name']);
         }
         if (!$acs) {

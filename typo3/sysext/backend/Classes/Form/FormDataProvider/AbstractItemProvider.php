@@ -1080,7 +1080,7 @@ abstract class AbstractItemProvider
         ) {
             $foreignTableClause = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_where'];
             // Replace possible markers in query
-            if (strstr($foreignTableClause, '###REC_FIELD_')) {
+            if (strpos($foreignTableClause, '###REC_FIELD_') !== false) {
                 // " AND table.field='###REC_FIELD_field1###' AND ..." -> array(" AND table.field='", "field1###' AND ...")
                 $whereClauseParts = explode('###REC_FIELD_', $foreignTableClause);
                 foreach ($whereClauseParts as $key => $value) {

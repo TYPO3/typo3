@@ -1215,7 +1215,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         );
                     }
                     if ($dimension) {
-                        if (strstr($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
+                        if (strpos($dimension, 'c') !== false && ($dimensionKey === 'width' || $dimensionKey === 'height')) {
                             $dimensionParts = explode('c', $dimension, 2);
                             $dimension = ((int)$dimensionParts[0] * $pixelDensity) . 'c';
                             if ($dimensionParts[1]) {
@@ -3850,7 +3850,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                                 $newstring .= $pieces[0];
                                 $match_len = strlen($data) - (strlen($pieces[0]) + strlen($pieces[1]));
                                 $inTag = false;
-                                if (strstr($pieces[0], '<') || strstr($pieces[0], '>')) {
+                                if (strpos($pieces[0], '<') !== false || strpos($pieces[0], '>') !== false) {
                                     // Returns TRUE, if a '<' is closer to the string-end than '>'.
                                     // This is the case if we're INSIDE a tag (that could have been
                                     // made by makelinks...) and we must secure, that the inside of a tag is
@@ -4130,14 +4130,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $keep = $conf['keep'];
                     $linkParts = parse_url($scheme . $parts[0]);
                     $linktxt = '';
-                    if (strstr($keep, 'scheme')) {
+                    if (strpos($keep, 'scheme') !== false) {
                         $linktxt = $scheme;
                     }
                     $linktxt .= $linkParts['host'];
-                    if (strstr($keep, 'path')) {
+                    if (strpos($keep, 'path') !== false) {
                         $linktxt .= $linkParts['path'];
                         // Added $linkParts['query'] 3/12
-                        if (strstr($keep, 'query') && $linkParts['query']) {
+                        if (strpos($keep, 'query') !== false && $linkParts['query']) {
                             $linktxt .= '?' . $linkParts['query'];
                         } elseif ($linkParts['path'] === '/') {
                             $linktxt = substr($linktxt, 0, -1);
@@ -4475,7 +4475,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getFieldVal($field)
     {
-        if (!strstr($field, '//')) {
+        if (strpos($field, '//') === false) {
             return $this->data[trim($field)] ?? null;
         }
         $sections = GeneralUtility::trimExplode('//', $field, true);

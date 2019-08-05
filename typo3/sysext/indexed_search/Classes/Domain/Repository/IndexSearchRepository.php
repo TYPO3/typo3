@@ -382,7 +382,7 @@ class IndexSearchRepository
             // Making the query for a single search word based on the search-type
             $searchWord = $searchWordData['sword'];
             $wildcard = '';
-            if (strstr($searchWord, ' ')) {
+            if (strpos($searchWord, ' ') !== false) {
                 $searchType = '20';
             }
             switch ($searchType) {
@@ -589,7 +589,7 @@ class IndexSearchRepository
             $sWord = $v['sword'];
             $theType = (string)$this->searchType;
             // If there are spaces in the search-word, make a full text search instead.
-            if (strstr($sWord, ' ')) {
+            if (strpos($sWord, ' ') !== false) {
                 $theType = 20;
             }
             $this->getTimeTracker()->push('SearchWord "' . $sWord . '" - $theType=' . $theType);

@@ -400,7 +400,7 @@ class DatabaseIntegrityCheck
             $cols = $GLOBALS['TCA'][$table]['columns'];
             foreach ($cols as $field => $config) {
                 if ($config['config']['type'] === 'group' && $config['config']['internal_type'] === 'db') {
-                    if (trim($config['config']['allowed']) === '*' || strstr($config['config']['allowed'], $theSearchTable)) {
+                    if (trim($config['config']['allowed']) === '*' || strpos($config['config']['allowed'], $theSearchTable) !== false) {
                         $result[] = [$table, $field];
                     }
                 } elseif ($config['config']['type'] === 'select' && $config['config']['foreign_table'] == $theSearchTable) {

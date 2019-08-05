@@ -115,7 +115,7 @@ class LinkService implements SingletonInterface
             if ($fragment) {
                 $result['fragment'] = $fragment;
             }
-        } elseif (stripos($urn, '://') && $this->handlers[self::TYPE_URL]) {
+        } elseif (strpos($urn, '://') && $this->handlers[self::TYPE_URL]) {
             $result = $this->handlers[self::TYPE_URL]->resolveHandlerData(['url' => $urn]);
             $result['type'] = self::TYPE_URL;
         } elseif (stripos($urn, 'mailto:') === 0 && $this->handlers[self::TYPE_EMAIL]) {

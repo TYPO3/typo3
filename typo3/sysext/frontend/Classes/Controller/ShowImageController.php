@@ -172,11 +172,7 @@ EOF;
      */
     protected function processImage()
     {
-        if (strstr($this->width . $this->height, 'm')) {
-            $max = 'm';
-        } else {
-            $max = '';
-        }
+        $max = strpos($this->width . $this->height, 'm') !== false ? 'm' : '';
         $this->height = MathUtility::forceIntegerInRange($this->height, 0);
         $this->width = MathUtility::forceIntegerInRange($this->width, 0) . $max;
 

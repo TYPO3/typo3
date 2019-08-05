@@ -826,7 +826,7 @@ abstract class ImportExport
         $allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables'] ?? $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
         $allowedArray = GeneralUtility::trimExplode(',', $allowedTableList, true);
         // If all tables or the table is listed as an allowed type, return TRUE
-        if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
+        if (strpos($allowedTableList, '*') !== false || in_array($checkTable, $allowedArray)) {
             return true;
         }
         return false;

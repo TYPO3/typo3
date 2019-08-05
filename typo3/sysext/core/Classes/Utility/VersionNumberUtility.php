@@ -79,7 +79,7 @@ class VersionNumberUtility
         trigger_error('Method ' . __METHOD__ . ' will be removed in TYPO3 11.0', E_USER_DEPRECATED);
 
         $versionRange = [];
-        if (strstr($version, '-')) {
+        if (strpos($version, '-') !== false) {
             $versionRange = explode('-', $version, 2);
         } else {
             $versionRange[0] = $version;

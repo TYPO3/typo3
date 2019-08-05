@@ -1678,7 +1678,7 @@ class Import extends ImportExport
             return null;
         }
         $initStrDat = explode(':', $initStr);
-        if (strstr($initStrDat[0], 'Warning')) {
+        if (strpos($initStrDat[0], 'Warning') !== false) {
             $this->error('File read error: Warning message in file. (' . $initStr . fgets($fd) . ')');
             return null;
         }

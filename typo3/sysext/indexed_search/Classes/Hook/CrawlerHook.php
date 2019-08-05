@@ -592,7 +592,7 @@ class CrawlerHook
     {
         $url = preg_replace('/\\/\\/$/', '/', $url);
         list($url) = explode('#', $url);
-        if (!strstr($url, '../')) {
+        if (strpos($url, '../') === false) {
             if (GeneralUtility::isFirstPartOfStr($url, $baseUrl)) {
                 if (!in_array($url, $urlLog)) {
                     return $url;

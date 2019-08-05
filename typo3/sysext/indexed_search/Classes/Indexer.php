@@ -600,10 +600,10 @@ class Indexer
             // @todo The code below stops at first unset tag. Is that correct?
             for ($i = 0; isset($meta[$i]); $i++) {
                 $meta[$i] = GeneralUtility::get_tag_attributes($meta[$i]);
-                if (stristr($meta[$i]['name'], 'keywords')) {
+                if (stripos($meta[$i]['name'], 'keywords') !== false) {
                     $contentArr['keywords'] .= ',' . $this->addSpacesToKeywordList($meta[$i]['content']);
                 }
-                if (stristr($meta[$i]['name'], 'description')) {
+                if (stripos($meta[$i]['name'], 'description') !== false) {
                     $contentArr['description'] .= ',' . $meta[$i]['content'];
                 }
             }
@@ -746,7 +746,7 @@ class Indexer
             // Parse URL:
             $qParts = parse_url($linkSource);
             // Check for jumpurl (TYPO3 specific thing...)
-            if ($qParts['query'] && strstr($qParts['query'], 'jumpurl=')) {
+            if ($qParts['query'] && strpos($qParts['query'], 'jumpurl=') !== false) {
                 parse_str($qParts['query'], $getP);
                 $linkSource = $getP['jumpurl'];
                 $qParts = parse_url($linkSource);
@@ -869,7 +869,7 @@ class Indexer
     {
         // Get headers:
         $urlHeaders = $this->getUrlHeaders($externalUrl);
-        if (stristr($urlHeaders['Content-Type'], 'text/html')) {
+        if (stripos($urlHeaders['Content-Type'], 'text/html') !== false) {
             $content = ($this->indexExternalUrl_content = GeneralUtility::getUrl($externalUrl));
             if ((string)$content !== '') {
                 // Create temporary file:

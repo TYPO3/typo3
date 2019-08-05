@@ -969,7 +969,7 @@ class ReferenceIndex implements LoggerAwareInterface
             }
         }
         // Set in data array:
-        if (!strstr($softref['tokenizedContent'], '{softref:')) {
+        if (strpos($softref['tokenizedContent'], '{softref:') === false) {
             if ($flexPointer) {
                 $flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']]['data'] = [];

@@ -384,7 +384,7 @@ class SoftReferenceIndex implements SingletonInterface
         $pU = @parse_url($link_param);
 
         // If it's a mail address:
-        if (strstr($link_param, '@') && !$pU['scheme']) {
+        if (strpos($link_param, '@') !== false && !$pU['scheme']) {
             $link_param = preg_replace('/^mailto:/i', '', $link_param);
             $finalTagParts['LINK_TYPE'] = 'mailto';
             $finalTagParts['url'] = trim($link_param);

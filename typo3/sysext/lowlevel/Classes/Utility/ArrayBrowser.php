@@ -186,8 +186,8 @@ class ArrayBrowser
                 }
             } else {
                 if (
-                    is_scalar($keyArr[$key]) && stristr($keyArr[$key], $searchString)
-                    || $this->searchKeysToo && stristr($key, $searchString)
+                    is_scalar($keyArr[$key]) && stripos($keyArr[$key], $searchString) !== false
+                    || $this->searchKeysToo && stripos($key, $searchString) !== false
                 ) {
                     $this->searchKeys[$depth] = 1;
                 }
