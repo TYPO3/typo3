@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\Tests\Functional\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\Uri;
@@ -38,10 +40,13 @@ class PageLayoutViewTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::cetera())->willReturnArgument(0);
+
         $this->setUpBackendUserFromFixture(1);
         Bootstrap::initializeLanguageObject();
 
-        $this->subject = $this->getAccessibleMock(PageLayoutView::class, ['dummy']);
+        $this->subject = $this->getAccessibleMock(PageLayoutView::class, ['dummy'], [$eventDispatcher->reveal()]);
         $this->subject->_set('siteLanguages', [
             0 => new SiteLanguage(0, '', new Uri('/'), [
                 'title' => 'default',
