@@ -292,7 +292,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         ->getQueryBuilderForTable('index_config');
                     $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
                     $indexCfgRec = $queryBuilder
-                        ->select('*')
+                        ->select('title')
                         ->from('index_config')
                         ->where(
                             $queryBuilder->expr()->eq(
@@ -302,7 +302,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                         )
                         ->execute()
                         ->fetch();
-                    $categoryTitle = $indexCfgRec['title'];
+                    $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
+                    $categoryTitle = $categoryTitle ?: $indexCfgRec['title'];
                 } else {
                     $categoryTitle = LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'IndexedSearch');
                 }
@@ -1206,7 +1207,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     ->execute();
 
                 while ($row = $result->fetch()) {
-                    $allOptions[$row['uid']] = $row['title'];
+                    $indexId = (int)$row['uid'];
+                    $title = LocalizationUtility::translate('indexingConfigurations.' . $indexId, 'IndexedSearch');
+                    $allOptions[$indexId] = $title ?: $row['title'];
                 }
             }
             // disable single entries by TypoScript
