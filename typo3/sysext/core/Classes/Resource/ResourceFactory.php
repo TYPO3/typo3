@@ -392,7 +392,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      * Gets an file object from an identifier [storage]:[fileId]
      *
      * @param string $identifier
-     * @return File
+     * @return File|ProcessedFile|null
      * @throws \InvalidArgumentException
      */
     public function getFileObjectFromCombinedIdentifier($identifier)
