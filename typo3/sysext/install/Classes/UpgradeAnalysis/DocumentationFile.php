@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Provide information about documentation files
@@ -75,10 +76,14 @@ class DocumentationFile
             throw new \InvalidArgumentException('the given path does not belong to the changelog dir. Aborting', 1537158043);
         }
 
+        $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
+        $versions = range($currentVersion, $currentVersion - 2);
+        $pattern = '(master|' . implode('\.*|', $versions) . '\.*)';
         $finder = new Finder();
         $finder
             ->depth(0)
             ->sortByName(true)
+            ->name($pattern)
             ->in($path);
 
         $directories = [];

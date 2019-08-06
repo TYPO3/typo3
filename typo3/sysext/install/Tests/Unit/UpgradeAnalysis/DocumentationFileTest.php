@@ -20,6 +20,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Install\UpgradeAnalysis\DocumentationFile;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -78,6 +79,7 @@ class DocumentationFileTest extends UnitTestCase
             'Some more content'
         ];
 
+        $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
         $structure = [
             'Changelog' => [
                 '1.2' => [
@@ -86,6 +88,18 @@ class DocumentationFileTest extends UnitTestCase
 
                 ],
                 '2.0' => [
+                    'Important-98574-Issue.rst' => implode("\n", $content_98574),
+                ],
+                $currentVersion-3 . '.0' => [
+                    'Important-98574-Issue.rst' => implode("\n", $content_98574),
+                ],
+                $currentVersion-2 . '.0' => [
+                    'Important-98574-Issue.rst' => implode("\n", $content_98574),
+                ],
+                $currentVersion-1 . '.0' => [
+                    'Important-98574-Issue.rst' => implode("\n", $content_98574),
+                ],
+                $currentVersion . '.0' => [
                     'Important-98574-Issue.rst' => implode("\n", $content_98574),
                 ],
                 'master' => [
@@ -139,11 +153,13 @@ class DocumentationFileTest extends UnitTestCase
     /**
      * @test
      */
-    public function findDocumentationFilesReturnsArrayOfFiles()
+    public function findDocumentationFilesReturnsArrayOfFilesForTheLastThreeMajorVersions()
     {
+        $currentVersion = (int)explode('.', VersionNumberUtility::getNumericTypo3Version())[0];
         $expected = [
-            '1.2' => [],
-            '2.0' => [],
+            $currentVersion-2 . '.0' => [],
+            $currentVersion-1 . '.0' => [],
+            $currentVersion . '.0' => [],
             'master' => [],
         ];
 
