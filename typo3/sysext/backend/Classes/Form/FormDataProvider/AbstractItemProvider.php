@@ -1004,6 +1004,13 @@ abstract class AbstractItemProvider
                 [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
+        } elseif (!empty($GLOBALS['TCA'][$foreignTableName]['ctrl']['default_sortby'])) {
+            $orderByClauses = QueryHelper::parseOrderBy($GLOBALS['TCA'][$foreignTableName]['ctrl']['default_sortby']);
+            foreach ($orderByClauses as $orderByClause) {
+                if (!empty($orderByClause[0])) {
+                    $queryBuilder->addOrderBy($orderByClause[0], $orderByClause[1]);
+                }
+            }
         }
 
         if (!empty($foreignTableClauseArray['LIMIT'])) {
