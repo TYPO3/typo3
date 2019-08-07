@@ -31,6 +31,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class FileBackendTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * Sets up this testcase
      * @throws \org\bovigo\vfs\vfsStreamException

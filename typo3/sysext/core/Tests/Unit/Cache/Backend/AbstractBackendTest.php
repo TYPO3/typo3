@@ -22,6 +22,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractBackendTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
