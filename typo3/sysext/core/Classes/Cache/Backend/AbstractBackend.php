@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Cache\Backend;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * An abstract caching backend
@@ -74,6 +76,12 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
                     throw new \InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . static::class . '"', 1231267498);
                 }
             }
+        }
+        if ($this->logger === null) {
+            $this->setLogger(
+                GeneralUtility::makeInstance(LogManager::class)
+                    ->getLogger(__CLASS__)
+            );
         }
     }
 

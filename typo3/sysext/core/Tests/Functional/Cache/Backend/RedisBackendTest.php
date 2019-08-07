@@ -13,6 +13,8 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\Backend\RedisBackend;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -59,7 +61,9 @@ class RedisBackendTest extends FunctionalTestCase
         $frontendProphecy = $this->prophesize(FrontendInterface::class);
         $frontendProphecy->getIdentifier()->willReturn('pages');
 
+        $GLOBALS['TYPO3_CONF_VARS']['LOG'] = 'only needed for logger initialisation';
         $subject = new RedisBackend('Testing', $backendOptions);
+        $subject->setLogger($this->prophesize(LoggerInterface::class)->reveal());
         $subject->setCache($frontendProphecy->reveal());
         $subject->initializeObject();
         $subject->flush();

@@ -30,6 +30,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class Typo3DatabaseBackendTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */

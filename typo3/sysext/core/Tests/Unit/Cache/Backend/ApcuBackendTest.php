@@ -28,6 +28,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ApcuBackendTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * Set up
      */
