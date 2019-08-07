@@ -197,6 +197,7 @@ define(['jquery',
 
         // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
         FormEngine.legacyFieldChangedCb();
+        FormEngineValidation.markFieldAsChanged($originalFieldEl);
       }
 
     } else {
