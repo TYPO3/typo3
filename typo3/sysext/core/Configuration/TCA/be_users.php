@@ -66,7 +66,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'be_groups',
-                'foreign_table_where' => 'ORDER BY be_groups.title',
                 'size' => 5,
                 'maxitems' => 20,
                 'enableMultiSelectFilterTextfield' => true,
@@ -129,7 +128,7 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'sys_filemounts',
-                'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
+                'foreign_table_where' => ' AND sys_filemounts.pid=0',
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
@@ -365,7 +364,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
+                'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0)',
                 'treeConfig' => [
                     'parentField' => 'parent',
                     'appearance' => [

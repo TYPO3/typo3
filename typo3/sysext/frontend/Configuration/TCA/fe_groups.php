@@ -7,6 +7,7 @@ return [
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
+        'default_sortby' => 'title',
         'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
         'enablecolumns' => [
             'disabled' => 'hidden'
@@ -54,7 +55,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectMultipleSideBySide',
                 'foreign_table' => 'fe_groups',
-                'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###) ORDER BY fe_groups.title',
+                'foreign_table_where' => 'AND NOT(fe_groups.uid = ###THIS_UID###)',
                 'enableMultiSelectFilterTextfield' => true,
                 'size' => 6,
                 'autoSizeMax' => 10,

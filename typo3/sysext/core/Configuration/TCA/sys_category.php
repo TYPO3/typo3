@@ -9,6 +9,7 @@ return [
         'cruser_id' => 'cruser_id',
         'delete' => 'deleted',
         'sortby' => 'sorting',
+        'default_sortby' => 'title',
         'versioningWS' => true,
         'rootLevel' => -1,
         'origUid' => 't3_origuid',
@@ -60,7 +61,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'foreign_table' => 'sys_language',
-                'foreign_table_where' => 'ORDER BY sys_language.title',
                 'items' => [
                     ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.allLanguages', -1],
                     ['LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value', 0]
@@ -161,7 +161,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0) ORDER BY sys_category.sorting ASC',
+                'foreign_table_where' => ' AND sys_category.sys_language_uid IN (-1,0)',
                 'treeConfig' => [
                     'parentField' => 'parent',
                     'appearance' => [

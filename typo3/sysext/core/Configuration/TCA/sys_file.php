@@ -43,7 +43,6 @@ return [
                     ['', 0]
                 ],
                 'foreign_table' => 'sys_file_storage',
-                'foreign_table_where' => 'ORDER BY sys_file_storage.name',
                 'size' => 1,
                 'minitems' => 0,
                 'maxitems' => 1

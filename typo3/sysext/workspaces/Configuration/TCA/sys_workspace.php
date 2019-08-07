@@ -72,7 +72,6 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectCheckBox',
                 'foreign_table' => 'sys_filemounts',
-                'foreign_table_where' => ' ORDER BY sys_filemounts.title',
                 'size' => 3,
                 'maxitems' => 25,
                 'autoSizeMax' => 10,

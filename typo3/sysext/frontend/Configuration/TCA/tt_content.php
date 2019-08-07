@@ -287,7 +287,6 @@ return [
                 ],
                 'exclusiveKeys' => '-1,-2',
                 'foreign_table' => 'fe_groups',
-                'foreign_table_where' => 'ORDER BY fe_groups.title',
                 'enableMultiSelectFilterTextfield' => true
             ]
         ],
@@ -1158,7 +1157,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1) ORDER BY sys_category.title ASC',
+                'foreign_table_where' => 'AND sys_category.sys_language_uid IN (0,-1)',
                 'size' => 20,
                 'treeConfig' => [
                     'parentField' => 'parent',

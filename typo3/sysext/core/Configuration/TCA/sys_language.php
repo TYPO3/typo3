@@ -4,6 +4,7 @@ return [
         'label' => 'title',
         'tstamp' => 'tstamp',
         'sortby' => 'sorting',
+        'default_sortby' => 'title',
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_language',
         'adminOnly' => true,
         'rootLevel' => 1,

@@ -52,7 +52,7 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'sys_filemounts',
-                'foreign_table_where' => ' AND sys_filemounts.pid=0 ORDER BY sys_filemounts.title',
+                'foreign_table_where' => ' AND sys_filemounts.pid=0',
                 'size' => 3,
                 'autoSizeMax' => 10,
                 'fieldControl' => [
@@ -251,7 +251,7 @@ return [
                 'renderType' => 'selectMultipleSideBySide',
                 'enableMultiSelectFilterTextfield' => true,
                 'foreign_table' => 'be_groups',
-                'foreign_table_where' => 'AND NOT(be_groups.uid = ###THIS_UID###) ORDER BY be_groups.title',
+                'foreign_table_where' => 'AND NOT(be_groups.uid = ###THIS_UID###)',
                 'size' => 5,
                 'autoSizeMax' => 50,
             ]
@@ -262,7 +262,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectTree',
                 'foreign_table' => 'sys_category',
-                'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0) ORDER BY sys_category.sorting',
+                'foreign_table_where' => ' AND (sys_category.sys_language_uid = 0 OR sys_category.l10n_parent = 0)',
                 'treeConfig' => [
                     'parentField' => 'parent',
                     'appearance' => [
