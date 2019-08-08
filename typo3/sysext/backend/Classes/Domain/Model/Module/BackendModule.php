@@ -70,6 +70,11 @@ class BackendModule
     protected $children;
 
     /**
+     * @var bool
+     */
+    protected $collapsed = false;
+
+    /**
      * construct
      */
     public function __construct()
@@ -277,5 +282,15 @@ class BackendModule
     public function getOnClick()
     {
         return $this->onClick;
+    }
+
+    public function setCollapsed(bool $collapsed): void
+    {
+        $this->collapsed = $collapsed;
+    }
+
+    public function getCollapsed(): bool
+    {
+        return $this->collapsed;
     }
 }
