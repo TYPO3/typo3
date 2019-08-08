@@ -80,7 +80,7 @@ abstract class AbstractBackend implements BackendInterface, LoggerAwareInterface
         if ($this->logger === null) {
             $this->setLogger(
                 GeneralUtility::makeInstance(LogManager::class)
-                    ->getLogger(__CLASS__)
+                    ->getLogger(static::class)
             );
         }
     }
