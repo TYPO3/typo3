@@ -67,15 +67,22 @@ class ClearCacheMenu {
       url: ajaxUrl,
       type: 'post',
       cache: false,
-      complete: (jqXHRObject: JQueryXHR, status: string): void => {
-        $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
-        if (status !== 'success' || jqXHRObject.responseText !== '') {
-          Notification.error(
-            'An error occurred',
-            'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.',
-          );
+      success: (data: any): void => {
+        if (data.success === true) {
+          Notification.success(data.title, data.message);
+        } else if (data.success === false) {
+          Notification.error(data.title, data.message);
         }
       },
+      error: (): void => {
+        Notification.error(
+          'An error occurred',
+          'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.',
+        );
+      },
+      complete: (): void => {
+        $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
+      }
     });
   }
 }
