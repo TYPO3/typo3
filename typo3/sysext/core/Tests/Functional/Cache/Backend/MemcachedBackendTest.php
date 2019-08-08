@@ -29,8 +29,6 @@ class MemcachedBackendTest extends FunctionalTestCase
      */
     protected function setUp(): void
     {
-        // Note this functional does NOT call parent::setUp() since it does
-        // not need a full blown instance and database
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
             $this->markTestSkipped('Neither "memcache" nor "memcached" extension was available');
         }
@@ -40,6 +38,8 @@ class MemcachedBackendTest extends FunctionalTestCase
         // Note we assume that if that typo3TestingMemcachedHost env is set, we can use that for testing,
         // there is no test to see if the daemon is actually up and running. Tests will fail if env
         // is set but daemon is down.
+
+        parent::setUp();
     }
 
     /**
