@@ -709,4 +709,28 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
         $expected['databaseRow']['pid'] = 42;
         self::assertSame($expected, (new DatabaseRowInitializeNew)->addData($input));
     }
+
+    /**
+     * @test
+     */
+    public function addDataSetsUidOfParentFieldIfRecordIsInlineChild()
+    {
+        $input = [
+            'command' => 'new',
+            'tableName' => 'aTable',
+            'vanillaUid' => 23,
+            'neighborRow' => null,
+            'inlineChildChildUid' => null,
+            'databaseRow' => [],
+            'isInlineChild' => true,
+            'inlineParentUid' => 42,
+            'inlineParentConfig' => [
+                'foreign_field' => 'theParentField'
+             ],
+        ];
+        $expected = $input;
+        $expected['databaseRow']['theParentField'] = 42;
+        $expected['databaseRow']['pid'] = 23;
+        self::assertSame($expected, (new DatabaseRowInitializeNew)->addData($input));
+    }
 }
