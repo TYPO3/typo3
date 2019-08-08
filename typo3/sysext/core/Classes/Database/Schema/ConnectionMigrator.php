@@ -494,59 +494,10 @@ class ConnectionMigrator
         $updateSuggestions = [];
 
         foreach ($schemaDiff->changedTables as $index => $changedTable) {
-            if (count($changedTable->changedColumns) !== 0) {
-                // Treat each changed column with a new diff to get a dedicated suggestions
-                // just for this single column.
-                $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
-
-                foreach ($changedTable->changedColumns as $changedColumn) {
-                    // Field has been renamed and will be handled separately
-                    if ($changedColumn->getOldColumnName()->getName() !== $changedColumn->column->getName()) {
-                        continue;
-                    }
-
-                    $changedColumn->fromColumn = $this->buildQuotedColumn($changedColumn->fromColumn);
-
-                    // Get the current SQL declaration for the column
-                    $currentColumn = $fromTable->getColumn($changedColumn->getOldColumnName()->getName());
-                    $currentDeclaration = $databasePlatform->getColumnDeclarationSQL(
-                        $currentColumn->getQuotedName($this->connection->getDatabasePlatform()),
-                        $currentColumn->toArray()
-                    );
-
-                    // Build a dedicated diff just for the current column
-                    $tableDiff = GeneralUtility::makeInstance(
-                        TableDiff::class,
-                        $changedTable->name,
-                        [],
-                        [$changedColumn],
-                        [],
-                        [],
-                        [],
-                        [],
-                        $fromTable
-                    );
-
-                    $temporarySchemaDiff = GeneralUtility::makeInstance(
-                        SchemaDiff::class,
-                        [],
-                        [$tableDiff],
-                        [],
-                        $schemaDiff->fromSchema
-                    );
-
-                    $statements = $temporarySchemaDiff->toSql($databasePlatform);
-                    foreach ($statements as $statement) {
-                        $updateSuggestions['change'][md5($statement)] = $statement;
-                        $updateSuggestions['change_currentValue'][md5($statement)] = $currentDeclaration;
-                    }
-                }
-            }
-
             // Treat each changed index with a new diff to get a dedicated suggestions
             // just for this index.
             if (count($changedTable->changedIndexes) !== 0) {
-                foreach ($changedTable->renamedIndexes as $key => $changedIndex) {
+                foreach ($changedTable->changedIndexes as $key => $changedIndex) {
                     $indexDiff = GeneralUtility::makeInstance(
                         TableDiff::class,
                         $changedTable->name,
@@ -607,6 +558,55 @@ class ConnectionMigrator
                     $statements = $temporarySchemaDiff->toSql($databasePlatform);
                     foreach ($statements as $statement) {
                         $updateSuggestions['change'][md5($statement)] = $statement;
+                    }
+                }
+            }
+
+            if (count($changedTable->changedColumns) !== 0) {
+                // Treat each changed column with a new diff to get a dedicated suggestions
+                // just for this single column.
+                $fromTable = $this->buildQuotedTable($schemaDiff->fromSchema->getTable($changedTable->name));
+
+                foreach ($changedTable->changedColumns as $changedColumn) {
+                    // Field has been renamed and will be handled separately
+                    if ($changedColumn->getOldColumnName()->getName() !== $changedColumn->column->getName()) {
+                        continue;
+                    }
+
+                    $changedColumn->fromColumn = $this->buildQuotedColumn($changedColumn->fromColumn);
+
+                    // Get the current SQL declaration for the column
+                    $currentColumn = $fromTable->getColumn($changedColumn->getOldColumnName()->getName());
+                    $currentDeclaration = $databasePlatform->getColumnDeclarationSQL(
+                        $currentColumn->getQuotedName($this->connection->getDatabasePlatform()),
+                        $currentColumn->toArray()
+                    );
+
+                    // Build a dedicated diff just for the current column
+                    $tableDiff = GeneralUtility::makeInstance(
+                        TableDiff::class,
+                        $changedTable->name,
+                        [],
+                        [$changedColumn],
+                        [],
+                        [],
+                        [],
+                        [],
+                        $fromTable
+                    );
+
+                    $temporarySchemaDiff = GeneralUtility::makeInstance(
+                        SchemaDiff::class,
+                        [],
+                        [$tableDiff],
+                        [],
+                        $schemaDiff->fromSchema
+                    );
+
+                    $statements = $temporarySchemaDiff->toSql($databasePlatform);
+                    foreach ($statements as $statement) {
+                        $updateSuggestions['change'][md5($statement)] = $statement;
+                        $updateSuggestions['change_currentValue'][md5($statement)] = $currentDeclaration;
                     }
                 }
             }
