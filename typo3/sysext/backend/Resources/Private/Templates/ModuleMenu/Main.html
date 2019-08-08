@@ -1,6 +1,6 @@
 <ul class="nav nav-modules" data-role="modulemenu" id="menu">
 	<f:for each="{modules}" as="mainModule">
-		<li class="modulemenu-group expanded" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
+		<li class="modulemenu-group {f:if(condition: '{mainModule.collapsed}', then: 'collapsed', else: 'expanded')}" id="{mainModule.name}" data-modulename="{mainModule.name}" data-navigationcomponentid="{mainModule.navigationComponentId}" data-navigationframescript="{mainModule.navigationFrameScript}" data-navigationframescriptparameters="{mainModule.navigationFrameScriptParameters}">
 			<div class="modulemenu-group-header">
 				<span class="modulemenu-icon modulemenu-group-icon">
 						<f:if condition="{mainModule.icon}">
@@ -16,12 +16,12 @@
 					{mainModule.title} <span class="caret"></span>
 				</span>
 			</div>
-			<ul class="modulemenu-group-container">
+			<ul class="modulemenu-group-container" {f:if(condition: '{mainModule.collapsed}', then: 'style="display: none;"')}>
 				<f:for each="{mainModule.children}" as="subModule">
 					<li id="{subModule.name}" class="modulemenu-item t3js-mainmodule" data-modulename="{mainModule.name}" data-navigationcomponentid="{subModule.navigationComponentId}" data-navigationframescript="{subModule.navigationFrameScript}" data-navigationframescriptparameters="{subModule.navigationFrameScriptParameters}">
 						<a href="#" data-link="{subModule.link}" class="modulemenu-item-link" title="{subModule.description}">
 							<span class="modulemenu-icon modulemenu-item-icon">
-                                <f:format.raw>{subModule.icon}</f:format.raw>
+								<f:format.raw>{subModule.icon}</f:format.raw>
 							</span>
 							<span class="modulemenu-item-title">
 								{subModule.title}

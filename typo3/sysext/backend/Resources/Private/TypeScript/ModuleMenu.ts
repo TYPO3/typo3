@@ -220,29 +220,6 @@ class ModuleMenu {
     }
 
     deferred.then((): void => {
-      // check if module menu should be collapsed or not
-      const state = PersistentStorage.get('BackendComponents.States.typo3-module-menu');
-      if (state && state.collapsed) {
-        ModuleMenu.toggleMenu(state.collapsed === 'true');
-      }
-
-      // check if there are collapsed items in the users' configuration
-      const collapsedMainMenuItems = ModuleMenu.getCollapsedMainMenuItems();
-      $.each(collapsedMainMenuItems, (key: string, itm: boolean): void => {
-        if (itm !== true) {
-          return;
-        }
-
-        const $group = $('#' + key);
-        if ($group.length > 0) {
-          const $groupContainer = $group.find('.modulemenu-group-container');
-          $group.addClass('collapsed').removeClass('expanded');
-          Viewport.NavigationContainer.cleanup();
-          $groupContainer.hide().promise().done((): void => {
-            Viewport.doLayout();
-          });
-        }
-      });
       me.initializeEvents();
     });
   }

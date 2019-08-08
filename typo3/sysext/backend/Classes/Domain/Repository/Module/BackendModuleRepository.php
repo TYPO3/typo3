@@ -182,6 +182,8 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
         if (!empty($module['navigationFrameScriptParam']) && is_string($module['navigationFrameScriptParam'])) {
             $entry->setNavigationFrameScriptParameters($module['navigationFrameScriptParam']);
         }
+        $moduleMenuState = json_decode($this->getBackendUser()->uc['modulemenu'] ?? '{}', true);
+        $entry->setCollapsed(isset($moduleMenuState[$module['name']]));
         return $entry;
     }
 

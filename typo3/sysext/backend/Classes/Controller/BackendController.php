@@ -251,6 +251,8 @@ class BackendController
         // Prepare the scaffolding, at this point extension may still add javascript and css
         $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
 
+        $collapseState = $this->getBackendUser()->uc['BackendComponents']['States']['typo3-module-menu']['collapsed'] ?? false;
+        $view->assign('moduleMenuCollapsed', $collapseState === true || $collapseState === 'true');
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
 
