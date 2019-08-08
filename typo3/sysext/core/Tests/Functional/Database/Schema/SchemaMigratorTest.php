@@ -322,6 +322,46 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * @test
+     */
+    public function changeExistingIndex()
+    {
+        // recreate the table with the indexes applied
+        // this is needed for e.g. postgres
+        if ($this->schemaManager->tablesExist([$this->tableName])) {
+            $this->schemaManager->dropTable($this->tableName);
+        }
+        $this->prepareTestTable(false);
+
+        $statements = $this->readFixtureFile('changeExistingIndex');
+        $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
+
+        $this->subject->migrate(
+            $statements,
+            $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']
+        );
+
+        $indexesAfterChange = $this->schemaManager->listTableIndexes($this->tableName);
+
+        // indexes could be sorted differently thus we filter for index named "parent" only and
+        // use that as index to retrieve the modified columns of that index
+        $parentIndex = array_values(
+            array_filter(
+                array_keys($indexesAfterChange),
+                function ($key) {
+                    return strpos($key, 'parent') !== false;
+                }
+            )
+        );
+
+        $expectedColumnsOfChangedIndex = [
+            'pid',
+            'deleted'
+        ];
+        $this->assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
+    }
+
+    /**
+     * @test
      * @group not-postgres
      * @group not-mssql
      * @group not-sqlite
@@ -395,11 +435,13 @@ class SchemaMigratorTest extends FunctionalTestCase
 
     /**
      * Create the base table for all migration tests
+     *
+     * @param bool $createOnly
      */
-    protected function prepareTestTable()
+    protected function prepareTestTable(bool $createOnly = true)
     {
         $statements = $this->readFixtureFile('newTable');
-        $this->subject->install($statements, true);
+        $this->subject->install($statements, $createOnly);
     }
 
     /**
