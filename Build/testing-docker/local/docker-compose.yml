@@ -4,7 +4,7 @@ services:
     image: selenium/standalone-chrome:3.12
 
   mariadb10:
-    image: mariadb:10
+    image: mariadb:10.3
     environment:
       MYSQL_ROOT_PASSWORD: funcp
     tmpfs:

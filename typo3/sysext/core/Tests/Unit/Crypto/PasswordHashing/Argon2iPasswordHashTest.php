@@ -35,8 +35,8 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         parent::setUp();
         $options = [
-            'memory_cost' => 1024,
-            'time_cost' => 2,
+            'memory_cost' => 65536,
+            'time_cost' => 4,
             'threads' => 2,
         ];
         $this->subject = new Argon2iPasswordHash($options);
@@ -69,7 +69,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1533899614);
-        new Argon2iPasswordHash(['threads' => 1]);
+        new Argon2iPasswordHash(['threads' => 0]);
     }
 
     /**
@@ -197,8 +197,8 @@ class Argon2iPasswordHashTest extends UnitTestCase
     public function isHashUpdateNeededReturnsTrueForHashGeneratedWithOldOptions()
     {
         $originalOptions = [
-            'memory_cost' => 1024,
-            'time_cost' => 2,
+            'memory_cost' => 65536,
+            'time_cost' => 4,
             'threads' => 2,
         ];
         $subject = new Argon2iPasswordHash($originalOptions);
