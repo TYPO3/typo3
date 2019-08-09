@@ -120,20 +120,25 @@ class SlugElement {
     });
 
     // Clicking the toggle button toggles the read only field and the input field.
-    // Also set the value of either the read only or the input field to the hidden field.
+    // Also set the value of either the read only or the input field to the hidden field
+    // and update the value of the read only field after manual change of the input field.
     $(this.$fullElement).on('click', Selectors.toggleButton, (e): void => {
       e.preventDefault();
       const showReadOnlyField = this.$readOnlyField.hasClass('hidden');
       this.$readOnlyField.toggleClass('hidden', !showReadOnlyField);
       this.$inputField.toggleClass('hidden', showReadOnlyField);
-      if (showReadOnlyField) {
+      if (!showReadOnlyField) {
+        this.$hiddenField.val(this.$inputField.val());
+        return;
+      }
+      if (this.$inputField.val() !== this.$readOnlyField.val()) {
+        this.$readOnlyField.val(this.$inputField.val());
+      } else {
         this.manuallyChanged = false;
-        this.$hiddenField.val(this.$readOnlyField.val());
         this.$fullElement.find('.t3js-form-proposal-accepted').addClass('hidden');
         this.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
-      } else {
-        this.$hiddenField.val(this.$inputField.val());
       }
+      this.$hiddenField.val(this.$readOnlyField.val());
     });
   }
 
@@ -181,6 +186,7 @@ class SlugElement {
         if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
           this.$readOnlyField.val(response.proposal);
           this.$hiddenField.val(response.proposal);
+          this.$inputField.val(response.proposal);
         } else {
           this.$hiddenField.val(response.proposal);
         }
