@@ -33,7 +33,7 @@ class Argon2iPasswordHash implements PasswordHashInterface
     protected const PREFIX = '$argon2i$';
 
     /**
-     * The PHP defaults are rather low ('memory_cost' => 1024, 'time_cost' => 2, 'threads' => 2)
+     * The PHP defaults are rather low ('memory_cost' => 65536, 'time_cost' => 4, 'threads' => 1)
      * We raise that significantly by default. At the time of this writing, with the options
      * below, password_verify() needs about 130ms on an I7 6820 on 2 CPU's.
      *
@@ -42,7 +42,7 @@ class Argon2iPasswordHash implements PasswordHashInterface
      * @var array
      */
     protected $options = [
-        'memory_cost' => 16384,
+        'memory_cost' => 65536,
         'time_cost' => 16,
         'threads' => 2
     ];

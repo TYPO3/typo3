@@ -29,7 +29,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     public function getOptionsReturnsPreviouslySetOptions()
     {
         $options = [
-            'memory_cost' => 2048,
+            'memory_cost' => 65536,
             'time_cost' => 4,
             'threads' => 4,
         ];
@@ -68,6 +68,6 @@ class Argon2iPasswordHashTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1526042082);
         $subject = new Argon2iPasswordHash();
-        $subject->setOptions(['threads' => 1]);
+        $subject->setOptions(['threads' => 0]);
     }
 }
