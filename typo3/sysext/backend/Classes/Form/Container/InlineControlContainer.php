@@ -119,7 +119,7 @@ class InlineControlContainer extends AbstractContainer
 
         $config = $parameterArray['fieldConf']['config'];
         $foreign_table = $config['foreign_table'];
-
+        $isReadOnly = isset($config['readOnly']) && $config['readOnly'];
         $language = 0;
         $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         if (BackendUtility::isTableLocalizable($table)) {
@@ -273,7 +273,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Define how to show the "Create new record" link - if there are more than maxitems, hide it
-        if ($numberOfFullLocalizedChildren >= $config['maxitems'] || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
+        if ($isReadOnly || $numberOfFullLocalizedChildren >= $config['maxitems'] || ($uniqueMax > 0 && $numberOfFullLocalizedChildren >= $uniqueMax)) {
             $config['inline']['inlineNewButtonStyle'] = 'display: none;';
             $config['inline']['inlineNewRelationButtonStyle'] = 'display: none;';
             $config['inline']['inlineOnlineMediaAddButtonStyle'] = 'display: none;';
@@ -297,7 +297,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
-        if ($config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== false) {
+        if (!$isReadOnly && $config['foreign_selector'] && $config['appearance']['showPossibleRecordsSelector'] !== false) {
             if ($config['selectorOrUniqueConfiguration']['config']['type'] === 'select') {
                 $selectorBox = $this->renderPossibleRecordsSelectorTypeSelect($config, $uniqueIds);
             } else {
@@ -337,7 +337,7 @@ class InlineControlContainer extends AbstractContainer
         $html .= $fieldWizardHtml;
 
         // Add the level links after all child records:
-        if ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'bottom') {
+        if (!$isReadOnly && ($config['appearance']['levelLinksPosition'] === 'both' || $config['appearance']['levelLinksPosition'] === 'bottom')) {
             $html .= $levelLinks . $localizationLinks;
         }
         if (is_array($config['customControls'])) {

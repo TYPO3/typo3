@@ -50,6 +50,13 @@ class TcaInlineConfiguration implements FormDataProviderInterface
             $result = $this->addInlineSelectorAndUniqueConfiguration($result, $fieldName);
         }
 
+        // If field is set to readOnly, set all fields of the relation to readOnly as well
+        if (isset($result['inlineParentConfig']) && isset($result['inlineParentConfig']['readOnly']) && $result['inlineParentConfig']['readOnly']) {
+            foreach ($result['processedTca']['columns'] as $columnName => $columnConfiguration) {
+                $result['processedTca']['columns'][$columnName]['config']['readOnly'] = true;
+            }
+        }
+
         return $result;
     }
 
