@@ -10,7 +10,7 @@ See :issue:`68191`
 Description
 ===========
 
-The TypoScript .select option which is used for Content Objects like "CONTENT", has the property "languageField". This option allows to set the name of the database field that has the information about the sys_language_uid value in order to have only records shown that are translated or set to "-1" (show in all langauges) when showing translated pages.
+The TypoScript .select option which is used for Content Objects like "CONTENT", has the property "languageField". This option allows to set the name of the database field that has the information about the sys_language_uid value in order to have only records shown that are translated or set to "-1" (show in all languages) when showing translated pages.
 
 Previously this functionality had to be set explicitly:
 

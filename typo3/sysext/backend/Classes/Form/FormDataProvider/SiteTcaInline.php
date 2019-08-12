@@ -146,7 +146,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
             }
         }
 
-        // If we are dealing with ite_language, we *always* force a relation to sys_language "0"
+        // If we are dealing with site_language, we *always* force a relation to sys_language "0"
         if ($foreignTable === 'site_language' && $result['command'] === 'edit') {
             // If edit, find out if a child using sys_language "0" exists, else add it on top
             $defaultSysSiteLanguageChildFound = false;
