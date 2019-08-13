@@ -36,7 +36,7 @@
 		"symfony/console": "^4.1",
 		"symfony/dependency-injection": "^4.1",
 		"symfony/expression-language": "^4.1",
-		"symfony/finder": "^4.1",
+		"symfony/finder": "^4.3",
 		"symfony/mailer": "^4.3",
 		"symfony/mime": "^4.3",
 		"symfony/polyfill-intl-icu": "^1.6",
