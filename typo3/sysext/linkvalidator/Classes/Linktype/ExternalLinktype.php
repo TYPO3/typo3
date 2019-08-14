@@ -209,7 +209,7 @@ class ExternalLinktype extends AbstractLinktype
     protected function preprocessUrl(string $url): string
     {
         try {
-            return (new IdnaConvert())->encode($url);
+            return (new IdnaConvert())->encodeUri($url);
         } catch (\Exception $e) {
             // in case of any error, return empty url.
             $this->errorParams['errorType'] = 'exception';
