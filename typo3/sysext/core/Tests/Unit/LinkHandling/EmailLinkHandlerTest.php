@@ -27,23 +27,32 @@ class EmailLinkHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
     public function resolveParametersForNonFilesDataProvider()
     {
         return [
+            'email without protocol' => [
+                [
+                    'email' => 'one@example.com'
+                ],
+                [
+                    'email' => 'one@example.com'
+                ],
+                'mailto:one@example.com'
+            ],
             'email with protocol' => [
                 [
-                    'email' => 'mailto:one@love.com'
+                    'email' => 'mailto:one@example.com'
                 ],
                 [
-                    'email' => 'one@love.com'
+                    'email' => 'one@example.com'
                 ],
-                'mailto:one@love.com'
+                'mailto:one@example.com'
             ],
             'email with protocol 2' => [
                 [
-                    'email' => 'mailto:info@typo3.org'
+                    'email' => 'mailto:info@example.org'
                 ],
                 [
-                    'email' => 'info@typo3.org'
+                    'email' => 'info@example.org'
                 ],
-                'mailto:info@typo3.org'
+                'mailto:info@example.org'
             ],
         ];
     }

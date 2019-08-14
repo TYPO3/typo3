@@ -83,6 +83,7 @@ class FileLinkHandlerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         // fake methods to return proper objects
         $fileObject = new File(['identifier' => $expected['file']], $storage);
         $factory->expects($this->any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
+        $factory->expects($this->any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])->willReturn($fileObject);
         $expected['file'] = $fileObject;
 
         /** @var FileLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */

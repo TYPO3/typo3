@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1000</uid>
+        <pid>0</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>4</doktype>
+        <is_siteroot>1</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>1</shortcut_mode>
+        <title>ACME Inc</title>
+    </pages>
+    <pages>
+        <uid>1100</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title>EN: Welcome</title>
+        <TSconfig><![CDATA[
+            TCEMAIN.linkHandler.content {
+               configuration.table = tt_content
+            }
+        ]]></TSconfig>
+    </pages>
+    <pages>
+        <uid>1200</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title>EN: Features</title>
+    </pages>
+    <tt_content>
+        <uid>10001</uid>
+        <pid>1100</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <header>EN: Content Element #1</header>
+        <CType>text</CType>
+    </tt_content>
+</dataset>
