@@ -41,6 +41,9 @@ class EmailLinkHandler implements LinkHandlingInterface
      */
     public function resolveHandlerData(array $data): array
     {
-        return ['email' => substr($data['email'], 7)];
+        if (stripos($data['email'], 'mailto:') === 0) {
+            return ['email' => substr($data['email'], 7)];
+        }
+        return ['email' => $data['email']];
     }
 }

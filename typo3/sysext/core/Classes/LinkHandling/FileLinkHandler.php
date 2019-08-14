@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\LinkHandling;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -70,17 +71,28 @@ class FileLinkHandler implements LinkHandlingInterface
      */
     public function resolveHandlerData(array $data): array
     {
-        if (isset($data['uid'])) {
-            $fileId = $data['uid'];
-        } else {
-            $fileId = $data['identifier'];
-        }
         try {
-            $file = $this->getResourceFactory()->getFileObject($fileId);
+            $file = $this->resolveFile($data);
         } catch (FileDoesNotExistException $e) {
             $file = null;
         }
         return ['file' => $file];
+    }
+
+    /**
+     * @param array $data
+     * @return FileInterface|null
+     * @throws FileDoesNotExistException
+     */
+    protected function resolveFile(array $data): ?FileInterface
+    {
+        if (isset($data['uid'])) {
+            return $this->getResourceFactory()->getFileObject($data['uid']);
+        }
+        if (isset($data['identifier'])) {
+            return $this->getResourceFactory()->getFileObjectFromCombinedIdentifier($data['identifier']);
+        }
+        return null;
     }
 
     /**
