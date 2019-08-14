@@ -85,7 +85,7 @@ class ExternalLinktype extends AbstractLinktype
             $isValidUrl = $this->requestUrl($url, 'HEAD', $options);
             if (!$isValidUrl) {
                 // HEAD was not allowed or threw an error, now trying GET
-                $options['headers']['Range'] = 'bytes = 0 - 4048';
+                $options['headers']['Range'] = 'bytes=0-4048';
                 $isValidUrl = $this->requestUrl($url, 'GET', $options);
             }
         }
