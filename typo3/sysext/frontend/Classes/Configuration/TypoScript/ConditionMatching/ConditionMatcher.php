@@ -51,6 +51,7 @@ class ConditionMatcher extends AbstractConditionMatcher
         $tree->level = $this->rootline ? count($this->rootline) - 1 : 0;
         $tree->rootLine = $this->rootline;
         $tree->rootLineIds = array_column($this->rootline, 'uid');
+        $tree->rootLineParentIds = array_slice(array_column($this->rootline, 'pid'), 1);
 
         $frontendUserAspect = $this->context->getAspect('frontend.user');
         $frontend = new \stdClass();

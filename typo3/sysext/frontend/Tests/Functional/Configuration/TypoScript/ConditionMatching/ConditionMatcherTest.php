@@ -197,9 +197,19 @@ class ConditionMatcherTest extends FunctionalTestCase
     public function PIDupinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
         $subject = $this->getConditionMatcher();
-        self::assertTrue($subject->match('[2 in tree.rootLineIds]'));
-        self::assertTrue($subject->match('["2" in tree.rootLineIds]'));
-        self::assertTrue($subject->match('[\'2\' in tree.rootLineIds]'));
+        self::assertTrue($subject->match('[2 in tree.rootLineParentIds]'));
+        self::assertTrue($subject->match('["2" in tree.rootLineParentIds]'));
+        self::assertTrue($subject->match('[\'2\' in tree.rootLineParentIds]'));
+    }
+
+    /**
+     * Tests whether a page id is not found in the previous rootline entries.
+     *
+     * @test
+     */
+    public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline(): void
+    {
+        self::assertFalse($this->getConditionMatcher()->match('[3 in tree.rootLineParentIds]'));
     }
 
     /**
@@ -209,7 +219,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
-        self::assertFalse($this->getConditionMatcher()->match('[999 in tree.rootLineIds]'));
+        self::assertFalse($this->getConditionMatcher()->match('[999 in tree.rootLineParentIds]'));
     }
 
     /**
