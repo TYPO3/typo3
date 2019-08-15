@@ -171,7 +171,7 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
         if ($cacheDirectory[strlen($cacheDirectory) - 1] !== '/') {
             $cacheDirectory .= '/';
         }
-        $this->temporaryCacheDirectory = $documentRoot . $cacheDirectory . $this->cacheIdentifier . '/';
+        $this->temporaryCacheDirectory = $documentRoot . $cacheDirectory;
     }
 
     /**
