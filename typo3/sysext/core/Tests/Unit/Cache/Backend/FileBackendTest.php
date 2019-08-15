@@ -69,9 +69,8 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsAbsolutePathWithoutTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/foo');
-        $this->assertEquals('/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -80,9 +79,8 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsAbsolutePathWithTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/foo/');
-        $this->assertEquals('/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -91,10 +89,9 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsRelativePathWithoutTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo');
         $path = Environment::getProjectPath();
-        $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -103,10 +100,9 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsRelativePathWithTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo/');
         $path = Environment::getProjectPath();
-        $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -115,10 +111,9 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsRelativeDottedPathWithoutTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo');
         $path = Environment::getProjectPath();
-        $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/../tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -127,10 +122,9 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsRelativeDottedPathWithTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo/');
         $path = Environment::getProjectPath();
-        $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/../tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -139,9 +133,8 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithoutTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/../foo');
-        $this->assertEquals('/tmp/../foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/../foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -150,9 +143,8 @@ class FileBackendTest extends UnitTestCase
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithTrailingSlash(): void
     {
         $backend = $this->getAccessibleMock(FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/../foo/');
-        $this->assertEquals('/tmp/../foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/../foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
