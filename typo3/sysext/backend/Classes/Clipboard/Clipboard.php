@@ -764,8 +764,9 @@ class Clipboard
                     list($table, $uid) = explode('|', $k);
                     // Rendering files/directories on the clipboard
                     if ($table === '_FILE') {
-                        if (file_exists($v) && GeneralUtility::isAllowedAbsPath($v)) {
-                            $params['tx_impexp'][is_dir($v) ? 'dir' : 'file'][] = $v;
+                        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($v);
+                        if ($file !== null) {
+                            $params['tx_impexp']['record'][] = 'sys_file:' . $file->getUid();
                         }
                     } else {
                         // Rendering records:
