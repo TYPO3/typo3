@@ -109,7 +109,7 @@ class ExportController extends ImportExportController
         );
 
         // Input data grabbed:
-        $inData = GeneralUtility::_GP('tx_impexp');
+        $inData = $request->getParsedBody()['tx_impexp'] ?? $request->getQueryParams()['tx_impexp'] ?? [];
         if (!array_key_exists('excludeDisabled', $inData)) {
             // flag doesn't exist initially; state is on by default
             $inData['excludeDisabled'] = 1;
