@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
@@ -217,19 +218,28 @@ class PopulatePageSlugs implements UpgradeWizardInterface
      */
     protected function getSuggestedSlugs(string $tableName): array
     {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $currentTimestamp = $context->getPropertyFromAspect('date', 'timestamp');
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
         $statement = $queryBuilder
             ->select('*')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq('mpvar', $queryBuilder->createNamedParameter(''))
+                $queryBuilder->expr()->eq('mpvar', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->eq('expire', $queryBuilder->createNamedParameter(0)),
+                    $queryBuilder->expr()->gt('expire', $queryBuilder->createNamedParameter($currentTimestamp))
+                )
             )
             ->execute();
         $suggestedSlugs = [];
         while ($row = $statement->fetch()) {
             // rawurldecode ensures that non-ASCII arguments are also migrated
             $pagePath = rawurldecode($row['pagepath']);
-            $suggestedSlugs[(int)$row['page_id']][(int)$row['language_id']] = '/' . trim($pagePath, '/');
+            if (!isset($suggestedSlugs[(int)$row['page_id']][(int)$row['language_id']])) { // keep only first result
+                $suggestedSlugs[(int)$row['page_id']][(int)$row['language_id']] = '/' . trim($pagePath, '/');
+            }
         }
         return $suggestedSlugs;
     }
