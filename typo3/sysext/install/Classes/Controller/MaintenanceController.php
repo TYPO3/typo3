@@ -85,6 +85,7 @@ class MaintenanceController extends AbstractController
      */
     public function clearTypo3tempFilesStatsAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->loadExtLocalconfDatabaseAndExtTables();
         $view = $this->initializeStandaloneView($request, 'Maintenance/ClearTypo3tempFiles.html');
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
@@ -107,6 +108,7 @@ class MaintenanceController extends AbstractController
      */
     public function clearTypo3tempFilesAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->loadExtLocalconfDatabaseAndExtTables();
         $messageQueue = new FlashMessageQueue('install');
         $typo3tempFileService = new Typo3tempFileService();
         $folder = $request->getParsedBody()['install']['folder'];
