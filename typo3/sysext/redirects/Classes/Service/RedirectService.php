@@ -175,6 +175,12 @@ class RedirectService implements LoggerAwareInterface
         $redirectTarget = $linkParameterParts['url'];
         $linkDetails = $this->resolveLinkDetailsFromLinkTarget($redirectTarget);
         $this->logger->debug('Resolved link details for redirect', $linkDetails);
+        if (!empty($linkParameterParts['additionalParams']) && $matchedRedirect['keep_query_parameters']) {
+            $params = GeneralUtility::explodeUrl2Array($linkParameterParts['additionalParams']);
+            foreach ($params as $key => $value) {
+                $queryParams[$key] = $value;
+            }
+        }
         // Do this for files, folders, external URLs
         if (!empty($linkDetails['url'])) {
             $url = new Uri($linkDetails['url']);
