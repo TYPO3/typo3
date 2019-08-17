@@ -535,4 +535,47 @@ class RedirectServiceTest extends UnitTestCase
         $uri = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         self::assertEquals($uri, $result);
     }
+
+    /**
+     * @test
+     */
+    public function getTargetUrlRespectsAdditionalParametersFromTypolink()
+    {
+        /** @var RedirectService $redirectService */
+        $redirectService = $this->getAccessibleMock(
+            RedirectService::class,
+            ['getUriFromCustomLinkDetails'],
+            [$this->redirectCacheServiceProphecy->reveal(), $this->linkServiceProphecy->reveal(), $this->siteFinder->reveal()],
+            '',
+            true
+        );
+
+        $loggerProphecy = $this->prophesize(LoggerInterface::class);
+        $redirectService->setLogger($loggerProphecy->reveal());
+
+        $pageRecord = 't3://page?uid=13';
+        $redirectTargetMatch = [
+            'target' => $pageRecord . ' - - - foo=bar',
+            'force_https' => 1,
+            'keep_query_parameters' => 1
+        ];
+
+        $linkDetails = [
+            'pageuid' => 13,
+            'type' => LinkService::TYPE_PAGE
+        ];
+        $this->linkServiceProphecy->resolve($pageRecord)->willReturn($linkDetails);
+
+        $queryParams['foo'] = 'bar';
+        $uri = new Uri('/page?foo=bar');
+
+        $frontendUserAuthentication = new FrontendUserAuthentication();
+        $site = new Site('dummy', 13, []);
+        $redirectService->expects($this->once())->method('getUriFromCustomLinkDetails')
+            ->with($redirectTargetMatch, $frontendUserAuthentication, $site, $linkDetails, $queryParams)
+            ->willReturn($uri);
+        $result = $redirectService->getTargetUrl($redirectTargetMatch, [], $frontendUserAuthentication, $site);
+
+        self::assertEquals($uri, $result);
+    }
 }
