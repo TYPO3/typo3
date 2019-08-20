@@ -2107,7 +2107,7 @@ class GeneralUtility
      *
      * @param string $path Absolute path to folder, see PHP rmdir() function. Removes trailing slash internally.
      * @param bool $removeNonEmpty Allow deletion of non-empty directories
-     * @return bool TRUE if @rmdir went well!
+     * @return bool TRUE if {@rmdir} went well!
      */
     public static function rmdir($path, $removeNonEmpty = false)
     {
