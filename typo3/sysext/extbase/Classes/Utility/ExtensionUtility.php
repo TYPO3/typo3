@@ -156,6 +156,10 @@ tt_content.' . $pluginSignature . ' {
 
         $delimiterPosition = strrpos($extensionName, '.');
         if ($delimiterPosition !== false) {
+            trigger_error(
+                'Calling method ' . __METHOD__ . ' with argument $extensionName containing the vendor name is deprecated and will stop working in TYPO3 11.0.',
+                E_USER_DEPRECATED
+            );
             $extensionName = substr($extensionName, $delimiterPosition + 1);
         }
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));

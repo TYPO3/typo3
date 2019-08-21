@@ -931,4 +931,11 @@ return [
             'Deprecation-88787-BackendUtilityEditOnClick.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-88995-CallingRegisterPluginWithVendorName.rst'
+        ],
+    ],
 ];

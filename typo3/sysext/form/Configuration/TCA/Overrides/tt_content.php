@@ -33,7 +33,7 @@ call_user_func(function () {
     ';
     // Register the plugin
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-        'TYPO3.CMS.Form',
+        'Form',
         'Formframework',
         'Form',
         'content-form'

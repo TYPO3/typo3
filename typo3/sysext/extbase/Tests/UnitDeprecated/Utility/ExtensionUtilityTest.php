@@ -258,4 +258,21 @@ class ExtensionUtilityTest extends UnitTestCase
         ];
         $this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
+
+    /**
+     * @test
+     */
+    public function registerPluginRegistersPluginWithDeprecatedVendorInExtensionName()
+    {
+        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        ExtensionUtility::registerPlugin(
+            'TYPO3.CMS.IndexedSearch',
+            'Pi2',
+            'Testing'
+        );
+        $this->assertSame(
+            'indexedsearch_pi2',
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][1]
+        );
+    }
 }

@@ -63,7 +63,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForMinimalisticSetup()
     {
@@ -80,7 +80,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginCreatesCorrectDefaultTypoScriptSetup()
     {
@@ -92,7 +92,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForASingleControllerAction()
     {
@@ -120,7 +120,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginThrowsExceptionIfExtensionNameIsEmpty()
     {
@@ -133,7 +133,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginThrowsExceptionIfPluginNameIsEmpty()
     {
@@ -146,7 +146,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginRespectsDefaultActionAsANonCacheableAction()
     {
@@ -177,7 +177,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginRespectsNonDefaultActionAsANonCacheableAction()
     {
@@ -208,7 +208,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault()
     {
@@ -248,7 +248,7 @@ class ExtensionUtilityTest extends UnitTestCase
 
     /**
      * @test
-     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
+     * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin
      */
     public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault()
     {
@@ -306,6 +306,10 @@ class ExtensionUtilityTest extends UnitTestCase
             'EXT:indexed_search/Resources/Public/Icons/Extension.png',
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
         );
+        $this->assertSame(
+            'indexedsearch_pi2',
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][1]
+        );
     }
 
     /**
@@ -325,6 +329,10 @@ class ExtensionUtilityTest extends UnitTestCase
         $this->assertEquals(
             'EXT:indexed_search/Resources/Public/Icons/Extension.png',
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][2]
+        );
+        $this->assertSame(
+            'indexedsearch_pi2',
+            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][1]
         );
     }
 
