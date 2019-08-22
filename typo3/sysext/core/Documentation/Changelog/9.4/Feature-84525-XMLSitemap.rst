@@ -49,7 +49,7 @@ for the selection of pages. You also have the possibility to exclude certain dok
                pages {
                   config {
                      excludedDoktypes = 137, 138
-                     additionalWhere = AND (no_index = 0 OR no_follow = 0)
+                     additionalWhere = no_index = 0 AND canonical_link = ''
                   }
                }
             }
@@ -72,7 +72,7 @@ If you also have an extension installed and want a sitemap of those records, you
                      table = news_table
                      sortField = sorting
                      lastModifiedField = tstamp
-                     additionalWhere = AND (no_index = 0 OR no_follow = 0)
+                     additionalWhere = no_index = 0 AND canonical_link = ''
                      pid = <page id('s) containing news records>
                      url {
                         pageId = <your detail page id>

@@ -105,6 +105,15 @@
         <deleted>0</deleted>
     </pages>
     <pages>
+        <uid>15</uid>
+        <pid>1</pid>
+        <title>Canonicalized page</title>
+        <tstamp>1566474847</tstamp>
+        <slug>/canonicalized-page</slug>
+        <deleted>0</deleted>
+        <canonical_link>https://www.typo3.org</canonical_link>
+    </pages>
+    <pages>
         <uid>100</uid>
         <pid>0</pid>
         <title>Root FR</title>

@@ -13,7 +13,7 @@ plugin.tx_seo {
       sitemaps {
         pages {
           excludedDoktypes = 3, 4, 6, 7, 199, 254, 255
-          additionalWhere = no_index = 0
+          additionalWhere = no_index = 0 AND canonical_link = ''
         }
       }
     }
