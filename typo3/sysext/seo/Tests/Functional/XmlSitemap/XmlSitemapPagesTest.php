@@ -86,6 +86,17 @@ class XmlSitemapPagesTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function pagesSitemapDoesNotContainUrlWithCanonicalSet(): void
+    {
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/canonicalized-page</loc>',
+            (string)$this->response->getBody()
+        );
+    }
+
+    /**
      * @return array
      */
     public function pagesToCheckDataProvider(): array //18-03-2019 21:24:07
