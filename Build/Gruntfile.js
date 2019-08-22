@@ -337,7 +337,9 @@ module.exports = function(grunt) {
 					'imagesloaded.pkgd.min.js': 'imagesloaded/imagesloaded.pkgd.min.js',
 					'bootstrap-datetimepicker.js': 'eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 					'autosize.js': 'autosize/dist/autosize.min.js',
+					/* disabled for removed sourcemap reference in file
 					'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
+					*/
 					'bootstrap-slider.min.js': 'bootstrap-slider/dist/bootstrap-slider.min.js',
 					/* disabled until events are not bound to document only
 					   see https://github.com/claviska/jquery-minicolors/issues/192
