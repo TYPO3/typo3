@@ -1303,6 +1303,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Page is 'not found' in case the id itself was not an accessible page. code 1
             $this->pageNotFound = 1;
             try {
+                $requestedPageRowWithoutGroupCheck = $this->sys_page->getPage($this->id, true);
+                if (!empty($requestedPageRowWithoutGroupCheck)) {
+                    $this->pageAccessFailureHistory['direct_access'][] = $requestedPageRowWithoutGroupCheck;
+                }
                 $this->rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $this->id, $this->MP, $this->context)->get();
                 if (!empty($this->rootLine)) {
                     $c = count($this->rootLine) - 1;
@@ -1322,7 +1326,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->rootLine = [];
             }
             // If still no page...
-            if (empty($this->page)) {
+            if (empty($requestedPageRowWithoutGroupCheck) && empty($this->page)) {
                 $message = 'The requested page does not exist!';
                 $this->logger->error($message);
                 try {
@@ -1480,13 +1484,14 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $removeTheRestFlag = false;
         for ($a = 0; $a < $c; $a++) {
             if (!$this->checkPagerecordForIncludeSection($this->rootLine[$a])) {
-                // Add to page access failure history:
+                // Add to page access failure history and mark the page as not found
+                // Keep the rootline however to trigger an access denied error instead of a service unavailable error
                 $this->pageAccessFailureHistory['sub_section'][] = $this->rootLine[$a];
-                $removeTheRestFlag = true;
+                $this->pageNotFound = 2;
             }
 
-            if ($this->rootLine[$a]['doktype'] == PageRepository::DOKTYPE_BE_USER_SECTION) {
-                // If there is a backend user logged in, check if he has read access to the page:
+            if ((int)$this->rootLine[$a]['doktype'] === PageRepository::DOKTYPE_BE_USER_SECTION) {
+                // If there is a backend user logged in, check if they have read access to the page:
                 if ($this->isBackendUserLoggedIn()) {
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getQueryBuilderForTable('pages');
