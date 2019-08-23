@@ -22,6 +22,7 @@ declare namespace TYPO3 {
   export let Tooltip: any;
   export let Utility: any;
   export let Wizard: any;
+  export let WorkspacesMenu: any;
   export let settings: any;
   export const lang: { [key: string]: string };
   export const configuration: any;
@@ -63,16 +64,6 @@ declare namespace TYPO3 {
         public initializeNullNoPlaceholderCheckboxes(): void;
         public initializeNullWithPlaceholderCheckboxes(): void;
       }
-
-      export class Wizard {
-        public addSlide(identifier: string, title: string, content: string, severity: number, callback?: Function): Wizard;
-        public lockNextStep(): JQuery;
-        public unlockNextStep(): JQuery;
-        public getComponent(): JQuery;
-        public addFinalProcessingSlide(callback?: Function): JQueryXHR;
-        public show(): Wizard;
-        public dismiss(): Wizard;
-      }
     }
   }
 }
@@ -97,10 +88,6 @@ declare module 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree' {
   export = TYPO3.CMS.Backend.FormEngine.Element.SelectTree;
 }
 
-declare module 'TYPO3/CMS/Backend/Wizard' {
-  export = new TYPO3.CMS.Backend.Wizard();
-}
-
 // type definition for global namespace object
 interface Window {
   TYPO3: any;
@@ -109,6 +96,7 @@ interface Window {
   inline: {
     delayedImportElement: (objectId: number, table: string, uid: number, type: string) => void,
   };
+  loadEditId: (id: number, addGetVars?: string) => void;
   require: Function;
   list_frame: Window;
   jump: Function;

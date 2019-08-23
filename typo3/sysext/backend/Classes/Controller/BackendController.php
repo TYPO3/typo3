@@ -345,12 +345,16 @@ class BackendController
         // If another page module was specified, replace the default Page module with the new one
         $newPageModule = trim($beUser->getTSConfig()['options.']['overridePageModule'] ?? '');
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
+        $pageModuleUrl = '';
         if (!$beUser->check('modules', $pageModule)) {
             $pageModule = '';
+        } else {
+            $pageModuleUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($pageModule);
         }
         $t3Configuration = [
             'username' => htmlspecialchars($beUser->user['username']),
             'pageModule' => $pageModule,
+            'pageModuleUrl' => $pageModuleUrl,
             'inWorkspace' => $beUser->workspace !== 0,
             'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
         ];
