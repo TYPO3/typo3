@@ -15,12 +15,15 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -42,6 +45,8 @@ class InstallUtilityTest extends UnitTestCase
      * @var array List of created fake extensions to be deleted in tearDown() again
      */
     protected $fakedExtensions = [];
+
+    protected $backupEnvironment = true;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|InstallUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
@@ -274,5 +279,121 @@ class InstallUtilityTest extends UnitTestCase
         $installMock->_set('registry', $registryMock);
         $installMock->expects($this->never())->method('getImportExportUtility');
         $installMock->_call('importT3DFile', $this->fakedExtensions[$extKey]['siteRelPath']);
+    }
+
+    /**
+     * @test
+     */
+    public function siteConfigGetsMovedIntoPlace()
+    {
+        // prepare an extension with a shipped site config
+        $extKey = $this->createFakeExtension();
+        $absPath = Environment::getProjectPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $siteIdentifier = 'site_identifier';
+        GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
+        file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', 'DUMMY');
+
+        $subject = new InstallUtility();
+        $listUtility = $this->prophesize(ListUtility::class);
+        $subject->injectListUtility($listUtility->reveal());
+        $availableExtensions = [
+            $extKey => [
+                'siteRelPath' => $this->fakedExtensions[$extKey]['siteRelPath'],
+            ],
+        ];
+        $listUtility->enrichExtensionsWithEmConfInformation($availableExtensions)->willReturn($availableExtensions);
+        $listUtility->getAvailableExtensions()->willReturn($availableExtensions);
+        $registry = $this->prophesize(Registry::class);
+        $registry->get('extensionDataImport', Argument::any())->willReturn('some folder name');
+        $registry->get('siteConfigImport', Argument::any())->willReturn(null);
+        $registry->set('siteConfigImport', Argument::cetera())->shouldBeCalled();
+        $subject->injectRegistry($registry->reveal());
+
+        // provide function result inside test output folder
+        $environment = new Environment();
+        $configDir = $absPath . 'Result/config';
+        if (!file_exists($configDir)) {
+            GeneralUtility::mkdir_deep($configDir);
+        }
+        $environment::initialize(
+            Environment::getContext(),
+            Environment::isCli(),
+            Environment::isComposerMode(),
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            $configDir,
+            Environment::getCurrentScript(),
+            'UNIX'
+        );
+        $signalSlotDispatcher = $this->prophesize(Dispatcher::class);
+        $subject->injectSignalSlotDispatcher($signalSlotDispatcher->reveal());
+        $signalSlotDispatcher->dispatch(InstallUtility::class, 'afterSiteConfigImport', Argument::any())->shouldBeCalled();
+        $subject->processExtensionSetup($extKey);
+
+        $registry->set('siteConfigImport', $configDir . '/sites/' . $siteIdentifier, 1)->shouldHaveBeenCalled();
+        $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
+        self::assertFileExists($siteConfigFile);
+        self::assertSame(file_get_contents($siteConfigFile), 'DUMMY');
+    }
+
+    /**
+     * @test
+     */
+    public function siteConfigGetsNotOverriddenIfExistsAlready()
+    {
+        // prepare an extension with a shipped site config
+        $extKey = $this->createFakeExtension();
+        $absPath = Environment::getProjectPath() . '/' . $this->fakedExtensions[$extKey]['siteRelPath'];
+        $siteIdentifier = 'site_identifier';
+        GeneralUtility::mkdir_deep($absPath . 'Initialisation/Site/' . $siteIdentifier);
+        file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', 'DUMMY');
+
+        // fake an already existing site config in test output folder
+        $configDir = $absPath . 'Result/config';
+        if (!file_exists($configDir)) {
+            GeneralUtility::mkdir_deep($configDir);
+        }
+        $existingSiteConfig = 'sites/' . $siteIdentifier . '/config.yaml';
+        GeneralUtility::mkdir_deep($configDir . '/sites/' . $siteIdentifier);
+        file_put_contents($configDir . '/' . $existingSiteConfig, 'config data already exists. Don\'t touch!');
+
+        $subject = new InstallUtility();
+        $listUtility = $this->prophesize(ListUtility::class);
+        $subject->injectListUtility($listUtility->reveal());
+        $availableExtensions = [
+            $extKey => [
+                'siteRelPath' => $this->fakedExtensions[$extKey]['siteRelPath'],
+            ],
+        ];
+        $listUtility->enrichExtensionsWithEmConfInformation($availableExtensions)->willReturn($availableExtensions);
+        $listUtility->getAvailableExtensions()->willReturn($availableExtensions);
+        $registry = $this->prophesize(Registry::class);
+        $registry->get('extensionDataImport', Argument::any())->willReturn('some folder name');
+        $registry->get('siteConfigImport', Argument::any())->willReturn(null);
+        $registry->set('siteConfigImport', Argument::cetera())->shouldNotBeCalled();
+        $subject->injectRegistry($registry->reveal());
+
+        $environment = new Environment();
+
+        $environment::initialize(
+            Environment::getContext(),
+            Environment::isCli(),
+            Environment::isComposerMode(),
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            $configDir,
+            Environment::getCurrentScript(),
+            'UNIX'
+        );
+        $signalSlotDispatcher = $this->prophesize(Dispatcher::class);
+        $subject->injectSignalSlotDispatcher($signalSlotDispatcher->reveal());
+        $signalSlotDispatcher->dispatch(InstallUtility::class, 'afterSiteConfigImport', Argument::any())->shouldNotBeCalled();
+        $subject->processExtensionSetup($extKey);
+
+        $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';
+        self::assertFileExists($siteConfigFile);
+        self::assertSame(file_get_contents($siteConfigFile), 'config data already exists. Don\'t touch!');
     }
 }

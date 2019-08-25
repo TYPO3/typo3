@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
 /*
@@ -14,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
@@ -183,12 +185,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @param string $extensionKey
      */
-    public function processExtensionSetup($extensionKey)
+    public function processExtensionSetup(string $extensionKey): void
     {
         $extension = $this->enrichExtensionWithDetails($extensionKey, false);
         $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
         $this->importStaticSqlFile($extension['siteRelPath']);
         $this->importT3DFile($extension['siteRelPath']);
+        $this->importSiteConfiguration($extension['siteRelPath']);
     }
 
     /**
@@ -307,9 +310,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionKey
      * @param bool $loadTerInformation
-     * @internal
      * @return array
      * @throws ExtensionManagerException
+     * @internal
      */
     public function enrichExtensionWithDetails($extensionKey, $loadTerInformation = true)
     {
@@ -443,9 +446,9 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Checks if an update for an extension is available which also resolves dependencies.
      *
-     * @internal
      * @param Extension $extensionData
      * @return bool
+     * @internal
      */
     public function isUpdateAvailable(Extension $extensionData)
     {
@@ -455,16 +458,16 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns the updateable version for an extension which also resolves dependencies.
      *
-     * @internal
      * @param Extension $extensionData
      * @return bool|Extension FALSE if no update available otherwise latest possible update
+     * @internal
      */
     public function getUpdateableVersion(Extension $extensionData)
     {
         // Only check for update for TER extensions
         $version = $extensionData->getIntegerVersion();
 
-        /** @var $extensionUpdates[] \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
+        /** @var $extensionUpdates [] \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
         $extensionUpdates = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion(
             $extensionData->getExtensionKey(),
             $version,
@@ -606,5 +609,46 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected function emitAfterExtensionFileImportSignal($destinationAbsolutePath)
     {
         $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', [$destinationAbsolutePath, $this]);
+    }
+
+    /**
+     * @param string $extensionSiteRelPath
+     */
+    protected function importSiteConfiguration(string $extensionSiteRelPath): void
+    {
+        $importRelFolder = $extensionSiteRelPath . 'Initialisation/Site';
+        $importAbsFolder = Environment::getPublicPath() . '/' . $importRelFolder;
+        $destinationFolder = Environment::getConfigPath() . '/sites';
+
+        if (!is_dir($importAbsFolder)) {
+            return;
+        }
+
+        GeneralUtility::mkdir($destinationFolder);
+        $finder = GeneralUtility::makeInstance(Finder::class);
+        $finder->directories()->in($importAbsFolder);
+        if ($finder->hasResults()) {
+            foreach ($finder as $siteConfigDirectory) {
+                $targetDir = $destinationFolder . '/' . $siteConfigDirectory->getBasename();
+                if (!$this->registry->get('siteConfigImport', $targetDir) && !is_dir($targetDir)) {
+                    GeneralUtility::mkdir($targetDir);
+                    GeneralUtility::copyDirectory($siteConfigDirectory->getPathname(), $targetDir);
+                    $this->registry->set('siteConfigImport', $targetDir, 1);
+                    $this->emitAfterSiteConfigImportSignal($destinationFolder);
+                }
+            }
+        }
+    }
+
+    /**
+     * emits a signal after site configuration was imported
+     *
+     * @param string $destinationAbsolutePath
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     */
+    protected function emitAfterSiteConfigImportSignal(string $destinationAbsolutePath): void
+    {
+        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterSiteConfigImport', [$destinationAbsolutePath, $this]);
     }
 }
