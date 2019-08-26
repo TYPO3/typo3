@@ -22,7 +22,7 @@ namespace TYPO3\CMS\Core\Database\Schema\Parser\AST;
 class CreateForeignKeyDefinitionItem extends AbstractCreateDefinitionItem
 {
     /**
-     * @var
+     * @var string
      */
     public $indexName = '';
 

@@ -55,7 +55,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
-     * @see DataSet/createContentRecordAndDiscardCreatedContentRecord.csv
+     * See DataSet/createContentRecordAndDiscardCreatedContentRecord.csv
      */
     public function createContentAndDiscardCreatedContent()
     {
@@ -66,7 +66,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createAndCopyContentRecordAndDiscardCopiedContentRecord.csv
+     * See DataSet/createAndCopyContentRecordAndDiscardCopiedContentRecord.csv
      */
     public function createAndCopyContentAndDiscardCopiedContent()
     {
@@ -79,7 +79,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/changeContentSortingNDeleteMovedRecord.csv
+     * See DataSet/changeContentSortingNDeleteMovedRecord.csv
      */
     public function changeContentSortingAndDeleteMovedRecord()
     {
@@ -88,7 +88,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/changeContentSortingNDeleteLiveRecord.csv
+     * See DataSet/changeContentSortingNDeleteLiveRecord.csv
      */
     public function changeContentSortingAndDeleteLiveRecord()
     {
@@ -105,7 +105,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
-     * @see DataSet/deleteContentAndPage.csv
+     * See DataSet/deleteContentAndPage.csv
      */
     public function deleteContentAndPage()
     {
@@ -114,7 +114,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/copyPageFreeMode.csv
+     * See DataSet/copyPageFreeMode.csv
      */
     public function copyPageFreeMode()
     {
@@ -126,7 +126,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/movePageRecordToDifferentPageAndCreatePageRecordAfterMovedPageRecord.csv
+     * See DataSet/movePageRecordToDifferentPageAndCreatePageRecordAfterMovedPageRecord.csv
      * @see http://forge.typo3.org/issues/33104
      * @see http://forge.typo3.org/issues/55573
      */

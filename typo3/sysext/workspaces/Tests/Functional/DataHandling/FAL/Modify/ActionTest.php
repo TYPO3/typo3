@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/modifyContentRecord.csv
+     * See DataSet/modifyContentRecord.csv
      */
     public function modifyContent()
     {
@@ -47,7 +47,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/deleteContentRecord.csv
+     * See DataSet/deleteContentRecord.csv
      */
     public function deleteContent()
     {
@@ -63,7 +63,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/copyContentRecord.csv
+     * See DataSet/copyContentRecord.csv
      */
     public function copyContent()
     {
@@ -80,7 +80,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/localizeContentRecord.csv
+     * See DataSet/localizeContentRecord.csv
      */
     public function localizeContent()
     {
@@ -100,7 +100,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/changeContentRecordSorting.csv
+     * See DataSet/changeContentRecordSorting.csv
      */
     public function changeContentSorting()
     {
@@ -120,7 +120,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/moveContentRecordToDifferentPage.csv
+     * See DataSet/moveContentRecordToDifferentPage.csv
      */
     public function moveContentToDifferentPage()
     {
@@ -144,7 +144,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
+     * See DataSet/moveContentRecordToDifferentPageAndChangeSorting.csv
      */
     public function moveContentToDifferentPageAndChangeSorting()
     {
@@ -168,7 +168,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSets/createContentWFileReference.csv
+     * See DataSets/createContentWFileReference.csv
      */
     public function createContentWithFileReference()
     {
@@ -185,7 +185,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSets/modifyContentWFileReference.csv
+     * See DataSets/modifyContentWFileReference.csv
      */
     public function modifyContentWithFileReference()
     {
@@ -202,7 +202,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSets/modifyContentNAddFileReference.csv
+     * See DataSets/modifyContentNAddFileReference.csv
      */
     public function modifyContentAndAddFileReference()
     {
@@ -217,7 +217,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSets/modifyContentNDeleteFileReference.csv
+     * See DataSets/modifyContentNDeleteFileReference.csv
      */
     public function modifyContentAndDeleteFileReference()
     {
@@ -235,7 +235,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\FAL
 
     /**
      * @test
-     * @see DataSets/modifyContentNDeleteAllFileReference.csv
+     * See DataSets/modifyContentNDeleteAllFileReference.csv
      */
     public function modifyContentAndDeleteAllFileReference()
     {

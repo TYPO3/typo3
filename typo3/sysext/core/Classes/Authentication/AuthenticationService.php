@@ -349,7 +349,7 @@ class AuthenticationService extends AbstractAuthenticationService
      * parameters. The syntax is the same as for sprintf()
      *
      * @param string $message Message to output
-     * @param array<int, mixed> $params
+     * @param array|mixed[] $params
      */
     protected function writeLogMessage(string $message, ...$params): void
     {

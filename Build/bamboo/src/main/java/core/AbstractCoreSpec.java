@@ -865,6 +865,48 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
+     * Job with integration test checking for valid php doc blocks
+     *
+     * @param int stageNumber
+     * @param String requirementIdentifier
+     * @param Task composerTask
+     * @param Boolean isSecurity
+     */
+    protected Job getJobIntegrationDocBlocks(int stageNumber, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+        return new Job("Integration doc blocks " + stageNumber, new BambooKey("IDB" + stageNumber))
+            .description("Check doc blocks by executing Build/Scripts/docBlockChecker.php script")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(isSecurity),
+                this.getTaskStopDanglingContainers(),
+                composerTask,
+                new ScriptTask()
+                    .description("Execute doc block check script")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                        "function dockBlockChecker() {\n" +
+                        "    docker run \\\n" +
+                        "        -u ${HOST_UID} \\\n" +
+                        "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                        "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                        "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                        "        --rm \\\n" +
+                        "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                        "        bin/bash -c \"cd ${PWD}; ./Build/Scripts/docBlockChecker.php $*\"\n" +
+                        "}\n" +
+                        "\n" +
+                        "dockBlockChecker"
+                    )
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
      * Job with various smaller script tests
      *
      * @param int stageNumber

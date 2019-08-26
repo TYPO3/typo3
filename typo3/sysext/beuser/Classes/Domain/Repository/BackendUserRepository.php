@@ -34,7 +34,7 @@ class BackendUserRepository extends BackendUserGroupRepository
      * Finds Backend Users on a given list of uids
      *
      * @param array $uidList
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
      */
     public function findByUidList(array $uidList)
     {
@@ -49,7 +49,7 @@ class BackendUserRepository extends BackendUserGroupRepository
      * Find Backend Users matching to Demand object properties
      *
      * @param Demand $demand
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
      */
     public function findDemanded(Demand $demand)
     {
@@ -113,7 +113,7 @@ class BackendUserRepository extends BackendUserGroupRepository
     /**
      * Find Backend Users currently online
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult<\TYPO3\CMS\Beuser\Domain\Model\BackendUser>
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
      */
     public function findOnline()
     {

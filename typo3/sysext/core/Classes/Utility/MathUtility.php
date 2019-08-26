@@ -165,7 +165,8 @@ class MathUtility
      *
      * @param string $string Input string, eg "(123 + 456) / 789 - 4
      * @return int Calculated value. Or error string.
-     * @see calculateWithPriorityToAdditionAndSubtraction(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap()
+     * @see calculateWithPriorityToAdditionAndSubtraction()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::stdWrap()
      */
     public static function calculateWithParentheses($string)
     {

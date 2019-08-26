@@ -632,7 +632,7 @@ class GridDataService implements LoggerAwareInterface
      * Emits a signal to be handled by any registered slots.
      *
      * @param string $signalName Name of the signal
-     * @param array<int, mixed> $arguments
+     * @param array|mixed[] $arguments
      * @return array
      */
     protected function emitSignal($signalName, ...$arguments)

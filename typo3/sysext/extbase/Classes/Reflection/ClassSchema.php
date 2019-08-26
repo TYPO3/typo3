@@ -107,7 +107,7 @@ class ClassSchema
     private static $propertyInfoExtractor;
 
     /**
-     * @var
+     * @var DocBlockFactory
      */
     private static $docBlockFactory;
 

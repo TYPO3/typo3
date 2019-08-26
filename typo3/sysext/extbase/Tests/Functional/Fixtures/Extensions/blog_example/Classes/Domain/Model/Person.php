@@ -136,7 +136,7 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag> $tags
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags
      */
     public function setTags(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tags)
     {
@@ -168,7 +168,7 @@ class Person extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\ExtbaseTeam\BlogExample\Domain\Model\Tag> $tagsSpecial
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial
      */
     public function setTagsSpecial(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $tagsSpecial)
     {

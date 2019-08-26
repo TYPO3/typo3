@@ -8265,7 +8265,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * (The default value of currentValKey is tested elsewhere.)
      *
      * @test
-     * @see $this->stdWrap_current()
+     * @see stdWrap_current()
      */
     public function setCurrentVal_getCurrentVal(): void
     {

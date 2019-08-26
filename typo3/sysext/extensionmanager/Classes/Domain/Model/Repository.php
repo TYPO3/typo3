@@ -73,7 +73,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns title of a repository.
      *
      * @return string title of repository
-     * @see $title, setTitle()
+     * @see setTitle()
      */
     public function getTitle()
     {
@@ -84,7 +84,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method sets title of a repository.
      *
      * @param string $title title of repository to set
-     * @see $title, getTitle()
+     * @see getTitle()
      */
     public function setTitle($title)
     {
@@ -97,7 +97,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns description of a repository.
      *
      * @return string title of repository
-     * @see $title, setTitle()
+     * @see setDescription()
      */
     public function getDescription()
     {
@@ -120,7 +120,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns URL of a resource that contains repository mirrors.
      *
      * @return string URL of file that contains repository mirrors
-     * @see $mirrorListUrl, getMirrorListUrl()
+     * @see getMirrorListUrl()
      */
     public function getMirrorListUrl()
     {
@@ -133,7 +133,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Parameter is typically a remote gzipped xml file.
      *
      * @param string $url URL of file that contains repository mirrors
-     * @see $mirrorListUrl, getMirrorListUrl()
+     * @see getMirrorListUrl()
      */
     public function setMirrorListUrl($url)
     {
@@ -146,7 +146,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns URL of repository WSDL.
      *
      * @return string URL of repository WSDL
-     * @see $wsdlUrl, setWsdlUrl()
+     * @see setWsdlUrl()
      */
     public function getWsdlUrl()
     {
@@ -157,7 +157,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method sets URL of repository WSDL.
      *
      * @param string $url URL of repository WSDL
-     * @see $wsdlUrl, getWsdlUrl()
+     * @see getWsdlUrl()
      */
     public function setWsdlUrl($url)
     {
@@ -212,7 +212,9 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Repository mirrors object is passed by reference.
      *
      * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors mirror list
-     * @see $mirrors, getMirrors(), hasMirrors(), removeMirrors()
+     * @see getMirrors()
+     * @see hasMirrors()
+     * @see removeMirrors()
      */
     public function addMirrors(\TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors)
     {
@@ -224,7 +226,9 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * object has been registered to this repository.
      *
      * @return bool TRUE, if a repository mirrors object has been registered, otherwise FALSE
-     * @see $mirrors, addMirrors(), getMirrors(), removeMirrors()
+     * @see addMirrors()
+     * @see getMirrors()
+     * @see removeMirrors()
      */
     public function hasMirrors()
     {
@@ -239,7 +243,9 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns a repository mirrors object.
      *
      * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors mirrors for repository
-     * @see $mirrors, addMirrors(), hasMirrors(), removeMirrors()
+     * @see addMirrors()
+     * @see hasMirrors()
+     * @see removeMirrors()
      */
     public function getMirrors()
     {
@@ -249,7 +255,9 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method unregisters a repository mirrors object.
      *
-     * @see $mirrors, addMirrors(), getMirrors(), hasMirrors()
+     * @see addMirrors()
+     * @see getMirrors()
+     * @see hasMirrors()
      */
     public function removeMirrors()
     {

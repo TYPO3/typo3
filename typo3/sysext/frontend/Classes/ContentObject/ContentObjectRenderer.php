@@ -1409,7 +1409,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input string
      * @param string $wrap A string where the first two parts separated by "|" (vertical line) will be wrapped around the input string
      * @return string Wrapped output string
-     * @see wrap(), cImage(), FILE()
+     * @see wrap()
+     * @see cImage()
      */
     public function linkWrap($content, $wrap)
     {
@@ -1430,7 +1431,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript configuration properties
      * @param bool $longDesc If set, the longdesc attribute will be generated - must only be used for img elements!
      * @return string Parameter string containing alt and title parameters (if any)
-     * @see IMGTEXT(), FILE(), FORM(), cImage(), filelink()
+     * @see cImage()
      */
     public function getAltParam($conf, $longDesc = true)
     {
@@ -1467,7 +1468,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript configuration properties
      * @param bool|int $addGlobal If set, will add the global config.ATagParams to the link
      * @return string String containing the parameters to the A tag (if non empty, with a leading space)
-     * @see IMGTEXT(), filelink(), makelinks(), typolink()
+     * @see typolink()
      */
     public function getATagParams($conf, $addGlobal = 1)
     {
@@ -3009,7 +3010,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param array $conf TypoScript properties defining what to compare
      * @return bool
-     * @see stdWrap(), _parseFunc()
+     * @see stdWrap()
+     * @see _parseFunc()
      */
     public function checkIf($conf)
     {
@@ -3087,7 +3089,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $theValue The value to parse by the class \TYPO3\CMS\Core\Html\HtmlParser
      * @param array $conf TypoScript properties for the parser. See link.
      * @return string Return value.
-     * @see stdWrap(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLparserConfig(), \TYPO3\CMS\Core\Html\HtmlParser::HTMLcleaner()
+     * @see stdWrap()
+     * @see \TYPO3\CMS\Core\Html\HtmlParser::HTMLparserConfig()
+     * @see \TYPO3\CMS\Core\Html\HtmlParser::HTMLcleaner()
      */
     public function HTMLparser_TSbridge($theValue, $conf)
     {
@@ -3102,7 +3106,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $content Input string being wrapped
      * @param string $wrap The wrap string, eg. "<strong></strong>" or more likely here '<a href="index.php?id={TSFE:id}"> | </a>' which will wrap the input string in a <a> tag linking to the current page.
      * @return string Output string wrapped in the wrapping value.
-     * @see insertData(), stdWrap()
+     * @see insertData()
+     * @see stdWrap()
      */
     public function dataWrap($content, $wrap)
     {
@@ -3120,7 +3125,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      *
      * @param string $str Input value
      * @return string Processed input value
-     * @see getData(), stdWrap(), dataWrap()
+     * @see getData()
+     * @see stdWrap()
+     * @see dataWrap()
      */
     public function insertData($str)
     {
@@ -3420,7 +3427,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf TypoScript properties for "split
      * @return string Compiled result
      * @internal
-     * @see stdWrap(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::processItemStates()
+     * @see stdWrap()
+     * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::processItemStates()
      */
     public function splitObj($value, $conf)
     {
@@ -4242,7 +4250,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string|File|FileReference $file A "imgResource" TypoScript data type. Either a TypoScript file resource, a file or a file reference object or the string GIFBUILDER. See description above.
      * @param array $fileArray TypoScript properties for the imgResource type
      * @return array|null Returns info-array
-     * @see IMG_RESOURCE(), cImage(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
+     * @see cImage()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
     public function getImgResource($file, $fileArray)
     {
@@ -4984,7 +4993,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param string $linkText The string (text) to link
      * @param array $conf TypoScript configuration (see link below)
      * @return string A link-wrapped string.
-     * @see stdWrap(), \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_linkTP()
+     * @see stdWrap()
+     * @see \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_linkTP()
      */
     public function typoLink($linkText, $conf)
     {
@@ -5585,7 +5595,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $conf The TypoScript configuration to pass the function
      * @param string $content The content string to pass the function
      * @return string The return content from the function call. Should probably be a string.
-     * @see USER(), stdWrap(), typoLink(), _parseFunc()
+     * @see stdWrap()
+     * @see typoLink()
+     * @see _parseFunc()
      */
     public function callUserFunction($funcName, $conf, $content)
     {
@@ -5858,7 +5870,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @param array $prevId_array array of IDs from previous recursions. In order to prevent infinite loops with mount pages.
      * @param int $recursionLevel Internal: Zero for the first recursion, incremented for each recursive call.
      * @return string Returns the list of ids as a comma separated string
-     * @see TypoScriptFrontendController::checkEnableFields(), TypoScriptFrontendController::checkPagerecordForIncludeSection()
+     * @see TypoScriptFrontendController::checkEnableFields()
+     * @see TypoScriptFrontendController::checkPagerecordForIncludeSection()
      */
     public function getTreeList($id, $depth, $begin = 0, $dontCheckEnableFields = false, $addSelectFields = '', $moreWhereClauses = '', array $prevId_array = [], $recursionLevel = 0)
     {
@@ -6188,7 +6201,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      * @internal
-     * @see CONTENT(), numRows()
+     * @see numRows()
      */
     public function getQuery($table, $conf, $returnQueryArray = false)
     {

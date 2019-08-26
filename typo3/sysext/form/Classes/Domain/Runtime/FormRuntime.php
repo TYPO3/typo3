@@ -889,7 +889,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * @return array<Page> The Form's pages in the correct order
+     * @return array|Page[] The Form's pages in the correct order
      */
     public function getPages(): array
     {

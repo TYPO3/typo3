@@ -340,7 +340,7 @@ class AbstractPlugin
      * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
      * @return string The resulting URL
      * @see pi_linkToPage()
-     * @see ContentObjectRenderer->getTypoLink()
+     * @see ContentObjectRenderer::getTypoLink()
      */
     public function pi_getPageLink($id, $target = '', $urlParameters = [])
     {
@@ -357,7 +357,8 @@ class AbstractPlugin
      * @param string $target Target value to use. Affects the &type-value of the URL, defaults to current.
      * @param array|string $urlParameters As an array key/value pairs represent URL parameters to set. Values NOT URL-encoded yet, keys should be URL-encoded if needed. As a string the parameter is expected to be URL-encoded already.
      * @return string The input string wrapped in <a> tags with the URL and target set.
-     * @see pi_getPageLink(), ContentObjectRenderer::getTypoLink()
+     * @see pi_getPageLink()
+     * @see ContentObjectRenderer::getTypoLink()
      */
     public function pi_linkToPage($str, $id, $target = '', $urlParameters = [])
     {
@@ -373,7 +374,8 @@ class AbstractPlugin
      * @param bool $cache If $cache is set (0/1), the page is asked to be cached by a &cHash value (unless the current plugin using this class is a USER_INT). Otherwise the no_cache-parameter will be a part of the link.
      * @param int $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
      * @return string The input string wrapped in <a> tags
-     * @see pi_linkTP_keepPIvars(), ContentObjectRenderer::typoLink()
+     * @see pi_linkTP_keepPIvars()
+     * @see ContentObjectRenderer::typoLink()
      */
     public function pi_linkTP($str, $urlParameters = [], $cache = false, $altPageId = 0)
     {
@@ -439,7 +441,8 @@ class AbstractPlugin
      * @param bool $urlOnly If TRUE, only the URL is returned, not a full link
      * @param int $altPageId Alternative page ID for the link. (By default this function links to the SAME page!)
      * @return string The input string wrapped in <a> tags
-     * @see pi_linkTP(), pi_linkTP_keepPIvars()
+     * @see pi_linkTP()
+     * @see pi_linkTP_keepPIvars()
      */
     public function pi_list_linkSingle($str, $uid, $cache = false, $mergeArr = [], $urlOnly = false, $altPageId = 0)
     {
@@ -717,7 +720,8 @@ class AbstractPlugin
      * @param Statement $statement Result pointer to a SQL result which can be traversed.
      * @param string $tableParams Attributes for the table tag which is wrapped around the table rows containing the list
      * @return string Output HTML, wrapped in <div>-tags with a class attribute
-     * @see pi_list_row(), pi_list_header()
+     * @see pi_list_row()
+     * @see pi_list_header()
      */
     public function pi_list_makelist($statement, $tableParams = '')
     {

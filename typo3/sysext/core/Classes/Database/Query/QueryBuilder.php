@@ -624,7 +624,7 @@ class QueryBuilder
      * Specifies one or more restrictions to the query result.
      * Replaces any previously specified restrictions, if any.
      *
-     * @param mixed,... $predicates
+     * @param mixed $predicates
      * @return QueryBuilder This QueryBuilder instance.
      */
     public function where(...$predicates): QueryBuilder
@@ -638,7 +638,7 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * conjunction with any previously specified restrictions.
      *
-     * @param mixed,... $where The query restrictions.
+     * @param mixed $where The query restrictions.
      *
      * @return QueryBuilder This QueryBuilder instance.
      *
@@ -655,7 +655,7 @@ class QueryBuilder
      * Adds one or more restrictions to the query results, forming a logical
      * disjunction with any previously specified restrictions.
      *
-     * @param mixed,... $where The WHERE statement.
+     * @param mixed $where The WHERE statement.
      *
      * @return QueryBuilder This QueryBuilder instance.
      *
@@ -672,7 +672,7 @@ class QueryBuilder
      * Specifies a grouping over the results of the query.
      * Replaces any previously specified groupings, if any.
      *
-     * @param mixed,... $groupBy The grouping expression.
+     * @param mixed $groupBy The grouping expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -686,7 +686,7 @@ class QueryBuilder
     /**
      * Adds a grouping expression to the query.
      *
-     * @param mixed,... $groupBy The grouping expression.
+     * @param mixed $groupBy The grouping expression.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -742,7 +742,7 @@ class QueryBuilder
      * Specifies a restriction over the groups of the query.
      * Replaces any previous having restrictions, if any.
      *
-     * @param mixed,... $having The restriction over the groups.
+     * @param mixed $having The restriction over the groups.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -756,7 +756,7 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * conjunction with any existing having restrictions.
      *
-     * @param mixed,... $having The restriction to append.
+     * @param mixed $having The restriction to append.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */
@@ -771,7 +771,7 @@ class QueryBuilder
      * Adds a restriction over the groups of the query, forming a logical
      * disjunction with any existing having restrictions.
      *
-     * @param mixed,... $having The restriction to add.
+     * @param mixed $having The restriction to add.
      *
      * @return QueryBuilder This QueryBuilder instance.
      */

@@ -303,7 +303,10 @@ class ResourceStorage implements ResourceStorageInterface
      * Returns the capabilities of this storage.
      *
      * @return int
-     * @see CAPABILITY_* constants
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_BROWSABLE
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_PUBLIC
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_WRITABLE
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_HIERARCHICAL_IDENTIFIERS
      */
     public function getCapabilities()
     {

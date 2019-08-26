@@ -94,6 +94,7 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobCglCheckFullCore(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
 
+        jobsMainStage.add(this.getJobIntegrationDocBlocks(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.add(this.getJobIntegrationAnnotations(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
 
         jobsMainStage.add(this.getJobIntegrationVarious(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
@@ -140,6 +141,7 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsComposerMaxStage.add(this.getJobCglCheckFullCore(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
 
+        jobsComposerMaxStage.add(this.getJobIntegrationDocBlocks(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
         jobsComposerMaxStage.add(this.getJobIntegrationAnnotations(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
 
         jobsComposerMaxStage.add(this.getJobIntegrationVarious(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
@@ -182,6 +184,7 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsComposerMinStage.add(this.getJobCglCheckFullCore(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
 
+        jobsComposerMinStage.add(this.getJobIntegrationDocBlocks(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
         jobsComposerMinStage.add(this.getJobIntegrationAnnotations(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
 
         jobsComposerMinStage.add(this.getJobIntegrationVarious(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));

@@ -125,7 +125,7 @@ class ProcessingRule
     /**
      * Returns the child validators of the ConjunctionValidator that is bound to this processing rule
      *
-     * @return \SplObjectStorage<ValidatorInterface>
+     * @return \SplObjectStorage
      * @internal
      */
     public function getValidators(): \SplObjectStorage

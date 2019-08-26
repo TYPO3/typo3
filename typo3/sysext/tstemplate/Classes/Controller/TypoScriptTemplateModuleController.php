@@ -108,7 +108,6 @@ class TypoScriptTemplateModuleController
     /**
      * Current settings for the keys of the MOD_MENU array, used in client classes
      *
-     * @see $MOD_MENU
      * @var array
      */
     public $MOD_SETTINGS = [];
@@ -123,7 +122,6 @@ class TypoScriptTemplateModuleController
     /**
      * Contains module configuration parts from TBE_MODULES_EXT if found
      *
-     * @see handleExternalFunctionValue()
      * @var array
      */
     protected $extClassConf;
@@ -654,7 +652,9 @@ page.10.value = HELLO WORLD!
      * Also loads the modTSconfig internal variable.
      *
      * @param array|string|null $changedSettings can be anything
-     * @see mainAction(), $MOD_MENU, $MOD_SETTINGS, \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
+     * @see mainAction()
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
+     * @see mergeExternalItems()
      */
     protected function menuConfig($changedSettings)
     {
@@ -678,7 +678,8 @@ page.10.value = HELLO WORLD!
      * @param array $menuArr The part of a MOD_MENU array to work on.
      * @return array Modified array part.
      * @internal
-     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), menuConfig()
+     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()
+     * @see menuConfig()
      */
     protected function mergeExternalItems($modName, $menuKey, $menuArr)
     {
@@ -715,10 +716,10 @@ page.10.value = HELLO WORLD!
     /**
      * Creates an instance of the class found in $this->extClassConf['name'] in $this->extObj if any (this should hold three keys, "name", "path" and "title" if a "Function menu module" tries to connect...)
      * This value in extClassConf might be set by an extension (in an ext_tables/ext_localconf file) which thus "connects" to a module.
-     * The array $this->extClassConf is set in handleExternalFunctionValue() based on the value of MOD_SETTINGS[function]
+     * The array $this->extClassConf is set based on the value of MOD_SETTINGS[function]
      * If an instance is created it is initiated with $this passed as value and $this->extClassConf as second argument. Further the $this->MOD_SETTING is cleaned up again after calling the init function.
      *
-     * @see handleExternalFunctionValue(), \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(), $extObj
+     * @see \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction()
      * @param array|string|null $changedSettings
      * @param ServerRequestInterface $request
      */

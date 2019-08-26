@@ -70,7 +70,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (BE module of the Scheduler)
      * @return array Additional fields
-     * @see \TYPO3\CMS\Scheduler\AdditionalFieldProvider#getAdditionalFields($taskInfo, $task, $schedulerModule)
+     * @see \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface::getAdditionalFields
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule): array
     {

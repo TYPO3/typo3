@@ -95,7 +95,9 @@ class ReferenceIndex implements LoggerAwareInterface
      * This array holds the FlexForm references of a record
      *
      * @var array
-     * @see getRelations(),FlexFormTools::traverseFlexFormXMLData(),getRelations_flexFormCallBack()
+     * @see getRelations()
+     * @see FlexFormTools::traverseFlexFormXMLData()
+     * @see getRelations_flexFormCallBack()
      */
     public $temp_flexRelations = [];
 
@@ -112,7 +114,8 @@ class ReferenceIndex implements LoggerAwareInterface
      * An index of all found references of a single record created in createEntryData() and accumulated in generateRefIndexData()
      *
      * @var array
-     * @see createEntryData(),generateRefIndexData()
+     * @see createEntryData()
+     * @see generateRefIndexData()
      */
     public $relations = [];
 
@@ -175,7 +178,8 @@ class ReferenceIndex implements LoggerAwareInterface
      * Gets the current workspace id
      *
      * @return int
-     * @see updateRefIndexTable(),createEntryData()
+     * @see updateRefIndexTable()
+     * @see createEntryData()
      */
     public function getWorkspaceId()
     {
@@ -690,7 +694,8 @@ class ReferenceIndex implements LoggerAwareInterface
      * @param mixed $dataValue Current value
      * @param array $PA Additional configuration used in calling function
      * @param string $structurePath Path of value in DS structure
-     * @see DataHandler::checkValue_flex_procInData_travDS(),FlexFormTools::traverseFlexFormXMLData()
+     * @see DataHandler::checkValue_flex_procInData_travDS()
+     * @see FlexFormTools::traverseFlexFormXMLData()
      */
     public function getRelations_flexFormCallBack($dsArr, $dataValue, $PA, $structurePath)
     {

@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/addElementRelation.csv
+     * See DataSet/addElementRelation.csv
      */
     public function addElementRelation()
     {
@@ -45,7 +45,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/deleteElementRelation.csv
+     * See DataSet/deleteElementRelation.csv
      */
     public function deleteElementRelation()
     {
@@ -63,7 +63,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/changeElementSorting.csv
+     * See DataSet/changeElementSorting.csv
      */
     public function changeElementSorting()
     {
@@ -78,7 +78,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/changeElementRelationSorting.csv
+     * See DataSet/changeElementRelationSorting.csv
      */
     public function changeElementRelationSorting()
     {
@@ -93,7 +93,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/createContentNAddRelation.csv
+     * See DataSet/createContentNAddRelation.csv
      */
     public function createContentAndAddElementRelation()
     {
@@ -110,7 +110,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/createContentNCreateRelation.csv
+     * See DataSet/createContentNCreateRelation.csv
      */
     public function createContentAndCreateElementRelation()
     {
@@ -127,7 +127,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/modifyElementOfRelation.csv
+     * See DataSet/modifyElementOfRelation.csv
      */
     public function modifyElementOfRelation()
     {
@@ -142,7 +142,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/modifyContentOfRelation.csv
+     * See DataSet/modifyContentOfRelation.csv
      */
     public function modifyContentOfRelation()
     {
@@ -156,7 +156,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/modifyBothSidesOfRelation.csv
+     * See DataSet/modifyBothSidesOfRelation.csv
      */
     public function modifyBothSidesOfRelation()
     {
@@ -173,7 +173,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/deleteContentOfRelation.csv
+     * See DataSet/deleteContentOfRelation.csv
      */
     public function deleteContentOfRelation()
     {
@@ -187,7 +187,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/deleteElementOfRelation.csv
+     * See DataSet/deleteElementOfRelation.csv
      */
     public function deleteElementOfRelation()
     {
@@ -202,7 +202,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/copyContentOfRelation.csv
+     * See DataSet/copyContentOfRelation.csv
      */
     public function copyContentOfRelation()
     {
@@ -218,7 +218,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/copyElementOfRelation.csv
+     * See DataSet/copyElementOfRelation.csv
      */
     public function copyElementOfRelation()
     {
@@ -237,7 +237,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/localizeContentOfRelation.csv
+     * See DataSet/localizeContentOfRelation.csv
      */
     public function localizeContentOfRelation()
     {
@@ -252,7 +252,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/localizeElementOfRelation.csv
+     * See DataSet/localizeElementOfRelation.csv
      */
     public function localizeElementOfRelation()
     {
@@ -269,7 +269,7 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Gro
 
     /**
      * @test
-     * @see DataSet/moveContentOfRelationToDifferentPage.csv
+     * See DataSet/moveContentOfRelationToDifferentPage.csv
      */
     public function moveContentOfRelationToDifferentPage()
     {

@@ -766,7 +766,8 @@ class ArrayUtility
      * @param array $setupArr TypoScript array with numerical array in
      * @param bool $acceptAnyKeys If set, then a value is not required - the properties alone will be enough.
      * @return array An array with all integer properties listed in numeric order.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet(), \TYPO3\CMS\Frontend\Imaging\GifBuilder
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGet()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
     public static function filterAndSortByNumericKeys($setupArr, $acceptAnyKeys = false)
     {

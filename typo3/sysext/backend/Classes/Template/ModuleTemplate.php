@@ -637,7 +637,6 @@ class ModuleTemplate
      *
      * @param string $thisLocation URL to "this location" / current script
      * @return string Urls are returned as JavaScript variables T3_RETURN_URL and T3_THIS_LOCATION
-     * @see typo3/db_list.php
      * @internal
      */
     public function redirectUrls($thisLocation = '')

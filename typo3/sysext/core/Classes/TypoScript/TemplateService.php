@@ -909,7 +909,8 @@ class TemplateService
      *
      * @param array $subrow Static template record/file
      * @return array Returns the input array where the values for keys "config" and "constants" may have been modified with prepended code.
-     * @see addExtensionStatics(), includeStaticTypoScriptSources()
+     * @see addExtensionStatics()
+     * @see includeStaticTypoScriptSources()
      */
     protected function prependStaticExtra($subrow)
     {
@@ -947,7 +948,8 @@ class TemplateService
      * Generates the configuration array by replacing constants and parsing the whole thing.
      * Depends on $this->config and $this->constants to be set prior to this! (done by processTemplate/runThroughTemplates)
      *
-     * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser, start()
+     * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+     * @see start()
      */
     public function generateConfig()
     {
@@ -1064,7 +1066,8 @@ class TemplateService
      * for include instructions and does the inclusion of external TypoScript files
      * if needed.
      *
-     * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser, generateConfig()
+     * @see \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
+     * @see generateConfig()
      */
     protected function processIncludes()
     {
@@ -1123,7 +1126,8 @@ class TemplateService
      *
      * @param string $all TypoScript code text string
      * @return string The processed string with all constants found in $this->flatSetup as key/value pairs substituted.
-     * @see generateConfig(), flattenSetup()
+     * @see generateConfig()
+     * @see flattenSetup()
      */
     protected function substituteConstants($all)
     {

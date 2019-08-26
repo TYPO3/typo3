@@ -191,7 +191,8 @@ class MarkerBasedTemplateService
      * @param bool $deleteUnused If set, all unused marker are deleted.
      *
      * @return string The processed output stream
-     * @see substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+     * @see substituteMarker()
+     * @see substituteMarkerInObject()
      */
     public function substituteMarkerArray($content, $markContentArray, $wrap = '', $uppercase = false, $deleteUnused = false)
     {
@@ -346,7 +347,9 @@ class MarkerBasedTemplateService
      * @param array $subpartContentArray Exactly like markContentArray only is whole subparts substituted and not only a single marker.
      * @param array $wrappedSubpartContentArray An array of arrays with 0/1 keys where the subparts pointed to by the main key is wrapped with the 0/1 value alternating.
      * @return string The output content stream
-     * @see substituteSubpart(), substituteMarker(), substituteMarkerInObject(), TEMPLATE()
+     * @see substituteSubpart()
+     * @see substituteMarker()
+     * @see substituteMarkerInObject()
      */
     public function substituteMarkerArrayCached($content, array $markContentArray = null, array $subpartContentArray = null, array $wrappedSubpartContentArray = null)
     {

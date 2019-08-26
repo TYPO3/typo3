@@ -181,7 +181,7 @@ abstract class AbstractNode
     /**
      * Get current permission of node
      *
-     * @return string, eg. 2775 for dirs, 0664 for files
+     * @return string eg. 2775 for dirs, 0664 for files
      */
     protected function getCurrentPermission()
     {

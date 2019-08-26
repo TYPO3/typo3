@@ -3430,7 +3430,7 @@ class GeneralUtilityTest extends UnitTestCase
     /////////////////////////////
     /**
      * @see dirnameWithDataProvider
-     * @return array<array>
+     * @return array|array[]
      */
     public function dirnameDataProvider()
     {
@@ -3461,7 +3461,7 @@ class GeneralUtilityTest extends UnitTestCase
     /////////////////////////////////////
     /**
      * @see resolveBackPathWithDataProvider
-     * @return array<array>
+     * @return array|array[]
      */
     public function resolveBackPathDataProvider()
     {

@@ -159,7 +159,7 @@ class FileSearchQuery
      * Can be accessed by subclasses to add further restrictions to the query.
      *
      * @param QueryRestrictionInterface $additionalRestriction
-     * @throws |RuntimeException
+     * @throws \RuntimeException
      */
     public function additionalRestriction(QueryRestrictionInterface $additionalRestriction): void
     {

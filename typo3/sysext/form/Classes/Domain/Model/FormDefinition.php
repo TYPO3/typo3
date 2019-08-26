@@ -448,7 +448,7 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     /**
      * Get the Form's pages
      *
-     * @return array<Page> The Form's pages in the correct order
+     * @return array|Page[] The Form's pages in the correct order
      */
     public function getPages(): array
     {

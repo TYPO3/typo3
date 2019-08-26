@@ -46,7 +46,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
-     * @see DataSet/deleteParentContentRecordAndDiscardDeletedParentRecord.csv
+     * See DataSet/deleteParentContentRecordAndDiscardDeletedParentRecord.csv
      */
     public function deleteParentContentAndDiscardDeletedParent()
     {
@@ -60,7 +60,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
-     * @see DataSet/createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord.csv
+     * See DataSet/createAndCopyParentContentRecordWithHotelAndOfferChildRecordsAndDiscardCopiedParentRecord.csv
      */
     public function createAndCopyParentContentWithHotelAndOfferChildrenAndDiscardCopiedParent()
     {
@@ -81,7 +81,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
+     * See DataSet/createNLocParentNHotelNOfferChildrenNDiscardCreatedParent.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardCreatedParent()
     {
@@ -101,7 +101,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecordsAndDiscardLocalizedParentRecord.csv
+     * See DataSet/createAndLocalizeParentContentRecordWithHotelAndOfferChildRecordsAndDiscardLocalizedParentRecord.csv
      */
     public function createAndLocalizeParentContentWithHotelAndOfferChildrenAndDiscardLocalizedParent()
     {
@@ -122,7 +122,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/modifyParentRecordWithHotelChildRecordAndDiscardModifiedParentRecord.csv
+     * See DataSet/modifyParentRecordWithHotelChildRecordAndDiscardModifiedParentRecord.csv
      */
     public function modifyParentWithHotelChildAndDiscardModifiedParent()
     {
@@ -138,7 +138,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/modifyParentRecordWithHotelChildRecordAndDiscardAllModifiedRecords.csv
+     * See DataSet/modifyParentRecordWithHotelChildRecordAndDiscardAllModifiedRecords.csv
      */
     public function modifyParentWithHotelChildAndDiscardAll()
     {
@@ -160,7 +160,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/modifyNDiscardNModifyParentWHotelChild.csv
+     * See DataSet/modifyNDiscardNModifyParentWHotelChild.csv
      */
     public function modifyAndDiscardAndModifyParentWithHotelChild()
     {

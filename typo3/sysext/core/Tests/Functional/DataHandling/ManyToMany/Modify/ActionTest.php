@@ -30,7 +30,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/addCategoryRelation.csv
+     * See DataSet/addCategoryRelation.csv
      */
     public function addCategoryRelation()
     {
@@ -45,7 +45,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/deleteCategoryRelation.csv
+     * See DataSet/deleteCategoryRelation.csv
      */
     public function deleteCategoryRelation()
     {
@@ -63,7 +63,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/changeCategoryRelationSorting.csv
+     * See DataSet/changeCategoryRelationSorting.csv
      */
     public function changeCategoryRelationSorting()
     {
@@ -78,7 +78,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/modifyCategoryRecordOfCategoryRelation.csv
+     * See DataSet/modifyCategoryRecordOfCategoryRelation.csv
      */
     public function modifyCategoryOfRelation()
     {
@@ -93,7 +93,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/modifyContentRecordOfCategoryRelation.csv
+     * See DataSet/modifyContentRecordOfCategoryRelation.csv
      */
     public function modifyContentOfRelation()
     {
@@ -107,7 +107,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/modifyBothRecordsOfCategoryRelation.csv
+     * See DataSet/modifyBothRecordsOfCategoryRelation.csv
      */
     public function modifyBothsOfRelation()
     {
@@ -124,7 +124,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/deleteContentRecordOfCategoryRelation.csv
+     * See DataSet/deleteContentRecordOfCategoryRelation.csv
      */
     public function deleteContentOfRelation()
     {
@@ -138,7 +138,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/deleteCategoryRecordOfCategoryRelation.csv
+     * See DataSet/deleteCategoryRecordOfCategoryRelation.csv
      */
     public function deleteCategoryOfRelation()
     {
@@ -153,7 +153,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/copyContentRecordOfCategoryRelation.csv
+     * See DataSet/copyContentRecordOfCategoryRelation.csv
      */
     public function copyContentOfRelation()
     {
@@ -168,7 +168,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/copyCategoryRecordOfCategoryRelation.csv
+     * See DataSet/copyCategoryRecordOfCategoryRelation.csv
      */
     public function copyCategoryOfRelation()
     {
@@ -183,7 +183,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/copyContentToLanguageOfRelation.csv
+     * See DataSet/copyContentToLanguageOfRelation.csv
      */
     public function copyContentToLanguageOfRelation()
     {
@@ -198,7 +198,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/copyCategoryToLanguageOfRelation.csv
+     * See DataSet/copyCategoryToLanguageOfRelation.csv
      */
     public function copyCategoryToLanguageOfRelation()
     {
@@ -214,7 +214,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/localizeContentRecordOfCategoryRelation.csv
+     * See DataSet/localizeContentRecordOfCategoryRelation.csv
      */
     public function localizeContentOfRelation()
     {
@@ -229,7 +229,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/localizeContentOfRelationWSynchronization.csv
+     * See DataSet/localizeContentOfRelationWSynchronization.csv
      */
     public function localizeContentOfRelationWithLanguageSynchronization()
     {
@@ -244,7 +244,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
+     * See DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv
      */
     public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization()
     {
@@ -259,7 +259,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv
+     * See DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv
      */
     public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization()
     {
@@ -274,7 +274,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/localizeCategoryRecordOfCategoryRelation.csv
+     * See DataSet/localizeCategoryRecordOfCategoryRelation.csv
      */
     public function localizeCategoryOfRelation()
     {
@@ -291,7 +291,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/moveContentRecordOfCategoryRelationToDifferentPage.csv
+     * See DataSet/moveContentRecordOfCategoryRelationToDifferentPage.csv
      */
     public function moveContentOfRelationToDifferentPage()
     {
@@ -306,7 +306,7 @@ class ActionTest extends \TYPO3\CMS\Core\Tests\Functional\DataHandling\ManyToMan
 
     /**
      * @test
-     * @see DataSet/copyPage.csv
+     * See DataSet/copyPage.csv
      */
     public function copyPage()
     {

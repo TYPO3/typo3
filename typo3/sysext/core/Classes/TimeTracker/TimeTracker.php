@@ -174,7 +174,8 @@ class TimeTracker implements SingletonInterface
      *
      * @param string $tslabel Label string for the entry, eg. TypoScript property name
      * @param string $value Additional value(?)
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle(), pull()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+     * @see pull()
      */
     public function push($tslabel, $value = '')
     {
@@ -200,7 +201,8 @@ class TimeTracker implements SingletonInterface
      * Pulls an element from the TypoScript tracking array
      *
      * @param string $content The content string generated within the push/pull part.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle(), push()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+     * @see push()
      */
     public function pull($content = '')
     {
@@ -260,7 +262,9 @@ class TimeTracker implements SingletonInterface
     /**
      * Increases the stack pointer
      *
-     * @see decStackPointer(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+     * @see decStackPointer()
+     * @see \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      */
     public function incStackPointer()
     {
@@ -274,7 +278,9 @@ class TimeTracker implements SingletonInterface
     /**
      * Decreases the stack pointer
      *
-     * @see incStackPointer(), \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent(), \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
+     * @see incStackPointer()
+     * @see \TYPO3\CMS\Frontend\Page\PageGenerator::renderContent()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::cObjGetSingle()
      */
     public function decStackPointer()
     {

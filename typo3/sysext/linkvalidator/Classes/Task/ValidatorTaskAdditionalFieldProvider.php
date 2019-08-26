@@ -43,7 +43,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
      * @param ValidatorTask|null $task The task object being edited. Null when adding a task!
      * @param SchedulerModuleController $schedulerModule Reference to the BE module of the Scheduler
      * @return array Additional fields
-     * @see AdditionalFieldProviderInterface->getAdditionalFields($taskInfo, $task, $schedulerModule)
+     * @see AdditionalFieldProviderInterface::getAdditionalFields
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {

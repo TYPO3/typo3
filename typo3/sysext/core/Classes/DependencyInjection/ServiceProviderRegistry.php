@@ -40,7 +40,7 @@ class ServiceProviderRegistry implements \IteratorAggregate
     /**
      * The array with constructed values.
      *
-     * @var array<packageKey, ServiceProviderInterface>
+     * @var array An array<packageKey, ServiceProviderInterface>
      */
     private $instances;
 

@@ -49,7 +49,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
     protected $postRepository;
 
     /**
-     * @var PersistenceManager;
+     * @var PersistenceManager
      */
     protected $persistenceManager;
 

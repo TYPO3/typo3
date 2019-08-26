@@ -136,7 +136,7 @@ class ConfigurationService implements SingletonInterface
      * property paths by one of the above described inspector editor properties (e.g "propertyPath") within
      * the form setup, you must provide the writable property paths with a hook.
      *
-     * @see $this->executeBuildFormDefinitionValidationConfigurationHooks()
+     * @see executeBuildFormDefinitionValidationConfigurationHooks()
      * @param ValidationDto $dto
      * @return bool
      * @internal
@@ -171,7 +171,7 @@ class ConfigurationService implements SingletonInterface
      * property paths by one of the above described inspector editor properties (e.g "propertyPath") within
      * the form setup, you must provide the writable property paths with a hook.
      *
-     * @see $this->executeBuildFormDefinitionValidationConfigurationHooks()
+     * @see executeBuildFormDefinitionValidationConfigurationHooks()
      * @param ValidationDto $dto
      * @return bool
      * @internal
@@ -448,8 +448,8 @@ class ConfigurationService implements SingletonInterface
      * property paths by one of the described inspector editor properties (e.g "propertyPath") within
      * the form setup, you must provide the writable property paths with a hook.
      *
-     * @see $this->isFormElementPropertyDefinedInFormEditorSetup()
-     * @see $this->isPropertyCollectionPropertyDefinedInFormEditorSetup()
+     * @see isFormElementPropertyDefinedInFormEditorSetup()
+     * @see isPropertyCollectionPropertyDefinedInFormEditorSetup()
      * Connect to the hook:
      * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['buildFormDefinitionValidationConfiguration'][] = \Vendor\YourNamespace\YourClass::class;
      * Use the hook:

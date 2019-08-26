@@ -57,7 +57,7 @@ class Offer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
     public function getPrices()
     {
@@ -65,7 +65,7 @@ class Offer extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer> $prices
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $prices
      */
     public function setPrices(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $prices)
     {

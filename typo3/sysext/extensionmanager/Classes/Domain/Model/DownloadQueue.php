@@ -25,7 +25,7 @@ class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Storage for extensions to be downloaded
      *
-     * @var Extension[string][string]
+     * @var array|string[]
      */
     protected $extensionStorage = [];
 

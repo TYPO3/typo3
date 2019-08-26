@@ -98,7 +98,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Repository instance is passed by reference.
      *
      * @param Repository $repository
-     * @see $repository
      */
     public function setRepository(Repository $repository)
     {
@@ -137,7 +136,8 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $remoteResource remote resource to read contents from
      * @param string $localResource local resource (absolute file path) to store retrieved contents to (must be within typo3temp/)
-     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(), \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl()
+     * @see \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile()
      * @throws ExtensionManagerException
      */
     protected function fetchFile($remoteResource, $localResource)
@@ -246,7 +246,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * Method returns information if currently available
      * extension list might be outdated.
      *
-     * @see \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::PROBLEM_NO_VERSIONS_IN_DATABASE,
+     * @see \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper::PROBLEM_NO_VERSIONS_IN_DATABASE
      * @throws ExtensionManagerException
      * @return int "0" if everything is perfect, otherwise bitmask with problems
      */

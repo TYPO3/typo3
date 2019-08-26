@@ -1807,7 +1807,8 @@ class DataHandler implements LoggerAwareInterface
      * @param string $field Field name
      * @param array $incomingFieldArray the fields being explicitly set by the outside (unlike $fieldArray) for the record
      * @return array $res The result array. The processed value (if any!) is set in the "value" key.
-     * @see SlugEnricher, SlugHelper
+     * @see SlugEnricher
+     * @see SlugHelper
      */
     protected function checkValueForSlug(string $value, array $tcaFieldConf, string $table, $id, int $realPid, string $field, array $incomingFieldArray = []): array
     {
@@ -3738,7 +3739,8 @@ class DataHandler implements LoggerAwareInterface
      * @param string $_3 Not used.
      * @param array $workspaceOptions
      * @return array Result array with key "value" containing the value of the processing.
-     * @see copyRecord(), checkValue_flex_procInData_travDS()
+     * @see copyRecord()
+     * @see checkValue_flex_procInData_travDS()
      */
     public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $_3, $workspaceOptions)
     {
@@ -5288,7 +5290,8 @@ class DataHandler implements LoggerAwareInterface
      * @param string $dataValue_ext1 Not used.
      * @param string $dataValue_ext2 Not used.
      * @param string $path Path in flexforms
-     * @see version_remapMMForVersionSwap(), checkValue_flex_procInData_travDS()
+     * @see version_remapMMForVersionSwap()
+     * @see checkValue_flex_procInData_travDS()
      */
     public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
     {
@@ -5429,7 +5432,8 @@ class DataHandler implements LoggerAwareInterface
      * @param string $dataValue_ext1 Not used
      * @param string $dataValue_ext2 Not used
      * @return array Array where the "value" key carries the value.
-     * @see checkValue_flex_procInData_travDS(), remapListedDBRecords()
+     * @see checkValue_flex_procInData_travDS()
+     * @see remapListedDBRecords()
      */
     public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
     {
@@ -6659,7 +6663,8 @@ class DataHandler implements LoggerAwareInterface
      * @param array $fieldArray Array of field=>value pairs to insert/update
      * @param string $action Action, for logging only.
      * @return array|null Selected row
-     * @see insertDB(), updateDB()
+     * @see insertDB()
+     * @see updateDB()
      */
     public function checkStoredRecord($table, $id, $fieldArray, $action)
     {
@@ -7236,7 +7241,8 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $string List of pMap strings
      * @return int Integer mask
-     * @see setTSconfigPermissions(), newFieldArray()
+     * @see setTSconfigPermissions()
+     * @see newFieldArray()
      */
     public function assemblePermissions($string)
     {

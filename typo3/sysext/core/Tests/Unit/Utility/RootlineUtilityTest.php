@@ -70,7 +70,7 @@ class RootlineUtilityTest extends UnitTestCase
      * Tests that $subsetCandidate is completely part of $superset
      * and keys match.
      *
-     * @see (A ^ B) = A <=> A c B
+     * See (A ^ B) = A <=> A c B
      * @param array $subsetCandidate
      * @param array $superset
      */

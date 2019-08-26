@@ -57,7 +57,7 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer>
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
     public function getOffers()
     {
@@ -65,7 +65,7 @@ class Hotel extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Offer> $offers
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers
      */
     public function setOffers(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $offers)
     {

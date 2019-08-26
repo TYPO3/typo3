@@ -25,8 +25,8 @@ abstract class AbstractDriver implements DriverInterface
      * CAPABILITIES
      *******************/
     /**
-     * The capabilities of this driver. See Storage::CAPABILITY_* constants for possible values. This value should be set
-     * in the constructor of derived classes.
+     * The capabilities of this driver. See \TYPO3\CMS\Core\Resource\ResourceStorageInterface::::CAPABILITY_* constants
+     * for possible values. This value should be set in the constructor of derived classes.
      *
      * @var int
      */
@@ -97,7 +97,10 @@ abstract class AbstractDriver implements DriverInterface
      * Returns the capabilities of this driver.
      *
      * @return int
-     * @see Storage::CAPABILITY_* constants
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_BROWSABLE
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_PUBLIC
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_WRITABLE
+     * @see \TYPO3\CMS\Core\Resource\ResourceStorageInterface::CAPABILITY_HIERARCHICAL_IDENTIFIERS
      */
     public function getCapabilities()
     {

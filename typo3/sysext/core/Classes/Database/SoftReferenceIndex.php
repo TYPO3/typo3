@@ -148,7 +148,8 @@ class SoftReferenceIndex implements SingletonInterface
      * @param string $content The input content to analyze
      * @param array $spParams Parameters set for the softref parser key in TCA/columns. value "linkList" will split the string by comma before processing.
      * @return array Result array on positive matches, see description above. Otherwise FALSE
-     * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
+     * @see \TYPO3\CMS\Frontend\ContentObject::typolink()
+     * @see getTypoLinkParts()
      */
     public function findRef_typolink($content, $spParams)
     {
@@ -183,7 +184,8 @@ class SoftReferenceIndex implements SingletonInterface
      *
      * @param string $content The input content to analyze
      * @return array Result array on positive matches, see description above. Otherwise FALSE
-     * @see \TYPO3\CMS\Frontend\ContentObject::typolink(), getTypoLinkParts()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
+     * @see getTypoLinkParts()
      */
     public function findRef_typolink_tag($content)
     {
@@ -363,7 +365,8 @@ class SoftReferenceIndex implements SingletonInterface
      *
      * @param string $typolinkValue TypoLink value.
      * @return array Array with the properties of the input link specified. The key "LINK_TYPE" will reveal the type. If that is blank it could not be determined.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink(), setTypoLinkPartsElement()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::typolink()
+     * @see setTypoLinkPartsElement()
      */
     public function getTypoLinkParts($typolinkValue)
     {

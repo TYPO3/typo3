@@ -46,7 +46,8 @@ class HtmlParser
      * @param string $content HTML-content
      * @param bool $eliminateExtraEndTags If set, excessive end tags are ignored - you should probably set this in most cases.
      * @return array Even numbers in the array are outside the blocks, Odd numbers are block-content.
-     * @see splitTags(), removeFirstAndLastTag()
+     * @see splitTags()
+     * @see removeFirstAndLastTag()
      */
     public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = false)
     {
@@ -152,7 +153,8 @@ class HtmlParser
      * @param string $tag List of tags
      * @param string $content HTML-content
      * @return array Even numbers in the array are outside the blocks, Odd numbers are block-content.
-     * @see splitIntoBlock(), removeFirstAndLastTag()
+     * @see splitIntoBlock()
+     * @see removeFirstAndLastTag()
      */
     public function splitTags($tag, $content)
     {

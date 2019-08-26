@@ -76,7 +76,8 @@ class TerUtility
      * @param string $externalData Data stream from remove server
      * @throws ExtensionManagerException
      * @return array $externalData
-     * @see fetchServerData(), processRepositoryReturnData()
+     * @see fetchServerData()
+     * @see processRepositoryReturnData()
      */
     public function decodeServerData($externalData)
     {

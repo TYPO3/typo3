@@ -622,7 +622,8 @@ class Import extends ImportExport
      * Only used for updates and when $this->dat['header']['pagetree'] is an array.
      *
      * @internal
-     * @see writeRecords_pages(), writeRecords_records_order()
+     * @see writeRecords_pages()
+     * @see writeRecords_records_order()
      */
     public function writeRecords_pages_order()
     {
@@ -745,7 +746,8 @@ class Import extends ImportExport
      *
      * @param int $mainPid Main PID into which we import.
      * @internal
-     * @see writeRecords_records(), writeRecords_pages_order()
+     * @see writeRecords_records()
+     * @see writeRecords_pages_order()
      */
     public function writeRecords_records_order($mainPid)
     {

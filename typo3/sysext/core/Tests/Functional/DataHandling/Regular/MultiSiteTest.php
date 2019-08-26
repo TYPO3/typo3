@@ -53,7 +53,7 @@ class MultiSiteTest extends AbstractDataHandlerActionTestCase
 
     /**
      * @test
-     * @see DataSet/moveRootPageToDifferentPageTree.csv
+     * See DataSet/moveRootPageToDifferentPageTree.csv
      */
     public function moveRootPageToDifferentPageTree()
     {

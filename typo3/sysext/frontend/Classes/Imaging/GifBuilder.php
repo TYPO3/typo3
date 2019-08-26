@@ -343,7 +343,8 @@ class GifBuilder extends GraphicalFunctions
      * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
      *
      * @return string The filename for the created GIF/PNG file. The filename will be prefixed "GB_
-     * @see make(), fileName()
+     * @see make()
+     * @see fileName()
      */
     public function gifBuild()
     {

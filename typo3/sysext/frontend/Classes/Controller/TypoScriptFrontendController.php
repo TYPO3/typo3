@@ -1538,7 +1538,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param array $row The page record to evaluate (needs fields: hidden, starttime, endtime, fe_group)
      * @param bool $bypassGroupCheck Bypass group-check
      * @return bool TRUE, if record is viewable.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(), checkPagerecordForIncludeSection()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList()
+     * @see checkPagerecordForIncludeSection()
      */
     public function checkEnableFields($row, $bypassGroupCheck = false)
     {
@@ -1908,7 +1909,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Used to get and later store the cached data.
      *
      * @return string MD5 hash of serialized hash base from createHashBase()
-     * @see getFromCache(), getLockHash()
+     * @see getFromCache()
+     * @see getLockHash()
      */
     protected function getHash()
     {
@@ -1920,7 +1922,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * This hash is unique to the above hash, except that it doesn't contain the template information in $this->all.
      *
      * @return string MD5 hash
-     * @see getFromCache(), getHash()
+     * @see getFromCache()
+     * @see getHash()
      */
     protected function getLockHash()
     {
@@ -3219,7 +3222,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Converts relative paths in the HTML source to absolute paths for fileadmin/, typo3conf/ext/ and media/ folders.
      *
      * @internal
-     * @see RequestHandler, INTincScript()
+     * @see \TYPO3\CMS\Frontend\Http\RequestHandler
+     * @see INTincScript()
      */
     public function setAbsRefPrefix()
     {

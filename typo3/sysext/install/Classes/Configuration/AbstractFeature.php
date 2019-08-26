@@ -99,7 +99,7 @@ abstract class AbstractFeature
     /**
      * Return presets ordered by priority
      *
-     * @return array<PresetInterface>
+     * @return array|PresetInterface[]
      * @throws Exception
      */
     public function getPresetsOrderedByPriority()

@@ -1927,7 +1927,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * of the user is used.
      *
      * @return \TYPO3\CMS\Core\Resource\Folder|null
-     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder();
+     * @see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getDefaultUploadFolder()
      */
     public function getDefaultUploadTemporaryFolder()
     {

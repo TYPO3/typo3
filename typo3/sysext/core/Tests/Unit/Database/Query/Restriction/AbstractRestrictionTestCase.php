@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractRestrictionTestCase extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+     * @var \TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder
      */
     protected $expressionBuilder;
 

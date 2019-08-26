@@ -29,7 +29,7 @@ class MatcherFactory
      * Create matcher instances and hand over configuration.
      *
      * @param array $matcherConfigurations Incoming configuration array
-     * @return NodeVisitor[]&CodeScannerInterface[]
+     * @return NodeVisitor[]|CodeScannerInterface[]
      * @throws \RuntimeException
      */
     public function createAll(array $matcherConfigurations)

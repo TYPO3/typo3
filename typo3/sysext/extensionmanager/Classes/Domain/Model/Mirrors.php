@@ -48,7 +48,6 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method selects one specific mirror to be used.
      *
      * @param int $mirrorId number (>=1) of mirror or NULL for random selection
-     * @see $currentMirror
      */
     public function setSelect($mirrorId = null)
     {
@@ -97,7 +96,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method returns all available mirrors.
      *
      * @return array multidimensional array with mirrors and their properties
-     * @see $mirrors, setMirrors()
+     * @see setMirrors()
      */
     public function getMirrors()
     {
@@ -108,7 +107,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Method sets available mirrors.
      *
      * @param array $mirrors multidimensional array with mirrors and their properties
-     * @see $mirrors, getMirrors()
+     * @see getMirrors()
      */
     public function setMirrors(array $mirrors)
     {

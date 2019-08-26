@@ -669,7 +669,8 @@ class PageRepository implements LoggerAwareInterface
      * @param string $additionalWhereClause Optional additional where clauses. Like "AND title like '%blabla%'" for instance.
      * @param bool $checkShortcuts Check if shortcuts exist, checks by default
      * @return array Array with key/value pairs; keys are page-uid numbers. values are the corresponding page records (with overlaid localized fields, if any)
-     * @see self::getPageShortcut(), \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
+     * @see getPageShortcut()
+     * @see \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject::makeMenu()
      */
     public function getMenu($pageId, $fields = '*', $sortField = 'sorting', $additionalWhereClause = '', $checkShortcuts = true)
     {
@@ -1007,7 +1008,7 @@ class PageRepository implements LoggerAwareInterface
      * Recursive mount points are not supported by all parts of the core.
      * The usage is discouraged. They may be removed from this method.
      *
-     * @see: https://decisions.typo3.org/t/supporting-or-prohibiting-recursive-mount-points/165/3
+     * @see https://decisions.typo3.org/t/supporting-or-prohibiting-recursive-mount-points/165/3
      *
      * An array will be returned if mount pages are enabled, the correct
      * doktype (7) is set for page and there IS a mount_pid with a valid
@@ -1371,7 +1372,9 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
-     * @see BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
+     * @see BackendUtility::fixVersioningPid()
+     * @see versionOL()
+     * @see getRootLine()
      */
     public function fixVersioningPid($table, &$rr)
     {
@@ -1451,7 +1454,8 @@ class PageRepository implements LoggerAwareInterface
      * @param array $row Record array passed by reference. As minimum, the "uid", "pid" and "t3ver_state" fields must exist! The record MAY be set to FALSE in which case the calling function should act as if the record is forbidden to access!
      * @param bool $unsetMovePointers If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
      * @param bool $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
-     * @see fixVersioningPid(), BackendUtility::workspaceOL()
+     * @see fixVersioningPid()
+     * @see BackendUtility::workspaceOL()
      */
     public function versionOL($table, &$row, $unsetMovePointers = false, $bypassEnableFieldsCheck = false)
     {

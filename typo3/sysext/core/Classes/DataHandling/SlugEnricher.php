@@ -24,7 +24,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * process to create a new slug. Fields having `null` as value are ignored
  * and can be used to by-pass implicit slug initialization.
  *
- * @see DataHandler::fillInFieldArray(), DataHandler::checkValueForSlug()
+ * @see DataHandler::fillInFieldArray()
+ * @see DataHandler::checkValueForSlug()
  */
 class SlugEnricher
 {

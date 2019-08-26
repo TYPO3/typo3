@@ -54,7 +54,7 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel>
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
      */
     public function getHotels()
     {
@@ -62,7 +62,7 @@ class Content extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\OliverHader\IrreTutorial\Domain\Model\Hotel> $hotels
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels
      */
     public function setHotels(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $hotels)
     {

@@ -168,7 +168,8 @@ class GeneralUtility
      *
      * @param string $var Optional pointer to value in GET array (basically name of GET var)
      * @return mixed If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself. In any case *slashes are stipped from the output!*
-     * @see _POST(), _GP()
+     * @see _POST()
+     * @see _GP()
      */
     public static function _GET($var = null)
     {
@@ -188,7 +189,8 @@ class GeneralUtility
      *
      * @param string $var Optional pointer to value in POST array (basically name of POST var)
      * @return mixed If $var is set it returns the value of $_POST[$var]. If $var is NULL (default), returns $_POST itself. In any case *slashes are stipped from the output!*
-     * @see _GET(), _GP()
+     * @see _GET()
+     * @see _GP()
      */
     public static function _POST($var = null)
     {
@@ -827,7 +829,8 @@ class GeneralUtility
      * @param string $string Input string, eg "123 + 456 / 789 - 4
      * @param string $operators Operators to split by, typically "/+-*
      * @return array Array with operators and operands separated.
-     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calc(), \TYPO3\CMS\Frontend\Imaging\GifBuilder::calcOffset()
+     * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::calc()
+     * @see \TYPO3\CMS\Frontend\Imaging\GifBuilder::calcOffset()
      */
     public static function splitCalc($string, $operators)
     {
@@ -1539,7 +1542,8 @@ class GeneralUtility
      * @param string $NSprefix The tag-prefix resolve, eg. a namespace like "T3:"
      * @param bool $reportDocTag If set, the document tag will be set in the key "_DOCUMENT_TAG" of the output array
      * @return mixed If the parsing had errors, a string with the error message is returned. Otherwise an array with the content.
-     * @see array2xml(),xml2arrayProcess()
+     * @see array2xml()
+     * @see xml2arrayProcess()
      */
     public static function xml2array($string, $NSprefix = '', $reportDocTag = false)
     {
@@ -3201,7 +3205,8 @@ class GeneralUtility
      *
      * @param string $uploadedFileName The temporary uploaded filename, eg. $_FILES['[upload field name here]']['tmp_name']
      * @return string If a new file was successfully created, return its filename, otherwise blank string.
-     * @see unlink_tempfile(), upload_copy_move()
+     * @see unlink_tempfile()
+     * @see upload_copy_move()
      */
     public static function upload_to_tempfile($uploadedFileName)
     {
@@ -3227,7 +3232,8 @@ class GeneralUtility
      *
      * @param string $uploadedTempFileName absolute file path - must reside within var/ or typo3temp/ folder.
      * @return bool Returns TRUE if the file was unlink()'ed
-     * @see upload_to_tempfile(), tempnam()
+     * @see upload_to_tempfile()
+     * @see tempnam()
      */
     public static function unlink_tempfile($uploadedTempFileName)
     {
@@ -3256,7 +3262,8 @@ class GeneralUtility
      * @param string $filePrefix Prefix for temporary file
      * @param string $fileSuffix Suffix for temporary file, for example a special file extension
      * @return string result from PHP function tempnam() with the temp/var folder prefixed.
-     * @see unlink_tempfile(), upload_to_tempfile()
+     * @see unlink_tempfile()
+     * @see upload_to_tempfile()
      */
     public static function tempnam($filePrefix, $fileSuffix = '')
     {
@@ -3410,7 +3417,7 @@ class GeneralUtility
      * the instance of a specific class.
      *
      * @param string $className name of the class to instantiate, must not be empty and not start with a backslash
-     * @param array<int, mixed> $constructorArguments Arguments for the constructor
+     * @param array|mixed[] $constructorArguments Arguments for the constructor
      * @return object the created instance
      * @throws \InvalidArgumentException if $className is empty or starts with a backslash
      */
@@ -3471,7 +3478,7 @@ class GeneralUtility
      * container.
      *
      * @param string $className name of the class to instantiate
-     * @param array<int, mixed> $constructorArguments Arguments for the constructor
+     * @param array|mixed[] $constructorArguments Arguments for the constructor
      * @return object the created instance
      * @internal
      */

@@ -412,7 +412,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * If the flag $this->userData_change has been set, the function ->writeUC is called (which will save persistent user session data)
      * If the flag $this->sesData_change has been set, the current session record is updated with the content of $this->sessionData
      *
-     * @see getKey(), setKey()
+     * @see getKey()
+     * @see setKey()
      */
     public function storeSessionData()
     {
@@ -561,7 +562,8 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
      * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
      * @param string $key Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sessionData) and this value determines in which key the $data value will be stored.
      * @param mixed $data The data value to store in $key
-     * @see setKey(), storeSessionData()
+     * @see setKey()
+     * @see storeSessionData()
      */
     public function setKey($type, $key, $data)
     {

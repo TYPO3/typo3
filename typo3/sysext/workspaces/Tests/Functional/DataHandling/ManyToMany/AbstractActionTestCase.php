@@ -47,7 +47,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
      */
 
     /**
-     * @see DataSet/createContentRecordAndAddCategoryRelation.csv
+     * See DataSet/createContentRecordAndAddCategoryRelation.csv
      */
     public function createContentAndAddRelation()
     {
@@ -60,7 +60,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createCategoryRecordAndAddCategoryRelation.csv
+     * See DataSet/createCategoryRecordAndAddCategoryRelation.csv
      */
     public function createCategoryAndAddRelation()
     {
@@ -73,7 +73,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createContentRecordAndCreateCategoryRelation.csv
+     * See DataSet/createContentRecordAndCreateCategoryRelation.csv
      */
     public function createContentAndCreateRelation()
     {
@@ -89,7 +89,7 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
-     * @see DataSet/createCategoryRecordAndCreateCategoryRelation.csv
+     * See DataSet/createCategoryRecordAndCreateCategoryRelation.csv
      */
     public function createCategoryAndCreateRelation()
     {

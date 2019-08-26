@@ -190,7 +190,7 @@ class ConfigurationManager extends ExtbaseConfigurationManager implements Config
 
     /**
      * @param string $extensionName
-     * @return null|[]
+     * @return array
      */
     protected function getTypoScriptSettings(string $extensionName)
     {

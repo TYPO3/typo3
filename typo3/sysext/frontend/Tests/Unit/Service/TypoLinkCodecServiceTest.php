@@ -40,7 +40,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
      * @test
      * @dataProvider encodeReturnsExpectedResultDataProvider
      * @param array $parts
-     * @param string$expected
+     * @param string $expected
      */
     public function encodeReturnsExpectedResult(array $parts, $expected)
     {

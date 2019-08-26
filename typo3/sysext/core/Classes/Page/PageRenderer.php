@@ -1745,7 +1745,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Renders all JavaScript and CSS
      *
-     * @return array<string>
+     * @return array|string[]
      */
     protected function renderJavaScriptAndCss()
     {
@@ -2100,7 +2100,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Render JavaScipt libraries
      *
-     * @return array<string> jsLibs and jsFooterLibs strings
+     * @return array|string[] jsLibs and jsFooterLibs strings
      */
     protected function renderAdditionalJavaScriptLibraries()
     {
@@ -2144,7 +2144,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Render JavaScript files
      *
-     * @return array<string> jsFiles and jsFooterFiles strings
+     * @return array|string[] jsFiles and jsFooterFiles strings
      */
     protected function renderJavaScriptFiles()
     {
@@ -2189,7 +2189,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Render inline JavaScript
      *
-     * @return array<string> jsInline and jsFooterInline string
+     * @return array|string[] jsInline and jsFooterInline string
      */
     protected function renderInlineJavaScript()
     {
