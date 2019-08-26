@@ -42,7 +42,7 @@ class ActionController extends AbstractController
     protected $cacheService;
 
     /**
-     * @var HashService;
+     * @var HashService
      */
     protected $hashService;
 
