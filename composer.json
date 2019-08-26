@@ -47,6 +47,7 @@
 		"phpdocumentor/reflection-docblock": "^4.3",
 		"psr/container": "^1.0",
 		"psr/event-dispatcher": "^1.0",
+		"psr/http-factory": "^1.0",
 		"psr/http-message": "~1.0",
 		"psr/http-server-middleware": "^1.0",
 		"psr/log": "~1.0.0",
@@ -92,6 +93,10 @@
 		"symfony/finder": "2.7.44 || 2.8.37 || 3.4.7 || 4.0.7",
 		"symfony/routing": "4.2.7",
 		"phpdocumentor/reflection-docblock": ">= 4.3.2"
+	},
+	"provide": {
+		"psr/http-factory-implementation": "1.0",
+		"psr/http-message-implementation": "1.0"
 	},
 	"extra": {
 		"typo3/class-alias-loader": {

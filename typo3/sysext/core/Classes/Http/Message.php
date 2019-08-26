@@ -285,6 +285,9 @@ class Message implements MessageInterface
      */
     public function getBody()
     {
+        if ($this->body === null) {
+            $this->body = new Stream('php://temp', 'r+');
+        }
         return $this->body;
     }
 

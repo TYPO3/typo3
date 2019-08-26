@@ -67,7 +67,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Constructor method
      *
-     * @param string|resource $input is either a stream or a filename
+     * @param string|resource|StreamInterface $input is either a stream or a filename
      * @param int $size see $_FILES['size'] from PHP
      * @param int $errorStatus see $_FILES['error']
      * @param string $clientFilename the original filename handed over from the client

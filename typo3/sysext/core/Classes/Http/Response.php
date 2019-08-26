@@ -120,16 +120,17 @@ class Response extends Message implements ResponseInterface
      * @param StreamInterface|string $body
      * @param int $statusCode
      * @param array $headers
+     * @param string $reasonPhrase
      * @throws \InvalidArgumentException if any of the given arguments are given
      */
-    public function __construct($body = 'php://temp', $statusCode = 200, $headers = [])
+    public function __construct($body = 'php://temp', $statusCode = 200, $headers = [], string $reasonPhrase = '')
     {
         // Build a streamable object for the body
-        if (!is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {
+        if ($body !== null && !is_string($body) && !is_resource($body) && !$body instanceof StreamInterface) {
             throw new \InvalidArgumentException('Body must be a string stream resource identifier, a stream resource, or a StreamInterface instance', 1436717277);
         }
 
-        if (!$body instanceof StreamInterface) {
+        if ($body !== null && !$body instanceof StreamInterface) {
             $body = new Stream($body, 'rw');
         }
         $this->body = $body;
@@ -139,7 +140,7 @@ class Response extends Message implements ResponseInterface
         }
         $this->statusCode = (int)$statusCode;
 
-        $this->reasonPhrase = $this->availableStatusCodes[$this->statusCode];
+        $this->reasonPhrase = $reasonPhrase === '' ? $this->availableStatusCodes[$this->statusCode] : $reasonPhrase;
         list($this->lowercasedHeaderNames, $headers) = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;

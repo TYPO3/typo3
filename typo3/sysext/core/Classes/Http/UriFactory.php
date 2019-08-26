@@ -15,15 +15,23 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\UriFactoryInterface;
+use Psr\Http\Message\UriInterface;
+
 /**
- * A null response object
- *
- * @internal Note that this is not public API yet.
+ * @internal Note that this is not public API, use PSR-17 interfaces instead.
  */
-class NullResponse extends Response
+class UriFactory implements UriFactoryInterface
 {
-    public function __construct()
+    /**
+     * Create a new URI.
+     *
+     * @param string $uri
+     * @return UriInterface
+     * @throws \InvalidArgumentException If the given URI cannot be parsed.
+     */
+    public function createUri(string $uri = ''): UriInterface
     {
-        parent::__construct(null);
+        return new Uri($uri);
     }
 }

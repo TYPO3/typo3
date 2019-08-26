@@ -7,10 +7,6 @@ services:
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
 
-  Psr\EventDispatcher\EventDispatcherInterface:
-    alias: TYPO3\CMS\Core\EventDispatcher\EventDispatcher
-    public: true
-
   TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
     tags: ['container.env_var_processor']
 
@@ -76,3 +72,26 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['l10n']
+
+  # Interface implementations
+  Psr\EventDispatcher\EventDispatcherInterface:
+    alias: TYPO3\CMS\Core\EventDispatcher\EventDispatcher
+    public: true
+  Psr\Http\Message\RequestFactoryInterface:
+    alias: TYPO3\CMS\Core\Http\RequestFactory
+    public: true
+  Psr\Http\Message\ResponseFactoryInterface:
+    alias: TYPO3\CMS\Core\Http\ResponseFactory
+    public: true
+  Psr\Http\Message\ServerRequestFactoryInterface:
+    alias: TYPO3\CMS\Core\Http\ServerRequestFactory
+    public: true
+  Psr\Http\Message\StreamFactoryInterface:
+    alias: TYPO3\CMS\Core\Http\StreamFactory
+    public: true
+  Psr\Http\Message\UploadedFileFactoryInterface:
+    alias: TYPO3\CMS\Core\Http\UploadedFileFactory
+    public: true
+  Psr\Http\Message\UriFactoryInterface:
+    alias: TYPO3\CMS\Core\Http\UriFactory
+    public: true

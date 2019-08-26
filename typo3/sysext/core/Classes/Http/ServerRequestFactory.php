@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Http;
 
 /*
@@ -14,6 +15,8 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -24,8 +27,25 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal Note that this is not public API yet.
  */
-class ServerRequestFactory
+class ServerRequestFactory implements ServerRequestFactoryInterface
 {
+    /**
+     * Create a new server request.
+     *
+     * Note that server-params are taken precisely as given - no parsing/processing
+     * of the given values is performed, and, in particular, no attempt is made to
+     * determine the HTTP method or URI, which must be provided explicitly.
+     *
+     * @param string $method The HTTP method associated with the request.
+     * @param UriInterface|string $uri The URI associated with the request.
+     * @param array $serverParams Array of SAPI parameters with which to seed the generated request instance.
+     * @return ServerRequestInterface
+     */
+    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+    {
+        return new ServerRequest($uri, $method, null, [], $serverParams);
+    }
+
     /**
      * Create a request from the original superglobal variables.
      *

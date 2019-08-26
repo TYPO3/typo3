@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Core\Http;
 
 /*
@@ -17,17 +18,32 @@ namespace TYPO3\CMS\Core\Http;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class RequestFactory to create Request objects
- * Returns PSR-7 Request objects (currently the Guzzle implementation).
+ * Returns PSR-7 Request objects
  */
-class RequestFactory
+class RequestFactory implements RequestFactoryInterface
 {
     /**
-     * Create a request object with our custom implementation
+     * Create a new request.
+     *
+     * @param string $method The HTTP method associated with the request.
+     * @param UriInterface|string $uri The URI associated with the request.
+     * @return RequestInterface
+     */
+    public function createRequest(string $method, $uri): RequestInterface
+    {
+        return new Request($uri, $method, null);
+    }
+
+    /**
+     * Create a guzzle request object with our custom implementation
      *
      * @param string $uri the URI to request
      * @param string $method the HTTP method (defaults to GET)
