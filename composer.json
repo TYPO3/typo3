@@ -47,6 +47,7 @@
 		"phpdocumentor/reflection-docblock": "^4.3",
 		"psr/container": "^1.0",
 		"psr/event-dispatcher": "^1.0",
+		"psr/http-client": "^1.0",
 		"psr/http-factory": "^1.0",
 		"psr/http-message": "~1.0",
 		"psr/http-server-middleware": "^1.0",
@@ -95,6 +96,7 @@
 		"phpdocumentor/reflection-docblock": ">= 4.3.2"
 	},
 	"provide": {
+		"psr/http-client-implementation": "1.0",
 		"psr/http-factory-implementation": "1.0",
 		"psr/http-message-implementation": "1.0"
 	},

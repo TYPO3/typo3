@@ -15,14 +15,11 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 
 /**
  * Class RequestFactory to create Request objects
@@ -52,27 +49,7 @@ class RequestFactory implements RequestFactoryInterface
      */
     public function request(string $uri, string $method = 'GET', array $options = []): ResponseInterface
     {
-        $client = $this->getClient();
+        $client = GuzzleClientFactory::getClient();
         return $client->request($method, $uri, $options);
-    }
-
-    /**
-     * Creates the client to do requests
-     * @return ClientInterface
-     */
-    protected function getClient(): ClientInterface
-    {
-        $httpOptions = $GLOBALS['TYPO3_CONF_VARS']['HTTP'];
-        $httpOptions['verify'] = filter_var($httpOptions['verify'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? $httpOptions['verify'];
-
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler']) && is_array($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'])) {
-            $stack = HandlerStack::create();
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['HTTP']['handler'] ?? [] as $handler) {
-                $stack->push($handler);
-            }
-            $httpOptions['handler'] = $stack;
-        }
-
-        return GeneralUtility::makeInstance(Client::class, $httpOptions);
     }
 }
