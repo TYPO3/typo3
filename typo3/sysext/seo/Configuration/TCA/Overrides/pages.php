@@ -158,7 +158,7 @@ $tca = [
                         'options' => [
                             'title' => 'LLL:EXT:seo/Resources/Private/Language/locallang_tca.xlf:pages.canonical_link',
                             'blindLinkFields' => 'class,target,title',
-                            'blindLinkOptions' => 'mail,folder,file'
+                            'blindLinkOptions' => 'mail,folder,file,telephone'
                         ],
                     ],
                 ],
