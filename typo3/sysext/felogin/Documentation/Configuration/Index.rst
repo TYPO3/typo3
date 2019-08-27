@@ -583,7 +583,7 @@ changePasswordNotEqualMessage\_stdWrap
          changePasswordNotEqualMessage\_stdWrap
 
    Data type
-
+         array
 
    Default
          wrap = <div>\|</div>
