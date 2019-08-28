@@ -82,6 +82,7 @@ class PreviewController
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
         $this->moduleTemplate->getPageRenderer()->addJsInlineCode('workspace-inline-code', $this->generateJavascript());
         $this->moduleTemplate->getPageRenderer()->addCssFile('EXT:workspaces/Resources/Public/Css/preview.css');
+        $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
         $this->moduleTemplate->getPageRenderer()->addInlineLanguageLabelFile('EXT:workspaces/Resources/Private/Language/locallang.xlf');
     }
 
@@ -188,6 +189,7 @@ class PreviewController
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;
         }
+        $this->moduleTemplate->getPageRenderer()->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'id', $this->pageId);
 
@@ -232,15 +234,23 @@ class PreviewController
      */
     protected function generateJavascript(): string
     {
+        // Needed for FormEngine manipulation (date picker)
+        $dateFormat = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['USdateFormat'] ? ['MM-DD-YYYY', 'HH:mm MM-DD-YYYY'] : ['DD-MM-YYYY', 'HH:mm DD-MM-YYYY']);
+        $this->moduleTemplate->getPageRenderer()->addInlineSetting('DateTimePicker', 'DateFormat', $dateFormat);
+
         // If another page module was specified, replace the default Page module with the new one
         $pageModule = \trim($this->getBackendUser()->getTSConfig()['options.']['overridePageModule'] ?? '');
         $pageModule = BackendUtility::isModuleSetInTBE_MODULES($pageModule) ? $pageModule : 'web_layout';
+        $pageModuleUrl = '';
         if (!$this->getBackendUser()->check('modules', $pageModule)) {
             $pageModule = '';
+        } else {
+            $pageModuleUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($pageModule);
         }
         $t3Configuration = [
             'username' => htmlspecialchars($this->getBackendUser()->user['username']),
             'pageModule' => $pageModule,
+            'pageModuleUrl' => $pageModuleUrl,
             'inWorkspace' => $this->getBackendUser()->workspace !== 0,
             'showRefreshLoginPopup' => (bool)($GLOBALS['TYPO3_CONF_VARS']['BE']['showRefreshLoginPopup'] ?? false)
         ];

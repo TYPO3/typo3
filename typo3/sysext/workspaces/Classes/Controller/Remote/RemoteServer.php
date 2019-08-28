@@ -431,9 +431,10 @@ class RemoteServer
     /**
      * Gets all available system languages.
      *
+     * @param \stdClass $parameters
      * @return array
      */
-    public function getSystemLanguages()
+    public function getSystemLanguages(\stdClass $parameters)
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $systemLanguages = [
@@ -443,7 +444,7 @@ class RemoteServer
                 'icon' => $iconFactory->getIcon('empty-empty', Icon::SIZE_SMALL)->render()
             ]
         ];
-        foreach ($this->gridDataService->getSystemLanguages() as $id => $systemLanguage) {
+        foreach ($this->gridDataService->getSystemLanguages($parameters->pageUid ?? 0) as $id => $systemLanguage) {
             if ($id < 0) {
                 continue;
             }

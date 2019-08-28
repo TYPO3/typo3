@@ -161,11 +161,11 @@ define([
       window.location.href = newUrl;
     }).on('click', '[data-action="version"]', function(e) {
       var $tr = $(e.target).closest('tr');
-      if ($tr.data('table') === 'pages') {
-        top.loadEditId($tr.data('t3ver_oid'));
-      } else {
-        top.loadEditId($tr.data('pid'));
-      }
+      var recordUidField = $tr.data('table') === 'pages' ? 't3ver_oid' : 'pid';
+      var recordUid = $tr.data(recordUidField);
+      window.location.href = top.TYPO3.configuration.pageModuleUrl
+        + '&id=' + recordUid
+        + '&returnUrl=' + encodeURIComponent(window.location.href);
     }).on('click', '[data-action="remove"]', Backend.confirmDeleteRecordFromWorkspace
     ).on('click', '[data-action="expand"]', function(e) {
       var $me = $(this),
@@ -429,7 +429,9 @@ define([
       Workspaces.generateRemotePayload('getWorkspaceInfos', Backend.settings),
       Workspaces.generateRemotePayload('getStageActions', {}),
       Workspaces.generateRemoteMassActionsPayload('getMassStageActions', {}),
-      Workspaces.generateRemotePayload('getSystemLanguages', {})
+      Workspaces.generateRemotePayload('getSystemLanguages', {
+        pageUid: Backend.elements.$container.data('pageUid')
+      })
     ]).done(function(response) {
       Backend.elements.$depthSelector.prop('disabled', false);
 
