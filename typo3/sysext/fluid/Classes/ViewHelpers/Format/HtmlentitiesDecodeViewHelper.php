@@ -31,7 +31,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    <f:format.htmlentitiesDecode>{text}</f:format.htmlentitiesDecode>
  *
- * Text with ``&amp;`` ``&quot;`` ``&lt;`` ``&gt;`` replaced by unescaped entities :php:`html_entity_decode` applied.
+ * Text containing the following escaped signs: ``&amp;`` ``&quot;`` ``&#039;`` ``&lt;`` ``&gt;``, will be processed by :php:`html_entity_decode()`.
+ * These will result in: ``&`` ``"`` ``'`` ``<`` ``>``.
  *
  * Inline notation
  * ---------------
@@ -40,7 +41,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    {text -> f:format.htmlentitiesDecode(encoding: 'ISO-8859-1')}
  *
- * Text with ``&amp;`` ``&quot;`` ``&lt;`` ``&gt;`` replaced by unescaped entities :php:`html_entity_decode` applied.
+ * Text containing the following escaped signs: ``&amp;`` ``&quot;`` ``&#039;`` ``&lt;`` ``&gt;``, will be processed by :php:`html_entity_decode()`.
+ * These will result in: ``&`` ``"`` ``'`` ``<`` ``>``.
+ *
+ * But encoded as ISO-8859-1.
  */
 class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {

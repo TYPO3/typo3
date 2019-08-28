@@ -34,8 +34,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <f:translate key="key1" />
  *
- * Value of key "key1" in the current website language. Alternatively id can be used instead of
- * key:
+ * Value of key ``key1`` in the current website language. Alternatively id can
+ * be used instead of key::
  *
  *    <f:translate id="key1" />
  *
@@ -48,7 +48,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <f:format.raw><f:translate key="htmlKey" /></f:format.raw>
  *
- * Value of key "htmlKey" in the current website language, no :php:`htmlspecialchars` applied.
+ * Value of key ``htmlKey`` in the current website language, no :php:`htmlspecialchars()` applied.
  *
  * Translate key from custom locallang file
  * ----------------------------------------
@@ -57,7 +57,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    <f:translate key="LLL:EXT:myext/Resources/Private/Language/locallang.xlf:key1" />
  *
- * Value of key "key1" in the current website language.
+ * Value of key ``key1`` in the current website language.
  *
  * Inline notation with arguments and default value
  * ------------------------------------------------
@@ -66,8 +66,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    {f:translate(key: 'argumentsKey', arguments: {0: 'dog', 1: 'fox'}, default: 'default value')}
  *
- * Value of key "argumentsKey" in the current website language
- * with "%1" and "%2" are replaced by "dog" and "fox" (:php:`printf`).
+ * Value of key ``argumentsKey`` in the current website language
+ * with ``%1`` and ``%2`` are replaced by "dog" and "fox" (:php:`printf()`).
  * If the key is not found, the output is "default value".
  *
  * Inline notation with extension name
@@ -77,7 +77,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *
  *    {f:translate(key: 'someKey', extensionName: 'SomeExtensionName')}
  *
- * Value of key "someKey" in the current website language.
+ * Value of key ``someKey`` in the current website language.
  * The locallang file of extension "some_extension_name" will be used.
  */
 class TranslateViewHelper extends AbstractViewHelper

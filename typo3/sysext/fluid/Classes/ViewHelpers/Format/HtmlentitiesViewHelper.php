@@ -31,7 +31,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    <f:format.htmlentities>{text}</f:format.htmlentities>
  *
- * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities :php:`htmlentities` applied.
+ * Text containing the following signs ``&`` ``"`` ``'`` ``<`` ``>`` will be processed by :php:`htmlentities()`.
+ * These will result in: ``&amp;`` ``&quot;`` ``&#039;`` ``&lt;`` ``&gt;``.
  *
  * Inline notation
  * ---------------
@@ -40,7 +41,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  *
  *    {text -> f:format.htmlentities(encoding: 'ISO-8859-1')}
  *
- * Text with ``&`` ``"`` ``'`` ``<`` ``>`` ``*`` replaced by HTML entities :php:`htmlentities` applied.
+ * Text containing the following signs ``&`` ``"`` ``'`` ``<`` ``>`` will be processed by :php:`htmlentities()`.
+ * These will result in: ``&amp;`` ``&quot;`` ``&#039;`` ``&lt;`` ``&gt;``.
+ *
+ * But encoded as ISO-8859-1.
  */
 class HtmlentitiesViewHelper extends AbstractEncodingViewHelper
 {
