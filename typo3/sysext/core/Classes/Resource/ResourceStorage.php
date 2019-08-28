@@ -820,7 +820,7 @@ class ResourceStorage implements ResourceStorageInterface
             throw new Exception\InsufficientFolderAccessPermissionsException(
                 'You are not allowed to access the given folder: "' . $folder->getName() . '"',
                 1375955684
-                );
+            );
         }
     }
 

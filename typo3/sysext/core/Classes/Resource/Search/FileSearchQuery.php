@@ -147,7 +147,7 @@ class FileSearchQuery
         $query->queryBuilder->add(
             'select',
             'COUNT(DISTINCT ' . $query->queryBuilder->quoteIdentifier(self::FILES_TABLE . '.identifier') . ')'
-         );
+        );
 
         return $query;
     }

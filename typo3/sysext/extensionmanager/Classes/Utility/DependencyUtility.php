@@ -401,7 +401,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
                 throw new Exception\MissingExtensionDependencyException(
                     'The extension ' . $extensionKey . ' could not be checked. Please update your Extension-List from TYPO3 Extension Repository (TER).',
                     1430580308
-                    );
+                );
             }
             return;
         }

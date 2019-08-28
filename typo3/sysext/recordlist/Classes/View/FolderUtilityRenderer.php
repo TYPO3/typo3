@@ -89,9 +89,9 @@ class FolderUtilityRenderer
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
             $this->parameterProvider->getUrlParameters(
                 ['identifier' => $folderObject->getCombinedIdentifier()]
-                ),
+            ),
             '&'
-            );
+        );
         $markup[] = '<input type="hidden" name="data[newfolder][' . $a . '][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
 
         $markup[] = '</div></form>';
@@ -153,7 +153,7 @@ class FolderUtilityRenderer
         $redirectValue = $this->parameterProvider->getScriptUrl() . HttpUtility::buildQueryString(
             $this->parameterProvider->getUrlParameters(['identifier' => $combinedIdentifier]),
             '&'
-            );
+        );
         $markup[] = '<input type="hidden" name="data[upload][1][redirect]" value="' . htmlspecialchars($redirectValue) . '" />';
 
         if (!empty($fileExtList)) {

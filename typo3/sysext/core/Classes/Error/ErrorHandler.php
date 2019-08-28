@@ -174,7 +174,7 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 $message,
                 $errorLevels[$errorLevel],
                 $flashMessageSeverity
-                    );
+            );
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */

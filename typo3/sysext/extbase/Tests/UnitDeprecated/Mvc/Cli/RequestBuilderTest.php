@@ -114,7 +114,7 @@ class RequestBuilderTest extends UnitTestCase
             ->will(
                 $this->throwException(
                     new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('testing', 1476050312)
-            )
+                )
             );
         $this->requestBuilder->_set('commandManager', $mockCommandManager);
         $request = $this->requestBuilder->build('test:default:list');

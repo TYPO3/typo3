@@ -406,7 +406,7 @@ STYLESHEET;
                     $step['type'],
                     $step['function'],
                     $this->formatArgs($args)
-                    ) . '</div>';
+                ) . '</div>';
             }
 
             if (isset($step['file']) && isset($step['line'])) {

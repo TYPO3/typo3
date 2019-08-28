@@ -298,7 +298,7 @@ class FlexFormTools
                         $queryBuilder->expr()->eq(
                             'uid',
                             $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
-                    )
+                        )
                     )
                     ->execute();
                 $rowCount = $queryBuilder

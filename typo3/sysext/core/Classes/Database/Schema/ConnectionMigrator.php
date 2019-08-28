@@ -122,7 +122,7 @@ class ConnectionMigrator
             $this->getUnusedTableUpdateSuggestions($schemaDiff),
             $this->getDropTableUpdateSuggestions($schemaDiff),
             $this->getDropFieldUpdateSuggestions($schemaDiff)
-            );
+        );
     }
 
     /**

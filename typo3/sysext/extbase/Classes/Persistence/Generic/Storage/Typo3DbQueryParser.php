@@ -403,7 +403,7 @@ class Typo3DbQueryParser
                     $this->queryBuilder->quoteIdentifier($tableName . '.uid'),
                     'IN',
                     '(' . $queryBuilderForSubselect->getSQL() . ')'
-                    );
+                );
             }
             if ($typeOfRelation === ColumnMap::RELATION_HAS_MANY) {
                 $parentKeyFieldName = $columnMap->getParentKeyFieldName();
@@ -426,12 +426,12 @@ class Typo3DbQueryParser
                     return $this->queryBuilder->expr()->eq(
                         $tableName . '.uid',
                         '(' . $queryBuilderForSubselect->getSQL() . ')'
-                        );
+                    );
                 }
                 return $this->queryBuilder->expr()->inSet(
                     $tableName . '.' . $columnName,
                     $this->queryBuilder->quote($value)
-                        );
+                );
             }
             throw new RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
         }
@@ -835,7 +835,6 @@ class Typo3DbQueryParser
                                 $this->queryBuilder->expr()->in(
                                     $tableAlias . '.uid',
                                     $queryBuilderForSubselect->getSQL()
-
                                 )
                             )
                         );
@@ -858,15 +857,14 @@ class Typo3DbQueryParser
                             $this->queryBuilder->expr()->notIn(
                                 $tableAlias . '.uid',
                                 $queryBuilderForSubselect->getSQL()
-
-                                )
                             )
-                        );
+                        )
+                    );
                 }
                 return $this->queryBuilder->expr()->in(
                     $tableAlias . '.' . $languageField,
                     [(int)$querySettings->getLanguageUid(), -1]
-                    );
+                );
             }
         }
         return '';

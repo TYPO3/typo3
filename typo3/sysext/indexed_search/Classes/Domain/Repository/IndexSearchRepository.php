@@ -1199,7 +1199,7 @@ class IndexSearchRepository
                         'phash' => (int)$row['phash'],
                         'gr_list' => $this->frontendUserGroupList
                     ]
-                );
+            );
         }
         return true;
     }

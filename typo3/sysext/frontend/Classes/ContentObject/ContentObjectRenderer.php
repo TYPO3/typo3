@@ -6801,7 +6801,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $tableReference,
                 $queryBuilder->getQueryPart('join'),
                 $knownAliases
-                );
+            );
         }
 
         $queryParts['SELECT'] = implode(', ', $queryBuilder->getQueryPart('select'));

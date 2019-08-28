@@ -202,6 +202,6 @@ class PaginateController extends AbstractWidgetController
                 . '" accepts as argument "QueryResultInterface", "\SplObjectStorage", "ObjectStorage" or an array. '
                 . 'given: ' . get_class($this->objects),
             1385547291
-            );
+        );
     }
 }

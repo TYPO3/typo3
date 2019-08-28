@@ -102,6 +102,6 @@ class PlatformInformation
         throw new \RuntimeException(
             'Unsupported Databaseplatform "' . get_class($platform) . '" detected in PlatformInformation',
             1500958070
-            );
+        );
     }
 }

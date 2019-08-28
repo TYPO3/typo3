@@ -110,7 +110,7 @@ class BackendUtility
         return ' AND ' . $expressionBuilder->eq(
             ($tableAlias ?: $table) . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'],
             0
-            );
+        );
     }
 
     /**
@@ -3662,7 +3662,6 @@ class BackendUtility
                         $queryBuilder->createNamedParameter($domain . '/', \PDO::PARAM_STR)
                     )
                 )
-
             )
             ->execute()
             ->fetch();

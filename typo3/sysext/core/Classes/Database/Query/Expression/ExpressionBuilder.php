@@ -368,7 +368,7 @@ class ExpressionBuilder
                         )
                         : $this->literal(
                             ',' . $this->unquoteLiteral($value) . ','
-                    )
+                        )
                 );
                 return $comparison;
             default:

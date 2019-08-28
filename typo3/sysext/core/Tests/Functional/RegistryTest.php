@@ -121,7 +121,7 @@ class RegistryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             [
                     'entry_value' => Connection::PARAM_LOB,
                 ]
-            );
+        );
 
         (new Registry())->remove('ns1', 'k1');
 

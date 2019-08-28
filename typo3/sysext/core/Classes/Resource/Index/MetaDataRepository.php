@@ -191,7 +191,7 @@ class MetaDataRepository implements SingletonInterface
                         'uid' => (int)$row['uid']
                     ],
                 $types
-                );
+            );
 
             $this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
         }

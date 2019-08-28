@@ -60,19 +60,19 @@ class AdminIsSystemMaintainer extends AbstractNode
                     // User is a system maintainer
                     $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
                         'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userIsSystemMaintainer'
-                        )) . '</strong>';
+                    )) . '</strong>';
                 } else {
                     // User is currently not an admin, but set as system maintainer (in-effective).
                     // If admin field is set to 1, the user is therefore system maintainer again.
                     $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
                         'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userWillBecomeSystemMaintainer'
-                        )) . '</strong>';
+                    )) . '</strong>';
                 }
             } else {
                 // User is in system maintainer list, user can not change admin and password
                 $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed'
-                    )) . '</strong>';
+                )) . '</strong>';
             }
             $resultArray['html'] = $fieldInformationText;
         }

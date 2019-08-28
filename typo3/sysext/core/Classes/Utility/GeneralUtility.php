@@ -3196,7 +3196,7 @@ class GeneralUtility
         } elseif (!(
             static::isFirstPartOfStr($filename, Environment::getProjectPath())
                   || static::isFirstPartOfStr($filename, Environment::getPublicPath())
-                )) {
+        )) {
             // absolute, but set to blank if not allowed
             $filename = '';
         }
@@ -3249,7 +3249,7 @@ class GeneralUtility
                 static::isFirstPartOfStr($path, Environment::getProjectPath())
                 || static::isFirstPartOfStr($path, Environment::getPublicPath())
                 || $lockRootPath && static::isFirstPartOfStr($path, $lockRootPath)
-               );
+            );
     }
 
     /**

@@ -3800,7 +3800,7 @@ class DataHandler implements LoggerAwareInterface
                             $queryBuilder->expr()->eq(
                                 'pid',
                                 $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                        )
+                            )
                         );
                     if ($isTableWorkspaceEnabled && (int)$this->BE_USER->workspace === 0) {
                         // Table is workspace enabled, user is in default ws -> add t3ver_wsid=0 restriction

@@ -34,7 +34,7 @@ class FileReferenceTest extends UnitTestCase
             ->method('getProperties')
             ->will(
                 $this->returnValue($originalFileProperties)
-        );
+            );
         $fixture->_set('originalFile', $originalFileMock);
         $fixture->_set('propertiesOfFileReference', $fileReferenceProperties);
 
