@@ -176,7 +176,7 @@ class DeletedRecordsCommand extends Command
                     $queryBuilder->expr()->eq(
                         'pid',
                         $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)
-                )
+                    )
                 )
                 ->execute();
 

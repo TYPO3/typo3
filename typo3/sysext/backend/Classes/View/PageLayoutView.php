@@ -2001,11 +2001,11 @@ class PageLayoutView implements LoggerAwareInterface
                         $row['uid'],
                         ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                         $this->getReferenceCount('tt_content', $row['uid'])
-                        ) . BackendUtility::translationCount(
-                            'tt_content',
-                            $row['uid'],
-                            ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
-                        );
+                    ) . BackendUtility::translationCount(
+                        'tt_content',
+                        $row['uid'],
+                        ' ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
+                    );
                     $confirm = $this->getLanguageService()->getLL('deleteWarning')
                         . $refCountMsg;
                     $out .= '<a class="btn btn-default t3js-modal-trigger" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params)) . '"'
@@ -2278,7 +2278,7 @@ class PageLayoutView implements LoggerAwareInterface
                     }
                     $out .= htmlspecialchars($this->getLanguageService()->sL(
                         BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages'])
-                        )) . '<br />';
+                    )) . '<br />';
                     break;
                 default:
                     $contentType = $this->CType_labels[$row['CType']];
@@ -3160,11 +3160,11 @@ class PageLayoutView implements LoggerAwareInterface
         foreach ($searchLevelItems as $kv => $label) {
             $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars(
                 $label
-                ) . '</option>';
+            ) . '</option>';
         }
         $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')
-            ) . '" id="search_levels">' . implode('', $opt) . '</select>';
+        ) . '" id="search_levels">' . implode('', $opt) . '</select>';
         // Table with the search box:
         $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
@@ -3175,34 +3175,34 @@ class PageLayoutView implements LoggerAwareInterface
                                 <div class="form-group col-xs-12">
                                     <label for="search_field">' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')
-            ) . ': </label>
+        ) . ': </label>
 									<input class="form-control" type="search" placeholder="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
-            ) . '" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')
-            ) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
+        ) . '" title="' . htmlspecialchars(
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')
+        ) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
 									<label for="search_levels">' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')
-            ) . ': </label>
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')
+        ) . ': </label>
 									' . $lMenu . '
                                 </div>
                                 <div class="form-group col-xs-12 col-sm-6">
 									<label for="showLimit">' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')
-            ) . ': </label>
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')
+        ) . ': </label>
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
-            ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-                ($this->showLimit ? $this->showLimit : '')
-            ) . '" />
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
+        ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
+            ($this->showLimit ? $this->showLimit : '')
+        ) . '" />
                                 </div>
                                 <div class="form-group col-xs-12">
                                     <div class="form-control-wrap">
                                         <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
-            ) . '">
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
+        ) . '">
                                             ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
             ) . ' ' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')
@@ -3639,14 +3639,14 @@ class PageLayoutView implements LoggerAwareInterface
         // Check table:
         if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array(
             $GLOBALS['TCA'][$table]['columns']
-            )) {
+        )) {
             if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
                 // Traverse configured columns and add them to field array, if available for user.
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
                     if ($dontCheckUser || (!$fieldValue['exclude'] || $backendUser->check(
                         'non_exclude_fields',
                         $table . ':' . $fN
-                            )) && $fieldValue['config']['type'] !== 'passthrough') {
+                    )) && $fieldValue['config']['type'] !== 'passthrough') {
                         $fieldListArr[] = $fN;
                     }
                 }
@@ -3991,14 +3991,14 @@ class PageLayoutView implements LoggerAwareInterface
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-up',
                     Icon::SIZE_SMALL
-                    )->render() . '</a> <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i>';
+                )->render() . '</a> <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i>';
                 break;
             case 'rwd':
                 $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-down',
                     Icon::SIZE_SMALL
-                    )->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
+                )->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
                 break;
         }
         return $content;
@@ -4138,13 +4138,13 @@ class PageLayoutView implements LoggerAwareInterface
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
                     'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
-                    ) . '"';
+                ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
                     'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
-                    ) . ' (' . $references . ')'
-                ) . '">';
+                ) . ' (' . $references . ')'
+            ) . '">';
             $htmlCode .= $references;
             $htmlCode .= '</a>';
         }

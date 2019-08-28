@@ -61,6 +61,6 @@ class DebugModule extends AbstractModule implements ShortInfoProviderInterface
         });
         return sprintf($this->getLanguageService()->sL(
             'LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:module.shortinfo'
-            ), count($errorsAndWarnings));
+        ), count($errorsAndWarnings));
     }
 }

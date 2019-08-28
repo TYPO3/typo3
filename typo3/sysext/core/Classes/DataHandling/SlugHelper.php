@@ -340,7 +340,7 @@ class SlugHelper
         while (!$this->isUniqueInSite(
             $newValue,
             $state
-            ) && $counter++ < 100
+        ) && $counter++ < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
         }
@@ -366,7 +366,7 @@ class SlugHelper
         while (!$this->isUniqueInPid(
             $newValue,
             $state
-            ) && $counter++ < 100
+        ) && $counter++ < 100
         ) {
             $newValue = $this->sanitize($rawValue . '-' . $counter);
         }

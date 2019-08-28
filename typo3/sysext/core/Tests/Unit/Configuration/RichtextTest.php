@@ -386,7 +386,7 @@ class RichtextTest extends UnitTestCase
             [],
             '',
             false
-            );
+        );
         $subject->expects($this->once())->method('loadConfigurationFromPreset')->with($presetKey)->willReturn($preset);
         $subject->expects($this->once())->method('getRtePageTsConfigOfPid')->with($pageId)->willReturn($pageTsConfigArray);
 

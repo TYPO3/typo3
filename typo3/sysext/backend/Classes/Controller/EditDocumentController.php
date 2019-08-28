@@ -2318,7 +2318,7 @@ class EditDocumentController
                         $table,
                         $reqRecord['uid'],
                         'uid,pid,t3ver_oid'
-                        );
+                    );
                     return is_array($versionRec) ? $versionRec : $reqRecord;
                 }
                 // This means that editing cannot occur on this record because it was not supporting versioning

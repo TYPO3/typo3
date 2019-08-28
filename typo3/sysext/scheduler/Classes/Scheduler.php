@@ -353,7 +353,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 'tx_scheduler_task',
                 ['disable' => 1],
                 ['uid' => (int)$row['uid']]
-                );
+            );
             // Throw an exception to raise the problem
             throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
         }

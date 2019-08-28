@@ -3311,7 +3311,7 @@ class GeneralUtilityTest extends UnitTestCase
             in_array(
                 $vfsStreamUrl . '/testA.txt',
                 GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
-        )
+            )
         );
     }
 
@@ -3369,7 +3369,7 @@ class GeneralUtilityTest extends UnitTestCase
             in_array(
                 'subDirectory',
                 GeneralUtility::getFilesInDir($vfsStreamUrl)
-        )
+            )
         );
     }
 

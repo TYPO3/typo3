@@ -150,7 +150,7 @@ class DispatcherTest extends UnitTestCase
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
-                    ));
+            ));
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
         $secondMockSlot->expects($this->once())
@@ -175,7 +175,7 @@ class DispatcherTest extends UnitTestCase
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
-                    ));
+            ));
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
         $secondMockSlot->expects($this->once())
@@ -200,7 +200,7 @@ class DispatcherTest extends UnitTestCase
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
-                    ));
+            ));
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
         $secondMockSlot->expects($this->once())
@@ -233,7 +233,7 @@ class DispatcherTest extends UnitTestCase
                 function () {
                     return 'string';
                 }
-                    ));
+            ));
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
@@ -254,7 +254,7 @@ class DispatcherTest extends UnitTestCase
                 function () {
                     return [1, 2, 3];
                 }
-                    ));
+            ));
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);

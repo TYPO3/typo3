@@ -5,4 +5,4 @@ defined('TYPO3_MODE') or die();
     ->registerImplementation(
         \ExtbaseTeam\A\Domain\Model\A::class,
         \ExtbaseTeam\B\Domain\Model\B::class
-);
+    );

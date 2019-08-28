@@ -687,14 +687,14 @@ class FileList
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-up',
                     Icon::SIZE_SMALL
-                    )->render() . ' <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i></a>';
+                )->render() . ' <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i></a>';
                 break;
             case 'rwd':
                 $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
                 $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
                     'actions-move-down',
                     Icon::SIZE_SMALL
-                    )->render() . ' <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i></a>';
+                )->render() . ' <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i></a>';
                 break;
         }
         return $content;
@@ -793,7 +793,7 @@ class FileList
             $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon(
                 $this->languageIconTitles[$sys_language_uid]['flagIcon'],
                 Icon::SIZE_SMALL
-                )->render() . '</span>';
+            )->render() . '</span>';
             if (!$addAsAdditionalText) {
                 return $out;
             }
@@ -1537,13 +1537,13 @@ class FileList
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
                     'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
-                    ) . '"';
+                ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
                     'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
-                    ) . ' (' . $references . ')'
-                ) . '">';
+                ) . ' (' . $references . ')'
+            ) . '">';
             $htmlCode .= $references;
             $htmlCode .= '</a>';
         }

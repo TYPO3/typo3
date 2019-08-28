@@ -1816,7 +1816,7 @@ class DatabaseRecordList
             $viewAction = '<a class="btn btn-default" href="#" onclick="'
                             . htmlspecialchars(
                                 $onClick
-                ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
+                            ) . '" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
             if ($table === 'pages') {
                 $viewAction .= $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render();
             } else {
@@ -2992,11 +2992,11 @@ class DatabaseRecordList
         foreach ($searchLevelItems as $kv => $label) {
             $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars(
                 $label
-                ) . '</option>';
+            ) . '</option>';
         }
         $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')
-            ) . '" id="search_levels">' . implode('', $opt) . '</select>';
+        ) . '" id="search_levels">' . implode('', $opt) . '</select>';
         // Table with the search box:
         $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
 			' . $formElements[0] . '
@@ -3007,34 +3007,34 @@ class DatabaseRecordList
                                 <div class="col-sm-6 col-xs-12">
                                     <label for="search_field">' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')
-            ) . '</label>
+        ) . '</label>
 									<input class="form-control" type="search" placeholder="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
-            ) . '" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')
-            ) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
+        ) . '" title="' . htmlspecialchars(
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')
+        ) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
                                 </div>
                                 <div class="col-xs-12 col-sm-3">
 									<label for="search_levels">' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')
-            ) . '</label>
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')
+        ) . '</label>
 									' . $lMenu . '
                                 </div>
                                 <div class="col-xs-12 col-sm-3">
 									<label for="showLimit">' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')
-            ) . '</label>
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')
+        ) . '</label>
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
-            ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-                ($this->showLimit ? $this->showLimit : '')
-            ) . '" />
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
+        ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
+            ($this->showLimit ? $this->showLimit : '')
+        ) . '" />
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="form-control-wrap">
                                         <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
-            ) . '">
+            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
+        ) . '">
                                             ' . $iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
             ) . ' ' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')
@@ -3397,11 +3397,11 @@ class DatabaseRecordList
         if ($this->table !== $table) {
             return '<a href="' . htmlspecialchars(
                 $this->listURL('', $table, 'firstElementNumber')
-                ) . '">' . $code . '</a>';
+            ) . '">' . $code . '</a>';
         }
         return '<a href="' . htmlspecialchars(
             $this->listURL('', '', 'sortField,sortRev,table,firstElementNumber')
-            ) . '">' . $code . '</a>';
+        ) . '">' . $code . '</a>';
     }
 
     /**
@@ -3421,7 +3421,7 @@ class DatabaseRecordList
         if ((string)$code === '') {
             $code = '<i>[' . htmlspecialchars(
                 $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')
-                ) . ']</i> - '
+            ) . ']</i> - '
                 . htmlspecialchars(BackendUtility::getRecordTitle($table, $row));
         } else {
             $code = htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
@@ -3431,7 +3431,7 @@ class DatabaseRecordList
                     ENT_QUOTES,
                     'UTF-8',
                     false
-                    ) . '">' . $code . '</span>';
+                ) . '">' . $code . '</span>';
             } else {
                 $code = '<span title="' . $code . '">' . $code . '</span>';
             }
@@ -3460,21 +3460,21 @@ class DatabaseRecordList
                     $onClick = $this->getOnClickForRow($table, $row);
                     $code = '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars(
                         $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')
-                        ) . '">' . $code . '</a>';
+                    ) . '">' . $code . '</a>';
                 }
                 break;
             case 'info':
                 // "Info": (All records)
                 $code = '<a href="#" onclick="' . htmlspecialchars(
                     'top.TYPO3.InfoWindow.showItem(' . GeneralUtility::quoteJSvalue($table) . ', ' . (int)$row['uid'] . '); return false;'
-                    ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
+                ) . '" title="' . htmlspecialchars($lang->getLL('showInfo')) . '">' . $code . '</a>';
                 break;
             default:
                 // Output the label now:
                 if ($table === 'pages') {
                     $code = '<a href="' . htmlspecialchars(
                         $this->listURL($uid, '', 'firstElementNumber')
-                        ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
+                    ) . '" onclick="setHighlight(' . (int)$uid . ')">' . $code . '</a>';
                 } else {
                     $code = $this->linkUrlMail($code, $origCode);
                 }
@@ -3578,7 +3578,7 @@ class DatabaseRecordList
         // Check table:
         if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array(
             $GLOBALS['TCA'][$table]['columns']
-            )) {
+        )) {
             if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
                 // Traverse configured columns and add them to field array, if available for user.
                 foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
@@ -3615,7 +3615,7 @@ class DatabaseRecordList
                     }
                     if (ExtensionManagementUtility::isLoaded(
                         'workspaces'
-                        ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                    ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
                         $fieldListArr[] = 't3ver_state';
                         $fieldListArr[] = 't3ver_wsid';
                     }
@@ -3985,7 +3985,7 @@ class DatabaseRecordList
             $out .= '<span title="' . $title . '">' . $this->iconFactory->getIcon(
                 $this->languageIconTitles[$sys_language_uid]['flagIcon'],
                 Icon::SIZE_SMALL
-                )->render() . '</span>';
+            )->render() . '</span>';
             if (!$addAsAdditionalText) {
                 return $out;
             }
@@ -4045,13 +4045,13 @@ class DatabaseRecordList
             if ($launchViewParameter !== '') {
                 $htmlCode .= ' onclick="' . htmlspecialchars(
                     'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
-                    ) . '"';
+                ) . '"';
             }
             $htmlCode .= ' title="' . htmlspecialchars(
                 $this->getLanguageService()->sL(
                     'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
-                    ) . ' (' . $references . ')'
-                ) . '">';
+                ) . ' (' . $references . ')'
+            ) . '">';
             $htmlCode .= $references;
             $htmlCode .= '</a>';
         }

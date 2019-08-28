@@ -18,7 +18,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
         'paths' => [
             'ckeditor' => \TYPO3\CMS\Core\Utility\PathUtility::getAbsoluteWebPath(
                 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('rte_ckeditor', 'Resources/Public/JavaScript/Contrib/')
-                ) . 'ckeditor'
+            ) . 'ckeditor'
         ]
     ]);
 }
