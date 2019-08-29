@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","TYPO3/CMS/Backend/Tooltip"],function(e,i,t,n){"use strict";return new function(){t(function(){n.initialize(".table-fit a[title]",{delay:{show:500,hide:100},trigger:"hover",container:"body"})})}});
+define(["require","exports","jquery","TYPO3/CMS/Backend/Tooltip"],function(e,i,t,n){"use strict";return new(function(){return function(){t(function(){n.initialize(".table-fit a[title]",{delay:{show:500,hide:100},trigger:"hover",container:"body"})})}}())});

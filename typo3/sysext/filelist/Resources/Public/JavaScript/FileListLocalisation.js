@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery"],function(t,e,i){"use strict";return new function(){i(function(){i("a.filelist-translationToggler").click(function(t){var e=i(t.currentTarget).attr("data-fileid");i('div[data-fileid="'+e+'"]').toggle()})})}});
+define(["require","exports","jquery"],function(t,e,i){"use strict";return new(function(){return function(){i(function(){i("a.filelist-translationToggler").click(function(t){var e=i(t.currentTarget).attr("data-fileid");i('div[data-fileid="'+e+'"]').toggle()})})}}())});

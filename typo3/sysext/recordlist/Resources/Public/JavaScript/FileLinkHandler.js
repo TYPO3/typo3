@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./LinkBrowser","TYPO3/CMS/Backend/LegacyTree"],function(n,e,i,t,r){"use strict";return new function(){var n=this;this.currentLink="",this.linkFile=function(n){n.preventDefault(),t.finalizeFunction(i(n.currentTarget).attr("href"))},this.linkCurrent=function(e){e.preventDefault(),t.finalizeFunction(n.currentLink)},r.noop(),i(function(){n.currentLink=i("body").data("currentLink"),i("a.t3js-fileLink").on("click",n.linkFile),i("input.t3js-linkCurrent").on("click",n.linkCurrent)})}});
+define(["require","exports","jquery","./LinkBrowser","TYPO3/CMS/Backend/LegacyTree"],function(n,e,i,t,r){"use strict";return new(function(){return function(){var n=this;this.currentLink="",this.linkFile=function(n){n.preventDefault(),t.finalizeFunction(i(n.currentTarget).attr("href"))},this.linkCurrent=function(e){e.preventDefault(),t.finalizeFunction(n.currentLink)},r.noop(),i(function(){n.currentLink=i("body").data("currentLink"),i("a.t3js-fileLink").on("click",n.linkFile),i("input.t3js-linkCurrent").on("click",n.linkCurrent)})}}())});
