@@ -93,10 +93,12 @@ class YamlFileLoader
      */
     protected function getValueFromEnv(string $value): string
     {
-        $matched = preg_match('/%env\([\'"]?(\w+)[\'"]?\)%/', $value, $matches);
-        if ($matched === 1) {
-            $envVar = getenv($matches[1]);
-            $value = $envVar ? str_replace($matches[0], $envVar, $value) : $value;
+        $matches = [];
+        preg_match_all('/%env\([\'"]?(\w+)[\'"]?\)%/', $value, $matches);
+        $envVars = array_combine($matches[0], $matches[1]);
+        foreach ($envVars as $substring => $envVarName) {
+            $envVar = getenv($envVarName);
+            $value = $envVar ? str_replace($substring, $envVar, $value) : $value;
         }
         return $value;
     }

@@ -132,34 +132,54 @@ betterthanbefore: \'%firstset.myinitialversion%\'
     {
         return [
             'plain' => [
-                'foo=heinz',
+                ['foo=heinz'],
                 'carl: \'%env(foo)%\'',
                 ['carl' => 'heinz']
             ],
             'quoted var' => [
-                'foo=heinz',
+                ['foo=heinz'],
                 "carl: '%env(''foo'')%'",
                 ['carl' => 'heinz']
             ],
             'double quoted var' => [
-                'foo=heinz',
+                ['foo=heinz'],
                 "carl: '%env(\"foo\")%'",
                 ['carl' => 'heinz']
             ],
             'var in the middle' => [
-                'foo=heinz',
+                ['foo=heinz'],
                 "carl: 'https://%env(foo)%/foo'",
                 ['carl' => 'https://heinz/foo']
             ],
             'quoted var in the middle' => [
-                'foo=heinz',
+                ['foo=heinz'],
                 "carl: 'https://%env(''foo'')%/foo'",
                 ['carl' => 'https://heinz/foo']
             ],
             'double quoted var in the middle' => [
-                'foo=heinz',
+                ['foo=heinz'],
                 "carl: 'https://%env(\"foo\")%/foo'",
                 ['carl' => 'https://heinz/foo']
+            ],
+            'two env vars' => [
+                ['foo=karl', 'bar=heinz'],
+                'carl: \'%env(foo)%::%env(bar)%\'',
+                ['carl' => 'karl::heinz']
+            ],
+            'three env vars' => [
+                ['foo=karl', 'bar=heinz', 'baz=bencer'],
+                'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
+                ['carl' => 'karl::heinz::bencer']
+            ],
+            'three env vars with baz being undefined' => [
+                ['foo=karl', 'bar=heinz'],
+                'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
+                ['carl' => 'karl::heinz::%env(baz)%']
+            ],
+            'three undefined env vars' => [
+                [],
+                'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
+                ['carl' => '%env(foo)%::%env(bar)%::%env(baz)%']
             ],
         ];
     }
@@ -169,13 +189,15 @@ betterthanbefore: \'%firstset.myinitialversion%\'
      *
      * @dataProvider loadWithEnvVarDataProvider
      * @test
-     * @param string $env
+     * @param array $envs
      * @param string $yamlContent
      * @param array $expected
      */
-    public function loadWithEnvVarPlaceholders(string $env, string $yamlContent, array $expected): void
+    public function loadWithEnvVarPlaceholders(array $envs, string $yamlContent, array $expected): void
     {
-        putenv($env);
+        foreach ($envs as $env) {
+            putenv($env);
+        }
         $fileName = 'Berta.yml';
         $fileContents = $yamlContent;
 
@@ -185,6 +207,8 @@ betterthanbefore: \'%firstset.myinitialversion%\'
         $output = $subject->load($fileName);
         $this->assertSame($expected, $output);
         putenv('foo=');
+        putenv('bar=');
+        putenv('baz=');
     }
 
     /**
