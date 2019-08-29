@@ -281,7 +281,7 @@ class WorkspaceService implements SingletonInterface
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $fields = ['A.uid', 'A.t3ver_oid', 'A.t3ver_stage', 'B.pid AS wspid', 'B.pid AS livepid'];
+        $fields = ['A.uid', 'A.pid', 'A.t3ver_oid', 'A.t3ver_stage', 'B.pid AS wspid', 'B.pid AS livepid'];
         if ($isTableLocalizable) {
             $fields[] = $languageParentField;
             $fields[] = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
