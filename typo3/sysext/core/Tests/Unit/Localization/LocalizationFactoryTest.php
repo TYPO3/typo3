@@ -14,11 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
@@ -35,51 +32,6 @@ class LocalizationFactoryTest extends UnitTestCase
         // Drop created singletons again
         GeneralUtility::purgeInstances();
         parent::tearDown();
-    }
-
-    /**
-     * @test
-     */
-    public function getParsedDataHandlesLocallangXMLOverride()
-    {
-        $cacheManagerProphecy = $this->prophesize(CacheManager::class);
-        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $cacheFrontendProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->getCache('l10n')->willReturn($cacheFrontendProphecy->reveal());
-        $cacheFrontendProphecy->get(Argument::cetera())->willReturn(false);
-        $cacheFrontendProphecy->set(Argument::cetera())->willReturn(null);
-
-        $subject = new LocalizationFactory;
-
-        $unique = 'locallangXMLOverrideTest' . substr($this->getUniqueId(), 0, 10);
-        $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-			<T3locallang>
-				<data type="array">
-					<languageKey index="default" type="array">
-						<label index="buttons.logout">EXIT</label>
-					</languageKey>
-				</data>
-			</T3locallang>';
-        $file = Environment::getVarPath() . '/tests/' . $unique . '.xml';
-        GeneralUtility::writeFileToTypo3tempDir($file, $xml);
-        $this->testFilesToDelete[] = $file;
-
-        // Get default value
-        $defaultLL = $subject->getParsedData('EXT:core/Resources/Private/Language/locallang_core.xlf', 'default');
-
-        // Set override file
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:core/Resources/Private/Language/locallang_core.xlf'][$unique] = $file;
-
-        /** @var $store LanguageStore */
-        $store = GeneralUtility::makeInstance(LanguageStore::class);
-        $store->flushData('EXT:core/Resources/Private/Language/locallang_core.xlf');
-
-        // Get override value
-        $overrideLL = $subject->getParsedData('EXT:core/Resources/Private/Language/locallang_core.xlf', 'default');
-
-        $this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
-        $this->assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);
-        $this->assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
     }
 
     /**

@@ -37,6 +37,7 @@ class LocallangXmlParserTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser']['xml'] = \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser::class;
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
@@ -59,7 +60,7 @@ class LocallangXmlParserTest extends UnitTestCase
     protected static function getFixtureFilePath($filename)
     {
         // We have to take the whole relative path as otherwise this test fails on Windows systems
-        return Environment::getFrameworkBasePath() . '/core/Tests/Unit/Localization/Parser/Fixtures/' . $filename;
+        return Environment::getFrameworkBasePath() . '/core/Tests/UnitDeprecated/Localization/Parser/Fixtures/' . $filename;
     }
 
     /**

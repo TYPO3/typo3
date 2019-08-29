@@ -22,9 +22,15 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 /**
  * Parser for XML locallang file.
  * @internal This class is a concrete implementation and is not part of the TYPO3 Core API.
+ * @deprecated since v10.1 and will be removed in TYPO3 v11
  */
 class LocallangXmlParser extends AbstractXmlParser
 {
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' has been marked as deprecated and will be removed in TYPO3 v11. Consider using xlf files instead.', E_USER_DEPRECATED);
+    }
+
     /**
      * Associative array of "filename => parsed data" pairs.
      *
