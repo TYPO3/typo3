@@ -1,0 +1,35 @@
+base: 'https://example.com/'
+baseVariants:
+  -
+    base: foo123
+    condition: bar
+errorHandling:
+  -
+    errorCode: '404'
+    errorHandler: Page
+    errorContentSource: 't3://page?uid=5'
+languages:
+  -
+    title: Danish
+    enabled: false
+    languageId: '1'
+    base: /da
+    typo3Language: da
+    locale: da_DK.utf8
+    iso-639-1: da
+    hreflang: ''
+    direction: ''
+    flag: da
+    navigationTitle: Dansk
+rootPageId: 1
+routeEnhancers:
+  -
+    foo: bar
+routes:
+  -
+    route: robots.txt
+    type: staticText
+    content: 'deny all'
+imports:
+  -
+    resource: 'EXT:core/Tests/Unit/Configuration/Fixtures/SiteConfigs/include.yaml'

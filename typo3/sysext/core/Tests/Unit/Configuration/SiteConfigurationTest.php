@@ -1,5 +1,6 @@
 <?php
 declare(strict_types = 1);
+
 namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 /*
@@ -17,16 +18,23 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
 
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class SiteConfigurationTest extends UnitTestCase
 {
     protected $resetSingletonInstances = true;
+
+    /**
+     * @var \TYPO3\CMS\Core\Configuration\SiteConfiguration
+     */
+    protected $siteConfiguration;
 
     /**
      * @var string
@@ -36,23 +44,27 @@ class SiteConfigurationTest extends UnitTestCase
     protected $fixturePath;
 
     /**
-     * @var SiteConfiguration
+     * Files to be deleted (as they may be in var and testing framework
+     * does not support that in this version, we are taking care ourselves)
+     *
+     * @var array
      */
-    protected $subject;
+    protected $filesToDelete;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
+        parent::setUp();
         $basePath = Environment::getVarPath() . '/tests/unit';
         $this->fixturePath = $basePath . '/fixture/config/sites';
         if (!file_exists($this->fixturePath)) {
             GeneralUtility::mkdir_deep($this->fixturePath);
         }
-        $this->testFilesToDelete[] = $basePath;
+        $this->filesToDelete[] = $basePath;
         $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('cache_core')->willReturn($this->prophesize(FrontendInterface::class)->reveal());
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
-        $cacheProphecy = $this->prophesize(CacheFrontendInterface::class);
-        $cacheManager->getCache('cache_core')->willReturn($cacheProphecy->reveal());
         $this->subject = new SiteConfiguration($this->fixturePath);
+        $this->siteConfiguration = new SiteConfiguration($this->fixturePath);
     }
 
     /**
@@ -60,7 +72,7 @@ class SiteConfigurationTest extends UnitTestCase
      */
     public function resolveAllExistingSitesReturnsEmptyArrayForNoSiteConfigsFound(): void
     {
-        $this->assertEmpty($this->subject->resolveAllExistingSites());
+        $this->assertEmpty($this->siteConfiguration->resolveAllExistingSites());
     }
 
     /**
@@ -70,15 +82,112 @@ class SiteConfigurationTest extends UnitTestCase
     {
         $configuration = [
             'rootPageId' => 42,
-            'base' => 'https://example.com'
+            'base' => 'https://example.com',
         ];
         $yamlFileContents = Yaml::dump($configuration, 99, 2);
         GeneralUtility::mkdir($this->fixturePath . '/home');
         GeneralUtility::writeFile($this->fixturePath . '/home/config.yaml', $yamlFileContents);
-        $sites = $this->subject->resolveAllExistingSites();
+        $sites = $this->siteConfiguration->resolveAllExistingSites();
         $this->assertCount(1, $sites);
         $currentSite = current($sites);
         $this->assertSame(42, $currentSite->getRootPageId());
         $this->assertEquals(new Uri('https://example.com'), $currentSite->getBase());
+    }
+
+    /**
+     * @test
+     */
+    public function writeOnlyWritesModifiedKeys(): void
+    {
+        $identifier = 'testsite';
+        GeneralUtility::mkdir_deep($this->fixturePath . '/' . $identifier);
+        $configFixture = __DIR__ . '/Fixtures/SiteConfigs/config1.yaml';
+        $expected = __DIR__ . '/Fixtures/SiteConfigs/config1_expected.yaml';
+        $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
+        copy($configFixture, $siteConfig);
+
+        // load with resolved imports as the module does
+        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+            ->load(
+                GeneralUtility::fixWindowsFilePath($siteConfig),
+                YamlFileLoader::PROCESS_IMPORTS
+            );
+        // modify something on base level
+        $configuration['base'] = 'https://example.net/';
+        // modify something nested
+        $configuration['languages'][0]['title'] = 'English';
+        // delete values
+        unset($configuration['someOtherValue'], $configuration['languages'][1]);
+
+        $this->siteConfiguration->write($identifier, $configuration);
+
+        // expect modified base but intact imports
+        self::assertFileEquals($expected, $siteConfig);
+    }
+
+    protected function tearDown(): void
+    {
+        // Delete registered test files and directories
+        foreach ($this->filesToDelete as $absoluteFileName) {
+            $absoluteFileName = GeneralUtility::fixWindowsFilePath(PathUtility::getCanonicalPath($absoluteFileName));
+            if (!GeneralUtility::validPathStr($absoluteFileName)) {
+                throw new \RuntimeException('tearDown() cleanup: Filename contains illegal characters', 1410633087);
+            }
+            if (strpos($absoluteFileName, Environment::getVarPath()) !== 0) {
+                throw new \RuntimeException(
+                    'tearDown() cleanup:  Files to delete must be within ' . Environment::getVarPath(),
+                    1410633412
+                );
+            }
+            // file_exists returns false for links pointing to not existing targets, so handle links before next check.
+            if (@is_link($absoluteFileName) || @is_file($absoluteFileName)) {
+                unlink($absoluteFileName);
+            } elseif (@is_dir($absoluteFileName)) {
+                GeneralUtility::rmdir($absoluteFileName, true);
+            } else {
+                throw new \RuntimeException('tearDown() cleanup: File, link or directory does not exist', 1410633510);
+            }
+        }
+        $this->filesToDelete = [];
+        parent::tearDown();
+    }
+
+    /**
+     * @test
+     */
+    public function writingOfNestedStructuresPreservesOrder(): void
+    {
+        $identifier = 'testsite';
+        GeneralUtility::mkdir_deep($this->fixturePath . '/' . $identifier);
+        $configFixture = __DIR__ . '/Fixtures/SiteConfigs/config2.yaml';
+        $expected = __DIR__ . '/Fixtures/SiteConfigs/config2_expected.yaml';
+        $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
+        copy($configFixture, $siteConfig);
+
+        // load with resolved imports as the module does
+        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+            ->load(
+                GeneralUtility::fixWindowsFilePath($siteConfig),
+                YamlFileLoader::PROCESS_IMPORTS
+            );
+        // add new language
+        $languageConfig = [
+            'title' => 'English',
+            'enabled' => true,
+            'languageId' => '0',
+            'base' => '/en',
+            'typo3Language' => 'default',
+            'locale' => 'en_US.utf8',
+            'iso-639-1' => 'en',
+            'hreflang' => '',
+            'direction' => '',
+            'flag' => 'en',
+            'navigationTitle' => 'English',
+        ];
+        array_unshift($configuration['languages'], $languageConfig);
+        $this->siteConfiguration->write($identifier, $configuration);
+
+        // expect modified base but intact imports
+        self::assertFileEquals($expected, $siteConfig);
     }
 }
