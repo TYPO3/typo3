@@ -4852,29 +4852,29 @@ class BackendUtility
             $warrantyNote = sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:warranty.by'),
                 htmlspecialchars($loginCopyrightWarrantyProvider),
-                '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">',
+                '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank" rel="noopener noreferrer">',
                 '</a>'
             );
         } else {
             $warrantyNote = sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:no.warranty'),
-                '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">',
+                '<a href="' . TYPO3_URL_LICENSE . '" target="_blank" rel="noopener noreferrer">',
                 '</a>'
             );
         }
-        $cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
+        $cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank" rel="noopener noreferrer">' .
             $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. ' .
             $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
             . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
             $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
             sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:details.link'),
-                ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')
+                ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank" rel="noopener noreferrer">' . TYPO3_URL_GENERAL . '</a>')
             ) . ' ' .
             strip_tags($warrantyNote, '<a>') . ' ' .
             sprintf(
                 $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:free.software'),
-                ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'),
+                ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank" rel="noopener noreferrer">'),
                 '</a> '
             )
             . $lang->sL('LLL:EXT:lang/Resources/Private/Language/locallang_login.xlf:keep.notice');

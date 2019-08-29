@@ -42,7 +42,7 @@ class DebugExceptionHandler extends AbstractExceptionHandler
         $filePathAndName = $exception->getFile();
         $exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
         $moreInformationLink = $exceptionCodeNumber !== ''
-            ? '(<a href="' . TYPO3_URL_EXCEPTION . 'debug/' . $exception->getCode() . '" target="_blank">More information</a>)'
+            ? '(<a href="' . TYPO3_URL_EXCEPTION . 'debug/' . $exception->getCode() . '" target="_blank" rel="noopener noreferrer">More information</a>)'
             : '';
         $backtraceCode = $this->getBacktraceCode($exception->getTrace());
         $this->writeLogEntries($exception, self::CONTEXT_WEB);
