@@ -319,8 +319,8 @@ class DocumentationFile
     protected function parseContent(string $rstContent): string
     {
         $content = htmlspecialchars($rstContent);
-        $content = preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank">\\1</a>', $content);
-        $content = preg_replace('/#([\d]*)/', '#<a href="https://forge.typo3.org/issues/\\1" target="_blank">\\1</a>', $content);
+        $content = preg_replace('/:issue:`([\d]*)`/', '<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noopener noreferrer">\\1</a>', $content);
+        $content = preg_replace('/#([\d]*)/', '#<a href="https://forge.typo3.org/issues/\\1" target="_blank" rel="noopener noreferrer">\\1</a>', $content);
         $content = preg_replace('/(\n([=]*)\n(.*)\n([=]*)\n)/', '', $content, 1);
         $content = preg_replace('/.. index::(.*)/', '', $content);
         $content = preg_replace('/.. include::(.*)/', '', $content);

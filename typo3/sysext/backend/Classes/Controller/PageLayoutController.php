@@ -611,7 +611,7 @@ class PageLayoutController
             } else {
                 $externalUrl = htmlspecialchars(GeneralUtility::makeInstance(PageRepository::class)->getExtURL($this->pageinfo));
                 if ($externalUrl !== false) {
-                    $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noopener">' . $externalUrl . '</a>';
+                    $externalUrlHtml = '<a href="' . $externalUrl . '" target="_blank" rel="noopener noreferrer">' . $externalUrl . '</a>';
                     $view->assignMultiple([
                         'title' => $this->pageinfo['title'],
                         'message' => sprintf($lang->getLL('pageIsExternalLinkMessage'), $externalUrlHtml),
