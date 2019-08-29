@@ -196,6 +196,7 @@ class InlineRecordContainer extends AbstractContainer
                 'data-field-name' => $appendFormFieldNames,
                 'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
                 'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
+                'data-table-unique-original-value' => $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']] ?? '',
             ];
 
             $html = '

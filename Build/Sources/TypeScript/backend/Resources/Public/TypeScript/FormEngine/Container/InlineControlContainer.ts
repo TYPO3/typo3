@@ -189,6 +189,10 @@ class InlineControlContainer {
     return Object.keys(hashmap).map(key => hashmap[key]);
   }
 
+  private static selectOptionValueExists(selectElement: HTMLSelectElement, value: string): boolean {
+    return selectElement.querySelector('option[value="' + value + '"]') !== null;
+  }
+
   /**
    * @param {HTMLSelectElement} selectElement
    * @param {string} value
@@ -206,6 +210,10 @@ class InlineControlContainer {
    * @param {UniqueDefinition} unique
    */
   private static reAddSelectOption(selectElement: HTMLSelectElement, value: string, unique: UniqueDefinition): void {
+    if (InlineControlContainer.selectOptionValueExists(selectElement, value)) {
+      return;
+    }
+
     const options: Array<HTMLOptionElement> = Array.from(selectElement.querySelectorAll('option'));
     let index: number = -1;
 
@@ -253,13 +261,16 @@ class InlineControlContainer {
       this.registerToggle(e);
       this.registerSort(e);
       this.registerCreateRecordButton(e);
-      this.registerCreateRecordBySelector(e);
       this.registerEnableDisableButton(e);
       InlineControlContainer.registerInfoButton(e);
       this.registerDeleteButton(e);
       this.registerSynchronizeLocalize(e);
-      this.registerUniqueSelectFieldChanged(e);
       this.registerRevertUniquenessAction(e);
+    });
+
+    this.container.addEventListener('change', (e: Event): void => {
+      this.registerCreateRecordBySelector(e);
+      this.registerUniqueSelectFieldChanged(e);
     });
 
     window.addEventListener('message', this.handlePostMessage);
@@ -702,10 +713,7 @@ class InlineControlContainer {
     $(document).trigger('change');
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
-
-    if (this.hasObjectGroupDefinedUniqueConstraints()) {
-      this.setUnique(newUid, selectedValue);
-    }
+    this.setUnique(newUid, selectedValue);
 
     if (!this.isBelowMax()) {
       this.toggleContainerControls(false);
@@ -810,16 +818,16 @@ class InlineControlContainer {
 
     recordContainer.addEventListener('transitionend', (): void => {
       recordContainer.parentElement.removeChild(recordContainer);
-      this.memorizeRemoveRecord(objectUid);
+      FormEngineValidation.validate();
     });
 
+    this.revertUnique(objectUid);
+    this.memorizeRemoveRecord(objectUid);
     recordContainer.classList.add('form-irre-object--deleted');
 
     if (this.isBelowMax()) {
       this.toggleContainerControls(true);
     }
-
-    FormEngineValidation.validate();
   }
 
   /**
@@ -1075,7 +1083,7 @@ class InlineControlContainer {
           };
         }
         // remove the newly used item from each select-field of the child records
-        if (formField !== null && selectedValue) {
+        if (formField !== null && InlineControlContainer.selectOptionValueExists(selectorElement, selectedValue)) {
           const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
           for (let k = 0; k < records.length; k++) {
             uniqueValueField = <HTMLSelectElement>document.querySelector(
@@ -1096,7 +1104,7 @@ class InlineControlContainer {
     }
 
     // remove used items from a selector-box
-    if (unique.selector === 'select' && selectedValue) {
+    if (unique.selector === 'select' && InlineControlContainer.selectOptionValueExists(selectorElement, selectedValue)) {
       InlineControlContainer.removeSelectOptionByValue(selectorElement, selectedValue);
       unique.used[recordUid] = {
         table: unique.elTable,
@@ -1160,7 +1168,54 @@ class InlineControlContainer {
     }
 
     const unique = TYPO3.settings.FormEngineInline.unique[this.container.dataset.objectGroup];
-    if (unique.type === 'groupdb') {
+    const recordObjectId = this.container.dataset.objectGroup + Separators.structureSeparator + recordUid;
+    const recordContainer = InlineControlContainer.getInlineRecordContainer(recordObjectId);
+
+    let uniqueValueField = <HTMLSelectElement>recordContainer.querySelector(
+      '[name="data[' + unique.table + '][' + recordContainer.dataset.objectUid + '][' + unique.field + ']"]',
+    );
+    if (unique.type === 'select') {
+      let uniqueValue;
+      if (uniqueValueField !== null) {
+        uniqueValue = uniqueValueField.value;
+      } else if (recordContainer.dataset.tableUniqueOriginalValue !== '') {
+        uniqueValue = recordContainer.dataset.tableUniqueOriginalValue;
+      } else {
+        return;
+      }
+
+      if (unique.selector === 'select') {
+        if (!isNaN(parseInt(uniqueValue, 10))) {
+          const selectorElement: HTMLSelectElement = <HTMLSelectElement>document.querySelector(
+            '#' + this.container.dataset.objectGroup + '_selector',
+          );
+          InlineControlContainer.reAddSelectOption(selectorElement, uniqueValue, unique);
+        }
+      }
+
+      if (unique.selector && unique.max === -1) {
+        return;
+      }
+
+      const formField = this.getFormFieldForElements();
+      if (formField === null) {
+        return;
+      }
+
+      const records = Utility.trimExplode(',', formField.value);
+      let recordObj;
+      // walk through all inline records on that level and get the select field
+      for (let i = 0; i < records.length; i++) {
+        recordObj = <HTMLSelectElement>document.querySelector(
+          '[name="data[' + unique.table + '][' + records[i] + '][' + unique.field + ']"]',
+        );
+        if (recordObj !== null) {
+          InlineControlContainer.reAddSelectOption(recordObj, uniqueValue, unique);
+        }
+      }
+
+      delete unique.used[recordUid];
+    } else if (unique.type === 'groupdb') {
       delete unique.used[recordUid];
     }
   }
