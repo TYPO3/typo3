@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Severity"],function(e,t,s,r){"use strict";return new(function(){function e(){this.template=s('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>')}return e.prototype.render=function(e,t,s){var n=this.template.clone();return n.addClass("alert-"+r.getCssClass(e)),t&&n.find("h4").text(t),s?n.find(".messageText").text(s):n.find(".messageText").remove(),n},e}())});
+define(["require","exports","jquery","./Severity"],function(e,s,t,r){"use strict";return new class{constructor(){this.template=t('<div class="t3js-message typo3-message alert"><h4></h4><p class="messageText"></p></div>')}render(e,s,t){let a=this.template.clone();return a.addClass("alert-"+r.getCssClass(e)),s&&a.find("h4").text(s),t?a.find(".messageText").text(t):a.find(".messageText").remove(),a}}});

@@ -491,6 +491,11 @@ module.exports = function (grunt) {
       }
     },
     terser: {
+      options: {
+        output: {
+          ecma: 6
+        }
+      },
       thirdparty: {
         files: {
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],

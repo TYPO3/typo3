@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./ElementBrowser"],function(e,t,n,r){"use strict";return new(function(){return function(){n(function(){n("[data-close]").on("click",function(e){e.preventDefault();var t=n(e.currentTarget).parents("span").data();r.insertElement(t.table,t.uid,"db",t.title,"","",t.icon,"",1===parseInt(n(e.currentTarget).data("close"),10))})});var e=document.getElementById("db_list-searchbox-toolbar");e.style.display="block",e.style.position="relative"}}())});
+define(["require","exports","jquery","./ElementBrowser"],function(e,t,r,n){"use strict";return new class{constructor(){r(()=>{r("[data-close]").on("click",e=>{e.preventDefault();const t=r(e.currentTarget).parents("span").data();n.insertElement(t.table,t.uid,"db",t.title,"","",t.icon,"",1===parseInt(r(e.currentTarget).data("close"),10))})});const e=document.getElementById("db_list-searchbox-toolbar");e.style.display="block",e.style.position="relative"}}});

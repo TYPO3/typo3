@@ -1,11 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "lib": [
             "dom",
-            "es5",
             "scripthost",
-            "es6"
+            "es6",
+            "es7"
         ],
         "module": "amd",
         "sourceMap": false,

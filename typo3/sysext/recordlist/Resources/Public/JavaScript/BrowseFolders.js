@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./ElementBrowser","TYPO3/CMS/Backend/Modal","TYPO3/CMS/Backend/Severity"],function(e,r,n,t,o,a){"use strict";return new(function(){return function(){n(function(){n("[data-folder-id]").on("click",function(e){e.preventDefault();var r=n(e.currentTarget),o=r.data("folderId"),a=1===parseInt(r.data("close"),10);t.insertElement("",o,"folder",o,o,"","","",a)}),n(".t3js-folderIdError").on("click",function(e){e.preventDefault(),o.confirm("",n(e.currentTarget).data("message"),a.error,[],[])})})}}())});
+define(["require","exports","jquery","./ElementBrowser","TYPO3/CMS/Backend/Modal","TYPO3/CMS/Backend/Severity"],function(e,r,t,n,a,o){"use strict";return new class{constructor(){t(()=>{t("[data-folder-id]").on("click",e=>{e.preventDefault();const r=t(e.currentTarget),a=r.data("folderId"),o=1===parseInt(r.data("close"),10);n.insertElement("",a,"folder",a,a,"","","",o)}),t(".t3js-folderIdError").on("click",e=>{e.preventDefault(),a.confirm("",t(e.currentTarget).data("message"),o.error,[],[])})})}}});

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,n){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var i=function(){function e(){}return e.getUrl=function(){return new URL(window.location.href).origin},e.verifyOrigin=function(n){return e.getUrl()===n},e.send=function(n,i){void 0===i&&(i=window),i.postMessage(n,e.getUrl())},e}();n.MessageUtility=i});
+define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});class i{static getUrl(){return new URL(window.location.href).origin}static verifyOrigin(e){return i.getUrl()===e}static send(e,t=window){t.postMessage(e,i.getUrl())}}t.MessageUtility=i});

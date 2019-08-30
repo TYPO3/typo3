@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","TYPO3/CMS/Backend/FormEngine"],function(e,t,n,r){"use strict";return function(){return function(e){var t=this;this.controlElement=null,this.registerClickHandler=function(e){e.preventDefault(),r.preventFollowLinkIfNotSaved(t.controlElement.getAttribute("href"))},n(function(){t.controlElement=document.querySelector(e),t.controlElement.addEventListener("click",t.registerClickHandler)})}}()});
+define(["require","exports","jquery","TYPO3/CMS/Backend/FormEngine"],function(e,t,r,n){"use strict";return class{constructor(e){this.controlElement=null,this.registerClickHandler=(e=>{e.preventDefault(),n.preventFollowLinkIfNotSaved(this.controlElement.getAttribute("href"))}),r(()=>{this.controlElement=document.querySelector(e),this.controlElement.addEventListener("click",this.registerClickHandler)})}}});

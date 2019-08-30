@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery"],function(n,t,e){"use strict";return new(function(){function n(){this.consumers=[]}return n.prototype.getConsumers=function(){return this.consumers},n.prototype.hasConsumer=function(n){return-1!==this.consumers.indexOf(n)},n.prototype.attach=function(n){this.hasConsumer(n)||this.consumers.push(n)},n.prototype.detach=function(n){this.consumers=this.consumers.filter(function(t){return t!==n})},n.prototype.invoke=function(n){var t=[];return this.consumers.forEach(function(e){var r=e.consume.call(e,n);r&&t.push(r)}),e.when.apply(e,t)},n}())});
+define(["require","exports","jquery"],function(s,e,r){"use strict";return new class{constructor(){this.consumers=[]}getConsumers(){return this.consumers}hasConsumer(s){return-1!==this.consumers.indexOf(s)}attach(s){this.hasConsumer(s)||this.consumers.push(s)}detach(s){this.consumers=this.consumers.filter(e=>e!==s)}invoke(s){const e=[];return this.consumers.forEach(r=>{const n=r.consume.call(r,s);n&&e.push(n)}),r.when.apply(r,e)}}});

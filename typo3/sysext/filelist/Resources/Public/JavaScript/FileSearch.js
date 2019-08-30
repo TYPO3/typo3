@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","TYPO3/CMS/Backend/jquery.clearable"],function(e,n,r){"use strict";return new(function(){return function(){r(function(){var e=r('input[name="tx_filelist_file_filelistlist[searchWord]"]'),n=""!==e.first().val();e.clearable({onClear:function(){n&&e.closest("form").submit()}})})}}())});
+define(["require","exports","jquery","TYPO3/CMS/Backend/jquery.clearable"],function(e,r,t){"use strict";return new class{constructor(){t(()=>{const e=t('input[name="tx_filelist_file_filelistlist[searchWord]"]'),r=""!==e.first().val();e.clearable({onClear:()=>{r&&e.closest("form").submit()}})})}}});

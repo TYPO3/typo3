@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=function(){function t(){}return t.enable=function(t){TYPO3.settings.Textarea&&TYPO3.settings.Textarea.autosize&&e(["autosize"],function(e){e(t)})},t}();t.Resizable=n});
+define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});t.Resizable=class{static enable(t){TYPO3.settings.Textarea&&TYPO3.settings.Textarea.autosize&&e(["autosize"],e=>{e(t)})}}});
