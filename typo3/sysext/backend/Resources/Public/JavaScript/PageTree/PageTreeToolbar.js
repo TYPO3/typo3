@@ -66,6 +66,13 @@ define(['jquery',
        * @type {jQuery}
        */
       this.template = null;
+
+      /**
+       * Nodes stored encoded before tree gets filtered
+       *
+       * @type {string}
+       */
+      this.originalNodes = '';
     };
 
     /**
@@ -219,18 +226,27 @@ define(['jquery',
       var _this = this;
       var name = $(input).val().trim();
 
-      this.tree.nodes[0].expanded = false;
-      this.tree.nodes.forEach(function(node) {
-        var regex = new RegExp(name, 'i');
-        if (node.identifier.toString() === name || regex.test(node.name) || regex.test(node.alias)) {
-          _this.showParents(node);
-          node.expanded = true;
-          node.hidden = false;
-        } else if (node.depth !== 0) {
-          node.hidden = true;
-          node.expanded = false;
+      if (name !== '') {
+        if (this.originalNodes.length === 0) {
+          this.originalNodes = JSON.stringify(this.tree.nodes);
         }
-      });
+
+        this.tree.nodes[0].expanded = false;
+        this.tree.nodes.forEach(function (node) {
+          var regex = new RegExp(name, 'i');
+          if (node.identifier.toString() === name || regex.test(node.name) || regex.test(node.alias || '')) {
+            _this.showParents(node);
+            node.expanded = true;
+            node.hidden = false;
+          } else if (node.depth !== 0) {
+            node.hidden = true;
+            node.expanded = false;
+          }
+        });
+      } else {
+        this.tree.nodes = JSON.parse(this.originalNodes);
+        this.originalNodes = '';
+      }
 
       this.tree.prepareDataForVisibleNodes();
       this.tree.update();
