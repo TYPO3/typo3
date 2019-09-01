@@ -35,3 +35,40 @@ services:
       - { name: event.listener,
           identifier: 'legacy-slot',
           event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent }
+
+  # Core caches, cache.core and cache.assets are injected as early
+  # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
+  cache.hash:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['hash']
+
+  cache.pages:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['pages']
+
+  cache.pagesection:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['pagesection']
+
+  cache.runtime:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['runtime']
+
+  cache.rootline:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['rootline']
+
+  cache.imagesizes:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['imagesizes']
+
+  cache.l10n:
+    class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
+    factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
+    arguments: ['l10n']
