@@ -45,7 +45,6 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                 'setup' => [
                     'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript',
                     'EXT:seo/Tests/Functional/Fixtures/records.typoscript',
-                    'EXT:seo/Tests/Functional/Fixtures/content.typoscript'
                 ],
             ]
         );
@@ -63,8 +62,11 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     /**
      * @test
      * @dataProvider sitemapEntriesToCheck
+     * @var string $host
+     * @var array $expectedEntries
+     * @var array $notExpectedEntries
      */
-    public function checkIfSiteMapIndexContainsSysCategoryLinks($host, $expectedEntries, $notExpectedEntries): void
+    public function checkIfSiteMapIndexContainsSysCategoryLinks(string $host, array $expectedEntries, array $notExpectedEntries): void
     {
         $response = $this->executeFrontendRequest(
             (new InternalRequest($host))->withQueryParameters(
@@ -93,7 +95,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public function sitemapEntriesToCheck(): array
     {
@@ -119,6 +121,71 @@ class XmlSitemapRecordsTest extends AbstractTestCase
                     'http://localhost/fr/?tx_example_category%5Bid%5D=2&amp;',
                     'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
                     'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider additionalWhereTypoScriptConfigurationsToCheck
+     * @var string $sitemap
+     * @var array $expectedEntries
+     * @var array $notExpectedEntries
+     */
+    public function checkSiteMapWithDifferentTypoScriptConfigs(string $sitemap, array $expectedEntries, array $notExpectedEntries): void
+    {
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest('http://localhost/'))->withQueryParameters(
+                [
+                    'id' => 1,
+                    'type' => 1533906435,
+                    'sitemap' => $sitemap,
+                ]
+            )
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
+        $stream = $response->getBody();
+        $stream->rewind();
+        $content = $stream->getContents();
+
+        foreach ($expectedEntries as $expectedEntry) {
+            self::assertStringContainsString($expectedEntry, $content);
+        }
+
+        foreach ($notExpectedEntries as $notExpectedEntry) {
+            self::assertStringNotContainsString($notExpectedEntry, $content);
+        }
+
+        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function additionalWhereTypoScriptConfigurationsToCheck(): array
+    {
+        return [
+            [
+                'records_with_additional_where',
+                [
+                    'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
+                ],
+                [
+                    'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
+                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;'
+                ]
+            ],
+            [
+                'records_with_additional_where_starting_with_logical_operator',
+                [
+                    'http://localhost/?tx_example_category%5Bid%5D=2&amp;',
+                ],
+                [
+                    'http://localhost/?tx_example_category%5Bid%5D=1&amp;',
+                    'http://localhost/?tx_example_category%5Bid%5D=3&amp;'
                 ]
             ],
         ];

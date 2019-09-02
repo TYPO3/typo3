@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Seo\XmlSitemap;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
@@ -92,7 +93,7 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         }
 
         if (!empty($this->config['additionalWhere'])) {
-            $constraints[] = $this->config['additionalWhere'];
+            $constraints[] = QueryHelper::stripLogicalOperatorPrefix($this->config['additionalWhere']);
         }
 
         $queryBuilder->select('*')
