@@ -51,8 +51,8 @@ class TcaExtTablesCheck extends AbstractInteractableModule {
           if (data.status.length > 0) {
             const aMessage: any = InfoBox.render(
               Severity.warning,
-              'Extensions change TCA in ext_tables.php',
-              'Check for ExtensionManagementUtility and $GLOBALS["TCA"]',
+              'Following extensions change TCA in ext_tables.php',
+              'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications',
             );
             modalContent.find(this.selectorOutputContainer).append(aMessage);
             data.status.forEach((element: any): void => {
