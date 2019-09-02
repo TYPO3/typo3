@@ -55,8 +55,8 @@ define([
             if (data.status.length > 0) {
               var message = InfoBox.render(
                 Severity.warning,
-                'Extensions change TCA in ext_tables.php',
-                'Check for ExtensionManagementUtility and $GLOBALS["TCA"]'
+                'Following extensions change TCA in ext_tables.php',
+                'Check ext_tables.php files, look for ExtensionManagementUtility calls and $GLOBALS[\'TCA\'] modifications'
               );
               modalContent.find(self.selectorOutputContainer).append(message);
               data.status.forEach(function(element) {

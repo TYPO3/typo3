@@ -1,7 +1,22 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 
 <p>
-	Check if an extension still changes $GLOBALS['TCA'] in ext_tables.php.
+    Identify any extensions that are modifying the Table Control Array (TCA) in ext_tables.php.
+    Changes made to the TCA in ext_tables.php can result in performance drawbacks.
+</p>
+<p>
+    Since TYPO3 CMS 6.2 changes to $GLOBALS['TCA']
+    must be stored inside a folder called Configuration/TCA/Overrides with one file per modified table.
+    <br>
+    These files are named along the pattern &lt;tablename&gt;.php.
+</p>
+<p>
+    Thus if you want to customize the TCA of tx_foo_domain_model_bar,
+    you’d create the file Configuration/TCA/Overrides/tx_foo_domain_model_bar.php.
+</p>
+<p>
+    The advantage of this method is that all such changes are incorporated into
+    $GLOBALS['TCA'] before it is cached. This is thus far more efficient.
 </p>
 <div class="t3js-tcaExtTablesCheck-output"></div>
 <button class="btn btn-default t3js-tcaExtTablesCheck-check" type="button">
