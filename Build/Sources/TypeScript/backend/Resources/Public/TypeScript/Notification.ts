@@ -12,8 +12,14 @@
  */
 
 import * as $ from 'jquery';
+import {AbstractAction} from './ActionButton/AbstractAction';
 import {SeverityEnum} from './Enum/Severity';
 import Severity = require('./Severity');
+
+interface Action {
+  label: string;
+  action: AbstractAction;
+}
 
 /**
  * Module: TYPO3/CMS/Backend/Notification
@@ -29,9 +35,10 @@ class Notification {
    * @param {string} title
    * @param {string} message
    * @param {number} duration
+   * @param {Action[]} actions
    */
-  public static notice(title: string, message?: string, duration?: number): void {
-    Notification.showMessage(title, message, SeverityEnum.notice, duration);
+  public static notice(title: string, message?: string, duration?: number, actions?: Array<Action>): void {
+    Notification.showMessage(title, message, SeverityEnum.notice, duration, actions);
   }
 
   /**
@@ -40,9 +47,10 @@ class Notification {
    * @param {string} title
    * @param {string} message
    * @param {number} duration
+   * @param {Action[]} actions
    */
-  public static info(title: string, message?: string, duration?: number): void {
-    Notification.showMessage(title, message, SeverityEnum.info, duration);
+  public static info(title: string, message?: string, duration?: number, actions?: Array<Action>): void {
+    Notification.showMessage(title, message, SeverityEnum.info, duration, actions);
   }
 
   /**
@@ -51,9 +59,10 @@ class Notification {
    * @param {string} title
    * @param {string} message
    * @param {number} duration
+   * @param {Action[]} actions
    */
-  public static success(title: string, message?: string, duration?: number): void {
-    Notification.showMessage(title, message, SeverityEnum.ok, duration);
+  public static success(title: string, message?: string, duration?: number, actions?: Array<Action>): void {
+    Notification.showMessage(title, message, SeverityEnum.ok, duration, actions);
   }
 
   /**
@@ -62,9 +71,10 @@ class Notification {
    * @param {string} title
    * @param {string} message
    * @param {number} duration
+   * @param {Action[]} actions
    */
-  public static warning(title: string, message?: string, duration?: number): void {
-    Notification.showMessage(title, message, SeverityEnum.warning, duration);
+  public static warning(title: string, message?: string, duration?: number, actions?: Array<Action>): void {
+    Notification.showMessage(title, message, SeverityEnum.warning, duration, actions);
   }
 
   /**
@@ -73,9 +83,10 @@ class Notification {
    * @param {string} title
    * @param {string} message
    * @param {number} duration
+   * @param {Action[]} actions
    */
-  public static error(title: string, message?: string, duration: number = 0): void {
-    Notification.showMessage(title, message, SeverityEnum.error, duration);
+  public static error(title: string, message?: string, duration: number = 0, actions?: Array<Action>): void {
+    Notification.showMessage(title, message, SeverityEnum.error, duration, actions);
   }
 
   /**
@@ -83,11 +94,13 @@ class Notification {
    * @param {string} message
    * @param {SeverityEnum} severity
    * @param {number} duration
+   * @param {Action[]} actions
    */
   public static showMessage(title: string,
                             message?: string,
                             severity: SeverityEnum = SeverityEnum.info,
-                            duration: number | string = this.duration): void {
+                            duration: number | string = this.duration,
+                            actions: Array<Action> = []): void {
     const className = Severity.getCssClass(severity);
     let icon = '';
     switch (severity) {
@@ -116,11 +129,14 @@ class Notification {
           : duration
       );
 
-    if (this.messageContainer === null) {
+    if (this.messageContainer === null || document.querySelector('#alert-container') === null) {
       this.messageContainer = $('<div>', {'id': 'alert-container'}).appendTo('body');
     }
+
+    const notificationId = 'notification-' + Math.random().toString(36).substr(2, 5);
+
     const $box = $(
-      '<div class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
+      '<div id="' + notificationId + '" class="alert alert-' + className + ' alert-dismissible fade" role="alert">' +
         '<button type="button" class="close" data-dismiss="alert">' +
           '<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>' +
           '<span class="sr-only">Close</span>' +
@@ -137,10 +153,40 @@ class Notification {
             '<p class="alert-message text-pre-wrap"></p>' +
           '</div>' +
         '</div>' +
+        '<div class="alert-actions">' +
+        '</div>' +
       '</div>',
     );
     $box.find('.alert-title').text(title);
     $box.find('.alert-message').text(message);
+
+    const $actionButtonContainer = $box.find('.alert-actions');
+    if (actions.length > 0) {
+      for (let action of actions) {
+        const $actionButton = $('<a />', {
+          href: '#',
+          title: action.label,
+        });
+        $actionButton.text(action.label);
+        $actionButton.on('click', (e): void => {
+          // Remove potentially set timeout
+          $box.clearQueue();
+
+          const target = <HTMLAnchorElement>e.currentTarget;
+          target.classList.add('executing');
+
+          $actionButtonContainer.find('a').not(target).addClass('disabled');
+          action.action.execute(target).then((): void => {
+            $box.alert('close');
+          });
+        });
+
+        $actionButtonContainer.append($actionButton);
+      }
+    } else {
+      $actionButtonContainer.remove();
+    }
+
     $box.on('close.bs.alert', (e: Event) => {
       e.preventDefault();
       const $me = $(e.currentTarget);
