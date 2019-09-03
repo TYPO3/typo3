@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
@@ -414,21 +415,33 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             $queryParameters['no_cache'] = 1;
         }
 
-        try {
-            $uri = $siteOfTargetPage->getRouter()->generateUri(
-                $targetPageId,
-                $queryParameters,
-                $fragment,
-                $useAbsoluteUrl ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH
-            );
-        } catch (InvalidRouteArgumentsException $e) {
-            throw new UnableToLinkException('The target page could not be linked. Error: ' . $e->getMessage(), 1535472406);
+        if ($fragment
+            && $useAbsoluteUrl === false
+            && $currentSiteLanguage === $siteLanguageOfTargetPage
+            && $targetPageId === (int)$GLOBALS['TSFE']->id
+            && (empty($conf['addQueryString']) || !isset($conf['addQueryString.']))
+            && !$GLOBALS['TSFE']->config['config']['baseURL']
+            && count($queryParameters) === 1 // _language is always set
+            ) {
+            $uri = (new Uri())->withFragment($fragment);
+        } else {
+            try {
+                $uri = $siteOfTargetPage->getRouter()->generateUri(
+                    $targetPageId,
+                    $queryParameters,
+                    $fragment,
+                    $useAbsoluteUrl ? RouterInterface::ABSOLUTE_URL : RouterInterface::ABSOLUTE_PATH
+                );
+            } catch (InvalidRouteArgumentsException $e) {
+                throw new UnableToLinkException('The target page could not be linked. Error: ' . $e->getMessage(), 1535472406);
+            }
+            // Override scheme, but only if the site does not define a scheme yet AND the site defines a domain/host
+            if ($useAbsoluteUrl && !$uri->getScheme() && $uri->getHost()) {
+                $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? 'https';
+                $uri = $uri->withScheme($scheme);
+            }
         }
-        // Override scheme, but only if the site does not define a scheme yet AND the site defines a domain/host
-        if ($useAbsoluteUrl && !$uri->getScheme() && $uri->getHost()) {
-            $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? 'https';
-            $uri = $uri->withScheme($scheme);
-        }
+
         return $uri;
     }
 
