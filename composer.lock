@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52a58d5697be7a21a129b3d4c71129d8",
+    "content-hash": "7fe5f08c96831734ec662923a866edd5",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5017,8 +5017,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
@@ -5159,8 +5159,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Utility class for timing",
@@ -5289,8 +5289,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -5866,8 +5866,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -6335,8 +6335,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -6408,16 +6408,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "5.0.11",
+            "version": "5.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "ac55b0e2d6e2d4369ece187cc31b58457d5b7122"
+                "reference": "1fe51765371fa91bd8d54fbfbf527eff5c0b25d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ac55b0e2d6e2d4369ece187cc31b58457d5b7122",
-                "reference": "ac55b0e2d6e2d4369ece187cc31b58457d5b7122",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/1fe51765371fa91bd8d54fbfbf527eff5c0b25d8",
+                "reference": "1fe51765371fa91bd8d54fbfbf527eff5c0b25d8",
                 "shasum": ""
             },
             "require": {
@@ -6447,14 +6447,14 @@
             ],
             "authors": [
                 {
-                    "name": "The TYPO3 Community",
-                    "homepage": "https://typo3.org/community/",
-                    "role": "Contributor"
-                },
-                {
                     "name": "TYPO3 CMS Core Team",
                     "homepage": "https://forge.typo3.org/projects/typo3cms-core",
                     "role": "Developer"
+                },
+                {
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 }
             ],
             "description": "The TYPO3 testing framework provides base classes for unit, functional and acceptance testing.",
@@ -6464,7 +6464,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-07-13T12:16:05+00:00"
+            "time": "2019-09-04T06:16:59+00:00"
         }
     ],
     "aliases": [],
