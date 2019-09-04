@@ -105,12 +105,12 @@ public class PreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
 
-        jobsMainStage.add(this.getJobUnitJavaScript(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.add(this.getJobUnitJavaScript(0, "JS", this.getTaskComposerInstall("PHP72"), false));
 
         jobsMainStage.add(this.getJobLintPhp("PHP72", false));
         jobsMainStage.add(this.getJobLintPhp("PHP73", false));
 
-        jobsMainStage.add(this.getJobLintScssTs("PHP72", false));
+        jobsMainStage.add(this.getJobLintScssTs("JS", false));
 
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), false));

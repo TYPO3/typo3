@@ -113,7 +113,7 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobLintPhp("PHP72", false));
         jobsMainStage.add(this.getJobLintPhp("PHP73", false));
 
-        jobsMainStage.add(this.getJobLintScssTs("PHP72", false));
+        jobsMainStage.add(this.getJobLintScssTs("JS", false));
 
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), false));

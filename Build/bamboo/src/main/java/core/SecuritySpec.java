@@ -110,7 +110,7 @@ public class SecuritySpec extends AbstractCoreSpec {
         jobsMainStage.add(this.getJobLintPhp("PHP72", true));
         jobsMainStage.add(this.getJobLintPhp("PHP73", true));
 
-        jobsMainStage.add(this.getJobLintScssTs("PHP72", true));
+        jobsMainStage.add(this.getJobLintScssTs("JS", true));
 
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
         jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
