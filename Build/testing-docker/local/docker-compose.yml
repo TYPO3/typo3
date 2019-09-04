@@ -190,7 +190,7 @@ services:
       "
 
   build_css:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -208,7 +208,7 @@ services:
       "
 
   build_javascript:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -695,7 +695,7 @@ services:
       "
 
   lint_scss:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -713,7 +713,7 @@ services:
       "
 
   lint_typescript:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
     - ${CORE_ROOT}:${CORE_ROOT}
@@ -781,7 +781,7 @@ services:
       "
 
   unitJavascript:
-    image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
+    image: typo3gmbh/${DOCKER_JS_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
       - ${CORE_ROOT}:${CORE_ROOT}
@@ -797,7 +797,7 @@ services:
         yarn install \
           && cd .. \
           && Build/node_modules/karma/bin/karma start \
-            vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.js --single-run
+            vendor/typo3/testing-framework/Resources/Core/Build/Configuration/JSUnit/karma.conf.ci.js --single-run
       "
 
   unitRandom:

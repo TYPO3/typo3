@@ -26,6 +26,7 @@ setUpDockerComposeDotEnv() {
     echo "PHP_XDEBUG_ON=${PHP_XDEBUG_ON}" >> .env
     echo "PHP_XDEBUG_PORT=${PHP_XDEBUG_PORT}" >> .env
     echo "DOCKER_PHP_IMAGE=${DOCKER_PHP_IMAGE}" >> .env
+    echo "DOCKER_JS_IMAGE=${DOCKER_JS_IMAGE}" >> .env
     echo "EXTRA_TEST_OPTIONS=${EXTRA_TEST_OPTIONS}" >> .env
     echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}" >> .env
     echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}" >> .env
@@ -176,6 +177,7 @@ EXTRA_TEST_OPTIONS=""
 SCRIPT_VERBOSE=0
 PHPUNIT_RANDOM=""
 CGLCHECK_DRY_RUN=""
+DOCKER_JS_IMAGE="js"
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
