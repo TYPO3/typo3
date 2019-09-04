@@ -62,7 +62,7 @@ return [
                 'internal_type' => 'db',
                 'allowed' => 'pages',
                 'size' => 3,
-                'maxitems' => 25,
+                'maxitems' => 100,
                 'autoSizeMax' => 10,
             ]
         ],
@@ -73,7 +73,7 @@ return [
                 'renderType' => 'selectCheckBox',
                 'foreign_table' => 'sys_filemounts',
                 'size' => 3,
-                'maxitems' => 25,
+                'maxitems' => 100,
                 'autoSizeMax' => 10,
             ]
         ],
