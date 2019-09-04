@@ -4121,16 +4121,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "8.0.15",
+            "version": "8.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "49439d3a2adc22d3bd17850a2cf84f686b068800"
+                "reference": "62a3e64c1c194df8a1aa7c88500c2ce33a352986"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/49439d3a2adc22d3bd17850a2cf84f686b068800",
-                "reference": "49439d3a2adc22d3bd17850a2cf84f686b068800",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/62a3e64c1c194df8a1aa7c88500c2ce33a352986",
+                "reference": "62a3e64c1c194df8a1aa7c88500c2ce33a352986",
                 "shasum": ""
             },
             "replace": {
@@ -4148,14 +4148,14 @@
             ],
             "authors": [
                 {
-                    "name": "Felix Kopp",
-                    "email": "felix-source@phorax.com",
-                    "homepage": "http://phorax.com",
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
                     "role": "Developer"
                 },
                 {
-                    "name": "TYPO3 CMS Core Team",
-                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "name": "Felix Kopp",
+                    "email": "felix-source@phorax.com",
+                    "homepage": "http://phorax.com",
                     "role": "Developer"
                 }
             ],
@@ -4166,7 +4166,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2018-09-19T10:31:04+00:00"
+            "time": "2019-09-04T14:05:56+00:00"
         },
         {
             "name": "typo3/testing-framework",
