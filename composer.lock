@@ -5235,16 +5235,16 @@
         },
         {
             "name": "typo3/cms-styleguide",
-            "version": "9.2.3",
+            "version": "9.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/styleguide.git",
-                "reference": "c81d2c678f32899091f5c1cd76d5877629555883"
+                "reference": "ee953611c953ce324506cfe957a6dec5c7f3a23f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/c81d2c678f32899091f5c1cd76d5877629555883",
-                "reference": "c81d2c678f32899091f5c1cd76d5877629555883",
+                "url": "https://api.github.com/repos/TYPO3/styleguide/zipball/ee953611c953ce324506cfe957a6dec5c7f3a23f",
+                "reference": "ee953611c953ce324506cfe957a6dec5c7f3a23f",
                 "shasum": ""
             },
             "replace": {
@@ -5277,14 +5277,14 @@
             ],
             "authors": [
                 {
-                    "name": "Felix Kopp",
-                    "email": "felix-source@phorax.com",
-                    "homepage": "http://phorax.com",
+                    "name": "TYPO3 CMS Core Team",
+                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
                     "role": "Developer"
                 },
                 {
-                    "name": "TYPO3 CMS Core Team",
-                    "homepage": "https://forge.typo3.org/projects/typo3cms-core",
+                    "name": "Felix Kopp",
+                    "email": "felix-source@phorax.com",
+                    "homepage": "http://phorax.com",
                     "role": "Developer"
                 }
             ],
@@ -5295,7 +5295,7 @@
                 "typo3",
                 "typo3 backend"
             ],
-            "time": "2018-11-05T16:26:41+00:00"
+            "time": "2019-09-04T14:05:28+00:00"
         },
         {
             "name": "typo3/testing-framework",
