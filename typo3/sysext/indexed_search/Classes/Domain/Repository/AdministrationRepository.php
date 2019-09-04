@@ -416,7 +416,8 @@ class AdministrationRepository
         }
 
         $result = $queryBuilder->execute();
-        $count = (int)$queryBuilder
+        $countQueryBuilder = clone $queryBuilder;
+        $count = (int)$countQueryBuilder
             ->count('uid')
             ->execute()
             ->fetchColumn(0);
