@@ -187,8 +187,9 @@ class InlineRecordContainer extends AbstractContainer
                 $class .= ' t3-form-field-container-inline-hidden';
             }
             $class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
+            $tableUniqueOriginalValue = $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']] ?? '';
             $html = '
-				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . htmlspecialchars($objectId) . '_div">
+				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . htmlspecialchars($objectId) . '_div" data-table-unique-original-value="' . htmlspecialchars($tableUniqueOriginalValue) . '">
 					<div class="panel-heading" data-toggle="formengine-inline" id="' . htmlspecialchars($objectId) . '_header" data-expandSingle="' . ($inlineConfig['appearance']['expandSingle'] ? 1 : 0) . '">
 						<div class="form-irre-header">
 							<div class="form-irre-header-cell form-irre-header-icon">

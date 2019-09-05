@@ -428,12 +428,16 @@ return [
     ],
     'types' => [
         '1' => [
-            'showitem' => '--palette--;;default, --palette--;;locale-related, --palette--;;rendering-related, flag',
+            'showitem' => '--palette--;;default, --palette--;;locale-related, --palette--;;rendering-related, flag, --palette--;;languageIdPalette',
         ],
     ],
     'palettes' => [
         'default' => [
-            'showitem' => 'title, enabled, languageId, --linebreak--, base'
+            'showitem' => 'title, enabled, --linebreak--, base'
+        ],
+        'languageIdPalette' => [
+            'showitem' => 'languageId',
+            'isHiddenPalette' => true,
         ],
         'locale-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.locales',

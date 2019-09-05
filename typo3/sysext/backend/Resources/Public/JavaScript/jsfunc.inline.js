@@ -463,7 +463,7 @@ var inline = {
           this.data.unique[objectId].used[recordUid] = selectedValue;
         }
         // remove the newly used item from each select-field of the child records
-        if (formObj.length && selectedValue) {
+        if (formObj.length && this.selectOptionExists($selector, selectedValue)) {
           var records = this.trimExplode(',', formObj[0].value);
           for (var i = 0; i < records.length; i++) {
             recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
@@ -480,7 +480,7 @@ var inline = {
     }
 
     // remove used items from a selector-box
-    if (unique.selector == 'select' && selectedValue) {
+    if (unique.selector == 'select' && this.selectOptionExists($selector, selectedValue)) {
       this.removeSelectOption($selector, selectedValue);
       this.data.unique[objectId]['used'][recordUid] = selectedValue;
     }
@@ -785,7 +785,7 @@ var inline = {
     var oldValue = unique.used[recordUid];
 
     if (unique.selector == 'select') {
-      var selector = $(objectPrefix + '_selector');
+      var selector = $('#' + this.escapeObjectId(objectPrefix) + '_selector');
       this.removeSelectOption(selector, srcElement.value);
       if (typeof oldValue != 'undefined') {
         this.readdSelectOption(selector, oldValue, unique);
@@ -823,18 +823,24 @@ var inline = {
 
     var unique = this.data.unique[objectPrefix];
     var fieldObj = elName ? document.getElementsByName(elName + '[' + unique.field + ']') : null;
+    var recordContainer = document.querySelector('#' + this.escapeObjectId(objectPrefix + '-' + recordUid + '_div'));
 
     if (unique.type == 'select') {
-      if (!fieldObj || !fieldObj.length) {
+      var fieldObjValue;
+      if (fieldObj && fieldObj.length) {
+        fieldObjValue = fieldObj[0].value;
+      } else if (recordContainer !== null && recordContainer.dataset.tableUniqueOriginalValue !== '') {
+        fieldObjValue = recordContainer.dataset.tableUniqueOriginalValue;
+      } else {
         return;
       }
 
       delete(this.data.unique[objectPrefix].used[recordUid]);
 
       if (unique.selector == 'select') {
-        if (!isNaN(fieldObj[0].value)) {
+        if (!isNaN(fieldObjValue)) {
           var $selector = $('#' + this.escapeObjectId(objectPrefix) + '_selector');
-          this.readdSelectOption($selector, fieldObj[0].value, unique);
+          this.readdSelectOption($selector, fieldObjValue, unique);
         }
       }
 
@@ -855,7 +861,7 @@ var inline = {
         recordObj = document.getElementsByName('data[' + unique.table + '][' + records[i] + '][' + unique.field + ']');
         if (recordObj.length) {
           var $recordObject = $(recordObj[0]);
-          this.readdSelectOption($recordObject, fieldObj[0].value, unique);
+          this.readdSelectOption($recordObject, fieldObjValue, unique);
         }
       }
     } else if (unique.type == 'groupdb') {
@@ -1144,8 +1150,12 @@ var inline = {
     }
   },
 
+  selectOptionExists: function($selector, value) {
+    return $selector.find('option[value="' + value + '"]').length > 0;
+  },
+
   readdSelectOption: function($selectObj, value, unique) {
-    if (!$selectObj.length) {
+    if (!$selectObj.length || this.selectOptionExists($selectObj, value)) {
       return;
     }
 
