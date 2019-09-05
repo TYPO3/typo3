@@ -49,6 +49,7 @@ class ServiceProvider extends AbstractServiceProvider
             Configuration\SiteConfiguration::class => [ static::class, 'getSiteConfiguration' ],
             Command\ListCommand::class => [ static::class, 'getListCommand' ],
             HelpCommand::class => [ static::class, 'getHelpCommand' ],
+            Command\CacheWarmupCommand::class => [ static::class, 'getCacheWarmupCommand' ],
             Command\DumpAutoloadCommand::class => [ static::class, 'getDumpAutoloadCommand' ],
             Console\CommandApplication::class => [ static::class, 'getConsoleCommandApplication' ],
             Console\CommandRegistry::class => [ static::class, 'getConsoleCommandRegistry' ],
@@ -171,6 +172,16 @@ class ServiceProvider extends AbstractServiceProvider
         return new HelpCommand();
     }
 
+    public static function getCacheWarmupCommand(ContainerInterface $container): Command\CacheWarmupCommand
+    {
+        return new Command\CacheWarmupCommand(
+            $container->get(ContainerBuilder::class),
+            $container->get(Package\PackageManager::class),
+            $container->get(Core\BootService::class),
+            $container->get('cache.di')
+        );
+    }
+
     public static function getDumpAutoloadCommand(ContainerInterface $container): Command\DumpAutoloadCommand
     {
         return new Command\DumpAutoloadCommand();
@@ -213,6 +224,16 @@ class ServiceProvider extends AbstractServiceProvider
             Package\PackageManager::class,
             'packagesMayHaveChanged'
         );
+
+        $cacheWarmers = [
+            Configuration\SiteConfiguration::class,
+            Http\MiddlewareStackResolver::class,
+            Imaging\IconRegistry::class,
+            Package\PackageManager::class,
+        ];
+        foreach ($cacheWarmers as $service) {
+            $listenerProvider->addListener(Cache\Event\CacheWarmupEvent::class, $service, 'warmupCaches');
+        }
         return $listenerProvider;
     }
 
@@ -451,6 +472,8 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('list', Command\ListCommand::class, 'Lists commands');
 
         $commandRegistry->addLazyCommand('help', HelpCommand::class, 'Displays help for a command');
+
+        $commandRegistry->addLazyCommand('cache:warmup', Command\CacheWarmupCommand::class, 'Cache warmup for all, system or frontend caches.');
 
         $commandRegistry->addLazyCommand('dumpautoload', Command\DumpAutoloadCommand::class, 'Updates class loading information in non-composer mode.', Environment::isComposerMode());
         $commandRegistry->addLazyCommand('extensionmanager:extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');

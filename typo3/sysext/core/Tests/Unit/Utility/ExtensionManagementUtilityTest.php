@@ -1600,14 +1600,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->getMock();
         $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTables), self::anything());
-        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
+        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry($mockCache);
     }
 
     /**
@@ -1624,16 +1618,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->getMock();
         $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects(self::once())
             ->method('set')
             ->with(self::anything(), self::logicalNot(self::stringContains($extensionName)), self::anything());
-        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
+        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry($mockCache);
     }
 
     /**
@@ -1646,17 +1634,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var CacheManager|\PHPUnit\Framework\MockObject\MockObject $mockCacheManager */
-        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
-            ->onlyMethods(['getCache'])
-            ->getMock();
-        $mockCacheManager->expects(self::any())->method('getCache')->willReturn($mockCache);
-        ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
         $packageManager = $this->createMockPackageManagerWithMockPackage(StringUtility::getUniqueId());
         $packageManager->setPackageCache(new PackageStatesPackageCache('vfs://Test/Configuration/PackageStates.php', $mockCache));
         ExtensionManagementUtility::setPackageManager($packageManager);
-        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
+        ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry($mockCache);
     }
 
     /////////////////////////////////////////

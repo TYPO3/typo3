@@ -176,6 +176,12 @@ services:
       - name: softreference.parser
         parserKey: url
 
+
+  TYPO3\CMS\Core\Core\Event\WarmupBaseTcaCache:
+    public: true
+    arguments:
+      $coreCache: '@cache.core'
+
   # @internal
   # This service entry is provided for legacy code that instantiates LanguageService
   # using GeneralUtility::makeInstance instead of the factory methods which itself
@@ -190,10 +196,20 @@ services:
       version: '11.3'
       message: 'Injection/Instantiation of "%service_id%" is deprecated. Please use TYPO3\CMS\Core\Localization\LanguageServiceFactory->create().'
 
+  TYPO3\CMS\Core\Localization\CacheWarmer:
+    tags:
+      - name: event.listener
+        method: 'warmupCaches'
+        event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
+
   TYPO3\CMS\Core\ExpressionLanguage\ProviderConfigurationLoader:
     public: true
     arguments:
       $coreCache: '@cache.core'
+    tags:
+      - name: event.listener
+        method: 'warmupCaches'
+        event: TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent
 
   TYPO3\CMS\Core\Page\AssetRenderer:
     public: true

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Package;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Cache\PackageCacheEntry;
@@ -1145,5 +1146,22 @@ class PackageManager implements SingletonInterface
         }
 
         return $frameworkPackageKeys;
+    }
+
+    /**
+     * @internal
+     */
+    public function warmupCaches(CacheWarmupEvent $event): void
+    {
+        if (Environment::isComposerMode()) {
+            return;
+        }
+        if ($event->hasGroup('system')) {
+            if (count($this->packageStatesConfiguration) === 0) {
+                $this->loadPackageStates();
+                $this->initializePackageObjects();
+            }
+            $this->saveToPackageCache();
+        }
     }
 }
