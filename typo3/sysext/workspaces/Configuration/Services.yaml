@@ -15,6 +15,21 @@ services:
   TYPO3\CMS\Workspaces\Service\GridDataService:
     public: true
 
+  TYPO3\CMS\Workspaces\Command\WorkspaceVersionRecordsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:versions'
+
+  TYPO3\CMS\Workspaces\Command\CleanupPreviewLinksCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:previewlinks'
+
+  TYPO3\CMS\Workspaces\Command\AutoPublishCommand:
+    tags:
+      - name: 'console.command'
+        command: 'workspace:autopublish'
+
   TYPO3\CMS\Workspaces\Compatibility\SlotReplacement:
     tags:
       - name: event.listener

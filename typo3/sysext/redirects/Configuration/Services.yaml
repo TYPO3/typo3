@@ -13,6 +13,11 @@ services:
   TYPO3\CMS\Redirects\Hooks\DataHandlerSlugUpdateHook:
     public: true
 
+  TYPO3\CMS\Redirects\Command\CheckIntegrityCommand:
+    tags:
+      - name: 'console.command'
+        command: 'redirects:checkintegrity'
+
   TYPO3\CMS\Redirects\EventListener\RecordHistoryRollbackEventsListener:
     tags:
       - name: event.listener

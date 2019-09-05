@@ -6,3 +6,43 @@ services:
 
   TYPO3\CMS\Lowlevel\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Lowlevel\Command\ListSysLogCommand:
+    tags:
+      - name: 'console.command'
+        command: 'syslog:list'
+
+  TYPO3\CMS\Lowlevel\Command\MissingFilesCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:missingfiles'
+
+  TYPO3\CMS\Lowlevel\Command\LostFilesCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:lostfiles'
+
+  TYPO3\CMS\Lowlevel\Command\FilesWithMultipleReferencesCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:multiplereferencedfiles'
+
+  TYPO3\CMS\Lowlevel\Command\MissingRelationsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:missingrelations'
+
+  TYPO3\CMS\Lowlevel\Command\DeletedRecordsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:deletedrecords'
+
+  TYPO3\CMS\Lowlevel\Command\OrphanRecordsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:orphanrecords'
+
+  TYPO3\CMS\Lowlevel\Command\CleanFlexFormsCommand:
+    tags:
+      - name: 'console.command'
+        command: 'cleanup:flexforms'

@@ -7,6 +7,12 @@ services:
   TYPO3\CMS\Scheduler\:
     resource: '../Classes/*'
 
+  TYPO3\CMS\Scheduler\Command\SchedulerCommand:
+    tags:
+      - name: 'console.command'
+        command: 'scheduler:run'
+        schedulable: false
+
   TYPO3\CMS\Scheduler\SystemInformation\ToolbarItemProvider:
     tags:
       - name: event.listener

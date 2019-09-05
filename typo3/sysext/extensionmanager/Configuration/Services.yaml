@@ -40,3 +40,31 @@ services:
         identifier: 'legacy-slot'
         method: 'emitProcessActionsSignal'
         event: TYPO3\CMS\Extensionmanager\Event\AvailableActionsForExtensionEvent
+
+  TYPO3\CMS\Extensionmanager\Command\ActivateExtensionCommand:
+    tags:
+      - name: 'console.command'
+        command: 'extension:activate'
+        schedulable: false
+      - name: 'console.command'
+        command: 'extensionmanager:extension:install'
+        alias: true
+        schedulable: false
+      - name: 'console.command'
+        command: 'extension:install'
+        alias: true
+        schedulable: false
+
+  TYPO3\CMS\Extensionmanager\Command\DeactivateExtensionCommand:
+    tags:
+      - name: 'console.command'
+        command: 'extension:deactivate'
+        schedulable: false
+      - name: 'console.command'
+        command: 'extensionmanager:extension:uninstall'
+        alias: true
+        schedulable: false
+      - name: 'console.command'
+        command: 'extension:uninstall'
+        alias: true
+        schedulable: false

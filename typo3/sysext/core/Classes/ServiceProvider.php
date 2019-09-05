@@ -35,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             Cache\CacheManager::class => [ static::class, 'getCacheManager' ],
             Console\CommandApplication::class => [ static::class, 'getConsoleCommandApplication' ],
+            Console\CommandRegistry::class => [ static::class, 'getConsoleCommandRegistry' ],
             Context\Context::class => [ static::class, 'getContext' ],
             EventDispatcher\EventDispatcher::class => [ static::class, 'getEventDispatcher' ],
             EventDispatcher\ListenerProvider::class => [ static::class, 'getEventListenerProvider' ],
@@ -77,7 +78,15 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getConsoleCommandApplication(ContainerInterface $container): Console\CommandApplication
     {
-        return new Console\CommandApplication($container->get(Context\Context::class));
+        return new Console\CommandApplication(
+            $container->get(Context\Context::class),
+            $container->get(Console\CommandRegistry::class)
+        );
+    }
+
+    public static function getConsoleCommandRegistry(ContainerInterface $container): Console\CommandRegistry
+    {
+        return new Console\CommandRegistry($container->get(Package\PackageManager::class), $container);
     }
 
     public static function getEventDispatcher(ContainerInterface $container): EventDispatcher\EventDispatcher

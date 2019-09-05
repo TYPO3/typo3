@@ -29,6 +29,17 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 class SiteListCommand extends Command
 {
     /**
+     * @var SiteFinder
+     */
+    protected $siteFinder;
+
+    public function __construct(SiteFinder $siteFinder)
+    {
+        $this->siteFinder = $siteFinder;
+        parent::__construct();
+    }
+
+    /**
      * Defines the allowed options for this command
      */
     protected function configure()
@@ -44,8 +55,7 @@ class SiteListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $siteFinder = new SiteFinder();
-        $sites = $siteFinder->getAllSites();
+        $sites = $this->siteFinder->getAllSites();
 
         if (empty($sites)) {
             $io->title('No sites configured');

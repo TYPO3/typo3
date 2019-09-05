@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -45,6 +46,16 @@ class ServiceProvider extends AbstractServiceProvider
             Service\LoadTcaService::class => [ static::class, 'getLoadTcaService' ],
             Middleware\Maintenance::class => [ static::class, 'getMaintenanceMiddleware' ],
             Controller\UpgradeController::class => [ static::class, 'getUpgradeController' ],
+            Command\LanguagePackCommand::class => [ static::class, 'getLanguagePackCommand' ],
+            Command\UpgradeWizardRunCommand::class => [ static::class, 'getUpgradeWizardRunCommand' ],
+            Command\UpgradeWizardListCommand::class => [ static::class, 'getUpgradeWizardListCommand' ],
+        ];
+    }
+
+    public function getExtensions(): array
+    {
+        return [
+            CommandRegistry::class => [ static::class, 'configureCommands' ],
         ];
     }
 
@@ -100,5 +111,28 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class)
         );
+    }
+
+    public static function getLanguagePackCommand(ContainerInterface $container): Command\LanguagePackCommand
+    {
+        return new Command\LanguagePackCommand;
+    }
+
+    public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
+    {
+        return new Command\UpgradeWizardRunCommand;
+    }
+
+    public static function getUpgradeWizardListCommand(ContainerInterface $container): Command\UpgradeWizardListCommand
+    {
+        return new Command\UpgradeWizardListCommand;
+    }
+
+    public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry
+    {
+        $commandRegistry->addLazyCommand('language:update', Command\LanguagePackCommand::class);
+        $commandRegistry->addLazyCommand('upgrade:run', Command\UpgradeWizardRunCommand::class);
+        $commandRegistry->addLazyCommand('upgrade:list', Command\UpgradeWizardListCommand::class);
+        return $commandRegistry;
     }
 }

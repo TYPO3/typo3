@@ -10,6 +10,48 @@ services:
   TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
     tags: ['container.env_var_processor']
 
+  TYPO3\CMS\Core\Command\DumpAutoloadCommand:
+    tags:
+      - name: 'console.command'
+        command: 'dumpautoload'
+        schedulable: false
+      - name: 'console.command'
+        command: 'extensionmanager:extension:dumpclassloadinginformation'
+        alias: true
+        schedulable: false
+      - name: 'console.command'
+        command: 'extension:dumpclassloadinginformation'
+        alias: true
+        schedulable: false
+
+  TYPO3\CMS\Core\Command\ExtensionListCommand:
+    tags:
+      - name: 'console.command'
+        command: 'extension:list'
+        schedulable: false
+
+  TYPO3\CMS\Core\Command\SendEmailCommand:
+    tags:
+      - name: 'console.command'
+        command: 'mailer:spool:send'
+      - name: 'console.command'
+        command: 'swiftmailer:spool:send'
+        alias: true
+        schedulable: false
+
+
+  TYPO3\CMS\Core\Command\SiteListCommand:
+    tags:
+      - name: 'console.command'
+        command: 'site:list'
+        schedulable: false
+
+  TYPO3\CMS\Core\Command\SiteShowCommand:
+    tags:
+      - name: 'console.command'
+        command: 'site:show'
+        schedulable: false
+
   TYPO3\CMS\Core\Configuration\SiteConfiguration:
     arguments:
       $configPath: "%env(TYPO3:configPath)%/sites"

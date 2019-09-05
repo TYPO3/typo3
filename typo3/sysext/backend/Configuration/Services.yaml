@@ -7,6 +7,18 @@ services:
   TYPO3\CMS\Backend\:
     resource: '../Classes/*'
 
+  TYPO3\CMS\Backend\Command\LockBackendCommand:
+    tags:
+      - { name: 'console.command', command: 'backend:lock' }
+
+  TYPO3\CMS\Backend\Command\UnlockBackendCommand:
+    tags:
+      - { name: 'console.command', command: 'backend:unlock' }
+
+  TYPO3\CMS\Backend\Command\ReferenceIndexUpdateCommand:
+    tags:
+      - { name: 'console.command', command: 'referenceindex:update' }
+
   # Temporary workaround until testing framework loads EXT:fluid in functional tests
   # @todo: Fix typo3/testing-framework and remove this
   TYPO3\CMS\Backend\View\BackendTemplateView:

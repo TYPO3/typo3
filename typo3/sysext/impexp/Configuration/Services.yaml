@@ -10,6 +10,11 @@ services:
   TYPO3\CMS\Impexp\Utility\ImportExportUtility:
     public: true
 
+  TYPO3\CMS\Impexp\Command\ImportCommand:
+    tags:
+      - name: 'console.command'
+        command: 'impexp:import'
+
   # Listener for old Signal Slots
   TYPO3\CMS\Impexp\Compatibility\SlotReplacement:
     tags:
