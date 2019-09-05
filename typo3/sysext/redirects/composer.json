@@ -23,6 +23,10 @@
 	"replace": {
 		"redirects": "*"
 	},
+	"suggest": {
+		"typo3/cms-reports": "Get reports of redirects",
+		"typo3/cms-scheduler": "Execute commands to update redirect status"
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "10.1.x-dev"

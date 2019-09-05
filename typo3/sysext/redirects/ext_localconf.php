@@ -1,4 +1,7 @@
 <?php
+
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3_MODE') or die();
 
 // Rebuild cache in DataHandler on changing / inserting / adding redirect records
@@ -21,3 +24,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup']['tcaDatabaseRe
 
 // Add validation call for form field source_host and source_path
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\TYPO3\CMS\Redirects\Evaluation\SourceHost::class] = '';
+
+if (ExtensionManagementUtility::isLoaded('reports')) {
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:statusProvider'][] = \TYPO3\CMS\Redirects\Report\Status\RedirectStatus::class;
+}

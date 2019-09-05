@@ -1,0 +1,9 @@
+"pages",,,,,,
+,"uid","pid","hidden","deleted","sys_language_uid","slug"
+,100,0,0,0,0,"/"
+,110,100,0,0,0,"/about-us"
+,120,100,0,0,0,"/features"
+,121,100,0,0,1,"/merkmale"
+,130,110,0,0,0,"/about-us/we-are-here"
+,140,100,1,0,0,"/buy/"
+,150,0,0,0,0,"/contact"
