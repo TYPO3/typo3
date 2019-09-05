@@ -27,14 +27,14 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class SiteConfigurationTest extends UnitTestCase
+class SiteConfigurationDataGroupTest extends UnitTestCase
 {
     /**
      * @var SiteConfigurationDataGroup
      */
     protected $subject;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->subject = new SiteConfigurationDataGroup();
     }
