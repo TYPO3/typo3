@@ -4231,4 +4231,60 @@ return [
             'Deprecation-88850-ContentObjectRendererSendNotifyEmail.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\History\RecordHistory->getHistoryEntry' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->getHistoryData' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->createChangeLog' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->shouldPerformRollback' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->getElementData' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->performRollback' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->createMultipleDiff' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->setLastHistoryEntry' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
 ];

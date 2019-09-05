@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\History\RecordHistory;
+use TYPO3\CMS\Backend\History\RecordHistoryRollback;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -104,32 +106,34 @@ class ElementHistoryController
         // Start history object
         $this->historyObject = GeneralUtility::makeInstance(RecordHistory::class, $element, $rollbackFields);
         $this->historyObject->setShowSubElements((int)$displaySettings['showSubElements']);
-        $this->historyObject->setLastHistoryEntry($lastHistoryEntry);
+        $this->historyObject->setLastHistoryEntryNumber($lastHistoryEntry);
         if ($displaySettings['maxSteps']) {
             $this->historyObject->setMaxSteps((int)$displaySettings['maxSteps']);
         }
 
         // Do the actual logic now (rollback, show a diff for certain changes,
         // or show the full history of a page or a specific record)
-        $this->historyObject->createChangeLog();
-        if (!empty($this->historyObject->changeLog)) {
-            if ($this->historyObject->shouldPerformRollback()) {
-                $this->historyObject->performRollback();
+        $changeLog = $this->historyObject->getChangeLog();
+        if (!empty($changeLog)) {
+            if ($rollbackFields !== null) {
+                GeneralUtility::makeInstance(RecordHistoryRollback::class)
+                    ->performRollback($rollbackFields, $this->historyObject->getDiff($changeLog));
+                $this->historyObject->legacyUpdates();
             } elseif ($lastHistoryEntry) {
-                $completeDiff = $this->historyObject->createMultipleDiff();
+                $completeDiff = $this->historyObject->getDiff($changeLog);
                 $this->displayMultipleDiff($completeDiff);
                 $this->view->assign('showDifferences', true);
                 $this->view->assign('fullViewUrl', $this->buildUrl(['historyEntry' => '']));
             }
-            if ($this->historyObject->getElementData()) {
-                $this->displayHistory($this->historyObject->changeLog);
+            if ($this->historyObject->getElementString() !== '') {
+                $this->displayHistory($changeLog);
             }
         }
 
         /** @var \TYPO3\CMS\Core\Http\NormalizedParams $normalizedParams */
         $normalizedParams = $request->getAttribute('normalizedParams');
-        $elementData = $this->historyObject->getElementData();
-        if ($elementData) {
+        $elementData = $this->historyObject->getElementInformation();
+        if (!empty($elementData)) {
             $this->setPagePath($elementData[0], $elementData[1]);
             $this->editLock = $this->getEditLockFromElement($elementData[0], $elementData[1]);
             // Get link to page history if the element history is shown
@@ -429,17 +433,19 @@ class ElementHistoryController
     protected function buildUrl($overrideParameters = []): string
     {
         $params = [];
+
         // Setting default values based on GET parameters:
-        if ($this->historyObject->getElementData()) {
-            $params['element'] = $this->historyObject->getElementString();
+        $elementString = $this->historyObject->getElementString();
+        if ($elementString !== '') {
+            $params['element'] = $elementString;
         }
-        $params['historyEntry'] = $this->historyObject->lastHistoryEntry;
+        $params['historyEntry'] = $this->historyObject->getLastHistoryEntryNumber();
+
         // Merging overriding values:
         $params = array_merge($params, $overrideParameters);
-        // Make the link:
 
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        // Make the link:
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_history', $params);
     }
 

@@ -621,4 +621,14 @@ return [
             'Deprecation-89001-InternalPublicTSFEProperties.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\History\RecordHistory->changeLog' => [
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\History\RecordHistory->lastHistoryEntry' => [
+        'restFiles' => [
+            'Deprecation-89127-CleanupRecordHistoryHandling.rst',
+        ],
+    ],
 ];

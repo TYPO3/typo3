@@ -15,9 +15,11 @@ namespace TYPO3\CMS\Backend\History;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Compatibility\PublicMethodDeprecationTrait;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,6 +30,19 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RecordHistory
 {
+    use PublicMethodDeprecationTrait;
+    use PublicPropertyDeprecationTrait;
+
+    private $deprecatedPublicMethods = [
+        'getHistoryEntry' => 'Using RecordHistory::getHistoryEntry() is deprecated and will not be possible anymore in TYPO3 v11.0.',
+        'getHistoryData' => 'Using RecordHistory::getHistoryData() is deprecated and will not be possible anymore in TYPO3 v11.0.',
+    ];
+
+    private $deprecatedPublicProperties = [
+        'changeLog' => 'Using changeLog is deprecated and will not be possible anymore in TYPO3 v11.0. Use getChangeLog() instead.',
+        'lastHistoryEntry' => 'Using lastHistoryEntry is deprecated and will not be possible anymore in TYPO3 v11.0. Use getLastHistoryEntryNumber() instead.',
+    ];
+
     /**
      * Maximum number of sys_history steps to show.
      *
@@ -54,12 +69,12 @@ class RecordHistory
      *
      * @var int
      */
-    public $lastHistoryEntry;
+    protected $lastHistoryEntry = 0;
 
     /**
      * @var array
      */
-    public $changeLog = [];
+    protected $changeLog = [];
 
     /**
      * Internal cache
@@ -74,7 +89,7 @@ class RecordHistory
     protected $rollbackFields = '';
 
     /**
-     * Constructor to define which element to work on - can be overridden with "setLastHistoryEntry"
+     * Constructor to define which element to work on - can be overridden with "setLastHistoryEntryNumber"
      *
      * @param string $element in the form of "tablename:uid"
      * @param string $rollbackFields
@@ -88,17 +103,28 @@ class RecordHistory
     /**
      * If a specific history entry is selected, then the relevant element is resolved for that.
      *
+     * @param int $lastHistoryEntryNumber
+     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use setLastHistoryEntryNumber() instead.
+     */
+    public function setLastHistoryEntry(int $lastHistoryEntryNumber): void
+    {
+        $this->setLastHistoryEntryNumber($lastHistoryEntryNumber);
+    }
+
+    /**
+     * If a specific history entry is selected, then the relevant element is resolved for that.
+     *
      * @param int $lastHistoryEntry
      */
-    public function setLastHistoryEntry(int $lastHistoryEntry)
+    public function setLastHistoryEntryNumber(int $lastHistoryEntry): void
     {
-        if ($lastHistoryEntry) {
-            $elementData = $this->getHistoryEntry($lastHistoryEntry);
-            $this->lastHistoryEntry = $lastHistoryEntry;
-            if (!empty($elementData) && empty($this->element)) {
-                $this->element = $elementData['tablename'] . ':' . $elementData['recuid'];
-            }
-        }
+        $this->lastHistoryEntry = $lastHistoryEntry;
+        $this->updateCurrentElement();
+    }
+
+    public function getLastHistoryEntryNumber(): int
+    {
+        return $this->lastHistoryEntry;
     }
 
     /**
@@ -107,7 +133,7 @@ class RecordHistory
      *
      * @param int $maxSteps
      */
-    public function setMaxSteps(int $maxSteps)
+    public function setMaxSteps(int $maxSteps): void
     {
         $this->maxSteps = $maxSteps;
     }
@@ -118,27 +144,40 @@ class RecordHistory
      *
      * @param bool $showSubElements
      */
-    public function setShowSubElements(bool $showSubElements)
+    public function setShowSubElements(bool $showSubElements): void
     {
         $this->showSubElements = $showSubElements;
     }
 
     /**
      * Creates change log including sub-elements, filling $this->changeLog
+     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use getChangeLog() instead.
      */
-    public function createChangeLog()
+    public function createChangeLog(): void
+    {
+        $this->changeLog = $this->getChangeLog();
+    }
+
+    /**
+     * Creates change log including sub-elements
+     * @noinspection GetSetMethodCorrectnessInspection
+     * @TODO: In v11 remove the property $this->changeLog and the @noinspection above
+     */
+    public function getChangeLog(): array
     {
         if (!empty($this->element)) {
-            list($table, $recordUid) = explode(':', $this->element);
-            $this->changeLog = $this->getHistoryData($table, $recordUid, $this->showSubElements, $this->lastHistoryEntry);
+            [$table, $recordUid] = explode(':', $this->element);
+            return $this->getHistoryData($table, $recordUid, $this->showSubElements, $this->lastHistoryEntry);
         }
+        return [];
     }
 
     /**
      * Whether rollback mode is on
      * @return bool
+     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0.
      */
-    public function shouldPerformRollback()
+    public function shouldPerformRollback(): bool
     {
         return !empty($this->rollbackFields);
     }
@@ -147,10 +186,20 @@ class RecordHistory
      * An array (0 = tablename, 1 = uid) or false if no element is set
      *
      * @return array|bool
+     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0. Use getElementInformation() instead.
      */
     public function getElementData()
     {
         return !empty($this->element) ? explode(':', $this->element) : false;
+    }
+
+    /**
+     * An array (0 = tablename, 1 = uid) or empty array if no element is set
+     * @return array
+     */
+    public function getElementInformation(): array
+    {
+        return !empty($this->element) ? explode(':', $this->element) : [];
     }
 
     /**
@@ -163,94 +212,16 @@ class RecordHistory
 
     /**
      * Perform rollback via DataHandler
+     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use RecordHistoryRollback::performRollback() instead.
      */
-    public function performRollback()
+    public function performRollback(): void
     {
         if (!$this->shouldPerformRollback()) {
             return;
         }
-        $rollbackData = explode(':', $this->rollbackFields);
-        $diff = $this->createMultipleDiff();
-        // PROCESS INSERTS AND DELETES
-        // rewrite inserts and deletes
-        $cmdmapArray = [];
-        $data = [];
-        if ($diff['insertsDeletes']) {
-            switch (count($rollbackData)) {
-                case 1:
-                    // all tables
-                    $data = $diff['insertsDeletes'];
-                    break;
-                case 2:
-                    // one record
-                    if ($diff['insertsDeletes'][$this->rollbackFields]) {
-                        $data[$this->rollbackFields] = $diff['insertsDeletes'][$this->rollbackFields];
-                    }
-                    break;
-                case 3:
-                    // one field in one record -- ignore!
-                    break;
-            }
-            if (!empty($data)) {
-                foreach ($data as $key => $action) {
-                    $elParts = explode(':', $key);
-                    if ((int)$action === 1) {
-                        // inserted records should be deleted
-                        $cmdmapArray[$elParts[0]][$elParts[1]]['delete'] = 1;
-                        // When the record is deleted, the contents of the record do not need to be updated
-                        unset($diff['oldData'][$key]);
-                        unset($diff['newData'][$key]);
-                    } elseif ((int)$action === -1) {
-                        // deleted records should be inserted again
-                        $cmdmapArray[$elParts[0]][$elParts[1]]['undelete'] = 1;
-                    }
-                }
-            }
-        }
-        // Writes the data:
-        if ($cmdmapArray) {
-            $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->dontProcessTransformations = true;
-            $tce->start([], $cmdmapArray);
-            $tce->process_cmdmap();
-            unset($tce);
-        }
-        if (!$diff['insertsDeletes']) {
-            // PROCESS CHANGES
-            // create an array for process_datamap
-            $diffModified = [];
-            foreach ($diff['oldData'] as $key => $value) {
-                $splitKey = explode(':', $key);
-                $diffModified[$splitKey[0]][$splitKey[1]] = $value;
-            }
-            switch (count($rollbackData)) {
-                case 1:
-                    // all tables
-                    $data = $diffModified;
-                    break;
-                case 2:
-                    // one record
-                    $data[$rollbackData[0]][$rollbackData[1]] = $diffModified[$rollbackData[0]][$rollbackData[1]];
-                    break;
-                case 3:
-                    // one field in one record
-                    $data[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]] = $diffModified[$rollbackData[0]][$rollbackData[1]][$rollbackData[2]];
-                    break;
-            }
-            // Writes the data:
-            $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->dontProcessTransformations = true;
-            $tce->start($data, []);
-            $tce->process_datamap();
-            unset($tce);
-        }
-        // Return to normal operation
-        $this->lastHistoryEntry = false;
-        $this->rollbackFields = '';
-        $this->createChangeLog();
-        if (isset($data['pages']) || isset($cmdmapArray['pages'])) {
-            BackendUtility::setUpdateSignal('updatePageTree');
-        }
+        GeneralUtility::makeInstance(RecordHistoryRollback::class)
+            ->performRollback($this->rollbackFields, $this->getDiff($this->getChangeLog()));
+        $this->legacyUpdates();
     }
 
     /*******************************
@@ -263,52 +234,53 @@ class RecordHistory
      * Creates a diff between the current version of the records and the selected version
      *
      * @return array Diff for many elements
+     * @deprecated since TYPO3 v10.1, will be removed in TYPO3 v11.0, use getDiff() instead.
      */
     public function createMultipleDiff(): array
+    {
+        return $this->getDiff($this->changeLog);
+    }
+
+    /**
+     * Creates a diff between the current version of the records and the selected version
+     *
+     * @param array $changeLog
+     * @return array Diff for many elements
+     */
+    public function getDiff(array $changeLog): array
     {
         $insertsDeletes = [];
         $newArr = [];
         $differences = [];
         // traverse changelog array
-        foreach ($this->changeLog as $value) {
+        foreach ($changeLog as $value) {
             $field = $value['tablename'] . ':' . $value['recuid'];
             // inserts / deletes
             if ((int)$value['actiontype'] !== RecordHistoryStore::ACTION_MODIFY) {
                 if (!$insertsDeletes[$field]) {
                     $insertsDeletes[$field] = 0;
                 }
-                if ($value['action'] === 'insert') {
-                    $insertsDeletes[$field]++;
-                } else {
-                    $insertsDeletes[$field]--;
-                }
+                $value['action'] === 'insert' ? $insertsDeletes[$field]++ : $insertsDeletes[$field]--;
                 // unset not needed fields
                 if ($insertsDeletes[$field] === 0) {
                     unset($insertsDeletes[$field]);
                 }
+            } elseif (!isset($newArr[$field])) {
+                $newArr[$field] = $value['newRecord'];
+                $differences[$field] = $value['oldRecord'];
             } else {
-                // update fields
-                // first row of field
-                if (!isset($newArr[$field])) {
-                    $newArr[$field] = $value['newRecord'];
-                    $differences[$field] = $value['oldRecord'];
-                } else {
-                    // standard
-                    $differences[$field] = array_merge($differences[$field], $value['oldRecord']);
-                }
+                $differences[$field] = array_merge($differences[$field], $value['oldRecord']);
             }
         }
         // remove entries where there were no changes effectively
         foreach ($newArr as $record => $value) {
             foreach ($value as $key => $innerVal) {
-                if ($newArr[$record][$key] == $differences[$record][$key]) {
-                    unset($newArr[$record][$key]);
-                    unset($differences[$record][$key]);
+                if ($newArr[$record][$key] === $differences[$record][$key]) {
+                    unset($newArr[$record][$key], $differences[$record][$key]);
                 }
             }
             if (empty($newArr[$record]) && empty($differences[$record])) {
-                unset($newArr[$record]);
-                unset($differences[$record]);
+                unset($newArr[$record], $differences[$record]);
             }
         }
         return [
@@ -323,15 +295,15 @@ class RecordHistory
      *
      * @param string $table
      * @param int $uid
-     * @param bool $includeSubentries
+     * @param bool $includeSubEntries
      * @param int $lastHistoryEntry the highest entry to be evaluated
      * @return array
      */
-    public function getHistoryData(string $table, int $uid, bool $includeSubentries = null, int $lastHistoryEntry = null): array
+    protected function getHistoryData(string $table, int $uid, bool $includeSubEntries = null, int $lastHistoryEntry = null): array
     {
-        $changeLog = $this->getHistoryDataForRecord($table, $uid, $lastHistoryEntry);
+        $historyDataForRecord = $this->getHistoryDataForRecord($table, $uid, $lastHistoryEntry);
         // get history of tables of this page and merge it into changelog
-        if ($table === 'pages' && $includeSubentries && $this->hasPageAccess('pages', $uid)) {
+        if ($table === 'pages' && $includeSubEntries && $this->hasPageAccess('pages', $uid)) {
             foreach ($GLOBALS['TCA'] as $tablename => $value) {
                 // check if there are records on the page
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tablename);
@@ -356,13 +328,13 @@ class RecordHistory
                     $newChangeLog = $this->getHistoryDataForRecord($tablename, $row['uid'], $lastHistoryEntry);
                     if (is_array($newChangeLog) && !empty($newChangeLog)) {
                         foreach ($newChangeLog as $key => $newChangeLogEntry) {
-                            $changeLog[$key] = $newChangeLogEntry;
+                            $historyDataForRecord[$key] = $newChangeLogEntry;
                         }
                     }
                 }
             }
         }
-        usort($changeLog, function ($a, $b) {
+        usort($historyDataForRecord, static function (array $a, array $b): int {
             if ($a['tstamp'] < $b['tstamp']) {
                 return 1;
             }
@@ -371,7 +343,7 @@ class RecordHistory
             }
             return 0;
         });
-        return $changeLog;
+        return $historyDataForRecord;
     }
 
     /**
@@ -381,6 +353,7 @@ class RecordHistory
      * @param int $uid UID of record
      * @param int $lastHistoryEntry the highest entry to be fetched
      * @return array Array of history data of the record
+     * @internal
      */
     public function getHistoryDataForRecord(string $table, int $uid, int $lastHistoryEntry = null): array
     {
@@ -420,7 +393,7 @@ class RecordHistory
      * @param int $lastHistoryEntry
      * @return array
      */
-    public function getHistoryEntry(int $lastHistoryEntry): array
+    protected function getHistoryEntry(int $lastHistoryEntry): array
     {
         $queryBuilder = $this->getQueryBuilder();
         $record = $queryBuilder
@@ -449,7 +422,6 @@ class RecordHistory
      */
     public function findEventsForRecord(string $table, int $uid, int $limit = 0, int $minimumUid = null): array
     {
-        $events = [];
         $queryBuilder = $this->getQueryBuilder();
         $queryBuilder
             ->select('*')
@@ -467,13 +439,20 @@ class RecordHistory
             $queryBuilder->andWhere($queryBuilder->expr()->gte('uid', $queryBuilder->createNamedParameter($minimumUid, \PDO::PARAM_INT)));
         }
 
+        return $this->prepareEventDataFromQueryBuilder($queryBuilder);
+    }
+
+    protected function prepareEventDataFromQueryBuilder(QueryBuilder $queryBuilder): array
+    {
+        $events = [];
         $result = $queryBuilder->orderBy('tstamp', 'DESC')->execute();
         while ($row = $result->fetch()) {
             $identifier = (int)$row['uid'];
-            if ((int)$row['actiontype'] === RecordHistoryStore::ACTION_ADD || (int)$row['actiontype'] === RecordHistoryStore::ACTION_UNDELETE) {
+            $actionType = (int)$row['actiontype'];
+            if ($actionType === RecordHistoryStore::ACTION_ADD || $actionType === RecordHistoryStore::ACTION_UNDELETE) {
                 $row['action'] = 'insert';
             }
-            if ((int)$row['actiontype'] === RecordHistoryStore::ACTION_DELETE) {
+            if ($actionType === RecordHistoryStore::ACTION_DELETE) {
                 $row['action'] = 'delete';
             }
             if (strpos($row['history_data'], 'a') === 0) {
@@ -501,7 +480,7 @@ class RecordHistory
      * @param int $uid
      * @return bool
      */
-    protected function hasPageAccess($table, $uid)
+    protected function hasPageAccess($table, $uid): bool
     {
         $uid = (int)$uid;
 
@@ -540,16 +519,15 @@ class RecordHistory
     }
 
     /**
-     * Fetches GET/POST arguments and sanitizes the values for
-     * the expected disposal. Invalid values will be converted
-     * to an empty string.
+     * Sanitizes the values for the expected disposal.
+     * Invalid values will be converted to an empty string.
      *
      * @param string $value the value of the element value
-     * @return array|string|int
+     * @return string
      */
-    protected function sanitizeElementValue($value)
+    protected function sanitizeElementValue($value): string
     {
-        if ($value !== '' && !preg_match('#^[a-z0-9_.]+:[0-9]+$#i', $value)) {
+        if ($value !== '' && !preg_match('#^[a-z\d_.]+:[\d]+$#i', $value)) {
             return '';
         }
         return $value;
@@ -561,9 +539,9 @@ class RecordHistory
      * @param string $value
      * @return string
      */
-    protected function sanitizeRollbackFieldsValue($value)
+    protected function sanitizeRollbackFieldsValue($value): string
     {
-        if ($value !== '' && !preg_match('#^[a-z0-9_.]+(:[0-9]+(:[a-z0-9_.]+)?)?$#i', $value)) {
+        if ($value !== '' && !preg_match('#^[a-z\d_.]+(:[\d]+(:[a-z\d_.]+)?)?$#i', $value)) {
             return '';
         }
         return $value;
@@ -575,27 +553,39 @@ class RecordHistory
      * @param string $table
      * @return bool
      */
-    protected function hasTableAccess($table)
+    protected function hasTableAccess($table): bool
     {
         return $this->getBackendUser()->check('tables_select', $table);
     }
 
-    /**
-     * Gets the current backend user.
-     *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-     */
-    protected function getBackendUser()
+    protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function getQueryBuilder(): QueryBuilder
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_history');
+    }
+
+    protected function updateCurrentElement(): void
+    {
+        if ($this->lastHistoryEntry) {
+            $elementData = $this->getHistoryEntry($this->lastHistoryEntry);
+            if (!empty($elementData) && empty($this->element)) {
+                $this->element = $elementData['tablename'] . ':' . $elementData['recuid'];
+            }
+        }
+    }
+
+    /**
+     * @internal
+     * @TODO: In v11 remove this function, this only exists for legacy reasons
+     */
+    public function legacyUpdates(): void
+    {
+        $this->lastHistoryEntry = false;
+        $this->changeLog = $this->getChangeLog();
     }
 }

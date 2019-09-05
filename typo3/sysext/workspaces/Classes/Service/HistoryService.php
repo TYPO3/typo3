@@ -154,8 +154,8 @@ class HistoryService implements SingletonInterface
     protected function getHistoryEntries($table, $id)
     {
         if (!isset($this->historyEntries[$table][$id])) {
-            $historyObject = GeneralUtility::makeInstance(RecordHistory::class);
-            $this->historyEntries[$table][$id] = $historyObject->getHistoryDataForRecord($table, $id);
+            $this->historyEntries[$table][$id] = GeneralUtility::makeInstance(RecordHistory::class)
+                ->getHistoryDataForRecord($table, $id);
         }
         return $this->historyEntries[$table][$id];
     }
