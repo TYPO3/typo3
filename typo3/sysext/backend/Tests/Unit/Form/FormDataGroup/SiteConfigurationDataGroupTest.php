@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 /**
  * Test case
  */
-class SiteConfigurationTest extends UnitTestCase
+class SiteConfigurationDataGroupTest extends UnitTestCase
 {
     /**
      * @var SiteConfigurationDataGroup
