@@ -108,7 +108,7 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
 
-        jobsMainStage.add(this.getJobUnitJavaScript(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.add(this.getJobUnitJavaScript(0, "JS", this.getTaskComposerInstall("PHP72"), false));
 
         jobsMainStage.add(this.getJobLintPhp("PHP72", false));
         jobsMainStage.add(this.getJobLintPhp("PHP73", false));
@@ -155,7 +155,7 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
         jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
 
-        jobsComposerMaxStage.add(this.getJobUnitJavaScript(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
+        jobsComposerMaxStage.add(this.getJobUnitJavaScript(1, "JS", this.getTaskComposerUpdateMax("PHP72"), false));
 
         jobsComposerMaxStage.add(this.getJobUnitPhp(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
         jobsComposerMaxStage.add(this.getJobUnitPhp(1, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
@@ -199,7 +199,7 @@ public class NightlySpec extends AbstractCoreSpec {
         jobsComposerMinStage.addAll(this.getJobsFunctionalTestsSqlite(2, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
         jobsComposerMinStage.addAll(this.getJobsFunctionalTestsSqlite(2, this.numberOfFunctionalSqliteJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
 
-        jobsComposerMinStage.add(this.getJobUnitJavaScript(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
+        jobsComposerMinStage.add(this.getJobUnitJavaScript(2, "JS", this.getTaskComposerUpdateMin("PHP72"), false));
 
         jobsComposerMinStage.add(this.getJobUnitPhp(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
         jobsComposerMinStage.add(this.getJobUnitPhp(2, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
