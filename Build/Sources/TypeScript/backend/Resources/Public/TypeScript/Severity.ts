@@ -71,7 +71,7 @@ try {
   if (top && top.TYPO3 && top.TYPO3.Severity) {
     severityObject = top.TYPO3.Severity;
   }
-} catch (e) {
+} catch {
   // This only happens if the opener, parent or top is some other url (eg a local file)
   // which loaded the current window. Then the browser's cross domain policy jumps in
   // and raises an exception.

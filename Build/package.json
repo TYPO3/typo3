@@ -80,7 +80,7 @@
     "taboverride": "^4.0.3",
     "tagsort": "1.4.0",
     "tslint": "^5.10.0",
-    "typescript": "~2.4.0"
+    "typescript": "~3.6.2"
   },
   "scripts": {
     "build-css": "./node_modules/.bin/grunt css",

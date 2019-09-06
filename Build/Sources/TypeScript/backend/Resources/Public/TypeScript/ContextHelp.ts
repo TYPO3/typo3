@@ -132,7 +132,7 @@ class ContextHelp {
       cshWindow.focus();
       Popover.hide($trigger);
       return cshWindow;
-    } catch (e) {
+    } catch {
       // do nothing
     }
   }

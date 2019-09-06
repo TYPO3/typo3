@@ -479,7 +479,7 @@ try {
   if (top && top.TYPO3 && top.TYPO3.LoginRefresh) {
     loginRefreshObject = top.TYPO3.LoginRefresh;
   }
-} catch (e) {
+} catch {
   // This only happens if the opener, parent or top is some other url (eg a local file)
   // which loaded the current window. Then the browser's cross domain policy jumps in
   // and raises an exception.

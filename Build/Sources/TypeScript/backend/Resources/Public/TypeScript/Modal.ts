@@ -496,7 +496,7 @@ try {
     top.TYPO3.Modal.initializeMarkupTrigger(document);
     modalObject = top.TYPO3.Modal;
   }
-} catch (e) {
+} catch {
   // This only happens if the opener, parent or top is some other url (eg a local file)
   // which loaded the current window. Then the browser's cross domain policy jumps in
   // and raises an exception.
