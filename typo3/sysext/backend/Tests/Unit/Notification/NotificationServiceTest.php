@@ -84,7 +84,7 @@ class NotificationServiceTest extends UnitTestCase
             $this->assertStringContainsString(GeneralUtility::quoteJSvalue($message), $callback);
             $this->assertStringContainsString($notificationCode, $callback);
             return true;
-        }))->shouldBeCalledOnce();
+        }))->shouldBeCalled();
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer->reveal());
 
         GeneralUtility::makeInstance(NotificationService::class)
@@ -108,7 +108,7 @@ class NotificationServiceTest extends UnitTestCase
             $this->assertStringContainsString(GeneralUtility::quoteJSvalue($message), $callback);
             $this->assertStringContainsString(', 123,', $callback);
             return true;
-        }))->shouldBeCalledOnce();
+        }))->shouldBeCalled();
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer->reveal());
 
         GeneralUtility::makeInstance(NotificationService::class)
@@ -133,7 +133,7 @@ class NotificationServiceTest extends UnitTestCase
             $this->assertStringContainsString(', 123,', $callback);
             $this->assertStringContainsString(Action::TYPE_IMMEDIATE, $callback);
             return true;
-        }))->shouldBeCalledOnce();
+        }))->shouldBeCalled();
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer->reveal());
 
         GeneralUtility::makeInstance(NotificationService::class)
@@ -158,7 +158,7 @@ class NotificationServiceTest extends UnitTestCase
             $this->assertStringContainsString(', 123,', $callback);
             $this->assertStringContainsString(Action::TYPE_DEFERRED, $callback);
             return true;
-        }))->shouldBeCalledOnce();
+        }))->shouldBeCalled();
         GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer->reveal());
 
         GeneralUtility::makeInstance(NotificationService::class)
