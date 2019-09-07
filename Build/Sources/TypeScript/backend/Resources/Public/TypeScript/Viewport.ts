@@ -21,15 +21,22 @@ import Topbar = require('./Viewport/Topbar');
 class Viewport {
   // The attributes are uppercase for compatibility reasons
   public readonly Loader: Loader = Loader;
-  public readonly Topbar: Topbar = Topbar;
+  public readonly Topbar: Topbar;
   public readonly NavigationContainer: NavigationContainer = null;
   public readonly ContentContainer: ContentContainer = null;
   public readonly consumerScope: any = ConsumerScope;
 
   constructor() {
     $((): void => this.initialize());
+    this.Topbar = new Topbar();
     this.NavigationContainer = new NavigationContainer(this.consumerScope);
     this.ContentContainer = new ContentContainer(this.consumerScope);
+  }
+
+  public doLayout(): void {
+    this.NavigationContainer.cleanup();
+    this.NavigationContainer.calculateScrollbar();
+    $('.t3js-topbar-header').css('padding-right', $('.t3js-scaffold-toolbar').outerWidth());
   }
 
   private initialize(): void {
@@ -38,15 +45,9 @@ class Viewport {
       this.doLayout();
     });
   }
-
-  private doLayout(): void {
-    this.NavigationContainer.cleanup();
-    this.NavigationContainer.calculateScrollbar();
-    $('.t3js-topbar-header').css('padding-right', $('.t3js-scaffold-toolbar').outerWidth());
-  }
 }
 
-let viewportObject;
+let viewportObject: Viewport;
 
 if (!top.TYPO3.Backend) {
   viewportObject = new Viewport();

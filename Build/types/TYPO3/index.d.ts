@@ -77,15 +77,18 @@ declare namespace TBE_EDITOR {
  * Current AMD/RequireJS modules are returning *instances* of ad-hoc *classes*, make that known to TypeScript
  */
 declare module 'TYPO3/CMS/Backend/FormEngineValidation' {
-  export = new TYPO3.CMS.Backend.FormEngineValidation();
+  const _exported: TYPO3.CMS.Backend.FormEngineValidation;
+  export = _exported;
 }
 
 declare module 'TYPO3/CMS/Backend/FormEngine' {
-  export = new TYPO3.CMS.Backend.FormEngine();
+  const _exported: TYPO3.CMS.Backend.FormEngine;
+  export = _exported;
 }
 
 declare module 'TYPO3/CMS/Backend/FormEngine/Element/SelectTree' {
-  export = TYPO3.CMS.Backend.FormEngine.Element.SelectTree;
+  const _exported: any;
+  export = _exported;
 }
 
 // type definition for global namespace object

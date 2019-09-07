@@ -14,6 +14,7 @@
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import {AbstractContainer} from './AbstractContainer';
 import * as $  from 'jquery';
+import ClientRequest = require('../Event/ClientRequest');
 import InteractionRequest = require('../Event/InteractionRequest');
 import Loader = require('./Loader');
 import Utility = require('../Utility');
@@ -39,7 +40,7 @@ class ContentContainer extends AbstractContainer {
    * @param {InteractionRequest} [interactionRequest]
    * @returns {JQueryDeferred<TriggerRequest>}
    */
-  public setUrl(urlToLoad: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
+  public setUrl(urlToLoad: string, interactionRequest?: InteractionRequest): JQueryDeferred<TriggerRequest> {
     let deferred: JQueryDeferred<TriggerRequest>;
     const iFrame = this.resolveIFrameElement();
     // abort, if no IFRAME can be found
@@ -47,6 +48,9 @@ class ContentContainer extends AbstractContainer {
       deferred = $.Deferred();
       deferred.reject();
       return deferred;
+    }
+    if (!(interactionRequest instanceof InteractionRequest)) {
+      interactionRequest = new ClientRequest('typo3.setUrl', null);
     }
     deferred = this.consumerScope.invoke(
       new TriggerRequest('typo3.setUrl', interactionRequest),
@@ -70,11 +74,10 @@ class ContentContainer extends AbstractContainer {
   }
 
   /**
-   * @param {boolean} forceGet
    * @param {InteractionRequest} interactionRequest
    * @returns {JQueryDeferred<{}>}
    */
-  public refresh(forceGet: boolean, interactionRequest?: InteractionRequest): JQueryDeferred<{}> {
+  public refresh(interactionRequest?: InteractionRequest): JQueryDeferred<{}> {
     let deferred;
     const iFrame = <HTMLIFrameElement>this.resolveIFrameElement();
     // abort, if no IFRAME can be found
@@ -87,7 +90,7 @@ class ContentContainer extends AbstractContainer {
       new TriggerRequest('typo3.refresh', interactionRequest),
     );
     deferred.then((): void => {
-      iFrame.contentWindow.location.reload(forceGet);
+      iFrame.contentWindow.location.reload();
     });
     return deferred;
   }

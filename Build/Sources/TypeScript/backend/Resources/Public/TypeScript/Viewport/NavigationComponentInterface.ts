@@ -22,4 +22,5 @@ export interface NavigationComponentInterface {
   setTemporaryMountPoint: SetTemporaryMountPoint;
   unsetTemporaryMountPoint: Function;
   selectNode: Function;
+  getFirstNode: Function;
 }

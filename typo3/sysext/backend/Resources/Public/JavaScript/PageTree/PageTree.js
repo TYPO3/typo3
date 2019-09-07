@@ -139,7 +139,7 @@ define(['jquery',
       } else {
         if (data.command === 'delete') {
           if (data.uid === fsMod.recentIds.web) {
-            _this.selectNode(_this.nodes[0]);
+            _this.selectNode(_this.getFirstNode());
           }
           params = '&cmd[pages][' + data.uid + '][delete]=1';
         } else {
@@ -182,6 +182,10 @@ define(['jquery',
             _this.errorNotification();
           }
         });
+    };
+
+    PageTree.prototype.getFirstNode = function() {
+      return this.nodes[0];
     };
 
     /**

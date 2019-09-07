@@ -113,7 +113,7 @@ class ImageManipulation {
     viewMode: 1,
     zoomable: false,
   };
-  private resizeTimeout: Number = 450;
+  private resizeTimeout: number = 450;
 
   /**
    * @method isCropAreaEmpty
@@ -967,9 +967,12 @@ class ImageManipulation {
     let timer: number;
     $(window).on('resize', (): void => {
       clearTimeout(timer);
-      timer = setTimeout((): void => {
-        fn();
-      },                 this.resizeTimeout);
+      timer = setTimeout(
+        (): void => {
+          fn();
+        },
+        this.resizeTimeout,
+      );
     });
   }
 }

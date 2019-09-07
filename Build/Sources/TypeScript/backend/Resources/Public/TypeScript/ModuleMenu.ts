@@ -191,7 +191,7 @@ class ModuleMenu {
     return this.loadModuleComponents(
       moduleData,
       params,
-      new ClientRequest('typo3.showModule', event),
+      new ClientRequest('typo3.showModule', event ? event.originalEvent : null),
     );
   }
 

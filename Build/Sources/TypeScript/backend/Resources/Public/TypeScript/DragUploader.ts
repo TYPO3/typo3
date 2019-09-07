@@ -54,6 +54,7 @@ interface UploadedFile {
 
 interface InternalFile extends File {
   lastModified: any;
+  lastModifiedDate: any;
 }
 
 interface DragUploaderOptions {

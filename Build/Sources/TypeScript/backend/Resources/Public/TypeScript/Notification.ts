@@ -196,8 +196,10 @@ class Notification {
           $me.removeClass('in');
           next();
         })
-        .slideUp(() => {
-          $me.remove();
+        .slideUp({
+          complete: (): void => {
+            $me.remove();
+          },
         });
     });
     $box.appendTo(this.messageContainer);
@@ -218,7 +220,7 @@ class Notification {
   }
 }
 
-let notificationObject;
+let notificationObject: any;
 
 try {
   // fetch from parent

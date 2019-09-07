@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery","./Toolbar"],function(r,e,t,o,a){"use strict";class i{constructor(){this.Toolbar=new a}refresh(){o.ajax(TYPO3.settings.ajaxUrls.topbar).done(r=>{o(i.topbarSelector).html(r.topbar),o(i.topbarSelector).trigger("t3-topbar-update")})}}return i.topbarSelector=t.ScaffoldIdentifierEnum.header,i});
+define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery"],function(e,r,t,i){"use strict";return class{registerEvent(e){i(e),i(t.ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}});

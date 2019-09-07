@@ -222,7 +222,7 @@ class ContextMenuActions {
           success: (): void => {
             if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
               if (uid === top.fsMod.recentIds.web) {
-                let node = Viewport.NavigationContainer.PageTree.instance.nodes[0];
+                let node = Viewport.NavigationContainer.PageTree.getFirstNode();
                 Viewport.NavigationContainer.PageTree.selectNode(node);
               }
 
@@ -281,7 +281,7 @@ class ContextMenuActions {
    */
   public static triggerRefresh(iframeUrl: string): void {
     if (iframeUrl.indexOf('record%2Fedit') === -1) {
-      Viewport.ContentContainer.refresh(true);
+      Viewport.ContentContainer.refresh();
     }
   }
 

@@ -96,11 +96,8 @@ class NavigationContainer extends AbstractContainer {
     return $(ScaffoldIdentifierEnum.contentNavigationIframe).attr('src');
   }
 
-  /**
-   * @param {boolean} forceGet
-   */
-  public refresh(forceGet: boolean): any {
-    return (<HTMLIFrameElement>$(ScaffoldIdentifierEnum.contentNavigationIframe)[0]).contentWindow.location.reload(forceGet);
+  public refresh(): any {
+    return (<HTMLIFrameElement>$(ScaffoldIdentifierEnum.contentNavigationIframe)[0]).contentWindow.location.reload();
   }
 
   public calculateScrollbar(): void {

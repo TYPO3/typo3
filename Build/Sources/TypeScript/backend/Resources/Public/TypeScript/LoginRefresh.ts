@@ -67,7 +67,7 @@ class LoginRefresh {
       return;
     }
     // set interval to 60 seconds
-    let interval: Number = this.intervalTime * 1000;
+    let interval: number = this.intervalTime * 1000;
     this.intervalId = setInterval(this.checkActiveSession, interval);
   }
 

@@ -19,7 +19,7 @@ interface FieldOptions {
   tableName: string;
   fieldName: string;
   config: { [key: string]: any };
-  listenerFieldNames: string[];
+  listenerFieldNames: { [key: string]: string };
   language: number;
   originalValue: string;
   signature: string;

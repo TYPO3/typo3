@@ -156,6 +156,10 @@ class Wizard {
     return $button;
   }
 
+  public setForceSelection(force: boolean): void {
+    this.setup.forceSelection = force;
+  }
+
   private initializeEvents(): void {
     let $modal = this.setup.$carousel.closest('.modal');
     let $modalTitle = $modal.find('.modal-title');
@@ -288,7 +292,7 @@ class Wizard {
   }
 }
 
-let wizardObject;
+let wizardObject: any;
 try {
   // fetch from opening window
   if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Wizard) {

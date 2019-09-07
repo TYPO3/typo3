@@ -14,7 +14,7 @@
 import {NavigationComponentInterface} from './NavigationComponentInterface';
 
 class PageTree {
-  private instance: NavigationComponentInterface = null;
+  private readonly instance: NavigationComponentInterface = null;
 
   constructor(instance: NavigationComponentInterface) {
     this.instance = instance;
@@ -42,6 +42,14 @@ class PageTree {
     if (this.instance !== null) {
       this.instance.selectNode(node);
     }
+  }
+
+  public getFirstNode(): object {
+    if (this.instance !== null) {
+      return this.instance.getFirstNode();
+    }
+
+    return {};
   }
 }
 

@@ -13,18 +13,17 @@
 
 import {ScaffoldIdentifierEnum} from '../Enum/Viewport/ScaffoldIdentifier';
 import * as $ from 'jquery';
+import Toolbar = require('./Toolbar');
 
 class Topbar {
   public static readonly topbarSelector: string = ScaffoldIdentifierEnum.header;
+  public readonly Toolbar: Toolbar;
 
-  public static Toolbar: { [key: string]: Function } = {
-    registerEvent: (callback: (eventHandler: JQueryEventObject) => any): void => {
-      $(callback);
-      $(Topbar.topbarSelector).on('t3-topbar-update', callback);
-    },
-  };
+  public constructor() {
+    this.Toolbar = new Toolbar();
+  }
 
-  public static refresh(): void {
+  public refresh(): void {
     $.ajax(TYPO3.settings.ajaxUrls.topbar).done((data: { [key: string]: string }): void => {
       $(Topbar.topbarSelector).html(data.topbar);
       $(Topbar.topbarSelector).trigger('t3-topbar-update');

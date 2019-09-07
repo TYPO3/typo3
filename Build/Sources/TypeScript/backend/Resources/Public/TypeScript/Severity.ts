@@ -55,7 +55,7 @@ class Severity {
   }
 }
 
-let severityObject;
+let severityObject: any;
 try {
   // fetch from opening window
   if (window.opener && window.opener.TYPO3 && window.opener.TYPO3.Severity) {
