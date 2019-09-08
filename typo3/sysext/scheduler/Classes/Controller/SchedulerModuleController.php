@@ -173,7 +173,7 @@ class SchedulerModuleController
         $content .= $this->getModuleContent($previousCMD);
         $content .= '<div id="extraFieldsSection"></div></form><div id="extraFieldsHidden"></div>';
 
-        $this->getButtons();
+        $this->getButtons($request);
         $this->getModuleMenu();
 
         $this->moduleTemplate->setContent($content);
@@ -1294,8 +1294,10 @@ class SchedulerModuleController
 
     /**
      * Create the panel of buttons for submitting the form or otherwise perform operations.
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function getButtons(): void
+    protected function getButtons(ServerRequestInterface $request): void
     {
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // CSH
@@ -1355,12 +1357,17 @@ class SchedulerModuleController
             $buttonBar->addButton($saveButtonDropdown, ButtonBar::BUTTON_POSITION_LEFT, 3);
         }
 
-        // Edit
+        // Delete
         if ($this->getCurrentAction()->equals(Action::EDIT)) {
-            $deleteButton = $buttonBar->makeInputButton()
-                ->setName('CMD')
-                ->setValue(Action::DELETE)
-                ->setForm('tx_scheduler_form')
+            $deleteButton = $buttonBar->makeLinkButton()
+                ->setHref($this->moduleUri . '&CMD=' . Action::DELETE . '&tx_scheduler[uid]=' . $request->getQueryParams()['tx_scheduler']['uid'])
+                ->setClasses('t3js-modal-trigger')
+                ->setDataAttributes([
+                    'severity' => 'warning',
+                    'title' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'),
+                    'button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
+                    'content' => $this->getLanguageService()->getLL('msg.delete'),
+                ])
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon('actions-edit-delete', Icon::SIZE_SMALL))
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete'));
             $buttonBar->addButton($deleteButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
