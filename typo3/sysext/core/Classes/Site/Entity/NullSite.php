@@ -109,6 +109,16 @@ class NullSite implements SiteInterface
     }
 
     /**
+     * A null site has no settings - return empty array
+     *
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return [];
+    }
+
+    /**
      * Returns a language of this site, given by the sys_language_uid
      *
      * @param int $languageId

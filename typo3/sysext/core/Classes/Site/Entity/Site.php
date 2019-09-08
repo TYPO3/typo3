@@ -72,17 +72,24 @@ class Site implements SiteInterface
     protected $errorHandlers;
 
     /**
+     * @var array
+     */
+    protected $settings;
+
+    /**
      * Sets up a site object, and its languages and error handlers
      *
      * @param string $identifier
      * @param int $rootPageId
      * @param array $configuration
+     * @param array $settings
      */
-    public function __construct(string $identifier, int $rootPageId, array $configuration)
+    public function __construct(string $identifier, int $rootPageId, array $configuration, array $settings = [])
     {
         $this->identifier = $identifier;
         $this->rootPageId = $rootPageId;
         $this->configuration = $configuration;
+        $this->settings = $settings;
         $configuration['languages'] = !empty($configuration['languages']) ? $configuration['languages'] : [
             0 => [
                 'languageId' => 0,
@@ -315,6 +322,16 @@ class Site implements SiteInterface
     public function getConfiguration(): array
     {
         return $this->configuration;
+    }
+
+    /**
+     * Returns the settings for this site
+     *
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return $this->settings;
     }
 
     /**

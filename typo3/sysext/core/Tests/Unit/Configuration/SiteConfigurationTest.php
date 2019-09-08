@@ -88,6 +88,32 @@ class SiteConfigurationTest extends UnitTestCase
     /**
      * @test
      */
+    public function resolveAllExistingSitesReadsSettings(): void
+    {
+        $configuration = [
+            'rootPageId' => 42,
+            'base' => 'https://example.com',
+        ];
+        $settings = [
+            'somevendor' => [
+                'someextension' => 'foo'
+            ],
+            'othervendor' => [
+                'otherextension' => 'bar'
+            ]
+        ];
+        GeneralUtility::mkdir($this->fixturePath . '/home');
+        // make sure some config exists else no settings will be loaded
+        GeneralUtility::writeFile($this->fixturePath . '/home/config.yaml', Yaml::dump($configuration, 99, 2));
+        GeneralUtility::writeFile($this->fixturePath . '/home/settings.yaml', Yaml::dump($settings, 99, 2));
+        $sites = $this->siteConfiguration->resolveAllExistingSites();
+        $currentSite = current($sites);
+        $this->assertSame($settings, $currentSite->getSettings());
+    }
+
+    /**
+     * @test
+     */
     public function writeOnlyWritesModifiedKeys(): void
     {
         $identifier = 'testsite';
