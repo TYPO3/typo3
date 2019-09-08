@@ -941,7 +941,7 @@ class DataHandler implements LoggerAwareInterface
                                     }
                                 } else {
                                     // So, if no live records were allowed, we have to create a new version of this record:
-                                    if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
                                         $createNewVersion = true;
                                     } else {
                                         $recordAccess = false;
@@ -972,7 +972,7 @@ class DataHandler implements LoggerAwareInterface
                         $this->newlog('recordEditAccessInternals() check failed. [' . $this->BE_USER->errorMsg . ']', 1);
                     } else {
                         // Here we fetch the PID of the record that we point to...
-                        $tempdata = $this->recordInfo($table, $id, 'pid' . (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) ? ',t3ver_wsid,t3ver_stage' : ''));
+                        $tempdata = $this->recordInfo($table, $id, 'pid' . (BackendUtility::isTableWorkspaceEnabled($table) ? ',t3ver_oid,t3ver_wsid,t3ver_stage' : ''));
                         $theRealPid = $tempdata['pid'];
                         // Use the new id of the versionized record we're trying to write to:
                         // (This record is a child record of a parent and has already been versionized.)
@@ -1086,7 +1086,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
                 // Set stage to "Editing" to make sure we restart the workflow
-                if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                if (BackendUtility::isTableWorkspaceEnabled($table)) {
                     $fieldArray['t3ver_stage'] = 0;
                 }
                 // Hook: processDatamap_postProcessFieldArray
@@ -3787,7 +3787,7 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
 
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
@@ -4212,7 +4212,7 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
 
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
@@ -5102,7 +5102,7 @@ class DataHandler implements LoggerAwareInterface
                 )
             );
 
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
@@ -5146,7 +5146,7 @@ class DataHandler implements LoggerAwareInterface
         if ($this->isElementToBeDeleted($table, $id)) {
             return null;
         }
-        if (!$GLOBALS['TCA'][$table] || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] || $id <= 0) {
+        if (!$GLOBALS['TCA'][$table] || !BackendUtility::isTableWorkspaceEnabled($table) || $id <= 0) {
             $this->newlog('Versioning is not supported for this table "' . $table . '" / ' . $id, 1);
             return null;
         }
@@ -6461,7 +6461,7 @@ class DataHandler implements LoggerAwareInterface
                 'header' => BackendUtility::getRecordTitle($table, $row),
                 'pid' => $row['pid'],
                 'event_pid' => $this->eventPid($table, isset($row['_ORIG_pid']) ? $row['t3ver_oid'] : $row['uid'], $row['pid']),
-                't3ver_state' => $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? $row['t3ver_state'] : '',
+                't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? $row['t3ver_state'] : '',
                 '_ORIG_pid' => $row['_ORIG_pid']
             ];
         }

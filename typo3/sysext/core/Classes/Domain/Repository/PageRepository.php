@@ -1243,7 +1243,7 @@ class PageRepository implements LoggerAwareInterface
             if ($ctrl['delete']) {
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
-            if ($ctrl['versioningWS'] ?? false) {
+            if ($this->hasTableWorkspaceSupport($table)) {
                 if ($this->versioningWorkspaceId === 0) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (that means we are online!)
@@ -1270,7 +1270,7 @@ class PageRepository implements LoggerAwareInterface
             if (is_array($ctrl['enablecolumns'])) {
                 // In case of versioning-preview, enableFields are ignored (checked in
                 // versionOL())
-                if ($this->versioningWorkspaceId === 0 || !$ctrl['versioningWS']) {
+                if ($this->versioningWorkspaceId === 0 || !$this->hasTableWorkspaceSupport($table)) {
                     if (($ctrl['enablecolumns']['disabled'] ?? false) && !$show_hidden && !($ignore_array['disabled'] ?? false)) {
                         $field = $table . '.' . $ctrl['enablecolumns']['disabled'];
                         $constraints[] = $expressionBuilder->eq($field, 0);
@@ -1378,7 +1378,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function fixVersioningPid($table, &$rr)
     {
-        if ($this->versioningWorkspaceId > 0 && is_array($rr) && (int)$rr['pid'] === -1 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if ($this->versioningWorkspaceId > 0 && is_array($rr) && $this->hasTableWorkspaceSupport($table)) {
             $oid = 0;
             $wsid = 0;
             // Check values for t3ver_oid and t3ver_wsid:
@@ -1533,7 +1533,7 @@ class PageRepository implements LoggerAwareInterface
      */
     protected function movePlhOL($table, &$row)
     {
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
+        if ($this->hasTableWorkspaceSupport($table)
             && (int)VersionState::cast($row['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)
         ) {
             $moveID = 0;
@@ -1594,7 +1594,7 @@ class PageRepository implements LoggerAwareInterface
     protected function getMovePlaceholder($table, $uid, $fields = '*')
     {
         $workspace = (int)$this->versioningWorkspaceId;
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $workspace > 0) {
+        if ($workspace > 0 && $this->hasTableWorkspaceSupport($table)) {
             // Select workspace version of record:
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
@@ -1645,7 +1645,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = false)
     {
-        if ($workspace !== 0 && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+        if ($workspace !== 0 && $this->hasTableWorkspaceSupport($table)) {
             $workspace = (int)$workspace;
             $uid = (int)$uid;
             // Select workspace version of record, only testing for deleted.
@@ -1740,5 +1740,10 @@ class PageRepository implements LoggerAwareInterface
     protected function getRuntimeCache(): VariableFrontend
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
+    }
+
+    protected function hasTableWorkspaceSupport(string $tableName): bool
+    {
+        return !empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS']);
     }
 }

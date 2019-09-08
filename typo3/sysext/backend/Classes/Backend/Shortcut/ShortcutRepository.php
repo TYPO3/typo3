@@ -626,8 +626,10 @@ class ShortcutRepository
                         $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
                     }
 
-                    if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
                         $selectFields[] = 't3ver_state';
+                        $selectFields[] = 't3ver_wsid';
+                        $selectFields[] = 't3ver_oid';
                     }
 
                     $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

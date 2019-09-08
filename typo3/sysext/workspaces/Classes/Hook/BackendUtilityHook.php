@@ -58,7 +58,7 @@ class BackendUtilityHook
      */
     public function makeEditForm_accessCheck($params)
     {
-        if ($GLOBALS['BE_USER']->workspace !== 0 && $GLOBALS['TCA'][$params['table']]['ctrl']['versioningWS']) {
+        if ($GLOBALS['BE_USER']->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($params['table'])) {
             $record = BackendUtility::getRecordWSOL($params['table'], $params['uid']);
             if (abs($record['t3ver_stage']) > StagesService::STAGE_EDIT_ID) {
                 $stages = GeneralUtility::makeInstance(StagesService::class);

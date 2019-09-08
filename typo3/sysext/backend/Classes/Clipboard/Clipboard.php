@@ -498,7 +498,7 @@ class Clipboard
                     )
                 );
 
-            if (isset($tcaCtrl['versioningWS']) && $tcaCtrl['versioningWS']) {
+            if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $queryBuilder
                     ->andWhere(
                         $queryBuilder->expr()->eq(

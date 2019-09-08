@@ -385,7 +385,7 @@ class SuggestWizardDefaultReceiver
     protected function makeWorkspaceOverlay(&$row)
     {
         // Check for workspace-versions
-        if ($GLOBALS['BE_USER']->workspace != 0 && $GLOBALS['TCA'][$this->table]['ctrl']['versioningWS'] == true) {
+        if ($GLOBALS['BE_USER']->workspace != 0 && BackendUtility::isTableWorkspaceEnabled($this->table)) {
             BackendUtility::workspaceOL($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
         }
     }

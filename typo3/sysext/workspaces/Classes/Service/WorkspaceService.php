@@ -235,7 +235,7 @@ class WorkspaceService implements SingletonInterface
             if (!$GLOBALS['BE_USER']->check($selectionType, $table)) {
                 continue;
             }
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $recs = $this->selectAllVersionsFromPages($table, $pageList, $wsid, $filter, $stage, $language);
                 $moveRecs = $this->getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage);
                 $recs = array_merge($recs, $moveRecs);
@@ -782,7 +782,7 @@ class WorkspaceService implements SingletonInterface
         $this->versionsOnPageCache[$workspaceId][$pageId] = false;
 
         foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
-            if ($tableName === 'pages' || empty($tableConfiguration['ctrl']['versioningWS'])) {
+            if ($tableName === 'pages' || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
                 continue;
             }
 
@@ -832,7 +832,7 @@ class WorkspaceService implements SingletonInterface
     public function getPagesWithVersionsInTable($workspaceId)
     {
         foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
-            if ($tableName === 'pages' || empty($tableConfiguration['ctrl']['versioningWS'])) {
+            if ($tableName === 'pages' || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
                 continue;
             }
 

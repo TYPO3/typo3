@@ -222,7 +222,7 @@ class DatabaseIntegrityCheck
                 $this->recStats['published_versions'][$table][$newID] = $newID;
             }
             // Select all versions of this record:
-            if ($this->genTreeIncludeVersions && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if ($this->genTreeIncludeVersions && BackendUtility::isTableWorkspaceEnabled($table)) {
                 $this->genTree_records($newID, '', $table, true);
             }
         }

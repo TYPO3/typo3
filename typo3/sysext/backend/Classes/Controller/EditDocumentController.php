@@ -626,7 +626,7 @@ class EditDocumentController
             reset($this->editconf[$nTable]);
             $nUid = key($this->editconf[$nTable]);
             $recordFields = 'pid,uid';
-            if (!empty($GLOBALS['TCA'][$nTable]['ctrl']['versioningWS'])) {
+            if (BackendUtility::isTableWorkspaceEnabled($nTable)) {
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
@@ -673,7 +673,7 @@ class EditDocumentController
             }
 
             $recordFields = 'pid,uid';
-            if (!empty($GLOBALS['TCA'][$nTable]['ctrl']['versioningWS'])) {
+            if (!BackendUtility::isTableWorkspaceEnabled($nTable)) {
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
@@ -2292,13 +2292,14 @@ class EditDocumentController
      */
     protected function getRecordForEdit(string $table, int $theUid)
     {
+        $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
         // Fetch requested record:
-        $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid');
+        $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid' . ($tableSupportsVersioning ? ',t3ver_oid' : ''));
         if (is_array($reqRecord)) {
             // If workspace is OFFLINE:
             if ($this->getBackendUser()->workspace != 0) {
                 // Check for versioning support of the table:
-                if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                if ($tableSupportsVersioning) {
                     // If the record is already a version of "something" pass it by.
                     if ($reqRecord['pid'] == -1) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but

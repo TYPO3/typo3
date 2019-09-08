@@ -845,9 +845,10 @@ class DatabaseRecordList
                 $selectFields[] = $GLOBALS['TCA'][$table]['ctrl'][$field];
             }
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             $selectFields[] = 't3ver_state';
             $selectFields[] = 't3ver_wsid';
+            $selectFields[] = 't3ver_oid';
         }
         if ($l10nEnabled) {
             $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
@@ -3616,11 +3617,10 @@ class DatabaseRecordList
                     if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
                         $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                     }
-                    if (ExtensionManagementUtility::isLoaded(
-                        'workspaces'
-                    ) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
                         $fieldListArr[] = 't3ver_state';
                         $fieldListArr[] = 't3ver_wsid';
+                        $fieldListArr[] = 't3ver_oid';
                     }
                 }
             } else {

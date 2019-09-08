@@ -605,7 +605,7 @@ page.10.value = HELLO WORLD!
         string $tableName,
         int $workspaceId
     ) {
-        if (empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
+        if (!BackendUtility::isTableWorkspaceEnabled($tableName)) {
             return;
         }
 

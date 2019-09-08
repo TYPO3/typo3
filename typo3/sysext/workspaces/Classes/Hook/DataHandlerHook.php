@@ -192,7 +192,7 @@ class DataHandlerHook
         $recordVersionState = VersionState::cast($record['t3ver_state']);
         // Look, if record is an offline version, then delete directly:
         if ($record['pid'] == -1) {
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+            if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 // In Live workspace, delete any. In other workspaces there must be match.
                 if ($dataHandler->BE_USER->workspace == 0 || (int)$record['t3ver_wsid'] == $dataHandler->BE_USER->workspace) {
                     $liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
@@ -1380,7 +1380,7 @@ class DataHandlerHook
         }
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $table !== 'pages') {
+            if (BackendUtility::isTableWorkspaceEnabled($table) && $table !== 'pages') {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($table);
 
@@ -1435,7 +1435,7 @@ class DataHandlerHook
         }
         // Traversing all tables supporting versioning:
         foreach ($GLOBALS['TCA'] as $table => $cfg) {
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $table !== 'pages') {
+            if (BackendUtility::isTableWorkspaceEnabled($table) && $table !== 'pages') {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable($table);
 

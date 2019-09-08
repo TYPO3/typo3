@@ -3347,7 +3347,7 @@ class BackendUtility
     ) {
         $realPid = 0;
         $outputRows = [];
-        if ($GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
+        if (static::isTableWorkspaceEnabled($table)) {
             if (is_array($row) && !$includeDeletedRecords) {
                 $row['_CURRENT_VERSION'] = true;
                 $realPid = $row['pid'];
@@ -3437,8 +3437,11 @@ class BackendUtility
         if (!ExtensionManagementUtility::isLoaded('workspaces')) {
             return;
         }
+        if (!static::isTableWorkspaceEnabled($table)) {
+            return;
+        }
         // Check that the input record is an offline version from a table that supports versioning:
-        if (is_array($rr) && $rr['pid'] == -1 && static::isTableWorkspaceEnabled($table)) {
+        if (is_array($rr)) {
             // Check values for t3ver_oid and t3ver_wsid:
             if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
                 // If "t3ver_oid" is already a field, just set this:
@@ -3762,7 +3765,7 @@ class BackendUtility
         if ($workspace === null && static::getBackendUserAuthentication() instanceof BackendUserAuthentication) {
             $workspace = static::getBackendUserAuthentication()->workspace;
         }
-        if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && static::isTableWorkspaceEnabled($table)) {
+        if ((int)$workspace !== 0 && static::isTableWorkspaceEnabled($table)) {
             // Select workspace version of record:
             $queryBuilder = static::getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()

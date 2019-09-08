@@ -902,7 +902,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $recData = BackendUtility::getRecord(
                     $table,
                     $recData,
-                    'pid' . ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : '')
+                    'pid' . (BackendUtility::isTableWorkspaceEnabled($table) ? ',t3ver_oid,t3ver_wsid,t3ver_stage' : '')
                 );
             }
             if (is_array($recData)) {
@@ -910,9 +910,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 // that workspace matches and versioning is enabled for the table.
                 if ((int)$recData['pid'] === -1) {
                     // No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
-                    if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-                        return 'Versioning disabled for table';
-                    }
                     if ((int)$recData['t3ver_wsid'] !== $this->workspace) {
                         // So does workspace match?
                         return 'Workspace ID of record didn\'t match current workspace';
@@ -951,9 +948,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function workspaceCannotEditOfflineVersion($table, $recData)
     {
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        if (BackendUtility::isTableWorkspaceEnabled($table)) {
             if (!is_array($recData)) {
-                $recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_wsid,t3ver_stage');
+                $recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_oid,t3ver_wsid,t3ver_stage');
             }
             if (is_array($recData)) {
                 if ((int)$recData['pid'] === -1) {
@@ -983,7 +980,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // and tables are completely without versioning it is ok as well.
         if (
             $this->workspace === 0
-            || $this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']
+            || $this->workspaceRec['live_edit'] && !BackendUtility::isTableWorkspaceEnabled($table)
             || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']
         ) {
             // OK to create for this table.
@@ -1008,7 +1005,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 // Stage for versioning root point and users access level did not allow for editing
                 return false;
             }
-        } elseif (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+        } elseif (!BackendUtility::isTableWorkspaceEnabled($table)) {
             // So, if no live records were allowed, we have to create a new version of this record:
             return false;
         }
@@ -1030,7 +1027,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // If there is no versionized record found we will create one and save to that.
         if (
             $this->workspace !== 0
-            && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $recpid >= 0
+            && BackendUtility::isTableWorkspaceEnabled($table) && $recpid >= 0
             && !BackendUtility::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')
         ) {
             // There must be no existing version of this record in workspace.

@@ -44,7 +44,6 @@ use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -3671,8 +3670,8 @@ class PageLayoutView implements LoggerAwareInterface
                     if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
                         $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
                     }
-                    if (ExtensionManagementUtility::isLoaded('workspaces')
-                        && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
+                        $fieldListArr[] = 't3ver_oid';
                         $fieldListArr[] = 't3ver_state';
                         $fieldListArr[] = 't3ver_wsid';
                     }
