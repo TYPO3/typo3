@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "504d732795cef3c4078aa9f9587ff3dd",
+    "content-hash": "f2fe7c52b1352fc018455fec38f1eedc",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -3177,16 +3177,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.6.1",
+            "version": "2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "9ef6a8ffff2e812025fc0701b4ce72eea6911a3d"
+                "reference": "75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/9ef6a8ffff2e812025fc0701b4ce72eea6911a3d",
-                "reference": "9ef6a8ffff2e812025fc0701b4ce72eea6911a3d",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80",
+                "reference": "75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80",
                 "shasum": ""
             },
             "require": {
@@ -3195,7 +3195,7 @@
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
                 "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^4.8",
+                "phpunit/phpunit": "^8.1",
                 "squizlabs/php_codesniffer": "^2.7"
             },
             "bin": [
@@ -3212,7 +3212,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2019-05-07T07:07:18+00:00"
+            "time": "2019-09-13T09:38:15+00:00"
         },
         {
             "name": "webmozart/assert",
