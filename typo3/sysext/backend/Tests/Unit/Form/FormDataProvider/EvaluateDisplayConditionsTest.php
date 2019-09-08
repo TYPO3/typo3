@@ -3763,7 +3763,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 'VERSION:IS:TRUE',
                 [
                     'uid' => 42,
-                    'pid' => -1,
+                    't3ver_oid' => 12,
                 ],
                 true,
             ],
@@ -3771,7 +3771,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
                 'VERSION:IS:FALSE',
                 [
                     'uid' => 42,
-                    'pid' => 1,
+                    't3ver_oid' => 0,
                 ],
                 true,
             ],

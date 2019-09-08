@@ -189,18 +189,18 @@ class ElementEntityProcessor
                 1393960943
             );
         }
-        // If version is on live workspace, but the pid is negative, mark the record as invalid.
+        // If version is on live workspace, but an "offline" ID is set, mark the record as invalid.
         // This happens if a change has been discarded (clearWSID) - it will be removed from the command map.
-        if ((int)$versionRecord['t3ver_wsid'] === 0 && (int)$versionRecord['pid'] === -1) {
+        if ((int)$versionRecord['t3ver_wsid'] === 0 && (int)$versionRecord['t3ver_oid'] > 0) {
             $caller->setDataValue('liveId', $caller->getId());
             $caller->setInvalid(true);
             return;
         }
         if ($caller->hasDataValue('liveId') === false) {
             // Set the original uid from the version record
-            if (!empty($versionRecord['t3ver_oid']) && (int)$versionRecord['pid'] === -1 && (int)$versionRecord['t3ver_wsid'] === $this->getWorkspace()) {
+            if (!empty($versionRecord['t3ver_oid']) && (int)$versionRecord['t3ver_wsid'] === $this->getWorkspace()) {
                 $caller->setDataValue('liveId', $versionRecord['t3ver_oid']);
-            } elseif ((int)$versionRecord['t3ver_wsid'] === 0 || (int)$versionRecord['pid'] !== -1) {
+            } elseif ((int)$versionRecord['t3ver_wsid'] === 0 || (int)$versionRecord['t3ver_oid'] === 0) {
                 // The current version record is actually a live record or an accordant placeholder for live
                 $caller->setDataValue('liveId', $caller->getId());
                 $versionRecord = BackendUtility::getWorkspaceVersionOfRecord(

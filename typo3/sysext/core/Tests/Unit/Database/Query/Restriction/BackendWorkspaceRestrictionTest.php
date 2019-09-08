@@ -55,7 +55,7 @@ class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new BackendWorkspaceRestriction(0, false);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('("aTable"."t3ver_wsid" = 0) AND ("aTable"."pid" <> -1)', (string)$expression);
+        $this->assertSame('("aTable"."t3ver_wsid" = 0) AND ("aTable"."t3ver_oid" = 0)', (string)$expression);
     }
 
     /**
@@ -68,6 +68,6 @@ class BackendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
         ];
         $subject = new BackendWorkspaceRestriction(42, false);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('("aTable"."t3ver_wsid" = 42) AND ("aTable"."pid" = -1)', (string)$expression);
+        $this->assertSame('("aTable"."t3ver_wsid" = 42) AND ("aTable"."t3ver_oid" > 0)', (string)$expression);
     }
 }

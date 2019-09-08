@@ -6460,7 +6460,7 @@ class DataHandler implements LoggerAwareInterface
             return [
                 'header' => BackendUtility::getRecordTitle($table, $row),
                 'pid' => $row['pid'],
-                'event_pid' => $this->eventPid($table, isset($row['_ORIG_pid']) ? $row['t3ver_oid'] : $row['uid'], $row['pid']),
+                'event_pid' => $this->eventPid($table, ((int)($row['t3ver_oid'] ?? 0) > 0 ? $row['t3ver_oid'] : $row['uid']), $row['pid']),
                 't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? $row['t3ver_state'] : '',
                 '_ORIG_pid' => $row['_ORIG_pid']
             ];

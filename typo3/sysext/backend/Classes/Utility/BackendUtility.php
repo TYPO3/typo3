@@ -3373,7 +3373,6 @@ class BackendUtility
             $queryBuilder
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
                 )
@@ -3634,10 +3633,6 @@ class BackendUtility
                     ->from($table)
                     ->where(
                         $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
                             't3ver_oid',
                             $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                         ),
@@ -3687,7 +3682,7 @@ class BackendUtility
         $liveVersionId = null;
         if (self::isTableWorkspaceEnabled($table)) {
             $currentRecord = self::getRecord($table, $uid, 'pid,t3ver_oid');
-            if (is_array($currentRecord) && $currentRecord['pid'] == -1) {
+            if (is_array($currentRecord) && (int)$currentRecord['t3ver_oid'] > 0) {
                 $liveVersionId = $currentRecord['t3ver_oid'];
             }
         }
@@ -3725,8 +3720,8 @@ class BackendUtility
                 $workspaceId = static::getBackendUserAuthentication()->workspace;
             }
             $workspaceId = (int)$workspaceId;
-            $pidOperator = $workspaceId === 0 ? '!=' : '=';
-            $whereClause = ' AND ' . $table . '.t3ver_wsid=' . $workspaceId . ' AND ' . $table . '.pid' . $pidOperator . '-1';
+            $comparison = $workspaceId === 0 ? '=' : '>';
+            $whereClause = ' AND ' . $table . '.t3ver_wsid=' . $workspaceId . ' AND ' . $table . '.t3ver_oid' . $comparison . '0';
         }
         return $whereClause;
     }
@@ -3777,10 +3772,6 @@ class BackendUtility
                 ->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->neq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                    ),
                     $queryBuilder->expr()->eq(
                         't3ver_state',
                         $queryBuilder->createNamedParameter(

@@ -636,7 +636,7 @@ class EditDocumentController
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
             // Determine related page ID for regular live context
-            if ($nRec['pid'] != -1) {
+            if ($nRec['t3ver_oid'] > 0) {
                 if ($insertRecordOnTop) {
                     $relatedPageId = $nRec['pid'];
                 } else {
@@ -681,7 +681,7 @@ class EditDocumentController
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
 
-            if ($nRec['pid'] != -1) {
+            if ((int)$nRec['t3ver_oid'] === 0) {
                 $relatedPageId = -$nRec['uid'];
             } else {
                 $relatedPageId = -$nRec['t3ver_oid'];
@@ -2301,7 +2301,7 @@ class EditDocumentController
                 // Check for versioning support of the table:
                 if ($tableSupportsVersioning) {
                     // If the record is already a version of "something" pass it by.
-                    if ($reqRecord['pid'] == -1) {
+                    if ($reqRecord['t3ver_oid'] > 0) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but
                         // that is handled inside DataHandler then and in the interface it would clearly be an error of
                         // links if the user accesses such a scenario)

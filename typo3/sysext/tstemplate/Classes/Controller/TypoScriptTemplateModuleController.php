@@ -596,6 +596,9 @@ page.10.value = HELLO WORLD!
     }
 
     /**
+     * Fetching all live records, and versioned records that do not have a "online ID" counterpart,
+     * as this is then handled via the BackendUtility::workspaceOL().
+     *
      * @param QueryBuilder $queryBuilder
      * @param string $tableName
      * @param int $workspaceId

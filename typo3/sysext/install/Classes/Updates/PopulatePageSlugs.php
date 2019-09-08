@@ -151,7 +151,8 @@ class PopulatePageSlugs implements UpgradeWizardInterface
             }
 
             if (empty($slug)) {
-                if ($pid === -1) {
+                // Resolve the live "pid"
+                if ($record['t3ver_oid'] > 0) {
                     $queryBuilder = $connection->createQueryBuilder();
                     $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                     $liveVersion = $queryBuilder

@@ -519,7 +519,7 @@ class WorkspaceVersionRecordsCommand extends Command
 
             while ($placeholderRecord = $result->fetch()) {
                 if (VersionState::cast($placeholderRecord['t3ver_state'])->equals(VersionState::MOVE_PLACEHOLDER)) {
-                    if ((int)$placeholderRecord['pid'] === -1) {
+                    if ((int)$placeholderRecord['t3ver_oid'] > 0) {
                         $records[] = $table . ':' . $placeholderRecord['uid'] . ' - Record was offline, must not be!';
                     }
                 } else {

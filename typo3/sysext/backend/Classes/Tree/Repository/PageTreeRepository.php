@@ -228,7 +228,7 @@ class PageTreeRepository
             // In case this is a record from a workspace
             // The uid+pid of the live-version record is fetched
             // This is done in order to avoid fetching records again (e.g. via BackendUtility::workspaceOL()
-            if ($parentPageId === -1) {
+            if ((int)$pageRecord['t3ver_oid'] > 0) {
                 // When a move pointer is found, the pid+sorting of the MOVE_PLACEHOLDER should be used (this is the
                 // workspace record holding this information), also the t3ver_state is set to the MOVE_PLACEHOLDER
                 // because the record is then added

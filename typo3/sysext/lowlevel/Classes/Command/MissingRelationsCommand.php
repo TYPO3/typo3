@@ -265,7 +265,7 @@ If you want to get more detailed information, use the --verbose option.')
             // Handle missing file:
             if ($existingRecords[$idx]['uid']) {
                 // Record exists, but is a reference to an offline version
-                if ((int)$existingRecords[$idx]['pid'] === -1) {
+                if ((int)($existingRecords[$idx]['t3ver_oid'] ?? 0) > 0) {
                     if ($isSoftReference) {
                         $offlineVersionRecordsInSoftReferenceRelations[] = $infoString;
                     } else {

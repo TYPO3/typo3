@@ -183,7 +183,7 @@ class DataHandlerHook
         $recordWasDeleted = true;
         // For Live version, try if there is a workspace version because if so, rather "delete" that instead
         // Look, if record is an offline version, then delete directly:
-        if ($record['pid'] != -1) {
+        if ((int)($record['t3ver_oid'] ?? 0) === 0) {
             if ($wsVersion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $id)) {
                 $record = $wsVersion;
                 $id = $record['uid'];
@@ -191,7 +191,7 @@ class DataHandlerHook
         }
         $recordVersionState = VersionState::cast($record['t3ver_state']);
         // Look, if record is an offline version, then delete directly:
-        if ($record['pid'] == -1) {
+        if ((int)($record['t3ver_oid'] ?? 0) > 0) {
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 // In Live workspace, delete any. In other workspaces there must be match.
                 if ($dataHandler->BE_USER->workspace == 0 || (int)$record['t3ver_wsid'] == $dataHandler->BE_USER->workspace) {
@@ -827,8 +827,8 @@ class DataHandlerHook
             return;
         }
         // Check if the swapWith record really IS a version of the original!
-        if (!(((int)$swapVersion['pid'] == -1 && (int)$curVersion['pid'] >= 0) && (int)$swapVersion['t3ver_oid'] === (int)$id)) {
-            $dataHandler->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!', 2);
+        if (!(((int)$swapVersion['t3ver_oid'] > 0 && (int)$curVersion['t3ver_oid'] === 0) && (int)$swapVersion['t3ver_oid'] === (int)$id)) {
+            $dataHandler->newlog('In swap version, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', 2);
             return;
         }
         // Lock file name:
@@ -1265,10 +1265,6 @@ class DataHandlerHook
                             't3ver_stage',
                             $queryBuilder->createNamedParameter($stageId, \PDO::PARAM_INT)
                         ),
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                        ),
                         $queryBuilder->expr()->gt(
                             't3ver_wsid',
                             $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
@@ -1390,9 +1386,9 @@ class DataHandlerHook
                     ->from($table, 'A')
                     ->from($table, 'B')
                     ->where(
-                        $queryBuilder->expr()->eq(
-                            'A.pid',
-                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        $queryBuilder->expr()->gt(
+                            'A.t3ver_oid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
                             'B.pid',
@@ -1445,9 +1441,9 @@ class DataHandlerHook
                     ->from($table, 'A')
                     ->from($table, 'B')
                     ->where(
-                        $queryBuilder->expr()->eq(
-                            'A.pid',
-                            $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                        $queryBuilder->expr()->gt(
+                            'A.t3ver_oid',
+                            $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                         ),
                         $queryBuilder->expr()->in(
                             'B.pid',
@@ -1500,9 +1496,9 @@ class DataHandlerHook
             ->from($table, 'A')
             ->from($table, 'B')
             ->where(
-                $queryBuilder->expr()->eq(
-                    'A.pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                $queryBuilder->expr()->gt(
+                    'A.t3ver_oid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
                     'A.t3ver_wsid',

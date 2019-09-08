@@ -378,11 +378,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         $checkRec = BackendUtility::getRecord(
             'pages',
             $id,
-            'pid,t3ver_oid,'
+            't3ver_oid,'
             . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ','
             . $GLOBALS['TCA']['pages']['ctrl']['languageField']
         );
-        if ($checkRec['pid'] == -1) {
+        if ((int)$checkRec['t3ver_oid'] > 0) {
             $id = (int)$checkRec['t3ver_oid'];
         }
         // if current rec is a translation then get uid from l10n_parent instead
@@ -906,10 +906,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 );
             }
             if (is_array($recData)) {
-                // We are testing a "version" (identified by a pid of -1): it can be edited provided
+                // We are testing a "version" (identified by having a t3ver_oid): it can be edited provided
                 // that workspace matches and versioning is enabled for the table.
-                if ((int)$recData['pid'] === -1) {
-                    // No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
+                if ((int)($recData['t3ver_oid'] ?? 0) > 0) {
                     if ((int)$recData['t3ver_wsid'] !== $this->workspace) {
                         // So does workspace match?
                         return 'Workspace ID of record didn\'t match current workspace';
@@ -953,7 +952,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $recData = BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_oid,t3ver_wsid,t3ver_stage');
             }
             if (is_array($recData)) {
-                if ((int)$recData['pid'] === -1) {
+                if ((int)$recData['t3ver_oid'] > 0) {
                     return $this->workspaceCannotEditRecord($table, $recData);
                 }
                 return 'Not an offline version';

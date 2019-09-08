@@ -1375,15 +1375,7 @@ abstract class AbstractItemProvider
         $table = $result['tableName'];
         $row = $result['databaseRow'];
         $uid = $row['uid'];
-        if (!empty($result['processedTca']['ctrl']['versioningWS'])
-            && $result['pid'] === -1
-        ) {
-            if (empty($row['t3ver_oid'])) {
-                throw new \UnexpectedValueException(
-                    'No t3ver_oid found for record ' . $row['uid'] . ' on table ' . $table,
-                    1440066481
-                );
-            }
+        if (BackendUtility::isTableWorkspaceEnabled($table) && (int)$row['t3ver_oid'] > 0) {
             $uid = $row['t3ver_oid'];
         }
         return $uid;

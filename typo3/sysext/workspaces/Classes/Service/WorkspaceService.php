@@ -286,15 +286,15 @@ class WorkspaceService implements SingletonInterface
             $fields[] = $languageParentField;
             $fields[] = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
         }
-        // Table A is the offline version and pid=-1 defines offline
-        // Table B (online) must have PID >= 0 to signify being online.
+        // Table A is the offline version and t3ver_oid>0 defines offline
+        // Table B (online) must have t3ver_oid=0 to signify being online.
         $constraints = [
-            $queryBuilder->expr()->eq(
-                'A.pid',
-                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+            $queryBuilder->expr()->gt(
+                'A.t3ver_oid',
+                $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             ),
-            $queryBuilder->expr()->gte(
-                'B.pid',
+            $queryBuilder->expr()->eq(
+                'B.t3ver_oid',
                 $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             ),
             $queryBuilder->expr()->neq(

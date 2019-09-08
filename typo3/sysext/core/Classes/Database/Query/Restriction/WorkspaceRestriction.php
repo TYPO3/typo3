@@ -72,12 +72,12 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                     [0, $this->workspaceId]
                 );
             }
-            // Always filter out "pid=-1" records
+            // Always filter out versioned records that have an "offline" record
             $constraints[] = $expressionBuilder->andX(
                 $workspaceIdExpression,
-                $expressionBuilder->neq(
-                    $tableAlias . '.pid',
-                    -1
+                $expressionBuilder->eq(
+                    $tableAlias . '.t3ver_oid',
+                    0
                 )
             );
         }

@@ -1604,7 +1604,6 @@ class PageRepository implements LoggerAwareInterface
             $row = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->neq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq(
                         't3ver_state',
                         $queryBuilder->createNamedParameter(
@@ -1657,7 +1656,6 @@ class PageRepository implements LoggerAwareInterface
             $newrow = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields, true))
                 ->from($table)
                 ->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq(
                         't3ver_oid',
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
@@ -1683,7 +1681,6 @@ class PageRepository implements LoggerAwareInterface
 
             if (is_array($newrow)) {
                 $queryBuilder->where(
-                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)),
                     $queryBuilder->expr()->eq(
                         't3ver_oid',
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)

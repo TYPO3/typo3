@@ -85,7 +85,7 @@ class FrontendWorkspaceRestriction implements QueryRestrictionInterface
                 }
                 // Filter out versioned records
                 if ($this->enforceLiveRowsOnly) {
-                    $constraints[] = $expressionBuilder->neq($tableAlias . '.pid', -1);
+                    $constraints[] = $expressionBuilder->eq($tableAlias . '.t3ver_oid', 0);
                 }
             }
         }

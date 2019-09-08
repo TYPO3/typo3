@@ -39,7 +39,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 
         $subject = new FrontendWorkspaceRestriction(0);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('("aTable"."t3ver_state" <= 0) AND ("aTable"."pid" <> -1)', (string)$expression);
+        $this->assertSame('("aTable"."t3ver_state" <= 0) AND ("aTable"."t3ver_oid" = 0)', (string)$expression);
     }
 
     /**
@@ -57,7 +57,7 @@ class FrontendWorkspaceRestrictionTest extends AbstractRestrictionTestCase
 
         $subject = new FrontendWorkspaceRestriction(42, true);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('(("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 42)) AND ("aTable"."pid" <> -1)', (string)$expression);
+        $this->assertSame('(("aTable"."t3ver_wsid" = 0) OR ("aTable"."t3ver_wsid" = 42)) AND ("aTable"."t3ver_oid" = 0)', (string)$expression);
     }
 
     /**

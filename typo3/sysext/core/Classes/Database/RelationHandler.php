@@ -974,9 +974,9 @@ class RelationHandler
                     $foreign_table . '.t3ver_wsid',
                     $queryBuilder->createNamedParameter([0, (int)$this->getWorkspaceId()], Connection::PARAM_INT_ARRAY)
                 ),
-                $queryBuilder->expr()->neq(
-                    $foreign_table . '.pid',
-                    $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
+                $queryBuilder->expr()->eq(
+                    $foreign_table . '.t3ver_oid',
+                    $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                 )
             );
         }
@@ -1451,6 +1451,7 @@ class RelationHandler
      */
     protected function purgeVersionedIds($tableName, array $ids)
     {
+        $ids = $this->sanitizeIds($ids);
         $ids = array_combine($ids, $ids);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
@@ -1461,10 +1462,6 @@ class RelationHandler
             $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                    ),
                     $queryBuilder->expr()->in(
                         't3ver_oid',
                         $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
@@ -1497,6 +1494,7 @@ class RelationHandler
      */
     protected function purgeLiveVersionedIds($tableName, array $ids)
     {
+        $ids = $this->sanitizeIds($ids);
         $ids = array_combine($ids, $ids);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
@@ -1507,10 +1505,6 @@ class RelationHandler
             $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                    ),
                     $queryBuilder->expr()->in(
                         't3ver_oid',
                         $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
@@ -1544,6 +1538,7 @@ class RelationHandler
      */
     protected function purgeDeletePlaceholder($tableName, array $ids)
     {
+        $ids = $this->sanitizeIds($ids);
         $ids = array_combine($ids, $ids);
         $connection = $this->getConnectionForTableName($tableName);
         $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
@@ -1554,10 +1549,6 @@ class RelationHandler
             $result = $queryBuilder->select('uid', 't3ver_oid', 't3ver_state')
                 ->from($tableName)
                 ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-                    ),
                     $queryBuilder->expr()->in(
                         't3ver_oid',
                         $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
@@ -1660,6 +1651,17 @@ class RelationHandler
             $liveDefaultId = $id;
         }
         return (int)$liveDefaultId;
+    }
+
+    /**
+     * Removes empty values (null, '0', 0, false).
+     *
+     * @param int[] $ids
+     * @return array
+     */
+    protected function sanitizeIds(array $ids): array
+    {
+        return array_filter($ids);
     }
 
     /**
