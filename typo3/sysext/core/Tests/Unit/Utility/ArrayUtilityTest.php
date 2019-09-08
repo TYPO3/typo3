@@ -1315,6 +1315,128 @@ class ArrayUtilityTest extends UnitTestCase
         $this->assertEquals($expected, ArrayUtility::flatten($array));
     }
 
+    /**
+     * @return array
+     */
+    public function flattenWithKeepDotsCalculatesExpectedResultDataProvider()
+    {
+        return [
+            'plain array' => [
+                [
+                    'first' => 1,
+                    'second' => 2
+                ],
+                [
+                    'first' => 1,
+                    'second' => 2
+                ]
+            ],
+            'plain array with dots' => [
+                [
+                    'first.' => 1,
+                    'second.' => 2
+                ],
+                [
+                    'first.' => 1,
+                    'second.' => 2
+                ]
+            ],
+            'nested array of 2 levels' => [
+                [
+                    'first.' => [
+                        'firstSub' => 1
+                    ],
+                    'second.' => [
+                        'secondSub' => 2
+                    ]
+                ],
+                [
+                    'first.firstSub' => 1,
+                    'second.secondSub' => 2
+                ]
+            ],
+            'nested array of 2 levels with dots' => [
+                [
+                    'first.' => [
+                        'firstSub.' => 1
+                    ],
+                    'second.' => [
+                        'secondSub.' => 2
+                    ]
+                ],
+                [
+                    'first.firstSub.' => 1,
+                    'second.secondSub.' => 2
+                ]
+            ],
+            'nested array of 3 levels' => [
+                [
+                    'first.' => [
+                        'firstSub.' => [
+                            'firstSubSub' => 1
+                        ]
+                    ],
+                    'second.' => [
+                        'secondSub.' => [
+                            'secondSubSub' => 2
+                        ]
+                    ]
+                ],
+                [
+                    'first.firstSub.firstSubSub' => 1,
+                    'second.secondSub.secondSubSub' => 2
+                ]
+            ],
+            'nested array of 3 levels with dots' => [
+                [
+                    'first.' => [
+                        'firstSub.' => [
+                            'firstSubSub.' => 1
+                        ]
+                    ],
+                    'second.' => [
+                        'secondSub.' => [
+                            'secondSubSub.' => 2
+                        ]
+                    ]
+                ],
+                [
+                    'first.firstSub.firstSubSub.' => 1,
+                    'second.secondSub.secondSubSub.' => 2
+                ]
+            ],
+            'nested array of 3 levels with multi dots' => [
+                [
+                    'first.' => [
+                        'firstSub..' => [
+                            'firstSubSub..' => 1
+                        ]
+                    ],
+                    'second.' => [
+                        'secondSub..' => [
+                            'secondSubSub.' => 2
+                        ]
+                    ]
+                ],
+                [
+                    'first.firstSub..firstSubSub..' => 1,
+                    'second.secondSub..secondSubSub.' => 2
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @param array $array
+     * @param array $expected
+     * @dataProvider flattenWithKeepDotsCalculatesExpectedResultDataProvider
+     */
+    public function flattenWithKeepDotsCalculatesExpectedResult(array $array, array $expected): void
+    {
+        $this->assertEquals($expected, ArrayUtility::flatten($array, '', true));
+    }
+
     ///////////////////////
     // Tests concerning intersectRecursive
     ///////////////////////

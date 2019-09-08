@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Configuration;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -40,54 +41,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionConfiguration
 {
-    /**
-     * TypoScript hierarchy being build.
-     * Used parsing ext_conf_template.txt
-     *
-     * @var array
-     */
-    protected $setup = [];
-
-    /**
-     * Raw data, the input string exploded by LF.
-     * Used parsing ext_conf_template.txt
-     *
-     * @var array
-     */
-    protected $raw;
-
-    /**
-     * Pointer to entry in raw data array.
-     * Used parsing ext_conf_template.txt
-     *
-     * @var int
-     */
-    protected $rawPointer = 0;
-
-    /**
-     * Holding the value of the last comment
-     * Used parsing ext_conf_template.txt
-     *
-     * @var string
-     */
-    protected $lastComment = '';
-
-    /**
-     * Internal flag to create a multi-line comment (one of those like /* ... * /)
-     * Used parsing ext_conf_template.txt
-     *
-     * @var bool
-     */
-    protected $commentSet = false;
-
-    /**
-     * Internally set, when in brace. Counter.
-     * Used parsing ext_conf_template.txt
-     *
-     * @var int
-     */
-    protected $inBrace = 0;
-
     /**
      * Get a single configuration value, a sub array or the whole configuration.
      *
@@ -127,11 +80,11 @@ class ExtensionConfiguration
     public function get(string $extension, string $path = '')
     {
         $hasBeenSynchronized = false;
-        if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]) || !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension])) {
+        if (!$this->hasConfiguration($extension)) {
             // This if() should not be hit at "casual" runtime, but only in early setup phases
             $this->synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions();
             $hasBeenSynchronized = true;
-            if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]) || !is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension])) {
+            if (!$this->hasConfiguration($extension)) {
                 // If there is still no such entry, even after sync -> throw
                 throw new ExtensionConfigurationExtensionNotConfiguredException(
                     'No extension configuration for extension ' . $extension . ' found. Either this extension'
@@ -191,7 +144,7 @@ class ExtensionConfiguration
      * @param null $value The value. If null, unset the path
      * @internal
      */
-    public function set(string $extension, string $path = '', $value = null)
+    public function set(string $extension, string $path = '', $value = null): void
     {
         if (empty($extension)) {
             throw new \RuntimeException('extension name must not be empty', 1509715852);
@@ -223,7 +176,7 @@ class ExtensionConfiguration
      * @param array $configuration Configuration of all extensions
      * @internal
      */
-    public function setAll(array $configuration)
+    public function setAll(array $configuration): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS', $configuration);
@@ -239,7 +192,7 @@ class ExtensionConfiguration
      *
      * @internal
      */
-    public function synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions()
+    public function synchronizeExtConfTemplateWithLocalConfigurationOfAllExtensions(): void
     {
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
         $fullConfiguration = [];
@@ -271,7 +224,7 @@ class ExtensionConfiguration
      * @param string $extensionKey The extension to sync
      * @internal
      */
-    public function synchronizeExtConfTemplateWithLocalConfiguration(string $extensionKey)
+    public function synchronizeExtConfTemplateWithLocalConfiguration(string $extensionKey): void
     {
         $package = GeneralUtility::makeInstance(PackageManager::class)->getPackage($extensionKey);
         if (!@is_file($package->getPackagePath() . 'ext_conf_template.txt')) {
@@ -297,37 +250,14 @@ class ExtensionConfiguration
      */
     protected function getExtConfTablesWithoutCommentsAsNestedArrayWithoutDots(string $extensionKey): array
     {
-        $configuration = $this->getParsedExtConfTemplate($extensionKey);
-        return $this->removeCommentsAndDotsRecursive($configuration);
-    }
-
-    /**
-     * Trigger main ext_conf_template.txt parsing logic.
-     * Needs to be public as it is used by install tool ExtensionConfigurationService
-     * which adds the comment parsing on top for display of options in install tool.
-     *
-     * @param string $extensionKey
-     * @return array
-     * @internal
-     */
-    public function getParsedExtConfTemplate(string $extensionKey): array
-    {
         $rawConfigurationString = $this->getDefaultConfigurationRawString($extensionKey);
-        $configuration = [];
-        if ((string)$rawConfigurationString !== '') {
-            $this->raw = explode(LF, $rawConfigurationString);
-            $this->rawPointer = 0;
-            $this->setup = [];
-            $this->parseSub($this->setup);
-            if ($this->inBrace) {
-                throw new \RuntimeException(
-                    'Line ' . ($this->rawPointer - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)',
-                    1507645349
-                );
-            }
-            $configuration = $this->setup;
-        }
-        return $configuration;
+        $typoScriptParser = GeneralUtility::makeInstance(TypoScriptParser::class);
+        // we are parsing constants, so we need the instructions from comments
+        $typoScriptParser->regComments = true;
+        $typoScriptParser->parse($rawConfigurationString);
+        // setup contains the parsed constants string
+        $parsedTemplate = $typoScriptParser->setup;
+        return $this->removeCommentsAndDotsRecursive($parsedTemplate);
     }
 
     /**
@@ -339,7 +269,7 @@ class ExtensionConfiguration
      * @param string $extensionKey Extension key
      * @return string
      */
-    protected function getDefaultConfigurationRawString(string $extensionKey): string
+    public function getDefaultConfigurationRawString(string $extensionKey): string
     {
         $rawString = '';
         $extConfTemplateFileLocation = GeneralUtility::getFileAbsFileName(
@@ -349,6 +279,15 @@ class ExtensionConfiguration
             $rawString = file_get_contents($extConfTemplateFileLocation);
         }
         return $rawString;
+    }
+
+    /**
+     * @param string $extension
+     * @return bool
+     */
+    protected function hasConfiguration(string $extension): bool
+    {
+        return isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS'][$extension]);
     }
 
     /**
@@ -366,7 +305,6 @@ class ExtensionConfiguration
      *      'enabled..' => '# cat=basic/enabled; ...'
      *  ]
      * ]
-     *
      * Output array:
      * [
      *  'automaticInstallation' => '1',
@@ -391,216 +329,5 @@ class ExtensionConfiguration
             }
         }
         return $cleanedConfig;
-    }
-
-    /**
-     * Helper method of ext_conf_template.txt parsing.
-     *
-     * Parsing the $this->raw TypoScript lines from pointer, $this->rawP
-     *
-     * @param array $setup Reference to the setup array in which to accumulate the values.
-     */
-    protected function parseSub(array &$setup)
-    {
-        while (isset($this->raw[$this->rawPointer])) {
-            $line = ltrim($this->raw[$this->rawPointer]);
-            $this->rawPointer++;
-            // Set comment flag?
-            if (strpos($line, '/*') === 0) {
-                $this->commentSet = 1;
-            }
-            if (!$this->commentSet && $line) {
-                if ($line[0] !== '}' && $line[0] !== '#' && $line[0] !== '/') {
-                    // If not brace-end or comment
-                    // Find object name string until we meet an operator
-                    $varL = strcspn($line, "\t" . ' {=<>(');
-                    // check for special ":=" operator
-                    if ($varL > 0 && substr($line, $varL - 1, 2) === ':=') {
-                        --$varL;
-                    }
-                    // also remove tabs after the object string name
-                    $objStrName = substr($line, 0, $varL);
-                    if ($objStrName !== '') {
-                        $r = [];
-                        if (preg_match('/[^[:alnum:]_\\\\\\.:-]/i', $objStrName, $r)) {
-                            throw new \RuntimeException(
-                                'Line ' . ($this->rawPointer - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_:-\\."',
-                                1507645381
-                            );
-                        }
-                        $line = ltrim(substr($line, $varL));
-                        if ($line === '') {
-                            throw new \RuntimeException(
-                                'Line ' . ($this->rawPointer - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({',
-                                1507645417
-                            );
-                        }
-                        switch ($line[0]) {
-                            case '=':
-                                if (strpos($objStrName, '.') !== false) {
-                                    $value = [];
-                                    $value[0] = trim(substr($line, 1));
-                                    $this->setVal($objStrName, $setup, $value);
-                                } else {
-                                    $setup[$objStrName] = trim(substr($line, 1));
-                                    if ($this->lastComment) {
-                                        // Setting comment..
-                                        $setup[$objStrName . '..'] .= $this->lastComment;
-                                    }
-                                }
-                                break;
-                            case '{':
-                                $this->inBrace++;
-                                if (strpos($objStrName, '.') !== false) {
-                                    $this->rollParseSub($objStrName, $setup);
-                                } else {
-                                    if (!isset($setup[$objStrName . '.'])) {
-                                        $setup[$objStrName . '.'] = [];
-                                    }
-                                    $this->parseSub($setup[$objStrName . '.']);
-                                }
-                                break;
-                            default:
-                                throw new \RuntimeException(
-                                    'Line ' . ($this->rawPointer - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not followed by any operator, =<>({',
-                                    1507645445
-                                );
-                        }
-
-                        $this->lastComment = '';
-                    }
-                } elseif ($line[0] === '}') {
-                    $this->inBrace--;
-                    $this->lastComment = '';
-                    if ($this->inBrace < 0) {
-                        throw new \RuntimeException(
-                            'Line ' . ($this->rawPointer - 1) . ': An end brace is in excess.',
-                            1507645489
-                        );
-                    }
-                    break;
-                } else {
-                    $this->lastComment .= rtrim($line) . LF;
-                }
-            }
-            // Unset comment
-            if ($this->commentSet) {
-                if (strpos($line, '*/') === 0) {
-                    $this->commentSet = 0;
-                }
-            }
-        }
-    }
-
-    /**
-     * Helper method of ext_conf_template.txt parsing.
-     *
-     * Parsing of TypoScript keys inside a curly brace where the key is composite of at least two keys,
-     * thus having to recursively call itself to get the value.
-     *
-     * @param string $string The object sub-path, eg "thisprop.another_prot"
-     * @param array $setup The local setup array from the function calling this function
-     */
-    protected function rollParseSub($string, array &$setup)
-    {
-        if ((string)$string === '') {
-            return;
-        }
-        list($key, $remainingKey) = $this->parseNextKeySegment($string);
-        $key .= '.';
-        if (!isset($setup[$key])) {
-            $setup[$key] = [];
-        }
-        $remainingKey === ''
-            ? $this->parseSub($setup[$key])
-            : $this->rollParseSub($remainingKey, $setup[$key]);
-    }
-
-    /**
-     * Helper method of ext_conf_template.txt parsing.
-     *
-     * Setting a value/property of an object string in the setup array.
-     *
-     * @param string $string The object sub-path, eg "thisprop.another_prot
-     * @param array $setup The local setup array from the function calling this function.
-     * @param void
-     */
-    protected function setVal($string, array &$setup, $value)
-    {
-        if ((string)$string === '') {
-            return;
-        }
-
-        list($key, $remainingKey) = $this->parseNextKeySegment($string);
-        $subKey = $key . '.';
-        if ($remainingKey === '') {
-            if (isset($value[0])) {
-                $setup[$key] = $value[0];
-            }
-            if (isset($value[1])) {
-                $setup[$subKey] = $value[1];
-            }
-            if ($this->lastComment) {
-                $setup[$key . '..'] .= $this->lastComment;
-            }
-        } else {
-            if (!isset($setup[$subKey])) {
-                $setup[$subKey] = [];
-            }
-            $this->setVal($remainingKey, $setup[$subKey], $value);
-        }
-    }
-
-    /**
-     * Helper method of ext_conf_template.txt parsing.
-     *
-     * Determines the first key segment of a TypoScript key by searching for the first
-     * unescaped dot in the given key string.
-     *
-     * Since the escape characters are only needed to correctly determine the key
-     * segment any escape characters before the first unescaped dot are
-     * stripped from the key.
-     *
-     * @param string $key The key, possibly consisting of multiple key segments separated by unescaped dots
-     * @return array Array with key segment and remaining part of $key
-     */
-    protected function parseNextKeySegment($key): array
-    {
-        // if no dot is in the key, nothing to do
-        $dotPosition = strpos($key, '.');
-        if ($dotPosition === false) {
-            return [$key, ''];
-        }
-
-        if (strpos($key, '\\') !== false) {
-            // backslashes are in the key, so we do further parsing
-            while ($dotPosition !== false) {
-                if ($dotPosition > 0 && $key[$dotPosition - 1] !== '\\' || $dotPosition > 1 && $key[$dotPosition - 2] === '\\') {
-                    break;
-                }
-                // escaped dot found, continue
-                $dotPosition = strpos($key, '.', $dotPosition + 1);
-            }
-
-            if ($dotPosition === false) {
-                // no regular dot found
-                $keySegment = $key;
-                $remainingKey = '';
-            } else {
-                if ($dotPosition > 1 && $key[$dotPosition - 2] === '\\' && $key[$dotPosition - 1] === '\\') {
-                    $keySegment = substr($key, 0, $dotPosition - 1);
-                } else {
-                    $keySegment = substr($key, 0, $dotPosition);
-                }
-                $remainingKey = substr($key, $dotPosition + 1);
-            }
-
-            // fix key segment by removing escape sequences
-            $keySegment = str_replace('\\.', '.', $keySegment);
-        } else {
-            // no backslash in the key, we're fine off
-            list($keySegment, $remainingKey) = explode('.', $key, 2);
-        }
-        return [$keySegment, $remainingKey];
     }
 }

@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
@@ -39,7 +41,7 @@ class ExtendedTemplateService extends TemplateService
     /**
      * @var array
      */
-    public $categories = [
+    protected $categories = [
         'basic' => [],
         // Constants of superior importance for the template-layout. This is dimensions, imagefiles and enabling of various features. The most basic constants, which you would almost always want to configure.
         'menu' => [],
@@ -51,47 +53,6 @@ class ExtendedTemplateService extends TemplateService
         'advanced' => [],
         // Advanced functions, which are used very seldom.
         'all' => []
-    ];
-
-    /**
-     * Translated categories
-     *
-     * @var array
-     */
-    protected $categoryLabels = [];
-
-    /**
-     * This will be filled with the available categories of the current template.
-     *
-     * @var array
-     */
-    public $subCategories = [
-        // Standard categories:
-        'enable' => ['Enable features', 'a'],
-        'dims' => ['Dimensions, widths, heights, pixels', 'b'],
-        'file' => ['Files', 'c'],
-        'typo' => ['Typography', 'd'],
-        'color' => ['Colors', 'e'],
-        'links' => ['Links and targets', 'f'],
-        'language' => ['Language specific constants', 'g'],
-        // subcategories based on the default content elements
-        'cheader' => ['Content: \'Header\'', 'ma'],
-        'cheader_g' => ['Content: \'Header\', Graphical', 'ma'],
-        'ctext' => ['Content: \'Text\'', 'mb'],
-        'cimage' => ['Content: \'Image\'', 'md'],
-        'ctextmedia' => ['Content: \'Textmedia\'', 'ml'],
-        'cbullets' => ['Content: \'Bullet list\'', 'me'],
-        'ctable' => ['Content: \'Table\'', 'mf'],
-        'cuploads' => ['Content: \'Filelinks\'', 'mg'],
-        'cmultimedia' => ['Content: \'Multimedia\'', 'mh'],
-        'cmedia' => ['Content: \'Media\'', 'mr'],
-        'cmailform' => ['Content: \'Form\'', 'mi'],
-        'csearch' => ['Content: \'Search\'', 'mj'],
-        'clogin' => ['Content: \'Login\'', 'mk'],
-        'cmenu' => ['Content: \'Menu/Sitemap\'', 'mm'],
-        'cshortcut' => ['Content: \'Insert records\'', 'mn'],
-        'clist' => ['Content: \'List of records\'', 'mo'],
-        'chtml' => ['Content: \'HTML\'', 'mq']
     ];
 
     /**
@@ -139,11 +100,6 @@ class ExtendedTemplateService extends TemplateService
     public $ext_noPMicons = 0;
 
     /**
-     * @var array
-     */
-    public $ext_listOfTemplatesArr = [];
-
-    /**
      * @var string
      */
     public $ext_lineNumberOffset_mode = '';
@@ -159,11 +115,6 @@ class ExtendedTemplateService extends TemplateService
      * @var int
      */
     public $ext_printAll = 0;
-
-    /**
-     * @var string
-     */
-    public $ext_CEformName = 'forms[0]';
 
     /**
      * @var bool
@@ -231,13 +182,19 @@ class ExtendedTemplateService extends TemplateService
      * @var array
      */
     protected $inlineJavaScript = [];
+    /**
+     * @var \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser
+     */
+    private $constantParser;
 
     /**
      * @param Context|null $context
+     * @param \TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser $constantParser
      */
-    public function __construct(Context $context = null)
+    public function __construct(Context $context = null, ConstantConfigurationParser $constantParser = null)
     {
         parent::__construct($context);
+        $this->constantParser = $constantParser ?? GeneralUtility::makeInstance(ConstantConfigurationParser::class);
         // Disabled in backend context
         $this->tt_track = false;
         $this->verbose = false;
@@ -337,16 +294,16 @@ class ExtendedTemplateService extends TemplateService
         foreach ($this->constants as $str) {
             $c++;
             if ($c == $cc) {
-                $this->flatSetup = [];
-                $this->flattenSetup($constants->setup, '');
-                $defaultConstants = $this->flatSetup;
+                $defaultConstants = ArrayUtility::flatten($constants->setup, '', true);
             }
             $constants->parse($str, $matchObj);
         }
-        $this->flatSetup = [];
-        $this->flattenSetup($constants->setup, '');
         $this->setup['constants'] = $constants->setup;
-        return $this->ext_compareFlatSetups($defaultConstants);
+        $flatSetup = ArrayUtility::flatten($constants->setup, '', true);
+        return $this->constantParser->parseComments(
+            $flatSetup,
+            $defaultConstants
+        );
     }
 
     /**
@@ -896,95 +853,6 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * This function compares the flattened constants (default and all).
-     * Returns an array with the constants from the whole template which may be edited by the module.
-     *
-     * @param array $default
-     * @return array
-     */
-    public function ext_compareFlatSetups($default)
-    {
-        $editableComments = [];
-        $counter = 0;
-        foreach ($this->flatSetup as $const => $value) {
-            if (substr($const, -2) === '..' || !isset($this->flatSetup[$const . '..'])) {
-                continue;
-            }
-            $counter++;
-            $comment = trim($this->flatSetup[$const . '..']);
-            $c_arr = explode(LF, $comment);
-            foreach ($c_arr as $k => $v) {
-                $line = trim(preg_replace('/^[#\\/]*/', '', $v));
-                if (!$line) {
-                    continue;
-                }
-                $parts = explode(';', $line);
-                foreach ($parts as $par) {
-                    if (strpos($par, '=') !== false) {
-                        $keyValPair = explode('=', $par, 2);
-                        switch (trim(strtolower($keyValPair[0]))) {
-                            case 'type':
-                                // Type:
-                                $editableComments[$const]['type'] = trim($keyValPair[1]);
-                                break;
-                            case 'cat':
-                                // List of categories.
-                                $catSplit = explode('/', strtolower($keyValPair[1]));
-                                $catSplit[0] = trim($catSplit[0]);
-                                if (isset($this->categoryLabels[$catSplit[0]])) {
-                                    $catSplit[0] = $this->categoryLabels[$catSplit[0]];
-                                }
-                                $editableComments[$const]['cat'] = $catSplit[0];
-                                // This is the subcategory. Must be a key in $this->subCategories[].
-                                // catSplit[2] represents the search-order within the subcat.
-                                $catSplit[1] = trim($catSplit[1]);
-                                if ($catSplit[1] && isset($this->subCategories[$catSplit[1]])) {
-                                    $editableComments[$const]['subcat_name'] = $catSplit[1];
-                                    $orderIdentifier = isset($catSplit[2]) ? trim($catSplit[2]) : $counter;
-                                    $editableComments[$const]['subcat'] = $this->subCategories[$catSplit[1]][1]
-                                        . '/' . $catSplit[1] . '/' . $orderIdentifier . 'z';
-                                } elseif (isset($catSplit[2])) {
-                                    $editableComments[$const]['subcat'] = 'x/' . trim($catSplit[2]) . 'z';
-                                } else {
-                                    $editableComments[$const]['subcat'] = 'x/' . $counter . 'z';
-                                }
-                                break;
-                            case 'label':
-                                // Label
-                                $editableComments[$const]['label'] = trim($keyValPair[1]);
-                                break;
-                            case 'customcategory':
-                                // Custom category label
-                                $customCategory = explode('=', $keyValPair[1], 2);
-                                if (trim($customCategory[0])) {
-                                    $categoryKey = strtolower($customCategory[0]);
-                                    $this->categoryLabels[$categoryKey] = $this->getLanguageService()->sL($customCategory[1]);
-                                }
-                                break;
-                            case 'customsubcategory':
-                                // Custom subCategory label
-                                $customSubcategory = explode('=', $keyValPair[1], 2);
-                                if (trim($customSubcategory[0])) {
-                                    $subCategoryKey = strtolower($customSubcategory[0]);
-                                    $this->subCategories[$subCategoryKey][0] = $this->getLanguageService()->sL($customSubcategory[1]);
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
-            if (isset($editableComments[$const])) {
-                $editableComments[$const]['name'] = $const;
-                $editableComments[$const]['value'] = trim($value);
-                if (isset($default[$const])) {
-                    $editableComments[$const]['default_value'] = trim($default[$const]);
-                }
-            }
-        }
-        return $editableComments;
-    }
-
-    /**
      * @param array $editConstArray
      */
     public function ext_categorizeEditableConstants($editConstArray)
@@ -1103,7 +971,7 @@ class ExtendedTemplateService extends TemplateService
                 if (is_array($params)) {
                     if ($subcat != $params['subcat_name']) {
                         $subcat = $params['subcat_name'];
-                        $subcat_name = $params['subcat_name'] ? $this->subCategories[$params['subcat_name']][0] : 'Others';
+                        $subcat_name = $params['subcat_name'] ? $this->constantParser->getSubCategories()[$params['subcat_name']][0] : 'Others';
                         $output .= '<h3>' . $subcat_name . '</h3>';
                     }
                     $label = $this->getLanguageService()->sL($params['label']);

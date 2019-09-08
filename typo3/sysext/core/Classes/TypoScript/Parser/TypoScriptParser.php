@@ -425,7 +425,12 @@ class TypoScriptParser
                                                 $setup[$objStrName] = trim(substr($line, 1));
                                                 if ($this->lastComment && $this->regComments) {
                                                     // Setting comment..
-                                                    $setup[$objStrName . '..'] .= $this->lastComment;
+                                                    $matchingCommentKey = $objStrName . '..';
+                                                    if (isset($setup[$matchingCommentKey])) {
+                                                        $setup[$matchingCommentKey] .= $this->lastComment;
+                                                    } else {
+                                                        $setup[$matchingCommentKey] = $this->lastComment;
+                                                    }
                                                 }
                                                 if ($this->regLinenumbers) {
                                                     $setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;

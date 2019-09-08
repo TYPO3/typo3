@@ -987,8 +987,7 @@ class TemplateService
         // Read out parse errors if any
         $this->parserErrors['constants'] = $constants->errors;
         // Then flatten the structure from a multi-dim array to a single dim array with all constants listed as key/value pairs (ready for substitution)
-        $this->flatSetup = [];
-        $this->flattenSetup($constants->setup, '');
+        $this->flatSetup = ArrayUtility::flatten($constants->setup, '', true);
         // ***********************************************
         // Parse TypoScript Setup (here called "config")
         // ***********************************************
@@ -1111,32 +1110,11 @@ class TemplateService
     }
 
     /**
-     * This flattens a hierarchical TypoScript array to $this->flatSetup
-     *
-     * @param array $setupArray TypoScript array
-     * @param string $prefix Prefix to the object path. Used for recursive calls to this function.
-     * @see generateConfig()
-     */
-    protected function flattenSetup($setupArray, $prefix)
-    {
-        if (is_array($setupArray)) {
-            foreach ($setupArray as $key => $val) {
-                if (is_array($val)) {
-                    $this->flattenSetup($val, $prefix . $key);
-                } else {
-                    $this->flatSetup[$prefix . $key] = $val;
-                }
-            }
-        }
-    }
-
-    /**
      * Substitutes the constants from $this->flatSetup in the text string $all
      *
      * @param string $all TypoScript code text string
      * @return string The processed string with all constants found in $this->flatSetup as key/value pairs substituted.
      * @see generateConfig()
-     * @see flattenSetup()
      */
     protected function substituteConstants($all)
     {
