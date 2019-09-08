@@ -1086,7 +1086,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
                 if (
                     $stat['_ACCESS'] === 'owner'
-                    || $stat['_ACCESS'] === 'reviewer' && $stage <= 1
                     || $stat['_ACCESS'] === 'member' && $stage <= $memberStageLimit
                 ) {
                     return true;
@@ -1997,10 +1996,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * Checking if a workspace is allowed for backend user
      *
      * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
-     * @param string $fields List of fields to select. Default fields are: uid,title,adminusers,members,reviewers,publish_access,stagechg_notification
+     * @param string $fields List of fields to select. Default fields are all
      * @return array Output will also show how access was granted. Admin users will have a true output regardless of input.
      */
-    public function checkWorkspace($wsRec, $fields = 'uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')
+    public function checkWorkspace($wsRec, $fields = '*')
     {
         $retVal = false;
         // If not array, look up workspace record:
@@ -2046,16 +2045,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                         foreach ($this->userGroupsUID as $groupUid) {
                             if (GeneralUtility::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
                                 return array_merge($wsRec, ['_ACCESS' => 'owner']);
-                            }
-                        }
-                        // Checking if he is reviewer user:
-                        if (GeneralUtility::inList($wsRec['reviewers'], 'be_users_' . $this->user['uid'])) {
-                            return array_merge($wsRec, ['_ACCESS' => 'reviewer']);
-                        }
-                        // Checking if he is reviewer through a user group of his:
-                        foreach ($this->userGroupsUID as $groupUid) {
-                            if (GeneralUtility::inList($wsRec['reviewers'], 'be_groups_' . $groupUid)) {
-                                return array_merge($wsRec, ['_ACCESS' => 'reviewer']);
                             }
                         }
                         // Checking if he is member as user:
@@ -2122,7 +2111,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function setTemporaryWorkspace($workspaceId)
     {
         $result = false;
-        $workspaceRecord = $this->checkWorkspace($workspaceId, '*');
+        $workspaceRecord = $this->checkWorkspace($workspaceId);
 
         if ($workspaceRecord) {
             $this->workspaceRec = $workspaceRecord;
@@ -2139,7 +2128,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function setDefaultWorkspace()
     {
         $this->workspace = (int)$this->getDefaultWorkspace();
-        $this->workspaceRec = $this->checkWorkspace($this->workspace, '*');
+        $this->workspaceRec = $this->checkWorkspace($this->workspace);
     }
 
     /**

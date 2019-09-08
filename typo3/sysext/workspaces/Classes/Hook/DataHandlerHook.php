@@ -500,8 +500,6 @@ class DataHandlerHook
                 case 1:
                     switch ((int)$stageId) {
                         case 1:
-                            $emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']);
-                            break;
                         case 10:
                             $emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], true);
                             break;
@@ -560,7 +558,6 @@ class DataHandlerHook
                     break;
                 case 10:
                     $emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], true);
-                    $emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']) + $emails;
                     $emails = $this->getEmailsForStageChangeNotification($workspaceRec['members']) + $emails;
                     break;
                 default:

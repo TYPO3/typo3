@@ -53,10 +53,10 @@ class PreviewUserAuthentication extends BackendUserAuthentication
      * This method is intentionally called with setTemporaryWorkspace() to check if the workspace exists.
      *
      * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0
-     * @param string $fields List of fields to select. Default fields are: uid,title,adminusers,members,reviewers,publish_access,stagechg_notification
+     * @param string $fields List of fields to select. Default is to fetch all of them
      * @return array|bool Output will also show how access was granted. For preview users, if the record exists, it's a go.
      */
-    public function checkWorkspace($wsRec, $fields = 'uid,title,adminusers,members,reviewers,publish_access,stagechg_notification')
+    public function checkWorkspace($wsRec, $fields = '*')
     {
         // If not array, look up workspace record:
         if (!is_array($wsRec)) {

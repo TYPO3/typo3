@@ -183,9 +183,6 @@
 			<trans-unit id="workspace_list_label_members">
 				<source>Members</source>
 			</trans-unit>
-			<trans-unit id="workspace_list_label_reviewers">
-				<source>Reviewers</source>
-			</trans-unit>
 			<trans-unit id="workspace_list_access_admins_only">
 				<source>Admins only</source>
 			</trans-unit>
@@ -239,9 +236,6 @@
 			</trans-unit>
 			<trans-unit id="workspace_list_access_member">
 				<source>Member</source>
-			</trans-unit>
-			<trans-unit id="workspace_list_access_reviewer">
-				<source>Reviewer</source>
 			</trans-unit>
 			<trans-unit id="workspace_list_publishing_count_draft">
 				<source>Draft</source>
@@ -353,9 +347,6 @@
 			</trans-unit>
 			<trans-unit id="label_subelementsdetails">
 				<source>Sub elements, click for details</source>
-			</trans-unit>
-			<trans-unit id="label_commentforreviewer">
-				<source>Comment for Reviewer</source>
 			</trans-unit>
 			<trans-unit id="label_commentforpublisher">
 				<source>Comment for Publisher</source>

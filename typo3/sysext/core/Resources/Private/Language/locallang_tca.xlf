@@ -309,9 +309,6 @@
 			<trans-unit id="sys_workspace.members">
 				<source>Members</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.reviewers">
-				<source>Reviewers</source>
-			</trans-unit>
 			<trans-unit id="sys_workspace.publish_time">
 				<source>Publish</source>
 			</trans-unit>
@@ -329,9 +326,6 @@
 			</trans-unit>
 			<trans-unit id="sys_workspace.swap_modes">
 				<source>Swap modes</source>
-			</trans-unit>
-			<trans-unit id="sys_workspace.vtypes">
-				<source>Disable Versioning Types for members and reviewers</source>
 			</trans-unit>
 			<trans-unit id="sys_workspace.publish_access">
 				<source>Publish access</source>
