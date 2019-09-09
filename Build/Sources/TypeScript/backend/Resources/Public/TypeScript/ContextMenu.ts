@@ -158,7 +158,7 @@ class ContextMenu {
   private fetch(parameters: string): void {
     let url = TYPO3.settings.ajaxUrls.contextmenu;
     if (parameters) {
-      url += ((url.indexOf('?') === -1) ? '?' : '&') + parameters;
+      url += (!url.includes('?') ? '?' : '&') + parameters;
     }
     $.ajax(url).done((response: MenuItems): void => {
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {

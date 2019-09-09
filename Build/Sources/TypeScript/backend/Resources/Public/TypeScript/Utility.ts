@@ -91,7 +91,7 @@ class Utility {
    */
   public static updateQueryStringParameter(url: string, key: string, value: string): string {
     const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
-    const separator = url.indexOf('?') !== -1 ? '&' : '?';
+    const separator = url.includes('?') ? '&' : '?';
 
     if (url.match(re)) {
       return url.replace(re, '$1' + key + '=' + value + '$2');

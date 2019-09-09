@@ -33,13 +33,13 @@ class TriggerRequest extends InteractionRequest {
   }
 
   public concernsTypes(types: string[]): boolean {
-    if (types.indexOf(this.type) !== -1) {
+    if (types.includes(this.type)) {
       return true;
     }
     let request: InteractionRequest = this;
     while (request.parentRequest instanceof InteractionRequest) {
       request = request.parentRequest;
-      if (types.indexOf(request.type) !== -1) {
+      if (types.includes(request.type)) {
         return true;
       }
     }

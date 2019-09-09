@@ -138,7 +138,7 @@ class Paste {
       ];
     }
     if (url !== null) {
-      const separator = (url.indexOf('?') > -1) ? '&' : '?';
+      const separator = url.contains('?') ? '&' : '?';
       const params = $.param({data: $element.data()});
       Modal.loadUrl(title, severity, buttons, url + separator + params);
     } else {

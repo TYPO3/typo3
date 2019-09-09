@@ -30,9 +30,9 @@ class Cache implements InlineModuleInterface {
       success: (data: any): void => {
         if (data.success === true && Array.isArray(data.status)) {
           if (data.status.length > 0) {
-            data.status.forEach(((element: any): void => {
+            data.status.forEach((element: any): void => {
               Notification.success(element.title, element.message);
-            }));
+            });
           }
         } else {
           Notification.error('Something went wrong clearing caches');

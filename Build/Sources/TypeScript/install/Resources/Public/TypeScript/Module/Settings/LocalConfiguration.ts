@@ -46,7 +46,7 @@ class LocalConfiguration extends AbstractInteractableModule {
     // Make jquerys "contains" work case-insensitive
     jQuery.expr[':'].contains = jQuery.expr.createPseudo((arg: any): Function => {
       return (elem: any): boolean => {
-        return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+        return jQuery(elem).text().toUpperCase().includes(arg.toUpperCase());
       };
     });
 

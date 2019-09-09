@@ -142,12 +142,12 @@ class WorkspacesMenu {
         if (response.pageId) {
           top.fsMod.recentIds.web = response.pageId;
           let url = TYPO3.Backend.ContentContainer.getUrl();
-          url += (url.indexOf('?') === -1 ? '?' : '&') + '&id=' + response.pageId;
+          url += (!url.includes('?') ? '?' : '&') + '&id=' + response.pageId;
           WorkspacesMenu.refreshPageTree();
           Viewport.ContentContainer.setUrl(url);
 
           // when in web module reload, otherwise send the user to the web module
-        } else if (top.currentModuleLoaded.indexOf('web_') === 0) {
+        } else if (top.currentModuleLoaded.startsWith('web_')) {
           WorkspacesMenu.refreshPageTree();
           ModuleMenu.App.reloadFrames();
         } else if (TYPO3.configuration.pageModule) {

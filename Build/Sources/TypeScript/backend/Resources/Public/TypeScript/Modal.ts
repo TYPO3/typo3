@@ -344,7 +344,7 @@ class Modal {
         : SeverityEnum.info;
       let url = $element.data('url') || null;
       if (url !== null) {
-        const separator = (url.indexOf('?') > -1) ? '&' : '?';
+        const separator = url.includes('?') ? '&' : '?';
         const params = $.param({data: $element.data()});
         url = url + separator + params;
       }

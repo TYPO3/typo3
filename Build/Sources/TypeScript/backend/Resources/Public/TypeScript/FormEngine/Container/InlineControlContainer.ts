@@ -214,7 +214,7 @@ class InlineControlContainer {
       return;
     }
 
-    const options: Array<HTMLOptionElement> = Array.from(selectElement.querySelectorAll('option'));
+    const options: NodeListOf<HTMLOptionElement> = selectElement.querySelectorAll('option');
     let index: number = -1;
 
     for (let possibleValue of Object.keys(unique.possible)) {

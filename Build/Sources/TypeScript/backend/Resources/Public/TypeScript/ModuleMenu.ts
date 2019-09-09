@@ -367,7 +367,7 @@ class ModuleMenu {
    * @returns {JQueryDeferred<TriggerRequest>}
    */
   private openInNavFrame(url: string, params: string, interactionRequest: InteractionRequest): JQueryDeferred<TriggerRequest> {
-    const navUrl = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
+    const navUrl = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
     const currentUrl = Viewport.NavigationContainer.getUrl();
     const deferred = Viewport.NavigationContainer.setUrl(
       url,
@@ -401,7 +401,7 @@ class ModuleMenu {
       );
       top.nextLoadModuleUrl = '';
     } else {
-      const urlToLoad = url + (params ? (url.indexOf('?') !== -1 ? '&' : '?') + params : '');
+      const urlToLoad = url + (params ? (url.includes('?') ? '&' : '?') + params : '');
       deferred = Viewport.ContentContainer.setUrl(
         urlToLoad,
         new TriggerRequest('typo3.openInContentFrame', interactionRequest),

@@ -74,7 +74,7 @@ class LinkBrowser {
       if (obj.hasOwnProperty(p)) {
         const k: string = prefix ? prefix + '[' + p + ']' : p;
         const v: any = obj[p];
-        if (url.indexOf(k + '=') === -1) {
+        if (!url.includes(k + '=')) {
           str.push(
             typeof v === 'object'
               ? this.encodeGetParameters(v, k, url)

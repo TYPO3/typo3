@@ -280,7 +280,7 @@ class ContextMenuActions {
    * @param {string} iframeUrl
    */
   public static triggerRefresh(iframeUrl: string): void {
-    if (iframeUrl.indexOf('record%2Fedit') === -1) {
+    if (!iframeUrl.includes('record%2Fedit')) {
       Viewport.ContentContainer.refresh();
     }
   }

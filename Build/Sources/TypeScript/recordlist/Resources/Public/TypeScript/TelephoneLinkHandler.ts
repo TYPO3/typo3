@@ -29,7 +29,7 @@ class TelephoneLinkHandler {
         if (value === 'tel:') {
           return;
         }
-        if (value.indexOf('tel:') === 0) {
+        if (value.startsWith('tel:')) {
           value = value.substr(4);
         }
 

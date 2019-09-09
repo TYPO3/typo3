@@ -40,7 +40,7 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
         const exclusiveValues = el.dataset.exclusiveValues;
         const selectedOptions = el.querySelectorAll('option:checked'); // Yep, :checked finds selected options
         if (selectedOptions.length > 0) {
-          Array.from(selectedOptions).forEach((optionElement: HTMLOptionElement): void => {
+          selectedOptions.forEach((optionElement: HTMLOptionElement): void => {
             FormEngine.setSelectOptionFromExternalSource(
               fieldName,
               optionElement.value,

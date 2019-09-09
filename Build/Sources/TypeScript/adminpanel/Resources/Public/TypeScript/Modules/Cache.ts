@@ -1,9 +1,9 @@
 namespace TYPO3 {
   export class Cache {
-    private buttons: Array<Element>;
+    private buttons: NodeList;
 
     constructor() {
-      this.buttons = Array.from(document.querySelectorAll('[data-typo3-role="clearCacheButton"]'));
+      this.buttons = document.querySelectorAll('[data-typo3-role="clearCacheButton"]');
 
       this.buttons.forEach((element: HTMLElement): void => {
         element.addEventListener('click', (): void => {

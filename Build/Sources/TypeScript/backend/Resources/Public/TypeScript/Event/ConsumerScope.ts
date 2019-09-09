@@ -23,7 +23,7 @@ class ConsumerScope {
   }
 
   public hasConsumer(consumer: Consumable): boolean {
-    return this.consumers.indexOf(consumer) !== -1;
+    return this.consumers.includes(consumer);
   }
 
   public attach(consumer: Consumable): void {
