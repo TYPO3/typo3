@@ -96,10 +96,15 @@ class Bootstrap
             $failsafe = true;
         }
         static::populateLocalConfiguration($configurationManager);
+
+        $logManager = new LogManager($requestId);
+        // LogManager is used by the core ErrorHandler (using GeneralUtility::makeInstance),
+        // therefore we have to push the LogManager to GeneralUtility, to ensure the requestId is set
+        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
+
         static::initializeErrorHandling();
         static::initializeIO();
 
-        $logManager = new LogManager($requestId);
         $cacheManager = static::createCacheManager($failsafe ? true : false);
         $coreCache = $cacheManager->getCache('cache_core');
         $assetsCache = $cacheManager->getCache('assets');
@@ -112,7 +117,6 @@ class Bootstrap
         // Push singleton instances to GeneralUtility and ExtensionManagementUtility
         // They should be fetched through a container (later) but currently a PackageManager
         // singleton instance is required by PackageManager->activePackageDuringRuntime
-        GeneralUtility::setSingletonInstance(LogManager::class, $logManager);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager);
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         ExtensionManagementUtility::setPackageManager($packageManager);
