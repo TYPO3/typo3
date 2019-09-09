@@ -1300,7 +1300,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $authInfo['REMOTE_ADDR'] = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $authInfo['REMOTE_HOST'] = GeneralUtility::getIndpEnv('REMOTE_HOST');
         $authInfo['showHiddenRecords'] = $this->showHiddenRecords;
-        // Can be overidden in localconf by SVCONF:
+        // Can be overridden in localconf by SVCONF:
         $authInfo['db_user']['table'] = $this->user_table;
         $authInfo['db_user']['userid_column'] = $this->userid_column;
         $authInfo['db_user']['username_column'] = $this->username_column;

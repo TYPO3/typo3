@@ -74,7 +74,7 @@ class RecordHistory
     protected $rollbackFields = '';
 
     /**
-     * Constructor to define which element to work on - can be overriden with "setLastHistoryEntry"
+     * Constructor to define which element to work on - can be overridden with "setLastHistoryEntry"
      *
      * @param string $element in the form of "tablename:uid"
      * @param string $rollbackFields

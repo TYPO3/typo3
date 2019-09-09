@@ -1457,7 +1457,7 @@ The following features have been removed:
 * EXT:form: :yaml:`renderingOptions._isHiddenFormElement` and :yaml:`renderingOptions._isReadOnlyFormElement` are dropped
 * :php:`$TBE_MODULES`: configuring a module via a custom "configureModuleFunction" is dropped
 * CLI Command alias "lang:language:update" is dropped in favor of "language:update"
-* Accessing or modifying :php:`$_GET`/:php:`$_POST` parameters during any PSR-15 middleware will not reflect any change during the actual Request processing anymore as it is overridden by the incoming PSR-7 request object, but overriden again when the RequestHandler is accessed
+* Accessing or modifying :php:`$_GET`/:php:`$_POST` parameters during any PSR-15 middleware will not reflect any change during the actual Request processing anymore as it is overridden by the incoming PSR-7 request object, but overridden again when the RequestHandler is accessed
 * Parsing of the legacy `<link>` tags which were migrated to `<a>` tags in Frontend is dropped
 
 The following database tables have been removed:

@@ -66,7 +66,7 @@ abstract class AbstractDriver implements DriverInterface
     }
 
     /**
-     * Checks a fileName for validity. This could be overidden in concrete
+     * Checks a fileName for validity. This could be overridden in concrete
      * drivers if they have different file naming rules.
      *
      * @param string $fileName

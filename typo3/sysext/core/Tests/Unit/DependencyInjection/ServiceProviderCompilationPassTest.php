@@ -140,7 +140,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
             ],
             function (ContainerBuilder $container) {
                 $definition = new \Symfony\Component\DependencyInjection\Definition('stdClass');
-                // property should be overriden by service provider
+                // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
                 // property should not be "deleted" by service provider
                 $definition->setProperty('symfony_defined_parameter', 'foobar');
@@ -164,7 +164,7 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
             ],
             function (ContainerBuilder $container) {
                 $definition = new \Symfony\Component\DependencyInjection\Definition('stdClass');
-                // property should be overriden by service provider
+                // property should be overridden by service provider
                 $definition->setProperty('parameter', 'remotehost');
                 // property should not be "deleted" by service provider
                 $definition->setProperty('symfony_defined_parameter', 'foobar');

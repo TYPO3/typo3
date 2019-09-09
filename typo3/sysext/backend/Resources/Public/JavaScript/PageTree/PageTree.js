@@ -304,7 +304,7 @@ define(['jquery',
     /**
      * Node selection logic (triggered by different events)
      * Page tree supports only one node to be selected at a time
-     * so the default function from SvgTree needs to be overriden
+     * so the default function from SvgTree needs to be overridden
      *
      * @param {Node} node
      */

@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * Test case checking if localized tt_content is rendered correctly with different language settings
  * with site configuration.
  *
- * Previously the language was given by TypoScript settings which were overriden via GP parameters for language
+ * Previously the language was given by TypoScript settings which were overridden via GP parameters for language
  *
  * config.sys_language_uid = [0,1,2,3,4...]
  * config.sys_language_mode = [strict, content_fallback;2,3, ignore, '']
