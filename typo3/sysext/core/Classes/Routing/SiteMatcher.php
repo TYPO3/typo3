@@ -315,6 +315,8 @@ class SiteMatcher implements SingletonInterface
     protected function createRouteCollectionFromGroupedRoutes(array $groupedRoutes): RouteCollection
     {
         $collection = new RouteCollection();
+        // Ensure more generic routes containing '-' in host identifier, processed at last
+        krsort($groupedRoutes);
         foreach ($groupedRoutes as $groupedRoutesPerHost) {
             krsort($groupedRoutesPerHost);
             foreach ($groupedRoutesPerHost as $groupedRoutesPerPath) {
