@@ -1319,7 +1319,7 @@ class ExtensionManagementUtility
      * @param string $type See description above
      * @param bool $cacheable If $cached is set as USER content object (cObject) is created - otherwise a USER_INT object is created.
      */
-    public static function addPItoST43($key, $_, $suffix = '', $type = 'list_type', $cacheable = false)
+    public static function addPItoST43($key, $_ = '', $suffix = '', $type = 'list_type', $cacheable = false)
     {
         $cN = self::getCN($key);
         // General plugin
