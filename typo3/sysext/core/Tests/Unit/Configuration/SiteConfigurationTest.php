@@ -141,4 +141,43 @@ class SiteConfigurationTest extends UnitTestCase
         // expect modified base but intact imports
         self::assertFileEquals($expected, $siteConfig);
     }
+
+    /**
+     * @test
+     */
+    public function writingOfNestedStructuresPreservesOrder(): void
+    {
+        $identifier = 'testsite';
+        GeneralUtility::mkdir_deep($this->fixturePath . '/' . $identifier);
+        $configFixture = __DIR__ . '/Fixtures/SiteConfigs/config2.yaml';
+        $expected = __DIR__ . '/Fixtures/SiteConfigs/config2_expected.yaml';
+        $siteConfig = $this->fixturePath . '/' . $identifier . '/config.yaml';
+        copy($configFixture, $siteConfig);
+
+        // load with resolved imports as the module does
+        $configuration = GeneralUtility::makeInstance(YamlFileLoader::class)
+            ->load(
+                GeneralUtility::fixWindowsFilePath($siteConfig),
+                YamlFileLoader::PROCESS_IMPORTS
+            );
+        // add new language
+        $languageConfig = [
+            'title' => 'English',
+            'enabled' => true,
+            'languageId' => '0',
+            'base' => '/en',
+            'typo3Language' => 'default',
+            'locale' => 'en_US.utf8',
+            'iso-639-1' => 'en',
+            'hreflang' => '',
+            'direction' => '',
+            'flag' => 'en',
+            'navigationTitle' => 'English',
+        ];
+        array_unshift($configuration['languages'], $languageConfig);
+        $this->siteConfiguration->write($identifier, $configuration);
+
+        // expect modified base but intact imports
+        self::assertFileEquals($expected, $siteConfig);
+    }
 }

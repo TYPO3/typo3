@@ -198,9 +198,9 @@ class SiteConfiguration implements SingletonInterface
             // load the processed configuration to diff changed values
             $processed = $loader->load(GeneralUtility::fixWindowsFilePath($fileName));
             // find properties that were modified via GUI
-            $newModified = array_merge_recursive(
-                self::findModified($processed, $configuration),
-                self::findRemoved($processed, $configuration)
+            $newModified = array_replace_recursive(
+                self::findRemoved($processed, $configuration),
+                self::findModified($processed, $configuration)
             );
             // change _only_ the modified keys, leave the original non-changed areas alone
             ArrayUtility::mergeRecursiveWithOverrule($newConfiguration, $newModified);
@@ -282,9 +282,12 @@ class SiteConfiguration implements SingletonInterface
         $differences = [];
         foreach ($newConfiguration as $key => $value) {
             if (!isset($currentConfiguration[$key]) || $currentConfiguration[$key] !== $newConfiguration[$key]) {
-                if (empty($newConfiguration[$key]) && !empty($currentConfiguration[$key])) {
+                if (!isset($newConfiguration[$key]) && isset($currentConfiguration[$key])) {
                     $differences[$key] = '__UNSET';
-                } elseif (is_array($newConfiguration[$key]) && is_array($currentConfiguration[$key])) {
+                } elseif (isset($currentConfiguration[$key])
+                    && is_array($newConfiguration[$key])
+                    && is_array($currentConfiguration[$key])
+                ) {
                     $differences[$key] = self::findModified($currentConfiguration[$key], $newConfiguration[$key]);
                 } else {
                     $differences[$key] = $value;
