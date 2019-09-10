@@ -70,17 +70,15 @@ class LinkBrowser {
    */
   public encodeGetParameters(obj: LinkAttributes, prefix: string, url: string): string {
     const str = [];
-    for (let p in obj) {
-      if (obj.hasOwnProperty(p)) {
-        const k: string = prefix ? prefix + '[' + p + ']' : p;
-        const v: any = obj[p];
-        if (!url.includes(k + '=')) {
-          str.push(
-            typeof v === 'object'
-              ? this.encodeGetParameters(v, k, url)
-              : encodeURIComponent(k) + '=' + encodeURIComponent(v),
-          );
-        }
+    for (const entry of Object.entries(obj)) {
+      const [p, v] = entry;
+      const k: string = prefix ? prefix + '[' + p + ']' : p;
+      if (!url.includes(k + '=')) {
+        str.push(
+          typeof v === 'object'
+            ? this.encodeGetParameters(v, k, url)
+            : encodeURIComponent(k) + '=' + encodeURIComponent(v),
+        );
       }
     }
     return '&' + str.join('&');

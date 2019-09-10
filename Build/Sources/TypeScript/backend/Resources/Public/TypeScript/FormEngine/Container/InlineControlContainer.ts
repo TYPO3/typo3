@@ -1028,9 +1028,9 @@ class InlineControlContainer {
 
     if (uniqueValueField !== null) {
       const selectedValue = uniqueValueField.options[uniqueValueField.selectedIndex].value;
-      for (let i = 0; i < values.length; i++) {
-        if (values[i] !== selectedValue) {
-          InlineControlContainer.removeSelectOptionByValue(uniqueValueField, values[i]);
+      for (let value of values) {
+        if (value !== selectedValue) {
+          InlineControlContainer.removeSelectOptionByValue(uniqueValueField, value);
         }
       }
     }
@@ -1060,8 +1060,8 @@ class InlineControlContainer {
         if (selectorElement !== null) {
           // remove all items from the new select-item which are already used in other children
           if (uniqueValueField !== null) {
-            for (let i = 0; i < values.length; i++) {
-              InlineControlContainer.removeSelectOptionByValue(uniqueValueField, values[i]);
+            for (let value of values) {
+              InlineControlContainer.removeSelectOptionByValue(uniqueValueField, value);
             }
             // set the selected item automatically to the first of the remaining items if no selector is used
             if (!unique.selector) {
@@ -1071,8 +1071,8 @@ class InlineControlContainer {
               this.handleChangedField(uniqueValueField, this.container.dataset.objectGroup + '[' + recordUid + ']');
             }
           }
-          for (let j = 0; j < values.length; j++) {
-            InlineControlContainer.removeSelectOptionByValue(uniqueValueField, values[j]);
+          for (let value of values) {
+            InlineControlContainer.removeSelectOptionByValue(uniqueValueField, value);
           }
           if (typeof unique.used.length !== 'undefined') {
             unique.used = {};
@@ -1085,11 +1085,11 @@ class InlineControlContainer {
         // remove the newly used item from each select-field of the child records
         if (formField !== null && InlineControlContainer.selectOptionValueExists(selectorElement, selectedValue)) {
           const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
-          for (let k = 0; k < records.length; k++) {
+          for (let record of records) {
             uniqueValueField = <HTMLSelectElement>document.querySelector(
-              '[name="data[' + unique.table + '][' + records[k] + '][' + unique.field + ']"]',
+              '[name="data[' + unique.table + '][' + record + '][' + unique.field + ']"]',
             );
-            if (uniqueValueField !== null && records[k] !== recordUid) {
+            if (uniqueValueField !== null && record !== recordUid) {
               InlineControlContainer.removeSelectOptionByValue(uniqueValueField, selectedValue);
             }
           }
@@ -1145,9 +1145,9 @@ class InlineControlContainer {
 
     const records = Utility.trimExplode(',', formField.value);
     let uniqueValueField;
-    for (let i = 0; i < records.length; i++) {
+    for (let record of records) {
       uniqueValueField = <HTMLSelectElement>document.querySelector(
-        '[name="data[' + unique.table + '][' + records[i] + '][' + unique.field + ']"]',
+        '[name="data[' + unique.table + '][' + record + '][' + unique.field + ']"]',
       );
       if (uniqueValueField !== null && uniqueValueField !== srcElement) {
         InlineControlContainer.removeSelectOptionByValue(uniqueValueField, srcElement.value);

@@ -45,12 +45,11 @@ class ExtensionManager {
 
   private static getUrlVars(): any {
     let vars: any = [];
-    let hash: Array<string>;
     let hashes: Array<string> = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (let i = 0; i < hashes.length; i++) {
-      hash = hashes[i].split('=');
-      vars.push(hash[0]);
-      vars[hash[0]] = hash[1];
+    for (let hash of hashes) {
+      const [k, v] = hash.split('=');
+      vars.push(k);
+      vars[k] = v;
     }
     return vars;
   }

@@ -273,8 +273,7 @@ class Wizard {
     let slides = '<div class="carousel slide" data-ride="carousel" data-interval="false">'
       + '<div class="carousel-inner" role="listbox">';
 
-    for (let i = 0; i < this.setup.slides.length; ++i) {
-      let currentSlide: Slide = this.setup.slides[i];
+    for (let currentSlide of Object.values(this.setup.slides)) {
       let slideContent = currentSlide.content;
 
       if (typeof slideContent === 'object') {

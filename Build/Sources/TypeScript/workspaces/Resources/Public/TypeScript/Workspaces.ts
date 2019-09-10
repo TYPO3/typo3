@@ -41,9 +41,7 @@ export default class Workspaces {
         ),
       );
 
-      for (let i = 0; i < result.sendMailTo.length; ++i) {
-        const recipient = result.sendMailTo[i];
-
+      for (const recipient of result.sendMailTo) {
         $form.append(
           $('<div />', {class: 'checkbox'}).append(
             $('<label />').text(recipient.label).prepend(

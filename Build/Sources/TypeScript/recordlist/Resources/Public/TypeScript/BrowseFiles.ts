@@ -116,8 +116,8 @@ class Selector {
         }
       });
       if (selectedItems.length > 0) {
-        for (let i = 0; i < selectedItems.length; i++) {
-          BrowseFiles.File.insertElement(selectedItems[i]);
+        for (let selectedItem of selectedItems) {
+          BrowseFiles.File.insertElement(selectedItem);
         }
       }
       ElementBrowser.focusOpenerAndClose();

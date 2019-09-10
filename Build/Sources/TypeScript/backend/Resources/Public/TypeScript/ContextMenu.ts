@@ -53,10 +53,9 @@ class ContextMenu {
   private static drawActionItem(item: MenuItem): string {
     const attributes: { [key: string]: string } = item.additionalAttributes || {};
     let attributesString = '';
-    for (let attribute in attributes) {
-      if (attributes.hasOwnProperty(attribute)) {
-        attributesString += ' ' + attribute + '="' + attributes[attribute] + '"';
-      }
+    for (const attribute of Object.entries(attributes)) {
+      const [k, v] = attribute;
+      attributesString += ' ' + k + '="' + v + '"';
     }
 
     return '<a class="list-group-item"'
@@ -273,24 +272,21 @@ class ContextMenu {
    */
   private drawMenu(items: MenuItems, level: number): string {
     let elements: string = '';
-    for (let key in items) {
-      if (items.hasOwnProperty(key)) {
-        const item = items[key];
-        if (item.type === 'item') {
-          elements += ContextMenu.drawActionItem(item);
-        } else if (item.type === 'divider') {
-          elements += '<a class="list-group-item list-group-item-divider"></a>';
-        } else if (item.type === 'submenu' || item.childItems) {
-          elements += '<a class="list-group-item list-group-item-submenu">'
-            + '<span class="list-group-item-icon">' + item.icon + '</span> '
-            + item.label + '&nbsp;&nbsp;<span class="fa fa-caret-right"></span>'
-            + '</a>';
+    for (let item of Object.values(items)) {
+      if (item.type === 'item') {
+        elements += ContextMenu.drawActionItem(item);
+      } else if (item.type === 'divider') {
+        elements += '<a class="list-group-item list-group-item-divider"></a>';
+      } else if (item.type === 'submenu' || item.childItems) {
+        elements += '<a class="list-group-item list-group-item-submenu">'
+          + '<span class="list-group-item-icon">' + item.icon + '</span> '
+          + item.label + '&nbsp;&nbsp;<span class="fa fa-caret-right"></span>'
+          + '</a>';
 
-          const childElements = this.drawMenu(item.childItems, 1);
-          elements += '<div class="context-menu contentMenu' + (level + 1) + '" style="display:none;">'
-            + '<div class="list-group">' + childElements + '</div>'
-            + '</div>';
-        }
+        const childElements = this.drawMenu(item.childItems, 1);
+        elements += '<div class="context-menu contentMenu' + (level + 1) + '" style="display:none;">'
+          + '<div class="list-group">' + childElements + '</div>'
+          + '</div>';
       }
     }
     return elements;

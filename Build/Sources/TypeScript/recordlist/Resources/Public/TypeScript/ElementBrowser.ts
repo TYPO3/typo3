@@ -89,8 +89,8 @@ class ElementBrowser {
   public executeFunctionByName(functionName: string, context: any, ...args: Array<any>): any {
     const namespaces = functionName.split('.');
     const func = namespaces.pop();
-    for (let i = 0; i < namespaces.length; i++) {
-      context = context[namespaces[i]];
+    for (let namespace of namespaces) {
+      context = context[namespace];
     }
     return context[func].apply(context, args);
   }

@@ -510,8 +510,8 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private renderNotifications(): void {
     const $notificationBox: JQuery = this.getNotificationBox();
-    for (let i = 0; i < this.notifications.length; ++i) {
-      $notificationBox.append(this.notifications[i]);
+    for (let notification of this.notifications) {
+      $notificationBox.append(notification);
     }
     this.notifications = [];
   }

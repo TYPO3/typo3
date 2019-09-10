@@ -220,8 +220,8 @@ class UpgradeDocs extends AbstractInteractableModule {
       const andString = andTags.join('');
       const tags = [];
       if (orTags.length) {
-        for (let i = 0; i < orTags.length; i++) {
-          tags.push(andString + orTags[i]);
+        for (let orTag of orTags) {
+          tags.push(andString + orTag);
         }
       } else {
         tags.push(andString);

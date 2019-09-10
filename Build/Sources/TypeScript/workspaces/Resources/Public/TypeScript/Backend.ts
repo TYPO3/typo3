@@ -81,11 +81,11 @@ class Backend extends Workspaces {
   private static generateDiffView(diff: Array<any>): JQuery {
     const $diff = $('<div />', {class: 'diff'});
 
-    for (let i = 0; i < diff.length; ++i) {
+    for (let currentDiff of diff) {
       $diff.append(
         $('<div />', {class: 'diff-item'}).append(
-          $('<div />', {class: 'diff-item-title'}).text(diff[i].label),
-          $('<div />', {class: 'diff-item-result diff-item-result-inline'}).html(diff[i].content),
+          $('<div />', {class: 'diff-item-title'}).text(currentDiff.label),
+          $('<div />', {class: 'diff-item-result diff-item-result-inline'}).html(currentDiff.content),
         ),
       );
     }
@@ -101,26 +101,26 @@ class Backend extends Workspaces {
   private static generateCommentView(comments: Array<any>): JQuery {
     const $comments = $('<div />');
 
-    for (let i = 0; i < comments.length; ++i) {
+    for (let comment of comments) {
       const $panel = $('<div />', {class: 'panel panel-default'});
 
-      if (comments[i].user_comment.length > 0) {
+      if (comment.user_comment.length > 0) {
         $panel.append(
-          $('<div />', {class: 'panel-body'}).html(comments[i].user_comment),
+          $('<div />', {class: 'panel-body'}).html(comment.user_comment),
         );
       }
 
       $panel.append(
         $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'label label-success'}).text(comments[i].stage_title),
-          $('<span />', {class: 'label label-info'}).text(comments[i].tstamp),
+          $('<span />', {class: 'label label-success'}).text(comment.stage_title),
+          $('<span />', {class: 'label label-info'}).text(comment.tstamp),
         ),
       );
 
       $comments.append(
         $('<div />', {class: 'media'}).append(
-          $('<div />', {class: 'media-left text-center'}).text(comments[i].user_username).prepend(
-            $('<div />').html(comments[i].user_avatar),
+          $('<div />', {class: 'media-left text-center'}).text(comment.user_username).prepend(
+            $('<div />').html(comment.user_avatar),
           ),
           $('<div />', {class: 'media-body'}).append($panel),
         ),
@@ -139,22 +139,22 @@ class Backend extends Workspaces {
   private static generateHistoryView(data: Array<any>): JQuery {
     const $history = $('<div />');
 
-    for (let i = 0; i < data.length; ++i) {
+    for (let currentData of data) {
       const $panel = $('<div />', {class: 'panel panel-default'});
       let $diff;
 
-      if (typeof data[i].differences === 'object') {
-        if (data[i].differences.length === 0) {
+      if (typeof currentData.differences === 'object') {
+        if (currentData.differences.length === 0) {
           // Somehow here are no differences. What a pity, skip that record
           continue;
         }
         $diff = $('<div />', {class: 'diff'});
 
-        for (let j = 0; j < data[i].differences.length; ++j) {
+        for (let j = 0; j < currentData.differences.length; ++j) {
           $diff.append(
             $('<div />', {class: 'diff-item'}).append(
-              $('<div />', {class: 'diff-item-title'}).text(data[i].differences[j].label),
-              $('<div />', {class: 'diff-item-result diff-item-result-inline'}).html(data[i].differences[j].html),
+              $('<div />', {class: 'diff-item-title'}).text(currentData.differences[j].label),
+              $('<div />', {class: 'diff-item-result diff-item-result-inline'}).html(currentData.differences[j].html),
             ),
           );
         }
@@ -164,19 +164,19 @@ class Backend extends Workspaces {
         );
       } else {
         $panel.append(
-          $('<div />', {class: 'panel-body'}).text(data[i].differences),
+          $('<div />', {class: 'panel-body'}).text(currentData.differences),
         );
       }
       $panel.append(
         $('<div />', {class: 'panel-footer'}).append(
-          $('<span />', {class: 'label label-info'}).text(data[i].datetime),
+          $('<span />', {class: 'label label-info'}).text(currentData.datetime),
         ),
       );
 
       $history.append(
         $('<div />', {class: 'media'}).append(
-          $('<div />', {class: 'media-left text-center'}).text(data[i].user).prepend(
-            $('<div />').html(data[i].user_avatar),
+          $('<div />', {class: 'media-left text-center'}).text(currentData.user).prepend(
+            $('<div />').html(currentData.user_avatar),
           ),
           $('<div />', {class: 'media-body'}).append($panel),
         ),
