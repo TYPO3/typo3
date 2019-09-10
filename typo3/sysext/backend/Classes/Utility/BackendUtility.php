@@ -2816,6 +2816,7 @@ class BackendUtility
      * @param string $type If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
      * @param string $dontValidateList dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
      * @param string $setDefaultList List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
+     * @throws \RuntimeException
      * @return array The array $settings, which holds a key for each MOD_MENU key and the values of each key will be within the range of values for each menuitem
      */
     public static function getModuleData(
@@ -2868,14 +2869,14 @@ class BackendUtility
                     }
                 }
             } else {
-                die('No menu!');
+                throw new \RuntimeException('No menu', 1568119229);
             }
             if ($changed) {
                 $beUser->pushModuleData($modName, $settings);
             }
             return $settings;
         }
-        die('Wrong module name: "' . $modName . '"');
+        throw new \RuntimeException('Wrong module name "' . $modName . '"', 1568119221);
     }
 
     /*******************************************
