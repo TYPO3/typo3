@@ -772,25 +772,6 @@ class NewRecordController
     }
 
     /**
-     * Checks if sys_language records are present
-     *
-     * @return bool
-     */
-    protected function checkIfLanguagesExist(): bool
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_language');
-        $queryBuilder->getRestrictions()->removeAll();
-
-        $count = $queryBuilder
-            ->count('uid')
-            ->from('sys_language')
-            ->execute()
-            ->fetchColumn(0);
-        return (bool)$count;
-    }
-
-    /**
      * @return LanguageService
      */
     protected function getLanguageService(): LanguageService

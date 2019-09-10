@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -247,6 +248,11 @@ class PageLayoutController
     protected $searchContent;
 
     /**
+     * @var SiteLanguage[]
+     */
+    protected $availableLanguages;
+
+    /**
      * Injects the request object for the current request or subrequest
      * As this controller goes only through the main() method, it is rather simple for now
      *
@@ -317,7 +323,7 @@ class PageLayoutController
 
         /** @var SiteInterface $currentSite */
         $currentSite = $request->getAttribute('site');
-        $availableLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, $this->id);
+        $this->availableLanguages = $currentSite->getAvailableLanguages($this->getBackendUser(), false, $this->id);
 
         $lang = $this->getLanguageService();
         // MENU-ITEMS:
@@ -355,13 +361,13 @@ class PageLayoutController
                 )->execute();
             while ($pageTranslation = $statement->fetch()) {
                 $languageId = $pageTranslation[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
-                if (isset($availableLanguages[$languageId])) {
-                    $this->MOD_MENU['language'][$languageId] = $availableLanguages[$languageId]->getTitle();
+                if (isset($this->availableLanguages[$languageId])) {
+                    $this->MOD_MENU['language'][$languageId] = $this->availableLanguages[$languageId]->getTitle();
                 }
             }
             // Override the label
-            if (isset($availableLanguages[0])) {
-                $this->MOD_MENU['language'][0] = $availableLanguages[0]->getTitle();
+            if (isset($this->availableLanguages[0])) {
+                $this->MOD_MENU['language'][0] = $this->availableLanguages[0]->getTitle();
             }
         }
         // Initialize the available actions
@@ -387,24 +393,13 @@ class PageLayoutController
     protected function initActions(): array
     {
         $actions = [
-            1 => $this->getLanguageService()->getLL('m_function_1'),
-            2 => $this->getLanguageService()->getLL('m_function_2')
+            1 => $this->getLanguageService()->getLL('m_function_1')
         ];
-        // Find if there are ANY languages at all (and if not, remove the language option from function menu).
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        if ($this->getBackendUser()->isAdmin()) {
-            $queryBuilder->getRestrictions()->removeAll();
+        // Find if there are ANY languages at all (and if not, do not show the language option from function menu).
+        if (count($this->availableLanguages) > 1) {
+            $actions[2] = $this->getLanguageService()->getLL('m_function_2');
         }
-
-        $count = $queryBuilder
-            ->count('uid')
-            ->from('sys_language')
-            ->execute()
-            ->fetchColumn(0);
-
-        if (!$count) {
-            unset($actions['2']);
-        }
+        $this->makeLanguageMenu();
         // Page / user TSconfig blinding of menu-items
         $blindActions = $this->modTSconfig['properties']['menu.']['functions.'] ?? [];
         foreach ($blindActions as $key => $value) {
