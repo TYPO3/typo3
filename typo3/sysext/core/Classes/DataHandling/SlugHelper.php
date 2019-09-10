@@ -113,7 +113,7 @@ class SlugHelper
         $slug = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $slug);
 
         // Get rid of all invalid characters, but allow slashes
-        $slug = preg_replace('/[^\p{L}0-9\/' . preg_quote($fallbackCharacter) . ']/u', '', $slug);
+        $slug = preg_replace('/[^\p{L}\p{M}0-9\/' . preg_quote($fallbackCharacter) . ']/u', '', $slug);
 
         // Convert multiple fallback characters to a single one
         if ($fallbackCharacter !== '') {
