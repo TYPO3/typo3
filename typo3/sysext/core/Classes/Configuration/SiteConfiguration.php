@@ -87,6 +87,39 @@ class SiteConfiguration implements SingletonInterface
     }
 
     /**
+     * Creates a site configuration with one language "English" which is the de-facto default language for TYPO3 in general.
+     *
+     * @param string $identifier
+     * @param int $rootPageId
+     * @param string $base
+     */
+    public function createNewBasicSite(string $identifier, int $rootPageId, string $base): void
+    {
+        // Create a default site configuration called "main" as best practice
+        $this->write($identifier, [
+            'rootPageId' => $rootPageId,
+            'base' => $base,
+            'languages' => [
+                0 => [
+                    'title' => 'English',
+                    'enabled' => true,
+                    'languageId' => 0,
+                    'base' => '/en/',
+                    'typo3Language' => 'default',
+                    'locale' => 'en_US.UTF-8',
+                    'iso-639-1' => 'en',
+                    'navigationTitle' => 'English',
+                    'hreflang' => 'en-us',
+                    'direction' => 'ltr',
+                    'flag' => 'us',
+                ],
+            ],
+            'errorHandling' => [],
+            'routes' => [],
+        ]);
+    }
+
+    /**
      * Resolve all site objects which have been found in the filesystem.
      *
      * @return Site[]
