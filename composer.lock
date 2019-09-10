@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fe5f08c96831734ec662923a866edd5",
+    "content-hash": "29101a84cc5689c07e8b81dd4f0f2ada",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -5017,8 +5017,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
@@ -5159,8 +5159,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Utility class for timing",
@@ -5289,8 +5289,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "The PHP Unit Testing framework.",
@@ -5866,8 +5866,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -6408,16 +6408,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "5.0.12",
+            "version": "5.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "1fe51765371fa91bd8d54fbfbf527eff5c0b25d8"
+                "reference": "883abec7d68cb71a74627ef6dde82d65766af4da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/1fe51765371fa91bd8d54fbfbf527eff5c0b25d8",
-                "reference": "1fe51765371fa91bd8d54fbfbf527eff5c0b25d8",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/883abec7d68cb71a74627ef6dde82d65766af4da",
+                "reference": "883abec7d68cb71a74627ef6dde82d65766af4da",
                 "shasum": ""
             },
             "require": {
@@ -6464,7 +6464,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-09-04T06:16:59+00:00"
+            "time": "2019-09-10T21:46:52+00:00"
         }
     ],
     "aliases": [],

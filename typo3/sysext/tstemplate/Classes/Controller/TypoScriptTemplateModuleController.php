@@ -21,10 +21,10 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -609,19 +609,8 @@ page.10.value = HELLO WORLD!
             return;
         }
 
-        $workspaceIds = [0];
-        if ($workspaceId > 0) {
-            $workspaceIds[] = $workspaceId;
-        }
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->in(
-                't3ver_wsid',
-                $queryBuilder->createNamedParameter($workspaceIds, Connection::PARAM_INT_ARRAY)
-            ),
-            $queryBuilder->expr()->neq(
-                'pid',
-                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-            )
+        $queryBuilder->getRestrictions()->add(
+            GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId)
         );
     }
 

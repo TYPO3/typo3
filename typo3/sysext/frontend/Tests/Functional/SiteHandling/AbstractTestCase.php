@@ -154,21 +154,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     }
 
     /**
-     * @param array $items
-     */
-    protected static function failIfArrayIsNotEmpty(array $items): void
-    {
-        if (empty($items)) {
-            return;
-        }
-
-        static::fail(
-            'Array was not empty as expected, but contained these items:' . LF
-            . '* ' . implode(LF . '* ', $items)
-        );
-    }
-
-    /**
      * @param array $typoScript
      * @return ArrayValueInstruction
      */

@@ -15,12 +15,12 @@ namespace TYPO3\CMS\Core\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordState;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -413,19 +413,8 @@ class SlugHelper
             return;
         }
 
-        $workspaceIds = [0];
-        if ($this->workspaceId > 0) {
-            $workspaceIds[] = $this->workspaceId;
-        }
-        $queryBuilder->andWhere(
-            $queryBuilder->expr()->in(
-                't3ver_wsid',
-                $queryBuilder->createNamedParameter($workspaceIds, Connection::PARAM_INT_ARRAY)
-            ),
-            $queryBuilder->expr()->neq(
-                'pid',
-                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-            )
+        $queryBuilder->getRestrictions()->add(
+            GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->workspaceId)
         );
     }
 

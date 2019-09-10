@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -474,6 +475,8 @@ class Clipboard
     {
         $lines = [];
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+        $workspaceId = (int)$this->getBackendUser()->workspace;
+
         if (BackendUtility::isTableLocalizable($table)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
@@ -499,13 +502,9 @@ class Clipboard
                 );
 
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $queryBuilder
-                    ->andWhere(
-                        $queryBuilder->expr()->eq(
-                            't3ver_wsid',
-                            $queryBuilder->createNamedParameter($parentRec['t3ver_wsid'], \PDO::PARAM_INT)
-                        )
-                    );
+                $queryBuilder->getRestrictions()->add(
+                    GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId)
+                );
             }
             $rows = $queryBuilder->execute()->fetchAll();
             if (is_array($rows)) {
