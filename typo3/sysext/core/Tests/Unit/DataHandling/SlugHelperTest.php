@@ -301,6 +301,36 @@ class SlugHelperTest extends UnitTestCase
                 '应用',
                 '/应用'
             ],
+            'hindi' => [
+                [],
+                'कंपनी',
+                '/कंपनी'
+            ],
+            'hindi with plain accent character' => [
+                [],
+                'कंपनी^',
+                '/कंपनी'
+            ],
+            'hindi with combined accent character' => [
+                [],
+                'कंपनीâ',
+                '/कंपनीa'
+            ],
+            'japanese numbers (sino-japanese)' => [
+                [],
+                'さん',
+                '/さん'
+            ],
+            'japanese numbers (kanji)' => [
+                [],
+                '三つ',
+                '/三つ'
+            ],
+            'persian numbers' => [
+                [],
+                '۴',
+                '/4'
+            ],
         ];
     }
 
