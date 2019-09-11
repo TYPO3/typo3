@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Backend\History;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent;
+use TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -23,6 +26,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RecordHistoryRollback
 {
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
      * Perform rollback via DataHandler
      * @param string $rollbackFields
      * @param array $diff
@@ -30,6 +43,7 @@ class RecordHistoryRollback
      */
     public function performRollback(string $rollbackFields, array $diff, BackendUserAuthentication $backendUserAuthentication = null): void
     {
+        $this->eventDispatcher->dispatch(new BeforeHistoryRollbackStartEvent($rollbackFields, $diff, $this, $backendUserAuthentication));
         $rollbackData = explode(':', $rollbackFields);
         $rollbackDataCount = count($rollbackData);
         // PROCESS INSERTS AND DELETES
@@ -98,5 +112,6 @@ class RecordHistoryRollback
         if (isset($data['pages']) || isset($commandMapArray['pages'])) {
             BackendUtility::setUpdateSignal('updatePageTree');
         }
+        $this->eventDispatcher->dispatch(new AfterHistoryRollbackFinishedEvent($rollbackFields, $diff, $data, $this, $backendUserAuthentication));
     }
 }

@@ -7,6 +7,10 @@ services:
   TYPO3\CMS\Core\:
     resource: '../Classes/*'
 
+  Psr\EventDispatcher\EventDispatcherInterface:
+    alias: TYPO3\CMS\Core\EventDispatcher\EventDispatcher
+    public: true
+
   TYPO3\CMS\Core\DependencyInjection\EnvVarProcessor:
     tags: ['container.env_var_processor']
 
