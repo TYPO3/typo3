@@ -93,11 +93,9 @@ class LocalizationController
 
         if ($elementsInColumnCount === 0) {
             $fetchedAvailableLanguages = $this->localizationRepository->fetchAvailableLanguages($pageId, $languageId);
-            $availableLanguages[] = $systemLanguages[0];
-
             foreach ($fetchedAvailableLanguages as $language) {
-                if (isset($systemLanguages[$language['uid']])) {
-                    $availableLanguages[] = $systemLanguages[$language['uid']];
+                if (isset($systemLanguages[$language['sys_language_uid']])) {
+                    $availableLanguages[] = $systemLanguages[$language['sys_language_uid']];
                 }
             }
         } else {
