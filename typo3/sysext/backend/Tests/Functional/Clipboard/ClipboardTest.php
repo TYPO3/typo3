@@ -70,6 +70,12 @@ class ClipboardTest extends FunctionalTestCase
         });
     }
 
+    protected function tearDown(): void
+    {
+        unset($this->subject, $this->backendUser);
+        parent::tearDown();
+    }
+
     protected function setUpDatabase()
     {
         Bootstrap::initializeLanguageObject();
@@ -153,6 +159,6 @@ class ClipboardTest extends FunctionalTestCase
             $this->subject->getLocalizations('pages', $record),
             'title'
         );
-        static::assertSame($expectation, $actualResult);
+        static::assertEqualsCanonicalizing($expectation, $actualResult);
     }
 }

@@ -499,7 +499,8 @@ class Clipboard
                         'pid',
                         $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
                     )
-                );
+                )
+                ->orderBy($tcaCtrl['languageField']);
 
             if (BackendUtility::isTableWorkspaceEnabled($table)) {
                 $queryBuilder->getRestrictions()->add(

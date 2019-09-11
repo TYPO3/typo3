@@ -71,6 +71,12 @@ class PageLayoutControllerTest extends FunctionalTestCase
         });
     }
 
+    protected function tearDown(): void
+    {
+        unset($this->subject, $this->backendUser);
+        parent::tearDown();
+    }
+
     protected function setUpDatabase()
     {
         Bootstrap::initializeLanguageObject();
