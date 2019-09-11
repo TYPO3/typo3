@@ -442,6 +442,17 @@ class RecordHistory
         return $this->prepareEventDataFromQueryBuilder($queryBuilder);
     }
 
+    public function findEventsForCorrelation(string $correlationId): array
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $queryBuilder
+            ->select('*')
+            ->from('sys_history')
+            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId, \PDO::PARAM_STR)));
+
+        return $this->prepareEventDataFromQueryBuilder($queryBuilder);
+    }
+
     protected function prepareEventDataFromQueryBuilder(QueryBuilder $queryBuilder): array
     {
         $events = [];

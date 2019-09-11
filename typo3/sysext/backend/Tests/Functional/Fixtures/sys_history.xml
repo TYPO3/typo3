@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <sys_history>
+        <uid>1</uid>
+        <actiontype>1</actiontype>
+        <usertype>BE</usertype>
+        <userid>1</userid>
+        <originaluserid>1</originaluserid>
+        <tablename>pages</tablename>
+        <recuid>1</recuid>
+        <history_data>not relevant for this test</history_data>
+        <workspace>0</workspace>
+        <correlation_id>da625644-8e50-47ee-8c11-bb19552a79e4</correlation_id>
+    </sys_history>
+    <sys_history>
+        <uid>2</uid>
+        <actiontype>1</actiontype>
+        <usertype>BE</usertype>
+        <userid>1</userid>
+        <originaluserid>1</originaluserid>
+        <tablename>pages</tablename>
+        <recuid>1</recuid>
+        <history_data>not relevant for this test</history_data>
+        <workspace>0</workspace>
+        <correlation_id>da625644-8e50-47ee-8c11-bb19552a79e4</correlation_id>
+    </sys_history>
+    <sys_history>
+        <uid>3</uid>
+        <actiontype>1</actiontype>
+        <usertype>BE</usertype>
+        <userid>1</userid>
+        <originaluserid>1</originaluserid>
+        <tablename>pages</tablename>
+        <recuid>1</recuid>
+        <history_data>not relevant for this test</history_data>
+        <workspace>0</workspace>
+        <correlation_id>3479dc73-7bc8-4d3b-a8bc-0370a68cedd2</correlation_id>
+    </sys_history>
+</dataset>

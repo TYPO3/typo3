@@ -344,6 +344,7 @@ CREATE TABLE sys_history (
 	tablename varchar(255) DEFAULT '' NOT NULL,
 	history_data mediumtext,
 	workspace int(11) DEFAULT '0',
+	correlation_id varchar(36) DEFAULT '' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY recordident_1 (tablename(100),recuid),
