@@ -27,7 +27,7 @@ Reference
 You can set the following options in the TSconfig for a page (e.g. the
 root page) and override them in user or groups TSconfig. You must
 prefix them with mod.linkvalidator, e.g.
-:code:`mod.linkvalidator.searchFields.pages = media`.
+:code:`mod.linkvalidator.searchFields.pages = canonical_link`.
 
 
 
@@ -47,17 +47,28 @@ searchFields.[key]
    Description
          Comma separated list of table fields in which to check for broken
          links.
+         
+         
+         This configuration only works for fields having at least one softref set in its TCA Configuration.
+
+         i.e. 
+         :code:`mod.linkvalidator.searchFields.pages = canonical_link` would work as 
+         :php:`$TCA['pages']['columns'][FIELD_NAME]['config']['softref'] == 'typolink'`
+         
+         :code:`mod.linkvalidator.searchFields.pages = media` would not work as the config field for media has no softref set.
 
          **Example** :
 
          ::
 
-            pages = media,url
+            pages = canonical_link
+            
+         
 
    Default
          .. code-block:: typoscript
 
-            pages = media,url
+            pages = media,url 
             tt_content = bodytext,header_link,records
 
 
@@ -275,7 +286,7 @@ Example
 
    mod.linkvalidator {
            searchFields {
-                   pages = media,url
+                   pages = canonical_link
                    tt_content = bodytext,header_link,records
            }
            linktypes = db,file,external
