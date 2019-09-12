@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Install\ViewHelpers\Form;
+namespace TYPO3\CMS\Core\ViewHelpers\Form;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,7 +22,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
- * ViewHelper for rendering extension configuration forms
+ * ViewHelper for rendering
+ * - extension configuration forms in install tool (Settings -> Extension Configuration
+ * - site settings in Sites Module (site settings per site configuration)
+ *
  * @internal
  */
 class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper

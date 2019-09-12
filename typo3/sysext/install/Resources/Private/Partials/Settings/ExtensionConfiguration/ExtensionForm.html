@@ -1,4 +1,7 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+        data-namespace-typo3-fluid="true">
 
 <div class="panel panel-default panel-flat searchhit">
     <div class="panel-heading" role="tab" id="heading-{extensionKey}">
@@ -46,7 +49,7 @@
                                                         </f:if>
                                                     </p>
                                                     <div class="form-control-wrap">
-                                                        <i:form.typoScriptConstants configuration="{configurationItem}"/>
+                                                        <core:form.typoScriptConstants configuration="{configurationItem}"/>
                                                     </div>
                                                     <f:if condition="{configurationItem.labels.1}">
                                                         <div class="help-block">{configurationItem.labels.1 -> f:format.nl2br()}</div>
