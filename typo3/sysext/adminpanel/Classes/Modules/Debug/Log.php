@@ -154,11 +154,11 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
         $groupByLevel = $this->getConfigOption('groupByLevel');
 
         foreach ($data['log'] as $logRecord) {
-            if ($logRecord['level'] > $this->logLevel) {
+            if (LogLevel::normalizeLevel($logRecord['level']) > $this->logLevel) {
                 continue;
             }
             if ($groupByComponent && $groupByLevel) {
-                $sortedLog[$logRecord['component']][LogLevel::getName($logRecord['level'])][] = $logRecord;
+                $sortedLog[$logRecord['component']][$logRecord['level']][] = $logRecord;
             } elseif ($groupByComponent) {
                 $sortedLog[$logRecord['component']][] = $logRecord;
             } elseif ($groupByLevel) {
@@ -194,11 +194,10 @@ class Log extends AbstractSubModule implements DataProviderInterface, ContentPro
 
     protected function setLoggingConfigRecursive(array $logConfig): array
     {
-        $maxLevel = LogLevel::normalizeLevel(LogLevel::DEBUG);
         foreach ($logConfig as $key => $value) {
             if ($key === 'writerConfiguration') {
                 $logConfig[$key] = $value;
-                $logConfig[$key][$maxLevel][InMemoryLogWriter::class] = [];
+                $logConfig[$key][LogLevel::DEBUG][InMemoryLogWriter::class] = [];
             } elseif (is_array($value)) {
                 $logConfig[$key] = $this->setLoggingConfigRecursive($value);
             }
