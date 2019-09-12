@@ -112,28 +112,28 @@ class PersistedAliasMapperTest extends FunctionalTestCase
 
             '30xx-slug-fr-ca, fr-ca language' => ['30xx-slug-fr-ca', 'fr-ca', '3010'],
             // '30xx-slug-fr-ca' available in default language as well, fallbacks to that one
-            '30xx-slug-fr-ca, fr-fr language' => ['30xx-slug-fr-ca', 'fr-fr', '3010'],
+            '30xx-slug-fr-ca, fr-fr language' => ['30xx-slug-fr-ca', 'fr-fr', '3030'],
             // '30xx-slug-fr-ca' available in default language, use it directly
-            '30xx-slug-fr-ca, default language' => ['30xx-slug-fr-ca', 'default', '3010'],
+            '30xx-slug-fr-ca, default language' => ['30xx-slug-fr-ca', 'default', '3030'],
 
             '30xx-slug-fr, fr-ca language' => ['30xx-slug-fr', 'fr-ca', '3010'],
             '30xx-slug-fr, fr-fr language' => ['30xx-slug-fr', 'fr-fr', '3010'],
             // '30xx-slug-fr-ca' available in default language, use it directly
-            '30xx-slug-fr, default language' => ['30xx-slug-fr', 'default', '3010'],
+            '30xx-slug-fr, default language' => ['30xx-slug-fr', 'default', '3020'],
 
             // basically the same, but being stored in reverse order in database
             '40xx-slug, default language' => ['40xx-slug', 'default', '4040'],
             '40xx-slug, fr-fr language' => ['40xx-slug', 'fr-fr', '4040'],
             '40xx-slug, fr-ca language' => ['40xx-slug', 'fr-ca', '4040'],
 
-            '40xx-slug-fr-ca, fr-ca language' => ['40xx-slug-fr-ca', 'fr-ca', '4030'],
+            '40xx-slug-fr-ca, fr-ca language' => ['40xx-slug-fr-ca', 'fr-ca', '4040'],
             // '40xx-slug-fr-ca' available in default language as well, fallbacks to that one
             '40xx-slug-fr-ca, fr-fr language' => ['40xx-slug-fr-ca', 'fr-fr', '4030'],
             // '40xx-slug-fr-ca' available in default language, use it directly
             '40xx-slug-fr-ca, default language' => ['40xx-slug-fr-ca', 'default', '4030'],
 
-            '40xx-slug-fr, fr-ca language' => ['40xx-slug-fr', 'fr-ca', '4020'],
-            '40xx-slug-fr, fr-fr language' => ['40xx-slug-fr', 'fr-fr', '4020'],
+            '40xx-slug-fr, fr-ca language' => ['40xx-slug-fr', 'fr-ca', '4040'],
+            '40xx-slug-fr, fr-fr language' => ['40xx-slug-fr', 'fr-fr', '4040'],
             // '40xx-slug-fr-ca' available in default language, use it directly
             '40xx-slug-fr, default language' => ['40xx-slug-fr', 'default', '4020'],
         ];
@@ -146,7 +146,6 @@ class PersistedAliasMapperTest extends FunctionalTestCase
      *
      * @test
      * @dataProvider languageAwareRecordsAreResolvedDataProvider
-     * @group not-postgres
      */
     public function languageAwareRecordsAreResolved(string $requestValue, string $language, ?string $expectation): void
     {
