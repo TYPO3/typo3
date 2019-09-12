@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
@@ -4440,7 +4441,9 @@ class DataHandler implements LoggerAwareInterface
         // In case the parent record is the default language record, fetch the localization
         if (empty($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
             // Fetch the live record
-            $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND pid<>-1');
+            // @todo: this needs to be revisited, as getRecordLocalization() does a BackendWorkspaceRestriction
+            // based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
+            $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], 'AND t3ver_oid=0');
             if (empty($parentRecordLocalization)) {
                 if ($this->enableLogging) {
                     $this->log($table, $id, 0, 0, 0, 'Localization for parent record ' . $table . ':' . $id . '" cannot be fetched', -1, [], $this->eventPid($table, $id, $parentRecord['pid']));
@@ -5163,9 +5166,9 @@ class DataHandler implements LoggerAwareInterface
             return null;
         }
 
-        // Record must be online record
-        if ($row['pid'] < 0) {
-            $this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (pid=-1)!', 1);
+        // Record must be online record, otherwise we would create a version of a version
+        if ($row['t3ver_oid'] ?? 0 > 0) {
+            $this->newlog('Record "' . $table . ':' . $id . '" you wanted to versionize was already a version in archive (record has an online ID)!', 1);
             return null;
         }
 
@@ -6457,10 +6460,11 @@ class DataHandler implements LoggerAwareInterface
     {
         if ($GLOBALS['TCA'][$table]) {
             BackendUtility::fixVersioningPid($table, $row);
+            $liveUid = ($row['t3ver_oid'] ?? null) ? $row['t3ver_oid'] : $row['uid'];
             return [
                 'header' => BackendUtility::getRecordTitle($table, $row),
                 'pid' => $row['pid'],
-                'event_pid' => $this->eventPid($table, ((int)($row['t3ver_oid'] ?? 0) > 0 ? $row['t3ver_oid'] : $row['uid']), $row['pid']),
+                'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid']),
                 't3ver_state' => BackendUtility::isTableWorkspaceEnabled($table) ? $row['t3ver_state'] : '',
                 '_ORIG_pid' => $row['_ORIG_pid']
             ];
@@ -6537,7 +6541,8 @@ class DataHandler implements LoggerAwareInterface
                         }
                         // Set log entry:
                         $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                        $this->log($table, $id, 2, $propArr['pid'], 0, 'Record \'%s\' (%s) was updated.' . ($propArr['_ORIG_pid'] == -1 ? ' (Offline version).' : ' (Online).'), 10, [$propArr['header'], $table . ':' . $id, 'history' => $historyEntryId], $propArr['event_pid']);
+                        $isOfflineVersion = (bool)($newRow['t3ver_oid'] ?? 0);
+                        $this->log($table, $id, 2, $propArr['pid'], 0, 'Record \'%s\' (%s) was updated.' . ($isOfflineVersion ? ' (Offline version).' : ' (Online).'), 10, [$propArr['header'], $table . ':' . $id, 'history' => $historyEntryId], $propArr['event_pid']);
                     }
                     // Clear cache for relevant pages:
                     $this->registerRecordIdForPageCacheClearing($table, $id);
@@ -6824,6 +6829,7 @@ class DataHandler implements LoggerAwareInterface
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
 
         $queryBuilder
             ->select($sortColumn, 'pid', 'uid')
@@ -6886,6 +6892,7 @@ class DataHandler implements LoggerAwareInterface
             } else {
                 $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
                 $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
 
                 $subResults = $queryBuilder
                         ->select($sortColumn, 'pid', 'uid')

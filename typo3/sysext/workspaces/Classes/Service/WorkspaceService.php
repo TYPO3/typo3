@@ -884,8 +884,8 @@ class WorkspaceService implements SingletonInterface
                 $workspaceId,
                 \PDO::PARAM_INT
             );
-            $pageIdParameter = $queryBuilder->createNamedParameter(
-                -1,
+            $onlineVersionParameter = $queryBuilder->createNamedParameter(
+                0,
                 \PDO::PARAM_INT
             );
             // create sub-queries, parameters are available for main query
@@ -894,7 +894,7 @@ class WorkspaceService implements SingletonInterface
                 ->from($tableName, 'B')
                 ->join('B', $tableName, 'A', $queryBuilder->expr()->eq('B.uid', $queryBuilder->quoteIdentifier('A.t3ver_oid')))
                 ->where(
-                    $queryBuilder->expr()->eq('A.pid', $pageIdParameter),
+                    $queryBuilder->expr()->gt('A.t3ver_oid', $onlineVersionParameter),
                     $queryBuilder->expr()->eq('A.t3ver_wsid', $workspaceIdParameter),
                     $queryBuilder->expr()->neq('A.t3ver_state', $movePointerParameter)
                 )
@@ -904,7 +904,7 @@ class WorkspaceService implements SingletonInterface
                 ->from($tableName, 'B')
                 ->join('B', $tableName, 'A', $queryBuilder->expr()->eq('B.t3ver_move_id', $queryBuilder->quoteIdentifier('A.t3ver_oid')))
                 ->where(
-                    $queryBuilder->expr()->eq('A.pid', $pageIdParameter),
+                    $queryBuilder->expr()->gt('A.t3ver_oid', $onlineVersionParameter),
                     $queryBuilder->expr()->eq('A.t3ver_wsid', $workspaceIdParameter),
                     $queryBuilder->expr()->eq('A.t3ver_state', $movePointerParameter)
                 )

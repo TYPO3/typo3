@@ -234,7 +234,7 @@ class DataHandlerHook
                     $dataHandler->newlog('Tried to delete record from another workspace', 1);
                 }
             } else {
-                $dataHandler->newlog('Versioning not enabled for record with PID = -1!', 2);
+                $dataHandler->newlog('Versioning not enabled for record with an online ID (t3ver_oid) given', 2);
             }
         } elseif ($res = $dataHandler->BE_USER->workspaceAllowLiveRecordsInPID($record['pid'], $table)) {
             // Look, if record is "online" or in a versionized branch, then delete directly.
@@ -1025,7 +1025,7 @@ class DataHandlerHook
             $dataHandler->addRemapStackRefIndex($table, $id);
             // Set log entry for live record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
-            if ($propArr['_ORIG_pid'] == -1) {
+            if ($propArr['t3ver_oid'] ?? 0 > 0) {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.offline_record_updated');
             } else {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
@@ -1036,7 +1036,7 @@ class DataHandlerHook
             $dataHandler->addRemapStackRefIndex($table, $swapWith);
             // Set log entry for offline record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $curVersion);
-            if ($propArr['_ORIG_pid'] == -1) {
+            if ($propArr['t3ver_oid'] ?? 0 > 0) {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.offline_record_updated');
             } else {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
