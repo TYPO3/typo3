@@ -195,7 +195,7 @@ class SuggestWizardDefaultReceiver
                     'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
                     'table' => $this->mmForeignTable ? $this->mmForeignTable : $this->table,
-                    'label' => $label,
+                    'label' => strip_tags($label),
                     'path' => $path,
                     'uid' => $uid,
                     'style' => '',
