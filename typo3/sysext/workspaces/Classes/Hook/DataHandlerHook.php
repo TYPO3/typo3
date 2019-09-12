@@ -21,8 +21,8 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -350,12 +350,10 @@ class DataHandlerHook
             return;
         }
         $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
-        if ($destPid < 0) {
-            // Fetch move placeholder, since it might point to a new page in the current workspace
-            $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid,pid');
-            if ($movePlaceHolder !== false) {
-                $resolvedPid = $movePlaceHolder['pid'];
-            }
+        // Fetch move placeholder, since it might point to a new page in the current workspace
+        $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid,pid');
+        if ($movePlaceHolder !== false && $destPid < 0) {
+            $resolvedPid = $movePlaceHolder['pid'];
         }
         $recordWasMoved = true;
         $moveRecVersionState = VersionState::cast($moveRec['t3ver_state']);
@@ -406,7 +404,7 @@ class DataHandlerHook
             // If the move operation is done on a versioned record, which is
             // NOT new/deleted placeholder, then also create a move placeholder
             if ($workspaceVersion['uid'] && !$recIsNewVersion && BackendUtility::isTableWorkspaceEnabled($table)) {
-                $this->moveRecord_wsPlaceholders($table, (int)$uid, (int)$destPid, (int)$workspaceVersion['uid'], $dataHandler);
+                $this->moveRecord_wsPlaceholders($table, (int)$uid, (int)$destPid, (int)$resolvedPid, (int)$workspaceVersion['uid'], $dataHandler);
             } else {
                 // moving not needed, just behave like in live workspace
                 $recordWasMoved = false;
@@ -707,8 +705,7 @@ class DataHandlerHook
         unset($swapVersion['uid']);
         // Modify online version to become offline:
         unset($curVersion['uid']);
-        // Set pid for OFFLINE
-        $curVersion['pid'] = -1;
+        // Mark curVersion to contain the oid
         $curVersion['t3ver_oid'] = (int)$id;
         $curVersion['t3ver_wsid'] = $swapIntoWS ? (int)$tmp_wsid : 0;
         $curVersion['t3ver_tstamp'] = $GLOBALS['EXEC_TIME'];
@@ -801,7 +798,7 @@ class DataHandlerHook
             }
             // Checking for delete:
             // Delete only if new/deleted placeholders are there.
-            if (!$swapIntoWS && ((int)$t3ver_state['swapVersion'] === 1 || (int)$t3ver_state['swapVersion'] === 2)) {
+            if (!$swapIntoWS && ((int)$t3ver_state['swapVersion'] === VersionState::NEW_PLACEHOLDER || (int)$t3ver_state['swapVersion'] === VersionState::DELETE_PLACEHOLDER)) {
                 // Force delete
                 $dataHandler->deleteEl($table, $id, true);
             }
@@ -1051,7 +1048,7 @@ class DataHandlerHook
                 $queryBuilder->getRestrictions()
                     ->removeAll()
                     ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, $workspaceId, false));
+                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
 
                 $result = $queryBuilder
                     ->select('uid')
@@ -1314,20 +1311,19 @@ class DataHandlerHook
      * @param string $table Table name to move
      * @param int $uid Record uid to move (online record)
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+     * @param int $resolvedId Effective page ID
      * @param int $offlineUid UID of offline version of online record
      * @param DataHandler $dataHandler DataHandler object
      * @see moveRecord()
      */
-    protected function moveRecord_wsPlaceholders(string $table, int $uid, int $destPid, int $offlineUid, DataHandler $dataHandler): void
+    protected function moveRecord_wsPlaceholders(string $table, int $uid, int $destPid, int $resolvedId, int $offlineUid, DataHandler $dataHandler): void
     {
         // If a record gets moved after a record that already has a placeholder record
         // then the new placeholder record needs to be after the existing one
         $originalRecordDestinationPid = $destPid;
-        if ($destPid < 0) {
-            $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid');
-            if ($movePlaceHolder !== false) {
-                $destPid = -$movePlaceHolder['uid'];
-            }
+        $movePlaceHolder = BackendUtility::getMovePlaceholder($table, abs($destPid), 'uid');
+        if ($movePlaceHolder !== false && $destPid < 0) {
+            $destPid = -$movePlaceHolder['uid'];
         }
         if ($plh = BackendUtility::getMovePlaceholder($table, $uid, 'uid')) {
             // If already a placeholder exists, move it:
@@ -1388,6 +1384,7 @@ class DataHandlerHook
                 }
                 unset($l10nParentRec);
             }
+            // @todo Check why $destPid cannot be used directly
             // Initially, create at root level.
             $newVersion_placeholderFieldArray['pid'] = 0;
             $id = 'NEW_MOVE_PLH';
@@ -1398,6 +1395,7 @@ class DataHandlerHook
             // Move the workspace-version of the original to be the version of the move-to-placeholder:
             // Setting placeholder state value for version (so it can know it is currently a new version...)
             $updateFields = [
+                'pid' => $resolvedId,
                 't3ver_state' => (string)new VersionState(VersionState::MOVE_POINTER)
             ];
 

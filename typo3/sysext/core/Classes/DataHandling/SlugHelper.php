@@ -244,16 +244,12 @@ class SlugHelper
         $recordId = $state->getSubject()->getIdentifier();
         $languageId = $state->getContext()->getLanguageId();
 
-        if ($pageId < 0) {
-            $pageId = $this->resolveLivePageId($recordId);
-        }
-
         $queryBuilder = $this->createPreparedQueryBuilder();
         $this->applySlugConstraint($queryBuilder, $slug);
         $this->applyPageIdConstraint($queryBuilder, $pageId);
         $this->applyRecordConstraint($queryBuilder, $recordId);
         $this->applyLanguageConstraint($queryBuilder, $languageId);
-        $this->applyWorkspaceConstraint($queryBuilder);
+        $this->applyWorkspaceConstraint($queryBuilder, $state);
         $statement = $queryBuilder->execute();
 
         $records = $this->resolveVersionOverlays(
@@ -282,15 +278,11 @@ class SlugHelper
         }
         $pageId = (int)$pageId;
 
-        if ($pageId < 0) {
-            $pageId = $this->resolveLivePageId($recordId);
-        }
-
         $queryBuilder = $this->createPreparedQueryBuilder();
         $this->applySlugConstraint($queryBuilder, $slug);
         $this->applyRecordConstraint($queryBuilder, $recordId);
         $this->applyLanguageConstraint($queryBuilder, $languageId);
-        $this->applyWorkspaceConstraint($queryBuilder);
+        $this->applyWorkspaceConstraint($queryBuilder, $state);
         $statement = $queryBuilder->execute();
 
         $records = $this->resolveVersionOverlays(
@@ -401,6 +393,7 @@ class SlugHelper
         $fieldNames = ['uid', 'pid', $this->fieldName];
         if ($this->workspaceEnabled) {
             $fieldNames[] = 't3ver_state';
+            $fieldNames[] = 't3ver_oid';
         }
         $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
         if (is_string($languageFieldName)) {
@@ -423,8 +416,9 @@ class SlugHelper
 
     /**
      * @param QueryBuilder $queryBuilder
+     * @param RecordState $state
      */
-    protected function applyWorkspaceConstraint(QueryBuilder $queryBuilder)
+    protected function applyWorkspaceConstraint(QueryBuilder $queryBuilder, RecordState $state)
     {
         if (!$this->workspaceEnabled) {
             return;
@@ -433,6 +427,13 @@ class SlugHelper
         $queryBuilder->getRestrictions()->add(
             GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->workspaceId)
         );
+
+        // Exclude the online record of a versioned record
+        if ($state->getVersionLink()) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->neq('uid', $state->getVersionLink()->getSubject()->getIdentifier())
+            );
+        }
     }
 
     /**
@@ -513,43 +514,6 @@ class SlugHelper
                 $queryBuilder->expr()->neq('uid', $queryBuilder->createNamedParameter($liveId, \PDO::PARAM_INT))
             );
         }
-    }
-
-    /**
-     * @param int $recordId
-     * @return int
-     * @throws \RuntimeException
-     */
-    protected function resolveLivePageId($recordId): int
-    {
-        if (!MathUtility::canBeInterpretedAsInteger($recordId)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot resolve live page id for non-numeric identifier "%s"',
-                    $recordId
-                ),
-                1534951024
-            );
-        }
-
-        $liveVersion = BackendUtility::getLiveVersionOfRecord(
-            $this->tableName,
-            $recordId,
-            'pid'
-        );
-
-        if (empty($liveVersion)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot resolve live page id for record "%s:%d"',
-                    $this->tableName,
-                    $recordId
-                ),
-                1534951025
-            );
-        }
-
-        return (int)$liveVersion['pid'];
     }
 
     /**

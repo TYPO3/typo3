@@ -539,7 +539,7 @@ class ActionHandler
     public function sendToNextStageExecute(\stdClass $parameters)
     {
         $cmdArray = [];
-        $setStageId = $parameters->affects->nextStage;
+        $setStageId = (int)$parameters->affects->nextStage;
         $comments = $parameters->comments;
         $table = $parameters->affects->table;
         $uid = $parameters->affects->uid;
@@ -549,7 +549,7 @@ class ActionHandler
         $currentWorkspace = $this->setTemporaryWorkspace($elementRecord['t3ver_wsid']);
 
         $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
-        if ($setStageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
+        if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
             $cmdArray[$table][$t3ver_oid]['version']['action'] = 'swap';
             $cmdArray[$table][$t3ver_oid]['version']['swapWith'] = $uid;
             $cmdArray[$table][$t3ver_oid]['version']['comment'] = $comments;
@@ -632,7 +632,7 @@ class ActionHandler
     public function sendToSpecificStageExecute(\stdClass $parameters)
     {
         $cmdArray = [];
-        $setStageId = $parameters->affects->nextStage;
+        $setStageId = (int)$parameters->affects->nextStage;
         $comments = $parameters->comments;
         $elements = $parameters->affects->elements;
         $recipients = $this->getRecipientList((array)$parameters->recipients, $parameters->additional, $setStageId);
@@ -643,7 +643,7 @@ class ActionHandler
                 continue;
             }
 
-            if ($setStageId == StagesService::STAGE_PUBLISH_EXECUTE_ID) {
+            if ($setStageId === StagesService::STAGE_PUBLISH_EXECUTE_ID) {
                 $cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'swap';
                 $cmdArray[$element->table][$element->t3ver_oid]['version']['swapWith'] = $element->uid;
                 $cmdArray[$element->table][$element->t3ver_oid]['version']['comment'] = $comments;

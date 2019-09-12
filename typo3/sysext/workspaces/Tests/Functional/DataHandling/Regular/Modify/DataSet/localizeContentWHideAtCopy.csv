@@ -10,6 +10,6 @@
 ,310,90,256,0,0,0,0,0,0,0,0,0,0,0,"Regular Element #10"
 ,311,90,512,0,0,1,0,310,310,0,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
 ,312,90,768,0,0,2,0,311,311,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
-,320,-1,512,0,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
+,320,89,512,0,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
 ,321,89,416,0,0,1,298,298,298,1,1,0,0,0,"[Translate to Dansk:] Regular Element #2"
-,322,-1,416,0,0,1,298,298,298,1,-1,0,321,0,"[Translate to Dansk:] Regular Element #2"
+,322,89,416,0,0,1,298,298,298,1,-1,0,321,0,"[Translate to Dansk:] Regular Element #2"

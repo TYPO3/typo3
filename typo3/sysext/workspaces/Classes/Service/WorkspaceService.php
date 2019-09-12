@@ -465,10 +465,6 @@ class WorkspaceService implements SingletonInterface
                 $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
             ),
             $queryBuilder->expr()->eq(
-                'C.pid',
-                $queryBuilder->createNamedParameter(-1, \PDO::PARAM_INT)
-            ),
-            $queryBuilder->expr()->eq(
                 'C.t3ver_state',
                 $queryBuilder->createNamedParameter(
                     (string)new VersionState(VersionState::MOVE_POINTER),

@@ -19,8 +19,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -102,7 +102,7 @@ class SuggestWizardDefaultReceiver
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             // if table is versionized, only get the records from the Live Workspace
             // the overlay itself of WS-records is done below
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class, 0));
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, 0));
         $this->table = $table;
         $this->config = $config;
         // get a list of all the pages that should be looked on

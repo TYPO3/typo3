@@ -5,10 +5,6 @@ defined('TYPO3_MODE') or die();
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['extensionManagerTables']
     = \TYPO3\CMS\Install\Updates\ExtensionManagerTables::class;
 
-// Update rows of many tables - Enable if new row updaters are needed again.
-//$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['databaseRowsUpdateWizard']
-//    = \TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class;
-
 // v8->v9 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['typo3DbLegacyExtension']
     = \TYPO3\CMS\Install\Updates\Typo3DbExtractionUpdate::class;
@@ -48,6 +44,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['taskcenterEx
     = \TYPO3\CMS\Install\Updates\TaskcenterExtractionUpdate::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['sysActionExtension']
     = \TYPO3\CMS\Install\Updates\SysActionExtractionUpdate::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['databaseRowsUpdateWizard']
+    = \TYPO3\CMS\Install\Updates\DatabaseRowsUpdateWizard::class;
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 $icons = [

@@ -1,0 +1,18 @@
+uid,pid,deleted,sorting,t3ver_wsid,t3ver_oid,t3ver_state,t3ver_move_id,l10n_parent,sys_language_uid,title
+11,20,0,128,0,0,0,0,0,0,Article #1
+12,20,0,256,0,0,0,0,0,0,Article #2
+13,20,0,384,0,0,0,0,0,0,Article #3
+21,-1,0,128,1,11,0,0,0,0,Article #1 modified
+22,-1,0,256,1,12,2,0,0,0,Article #2 deleted
+23,-1,0,384,1,13,4,0,0,0,Article #3 moved
+24,30,0,64,1,0,3,13,0,0,[MOVE_TO PLACEHOLDER for ...]
+25,20,0,512,1,0,1,0,0,0,Article #4 new
+26,-1,0,512,1,25,-1,0,0,0,Article #4 new
+27,20,1,640,0,0,1,0,0,0,Article #5 discarded
+28,-1,1,640,0,27,-1,0,0,0,Article #5 discarded
+29,41,0,128,1,0,1,0,0,0,Topic #1 Article new
+30,-1,0,128,1,29,-1,0,0,0,Topic #1 Article new
+31,20,0,192,1,0,1,0,11,1,Entrefilet #1 (fr)
+32,-1,0,192,1,31,-1,0,11,1,Entrefilet #1 (fr)
+33,20,0,224,1,0,1,0,11,2,Beitrag #1 (de)
+34,-1,0,224,1,33,-1,0,11,2,Beitrag #1 (de)

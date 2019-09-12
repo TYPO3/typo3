@@ -17,7 +17,7 @@
 ,310,90,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #10"
 ,311,90,512,0,1,0,310,310,0,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
 ,312,90,768,0,2,0,311,311,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
-,320,-1,512,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
+,320,89,512,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
 ,321,91,256,0,0,0,0,299,0,0,0,0,0,"Regular Element #3"
 ,323,91,128,0,1,321,321,300,0,0,0,0,0,"[Translate to Dansk:] Regular Element #3"
 ,325,91,64,0,0,0,0,298,0,0,0,0,0,"Regular Element #2"

@@ -2,9 +2,9 @@
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header","tx_irretutorial_1nff_hotels",,,
 ,297,89,256,0,0,0,0,0,0,0,0,"Regular Element #1",2,,,
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",1,,,
-,299,-1,512,0,0,0,1,4,0,298,0,"Regular Element #2",1,,,
+,299,90,512,0,0,0,1,4,0,298,0,"Regular Element #2",1,,,
 ,300,90,256,0,0,0,1,3,0,0,298,"[MOVE-TO PLACEHOLDER for #298, WS#1]",0,,,
-,301,-1,256,0,0,0,1,4,0,297,0,"Regular Element #1",2,,,
+,301,90,256,0,0,0,1,4,0,297,0,"Regular Element #1",2,,,
 ,302,90,512,0,0,0,1,3,0,0,297,"[MOVE-TO PLACEHOLDER for #297, WS#1]",0,,,
 "tx_irretutorial_1nff_hotel",,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title","parentid","parenttable","parentidentifier","offers"
@@ -12,10 +12,10 @@
 ,3,89,1,0,0,0,0,0,0,0,0,"Hotel #1",297,"tt_content",,2
 ,4,89,2,0,0,0,0,0,0,0,0,"Hotel #2",297,"tt_content",,1
 ,5,89,1,0,0,0,0,0,0,0,0,"Hotel #1",298,"tt_content",,1
-,6,-1,1,0,0,0,1,4,0,5,0,"Hotel #1",298,"tt_content",,1
+,6,90,1,0,0,0,1,4,0,5,0,"Hotel #1",298,"tt_content",,1
 ,7,90,256,0,0,0,1,3,0,0,5,"[MOVE-TO PLACEHOLDER for #5, WS#1]",298,"tt_content",,0
-,8,-1,1,0,0,0,1,4,0,3,0,"Hotel #1",297,"tt_content",,2
-,9,-1,2,0,0,0,1,4,0,4,0,"Hotel #2",297,"tt_content",,1
+,8,90,1,0,0,0,1,4,0,3,0,"Hotel #1",297,"tt_content",,2
+,9,90,2,0,0,0,1,4,0,4,0,"Hotel #2",297,"tt_content",,1
 ,10,90,128,0,0,0,1,3,0,0,3,"[MOVE-TO PLACEHOLDER for #3, WS#1]",297,"tt_content",,0
 ,11,90,64,0,0,0,1,3,0,0,4,"[MOVE-TO PLACEHOLDER for #4, WS#1]",297,"tt_content",,0
 "tx_irretutorial_1nff_offer",,,,,,,,,,,,,,,,
@@ -24,11 +24,11 @@
 ,6,89,2,0,0,0,0,0,0,0,0,"Offer #1.2",3,"tx_irretutorial_1nff_hotel",,2
 ,7,89,1,0,0,0,0,0,0,0,0,"Offer #2.1",4,"tx_irretutorial_1nff_hotel",,1
 ,8,89,1,0,0,0,0,0,0,0,0,"Offer #1.1",5,"tx_irretutorial_1nff_hotel",,1
-,9,-1,1,0,0,0,1,4,0,8,0,"Offer #1.1",5,"tx_irretutorial_1nff_hotel",,1
+,9,90,1,0,0,0,1,4,0,8,0,"Offer #1.1",5,"tx_irretutorial_1nff_hotel",,1
 ,10,90,256,0,0,0,1,3,0,0,8,"[MOVE-TO PLACEHOLDER for #8, WS#1]",5,"tx_irretutorial_1nff_hotel",,0
-,11,-1,1,0,0,0,1,4,0,5,0,"Offer #1.1",3,"tx_irretutorial_1nff_hotel",,3
-,12,-1,2,0,0,0,1,4,0,6,0,"Offer #1.2",3,"tx_irretutorial_1nff_hotel",,2
-,13,-1,1,0,0,0,1,4,0,7,0,"Offer #2.1",4,"tx_irretutorial_1nff_hotel",,1
+,11,90,1,0,0,0,1,4,0,5,0,"Offer #1.1",3,"tx_irretutorial_1nff_hotel",,3
+,12,90,2,0,0,0,1,4,0,6,0,"Offer #1.2",3,"tx_irretutorial_1nff_hotel",,2
+,13,90,1,0,0,0,1,4,0,7,0,"Offer #2.1",4,"tx_irretutorial_1nff_hotel",,1
 ,14,90,128,0,0,0,1,3,0,0,5,"[MOVE-TO PLACEHOLDER for #5, WS#1]",3,"tx_irretutorial_1nff_hotel",,0
 ,15,90,64,0,0,0,1,3,0,0,6,"[MOVE-TO PLACEHOLDER for #6, WS#1]",3,"tx_irretutorial_1nff_hotel",,0
 ,16,90,32,0,0,0,1,3,0,0,7,"[MOVE-TO PLACEHOLDER for #7, WS#1]",4,"tx_irretutorial_1nff_hotel",,0
@@ -41,14 +41,14 @@
 ,11,89,2,0,0,0,0,0,0,0,0,"Price #1.2.2",6,"tx_irretutorial_1nff_offer",,
 ,12,89,1,0,0,0,0,0,0,0,0,"Price #2.1.1",7,"tx_irretutorial_1nff_offer",,
 ,13,89,1,0,0,0,0,0,0,0,0,"Price #1.1.1",8,"tx_irretutorial_1nff_offer",,
-,14,-1,1,0,0,0,1,4,0,13,0,"Price #1.1.1",8,"tx_irretutorial_1nff_offer",,
+,14,90,1,0,0,0,1,4,0,13,0,"Price #1.1.1",8,"tx_irretutorial_1nff_offer",,
 ,15,90,256,0,0,0,1,3,0,0,13,"[MOVE-TO PLACEHOLDER for #13, WS#1]",8,"tx_irretutorial_1nff_offer",,
-,16,-1,1,0,0,0,1,4,0,7,0,"Price #1.1.1",5,"tx_irretutorial_1nff_offer",,
-,17,-1,2,0,0,0,1,4,0,8,0,"Price #1.1.2",5,"tx_irretutorial_1nff_offer",,
-,18,-1,3,0,0,0,1,4,0,9,0,"Price #1.1.3",5,"tx_irretutorial_1nff_offer",,
-,19,-1,1,0,0,0,1,4,0,10,0,"Price #1.2.1",6,"tx_irretutorial_1nff_offer",,
-,20,-1,2,0,0,0,1,4,0,11,0,"Price #1.2.2",6,"tx_irretutorial_1nff_offer",,
-,21,-1,1,0,0,0,1,4,0,12,0,"Price #2.1.1",7,"tx_irretutorial_1nff_offer",,
+,16,90,1,0,0,0,1,4,0,7,0,"Price #1.1.1",5,"tx_irretutorial_1nff_offer",,
+,17,90,2,0,0,0,1,4,0,8,0,"Price #1.1.2",5,"tx_irretutorial_1nff_offer",,
+,18,90,3,0,0,0,1,4,0,9,0,"Price #1.1.3",5,"tx_irretutorial_1nff_offer",,
+,19,90,1,0,0,0,1,4,0,10,0,"Price #1.2.1",6,"tx_irretutorial_1nff_offer",,
+,20,90,2,0,0,0,1,4,0,11,0,"Price #1.2.2",6,"tx_irretutorial_1nff_offer",,
+,21,90,1,0,0,0,1,4,0,12,0,"Price #2.1.1",7,"tx_irretutorial_1nff_offer",,
 ,22,90,128,0,0,0,1,3,0,0,7,"[MOVE-TO PLACEHOLDER for #7, WS#1]",5,"tx_irretutorial_1nff_offer",,
 ,23,90,64,0,0,0,1,3,0,0,8,"[MOVE-TO PLACEHOLDER for #8, WS#1]",5,"tx_irretutorial_1nff_offer",,
 ,24,90,32,0,0,0,1,3,0,0,9,"[MOVE-TO PLACEHOLDER for #9, WS#1]",5,"tx_irretutorial_1nff_offer",,

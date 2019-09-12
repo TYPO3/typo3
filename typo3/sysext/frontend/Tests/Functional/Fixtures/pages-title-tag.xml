@@ -82,7 +82,7 @@
     </pages>
     <pages>
         <uid>12</uid>
-        <pid>-1</pid>
+        <pid>0</pid>
         <title>Workspace Root</title>
         <deleted>0</deleted>
         <t3ver_oid>11</t3ver_oid>

@@ -5,15 +5,15 @@
 ,89,88,256,0,0,0,0,0,0,0,"Relations",,,
 ,90,88,512,0,0,0,0,0,0,0,"Target",,,
 ,91,89,256,0,0,1,1,0,0,0,"Testing #1",,,
-,92,-1,256,0,0,1,-1,0,91,0,"Testing #1",,,
+,92,89,256,0,0,1,-1,0,91,0,"Testing #1",,,
 ,93,91,256,0,0,1,1,0,0,0,"Testing #2",,,
-,94,-1,256,0,0,1,-1,0,93,0,"Testing #2",,,
+,94,91,256,0,0,1,-1,0,93,0,"Testing #2",,,
 ,95,90,256,0,89,1,1,0,0,0,"Relations",,,
-,96,-1,256,0,89,1,-1,0,95,0,"Relations",,,
+,96,90,256,0,89,1,-1,0,95,0,"Relations",,,
 ,97,95,256,0,91,1,1,0,0,0,"Testing #1",,,
-,98,-1,256,0,91,1,-1,0,97,0,"Testing #1",,,
+,98,95,256,0,91,1,-1,0,97,0,"Testing #1",,,
 ,99,97,256,0,93,1,1,0,0,0,"Testing #2",,,
-,100,-1,256,0,93,1,-1,0,99,0,"Testing #2",,,
+,100,97,256,0,93,1,-1,0,99,0,"Testing #2",,,
 "tt_content",,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","header"
 ,296,88,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #0"
@@ -26,16 +26,16 @@
 ,310,90,256,0,0,0,0,0,0,0,0,0,0,"Regular Element #10"
 ,311,90,512,0,1,0,310,310,0,0,0,0,0,"[Translate to Dansk:] Regular Element #10"
 ,312,90,768,0,2,0,311,311,0,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #10"
-,320,-1,512,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
+,320,89,512,0,0,0,0,298,2,2,0,298,0,"Regular Element #2"
 ,321,95,256,0,0,0,0,299,1,1,0,0,0,"Regular Element #3"
-,322,-1,256,0,0,0,0,299,1,-1,0,321,0,"Regular Element #3"
+,322,95,256,0,0,0,0,299,1,-1,0,321,0,"Regular Element #3"
 ,323,95,128,0,1,321,321,300,1,1,0,0,0,"[Translate to Dansk:] Regular Element #3"
-,324,-1,128,0,1,321,321,300,1,-1,0,323,0,"[Translate to Dansk:] Regular Element #3"
+,324,95,128,0,1,321,321,300,1,-1,0,323,0,"[Translate to Dansk:] Regular Element #3"
 ,325,95,64,0,0,0,0,298,1,1,0,0,0,"Regular Element #2"
-,326,-1,64,0,0,0,0,298,1,-1,0,325,0,"Regular Element #2"
+,326,95,64,0,0,0,0,298,1,-1,0,325,0,"Regular Element #2"
 ,327,95,32,0,0,0,0,297,1,1,0,0,0,"Regular Element #1"
-,328,-1,32,0,0,0,0,297,1,-1,0,327,0,"Regular Element #1"
+,328,95,32,0,0,0,0,297,1,-1,0,327,0,"Regular Element #1"
 ,329,95,16,0,1,327,327,301,1,1,0,0,0,"[Translate to Dansk:] Regular Element #1"
-,330,-1,16,0,1,327,327,301,1,-1,0,329,0,"[Translate to Dansk:] Regular Element #1"
+,330,95,16,0,1,327,327,301,1,-1,0,329,0,"[Translate to Dansk:] Regular Element #1"
 ,331,95,8,0,2,327,329,302,1,1,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
-,332,-1,8,0,2,327,329,302,1,-1,0,331,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+,332,95,8,0,2,327,329,302,1,-1,0,331,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"

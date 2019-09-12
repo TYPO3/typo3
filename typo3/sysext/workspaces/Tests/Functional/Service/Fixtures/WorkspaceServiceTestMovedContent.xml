@@ -52,7 +52,7 @@
 
 	<pages>
 		<uid>103</uid>
-		<pid>-1</pid>
+		<pid>2</pid>
 		<title>Dummy 1-2-3 - "move from placeholder"</title>
 		<deleted>0</deleted>
 		<perms_everybody>15</perms_everybody>
@@ -86,7 +86,7 @@
 
 	<tt_content>
 		<uid>105</uid>
-		<pid>-1</pid>
+		<pid>7</pid>
 		<header>Content - "move from placeholder"</header>
 		<deleted>0</deleted>
 		<t3ver_oid>5</t3ver_oid>
@@ -119,7 +119,7 @@
 
 	<tt_content>
 		<uid>106</uid>
-		<pid>-1</pid>
+		<pid>2</pid>
 		<header>Content - "move from placeholder"</header>
 		<deleted>0</deleted>
 		<t3ver_oid>6</t3ver_oid>

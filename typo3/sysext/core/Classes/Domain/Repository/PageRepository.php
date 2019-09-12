@@ -1279,6 +1279,7 @@ class PageRepository implements LoggerAwareInterface
                 $constraints[] = $expressionBuilder->eq($table . '.' . $ctrl['delete'], 0);
             }
             if ($this->hasTableWorkspaceSupport($table)) {
+                // this should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
                 if ($this->versioningWorkspaceId === 0) {
                     // Filter out placeholder records (new/moved/deleted items)
                     // in case we are NOT in a versioning preview (that means we are online!)
@@ -1286,7 +1287,8 @@ class PageRepository implements LoggerAwareInterface
                         $table . '.t3ver_state',
                         new VersionState(VersionState::DEFAULT_STATE)
                     );
-                } elseif ($table !== 'pages') {
+                    $constraints[] = $expressionBuilder->eq($table . '.t3ver_wsid', 0);
+                } else {
                     // show only records of live and of the current workspace
                     // in case we are in a versioning preview
                     $constraints[] = $expressionBuilder->orX(
@@ -1297,7 +1299,8 @@ class PageRepository implements LoggerAwareInterface
 
                 // Filter out versioned records
                 if (empty($ignore_array['pid'])) {
-                    $constraints[] = $expressionBuilder->neq($table . '.pid', -1);
+                    // Always filter out versioned records that have an "offline" record
+                    $constraints[] = $expressionBuilder->eq($table . '.t3ver_oid', 0);
                 }
             }
 
