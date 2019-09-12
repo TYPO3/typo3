@@ -783,7 +783,14 @@ class DataHandlerHook
 
         // First, check if we may actually edit the online record
         if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
-            $dataHandler->newlog('Error: You cannot swap versions for a record you do not have access to edit!', 1);
+            $dataHandler->newlog(
+                sprintf(
+                    'Error: You cannot swap versions for record %s:%d you do not have access to edit!',
+                    $table,
+                    $id
+                ),
+                1
+            );
             return;
         }
         // Select the two versions:
@@ -792,7 +799,15 @@ class DataHandlerHook
         $movePlh = [];
         $movePlhID = 0;
         if (!(is_array($curVersion) && is_array($swapVersion))) {
-            $dataHandler->newlog('Error: Either online or swap version could not be selected!', 2);
+            $dataHandler->newlog(
+                sprintf(
+                    'Error: Either online or swap version for %s:%d->%d could not be selected!',
+                    $table,
+                    $id,
+                    $swapWith
+                ),
+                2
+            );
             return;
         }
         if (!$dataHandler->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid'])) {
@@ -1139,70 +1154,65 @@ class DataHandlerHook
     }
 
     /**
-     * Release version from this workspace (and into "Live" workspace but as an offline version).
+     * Remove a versioned record from this workspace. Often referred to as "dicarding a version" = throwing away a version.
+     * This means to delete the record and remove any placeholders that are not needed anymore.
      *
-     * @param string $table Table name
-     * @param int $id Record UID
+     * In previous versions, this meant that the versioned record was marked as deleted and moved into "live" workspace.
+     *
+     * @param string $table Database table name
+     * @param int $versionId Version record uid
      * @param bool $flush If set, will completely delete element
      * @param DataHandler $dataHandler DataHandler object
      */
-    protected function version_clearWSID(string $table, int $id, bool $flush, DataHandler $dataHandler): void
+    protected function version_clearWSID(string $table, int $versionId, bool $flush, DataHandler $dataHandler): void
     {
-        if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
+        if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $versionId)) {
             $dataHandler->newlog('Attempt to reset workspace for record failed: ' . $errorCode, 1);
             return;
         }
-        if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
+        if (!$dataHandler->checkRecordUpdateAccess($table, $versionId)) {
             $dataHandler->newlog('Attempt to reset workspace for record failed because you do not have edit access', 1);
             return;
         }
-        $liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
-        if (!$liveRec) {
+        $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $versionId, 'uid,t3ver_state');
+        if (!$liveRecord) {
+            // Attempting to discard a record that has no live version, don't do anything
             return;
         }
-        // Clear workspace ID:
-        $updateData = [
-            't3ver_wsid' => 0,
-            't3ver_tstamp' => $GLOBALS['EXEC_TIME']
-        ];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-        $connection->update(
-            $table,
-            $updateData,
-            ['uid' => (int)$id]
-        );
 
-        // Clear workspace ID for live version AND DELETE IT as well because it is a new record!
-        if (
-            VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)
-            || VersionState::cast($liveRec['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
-        ) {
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $liveState = VersionState::cast($liveRecord['t3ver_state']);
+        $versionRecord = BackendUtility::getRecord($table, $versionId);
+        $versionState = VersionState::cast($versionRecord['t3ver_state']);
+        $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'] ?? null;
+
+        // purge delete placeholder since it would not contain any modified information
+        if ($flush || $versionState->equals(VersionState::DELETE_PLACEHOLDER)) {
+            $dataHandler->deleteEl($table, $versionRecord['uid'], true, true);
+        // let DataHandler decide how to delete the record that does not have a deleted field
+        } elseif ($deleteField === null) {
+            $dataHandler->deleteEl($table, $versionRecord['uid'], true);
+        // update record directly in order to avoid delete cascades on this version
+        } else {
             $connection->update(
                 $table,
-                $updateData,
-                ['uid' => (int)$liveRec['uid']]
+                ['t3ver_tstamp' => $GLOBALS['EXEC_TIME'], $deleteField => 1],
+                ['uid' => (int)$versionId]
             );
+        }
 
+        // purge move placeholder as it has been created just for the sake of pointing to a version
+        if ($liveState->equals(VersionState::MOVE_PLACEHOLDER)) {
+            $dataHandler->deleteEl($table, $liveRecord['uid'], true, true);
+        // purge new placeholder as it has been created just for the sake of pointing to a version
+        } elseif ($liveState->equals(VersionState::NEW_PLACEHOLDER)) {
+            $connection->update(
+                $table,
+                ['t3ver_tstamp' => $GLOBALS['EXEC_TIME']],
+                ['uid' => (int)$liveRecord['uid']]
+            );
             // THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
-            $dataHandler->deleteEl($table, $liveRec['uid'], true);
-        }
-        // If "deleted" flag is set for the version that got released
-        // it doesn't make sense to keep that "placeholder" anymore and we delete it completly.
-        $wsRec = BackendUtility::getRecord($table, $id);
-        if (
-            $flush
-            || (
-                VersionState::cast($wsRec['t3ver_state'])->equals(VersionState::NEW_PLACEHOLDER)
-                || VersionState::cast($wsRec['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)
-            )
-        ) {
-            $dataHandler->deleteEl($table, $id, true, true);
-        }
-        // Remove the move-placeholder if found for live record.
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
-            if ($plhRec = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid')) {
-                $dataHandler->deleteEl($table, $plhRec['uid'], true, true);
-            }
+            $dataHandler->deleteEl($table, $liveRecord['uid'], true);
         }
     }
 

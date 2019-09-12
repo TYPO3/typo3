@@ -92,7 +92,7 @@ class ElementEntity
      * @param array $data (optional)
      * @param DependencyResolver $dependency
      */
-    public function __construct($table, $id, array $data = [], DependencyResolver $dependency)
+    public function __construct($table, $id, array $data, DependencyResolver $dependency)
     {
         $this->table = $table;
         $this->id = (int)$id;
@@ -418,12 +418,17 @@ class ElementEntity
         if (empty($this->record['uid']) || (int)$this->record['uid'] !== $this->getId()) {
             $this->record = [];
 
+            $fieldNames = ['uid', 'pid', 't3ver_wsid', 't3ver_state', 't3ver_oid'];
+            if (!empty($GLOBALS['TCA'][$this->getTable()]['ctrl']['delete'])) {
+                $fieldNames[] = $GLOBALS['TCA'][$this->getTable()]['ctrl']['delete'];
+            }
+
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($this->getTable());
             $queryBuilder->getRestrictions()->removeAll();
 
             $row = $queryBuilder
-                ->select('uid', 'pid', 't3ver_wsid', 't3ver_state', 't3ver_oid')
+                ->select(...$fieldNames)
                 ->from($this->getTable())
                 ->where(
                     $queryBuilder->expr()->eq(

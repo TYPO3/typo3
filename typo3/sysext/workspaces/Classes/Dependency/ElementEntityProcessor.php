@@ -93,6 +93,10 @@ class ElementEntityProcessor
      */
     public function createNewDependentElementChildReferenceCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, $eventName)
     {
+        // skip children in case ancestor is invalid
+        if ($caller->isInvalid()) {
+            return ElementEntity::RESPONSE_Skip;
+        }
         $fieldConfiguration = BackendUtility::getTcaFieldConfiguration($caller->getTable(), $callerArguments['field']);
         $inlineFieldType = $this->getDataHandler()->getInlineFieldType($fieldConfiguration);
         if (!$fieldConfiguration || ($fieldConfiguration['type'] !== 'flex' && $inlineFieldType !== 'field' && $inlineFieldType !== 'list')) {
@@ -189,9 +193,17 @@ class ElementEntityProcessor
                 1393960943
             );
         }
+
+        $deleteFieldName = $GLOBALS['TCA'][$caller->getTable()]['ctrl']['delete'] ?? null;
         // If version is on live workspace, but an "offline" ID is set, mark the record as invalid.
         // This happens if a change has been discarded (clearWSID) - it will be removed from the command map.
-        if ((int)$versionRecord['t3ver_wsid'] === 0 && (int)$versionRecord['t3ver_oid'] > 0) {
+        if (
+            (int)$versionRecord['t3ver_oid'] > 0 && (
+                (int)$versionRecord['t3ver_wsid'] === 0 // behavior prior to v10.1 (backward compatibility)
+                || !empty($deleteFieldName) && (int)$versionRecord['t3ver_wsid'] === $this->getWorkspace()
+                    && (int)$versionRecord[$deleteFieldName] > 0 // behavior since v10.1
+            )
+        ) {
             $caller->setDataValue('liveId', $caller->getId());
             $caller->setInvalid(true);
             return;

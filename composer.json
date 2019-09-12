@@ -76,7 +76,7 @@
 		"friendsofphp/php-cs-fixer": "^2.15.2",
 		"phpspec/prophecy": "^1.7.5",
 		"typo3/cms-styleguide": "~10.0.2",
-		"typo3/testing-framework": "~5.0.13"
+		"typo3/testing-framework": "~5.0.14"
 	},
 	"suggest": {
 		"ext-gd": "GDlib/Freetype is required for building images with text (GIFBUILDER) and can also be used to scale images",

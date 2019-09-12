@@ -214,11 +214,19 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
 
     /**
      * Asserts correct number of warning and error log entries.
+     *
+     * @param string[]|null $expectedMessages
      */
-    protected function assertErrorLogEntries()
+    protected function assertErrorLogEntries(array $expectedMessages = null)
     {
-        if ($this->expectedErrorLogEntries === null) {
+        if ($this->expectedErrorLogEntries === null && $expectedMessages === null) {
             return;
+        }
+
+        if ($expectedMessages !== null) {
+            $expectedErrorLogEntries = count($expectedMessages);
+        } else {
+            $expectedErrorLogEntries = (int)$this->expectedErrorLogEntries;
         }
 
         $queryBuilder = $this->getConnectionPool()
@@ -239,16 +247,27 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
             ->count('uid')
             ->execute()
             ->fetchColumn(0);
-        if ($actualErrorLogEntries === (int)$this->expectedErrorLogEntries) {
-            $this->assertSame($this->expectedErrorLogEntries, $actualErrorLogEntries);
+
+        $entryMessages = array_map(
+            function (array $entry) {
+                $entryData = unserialize($entry['log_data'], ['allowed_classes' => false]);
+                return vsprintf($entry['details'], $entryData);
+            },
+            $statement->fetchAll()
+        );
+
+        if ($expectedMessages !== null) {
+            static::assertEqualsCanonicalizing($expectedMessages, $entryMessages);
+        } elseif ($actualErrorLogEntries === $expectedErrorLogEntries) {
+            static::assertSame($expectedErrorLogEntries, $actualErrorLogEntries);
         } else {
-            $failureMessage = 'Expected ' . $this->expectedErrorLogEntries . ' entries in sys_log, but got ' . $actualErrorLogEntries . LF;
-            while ($entry = $statement->fetch()) {
-                $entryData = unserialize($entry['log_data']);
-                $entryMessage = vsprintf($entry['details'], $entryData);
-                $failureMessage .= '* ' . $entryMessage . LF;
-            }
-            $this->fail($failureMessage);
+            $failureMessage = sprintf(
+                'Expected %d entries in sys_log, but got %d' . LF,
+                $expectedMessages,
+                $actualErrorLogEntries
+            );
+            $failureMessage .= '* ' . implode(LF . '* ', $entryMessages) . LF;
+            static::fail($failureMessage);
         }
     }
 
