@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
@@ -1417,7 +1418,11 @@ class QueryGenerator
             }
         } elseif (!is_array($conf['inputValue' . $suffix]) && strtotime($conf['inputValue' . $suffix])) {
             $inputVal = $conf['inputValue' . $suffix];
+        } elseif (!is_array($conf['inputValue' . $suffix]) && MathUtility::canBeInterpretedAsInteger($conf['inputValue' . $suffix])) {
+            $inputVal = (int)$conf['inputValue' . $suffix];
         } else {
+            // TODO: Six eyes looked at this code and nobody understood completely what is going on here and why we
+            // fallback to float casting, the whole class smells like it needs a refactoring.
             $inputVal = (float)$conf['inputValue' . $suffix];
         }
         return $inputVal;
