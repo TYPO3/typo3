@@ -222,7 +222,7 @@ Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
 			<trans-unit id="labels.tableWizard">
 				<source>Table Wizard</source>
-			·</trans-unit>
+			</trans-unit>
 			<trans-unit id="labels.new">
 				<source>NEW</source>
 			</trans-unit>

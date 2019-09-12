@@ -347,6 +347,8 @@ class RecordProvider extends AbstractProvider
      */
     protected function getPasteAdditionalAttributes(string $type): array
     {
+        $closeText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel');
+        $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:ok');
         $attributes = [];
         if ($this->backendUser->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             $selItem = $this->clipboard->getSelectedRecord();
@@ -360,7 +362,9 @@ class RecordProvider extends AbstractProvider
             );
             $attributes += [
                 'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage)
+                'data-message' => htmlspecialchars($confirmMessage),
+                'data-button-close-text' => htmlspecialchars($closeText),
+                'data-button-ok-text' => htmlspecialchars($okText),
             ];
         }
         return $attributes;
@@ -373,6 +377,8 @@ class RecordProvider extends AbstractProvider
      */
     protected function getDeleteAdditionalAttributes(): array
     {
+        $closeText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel');
+        $okText = $this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:delete');
         $attributes = [];
         if ($this->backendUser->jsConfirmation(JsConfirmation::DELETE)) {
             $recordTitle = GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($this->table, $this->record), $this->backendUser->uc['titleLen']);
@@ -394,7 +400,9 @@ class RecordProvider extends AbstractProvider
             );
             $attributes += [
                 'data-title' => htmlspecialchars($title),
-                'data-message' => htmlspecialchars($confirmMessage)
+                'data-message' => htmlspecialchars($confirmMessage),
+                'data-button-close-text' => htmlspecialchars($closeText),
+                'data-button-ok-text' => htmlspecialchars($okText),
             ];
         }
         return $attributes;
