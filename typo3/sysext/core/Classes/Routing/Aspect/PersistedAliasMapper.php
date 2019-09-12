@@ -16,13 +16,13 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
-use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -47,7 +47,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
 {
-    use SiteLanguageAwareTrait;
+    use SiteLanguageAccessorTrait;
     use PersistedAliasMapperLegacyTrait;
 
     /**
@@ -196,16 +196,36 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
 
     protected function findByRouteFieldValue(string $value): ?array
     {
+        $languageAware = $this->languageFieldName !== null && $this->languageParentFieldName !== null;
+
         $queryBuilder = $this->createQueryBuilder();
-        $result = $queryBuilder
-            ->select(...$this->persistenceFieldNames)
-            ->where($queryBuilder->expr()->eq(
+        $constraints = [
+            $queryBuilder->expr()->eq(
                 $this->routeFieldName,
                 $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
-            ))
+            ),
+        ];
+
+        $languageIds = null;
+        if ($languageAware) {
+            $languageIds = $this->resolveAllRelevantLanguageIds();
+            $constraints[] = $queryBuilder->expr()->in(
+                $this->languageFieldName,
+                $queryBuilder->createNamedParameter($languageIds, Connection::PARAM_INT_ARRAY)
+            );
+        }
+
+        $results = $queryBuilder
+            ->select(...$this->persistenceFieldNames)
+            ->where(...$constraints)
             ->execute()
-            ->fetch();
-        return $result !== false ? $result : null;
+            ->fetchAll();
+        // return first result record in case table is not language aware
+        if (!$languageAware) {
+            return $results[0] ?? null;
+        }
+        // post-process language fallbacks
+        return $this->resolveLanguageFallback($results, $this->languageFieldName, $languageIds);
     }
 
     protected function createQueryBuilder(): QueryBuilder

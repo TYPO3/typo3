@@ -16,13 +16,13 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\Connection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
-use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -50,7 +50,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
  */
 class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
 {
-    use SiteLanguageAwareTrait;
+    use SiteLanguageAccessorTrait;
     use PersistedPatternMapperLegacyTrait;
 
     protected const PATTERN_RESULT = '#\{(?P<fieldName>[^}]+)\}#';
@@ -79,6 +79,11 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
      * @var string[]
      */
     protected $routeFieldResultNames;
+
+    /**
+     * @var string|null
+     */
+    protected $languageFieldName;
 
     /**
      * @var string|null
@@ -116,6 +121,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         $this->routeFieldPattern = $routeFieldPattern;
         $this->routeFieldResult = $routeFieldResult;
         $this->routeFieldResultNames = $routeFieldResultNames['fieldName'] ?? [];
+        $this->languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
         $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
     }
 
@@ -204,13 +210,21 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
 
     protected function findByRouteFieldValues(array $values): ?array
     {
+        $languageAware = $this->languageFieldName !== null && $this->languageParentFieldName !== null;
+
         $queryBuilder = $this->createQueryBuilder();
-        $result = $queryBuilder
+        $results = $queryBuilder
             ->select('*')
             ->where(...$this->createRouteFieldConstraints($queryBuilder, $values))
             ->execute()
-            ->fetch();
-        return $result !== false ? $result : null;
+            ->fetchAll();
+        // return first result record in case table is not language aware
+        if (!$languageAware) {
+            return $results[0] ?? null;
+        }
+        // post-process language fallbacks
+        $languageIds = $this->resolveAllRelevantLanguageIds();
+        return $this->resolveLanguageFallback($results, $this->languageFieldName, $languageIds);
     }
 
     protected function createQueryBuilder(): QueryBuilder
@@ -227,7 +241,8 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
      */
     protected function createRouteFieldConstraints(QueryBuilder $queryBuilder, array $values): array
     {
-        $languageExpansion = $this->languageParentFieldName && isset($values['uid']);
+        $languageAware = $this->languageFieldName !== null && $this->languageParentFieldName !== null;
+        $languageExpansion = $languageAware && isset($values['uid']);
 
         $constraints = [];
         foreach ($values as $fieldName => $fieldValue) {
@@ -242,7 +257,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
                 )
             );
         }
-        // If requested, either match uid or language parent field value
+        // either match uid or language parent field value (for any language)
         if ($languageExpansion) {
             $idParameter = $queryBuilder->createNamedParameter(
                 $values['uid'],
@@ -251,6 +266,13 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             $constraints[] = $queryBuilder->expr()->orX(
                 $queryBuilder->expr()->eq('uid', $idParameter),
                 $queryBuilder->expr()->eq($this->languageParentFieldName, $idParameter)
+            );
+        // otherwise - basically uid is not in pattern - restrict to languages and apply fallbacks
+        } elseif ($languageAware) {
+            $languageIds = $this->resolveAllRelevantLanguageIds();
+            $constraints[] = $queryBuilder->expr()->in(
+                $this->languageFieldName,
+                $queryBuilder->createNamedParameter($languageIds, Connection::PARAM_INT_ARRAY)
             );
         }
 
