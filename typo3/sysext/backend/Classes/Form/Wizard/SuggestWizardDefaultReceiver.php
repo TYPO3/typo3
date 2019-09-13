@@ -255,36 +255,34 @@ class SuggestWizardDefaultReceiver
     protected function buildConstraintBlock(string $searchString)
     {
         $expressionBuilder = $this->queryBuilder->expr();
+        $selectParts = $expressionBuilder->orX();
         if (MathUtility::canBeInterpretedAsInteger($searchString) && (int)$searchString > 0) {
-            $searchClause = $expressionBuilder->eq('uid', (int)$searchString);
-        } else {
-            $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
-            $likeCondition = ($searchWholePhrase ? '%' : '') . $this->queryBuilder->escapeLikeWildcards($searchString) . '%';
-            // Search in all fields given by label or label_alt
-            $selectFieldsList = ($GLOBALS['TCA'][$this->table]['ctrl']['label'] ?? '') . ',' . ($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] ?? '') . ',' . $this->config['additionalSearchFields'];
-            $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
-            $selectFields = array_unique($selectFields);
-            $selectParts = $expressionBuilder->orX();
-            foreach ($selectFields as $field) {
-                $selectParts->add($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
-            }
-            $searchClause = $expressionBuilder->orX($selectParts);
+            $selectParts->add($expressionBuilder->eq('uid', (int)$searchString));
         }
-        return $searchClause;
+        $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
+        $likeCondition = ($searchWholePhrase ? '%' : '') . $this->queryBuilder->escapeLikeWildcards($searchString) . '%';
+        // Search in all fields given by label or label_alt
+        $selectFieldsList = ($GLOBALS['TCA'][$this->table]['ctrl']['label'] ?? '') . ',' . ($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] ?? '') . ',' . $this->config['additionalSearchFields'];
+        $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
+        $selectFields = array_unique($selectFields);
+        foreach ($selectFields as $field) {
+            $selectParts->add($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
+        }
+
+        return $selectParts;
     }
 
     /**
-     * Splits the search string by +
-     * This allows searching for "elements+basic" and will find results like
-     * "elements rte basic
+     * Splits the search string by space
+     * This allows searching for 'elements basic' and will find results like "elements rte basic"
+     * To search for whole phrases enclose by double-quotes: '"elements basic"', results in empty result
      *
      * @param string $searchString
      * @return array
      */
     protected function splitSearchString(string $searchString): array
     {
-        $spitStrings = GeneralUtility::trimExplode('+', $searchString, true);
-        return $spitStrings;
+        return str_getcsv($searchString, ' ');
     }
 
     /**
