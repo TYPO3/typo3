@@ -296,13 +296,19 @@ class LinkAnalyzer
             foreach ($softRefs as $spKey => $spParams) {
                 /** @var \TYPO3\CMS\Core\Database\SoftReferenceIndex $softRefObj */
                 $softRefObj = BackendUtility::softRefParserObj($spKey);
+
                 // If there is an object returned...
                 if (!is_object($softRefObj)) {
                     continue;
                 }
+                $softRefParams = $spParams;
+                if (!is_array($softRefParams)) {
+                    // set subst such that findRef will return substitutes for urls, emails etc
+                    $softRefParams = ['subst' => true];
+                }
 
                 // Do processing
-                $resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
+                $resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $softRefParams);
                 if (empty($resultArray['elements'])) {
                     continue;
                 }
