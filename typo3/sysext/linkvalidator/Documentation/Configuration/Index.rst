@@ -15,7 +15,7 @@ Configuration
 You find the standard configuration in
 :file:`EXT:linkvalidator/Configuration/TsConfig/Page/pagetsconfig.txt`.
 
-This may serve you as an example on how to configure the extension for
+This may serve as an example on how to configure the extension for
 your needs.
 
 
@@ -27,8 +27,7 @@ Reference
 You can set the following options in the TSconfig for a page (e.g. the
 root page) and override them in user or groups TSconfig. You must
 prefix them with mod.linkvalidator, e.g.
-:code:`mod.linkvalidator.searchFields.pages = media`.
-
+:ts:`mod.linkvalidator.searchFields.pages = canonical_link`.
 
 
 .. _searchfields-key:
@@ -45,14 +44,39 @@ searchFields.[key]
          string
 
    Description
-         Comma separated list of table fields in which to check for broken
-         links.
+         Comma separated list of table fields in which to check for
+         broken links. Linkvalidator only checks fields that have
+         been defined in :ts:`searchFields`.
 
-         **Example** :
+         Linkvalidator ships with sensible defaults that work well
+         for the TYPO3 core, but additional third party extensions
+         are not considered.
 
-         ::
+         .. warning::
 
-            pages = media,url
+            Currently, Linkvalidator can only detect links for fields having at
+            least one :ref:`softref <columns-input-properties-softref>` set in their TCA configuration.
+
+            For this reason, it is currently not possible to check for
+            `pages.media`. This will be fixed in the future.
+
+            Examples for working fields:
+
+                * `pages.canonical_link`
+                * `pages.url`
+
+            Examples for not working fields:
+
+            * `pages.media`
+
+
+    Examples
+
+          Only check for `bodytext` in `tt_content`:
+
+          .. code-block:: typoscript
+
+             tt_content = bodytext
 
    Default
          .. code-block:: typoscript
@@ -153,7 +177,7 @@ showCheckLinkTab
             Linkvalidator uses a database table to store information
             about the broken links, which it found in your website. If
             showCheckLinkTab is set to 0, you must use the scheduler task provided
-            by linkvalidator to update these information.
+            by linkvalidator to update this information.
 
    Default
          1
@@ -275,7 +299,7 @@ Example
 
    mod.linkvalidator {
            searchFields {
-                   pages = media,url
+                   pages = url,canonical_link
                    tt_content = bodytext,header_link,records
            }
            linktypes = db,file,external
