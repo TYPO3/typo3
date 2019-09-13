@@ -2819,6 +2819,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $packageManagerMock = $this->getMockBuilder(PackageManager::class)
             ->disableOriginalConstructor()
             ->getMock();
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerMock);
+        $packageManagerMock->method('getActivePackages')->willReturn([]);
         $templateServiceObjectMock = $this->getMockBuilder(TemplateService::class)
             ->setConstructorArgs([null, $packageManagerMock])
             ->setMethods(['dummy'])

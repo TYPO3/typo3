@@ -1,0 +1,7 @@
+MyVendor:
+  MyExtension:
+    storagePid: '22'
+    somethingElse: '22'
+banana:
+  bread:
+    is: tasty

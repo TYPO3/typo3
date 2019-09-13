@@ -121,7 +121,8 @@ class SiteConfigurationController
         }
         $this->view->assignMultiple([
             'pages' => $pages,
-            'unassignedSites' => $unassignedSites
+            'unassignedSites' => $unassignedSites,
+            'hasConfigurableSettings' => count(GeneralUtility::makeInstance(SiteConfiguration::class, Environment::getConfigPath() . '/sites')->getDefaultSiteSettings()) > 0
         ]);
     }
 
@@ -331,6 +332,61 @@ class SiteConfigurationController
         }
 
         $saveRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'edit', 'site' => $siteIdentifier]);
+        if ($isSaveClose) {
+            return new RedirectResponse($overviewRoute);
+        }
+        return new RedirectResponse($saveRoute);
+    }
+
+    /**
+     * display form for site settings, compiled from the extension shipped configuration and stored values in settings.yaml
+     *
+     * @param ServerRequestInterface $request
+     * @throws SiteNotFoundException
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    protected function editSettingsAction(ServerRequestInterface $request): void
+    {
+        $this->configureEditViewDocHeader();
+        $siteIdentifier = $request->getQueryParams()['site'];
+        $site = $this->siteFinder->getSiteByIdentifier($siteIdentifier);
+        $returnUrl = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('site_configuration');
+        $this->view->assignMultiple([
+            'configuration' => GeneralUtility::makeInstance(SiteConfiguration::class, Environment::getConfigPath() . '/sites')->getSettingsForView($siteIdentifier),
+            'site' => $site,
+            'returnUrl' => $returnUrl,
+            'formEngineFooter' => GeneralUtility::makeInstance(FormResultCompiler::class)->printNeededJSFunctions(),
+        ]);
+    }
+
+    /**
+     * override settings passed on from the form, keep everything else
+     * write settings.yaml file with resulting values
+     *
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     * @throws SiteNotFoundException
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    protected function saveSettingsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $overviewRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'overview']);
+        $parsedBody = $request->getParsedBody();
+        if (isset($parsedBody['closeDoc']) && (int)$parsedBody['closeDoc'] === 1) {
+            // Closing means no save, just redirect to overview
+            return new RedirectResponse($overviewRoute);
+        }
+        $isSave = $parsedBody['_savedok'] ?? $parsedBody['doSave'] ?? false;
+        $isSaveClose = $parsedBody['_saveandclosedok'] ?? false;
+        if (!$isSave && !$isSaveClose) {
+            throw new \RuntimeException('Either save or save and close', 1568277064);
+        }
+        $siteIdentifier = $request->getQueryParams()['site'];
+        $data = $parsedBody['data'] ?? [];
+        GeneralUtility::makeInstance(SiteConfiguration::class, Environment::getConfigPath() . '/sites')->writeSettings($siteIdentifier, $data);
+
+        $saveRoute = $uriBuilder->buildUriFromRoute('site_configuration', ['action' => 'editSettings', 'site' => $siteIdentifier]);
         if ($isSaveClose) {
             return new RedirectResponse($overviewRoute);
         }
