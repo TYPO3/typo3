@@ -69,45 +69,54 @@ class SearchTermRestriction implements QueryRestrictionInterface
         $searchTerm = $this->searchDemand->getSearchTerm();
         $constraints = [];
 
-        $like = '%' . $this->queryBuilder->escapeLikeWildcards($searchTerm) . '%';
-        foreach ($fieldsToSearchWithin as $fieldName) {
-            if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+        $searchTermParts = str_getcsv($searchTerm, ' ');
+        foreach ($searchTermParts as $searchTermPart) {
+            $searchTermPart = trim($searchTermPart);
+            if ($searchTermPart === '') {
                 continue;
             }
-            $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-            $fieldType = $fieldConfig['type'];
-            $evalRules = $fieldConfig['eval'] ?? '';
+            $constraintsForParts = [];
+            $like = '%' . $this->queryBuilder->escapeLikeWildcards($searchTermPart) . '%';
+            foreach ($fieldsToSearchWithin as $fieldName) {
+                if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+                    continue;
+                }
+                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+                $fieldType = $fieldConfig['type'];
+                $evalRules = $fieldConfig['eval'] ?? '';
 
-            // Check whether search should be case-sensitive or not
-            if (is_array($fieldConfig['search']) && in_array('case', $fieldConfig['search'], true)) {
-                // case sensitive
-                $searchConstraint = $this->queryBuilder->expr()->andX(
-                    $this->queryBuilder->expr()->like(
-                        $tableAlias . '.' . $fieldName,
-                        $this->queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
-                    )
-                );
-            } else {
-                $searchConstraint = $this->queryBuilder->expr()->andX(
+                // Check whether search should be case-sensitive or not
+                if (is_array($fieldConfig['search']) && in_array('case', $fieldConfig['search'], true)) {
+                    // case sensitive
+                    $searchConstraint = $this->queryBuilder->expr()->andX(
+                        $this->queryBuilder->expr()->like(
+                            $tableAlias . '.' . $fieldName,
+                            $this->queryBuilder->createNamedParameter($like, \PDO::PARAM_STR)
+                        )
+                    );
+                } else {
+                    $searchConstraint = $this->queryBuilder->expr()->andX(
                     // case insensitive
-                    $this->queryBuilder->expr()->comparison(
-                        'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
-                        'LIKE',
-                        $this->queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
-                    )
-                );
-            }
+                        $this->queryBuilder->expr()->comparison(
+                            'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
+                            'LIKE',
+                            $this->queryBuilder->createNamedParameter(mb_strtolower($like), \PDO::PARAM_STR)
+                        )
+                    );
+                }
 
-            // Assemble the search condition only if the field makes sense to be searched
-            if ($fieldType === 'text'
-                || $fieldType === 'flex'
-                || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
-            ) {
-                $constraints[] = $searchConstraint;
+                // Assemble the search condition only if the field makes sense to be searched
+                if ($fieldType === 'text'
+                    || $fieldType === 'flex'
+                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
+                ) {
+                    $constraintsForParts[] = $searchConstraint;
+                }
             }
+            $constraints[] = $this->queryBuilder->expr()->orX(...$constraintsForParts);
         }
 
-        return $this->queryBuilder->expr()->orX(...$constraints);
+        return $this->queryBuilder->expr()->andX(...$constraints);
     }
 
     /**
