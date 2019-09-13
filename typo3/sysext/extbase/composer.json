@@ -24,7 +24,8 @@
 		"typo3/cms-scheduler": "Additional scheduler tasks"
 	},
 	"conflict": {
-		"typo3/cms": "*"
+		"typo3/cms": "*",
+		"phpdocumentor/reflection-docblock": ">= 4.3.2"
 	},
 	"replace": {
 		"extbase": "*"
