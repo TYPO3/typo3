@@ -20,74 +20,87 @@ However, notifications flagged with a duration will still disappear, unless an a
    Such tasks must **never** be mandatory to be executed. This API is meant to suggest certain actions without enforcing
    them. If a user must take action immediately, consider using modals instead.
 
+.. important::
+
+   Due to how passed callbacks are handled, using arrow functions is **mandatory**!
+
 
 Example:
 
 .. code-block:: js
 
-   require([
-     'TYPO3/CMS/Backend/ActionButton/ImmediateAction',
-     'TYPO3/CMS/Backend/ActionButton/DeferredAction',
-     'TYPO3/CMS/Backend/Notification'
-   ], function(ImmediateAction, DeferredAction, Notification) {
-     const immediateActionCallback = new ImmediateAction(function () { /* your action code */ });
+   require(['TYPO3/CMS/Backend/Notification', 'TYPO3/CMS/Backend/ActionButton/ActionEnum'], function (Notification, ActionEnum) {
      Notification.warning(
        'Beware',
        'We did some stuff that might take your intervention',
        0,
        [
-         {label: 'Apply suggestion', action: immediateActionCallback}
+         {
+           label: 'Apply suggestion',
+           action: {
+             type: ActionEnum.IMMEDIATE,
+             callback: () => {
+               /* your action code */
+             }
+           }
+         }
        ]
      );
    });
 
 
-ImmediateAction
----------------
+Immediate Action
+----------------
 
-An action of type :js:`ImmediateAction` (:js:`TYPO3/CMS/Backend/ActionButtons/ImmediateAction`) is executed directly on
-click and closes the notification. This action type is suitable for e.g. linking to a backend module.
-
-The class accepts a callback method executing very simple logic.
+An action of type :js:`immediate` is executed directly on click and closes the notification. This action type is
+suitable for e.g. linking to a backend module.
 
 Example:
 
 .. code-block:: js
 
-   const immediateActionCallback = new ImmediateAction(function () {
-     require(['TYPO3/CMS/Backend/ModuleMenu'], function (ModuleMenu) {
-       ModuleMenu.showModule('web_layout');
-     });
-   });
+   action: {
+     type: ActionEnum.IMMEDIATE,
+     callback: () => {
+       require(['TYPO3/CMS/Backend/ModuleMenu'], function (ModuleMenu) {
+         ModuleMenu.showModule('web_layout');
+       });
+     }
+   }
 
 
-DeferredAction
---------------
+Deferred Action
+---------------
 
-An action of type :js:`DeferredAction` (:js:`TYPO3/CMS/Backend/ActionButtons/DeferredAction`) is recommended when a
-long-lasting task is executed, e.g. an AJAX request.
+An action of type :js:`deferred` is recommended when a long-lasting task is executed, e.g. an AJAX request.
 
-This class accepts a callback method which must return either a resolved or rejected promise.
+The callback function must return either a resolved or rejected promise.
 
-The :js:`DeferredAction` replaces the action button with a spinner icon to indicate a task will take some time. It's
+The :js:`deferred` action replaces the action button with a spinner icon to indicate a task will take some time. It's
 still possible to dismiss a notification, which will **not** stop the execution.
 
 Example:
 
 .. code-block:: js
 
-   const deferredActionCallback = new DeferredAction(function () {
-     const myAction = async function() {
-       return await 'something';
+   action: {
+     type: ActionEnum.DEFERRED,
+     callback: () => {
+       const myAction = async function() {
+         return await 'something';
+       }
+
+       return myAction();
      }
+   }
 
-     return myAction();
-   });
-
-   const anotherDeferredActionCallback = new DeferredAction(function () {
+   action: {
+     type: ActionEnum.DEFERRED,
      // do some old-fashioned jQuery stuff
-     return $.ajax(/* AJAX configuration */);
-   });
+     callback: () => {
+       return $.ajax(/* AJAX configuration */);
+     }
+   }
 
 
 .. index:: Backend, JavaScript, ext:backend

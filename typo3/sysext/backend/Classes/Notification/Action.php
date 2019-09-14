@@ -19,8 +19,8 @@ use TYPO3\CMS\Backend\Exception\UnknownTypeException;
 
 final class Action
 {
-    public const TYPE_IMMEDIATE = 'ImmediateAction';
-    public const TYPE_DEFERRED = 'DeferredAction';
+    public const TYPE_IMMEDIATE = 'immediate';
+    public const TYPE_DEFERRED = 'deferred';
 
     /**
      * @var string

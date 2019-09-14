@@ -12,13 +12,18 @@
  */
 
 import * as $ from 'jquery';
-import {AbstractAction} from './ActionButton/AbstractAction';
 import {SeverityEnum} from './Enum/Severity';
+import ActionFactory = require('./ActionButton/ActionFactory');
 import Severity = require('./Severity');
 
 interface Action {
   label: string;
-  action: AbstractAction;
+  action: ActionType;
+}
+
+interface ActionType {
+  type: string;
+  action: Function;
 }
 
 /**
@@ -172,11 +177,13 @@ class Notification {
           // Remove potentially set timeout
           $box.clearQueue();
 
+          $actionButton.siblings().addClass('disabled');
+
           const target = <HTMLAnchorElement>e.currentTarget;
           target.classList.add('executing');
 
-          $actionButtonContainer.find('a').not(target).addClass('disabled');
-          action.action.execute(target).then((): void => {
+          const actionInstance = ActionFactory.createAction(action.action);
+          actionInstance.execute(target).then((): void => {
             $box.alert('close');
           });
         });
