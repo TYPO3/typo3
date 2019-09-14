@@ -61,7 +61,7 @@ class IntegrityServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SimplePages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
 
-        $expectedConflictes = [
+        $expectedConflicts = [
             [
                 'uri' => 'https://example.com/',
                 'redirect' => [
@@ -85,7 +85,7 @@ class IntegrityServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $this->assertExpectedPathsFromGenerator($expectedConflictes, $this->subject->findConflictingRedirects('simple-page'));
+        $this->assertExpectedPathsFromGenerator($expectedConflicts, $this->subject->findConflictingRedirects('simple-page'));
     }
 
     /**
@@ -96,7 +96,7 @@ class IntegrityServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LocalizedPages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
 
-        $expectedConflictes = [
+        $expectedConflicts = [
             [
                 'uri' => 'https://another.example.com/about-us/we-are-here',
                 'redirect' => [
@@ -113,7 +113,7 @@ class IntegrityServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $this->assertExpectedPathsFromGenerator($expectedConflictes, $this->subject->findConflictingRedirects('localized-page'));
+        $this->assertExpectedPathsFromGenerator($expectedConflicts, $this->subject->findConflictingRedirects('localized-page'));
     }
 
     /**
@@ -125,7 +125,7 @@ class IntegrityServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LocalizedPages.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/sys_redirect.csv');
 
-        $expectedConflictes = [
+        $expectedConflicts = [
             [
                 'uri' => 'https://example.com/',
                 'redirect' => [
@@ -163,17 +163,17 @@ class IntegrityServiceTest extends FunctionalTestCase
             ],
         ];
 
-        $this->assertExpectedPathsFromGenerator($expectedConflictes, $this->subject->findConflictingRedirects());
+        $this->assertExpectedPathsFromGenerator($expectedConflicts, $this->subject->findConflictingRedirects());
     }
 
-    private function assertExpectedPathsFromGenerator(array $expectedConflictes, \Generator $generator): void
+    private function assertExpectedPathsFromGenerator(array $expectedConflicts, \Generator $generator): void
     {
         $matches = 0;
         foreach ($generator as $reportedConflict) {
-            $this->assertContains($reportedConflict, $expectedConflictes);
+            $this->assertContains($reportedConflict, $expectedConflicts);
             $matches++;
         }
-        $this->assertSame(count($expectedConflictes), $matches);
+        $this->assertSame(count($expectedConflicts), $matches);
     }
 
     private function prophesizeSiteFinder(): ObjectProphecy

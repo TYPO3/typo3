@@ -6,7 +6,7 @@
 <f:if condition="{count} > 0">
     <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:status.conflictingRedirects.message" /></p>
     <ul>
-        <f:for each="{reportedConflictes}" as="conflict">
+        <f:for each="{reportedConflicts}" as="conflict">
             <li>
                 <span title="{conflict.uri}">{conflict.uri -> f:format.crop(maxCharacters: '100')}</span><br>
                 <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.source_host" />: {conflict.redirect.source_host}<br>

@@ -35,7 +35,7 @@ class RedirectStatus implements StatusProviderInterface
     public function getStatus(): array
     {
         return [
-            'Conflictes' => $this->getConflictingRedirects(),
+            'Conflicts' => $this->getConflictingRedirects(),
         ];
     }
 
@@ -45,8 +45,8 @@ class RedirectStatus implements StatusProviderInterface
         $severity = Status::OK;
 
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $reportedConflictes = $registry->get('tx_redirects', 'conflicting_redirects');
-        $count = count($reportedConflictes);
+        $reportedConflicts = $registry->get('tx_redirects', 'conflicting_redirects', []);
+        $count = count($reportedConflicts);
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:redirects/Resources/Private/Templates/Report/RedirectStatus.html'));
@@ -58,7 +58,7 @@ class RedirectStatus implements StatusProviderInterface
 
         $view->assignMultiple([
             'count' => $count,
-            'reportedConflictes' => $reportedConflictes,
+            'reportedConflicts' => $reportedConflicts,
         ]);
 
         return GeneralUtility::makeInstance(
