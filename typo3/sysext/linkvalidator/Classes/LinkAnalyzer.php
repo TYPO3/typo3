@@ -73,13 +73,6 @@ class LinkAnalyzer
     protected $hookObjectsArr = [];
 
     /**
-     * Array with information about the current page
-     *
-     * @var array
-     */
-    protected $extPageInTreeInfo = [];
-
-    /**
      * Reference to the current element with table:uid, e.g. pages:85
      *
      * @var string
@@ -115,9 +108,9 @@ class LinkAnalyzer
     /**
      * Store all the needed configuration values in class variables
      *
-     * @param array  $searchField List of fields in which to search for links
-     * @param string $pidList     List of comma separated page uids in which to search for links
-     * @param array  $tsConfig    The currently active TSconfig.
+     * @param array $searchField List of fields in which to search for links
+     * @param string $pidList List of comma separated page uids in which to search for links
+     * @param array $tsConfig The currently active TSconfig.
      */
     public function init(array $searchField, $pidList, $tsConfig)
     {
@@ -147,18 +140,21 @@ class LinkAnalyzer
         $queryBuilder->delete('tx_linkvalidator_link')
             ->where(
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->in(
-                        'record_pid',
-                        $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
-                    ),
                     $queryBuilder->expr()->andX(
                         $queryBuilder->expr()->in(
                             'record_uid',
                             $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
                         ),
-                        $queryBuilder->expr()->eq(
+                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_pid',
+                            $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->neq(
                             'table_name',
-                            $queryBuilder->createNamedParameter('pages', \PDO::PARAM_STR)
+                            $queryBuilder->createNamedParameter('pages')
                         )
                     )
                 ),
@@ -449,9 +445,21 @@ class LinkAnalyzer
             ->addSelectLiteral($queryBuilder->expr()->count('uid', 'nbBrokenLinks'))
             ->from('tx_linkvalidator_link')
             ->where(
-                $queryBuilder->expr()->in(
-                    'record_pid',
-                    $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_uid',
+                            $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_pid',
+                            $queryBuilder->createNamedParameter($this->pids, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    )
                 )
             )
             ->groupBy('link_type')
@@ -509,7 +517,6 @@ class LinkAnalyzer
         while ($row = $result->fetch()) {
             if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden)) {
                 $theList .= $row['uid'] . ',';
-                $this->extPageInTreeInfo[] = [$row['uid'], htmlspecialchars($row['title'], $depth)];
             }
             if ($depth > 1 && (!($row['hidden'] == 1 && $row['extendToSubpages'] == 1) || $considerHidden)) {
                 $theList .= $this->extGetTreeList(
@@ -532,13 +539,14 @@ class LinkAnalyzer
      */
     public function getRootLineIsHidden(array $pageInfo)
     {
+        if ($pageInfo['pid'] === 0) {
+            return false;
+        }
+
         if ($pageInfo['extendToSubpages'] == 1 && $pageInfo['hidden'] == 1) {
             return true;
         }
 
-        if ($pageInfo['pid'] === 0) {
-            return false;
-        }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
 

@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -210,13 +212,13 @@ class LinkValidatorReport
                 } else {
                     $this->checkOpt[$prefix][$linkType] = '0';
                 }
-                $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] =  $this->checkOpt[$prefix][$linkType];
+                $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] = $this->checkOpt[$prefix][$linkType];
             } elseif (isset($this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType])) {
                 $this->checkOpt[$prefix][$linkType] = $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType];
             } else {
                 // use default
                 $this->checkOpt[$prefix][$linkType] = '0';
-                $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] =  $this->checkOpt[$prefix][$linkType];
+                $this->pObj->MOD_SETTINGS[$prefix . '_' . $linkType] = $this->checkOpt[$prefix][$linkType];
             }
             if (isset($this->pObj->MOD_SETTINGS[$other . '_' . $linkType])) {
                 $this->checkOpt[$other][$linkType] = $this->pObj->MOD_SETTINGS[$other . '_' . $linkType];
@@ -331,16 +333,18 @@ class LinkValidatorReport
         }
         $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
         if (!$rootLineHidden || $this->modTS['checkhidden'] == 1) {
+            $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
             // Get children pages
             $pageList = $this->linkAnalyzer->extGetTreeList(
                 $this->id,
                 $this->searchLevel['check'],
                 0,
-                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW),
+                $permsClause,
                 $this->modTS['checkhidden']
             );
             if ($this->pObj->pageinfo['hidden'] == 0 || $this->modTS['checkhidden']) {
                 $pageList .= $this->id;
+                $pageList = $this->addPageTranslationsToPageList($pageList, $permsClause);
             }
 
             $this->linkAnalyzer->init($searchFields, $pageList, $this->modTS);
@@ -441,7 +445,7 @@ class LinkValidatorReport
 
         $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
         if (!$rootLineHidden || (bool)$this->modTS['checkhidden']) {
-            $pageList = $this->getPageList($this->id);
+            $pageList = $this->getPageList();
             $result = false;
             if (!empty($linkTypes)) {
                 $result = $this->getLinkValidatorBrokenLinks($pageList, $linkTypes);
@@ -485,20 +489,21 @@ class LinkValidatorReport
      * Generates an array of page uids from current pageUid.
      * List does include pageUid itself.
      *
-     * @param int $currentPageUid
      * @return array
      */
-    protected function getPageList(int $currentPageUid): array
+    protected function getPageList(): array
     {
+        $permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageList = $this->linkAnalyzer->extGetTreeList(
-            $currentPageUid,
+            $this->id,
             $this->searchLevel['report'],
             0,
-            $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW),
+            $permsClause,
             $this->modTS['checkhidden']
         );
         // Always add the current page, because we are just displaying the results
-        $pageList .= $currentPageUid;
+        $pageList .= $this->id;
+        $pageList = $this->addPageTranslationsToPageList($pageList, $permsClause);
 
         return GeneralUtility::intExplode(',', $pageList, true);
     }
@@ -518,9 +523,21 @@ class LinkValidatorReport
             ->select('*')
             ->from('tx_linkvalidator_link')
             ->where(
-                $queryBuilder->expr()->in(
-                    'record_pid',
-                    $queryBuilder->createNamedParameter($pageList, Connection::PARAM_INT_ARRAY)
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_uid',
+                            $queryBuilder->createNamedParameter($pageList, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_pid',
+                            $queryBuilder->createNamedParameter($pageList, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    )
                 )
             )
             ->orderBy('record_uid')
@@ -853,5 +870,38 @@ class LinkValidatorReport
     protected function getPageRenderer(): PageRenderer
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
+    }
+
+    /**
+     * @param string $theList
+     * @param string $permsClause
+     * @return string
+     */
+    protected function addPageTranslationsToPageList(string $theList, string $permsClause): string
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $result = $queryBuilder
+            ->select('uid', 'title', 'hidden')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'l10n_parent',
+                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+                ),
+                QueryHelper::stripLogicalOperatorPrefix($permsClause)
+            )
+            ->execute();
+
+        while ($row = $result->fetch()) {
+            if ($row['hidden'] === 0 || $this->modTS['checkhidden']) {
+                $theList .= ',' . $row['uid'];
+            }
+        }
+
+        return $theList;
     }
 }
