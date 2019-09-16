@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+    </pages>
+    <tt_content>
+        <uid>1</uid>
+        <pid>1</pid>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;t3://page?uid=85&quot;&gt;broken link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <CType>textmedia</CType>
+    </tt_content>
+</dataset>

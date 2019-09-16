@@ -1,0 +1,8 @@
+"tx_linkvalidator_link",,,,,,,,,,,,,
+,"record_uid","record_pid","field","table_name","link_title","url","link_type",,,,,,
+,1,1,"bodytext","tt_content","link","https://sfsfsfsfdfsfsdfsf/sfdsfsds","external",,,,,,
+,2,1,"bodytext","tt_content","link","https://sfsfsfsfdfsfsdfsf/sfdsfsds","external",,,,,,
+,3,1,"bodytext","tt_content","broken link","85","db",,,,,,
+,4,1,"bodytext","tt_content","broken link","8555555","db",,,,,,
+,5,1,"bodytext","tt_content","broken link","file:88","file",,,,,,
+,6,1,"bodytext","tt_content","broken link","file:8888888","file",,,,,,
