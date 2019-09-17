@@ -782,7 +782,7 @@ class PageLayoutController
 
             // Render the primary module content:
             if ($this->MOD_SETTINGS['function'] == 1 || $this->MOD_SETTINGS['function'] == 2) {
-                $content .= '<form action="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'imagemode' =>  $this->imagemode])) . '" id="PageLayoutController" method="post">';
+                $content .= '<form action="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'imagemode' => $this->imagemode])) . '" id="PageLayoutController" method="post">';
                 // Page title
                 $content .= '<h1 class="t3js-title-inlineedit">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
                 // All other listings
@@ -978,8 +978,17 @@ class PageLayoutController
         $lang = $this->getLanguageService();
         // View page
         if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+            $languageParameter = $this->current_sys_language ? ('&L=' . $this->current_sys_language) : '';
+            $onClick = BackendUtility::viewOnClick(
+                $this->pageinfo['uid'],
+                '',
+                BackendUtility::BEgetRootLine($this->pageinfo['uid']),
+                '',
+                '',
+                $languageParameter
+            );
             $viewButton = $this->buttonBar->makeLinkButton()
-                ->setOnClick(BackendUtility::viewOnClick($this->pageinfo['uid'], '', BackendUtility::BEgetRootLine($this->pageinfo['uid'])))
+                ->setOnClick($onClick)
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                 ->setIcon($this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL))
                 ->setHref('#');
