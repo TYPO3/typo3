@@ -130,6 +130,7 @@ class FileRepository extends AbstractRepository
                     // No handling, just omit the invalid reference uid
                 }
             }
+            $itemList = $this->reapplySorting($itemList);
         }
 
         return $itemList;
@@ -154,6 +155,29 @@ class FileRepository extends AbstractRepository
             $fileReferenceObject = false;
         }
         return $fileReferenceObject;
+    }
+
+    /**
+     * As sorting might have changed due to workspace overlays, PHP does the sorting again.
+     *
+     * @param array $itemList
+     */
+    protected function reapplySorting(array $itemList): array
+    {
+        uasort(
+            $itemList,
+            function (FileReference $a, FileReference $b) {
+                $sortA = (int)$a->getReferenceProperty('sorting_foreign');
+                $sortB = (int)$b->getReferenceProperty('sorting_foreign');
+
+                if ($sortA === $sortB) {
+                    return 0;
+                }
+
+                return ($sortA < $sortB) ? -1 : 1;
+            }
+        );
+        return $itemList;
     }
 
     /**
