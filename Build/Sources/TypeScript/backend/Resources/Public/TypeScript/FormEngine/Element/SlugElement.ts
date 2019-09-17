@@ -98,8 +98,10 @@ class SlugElement {
           }
         });
       }
+    }
 
-      // Clicking the recreate button makes new slug proposal created from 'title' field
+    // Clicking the recreate button makes new slug proposal created from 'title' field or any defined postModifiers
+    if (fieldsToListenOnList.length > 0 || this.hasPostModifiersDefined()) {
       $(this.$fullElement).on('click', Selectors.recreateButton, (e: JQueryEventObject): void => {
         e.preventDefault();
         if (this.$readOnlyField.hasClass('hidden')) {
@@ -217,6 +219,15 @@ class SlugElement {
     });
 
     return availableFields;
+  }
+
+  /**
+   * Check whether the slug element has post modifiers defined for slug generation
+   *
+   * @return boolean
+   */
+  private hasPostModifiersDefined(): boolean {
+    return Array.isArray(this.options.config.generatorOptions.postModifiers) && this.options.config.generatorOptions.postModifiers.length > 0;
   }
 }
 

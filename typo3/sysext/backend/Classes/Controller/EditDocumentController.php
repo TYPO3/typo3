@@ -501,8 +501,12 @@ class EditDocumentController
         if ($this->columnsOnly && $table !== false && isset($GLOBALS['TCA'][$table])) {
             $fields = GeneralUtility::trimExplode(',', $this->columnsOnly, true);
             foreach ($fields as $field) {
-                if (isset($GLOBALS['TCA'][$table]['columns'][$field]) && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'slug') {
-                    foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['fields'] as $fields) {
+                $postModifiers = $GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['postModifiers'] ?? [];
+                if (isset($GLOBALS['TCA'][$table]['columns'][$field])
+                    && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'slug'
+                    && (!is_array($postModifiers) || $postModifiers === [])
+                ) {
+                    foreach ($GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['fields'] ?? [] as $fields) {
                         $this->columnsOnly .= ',' . (is_array($fields) ? implode(',', $fields) : $fields);
                     }
                 }
