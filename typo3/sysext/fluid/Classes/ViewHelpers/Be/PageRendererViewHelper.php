@@ -30,8 +30,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * All options::
  *
  *    <f:be.pageRenderer pageTitle="foo"
- *        includeCssFiles="0: '{f:uri.resource(path:\'Css/Styles.css\')}'"
- *        includeJsFiles="0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'"
+ *        includeCssFiles="{0: '{f:uri.resource(path:\'Css/Styles.css\')}'}"
+ *        includeJsFiles="{0: '{f:uri.resource(path:\'JavaScript/Library1.js\')}', 1: '{f:uri.resource(path:\'JavaScript/Library2.js\')}'}"
  *        addJsInlineLabels="{0: 'label1', 1: 'label2'}" />
  *
  * Custom CSS file :file:`EXT:your_extension/Resources/Public/Css/styles.css` and
