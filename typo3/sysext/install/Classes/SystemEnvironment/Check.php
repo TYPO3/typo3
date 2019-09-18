@@ -737,7 +737,7 @@ class Check implements CheckInterface
     }
 
     /**
-     * Check jgp support of GD library
+     * Check jpg support of GD library
      */
     protected function checkGdLibJpgSupport()
     {
