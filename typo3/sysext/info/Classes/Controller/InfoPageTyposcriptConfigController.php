@@ -191,6 +191,9 @@ class InfoPageTyposcriptConfigController
                     case '6':
                         $pageTsConfig = $pageTsConfig['TCEMAIN.'] ?? [];
                         break;
+                    case '7':
+                        $pageTsConfig = $pageTsConfig['TCAdefaults.'] ?? [];
+                        break;
                     case '4':
                         $pageTsConfig = $pageTsConfig['user.'] ?? [];
                         break;
@@ -227,6 +230,7 @@ class InfoPageTyposcriptConfigController
                 '1f' => $lang->getLL('tsconf_parts_1f'),
                 '1g' => $lang->getLL('tsconf_parts_1g'),
                 2 => 'RTE.',
+                7 => 'TCAdefaults.',
                 5 => 'TCEFORM.',
                 6 => 'TCEMAIN.',
                 4 => 'user.',
