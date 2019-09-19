@@ -113,10 +113,10 @@ class ObjectManager implements ObjectManagerInterface
         }
 
         if ($this->container->has($objectName)) {
-            if ($constructorArguments !== []) {
+            if ($constructorArguments === []) {
                 $instance = $this->container->get($objectName);
                 if (!is_object($instance)) {
-                    throw new \TYPO3\CMS\Extbase\Object\Exception('PSR-11 container returned non object for class name "' . $className . '".', 1562357346);
+                    throw new \TYPO3\CMS\Extbase\Object\Exception('Invalid object name "' . $objectName . '". The PSR-11 container entry resolves to a non object.', 1562357346);
                 }
                 return $instance;
             }
