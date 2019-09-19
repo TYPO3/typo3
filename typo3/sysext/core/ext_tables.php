@@ -47,40 +47,40 @@ $GLOBALS['TBE_MODULES'] = [
         'web' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web.xlf',
             'name' => 'web',
-            'iconIdentifier' => 'module-web'
+            'iconIdentifier' => 'modulegroup-web'
         ],
         'site' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_site.xlf',
             'name' => 'site',
             'workspaces' => 'online',
-            'iconIdentifier' => 'module-site',
+            'iconIdentifier' => 'modulegroup-site',
         ],
         'file' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_file.xlf',
             'navigationFrameModule' => 'file_navframe',
             'name' => 'file',
             'workspaces' => 'online,custom',
-            'iconIdentifier' => 'module-file'
+            'iconIdentifier' => 'modulegroup-file'
         ],
         'user' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
             'name' => 'user',
-            'iconIdentifier' => 'status-user-backend'
+            'iconIdentifier' => 'modulegroup-user'
         ],
         'tools' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_admintools.xlf',
             'name' => 'tools',
-            'iconIdentifier' => 'module-tools'
+            'iconIdentifier' => 'modulegroup-tools'
         ],
         'system' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_system.xlf',
             'name' => 'system',
-            'iconIdentifier' => 'module-system'
+            'iconIdentifier' => 'modulegroup-system'
         ],
         'help' => [
             'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_help.xlf',
             'name' => 'help',
-            'iconIdentifier' => 'module-help'
+            'iconIdentifier' => 'modulegroup-help'
         ]
     ]
 ];

@@ -348,7 +348,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
         if ($iconRegistry->isRegistered($iconIdentifier)) {
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-            return $iconFactory->getIcon($iconIdentifier)->render();
+            return $iconFactory->getIcon($iconIdentifier)->render('inline');
         }
         return '';
     }

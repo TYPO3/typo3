@@ -121,10 +121,10 @@
   resolved "https://registry.yarnpkg.com/@types/requirejs/-/requirejs-2.1.31.tgz#a24eaa0ee4f6b84feb8f521ca6550d48490b2bc6"
   integrity sha512-b2soeyuU76rMbcRJ4e0hEl0tbMhFwZeTC0VZnfuWlfGlk6BwWNsev6kFu/twKABPX29wkX84wU2o+cEJoXsiTw==
 
-"@typo3/icons@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-1.9.0.tgz#f6945db21ef74f283e427bd63f511a0002bc045a"
-  integrity sha512-yvQzjE1zcinx0n/ymTiQDkJn4Sorwm6hyfL8i1G0qAmL9RoXoNYGTOEeRfsVcvafEd1Zohji2Zof2hmWmsfOOQ==
+"@typo3/icons@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@typo3/icons/-/icons-1.10.0.tgz#f7e3d68d691ffd32ef73b18e8912a8d739eafd06"
+  integrity sha512-KD3uMfsol4Wkx6G+GZl8KENgoirLNYZGznKU8uOw66DCNq9VMOuzQHOqq0/wda6hCs/HLD7VrBXK8kXmEOjr5w==
   dependencies:
     npm "^6.9.0"
 

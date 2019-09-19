@@ -109,44 +109,6 @@ class IconRegistry implements SingletonInterface
             ]
         ],
 
-        // Module
-        'module-web' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'file-o'
-            ]
-        ],
-        'module-site' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'globe'
-            ]
-        ],
-        'module-file' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'image'
-            ]
-        ],
-        'module-tools' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'rocket'
-            ]
-        ],
-        'module-system' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'plug'
-            ]
-        ],
-        'module-help' => [
-            'provider' => FontawesomeIconProvider::class,
-            'options' => [
-                'name' => 'question-circle'
-            ]
-        ],
-
         // Status
         'status-dialog-information' => [
             'provider' => FontawesomeIconProvider::class,
@@ -433,6 +395,12 @@ class IconRegistry implements SingletonInterface
      * @var array
      */
     protected $deprecatedIcons = [
+        'module-web' => 'modulegroup-web',
+        'module-site' => 'modulegroup-site',
+        'module-file' => 'modulegroup-file',
+        'module-tools' => 'modulegroup-tools',
+        'module-system' => 'modulegroup-system',
+        'module-help' => 'modulegroup-help',
         'module-workspaces-action-preview-link' => 'actions-version-workspaces-preview-link',
         'generate-ws-preview-link' => 'actions-version-workspaces-preview-link',
         'extensions-workspaces-generatepreviewlink' => 'actions-version-workspaces-preview-link',
