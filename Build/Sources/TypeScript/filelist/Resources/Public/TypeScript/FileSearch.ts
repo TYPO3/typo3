@@ -12,7 +12,7 @@
  */
 
 import * as $ from 'jquery';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Filelist/RenameFile
@@ -22,17 +22,19 @@ import 'TYPO3/CMS/Backend/jquery.clearable';
 class FileSearch {
   constructor() {
     $((): void => {
-      const $searchFields = $('input[name="tx_filelist_file_filelistlist[searchWord]"]');
-      const searchResultShown = ('' !== $searchFields.first().val());
+      let searchField: HTMLInputElement;
+      if ((searchField = document.querySelector('input[name="tx_filelist_file_filelistlist[searchWord]"]')) !== null) {
+        const searchResultShown = ('' !== searchField.value);
 
-      // make search field clearable
-      $searchFields.clearable({
-        onClear: (): void => {
-          if (searchResultShown) {
-            $searchFields.closest('form').submit();
-          }
-        },
-      });
+        // make search field clearable
+        searchField.clearable({
+          onClear: (input: HTMLInputElement): void => {
+            if (searchResultShown) {
+              input.closest('form').submit();
+            }
+          },
+        });
+      }
     });
   }
 }

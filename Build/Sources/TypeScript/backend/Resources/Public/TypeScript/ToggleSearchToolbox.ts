@@ -13,7 +13,7 @@
 
 import * as $ from 'jquery';
 import DocumentHeader = require('./DocumentHeader');
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Backend/ToggleSearchToolbox
@@ -37,17 +37,19 @@ class ToggleSearchToolbox {
       }
     });
 
-    const $searchFields = $('#search_field');
-    const searchResultShown = ('' !== $searchFields.val());
+    let searchField: HTMLInputElement;
+    if ((searchField = document.querySelector('#search_field')) !== null) {
+      const searchResultShown = ('' !== searchField.value);
 
-    // make search field clearable
-    $searchFields.clearable({
-      onClear: (): void => {
-        if (searchResultShown) {
-          $(this).closest('form').submit();
-        }
-      },
-    });
+      // make search field clearable
+      searchField.clearable({
+        onClear: (input: HTMLInputElement): void => {
+          if (searchResultShown) {
+            input.closest('form').submit();
+          }
+        },
+      });
+    }
   }
 }
 

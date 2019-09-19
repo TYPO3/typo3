@@ -15,7 +15,6 @@ import * as $ from 'jquery';
 import * as NProgress from 'nprogress';
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import 'datatables';
-import 'TYPO3/CMS/Backend/jquery.clearable';
 
 enum ExtensionManagerUpdateIdentifier {
   extensionTable = '#terTable',

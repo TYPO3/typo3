@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","TYPO3/CMS/Backend/jquery.clearable"],function(e,s,r){"use strict";return new class{constructor(){this.$searchFields=r('input[name="search_field"]'),this.searchResultShown=""!==this.$searchFields.first().val(),this.$searchFields.clearable({onClear:e=>{this.searchResultShown&&r(e.currentTarget).closest("form").submit()}}),self.location.hash&&window.scrollTo(window.pageXOffset,window.pageYOffset-40)}}});
+define(["require","exports","TYPO3/CMS/Backend/Input/Clearable"],function(e,s){"use strict";return new class{constructor(){this.searchField=document.querySelector('input[name="search_field"]'),this.searchResultShown=""!==this.searchField.value,this.searchField.clearable({onClear:e=>{this.searchResultShown&&e.closest("form").submit()}}),self.location.hash&&window.scrollTo(window.pageXOffset,window.pageYOffset-40)}}});

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","datatables","TYPO3/CMS/Backend/jquery.clearable"],function(e,s,a){"use strict";return class{constructor(){this.expandedUploadFormClass="transformed"}initializeEvents(){a(document).on("click",".t3js-upload",e=>{const s=a(e.currentTarget),t=a(".uploadForm");e.preventDefault(),s.hasClass(this.expandedUploadFormClass)?(t.stop().slideUp(),s.removeClass(this.expandedUploadFormClass)):(s.addClass(this.expandedUploadFormClass),t.stop().slideDown(),a.ajax({url:s.attr("href"),dataType:"html",success:e=>{t.html(e)}}))})}}});
+define(["require","exports","jquery","datatables"],function(s,e,a){"use strict";return class{constructor(){this.expandedUploadFormClass="transformed"}initializeEvents(){a(document).on("click",".t3js-upload",s=>{const e=a(s.currentTarget),t=a(".uploadForm");s.preventDefault(),e.hasClass(this.expandedUploadFormClass)?(t.stop().slideUp(),e.removeClass(this.expandedUploadFormClass)):(e.addClass(this.expandedUploadFormClass),t.stop().slideDown(),a.ajax({url:e.attr("href"),dataType:"html",success:s=>{t.html(s)}}))})}}});

@@ -13,7 +13,6 @@
 
 import * as $ from 'jquery';
 import 'datatables';
-import 'TYPO3/CMS/Backend/jquery.clearable';
 
 class UploadForm {
   public expandedUploadFormClass: string = 'transformed';

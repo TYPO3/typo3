@@ -14,7 +14,7 @@
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import 'twbs/bootstrap-slider';
 import 'nprogress';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Persistent = require('TYPO3/CMS/Backend/Storage/Persistent');
@@ -327,7 +327,8 @@ class Backend extends Workspaces {
         this.elements.$searchSubmitBtn.addClass('disabled');
         this.getWorkspaceInfos();
       }
-    }).clearable(
+    });
+    (<HTMLInputElement>this.elements.$searchTextField.get(0)).clearable(
       {
         onClear: (): void => {
           this.elements.$searchSubmitBtn.addClass('disabled');

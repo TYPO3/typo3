@@ -14,6 +14,7 @@
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
+import '../../Renderable/Clearable';
 import Router = require('../../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
@@ -72,9 +73,9 @@ class UpgradeDocs extends AbstractInteractableModule {
       };
     });
 
-    require(['jquery.clearable'], (): void => {
-      currentModal.find(this.selectorFulltextSearch).clearable().focus();
-    });
+    const searchInput = <HTMLInputElement>currentModal.find(this.selectorFulltextSearch).get(0);
+    searchInput.clearable();
+    searchInput.focus();
   }
 
   private getContent(): void {
@@ -142,7 +143,10 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private initializeFullTextSearch(): void {
     this.fulltextSearchField = this.findInModal(this.selectorFulltextSearch);
-    this.fulltextSearchField.clearable().focus();
+    const searchInput = <HTMLInputElement>this.fulltextSearchField.get(0);
+    searchInput.clearable();
+    searchInput.focus();
+
     this.initializeChosenSelector();
     this.fulltextSearchField.on('keyup', (): void => {
       this.combinedFilterSearch();

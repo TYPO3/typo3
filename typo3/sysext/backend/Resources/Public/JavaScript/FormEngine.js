@@ -701,9 +701,13 @@ define(['jquery',
    */
   FormEngine.reinitialize = function() {
     // Apply "close" button to all input / datetime fields
-    if ($('.t3js-clearable').length) {
-      require(['TYPO3/CMS/Backend/jquery.clearable'], function() {
-        $('.t3js-clearable').clearable();
+    const clearables = Array.from(document.querySelectorAll('.t3js-clearable')).filter(inputElement => {
+      // Filter input fields being a date time picker and a color picker
+      return !inputElement.classList.contains('t3js-datetimepicker') && !inputElement.classList.contains('t3js-color-picker');
+    });
+    if (clearables.length > 0) {
+      require(['TYPO3/CMS/Backend/Input/Clearable'], function() {
+        clearables.forEach(clearableField => clearableField.clearable());
       });
     }
 

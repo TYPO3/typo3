@@ -12,8 +12,7 @@
  */
 
 import * as $ from 'jquery';
-import DateTimePicker = require('TYPO3/CMS/Backend/DateTimePicker');
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Lowlevel/QueryGenerator
@@ -51,11 +50,13 @@ class QueryGenerator {
       const $field = $(e.currentTarget);
       this.addValueToField($field.data('field'), $field.val());
     });
-    this.form.find('.t3js-clearable').clearable({
-      onClear: (): void => {
-        this.doSubmit();
-      },
-    });
+    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-clearable')).forEach(
+      clearableField => clearableField.clearable({
+        onClear: (): void => {
+          this.doSubmit();
+        },
+      }),
+    );
   }
 
   /**

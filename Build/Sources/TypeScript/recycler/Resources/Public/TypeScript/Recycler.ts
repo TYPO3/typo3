@@ -16,7 +16,6 @@ import * as NProgress from 'nprogress';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
-import 'TYPO3/CMS/Backend/jquery.clearable';
 
 enum RecyclerIdentifiers {
   searchForm = '#recycler-form',
@@ -104,7 +103,8 @@ class Recycler {
         this.elements.$searchSubmitBtn.addClass('disabled');
         this.loadDeletedElements();
       }
-    }).clearable(
+    });
+    this.elements.$searchTextField.get(0).clearable(
       {
         onClear: () => {
           this.elements.$searchSubmitBtn.addClass('disabled');

@@ -17,7 +17,7 @@ import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
 import 'datatables';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 class Repository {
   public downloadPath: string = '';
@@ -186,18 +186,19 @@ class Repository {
   }
 
   private bindSearchFieldResetter(): void {
-    const $searchFields = $('.typo3-extensionmanager-searchTerForm input[type="text"]');
-    const searchResultShown = ('' !== $searchFields.first().val());
+    let searchField: HTMLInputElement;
+    if ((searchField = document.querySelector('.typo3-extensionmanager-searchTerForm input[type="text"]')) !== null) {
+      const searchResultShown = ('' !== searchField.value);
 
-    $searchFields.clearable(
-      {
-        onClear: (e: JQueryEventObject): void => {
+      // make search field clearable
+      searchField.clearable({
+        onClear: (input: HTMLInputElement): void => {
           if (searchResultShown) {
-            $(e.currentTarget).closest('form').submit();
+            input.closest('form').submit();
           }
         },
-      },
-    );
+      });
+    }
   }
 }
 

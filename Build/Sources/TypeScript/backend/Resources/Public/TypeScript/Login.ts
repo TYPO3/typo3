@@ -13,7 +13,7 @@
 
 import 'bootstrap';
 import * as $ from 'jquery';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Backend/Login
@@ -157,7 +157,9 @@ class BackendLogin {
       $(document).on('change blur', this.options.interfaceField, this.interfaceSelectorChanged);
     }
 
-    $('.t3js-clearable').clearable();
+    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('.t3js-clearable')).forEach(
+      clearableField => clearableField.clearable(),
+    );
 
     // carousel news height transition
     $('.t3js-login-news-carousel').on('slide.bs.carousel', (e: any) => {

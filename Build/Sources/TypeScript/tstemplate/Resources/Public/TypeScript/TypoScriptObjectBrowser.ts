@@ -12,7 +12,7 @@
  */
 
 import * as $ from 'jquery';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser
@@ -20,17 +20,17 @@ import 'TYPO3/CMS/Backend/jquery.clearable';
  * @exports TYPO3/CMS/Tstemplate/TypoScriptObjectBrowser
  */
 class TypoScriptObjectBrowser {
-  private $searchFields: JQuery;
+  private searchField: HTMLInputElement;
   private readonly searchResultShown: boolean;
 
   constructor() {
-    this.$searchFields = $('input[name="search_field"]');
-    this.searchResultShown = ('' !== this.$searchFields.first().val());
+    this.searchField = document.querySelector('input[name="search_field"]');
+    this.searchResultShown = ('' !== this.searchField.value);
 
-    this.$searchFields.clearable({
-      onClear: (evt: JQueryEventObject): void => {
+    this.searchField.clearable({
+      onClear: (input: HTMLInputElement): void => {
         if (this.searchResultShown) {
-          $(evt.currentTarget).closest('form').submit();
+          input.closest('form').submit();
         }
       },
     });

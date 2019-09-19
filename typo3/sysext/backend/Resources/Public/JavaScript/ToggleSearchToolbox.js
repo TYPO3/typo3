@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./DocumentHeader","TYPO3/CMS/Backend/jquery.clearable"],function(e,i,s,t){"use strict";return new class{constructor(){s(()=>{this.initialize()})}initialize(){const e=s("#db_list-searchbox-toolbar");s(".t3js-toggle-search-toolbox").on("click",()=>{e.toggle(),t.reposition(),e.is(":visible")&&s("#search_field").focus()});const i=s("#search_field"),o=""!==i.val();i.clearable({onClear:()=>{o&&s(this).closest("form").submit()}})}}});
+define(["require","exports","jquery","./DocumentHeader","TYPO3/CMS/Backend/Input/Clearable"],function(e,t,i,o){"use strict";return new class{constructor(){i(()=>{this.initialize()})}initialize(){const e=i("#db_list-searchbox-toolbar");let t;if(i(".t3js-toggle-search-toolbox").on("click",()=>{e.toggle(),o.reposition(),e.is(":visible")&&i("#search_field").focus()}),null!==(t=document.querySelector("#search_field"))){const e=""!==t.value;t.clearable({onClear:t=>{e&&t.closest("form").submit()}})}}}});

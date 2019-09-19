@@ -12,22 +12,21 @@
  */
 
 import * as $ from 'jquery';
-import 'TYPO3/CMS/Backend/jquery.clearable';
 
 /**
  * Module: TYPO3/CMS/Lowlevel/ConfigurationView
  * JavaScript for Configuration View
  */
 class ConfigurationView {
-  private $searchFields: JQuery = $('input[name="searchString"]');
-  private searchResultShown: boolean = ('' !== this.$searchFields.first().val());
+  private searchField: HTMLInputElement = document.querySelector('input[name="searchString"]');
+  private searchResultShown: boolean = ('' !== this.searchField.value);
 
   constructor() {
     // make search field clearable
-    this.$searchFields.clearable({
-      onClear: (): void => {
+    this.searchField.clearable({
+      onClear: (input: HTMLInputElement): void => {
         if (this.searchResultShown) {
-          $(this.$searchFields).closest('form').submit();
+          input.closest('form').submit();
         }
       },
     });

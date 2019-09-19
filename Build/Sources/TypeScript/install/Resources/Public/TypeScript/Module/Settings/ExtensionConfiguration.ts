@@ -14,6 +14,7 @@
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
 import 'bootstrap';
+import '../../Renderable/Clearable';
 import Router = require('../../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
@@ -58,9 +59,9 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       });
       currentModal.find('.searchhit').collapse('show');
       // Make search field clearable
-      require(['jquery.clearable'], (): void => {
-        $searchInput.clearable().focus();
-      });
+      const searchInput = <HTMLInputElement>$searchInput.get(0);
+      searchInput.clearable();
+      searchInput.focus();
     });
 
     currentModal.on('submit', this.selectorFormListener, (e: JQueryEventObject): void => {

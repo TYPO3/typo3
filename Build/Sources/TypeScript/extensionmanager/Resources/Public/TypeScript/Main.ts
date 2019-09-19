@@ -21,7 +21,7 @@ import ExtensionManagerRepository = require('./Repository');
 import ExtensionManagerUpdate = require('./Update');
 import ExtensionManagerUploadForm = require('./UploadForm');
 import 'datatables';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 const securityUtility = new SecurityUtility();
 
@@ -84,11 +84,14 @@ class ExtensionManager {
         $actionButton.toggleClass('disabled', !$(e.currentTarget).prop('checked'));
       });
 
-      $(ExtensionManagerIdentifier.searchField).clearable({
-        onClear: (): void => {
-          dataTable.search('').draw();
-        },
-      });
+      let searchField: HTMLInputElement;
+      if ((searchField = document.querySelector(ExtensionManagerIdentifier.searchField)) !== null) {
+        searchField.clearable({
+          onClear: (): void => {
+            dataTable.search('').draw();
+          },
+        });
+      }
 
       $(document).on('click', '.t3-button-action-installdistribution', (): void => {
         NProgress.start();

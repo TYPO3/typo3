@@ -15,7 +15,7 @@ import * as $ from 'jquery';
 import Viewport = require('./Viewport');
 import Icons = require('./Icons');
 import 'jquery/autocomplete';
-import 'TYPO3/CMS/Backend/jquery.clearable';
+import './Input/Clearable';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-livesearchtoolbaritem',
@@ -54,14 +54,16 @@ class LiveSearch {
 
       // Unset height, width and z-index
       $(Identifiers.toolbarItem).removeAttr('style');
-
-      $(Identifiers.searchFieldSelector).clearable({
-        onClear: (): void => {
-          if ($(Identifiers.toolbarItem).hasClass('open')) {
-            $(Identifiers.dropdownToggle).dropdown('toggle');
-          }
-        },
-      });
+      let searchField: HTMLInputElement;
+      if ((searchField = document.querySelector(Identifiers.searchFieldSelector)) !== null) {
+        searchField.clearable({
+          onClear: (): void => {
+            if ($(Identifiers.toolbarItem).hasClass('open')) {
+              $(Identifiers.dropdownToggle).dropdown('toggle');
+            }
+          },
+        });
+      }
     });
   }
 
