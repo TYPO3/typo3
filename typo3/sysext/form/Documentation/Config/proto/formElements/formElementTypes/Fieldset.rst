@@ -15,9 +15,6 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.fieldset.implementationclassname:
 .. include:: Fieldset/implementationClassName.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.fieldset.properties.containerclassattribute:
-.. include:: Fieldset/properties/containerClassAttribute.rst
-
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.fieldset.properties.elementclassattribute:
 .. include:: Fieldset/properties/elementClassAttribute.rst
 
