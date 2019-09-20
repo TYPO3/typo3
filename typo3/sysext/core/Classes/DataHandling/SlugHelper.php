@@ -153,7 +153,7 @@ class SlugHelper
      * Used when no slug exists for a record
      *
      * @param array $recordData
-     * @param int $pid
+     * @param int $pid The uid of the page to generate the slug for
      * @return string
      */
     public function generate(array $recordData, int $pid): string
@@ -597,9 +597,23 @@ class SlugHelper
             // do not use spacers (199), recyclers and folders and everything else
         } while (!empty($rootLine) && (int)$parentPageRecord['doktype'] >= 199);
         if ($languageId > 0) {
-            $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
-            if (!empty($localizedParentPageRecord)) {
-                $parentPageRecord = reset($localizedParentPageRecord);
+            $languageIds = [$languageId];
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+
+            try {
+                $site = $siteFinder->getSiteByPageId($pid);
+                $siteLanguage = $site->getLanguageById($languageId);
+                $languageIds = array_merge($languageIds, $siteLanguage->getFallbackLanguageIds());
+            } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+                // no site or requested language available - move on
+            }
+
+            foreach ($languageIds as $languageId) {
+                $localizedParentPageRecord = BackendUtility::getRecordLocalization('pages', $parentPageRecord['uid'], $languageId);
+                if (!empty($localizedParentPageRecord)) {
+                    $parentPageRecord = reset($localizedParentPageRecord);
+                    break;
+                }
             }
         }
         return $parentPageRecord;

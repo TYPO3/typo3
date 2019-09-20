@@ -1,0 +1,9 @@
+"pages",,,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","l10n_source","t3_origuid","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","t3ver_move_id","title","slug"
+,1,0,0,0,0,0,0,0,0,0,0,0,0,"Root","/"
+,13,1,0,0,0,0,0,0,0,0,0,0,0,"Default parent","/default-parent"
+,14,1,0,0,2,13,13,0,0,0,0,0,0,"German parent","/german-parent"
+,15,13,0,0,0,0,0,0,0,0,0,0,0,"Default Page","/default-parent/default-page"
+,16,13,0,0,1,15,15,0,0,0,0,0,0,"Dansk Page","/default-parent/dansk-page"
+,17,13,0,0,2,15,15,0,0,0,0,0,0,"German Page","/german-parent/german-page"
+,18,13,0,0,3,15,15,0,0,0,0,0,0,"Swiss Page","/german-parent/swiss-page"
