@@ -127,6 +127,9 @@ the other form elements:
 * :yaml:`renderingOptions`
 * :yaml:`validators`
 
+.. note::
+   To selectively unset list items in variants like select options the special value :code:`__UNSET` can be used as value for the item to remove.
+
 
 .. _concepts-variants-conditions:
 
@@ -546,6 +549,45 @@ application context.
            type: Text
            identifier: text-1
            label: A field
+
+
+.. _concepts-variants-examples-remove-options:
+
+Remove select options
+^^^^^^^^^^^^^^^^^^^^^
+
+In this example a select option is removed for a specific locale.
+
+.. code-block:: yaml
+
+   type: Form
+   prototypeName: standard
+   identifier: option-remove-example
+   label: Options removed under condition
+   renderables:
+     -
+       type: Page
+       identifier: page-1
+       label: Step
+       renderables:
+         -
+           identifier: salulation
+           type: SingleSelect
+           label: Salutation
+           properties:
+             options:
+               '': '---'
+               mr: Mr.
+               mrs: Mrs.
+               miss: Miss
+           defaultValue: ''
+           variants:
+             -
+               identifier: salulation-variant
+               condition: 'siteLanguage("locale") == "zh_CN.utf-8"'
+               properties:
+                 options:
+                   miss: __UNSET
 
 
 .. _concepts-variants-custom-language-providers:
