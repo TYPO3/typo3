@@ -118,7 +118,14 @@
     "number-leading-zero": "always",
     "number-no-trailing-zeros": true,
     "property-case": "lower",
-    "property-no-unknown": true,
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "/^scroll-padding/"
+        ]
+      }
+    ],
     "rule-empty-line-before": [
       "always-multi-line",
       {

@@ -206,4 +206,5 @@ $module-body-padding: $module-body-padding-vertical $module-body-padding-horizon
 
 .module-docheader + .module-body {
     padding-top: $module-docheader-height + $module-body-padding-vertical;
+    scroll-padding-top: $module-docheader-height;
 }
