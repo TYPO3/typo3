@@ -536,7 +536,12 @@ define(['jquery', 'moment'], function($, moment) {
    */
   FormEngineValidation.markFieldAsChanged = function($field) {
     var $paletteField = $field.closest('.t3js-formengine-palette-field');
-    $paletteField.addClass('has-change');
+
+    if ($field.data('original-value') && $field.data('original-value') == $field.val()) {
+      $paletteField.removeClass('has-change');
+    } else {
+      $paletteField.addClass('has-change');
+    }
   };
 
   /**
