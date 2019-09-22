@@ -138,12 +138,11 @@ class GeneralUtility
      *
      *************************/
     /**
-     * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST (that is equalent to 'GP' order)
-     * To enhance security in your scripts, please consider using GeneralUtility::_GET or GeneralUtility::_POST if you already
-     * know by which method your data is arriving to the scripts!
+     * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST, which is equalent to 'GP' order
+     * In case you already know by which method your data is arriving consider using GeneralUtility::_GET or GeneralUtility::_POST.
      *
      * @param string $var GET/POST var to return
-     * @return mixed POST var named $var and if not set, the GET var of the same name.
+     * @return mixed POST var named $var, if not set, the GET var of the same name and if also not set, NULL.
      */
     public static function _GP($var)
     {
