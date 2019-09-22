@@ -162,11 +162,10 @@ class GeneralUtility
 
     /**
      * Returns the global $_GET array (or value from) normalized to contain un-escaped values.
-     * ALWAYS use this API function to acquire the GET variables!
      * This function was previously used to normalize between magic quotes logic, which was removed from PHP 5.5
      *
      * @param string $var Optional pointer to value in GET array (basically name of GET var)
-     * @return mixed If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself. In any case *slashes are stipped from the output!*
+     * @return mixed If $var is set it returns the value of $_GET[$var]. If $var is NULL (default), returns $_GET itself.
      * @see _POST()
      * @see _GP()
      */
@@ -184,10 +183,9 @@ class GeneralUtility
 
     /**
      * Returns the global $_POST array (or value from) normalized to contain un-escaped values.
-     * ALWAYS use this API function to acquire the $_POST variables!
      *
      * @param string $var Optional pointer to value in POST array (basically name of POST var)
-     * @return mixed If $var is set it returns the value of $_POST[$var]. If $var is NULL (default), returns $_POST itself. In any case *slashes are stipped from the output!*
+     * @return mixed If $var is set it returns the value of $_POST[$var]. If $var is NULL (default), returns $_POST itself.
      * @see _GET()
      * @see _GP()
      */
