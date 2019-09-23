@@ -47,6 +47,7 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
       it('works for simply identifier and markup', function() {
         Icons.putInPromiseCache('foo', 'bar');
         expect(Icons.promiseCache['foo']).toBe('bar');
+        expect(Icons.isPromiseCached('foo')).toBe(true);
       });
     });
 
@@ -56,17 +57,6 @@ define(['jquery', 'TYPO3/CMS/Backend/Icons'], function($, Icons) {
     describe('tests for Icons::getFromPromiseCache', function() {
       it('return undefined for uncached promise', function() {
         expect(Icons.getFromPromiseCache('bar')).not.toBeDefined();
-      });
-    });
-
-    /**
-     * @test
-     */
-    describe('tests for Icons::isPromiseCached', function() {
-      it('return true for cached promise', function() {
-        expect(Icons.isPromiseCached('foo')).toBe(true);
-      });
-      it('return false for uncached promise', function() {
         expect(Icons.isPromiseCached('bar')).toBe(false);
       });
     });
