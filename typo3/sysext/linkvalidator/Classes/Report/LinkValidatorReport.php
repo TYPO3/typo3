@@ -143,6 +143,11 @@ class LinkValidatorReport
      */
     protected $view;
 
+    public function __construct()
+    {
+        $this->brokenLinkRepository = GeneralUtility::makeInstance(BrokenLinkRepository::class);
+    }
+
     /**
      * Init, called from parent object
      *
@@ -262,8 +267,8 @@ class LinkValidatorReport
             } else {
                 // mark broken links for last edited record as needing a recheck
                 $this->brokenLinkRepository->setNeedsRecheckForRecord(
-                    $this->lastEditedRecord['table'],
-                    (int)$this->lastEditedRecord['uid']
+                    (int)$this->lastEditedRecord['uid'],
+                    $this->lastEditedRecord['table']
                 );
             }
         }
@@ -324,7 +329,7 @@ class LinkValidatorReport
         }
 
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        if ($this->id && is_array($this->pageRecord) || !$this->id && $this->getBackendUser()->isAdmin()) {
+        if (($this->id && is_array($this->pageRecord)) || (!$this->id && $this->getBackendUser()->isAdmin())) {
             $this->isAccessibleForCurrentUser = true;
         }
         // Don't access in workspace
@@ -402,7 +407,11 @@ class LinkValidatorReport
         $items = [];
         $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
         if (!$rootLineHidden || (bool)$this->modTS['checkhidden'] && !empty($linkTypes)) {
-            $brokenLinks = $this->brokenLinkRepository->getAllBrokenLinksForPages($this->getPageList(), $linkTypes);
+            $brokenLinks = $this->brokenLinkRepository->getAllBrokenLinksForPages(
+                $this->getPageList(),
+                $linkTypes,
+                $this->searchFields
+            );
             foreach ($brokenLinks as $row) {
                 $items[] = $this->renderTableRow($row['table_name'], $row);
             }
@@ -570,7 +579,7 @@ class LinkValidatorReport
     {
         $variables = [];
         $variables['totalCountLabel'] = BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $this->getLanguageService()->getLL('overviews.nbtotal'));
-        $variables['totalCount'] = $brokenLinkOverView['brokenlinkCount'] ?: '0';
+        $variables['totalCount'] = $brokenLinkOverView['total'] ?: '0';
         $variables['optionsByType'] = [];
         $linkTypes = GeneralUtility::trimExplode(',', $this->modTS['linktypes'] ?? '', true);
         $availableLinkTypes = array_keys($this->hookObjectsArr);

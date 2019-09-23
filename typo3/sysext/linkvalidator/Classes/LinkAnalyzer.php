@@ -158,6 +158,12 @@ class LinkAnalyzer
 
             // Re-init selectFields for table
             $selectFields = array_merge(['uid', 'pid', $GLOBALS['TCA'][$table]['ctrl']['label']], $fields);
+            if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
+                $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+            }
+            if ($GLOBALS['TCA'][$table]['ctrl']['type'] ?? false) {
+                $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
+            }
 
             $result = $queryBuilder->select(...$selectFields)
                 ->from($table)
@@ -196,6 +202,16 @@ class LinkAnalyzer
                 $record['link_title'] = $entryValue['link_title'];
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
+                $typeField = $GLOBALS['TCA'][$table]['ctrl']['type'] ?? false;
+                if ($entryValue['row'][$typeField] ?? false) {
+                    $record['element_type'] = $entryValue['row'][$typeField];
+                }
+                $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false;
+                if ($languageField && isset($entryValue['row'][$languageField])) {
+                    $record['language'] = $entryValue['row'][$languageField];
+                } else {
+                    $record['language'] = -1;
+                }
                 $this->recordReference = $entryValue['substr']['recordRef'];
                 if (!empty($entryValue['pageAndAnchor'] ?? '')) {
                     // Page with anchor, e.g. 18#1580
@@ -462,13 +478,7 @@ class LinkAnalyzer
      */
     public function getLinkCounts()
     {
-        $groupedResult = $this->brokenLinkRepository->getNumberOfBrokenLinksForRecordsOnPages($this->pids);
-        $data = [];
-        foreach ($groupedResult as $linkType => $amount) {
-            $data[$linkType] = $amount;
-            $data['brokenlinkCount'] += $amount;
-        }
-        return $data;
+        return $this->brokenLinkRepository->getNumberOfBrokenLinksForRecordsOnPages($this->pids, $this->searchFields);
     }
 
     /**

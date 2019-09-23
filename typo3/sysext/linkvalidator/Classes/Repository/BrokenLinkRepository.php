@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Linkvalidator\Repository;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Linkvalidator\QueryRestrictions\EditableRestriction;
 
 /**
  * Repository for finding broken links that were detected previously.
@@ -90,17 +91,27 @@ class BrokenLinkRepository
      * grouped by the link_type.
      *
      * @param array $pageIds
+     * @param array $searchFields [ table => [field1, field2, ...], ...]
      * @return array
      */
-    public function getNumberOfBrokenLinksForRecordsOnPages(array $pageIds): array
+    public function getNumberOfBrokenLinksForRecordsOnPages(array $pageIds, array $searchFields): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(static::TABLE);
         $queryBuilder->getRestrictions()->removeAll();
-
+        if (!$GLOBALS['BE_USER']->isAdmin()) {
+            $queryBuilder->getRestrictions()
+                ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
+        }
         $statement = $queryBuilder->select('link_type')
-            ->addSelectLiteral($queryBuilder->expr()->count('uid', 'amount'))
+            ->addSelectLiteral($queryBuilder->expr()->count(static::TABLE . '.uid', 'amount'))
             ->from(static::TABLE)
+            ->join(
+                static::TABLE,
+                'pages',
+                'pages',
+                $queryBuilder->expr()->eq('record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
+            )
             ->where(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->andX(
@@ -122,9 +133,12 @@ class BrokenLinkRepository
             ->groupBy('link_type')
             ->execute();
 
-        $result = [];
+        $result = [
+            'total' => 0
+        ];
         while ($row = $statement->fetch()) {
             $result[$row['link_type']] = $row['amount'];
+            $result['total']+= $row['amount'];
         }
         return $result;
     }
@@ -205,17 +219,31 @@ class BrokenLinkRepository
     /**
      * Prepare database query with pageList and keyOpt data.
      *
+     * This takes permissions of current BE user into account
+     *
      * @param int[] $pageIds Pages to check for broken links
      * @param string[] $linkTypes Link types to validate
+     * @param string[] $searchFields table => [fields1, field2, ...], ... : fields in which linkvalidator should
+     *   search for broken links
      * @return array
      */
-    public function getAllBrokenLinksForPages(array $pageIds, array $linkTypes): array
+    public function getAllBrokenLinksForPages(array $pageIds, array $linkTypes, array $searchFields = []): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(self::TABLE);
+        if (!$GLOBALS['BE_USER']->isAdmin()) {
+            $queryBuilder->getRestrictions()
+                ->add(GeneralUtility::makeInstance(EditableRestriction::class, $searchFields, $queryBuilder));
+        }
         $records = $queryBuilder
-            ->select('*')
+            ->select(self::TABLE . '.*')
             ->from(self::TABLE)
+            ->join(
+                'tx_linkvalidator_link',
+                'pages',
+                'pages',
+                $queryBuilder->expr()->eq('tx_linkvalidator_link.record_pid', $queryBuilder->quoteIdentifier('pages.uid'))
+            )
             ->where(
                 $queryBuilder->expr()->orX(
                     $queryBuilder->expr()->andX(
@@ -238,13 +266,13 @@ class BrokenLinkRepository
                     $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
                 )
             )
-            ->orderBy('record_uid')
-            ->addOrderBy('uid')
+            ->orderBy('tx_linkvalidator_link.record_uid')
+            ->addOrderBy('tx_linkvalidator_link.uid')
             ->execute()
             ->fetchAll();
         foreach ($records as &$record) {
             $response = json_decode($record['url_response'], true);
-            // Fallback mechansim to still support the old serialized data, could be removed in TYPO3 v12 or later
+            // Fallback mechanism to still support the old serialized data, could be removed in TYPO3 v12 or later
             if ($response === null) {
                 $response = unserialize($record['url_response'], ['allowed_classes' => false]);
             }

@@ -105,8 +105,8 @@ class InternalLinktype extends AbstractLinktype
             $this->responseContent = $this->checkContent($page, $anchor);
         }
         if (
-            is_array($this->errorParams['page']) && !$this->responsePage
-            || is_array($this->errorParams['content']) && !$this->responseContent
+            (is_array($this->errorParams['page']) && !$this->responsePage)
+            || (is_array($this->errorParams['content']) && !$this->responseContent)
         ) {
             $this->setErrorParams($this->errorParams);
         }

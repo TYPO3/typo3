@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <perms_group>1</perms_group>
+        <!-- Permission::CONTENT_EDIT | Permission::PAGE_EDIT -->
+        <perms_user>18</perms_user>
+    </pages>
+
+    <!-- external -->
+    <tt_content>
+        <uid>1</uid>
+        <pid>1</pid>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;https://sfsfsfsfdfsfsdfsf/sfdsfsds&quot;&gt;link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <CType>textmedia</CType>
+    </tt_content>
+
+    <!-- page -->
+    <tt_content>
+        <uid>3</uid>
+        <pid>1</pid>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;t3://page?uid=85&quot;&gt;broken link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <CType>textmedia</CType>
+    </tt_content>
+
+    <!-- file -->
+    <tt_content>
+        <uid>5</uid>
+        <pid>1</pid>
+        <bodytext>&lt;p&gt;&lt;a href=&quot;t3://file?uid=88&quot;&gt;broken link&lt;/a&gt;&lt;/p&gt;</bodytext>
+        <CType>textmedia</CType>
+    </tt_content>
+
+</dataset>

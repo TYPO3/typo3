@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
+use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -127,6 +128,9 @@ class ValidatorTask extends AbstractTask
      * @var string
      */
     protected $languageFile = 'LLL:EXT:linkvalidator/Resources/Private/Language/locallang.xlf';
+
+    /** @var BrokenLinkRepository */
+    protected $brokenLinkRepository;
 
     /**
      * Get the value of the protected property email
@@ -256,6 +260,7 @@ class ValidatorTask extends AbstractTask
      */
     public function execute()
     {
+        $this->brokenLinkRepository = GeneralUtility::makeInstance(BrokenLinkRepository::class);
         $this->setCliArguments();
         $this->templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
         $successfullyExecuted = true;
@@ -343,12 +348,12 @@ class ValidatorTask extends AbstractTask
             $processor->init($searchFields, $pageIds, $modTs);
             if (!empty($this->email)) {
                 $oldLinkCounts = $processor->getLinkCounts();
-                $this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
+                $this->oldTotalBrokenLink += $oldLinkCounts['total'];
             }
             $processor->getLinkStatistics($linkTypes, $modTs['checkhidden']);
             if (!empty($this->email)) {
                 $linkCounts = $processor->getLinkCounts();
-                $this->totalBrokenLink += $linkCounts['brokenlinkCount'];
+                $this->totalBrokenLink += $linkCounts['total'];
                 $pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
             }
         }
@@ -547,7 +552,7 @@ class ValidatorTask extends AbstractTask
             BackendUtility::getRecord('pages', $curPage)
         );
         $content = '';
-        if ($markerArray['brokenlinkCount'] > 0) {
+        if ($markerArray['total'] > 0) {
             $content = $this->templateService->substituteMarkerArray(
                 $pageSectionHtml,
                 $markerArray,
