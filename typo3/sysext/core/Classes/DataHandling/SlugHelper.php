@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\DataHandling;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -24,9 +25,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\Model\RecordState;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -300,13 +302,18 @@ class SlugHelper
 
         // The installation contains at least ONE other record with the same slug
         // Now find out if it is the same root page ID
-        $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
-        $siteMatcher->refresh();
-        $siteOfCurrentRecord = $siteMatcher->matchByPageId($pageId);
+        $this->flushRootLineCaches();
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        try {
+            $siteOfCurrentRecord = $siteFinder->getSiteByPageId($pageId);
+        } catch (SiteNotFoundException $e) {
+            // Not within a site, so nothing to do
+            return true;
+        }
         foreach ($records as $record) {
             try {
                 $recordState = RecordStateFactory::forName($this->tableName)->fromArray($record);
-                $siteOfExistingRecord = $siteMatcher->matchByPageId(
+                $siteOfExistingRecord = $siteFinder->getSiteByPageId(
                     (int)$recordState->resolveNodeAggregateIdentifier()
                 );
             } catch (SiteNotFoundException $exception) {
@@ -321,6 +328,16 @@ class SlugHelper
 
         // Otherwise, everything is still fine
         return true;
+    }
+
+    /**
+     * Ensure root line caches are flushed to avoid any issue regarding moving of pages or dynamically creating
+     * sites while managing slugs at the same request
+     */
+    protected function flushRootLineCaches(): void
+    {
+        RootlineUtility::purgeCaches();
+        GeneralUtility::makeInstance(CacheManager::class)->getCache('rootline')->flush();
     }
 
     /**
