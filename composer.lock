@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b18a82508bbae64aead9ba8dc8a96487",
+    "content-hash": "e4147ebae0abe6a8b32b23f11f40acd9",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -1505,16 +1505,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.5.5",
+            "version": "2.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "e4ca051ad105a6bce02b2809172fb26d45fd06a3"
+                "reference": "75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/e4ca051ad105a6bce02b2809172fb26d45fd06a3",
-                "reference": "e4ca051ad105a6bce02b2809172fb26d45fd06a3",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80",
+                "reference": "75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80",
                 "shasum": ""
             },
             "require": {
@@ -1522,8 +1522,8 @@
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^4.8",
-                "satooshi/php-coveralls": "^1.0",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^8.1",
                 "squizlabs/php_codesniffer": "^2.7"
             },
             "bin": [
@@ -1540,7 +1540,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2019-05-07T07:21:41+00:00"
+            "time": "2019-09-13T09:38:15+00:00"
         }
     ],
     "packages-dev": [
@@ -2044,12 +2044,12 @@
             "version": "v1.6.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/bovigo/vfsStream.git",
+                "url": "https://github.com/mikey179/vfsStream.git",
                 "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/0247f57b2245e8ad2e689d7cee754b45fbabd592",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/0247f57b2245e8ad2e689d7cee754b45fbabd592",
                 "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592",
                 "shasum": ""
             },
@@ -2928,7 +2928,6 @@
                 "mock",
                 "xunit"
             ],
-            "abandoned": true,
             "time": "2017-03-03T06:30:20+00:00"
         },
         {
