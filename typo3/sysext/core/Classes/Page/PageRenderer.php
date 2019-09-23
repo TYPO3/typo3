@@ -1336,6 +1336,7 @@ class PageRenderer implements SingletonInterface
             'jquery/autocomplete' => $corePath . 'jquery.autocomplete',
             'd3' => $corePath . 'd3/d3',
             'Sortable' => $corePath . 'Sortable.min',
+            'broadcastchannel' => $corePath . '/broadcastchannel-polyfill',
         ];
         $requireJsConfig['public']['waitSeconds'] = 30;
         $requireJsConfig['public']['typo3BaseUrl'] = false;

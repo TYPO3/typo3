@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});class i{static getUrl(){return new URL(window.location.href).origin}static verifyOrigin(e){return i.getUrl()===e}static send(e,t=window){t.postMessage(e,i.getUrl())}}t.MessageUtility=i});
+define(["require","exports"],function(e,i){"use strict";Object.defineProperty(i,"__esModule",{value:!0});class t{static getOrigin(){return window.origin}static verifyOrigin(e){return t.getOrigin()===e}static send(e,i=window){i.postMessage(e,t.getOrigin())}}i.MessageUtility=t});

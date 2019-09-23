@@ -440,6 +440,7 @@ module.exports = function (grunt) {
           /* disabled for removed sourcemap reference in file
           'taboverride.min.js': 'taboverride/build/output/taboverride.min.js',
           */
+          'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
           'bootstrap-slider.min.js': 'bootstrap-slider/dist/bootstrap-slider.min.js',
           /* disabled until events are not bound to document only
                        see https://github.com/claviska/jquery-minicolors/issues/192
@@ -489,6 +490,7 @@ module.exports = function (grunt) {
       },
       thirdparty: {
         files: {
+          "<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js": ["<%= paths.core %>Public/JavaScript/Contrib/broadcastchannel-polyfill.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/require.js": ["<%= paths.core %>Public/JavaScript/Contrib/require.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/nprogress.js": ["<%= paths.core %>Public/JavaScript/Contrib/nprogress.js"],
           "<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js": ["<%= paths.core %>Public/JavaScript/Contrib/jquery-ui/core.js"],

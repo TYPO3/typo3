@@ -114,6 +114,9 @@ class BackendController
 			LoginRefresh.initialize();
 		}');
 
+        // load BroadcastService
+        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
+
         // load module menu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ModuleMenu');
 

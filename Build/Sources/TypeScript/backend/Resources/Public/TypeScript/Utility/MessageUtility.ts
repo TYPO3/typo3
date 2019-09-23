@@ -17,16 +17,15 @@ export class MessageUtility {
    *
    * @return {string}
    */
-  public static getUrl(): string {
-    const url = new URL(window.location.href);
-    return url.origin;
+  public static getOrigin(): string {
+    return window.origin;
   }
 
   /**
    * @param {string} receivedOrigin
    */
   public static verifyOrigin(receivedOrigin: string): boolean {
-    const currentDomain = MessageUtility.getUrl();
+    const currentDomain = MessageUtility.getOrigin();
 
     return currentDomain === receivedOrigin;
   }
@@ -36,6 +35,6 @@ export class MessageUtility {
    * @param {Window} windowObject
    */
   public static send(message: any, windowObject: Window = window): void {
-    windowObject.postMessage(message, MessageUtility.getUrl());
+    windowObject.postMessage(message, MessageUtility.getOrigin());
   }
 }
