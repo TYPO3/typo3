@@ -238,7 +238,7 @@ define(['jquery',
     $('.t3-flex-container').t3FormEngineFlexFormElement();
 
     // Add handler to fetch container data on click on "add container" buttons
-    $('.t3js-flex-container-add').on('click', function(e) {
+    $(document).on('click', '.t3js-flex-container-add', function(e) {
       var me = $(this);
       e.preventDefault();
       $.ajax({
