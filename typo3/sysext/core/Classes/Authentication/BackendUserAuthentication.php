@@ -298,7 +298,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         $this->name = self::getCookieName();
         $this->warningEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockIP'];
         $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'];
         parent::__construct();
     }

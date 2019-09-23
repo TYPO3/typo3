@@ -188,7 +188,6 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
     public function __construct()
     {
         $this->name = self::getCookieName();
-        $this->lockIP = $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'];
         $this->checkPid = $GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'];
         $this->lifetime = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['lifetime'];
         $this->sessionTimeout = (int)$GLOBALS['TYPO3_CONF_VARS']['FE']['sessionTimeout'];
