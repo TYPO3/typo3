@@ -251,14 +251,14 @@ class ModuleMenu {
       this.showModule($(evt.currentTarget).attr('id'), '', evt);
     });
     $(document).on('click', '.t3js-topbar-button-modulemenu', (evt: JQueryEventObject): void => {
-        evt.preventDefault();
-        ModuleMenu.toggleMenu();
-      },
+      evt.preventDefault();
+      ModuleMenu.toggleMenu();
+    },
     );
     $(document).on('click', '.t3js-scaffold-content-overlay', (evt: JQueryEventObject): void => {
-        evt.preventDefault();
-        ModuleMenu.toggleMenu(true);
-      },
+      evt.preventDefault();
+      ModuleMenu.toggleMenu(true);
+    },
     );
     $(document).on('click', '.t3js-topbar-button-navigationcomponent', (evt: JQueryEventObject): void => {
       evt.preventDefault();

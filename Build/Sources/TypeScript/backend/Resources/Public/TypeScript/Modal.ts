@@ -148,11 +148,13 @@ class Modal {
    * @param {Array<string>} additionalCssClasses Additional css classes to add to the modal
    * @returns {JQuery}
    */
-  public confirm(title: string,
-                 content: string | JQuery,
-                 severity: SeverityEnum = SeverityEnum.warning,
-                 buttons: Array<Object> = [],
-                 additionalCssClasses?: Array<string>): JQuery {
+  public confirm(
+    title: string,
+    content: string | JQuery,
+    severity: SeverityEnum = SeverityEnum.warning,
+    buttons: Array<Object> = [],
+    additionalCssClasses?: Array<string>,
+  ): JQuery {
     if (buttons.length === 0) {
       buttons.push(
         {
@@ -199,12 +201,13 @@ class Modal {
    * @param {string} target
    * @returns {JQuery}
    */
-  public loadUrl(title: string,
-                 severity: SeverityEnum = SeverityEnum.info,
-                 buttons: Array<Object>,
-                 url: string,
-                 callback?: Function,
-                 target?: string,
+  public loadUrl(
+    title: string,
+    severity: SeverityEnum = SeverityEnum.info,
+    buttons: Array<Object>,
+    url: string,
+    callback?: Function,
+    target?: string,
   ): JQuery {
     return this.advanced({
       type: Types.ajax,
@@ -226,11 +229,13 @@ class Modal {
    * @param {Array<string>} additionalCssClasses
    * @returns {JQuery}
    */
-  public show(title: string,
-              content: string | JQuery,
-              severity: SeverityEnum = SeverityEnum.info,
-              buttons?: Array<Object>,
-              additionalCssClasses?: Array<string>): JQuery {
+  public show(
+    title: string,
+    content: string | JQuery,
+    severity: SeverityEnum = SeverityEnum.info,
+    buttons?: Array<Object>,
+    additionalCssClasses?: Array<string>,
+  ): JQuery {
     return this.advanced({
       type: Types.default,
       title,

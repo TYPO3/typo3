@@ -151,7 +151,7 @@ class Persistent {
       data: {
         action: 'getAll',
       },
-    }).done((data) => {
+    }).done((data: any) => {
       me.data = data;
     });
   }
@@ -173,7 +173,7 @@ class Persistent {
         value,
       },
       method: 'post',
-    }).done((data): any => {
+    }).done((data: any): any => {
       me.data = data;
     });
   }

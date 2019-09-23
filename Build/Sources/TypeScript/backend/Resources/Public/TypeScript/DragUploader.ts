@@ -68,6 +68,12 @@ interface DragUploaderOptions {
   outputColor?: string;
 }
 
+interface FileConflict {
+  original: UploadedFile;
+  uploaded: InternalFile;
+  action: Action;
+}
+
 class DragUploaderPlugin {
   public irreObjectUid: number;
   public $fileList: JQuery;
@@ -81,17 +87,17 @@ class DragUploaderPlugin {
   /**
    * Array of files which are asked for being overridden
    */
-  private askForOverride: Array<{ original: UploadedFile, uploaded: InternalFile, action: Action }> = [];
+  private askForOverride: Array<FileConflict> = [];
 
   private percentagePerFile: number = 1;
 
   private $body: JQuery;
-  private $element: JQuery;
-  private $dropzone: JQuery;
-  private $dropzoneMask: JQuery;
-  private fileInput: HTMLInputElement;
+  private readonly $element: JQuery;
+  private readonly $dropzone: JQuery;
+  private readonly $dropzoneMask: JQuery;
+  private readonly fileInput: HTMLInputElement;
   private browserCapabilities: { fileReader: boolean; DnD: boolean; Progress: boolean };
-  private dropZoneInsertBefore: boolean;
+  private readonly dropZoneInsertBefore: boolean;
   private queueLength: number;
   private defaultAction: string;
 
@@ -256,7 +262,7 @@ class DragUploaderPlugin {
 
     // Check for each file if is already exist before adding it to the queue
     const ajaxCalls: JQueryXHR[] = [];
-    $.each(files, (i: string, file) => {
+    $.each(files, (i: string, file: InternalFile) => {
       ajaxCalls[parseInt(i, 10)] = $.ajax({
         url: TYPO3.settings.ajaxUrls.file_exists,
         data: {
@@ -274,8 +280,7 @@ class DragUploaderPlugin {
             });
             NProgress.inc(this.percentagePerFile);
           } else {
-            // Unused var _ is necessary as "no-unused-expression" is active
-            const _ = new FileQueueItem(this, file, Action.SKIP);
+            new FileQueueItem(this, file, Action.SKIP);
           }
         },
       });
@@ -320,7 +325,7 @@ class DragUploaderPlugin {
         $.ajax({
           url: TYPO3.settings.ajaxUrls.flashmessages_render,
           cache: false,
-          success: (data) => {
+          success: (data: any) => {
             $.each(data, (index: number, flashMessage: { title: string, message: string, severity: number }) => {
               Notification.showMessage(flashMessage.title, flashMessage.message, flashMessage.severity);
             });
@@ -355,8 +360,8 @@ class DragUploaderPlugin {
       const $record = $('<tr />').append(
         $('<td />').append(
           (this.askForOverride[i].original.thumbUrl !== ''
-              ? $('<img />', {src: this.askForOverride[i].original.thumbUrl, height: 40})
-              : $(this.askForOverride[i].original.icon)
+            ? $('<img />', {src: this.askForOverride[i].original.thumbUrl, height: 40})
+            : $(this.askForOverride[i].original.icon)
           ),
         ),
         $('<td />').html(
@@ -429,7 +434,7 @@ class DragUploaderPlugin {
 
       if (value !== '') {
         // mass action was selected, apply action to every file
-        $modal.find('.t3js-actions').each((i, select) => {
+        $modal.find('.t3js-actions').each((i: number, select: HTMLSelectElement) => {
           const $select = $(select),
             index = parseInt($select.data('override'), 10);
           $select.val(value).prop('disabled', 'disabled');
@@ -447,15 +452,14 @@ class DragUploaderPlugin {
         uploader.askForOverride = [];
         Modal.dismiss();
       } else if ((<HTMLInputElement>(e.target)).name === 'continue') {
-        $.each(uploader.askForOverride, (key, fileInfo) => {
+        $.each(uploader.askForOverride, (key: number, fileInfo: FileConflict) => {
           if (fileInfo.action === Action.USE_EXISTING) {
             DragUploader.addFileToIrre(
               uploader.irreObjectUid,
               fileInfo.original,
             );
           } else if (fileInfo.action !== Action.SKIP) {
-            // Unused var _ is necessary as "no-unused-expression" is active
-            const _ = new FileQueueItem(uploader, fileInfo.uploaded, fileInfo.action);
+            new FileQueueItem(uploader, fileInfo.uploaded, fileInfo.action);
           }
         });
         uploader.askForOverride = [];
@@ -740,7 +744,6 @@ class DragUploader {
       $('.t3js-drag-uploader').dragUploader(opts);
     });
   }
-
 }
 
 /**
@@ -767,7 +770,7 @@ export const initialize = function (): void {
     && 'undefined' !== typeof TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader']
   ) {
     $.each(
-      TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader'], (pos, moduleName) => {
+      TYPO3.settings.RequireJS.PostInitializationModules['TYPO3/CMS/Backend/DragUploader'], (pos: number, moduleName: string) => {
         require([moduleName]);
       },
     );

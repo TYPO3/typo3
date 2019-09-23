@@ -276,7 +276,7 @@ class ImageManipulation {
         title: modalTitle,
       });
 
-      this.currentModal.on('hide.bs.modal', (e: JQueryEventObject): void => {
+      this.currentModal.on('hide.bs.modal', (): void => {
         this.destroy();
       });
       // do not dismiss the modal when clicking beside it to avoid data loss
@@ -570,98 +570,98 @@ class ImageManipulation {
     this.focusArea = $('<div id="t3js-cropper-focus-area" class="cropper-focus-area"></div>');
     container.append(this.focusArea);
     this.focusArea
-        .draggable({
-          containment: container,
-          create: (): void => {
-            this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
-          },
-          drag: (): void => {
-            const {left, top}: Offset = container.offset();
-            const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-            const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+      .draggable({
+        containment: container,
+        create: (): void => {
+          this.scaleAndMoveFocusArea(this.currentCropVariant.focusArea);
+        },
+        drag: (): void => {
+          const {left, top}: Offset = container.offset();
+          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
+          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
-            focusArea.x = (fLeft - left) / container.width();
-            focusArea.y = (fTop - top) / container.height();
-            this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
-            if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
-              this.focusArea.addClass('has-nodrop');
-            } else {
-              this.focusArea.removeClass('has-nodrop');
-            }
-          },
-          revert: (): boolean => {
-            const revertDelay = 250;
-            const {left, top}: Offset = container.offset();
-            const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-            const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+          focusArea.x = (fLeft - left) / container.width();
+          focusArea.y = (fTop - top) / container.height();
+          this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
+          if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+            this.focusArea.addClass('has-nodrop');
+          } else {
+            this.focusArea.removeClass('has-nodrop');
+          }
+        },
+        revert: (): boolean => {
+          const revertDelay = 250;
+          const {left, top}: Offset = container.offset();
+          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
+          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
-            if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
-              this.focusArea.removeClass('has-nodrop');
-              ImageManipulation.wait((): void => {
-                focusArea.x = (fLeft - left) / container.width();
-                focusArea.y = (fTop - top) / container.height();
-                this.updateCropVariantData(this.currentCropVariant);
-              },                     revertDelay);
-              return true;
-            }
-            return false;
-          },
-          revertDuration: 200,
-          stop: (): void => {
-            const {left, top}: Offset = container.offset();
-            const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-            const {focusArea}: {focusArea?: Area} = this.currentCropVariant;
+          if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+            this.focusArea.removeClass('has-nodrop');
+            ImageManipulation.wait((): void => {
+              focusArea.x = (fLeft - left) / container.width();
+              focusArea.y = (fTop - top) / container.height();
+              this.updateCropVariantData(this.currentCropVariant);
+            },                     revertDelay);
+            return true;
+          }
+          return false;
+        },
+        revertDuration: 200,
+        stop: (): void => {
+          const {left, top}: Offset = container.offset();
+          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
+          const {focusArea}: {focusArea?: Area} = this.currentCropVariant;
 
-            focusArea.x = (fLeft - left) / container.width();
-            focusArea.y = (fTop - top) / container.height();
+          focusArea.x = (fLeft - left) / container.width();
+          focusArea.y = (fTop - top) / container.height();
 
-            this.scaleAndMoveFocusArea(focusArea);
-          },
-        })
-        .resizable({
-          containment: container,
-          handles: 'all',
-          resize: (): void => {
-            const {left, top}: Offset = container.offset();
-            const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-            const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+          this.scaleAndMoveFocusArea(focusArea);
+        },
+      })
+      .resizable({
+        containment: container,
+        handles: 'all',
+        resize: (): void => {
+          const {left, top}: Offset = container.offset();
+          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
+          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
-            focusArea.height = this.focusArea.height() / container.height();
-            focusArea.width = this.focusArea.width() / container.width();
-            focusArea.x = (fLeft - left) / container.width();
-            focusArea.y = (fTop - top) / container.height();
-            this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
+          focusArea.height = this.focusArea.height() / container.height();
+          focusArea.width = this.focusArea.width() / container.width();
+          focusArea.x = (fLeft - left) / container.width();
+          focusArea.y = (fTop - top) / container.height();
+          this.updatePreviewThumbnail(this.currentCropVariant, this.activeCropVariantTrigger);
 
-            if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
-              this.focusArea.addClass('has-nodrop');
-            } else {
-              this.focusArea.removeClass('has-nodrop');
-            }
+          if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+            this.focusArea.addClass('has-nodrop');
+          } else {
+            this.focusArea.removeClass('has-nodrop');
+          }
 
-          },
-          stop: (event: any, ui: any): void => {
-            const revertDelay = 250;
-            const {left, top}: Offset = container.offset();
-            const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
-            const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
+        },
+        stop: (event: any, ui: any): void => {
+          const revertDelay = 250;
+          const {left, top}: Offset = container.offset();
+          const {left: fLeft, top: fTop}: Offset = this.focusArea.offset();
+          const {focusArea, coverAreas}: {focusArea?: Area, coverAreas?: Area[]} = this.currentCropVariant;
 
-            if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
-              ui.element.animate($.extend(ui.originalPosition, ui.originalSize), revertDelay, (): void => {
+          if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
+            ui.element.animate($.extend(ui.originalPosition, ui.originalSize), revertDelay, (): void => {
 
-                focusArea.height = this.focusArea.height() / container.height();
-                focusArea.height = this.focusArea.height() / container.height();
-                focusArea.width = this.focusArea.width() / container.width();
-                focusArea.x = (fLeft - left) / container.width();
-                focusArea.y = (fTop - top) / container.height();
+              focusArea.height = this.focusArea.height() / container.height();
+              focusArea.height = this.focusArea.height() / container.height();
+              focusArea.width = this.focusArea.width() / container.width();
+              focusArea.x = (fLeft - left) / container.width();
+              focusArea.y = (fTop - top) / container.height();
 
-                this.scaleAndMoveFocusArea(focusArea);
-                this.focusArea.removeClass('has-nodrop');
-              });
-            } else {
               this.scaleAndMoveFocusArea(focusArea);
-            }
-          },
-        });
+              this.focusArea.removeClass('has-nodrop');
+            });
+          } else {
+            this.scaleAndMoveFocusArea(focusArea);
+          }
+        },
+      });
   }
 
   /**
@@ -868,11 +868,11 @@ class ImageManipulation {
       const cropData: Area = this.convertRelativeToAbsoluteCropArea(cropVariant.cropArea, imageData);
 
       const $preview: JQuery = this.trigger
-                                   .closest('.form-group')
-                                   .find(`.t3js-image-manipulation-preview[data-crop-variant-id="${cropVariantId}"]`);
+        .closest('.form-group')
+        .find(`.t3js-image-manipulation-preview[data-crop-variant-id="${cropVariantId}"]`);
       const $previewSelectedRatio: JQuery = this.trigger
-                                                .closest('.form-group')
-                                                .find(`.t3js-image-manipulation-selected-ratio[data-crop-variant-id="${cropVariantId}"]`); // tslint:disable-line:max-line-length
+        .closest('.form-group')
+        .find(`.t3js-image-manipulation-selected-ratio[data-crop-variant-id="${cropVariantId}"]`); // tslint:disable-line:max-line-length
 
       if ($preview.length === 0) {
         return;

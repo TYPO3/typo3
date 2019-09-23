@@ -21,7 +21,7 @@ enum MarkupIdentifiers {
 }
 
 // hack is required, because the Notification definition is wrong
-declare var Notification: any;
+declare let Notification: any;
 
 /**
  * Module: TYPO3/CMS/Backend/LoginRefresh
@@ -396,7 +396,7 @@ class LoginRefresh {
       url: $form.attr('action'),
       method: 'POST',
       data: postData,
-      success: (response) => {
+      success: (response: { [key: string ]: any }) => {
         if (response.login.success) {
           // User is logged in
           this.hideLoginForm();
@@ -439,7 +439,7 @@ class LoginRefresh {
    * and opens a dialog.
    */
   protected checkActiveSession = (): void => {
-    $.getJSON(TYPO3.settings.ajaxUrls.login_timedout, [], (response) => {
+    $.getJSON(TYPO3.settings.ajaxUrls.login_timedout, [], (response: { [key: string ]: any }) => {
       if (response.login.locked) {
         if (!this.backendIsLocked) {
           this.backendIsLocked = true;

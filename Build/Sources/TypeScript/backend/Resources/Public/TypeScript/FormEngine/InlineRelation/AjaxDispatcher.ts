@@ -86,7 +86,7 @@ export class AjaxDispatcher {
     // TODO: This is subject to be removed
     if (json.scriptCall && json.scriptCall.length > 0) {
       $.each(json.scriptCall, (index: number, value: string): void => {
-        // tslint:disable-next-line:no-eval
+        // eslint-disable-next-line no-eval
         eval(value);
       });
     }

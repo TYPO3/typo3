@@ -158,7 +158,7 @@ class BackendLogin {
     }
 
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('.t3js-clearable')).forEach(
-      clearableField => clearableField.clearable(),
+      (clearableField: HTMLInputElement) => clearableField.clearable(),
     );
 
     // carousel news height transition

@@ -129,8 +129,8 @@ class InlineControlContainer {
   private static registerInfoButton(e: Event): void {
     let target: HTMLElement;
     if ((target = InlineControlContainer.getDelegatedEventTarget(
-        e.target,
-        Selectors.infoWindowButton)
+      e.target,
+      Selectors.infoWindowButton)
     ) === null) {
       return;
     }
@@ -186,7 +186,7 @@ class InlineControlContainer {
    * @param {UniqueDefinitionCollection} hashmap
    */
   private static getValuesFromHashMap(hashmap: UniqueDefinitionCollection): Array<any> {
-    return Object.keys(hashmap).map(key => hashmap[key]);
+    return Object.keys(hashmap).map((key: string) => hashmap[key]);
   }
 
   private static selectOptionValueExists(selectElement: HTMLSelectElement, value: string): boolean {
@@ -374,7 +374,7 @@ class InlineControlContainer {
    */
   private handlePostMessage = (e: MessageEvent): void => {
     if (!MessageUtility.verifyOrigin(e.origin)) {
-       throw 'Denied message sent by ' + e.origin;
+      throw 'Denied message sent by ' + e.origin;
     }
 
     if (typeof e.data.objectGroup === 'undefined') {
@@ -448,8 +448,8 @@ class InlineControlContainer {
   private registerEnableDisableButton(e: Event): void {
     let target: HTMLElement;
     if ((target = InlineControlContainer.getDelegatedEventTarget(
-        e.target,
-        Selectors.enableDisableRecordButtonSelector)
+      e.target,
+      Selectors.enableDisableRecordButtonSelector)
     ) === null) {
       return;
     }
@@ -492,8 +492,8 @@ class InlineControlContainer {
   private registerDeleteButton(e: Event): void {
     let target: HTMLElement;
     if ((target = InlineControlContainer.getDelegatedEventTarget(
-        e.target,
-        Selectors.deleteRecordButtonSelector)
+      e.target,
+      Selectors.deleteRecordButtonSelector)
     ) === null) {
       return;
     }

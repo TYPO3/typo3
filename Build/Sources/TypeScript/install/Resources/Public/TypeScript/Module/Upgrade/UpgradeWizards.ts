@@ -50,17 +50,17 @@ class UpgradeWizards extends AbstractInteractableModule {
   private selectorWizardsInputPerform: string = '.t3js-upgradeWizards-input-perform';
   private securityUtility: SecurityUtility;
 
-  constructor() {
-    super();
-    this.securityUtility = new SecurityUtility();
-  }
-
   private static removeLoadingMessage($container: JQuery): void {
     $container.find('.alert-loading').remove();
   }
 
   private static renderProgressBar(title: string): any {
     return ProgressBar.render(Severity.loading, title, '');
+  }
+
+  constructor() {
+    super();
+    this.securityUtility = new SecurityUtility();
   }
 
   public initialize(currentModal: JQuery): void {
@@ -76,12 +76,12 @@ class UpgradeWizards extends AbstractInteractableModule {
     });
 
     // Execute "fix default mysql connection db charset" blocking wizard
-    currentModal.on('click', this.selectorWizardsBlockingCharsetFix, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorWizardsBlockingCharsetFix, (): void => {
       this.blockingUpgradesDatabaseCharsetFix();
     });
 
     // Execute "add required fields + tables" blocking wizard
-    currentModal.on('click', this.selectorWizardsBlockingAddsExecute, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorWizardsBlockingAddsExecute, (): void => {
       this.blockingUpgradesDatabaseAddsExecute();
     });
 

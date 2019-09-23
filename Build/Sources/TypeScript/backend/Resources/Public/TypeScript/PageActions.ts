@@ -134,7 +134,7 @@ class PageActions {
    */
   private editPageTitle(): void {
     const $inputFieldWrap = $(
-      '<form>' +
+        '<form>' +
       '<div class="form-group">' +
       '<div class="input-group input-group-lg">' +
       '<input class="form-control t3js-title-edit-input">' +

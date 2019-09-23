@@ -32,7 +32,7 @@ class ChangeInstallToolPassword extends AbstractInteractableModule {
       e.preventDefault();
       this.change();
     });
-    currentModal.on('click', '.t3-install-form-password-strength', (e: JQueryEventObject): void => {
+    currentModal.on('click', '.t3-install-form-password-strength', (): void => {
       PasswordStrength.initialize('.t3-install-form-password-strength');
     });
   }

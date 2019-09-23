@@ -154,12 +154,12 @@ class ContextMenuActions {
         + '&CB[pad]=normal&redirect=' + ContextMenuActions.getReturnUrl(),
       );
     };
-    if (!$anchorElement.data('title')) {
+    if (!title) {
       performPaste();
       return;
     }
     const $modal = Modal.confirm(
-      $anchorElement.data('title'),
+      title,
       $anchorElement.data('message'),
       SeverityEnum.warning, [
         {

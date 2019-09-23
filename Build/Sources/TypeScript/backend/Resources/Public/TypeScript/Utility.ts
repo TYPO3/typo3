@@ -23,7 +23,7 @@ class Utility {
    * @return Array<string>
    */
   public static trimExplode(delimiter: string, string: string): Array<string> {
-    return string.split(delimiter).map((item) => item.trim()).filter((item) => item !== '');
+    return string.split(delimiter).map((item: string) => item.trim()).filter((item: string) => item !== '');
   }
 
   /**
@@ -35,7 +35,10 @@ class Utility {
    * @return Array<number>
    */
   public static intExplode(delimiter: string, string: string, excludeZeroValues: boolean = false): Array<number> {
-    return string.split(delimiter).map((item) => parseInt(item, 10)).filter((item) => !isNaN(item) || excludeZeroValues && item === 0);
+    return string
+      .split(delimiter)
+      .map((item: string) => parseInt(item, 10))
+      .filter((item: number) => !isNaN(item) || excludeZeroValues && item === 0);
   }
 
   /**

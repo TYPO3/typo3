@@ -57,8 +57,8 @@ class LocalConfiguration extends AbstractInteractableModule {
       if (e.ctrlKey || e.metaKey) {
         // Focus search field on ctrl-f
         if (String.fromCharCode(e.which).toLowerCase() === 'f') {
-            e.preventDefault();
-            $searchInput.focus();
+          e.preventDefault();
+          $searchInput.focus();
         }
       } else if (e.keyCode === 27) {
         // Clear search on ESC key

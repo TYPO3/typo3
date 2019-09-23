@@ -83,7 +83,7 @@ class SlugElement {
   }
 
   private registerEvents(): void {
-    const fieldsToListenOnList = Object.keys(this.getAvailableFieldsForProposalGeneration()).map(k => this.fieldsToListenOn[k]);
+    const fieldsToListenOnList = Object.keys(this.getAvailableFieldsForProposalGeneration()).map((k: string) => this.fieldsToListenOn[k]);
 
     // Listen on 'listenerFieldNames' for new pages. This is typically the 'title' field
     // of a page to create slugs from the title when title is set / changed.
@@ -97,7 +97,7 @@ class SlugElement {
       }
 
       // Clicking the recreate button makes new slug proposal created from 'title' field
-      $(this.$fullElement).on('click', Selectors.recreateButton, (e): void => {
+      $(this.$fullElement).on('click', Selectors.recreateButton, (e: JQueryEventObject): void => {
         e.preventDefault();
         if (this.$readOnlyField.hasClass('hidden')) {
           // Switch to readonly version - similar to 'new' page where field is
@@ -122,7 +122,7 @@ class SlugElement {
     // Clicking the toggle button toggles the read only field and the input field.
     // Also set the value of either the read only or the input field to the hidden field
     // and update the value of the read only field after manual change of the input field.
-    $(this.$fullElement).on('click', Selectors.toggleButton, (e): void => {
+    $(this.$fullElement).on('click', Selectors.toggleButton, (e: JQueryEventObject): void => {
       e.preventDefault();
       const showReadOnlyField = this.$readOnlyField.hasClass('hidden');
       this.$readOnlyField.toggleClass('hidden', !showReadOnlyField);

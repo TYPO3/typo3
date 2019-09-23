@@ -51,7 +51,7 @@ class RenameFile {
 
         if (fileExists && originalFileName !== newFileName) {
           const description: string = TYPO3.lang['file_rename.exists.description']
-                                           .replace('{0}', originalFileName).replace('{1}', newFileName);
+            .replace('{0}', originalFileName).replace('{1}', newFileName);
 
           const modal: JQuery = Modal.confirm(
             TYPO3.lang['file_rename.exists.title'],

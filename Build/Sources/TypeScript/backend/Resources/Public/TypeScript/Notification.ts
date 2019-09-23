@@ -96,11 +96,13 @@ class Notification {
    * @param {number} duration
    * @param {Action[]} actions
    */
-  public static showMessage(title: string,
-                            message?: string,
-                            severity: SeverityEnum = SeverityEnum.info,
-                            duration: number | string = this.duration,
-                            actions: Array<Action> = []): void {
+  public static showMessage(
+    title: string,
+    message?: string,
+    severity: SeverityEnum = SeverityEnum.info,
+    duration: number | string = this.duration,
+    actions: Array<Action> = [],
+  ): void {
     const className = Severity.getCssClass(severity);
     let icon = '';
     switch (severity) {
@@ -168,7 +170,7 @@ class Notification {
           title: action.label,
         });
         $actionButton.text(action.label);
-        $actionButton.on('click', (e): void => {
+        $actionButton.on('click', (e: JQueryEventObject): void => {
           // Remove potentially set timeout
           $box.clearQueue();
 

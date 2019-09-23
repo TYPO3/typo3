@@ -65,7 +65,7 @@ class SelectBoxFilter {
     this.selectElement.innerHTML = '';
     const matchFilter = new RegExp(filterText, 'i');
 
-    this.$availableOptions.each((i, el): void => {
+    this.$availableOptions.each((i: number, el: HTMLElement): void => {
       if (filterText.length === 0 || el.textContent.match(matchFilter)) {
         this.selectElement.appendChild(el);
       }

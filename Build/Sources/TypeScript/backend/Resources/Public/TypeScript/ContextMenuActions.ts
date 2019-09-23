@@ -51,11 +51,7 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static viewRecord(table: string, uid: number): void {
+  public static viewRecord(): void {
     const $viewUrl = $(this).data('preview-url');
     if ($viewUrl) {
       const previewWin = window.open($viewUrl, 'newTYPO3frontendWindow');
@@ -91,11 +87,7 @@ class ContextMenuActions {
     );
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static newContentWizard(table: string, uid: number): void {
+  public static newContentWizard(): void {
     const $me = $(this);
     let $wizardUrl = $me.data('new-wizard-url');
     if ($wizardUrl) {
@@ -139,22 +131,14 @@ class ContextMenuActions {
     ModuleMenu.App.showModule('web_list', 'id=' + pageId);
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static pagesSort(table: string, uid: number): void {
+  public static pagesSort(): void {
     const pagesSortUrl = $(this).data('pages-sort-url');
     if (pagesSortUrl) {
       Viewport.ContentContainer.setUrl(pagesSortUrl);
     }
   }
 
-  /**
-   * @param {string} table
-   * @param {number} uid
-   */
-  public static pagesNewMultiple(table: string, uid: number): void {
+  public static pagesNewMultiple(): void {
     const pagesSortUrl = $(this).data('pages-new-multiple-url');
     if (pagesSortUrl) {
       Viewport.ContentContainer.setUrl(pagesSortUrl);
@@ -305,7 +289,7 @@ class ContextMenuActions {
       },
       error: (): void => {
         Notification.error(
-            'Clearing page caches went wrong on the server side.',
+          'Clearing page caches went wrong on the server side.',
         );
       },
     });

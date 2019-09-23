@@ -18,18 +18,18 @@ class DocumentSaveActions {
   private static instance: DocumentSaveActions = null;
   private preSubmitCallbacks: Array<Function> = [];
 
-  private constructor() {
-    $((): void => {
-      this.initializeSaveHandling();
-    });
-  }
-
   public static getInstance(): DocumentSaveActions {
     if (DocumentSaveActions.instance === null) {
       DocumentSaveActions.instance = new DocumentSaveActions();
     }
 
     return DocumentSaveActions.instance;
+  }
+
+  private constructor() {
+    $((): void => {
+      this.initializeSaveHandling();
+    });
   }
 
   /**

@@ -12,12 +12,10 @@
  */
 
 export abstract class AbstractInteractableModule {
+  protected currentModal: JQuery;
   private readonly selectorModalBody: string = '.t3js-modal-body';
   private readonly selectorModalContent: string = '.t3js-module-content';
   private readonly selectorModalFooter: string = '.t3js-modal-footer';
-  protected currentModal: JQuery;
-
-  abstract initialize(currentModal: JQuery): void;
 
   protected getModalBody(): JQuery {
     return this.findInModal(this.selectorModalBody);
@@ -34,4 +32,6 @@ export abstract class AbstractInteractableModule {
   protected findInModal(selector: string): JQuery {
     return this.currentModal.find(selector);
   }
+
+  public abstract initialize(currentModal: JQuery): void;
 }

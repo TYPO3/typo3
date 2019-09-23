@@ -565,9 +565,9 @@ export class GridEditor {
               + '<br />'
               + TYPO3.lang.grid_column + ': '
               + (typeof cell.column === 'undefined' || isNaN(cell.column)
-                  ? TYPO3.lang.grid_notSet
-                  : parseInt(cell.column, 10)
-                ),
+                ? TYPO3.lang.grid_notSet
+                : parseInt(cell.column, 10)
+              ),
             ),
         );
         if (cell.colspan > 1) {

@@ -80,7 +80,7 @@ class ImageProcessing extends AbstractInteractableModule {
           if (data.success === true) {
             $container.empty();
             if (Array.isArray(data.status)) {
-              data.status.forEach((aElement: any): void => {
+              data.status.forEach((): void => {
                 const aMessage = InfoBox.render(element.severity, element.title, element.message);
                 $container.append(aMessage);
               });

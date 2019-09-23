@@ -29,10 +29,10 @@ interface Parameters {
 }
 
 interface DroppableEventUIParam {
-    draggable: JQuery;
-    helper: JQuery;
-    position: { top: number; left: number; };
-    offset: { top: number; left: number; };
+  draggable: JQuery;
+  helper: JQuery;
+  position: { top: number; left: number; };
+  offset: { top: number; left: number; };
 }
 
 class DragDrop {
@@ -60,10 +60,10 @@ class DragDrop {
       // addClasses: 'active-drag',
       revert: 'invalid',
       zIndex: 100,
-      start: (evt: JQueryEventObject, ui: DroppableEventUIParam): void => {
+      start: (evt: JQueryEventObject): void => {
         DragDrop.onDragStart($(evt.target));
       },
-      stop: (evt: JQueryEventObject, ui: DroppableEventUIParam): void => {
+      stop: (evt: JQueryEventObject): void => {
         DragDrop.onDragStop($(evt.target));
       },
     });

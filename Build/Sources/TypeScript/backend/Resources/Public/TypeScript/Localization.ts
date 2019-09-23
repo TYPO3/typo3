@@ -149,8 +149,8 @@ class Localization {
                               value: languageObject.uid,
                               style: 'display: none;',
                             },
+                            ),
                           ),
-                        ),
                       ),
                     );
                   }

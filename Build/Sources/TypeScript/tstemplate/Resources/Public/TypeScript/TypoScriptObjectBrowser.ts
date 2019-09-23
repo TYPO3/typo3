@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
 import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**

@@ -235,7 +235,7 @@ class Permissions {
   /**
    * Group-related: Update the HTML view and show the original group
    */
-public restoreGroup = ($element: JQuery): void => {
+  public restoreGroup = ($element: JQuery): void => {
     let page = $element.data('page');
     let groupname = $element.data('groupname');
     let groupnameHtml = groupname;

@@ -111,7 +111,7 @@ class FlexFormElement {
       this.createSortable();
 
       // allow delete of a single section
-      this.$el.off('click').on('click', this.opts.deleteIconSelector, (evt) => {
+      this.$el.off('click').on('click', this.opts.deleteIconSelector, (evt: JQueryEventObject) => {
         evt.preventDefault();
 
         const confirmTitle = TYPO3.lang['flexform.section.delete.title'] || 'Are you sure?';
@@ -129,7 +129,7 @@ class FlexFormElement {
       });
 
       // allow the toggle open/close of the main selection
-      this.$el.on('click', this.opts.sectionToggleButtonSelector, (evt) => {
+      this.$el.on('click', this.opts.sectionToggleButtonSelector, (evt: JQueryEventObject) => {
         evt.preventDefault();
         const $sectionEl = $(evt.currentTarget).closest(this.opts.sectionSelector);
         this.toggleSection($sectionEl);
@@ -171,25 +171,25 @@ class FlexFormElement {
   // hides the flexform section and shows a preview text
   // or shows the form parts
   private toggleSection($sectionEl: JQuery): void {
-   const $contentEl = $sectionEl.find(this.opts.sectionContentSelector);
+    const $contentEl = $sectionEl.find(this.opts.sectionContentSelector);
 
-   // display/hide the content of this flexform section
-   $contentEl.toggle();
+    // display/hide the content of this flexform section
+    $contentEl.toggle();
 
-   if ($contentEl.is(':visible')) {
-     // show the open icon, and set the hidden field for toggling to "hidden"
-     $sectionEl.find(this.opts.sectionToggleIconOpenSelector).show();
-     $sectionEl.find(this.opts.sectionToggleIconCloseSelector).hide();
-     $sectionEl.find(this.opts.sectionToggleInputFieldSelector).val(0);
-   } else {
-     // show the close icon, and set the hidden field for toggling to "1"
-     $sectionEl.find(this.opts.sectionToggleIconOpenSelector).hide();
-     $sectionEl.find(this.opts.sectionToggleIconCloseSelector).show();
-     $sectionEl.find(this.opts.sectionToggleInputFieldSelector).val(1);
-   }
+    if ($contentEl.is(':visible')) {
+      // show the open icon, and set the hidden field for toggling to "hidden"
+      $sectionEl.find(this.opts.sectionToggleIconOpenSelector).show();
+      $sectionEl.find(this.opts.sectionToggleIconCloseSelector).hide();
+      $sectionEl.find(this.opts.sectionToggleInputFieldSelector).val(0);
+    } else {
+      // show the close icon, and set the hidden field for toggling to "1"
+      $sectionEl.find(this.opts.sectionToggleIconOpenSelector).hide();
+      $sectionEl.find(this.opts.sectionToggleIconCloseSelector).show();
+      $sectionEl.find(this.opts.sectionToggleInputFieldSelector).val(1);
+    }
 
-   // see if the preview content needs to be generated
-   this.generateSectionPreview($sectionEl);
+    // see if the preview content needs to be generated
+    this.generateSectionPreview($sectionEl);
   }
 
   // function to generate the section preview in the header
@@ -225,7 +225,7 @@ class FlexFormElement {
 $.fn.t3FormEngineFlexFormElement = function(options: FlexFormElementOptions): JQuery {
   // apply all util functions to ourself (for use in templates, etc.)
   return this.each(function(this: HTMLElement): void {
-    const _ = new FlexFormElement(this, options);
+    new FlexFormElement(this, options);
   });
 };
 
@@ -259,7 +259,7 @@ $(function(): void {
         $('.t3-flex-container').t3FormEngineFlexFormElement();
         if (response.scriptCall && response.scriptCall.length > 0) {
           $.each(response.scriptCall, function(index: number, value: string): void {
-            /* tslint:disable-next-line:no-eval */
+            // eslint-disable-next-line no-eval
             eval(value);
           });
         }

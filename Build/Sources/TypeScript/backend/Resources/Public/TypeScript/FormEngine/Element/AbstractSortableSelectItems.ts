@@ -103,10 +103,10 @@ export abstract class AbstractSortableSelectItems {
       return;
     }
 
-    aside.addEventListener('click', (e): void => {
+    aside.addEventListener('click', (e: Event): void => {
       let target: HTMLAnchorElement;
 
-      if ((target = <HTMLAnchorElement>(<Element>e.target).closest('.t3js-btn-option')) === null) {
+      if ((target = (<Element>e.target).closest('.t3js-btn-option')) === null) {
         if ((<Element>e.target).matches('.t3js-btn-option')) {
           target = <HTMLAnchorElement>e.target;
         }

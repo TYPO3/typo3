@@ -33,7 +33,7 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     this.currentModal = currentModal;
     this.getLoadedExtensionList();
 
-    currentModal.on('click', this.selectorCheckTrigger, (e: JQueryEventObject): void => {
+    currentModal.on('click', this.selectorCheckTrigger, (): void => {
       this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
       this.findInModal(this.selectorOutputContainer).empty();
       this.getLoadedExtensionList();

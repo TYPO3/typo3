@@ -101,16 +101,16 @@ class OnlineMedia {
     const allowedHelpText = $currentTarget.data('online-media-allowed-help-text') || 'Allow to embed from sources:';
 
     const $markup = $('<div>')
-        .attr('class', 'form-control-wrap')
-        .append([
-          $('<input>')
-            .attr('type', 'text')
-            .attr('class', 'form-control online-media-url')
-            .attr('placeholder', placeholder),
-          $('<div>')
-            .attr('class', 'help-block')
-            .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' ')),
-        ]);
+      .attr('class', 'form-control-wrap')
+      .append([
+        $('<input>')
+          .attr('type', 'text')
+          .attr('class', 'form-control online-media-url')
+          .attr('placeholder', placeholder),
+        $('<div>')
+          .attr('class', 'help-block')
+          .html(this.securityUtility.encodeHtml(allowedHelpText, false) + '<br>' + allowedExtMarkup.join(' ')),
+      ]);
     const $modal = Modal.show(
       $currentTarget.attr('title'),
       $markup,

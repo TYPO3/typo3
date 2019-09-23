@@ -95,9 +95,9 @@ class ShortcutMenu {
         });
         $(e.currentTarget).trigger('modal-dismiss');
       })
-      .on('confirm.button.cancel', (e: JQueryEventObject): void => {
-        $(e.currentTarget).trigger('modal-dismiss');
-      });
+        .on('confirm.button.cancel', (e: JQueryEventObject): void => {
+          $(e.currentTarget).trigger('modal-dismiss');
+        });
     }
   }
 

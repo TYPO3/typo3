@@ -18,7 +18,7 @@ import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
 interface TableNumberMapping {
   [s: string]: number;
 }
-declare var defaultNumberOfDays: TableNumberMapping;
+declare let defaultNumberOfDays: TableNumberMapping;
 
 /**
  * Module: TYPO3/CMS/Scheduler/Scheduler

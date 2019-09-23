@@ -55,7 +55,7 @@ namespace TYPO3 {
         },
       );
       this.contentSettings = this.querySelectorAll(AdminPanelSelectors.contentSettingsTriggerRole).map(
-      (contentSettingTrigger: HTMLElement) => {
+        (contentSettingTrigger: HTMLElement) => {
           const contentSettingElement = contentSettingTrigger
             .closest(AdminPanelSelectors.contentParentClass)
             .querySelector(AdminPanelSelectors.contentSettingsParentClass);
@@ -193,16 +193,16 @@ namespace TYPO3 {
     private addBackdropListener(): void {
       this.querySelectorAll('.' + AdminPanelClasses.backdrop)
         .forEach((elm: HTMLElement) =>  {
-        elm.addEventListener('click', () => {
-          this.removeBackdrop();
-          this
-            .querySelectorAll(AdminPanelSelectors.moduleTriggerRole)
-            .forEach((innerElm: HTMLElement) => {
-              innerElm.closest(AdminPanelSelectors.moduleParentClass)
-                .classList.remove(AdminPanelClasses.activeModule);
-            });
+          elm.addEventListener('click', () => {
+            this.removeBackdrop();
+            this
+              .querySelectorAll(AdminPanelSelectors.moduleTriggerRole)
+              .forEach((innerElm: HTMLElement) => {
+                innerElm.closest(AdminPanelSelectors.moduleParentClass)
+                  .classList.remove(AdminPanelClasses.activeModule);
+              });
+          });
         });
-      });
     }
   }
 
@@ -338,7 +338,7 @@ namespace TYPO3 {
     }
 
     private initializeEvents(): void {
-      this.trigger.addEventListener('click', (event: MouseEvent) => {
+      this.trigger.addEventListener('click', () => {
         this.adminPanel.removeBackdrop();
         if (this.isActive()) {
           this.disable();

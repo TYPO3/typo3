@@ -182,7 +182,7 @@ class ExtensionScanner extends AbstractInteractableModule {
    * Helper method removing duplicate entries from an array
    */
   private uniqueArray(anArray: Array<any>): Array<any> {
-    return anArray.filter((value, index, self): boolean => {
+    return anArray.filter((value: any, index: number, self: any): boolean => {
       return self.indexOf(value) === index;
     });
   }
@@ -323,20 +323,20 @@ class ExtensionScanner extends AbstractInteractableModule {
                   Notification.error('Oops, an error occurred', 'Please look at the console output for details');
                   console.error(xhr);
                 },
-                });
               });
-            } else {
-              Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
-            }
+            });
           } else {
-            Notification.error('Oops, an error occurred', 'Please look at the console output for details');
-            console.error(data);
+            Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
           }
-        },
-        error: (xhr: XMLHttpRequest): void => {
-          Router.handleAjaxError(xhr, modalContent);
-        },
+        } else {
+          Notification.error('Oops, an error occurred', 'Please look at the console output for details');
+          console.error(data);
+        }
       },
+      error: (xhr: XMLHttpRequest): void => {
+        Router.handleAjaxError(xhr, modalContent);
+      },
+    },
     );
   }
 }

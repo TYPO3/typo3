@@ -19,7 +19,7 @@ import {AbstractAction} from './AbstractAction';
 class ImmediateAction extends AbstractAction {
   protected callback: () => void;
 
-  public execute(el: HTMLElement): Promise<any> {
+  public execute(): Promise<any> {
     return this.executeCallback();
   }
 

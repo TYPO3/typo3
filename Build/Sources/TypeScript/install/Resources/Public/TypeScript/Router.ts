@@ -111,14 +111,14 @@ class Router {
     $.ajax({
       url: this.getUrl('executeSilentConfigurationUpdate', 'layout'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           this.executeSilentExtensionConfigurationSynchronization();
         } else {
           this.executeSilentConfigurationUpdate();
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -134,7 +134,7 @@ class Router {
     $.ajax({
       url: this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           this.loadMainLayout();
         } else {
@@ -142,7 +142,7 @@ class Router {
           $outputContainer.empty().append(message);
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -154,7 +154,7 @@ class Router {
     $.ajax({
       url: this.getUrl('mainLayout', 'layout'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
           $outputContainer.empty().append(data.html);
           // Mark main module as active in standalone
@@ -168,7 +168,7 @@ class Router {
           $outputContainer.empty().append(message);
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -237,14 +237,14 @@ class Router {
     $.ajax({
       url: this.getUrl('checkEnableInstallToolFile'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           this.checkLogin();
         } else {
           this.showEnableInstallTool();
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -254,12 +254,12 @@ class Router {
     $.ajax({
       url: this.getUrl('showEnableInstallToolFile'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           $(this.selectorBody).empty().append(data.html);
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -269,14 +269,14 @@ class Router {
     $.ajax({
       url: this.getUrl('checkLogin'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           this.loadMainLayout();
         } else {
           this.showLogin();
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -286,12 +286,12 @@ class Router {
     $.ajax({
       url: this.getUrl('showLogin'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           $(this.selectorBody).empty().append(data.html);
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -312,7 +312,7 @@ class Router {
           'password': $('.t3-install-form-input-text').val(),
         },
       },
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           this.executeSilentConfigurationUpdate();
         } else {
@@ -322,7 +322,7 @@ class Router {
           });
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -332,12 +332,12 @@ class Router {
     $.ajax({
       url: this.getUrl('logout'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true) {
           this.showEnableInstallTool();
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });
@@ -348,7 +348,7 @@ class Router {
     $.ajax({
       url: this.getUrl('cards'),
       cache: false,
-      success: (data): void => {
+      success: (data: { [key: string]: any }): void => {
         if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
           outputContainer.empty().append(data.html);
         } else {
@@ -356,7 +356,7 @@ class Router {
           outputContainer.empty().append(message);
         }
       },
-      error: (xhr): void => {
+      error: (xhr: JQueryXHR): void => {
         this.handleAjaxError(xhr);
       },
     });

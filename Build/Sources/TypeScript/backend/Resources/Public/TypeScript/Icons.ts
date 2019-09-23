@@ -55,11 +55,13 @@ class Icons {
    * @param {MarkupIdentifiers} markupIdentifier
    * @returns {JQueryPromise<any>}
    */
-  public getIcon(identifier: string,
-                 size: Sizes,
-                 overlayIdentifier?: string,
-                 state?: string,
-                 markupIdentifier?: MarkupIdentifiers): JQueryPromise<any> {
+  public getIcon(
+    identifier: string,
+    size: Sizes,
+    overlayIdentifier?: string,
+    state?: string,
+    markupIdentifier?: MarkupIdentifiers,
+  ): JQueryPromise<any> {
 
     /**
      * Icon keys:

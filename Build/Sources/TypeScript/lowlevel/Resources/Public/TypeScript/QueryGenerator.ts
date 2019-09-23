@@ -51,7 +51,7 @@ class QueryGenerator {
       this.addValueToField($field.data('field'), $field.val());
     });
     (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-clearable')).forEach(
-      clearableField => clearableField.clearable({
+      (clearableField: HTMLInputElement) => clearableField.clearable({
         onClear: (): void => {
           this.doSubmit();
         },
