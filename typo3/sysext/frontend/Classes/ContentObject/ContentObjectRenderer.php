@@ -684,7 +684,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     /**
      * Renders a content object
      *
-     * @param string $name The content object name, eg. "TEXT" or "USER" or "IMAGE
+     * @param string $name The content object name, eg. "TEXT" or "USER" or "IMAGE"
      * @param array $conf The array with TypoScript properties for the content object
      * @param string $TSkey A string label used for the internal debugging tracking.
      * @return string cObject output
