@@ -5397,7 +5397,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($tsfe->spamProtectEmailAddresses) {
                 $mailToUrl = $this->encryptEmail($mailToUrl, $tsfe->spamProtectEmailAddresses);
                 if ($tsfe->spamProtectEmailAddresses !== 'ascii') {
-                    $mailToUrl = 'javascript:linkTo_UnCryptMailto(' . GeneralUtility::quoteJSvalue($mailToUrl) . ');';
+                    $encodedForJsAndHref = rawurlencode(GeneralUtility::quoteJSvalue($mailToUrl));
+                    $mailToUrl = 'javascript:linkTo_UnCryptMailto(' . $encodedForJsAndHref . ');';
                 }
                 $atLabel = trim($tsfe->config['config']['spamProtectEmailAddresses_atSubst']) ?: '(at)';
                 $spamProtectedMailAddress = str_replace('@', $atLabel, htmlspecialchars($mailAddress));

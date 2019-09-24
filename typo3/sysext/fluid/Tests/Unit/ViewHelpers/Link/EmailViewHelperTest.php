@@ -102,7 +102,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
             'Plain email with spam protection' => [
                 'some@email.tld',
                 1,
-                '<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+tpnfAfnbjm\/ume\');">some(at)email.tld</a>',
+                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2BtpnfAfnbjm%5C%2Fume%27);">some(at)email.tld</a>',
             ],
             'Plain email with ascii spam protection' => [
                 'some@email.tld',
@@ -117,7 +117,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
             'Susceptible email with spam protection' => [
                 '"><script>alert(\'email\')</script>',
                 1,
-                '<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+\u0022\u003E\u003Ctdsjqu\u003Ebmfsu(\u0027fnbjm\u0027)\u003C0tdsjqu\u003E\');">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>',
+                '<a href="javascript:linkTo_UnCryptMailto(%27nbjmup%2B%5Cu0022%5Cu003E%5Cu003Ctdsjqu%5Cu003Ebmfsu%28%5Cu0027fnbjm%5Cu0027%29%5Cu003C0tdsjqu%5Cu003E%27);">&quot;&gt;&lt;script&gt;alert(\'email\')&lt;/script&gt;</a>',
             ],
             'Susceptible email with ascii spam protection' => [
                 '"><script>alert(\'email\')</script>',
