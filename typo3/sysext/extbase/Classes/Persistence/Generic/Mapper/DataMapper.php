@@ -45,13 +45,6 @@ class DataMapper
     protected $persistenceSession;
 
     /**
-     * A reference to the page select object providing methods to perform language and work space overlays
-     *
-     * @var \TYPO3\CMS\Core\Domain\Repository\PageRepository
-     */
-    protected $pageSelectObject;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory
      */
     protected $dataMapFactory;
