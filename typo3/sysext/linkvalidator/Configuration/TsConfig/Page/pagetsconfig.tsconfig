@@ -1,17 +1,41 @@
 mod.linkvalidator {
-	searchFields {
-		pages = media,url
-		tt_content = bodytext,header_link,records
-	}
-	linktypes = db,file,external
-	checkhidden = 0
-	showCheckLinkTab = 1
-	mail {
-		fromname = Linkvalidator
-		fromemail = Linkvalidator@example.com
-		replytoname =
-		replytoemail =
-		subject = TYPO3 Linkvalidator report
-	}
-	linkhandler.reportHiddenRecords = 0
+
+  # specify fields to be crawled
+  searchFields {
+    pages = media,url
+    tt_content = bodytext,header_link,records
+  }
+
+  # specify link types to be crawled
+  linktypes = db,file,external
+
+  linktypesConfig {
+    external {
+
+      # User-Agent string is filled with information about the crawling site
+      httpAgentName = TYPO3 Linkvalidator
+      httpAgentUrl =
+      httpAgentEmail =
+
+      headers {
+
+      }
+
+      method = HEAD
+
+      range = 0-4048
+    }
+  }
+
+  checkhidden = 0
+  showCheckLinkTab = 1
+  mail {
+    fromname = Linkvalidator
+    fromemail = Linkvalidator@example.com
+    replytoname =
+    replytoemail =
+    subject = TYPO3 Linkvalidator report
+  }
+
+  linkhandler.reportHiddenRecords = 0
 }

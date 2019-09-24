@@ -5,18 +5,31 @@
 
 .. include:: ../Includes.txt
 
-
+.. highlight:: typoscript
 
 .. _configuration:
 
 Configuration
 -------------
 
-You find the standard configuration in
+You can find the standard configuration in
 :file:`EXT:linkvalidator/Configuration/TsConfig/Page/pagetsconfig.txt`.
 
 This may serve as an example on how to configure the extension for
 your needs.
+
+
+Minimal Configuration
+^^^^^^^^^^^^^^^^^^^^^
+
+It is recommended to at least fill out `httpAgentUrl` and `httpAgentEmail`.
+The latter is only required if :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']`
+is not set.
+
+::
+
+    mod.linkvalidator.linktypesConfig.external.httpAgentUrl =
+    mod.linkvalidator.linktypesConfig.external.httpAgentEmail =
 
 
 .. _reference:
@@ -100,7 +113,7 @@ linktypes
          string
 
    Description
-         Comma separated list of hooks to load.
+         Comma separated list of link types to check.
 
          **Possible values:**
 
@@ -113,10 +126,74 @@ linktypes
          linkhandler: Check links provided by the extension "linkhandler".
 
          This list may be extended by other extensions providing a linktype
-         checker, e.g. DAM.
+         checker.
 
    Default
          db,file,external
+
+
+
+.. _linktypes-config-external:
+
+linktypesConfig.external.httpAgentName
+""""""""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linktypesConfig.external.httpAgentName
+
+   Data type
+         string
+
+   Description
+         Add descriptive name to be used as 'User-Agent' when crawling
+         external URLs.
+
+   Default
+         TYPO3 Linkvalidator
+
+
+
+
+
+linktypesConfig.external.httpAgentUrl
+"""""""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linktypesConfig.external.httpAgentUrl
+
+   Data type
+         string
+
+   Description
+         Add URL to be used in 'User-Agent' when crawling
+         external URLs.
+
+   Default
+
+
+
+linktypesConfig.external.httpAgentEmail
+"""""""""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linktypesConfig.external.httpAgentEmail
+
+   Data type
+         string
+
+   Description
+         Add descriptive email used in 'User-Agent' when crawling
+         external URLs. If none is set here,
+         :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']`
+         is used.
+
+   Default
 
 
 
@@ -287,7 +364,76 @@ mail.subject
 
 
 
-[page:mod.linkvalidator; beuser:mod.linkvalidator]
+.. hint::
+
+    The following are advanced settings. In most cases, the defaults
+    should be sufficient.
+
+
+
+linktypesConfig.external.headers
+""""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linktypesConfig.external.headers
+
+   Data type
+         array
+
+   Description
+         Additional set of HTTP headers to be passed when crawling URLs.
+
+   Default
+
+
+linktypesConfig.external.method
+"""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linktypesConfig.external.headers
+
+   Data type
+         array
+
+   Description
+         This specified which method is used for crawling URLs. By
+         default, we use HEAD (which falls back to GET if HEAD fails).
+
+         You can use GET as an alternative, but keep in mind that HEAD
+         is a lightweight request and should be preferred while GET will
+         fetch the remote web page (within the limits specified by range,
+         see next option).
+
+         "The HEAD method is identical to GET except that the server MUST
+         NOT return a message-body in the response."
+         (`w3 RFC2616 <https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html>`__).
+
+
+   Default
+         HEAD
+
+
+linktypesConfig.external.range
+""""""""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+         linktypesConfig.external.headers
+
+   Data type
+        string
+
+   Description
+        Additional HTTP request header 'Range' to be passed when crawling URLs.
+        Use a string to specify the range (in bytes).
+
+   Default
+         0-4048
 
 
 .. _configuration-example:
@@ -310,6 +456,10 @@ Example
                    replytoname =
                    replytoemail =
                    subject = TYPO3 Linkvalidator report
+           }
+           external {
+                   httpAgentUrl = https://example.com/info.html
+                   httpAgentEmail = info@example.com
            }
    }
 

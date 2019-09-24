@@ -51,6 +51,23 @@ class ExternalLinktype extends AbstractLinktype
     ];
 
     /**
+     * Preferred method of fetching (HEAD | GET).
+     * If HEAD is used, we fallback to GET
+     *
+     * @var array
+     */
+    protected $method = 'HEAD';
+
+    /**
+     * For GET method, set number of bytes returned.
+     *
+     * This limits the payload, but may fail for some sites.
+     *
+     * @var string
+     */
+    protected $range = '0-4048';
+
+    /**
      * @var RequestFactory
      */
     protected $requestFactory;
@@ -63,6 +80,38 @@ class ExternalLinktype extends AbstractLinktype
     public function __construct(RequestFactory $requestFactory = null)
     {
         $this->requestFactory = $requestFactory ?: GeneralUtility::makeInstance(RequestFactory::class);
+    }
+
+    public function setAdditionalConfig(array $config): void
+    {
+        if ($config['headers.'] ?? false) {
+            $this->headers = array_merge($this->headers, $config['headers.']);
+        }
+
+        if ($config['httpAgentName'] ?? false) {
+            $this->headers['User-Agent'] = $config['httpAgentName'];
+        }
+
+        if ($config['httpAgentUrl'] ?? false) {
+            $this->headers['User-Agent'] .= ' ' . $config['httpAgentUrl'];
+        }
+
+        $email = '';
+        if ($config['httpAgentEmail'] ?? false) {
+            $email = $config['httpAgentEmail'];
+        } elseif ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] ?? false) {
+            $email = $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
+        }
+        if ($email) {
+            $this->headers['User-Agent'] .= ';' . $email;
+        }
+
+        if ($config['method'] ?? false) {
+            $this->method = $config['method'];
+        }
+        if ($config['range'] ?? false) {
+            $this->range = $config['range'];
+        }
     }
 
     /**
@@ -89,10 +138,14 @@ class ExternalLinktype extends AbstractLinktype
         ];
         $url = $this->preprocessUrl($origUrl);
         if (!empty($url)) {
-            $isValidUrl = $this->requestUrl($url, 'HEAD', $options);
+            if ($this->method === 'HEAD') {
+                $isValidUrl = $this->requestUrl($url, 'HEAD', $options);
+            }
             if (!$isValidUrl) {
                 // HEAD was not allowed or threw an error, now trying GET
-                $options['headers']['Range'] = 'bytes=0-4048';
+                if ($this->range) {
+                    $options['headers']['Range'] = 'bytes=' . $this->range;
+                }
                 $isValidUrl = $this->requestUrl($url, 'GET', $options);
             }
         }

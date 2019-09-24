@@ -23,6 +23,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -178,5 +179,144 @@ class ExternalLinktypeTest extends UnitTestCase
         $method->setAccessible(true);
         $result = $method->invokeArgs($subject, [$inputUrl]);
         self::assertEquals($result, $expectedResult);
+    }
+
+    /**
+     * @test
+     */
+    public function setAdditionalConfigMergesHeaders(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig(['headers.' => [
+            'X-MAS' => 'Merry!'
+        ]]);
+
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
+            if ($result['headers']['X-MAS'] === 'Merry!' && $result['headers']['User-Agent'] === 'TYPO3 linkvalidator') {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled();
+    }
+
+    /**
+     * @test
+     */
+    public function setAdditionalConfigOverwritesUserAgent(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig([
+            'httpAgentName' => 'TYPO3 Testing'
+        ]);
+
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
+            if ($result['headers']['User-Agent'] === 'TYPO3 Testing') {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled();
+    }
+
+    /**
+     * @test
+     */
+    public function setAdditionalConfigAppendsAgentUrlIfConfigured(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig([
+            'httpAgentUrl' => 'http://example.com'
+        ]);
+
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
+            if ($result['headers']['User-Agent'] === 'TYPO3 linkvalidator http://example.com') {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled();
+    }
+
+    /**
+     * @test
+     */
+    public function setAdditionalConfigAppendsEmailIfConfigured(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig([
+            'httpAgentEmail' => 'mail@example.com'
+        ]);
+
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
+            if ($result['headers']['User-Agent'] === 'TYPO3 linkvalidator;mail@example.com') {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled();
+    }
+
+    /**
+     * @test
+     */
+    public function setAdditionalConfigAppendsEmailFromGlobalsIfConfigured(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::any())->shouldBeCalled();
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'test@example.com';
+
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig([]);
+
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+
+        $requestFactoryProphecy->request('http://example.com', 'HEAD', Argument::that(function ($result) {
+            if ($result['headers']['User-Agent'] === 'TYPO3 linkvalidator;test@example.com') {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled();
+    }
+
+    /**
+     * @test
+     */
+    public function setAdditionalConfigSetsRangeAndMethod(): void
+    {
+        $requestFactoryProphecy = $this->prophesize(RequestFactory::class);
+        $requestFactoryProphecy->request('http://example.com', 'GET', Argument::any())->shouldBeCalled();
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] = 'test@example.com';
+
+        $externalLinktype = new ExternalLinktype($requestFactoryProphecy->reveal());
+        $externalLinktype->setAdditionalConfig([
+            'method' => 'GET',
+            'range' => '0-2048'
+        ]);
+
+        $externalLinktype->checkLink('http://example.com', [], $this->prophesize(LinkAnalyzer::class)->reveal());
+
+        $requestFactoryProphecy->request('http://example.com', 'GET', Argument::that(function ($result) {
+            if ($result['headers']['Range'] === 'bytes=0-2048') {
+                return true;
+            }
+            return false;
+        }))->shouldBeCalled();
     }
 }

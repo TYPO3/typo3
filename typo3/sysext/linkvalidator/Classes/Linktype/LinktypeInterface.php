@@ -30,6 +30,14 @@ interface LinktypeInterface
     public function checkLink($url, $softRefEntry, $reference);
 
     /**
+     * Function to override config of Linktype. Should be used only
+     * if necessary. Add additional configuration to TSconfig.
+     *
+     * @param array $config
+     */
+    public function setAdditionalConfig(array $config): void;
+
+    /**
      * Base type fetching method, based on the type that softRefParserObj returns.
      *
      * @param array $value Reference properties

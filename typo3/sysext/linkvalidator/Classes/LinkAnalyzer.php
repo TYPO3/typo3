@@ -99,10 +99,6 @@ class LinkAnalyzer
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
-        // Hook to handle own checks
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $key => $className) {
-            $this->hookObjectsArr[$key] = GeneralUtility::makeInstance($className);
-        }
     }
 
     /**
@@ -117,6 +113,14 @@ class LinkAnalyzer
         $this->searchFields = $searchField;
         $this->pids = GeneralUtility::intExplode(',', $pidList, true);
         $this->tsConfig = $tsConfig;
+
+        // Hook to handle own checks
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] ?? [] as $key => $className) {
+            $this->hookObjectsArr[$key] = GeneralUtility::makeInstance($className);
+            $options = $tsConfig['linktypesConfig.'][$key . '.'] ?? [];
+            // setAdditionalConfig might use global configuration, so still call it, even if options are empty
+            $this->hookObjectsArr[$key]->setAdditionalConfig($options);
+        }
     }
 
     /**
