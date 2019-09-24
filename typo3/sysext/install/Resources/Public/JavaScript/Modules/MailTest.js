@@ -80,7 +80,7 @@ define([
         cache: false,
         success: function(data) {
           $outputContainer.empty();
-          if (data.success === true && Array.isArray(data.status)) {
+          if (Array.isArray(data.status)) {
             data.status.forEach(function(element) {
               var message = InfoBox.render(element.severity, element.title, element.message);
               $outputContainer.html(message);

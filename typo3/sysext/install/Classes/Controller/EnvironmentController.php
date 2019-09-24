@@ -213,6 +213,7 @@ class EnvironmentController extends AbstractController
     {
         $messages = new FlashMessageQueue('install');
         $recipient = $request->getParsedBody()['install']['email'];
+        $delivered = false;
         if (empty($recipient) || !GeneralUtility::validEmail($recipient)) {
             $messages->enqueue(new FlashMessage(
                 'Given address is not a valid email address.',
@@ -220,21 +221,38 @@ class EnvironmentController extends AbstractController
                 FlashMessage::ERROR
             ));
         } else {
-            $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
-            $mailMessage
-                ->addTo($recipient)
-                ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
-                ->setSubject($this->getEmailSubject())
-                ->setBody('<html><body>html test content</body></html>', 'text/html')
-                ->addPart('plain test content', 'text/plain')
-                ->send();
-            $messages->enqueue(new FlashMessage(
-                'Recipient: ' . $recipient,
-                'Test mail sent'
-            ));
+            try {
+                $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
+                $mailMessage
+                    ->addTo($recipient)
+                    ->addFrom($this->getSenderEmailAddress(), $this->getSenderEmailName())
+                    ->setSubject($this->getEmailSubject())
+                    ->setBody('<html><body>html test content</body></html>', 'text/html')
+                    ->addPart('plain test content', 'text/plain')
+                    ->send();
+                $messages->enqueue(new FlashMessage(
+                    'Recipient: ' . $recipient,
+                    'Test mail sent'
+                ));
+                $delivered = true;
+            } catch (\Swift_RfcComplianceException $exception) {
+                $messages->enqueue(new FlashMessage(
+                    'Please verify $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'defaultMailFromAddress\'] is a valid mail address.'
+                        . ' Error message: ' . $exception->getMessage(),
+                    'RFC compliance problem',
+                    FlashMessage::ERROR
+                ));
+            } catch (\Throwable $throwable) {
+                $messages->enqueue(new FlashMessage(
+                    'Please verify $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][*] settings are valid.'
+                        . ' Error message: ' . $throwable->getMessage(),
+                    'Could not deliver mail',
+                    FlashMessage::ERROR
+                ));
+            }
         }
         return new JsonResponse([
-            'success' => true,
+            'success' => $delivered,
             'status' => $messages,
         ]);
     }
