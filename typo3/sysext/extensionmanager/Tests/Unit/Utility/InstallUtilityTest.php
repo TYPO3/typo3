@@ -20,7 +20,6 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
@@ -326,9 +325,6 @@ class InstallUtilityTest extends UnitTestCase
             Environment::getCurrentScript(),
             'UNIX'
         );
-        $signalSlotDispatcher = $this->prophesize(Dispatcher::class);
-        $subject->injectSignalSlotDispatcher($signalSlotDispatcher->reveal());
-        $signalSlotDispatcher->dispatch(InstallUtility::class, 'afterSiteConfigImport', Argument::any())->shouldBeCalled();
         $subject->processExtensionSetup($extKey);
 
         $registry->set('siteConfigImport', $configDir . '/sites/' . $siteIdentifier, 1)->shouldHaveBeenCalled();
@@ -387,9 +383,6 @@ class InstallUtilityTest extends UnitTestCase
             Environment::getCurrentScript(),
             'UNIX'
         );
-        $signalSlotDispatcher = $this->prophesize(Dispatcher::class);
-        $subject->injectSignalSlotDispatcher($signalSlotDispatcher->reveal());
-        $signalSlotDispatcher->dispatch(InstallUtility::class, 'afterSiteConfigImport', Argument::any())->shouldNotBeCalled();
         $subject->processExtensionSetup($extKey);
 
         $siteConfigFile = $configDir . '/sites/' . $siteIdentifier . '/config.yaml';

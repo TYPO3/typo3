@@ -634,21 +634,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
                     GeneralUtility::mkdir($targetDir);
                     GeneralUtility::copyDirectory($siteConfigDirectory->getPathname(), $targetDir);
                     $this->registry->set('siteConfigImport', $targetDir, 1);
-                    $this->emitAfterSiteConfigImportSignal($destinationFolder);
                 }
             }
         }
-    }
-
-    /**
-     * emits a signal after site configuration was imported
-     *
-     * @param string $destinationAbsolutePath
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     */
-    protected function emitAfterSiteConfigImportSignal(string $destinationAbsolutePath): void
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterSiteConfigImport', [$destinationAbsolutePath, $this]);
     }
 }
