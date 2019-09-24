@@ -41,6 +41,7 @@ class Clearable {
 
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
+    closeButton.tabIndex = -1;
     closeButton.innerHTML = closeIcon;
     closeButton.style.visibility = 'hidden';
     closeButton.classList.add('close');
