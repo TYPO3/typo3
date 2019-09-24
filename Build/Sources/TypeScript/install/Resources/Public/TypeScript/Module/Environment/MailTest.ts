@@ -74,7 +74,7 @@ class MailTest extends AbstractInteractableModule {
       cache: false,
       success: (data: any): void => {
         $outputContainer.empty();
-        if (data.success === true && Array.isArray(data.status)) {
+        if (Array.isArray(data.status)) {
           data.status.forEach((element: any): void => {
             const aMessage: any = InfoBox.render(element.severity, element.title, element.message);
             $outputContainer.html(aMessage);
