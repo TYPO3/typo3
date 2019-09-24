@@ -64,9 +64,8 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsAbsolutePathWithoutTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/foo');
-        $this->assertEquals('/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -75,9 +74,8 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsAbsolutePathWithTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/foo/');
-        $this->assertEquals('/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -86,11 +84,10 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsRelativePathWithoutTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo');
         // get PATH_site without trailing slash
         $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
-        $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -99,11 +96,10 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsRelativePathWithTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('tmp/foo/');
         // get PATH_site without trailing slash
         $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
-        $this->assertEquals($path . '/tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -112,11 +108,10 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsRelativeDottedPathWithoutTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo');
         // get PATH_site without trailing slash
         $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
-        $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/../tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -125,11 +120,10 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsRelativeDottedPathWithTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('../tmp/foo/');
         // get PATH_site without trailing slash
         $path = GeneralUtility::fixWindowsFilePath(realpath(PATH_site));
-        $this->assertEquals($path . '/../tmp/foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals($path . '/../tmp/foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -138,9 +132,8 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithoutTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/../foo');
-        $this->assertEquals('/tmp/../foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/../foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**
@@ -149,9 +142,8 @@ class FileBackendTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
     public function setCacheDirectoryAllowsAbsoluteDottedPathWithTrailingSlash()
     {
         $backend = $this->getAccessibleMock(\TYPO3\CMS\Core\Cache\Backend\FileBackend::class, ['dummy'], [], '', false);
-        $backend->_set('cacheIdentifier', 'test');
         $backend->setCacheDirectory('/tmp/../foo/');
-        $this->assertEquals('/tmp/../foo/test/', $backend->_get('temporaryCacheDirectory'));
+        $this->assertEquals('/tmp/../foo/', $backend->_get('temporaryCacheDirectory'));
     }
 
     /**

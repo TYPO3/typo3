@@ -170,7 +170,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
         if ($cacheDirectory[strlen($cacheDirectory) - 1] !== '/') {
             $cacheDirectory .= '/';
         }
-        $this->temporaryCacheDirectory = $documentRoot . $cacheDirectory . $this->cacheIdentifier . '/';
+        $this->temporaryCacheDirectory = $documentRoot . $cacheDirectory;
     }
 
     /**
