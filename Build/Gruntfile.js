@@ -13,6 +13,8 @@
 
 module.exports = function (grunt) {
 
+  const sass = require('node-sass');
+
   /**
    * Grunt stylefmt task
    */
@@ -82,6 +84,7 @@ module.exports = function (grunt) {
     },
     sass: {
       options: {
+        implementation: sass,
         outputStyle: 'expanded',
         precision: 8,
         includePaths: [
@@ -131,18 +134,7 @@ module.exports = function (grunt) {
       options: {
         map: false,
         processors: [
-          require('autoprefixer')({
-            browsers: [
-              'Chrome >= 57',
-              'Firefox >= 52',
-              'Edge >= 14',
-              'Explorer >= 11',
-              'iOS >= 9',
-              'Safari >= 8',
-              'Android >= 4',
-              'Opera >= 43'
-            ]
-          }),
+          require('autoprefixer')(),
           require('postcss-clean')({
             rebase: false,
             level: {
