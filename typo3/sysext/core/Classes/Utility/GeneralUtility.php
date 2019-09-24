@@ -1281,7 +1281,7 @@ class GeneralUtility
             if ($val !== '=') {
                 if ($valuemode) {
                     if ($name) {
-                        $attributes[$name] = $val;
+                        $attributes[$name] = htmlspecialchars_decode($val);
                         $name = '';
                     }
                 } else {
