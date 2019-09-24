@@ -97,19 +97,22 @@ final class NotificationService
      */
     private function createNotification(string $type, string $title, string $message, int $duration, array $actions = []): void
     {
-        $actionDefinitionTemplate = '{label: %s, action: {type: %s, callback: () => {%s}}}';
+        $actionFunctionTemplate = 'const %s = new %s(function() { %s });';
+        $actionDefinitionTemplate = '{label: %s, action: %s}';
+        $actionItemFunctions = [];
         $actionItemDefinitions = [];
+        $i = 1;
         foreach ($actions as $action) {
-            $actionItemDefinitions[] = sprintf(
-                $actionDefinitionTemplate,
-                GeneralUtility::quoteJSvalue($action->getLabel()),
-                GeneralUtility::quoteJSvalue($action->getType()),
-                $action->getCallbackCode()
-            );
+            $actionName = 'action' . $i++;
+            $actionItemFunctions[] = sprintf($actionFunctionTemplate, $actionName, $action->getType(), $action->getCallbackCode());
+            $actionItemDefinitions[] = sprintf($actionDefinitionTemplate, GeneralUtility::quoteJSvalue($action->getLabel()), $actionName);
         }
         GeneralUtility::makeInstance(PageRenderer::class)
             ->loadRequireJsModule('TYPO3/CMS/Backend/Notification', sprintf('function(Notification) {
-                Notification.%s(%s, %s, %d, [%s]);
-            }', $type, GeneralUtility::quoteJSvalue($title), GeneralUtility::quoteJSvalue($message), $duration, implode(',', $actionItemDefinitions)));
+                require([\'TYPO3/CMS/Backend/ActionButton/DeferredAction\', \'TYPO3/CMS/Backend/ActionButton/ImmediateAction\'], function(DeferredAction, ImmediateAction) {
+                    %s
+                    Notification.%s(%s, %s, %d, [%s]);
+                });
+            }', implode(LF, $actionItemFunctions), $type, GeneralUtility::quoteJSvalue($title), GeneralUtility::quoteJSvalue($message), $duration, implode(',', $actionItemDefinitions)));
     }
 }

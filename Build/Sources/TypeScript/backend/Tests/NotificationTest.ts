@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
+import ImmediateAction = require('TYPO3/CMS/Backend/ActionButton/ImmediateAction');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 
 describe('TYPO3/CMS/Backend/Notification:', () => {
@@ -95,18 +97,15 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
       [
         {
           label: 'My action',
-          action: {
-            type: 'immediate',
-            callback: (promise: Promise<any>): Promise<any> => {
-              return promise;
-            },
-          },
+          action: new ImmediateAction((promise: Promise<any>): Promise<any> => {
+            return promise;
+          }),
         },
         {
           label: 'My other action',
-          action: (promise: Promise<any>): Promise<any> => {
+          action: new DeferredAction((promise: Promise<any>): Promise<any> => {
             return promise;
-          },
+          }),
         },
       ],
     );
@@ -116,5 +115,31 @@ describe('TYPO3/CMS/Backend/Notification:', () => {
     expect(alertBox.querySelectorAll('.alert-actions a').length).toEqual(2);
     expect(alertBox.querySelectorAll('.alert-actions a')[0].textContent).toEqual('My action');
     expect(alertBox.querySelectorAll('.alert-actions a')[1].textContent).toEqual('My other action');
+  });
+
+  it('immediate action is called', () => {
+    const observer = {
+      callback: (): void => {
+        return;
+      },
+    };
+
+    spyOn(observer, 'callback').and.callThrough();
+
+    Notification.info(
+      'Info message',
+      'Some text',
+      1,
+      [
+        {
+          label: 'My immediate action',
+          action: new ImmediateAction(observer.callback),
+        },
+      ],
+    );
+
+    const alertBox = document.querySelector('div.alert');
+    (<HTMLAnchorElement>alertBox.querySelector('.alert-actions a')).click();
+    expect(observer.callback).toHaveBeenCalled();
   });
 });
