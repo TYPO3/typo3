@@ -104,18 +104,6 @@
                                     >
                                         <core:icon identifier="actions-delete" />
                                     </f:be.link>
-                                    <f:if condition="{hasConfigurableSettings}">
-                                        <f:then>
-                                            <f:be.link route="site_configuration" parameters="{action: 'editSettings', site: page.siteIdentifier}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}" class="btn btn-default">
-                                                <core:icon identifier="actions-cog" />
-                                            </f:be.link>
-                                        </f:then>
-                                        <f:else>
-                                            <button class="btn btn-default" disabled>
-                                                <core:icon identifier="empty-empty" />
-                                            </button>
-                                        </f:else>
-                                    </f:if>
                                 </f:if>
                             </div>
                         </td>

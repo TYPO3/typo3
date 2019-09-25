@@ -62,7 +62,6 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
         parent::initializeArguments();
         $this->registerArgument('name', 'string', 'Name of input tag');
         $this->registerArgument('value', 'mixed', 'Value of input tag');
-        $this->registerArgument('fieldPrefix', 'string', 'Prefix for field names, for example "data"', false, '');
         $this->registerArgument('configuration', 'array', '', true);
         $this->registerUniversalTagAttributes();
     }
@@ -304,11 +303,7 @@ class TypoScriptConstantsViewHelper extends AbstractTagBasedViewHelper
      */
     protected function getName(array $configuration): string
     {
-        $name = $configuration['name'];
-        if ($this->arguments['fieldPrefix']) {
-            $name = $this->arguments['fieldPrefix'] . '[' . $configuration['name'] . ']';
-        }
-        return $name;
+        return $configuration['name'];
     }
 
     /**
