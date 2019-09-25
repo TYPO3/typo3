@@ -491,7 +491,8 @@ class RecordProvider extends AbstractProvider
 
         $access = !$this->isRecordLocked()
             && $this->backendUser->check('tables_modify', $this->table)
-            && $this->hasPagePermission(Permission::CONTENT_EDIT);
+            && $this->hasPagePermission(Permission::CONTENT_EDIT)
+            && $this->backendUser->recordEditAccessInternals($this->table, $this->record);
         return $access;
     }
 
