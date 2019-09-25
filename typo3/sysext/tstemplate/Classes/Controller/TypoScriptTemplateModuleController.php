@@ -201,13 +201,6 @@ class TypoScriptTemplateModuleController
         // Checking for first level external objects
         $this->checkExtObj($changedMenuSettings, $request);
 
-        // Clear the cache if requested
-        if (($request->getParsedBody()['clear_all_cache'] ?? $request->getQueryParams()['clear_all_cache'] ?? false)) {
-            $tce = GeneralUtility::makeInstance(DataHandler::class);
-            $tce->start([], []);
-            $tce->clear_cacheCmd('all');
-        }
-
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
