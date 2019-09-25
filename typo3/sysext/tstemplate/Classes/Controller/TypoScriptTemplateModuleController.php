@@ -534,7 +534,6 @@ page.10.value = HELLO WORLD!
             }
             $tce->start($recData, []);
             $tce->process_datamap();
-            $tce->clear_cacheCmd('all');
         }
         return $tce->substNEWwithIDs['NEW'];
     }

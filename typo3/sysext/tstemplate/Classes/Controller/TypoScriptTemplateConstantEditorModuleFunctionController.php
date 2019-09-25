@@ -149,8 +149,6 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->start($recData, []);
                     $tce->process_datamap();
-                    // Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
-                    $tce->clear_cacheCmd('all');
                     // re-read the template ...
                     // re-read the constants as they have changed
                     $this->initialize_editor($this->id, $template_uid);

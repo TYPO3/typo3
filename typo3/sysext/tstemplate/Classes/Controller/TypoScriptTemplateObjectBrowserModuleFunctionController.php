@@ -233,8 +233,6 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
                     $tce->start($recData, []);
                     // Saved the stuff
                     $tce->process_datamap();
-                    // Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
-                    $tce->clear_cacheCmd('all');
                     // re-read the template ...
                     $this->initialize_editor($this->id, $template_uid);
                 }
