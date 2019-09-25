@@ -27,23 +27,28 @@ class ExternalLinktype extends AbstractLinktype
     /**
      * Cached list of the URLs, which were already checked for the current processing
      *
-     * @var array $urlReports
+     * @var array
      */
     protected $urlReports = [];
 
     /**
      * Cached list of all error parameters of the URLs, which were already checked for the current processing
      *
-     * @var array $urlErrorParams
+     * @var array
      */
     protected $urlErrorParams = [];
 
     /**
-     * List of headers to be used for matching an URL for the current processing
+     * List of HTTP request headers to use for checking a URL
      *
-     * @var array $additionalHeaders
+     * @var array
      */
-    protected $additionalHeaders = [];
+    protected $headers = [
+        'User-Agent'      => 'TYPO3 linkvalidator',
+        'Accept'          => '*/*',
+        'Accept-Language' => '*',
+        'Accept-Encoding' => '*',
+    ];
 
     /**
      * @var RequestFactory
@@ -51,7 +56,7 @@ class ExternalLinktype extends AbstractLinktype
     protected $requestFactory;
 
     /**
-     * @var array $this->errorParams
+     * @var array
      */
     protected $errorParams = [];
 
@@ -71,6 +76,7 @@ class ExternalLinktype extends AbstractLinktype
      */
     public function checkLink($origUrl, $softRefEntry, $reference)
     {
+        $isValidUrl = false;
         // use URL from cache, if available
         if (isset($this->urlReports[$origUrl])) {
             $this->setErrorParams($this->urlErrorParams[$origUrl]);
@@ -78,7 +84,8 @@ class ExternalLinktype extends AbstractLinktype
         }
         $options = [
             'cookies' => GeneralUtility::makeInstance(CookieJar::class),
-            'allow_redirects' => ['strict' => true]
+            'allow_redirects' => ['strict' => true],
+            'headers'         => $this->headers
         ];
         $url = $this->preprocessUrl($origUrl);
         if (!empty($url)) {
@@ -108,13 +115,12 @@ class ExternalLinktype extends AbstractLinktype
         $isValidUrl = false;
         try {
             $response = $this->requestFactory->request($url, $method, $options);
-            if ($response->getStatusCode() < 300) {
-                $isValidUrl = true;
-            } else {
+            if ($response->getStatusCode() >= 300) {
                 $this->errorParams['errorType'] = $response->getStatusCode();
                 $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
+            } else {
+                $isValidUrl = true;
             }
-            $isValidUrl = true;
         } catch (\GuzzleHttp\Exception\TooManyRedirectsException $e) {
             // redirect loop or too many redirects
             // todo: change errorType to 'redirect' (breaking change)
