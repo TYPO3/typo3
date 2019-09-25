@@ -18,13 +18,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -65,7 +63,6 @@ class TemplateServiceTest extends UnitTestCase
         parent::setUp();
         $GLOBALS['SIM_ACCESS_TIME'] = time();
         $GLOBALS['ACCESS_TIME'] = time();
-        $GLOBALS['TYPO3_REQUEST'] = $this->prophesize(ServerRequestInterface::class)->reveal();
         $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
         $this->templateService = new TemplateService(new Context(), $this->packageManagerProphecy->reveal());
         $this->templateServiceMock = $this->getAccessibleMock(
@@ -183,37 +180,5 @@ class TemplateServiceTest extends UnitTestCase
 
         $this->templateServiceMock->_set('rootLine', $originalRootline);
         $this->templateServiceMock->updateRootlineData($newInvalidRootline);
-    }
-
-    /**
-     * @test
-     */
-    public function addDefaultTypoScriptLoadsSettingsFromSiteAfterGlobals(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants'] = 'foo.bar = baz';
-        $site = new Site('ident', 1, ['base' => 'https://example.com'], ['vendor' => ['ext' => ['storagePid' => 3]]]);
-        $templateServiceMock = $this->getAccessibleMock(
-            TemplateService::class,
-            ['dummy'],
-            [new Context(), $this->packageManagerProphecy->reveal(), $site]
-        );
-        $templateServiceMock->_call('addDefaultTypoScript');
-        self::assertSame('foo.bar = baz', $templateServiceMock->_get('constants')[0]);
-        self::assertSame('vendor.ext.storagePid = 3', $templateServiceMock->_get('constants')[1]);
-    }
-
-    /**
-     * @test
-     */
-    public function addDefaultTypoScriptLoadsSettingsFromSiteAsMultiLine(): void
-    {
-        $site = new Site('ident', 1, ['base' => 'https://example.com'], ['vendor' => ['ext' => ['storagePid' => 3, 'limit' => 5]]]);
-        $templateServiceMock = $this->getAccessibleMock(
-            TemplateService::class,
-            ['dummy'],
-            [new Context(), $this->packageManagerProphecy->reveal(), $site]
-        );
-        $templateServiceMock->_call('addDefaultTypoScript');
-        self::assertSame('vendor.ext.storagePid = 3' . "\n" . 'vendor.ext.limit = 5', $templateServiceMock->_get('constants')[1]);
     }
 }

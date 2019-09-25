@@ -125,11 +125,10 @@ class SiteConfiguration implements SingletonInterface
     {
         $sites = [];
         $siteConfiguration = $this->getAllSiteConfigurationFromFiles();
-        $siteSettings = $this->getAllSiteSettingsFromFiles();
         foreach ($siteConfiguration as $identifier => $configuration) {
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
-                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration, $siteSettings[$identifier] ?? []);
+                $sites[$identifier] = GeneralUtility::makeInstance(Site::class, $identifier, $rootPageId, $configuration);
             }
         }
         $this->firstLevelCache = $sites;
@@ -144,53 +143,32 @@ class SiteConfiguration implements SingletonInterface
      */
     protected function getAllSiteConfigurationFromFiles(): array
     {
-        return $this->getAllFromConfigFile($this->cacheIdentifier, $this->configFileName) ?? [];
-    }
-
-    /**
-     * Read the site settings from config files.
-     *
-     * @return array
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    protected function getAllSiteSettingsFromFiles(): array
-    {
-        return $this->getAllFromConfigFile($this->cacheIdentifier . '_settings', 'settings.yaml') ?? [];
-    }
-
-    /**
-     * @param string $entryIdentifier
-     * @param string $configFileName
-     * @return array|mixed|string|string[]|null
-     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
-     */
-    protected function getAllFromConfigFile(string $entryIdentifier, string $configFileName)
-    {
-        if ($siteSettings = $this->getCache()->get($entryIdentifier)) {
+        // Check if the data is already cached
+        if ($siteConfiguration = $this->getCache()->get($this->cacheIdentifier)) {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
-            $siteSettings = preg_replace('/^<\?php\s*|\s*#$/', '', $siteSettings);
-            $siteSettings = json_decode($siteSettings, true);
+            $siteConfiguration = preg_replace('/^<\?php\s*|\s*#$/', '', $siteConfiguration);
+            $siteConfiguration = json_decode($siteConfiguration, true);
         }
 
         // Nothing in the cache (or no site found)
-        if (empty($siteSettings)) {
+        if (empty($siteConfiguration)) {
             $finder = new Finder();
             try {
-                $finder->files()->depth(0)->name($configFileName)->in($this->configPath . '/*');
+                $finder->files()->depth(0)->name($this->configFileName)->in($this->configPath . '/*');
             } catch (\InvalidArgumentException $e) {
                 // Directory $this->configPath does not exist yet
                 $finder = [];
             }
             $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-            $siteSettings = [];
+            $siteConfiguration = [];
             foreach ($finder as $fileInfo) {
                 $configuration = $loader->load(GeneralUtility::fixWindowsFilePath((string)$fileInfo));
                 $identifier = basename($fileInfo->getPath());
-                $siteSettings[$identifier] = $configuration;
+                $siteConfiguration[$identifier] = $configuration;
             }
-            $this->getCache()->set($entryIdentifier, json_encode($siteSettings));
+            $this->getCache()->set($this->cacheIdentifier, json_encode($siteConfiguration));
         }
-        return $siteSettings;
+        return $siteConfiguration ?? [];
     }
 
     /**
