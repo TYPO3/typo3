@@ -123,7 +123,7 @@ When you are ready, click :guilabel:`"Get toolbar config"` to see the configurat
 How do I add Custom Plugins?
 ============================
 
-See `EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yml
+See `EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml
 <https://github.com/TYPO3/TYPO3.CMS/blob/9.5/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__
 for a list of plugins, that are already integrated in `rte_ckeditor`. Besides this, the wordcount plugin was added as
 npm package. You can find it within :file:`typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/Contrib/plugins/wordcount/`.

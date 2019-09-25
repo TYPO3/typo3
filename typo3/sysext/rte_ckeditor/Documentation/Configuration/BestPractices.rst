@@ -23,14 +23,14 @@ For more information about sitepackages in TYPO3 see:
   <https://www.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`__ (Slideshare)
 * :ref:`t3sitepackage:start`
 
-.. TODO Explain Create an extension, add ext_localconf.php, start over and copy over the Default.yml file
+.. TODO Explain Create an extension, add ext_localconf.php, start over and copy over the Default.yaml file
 
 Use TYPO3’s Core Default.yaml as boilerplate
 ============================================
 
 Instead of starting from scratch when writing custom configurations, it is
 recommended to copy TYPO3’s configuration file
-:file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Default.yml`
+:file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Default.yaml`
 into your extension folder :file:`<extkey>/Configuration/RTE/`.
 
 Check TYPO3's Core Full.yaml to gain insight into a more extensive configuration
@@ -39,7 +39,7 @@ Check TYPO3's Core Full.yaml to gain insight into a more extensive configuration
 This preset shows more configured options and plugins. It is not intended for real use.
 It acts as an example.
 
-:file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yml`
+:file:`typo3/sysext/rte_ckeditor/Configuration/RTE/Full.yaml`
 
 
 Use Core Includes

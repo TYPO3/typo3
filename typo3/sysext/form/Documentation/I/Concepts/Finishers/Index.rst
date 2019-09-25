@@ -437,5 +437,5 @@ Make sure the setup file is registered in the backend:
 .. code-block:: typoscript
 
    module.tx_form.settings.yamlConfigurations {
-      123456789 = EXT:yourExtension/Configuration/Form/Backend.yml
+      123456789 = EXT:yourExtension/Configuration/Form/Backend.yaml
    }

@@ -72,7 +72,7 @@ editor.config.contentsCss
 
       editor.config.contentCss: "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
-   This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yml
+   This is the default, as defined in `EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml
    <https://github.com/TYPO3/TYPO3.CMS/blob/9.5/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Base.yaml>`__.
 
 editor.config.style
@@ -117,5 +117,5 @@ editor.*
 editor.externalPlugins
    is a list of plugins with their routes and additional configuration options,
    the main “resource” subproperty needs to be set which is a JavaScript file
-   using CKEditor’s plugin API, see `rte_ckeditor/Configuration/RTE/Editor/Plugins.yml
+   using CKEditor’s plugin API, see `rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml
    <https://github.com/TYPO3/TYPO3.CMS/blob/9.5/typo3/sysext/rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml>`__.
