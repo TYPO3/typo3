@@ -477,23 +477,23 @@ class ArrayUtility
      */
     public static function flatten(array $array, $prefix = '', bool $keepDots = false)
     {
-        $flatArray = [[]];
+        $flatArray = [];
         foreach ($array as $key => $value) {
             if ($keepDots === false) {
                 // Ensure there is no trailing dot:
                 $key = rtrim($key, '.');
             }
             if (!is_array($value)) {
-                $flatArray[] = [$prefix . $key => $value];
+                $flatArray[$prefix . $key] = $value;
             } else {
                 $newPrefix = $prefix . $key;
                 if ($keepDots === false) {
                     $newPrefix = $prefix . $key . '.';
                 }
-                $flatArray[] = self::flatten($value, $newPrefix, $keepDots);
+                $flatArray = array_merge($flatArray, self::flatten($value, $newPrefix, $keepDots));
             }
         }
-        return array_merge(...$flatArray);
+        return $flatArray;
     }
 
     /**

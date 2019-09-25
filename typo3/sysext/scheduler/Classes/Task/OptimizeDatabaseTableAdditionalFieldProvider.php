@@ -158,7 +158,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             // These tables will be rechecked and possibly re-added to the list
             // of optimizable tables. This ensures that no orphaned table from
             // the default connection gets mistakenly labeled as optimizable.
-            $optimizableTables = [array_diff($optimizableTables, array_keys($tableMap))];
+            $optimizableTables = array_diff($optimizableTables, array_keys($tableMap));
 
             // Walk each connection and check all tables that have been
             // remapped to it for optimization support.
@@ -172,10 +172,8 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
                     }
                 ));
                 $tables = $this->getOptimizableTablesForConnection($connection, $tablesOnConnection);
-                $optimizableTables[] = $tables;
+                $optimizableTables = array_merge($optimizableTables, $tables);
             }
-
-            $optimizableTables = array_merge(...$optimizableTables);
         }
 
         sort($optimizableTables);

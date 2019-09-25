@@ -752,7 +752,7 @@ abstract class AbstractItemProvider
     protected function getExcludeFields()
     {
         $languageService = $this->getLanguageService();
-        $finalExcludeArray = [[]];
+        $finalExcludeArray = [];
 
         // Fetch translations for table names
         $tableToTranslation = [];
@@ -836,11 +836,11 @@ abstract class AbstractItemProvider
                     }
                     return 0;
                 });
-                $finalExcludeArray[] = $excludeArrayTable;
+                $finalExcludeArray = array_merge($finalExcludeArray, $excludeArrayTable);
             }
         }
 
-        return array_merge(...$finalExcludeArray);
+        return $finalExcludeArray;
     }
 
     /**

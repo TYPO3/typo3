@@ -69,14 +69,14 @@ class ClassLoadingInformationGenerator
      */
     public function buildClassLoadingInformationForPackage(PackageInterface $package, $useRelativePaths = false)
     {
-        $classMap = [[]];
+        $classMap = [];
         $psr4 = [];
         $packagePath = $package->getPackagePath();
         $manifest = $package->getValueFromComposerManifest();
 
         if (empty($manifest->autoload)) {
             // Legacy mode: Scan the complete extension directory for class files
-            $classMap[] = $this->createClassMap($packagePath, $useRelativePaths, !$this->isDevMode);
+            $classMap = $this->createClassMap($packagePath, $useRelativePaths, !$this->isDevMode);
         } else {
             $autoloadPsr4 = $this->getAutoloadSectionFromManifest($manifest, 'psr-4');
             if (!empty($autoloadPsr4)) {
@@ -91,7 +91,7 @@ class ClassLoadingInformationGenerator
                         }
                         if (!empty($namespaceRealPath) && is_dir($namespaceRealPath)) {
                             // Add all prs-4 classes to the class map for improved class loading performance
-                            $classMap[] = $this->createClassMap($namespacePath, $useRelativePaths, false, $namespacePrefix);
+                            $classMap = array_merge($classMap, $this->createClassMap($namespacePath, $useRelativePaths, false, $namespacePrefix));
                         }
                     }
                 }
@@ -99,12 +99,12 @@ class ClassLoadingInformationGenerator
             $autoloadClassmap = $this->getAutoloadSectionFromManifest($manifest, 'classmap');
             if (!empty($autoloadClassmap)) {
                 foreach ($autoloadClassmap as $path) {
-                    $classMap[] = $this->createClassMap($packagePath . $path, $useRelativePaths);
+                    $classMap = array_merge($classMap, $this->createClassMap($packagePath . $path, $useRelativePaths));
                 }
             }
         }
 
-        return ['classMap' => array_merge(...$classMap), 'psr-4' => $psr4];
+        return ['classMap' => $classMap, 'psr-4' => $psr4];
     }
 
     /**
@@ -219,15 +219,13 @@ class ClassLoadingInformationGenerator
 return array(
 
 EOF;
-        $classMap = [[]];
-        $psr4 = [[]];
+        $classMap = [];
+        $psr4 = [];
         foreach ($this->activeExtensionPackages as $package) {
             $classLoadingInformation = $this->buildClassLoadingInformationForPackage($package, true);
-            $classMap[] = $classLoadingInformation['classMap'];
-            $psr4[] = $classLoadingInformation['psr-4'];
+            $classMap = array_merge($classMap, $classLoadingInformation['classMap']);
+            $psr4 = array_merge($psr4, $classLoadingInformation['psr-4']);
         }
-        $classMap = array_merge(...$classMap);
-        $psr4 = array_merge(...$psr4);
 
         ksort($classMap);
         ksort($psr4);
@@ -290,16 +288,16 @@ EOF;
      */
     public function buildClassAliasMapFile()
     {
-        $aliasToClassNameMapping = [[]];
-        $classNameToAliasMapping = [[]];
+        $aliasToClassNameMapping = [];
+        $classNameToAliasMapping = [];
         foreach ($this->activeExtensionPackages as $package) {
             $aliasMappingForPackage = $this->buildClassAliasMapForPackage($package);
-            $aliasToClassNameMapping[] = $aliasMappingForPackage['aliasToClassNameMapping'];
-            $classNameToAliasMapping[] = $aliasMappingForPackage['classNameToAliasMapping'];
+            $aliasToClassNameMapping = array_merge($aliasToClassNameMapping, $aliasMappingForPackage['aliasToClassNameMapping']);
+            $classNameToAliasMapping = array_merge($classNameToAliasMapping, $aliasMappingForPackage['classNameToAliasMapping']);
         }
         $exportArray = [
-            'aliasToClassNameMapping' => array_merge(...$aliasToClassNameMapping),
-            'classNameToAliasMapping' => array_merge(...$classNameToAliasMapping)
+            'aliasToClassNameMapping' => $aliasToClassNameMapping,
+            'classNameToAliasMapping' => $classNameToAliasMapping
         ];
         $fileContent = '<?php' . chr(10) . 'return ';
         $fileContent .= var_export($exportArray, true);

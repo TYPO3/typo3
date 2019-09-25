@@ -372,7 +372,7 @@ class Clipboard
      */
     public function getContentFromTab($pad)
     {
-        $lines = [[]];
+        $lines = [];
         if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
@@ -434,7 +434,7 @@ class Clipboard
 
                             $localizationData = $this->getLocalizations($table, $rec);
                             if (!empty($localizationData)) {
-                                $lines[] = $localizationData;
+                                $lines = array_merge($lines, $localizationData);
                             }
                         } else {
                             unset($this->clipData[$pad]['el'][$k]);
@@ -445,7 +445,7 @@ class Clipboard
             }
         }
         $this->endClipboard();
-        return array_merge(...$lines);
+        return $lines;
     }
 
     /**

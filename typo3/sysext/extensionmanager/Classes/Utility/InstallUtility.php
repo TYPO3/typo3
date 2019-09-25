@@ -382,15 +382,18 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
         $updateStatements = $schemaMigrator->getUpdateSuggestions($sqlStatements);
 
         $updateStatements = array_merge_recursive(...array_values($updateStatements));
-        $selectedStatements = [[]];
+        $selectedStatements = [];
         foreach (['add', 'change', 'create_table', 'change_table'] as $action) {
             if (empty($updateStatements[$action])) {
                 continue;
             }
-            $selectedStatements[] = array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true));
+            $selectedStatements = array_merge(
+                $selectedStatements,
+                array_combine(array_keys($updateStatements[$action]), array_fill(0, count($updateStatements[$action]), true))
+            );
         }
 
-        $schemaMigrator->migrate($sqlStatements, array_merge(...$selectedStatements));
+        $schemaMigrator->migrate($sqlStatements, $selectedStatements);
     }
 
     /**

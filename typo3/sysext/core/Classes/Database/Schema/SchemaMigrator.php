@@ -173,7 +173,7 @@ class SchemaMigrator
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $tables = $this->parseCreateTableStatements($statements);
-        $result = [[]];
+        $result = [];
 
         foreach ($connectionPool->getConnectionNames() as $connectionName) {
             $connectionMigrator = ConnectionMigrator::create(
@@ -181,10 +181,11 @@ class SchemaMigrator
                 $tables
             );
 
-            $result[] = $connectionMigrator->install($createOnly);
+            $lastResult = $connectionMigrator->install($createOnly);
+            $result = array_merge($result, $lastResult);
         }
 
-        return array_merge(...$result);
+        return $result;
     }
 
     /**

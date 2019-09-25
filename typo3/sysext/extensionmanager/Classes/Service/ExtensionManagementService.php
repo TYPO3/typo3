@@ -180,9 +180,9 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
             return false;
         }
 
-        $downloadedDependencies = [[]];
-        $updatedDependencies = [[]];
-        $installQueue = [[]];
+        $downloadedDependencies = [];
+        $updatedDependencies = [];
+        $installQueue = [];
 
         // First resolve all dependencies and the sub-dependencies until all queues are empty as new extensions might be
         // added each time
@@ -198,19 +198,19 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
             if (!empty($copyQueue)) {
                 $this->copyDependencies($copyQueue);
             }
-            $installQueue[] = $this->downloadQueue->resetExtensionInstallStorage();
+            $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
             // Get download and update information
             $queue = $this->downloadQueue->resetExtensionQueue();
             if (!empty($queue['download'])) {
-                $downloadedDependencies[] = $this->downloadDependencies($queue['download']);
+                $downloadedDependencies = array_merge($downloadedDependencies, $this->downloadDependencies($queue['download']));
             }
-            $installQueue[] = $this->downloadQueue->resetExtensionInstallStorage();
+            $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
             if ($this->automaticInstallationEnabled) {
                 if (!empty($queue['update'])) {
                     $this->downloadDependencies($queue['update']);
-                    $updatedDependencies[] = $this->uninstallDependenciesToBeUpdated($queue['update']);
+                    $updatedDependencies = array_merge($updatedDependencies, $this->uninstallDependenciesToBeUpdated($queue['update']));
                 }
-                $installQueue[] = $this->downloadQueue->resetExtensionInstallStorage();
+                $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), $installQueue);
             }
         }
 
@@ -221,13 +221,13 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
 
         // Attach extension to install queue
         $this->downloadQueue->addExtensionToInstallQueue($extension);
-        $installQueue = array_merge($this->downloadQueue->resetExtensionInstallStorage(), ...$installQueue);
+        $installQueue += $this->downloadQueue->resetExtensionInstallStorage();
         $installedDependencies = [];
         if ($this->automaticInstallationEnabled) {
             $installedDependencies = $this->installDependencies($installQueue);
         }
 
-        return array_filter(array_merge($installedDependencies, ...$downloadedDependencies, ...$updatedDependencies));
+        return array_merge($downloadedDependencies, $updatedDependencies, $installedDependencies);
     }
 
     /**

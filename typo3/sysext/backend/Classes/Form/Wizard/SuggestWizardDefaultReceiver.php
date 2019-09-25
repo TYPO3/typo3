@@ -322,9 +322,9 @@ class SuggestWizardDefaultReceiver
             }
 
             $pageIds = array_keys($rows);
-            $pages[] = $pageIds;
+            $pages = array_merge($pages, $pageIds);
         }
-        return array_merge(...$pages);
+        return $pages;
     }
 
     /**

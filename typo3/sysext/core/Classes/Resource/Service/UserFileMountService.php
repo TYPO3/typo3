@@ -121,7 +121,7 @@ class UserFileMountService
         if ($level > 99) {
             return [];
         }
-        $allFolderItems = [[$parentFolder]];
+        $allFolderItems = [$parentFolder];
         $subFolders = $parentFolder->getSubfolders();
         foreach ($subFolders as $subFolder) {
             try {
@@ -129,9 +129,9 @@ class UserFileMountService
             } catch (InsufficientFolderReadPermissionsException $e) {
                 $subFolderItems = [];
             }
-            $allFolderItems[] = $subFolderItems;
+            $allFolderItems = array_merge($allFolderItems, $subFolderItems);
         }
-        return array_merge(...$allFolderItems);
+        return $allFolderItems;
     }
 
     /**

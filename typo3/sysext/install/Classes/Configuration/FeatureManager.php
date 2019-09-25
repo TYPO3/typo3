@@ -72,7 +72,7 @@ class FeatureManager
      */
     public function getConfigurationForSelectedFeaturePresets(array $postValues)
     {
-        $localConfigurationValuesToSet = [[]];
+        $localConfigurationValuesToSet = [];
         $features = $this->getInitializedFeatures($postValues);
         foreach ($features as $feature) {
             /** @var FeatureInterface $feature */
@@ -85,11 +85,14 @@ class FeatureManager
                     && $postValues[$featureName]['enable'] === $presetName
                     && (!$preset->isActive() || $preset instanceof CustomPresetInterface)
                 ) {
-                    $localConfigurationValuesToSet[] = $preset->getConfigurationValues();
+                    $localConfigurationValuesToSet = array_merge(
+                        $localConfigurationValuesToSet,
+                        $preset->getConfigurationValues()
+                    );
                 }
             }
         }
-        return array_merge(...$localConfigurationValuesToSet);
+        return $localConfigurationValuesToSet;
     }
 
     /**

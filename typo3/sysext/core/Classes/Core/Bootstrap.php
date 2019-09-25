@@ -540,7 +540,6 @@ class Bootstrap
             // substr is necessary, because the php frontend wraps php code around the cache value
             $routesFromPackages = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
         } else {
-            $routesFromPackages = [[]];
             // Loop over all packages and check for a Configuration/Backend/Routes.php file
             $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
             $packages = $packageManager->getActivePackages();
@@ -549,7 +548,7 @@ class Bootstrap
                 if (file_exists($routesFileNameForPackage)) {
                     $definedRoutesInPackage = require $routesFileNameForPackage;
                     if (is_array($definedRoutesInPackage)) {
-                        $routesFromPackages[] = $definedRoutesInPackage;
+                        $routesFromPackages = array_merge($routesFromPackages, $definedRoutesInPackage);
                     }
                 }
                 $routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/AjaxRoutes.php';
@@ -559,15 +558,12 @@ class Bootstrap
                         foreach ($definedRoutesInPackage as $routeIdentifier => $routeOptions) {
                             // prefix the route with "ajax_" as "namespace"
                             $routeOptions['path'] = '/ajax' . $routeOptions['path'];
-                            $routeOptions['ajax'] = true;
-                            $routesFromPackages[] = [
-                                'ajax_' . $routeIdentifier => $routeOptions,
-                            ];
+                            $routesFromPackages['ajax_' . $routeIdentifier] = $routeOptions;
+                            $routesFromPackages['ajax_' . $routeIdentifier]['ajax'] = true;
                         }
                     }
                 }
             }
-            $routesFromPackages = array_merge(...$routesFromPackages);
             // Store the data from all packages in the cache
             $codeCache->set($cacheIdentifier, serialize($routesFromPackages));
         }

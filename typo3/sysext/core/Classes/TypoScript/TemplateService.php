@@ -1084,22 +1084,21 @@ class TemplateService
         }
 
         $paths = $this->templateIncludePaths;
-        $files = [[]];
+        $files = [];
         foreach ($this->constants as &$value) {
             $includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
-            $files[] = $includeData['files'];
+            $files = array_merge($files, $includeData['files']);
             $value = $includeData['typoscript'];
         }
         unset($value);
         $paths = $this->templateIncludePaths;
         foreach ($this->config as &$value) {
             $includeData = Parser\TypoScriptParser::checkIncludeLines($value, 1, true, array_shift($paths));
-            $files[] = $includeData['files'];
+            $files = array_merge($files, $includeData['files']);
             $value = $includeData['typoscript'];
         }
         unset($value);
 
-        $files = array_merge(...$files);
         if (!empty($files)) {
             $files = array_unique($files);
             foreach ($files as $file) {

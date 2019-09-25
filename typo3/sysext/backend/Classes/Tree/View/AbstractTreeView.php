@@ -348,7 +348,7 @@ abstract class AbstractTreeView
         $this->initializePositionSaving();
         // Init done:
         $lastMountPointPid = 0;
-        $treeArr = [[]];
+        $treeArr = [];
         // Traverse mounts:
         foreach ($this->MOUNTS as $idx => $uid) {
             // Set first:
@@ -396,10 +396,10 @@ abstract class AbstractTreeView
                     $this->getTree($uid, 999, $depthData);
                 }
                 // Add tree:
-                $treeArr[] = $this->tree;
+                $treeArr = array_merge($treeArr, $this->tree);
             }
         }
-        return $this->printTree(array_merge(...$treeArr));
+        return $this->printTree($treeArr);
     }
 
     /**

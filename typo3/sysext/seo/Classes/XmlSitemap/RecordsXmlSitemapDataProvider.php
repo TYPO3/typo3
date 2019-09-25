@@ -82,14 +82,14 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
         if (!empty($pids)) {
             $recursiveLevel = isset($this->config['recursive']) ? (int)$this->config['recursive'] : 0;
             if ($recursiveLevel) {
-                $newList = [[]];
+                $newList = [];
                 foreach ($pids as $pid) {
                     $list = $this->cObj->getTreeList($pid, $recursiveLevel);
                     if ($list) {
-                        $newList[] = explode(',', $list);
+                        $newList = array_merge($newList, explode(',', $list));
                     }
                 }
-                $pids = array_merge($pids, ...$newList);
+                $pids = array_merge($pids, $newList);
             }
 
             $constraints[] = $queryBuilder->expr()->in('pid', $pids);

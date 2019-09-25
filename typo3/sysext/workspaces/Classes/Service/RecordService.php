@@ -61,7 +61,7 @@ class RecordService implements SingletonInterface
      */
     public function getCreateUserIds()
     {
-        $createUserIds = [[]];
+        $createUserIds = [];
         foreach ($this->getIdsPerTable() as $tableName => $ids) {
             if (empty($GLOBALS['TCA'][$tableName]['ctrl']['cruser_id'])) {
                 continue;
@@ -87,9 +87,9 @@ class RecordService implements SingletonInterface
             $records = array_column($records, $createUserIdFieldName);
 
             if (!empty($records)) {
-                $createUserIds[] = $records;
+                $createUserIds = array_merge($createUserIds, $records);
             }
         }
-        return array_unique(array_merge(...$createUserIds));
+        return array_unique($createUserIds);
     }
 }

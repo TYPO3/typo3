@@ -262,7 +262,7 @@ class LocalizationUtility
      */
     protected static function flattenTypoScriptLabelArray(array $labelValues, string $parentKey = ''): array
     {
-        $result = [[]];
+        $result = [];
         foreach ($labelValues as $key => $labelValue) {
             if (!empty($parentKey)) {
                 if ($key === '_typoScriptNodeValue') {
@@ -273,12 +273,12 @@ class LocalizationUtility
             }
             if (is_array($labelValue)) {
                 $labelValue = self::flattenTypoScriptLabelArray($labelValue, $key);
-                $result[] = $labelValue;
+                $result = array_merge($result, $labelValue);
             } else {
-                $result[] = [$key => $labelValue];
+                $result[$key] = $labelValue;
             }
         }
-        return array_merge(...$result);
+        return $result;
     }
 
     /**

@@ -162,18 +162,21 @@ class CollectionService implements SingletonInterface
      */
     protected function finalize(array $dataArray)
     {
-        $processedDataArray = [[]];
+        $processedDataArray = [];
         foreach ($dataArray as $dataElement) {
             $dataElementIdentifier = $dataElement['id'];
             $processedDataArray[] = $dataElement;
             // Insert children (if any)
             if (!empty($this->nestedDataArray[$dataElementIdentifier])) {
-                $processedDataArray[] = $this->finalize($this->nestedDataArray[$dataElementIdentifier]);
+                $processedDataArray = array_merge(
+                    $processedDataArray,
+                    $this->finalize($this->nestedDataArray[$dataElementIdentifier])
+                );
                 unset($this->nestedDataArray[$dataElementIdentifier]);
             }
         }
 
-        return array_merge(...$processedDataArray);
+        return $processedDataArray;
     }
 
     /**

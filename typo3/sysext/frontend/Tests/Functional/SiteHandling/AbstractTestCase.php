@@ -72,20 +72,23 @@ abstract class AbstractTestCase extends FunctionalTestCase
      */
     protected function meltStrings(array $arrays, callable $finalCallback = null, string $prefix = ''): array
     {
-        $results = [[]];
+        $results = [];
         $array = array_shift($arrays);
         foreach ($array as $item) {
             $resultItem = $prefix . $item;
             if (count($arrays) > 0) {
-                $results[] = $this->meltStrings($arrays, $finalCallback, $resultItem);
+                $results = array_merge(
+                    $results,
+                    $this->meltStrings($arrays, $finalCallback, $resultItem)
+                );
                 continue;
             }
             if ($finalCallback !== null) {
                 $resultItem = call_user_func($finalCallback, $resultItem);
             }
-            $results[] = [$resultItem];
+            $results[] = $resultItem;
         }
-        return array_merge(...$results);
+        return $results;
     }
 
     /**

@@ -7819,8 +7819,8 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function processClearCacheQueue()
     {
-        $tagsToClear = [[]];
-        $clearCacheCommands = [[]];
+        $tagsToClear = [];
+        $clearCacheCommands = [];
 
         foreach (static::$recordsToClearCacheFor as $table => $uids) {
             foreach (array_unique($uids) as $uid) {
@@ -7832,18 +7832,18 @@ class DataHandler implements LoggerAwareInterface
                 foreach ($pageUids as $originalParent) {
                     list($tagsToClearFromPrepare, $clearCacheCommandsFromPrepare)
                         = $this->prepareCacheFlush($table, $uid, $originalParent);
-                    $tagsToClear[] = $tagsToClearFromPrepare;
-                    $clearCacheCommands[] = $clearCacheCommandsFromPrepare;
+                    $tagsToClear = array_merge($tagsToClear, $tagsToClearFromPrepare);
+                    $clearCacheCommands = array_merge($clearCacheCommands, $clearCacheCommandsFromPrepare);
                 }
             }
         }
 
         /** @var CacheManager $cacheManager */
         $cacheManager = $this->getCacheManager();
-        $cacheManager->flushCachesInGroupByTags('pages', array_keys(array_merge(...$tagsToClear)));
+        $cacheManager->flushCachesInGroupByTags('pages', array_keys($tagsToClear));
 
         // Filter duplicate cache commands from cacheQueue
-        $clearCacheCommands = array_unique(array_merge(...$clearCacheCommands));
+        $clearCacheCommands = array_unique($clearCacheCommands);
         // Execute collected clear cache commands from page TSConfig
         foreach ($clearCacheCommands as $command) {
             $this->clear_cacheCmd($command);

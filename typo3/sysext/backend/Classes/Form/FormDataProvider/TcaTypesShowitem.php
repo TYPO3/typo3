@@ -183,7 +183,7 @@ class TcaTypesShowitem implements FormDataProviderInterface
      */
     protected function removeFieldsByBitmaskExcludeBits(array $result, $bitmaskValue, $recordTypeValue)
     {
-        $removeListArray = [[]];
+        $removeListArray = [];
         $bitmaskValue = MathUtility::forceIntegerInRange($bitmaskValue, 0);
         $excludeListBitsArray = $this->processedTca['types'][$recordTypeValue]['bitmask_excludelist_bits'];
         foreach ($excludeListBitsArray as $bitKey => $excludeList) {
@@ -193,10 +193,9 @@ class TcaTypesShowitem implements FormDataProviderInterface
             if (!$isNegative && ($bitmaskValue & pow(2, $bit))
                 || $isNegative && !($bitmaskValue & pow(2, $bit))
             ) {
-                $removeListArray[] = GeneralUtility::trimExplode(',', $excludeList, true);
+                $removeListArray = array_merge($removeListArray, GeneralUtility::trimExplode(',', $excludeList, true));
             }
         }
-        $removeListArray = array_merge(...$removeListArray);
         $result = $this->removeFields($result, $removeListArray, $recordTypeValue);
         return $this->removeFieldsFromPalettes($result, $removeListArray);
     }

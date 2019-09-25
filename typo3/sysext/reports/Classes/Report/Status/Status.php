@@ -87,16 +87,15 @@ class Status implements RequestAwareReportInterface
     {
         $status = [];
         foreach ($this->statusProviders as $statusProviderId => $statusProviderList) {
-            $status[$statusProviderId] = [[]];
+            $status[$statusProviderId] = [];
             foreach ($statusProviderList as $statusProvider) {
                 if ($statusProvider instanceof RequestAwareStatusProviderInterface) {
                     $statuses = $statusProvider->getStatus($request);
                 } else {
                     $statuses = $statusProvider->getStatus();
                 }
-                $status[$statusProviderId][] = $statuses;
+                $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
             }
-            $status[$statusProviderId] = array_merge(...$status[$statusProviderId]);
         }
         return $status;
     }
@@ -114,10 +113,9 @@ class Status implements RequestAwareReportInterface
             foreach ($statusProviderList as $statusProvider) {
                 if ($statusProvider instanceof ExtendedStatusProviderInterface) {
                     $statuses = $statusProvider->getDetailedStatus();
-                    $status[$statusProviderId][] = $statuses;
+                    $status[$statusProviderId] = array_merge($status[$statusProviderId], $statuses);
                 }
             }
-            $status[$statusProviderId] = array_merge(...$status[$statusProviderId]);
         }
         return $status;
     }

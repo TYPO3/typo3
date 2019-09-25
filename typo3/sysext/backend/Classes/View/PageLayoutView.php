@@ -3764,21 +3764,21 @@ class PageLayoutView implements LoggerAwareInterface
         $tree->init('AND ' . $perms_clause);
         $tree->makeHTML = 0;
         $tree->fieldArray = ['uid', 'php_tree_stop'];
-        $idList = [[]];
+        $idList = [];
 
         $allowedMounts = !$backendUser->isAdmin() && $id === 0
             ? $backendUser->returnWebmounts()
             : [$id];
 
         foreach ($allowedMounts as $allowedMount) {
-            $idList[] = [$allowedMount];
+            $idList[] = $allowedMount;
             if ($depth) {
                 $tree->getTree($allowedMount, $depth, '');
             }
-            $idList[] = $tree->ids;
+            $idList = array_merge($idList, $tree->ids);
         }
 
-        return array_merge(...$idList);
+        return $idList;
     }
 
     /**

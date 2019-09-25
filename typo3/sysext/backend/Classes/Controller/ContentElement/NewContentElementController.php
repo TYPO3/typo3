@@ -360,7 +360,7 @@ class NewContentElementController
      */
     protected function getWizards(): array
     {
-        $wizardItems = [[]];
+        $wizardItems = [];
         if (is_array($this->config)) {
             $wizards = $this->config['wizardItems.'] ?? [];
             $appendWizards = $this->getAppendWizards($wizards['elements.'] ?? []);
@@ -393,14 +393,13 @@ class NewContentElementController
                         }
                     }
                     if (!empty($groupItems)) {
-                        $wizardItems[] = [$groupKey => $this->getWizardGroupHeader($wizardGroup)];
-                        $wizardItems[] = $groupItems;
+                        $wizardItems[$groupKey] = $this->getWizardGroupHeader($wizardGroup);
+                        $wizardItems = array_merge($wizardItems, $groupItems);
                     }
                 }
             }
         }
         // Remove elements where preset values are not allowed:
-        $wizardItems = array_merge(...$wizardItems);
         $this->removeInvalidWizardItems($wizardItems);
         return $wizardItems;
     }
