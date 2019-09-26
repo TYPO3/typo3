@@ -21,8 +21,9 @@ define([
   'TYPO3/CMS/Install/ProgressBar',
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
+  'TYPO3/CMS/Core/SecurityUtility',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, SecurityUtility) {
   'use strict';
 
   return {
@@ -409,6 +410,7 @@ define([
     },
 
     extensionMatrixHtml: function(data) {
+      var securityUtility = new SecurityUtility();
       var packMissesIcon = this.currentModal.find(this.selectorExtensionPackMissesIcon).html();
       var updateIcon = this.currentModal.find(this.selectorLanguageUpdateIcon).html();
       var tooltip = '';
@@ -468,22 +470,22 @@ define([
           $('<td>').text(extension.key)
         );
         extension.packs.forEach(function(pack) {
+          var $column = $('<td>');
+          $tr.append($column);
           if (pack.exists !== true) {
             if (pack.lastUpdate !== null) {
-              tooltip = 'No language pack available when tried at ' + pack.lastUpdate + '. Click to re-try.';
+              tooltip = 'No language pack available for ' + pack.iso + ' when tried at ' + pack.lastUpdate + '. Click to re-try.';
             } else {
               tooltip = 'Language pack not downloaded. Click to download';
             }
-            $tr.append(
-              $('<td>').append(
-                $('<a>', {
-                  'class': 'btn btn-default t3js-languagePacks-update',
-                  'data-extension': extension.key,
-                  'data-iso': pack.iso,
-                  'data-toggle': 'tooltip',
-                  'title': tooltip
-                }).append(packMissesIcon)
-              )
+            $column.append(
+              $('<a>', {
+                'class': 'btn btn-default t3js-languagePacks-update',
+                'data-extension': extension.key,
+                'data-iso': pack.iso,
+                'data-toggle': 'tooltip',
+                'title': securityUtility.encodeHtml(tooltip),
+              }).append(packMissesIcon)
             );
           }
         });
