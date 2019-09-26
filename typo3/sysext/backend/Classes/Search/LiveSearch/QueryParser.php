@@ -81,7 +81,7 @@ class QueryParser
     }
 
     /**
-     * Verify if an given query contains a page jump command.
+     * Verify if a given query contains a page jump command.
      *
      * @param string $query A valid value looks like '#14'
      * @return int
@@ -107,7 +107,7 @@ class QueryParser
     }
 
     /**
-     * Verify if an given query contains an registered command key.
+     * Verify if a given query contains a registered command key.
      *
      * @param string $query
      * @return bool

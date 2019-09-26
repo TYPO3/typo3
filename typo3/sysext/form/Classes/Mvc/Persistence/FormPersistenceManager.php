@@ -160,7 +160,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     /**
      * Save the array form representation identified by $persistenceIdentifier.
      * Only files with the extension .form.yaml are saved.
-     * If the formDefinition is located within a EXT: resource, save is only
+     * If the formDefinition is located within an EXT: resource, save is only
      * allowed if the configuration path
      * TYPO3.CMS.Form.persistenceManager.allowSaveToExtensionPaths
      * is set to true.
@@ -397,7 +397,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      *
      * Only registered mountpoints from
      * TYPO3.CMS.Form.persistenceManager.allowedFileMounts
-     * are listet.
+     * are listed.
      *
      * @return Folder[]
      * @internal
@@ -441,7 +441,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      *
      * Only registered mountpoints from
      * TYPO3.CMS.Form.persistenceManager.allowedExtensionPaths
-     * are listet.
+     * are listed.
      *
      * @return array
      * @internal
@@ -548,7 +548,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     }
 
     /**
-     * Check if a identifier is already used by a formDefintion.
+     * Check if an identifier is already used by a formDefintion.
      *
      * @param string $identifier
      * @return bool

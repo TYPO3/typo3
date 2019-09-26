@@ -344,7 +344,7 @@ class PathUtility
             // ".." in path:
             if (($theDirParts[$partCount] ?? '') === '..') {
                 if ($partCount >= 1) {
-                    // Rremove this and previous element
+                    // Remove this and previous element
                     array_splice($theDirParts, $partCount - 1, 2);
                     $partCount -= 2;
                     $theDirPartsCount -= 2;

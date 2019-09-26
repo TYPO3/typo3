@@ -104,7 +104,7 @@ class DatabaseTreeDataProviderTest extends UnitTestCase
             ->shouldBeCalled()
             ->willReturn(['uid' => 0, 'parent' => '']);
 
-        // Register connection pool revelation in framework, this is the entry point used by system unter test
+        // Register connection pool revelation in framework, this is the entry point used by system under test
         for ($i = 1; $i <= $instanceCount; $i++) {
             GeneralUtility::addInstance(ConnectionPool::class, $connectionPoolProphecy->reveal());
         }

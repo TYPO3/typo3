@@ -32,7 +32,7 @@ use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Service\CacheService;
 
 /**
- * Creates a request an dispatches it to the controller which was specified
+ * Creates a request and dispatches it to the controller which was specified
  * by TS Setup, flexForm and returns the content.
  *
  * This class is the main entry point for extbase extensions.
@@ -231,7 +231,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface
     }
 
     /**
-     * Converts a Extbase response object into a PSR-7 Response
+     * Converts an Extbase response object into a PSR-7 Response
      *
      * @param ExtbaseResponse $extbaseResponse
      * @return ResponseInterface

@@ -586,7 +586,7 @@ class CrawlerHook
      * @param string $url URL string to check
      * @param array $urlLog Array of already indexed URLs (input url is looked up here and must not exist already)
      * @param string $baseUrl Base URL of the indexing process (input URL must be "inside" the base URL!)
-     * @return string Returls the URL if OK, otherwise FALSE
+     * @return string Returns the URL if OK, otherwise FALSE
      */
     public function checkUrl($url, $urlLog, $baseUrl)
     {
@@ -737,7 +737,7 @@ class CrawlerHook
      * Checks if $url has any of the URls in the $url_deny "list" in it and if so, returns TRUE.
      *
      * @param string $url URL to test
-     * @param string $url_deny String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of decend)
+     * @param string $url_deny String where URLs are separated by line-breaks; If any of these strings is the first part of $url, the function returns TRUE (to indicate denial of descend)
      * @return bool TRUE if there is a matching URL (hence, do not index!)
      */
     public function checkDeniedSuburls($url, $url_deny)

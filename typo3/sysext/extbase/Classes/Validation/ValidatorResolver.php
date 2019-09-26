@@ -154,7 +154,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface
                 // note: the outer simpleType check reduces lookups to the class loader
 
                 // todo: whether the property holds a simple type or not and whether it holds a collection is known in
-                // todo: in the ClassSchema. The information could be made available and not evaluted here again.
+                // todo: in the ClassSchema. The information could be made available and not evaluated here again.
                 if (!TypeHandlingUtility::isSimpleType($propertyTargetClassName)) {
                     if (TypeHandlingUtility::isCollectionType($propertyTargetClassName)) {
                         $collectionValidator = $this->createValidator(

@@ -372,7 +372,7 @@ class IndexSearchRepository
         $fulltextIndex = 'index_fulltext.fulltextdata';
         // This holds the result if the search is natural (doesn't contain any boolean operators)
         $naturalSearchString = '';
-        // This holds the result if the search is boolen (contains +/-/| operators)
+        // This holds the result if the search is boolean (contains +/-/| operators)
         $booleanSearchString = '';
 
         $searchType = (string)$this->getSearchType();

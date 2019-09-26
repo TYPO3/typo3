@@ -21,7 +21,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\FlexForm\Fixtures;
 class DataStructureIdentifierPreProcessHookReturnEmptyArray
 {
     /**
-     * Returns a empty array (no match for this hook)
+     * Returns an empty array (no match for this hook)
      *
      * @param array $fieldTca
      * @param string $tableName

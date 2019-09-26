@@ -305,7 +305,7 @@ class DataMapper
     }
 
     /**
-     * Creates a DateTime from an unix timestamp or date/datetime/time value.
+     * Creates a DateTime from a unix timestamp or date/datetime/time value.
      * If the input is empty, NULL is returned.
      *
      * @param int|string $value Unix timestamp or date/datetime/time value
@@ -496,7 +496,7 @@ class DataMapper
     }
 
     /**
-     * Returns the mapped classProperty from the identiyMap or
+     * Returns the mapped classProperty from the identityMap or
      * mapResultToPropertyValue()
      *
      * If the field value is empty and the column map has no parent key field name,

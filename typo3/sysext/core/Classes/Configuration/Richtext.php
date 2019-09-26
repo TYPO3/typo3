@@ -44,7 +44,7 @@ class Richtext
     {
         // create instance of NodeFactory, ask for "text" element
         //
-        // As soon an the Data handler starts using FormDataProviders, this class can vanish again, and the hack to
+        // As soon as the Data handler starts using FormDataProviders, this class can vanish again, and the hack to
         // test for specific rich text instances can be dropped: Split the "TcaText" data provider into multiple parts, each
         // RTE should register and own data provider that does the transformation / configuration providing. This way,
         // the explicit check for different RTE classes is removed from core and "hooked in" by the RTE's.

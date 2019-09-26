@@ -58,7 +58,7 @@ class Bootstrap
      * to initialize an Application class.
      *
      * @param ClassLoader $classLoader an instance of the class loader
-     * @param bool $failsafe true if no caching and a failsaife package manager should be used
+     * @param bool $failsafe true if no caching and a failsafe package manager should be used
      * @return ContainerInterface
      */
     public static function init(

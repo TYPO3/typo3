@@ -527,7 +527,7 @@ class Parser
     }
 
     /**
-     * Parses an foreign key definition item contained in the create definition
+     * Parses a foreign key definition item contained in the create definition
      *
      * @return \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem
      * @throws \TYPO3\CMS\Core\Database\Schema\Exception\StatementException

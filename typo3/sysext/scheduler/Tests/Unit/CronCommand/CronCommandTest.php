@@ -256,7 +256,7 @@ class CronCommandTest extends UnitTestCase
      * @dataProvider expectedCalculatedTimestampDataProvider
      * @param string $cronCommand Cron command
      * @param int $startTimestamp Timestamp for start of calculation
-     * @param string $expectedTimestamp Expected result (next time of execution), to be feeded to strtotime
+     * @param string $expectedTimestamp Expected result (next time of execution), to be fed to strtotime
      */
     public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp($cronCommand, $startTimestamp, $expectedTimestamp)
     {

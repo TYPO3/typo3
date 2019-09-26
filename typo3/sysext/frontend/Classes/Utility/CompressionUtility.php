@@ -18,7 +18,7 @@ namespace TYPO3\CMS\Frontend\Utility;
  * This class contains compression functions for the TYPO3 Frontend. It can be
  * used only in EXT:frontend/Classes/Http/RequestHandler.php
  *
- * @internal this is a internal TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
+ * @internal this is an internal TYPO3 implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
 class CompressionUtility implements \TYPO3\CMS\Core\SingletonInterface
 {

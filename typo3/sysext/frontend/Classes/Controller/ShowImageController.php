@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Picture file and settings is supplied by GET-parameters:
  *
  *  - file = fileUid or Combined Identifier
- *  - encoded in an parameter Array (with weird format - see ContentObjectRenderer about ll. 1500)
+ *  - encoded in a parameter Array (with weird format - see ContentObjectRenderer about ll. 1500)
  *  - width, height = usual width an height, m/c supported
  *  - frame
  *  - bodyTag

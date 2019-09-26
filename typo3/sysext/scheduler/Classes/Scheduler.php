@@ -284,7 +284,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Fetches and unserializes a task object from the db. If an uid is given the object
+     * Fetches and unserializes a task object from the db. If a uid is given the object
      * with the uid is returned, else the object representing the next due task is returned.
      * If there are no due tasks the method throws an exception.
      *

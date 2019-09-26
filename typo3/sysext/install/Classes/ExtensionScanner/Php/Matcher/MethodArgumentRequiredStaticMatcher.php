@@ -61,7 +61,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                 if (!$isArgumentUnpackingUsed
                     && array_key_exists($fqdnClassWithMethod, $this->matcherDefinitions)
                     && $numberOfArguments < $this->matcherDefinitions[$fqdnClassWithMethod]['numberOfMandatoryArguments']
-                    // maximum number of arguments is just a measure agains false positives
+                    // maximum number of arguments is just a measure against false positives
                     && $numberOfArguments <= $this->matcherDefinitions[$fqdnClassWithMethod]['maximumNumberOfArguments']
                 ) {
                     $this->matches[] = [
@@ -89,7 +89,7 @@ class MethodArgumentRequiredStaticMatcher extends AbstractCoreMatcher
                     // and number of used arguments is lesser than numberOfMandatoryArguments
                     if (!$isArgumentUnpackingUsed
                         && $numberOfArguments < $candidate['numberOfMandatoryArguments']
-                        // maximum number of arguments is just a measure agains false positives
+                        // maximum number of arguments is just a measure against false positives
                         && $numberOfArguments <= $candidate['maximumNumberOfArguments']
                     ) {
                         $isPossibleMatch = true;

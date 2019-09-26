@@ -53,7 +53,7 @@ class ExtensionManagementUtility
 
     /**
      * Sets the package manager for all that backwards compatibility stuff,
-     * so it doesn't have to be fetched through the bootstap.
+     * so it doesn't have to be fetched through the bootstrap.
      *
      * @param PackageManager $packageManager
      * @internal
@@ -307,7 +307,7 @@ class ExtensionManagementUtility
      * 		),
      * 	),
      * 	'palettes' => array(
-     * 		'aPallete' => array(
+     * 		'aPalette' => array(
      * 			'showitem' => 'fieldB, fieldC',
      * 		),
      * 	),
@@ -322,7 +322,7 @@ class ExtensionManagementUtility
      * 		),
      * 	),
      * 	'palettes' => array(
-     * 		'aPallete' => array(
+     * 		'aPalette' => array(
      * 			'showitem' => 'fieldB, newA, fieldC',
      * 		),
      * 	),
@@ -917,7 +917,7 @@ class ExtensionManagementUtility
      * Registers a navigation component e.g. page tree
      *
      * @param string $module
-     * @param string $componentId componentId is also an RequireJS module name e.g. 'TYPO3/CMS/MyExt/MyNavComponent'
+     * @param string $componentId componentId is also a RequireJS module name e.g. 'TYPO3/CMS/MyExt/MyNavComponent'
      * @param string $extensionKey
      * @throws \RuntimeException
      */
@@ -1752,7 +1752,7 @@ tt_content.' . $key . $suffix . ' {
     /**
      * Loads given extension
      *
-     * Warning: This method only works if the ugrade wizard to transform
+     * Warning: This method only works if the upgrade wizard to transform
      * localconf.php to LocalConfiguration.php was already run
      *
      * @param string $extensionKey Extension key to load
@@ -1769,7 +1769,7 @@ tt_content.' . $key . $suffix . ' {
     /**
      * Unloads given extension
      *
-     * Warning: This method only works if the ugrade wizard to transform
+     * Warning: This method only works if the upgrade wizard to transform
      * localconf.php to LocalConfiguration.php was already run
      *
      * @param string $extensionKey Extension key to remove

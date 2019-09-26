@@ -120,7 +120,7 @@ class SiteFinder
             } catch (PageNotFoundException $e) {
                 // Usually when a page was hidden or disconnected
                 // This could be improved by handing in a Context object and decide whether hidden pages
-                // Should be linkeable too
+                // Should be linkable too
                 $rootLine = [];
             }
         }

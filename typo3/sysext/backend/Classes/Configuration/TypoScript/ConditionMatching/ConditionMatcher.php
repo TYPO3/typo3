@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Matching TypoScript conditions for backend disposal.
  *
  * Used with the TypoScript parser.
- * Matches browserinfo, IPnumbers for use with templates
+ * Matches browserinfo, IP numbers for use with templates
  */
 class ConditionMatcher extends AbstractConditionMatcher
 {

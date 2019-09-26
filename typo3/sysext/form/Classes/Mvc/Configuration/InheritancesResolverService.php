@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\CycleInheritancesException;
 
 /**
- * Resolve declared inheritances within an configuration array
+ * Resolve declared inheritances within a configuration array
  *
  * Basic concept:
  * - Take a large YAML config and replace the key '__inheritance' by the referenced YAML partial (of the same config file)

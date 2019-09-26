@@ -345,8 +345,8 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
             $columnMap = $dataMap->getColumnMap($propertyName);
             if ($propertyValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
                 $cleanProperty = $object->_getCleanProperty($propertyName);
-                // objectstorage needs to be persisted if the object is new, the objectstorge is dirty, meaning it has
-                // been changed after initial build, or an empty objectstorge is present and the cleanstate objectstorage
+                // objectstorage needs to be persisted if the object is new, the objectstorage is dirty, meaning it has
+                // been changed after initial build, or an empty objectstorage is present and the cleanstate objectstorage
                 // has childelements, meaning all elements should been removed from the objectstorage
                 if ($object->_isNew() || $propertyValue->_isDirty() || ($propertyValue->count() === 0 && $cleanProperty && $cleanProperty->count() > 0)) {
                     $this->persistObjectStorage($propertyValue, $object, $propertyName, $row);
@@ -611,7 +611,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     /**
      * Inserts an object in the storage backend
      *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be insterted in the storage
+     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object to be inserted in the storage
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parentobject.
      * @param string $parentPropertyName
      */
@@ -936,7 +936,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     }
 
     /**
-     * Adds common databse fields to a row
+     * Adds common database fields to a row
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
      * @param array &$row
@@ -954,7 +954,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
     }
 
     /**
-     * Adjustes the common date fields of the given row to the current time
+     * Adjusts the common date fields of the given row to the current time
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
      * @param array &$row The row to be updated

@@ -80,7 +80,7 @@ class DataMapProcessor
      * Class generator
      *
      * @param array $dataMap The submitted data-map to be worked on
-     * @param BackendUserAuthentication $backendUser Forwared backend-user scope
+     * @param BackendUserAuthentication $backendUser Forwarded backend-user scope
      * @return DataMapProcessor
      */
     public static function instance(array $dataMap, BackendUserAuthentication $backendUser)
@@ -94,7 +94,7 @@ class DataMapProcessor
 
     /**
      * @param array $dataMap The submitted data-map to be worked on
-     * @param BackendUserAuthentication $backendUser Forwared backend-user scope
+     * @param BackendUserAuthentication $backendUser Forwarded backend-user scope
      */
     public function __construct(array $dataMap, BackendUserAuthentication $backendUser)
     {
@@ -500,7 +500,7 @@ class DataMapProcessor
 
     /**
      * Handle synchronization of inline relations.
-     * Inline Relational Record Editong ("IRRE") always is modelled as 1:n composite relation - which means that
+     * Inline Relational Record Editing ("IRRE") always is modelled as 1:n composite relation - which means that
      * direct(!) children cannot exist without their parent. Removing a relative parent results in cascaded removal
      * of all direct(!) children as well.
      *

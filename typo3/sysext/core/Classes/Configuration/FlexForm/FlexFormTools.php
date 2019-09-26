@@ -98,7 +98,7 @@ class FlexFormTools
      * Note that the TCA for data structure definitions MUST NOT be overridden by
      * 'columnsOverrides' or by parent TCA in an inline relation! This would create a huge mess.
      *
-     * Note: This method and the resolving methods belowe are well unit tested and document all
+     * Note: This method and the resolving methods below are well unit tested and document all
      * nasty details this way.
      *
      * @param array $fieldTca Full TCA of the field in question that has type=flex set
@@ -354,7 +354,7 @@ class FlexFormTools
             );
         }
         // Ok, finally we have the field value. This is now either a data structure directly, or a pointer to a file,
-        // or the value can be interpreted as integer (is an uid) and "ds_tableField" is set, so this is the table, uid and field
+        // or the value can be interpreted as integer (is a uid) and "ds_tableField" is set, so this is the table, uid and field
         // where the final data structure can be found.
         if (MathUtility::canBeInterpretedAsInteger($pointerValue)) {
             if (!isset($fieldTca['config']['ds_tableField'])) {
@@ -601,8 +601,8 @@ class FlexFormTools
         // Hook to fetch data structure by given identifier.
         // Method parseFlexFormDataStructureByIdentifier() must be implemented and returns either an
         // empty string "not my business", or a string with the resolved data structure string, or FILE: reference,
-        // or a fully parsed data structure as aray.
-        // Result of the FIRST hook that gives an non-empty string is used, namespace your identifiers in
+        // or a fully parsed data structure as array.
+        // Result of the FIRST hook that gives a non-empty string is used, namespace your identifiers in
         // a way that there is little chance they overlap (eg. prefix with extension name).
         // If implemented, this hook should be paired with a hook in getDataStructureIdentifier() above.
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['flexParsing'] ?? [] as $hookClass) {

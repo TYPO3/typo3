@@ -571,7 +571,7 @@ class CommandMap
     }
 
     /**
-     * Callback to get the liveId of an dependent element.
+     * Callback to get the liveId of a dependent element.
      *
      * @param ElementEntity $element
      * @return int
@@ -582,7 +582,7 @@ class CommandMap
     }
 
     /**
-     * Callback to get the real id of an dependent element.
+     * Callback to get the real id of a dependent element.
      *
      * @param ElementEntity $element
      * @return int
@@ -684,7 +684,7 @@ class CommandMap
     }
 
     /**
-     * Gets an instance of the depency resolver utility.
+     * Gets an instance of the dependency resolver utility.
      *
      * @param string $scope Scope identifier
      * @return DependencyResolver
@@ -715,7 +715,7 @@ class CommandMap
         $this->scopes = [
             // settings for publishing and swapping:
             self::SCOPE_WorkspacesSwap => [
-                // callback functons used to modify the commandMap
+                // callback functions used to modify the commandMap
                 // + element properties are specific for each element
                 // + common properties are the same for all elements
                 self::KEY_GetElementPropertiesCallback => 'getElementSwapPropertiesCallback',
@@ -732,7 +732,7 @@ class CommandMap
             ],
             // settings for modifying the stage:
             self::SCOPE_WorkspacesSetStage => [
-                // callback functons used to modify the commandMap
+                // callback functions used to modify the commandMap
                 // + element properties are specific for each element
                 // + common properties are the same for all elements
                 self::KEY_GetElementPropertiesCallback => 'getElementSetStagePropertiesCallback',
@@ -749,7 +749,7 @@ class CommandMap
             ],
             // settings for clearing and flushing:
             self::SCOPE_WorkspacesClear => [
-                // callback functons used to modify the commandMap
+                // callback functions used to modify the commandMap
                 // + element properties are specific for each element
                 // + common properties are the same for all elements
                 self::KEY_GetElementPropertiesCallback => null,

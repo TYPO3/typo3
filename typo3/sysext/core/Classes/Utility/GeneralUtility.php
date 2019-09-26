@@ -120,7 +120,7 @@ class GeneralUtility
      *
      *************************/
     /**
-     * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST, which is equalent to 'GP' order
+     * Returns the 'GLOBAL' value of incoming data from POST or GET, with priority to POST, which is equivalent to 'GP' order
      * In case you already know by which method your data is arriving consider using GeneralUtility::_GET or GeneralUtility::_POST.
      *
      * @param string $var GET/POST var to return
@@ -300,7 +300,7 @@ class GeneralUtility
      *
      * @param string $baseIP Is the current remote IP address for instance
      * @param string $list Is a comma-list of IPv6 prefixes, could also contain IPv4 addresses
-     * @return bool TRUE If an baseIP matches any prefix
+     * @return bool TRUE If a baseIP matches any prefix
      */
     public static function cmpIPv6($baseIP, $list)
     {
@@ -934,7 +934,7 @@ class GeneralUtility
     }
 
     /**
-     * Returns a given CamelCasedString as an lowercase string with underscores.
+     * Returns a given CamelCasedString as a lowercase string with underscores.
      * Example: Converts BlogExample to blog_example, and minimalValue to minimal_value
      *
      * @param string $string String to be converted to lowercase underscore
@@ -1411,7 +1411,7 @@ class GeneralUtility
      * Numeric keys are stored with the default tag name "numIndex" but can be overridden to other formats)
      * The function handles input values from the PHP array in a binary-safe way; All characters below 32 (except 9,10,13) will trigger the content to be converted to a base64-string
      * The PHP variable type of the data IS preserved as long as the types are strings, arrays, integers and booleans. Strings are the default type unless the "type" attribute is set.
-     * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances with 4.x versions. However, with PHP5 there seems to be the need to add an XML prologue a la <?xml version="1.0" encoding="[charset]" standalone="yes" ?> - otherwise UTF-8 is assumed! Unfortunately, many times the output from this function is used without adding that prologue meaning that non-ASCII characters will break the parsing!! This suchs of course! Effectively it means that the prologue should always be prepended setting the right characterset, alternatively the system should always run as utf-8!
+     * The output XML has been tested with the PHP XML-parser and parses OK under all tested circumstances with 4.x versions. However, with PHP5 there seems to be the need to add an XML prologue a la <?xml version="1.0" encoding="[charset]" standalone="yes" ?> - otherwise UTF-8 is assumed! Unfortunately, many times the output from this function is used without adding that prologue meaning that non-ASCII characters will break the parsing!! This sucks of course! Effectively it means that the prologue should always be prepended setting the right characterset, alternatively the system should always run as utf-8!
      * However using MSIE to read the XML output didn't always go well: One reason could be that the character encoding is not observed in the PHP data. The other reason may be if the tag-names are invalid in the eyes of MSIE. Also using the namespace feature will make MSIE break parsing. There might be more reasons...
      *
      * @param array $array The input PHP array with any kind of data; text, binary, integers. Not objects though.
@@ -1501,7 +1501,7 @@ class GeneralUtility
                 $vLen = strlen($v);
                 // Go for base64 encoding if the initial segment NOT matching any binary char has the same length as the whole string!
                 if ($vLen && strcspn($v, $binaryChars) != $vLen) {
-                    // If the value contained binary chars then we base64-encode it an set an attribute to notify this situation:
+                    // If the value contained binary chars then we base64-encode it and set an attribute to notify this situation:
                     $content = $nl . chunk_split(base64_encode($v));
                     $attr .= ' base64="1"';
                 } else {

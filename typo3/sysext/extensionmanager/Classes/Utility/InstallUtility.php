@@ -541,7 +541,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Emits a signal after an t3d file was imported
+     * Emits a signal after a t3d file was imported
      *
      * @param string $importFileToUse
      * @param int $importResult

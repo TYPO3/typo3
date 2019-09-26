@@ -98,7 +98,7 @@ abstract class AbstractTableConfigurationTreeDataProvider extends \TYPO3\CMS\Bac
     }
 
     /**
-     * Gets the expamdAll
+     * Gets the expandAll
      *
      * @return bool
      */

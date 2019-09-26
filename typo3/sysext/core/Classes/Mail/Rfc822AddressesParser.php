@@ -286,7 +286,7 @@ class Rfc822AddressesParser
      * A common function that will check an exploded string.
      *
      * @internal
-     * @param array $parts The exloded string.
+     * @param array $parts The exploded string.
      * @param string $char  The char that was exploded on.
      * @return mixed False if the string contains unclosed quotes/brackets, or the string on success.
      */

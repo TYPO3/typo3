@@ -18,9 +18,9 @@ namespace TYPO3\CMS\Core\Collection;
  * Marker interface for a collection class with title and description
  *
  * Collections might be used internally as well as being shown
- * With the nameable interface a title and a description are added
- * to an collection, allowing every collection implementing Nameable
- * being display by the same logic.
+ * with the nameable interface a title and a description are added
+ * to a collection, allowing every collection implementing Nameable
+ * being displayed by the same logic.
  */
 interface NameableCollectionInterface
 {

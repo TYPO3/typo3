@@ -33,7 +33,7 @@ use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
  * This class handles upgrades of these settings. It is called by
  * the step controller at an early point.
  *
- * Every change is encapsulated in one method an must throw a ConfigurationChangedException
+ * Every change is encapsulated in one method and must throw a ConfigurationChangedException
  * if new data is written to LocalConfiguration. This is caught by above
  * step controller to initiate a redirect and start again with adapted configuration.
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.

@@ -64,8 +64,8 @@ interface RenderableInterface extends RootRenderableInterface
     /**
      * This function is called after a renderable has been removed from its parent
      * renderable. The function should make sure to clean up the internal state,
-     * like reseting $this->parentRenderable or deregistering the renderable
-     * at the form.
+     * like resetting $this->parentRenderable or deregistering the renderable
+     * of the form.
      *
      * @internal
      */

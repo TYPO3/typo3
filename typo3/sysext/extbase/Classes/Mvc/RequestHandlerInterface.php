@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Mvc;
 interface RequestHandlerInterface
 {
     /**
-     * Handles a raw request and returns the respsonse.
+     * Handles a raw request and returns the response.
      *
      * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      */

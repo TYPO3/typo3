@@ -190,7 +190,7 @@ class FormDataCompiler
             'pageLanguageOverlayRows' => [],
             // If the handled row is a localized row, this entry hold the default language row array
             'defaultLanguageRow' => null,
-            // If the handled row is a localived row and $TCA[<tableName>]['ctrl']['translationSource'] is configured,
+            // If the handled row is a localized row and $TCA[<tableName>]['ctrl']['translationSource'] is configured,
             // This entry holds the row of the language source record.
             'sourceLanguageRow' => null,
             // If the handled row is a localized row and a transOrigDiffSourceField is defined, this
@@ -228,7 +228,7 @@ class FormDataCompiler
 
             // BackendUser->uc['inlineView'] - This array holds status of expand / collapsed inline items
             // This array is "flat", an inline structure with parent uid 1 having firstChild uid 2 having secondChild uid 3
-            // firstChild and secondChild are not nested. If an uid is set it means "record is expanded", example:
+            // firstChild and secondChild are not nested. If a uid is set it means "record is expanded", example:
             // 'parent' => [
             //     1 => [
             //         'firstChild' => [ 2 ], // record 2 of firstChild table is open in inline context to parent 1
@@ -261,7 +261,7 @@ class FormDataCompiler
             // Field name of the top most parent element
             'inlineTopMostParentFieldName' => '',
 
-            // If is on symetric side of an inline child parent reference.
+            // If is on symmetric side of an inline child parent reference.
             // symmetric side can be achieved in case of an mm relation to the same table. If record A has a relation
             // to record B, the symmetric side is set in case that record B gets edited.
             // Record A (table1) <=> mm <=> Record B (table1)

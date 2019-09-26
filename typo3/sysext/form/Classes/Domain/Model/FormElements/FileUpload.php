@@ -24,7 +24,7 @@ class FileUpload extends AbstractFormElement
 {
 
     /**
-     * Initializes the Form Element by setting the data type to a Extbase File Reference
+     * Initializes the Form Element by setting the data type to an Extbase File Reference
      * @internal
      */
     public function initializeFormElement()

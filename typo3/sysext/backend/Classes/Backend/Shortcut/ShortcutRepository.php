@@ -134,7 +134,7 @@ class ShortcutRepository
     }
 
     /**
-     * runs through the available shortcuts an collects their groups
+     * runs through the available shortcuts and collects their groups
      *
      * @return array Array of groups which have shortcuts
      */

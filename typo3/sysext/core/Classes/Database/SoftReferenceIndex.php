@@ -453,7 +453,7 @@ class SoftReferenceIndex implements SingletonInterface
                 $finalTagParts['anchor'] = trim($link_params_parts[1]);
             }
 
-            // Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/? pair
+            // Splitting the parameter by ',' and if the array counts more than 1 element it's an id/type/? pair
             $pairParts = GeneralUtility::trimExplode(',', $link_param);
             if (count($pairParts) > 1) {
                 $link_param = $pairParts[0];

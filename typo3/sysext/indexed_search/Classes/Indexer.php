@@ -1869,7 +1869,7 @@ class Indexer
     }
 
     /**
-     * Check if an grlist-entry for this hash exists and if not so, write one.
+     * Check if a grlist-entry for this hash exists and if not so, write one.
      *
      * @param int $phash phash of the search result that should be found
      * @param int $phash_x The real phash of the current content. The two values are different when a page with userlogin turns out to contain the exact same content as another already indexed version of the page; This is the whole reason for the grlist table in fact...
@@ -2233,7 +2233,7 @@ class Indexer
     }
 
     /**
-     * Makes sure that keywords are space-separated. This is impotant for their
+     * Makes sure that keywords are space-separated. This is important for their
      * proper displaying as a part of fulltext index.
      *
      * @param string $keywordList

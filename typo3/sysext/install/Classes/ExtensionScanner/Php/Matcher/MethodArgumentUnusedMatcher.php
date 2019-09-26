@@ -22,7 +22,7 @@ use PhpParser\Node\Expr\MethodCall;
 /**
  * Match method usages where arguments "in between" are unused but not given as "null":
  *
- * public function foo($arg1, $unsused1 = null, $unused2 = null, $arg4)
+ * public function foo($arg1, $unused1 = null, $unused2 = null, $arg4)
  * but called with:
  * ->foo('arg1', 'notNull', null, 'arg4');
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.

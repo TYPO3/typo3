@@ -382,7 +382,7 @@ class InlineControlContainer extends AbstractContainer
      * The possible keys for the parameter $type are 'newRecord', 'localize' and 'synchronize'.
      *
      * @param string $type The link type, values are 'newRecord', 'localize' and 'synchronize'.
-     * @param string $objectPrefix The "path" to the child record to create (e.g. 'data-parentPageId-partenTable-parentUid-parentField-childTable]')
+     * @param string $objectPrefix The "path" to the child record to create (e.g. 'data-parentPageId-parentTable-parentUid-parentField-childTable]')
      * @param array $conf TCA configuration of the parent(!) field
      * @return string The HTML code of the new link, wrapped in a div
      */

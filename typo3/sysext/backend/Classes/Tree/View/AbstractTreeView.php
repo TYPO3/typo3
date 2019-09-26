@@ -591,7 +591,7 @@ abstract class AbstractTreeView
         // Get stored tree structure:
         $this->stored = json_decode($this->BE_USER->uc['browseTrees'][$this->treeName], true);
         // PM action
-        // (If an plus/minus icon has been clicked, the PM GET var is sent and we
+        // (If a plus/minus icon has been clicked, the PM GET var is sent and we
         // must update the stored positions in the tree):
         // 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
         $PM = explode('_', GeneralUtility::_GP('PM'));
@@ -707,7 +707,7 @@ abstract class AbstractTreeView
 
     /********************************
      *
-     * tree data buidling
+     * tree data building
      *
      ********************************/
     /**

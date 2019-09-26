@@ -25,7 +25,7 @@ class CreatableFormElementPropertiesValidator extends ElementBasedValidator
 
     /**
      * Checks if the form element property is defined within the form editor setup
-     * or if the property is definied within the "predefinedDefaults" in the form editor setup
+     * or if the property is defined within the "predefinedDefaults" in the form editor setup
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
      *

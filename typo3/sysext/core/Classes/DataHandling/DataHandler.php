@@ -67,7 +67,7 @@ use TYPO3\CMS\Core\Versioning\VersionState;
  * This class was formerly known as TCEmain.
  *
  * This is the TYPO3 Core Engine class for manipulation of the database
- * This class is used by eg. the tce_db BE route (SimpleDataHandlerController) which provides an the interface for POST forms to this class.
+ * This class is used by eg. the tce_db BE route (SimpleDataHandlerController) which provides an interface for POST forms to this class.
  *
  * Dependencies:
  * - $GLOBALS['TCA'] must exist
@@ -167,7 +167,7 @@ class DataHandler implements LoggerAwareInterface
     protected $useTransOrigPointerField = true;
 
     /**
-     * If TRUE, workspace restrictions are bypassed on edit an create actions (process_datamap()).
+     * If TRUE, workspace restrictions are bypassed on edit and create actions (process_datamap()).
      * YOU MUST KNOW what you do if you use this feature!
      *
      * @var bool
@@ -8010,7 +8010,7 @@ class DataHandler implements LoggerAwareInterface
      * The following cache_* are intentionally not cleared by 'all'
      *
      * - imagesizes:	Clearing this table would cause a lot of unneeded
-     * Imagemagick calls because the size informations have
+     * Imagemagick calls because the size information has
      * to be fetched again after clearing.
      * - all caches inside the cache manager that are inside the group "system"
      * - they are only needed to build up the core system and templates,
@@ -8085,7 +8085,7 @@ class DataHandler implements LoggerAwareInterface
             $cacheTag = substr($cacheCmd, 9);
             $tagsToFlush[] = $cacheTag;
         }
-        // process caching framwork operations
+        // process caching framework operations
         if (!empty($tagsToFlush)) {
             $this->getCacheManager()->flushCachesInGroupByTags('pages', $tagsToFlush);
         }

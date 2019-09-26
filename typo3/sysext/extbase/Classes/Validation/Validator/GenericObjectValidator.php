@@ -84,7 +84,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      *
      * @param mixed $value The value to be validated
      * @param \Traversable $validators The validators to be called on the value
-     * @param string $propertyName Name of ther property to check
+     * @param string $propertyName Name of the property to check
      */
     protected function checkProperty($value, $validators, $propertyName)
     {

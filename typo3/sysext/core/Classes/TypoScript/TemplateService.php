@@ -966,7 +966,7 @@ class TemplateService
 
         // Parse the TypoScript code text for include-instructions!
         $this->processIncludes();
-        // These vars are also set lateron...
+        // These vars are also set later on...
         $this->setup['sitetitle'] = $this->sitetitle;
         // ****************************
         // Parse TypoScript Constants

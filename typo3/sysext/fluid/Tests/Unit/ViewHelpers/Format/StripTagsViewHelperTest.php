@@ -100,7 +100,7 @@ class StripTagsViewHelperTest extends ViewHelperBaseTestcase
     }
 
     /**
-     * Ensures that obejcts are handled properly:
+     * Ensures that objects are handled properly:
      * + class not having __toString() method as given
      * + class having __toString() method gets tags stripped off
      *

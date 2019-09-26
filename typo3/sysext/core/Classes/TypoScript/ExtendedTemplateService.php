@@ -278,7 +278,7 @@ class ExtendedTemplateService extends TemplateService
      */
     public function generateConfig_constants()
     {
-        // These vars are also set lateron...
+        // These vars are also set later on...
         $this->setup['sitetitle'] = $this->sitetitle;
         // Parse constants
         $constants = GeneralUtility::makeInstance(Parser\TypoScriptParser::class);
@@ -670,7 +670,7 @@ class ExtendedTemplateService extends TemplateService
     }
 
     /**
-     * Get formatted HTML output for TypoScript either with Syntaxhiglighting or in plain mode
+     * Get formatted HTML output for TypoScript either with Syntaxhighlighting or in plain mode
      *
      * @param array $config Array with simple strings of typoscript code.
      * @param bool $lineNumbers Prepend linNumbers to each line.

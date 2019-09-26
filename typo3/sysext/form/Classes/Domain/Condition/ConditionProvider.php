@@ -20,7 +20,7 @@ use TYPO3\CMS\Form\Domain\Condition\Functions\FormConditionFunctionsProvider;
 
 /**
  * Scope: frontend
- * **This classis NOT meant to be sub classed by developers .**
+ * **This class is NOT meant to be sub classed by developers.**
  *
  * @internal
  */

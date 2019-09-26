@@ -99,7 +99,7 @@ class LoadTcaService
     /**
      * Load ext_tables.php of a single extension
      *
-     * @param string $extensionKey The extension to load a ext_tables.php file from.
+     * @param string $extensionKey The extension to load an ext_tables.php file from.
      */
     public function loadSingleExtTablesFile(string $extensionKey)
     {

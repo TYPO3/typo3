@@ -215,7 +215,7 @@ class RecyclerUtility
     }
 
     /**
-     * Returns the modifyable tables of the current user
+     * Returns the modifiable tables of the current user
      */
     public static function getModifyableTables()
     {

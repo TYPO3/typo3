@@ -1799,7 +1799,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * current
-     * Gets content that has been perviously set as 'current'
+     * Gets content that has been previously set as 'current'
      * Can be set via setContentToCurrent or setCurrent or will be set automatically i.e. inside the split function
      *
      * @param string $content Input value undergoing processing in this function.
@@ -2398,7 +2398,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     /**
      * stripHtml
-     * Copmletely removes HTML tags from content
+     * Completely removes HTML tags from content
      *
      * @param string $content Input value undergoing processing in this function.
      * @return string The processed input value
@@ -2439,7 +2439,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * When preserveEntities returns TRUE, existing entities will be left untouched
      *
      * @param string $content Input value undergoing processing in this function.
-     * @param array $conf stdWrap properties for htmlSpecalChars.
+     * @param array $conf stdWrap properties for htmlSpecialChars.
      * @return string The processed input value
      */
     public function stdWrap_htmlSpecialChars($content = '', $conf = [])
@@ -3382,7 +3382,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     }
 
     /**
-     * Performs basic mathematical evaluation of the input string. Does NOT take parathesis and operator precedence into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
+     * Performs basic mathematical evaluation of the input string. Does NOT take parenthesis and operator precedence into account! (for that, see \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction())
      *
      * @param string $val The string to evaluate. Example: "3+4*10/5" will generate "35". Only integer numbers can be used.
      * @return int The result (might be a float if you did a division of the numbers).
@@ -3502,7 +3502,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         // Sorts actions in configuration by numeric index
         ksort($configuration, SORT_NUMERIC);
         foreach ($configuration as $index => $action) {
-            // Checks whether we have an valid action and a numeric key ending with a dot ("10.")
+            // Checks whether we have a valid action and a numeric key ending with a dot ("10.")
             if (is_array($action) && substr($index, -1) === '.' && MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))) {
                 $content = $this->replacementSingle($content, $action);
             }
@@ -5862,7 +5862,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * useful for links unless the correct MPvar is set.
      *
      * @param int $id The id of the start page from which point in the page tree to descend. IF NEGATIVE the id itself is included in the end of the list (only if $begin is 0) AND the output does NOT contain a last comma. Recommended since it will resolve the input ID for mount pages correctly and also check if the start ID actually exists!
-     * @param int $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no decend...)
+     * @param int $depth The number of levels to descend. If you want to descend infinitely, just set this to 100 or so. Should be at least "1" since zero will just make the function return (no descend...)
      * @param int $begin Is an optional integer that determines at which level in the tree to start collecting uid's. Zero means 'start right away', 1 = 'next level and out'
      * @param bool $dontCheckEnableFields See function description
      * @param string $addSelectFields Additional fields to select. Syntax: ",[fieldname],[fieldname],...

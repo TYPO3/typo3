@@ -656,7 +656,7 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
      * @param int $languageId
      * @param int $contentLanguageId
      * @param string $fallbackType
-     * @param string fallbackkChain
+     * @param string $fallbackChain
      * @param string $overlayMode
      * @param int $statusCode 200 or 404
      */

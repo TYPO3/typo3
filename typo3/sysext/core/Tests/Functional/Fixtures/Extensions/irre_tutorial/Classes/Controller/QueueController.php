@@ -64,7 +64,7 @@ class QueueController extends AbstractController
     }
 
     /**
-     * Finds and instanciates a controller that matches the current request.
+     * Finds and instantiates a controller that matches the current request.
      * If no controller can be found, an instance of NotFoundControllerInterface is returned.
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch

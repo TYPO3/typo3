@@ -85,7 +85,7 @@ class RenderRenderableViewHelper extends AbstractViewHelper
             $content = $renderChildrenClosure();
         }
 
-        // Wrap every renderable with a span with a identifier path data attribute if previewMode is active
+        // Wrap every renderable with a span with an identifier path data attribute if previewMode is active
         if (!empty($content)) {
             $renderingOptions = $formRuntime->getRenderingOptions();
             if (isset($renderingOptions['previewMode']) && $renderingOptions['previewMode'] === true) {

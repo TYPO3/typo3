@@ -797,7 +797,7 @@ class Export extends ImportExport
     }
 
     /**
-     * DB relations flattend to 1-dim array.
+     * DB relations flattened to 1-dim array.
      * The list will be unique, no table/uid combination will appear twice.
      *
      * @param array $dbrels 2-dim Array of database relations organized by table key
@@ -824,7 +824,7 @@ class Export extends ImportExport
     }
 
     /**
-     * Soft References flattend to 1-dim array.
+     * Soft References flattened to 1-dim array.
      *
      * @param array $dbrels 2-dim Array of database relations organized by table key
      * @return array 1-dim array where entries are arrays with properties of the soft link found and keys are a unique combination of field, spKey, structure path if applicable and token ID

@@ -337,7 +337,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      *
      * @param string $value value attribute of the option tag (will be escaped)
      * @param string $label content of the option tag (will be escaped)
-     * @param bool $isSelected specifies wheter or not to add selected attribute
+     * @param bool $isSelected specifies whether or not to add selected attribute
      * @return string the rendered option tag
      */
     protected function renderOptionTag($value, $label, $isSelected)

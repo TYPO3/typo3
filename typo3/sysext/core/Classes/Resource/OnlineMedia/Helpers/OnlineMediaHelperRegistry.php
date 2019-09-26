@@ -74,7 +74,7 @@ class OnlineMediaHelperRegistry implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Get all file extensions that have a OnlineMediaHelper
+     * Get all file extensions that have an OnlineMediaHelper
      *
      * @return string[]
      */

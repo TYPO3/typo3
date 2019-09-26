@@ -127,7 +127,7 @@ class FalMetadataInheritanceCest
      * This scenario tests whether sys_file_metadata fields are propagated to sys_file_reference
      * attached to tt_content
      *
-     * - given a image with filled metadata (created in checkIfUpdatedFileMetadataIsUpdatedInContent test)
+     * - given an image with filled metadata (created in checkIfUpdatedFileMetadataIsUpdatedInContent test)
      * - creates a new tt_content
      * - attaches an image to tt_content
      * - checks if metadata is propagated to tt_content

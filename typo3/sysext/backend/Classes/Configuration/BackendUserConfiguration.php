@@ -78,7 +78,7 @@ class BackendUserConfiguration
     }
 
     /**
-     * Adds an value to an Comma-separated list
+     * Adds a value to a Comma-separated list
      * stored in $key of user settings
      *
      * @param string $key
@@ -98,8 +98,8 @@ class BackendUserConfiguration
     }
 
     /**
-     * Removes an value from an Comma-separated list
-     * stored $key of user settings
+     * Removes a value from a Comma-separated list
+     * stored in $key of user settings
      *
      * @param string $key
      * @param mixed $value

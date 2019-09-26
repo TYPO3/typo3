@@ -289,7 +289,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         }, $tags);
 
         if ($this->isConnectionMysql($connection)) {
-            // Use a optimized query on mysql ... don't use on your own
+            // Use an optimized query on mysql ... don't use on your own
             // * ansi sql does not know about multi table delete
             // * doctrine query builder does not support join on delete()
             $connection->executeQuery(
@@ -340,7 +340,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $quotedTag = '\'' . $tag . '\'';
 
         if ($this->isConnectionMysql($connection)) {
-            // Use a optimized query on mysql ... don't use on your own
+            // Use an optimized query on mysql ... don't use on your own
             // * ansi sql does not know about multi table delete
             // * doctrine query builder does not support join on delete()
             $connection->executeQuery(
@@ -381,7 +381,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
 
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
         if ($this->isConnectionMysql($connection)) {
-            // Use a optimized query on mysql ... don't use on your own
+            // Use an optimized query on mysql ... don't use on your own
             // * ansi sql does not know about multi table delete
             // * doctrine query builder does not support join on delete()
             // First delete all expired rows from cache table and their connected tag rows

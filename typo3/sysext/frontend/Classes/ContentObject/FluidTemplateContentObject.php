@@ -73,7 +73,7 @@ class FluidTemplateContentObject extends AbstractContentObject
      * 10 = FLUIDTEMPLATE
      * 10.templateName = MyTemplate
      * 10.templateRootPaths.10 = EXT:site_configuration/Resources/Private/Templates/
-     * 10.partialRootPaths.10 = EXT:site_configuration/Resources/Private/Patials/
+     * 10.partialRootPaths.10 = EXT:site_configuration/Resources/Private/Partials/
      * 10.layoutRootPaths.10 = EXT:site_configuration/Resources/Private/Layouts/
      * 10.variables {
      *   mylabel = TEXT

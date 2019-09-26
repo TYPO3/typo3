@@ -377,7 +377,7 @@ class TimeTracker implements SingletonInterface
         foreach ($this->tsStackLog as $uniqueId => $data) {
             $this->createHierarchyArray($arr, $data['level'], $uniqueId);
         }
-        // Parsing the registeret content and create icon-html for the tree
+        // Parsing the registered content and create icon-html for the tree
         $this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', $arr['0.'][0]);
         // Displaying the tree:
         $outputArr = [];
@@ -542,7 +542,7 @@ class TimeTracker implements SingletonInterface
     }
 
     /**
-     * Wraps the input content string in green colored span-tags IF the length o fthe input string exceeds $this->printConf['contentLength'] (or $this->printConf['contentLength_FILE'] if $v == "FILE"
+     * Wraps the input content string in green colored span-tags IF the length of the input string exceeds $this->printConf['contentLength'] (or $this->printConf['contentLength_FILE'] if $v == "FILE"
      *
      * @param string $c The content string
      * @param string $v Command: If "FILE" then $this->printConf['contentLength_FILE'] is used for content length comparison, otherwise $this->printConf['contentLength']

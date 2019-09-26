@@ -173,9 +173,9 @@ class Container implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Instanciates an object, possibly setting the constructor dependencies.
+     * Instantiates an object, possibly setting the constructor dependencies.
      * Additionally, directly registers all singletons in the singleton registry,
-     * such that circular references of singletons are correctly instanciated.
+     * such that circular references of singletons are correctly instantiated.
      *
      * @param ClassSchema $classSchema
      * @param array $givenConstructorArguments

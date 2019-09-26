@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Property;
 use TYPO3\CMS\Extbase\Exception as ExtbaseException;
 
 /**
- * An generic Property related exception
+ * A generic Property related exception
  */
 class Exception extends ExtbaseException
 {

@@ -227,7 +227,7 @@ class ConnectionMigrator
             }
         }
 
-        // Build SchemaDiff and handle renames of tables and colums
+        // Build SchemaDiff and handle renames of tables and columns
         $comparator = GeneralUtility::makeInstance(Comparator::class, $this->connection->getDatabasePlatform());
         $schemaDiff = $comparator->compare($fromSchema, $toSchema);
         $schemaDiff = $this->migrateColumnRenamesToDistinctActions($schemaDiff);
@@ -268,7 +268,7 @@ class ConnectionMigrator
     }
 
     /**
-     * Build the expected schema definitons from raw SQL statements.
+     * Build the expected schema definitions from raw SQL statements.
      *
      * @param string $connectionName
      * @return \Doctrine\DBAL\Schema\Schema

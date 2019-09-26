@@ -45,7 +45,7 @@ use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
  *
  * options.whereClause
  * -------------------
- *   This where clause will be used for an database update action
+ *   This where clause will be used for a database update action
  *
  * options.elements
  * ----------------

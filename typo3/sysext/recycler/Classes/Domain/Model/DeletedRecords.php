@@ -64,14 +64,14 @@ class DeletedRecords
     protected $recyclerHelper;
 
     /**
-     * Array with all label fields drom different tables
+     * Array with all label fields from different tables
      *
      * @var array
      */
     public $label;
 
     /**
-     * Array with all title fields drom different tables
+     * Array with all title fields from different tables
      *
      * @var array
      */

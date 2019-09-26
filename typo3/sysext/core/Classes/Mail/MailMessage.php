@@ -232,7 +232,7 @@ class MailMessage extends Email
     }
 
     /**
-     * Converts Adresses into Address/NamedAddress objects.
+     * Converts Addresses into Address/NamedAddress objects.
      *
      * @param string|array $args
      * @return string|array
@@ -249,7 +249,7 @@ class MailMessage extends Email
     }
 
     /**
-     * Converts Adresses into Address/NamedAddress objects.
+     * Converts Addresses into Address/NamedAddress objects.
      *
      * @param string|array $addresses
      * @return string|array

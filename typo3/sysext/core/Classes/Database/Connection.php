@@ -325,7 +325,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * @param string $tableName The name of the table to truncate.
      * @param bool $cascade Not supported on many platforms but would cascade the truncate by following foreign keys.
      *
-     * @return int The number of affected rows. For a truncate this is unreliable as theres no meaningful information.
+     * @return int The number of affected rows. For a truncate this is unreliable as there is no meaningful information.
      */
     public function truncate(string $tableName, bool $cascade = false): int
     {

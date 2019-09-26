@@ -276,7 +276,7 @@ return [
 				title,description,--linebreak--,autoplay
 				',
         ],
-        // Used for everything that is a audio file
+        // Used for everything that is an audio file
         'audioOverlayPalette' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.audioOverlayPalette',
             'showitem' => '

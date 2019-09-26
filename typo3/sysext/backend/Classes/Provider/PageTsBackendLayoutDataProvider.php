@@ -174,7 +174,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
             $backendLayout['uid'] = substr($identifier, 0, -1);
             $backendLayout['title'] = $data['title'] ? $data['title'] : $backendLayout['uid'];
             $backendLayout['icon'] = $data['icon'] ?: '';
-            // Convert PHP array back to plain TypoScript so it can be procecced
+            // Convert PHP array back to plain TypoScript so it can be processed
             $config = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($data['config.']);
             $backendLayout['config'] = '';
             foreach ($config as $row => $value) {

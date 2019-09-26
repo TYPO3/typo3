@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Tests\Functional\DataHandling\AbstractDataHandlerActionTestCase;
 
 /**
- * Functional Test for DataHandlen::checkValue() concerning checkboxes
+ * Functional Test for DataHandler::checkValue() concerning checkboxes
  */
 class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
 {

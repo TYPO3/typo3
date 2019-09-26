@@ -351,7 +351,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     /**
-     * Test wheter replacing other TCA fields works as promissed
+     * Test whether replacing other TCA fields works as promised
      *
      * @test
      * @see ExtensionManagementUtility::addFieldsToAllPalettesOfField()

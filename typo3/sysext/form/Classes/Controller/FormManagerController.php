@@ -284,7 +284,7 @@ class FormManagerController extends AbstractBackendController
      *
      * Only registered mountpoints from
      * TYPO3.CMS.Form.persistenceManager.allowedFileMounts
-     * are listet. This is list will be reduced by the configured
+     * are listed. This list will be reduced by the configured
      * mountpoints for the current backend user.
      *
      * @return array
@@ -368,7 +368,7 @@ class FormManagerController extends AbstractBackendController
     }
 
     /**
-     * Returns an array with informations about the references for a
+     * Returns an array with information about the references for a
      * formDefinition identified by $persistenceIdentifier.
      *
      * @param string $persistenceIdentifier

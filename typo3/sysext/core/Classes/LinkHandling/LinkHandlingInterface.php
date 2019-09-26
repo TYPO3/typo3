@@ -40,7 +40,7 @@ interface LinkHandlingInterface
     public function asString(array $parameters): string;
 
     /**
-     * Returns a array with data interpretation of the link href from parsed query parameters of urn
+     * Returns an array with data interpretation of the link href from parsed query parameters of urn
      * representation.
      *
      * array of strings -> array of data

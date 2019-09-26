@@ -122,7 +122,7 @@ class PreviewUriBuilder
     }
 
     /**
-     * Generates a view Uri for a element.
+     * Generates a view Uri for an element.
      *
      * @param string $table Table to be used
      * @param int $uid Uid of the version(!) record

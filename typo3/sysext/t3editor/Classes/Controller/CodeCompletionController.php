@@ -76,7 +76,7 @@ class CodeCompletionController
     }
 
     /**
-     * Walks through a tree of TypoScript configuration an cleans it up.
+     * Walks through a tree of TypoScript configuration and cleans it up.
      *
      * @TODO oliver@typo3.org: Define and comment why this is necessary and exactly happens below
      * @param array $treeBranch TypoScript configuration or sub branch of it

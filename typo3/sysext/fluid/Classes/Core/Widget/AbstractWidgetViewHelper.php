@@ -139,7 +139,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
 
     /**
      * Stores the syntax tree child nodes in the Widget Context, so they can be
-     * rendered with <f:widget.renderChildren> lateron.
+     * rendered with <f:widget.renderChildren> later on.
      *
      * @param array $childNodes The SyntaxTree Child nodes of this ViewHelper.
      * @internal

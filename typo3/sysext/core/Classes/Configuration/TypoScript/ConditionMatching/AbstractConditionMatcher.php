@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Matching TypoScript conditions
  *
  * Used with the TypoScript parser.
- * Matches IPnumbers etc. for use with templates
+ * Matches IP numbers etc. for use with templates
  */
 abstract class AbstractConditionMatcher implements LoggerAwareInterface
 {
@@ -56,7 +56,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
     protected $simulateMatchResult = false;
 
     /**
-     * Whether to simulat the behaviour and match specific conditions
+     * Whether to simulate the behaviour and match specific conditions
      * (used in TypoScript object browser).
      *
      * @var array

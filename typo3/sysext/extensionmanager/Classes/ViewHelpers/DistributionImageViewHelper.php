@@ -43,7 +43,7 @@ class DistributionImageViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Renders the destribution preview image for the given extension
+     * Renders the distribution preview image for the given extension
      *
      * @return string rendered tag.
      */
@@ -72,7 +72,7 @@ class DistributionImageViewHelper extends AbstractTagBasedViewHelper
     }
 
     /**
-     * Find the distrubution image
+     * Find the distribution image
      *
      * @param string $extensionKey
      * @return string

@@ -322,7 +322,7 @@ class EnvironmentController extends AbstractController
         $textColor = imagecolorallocate($image, 233, 14, 91);
         @imagettftext(
             $image,
-            20 / 96.0 * 72, // As in  compensateFontSizeiBasedOnFreetypeDpi
+            20 / 96.0 * 72, // As in  compensateFontSizeBasedOnFreetypeDpi
             0,
             10,
             20,

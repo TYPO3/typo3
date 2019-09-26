@@ -65,7 +65,7 @@ final class PseudoServiceProvider extends AbstractServiceProvider
         // therefore we dynamically inject the package path to the static service
         // configure methods by wrapping these in a Closure.
         // AbstractServiceProvider configure methods are aware of this and
-        // provide an optional thrid parameter which is forwarded as
+        // provide an optional third parameter which is forwarded as
         // dynamic path to getPackagePath().
         foreach ($extensions as $serviceName => $previousCallable) {
             $extensions[$serviceName] = function (ContainerInterface $container, $value) use ($previousCallable, $packagePath) {

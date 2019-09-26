@@ -81,7 +81,7 @@ class TranslationTest extends \TYPO3\TestingFramework\Core\Functional\Functional
      */
     protected function setUpBasicFrontendEnvironment()
     {
-        // in v9 overlay and language mode has different default values, so we need to set them here explicitely
+        // in v9 overlay and language mode has different default values, so we need to set them here explicitly
         // to match v8 behaviour
         $context = GeneralUtility::makeInstance(Context::class);
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF, ['off']));

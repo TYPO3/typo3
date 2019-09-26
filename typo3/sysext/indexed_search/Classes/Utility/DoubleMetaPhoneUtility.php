@@ -136,7 +136,7 @@ class DoubleMetaPhoneUtility
                     $this->current += 1;
                     break;
                 case 'C':
-                    // various gremanic
+                    // various germanic
                     if ($this->current > 1 && !$this->IsVowel($this->original, $this->current - 2) && $this->StringAt($this->original, $this->current - 1, 3, ['ACH']) && (substr($this->original, $this->current + 2, 1) !== 'I' && (substr($this->original, $this->current + 2, 1) !== 'E' || $this->StringAt($this->original, $this->current - 2, 6, ['BACHER', 'MACHER'])))) {
                         $this->primary .= 'K';
                         $this->secondary .= 'K';

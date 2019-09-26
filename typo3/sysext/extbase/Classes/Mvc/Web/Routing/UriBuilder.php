@@ -828,7 +828,7 @@ class UriBuilder
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object
      * @return array
-     * @todo Refactore this into convertDomainObjectsToIdentityArrays()
+     * @todo Refactor this into convertDomainObjectsToIdentityArrays()
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
     public function convertTransientObjectToArray(\TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject $object): array

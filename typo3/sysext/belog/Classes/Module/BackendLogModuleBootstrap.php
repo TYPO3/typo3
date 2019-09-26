@@ -25,7 +25,7 @@ use TYPO3\CMS\Extbase\Core\Bootstrap;
  *
  * Extbase currently provides no way to register a "TBE_MODULES_EXT" module directly,
  * therefore we need to bootstrap extbase on our own here to jump to the WebInfo controller.
- * @internal This class is a experimental and is not considered part of the Public TYPO3 API.
+ * @internal This class is experimental and is not considered part of the Public TYPO3 API.
  */
 class BackendLogModuleBootstrap
 {

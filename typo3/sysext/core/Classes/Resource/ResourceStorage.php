@@ -850,7 +850,7 @@ class ResourceStorage implements ResourceStorageInterface
             );
         }
         // Check if the user has write permissions to folders
-        // Would be good if we could check for actual write permissions in the containig folder
+        // Would be good if we could check for actual write permissions in the containing folder
         // but we cannot since we have no access to the containing folder of this file.
         if (!$this->checkUserActionPermission('write', 'Folder')) {
             throw new Exception\InsufficientFolderWritePermissionsException('Writing to folders is not allowed.', 1377779111);
@@ -939,7 +939,7 @@ class ResourceStorage implements ResourceStorageInterface
                 throw new Exception\InsufficientFileWritePermissionsException('You are not allowed to delete the file "' . $file->getIdentifier() . '"', 1319550425);
             }
             // Check if the user has write permissions to folders
-            // Would be good if we could check for actual write permissions in the containig folder
+            // Would be good if we could check for actual write permissions in the containing folder
             // but we cannot since we have no access to the containing folder of this file.
             if (!$this->checkUserActionPermission('write', 'Folder')) {
                 throw new Exception\InsufficientFolderWritePermissionsException('Writing to folders is not allowed.', 1377778702);

@@ -26,7 +26,7 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * Checks mount points, shortcuts and redirects to the target.
- * Alternatively, checks if the current page is an redirect to an external page
+ * Alternatively, checks if the current page is a redirect to an external page
  *
  * @internal this middleware might get removed in TYPO3 v10.x.
  */

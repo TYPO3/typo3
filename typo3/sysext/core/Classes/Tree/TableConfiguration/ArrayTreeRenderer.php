@@ -101,7 +101,7 @@ class ArrayTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRen
     }
 
     /**
-     * Renders an tree recursive or just a single instance
+     * Renders a tree recursively or just a single instance
      *
      * @param TreeNodeCollection $collection
      * @param bool $recursive

@@ -47,7 +47,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Loads the windget contexts from the TYPO3 user session
+     * Loads the widget contexts from the TYPO3 user session
      */
     protected function loadWidgetContexts()
     {

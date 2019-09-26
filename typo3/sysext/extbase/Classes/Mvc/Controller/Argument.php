@@ -264,7 +264,7 @@ class Argument
         try {
             $this->value = $this->propertyMapper->convert($rawValue, $this->dataType, $this->propertyMappingConfiguration);
         } catch (TargetNotFoundException $e) {
-            // for optional arguments no exeption is thrown.
+            // for optional arguments no exception is thrown.
             if ($this->isRequired()) {
                 throw $e;
             }

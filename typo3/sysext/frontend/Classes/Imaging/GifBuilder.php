@@ -402,7 +402,7 @@ class GifBuilder extends GraphicalFunctions
             $Bcolor = imagecolorallocate($this->im, $BGcols[0], $BGcols[1], $BGcols[2]);
             imagefilledrectangle($this->im, 0, 0, $XY[0], $XY[1], $Bcolor);
         }
-        // Traverse the GIFBUILDER objects an render each one:
+        // Traverse the GIFBUILDER objects and render each one:
         if (is_array($this->setup)) {
             $sKeyArray = ArrayUtility::filterAndSortByNumericKeys($this->setup);
             foreach ($sKeyArray as $theKey) {
@@ -575,7 +575,7 @@ class GifBuilder extends GraphicalFunctions
         if (!$conf['fontSize']) {
             $conf['fontSize'] = 12;
         }
-        // If any kind of spacing applys, we cannot use angles!!
+        // If any kind of spacing applies, we cannot use angles!!
         if ($conf['spacing'] || $conf['wordSpacing']) {
             $conf['angle'] = 0;
         }
@@ -813,7 +813,7 @@ class GifBuilder extends GraphicalFunctions
      * Calculates the maximum of a set of values defined like "[10.h],[20.h],1000"
      *
      * @param string $string The string to be used to calculate the maximum (e.g. "[10.h],[20.h],1000")
-     * @return int The maxium value of the given comma separated and calculated values
+     * @return int The maximum value of the given comma separated and calculated values
      */
     protected function calculateMaximum($string)
     {

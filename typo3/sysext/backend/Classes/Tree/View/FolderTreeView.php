@@ -591,7 +591,7 @@ class FolderTreeView extends AbstractTreeView
         $this->stored = json_decode($this->BE_USER->uc['browseTrees'][$this->treeName], true);
         $this->getShortHashNumberForStorage();
         // PM action:
-        // (If an plus/minus icon has been clicked,
+        // (If a plus/minus icon has been clicked,
         // the PM GET var is sent and we must update the stored positions in the tree):
         // 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
         list($storageHashNumber, $doExpand, $numericFolderHash, $treeName) = $this->evaluateExpandCollapseParameter();
@@ -648,7 +648,7 @@ class FolderTreeView extends AbstractTreeView
      * Gets the values from the Expand/Collapse Parameter (&PM)
      * previously known as "PM" (plus/minus)
      * PM action:
-     * (If an plus/minus icon has been clicked,
+     * (If a plus/minus icon has been clicked,
      * the PM GET var is sent and we must update the stored positions in the tree):
      * 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
      *

@@ -139,7 +139,7 @@ Manual repair suggestions:
     }
 
     /**
-     * Recursive traversal of page tree to fetch all records marekd as "deleted",
+     * Recursive traversal of page tree to fetch all records marked as "deleted",
      * via option $GLOBALS[TCA][$tableName][ctrl][delete]
      * This also takes deleted versioned records into account.
      *

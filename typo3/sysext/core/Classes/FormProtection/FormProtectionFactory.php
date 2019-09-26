@@ -88,7 +88,7 @@ class FormProtectionFactory
      * Returns the class name and parameters depending on the given type.
      * If the type cannot be used currently, protection is disabled.
      *
-     * @param string $type Valid types: default, installtool, frontend, backend. "default" makes an autodection on the current state
+     * @param string $type Valid types: default, installtool, frontend, backend. "default" makes an autodetection on the current state
      * @return array Array of arguments
      */
     protected static function getClassNameAndConstructorArgumentsByType($type)

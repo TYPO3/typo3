@@ -166,7 +166,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
 
                 unlink($file . '.sending');
             } else {
-                /* This message has just been catched by another process */
+                /* This message has just been caught by another process */
                 continue;
             }
 

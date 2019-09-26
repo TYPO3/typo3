@@ -204,7 +204,7 @@ class ActionController extends AbstractController
     }
 
     /**
-     * Implementation of the arguments initilization in the action controller:
+     * Implementation of the arguments initialization in the action controller:
      * Automatically registers arguments of the current action
      *
      * Don't override this method - use initializeAction() instead.

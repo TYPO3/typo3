@@ -151,14 +151,14 @@ class t3lib_object_tests_b implements \TYPO3\CMS\Core\SingletonInterface
 }
 
 /**
- * test class C without dependencys
+ * test class C without dependencies
  */
 class t3lib_object_tests_c implements \TYPO3\CMS\Core\SingletonInterface
 {
 }
 
 /**
- * test class B-Child that extends Class B (therfore depends also on Class C)
+ * test class B-Child that extends Class B (therefore depends also on Class C)
  */
 class t3lib_object_tests_b_child extends \t3lib_object_tests_b
 {
@@ -189,7 +189,7 @@ class t3lib_object_tests_someimplementation implements \t3lib_object_tests_somei
 }
 
 /**
- * test class B-Child that extends Class B (therfore depends also on Class C)
+ * test class B-Child that extends Class B (therefore depends also on Class C)
  */
 class t3lib_object_tests_b_child_someimplementation extends \t3lib_object_tests_b implements \t3lib_object_tests_someinterface
 {
@@ -286,7 +286,7 @@ class t3lib_object_tests_injectmethods
 }
 
 /**
- * class which needs extenson settings injected
+ * class which needs extension settings injected
  */
 class t3lib_object_tests_injectsettings
 {

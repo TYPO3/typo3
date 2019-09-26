@@ -92,7 +92,7 @@ abstract class AbstractMessage implements \JsonSerializable
     /**
      * Gets the message' severity.
      *
-     * @return int The message' severity, must be one of AbstractMessage::INFO or similar contstants
+     * @return int The message' severity, must be one of AbstractMessage::INFO or similar constants
      */
     public function getSeverity(): int
     {

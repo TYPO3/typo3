@@ -192,7 +192,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         // Widget Context is set
         $widgetRequest->expects($this->once())->method('setWidgetContext')->with($this->widgetContext);
         // The namespaced arguments are passed to the sub-request
-        // and the action name is exctracted from the namespace.
+        // and the action name is extracted from the namespace.
         $this->controllerContext->expects($this->once())->method('getRequest')->will($this->returnValue($this->request));
         $this->widgetContext->expects($this->once())->method('getWidgetIdentifier')->will($this->returnValue('widget-1'));
         $this->request->expects($this->once())->method('getArguments')->will($this->returnValue([

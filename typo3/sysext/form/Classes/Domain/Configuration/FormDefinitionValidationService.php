@@ -306,7 +306,7 @@ class FormDefinitionValidationService implements SingletonInterface
     /**
      * Walk through all form element properties and checks
      * if the property is defined within the form editor setup
-     * or if the property is definied within the "predefinedDefaults" in the form editor setup
+     * or if the property is defined within the "predefinedDefaults" in the form editor setup
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
      *
@@ -337,7 +337,7 @@ class FormDefinitionValidationService implements SingletonInterface
     /**
      * Walk through all property collection properties and checks
      * if the property is defined within the form editor setup
-     * or if the property is definied within the "predefinedDefaults" in the form editor setup
+     * or if the property is defined within the "predefinedDefaults" in the form editor setup
      * and the property value matches the predefined value
      * or if there is a valid hmac hash for the value.
      *

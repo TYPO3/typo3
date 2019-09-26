@@ -3349,7 +3349,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      *******************************************/
 
     /**
-     * Returns the pages TSconfig array based on the currect ->rootLine
+     * Returns the pages TSconfig array based on the current ->rootLine
      *
      * @return array
      */
@@ -3725,7 +3725,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Fetches the originally requested id, fallsback to $this->id
+     * Fetches the originally requested id, falls back to $this->id
      *
      * @return int the originally requested page uid
      * @see fetch_the_id()

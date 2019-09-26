@@ -903,7 +903,7 @@ class ContentObjectRendererTest extends UnitTestCase
     /**
      * Data provider for round
      *
-     * @return array [$expect, $contet, $conf]
+     * @return array [$expect, $content, $conf]
      */
     public function roundDataProvider(): array
     {
@@ -1289,7 +1289,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * @dataProvider substringDataProvider
      * @param string $expect The expected output.
      * @param string $content The given input.
-     * @param string $conf The given configurationn.
+     * @param string $conf The given configuration.
      */
     public function substring(string $expect, string $content, string $conf): void
     {
@@ -3698,7 +3698,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * - Almost all stdWrap_[type] are callable if called with 2 parameters:
      *   - string $content Empty string.
      *   - array $conf ['type' => '', 'type.' => []].
-     * - Exeptions: stdWrap_numRows, stdWrap_split
+     * - Exceptions: stdWrap_numRows, stdWrap_split
      * - The overall count is 91.
      *
      *  Note:
@@ -4413,7 +4413,7 @@ class ContentObjectRendererTest extends UnitTestCase
      * - Calls calculateCacheTags with $conf['cache.'].
      * - Calls calculateCacheLifetime with $conf['cache.'].
      * - Calls all configured user functions with $params, $this.
-     * - Calls set on the cache frontent with $key, $content, $tags, $lifetime.
+     * - Calls set on the cache frontend with $key, $content, $tags, $lifetime.
      *
      * @test
      * @dataProvider stdWrap_cacheStoreDataProvider
@@ -5172,7 +5172,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * - Delegates to method encaps_lineSplit.
      * - Parameter 1 is $content.
-     * - Prameter 2 is $conf['encapsLines'].
+     * - Parameter 2 is $conf['encapsLines'].
      * - Returns the return value.
      *
      * @test
@@ -5977,7 +5977,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * - Returns the content, if not null.
      * - Otherwise returns $conf['ifNull'].
-     * - Null is strictly checked by identiy with null.
+     * - Null is strictly checked by identity with null.
      *
      * @test
      * @dataProvider stdWrap_ifNullDataProvider
@@ -7340,7 +7340,7 @@ class ContentObjectRendererTest extends UnitTestCase
      *
      * - Delegates to method splitObj.
      * - Parameter 1 is $content.
-     * - Prameter 2 is $conf['split.'].
+     * - Parameter 2 is $conf['split.'].
      * - Returns the return value.
      *
      * @test

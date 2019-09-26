@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 
 /**
- * This finisher remove the submited files.
+ * This finisher remove the submitted files.
  * Use this e.g after the email finisher if you don't want
  * to keep the files online.
  *

@@ -25,7 +25,7 @@ use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 class IntegrityService
 {
     /**
-     * Succes status - everything is fine
+     * Success status - everything is fine
      *
      * @var int
      */
@@ -113,7 +113,7 @@ class IntegrityService
      * Checks workspace localization integrity of a single elements.
      * If current record is a localization and its localization parent
      * is new in this workspace (has only a placeholder record in live),
-     * then boths (localization and localization parent) should be published.
+     * then both (localization and localization parent) should be published.
      *
      * @param CombinedRecord $element
      */
@@ -169,7 +169,7 @@ class IntegrityService
     }
 
     /**
-     * Gets the (human readable) represetation of the status with the most
+     * Gets the (human readable) representation of the status with the most
      * important severity (wraps $this->getStatus() and translates the result).
      *
      * @param string $identifier Record identifier (table:id) for look-ups

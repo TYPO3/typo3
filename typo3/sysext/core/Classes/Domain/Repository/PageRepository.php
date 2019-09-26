@@ -861,7 +861,7 @@ class PageRepository implements LoggerAwareInterface
             } elseif ($shortcutMode === self::SHORTCUT_MODE_FIRST_SUBPAGE || $shortcutMode === self::SHORTCUT_MODE_RANDOM_SUBPAGE) {
                 // Check subpages - first subpage or random subpage
                 $searchField = 'pid';
-                // If a shortcut mode is set and no valid page is given to select subpags
+                // If a shortcut mode is set and no valid page is given to select subpages
                 // from use the actual page.
                 $searchUid = (int)$page['shortcut'] ?: $page['uid'];
             } elseif ($shortcutMode === self::SHORTCUT_MODE_PARENT_PAGE) {

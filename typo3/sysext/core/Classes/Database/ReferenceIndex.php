@@ -953,7 +953,7 @@ class ReferenceIndex implements LoggerAwareInterface
      * Setting a value for a soft reference token
      *
      * @param array $refRec sys_refindex record
-     * @param array $softref Array of soft reference occurencies
+     * @param array $softref Array of soft reference occurrences
      * @param string $newValue Value to substitute current value with
      * @param array $dataArray Data array in which the new value is set (passed by reference)
      * @param string $flexPointer Flexform pointer, if in a flex form field.

@@ -220,7 +220,7 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, ObjectMonito
     }
 
     /**
-     * Adds an object in the storage, and optionaly associate it to some data.
+     * Adds an object in the storage, and optionally associate it to some data.
      *
      * @param object $object The object to add.
      * @param mixed $information The data to associate with the object.

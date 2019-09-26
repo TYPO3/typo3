@@ -807,7 +807,7 @@ class ExtendedFileUtility extends BasicFileUtility
     }
 
     /**
-     * Renaming files or foldes (action=5)
+     * Renaming files or folders (action=5)
      *
      * $cmds['data'] (string): The file/folder to copy
      * + example "4:mypath/tomyfolder/myfile.jpg")

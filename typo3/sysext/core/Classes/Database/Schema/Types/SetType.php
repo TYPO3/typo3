@@ -19,7 +19,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
 /**
- * Type that maps an TYPE field.
+ * Type that maps a TYPE field.
  */
 class SetType extends Type
 {

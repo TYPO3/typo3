@@ -58,7 +58,7 @@ class DocumentTemplate implements LoggerAwareInterface
     public $form = '';
 
     /**
-     * Additional header code (eg. a JavaScript section) could be accommulated in this var. It will be directly outputted in the header.
+     * Additional header code (eg. a JavaScript section) could be accumulated in this var. It will be directly outputted in the header.
      *
      * @var string
      */

@@ -32,7 +32,7 @@ interface PasswordHashInterface
     public function checkPassword(string $plainPW, string $saltedHashPW): bool;
 
     /**
-     * Returns whether all prequesites for the hashing methods are matched
+     * Returns whether all prerequisites for the hashing methods are matched
      *
      * @return bool Method available
      */

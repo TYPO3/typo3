@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception;
 
 /**
- * An Bad Constraint exception
+ * A Bad Constraint exception
  */
 class BadConstraintException extends Exception
 {

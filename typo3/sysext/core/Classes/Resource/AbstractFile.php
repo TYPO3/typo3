@@ -564,7 +564,7 @@ abstract class AbstractFile implements FileInterface
     /**
      * Updates properties of this object.
      * This method is used to reconstitute settings from the
-     * database into this object after being intantiated.
+     * database into this object after being instantiated.
      *
      * @param array $properties
      */

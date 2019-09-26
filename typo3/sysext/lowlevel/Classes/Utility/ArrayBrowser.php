@@ -84,12 +84,12 @@ class ArrayBrowser
     /**
      * Set var name here if you want links to the variable name.
      *
-     * Make browseable tree
+     * Make browsable tree
      * Before calling this function you may want to set some of the internal vars like
      * depthKeys, regexMode and fixedLgd.
      *
      * @param array $array The array to display
-     * @param string $positionKey Key-position id. Build up during recursive calls - [key1].[key2].[key3] - an so on.
+     * @param string $positionKey Key-position id. Build up during recursive calls - [key1].[key2].[key3] - and so on.
      * @return string HTML for the tree
      */
     public function tree($array, $positionKey)

@@ -268,7 +268,7 @@ class WorkspaceService implements SingletonInterface
         }
         $isTableLocalizable = BackendUtility::isTableLocalizable($table);
         $languageParentField = '';
-        // If table is not localizable, but localized reocrds shall
+        // If table is not localizable, but localized records shall
         // be collected, an empty result array needs to be returned:
         if ($isTableLocalizable === false && $language > 0) {
             return [];

@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
 {
     /**
-     * These form fields a visisble in the default page types.
+     * These form fields are visible in the default page types.
      *
      * @var array
      */

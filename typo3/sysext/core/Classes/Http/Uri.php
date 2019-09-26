@@ -662,7 +662,7 @@ class Uri implements UriInterface
     }
 
     /**
-     * Filter a query string to ensure it is propertly encoded.
+     * Filter a query string to ensure it is properly encoded.
      *
      * Ensures that the values in the query string are properly urlencoded.
      *

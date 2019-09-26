@@ -45,7 +45,7 @@ abstract class AbstractImagePreset extends Configuration\AbstractPreset
     /**
      * Path where executable was found
      *
-     * @return string Fonud path
+     * @return string Found path
      */
     public function getFoundPath()
     {

@@ -289,7 +289,7 @@ class TcaTypesShowitemTest extends UnitTestCase
                         'bitmask_value_field' => 'theSubtypeValueField',
                         'bitmask_excludelist_bits' => [
                             '-2' => 'removeMe', // Remove if bit 2 is NOT set
-                            '+3' => 'removeMe2', // Remvoe if bit 3 is set
+                            '+3' => 'removeMe2', // Remove if bit 3 is set
                         ],
                     ],
                 ],

@@ -38,7 +38,7 @@ abstract class AbstractTreeRenderer
     abstract public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = true);
 
     /**
-     * Renders an tree recursive or just a single instance
+     * Renders a tree recursively or just a single instance
      *
      * @param \TYPO3\CMS\Backend\Tree\AbstractTree $tree
      * @param bool $recursive

@@ -85,7 +85,7 @@ class IfHasRoleViewHelper extends AbstractConditionViewHelper
     /**
      * This method decides if the condition is TRUE or FALSE. It can be overridden in extending viewhelpers to adjust functionality.
      *
-     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexiblity in overriding this method.
+     * @param array $arguments ViewHelper arguments to evaluate the condition for this ViewHelper, allows for flexibility in overriding this method.
      * @return bool
      */
     protected static function evaluateCondition($arguments = null)

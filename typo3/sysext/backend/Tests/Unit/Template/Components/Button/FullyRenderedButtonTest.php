@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FullyRenderedButtonTest extends UnitTestCase
 {
     /**
-     * Try to valide an empty button
+     * Try to validate an empty button
      *
      * @test
      */

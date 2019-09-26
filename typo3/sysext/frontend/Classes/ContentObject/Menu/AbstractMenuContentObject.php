@@ -2020,7 +2020,7 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Set the parentMenuArr and key to provide the parentMenu informations to the
+     * Set the parentMenuArr and key to provide the parentMenu information to the
      * subMenu, special fur IProcFunc and itemArrayProcFunc user functions.
      *
      * @param array $menuArr
@@ -2039,7 +2039,7 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Check if there is an valid parentMenuArr.
+     * Check if there is a valid parentMenuArr.
      *
      * @return bool
      */
@@ -2053,7 +2053,7 @@ abstract class AbstractMenuContentObject
     }
 
     /**
-     * Check if we have an parentMenutArrItemKey
+     * Check if we have a parentMenuArrItemKey
      */
     protected function hasParentMenuItemKey()
     {
@@ -2089,7 +2089,7 @@ abstract class AbstractMenuContentObject
      */
     public function getParentMenuItem()
     {
-        // check if we have an parentMenuItem and if it is an array
+        // check if we have a parentMenuItem and if it is an array
         if ($this->hasParentMenuItem()
             && is_array($this->getParentMenuArr()[$this->parentMenuArrItemKey])
         ) {

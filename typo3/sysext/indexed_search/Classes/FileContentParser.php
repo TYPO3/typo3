@@ -775,7 +775,7 @@ class FileContentParser
     }
 
     /**
-     * Analysing PDF info into a useable format.
+     * Analysing PDF info into a usable format.
      *
      * @param array $pdfInfoArray Array of PDF content, coming from the pdfinfo tool
      * @return array Result array

@@ -62,7 +62,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
     }
 
     /**
-     * Renders an tree recursive or just a single instance
+     * Renders a tree recursively or just a single instance
      *
      * @param \TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection
      * @param bool $recursive

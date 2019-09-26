@@ -989,7 +989,7 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Generates the <html> tag by evaluting TypoScript configuration, usually found via:
+     * Generates the <html> tag by evaluating TypoScript configuration, usually found via:
      *
      * - Adding extra attributes in addition to pre-generated ones (e.g. "dir")
      *     config.htmlTag.attributes.no-js = 1

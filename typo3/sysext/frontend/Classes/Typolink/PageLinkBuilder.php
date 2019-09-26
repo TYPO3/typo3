@@ -93,7 +93,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if (isset($linkDetails['parameters'])) {
             $conf['additionalParams'] .= '&' . ltrim($linkDetails['parameters'], '&');
         }
-        // MointPoints, look for closest MPvar:
+        // MountPoints, look for closest MPvar:
         $MPvarAcc = [];
         if (!$tsfe->config['config']['MP_disableTypolinkClosestMPvalue']) {
             $temp_MP = $this->getClosestMountPointValueForPage($page['uid']);
@@ -436,7 +436,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                     $rl_mpArray[] = $invTmplRLRec['_MP_PARAM'];
                 }
                 // If two PIDs matches and this is NOT the site root, start accumulation of MP data (on the next level):
-                // (The check for site root is done so links to branches outsite the site but sharing the site roots PID
+                // (The check for site root is done so links to branches outside the site but sharing the site roots PID
                 // is NOT detected as within the branch!)
                 if ((int)$tCR_data['pid'] === (int)$invTmplRLRec['pid'] && count($inverseTmplRootline) !== $rlKey + 1) {
                     $startMPaccu = true;

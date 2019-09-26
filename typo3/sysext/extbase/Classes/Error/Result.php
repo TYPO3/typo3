@@ -174,7 +174,7 @@ class Result
     }
 
     /**
-     * Get the first notice object of the curren Result object (non-recursive)
+     * Get the first notice object of the current Result object (non-recursive)
      *
      * @return Notice
      */
@@ -186,7 +186,7 @@ class Result
 
     /**
      * Return a Result object for the given property path. This is
-     * a fluent interface, so you will proboably use it like:
+     * a fluent interface, so you will probably use it like:
      * $result->forProperty('foo.bar')->getErrors() -- to get all errors
      * for property "foo.bar"
      *

@@ -56,7 +56,7 @@ class ClassesConfiguration
      * The whole classes configuration is used to determine all subclasses recursively.
      *
      * @param string $className
-     * @return array An numeric array that contains all available subclasses-strings as values.
+     * @return array A numeric array that contains all available subclasses-strings as values.
      */
     public function getSubClasses(string $className): array
     {

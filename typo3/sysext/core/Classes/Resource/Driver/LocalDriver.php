@@ -80,7 +80,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
     }
 
     /**
-     * Merges the capabilites merged by the user at the storage
+     * Merges the capabilities merged by the user at the storage
      * configuration into the actual capabilities of the driver
      * and returns the result.
      *

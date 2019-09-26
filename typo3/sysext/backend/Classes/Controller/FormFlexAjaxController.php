@@ -79,7 +79,7 @@ class FormFlexAjaxController extends AbstractFormEngineAjaxController
         ];
         // A new container on a new record needs the 'NEW123' uid here, see comment
         // in DatabaseUniqueUidNewRow for more information on that.
-        // @todo: Resolve, maybe with a redifinition of vanillaUid to transport the information more clean through this var?
+        // @todo: Resolve, maybe with a redefinition of vanillaUid to transport the information more clean through this var?
         // @see issue #80100 for a series of changes in this area
         if ($command === 'new') {
             $formDataCompilerInput['databaseRow']['uid'] = $databaseRowUid;

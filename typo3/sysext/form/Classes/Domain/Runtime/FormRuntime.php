@@ -121,7 +121,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
      *
      * If $currentPage is NULL, the *last* page has been submitted and
      * finishing actions need to take place. You should use $this->isAfterLastPage()
-     * instead of explicitely checking for NULL.
+     * instead of explicitly checking for NULL.
      *
      * @var \TYPO3\CMS\Form\Domain\Model\FormElements\Page
      */
@@ -456,7 +456,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
     }
 
     /**
-     * Runs throuh all validations
+     * Runs through all validations
      */
     protected function processSubmittedFormValues()
     {

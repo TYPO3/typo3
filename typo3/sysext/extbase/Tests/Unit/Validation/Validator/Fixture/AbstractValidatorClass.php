@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator\Fixture;
  */
 
 /**
- * Testcase for the abstract base-class of vvalidators
+ * Testcase for the abstract base-class of validators
  */
 class AbstractValidatorClass extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {

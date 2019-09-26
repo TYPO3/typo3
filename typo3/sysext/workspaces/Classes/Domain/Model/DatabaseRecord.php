@@ -41,7 +41,7 @@ class DatabaseRecord
      * Creates database record object just by id of database record.
      *
      * @param string $table Name of the database table
-     * @param int $uid Id of the datbase record row
+     * @param int $uid Id of the database record row
      * @return DatabaseRecord
      */
     public static function create($table, $uid)
@@ -50,7 +50,7 @@ class DatabaseRecord
     }
 
     /**
-     * Creates datbase record object by relevant database record row.
+     * Creates database record object by relevant database record row.
      *
      * @param string $table Name of the database table
      * @param array $row The relevant database record row
@@ -63,7 +63,7 @@ class DatabaseRecord
 
     /**
      * @param string $table Name of the database table
-     * @param int $uid Id of the datbase record row
+     * @param int $uid Id of the database record row
      * @param array|null $row The relevant database record row
      */
     public function __construct($table, $uid, array $row = null)

@@ -398,7 +398,7 @@ class IconFactory
         } elseif ($resource instanceof File) {
             $mimeTypeIcon = $this->iconRegistry->getIconIdentifierForMimeType($resource->getMimeType());
 
-            // Check if we find a exact matching mime type
+            // Check if we find an exact matching mime type
             if ($mimeTypeIcon !== null) {
                 $iconIdentifier = $mimeTypeIcon;
             } else {

@@ -315,7 +315,7 @@ class LanguagePackService
     }
 
     /**
-     * Unzip an language zip file
+     * Unzip a language zip file
      *
      * @param string $file path to zip file
      * @param string $path path to extract to

@@ -65,7 +65,7 @@ class PreviewProcessing
         if (!$this->needsReprocessing($processedFile)) {
             return;
         }
-        // Check if there is a OnlineMediaHelper registered for this file type
+        // Check if there is an OnlineMediaHelper registered for this file type
         $helper = OnlineMediaHelperRegistry::getInstance()->getOnlineMediaHelper($file);
         if ($helper === false) {
             return;
@@ -143,7 +143,7 @@ class PreviewProcessing
         }
 
         if (!file_exists($temporaryFileName)) {
-            // Create a error image
+            // Create an error image
             $graphicalFunctions = $this->getGraphicalFunctionsObject();
             $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', PathUtility::basename($originalFileName));
         }
@@ -186,7 +186,7 @@ class PreviewProcessing
             $gifBuilder->imageMagickExec($originalFileName, $temporaryFileName, $command, $frame);
         }
         if (!file_exists($temporaryFileName)) {
-            // Create a error image
+            // Create an error image
             $graphicalFunctions = $this->getGraphicalFunctionsObject();
             $graphicalFunctions->getTemporaryImageWithText($temporaryFileName, 'No thumb', 'generated!', PathUtility::basename($originalFileName));
         }

@@ -521,7 +521,7 @@ abstract class AbstractService implements LoggerAwareInterface
      * Initialization of the service.
      *
      * The class have to do a strict check if the service is available.
-     * example: check if the perl interpreter is available which is needed to run an extern perl script.
+     * example: check if the perl interpreter is available which is needed to run an external perl script.
      *
      * @return bool TRUE if the service is available
      */

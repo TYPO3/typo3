@@ -51,7 +51,7 @@ class FileCollectionRepository extends RecordCollectionRepository
     /**
      * Creates a record collection domain object.
      *
-     * @param array $record Database record to be reconsituted
+     * @param array $record Database record to be reconstituted
      *
      * @return Collection\AbstractFileCollection
      */

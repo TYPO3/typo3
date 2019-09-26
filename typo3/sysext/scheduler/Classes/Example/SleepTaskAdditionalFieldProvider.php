@@ -29,7 +29,7 @@ class SleepTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
     /**
      * This method is used to define new fields for adding or editing a task
-     * In this case, it adds an sleep time field
+     * In this case, it adds a sleep time field
      *
      * @param array $taskInfo Reference to the array containing the info used in the add/edit form
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.

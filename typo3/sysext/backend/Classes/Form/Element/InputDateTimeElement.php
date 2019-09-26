@@ -160,7 +160,7 @@ class InputDateTimeElement extends AbstractFormElement
                 // (moment.js can only handle UTC or browser's local timezone), we need to offset the value
                 // to eliminate the timezone. JS will receive all dates as if they were UTC, which we undo on save in DataHandler
                 $adjustedValue = $itemValue + date('Z', (int)$itemValue);
-                // output date as a ISO-8601 date
+                // output date as an ISO-8601 date
                 $itemValue = gmdate('c', $adjustedValue);
             }
             if (isset($config['range']['lower'])) {

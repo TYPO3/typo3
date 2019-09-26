@@ -30,7 +30,7 @@ class QueryHelper
 {
     /**
      * Takes an input, possibly prefixed with ORDER BY, and explodes it into
-     * and array of arrays where each item consists of a fieldName and a order
+     * and array of arrays where each item consists of a fieldName and an order
      * direction.
      *
      * Each of the resulting fieldName/direction pairs can be used passed into

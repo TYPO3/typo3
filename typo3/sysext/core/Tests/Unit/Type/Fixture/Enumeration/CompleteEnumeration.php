@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration;
 use TYPO3\CMS\Core\Type\Enumeration;
 
 /**
- * This is an complete enumeration with all possible constant values
+ * This is a complete enumeration with all possible constant values
  */
 final class CompleteEnumeration extends Enumeration
 {

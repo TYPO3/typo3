@@ -862,7 +862,7 @@ For each website you need a TypoScript template on the main page of your website
     }
 
     /**
-     * Test connection with given credentials and return exception message if exception trown
+     * Test connection with given credentials and return exception message if exception thrown
      *
      * @return bool
      */
@@ -972,7 +972,7 @@ For each website you need a TypoScript template on the main page of your website
         // In first installation we show all databases but disable not empty ones (with tables)
         $databases = [];
         foreach ($allPossibleDatabases as $databaseName) {
-            // Reestablising the connection for each database since there is no
+            // Reestablishing the connection for each database since there is no
             // portable way to switch databases on the same Doctrine connection.
             // Directly using the Doctrine DriverManager here to avoid messing with
             // the $GLOBALS database configuration array.

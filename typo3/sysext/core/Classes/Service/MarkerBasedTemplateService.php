@@ -70,7 +70,7 @@ class MarkerBasedTemplateService
      * @param string $content Content with subpart wrapped in fx. "###CONTENT_PART###" inside.
      * @param string $marker Marker string, eg. "###CONTENT_PART###
      * @param string|array $subpartContent If $subpartContent happens to be an array, it's [0] and [1] elements are wrapped around the content of the subpart (fetched by getSubpart())
-     * @param bool $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceding subparts are ALSO substituted!
+     * @param bool $recursive If $recursive is set, the function calls itself with the content set to the remaining part of the content after the second marker. This means that proceeding subparts are ALSO substituted!
      * @param bool $keepMarker If set, the marker around the subpart is not removed, but kept in the output
      *
      * @return string Processed input content
@@ -142,7 +142,7 @@ class MarkerBasedTemplateService
     }
 
     /**
-     * Substitues multiple subparts at once
+     * Substitutes multiple subparts at once
      *
      * @param string $content The content stream, typically HTML template content.
      * @param array $subpartsContent The array of key/value pairs being subpart/content values used in the substitution. For each element in this array the function will substitute a subpart in the content stream with the content.
@@ -325,7 +325,7 @@ class MarkerBasedTemplateService
      * splitting. This secures that the value inserted does not themselves
      * contain markers or subparts.
      *
-     * Note that the "caching" won't cache the content of the substition,
+     * Note that the "caching" won't cache the content of the substitution,
      * but only the splitting of the template in various parts. So if you
      * want only one cache-entry per template, make sure you always pass the
      * exact same set of marker/subpart keys. Else you will be flooding the

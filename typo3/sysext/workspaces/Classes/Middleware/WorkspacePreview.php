@@ -114,7 +114,7 @@ class WorkspacePreview implements MiddlewareInterface
             $GLOBALS['TSFE']->set_no_cache('GET Parameter ADMCMD_noBeUser was given', true);
         }
 
-        // Add a info box to the frontend content
+        // Add an info box to the frontend content
         if ($GLOBALS['TSFE']->doWorkspacePreview() && $GLOBALS['TSFE']->isOutputting()) {
             $previewInfo = $this->renderPreviewInfo($GLOBALS['TSFE'], $request->getAttribute('normalizedParams'));
             $body = $response->getBody();

@@ -93,7 +93,7 @@ interface FormPersistenceManagerInterface
     public function getUniquePersistenceIdentifier(string $formIdentifier, string $savePath): string;
 
     /**
-     * Check if a identifier is already used by a formDefintion.
+     * Check if an identifier is already used by a formDefintion.
      *
      * @param string $identifier
      * @return bool

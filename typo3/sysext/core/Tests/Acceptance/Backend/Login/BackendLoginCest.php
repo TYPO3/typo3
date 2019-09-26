@@ -82,7 +82,7 @@ class BackendLoginCest
     }
 
     /**
-     * Login a admin user and logout again
+     * Login an admin user and logout again
      *
      * @param BackendTester $I
      */

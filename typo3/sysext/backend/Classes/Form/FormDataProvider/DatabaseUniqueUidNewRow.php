@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * On "new" command, initialize uid with an unqique uid
+ * On "new" command, initialize uid with a unique uid
  */
 class DatabaseUniqueUidNewRow implements FormDataProviderInterface
 {

@@ -389,7 +389,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
     }
 
     /**
-     * Gets an file object from an identifier [storage]:[fileId]
+     * Gets a file object from an identifier [storage]:[fileId]
      *
      * @param string $identifier
      * @return File|ProcessedFile|null
@@ -417,9 +417,9 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
     }
 
     /**
-     * Gets an file object from storage by file identifier
-     * If the file is outside of the process folder it gets indexed and returned as file object afterwards
-     * If the file is within processing folder the file object will be directly returned
+     * Gets a file object from storage by file identifier
+     * If the file is outside of the process folder, it gets indexed and returned as file object afterwards
+     * If the file is within processing folder, the file object will be directly returned
      *
      * @param int $storageUid
      * @param string $fileIdentifier

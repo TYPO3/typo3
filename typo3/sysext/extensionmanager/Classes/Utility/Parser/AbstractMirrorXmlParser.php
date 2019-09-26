@@ -75,7 +75,7 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      * Valid array keys of returned array are:
      * country, host, path, sponsorlink, sponsorlogo, sponsorname, title
      *
-     * @return array assoziative array of a mirror's properties
+     * @return array associative array of a mirror's properties
      */
     public function getAll()
     {

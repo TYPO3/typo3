@@ -54,7 +54,7 @@ class RelationHandler
     public $tableArray = [];
 
     /**
-     * Contains items in an numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
+     * Contains items in a numeric array (table/id for each). Tablenames here might be "_NO_TABLE"
      *
      * @var array
      */
@@ -1214,7 +1214,7 @@ class RelationHandler
                     } else {
                         $fields = 'uid,pid';
                         if ($GLOBALS['TCA'][$table]['ctrl']['label']) {
-                            // Titel
+                            // Title
                             $fields .= ',' . $GLOBALS['TCA'][$table]['ctrl']['label'];
                         }
                         if ($GLOBALS['TCA'][$table]['ctrl']['label_alt']) {

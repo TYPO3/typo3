@@ -212,7 +212,7 @@ class DebuggerUtility
     /**
      * Checks if a given object or property should be excluded/filtered
      *
-     * @param object $value An ReflectionProperty or other Object
+     * @param object $value A ReflectionProperty or other Object
      * @return bool TRUE if the given object should be filtered
      */
     protected static function isBlacklisted(object $value): bool

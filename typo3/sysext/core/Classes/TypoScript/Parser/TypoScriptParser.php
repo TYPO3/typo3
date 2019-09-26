@@ -924,7 +924,7 @@ class TypoScriptParser
             // Add a line break before and after the included code in order to make sure that the parser always has a LF.
             $string = LF . trim($newString) . LF;
         }
-        // When all included files should get returned, simply return an compound array containing
+        // When all included files should get returned, simply return a compound array containing
         // the TypoScript with all "includes" processed and the files which got included
         if ($returnFiles) {
             return [

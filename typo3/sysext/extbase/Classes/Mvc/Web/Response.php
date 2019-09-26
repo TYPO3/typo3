@@ -270,7 +270,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
      * '<script src="myext/Resources/JavaScript/my.js"></script>'
      * )
      *
-     * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
+     * @TODO The workaround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
      * @param string $additionalHeaderData The value additional header
      * @throws \InvalidArgumentException
      */

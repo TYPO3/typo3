@@ -186,7 +186,7 @@ class BackendUtility
     }
 
     /**
-     * Makes an backwards explode on the $str and returns an array with ($table, $uid).
+     * Makes a backwards explode on the $str and returns an array with ($table, $uid).
      * Example: tt_content_45 => ['tt_content', 45]
      *
      * @param string $str [tablename]_[uid] string to explode
@@ -1075,7 +1075,7 @@ class BackendUtility
     /**
      * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with sys_file_references
      * All $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
-     * Thumbsnails are linked to ShowItemController (/thumbnails route)
+     * Thumbnails are linked to ShowItemController (/thumbnails route)
      *
      * @param array $row Row is the database row from the table, $table.
      * @param string $table Table name for $row (present in TCA)
@@ -3127,7 +3127,7 @@ class BackendUtility
      * @param string $table Table name
      * @param int $uid Record uid
      * @param int $pid Record pid
-     * @return array Array of two ints; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID,
+     * @return array Array of two integers; first is the REAL PID of a record and if its a new record negative values are resolved to the true PID,
      * second value is the PID value for TSconfig (uid if table is pages, otherwise the pid)
      * @internal
      * @see \TYPO3\CMS\Core\DataHandling\DataHandler::setHistory()

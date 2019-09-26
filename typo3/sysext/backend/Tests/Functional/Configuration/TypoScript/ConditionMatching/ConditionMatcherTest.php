@@ -121,7 +121,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     }
 
     /**
-     * Tests whether checkinf for an admin user matches
+     * Tests whether checking for an admin user matches
      *
      * @test
      */

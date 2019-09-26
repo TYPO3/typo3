@@ -28,7 +28,7 @@ interface FrontendInterface
      */
     const TAG_PACKAGE = '%PACKAGE%';
     /**
-     * Pattern an entry identifer must match.
+     * Pattern an entry identifier must match.
      */
     const PATTERN_ENTRYIDENTIFIER = '/^[a-zA-Z0-9_%\\-&]{1,250}$/';
     /**

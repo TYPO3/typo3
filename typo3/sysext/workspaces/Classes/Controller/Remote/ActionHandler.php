@@ -449,7 +449,7 @@ class ActionHandler
      * $parameters->additional = your@mail.com
      * $parameters->affects->__TABLENAME__
      * $parameters->comments
-     * $parameters->receipients
+     * $parameters->recipients
      * $parameters->stageId
      * </code>
      *
@@ -527,7 +527,7 @@ class ActionHandler
      * t3ver_oid
      * nextStage
      * uid
-     * receipients: array with uids
+     * recipients: array with uids
      * additional: string
      * comments: string
      *
@@ -574,7 +574,7 @@ class ActionHandler
      * table
      * t3ver_oid
      * nextStage
-     * receipients: array with uids
+     * recipients: array with uids
      * additional: string
      * comments: string
      *

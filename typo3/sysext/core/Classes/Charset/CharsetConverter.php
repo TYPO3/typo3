@@ -736,7 +736,7 @@ class CharsetConverter implements SingletonInterface
      ********************************************/
 
     /**
-     * Maps all characters of an UTF-8 string.
+     * Maps all characters of a UTF-8 string.
      *
      * @param string $str UTF-8 string
      * @return string The converted string

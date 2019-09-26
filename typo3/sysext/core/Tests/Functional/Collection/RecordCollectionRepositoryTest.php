@@ -303,7 +303,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
                 $sqlServerIdentityDisabled = true;
             } catch (\Doctrine\DBAL\DBALException $e) {
                 // Some tables like sys_refindex don't have an auto-increment uid field and thus no
-                // IDENTITY column. Instead of testing existance, we just try to set IDENTITY ON
+                // IDENTITY column. Instead of testing existence, we just try to set IDENTITY ON
                 // and catch the possible error that occurs.
             }
         }

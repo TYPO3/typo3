@@ -227,7 +227,7 @@ class SetupCheck implements CheckInterface
                 $message .= LF;
             }
             $message .= $wikiLink;
-            // Set title of status depending on serverity
+            // Set title of status depending on severity
             switch ($status) {
                 case FlashMessage::ERROR:
                     $title = 'A possibly malfunctioning PHP opcode cache is loaded';

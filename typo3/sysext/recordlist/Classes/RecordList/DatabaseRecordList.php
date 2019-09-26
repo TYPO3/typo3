@@ -2603,7 +2603,7 @@ class DatabaseRecordList
     protected function addToCSV(array $row = [])
     {
         $rowReducedByControlFields = self::removeControlFieldsFromFieldRow($row);
-        // Get an field array without control fields but in the expected order
+        // Get a field array without control fields but in the expected order
         $fieldArray = array_intersect_key(array_flip($this->fieldArray), $rowReducedByControlFields);
         // Overwrite fieldArray to keep the order with an array of needed fields
         $rowReducedToSelectedColumns = array_replace($fieldArray, array_intersect_key($rowReducedByControlFields, $fieldArray));
@@ -2984,7 +2984,7 @@ class DatabaseRecordList
         $searchLevelsFromTSconfig = $config['mod.']['web_list.']['searchLevel.']['items.'];
         $searchLevelItems = [];
 
-        // get translated labels for search levels from pagets
+        // get translated labels for search levels from pageTS
         foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
             $label = $lang->sL('LLL:' . $labelConfigured);
             if ($label === '') {
@@ -3810,9 +3810,9 @@ class DatabaseRecordList
      * Returns a table-row with the content from the fields in the input data array.
      * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
      *
-     * @param int $h Is an integer >=0 and denotes how tall an element is. Set to '0' makes a halv line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
+     * @param int $h Is an integer >=0 and denotes how tall an element is. Set to '0' makes a half line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
      * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
-     * @param array $data Is the dataarray, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
+     * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
      * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
      * @param string $_ OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
      * @param string $_2 OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)

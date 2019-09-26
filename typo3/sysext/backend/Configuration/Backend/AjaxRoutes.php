@@ -137,7 +137,7 @@ return [
         'target' => Controller\ShortcutController::class . '::addAction'
     ],
 
-    // Render systeminformtion toolbar item
+    // Render systeminformation toolbar item
     'systeminformation_render' => [
         'path' => '/system-information/render',
         'target' => \TYPO3\CMS\Backend\Controller\SystemInformationController::class . '::renderMenuAction',

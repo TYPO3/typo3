@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
- * Translate form element properites.
+ * Translate form element properties.
  *
  * Scope: frontend / backend
  */

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
  *
  * Hashes are identified by the prefix '$argon2i$'.
  *
- * The length of a argon2i password hash (in the form it is received from
+ * The length of an argon2i password hash (in the form it is received from
  * PHP) depends on the environment.
  *
  * @see PASSWORD_ARGON2I in https://secure.php.net/manual/en/password.constants.php

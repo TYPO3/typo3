@@ -239,7 +239,7 @@ class TableBuilder
     }
 
     /**
-     * Prepare a explicit foreign key definition item to be added to the table being built.
+     * Prepare an explicit foreign key definition item to be added to the table being built.
      *
      * @param \TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem $item
      */

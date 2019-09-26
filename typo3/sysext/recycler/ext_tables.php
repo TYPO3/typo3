@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
     'web',
-    // Legacy name, as this module was previously a Extbase controller. Keeping the name allows to keep the sys_be_shortcut functionality alive
+    // Legacy name, as this module was previously an Extbase controller. Keeping the name allows to keep the sys_be_shortcut functionality alive
     'RecyclerRecycler',
     '',
     null,

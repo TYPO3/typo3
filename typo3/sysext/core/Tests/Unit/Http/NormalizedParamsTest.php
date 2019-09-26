@@ -269,7 +269,7 @@ class NormalizedParamsTest extends UnitTestCase
                 [],
                 false,
             ],
-            // Per PHP documententation 'HTTPS' is:
+            // Per PHP documentation 'HTTPS' is:
             //   "Set to a non-empty value if the script
             //   was queried through the HTTPS protocol."
             // So theoretically an empty array means HTTPS is off.

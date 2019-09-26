@@ -68,7 +68,7 @@ class RemoteServer
     }
 
     /**
-     * Checks integrity of elements before peforming actions on them.
+     * Checks integrity of elements before performing actions on them.
      *
      * @param \stdClass $parameters
      * @return array

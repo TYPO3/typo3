@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Utility;
 class CsvUtility
 {
     /**
-     * Convert a string, formatted as CSV, into an multidimensional array
+     * Convert a string, formatted as CSV, into a multidimensional array
      *
      * This cannot be done by str_getcsv, since it's impossible to handle enclosed cells with a line feed in it
      *

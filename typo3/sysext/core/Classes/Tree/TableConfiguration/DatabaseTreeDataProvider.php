@@ -473,7 +473,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     }
 
     /**
-     * Queries the table for an field which might contain a list.
+     * Queries the table for a field which might contain a list.
      *
      * @param string $fieldName the name of the field to be queried
      * @param int $queryId the uid to search for

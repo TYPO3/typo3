@@ -165,7 +165,7 @@ tt_content.' . $pluginSignature . ' {
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-        // At this point $extensionName is normalized, no matter which format the method was feeded with.
+        // At this point $extensionName is normalized, no matter which format the method was fed with.
         // Calculate the original extensionKey from this again.
         $extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 

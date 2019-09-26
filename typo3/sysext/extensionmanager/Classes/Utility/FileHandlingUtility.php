@@ -136,7 +136,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Wrapper for utility method to create directory recusively
+     * Wrapper for utility method to create directory recursively
      *
      * @param string $directory Absolute path
      * @throws ExtensionManagerException

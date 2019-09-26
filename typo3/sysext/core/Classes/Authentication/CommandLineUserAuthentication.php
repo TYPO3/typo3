@@ -52,7 +52,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     }
 
     /**
-     * Replacement for AbstactUserAuthentication::start()
+     * Replacement for AbstractUserAuthentication::start()
      *
      * We do not need support for sessions, cookies, $_GET-modes, the postUserLookup hook or
      * a database connection during CLI Bootstrap
@@ -63,7 +63,7 @@ class CommandLineUserAuthentication extends BackendUserAuthentication
     }
 
     /**
-     * Replacement for AbstactUserAuthentication::checkAuthentication()
+     * Replacement for AbstractUserAuthentication::checkAuthentication()
      *
      * Not required in CLI mode, therefore empty.
      */

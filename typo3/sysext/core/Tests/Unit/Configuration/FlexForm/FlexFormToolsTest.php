@@ -925,7 +925,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
         $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
-        // First db call returns $secondRow. $secendRow resolves DS and does not look further up
+        // First db call returns $secondRow. $secondRow resolves DS and does not look further up
         $statementProphecy->fetch()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_ds"}';
@@ -988,7 +988,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryBuilderProphecy->execute()->shouldBeCalled()->willReturn($statementProphecy->reveal());
         $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
-        // First db call returns $secondRow. $secendRow resolves DS and does not look further up
+        // First db call returns $secondRow. $secondRow resolves DS and does not look further up
         $statementProphecy->fetch()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_next_ds"}';
@@ -1072,7 +1072,7 @@ class FlexFormToolsTest extends UnitTestCase
         $queryBuilderProphecy->count('uid')->shouldBeCalled()->willReturn($queryBuilderRevelation);
         $statementProphecy->fetchColumn(0)->shouldBeCalled()->willReturn(1);
 
-        // First db call returns $secondRow. $secendRow resolves DS and does not look further up
+        // First db call returns $secondRow. $secondRow resolves DS and does not look further up
         $statementProphecy->fetch()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';

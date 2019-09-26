@@ -451,7 +451,7 @@ class TypoScriptParserTest extends UnitTestCase
      */
     public function includeFilesWithConditions(string $typoScript): void
     {
-        // This test triggers an BackendUtility::BEgetRootLine() down below, we need to suppress the cache call
+        // This test triggers a BackendUtility::BEgetRootLine() down below, we need to suppress the cache call
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());

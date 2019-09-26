@@ -715,7 +715,7 @@ class DataHandlerHook
         } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
             $record = BackendUtility::getRecord($table, $id);
             $stat = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
-            // check if the usere is allowed to the current stage, so it's also allowed to send to next stage
+            // check if the user is allowed to the current stage, so it's also allowed to send to next stage
             if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
                 // Set stage of record:
                 GeneralUtility::makeInstance(ConnectionPool::class)
@@ -762,7 +762,7 @@ class DataHandlerHook
      * @param bool $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
      * @param DataHandler $dataHandler DataHandler object
      * @param string $comment Notification comment
-     * @param array $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
+     * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
      */
     protected function version_swap($table, $id, $swapWith, bool $swapIntoWS, DataHandler $dataHandler, string $comment, $notificationAlternativeRecipients = [])
     {
@@ -1146,7 +1146,7 @@ class DataHandlerHook
     }
 
     /**
-     * Remove a versioned record from this workspace. Often referred to as "dicarding a version" = throwing away a version.
+     * Remove a versioned record from this workspace. Often referred to as "discarding a version" = throwing away a version.
      * This means to delete the record and remove any placeholders that are not needed anymore.
      *
      * In previous versions, this meant that the versioned record was marked as deleted and moved into "live" workspace.
@@ -1440,7 +1440,7 @@ class DataHandlerHook
      *
      * @param string $table Table to search
      * @param array $idList List of records' UIDs
-     * @param int $workspaceId Workspace ID. We need this parameter because user can be in LIVE but he still can publisg DRAFT from ws module!
+     * @param int $workspaceId Workspace ID. We need this parameter because user can be in LIVE but he still can publish DRAFT from ws module!
      * @param array $pageIdList List of found page UIDs
      * @param array $elementList List of found element UIDs. Key is table name, value is list of UIDs
      */

@@ -594,7 +594,7 @@ class GraphicalFunctions
                 // antiAliasing is setup:
                 $Fcolor = $conf['antiAlias'] ? $Fcolor : -$Fcolor;
                 for ($a = 0; $a < $conf['iterations']; $a++) {
-                    // If any kind of spacing applys, we use this function:
+                    // If any kind of spacing applies, we use this function:
                     if ($spacing || $wordSpacing) {
                         $this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, GeneralUtility::getFileAbsFileName($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
                     } else {
@@ -2064,7 +2064,7 @@ class GraphicalFunctions
      * @param string $params Additional ImageMagick parameters.
      * @param string $frame Refers to which frame-number to select in the image. '' or 0 will select the first frame, 1 will select the next and so on...
      * @param array $options An array with options passed to getImageScale (see this function).
-     * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding messures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
+     * @param bool $mustCreate If set, then another image than the input imagefile MUST be returned. Otherwise you can risk that the input image is good enough regarding measures etc and is of course not rendered to a new, temporary file in typo3temp/. But this option will force it to.
      * @return array|null [0]/[1] is w/h, [2] is file extension and [3] is the filename.
      * @see getImageScale()
      * @see \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getImgResource()
@@ -2528,7 +2528,7 @@ class GraphicalFunctions
 
     /**
      * Compressing a GIF file if not already LZW compressed.
-     * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimun size (that is RLE or no compression used)
+     * This function is a workaround for the fact that ImageMagick and/or GD does not compress GIF-files to their minimum size (that is RLE or no compression used)
      *
      * The function takes a file-reference, $theFile, and saves it again through GD or ImageMagick in order to compress the file
      * GIF:

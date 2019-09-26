@@ -60,7 +60,7 @@ abstract class AbstractRecycleTestCase extends \TYPO3\TestingFramework\Core\Func
     }
 
     /**
-     * Retrieves a deleted content elment using the recycler domain model "deletedRecords" class.
+     * Retrieves a deleted content element using the recycler domain model "deletedRecords" class.
      *
      * @param int $contentUid
      * @return array Retrieved deleted records

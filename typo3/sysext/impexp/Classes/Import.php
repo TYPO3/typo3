@@ -682,7 +682,7 @@ class Import extends ImportExport
     }
 
     /**
-     * Write all database records except pages (writtein in writeRecords_pages())
+     * Write all database records except pages (written in writeRecords_pages())
      *
      * @param int $pid Page id in which to import
      * @see writeRecords_pages()
@@ -1493,7 +1493,7 @@ class Import extends ImportExport
                             }
                         }
                     } else {
-                        // Create the resouces directory name (filename without extension, suffixed "_FILES")
+                        // Create the ressource's directory name (filename without extension, suffixed "_FILES")
                         $resourceDir = PathUtility::dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', PathUtility::basename($newName)) . '_FILES';
                         if (GeneralUtility::mkdir($resourceDir)) {
                             foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {

@@ -319,7 +319,7 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     }
 
     /**
-     * Add an CSS class if this ViewHelper has errors
+     * Add a CSS class if this ViewHelper has errors
      */
     protected function setErrorClassAttribute()
     {

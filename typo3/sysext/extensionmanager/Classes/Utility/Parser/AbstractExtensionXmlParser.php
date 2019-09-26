@@ -140,14 +140,14 @@ abstract class AbstractExtensionXmlParser extends AbstractXmlParser
     protected $versionDownloadCounter;
 
     /**
-     * Returns an assoziative array of all extension version properties.
+     * Returns an associative array of all extension version properties.
      *
      * Valid array keys of returned array are:
      * extkey, version, alldownloadcounter, downloadcounter, title, description,
      * state, reviewstate, category, lastuploaddate, uploadcomment, dependencies,
      * authorname, authoremail, authorcompany, ownerusername, t3xfilemd5
      *
-     * @return array assoziative array of an extension version's properties
+     * @return array associative array of an extension version's properties
      */
     public function getAll()
     {

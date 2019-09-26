@@ -187,7 +187,7 @@ class PermissionController extends ActionController
             $buttonBar->addButton($saveButton);
         }
 
-        // SHORTCUT botton:
+        // SHORTCUT bottom:
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setModuleName($moduleName)
             ->setGetVariables($getVars);

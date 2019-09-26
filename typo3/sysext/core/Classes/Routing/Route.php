@@ -134,7 +134,7 @@ class Route extends SymfonyRoute
      * Checks if an aspect is set for the given key.
      *
      * @param string $key A variable name
-     * @return bool true if a aspect is specified, false otherwise
+     * @return bool true if an aspect is specified, false otherwise
      */
     public function hasAspect(string $key): bool
     {
@@ -142,7 +142,7 @@ class Route extends SymfonyRoute
     }
 
     /**
-     * Sets a aspect for the given key.
+     * Sets an aspect for the given key.
      *
      * @param string $key The key
      * @param AspectInterface $aspect

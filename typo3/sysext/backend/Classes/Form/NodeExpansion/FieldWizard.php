@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * new ajax controllers for instance or add buttons and are not restricted by the
  * framework further.
  *
- * Examples for field wizards are the display of the "languaged diff" in input elements
+ * Examples for field wizards are the display of the "language diff" in input elements
  * and the file upload button in group elements.
  */
 class FieldWizard extends AbstractNode

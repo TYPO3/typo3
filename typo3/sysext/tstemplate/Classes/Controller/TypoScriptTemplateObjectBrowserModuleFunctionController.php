@@ -243,7 +243,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
         $tsbr = $this->request->getQueryParams()['tsbr'] ?? null;
         $update = 0;
         if (is_array($tsbr)) {
-            // If any plus-signs were clicked, it's registred.
+            // If any plus-signs were clicked, it's registered.
             $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $this->templateService->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
             $update = 1;
         }

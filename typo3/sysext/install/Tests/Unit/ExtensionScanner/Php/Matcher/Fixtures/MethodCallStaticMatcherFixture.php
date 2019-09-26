@@ -26,12 +26,12 @@ class MethodCallStaticMatcherFixture
     {
         // Matches
         BackendUtility::getAjaxUrl();
-        // Match: getAjaxUrl() is called statitally here and 1 mandatory argument is given
+        // Match: getAjaxUrl() is called statically here and 1 mandatory argument is given
         $foo::getAjaxUrl('bar');
 
         // No match
         $foo->getAjaxUrl();
-        // No match: Dynamycally called even if argument is given
+        // No match: Dynamically called even if argument is given
         $foo->getAjaxUrl('bar');
         // @extensionScannerIgnoreLine
         $foo::getAjaxUrl('bar');

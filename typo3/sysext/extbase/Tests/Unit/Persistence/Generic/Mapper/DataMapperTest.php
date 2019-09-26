@@ -155,7 +155,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * Test if fetchRelatedEager method returns NULL when $fieldValue = '' and relation type == RELATION_HAS_ONE
      *
-     * This is a actually a functional test as it tests multiple units along with a very specific setup of dependencies.
+     * This is actually a functional test as it tests multiple units along with a very specific setup of dependencies.
      * @todo: Cover this functionality by a functional test
      *
      * @test
@@ -178,7 +178,7 @@ class DataMapperTest extends UnitTestCase
     /**
      * Test if fetchRelatedEager method returns empty array when $fieldValue = '' and relation type != RELATION_HAS_ONE
      *
-     * This is a actually a functional test as it tests multiple units along with a very specific setup of dependencies.
+     * This is actually a functional test as it tests multiple units along with a very specific setup of dependencies.
      * @todo: Cover this functionality by a functional test
      *
      * @test
@@ -202,7 +202,7 @@ class DataMapperTest extends UnitTestCase
      * Test if fetchRelatedEager method returns NULL when $fieldValue = ''
      * and relation type == RELATION_HAS_ONE without calling fetchRelated
      *
-     * This is a actually a functional test as it tests multiple units along with a very specific setup of dependencies.
+     * This is actually a functional test as it tests multiple units along with a very specific setup of dependencies.
      * @todo: Cover this functionality by a functional test
      *
      * @test
@@ -228,7 +228,7 @@ class DataMapperTest extends UnitTestCase
      * that are already registered in the persistence session
      * without query it from the persistence layer
      *
-     * This is a actually a functional test as it tests multiple units along with a very specific setup of dependencies.
+     * This is actually a functional test as it tests multiple units along with a very specific setup of dependencies.
      * @todo: Cover this functionality by a functional test
      *
      * @test

@@ -549,7 +549,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
 
     /**
      * @test
-     * @dataProvider menuTypoLinkCreatesExpectedTypoLinkConfiurationDataProvider
+     * @dataProvider menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider
      * @param array $expected
      * @param array $mconf
      * @param array $page

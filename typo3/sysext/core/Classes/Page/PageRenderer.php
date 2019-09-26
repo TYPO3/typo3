@@ -1681,7 +1681,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Render the page but not the JavaScript and CSS Files
      *
-     * @param string $substituteHash The hash that is used for the placehoder markers
+     * @param string $substituteHash The hash that is used for the placeholder markers
      * @internal
      * @return string Content of rendered section
      */
@@ -1831,7 +1831,7 @@ class PageRenderer implements SingletonInterface
     /**
      * Fills the marker array with the given strings and trims each value
      *
-     * @param string $substituteHash The hash that is used for the placehoder markers
+     * @param string $substituteHash The hash that is used for the placeholder markers
      * @return array Marker array
      */
     protected function getPreparedMarkerArrayForPageWithUncachedObjects($substituteHash)
@@ -2103,7 +2103,7 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Render JavaScipt libraries
+     * Render JavaScript libraries
      *
      * @return array|string[] jsLibs and jsFooterLibs strings
      */
@@ -2626,7 +2626,7 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Creates an CSS inline tag
+     * Creates a CSS inline tag
      *
      * @param string $file the filename to process
      * @param array $properties

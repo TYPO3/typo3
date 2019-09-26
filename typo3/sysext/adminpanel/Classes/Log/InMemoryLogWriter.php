@@ -58,7 +58,7 @@ class InMemoryLogWriter extends AbstractWriter
     }
 
     /**
-     * Lock writer and add a info message that there may potentially be more entries.
+     * Lock writer and add an info message that there may potentially be more entries.
      */
     protected function lockWriter(): void
     {

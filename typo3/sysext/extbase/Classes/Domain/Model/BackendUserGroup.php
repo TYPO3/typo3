@@ -532,7 +532,7 @@ class BackendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * Helper method for settung permissions bitwise.
+     * Helper method for setting permissions bitwise.
      *
      * @param int $permission
      * @param bool $value

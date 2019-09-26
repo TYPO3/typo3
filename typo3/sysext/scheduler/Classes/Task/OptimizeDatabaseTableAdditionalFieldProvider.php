@@ -196,7 +196,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             return [];
         }
 
-        // Retrieve all tables from the MySQL informaation schema that have an engine type
+        // Retrieve all tables from the MySQL information schema that have an engine type
         // that supports the OPTIMIZE TABLE command.
         $queryBuilder = $connection->createQueryBuilder();
         $queryBuilder->select('TABLE_NAME AS Table', 'ENGINE AS Engine')

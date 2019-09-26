@@ -229,7 +229,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
         $tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
         $expiration = $lifetime ?? $this->defaultLifetime;
 
-        // Memcached consideres values over 2592000 sec (30 days) as UNIX timestamp
+        // Memcached considers values over 2592000 sec (30 days) as UNIX timestamp
         // thus $expiration should be converted from lifetime to UNIX timestamp
         if ($expiration > 2592000) {
             $expiration += $GLOBALS['EXEC_TIME'];

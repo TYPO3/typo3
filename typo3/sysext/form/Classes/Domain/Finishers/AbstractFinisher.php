@@ -256,14 +256,14 @@ abstract class AbstractFinisher implements FinisherInterface
     }
 
     /**
-     * You can encapsulate a option value with {}.
-     * This enables you to access every getable property from the
+     * You can encapsulate an option value with {}.
+     * This enables you to access every gettable property from the
      * TYPO3\CMS\Form\Domain\Runtime\FormRuntime.
      *
-     * For example: {formState.formValues.<elemenIdentifier>}
-     * or {<elemenIdentifier>}
+     * For example: {formState.formValues.<elementIdentifier>}
+     * or {<elementIdentifier>}
      *
-     * Both examples are equal to "$formRuntime->getFormState()->getFormValues()[<elemenIdentifier>]"
+     * Both examples are equal to "$formRuntime->getFormState()->getFormValues()[<elementIdentifier>]"
      * There is a special option value '{__currentTimestamp}'.
      * This will be replaced with the current timestamp.
      *

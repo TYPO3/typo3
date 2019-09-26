@@ -386,7 +386,7 @@ class ElementHistoryController
     }
 
     /**
-     * Renders HTML table-rows with the comparison information of an sys_history entry record
+     * Renders HTML table-rows with the comparison information of a sys_history entry record
      *
      * @param array $entry sys_history entry record.
      * @param string $table The table name

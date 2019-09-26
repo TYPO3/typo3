@@ -106,7 +106,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      * Does the actual parsing using the parent objects "parse" method. Creates the match-Object
      *
      * @param string $TSconfig The TSConfig being parsed
-     * @return array Array containing the parsed TSConfig, the encountered sectiosn, the matched sections
+     * @return array Array containing the parsed TSConfig, the encountered sections, the matched sections
      */
     protected function parseWithConditions($TSconfig)
     {

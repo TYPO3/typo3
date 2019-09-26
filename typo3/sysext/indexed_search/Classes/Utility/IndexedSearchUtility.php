@@ -16,7 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
 
 /**
  * Class with common methods used across various classes in the indexed search.
- * Impementation is provided by various people from the TYPO3 community.
+ * Implementation is provided by various people from the TYPO3 community.
  * @internal
  */
 class IndexedSearchUtility
@@ -48,7 +48,7 @@ class IndexedSearchUtility
     }
 
     /**
-     * Takes a search-string (WITHOUT SLASHES or else it'll be a little sppooky , NOW REMEMBER to unslash!!)
+     * Takes a search-string (WITHOUT SLASHES or else it'll be a little spooky , NOW REMEMBER to unslash!!)
      * Sets up search words with operators.
      *
      * @param string $sword The input search-word string.

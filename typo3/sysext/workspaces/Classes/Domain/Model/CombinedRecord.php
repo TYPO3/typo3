@@ -41,7 +41,7 @@ class CombinedRecord
      *
      * @param string $table Name of the database table
      * @param int $liveId Id of the database live-record row
-     * @param int $versionId Id of the datbase version-record row
+     * @param int $versionId Id of the database version-record row
      * @return CombinedRecord
      */
     public static function create($table, $liveId, $versionId)
@@ -55,7 +55,7 @@ class CombinedRecord
      * Creates combined record object by relevant database live-record and version-record rows.
      *
      * @param string $table Name of the database table
-     * @param array $liveRow The relevant datbase live-record row
+     * @param array $liveRow The relevant database live-record row
      * @param array $versionRow The relevant database version-record row
      * @return CombinedRecord
      */
