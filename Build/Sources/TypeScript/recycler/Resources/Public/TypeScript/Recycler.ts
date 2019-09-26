@@ -13,6 +13,7 @@
 
 import * as $ from 'jquery';
 import * as NProgress from 'nprogress';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
