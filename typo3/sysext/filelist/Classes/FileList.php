@@ -1254,7 +1254,7 @@ class FileList
                     $fullIdentifier,
                     1,
                     $isSel === 'copy'
-                 )) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
+                )) . '" title="' . $copyTitle . '">' . $copyIcon . '</a>';
             } else {
                 $cells[] = $this->spaceIcon;
             }
