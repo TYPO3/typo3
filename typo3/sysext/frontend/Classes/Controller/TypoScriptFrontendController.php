@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
@@ -1094,17 +1095,31 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ->setMaxResults(1);
 
         // $this->id always points to the ID of the default language page, so we check
-        // the current site language to determine if we need to fetch a translation
+        // the current site language to determine if we need to fetch a translation but consider fallbacks
         if ($this->language->getLanguageId() > 0) {
-            $queryBuilder->andWhere(
+            $languagesToCheck = array_merge([$this->language->getLanguageId()], $this->language->getFallbackLanguageIds());
+            // Check for the language and all its fallbacks
+            $constraint = $queryBuilder->expr()->andX(
                 $queryBuilder->expr()->eq('l10n_parent', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter($this->language->getLanguageId(), \PDO::PARAM_INT))
+                $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter(array_filter($languagesToCheck), Connection::PARAM_INT_ARRAY))
             );
+            // If the fallback language Ids also contains the default language, this needs to be considered
+            if (in_array(0, $languagesToCheck, true)) {
+                $constraint = $queryBuilder->expr()->orX(
+                    $constraint,
+                    // Ensure to also fetch the default record
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)),
+                        $queryBuilder->expr()->in('sys_language_uid', 0)
+                    )
+                );
+            }
+            // Ensure that the translated records are shown first (maxResults is set to 1)
+            $queryBuilder->orderBy('sys_language_uid', 'DESC');
         } else {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT))
-            );
+            $constraint = $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT));
         }
+        $queryBuilder->andWhere($constraint);
 
         $page = $queryBuilder->execute()->fetch();
 
