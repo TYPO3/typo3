@@ -294,13 +294,20 @@ class TemplateService
     protected $packageManager;
 
     /**
+     * @var TypoScriptFrontendController|null
+     */
+    protected $frontendController;
+
+    /**
      * @param Context|null $context
      * @param PackageManager|null $packageManager
+     * @param TypoScriptFrontendController|null $frontendController
      */
-    public function __construct(Context $context = null, PackageManager $packageManager = null)
+    public function __construct(Context $context = null, PackageManager $packageManager = null, TypoScriptFrontendController $frontendController = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
         $this->packageManager = $packageManager ?? GeneralUtility::makeInstance(PackageManager::class);
+        $this->frontendController = $frontendController;
         $this->initializeDatabaseQueryRestrictions();
         if ($this->context->getPropertyFromAspect('visibility', 'includeHiddenContent', false) || $GLOBALS['SIM_ACCESS_TIME'] !== $GLOBALS['ACCESS_TIME']) {
             // Set the simulation flag, if simulation is detected!
@@ -1222,7 +1229,7 @@ class TemplateService
      */
     protected function getTypoScriptFrontendController()
     {
-        return $GLOBALS['TSFE'];
+        return $this->frontendController ?? $GLOBALS['TSFE'];
     }
 
     /**

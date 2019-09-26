@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Redirects\Tests\Unit\Service;
+namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -44,12 +44,14 @@ class IntegrityServiceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $siteFinder = $this->prophesizeSiteFinder()->reveal();
         $this->subject = new IntegrityService(
             new RedirectService(
                 new RedirectCacheService(),
-                $this->prophesize(LinkService::class)->reveal()
+                $this->prophesize(LinkService::class)->reveal(),
+                $siteFinder
             ),
-            $this->prophesizeSiteFinder()->reveal()
+            $siteFinder
         );
     }
 

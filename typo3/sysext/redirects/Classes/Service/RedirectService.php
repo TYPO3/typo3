@@ -25,7 +25,9 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
@@ -53,10 +55,16 @@ class RedirectService implements LoggerAwareInterface
      */
     protected $linkService;
 
-    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService)
+    /**
+     * @var SiteFinder
+     */
+    protected $siteFinder;
+
+    public function __construct(RedirectCacheService $redirectCacheService, LinkService $linkService, SiteFinder $siteFinder)
     {
         $this->redirectCacheService = $redirectCacheService;
         $this->linkService = $linkService;
+        $this->siteFinder = $siteFinder;
     }
 
     /**
@@ -203,6 +211,9 @@ class RedirectService implements LoggerAwareInterface
                 $url = $this->addQueryParams($queryParams, $url);
             }
             return $url;
+        }
+        if (($site === null || $site instanceof NullSite) && $linkDetails['type'] === 'page') {
+            $site = $this->siteFinder->getSiteByPageId((int)$linkDetails['pageuid']);
         }
         // If it's a record or page, then boot up TSFE and use typolink
         return $this->getUriFromCustomLinkDetails($matchedRedirect, $frontendUserAuthentication, $site, $linkDetails, $queryParams);

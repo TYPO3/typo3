@@ -2003,7 +2003,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getConfigArray()
     {
         if (!($this->tmpl instanceof TemplateService)) {
-            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
+            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 
         // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
