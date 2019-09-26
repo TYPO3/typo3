@@ -1,3 +1,4 @@
+/.crowdin.yaml export-ignore
 /.editorconfig export-ignore
 /.gitattributes export-ignore
 /.gitreview export-ignore
