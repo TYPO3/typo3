@@ -18,6 +18,7 @@ import Router = require('../../Router');
 import FlashMessage = require('../../Renderable/FlashMessage');
 import ProgressBar = require('../../Renderable/ProgressBar');
 import InfoBox = require('../../Renderable/InfoBox');
+import SecurityUtility = require('TYPO3/CMS/Core/SecurityUtility');
 import Severity = require('../../Renderable/Severity');
 
 /**
@@ -402,6 +403,7 @@ class LanguagePacks extends AbstractInteractableModule {
   }
 
   private extensionMatrixHtml(data: any): any {
+    const securityUtility = new SecurityUtility();
     const packMissesIcon: string = this.findInModal(this.selectorExtensionPackMissesIcon).html();
     const updateIcon: string = this.findInModal(this.selectorLanguageUpdateIcon).html();
     let tooltip: string = '';
@@ -461,22 +463,22 @@ class LanguagePacks extends AbstractInteractableModule {
         $('<td>').text(extension.key),
       );
       extension.packs.forEach((pack: any): void => {
+        const $column = $('<td>');
+        $tr.append($column);
         if (pack.exists !== true) {
           if (pack.lastUpdate !== null) {
-            tooltip = 'No language pack available when tried at ' + pack.lastUpdate + '. Click to re-try.';
+            tooltip = 'No language pack available for ' + pack.iso + ' when tried at ' + pack.lastUpdate + '. Click to re-try.';
           } else {
             tooltip = 'Language pack not downloaded. Click to download';
           }
-          $tr.append(
-            $('<td>').append(
-              $('<a>', {
-                'class': 'btn btn-default t3js-languagePacks-update',
-                'data-extension': extension.key,
-                'data-iso': pack.iso,
-                'data-toggle': 'tooltip',
-                'title': tooltip,
-              }).append(packMissesIcon),
-            ),
+          $column.append(
+            $('<a>', {
+              'class': 'btn btn-default t3js-languagePacks-update',
+              'data-extension': extension.key,
+              'data-iso': pack.iso,
+              'data-toggle': 'tooltip',
+              'title': securityUtility.encodeHtml(tooltip),
+            }).append(packMissesIcon),
           );
         }
       });
