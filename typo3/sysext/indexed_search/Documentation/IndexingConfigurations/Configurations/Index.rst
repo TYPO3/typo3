@@ -18,7 +18,7 @@ entries that controls the indexing.
 
 The Indexing configuration contains two parts
 
-#. Definition of execution time and periodicality.
+#. Definition of execution time and period.
 
 #. Definition of indexing type and settings.
 
@@ -38,4 +38,15 @@ started it will set this value to a unique number which is used as ID
 for that process and all indexed entries are tagged with it. When the
 processing of an indexing configuration is done it will be reset to
 zero again.
+
+The title of a configuration can be translated in order to ease usage
+for backend users who use a different language than your default one.
+Translation strings can be provided via TypoScript:
+
+.. code-block:: typoscript
+
+   plugin.tx_indexedsearch.settings._LOCAL_LANG {
+      de.indexingConfigurations.13 = Mein Titel in Deutsch für Konfiguration 13
+      de.indexingConfigurationHeader.13 = Alle Ergebnisse für Konfiguration 13
+   }
 

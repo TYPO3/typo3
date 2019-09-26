@@ -12,3 +12,4 @@ Every change to the TYPO3 Core which might affect your site is documented here.
    :titlesonly:
 
    Changelog/10.0/Index
+   Changelog/10.1/Index
