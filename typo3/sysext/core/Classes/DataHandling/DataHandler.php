@@ -245,6 +245,13 @@ class DataHandler implements LoggerAwareInterface
      */
     public $callBackObj;
 
+    /**
+     * A string which can be used as correlationId for RecordHistory entries.
+     * The string can later be used to rollback multiple changes at once.
+     * @var string
+     */
+    protected $correlationId;
+
     // *********************
     // Internal variables (mapping arrays) which can be used (read-only) from outside
     // *********************
@@ -4020,7 +4027,7 @@ class DataHandler implements LoggerAwareInterface
                     }
                 }
 
-                $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields]);
+                $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields], $this->correlationId);
                 if ($this->enableLogging) {
                     // Logging...
                     $oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -4083,7 +4090,7 @@ class DataHandler implements LoggerAwareInterface
                             $hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
                         }
                     }
-                    $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields]);
+                    $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields], $this->correlationId);
                     if ($this->enableLogging) {
                         // Logging...
                         $oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
@@ -4747,9 +4754,9 @@ class DataHandler implements LoggerAwareInterface
 
         // Add history entry
         if ($undeleteRecord) {
-            $this->getRecordHistoryStore()->undeleteRecord($table, $uid);
+            $this->getRecordHistoryStore()->undeleteRecord($table, $uid, $this->correlationId);
         } else {
-            $this->getRecordHistoryStore()->deleteRecord($table, $uid);
+            $this->getRecordHistoryStore()->deleteRecord($table, $uid, $this->correlationId);
         }
 
         // Update reference index:
@@ -6524,7 +6531,7 @@ class DataHandler implements LoggerAwareInterface
                     // Set History data
                     $historyEntryId = 0;
                     if (isset($this->historyRecords[$table . ':' . $id])) {
-                        $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id]);
+                        $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id], $this->correlationId);
                     }
                     if ($this->enableLogging) {
                         if ($this->checkStoredRecords) {
@@ -6628,7 +6635,7 @@ class DataHandler implements LoggerAwareInterface
                     $this->updateRefIndex($table, $id);
 
                     // Store in history
-                    $this->getRecordHistoryStore()->addRecord($table, $id, $newRow);
+                    $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
 
                     if ($newVersion) {
                         if ($this->enableLogging) {
@@ -6740,7 +6747,8 @@ class DataHandler implements LoggerAwareInterface
             $this->getRecordHistoryStore()->modifyRecord(
                 $table,
                 $id,
-                $this->historyRecords[$table . ':' . $id]
+                $this->historyRecords[$table . ':' . $id],
+                $this->correlationId
             );
         }
     }
@@ -8512,6 +8520,11 @@ class DataHandler implements LoggerAwareInterface
                 $haystack[$key] = null;
             }
         }
+    }
+
+    public function setCorrelationId(string $correlationId): void
+    {
+        $this->correlationId = $correlationId;
     }
 
     /**
