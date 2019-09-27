@@ -1587,7 +1587,7 @@ class RelationHandler
                         't3ver_oid',
                         $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY)
                     ),
-                    $queryBuilder->expr()->neq(
+                    $queryBuilder->expr()->eq(
                         't3ver_wsid',
                         $queryBuilder->createNamedParameter(
                             $this->getWorkspaceId(),
