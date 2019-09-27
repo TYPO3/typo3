@@ -90,6 +90,13 @@ This property is used only in some cases where CARRAY is used. Please look out f
 			<description><![CDATA[The default object, if not defined, nothing is returned in the default case.
 ]]></description>
 		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="if" type="if">
 			<description><![CDATA[if "if" returns false nothing is returned
 
@@ -152,8 +159,22 @@ helloWorld.value = this item will be returned
 		</property>
 	</type>
 	<type id="COA" extends="COBJ_ARRAY">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
   </type>
 	<type id="COA_INT" extends="COBJ_ARRAY">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 	</type>
 	<type id="CONFIG">
 		<property name="ATagParams" type="string">
@@ -920,6 +941,13 @@ Any other string is used as the XML prologue itself.]]></description>
 ]]></description>
 			<default><![CDATA[< [tablename]]]></default>
 		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="select" type="select">
 			<description><![CDATA[The SQL-statement is set here!]]></description>
 			<default><![CDATA[
@@ -960,6 +988,31 @@ NOTE: Only tables allowed are "pages" or tables prefixed with one of these: "tt_
 ]]></default>
 		</property>
 	</type>
+	<type id="cache">
+		<property name="key" type="stdWrap">
+			<description><![CDATA[ string / stdwrap
+			The cache identifier that is used to store the rendered content into the cache and to read it from there.
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="lifetime" type="stdWrap">
+			<description><![CDATA["unlimited"/"default"/integer/stdWrap
+			Lifetime of the content within the cache. Allows you to determine the lifetime of the cached object. This does not depend on the lifetime of the cached version of the page on which it is used.
+			Possible values are any positive integer and the keywords "unlimited" and "default".
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+		<property name="tags" type="stdWrap">
+			<description><![CDATA[boolean/stdWrap
+			Can hold a comma-separated list of tags. These tags will be attached to the entry within cache_hash
+			cache (but not to cache_pages cache) and can be used to purge the cached content.
+]]></description>
+			<default><![CDATA[
+]]></default>
+		</property>
+	</type>
 	<type id="slide" extends="stdWrap">
 		<property name="collect" type="stdWrap">
 			<description><![CDATA[int/stdWrap
@@ -996,6 +1049,13 @@ toolbar,edit,new,delete,move,hide
 			<description><![CDATA[If set, then the record edited is displayed above the editing form.]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
 		</property>
 		<property name="innerWrap" type="wrap">
 			<description><![CDATA[Wraps the edit panel]]></description>
@@ -1091,6 +1151,13 @@ If no alttext is specified, it will use an empty alttext]]></description>
 			<default><![CDATA[useAlt
 ]]></default>
 		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="file" type="stdWrap">
 			<description><![CDATA[resource/stdWrap
 			If the resource is jpg,gif,jpeg,png the image is inserted as an image-tag. Al other formats is read and inserted into the HTML-code.
@@ -1132,6 +1199,13 @@ The maximum filesize of documents to be read is set to 1024 kb internally!]]></d
 			or you have to specify a table, uid and field name in the according sub-properties of "references".
 			See further documentation of these sub-properties in the table below.]]></description>
 			<default><![CDATA[]]></default>
+		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
 		</property>
 		<property name="files" type="stdWrap">
 			<description><![CDATA[string/stdWrap
@@ -1191,6 +1265,13 @@ Use this property to define a content object, which should be used as template f
 			<description><![CDATA[string/stdWrap
 The fluid template file. It is an alternative to ".template" and is used only, if ".template" is not set.]]></description>
 			<default><![CDATA[]]></default>
+		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
 		</property>
 		<property name="templateRootPaths" type="array">
 			<description><![CDATA[array of file paths with stdWrap
@@ -2311,6 +2392,13 @@ This results in a menu, where the first two items are skipped starting with item
 Notice: Affects all sub menus as well. (See "minItems" for notice)]]></description>
 			<default><![CDATA[
 ]]></default>
+		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
 		</property>
 		<property name="entryLevel" type="int">
 			<description><![CDATA[Defines at which level in the rootLine, the menu should start.
@@ -4139,6 +4227,13 @@ Example:
 			<default><![CDATA[useAlt
 ]]></default>
 		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="file" type="imgResource">
 			<description><![CDATA[
 ]]></description>
@@ -4195,6 +4290,13 @@ Additional Note: ONLY active if linkWrap is NOT set and file is NOT GIFBUILDER (
 		</property>
 	</type>
 	<type id="IMG_RESOURCE">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="file" type="imgResource">
 			<description><![CDATA[ ]]></description>
 			<default><![CDATA[]]></default>
@@ -4508,6 +4610,13 @@ page.27 {
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 	</type>
 	<type id="META" extends="array">
 		<property name="REFRESH" type="stdWrap">
@@ -4580,6 +4689,13 @@ An empty string will remove the parameter from the embed-tag]]></description>
 		</property>
 	</type>
 	<type id="RECORDS">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="conf" type="array">
 			<description><![CDATA[Config-array which renders records from table tablename]]></description>
 			<default><![CDATA[If this is NOT defined, the rendering of the records is done with the toplevel-object [tablename] - just like the cObject, CONTENT!]]></default>
@@ -4716,6 +4832,13 @@ uid]]></description>
 		</property>
 	</type>
 	<type id="TEMPLATE">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="markerWrap" type="wrap">
 			<description><![CDATA[This is the wrap the markers is wrapped with. The default value is ### | ### resulting in the markers to be presented as ###[marker_key]###.
 Any whitespace around the wrap-items is stripped before they are set around the marker_key.]]></description>
@@ -4807,6 +4930,13 @@ In this example the MYLINK subpart will be substituted by the wrap which is the 
 		</property>
 	</type>
 	<type id="TEXT" extends="stdWrap">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="value" type="stdWrap">
 			<description><![CDATA[text, wrap with stdWrap properties]]></description>
 			<default><![CDATA[
@@ -4814,6 +4944,13 @@ In this example the MYLINK subpart will be substituted by the wrap which is the 
 		</property>
 	</type>
 	<type id="USER">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's intepreted as a call to a method in a class.
 Two parameters are sent: A content variable (which is empty in this case, but not when used from stdWrap function .postUserFunc and .preUserFunc) and the second parameter is an array with the properties of this cObject if any.
@@ -4835,6 +4972,13 @@ page.30 {
 		</property>
 	</type>
 	<type id="USER_INT">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="userFunc" type="string">
 			<description><![CDATA[The name of the function. If you specify the name with a '->' in, it's intepreted as a call to a method in a class.
 Two parameters are sent: A content variable (which is empty in this case, but not when used from stdWrap function .postUserFunc and .preUserFunc) and the second parameter is an array with the properties of this cObject if any.
@@ -6218,6 +6362,13 @@ bytes.labels = " | K| M| G"]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="case" type="case">
 			<description><![CDATA[Converts case
 
@@ -6788,6 +6939,13 @@ Uses utf-8 as character set for the operation.]]></description>
 		</property>
 	</type>
 	<type id="SVG">
+		<property name="cache" type="cache">
+			<description><![CDATA[
+			Stores the rendered content into the caching framework and reads it from there.
+			This allows you to reuse this content without prior rendering. The presence of cache.key will trigger this feature.
+]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="width" type="stdWrap">
 			<description><![CDATA[int/stdWrap
 			width of SVG
