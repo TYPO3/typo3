@@ -83,4 +83,16 @@ class CorrelationIdTest extends UnitTestCase
             ->withAspects('aspect-a');
         static::assertSame('0400$scope:subject/aspect-a', (string)$correlationId);
     }
+
+    /**
+     * @test
+     */
+    public function doesNotVary(): void
+    {
+        $correlationId = '0400$scope:subject/aspect-a/aspect-b';
+        static::assertSame(
+            $correlationId,
+            (string)CorrelationId::fromString($correlationId)
+        );
+    }
 }

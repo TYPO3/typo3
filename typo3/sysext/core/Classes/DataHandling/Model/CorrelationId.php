@@ -81,7 +81,7 @@ class CorrelationId implements \JsonSerializable
             throw new \InvalidArgumentException('Unknown format', 1569620858);
         }
 
-        $flags = (int)unpack('n', $matches['flags']);
+        $flags = hexdec($matches['flags'] ?? 0);
         $aspects = !empty($matches['aspects']) ? explode('/', ltrim($matches['aspects'] ?? '', '/')) : [];
         $target = static::create()
             ->withSubject($matches['subject'])
