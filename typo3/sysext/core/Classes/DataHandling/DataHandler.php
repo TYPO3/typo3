@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
 use TYPO3\CMS\Core\DataHandling\Localization\DataMapProcessor;
+use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -248,7 +249,8 @@ class DataHandler implements LoggerAwareInterface
     /**
      * A string which can be used as correlationId for RecordHistory entries.
      * The string can later be used to rollback multiple changes at once.
-     * @var string
+     *
+     * @var CorrelationId|null
      */
     protected $correlationId;
 
@@ -654,6 +656,11 @@ class DataHandler implements LoggerAwareInterface
         if ($this->BE_USER->uc['recursiveDelete']) {
             $this->deleteTree = 1;
         }
+
+        // set correlation id for each new set of data or commands
+        $this->correlationId = CorrelationId::forScope(
+            md5(StringUtility::getUniqueId(self::class))
+        );
 
         // Get default values from user TSconfig
         $tcaDefaultOverride = $this->BE_USER->getTSConfig()['TCAdefaults.'] ?? null;
@@ -8522,9 +8529,20 @@ class DataHandler implements LoggerAwareInterface
         }
     }
 
-    public function setCorrelationId(string $correlationId): void
+    /**
+     * @param CorrelationId $correlationId
+     */
+    public function setCorrelationId(CorrelationId $correlationId): void
     {
         $this->correlationId = $correlationId;
+    }
+
+    /**
+     * @return CorrelationId|null
+     */
+    public function getCorrelationId(): ?CorrelationId
+    {
+        return $this->correlationId;
     }
 
     /**

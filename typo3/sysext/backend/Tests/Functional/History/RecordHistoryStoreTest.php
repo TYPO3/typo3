@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\History;
  */
 
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
+use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 class RecordHistoryStoreTest extends FunctionalTestCase
@@ -35,13 +36,13 @@ class RecordHistoryStoreTest extends FunctionalTestCase
         $this->subject = new RecordHistoryStore();
     }
 
-    protected function getRecordCountByCorrelationId(string $correlationId): int
+    protected function getRecordCountByCorrelationId(CorrelationId $correlationId): int
     {
         $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('sys_history');
         return (int)$queryBuilder
             ->count('uid')
             ->from('sys_history')
-            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter($correlationId)))
+            ->where($queryBuilder->expr()->eq('correlation_id', $queryBuilder->createNamedParameter((string)$correlationId)))
             ->execute()
             ->fetchColumn(0);
     }
@@ -51,7 +52,7 @@ class RecordHistoryStoreTest extends FunctionalTestCase
      */
     public function addRecordAddsARecordToTheDatabase(): void
     {
-        $correlationId = '092a640c-bd8c-490d-b993-ed4bcef1a1f2';
+        $correlationId = CorrelationId::forSubject('092a640c-bd8c-490d-b993-ed4bcef1a1f2');
         $this->assertSame(0, $this->getRecordCountByCorrelationId($correlationId));
         $this->subject->addRecord('foo', 1, [], $correlationId);
         $this->assertSame(1, $this->getRecordCountByCorrelationId($correlationId));
@@ -62,7 +63,7 @@ class RecordHistoryStoreTest extends FunctionalTestCase
      */
     public function modifyRecordAddsARecordToTheDatabase(): void
     {
-        $correlationId = '058f117c-5e21-4222-b308-085fc1113604';
+        $correlationId = CorrelationId::forSubject('058f117c-5e21-4222-b308-085fc1113604');
         $this->assertSame(0, $this->getRecordCountByCorrelationId($correlationId));
         $this->subject->modifyRecord('foo', 1, [], $correlationId);
         $this->assertSame(1, $this->getRecordCountByCorrelationId($correlationId));
@@ -73,7 +74,7 @@ class RecordHistoryStoreTest extends FunctionalTestCase
      */
     public function deleteRecordAddsARecordToTheDatabase(): void
     {
-        $correlationId = 'e1a2ea91-fe2f-4a01-b50b-5c2924a27568';
+        $correlationId = CorrelationId::forSubject('e1a2ea91-fe2f-4a01-b50b-5c2924a27568');
         $this->assertSame(0, $this->getRecordCountByCorrelationId($correlationId));
         $this->subject->deleteRecord('foo', 1, $correlationId);
         $this->assertSame(1, $this->getRecordCountByCorrelationId($correlationId));
@@ -84,7 +85,7 @@ class RecordHistoryStoreTest extends FunctionalTestCase
      */
     public function undeleteRecordAddsARecordToTheDatabase(): void
     {
-        $correlationId = 'ab902256-56f2-43bd-b857-f7a0b974e9db';
+        $correlationId = CorrelationId::forSubject('ab902256-56f2-43bd-b857-f7a0b974e9db');
         $this->assertSame(0, $this->getRecordCountByCorrelationId($correlationId));
         $this->subject->undeleteRecord('foo', 1, $correlationId);
         $this->assertSame(1, $this->getRecordCountByCorrelationId($correlationId));
@@ -95,7 +96,7 @@ class RecordHistoryStoreTest extends FunctionalTestCase
      */
     public function moveRecordAddsARecordToTheDatabase(): void
     {
-        $correlationId = '9d806d3a-1d7a-4e62-816f-9fa1a1b3fe5b';
+        $correlationId = CorrelationId::forSubject('9d806d3a-1d7a-4e62-816f-9fa1a1b3fe5b');
         $this->assertSame(0, $this->getRecordCountByCorrelationId($correlationId));
         $this->subject->moveRecord('foo', 1, [], $correlationId);
         $this->assertSame(1, $this->getRecordCountByCorrelationId($correlationId));

@@ -15,7 +15,9 @@ of the DataHandler instance.
 
 .. code-block:: php
 
-   $correlationId = StringUtility::getUniqueId('slug_');
+   $correlationId = CorrelationId::forSubject(
+       StringUtility::getUniqueId('slug_')
+   );
    $data['pages'][$uid]['slug'] = $newSlug;
    $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
    $dataHandler->setCorrelationId($correlationId);
@@ -23,5 +25,12 @@ of the DataHandler instance.
    $dataHandler->process_datamap();
 
 After this DataHandler operation the created RecordHistory entry contains the $correlationId.
+
+:php:`CorrelationId` model requires mandatory :php:`$subject` and allows optional :php:`$aspects` which
+can be serialized into string like e.g. `0400$12ae0b042a5d75e3f2744f4b3faf8068/5d8e6e70/slug`
+
+* `0400$` is a flag prefix containing an internal version number for possible schema validations
+* `12ae0b042a5d75e3f2744f4b3faf8068` is a unique subject
+* `/5d8e6e70/slug` are aspects, separated by slashes
 
 .. index:: Backend, Database, PHP-API, ext:core
