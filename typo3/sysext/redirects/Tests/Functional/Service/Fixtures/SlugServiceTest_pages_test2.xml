@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <pages>
+        <uid>1</uid>
+        <pid>0</pid>
+        <title>Root 1</title>
+        <!-- this value is correct, because for the test scenario this page is already renamed -->
+        <slug>/new-home</slug>
+    </pages>
+    <pages>
+        <uid>2</uid>
+        <pid>1</pid>
+        <title>Dummy 1-2</title>
+        <slug>/dummy-1-2</slug>
+    </pages>
+    <pages>
+        <uid>3</uid>
+        <pid>1</pid>
+        <title>Dummy 1-3</title>
+        <slug>/dummy-1-3</slug>
+    </pages>
+    <pages>
+        <uid>4</uid>
+        <pid>1</pid>
+        <title>Dummy 1-4</title>
+        <slug>/dummy-1-4</slug>
+    </pages>
+    <pages>
+        <uid>5</uid>
+        <pid>2</pid>
+        <title>Dummy 1-2-5</title>
+        <slug>/dummy-1-2/dummy-1-2-5</slug>
+    </pages>
+    <pages>
+        <uid>6</uid>
+        <pid>2</pid>
+        <title>Dummy 1-2-6</title>
+        <slug>/dummy-1-2/dummy-1-2-6</slug>
+    </pages>
+    <pages>
+        <uid>7</uid>
+        <pid>2</pid>
+        <title>Dummy 1-2-7</title>
+        <slug>/dummy-1-2/dummy-1-2-7</slug>
+    </pages>
+    <pages>
+        <uid>8</uid>
+        <pid>3</pid>
+        <title>Dummy 1-3-8</title>
+        <slug>/dummy-1-3/dummy-1-3-8</slug>
+    </pages>
+    <pages>
+        <uid>9</uid>
+        <pid>3</pid>
+        <title>Dummy 1-3-9</title>
+        <slug>/dummy-1-3/dummy-1-3-9</slug>
+    </pages>
+    <pages>
+        <uid>10</uid>
+        <pid>4</pid>
+        <title>Dummy 1-4-10</title>
+        <slug>/dummy-1-4/dummy-1-4-10</slug>
+    </pages>
+</dataset>

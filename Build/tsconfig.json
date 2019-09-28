@@ -82,6 +82,10 @@
                 "../typo3/sysext/recycler/Resources/Public/JavaScript/*",
                 "recycler/Resources/Public/TypeScript/*"
             ],
+            "TYPO3/CMS/Redirects/*": [
+                "../typo3/sysext/redirects/Resources/Public/JavaScript/*",
+                "redirects/Resources/Public/TypeScript/*"
+            ],
             "TYPO3/CMS/RteCkeditor/*": [
                 "../typo3/sysext/rte_ckeditor/Resources/Public/JavaScript/*",
                 "rte_ckeditor/Resources/Public/TypeScript/*"

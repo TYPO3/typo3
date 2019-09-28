@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1568292127" source-language="en" datatype="plaintext" original="messages" date="2017-12-29T20:22:14Z" product-name="redirects">
+		<header/>
+		<body>
+			<trans-unit id="redirects">
+				<source>Redirect Settings</source>
+			</trans-unit>
+			<trans-unit id="redirects.autoUpdateSlugs">
+				<source>Update the slugs of all sub pages automatically</source>
+			</trans-unit>
+			<trans-unit id="redirects.autoCreateRedirects">
+				<source>Create redirects for pages with a new slug automatically</source>
+			</trans-unit>
+			<trans-unit id="redirects.redirectTTL">
+				<source>Time To Live of redirect records in days</source>
+			</trans-unit>
+			<trans-unit id="redirects.httpStatusCode">
+				<source>HTTP Status Code for the redirect, 301 is the default</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
