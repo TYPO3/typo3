@@ -8692,4 +8692,9 @@ class DataHandler implements LoggerAwareInterface
     {
         return $GLOBALS['LANG'];
     }
+
+    public function getHistoryRecords(): array
+    {
+        return $this->historyRecords;
+    }
 }
