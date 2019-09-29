@@ -60,7 +60,7 @@ editing a page.
 #. Enter the Page TSconfig in the field :guilabel:`"Page TSconfig"`
 
 
-Additionally, you can add Page TSconfig in an extension: :file:`Configuration/TSconfig`, see
+Additionally, you can add Page TSconfig in an extension: :file:`Configuration/TSconfig/Page`, see
 :ref:`best-practice-sitepackage`.
 
 How to view settings
