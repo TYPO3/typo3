@@ -119,12 +119,13 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Resolve all site objects which have been found in the filesystem.
      *
+     * @param bool $useCache
      * @return Site[]
      */
-    public function resolveAllExistingSites(): array
+    public function resolveAllExistingSites(bool $useCache = true): array
     {
         $sites = [];
-        $siteConfiguration = $this->getAllSiteConfigurationFromFiles();
+        $siteConfiguration = $this->getAllSiteConfigurationFromFiles($useCache);
         foreach ($siteConfiguration as $identifier => $configuration) {
             $rootPageId = (int)($configuration['rootPageId'] ?? 0);
             if ($rootPageId > 0) {
@@ -138,13 +139,14 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Read the site configuration from config files.
      *
+     * @param bool $useCache
      * @return array
      * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      */
-    protected function getAllSiteConfigurationFromFiles(): array
+    protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
         // Check if the data is already cached
-        if ($siteConfiguration = $this->getCache()->get($this->cacheIdentifier)) {
+        if ($useCache && $siteConfiguration = $this->getCache()->get($this->cacheIdentifier)) {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed
             $siteConfiguration = preg_replace('/^<\?php\s*|\s*#$/', '', $siteConfiguration);
             $siteConfiguration = json_decode($siteConfiguration, true);

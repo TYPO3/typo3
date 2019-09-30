@@ -27,6 +27,19 @@ use TYPO3\CMS\Impexp\Import;
 class ImportExportUtility
 {
     /**
+     * @var Import|null
+     */
+    protected $import;
+
+    /**
+     * @return Import|null
+     */
+    public function getImport(): ?Import
+    {
+        return $this->import;
+    }
+
+    /**
      * Import a T3D file directly
      *
      * @param string $file The full absolute path to the file
@@ -43,25 +56,24 @@ class ImportExportUtility
         if (!is_int($pid)) {
             throw new \InvalidArgumentException('Input parameter $int has to be of type integer', 1377625646);
         }
-        /** @var Import $import */
-        $import = GeneralUtility::makeInstance(Import::class);
-        $import->init();
+        $this->import = GeneralUtility::makeInstance(Import::class);
+        $this->import->init();
 
-        $this->emitAfterImportExportInitialisationSignal($import);
+        $this->emitAfterImportExportInitialisationSignal($this->import);
 
         $importResponse = 0;
         if ($file && @is_file($file)) {
-            if ($import->loadFile($file, 1)) {
+            if ($this->import->loadFile($file, 1)) {
                 // Import to root page:
-                $import->importData($pid);
+                $this->import->importData($pid);
                 // Get id of first created page:
-                $newPages = $import->import_mapId['pages'];
+                $newPages = $this->import->import_mapId['pages'];
                 $importResponse = (int)reset($newPages);
             }
         }
 
         // Check for errors during the import process:
-        $errors = $import->printErrorLog();
+        $errors = $this->import->printErrorLog();
         if ($errors !== '') {
             $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
             $logger->warning($errors);
