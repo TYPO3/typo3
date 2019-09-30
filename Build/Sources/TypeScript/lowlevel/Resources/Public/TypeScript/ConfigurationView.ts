@@ -12,6 +12,7 @@
  */
 
 import * as $ from 'jquery';
+import 'TYPO3/CMS/Backend/Input/Clearable';
 
 /**
  * Module: TYPO3/CMS/Lowlevel/ConfigurationView
