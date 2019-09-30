@@ -772,7 +772,6 @@ class EditDocumentController
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf');
 
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->moduleTemplate->addJavaScriptCode(
             'previewCode',
             (isset($parsedBody['_savedokview']) && $this->popViewId ? $this->generatePreviewCode() : '')
@@ -1599,8 +1598,9 @@ class EditDocumentController
             && $this->isSavedRecord
             && count($this->elementsData) === 1
         ) {
+            /** @var UriBuilder $uriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $classNames = 't3js-editform-delete-record';
-
             $returnUrl = $this->retUrl;
             if ($this->firstEl['table'] === 'pages') {
                 parse_str((string)parse_url($returnUrl, PHP_URL_QUERY), $queryParams);
@@ -1608,10 +1608,6 @@ class EditDocumentController
                     isset($queryParams['route'], $queryParams['id'])
                     && (string)$this->firstEl['uid'] === (string)$queryParams['id']
                 ) {
-
-                    /** @var UriBuilder $uriBuilder */
-                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
                     // TODO: Use the page's pid instead of 0, this requires a clean API to manipulate the page
                     // tree from the outside to be able to mark the pid as active
                     $returnUrl = (string)$uriBuilder->buildUriFromRoutePath($queryParams['route'], ['id' => 0]);
@@ -1641,6 +1637,17 @@ class EditDocumentController
                 )
             );
 
+            $deleteUrl = (string)$uriBuilder->buildUriFromRoute('tce_db', [
+                'cmd' => [
+                    $this->firstEl['table'] => [
+                        $this->firstEl['uid'] => [
+                            'delete' => '1'
+                        ]
+                    ]
+                ],
+                'redirect' => $this->retUrl
+            ]);
+
             $deleteButton = $buttonBar->makeLinkButton()
                 ->setClasses($classNames)
                 ->setDataAttributes([
@@ -1650,7 +1657,7 @@ class EditDocumentController
                     'reference-count-message' => $referenceCountMessage,
                     'translation-count-message' => $translationCountMessage
                 ])
-                ->setHref('#')
+                ->setHref($deleteUrl)
                 ->setIcon($this->moduleTemplate->getIconFactory()->getIcon(
                     'actions-edit-delete',
                     Icon::SIZE_SMALL

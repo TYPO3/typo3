@@ -1186,10 +1186,8 @@ define(['jquery',
    */
   FormEngine.deleteActionCallback = function(modalButtonName, $anchorElement) {
     Modal.dismiss();
-    switch(modalButtonName) {
-      case 'yes':
-        deleteRecord($anchorElement.data('table'), $anchorElement.data('uid'), $anchorElement.data('return-url'));
-        break;
+    if (modalButtonName === 'yes') {
+        FormEngine.invokeRecordDeletion($anchorElement);
     }
   };
 
@@ -1267,6 +1265,10 @@ define(['jquery',
       FormEngine.reinitialize();
       $('#t3js-ui-block').remove();
     });
+  };
+
+  FormEngine.invokeRecordDeletion = function ($anchorElement) {
+    window.location.href = $anchorElement.attr('href');
   };
 
   // load required modules to hook in the post initialize function
