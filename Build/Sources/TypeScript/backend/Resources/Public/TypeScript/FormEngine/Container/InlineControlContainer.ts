@@ -834,10 +834,10 @@ class InlineControlContainer {
    * @param {boolean} visible
    */
   private toggleContainerControls(visible: boolean): void {
-    const controlContainerButtonsContainer = this.container.querySelector(Selectors.controlContainerButtons);
-    if (controlContainerButtonsContainer !== null) {
-      (<HTMLDivElement>controlContainerButtonsContainer).style.display = visible ? 'block' : 'none';
-    }
+    const controlContainerButtons = this.container.querySelectorAll(Selectors.controlContainerButtons + ' a');
+    controlContainerButtons.forEach((button: HTMLElement): void => {
+      button.style.display = visible ? null : 'none';
+    });
   }
 
   /**
