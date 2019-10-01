@@ -47,11 +47,11 @@ looked like the following example:
        }
    }
 
-The instance of :php:`FrontendCacheInterface` was retrieved by creating an instance
-of :php:`CacheManager` and then by calling the :php:`getCache()` method.
+The instance of :php:`\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface` was retrieved by creating an instance
+of :php:`\TYPO3\CMS\Core\Cache\CacheManager` and then by calling the :php:`getCache()` method.
 
 To inject the cache directly, the class needs to be changed as follows. The instance
-of :php:`FrontendCacheInterface` will be passed as an argument to the constructor.
+of :php:`\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface` will be passed as an argument to the constructor.
 
 .. code-block:: php
 
