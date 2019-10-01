@@ -14,8 +14,8 @@
 	},
 	"require": {
 		"psr/event-dispatcher": "^1.0",
-		"typo3/cms-core": "10.1.0",
-		"typo3/cms-recordlist": "10.1.0"
+		"typo3/cms-core": "10.2.*@dev",
+		"typo3/cms-recordlist": "10.2.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -30,7 +30,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "10.1.x-dev"
+			"dev-master": "10.2.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {

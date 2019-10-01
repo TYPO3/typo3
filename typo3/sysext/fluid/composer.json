@@ -14,8 +14,8 @@
 	},
 	"require": {
 		"symfony/dependency-injection": "^4.1",
-		"typo3/cms-core": "10.1.0",
-		"typo3/cms-extbase": "10.1.0",
+		"typo3/cms-core": "10.2.*@dev",
+		"typo3/cms-extbase": "10.2.*@dev",
 		"typo3fluid/fluid": "^2.6.4"
 	},
 	"conflict": {
@@ -26,7 +26,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "10.1.x-dev"
+			"dev-master": "10.2.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {
