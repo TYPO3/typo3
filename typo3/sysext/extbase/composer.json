@@ -17,7 +17,7 @@
 		"symfony/dependency-injection": "^4.1",
 		"symfony/property-access": "^4.2",
 		"symfony/property-info": "^4.2",
-		"typo3/cms-core": "10.1.*@dev",
+		"typo3/cms-core": "10.1.0",
 		"webmozart/assert": "^1.0"
 	},
 	"suggest": {
