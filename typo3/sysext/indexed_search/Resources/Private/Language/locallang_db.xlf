@@ -12,7 +12,7 @@
 			<trans-unit id="index_config.description" resname="index_config.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.0" resname="index_config.type.I.0">
+			<trans-unit id="index_config.type.I.0" resname="index_config.type.I.0" translate="no">
 				<source>-</source>
 			</trans-unit>
 			<trans-unit id="index_config.type.I.1" resname="index_config.type.I.1">
@@ -39,7 +39,7 @@
 			<trans-unit id="index_config.table2index" resname="index_config.table2index">
 				<source>Table to index</source>
 			</trans-unit>
-			<trans-unit id="index_config.table2index.I.0" resname="index_config.table2index.I.0">
+			<trans-unit id="index_config.table2index.I.0" resname="index_config.table2index.I.0" translate="no">
 				<source>-</source>
 			</trans-unit>
 			<trans-unit id="index_config.alternative_source_pid" resname="index_config.alternative_source_pid">

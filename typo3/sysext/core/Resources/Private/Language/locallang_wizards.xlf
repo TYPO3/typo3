@@ -297,19 +297,19 @@
 			<trans-unit id="imwizard.set-aspect-ratio" resname="imwizard.set-aspect-ratio">
 				<source>Set Aspect Ratio</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.16_9" resname="imwizard.ratio.16_9">
+			<trans-unit id="imwizard.ratio.16_9" resname="imwizard.ratio.16_9" translate="no">
 				<source>16:9</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.3_2" resname="imwizard.ratio.3_2">
+			<trans-unit id="imwizard.ratio.3_2" resname="imwizard.ratio.3_2" translate="no">
 				<source>3:2</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.4_3" resname="imwizard.ratio.4_3">
+			<trans-unit id="imwizard.ratio.4_3" resname="imwizard.ratio.4_3" translate="no">
 				<source>4:3</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.1_1" resname="imwizard.ratio.1_1">
+			<trans-unit id="imwizard.ratio.1_1" resname="imwizard.ratio.1_1" translate="no">
 				<source>1:1</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.191_1" resname="imwizard.ratio.191_1">
+			<trans-unit id="imwizard.ratio.191_1" resname="imwizard.ratio.191_1" translate="no">
 				<source>1.91:1</source>
 			</trans-unit>
 			<trans-unit id="imwizard.ratio.free" resname="imwizard.ratio.free">

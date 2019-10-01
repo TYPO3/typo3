@@ -87,7 +87,7 @@
 			<trans-unit id="setLink" resname="setLink">
 				<source>Set Link</source>
 			</trans-unit>
-			<trans-unit id="urlPlaceholder" resname="urlPlaceholder">
+			<trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no">
 				<source>https://...</source>
 			</trans-unit>
 			<trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize">

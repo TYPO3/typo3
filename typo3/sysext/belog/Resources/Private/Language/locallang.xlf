@@ -54,22 +54,22 @@
 			<trans-unit id="set" resname="set">
 				<source>Set</source>
 			</trans-unit>
-			<trans-unit id="20" resname="20">
+			<trans-unit id="20" resname="20" translate="no">
 				<source>20</source>
 			</trans-unit>
-			<trans-unit id="50" resname="50">
+			<trans-unit id="50" resname="50" translate="no">
 				<source>50</source>
 			</trans-unit>
-			<trans-unit id="100" resname="100">
+			<trans-unit id="100" resname="100" translate="no">
 				<source>100</source>
 			</trans-unit>
-			<trans-unit id="200" resname="200">
+			<trans-unit id="200" resname="200" translate="no">
 				<source>200</source>
 			</trans-unit>
-			<trans-unit id="500" resname="500">
+			<trans-unit id="500" resname="500" translate="no">
 				<source>500</source>
 			</trans-unit>
-			<trans-unit id="1000" resname="1000">
+			<trans-unit id="1000" resname="1000" translate="no">
 				<source>1000</source>
 			</trans-unit>
 			<trans-unit id="actionAll" resname="actionAll">
