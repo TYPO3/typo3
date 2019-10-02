@@ -15,19 +15,14 @@
  * Module: TYPO3/CMS/Form/Backend/FormEditor/InspectorComponent
  */
 
-/**
- * Add legacy functions to be accessible in the global scope.
- * This is needed by TYPO3/CMS/Recordlist/ElementBrowser
- */
-var setFormValueFromBrowseWin;
-
 define(['jquery',
   'TYPO3/CMS/Form/Backend/FormEditor/Helper',
   'TYPO3/CMS/Backend/Icons',
   'TYPO3/CMS/Backend/Notification',
   'TYPO3/CMS/Backend/Modal',
+  'TYPO3/CMS/Backend/Utility/MessageUtility',
   'TYPO3/CMS/Form/Backend/Contrib/jquery.mjs.nestedSortable'
-], function($, Helper, Icons, Notification, Modal) {
+], function($, Helper, Icons, Notification, Modal, MessageUtility) {
   'use strict';
 
   return (function($, Helper, Icons, Notification) {
@@ -393,6 +388,34 @@ define(['jquery',
     /**
      * @private
      *
+     * Listens on messages sent by ElementBrowser
+     */
+    function _listenOnElementBrowser() {
+      window.addEventListener('message', function (e) {
+        if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
+          throw 'Denied message sent by ' + e.origin;
+        }
+
+        if (e.data.actionName === 'typo3:elementBrowser:elementAdded') {
+          if (typeof e.data.fieldName === 'undefined') {
+            throw 'fieldName not defined in message';
+          }
+
+          if (typeof e.data.value === 'undefined') {
+            throw 'value not defined in message';
+          }
+
+          var result = e.data.value.split('_');
+          $(getHelper().getDomElementDataAttribute('contentElementSelectorTarget', 'bracesWithKeyValue', [e.data.fieldName]))
+            .val(result.pop())
+            .trigger('paste');
+        }
+      });
+    }
+
+    /**
+     * @private
+     *
      * @param string
      * @param string
      * @return object
@@ -750,25 +773,6 @@ define(['jquery',
     /* *************************************************************
      * Public Methodes
      * ************************************************************/
-
-    /**
-     * @public
-     *
-     * callback from TYPO3/CMS/Recordlist/ElementBrowser
-     *
-     * @param string fieldReference
-     * @param string elValue
-     * @param string elName
-     * @return void
-     */
-    setFormValueFromBrowseWin = function(fieldReference, elValue, elName) {
-      var result;
-      result = elValue.split('_');
-
-      $(getHelper().getDomElementDataAttribute('contentElementSelectorTarget', 'bracesWithKeyValue', [fieldReference]))
-        .val(result.pop())
-        .trigger('paste');
-    };
 
     /**
      * @public
@@ -2409,6 +2413,8 @@ define(['jquery',
         insertTarget.attr(getHelper().getDomElementDataAttribute('contentElementSelectorTarget'), randomIdentifier);
         _openTypo3WinBrowser('db', randomIdentifier + '|||' + editorConfiguration['browsableType']);
       });
+
+      _listenOnElementBrowser();
 
       propertyPath = getFormEditorApp().buildPropertyPath(editorConfiguration['propertyPath'], collectionElementIdentifier, collectionName);
       propertyData = getCurrentlySelectedFormElement().get(propertyPath);

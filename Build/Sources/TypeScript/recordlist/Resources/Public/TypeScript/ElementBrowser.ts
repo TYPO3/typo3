@@ -32,7 +32,6 @@ declare global {
     setFormValueFromBrowseWin: Function;
     editform: any;
     content: any;
-    group_change: any;
   }
 }
 
@@ -142,6 +141,7 @@ class ElementBrowser {
     if (this.irre.objectId) {
       if (this.getParent()) {
         const message = {
+          actionName: 'typo3:elementBrowser:elementInserted',
           objectGroup: this.irre.objectId,
           table: table,
           uid: uid,
@@ -161,32 +161,25 @@ class ElementBrowser {
 
     if (this.fieldReference && !this.rte.parameters && !this.rte.configuration) {
       this.addElement(filename, table + '_' + uid, fp, close);
-    } else {
-      if (
-        this.getParent() && this.getParent().content && this.getParent().content.document.editform
-        && this.getParent().content.document.editform[this.formFieldName]
-      ) {
-        this.getParent().group_change(
-          'add',
-          this.fieldReference,
-          this.rte.parameters,
-          this.rte.configuration,
-          this.targetDoc.editform[this.formFieldName],
-          this.getParent().content.document,
-        );
-      } else {
-        alert('Error - reference to main window is not set properly!');
-      }
-      if (close) {
-        this.focusOpenerAndClose();
-      }
     }
     return false;
   }
 
   public addElement(elName: string, elValue: string, altElValue: string, close: boolean): void {
-    if (this.getParent() && this.getParent().setFormValueFromBrowseWin) {
-      this.getParent().setFormValueFromBrowseWin(this.fieldReference, altElValue ? altElValue : elValue, elName);
+    if (this.getParent()) {
+      if (this.getParent().setFormValueFromBrowseWin) {
+        console.warn('setFormValueFromBrowseWin has been marked as deprecated. Listen to message events instead.');
+        this.getParent().setFormValueFromBrowseWin(this.fieldReference, altElValue ? altElValue : elValue, elName);
+      }
+
+      const message = {
+        actionName: 'typo3:elementBrowser:elementAdded',
+        fieldName: this.fieldReference,
+        value: altElValue ? altElValue : elValue,
+        label: elName
+      };
+      MessageUtility.send(message, this.getParent());
+
       if (close) {
         this.focusOpenerAndClose();
       }

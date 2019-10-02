@@ -21,11 +21,11 @@
  */
 
 // add legacy functions to be accessible in the global scope
-var setFormValueOpenBrowser,
-  setFormValueFromBrowseWin,
-  setHiddenFromList,
-  setFormValueManipulate,
-  setFormValue_getFObj;
+var setFormValueOpenBrowser, // @deprecated
+  setFormValueFromBrowseWin, // @deprecated
+  setHiddenFromList, // @deprecated
+  setFormValueManipulate, // @deprecated
+  setFormValue_getFObj; // @deprecated
 
 /**
  * Module: TYPO3/CMS/Backend/FormEngine
@@ -34,10 +34,11 @@ define(['jquery',
   'TYPO3/CMS/Backend/FormEngineValidation',
   'TYPO3/CMS/Backend/DocumentSaveActions',
   'TYPO3/CMS/Backend/Modal',
+  'TYPO3/CMS/Backend/Utility/MessageUtility',
   'TYPO3/CMS/Backend/Severity',
   'TYPO3/CMS/Backend/BackendException',
   'TYPO3/CMS/Backend/Event/InteractionRequestMap'
-], function($, FormEngineValidation, DocumentSaveActions, Modal, Severity, BackendException, InteractionRequestMap) {
+], function($, FormEngineValidation, DocumentSaveActions, Modal, MessageUtility, Severity, BackendException, InteractionRequestMap) {
 
   /**
    * @param {InteractionRequest} interactionRequest
@@ -66,15 +67,25 @@ define(['jquery',
     browserUrl: ''
   };
 
-  // functions to connect the db/file browser with this document and the formfields on it!
+  /**
+   * Opens a popup window with the element browser (browser.php)
+   *
+   * @param {string} mode can be "db" or "file"
+   * @param {string} params additional params for the browser window
+   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.openPopupWindow() instead.
+   */
+  setFormValueOpenBrowser = function(mode, params) {
+    console.warn('setFormValueOpenBrowser() has been marked as deprecated and will be removed in TYPO3 v11. Use FormEngine.openPopupWindow instead.');
+    return FormEngine.openPopupWindow(mode, params);
+  };
 
   /**
    * Opens a popup window with the element browser (browser.php)
    *
-   * @param {String} mode can be "db" or "file"
-   * @param {String} params additional params for the browser window
+   * @param {string} mode can be "db" or "file"
+   * @param {string} params additional params for the browser window
    */
-  FormEngine.openPopupWindow = setFormValueOpenBrowser = function(mode, params) {
+  FormEngine.openPopupWindow = function(mode, params) {
     return Modal.advanced({
       type: Modal.types.iframe,
       content: FormEngine.browserUrl + '&mode=' + mode + '&bparams=' + params,
@@ -87,14 +98,35 @@ define(['jquery',
    * or from a multi-select (two selects side-by-side)
    * previously known as "setFormValueFromBrowseWin"
    *
-   * @param {String} fieldName Formerly known as "fName" name of the field, like [tt_content][2387][header]
-   * @param {(String|Number)} value The value to fill in (could be an integer)
-   * @param {String} label The visible name in the selector
-   * @param {String} title The title when hovering over it
-   * @param {String} exclusiveValues If the select field has exclusive options that are not combine-able
+   * @param {string} fieldName Formerly known as "fsetFormValueFromBrowseWinName" name of the field, like [tt_content][2387][header]
+   * @param {string|number} value The value to fill in (could be an integer)
+   * @param {string} label The visible name in the selector
+   * @param {string} title The title when hovering over it
+   * @param {string} exclusiveValues If the select field has exclusive options that are not combine-able
+   * @param {$} $optionEl The jQuery object of the selected <option> tag
+   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.setSelectOptionFromExternalSource() instead.
+   */
+  setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues, $optionEl) {
+    console.warn(
+      'setFormValueFromBrowseWin() has been marked as deprecated and will be removed in TYPO3 v11. '
+      + 'Use FormEngine.setSelectOptionFromExternalSource() or send a message instead.'
+    );
+    FormEngine.setSelectOptionFromExternalSource(fieldName, value, label, title, exclusiveValues, $optionEl);
+  };
+
+  /**
+   * properly fills the select field from the popup window (element browser, link browser)
+   * or from a multi-select (two selects side-by-side)
+   * previously known as "setFormValueFromBrowseWin"
+   *
+   * @param {string} fieldName Formerly known as "fsetFormValueFromBrowseWinName" name of the field, like [tt_content][2387][header]
+   * @param {string|number} value The value to fill in (could be an integer)
+   * @param {string} label The visible name in the selector
+   * @param {string} title The title when hovering over it
+   * @param {string} exclusiveValues If the select field has exclusive options that are not combine-able
    * @param {$} $optionEl The jQuery object of the selected <option> tag
    */
-  FormEngine.setSelectOptionFromExternalSource = setFormValueFromBrowseWin = function(fieldName, value, label, title, exclusiveValues, $optionEl) {
+  FormEngine.setSelectOptionFromExternalSource = function(fieldName, value, label, title, exclusiveValues, $optionEl) {
     exclusiveValues = String(exclusiveValues);
 
     var $fieldEl,
@@ -226,8 +258,21 @@ define(['jquery',
    *
    * @param {HTMLElement} selectFieldEl the select field
    * @param {HTMLElement} originalFieldEl the hidden form field
+   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.updateHiddenFieldValueFromSelect() instead.
    */
-  FormEngine.updateHiddenFieldValueFromSelect = setHiddenFromList = function(selectFieldEl, originalFieldEl) {
+  setHiddenFromList = function(selectFieldEl, originalFieldEl) {
+    console.warn('setHiddenFromList() has been marked as deprecated and will be removed in TYPO3 v11. Use FormEngine.updateHiddenFieldValueFromSelect() instead.');
+    FormEngine.updateHiddenFieldValueFromSelect(selectFieldEl, originalFieldEl);
+  };
+
+  /**
+   * sets the value of the hidden field, from the select list, always executed after the select field was updated
+   * previously known as global function setHiddenFromList()
+   *
+   * @param {HTMLElement} selectFieldEl the select field
+   * @param {HTMLElement} originalFieldEl the hidden form field
+   */
+  FormEngine.updateHiddenFieldValueFromSelect = function(selectFieldEl, originalFieldEl) {
     var selectedValues = [];
     $(selectFieldEl).find('option').each(function() {
       selectedValues.push($(this).prop('value'));
@@ -244,8 +289,10 @@ define(['jquery',
    * @param {String} fName
    * @param {String} type
    * @param {Number} maxLength
+   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0.
    */
   setFormValueManipulate = function(fName, type, maxLength) {
+    console.warn('setFormValueManipulate() has been marked as deprecated and will be removed in TYPO3 v11.');
     var $formEl = FormEngine.getFormElement(fName);
     if ($formEl.length > 0) {
       var formObj = $formEl.get(0);
@@ -419,8 +466,10 @@ define(['jquery',
    *
    * @param {String} fieldName the name of the field name
    * @returns {*|HTMLElement}
+   * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0. Use FormEngine.getFormElement() instead.
    */
   setFormValue_getFObj = function(fieldName) {
+    console.warn('setFormValue_getFObj() has been marked as deprecated and will be removed in TYPO3 v11. Use FormEngine.getFormElement() instead.');
     var $formEl = FormEngine.getFormElement(fieldName);
     if ($formEl.length > 0) {
       // return the DOM element of the form object
@@ -548,6 +597,8 @@ define(['jquery',
 
       FormEngine.openPopupWindow(mode, params);
     });
+
+    window.addEventListener('message', FormEngine.handlePostMessage);
   };
 
   /**
@@ -586,6 +637,28 @@ define(['jquery',
       }
 
       return deferred;
+    }
+  };
+
+  FormEngine.handlePostMessage = function (e) {
+    if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
+      throw 'Denied message sent by ' + e.origin;
+    }
+
+    if (e.data.actionName === 'typo3:elementBrowser:elementAdded') {
+      if (typeof e.data.fieldName === 'undefined') {
+        throw 'fieldName not defined in message';
+      }
+
+      if (typeof e.data.value === 'undefined') {
+        throw 'value not defined in message';
+      }
+
+      const label = e.data.label || e.data.value;
+      const title = e.data.title || label;
+      const exclusiveValues = e.data.exclusiveValues || '';
+
+      FormEngine.setSelectOptionFromExternalSource(e.data.fieldName, e.data.value, label, title, exclusiveValues);
     }
   };
 

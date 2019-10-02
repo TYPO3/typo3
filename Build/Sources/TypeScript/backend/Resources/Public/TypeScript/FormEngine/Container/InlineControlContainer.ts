@@ -377,21 +377,23 @@ class InlineControlContainer {
       throw 'Denied message sent by ' + e.origin;
     }
 
-    if (typeof e.data.objectGroup === 'undefined') {
-      throw 'No object group defined for message';
-    }
+    if (e.data.actionName === 'typo3:elementBrowser:elementInserted') {
+      if (typeof e.data.objectGroup === 'undefined') {
+        throw 'No object group defined for message';
+      }
 
-    if (e.data.objectGroup !== this.container.dataset.objectGroup) {
-      // Received message isn't provisioned for current InlineControlContainer instance
-      return;
-    }
+      if (e.data.objectGroup !== this.container.dataset.objectGroup) {
+        // Received message isn't provisioned for current InlineControlContainer instance
+        return;
+      }
 
-    if (this.isUniqueElementUsed(parseInt(e.data.uid, 10), e.data.table)) {
-      Notification.error('There is already a relation to the selected element');
-      return;
-    }
+      if (this.isUniqueElementUsed(parseInt(e.data.uid, 10), e.data.table)) {
+        Notification.error('There is already a relation to the selected element');
+        return;
+      }
 
-    this.importRecord([e.data.objectGroup, e.data.uid]);
+      this.importRecord([e.data.objectGroup, e.data.uid]);
+    }
   }
 
   /**

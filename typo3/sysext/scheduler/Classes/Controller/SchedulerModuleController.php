@@ -610,14 +610,6 @@ class SchedulerModuleController
         // Load necessary JavaScript
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/Scheduler');
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-        $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Scheduler/PageBrowser');
-        $this->getPageRenderer()->addJsInlineCode('browse-button', '
-            function setFormValueFromBrowseWin(fieldReference, elValue, elName) {
-                var res = elValue.split("_");
-                var element = document.getElementById(fieldReference);
-                element.value = res[1];
-            }
-        ');
 
         // Start rendering the add/edit form
         $this->view->assign('uid', htmlspecialchars((string)$this->submittedData['uid']));
@@ -727,13 +719,11 @@ class SchedulerModuleController
     {
         if (isset($fieldInfo['browser']) && ($fieldInfo['browser'] === 'page')) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute(
-                'wizard_element_browser',
-                ['mode' => 'db', 'bparams' => $fieldID . '|||pages|']
-            );
+            $url = (string)$uriBuilder->buildUriFromRoute('wizard_element_browser');
+
             $title = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db'));
             return '
-                <div><a href="#" data-url=' . htmlspecialchars($url) . ' class="btn btn-default t3js-pageBrowser" title="' . $title . '">
+                <div><a href="' . htmlspecialchars($url) . '" data-trigger-for="' . htmlspecialchars($fieldID) . '" data-mode="db" data-params="" class="btn btn-default t3js-element-browser" title="' . $title . '">
                     <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
                         <span class="icon-markup">' . $this->iconFactory->getIcon(
                 'actions-insert-record',

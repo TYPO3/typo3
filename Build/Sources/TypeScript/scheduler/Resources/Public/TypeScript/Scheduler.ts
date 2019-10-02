@@ -14,6 +14,8 @@
 import * as $ from 'jquery';
 import 'datatables';
 import DocumentSaveActions = require('TYPO3/CMS/Backend/DocumentSaveActions');
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import MessageUtility = require('TYPO3/CMS/Backend/Utility/MessageUtility');
 
 interface TableNumberMapping {
   [s: string]: number;
@@ -26,6 +28,15 @@ declare let defaultNumberOfDays: TableNumberMapping;
  */
 class Scheduler {
   private allCheckedStatus: boolean = false;
+
+  private static updateElementBrowserTriggers(): void {
+    const triggers = document.querySelectorAll('.t3js-element-browser');
+
+    triggers.forEach((el: HTMLAnchorElement): void => {
+      const triggerField = <HTMLInputElement>document.getElementById(el.dataset.triggerFor);
+      el.dataset.params = triggerField.name + '|||pages';
+    });
+  }
 
   constructor() {
     this.initializeEvents();
@@ -160,6 +171,19 @@ class Scheduler {
       'paging': false,
       'searching': false,
     });
+
+    $(document).on('click', '.t3js-element-browser', (e: JQueryEventObject): void => {
+      e.preventDefault();
+
+      const el = <HTMLAnchorElement>e.currentTarget;
+      Modal.advanced({
+        type: Modal.types.iframe,
+        content: el.href + '&mode=' + el.dataset.mode + '&bparams=' + el.dataset.params,
+        size: Modal.sizes.large
+      });
+    });
+
+    window.addEventListener('message', this.listenOnElementBrowser);
   }
 
   /**
@@ -173,6 +197,27 @@ class Scheduler {
     let $taskClass = $('#task_class');
     if ($taskClass.length) {
       this.actOnChangedTaskClass($taskClass);
+      Scheduler.updateElementBrowserTriggers();
+    }
+  }
+
+  private listenOnElementBrowser = (e: MessageEvent): void => {
+    if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
+      throw 'Denied message sent by ' + e.origin;
+    }
+
+    if (e.data.actionName === 'typo3:elementBrowser:elementAdded') {
+      if (typeof e.data.fieldName === 'undefined') {
+        throw 'fieldName not defined in message';
+      }
+
+      if (typeof e.data.value === 'undefined') {
+        throw 'value not defined in message';
+      }
+
+      const result = e.data.value.split('_');
+      const field = <HTMLInputElement>document.querySelector('input[name="' + e.data.fieldName + '"]');
+      field.value = result[1];
     }
   }
 }
