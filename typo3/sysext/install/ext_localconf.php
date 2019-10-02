@@ -36,6 +36,8 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['pagesSlugs']
     = \TYPO3\CMS\Install\Updates\PopulatePageSlugs::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['argon2iPasswordHashes']
     = \TYPO3\CMS\Install\Updates\Argon2iPasswordHashes::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['backendUsersConfiguration']
+    = \TYPO3\CMS\Install\Updates\BackendUserConfigurationUpdate::class;
 
 // v9->v10 wizards below this line
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']['rsaauthExtension']
