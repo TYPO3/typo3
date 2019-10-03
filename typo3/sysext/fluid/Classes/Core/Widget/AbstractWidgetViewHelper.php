@@ -101,6 +101,13 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
             false,
             null
         );
+        $this->registerArgument(
+            'storeSession',
+            'bool',
+            'Store the widgets session (utilizing a cookie).',
+            false,
+            true
+        );
     }
 
     /**
@@ -132,7 +139,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
         $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
         $this->widgetContext->setParentPluginNamespace($pluginNamespace);
         $this->widgetContext->setWidgetViewHelperClassName(static::class);
-        if ($this->ajaxWidget === true) {
+        if ($this->ajaxWidget === true && $this->arguments['storeSession']) {
             $this->ajaxWidgetContextHolder->store($this->widgetContext);
         }
     }

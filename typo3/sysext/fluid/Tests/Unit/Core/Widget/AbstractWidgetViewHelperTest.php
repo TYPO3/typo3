@@ -116,7 +116,19 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
     public function initializeArgumentsAndRenderStoresTheWidgetContextIfInAjaxMode()
     {
         $this->viewHelper->_set('ajaxWidget', true);
+        $this->viewHelper->setArguments(['storeSession' => true]);
         $this->ajaxWidgetContextHolder->expects($this->once())->method('store')->with($this->widgetContext);
+        $this->callViewHelper();
+    }
+
+    /**
+     * @test
+     */
+    public function storeSessionSetToFalseDoesNotStoreTheWidgetContextIfInAjaxMode()
+    {
+        $this->viewHelper->_set('ajaxWidget', true);
+        $this->viewHelper->setArguments(['storeSession' => false]);
+        $this->ajaxWidgetContextHolder->expects($this->never())->method('store')->with($this->widgetContext);
         $this->callViewHelper();
     }
 
