@@ -4,16 +4,16 @@
 		  product-name="adminpanel">
 		<header/>
 		<body>
-			<trans-unit id="module.label">
+			<trans-unit id="module.label" resname="module.label">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="displayFieldIcons">
+			<trans-unit id="displayFieldIcons" resname="displayFieldIcons">
 				<source>Display edit icons</source>
 			</trans-unit>
-			<trans-unit id="displayIcons">
+			<trans-unit id="displayIcons" resname="displayIcons">
 				<source>Display edit panels</source>
 			</trans-unit>
-			<trans-unit id="openAB">
+			<trans-unit id="openAB" resname="openAB">
 				<source>Open TYPO3 Backend</source>
 			</trans-unit>
 		</body>

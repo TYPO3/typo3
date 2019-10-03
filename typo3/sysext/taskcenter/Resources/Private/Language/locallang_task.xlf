@@ -3,64 +3,64 @@
 	<file t3:id="1415815001" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="taskcenter">
 		<header/>
 		<body>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
 				<source>Tasks</source>
 			</trans-unit>
-			<trans-unit id="task_overview">
+			<trans-unit id="task_overview" resname="task_overview">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="error_header">
+			<trans-unit id="error_header" resname="error_header">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="error-access">
+			<trans-unit id="error-access" resname="error-access">
 				<source>No access to this module.</source>
 			</trans-unit>
-			<trans-unit id="error_no-instance">
+			<trans-unit id="error_no-instance" resname="error_no-instance">
 				<source>The class "%s" does not implement the task interface "%s" which is necessary to be displayed here.</source>
 			</trans-unit>
-			<trans-unit id="no-tasks">
+			<trans-unit id="no-tasks" resname="no-tasks">
 				<source>No tasks have been registered yet.</source>
 			</trans-unit>
-			<trans-unit id="lReplyAddress">
+			<trans-unit id="lReplyAddress" resname="lReplyAddress">
 				<source>Reply address is your email</source>
 			</trans-unit>
-			<trans-unit id="lSelf">
+			<trans-unit id="lSelf" resname="lSelf">
 				<source>Self</source>
 			</trans-unit>
-			<trans-unit id="lSendNew">
+			<trans-unit id="lSendNew" resname="lSendNew">
 				<source>Send message</source>
 			</trans-unit>
-			<trans-unit id="lSendReply">
+			<trans-unit id="lSendReply" resname="lSendReply">
 				<source>Reply to message</source>
 			</trans-unit>
-			<trans-unit id="listSeparator_Groups">
+			<trans-unit id="listSeparator_Groups" resname="listSeparator_Groups">
 				<source>__Groups:__</source>
 			</trans-unit>
-			<trans-unit id="lHomedir">
+			<trans-unit id="lHomedir" resname="lHomedir">
 				<source>Home dir</source>
 			</trans-unit>
-			<trans-unit id="lNone">
+			<trans-unit id="lNone" resname="lNone">
 				<source>[none]</source>
 			</trans-unit>
-			<trans-unit id="lCreate">
+			<trans-unit id="lCreate" resname="lCreate">
 				<source>Create</source>
 			</trans-unit>
-			<trans-unit id="lCancel">
+			<trans-unit id="lCancel" resname="lCancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="lDelete_warning_title">
+			<trans-unit id="lDelete_warning_title" resname="lDelete_warning_title">
 				<source>Please confirm</source>
 			</trans-unit>
-			<trans-unit id="lDelete_warning">
+			<trans-unit id="lDelete_warning" resname="lDelete_warning">
 				<source>Are you sure you want to delete this user?</source>
 			</trans-unit>
-			<trans-unit id="lDelete">
+			<trans-unit id="lDelete" resname="lDelete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="lUpdate">
+			<trans-unit id="lUpdate" resname="lUpdate">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="taskcenter-about" xml:space="preserve">
+			<trans-unit id="taskcenter-about" resname="taskcenter-about" xml:space="preserve">
 				<source>
 &lt;p&gt;The menu on the left side shows all allowed tasks and let you allow to complete your tasks in an efficient way.&lt;/p&gt;
 &lt;ul class="withicons"&gt;
@@ -72,10 +72,10 @@
 
 </source>
 			</trans-unit>
-			<trans-unit id="taskcenter-adminheader">
+			<trans-unit id="taskcenter-adminheader" resname="taskcenter-adminheader">
 				<source>Create a task</source>
 			</trans-unit>
-			<trans-unit id="taskcenter-admin">
+			<trans-unit id="taskcenter-admin" resname="taskcenter-admin">
 				<source>It is simple to extend the taskcenter by a custom task. For more information please look into the manual of the extension 'taskcenter'.</source>
 			</trans-unit>
 		</body>

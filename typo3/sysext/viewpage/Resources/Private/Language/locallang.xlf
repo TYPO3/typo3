@@ -3,46 +3,46 @@
 	<file t3:id="1415815011" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="viewpage">
 		<header/>
 		<body>
-			<trans-unit id="width">
+			<trans-unit id="width" resname="width">
 				<source>Width</source>
 			</trans-unit>
-			<trans-unit id="tablet">
+			<trans-unit id="tablet" resname="tablet">
 				<source>Tablet</source>
 			</trans-unit>
-			<trans-unit id="mobile">
+			<trans-unit id="mobile" resname="mobile">
 				<source>Mobile</source>
 			</trans-unit>
-			<trans-unit id="computer">
+			<trans-unit id="computer" resname="computer">
 				<source>Computer</source>
 			</trans-unit>
-			<trans-unit id="desktop">
+			<trans-unit id="desktop" resname="desktop">
 				<source>Desktop</source>
 			</trans-unit>
-			<trans-unit id="customWidth">
+			<trans-unit id="customWidth" resname="customWidth">
 				<source>Custom Size</source>
 			</trans-unit>
-			<trans-unit id="autoSize">
+			<trans-unit id="autoSize" resname="autoSize">
 				<source>Auto Size</source>
 			</trans-unit>
-			<trans-unit id="refreshPage">
+			<trans-unit id="refreshPage" resname="refreshPage">
 				<source>Refresh page</source>
 			</trans-unit>
-			<trans-unit id="language">
+			<trans-unit id="language" resname="language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="automatic">
+			<trans-unit id="automatic" resname="automatic">
 				<source>Automatic</source>
 			</trans-unit>
-			<trans-unit id="maximized">
+			<trans-unit id="maximized" resname="maximized">
 				<source>Maximized</source>
 			</trans-unit>
-			<trans-unit id="custom">
+			<trans-unit id="custom" resname="custom">
 				<source>Custom</source>
 			</trans-unit>
-			<trans-unit id="unidentified">
+			<trans-unit id="unidentified" resname="unidentified">
 				<source>Unidentified</source>
 			</trans-unit>
-			<trans-unit id="noValidPageSelected">
+			<trans-unit id="noValidPageSelected" resname="noValidPageSelected">
 				<source>Please select a page with a valid page type in the page tree on the left to preview the selected page in different screen resolutions.</source>
 			</trans-unit>
 		</body>

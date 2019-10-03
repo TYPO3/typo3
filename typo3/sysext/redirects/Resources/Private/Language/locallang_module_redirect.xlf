@@ -3,104 +3,104 @@
 	<file t3:id="1515791952" source-language="en" datatype="plaintext" original="messages" date="2017-12-29T20:23:34Z" product-name="redirects">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
 				<source>Redirect Administration</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
 				<source>This is the administration area for Web Redirects.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
 				<source>Redirects</source>
 			</trans-unit>
 
-			<trans-unit id="source_host_global_text">
+			<trans-unit id="source_host_global_text" resname="source_host_global_text">
 				<source>Global redirect (any domain)</source>
 			</trans-unit>
 
-			<trans-unit id="heading_text">
+			<trans-unit id="heading_text" resname="heading_text">
 				<source>Redirect Management</source>
 			</trans-unit>
-			<trans-unit id="redirect_add_text">
+			<trans-unit id="redirect_add_text" resname="redirect_add_text">
 				<source>Add redirect</source>
 			</trans-unit>
-			<trans-unit id="redirect_not_found.title">
+			<trans-unit id="redirect_not_found.title" resname="redirect_not_found.title">
 				<source>No redirects found!</source>
 			</trans-unit>
-			<trans-unit id="redirect_not_found.message">
+			<trans-unit id="redirect_not_found.message" resname="redirect_not_found.message">
 				<source>There are currently no redirect records found in the database.</source>
 			</trans-unit>
-			<trans-unit id="redirect_create">
+			<trans-unit id="redirect_create" resname="redirect_create">
 				<source>Create new redirect</source>
 			</trans-unit>
 
-			<trans-unit id="redirect_not_found_with_filter.title">
+			<trans-unit id="redirect_not_found_with_filter.title" resname="redirect_not_found_with_filter.title">
 				<source>No redirects found!</source>
 			</trans-unit>
-			<trans-unit id="redirect_not_found_with_filter.message">
+			<trans-unit id="redirect_not_found_with_filter.message" resname="redirect_not_found_with_filter.message">
 				<source>With the current set of filters applied, no redirect could be found.</source>
 			</trans-unit>
-			<trans-unit id="redirect_no_filter">
+			<trans-unit id="redirect_no_filter" resname="redirect_no_filter">
 				<source>Remove all filter</source>
 			</trans-unit>
-			<trans-unit id="filter.source_host.showAll">
+			<trans-unit id="filter.source_host.showAll" resname="filter.source_host.showAll">
 				<source>Show All</source>
 			</trans-unit>
-			<trans-unit id="filter.destination">
+			<trans-unit id="filter.destination" resname="filter.destination">
 				<source>Destination (Path or Page ID)</source>
 			</trans-unit>
-			<trans-unit id="filter.targetStatusCode">
+			<trans-unit id="filter.targetStatusCode" resname="filter.targetStatusCode">
 				<source>Status Code</source>
 			</trans-unit>
-			<trans-unit id="filter.sendButton">
+			<trans-unit id="filter.sendButton" resname="filter.sendButton">
 				<source>Send</source>
 			</trans-unit>
 
-			<trans-unit id="record_disabled">
+			<trans-unit id="record_disabled" resname="record_disabled">
 				<source>Redirect is not activated!</source>
 			</trans-unit>
-			<trans-unit id="source_host">
+			<trans-unit id="source_host" resname="source_host">
 				<source>Source Host</source>
 			</trans-unit>
-			<trans-unit id="source_path">
+			<trans-unit id="source_path" resname="source_path">
 				<source>Source Path</source>
 			</trans-unit>
-			<trans-unit id="source_path.placeholder">
+			<trans-unit id="source_path.placeholder" resname="source_path.placeholder">
 				<source>/my-path/ or #^/my-path/$# (when regex enabled)</source>
 			</trans-unit>
-			<trans-unit id="destination">
+			<trans-unit id="destination" resname="destination">
 				<source>Destination</source>
 			</trans-unit>
-			<trans-unit id="pageID">
+			<trans-unit id="pageID" resname="pageID">
 				<source>Page ID</source>
 			</trans-unit>
-			<trans-unit id="destination_status_code">
+			<trans-unit id="destination_status_code" resname="destination_status_code">
 				<source>Status Code</source>
 			</trans-unit>
-			<trans-unit id="hits">
+			<trans-unit id="hits" resname="hits">
 				<source>Hits</source>
 			</trans-unit>
-			<trans-unit id="hit_text">
+			<trans-unit id="hit_text" resname="hit_text">
 				<source>%s hit</source>
 			</trans-unit>
-			<trans-unit id="hits_text">
+			<trans-unit id="hits_text" resname="hits_text">
 				<source>%s hits</source>
 			</trans-unit>
-			<trans-unit id="hit_reset">
+			<trans-unit id="hit_reset" resname="hit_reset">
 				<source>Reset Hit Counter (!)</source>
 			</trans-unit>
-			<trans-unit id="hit_reset.confirm.title">
+			<trans-unit id="hit_reset.confirm.title" resname="hit_reset.confirm.title">
 				<source>Reset the hitcounter of this record?</source>
 			</trans-unit>
-			<trans-unit id="hit_reset.confirm.content">
+			<trans-unit id="hit_reset.confirm.content" resname="hit_reset.confirm.content">
 				<source>Are you sure you want to reset the hitcounter of this record?</source>
 			</trans-unit>
-			<trans-unit id="hit_last">
+			<trans-unit id="hit_last" resname="hit_last">
 				<source>Last Hit on</source>
 			</trans-unit>
-			<trans-unit id="hit_last_never">
+			<trans-unit id="hit_last_never" resname="hit_last_never">
 				<source>Never</source>
 			</trans-unit>
-			<trans-unit id="visit_destination">
+			<trans-unit id="visit_destination" resname="visit_destination">
 				<source>Go to</source>
 			</trans-unit>
 		</body>

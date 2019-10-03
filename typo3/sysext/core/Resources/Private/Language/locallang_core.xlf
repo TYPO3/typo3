@@ -3,1349 +3,1349 @@
 	<file t3:id="1415814851" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="labels.openInNewWindow">
+			<trans-unit id="labels.openInNewWindow" resname="labels.openInNewWindow">
 				<source>Open in new window</source>
 			</trans-unit>
-			<trans-unit id="labels.goBack">
+			<trans-unit id="labels.goBack" resname="labels.goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="labels.makeShortcut">
+			<trans-unit id="labels.makeShortcut" resname="labels.makeShortcut">
 				<source>Create a shortcut to this page?</source>
 			</trans-unit>
-			<trans-unit id="labels.makeBookmark">
+			<trans-unit id="labels.makeBookmark" resname="labels.makeBookmark">
 				<source>Create a bookmark to this page</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecord">
+			<trans-unit id="labels.lockedRecord" resname="labels.lockedRecord">
 				<source>The user '%s' began to edit this record %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecord_content">
+			<trans-unit id="labels.lockedRecord_content" resname="labels.lockedRecord_content">
 				<source>The user '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecordUser">
+			<trans-unit id="labels.lockedRecordUser" resname="labels.lockedRecordUser">
 				<source>The %s '%s' began to edit this record %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.lockedRecordUser_content">
+			<trans-unit id="labels.lockedRecordUser_content" resname="labels.lockedRecordUser_content">
 				<source>The %s '%s' began to edit content on this page %s ago.</source>
 			</trans-unit>
-			<trans-unit id="labels.user">
+			<trans-unit id="labels.user" resname="labels.user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="labels.beUser">
+			<trans-unit id="labels.beUser" resname="labels.beUser">
 				<source>BE-User</source>
 			</trans-unit>
-			<trans-unit id="labels.feUser">
+			<trans-unit id="labels.feUser" resname="labels.feUser">
 				<source>FE-User</source>
 			</trans-unit>
-			<trans-unit id="labels.unknownUser">
+			<trans-unit id="labels.unknownUser" resname="labels.unknownUser">
 				<source>-Unknown-</source>
 			</trans-unit>
-			<trans-unit id="labels.showRecords">
+			<trans-unit id="labels.showRecords" resname="labels.showRecords">
 				<source>Show records</source>
 			</trans-unit>
-			<trans-unit id="labels.path">
+			<trans-unit id="labels.path" resname="labels.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="labels.resetFilter">
+			<trans-unit id="labels.resetFilter" resname="labels.resetFilter">
 				<source>Reset Filter</source>
 			</trans-unit>
-			<trans-unit id="labels.table">
+			<trans-unit id="labels.table" resname="labels.table">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="labels.upOneLevel">
+			<trans-unit id="labels.upOneLevel" resname="labels.upOneLevel">
 				<source>Up one level</source>
 			</trans-unit>
-			<trans-unit id="labels.expandTable">
+			<trans-unit id="labels.expandTable" resname="labels.expandTable">
 				<source>Expand table</source>
 			</trans-unit>
-			<trans-unit id="labels.collapseTable">
+			<trans-unit id="labels.collapseTable" resname="labels.collapseTable">
 				<source>Collapse table</source>
 			</trans-unit>
-			<trans-unit id="labels.enterSearchString">
+			<trans-unit id="labels.enterSearchString" resname="labels.enterSearchString">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="labels.enterSearchLevels">
+			<trans-unit id="labels.enterSearchLevels" resname="labels.enterSearchLevels">
 				<source>This page|1 level down|2 levels down|3 levels down|4 levels down</source>
 			</trans-unit>
-			<trans-unit id="labels.searchLevel.0">
+			<trans-unit id="labels.searchLevel.0" resname="labels.searchLevel.0">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="labels.searchLevel.1">
+			<trans-unit id="labels.searchLevel.1" resname="labels.searchLevel.1">
 				<source>1 level down</source>
 			</trans-unit>
-			<trans-unit id="labels.searchLevel.2">
+			<trans-unit id="labels.searchLevel.2" resname="labels.searchLevel.2">
 				<source>2 levels down</source>
 			</trans-unit>
-			<trans-unit id="labels.searchLevel.3">
+			<trans-unit id="labels.searchLevel.3" resname="labels.searchLevel.3">
 				<source>3 levels down</source>
 			</trans-unit>
-			<trans-unit id="labels.searchLevel.4">
+			<trans-unit id="labels.searchLevel.4" resname="labels.searchLevel.4">
 				<source>4 levels down</source>
 			</trans-unit>
-			<trans-unit id="labels.searchLevel.infinite">
+			<trans-unit id="labels.searchLevel.infinite" resname="labels.searchLevel.infinite">
 				<source>Infinite levels</source>
 			</trans-unit>
-			<trans-unit id="labels.noEditPermission">
+			<trans-unit id="labels.noEditPermission" resname="labels.noEditPermission">
 				<source>Sorry, you didn't have proper permissions to perform this change.</source>
 			</trans-unit>
-			<trans-unit id="labels.fieldsMissing">
+			<trans-unit id="labels.fieldsMissing" resname="labels.fieldsMissing">
 				<source>The fields marked with an exclamation mark are not yet correctly filled in. Please complete them properly.</source>
 			</trans-unit>
-			<trans-unit id="labels.fieldsChanged" xml:space="preserve">
+			<trans-unit id="labels.fieldsChanged" resname="labels.fieldsChanged" xml:space="preserve">
 				<source>There are unsaved changes in the form!
 Do you want to continue WITHOUT saving?</source>
 			</trans-unit>
-			<trans-unit id="labels.remainingCharacters">
+			<trans-unit id="labels.remainingCharacters" resname="labels.remainingCharacters">
 				<source>Remaining characters: {0}</source>
 			</trans-unit>
-			<trans-unit id="labels.maxItemsAllowed">
+			<trans-unit id="labels.maxItemsAllowed" resname="labels.maxItemsAllowed">
 				<source>A maximum of {0} child records are allowed.</source>
 			</trans-unit>
-			<trans-unit id="labels.noRTEfound">
+			<trans-unit id="labels.noRTEfound" resname="labels.noRTEfound">
 				<source>Notice: This field can only be edited with a Rich Text Editor. No editor is currently available or enabled.</source>
 			</trans-unit>
-			<trans-unit id="labels.recordInformation">
+			<trans-unit id="labels.recordInformation" resname="labels.recordInformation">
 				<source>Record information</source>
 			</trans-unit>
-			<trans-unit id="labels.disableRTE">
+			<trans-unit id="labels.disableRTE" resname="labels.disableRTE">
 				<source>Disable Rich Text Editor (RTE)</source>
 			</trans-unit>
-			<trans-unit id="labels._CONTROL_">
+			<trans-unit id="labels._CONTROL_" resname="labels._CONTROL_">
 				<source>Control</source>
 			</trans-unit>
-			<trans-unit id="labels._PATH_">
+			<trans-unit id="labels._PATH_" resname="labels._PATH_">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="labels._LOCALIZATION_">
+			<trans-unit id="labels._LOCALIZATION_" resname="labels._LOCALIZATION_">
 				<source>Localization</source>
 			</trans-unit>
-			<trans-unit id="labels.setFields">
+			<trans-unit id="labels.setFields" resname="labels.setFields">
 				<source>Set fields</source>
 			</trans-unit>
-			<trans-unit id="labels.search">
+			<trans-unit id="labels.search" resname="labels.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="labels.author">
+			<trans-unit id="labels.author" resname="labels.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="labels.note">
+			<trans-unit id="labels.note" resname="labels.note">
 				<source>Note</source>
 			</trans-unit>
-			<trans-unit id="labels.category">
+			<trans-unit id="labels.category" resname="labels.category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="labels.reload">
+			<trans-unit id="labels.reload" resname="labels.reload">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="labels.csv">
+			<trans-unit id="labels.csv" resname="labels.csv">
 				<source>Download CSV file</source>
 			</trans-unit>
-			<trans-unit id="labels.clear_cache">
+			<trans-unit id="labels.clear_cache" resname="labels.clear_cache">
 				<source>Clear cache for this page</source>
 			</trans-unit>
-			<trans-unit id="labels.no_title">
+			<trans-unit id="labels.no_title" resname="labels.no_title">
 				<source>No title</source>
 			</trans-unit>
-			<trans-unit id="labels.cancel">
+			<trans-unit id="labels.cancel" resname="labels.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="labels.hidden">
+			<trans-unit id="labels.hidden" resname="labels.hidden">
 				<source>Hidden</source>
 			</trans-unit>
-			<trans-unit id="labels.starttime">
+			<trans-unit id="labels.starttime" resname="labels.starttime">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="labels.endtime">
+			<trans-unit id="labels.endtime" resname="labels.endtime">
 				<source>End</source>
 			</trans-unit>
-			<trans-unit id="labels.minutesHoursDaysYears">
+			<trans-unit id="labels.minutesHoursDaysYears" resname="labels.minutesHoursDaysYears">
 				<source>min|hrs|days|yrs|min|hour|day|year</source>
 			</trans-unit>
-			<trans-unit id="labels.menu">
+			<trans-unit id="labels.menu" resname="labels.menu">
 				<source>Menu</source>
 			</trans-unit>
-			<trans-unit id="labels.showPage">
+			<trans-unit id="labels.showPage" resname="labels.showPage">
 				<source>View webpage</source>
 			</trans-unit>
-			<trans-unit id="labels.showList">
+			<trans-unit id="labels.showList" resname="labels.showList">
 				<source>Show record list</source>
 			</trans-unit>
-			<trans-unit id="labels.days">
+			<trans-unit id="labels.days" resname="labels.days">
 				<source>days</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_0">
+			<trans-unit id="labels.depth_0" resname="labels.depth_0">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_1">
+			<trans-unit id="labels.depth_1" resname="labels.depth_1">
 				<source>1 level</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_2">
+			<trans-unit id="labels.depth_2" resname="labels.depth_2">
 				<source>2 levels</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_3">
+			<trans-unit id="labels.depth_3" resname="labels.depth_3">
 				<source>3 levels</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_4">
+			<trans-unit id="labels.depth_4" resname="labels.depth_4">
 				<source>4 levels</source>
 			</trans-unit>
-			<trans-unit id="labels.depth_infi">
+			<trans-unit id="labels.depth_infi" resname="labels.depth_infi">
 				<source>Infinite</source>
 			</trans-unit>
-			<trans-unit id="labels.allow">
+			<trans-unit id="labels.allow" resname="labels.allow">
 				<source>Allow</source>
 			</trans-unit>
-			<trans-unit id="labels.deny">
+			<trans-unit id="labels.deny" resname="labels.deny">
 				<source>Deny</source>
 			</trans-unit>
-			<trans-unit id="labels.automatic">
+			<trans-unit id="labels.automatic" resname="labels.automatic">
 				<source>Auto</source>
 			</trans-unit>
-			<trans-unit id="labels.enabled">
+			<trans-unit id="labels.enabled" resname="labels.enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="labels.show">
+			<trans-unit id="labels.show" resname="labels.show">
 				<source>Show</source>
 			</trans-unit>
-			<trans-unit id="labels.generalTab">
+			<trans-unit id="labels.generalTab" resname="labels.generalTab">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="labels.refresh">
+			<trans-unit id="labels.refresh" resname="labels.refresh">
 				<source>Reload the tree from server</source>
 			</trans-unit>
-			<trans-unit id="labels.temporaryDBmount">
+			<trans-unit id="labels.temporaryDBmount" resname="labels.temporaryDBmount">
 				<source>Cancel temporary DB mount</source>
 			</trans-unit>
-			<trans-unit id="labels.refreshList">
+			<trans-unit id="labels.refreshList" resname="labels.refreshList">
 				<source>Reload list from server</source>
 			</trans-unit>
-			<trans-unit id="labels.close">
+			<trans-unit id="labels.close" resname="labels.close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="labels.tableWizard">
+			<trans-unit id="labels.tableWizard" resname="labels.tableWizard">
 				<source>Table Wizard</source>
 			</trans-unit>
-			<trans-unit id="labels.new">
+			<trans-unit id="labels.new" resname="labels.new">
 				<source>NEW</source>
 			</trans-unit>
-			<trans-unit id="labels.list">
+			<trans-unit id="labels.list" resname="labels.list">
 				<source>List</source>
 			</trans-unit>
-			<trans-unit id="labels.link">
+			<trans-unit id="labels.link" resname="labels.link">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="labels.edit">
+			<trans-unit id="labels.edit" resname="labels.edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="labels.createNew">
+			<trans-unit id="labels.createNew" resname="labels.createNew">
 				<source>Create new</source>
 			</trans-unit>
-			<trans-unit id="labels.createNewPage">
+			<trans-unit id="labels.createNewPage" resname="labels.createNewPage">
 				<source>Create new %s</source>
 			</trans-unit>
-			<trans-unit id="labels.createNewRecord">
+			<trans-unit id="labels.createNewRecord" resname="labels.createNewRecord">
 				<source>Create new %s on page "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.createNewRecordRootLevel">
+			<trans-unit id="labels.createNewRecordRootLevel" resname="labels.createNewRecordRootLevel">
 				<source>Create new %s on root level</source>
 			</trans-unit>
-			<trans-unit id="labels.editPage">
+			<trans-unit id="labels.editPage" resname="labels.editPage">
 				<source>Edit %s "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.editRecord">
+			<trans-unit id="labels.editRecord" resname="labels.editRecord">
 				<source>Edit %s "%s" on page "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.editRecordNoTitle">
+			<trans-unit id="labels.editRecordNoTitle" resname="labels.editRecordNoTitle">
 				<source>Edit %s on page "%s"</source>
 			</trans-unit>
-			<trans-unit id="labels.editRecordRootLevel">
+			<trans-unit id="labels.editRecordRootLevel" resname="labels.editRecordRootLevel">
 				<source>Edit %s "%s" on root level</source>
 			</trans-unit>
-			<trans-unit id="labels.rootLevel">
+			<trans-unit id="labels.rootLevel" resname="labels.rootLevel">
 				<source>root level</source>
 			</trans-unit>
-			<trans-unit id="labels.addnew">
+			<trans-unit id="labels.addnew" resname="labels.addnew">
 				<source>Add new</source>
 			</trans-unit>
-			<trans-unit id="labels.toggleall">
+			<trans-unit id="labels.toggleall" resname="labels.toggleall">
 				<source>Toggle all</source>
 			</trans-unit>
-			<trans-unit id="labels.selected">
+			<trans-unit id="labels.selected" resname="labels.selected">
 				<source>Selected Items</source>
 			</trans-unit>
-			<trans-unit id="labels.items">
+			<trans-unit id="labels.items" resname="labels.items">
 				<source>Available Items</source>
 			</trans-unit>
-			<trans-unit id="labels.remove_selected">
+			<trans-unit id="labels.remove_selected" resname="labels.remove_selected">
 				<source>Remove selected items</source>
 			</trans-unit>
-			<trans-unit id="labels.move_to_top">
+			<trans-unit id="labels.move_to_top" resname="labels.move_to_top">
 				<source>Move selected items to top</source>
 			</trans-unit>
-			<trans-unit id="labels.move_up">
+			<trans-unit id="labels.move_up" resname="labels.move_up">
 				<source>Move selected items upwards</source>
 			</trans-unit>
-			<trans-unit id="labels.move_down">
+			<trans-unit id="labels.move_down" resname="labels.move_down">
 				<source>Move selected items downwards</source>
 			</trans-unit>
-			<trans-unit id="labels.move_to_bottom">
+			<trans-unit id="labels.move_to_bottom" resname="labels.move_to_bottom">
 				<source>Move selected items to bottom</source>
 			</trans-unit>
-			<trans-unit id="labels.move">
+			<trans-unit id="labels.move" resname="labels.move">
 				<source>Move this item</source>
 			</trans-unit>
-			<trans-unit id="labels.browse_file">
+			<trans-unit id="labels.browse_file" resname="labels.browse_file">
 				<source>Browse for files</source>
 			</trans-unit>
-			<trans-unit id="labels.browse_db">
+			<trans-unit id="labels.browse_db" resname="labels.browse_db">
 				<source>Browse for records</source>
 			</trans-unit>
-			<trans-unit id="labels.clipInsert_file">
+			<trans-unit id="labels.clipInsert_file" resname="labels.clipInsert_file">
 				<source>Insert %s file(s) from the clipboard</source>
 			</trans-unit>
-			<trans-unit id="labels.clipInsert_db">
+			<trans-unit id="labels.clipInsert_db" resname="labels.clipInsert_db">
 				<source>Insert %s record(s) from the clipboard</source>
 			</trans-unit>
-			<trans-unit id="labels.generalOptions">
+			<trans-unit id="labels.generalOptions" resname="labels.generalOptions">
 				<source>General options</source>
 			</trans-unit>
-			<trans-unit id="labels.generalOptions_more">
+			<trans-unit id="labels.generalOptions_more" resname="labels.generalOptions_more">
 				<source>General options (continued)</source>
 			</trans-unit>
-			<trans-unit id="labels.allTables">
+			<trans-unit id="labels.allTables" resname="labels.allTables">
 				<source>[All tables]</source>
 			</trans-unit>
-			<trans-unit id="labels.noMatchingValue">
+			<trans-unit id="labels.noMatchingValue" resname="labels.noMatchingValue">
 				<source>INVALID VALUE ("%s")</source>
 			</trans-unit>
-			<trans-unit id="labels.thumbmode_clip">
+			<trans-unit id="labels.thumbmode_clip" resname="labels.thumbmode_clip">
 				<source>Show Thumbnails on ClipBoard</source>
 			</trans-unit>
-			<trans-unit id="labels.copymode">
+			<trans-unit id="labels.copymode" resname="labels.copymode">
 				<source>Copy items instead of moving them</source>
 			</trans-unit>
-			<trans-unit id="labels.normal">
+			<trans-unit id="labels.normal" resname="labels.normal">
 				<source>Normal (single record mode)</source>
 			</trans-unit>
-			<trans-unit id="labels.normal-description">
+			<trans-unit id="labels.normal-description" resname="labels.normal-description">
 				<source>"Normal" clipboard allows to copy/move one record at time.</source>
 			</trans-unit>
-			<trans-unit id="labels.cliptabs">
+			<trans-unit id="labels.cliptabs" resname="labels.cliptabs">
 				<source>Clipboard #</source>
 			</trans-unit>
-			<trans-unit id="labels.cliptabs-name">
+			<trans-unit id="labels.cliptabs-name" resname="labels.cliptabs-name">
 				<source>Clipboard #%s (multi-selection mode)</source>
 			</trans-unit>
-			<trans-unit id="labels.cliptabs-description">
+			<trans-unit id="labels.cliptabs-description" resname="labels.cliptabs-description">
 				<source>This clipboard allows to select and edit/copy/move multiple records at once. Choose it to show a checkbox by each record.</source>
 			</trans-unit>
-			<trans-unit id="labels.clipboard.delete_elements">
+			<trans-unit id="labels.clipboard.delete_elements" resname="labels.clipboard.delete_elements">
 				<source>Delete elements</source>
 			</trans-unit>
-			<trans-unit id="labels.clipboard.clear_clipboard">
+			<trans-unit id="labels.clipboard.clear_clipboard" resname="labels.clipboard.clear_clipboard">
 				<source>Clear clipboard</source>
 			</trans-unit>
-			<trans-unit id="labels.removeItem">
+			<trans-unit id="labels.removeItem" resname="labels.removeItem">
 				<source>Remove item</source>
 			</trans-unit>
-			<trans-unit id="labels.holdDownCTRL">
+			<trans-unit id="labels.holdDownCTRL" resname="labels.holdDownCTRL">
 				<source>Important: Hold down the CTRL key while toggling elements in this list!</source>
 			</trans-unit>
-			<trans-unit id="labels.revertSelection">
+			<trans-unit id="labels.revertSelection" resname="labels.revertSelection">
 				<source>Revert selection</source>
 			</trans-unit>
-			<trans-unit id="labels.setAllCheckboxes">
+			<trans-unit id="labels.setAllCheckboxes" resname="labels.setAllCheckboxes">
 				<source>Select All Checkboxes</source>
 			</trans-unit>
-			<trans-unit id="labels.checkAll">
+			<trans-unit id="labels.checkAll" resname="labels.checkAll">
 				<source>Check all</source>
 			</trans-unit>
-			<trans-unit id="labels.uncheckAll">
+			<trans-unit id="labels.uncheckAll" resname="labels.uncheckAll">
 				<source>Uncheck all</source>
 			</trans-unit>
-			<trans-unit id="labels.placeholder.override">
+			<trans-unit id="labels.placeholder.override" resname="labels.placeholder.override">
 				<source>Set element specific value (Default: "%s")</source>
 			</trans-unit>
-			<trans-unit id="labels.placeholder.override_not_available">
+			<trans-unit id="labels.placeholder.override_not_available" resname="labels.placeholder.override_not_available">
 				<source>Set element specific value (No default)</source>
 			</trans-unit>
-			<trans-unit id="labels.nullCheckbox">
+			<trans-unit id="labels.nullCheckbox" resname="labels.nullCheckbox">
 				<source>Set value</source>
 			</trans-unit>
-			<trans-unit id="labels.changeInOrig">
+			<trans-unit id="labels.changeInOrig" resname="labels.changeInOrig">
 				<source>Changed in original translation</source>
 			</trans-unit>
-			<trans-unit id="labels.expandAll">
+			<trans-unit id="labels.expandAll" resname="labels.expandAll">
 				<source>Expand all</source>
 			</trans-unit>
-			<trans-unit id="labels.new_section">
+			<trans-unit id="labels.new_section" resname="labels.new_section">
 				<source>Create new</source>
 			</trans-unit>
-			<trans-unit id="labels.count">
+			<trans-unit id="labels.count" resname="labels.count">
 				<source>Quantity</source>
 			</trans-unit>
-			<trans-unit id="labels.findRecord">
+			<trans-unit id="labels.findRecord" resname="labels.findRecord">
 				<source>Find records</source>
 			</trans-unit>
-			<trans-unit id="labels.noRecordFound">
+			<trans-unit id="labels.noRecordFound" resname="labels.noRecordFound">
 				<source>No record found</source>
 			</trans-unit>
-			<trans-unit id="labels.title.searchIcon">
+			<trans-unit id="labels.title.searchIcon" resname="labels.title.searchIcon">
 				<source>Toggle search toolbar</source>
 			</trans-unit>
-			<trans-unit id="labels.title.searchString">
+			<trans-unit id="labels.title.searchString" resname="labels.title.searchString">
 				<source>Search term</source>
 			</trans-unit>
-			<trans-unit id="labels.title.limit">
+			<trans-unit id="labels.title.limit" resname="labels.title.limit">
 				<source>Limit</source>
 			</trans-unit>
-			<trans-unit id="labels.title.search">
+			<trans-unit id="labels.title.search" resname="labels.title.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="labels.title.search_levels">
+			<trans-unit id="labels.title.search_levels" resname="labels.title.search_levels">
 				<source>Search levels</source>
 			</trans-unit>
-			<trans-unit id="labels.label.searchString">
+			<trans-unit id="labels.label.searchString" resname="labels.label.searchString">
 				<source>Search term</source>
 			</trans-unit>
-			<trans-unit id="labels.label.limit">
+			<trans-unit id="labels.label.limit" resname="labels.label.limit">
 				<source>Limit</source>
 			</trans-unit>
-			<trans-unit id="labels.label.search_levels">
+			<trans-unit id="labels.label.search_levels" resname="labels.label.search_levels">
 				<source>Search levels</source>
 			</trans-unit>
-			<trans-unit id="labels.recordReadonly">
+			<trans-unit id="labels.recordReadonly" resname="labels.recordReadonly">
 				<source>The table is defined as readonly and can't be edited.</source>
 			</trans-unit>
-			<trans-unit id="alttext.suggestSearching">
+			<trans-unit id="alttext.suggestSearching" resname="alttext.suggestSearching">
 				<source>Searching...</source>
 			</trans-unit>
-			<trans-unit id="ver.online">
+			<trans-unit id="ver.online" resname="ver.online">
 				<source>ONLINE</source>
 			</trans-unit>
-			<trans-unit id="ver.mgm">
+			<trans-unit id="ver.mgm" resname="ver.mgm">
 				<source>Version Management</source>
 			</trans-unit>
-			<trans-unit id="ver.selVer">
+			<trans-unit id="ver.selVer" resname="ver.selVer">
 				<source>Select version</source>
 			</trans-unit>
-			<trans-unit id="ver.swap">
+			<trans-unit id="ver.swap" resname="ver.swap">
 				<source>Swap/Publish</source>
 			</trans-unit>
-			<trans-unit id="ver.swapPage">
+			<trans-unit id="ver.swapPage" resname="ver.swapPage">
 				<source>Publish this version of the page including content</source>
 			</trans-unit>
-			<trans-unit id="TYPO3_Element_Browser">
+			<trans-unit id="TYPO3_Element_Browser" resname="TYPO3_Element_Browser">
 				<source>TYPO3 Element Browser</source>
 			</trans-unit>
-			<trans-unit id="labels.referencesToRecord">
+			<trans-unit id="labels.referencesToRecord" resname="labels.referencesToRecord">
 				<source>(There are %s reference(s) to this record!)</source>
 			</trans-unit>
-			<trans-unit id="labels.referencesToFolder">
+			<trans-unit id="labels.referencesToFolder" resname="labels.referencesToFolder">
 				<source>(There are %s reference(s) to this folder!)</source>
 			</trans-unit>
-			<trans-unit id="labels.referencesToFile">
+			<trans-unit id="labels.referencesToFile" resname="labels.referencesToFile">
 				<source>(There are %s reference(s) to this file!)</source>
 			</trans-unit>
-			<trans-unit id="labels.translationsOfRecord">
+			<trans-unit id="labels.translationsOfRecord" resname="labels.translationsOfRecord">
 				<source>(This record has %s translation(s) which will be deleted, too!)</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.viewItem">
+			<trans-unit id="show_item.php.viewItem" resname="show_item.php.viewItem">
 				<source>View Item</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.referencesToThisItem">
+			<trans-unit id="show_item.php.referencesToThisItem" resname="show_item.php.referencesToThisItem">
 				<source>References to this item</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.referencesFromThisItem">
+			<trans-unit id="show_item.php.referencesFromThisItem" resname="show_item.php.referencesFromThisItem">
 				<source>References from this item</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.file">
+			<trans-unit id="show_item.php.file" resname="show_item.php.file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.dimensions">
+			<trans-unit id="show_item.php.dimensions" resname="show_item.php.dimensions">
 				<source>Dimensions</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.filesize">
+			<trans-unit id="show_item.php.filesize" resname="show_item.php.filesize">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.pixels">
+			<trans-unit id="show_item.php.pixels" resname="show_item.php.pixels">
 				<source>Pixels</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.files">
+			<trans-unit id="show_item.php.files" resname="show_item.php.files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.cannotDisplayArchive">
+			<trans-unit id="show_item.php.cannotDisplayArchive" resname="show_item.php.cannotDisplayArchive">
 				<source>Sorry, TYPO3_CONF_VARS[BE][disable_exec_function] was set, so cannot display content of archive file.</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.table">
+			<trans-unit id="show_item.php.table" resname="show_item.php.table">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.uid">
+			<trans-unit id="show_item.php.uid" resname="show_item.php.uid">
 				<source>Uid</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.title">
+			<trans-unit id="show_item.php.title" resname="show_item.php.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.field">
+			<trans-unit id="show_item.php.field" resname="show_item.php.field">
 				<source>Field</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.flexpointer">
+			<trans-unit id="show_item.php.flexpointer" resname="show_item.php.flexpointer">
 				<source>Flexpointer</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.softrefKey">
+			<trans-unit id="show_item.php.softrefKey" resname="show_item.php.softrefKey">
 				<source>Softref Key</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.sorting">
+			<trans-unit id="show_item.php.sorting" resname="show_item.php.sorting">
 				<source>Sorting</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refTable">
+			<trans-unit id="show_item.php.refTable" resname="show_item.php.refTable">
 				<source>Ref Table</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refUid">
+			<trans-unit id="show_item.php.refUid" resname="show_item.php.refUid">
 				<source>Ref Uid</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.refString">
+			<trans-unit id="show_item.php.refString" resname="show_item.php.refString">
 				<source>Ref String</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.ftp_area">
+			<trans-unit id="show_item.php.ftp_area" resname="show_item.php.ftp_area">
 				<source>FTP AREA</source>
 			</trans-unit>
-			<trans-unit id="show_item.php.missing_record">
+			<trans-unit id="show_item.php.missing_record" resname="show_item.php.missing_record">
 				<source>Missing</source>
 			</trans-unit>
-			<trans-unit id="db_new.php.pagetitle">
+			<trans-unit id="db_new.php.pagetitle" resname="db_new.php.pagetitle">
 				<source>New record</source>
 			</trans-unit>
-			<trans-unit id="db_new.php.after">
+			<trans-unit id="db_new.php.after" resname="db_new.php.after">
 				<source>after</source>
 			</trans-unit>
-			<trans-unit id="db_new.php.inside">
+			<trans-unit id="db_new.php.inside" resname="db_new.php.inside">
 				<source>inside</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.pagetitle">
+			<trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle">
 				<source>Upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.submit">
+			<trans-unit id="file_upload.php.submit" resname="file_upload.php.submit">
 				<source>Upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.files">
+			<trans-unit id="file_upload.php.files" resname="file_upload.php.files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.dropzonehint.title">
+			<trans-unit id="file_upload.dropzonehint.title" resname="file_upload.dropzonehint.title">
 				<source>Drag &amp; drop to upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.dropzonehint.message">
+			<trans-unit id="file_upload.dropzonehint.message" resname="file_upload.dropzonehint.message">
 				<source>Drop your files here, or &lt;u&gt;click, browse &amp; choose files&lt;/u&gt;</source>
 			</trans-unit>
-			<trans-unit id="file_upload.select-and-submit">
+			<trans-unit id="file_upload.select-and-submit" resname="file_upload.select-and-submit">
 				<source>Select &amp; upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.maxFileSizeExceeded">
+			<trans-unit id="file_upload.maxFileSizeExceeded" resname="file_upload.maxFileSizeExceeded">
 				<source>File &quot;{0}&quot; exceeds maximum file size of {1}!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.fileNotAllowed">
+			<trans-unit id="file_upload.fileNotAllowed" resname="file_upload.fileNotAllowed">
 				<source>Filename &quot;{0}&quot; is not allowed!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.fileExtensionExpected">
+			<trans-unit id="file_upload.fileExtensionExpected" resname="file_upload.fileExtensionExpected">
 				<source>Upload failed! A file with &quot;{0}&quot; extension is expected!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.uploadFailed">
+			<trans-unit id="file_upload.uploadFailed" resname="file_upload.uploadFailed">
 				<source>Upload of file &quot;{0}&quot; failed!</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-in-progress">
+			<trans-unit id="file_upload.upload-in-progress" resname="file_upload.upload-in-progress">
 				<source>File upload in progress...</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-progress-info">
+			<trans-unit id="file_upload.upload-progress-info" resname="file_upload.upload-progress-info">
 				<source>Uploading file {0} out of {1} files.</source>
 			</trans-unit>
-			<trans-unit id="file_upload.upload-finished">
+			<trans-unit id="file_upload.upload-finished" resname="file_upload.upload-finished">
 				<source>Upload complete! Filelist reloading...</source>
 			</trans-unit>
-			<trans-unit id="file_upload.overwriteExistingFiles">
+			<trans-unit id="file_upload.overwriteExistingFiles" resname="file_upload.overwriteExistingFiles">
 				<source>Shall existing files be overwritten?</source>
 			</trans-unit>
-			<trans-unit id="file_upload.header.originalFile">
+			<trans-unit id="file_upload.header.originalFile" resname="file_upload.header.originalFile">
 				<source>Original file</source>
 			</trans-unit>
-			<trans-unit id="file_upload.header.uploadedFile">
+			<trans-unit id="file_upload.header.uploadedFile" resname="file_upload.header.uploadedFile">
 				<source>Uploaded file</source>
 			</trans-unit>
-			<trans-unit id="file_upload.header.action">
+			<trans-unit id="file_upload.header.action" resname="file_upload.header.action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="file_upload.existingfiles.title">
+			<trans-unit id="file_upload.existingfiles.title" resname="file_upload.existingfiles.title">
 				<source>Some files exist already</source>
 			</trans-unit>
-			<trans-unit id="file_upload.existingfiles.description">
+			<trans-unit id="file_upload.existingfiles.description" resname="file_upload.existingfiles.description">
 				<source>Some files you wanted to upload exist already on the system. Please select what you want to do with each file.</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.skip">
+			<trans-unit id="file_upload.actions.skip" resname="file_upload.actions.skip">
 				<source>Skip the file</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.rename">
+			<trans-unit id="file_upload.actions.rename" resname="file_upload.actions.rename">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.override">
+			<trans-unit id="file_upload.actions.override" resname="file_upload.actions.override">
 				<source>Overwrite</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.use_existing">
+			<trans-unit id="file_upload.actions.use_existing" resname="file_upload.actions.use_existing">
 				<source>Use existing file</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.all.label">
+			<trans-unit id="file_upload.actions.all.label" resname="file_upload.actions.all.label">
 				<source>Alternatively, choose a mass action</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.all.empty">
+			<trans-unit id="file_upload.actions.all.empty" resname="file_upload.actions.all.empty">
 				<source>Please choose</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.all.skip">
+			<trans-unit id="file_upload.actions.all.skip" resname="file_upload.actions.all.skip">
 				<source>Skip all files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.all.rename">
+			<trans-unit id="file_upload.actions.all.rename" resname="file_upload.actions.all.rename">
 				<source>Rename all files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.all.override">
+			<trans-unit id="file_upload.actions.all.override" resname="file_upload.actions.all.override">
 				<source>Overwrite all files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.actions.all.use_existing">
+			<trans-unit id="file_upload.actions.all.use_existing" resname="file_upload.actions.all.use_existing">
 				<source>Use existing files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.button.cancel">
+			<trans-unit id="file_upload.button.cancel" resname="file_upload.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="file_upload.button.continue">
+			<trans-unit id="file_upload.button.continue" resname="file_upload.button.continue">
 				<source>Continue with selected actions</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.number_of_files">
+			<trans-unit id="file_upload.php.number_of_files" resname="file_upload.php.number_of_files">
 				<source>Number of files</source>
 			</trans-unit>
-			<trans-unit id="file_rename.exists.title">
+			<trans-unit id="file_rename.exists.title" resname="file_rename.exists.title">
 				<source>File exists already</source>
 			</trans-unit>
-			<trans-unit id="file_rename.exists.description">
+			<trans-unit id="file_rename.exists.description" resname="file_rename.exists.description">
 				<source>You want to rename the file "{0}" to "{1}", but such a file already exists. How do you want to proceed?</source>
 			</trans-unit>
-			<trans-unit id="file_rename.actions.cancel">
+			<trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="file_rename.actions.rename">
+			<trans-unit id="file_rename.actions.rename" resname="file_rename.actions.rename">
 				<source>Rename with unique name</source>
 			</trans-unit>
-			<trans-unit id="file_rename.actions.override">
+			<trans-unit id="file_rename.actions.override" resname="file_rename.actions.override">
 				<source>Overwrite</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.pagetitle">
+			<trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.submit">
+			<trans-unit id="file_rename.php.submit" resname="file_rename.php.submit">
 				<source>Rename</source>
 				<note from="developer">This label is not used since TYPO3 v9.</note>
 			</trans-unit>
-			<trans-unit id="file_rename.php.label.target.file">
+			<trans-unit id="file_rename.php.label.target.file" resname="file_rename.php.label.target.file">
 				<source>New file name</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.label.target.folder">
+			<trans-unit id="file_rename.php.label.target.folder" resname="file_rename.php.label.target.folder">
 				<source>New folder name</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.pagetitle">
+			<trans-unit id="file_replace.php.pagetitle" resname="file_replace.php.pagetitle">
 				<source>Replace</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.selectfile">
+			<trans-unit id="file_replace.php.selectfile" resname="file_replace.php.selectfile">
 				<source>Select new file</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.keepfiletitle">
+			<trans-unit id="file_replace.php.keepfiletitle" resname="file_replace.php.keepfiletitle">
 				<source>Keep the current filename?</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.browse">
+			<trans-unit id="file_replace.php.browse" resname="file_replace.php.browse">
 				<source>Browse</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.submit">
+			<trans-unit id="file_replace.php.submit" resname="file_replace.php.submit">
 				<source>Replace</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.pagetitle">
+			<trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.submit">
+			<trans-unit id="file_edit.php.submit" resname="file_edit.php.submit">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.saveAndClose">
+			<trans-unit id="file_edit.php.saveAndClose" resname="file_edit.php.saveAndClose">
 				<source>Save and Close</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.coundNot">
+			<trans-unit id="file_edit.php.coundNot" resname="file_edit.php.coundNot">
 				<source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br /&gt; &lt;b&gt;%s&lt;/b&gt;</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.pagetitle">
+			<trans-unit id="file_newfolder.php.pagetitle" resname="file_newfolder.php.pagetitle">
 				<source>New file or folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfolders">
+			<trans-unit id="file_newfolder.php.newfolders" resname="file_newfolder.php.newfolders">
 				<source>Create new folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfolder">
+			<trans-unit id="file_newfolder.php.label_newfolder" resname="file_newfolder.php.label_newfolder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.submit">
+			<trans-unit id="file_newfolder.php.submit" resname="file_newfolder.php.submit">
 				<source>Create folders</source>
 			</trans-unit>
-			<trans-unit id="create_folder.title">
+			<trans-unit id="create_folder.title" resname="create_folder.title">
 				<source>Create new folder</source>
 			</trans-unit>
-			<trans-unit id="create_folder.submit">
+			<trans-unit id="create_folder.submit" resname="create_folder.submit">
 				<source>Create folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.folders">
+			<trans-unit id="file_newfolder.php.folders" resname="file_newfolder.php.folders">
 				<source>folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile_submit">
+			<trans-unit id="file_newfolder.php.newfile_submit" resname="file_newfolder.php.newfile_submit">
 				<source>Create file</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile">
+			<trans-unit id="file_newfolder.php.newfile" resname="file_newfolder.php.newfile">
 				<source>Create new textfile</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfile">
+			<trans-unit id="file_newfolder.php.label_newfile" resname="file_newfolder.php.label_newfile">
 				<source>File name</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.number_of_folders">
+			<trans-unit id="file_newfolder.php.number_of_folders" resname="file_newfolder.php.number_of_folders">
 				<source>Number of folders</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media">
+			<trans-unit id="online_media.new_media" resname="online_media.new_media">
 				<source>Add new media asset</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media.label">
+			<trans-unit id="online_media.new_media.label" resname="online_media.new_media.label">
 				<source>Url of remote source</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media.allowedProviders">
+			<trans-unit id="online_media.new_media.allowedProviders" resname="online_media.new_media.allowedProviders">
 				<source>Allowed media providers</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media.button">
+			<trans-unit id="online_media.new_media.button" resname="online_media.new_media.button">
 				<source>Add media by URL</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media.submit">
+			<trans-unit id="online_media.new_media.submit" resname="online_media.new_media.submit">
 				<source>Add media</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media.added">
+			<trans-unit id="online_media.new_media.added" resname="online_media.new_media.added">
 				<source>Added media</source>
 			</trans-unit>
-			<trans-unit id="online_media.new_media.placeholder">
+			<trans-unit id="online_media.new_media.placeholder" resname="online_media.new_media.placeholder">
 				<source>Paste media url here...</source>
 			</trans-unit>
-			<trans-unit id="online_media.error.new_media.failed">
+			<trans-unit id="online_media.error.new_media.failed" resname="online_media.error.new_media.failed">
 				<source>Adding media failed</source>
 			</trans-unit>
-			<trans-unit id="online_media.error.invalid_url">
+			<trans-unit id="online_media.error.invalid_url" resname="online_media.error.invalid_url">
 				<source>Unknown/not allowed URL</source>
 			</trans-unit>
-			<trans-unit id="file_clipupload.php.warning_head">
+			<trans-unit id="file_clipupload.php.warning_head" resname="file_clipupload.php.warning_head">
 				<source>Upload path error</source>
 			</trans-unit>
-			<trans-unit id="file_clipupload.php.warning">
+			<trans-unit id="file_clipupload.php.warning" resname="file_clipupload.php.warning">
 				<source>No upload-folder is found. You should create a TEMP-folder ("_temp_") in the root of one of your mounts first!</source>
 			</trans-unit>
-			<trans-unit id="mess.redraw">
+			<trans-unit id="mess.redraw" resname="mess.redraw">
 				<source>Redrawing the page will discard the current data. Do you want to continue?</source>
 			</trans-unit>
-			<trans-unit id="mess.delete">
+			<trans-unit id="mess.delete" resname="mess.delete">
 				<source>Are you sure you want to delete '%s'?</source>
 			</trans-unit>
-			<trans-unit id="mess.deleteClip">
+			<trans-unit id="mess.deleteClip" resname="mess.deleteClip">
 				<source>Are you sure you want to delete ALL referenced elements (%s) on the clipboard?</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login" xml:space="preserve">
+			<trans-unit id="mess.refresh_login" resname="mess.refresh_login" xml:space="preserve">
 				<source>Your login has probably expired.
 Do you want to refresh it now?</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_refresh_button">
+			<trans-unit id="mess.refresh_login_refresh_button" resname="mess.refresh_login_refresh_button">
 				<source>Stay logged in!</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_direct_logout_button">
+			<trans-unit id="mess.refresh_direct_logout_button" resname="mess.refresh_direct_logout_button">
 				<source>No, log out.</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_logging_in">
+			<trans-unit id="mess.refresh_login_logging_in" resname="mess.refresh_login_logging_in">
 				<source>Logging in...</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_failed">
+			<trans-unit id="mess.refresh_login_failed" resname="mess.refresh_login_failed">
 				<source>Login failed</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_failed_message">
+			<trans-unit id="mess.refresh_login_failed_message" resname="mess.refresh_login_failed_message">
 				<source>Password not correct.</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_title">
+			<trans-unit id="mess.refresh_login_title" resname="mess.refresh_login_title">
 				<source>Refresh Login to TYPO3 (User: %s)</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_username">
+			<trans-unit id="mess.refresh_login_username" resname="mess.refresh_login_username">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_password">
+			<trans-unit id="mess.refresh_login_password" resname="mess.refresh_login_password">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_button">
+			<trans-unit id="mess.refresh_login_button" resname="mess.refresh_login_button">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_exit_button">
+			<trans-unit id="mess.refresh_exit_button" resname="mess.refresh_exit_button">
 				<source>Exit</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_emptyPassword">
+			<trans-unit id="mess.refresh_login_emptyPassword" resname="mess.refresh_login_emptyPassword">
 				<source>Empty password is not allowed!</source>
 			</trans-unit>
-			<trans-unit id="mess.please_wait">
+			<trans-unit id="mess.please_wait" resname="mess.please_wait">
 				<source>Please wait ...</source>
 			</trans-unit>
-			<trans-unit id="mess.be_locked">
+			<trans-unit id="mess.be_locked" resname="mess.be_locked">
 				<source>The TYPO3 backend is currently locked for maintenance. Leave this browser window open and the backend will automatically become available again once maintenance is complete.</source>
 			</trans-unit>
-			<trans-unit id="mess.login_about_to_expire">
+			<trans-unit id="mess.login_about_to_expire" resname="mess.login_about_to_expire">
 				<source>Your TYPO3 login is about to expire. Please confirm that you want to stay logged in.</source>
 			</trans-unit>
-			<trans-unit id="mess.refresh_login_logout_button">
+			<trans-unit id="mess.refresh_login_logout_button" resname="mess.refresh_login_logout_button">
 				<source>Log me out</source>
 			</trans-unit>
-			<trans-unit id="mess.login_refresh_about_to_expire">
+			<trans-unit id="mess.login_refresh_about_to_expire" resname="mess.login_refresh_about_to_expire">
 				<source>Your TYPO3 login is about to expire. Please confirm that you want to be logged out.</source>
 			</trans-unit>
-			<trans-unit id="mess.login_about_to_expire_title">
+			<trans-unit id="mess.login_about_to_expire_title" resname="mess.login_about_to_expire_title">
 				<source>TYPO3 login expiration notice</source>
 			</trans-unit>
-			<trans-unit id="mess.login_expired">
+			<trans-unit id="mess.login_expired" resname="mess.login_expired">
 				<source>Your TYPO3 login has expired. You need to login again if you want to continue. Otherwise you can close the current browser window.</source>
 			</trans-unit>
-			<trans-unit id="mess.noSelItemForEdit">
+			<trans-unit id="mess.noSelItemForEdit" resname="mess.noSelItemForEdit">
 				<source>Please select one or more items in the list before you can edit.</source>
 			</trans-unit>
-			<trans-unit id="mess.refreshRequired.title">
+			<trans-unit id="mess.refreshRequired.title" resname="mess.refreshRequired.title">
 				<source>Refresh required</source>
 			</trans-unit>
-			<trans-unit id="mess.refreshRequired.content">
+			<trans-unit id="mess.refreshRequired.content" resname="mess.refreshRequired.content">
 				<source>This change will affect which fields are available in the form. Would you like to save now in order to refresh the display?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_into">
+			<trans-unit id="mess.move_into" resname="mess.move_into">
 				<source>Move "%s" into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_into_colPos">
+			<trans-unit id="mess.move_into_colPos" resname="mess.move_into_colPos">
 				<source>Move "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_after">
+			<trans-unit id="mess.move_after" resname="mess.move_after">
 				<source>Move "%s" to after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copy_into">
+			<trans-unit id="mess.copy_into" resname="mess.copy_into">
 				<source>Copy "%s" into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copy_into_colPos">
+			<trans-unit id="mess.copy_into_colPos" resname="mess.copy_into_colPos">
 				<source>Copy "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copy_after">
+			<trans-unit id="mess.copy_after" resname="mess.copy_after">
 				<source>Copy "%s" to after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copycb_into">
+			<trans-unit id="mess.copycb_into" resname="mess.copycb_into">
 				<source>Copy all elements (%s) from the clipboard into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.copycb_after">
+			<trans-unit id="mess.copycb_after" resname="mess.copycb_after">
 				<source>Copy all elements (%s) from the clipboard to the position after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.movecb_into">
+			<trans-unit id="mess.movecb_into" resname="mess.movecb_into">
 				<source>Move all elements (%s) from the clipboard into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.movecb_after">
+			<trans-unit id="mess.movecb_after" resname="mess.movecb_after">
 				<source>Move all elements (%s) from the clipboard to the position after "%s"?</source>
 			</trans-unit>
-			<trans-unit id="rm.menu">
+			<trans-unit id="rm.menu" resname="rm.menu">
 				<source>[menu]</source>
 			</trans-unit>
-			<trans-unit id="rm.saveDoc">
+			<trans-unit id="rm.saveDoc" resname="rm.saveDoc">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="rm.viewDoc">
+			<trans-unit id="rm.viewDoc" resname="rm.viewDoc">
 				<source>View</source>
 			</trans-unit>
-			<trans-unit id="rm.saveDocShow">
+			<trans-unit id="rm.saveDocShow" resname="rm.saveDocShow">
 				<source>Save and view page</source>
 			</trans-unit>
-			<trans-unit id="rm.saveCloseDoc">
+			<trans-unit id="rm.saveCloseDoc" resname="rm.saveCloseDoc">
 				<source>Save and close</source>
 			</trans-unit>
-			<trans-unit id="rm.saveCloseAllDocs">
+			<trans-unit id="rm.saveCloseAllDocs" resname="rm.saveCloseAllDocs">
 				<source>Save and close all</source>
 			</trans-unit>
-			<trans-unit id="rm.saveNewDoc">
+			<trans-unit id="rm.saveNewDoc" resname="rm.saveNewDoc">
 				<source>Save and create a new one</source>
 			</trans-unit>
-			<trans-unit id="rm.newDoc">
+			<trans-unit id="rm.newDoc" resname="rm.newDoc">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="rm.duplicateDoc">
+			<trans-unit id="rm.duplicateDoc" resname="rm.duplicateDoc">
 				<source>Duplicate</source>
 			</trans-unit>
-			<trans-unit id="labels.recordDuplicated">
+			<trans-unit id="labels.recordDuplicated" resname="labels.recordDuplicated">
 				<source>The record has been duplicated.</source>
 			</trans-unit>
-			<trans-unit id="rm.closeDoc">
+			<trans-unit id="rm.closeDoc" resname="rm.closeDoc">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="rm.closeAllDocs">
+			<trans-unit id="rm.closeAllDocs" resname="rm.closeAllDocs">
 				<source>Close all</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_clearCache">
+			<trans-unit id="rm.clearCache_clearCache" resname="rm.clearCache_clearCache">
 				<source>Clear cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_thisPage">
+			<trans-unit id="rm.clearCache_thisPage" resname="rm.clearCache_thisPage">
 				<source>This page</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_all">
+			<trans-unit id="rm.clearCache_all" resname="rm.clearCache_all">
 				<source>Clear FE cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_pages">
+			<trans-unit id="rm.clearCache_pages" resname="rm.clearCache_pages">
 				<source>Clear Page Cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCache_allTypo3Conf">
+			<trans-unit id="rm.clearCache_allTypo3Conf" resname="rm.clearCache_allTypo3Conf">
 				<source>Clear cache in typo3conf/</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_all">
+			<trans-unit id="rm.clearCacheMenu_all" resname="rm.clearCacheMenu_all">
 				<source>Clear all caches</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_pages">
+			<trans-unit id="rm.clearCacheMenu_pages" resname="rm.clearCacheMenu_pages">
 				<source>Clear page content cache</source>
 			</trans-unit>
-			<trans-unit id="rm.clearCacheMenu_allTypo3Conf">
+			<trans-unit id="rm.clearCacheMenu_allTypo3Conf" resname="rm.clearCacheMenu_allTypo3Conf">
 				<source>Clear configuration cache</source>
 			</trans-unit>
-			<trans-unit id="flushPageCachesTitle">
+			<trans-unit id="flushPageCachesTitle" resname="flushPageCachesTitle">
 				<source>Flush frontend caches</source>
 			</trans-unit>
-			<trans-unit id="flushPageCachesDescription">
+			<trans-unit id="flushPageCachesDescription" resname="flushPageCachesDescription">
 				<source>Clear frontend and page-related caches.</source>
 			</trans-unit>
-			<trans-unit id="flushAllCachesTitle2">
+			<trans-unit id="flushAllCachesTitle2" resname="flushAllCachesTitle2">
 				<source>Flush all caches</source>
 			</trans-unit>
-			<trans-unit id="flushAllCachesDescription2">
+			<trans-unit id="flushAllCachesDescription2" resname="flushAllCachesDescription2">
 				<source>Clear all system-related caches, including localization, extension configuration, file caches and opcode caches. Rebuilding this cache may take some time.</source>
 			</trans-unit>
-			<trans-unit id="rm.adminFunctions">
+			<trans-unit id="rm.adminFunctions" resname="rm.adminFunctions">
 				<source>Admin functions</source>
 			</trans-unit>
-			<trans-unit id="rm.edit">
+			<trans-unit id="rm.edit" resname="rm.edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="rm.export">
+			<trans-unit id="rm.export" resname="rm.export">
 				<source>Export</source>
 			</trans-unit>
-			<trans-unit id="rm.delete">
+			<trans-unit id="rm.delete" resname="rm.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileNotDeletedHasReferences">
+			<trans-unit id="message.header.fileNotDeletedHasReferences" resname="message.header.fileNotDeletedHasReferences">
 				<source>File not deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileNotDeletedHasReferences">
+			<trans-unit id="message.description.fileNotDeletedHasReferences" resname="message.description.fileNotDeletedHasReferences">
 				<source>The file cannot be deleted since it is still used at the following places</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences">
+			<trans-unit id="message.header.folderNotDeletedHasFilesWithReferences" resname="message.header.folderNotDeletedHasFilesWithReferences">
 				<source>Folder not deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.folderNotDeletedHasFilesWithReferences">
+			<trans-unit id="message.description.folderNotDeletedHasFilesWithReferences" resname="message.description.folderNotDeletedHasFilesWithReferences">
 				<source>The folder cannot be deleted since it still contains files in use.</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileHasBrokenReferences">
+			<trans-unit id="message.header.fileHasBrokenReferences" resname="message.header.fileHasBrokenReferences">
 				<source>File has broken references</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileHasBrokenReferences">
+			<trans-unit id="message.description.fileHasBrokenReferences" resname="message.description.fileHasBrokenReferences">
 				<source>The file has %s broken reference(s) but it will be deleted regardless.</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileNotFound">
+			<trans-unit id="message.header.fileNotFound" resname="message.header.fileNotFound">
 				<source>File not found</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileNotFound">
+			<trans-unit id="message.description.fileNotFound" resname="message.description.fileNotFound">
 				<source>The file %s is not found, possible already removed.</source>
 			</trans-unit>
-			<trans-unit id="message.header.fileDeleted">
+			<trans-unit id="message.header.fileDeleted" resname="message.header.fileDeleted">
 				<source>File deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.fileDeleted">
+			<trans-unit id="message.description.fileDeleted" resname="message.description.fileDeleted">
 				<source>The file "%s" was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderDeleted">
+			<trans-unit id="message.header.folderDeleted" resname="message.header.folderDeleted">
 				<source>Folder deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.folderDeleted">
+			<trans-unit id="message.description.folderDeleted" resname="message.description.folderDeleted">
 				<source>The folder "%s" was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="message.header.folderNotDeletedHasFiles">
+			<trans-unit id="message.header.folderNotDeletedHasFiles" resname="message.header.folderNotDeletedHasFiles">
 				<source>Folder not deleted</source>
 			</trans-unit>
-			<trans-unit id="message.description.folderNotDeletedHasFiles">
+			<trans-unit id="message.description.folderNotDeletedHasFiles" resname="message.description.folderNotDeletedHasFiles">
 				<source>The folder cannot be deleted since it still contains files.</source>
 			</trans-unit>
 
-			<trans-unit id="buttons.logout">
+			<trans-unit id="buttons.logout" resname="buttons.logout">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="buttons.exit">
+			<trans-unit id="buttons.exit" resname="buttons.exit">
 				<source>Exit</source>
 			</trans-unit>
-			<trans-unit id="buttons.selMenu_modules">
+			<trans-unit id="buttons.selMenu_modules" resname="buttons.selMenu_modules">
 				<source>MODULES</source>
 			</trans-unit>
-			<trans-unit id="buttons.clear">
+			<trans-unit id="buttons.clear" resname="buttons.clear">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="buttons.clipboard">
+			<trans-unit id="buttons.clipboard" resname="buttons.clipboard">
 				<source>Clipboard</source>
 			</trans-unit>
-			<trans-unit id="buttons.toggleLinkExplanation">
+			<trans-unit id="buttons.toggleLinkExplanation" resname="buttons.toggleLinkExplanation">
 				<source>Toggle link explanation</source>
 			</trans-unit>
-			<trans-unit id="buttons.toggleSlugExplanation">
+			<trans-unit id="buttons.toggleSlugExplanation" resname="buttons.toggleSlugExplanation">
 				<source>Toggle manual URL segment</source>
 			</trans-unit>
-			<trans-unit id="buttons.recreateSlugExplanation">
+			<trans-unit id="buttons.recreateSlugExplanation" resname="buttons.recreateSlugExplanation">
 				<source>Recalculate URL segment from page title</source>
 			</trans-unit>
-			<trans-unit id="cm.copy">
+			<trans-unit id="cm.copy" resname="cm.copy">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="cm.cut">
+			<trans-unit id="cm.cut" resname="cm.cut">
 				<source>Cut</source>
 			</trans-unit>
-			<trans-unit id="cm.cutrelease">
+			<trans-unit id="cm.cutrelease" resname="cm.cutrelease">
 				<source>Cut release</source>
 			</trans-unit>
-			<trans-unit id="cm.view">
+			<trans-unit id="cm.view" resname="cm.view">
 				<source>Show</source>
 			</trans-unit>
-			<trans-unit id="cm.edit">
+			<trans-unit id="cm.edit" resname="cm.edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="cm.editcontent">
+			<trans-unit id="cm.editcontent" resname="cm.editcontent">
 				<source>Edit content</source>
 			</trans-unit>
-			<trans-unit id="cm.editMetadata">
+			<trans-unit id="cm.editMetadata" resname="cm.editMetadata">
 				<source>Edit Metadata of this file</source>
 			</trans-unit>
-			<trans-unit id="cm.new">
+			<trans-unit id="cm.new" resname="cm.new">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="cm.pasteinto">
+			<trans-unit id="cm.pasteinto" resname="cm.pasteinto">
 				<source>Paste into</source>
 			</trans-unit>
-			<trans-unit id="cm.pasteafter">
+			<trans-unit id="cm.pasteafter" resname="cm.pasteafter">
 				<source>Paste after</source>
 			</trans-unit>
-			<trans-unit id="cm.select">
+			<trans-unit id="cm.select" resname="cm.select">
 				<source>Select</source>
 			</trans-unit>
-			<trans-unit id="cm.deselect">
+			<trans-unit id="cm.deselect" resname="cm.deselect">
 				<source>Deselect</source>
 			</trans-unit>
-			<trans-unit id="cm.selectto">
+			<trans-unit id="cm.selectto" resname="cm.selectto">
 				<source>Select to</source>
 			</trans-unit>
-			<trans-unit id="cm.deselectto">
+			<trans-unit id="cm.deselectto" resname="cm.deselectto">
 				<source>Deselect to</source>
 			</trans-unit>
-			<trans-unit id="cm.delete">
+			<trans-unit id="cm.delete" resname="cm.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="cm.hide">
+			<trans-unit id="cm.hide" resname="cm.hide">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="cm.unhide">
+			<trans-unit id="cm.unhide" resname="cm.unhide">
 				<source>Unhide</source>
 			</trans-unit>
-			<trans-unit id="cm.online">
+			<trans-unit id="cm.online" resname="cm.online">
 				<source>Turn online</source>
 			</trans-unit>
-			<trans-unit id="cm.offline">
+			<trans-unit id="cm.offline" resname="cm.offline">
 				<source>Turn offline</source>
 			</trans-unit>
-			<trans-unit id="cm.upload">
+			<trans-unit id="cm.upload" resname="cm.upload">
 				<source>Upload Files</source>
 			</trans-unit>
-			<trans-unit id="cm.rename">
+			<trans-unit id="cm.rename" resname="cm.rename">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="cm.replace">
+			<trans-unit id="cm.replace" resname="cm.replace">
 				<source>Replace</source>
 			</trans-unit>
-			<trans-unit id="cm.open">
+			<trans-unit id="cm.open" resname="cm.open">
 				<source>Open</source>
 			</trans-unit>
-			<trans-unit id="cm.save">
+			<trans-unit id="cm.save" resname="cm.save">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="cm.unzip">
+			<trans-unit id="cm.unzip" resname="cm.unzip">
 				<source>Unzip</source>
 			</trans-unit>
-			<trans-unit id="cm.info">
+			<trans-unit id="cm.info" resname="cm.info">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="cm.createnew">
+			<trans-unit id="cm.createnew" resname="cm.createnew">
 				<source>Create new</source>
 			</trans-unit>
-			<trans-unit id="cm.createnew.link">
+			<trans-unit id="cm.createnew.link" resname="cm.createnew.link">
 				<source>Create new %s</source>
 			</trans-unit>
-			<trans-unit id="cm.tempMountPoint">
+			<trans-unit id="cm.tempMountPoint" resname="cm.tempMountPoint">
 				<source>Mount as treeroot</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPage_into">
+			<trans-unit id="cm.copyPage_into" resname="cm.copyPage_into">
 				<source>Copy page into</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPage_after">
+			<trans-unit id="cm.copyPage_after" resname="cm.copyPage_after">
 				<source>Copy page after</source>
 			</trans-unit>
-			<trans-unit id="cm.movePage_into">
+			<trans-unit id="cm.movePage_into" resname="cm.movePage_into">
 				<source>Move page into</source>
 			</trans-unit>
-			<trans-unit id="cm.movePage_after">
+			<trans-unit id="cm.movePage_after" resname="cm.movePage_after">
 				<source>Move page after</source>
 			</trans-unit>
-			<trans-unit id="cm.copyFolder_into">
+			<trans-unit id="cm.copyFolder_into" resname="cm.copyFolder_into">
 				<source>Copy folder into</source>
 			</trans-unit>
-			<trans-unit id="cm.moveFolder_into">
+			<trans-unit id="cm.moveFolder_into" resname="cm.moveFolder_into">
 				<source>Move folder into</source>
 			</trans-unit>
-			<trans-unit id="cm.createNewRelation">
+			<trans-unit id="cm.createNewRelation" resname="cm.createNewRelation">
 				<source>Create new relation</source>
 			</trans-unit>
-			<trans-unit id="cm.branchActions">
+			<trans-unit id="cm.branchActions" resname="cm.branchActions">
 				<source>Branch Actions</source>
 			</trans-unit>
-			<trans-unit id="cm.copyPasteActions">
+			<trans-unit id="cm.copyPasteActions" resname="cm.copyPasteActions">
 				<source>Page Actions</source>
 			</trans-unit>
-			<trans-unit id="cm.collapseBranch">
+			<trans-unit id="cm.collapseBranch" resname="cm.collapseBranch">
 				<source>Collapse Branch</source>
 			</trans-unit>
-			<trans-unit id="cm.expandBranch">
+			<trans-unit id="cm.expandBranch" resname="cm.expandBranch">
 				<source>Expand Branch</source>
 			</trans-unit>
-			<trans-unit id="cm.more">
+			<trans-unit id="cm.more" resname="cm.more">
 				<source>More options...</source>
 			</trans-unit>
-			<trans-unit id="cm.allowedFileExtensions">
+			<trans-unit id="cm.allowedFileExtensions" resname="cm.allowedFileExtensions">
 				<source>Allowed file extensions</source>
 			</trans-unit>
-			<trans-unit id="cm.allowedEditableTextFileExtensions">
+			<trans-unit id="cm.allowedEditableTextFileExtensions" resname="cm.allowedEditableTextFileExtensions">
 				<source>Allowed editable text file extensions</source>
 			</trans-unit>
-			<trans-unit id="cm.allowEmbedSources">
+			<trans-unit id="cm.allowEmbedSources" resname="cm.allowEmbedSources">
 				<source>Allowed media sources</source>
 			</trans-unit>
-			<trans-unit id="cm.allowedRelations">
+			<trans-unit id="cm.allowedRelations" resname="cm.allowedRelations">
 				<source>Allowed relations</source>
 			</trans-unit>
-			<trans-unit id="sortable.dragmove">
+			<trans-unit id="sortable.dragmove" resname="sortable.dragmove">
 				<source>Drag to move</source>
 			</trans-unit>
-			<trans-unit id="tree.defaultPageTitle">
+			<trans-unit id="tree.defaultPageTitle" resname="tree.defaultPageTitle">
 				<source>[Default Title]</source>
 			</trans-unit>
-			<trans-unit id="tree.activeFilterMode">
+			<trans-unit id="tree.activeFilterMode" resname="tree.activeFilterMode">
 				<source>Active Filtering Mode</source>
 			</trans-unit>
-			<trans-unit id="tree.buttonNewNode">
+			<trans-unit id="tree.buttonNewNode" resname="tree.buttonNewNode">
 				<source>Create new pages</source>
 			</trans-unit>
-			<trans-unit id="tree.buttonFilter">
+			<trans-unit id="tree.buttonFilter" resname="tree.buttonFilter">
 				<source>Filter tree</source>
 			</trans-unit>
-			<trans-unit id="tree.searchTermInfo">
+			<trans-unit id="tree.searchTermInfo" resname="tree.searchTermInfo">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="warning.install_password">
+			<trans-unit id="warning.install_password" resname="warning.install_password">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sAbout section%s of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.installtool_default_password">
+			<trans-unit id="warning.installtool_default_password" resname="warning.installtool_default_password">
 				<source>The Install Tool is still using the default password "joh316". Update this within the %sImportant actions section%s of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.backend_admin">
+			<trans-unit id="warning.backend_admin" resname="warning.backend_admin">
 				<source>The default backend user "admin" with password "password" is still present. %sEdit this account%s, either deleting it completely or changing the username and password.</source>
 			</trans-unit>
-			<trans-unit id="warning.file_deny_pattern">
+			<trans-unit id="warning.file_deny_pattern" resname="warning.file_deny_pattern">
 				<source>The value of fileDenyPattern is not set to its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
 			</trans-unit>
-			<trans-unit id="warning.file_deny_pattern_partsNotPresent">
+			<trans-unit id="warning.file_deny_pattern_partsNotPresent" resname="warning.file_deny_pattern_partsNotPresent">
 				<source>Security Risk! The new value of fileDenyPattern misses parts of its default:%s If TYPO3 is running on Apache, a customized value might enable backend or frontend users to execute malicious php scripts.</source>
 			</trans-unit>
-			<trans-unit id="warning.file_deny_htaccess">
+			<trans-unit id="warning.file_deny_htaccess" resname="warning.file_deny_htaccess">
 				<source>The current value of fileDenyPattern allows to upload/create files with the name ".htaccess". If TYPO3 is running on Apache, this enables backend or frontend users to create and execute php scripts. Please reset the value of fileDenyPattern to its default.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_enabled">
+			<trans-unit id="warning.install_enabled" resname="warning.install_enabled">
 				<source>The Install Tool is permanently enabled. Delete the file "%s" when you have finished setting up TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_enabled_cmd">
+			<trans-unit id="warning.install_enabled_cmd" resname="warning.install_enabled_cmd">
 				<source>Click to remove the file now!</source>
 			</trans-unit>
-			<trans-unit id="warning.install_trustedhosts">
+			<trans-unit id="warning.install_trustedhosts" resname="warning.install_trustedhosts">
 				<source>The trusted hosts pattern check is disabled. Please define the allowed hosts in the [SYS][trustedHostsPattern] section of the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="warning.install_update">
+			<trans-unit id="warning.install_update" resname="warning.install_update">
 				<source>This installation is not configured for the TYPO3 version it is running. If you did so intentionally, this message can be safely ignored. If you are unsure, visit the Update Wizard section of the %sInstall Tool%s to see how TYPO3 would change.</source>
 			</trans-unit>
-			<trans-unit id="warning.header">
+			<trans-unit id="warning.header" resname="warning.header">
 				<source>Important Notice!</source>
 			</trans-unit>
-			<trans-unit id="warning.backend_reference">
+			<trans-unit id="warning.backend_reference" resname="warning.backend_reference">
 				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
-			<trans-unit id="warning.backend_reference_index">
+			<trans-unit id="warning.backend_reference_index" resname="warning.backend_reference_index">
 				<source>The Reference Index table is empty which is likely the result of a recent TYPO3 upgrade. The Reference Index was last updated on %3$s. Please go to %sTools&gt;DB Check%s and update the reference index.</source>
 			</trans-unit>
-			<trans-unit id="warning.memcache_not_usable">
+			<trans-unit id="warning.memcache_not_usable" resname="warning.memcache_not_usable">
 				<source>Memcache is configured, but connection to memcached failed with these configuration(s)</source>
 			</trans-unit>
-			<trans-unit id="warning.file_missing">
+			<trans-unit id="warning.file_missing" resname="warning.file_missing">
 				<source>File is missing!</source>
 			</trans-unit>
-			<trans-unit id="warning.file_missing_text">
+			<trans-unit id="warning.file_missing_text" resname="warning.file_missing_text">
 				<source>This file is marked as missing</source>
 			</trans-unit>
-			<trans-unit id="warning.header.storage_is_no_public">
+			<trans-unit id="warning.header.storage_is_no_public" resname="warning.header.storage_is_no_public">
 				<source>Storage is not public</source>
 			</trans-unit>
-			<trans-unit id="warning.message.storage_is_no_public">
+			<trans-unit id="warning.message.storage_is_no_public" resname="warning.message.storage_is_no_public">
 				<source>The storage has been marked to be "publicly available" but is not detected as such by the driver. The setting has been reverted.</source>
 			</trans-unit>
-			<trans-unit id="warning.inline_use_combination">
+			<trans-unit id="warning.inline_use_combination" resname="warning.inline_use_combination">
 				<source>This record will be modified globally.</source>
 			</trans-unit>
-			<trans-unit id="error.formProtection.tokenInvalid">
+			<trans-unit id="error.formProtection.tokenInvalid" resname="error.formProtection.tokenInvalid">
 				<source>Validating the security token of this form has failed. Please reload the form and submit it again.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcuts">
+			<trans-unit id="toolbarItems.shortcuts" resname="toolbarItems.shortcuts">
 				<source>Shortcuts</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcut">
+			<trans-unit id="toolbarItems.shortcut" resname="toolbarItems.shortcut">
 				<source>Shortcut</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcutsGroup">
+			<trans-unit id="toolbarItems.shortcutsGroup" resname="toolbarItems.shortcutsGroup">
 				<source>Shortcut Group</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcutsEdit">
+			<trans-unit id="toolbarItems.shortcutsEdit" resname="toolbarItems.shortcutsEdit">
 				<source>Edit Shortcut</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.shortcutsDelete">
+			<trans-unit id="toolbarItems.shortcutsDelete" resname="toolbarItems.shortcutsDelete">
 				<source>Delete Shortcut</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks">
+			<trans-unit id="toolbarItems.bookmarks" resname="toolbarItems.bookmarks">
 				<source>Bookmarks</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmark">
+			<trans-unit id="toolbarItems.bookmark" resname="toolbarItems.bookmark">
 				<source>Bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksGroup">
+			<trans-unit id="toolbarItems.bookmarksGroup" resname="toolbarItems.bookmarksGroup">
 				<source>Bookmark group</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksEdit">
+			<trans-unit id="toolbarItems.bookmarksEdit" resname="toolbarItems.bookmarksEdit">
 				<source>Edit bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksDelete">
+			<trans-unit id="toolbarItems.bookmarksDelete" resname="toolbarItems.bookmarksDelete">
 				<source>Delete bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.collapsePageTree">
+			<trans-unit id="toolbarItems.collapsePageTree" resname="toolbarItems.collapsePageTree">
 				<source>Collapse page tree</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.confirmBookmarksDelete">
+			<trans-unit id="toolbarItems.confirmBookmarksDelete" resname="toolbarItems.confirmBookmarksDelete">
 				<source>Do you really want to remove this bookmark?</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.createBookmark">
+			<trans-unit id="toolbarItems.createBookmark" resname="toolbarItems.createBookmark">
 				<source>Create bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkSavedTitle">
+			<trans-unit id="toolbarItems.bookmarkSavedTitle" resname="toolbarItems.bookmarkSavedTitle">
 				<source>Bookmark saved</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkSavedMessage">
+			<trans-unit id="toolbarItems.bookmarkSavedMessage" resname="toolbarItems.bookmarkSavedMessage">
 				<source>The bookmark was saved.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.help">
+			<trans-unit id="toolbarItems.help" resname="toolbarItems.help">
 				<source>Help</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.minMaxModuleMenu">
+			<trans-unit id="toolbarItems.minMaxModuleMenu" resname="toolbarItems.minMaxModuleMenu">
 				<source>Minimize/maximize module menu</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.search">
+			<trans-unit id="toolbarItems.search" resname="toolbarItems.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.workspace">
+			<trans-unit id="toolbarItems.workspace" resname="toolbarItems.workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo">
+			<trans-unit id="toolbarItems.sysinfo" resname="toolbarItems.sysinfo">
 				<source>System Information</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.phpversion">
+			<trans-unit id="toolbarItems.sysinfo.phpversion" resname="toolbarItems.sysinfo.phpversion">
 				<source>PHP Version</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.database">
+			<trans-unit id="toolbarItems.sysinfo.database" resname="toolbarItems.sysinfo.database">
 				<source>Database</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.applicationcontext">
+			<trans-unit id="toolbarItems.sysinfo.applicationcontext" resname="toolbarItems.sysinfo.applicationcontext">
 				<source>Application Context</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.composerMode">
+			<trans-unit id="toolbarItems.sysinfo.composerMode" resname="toolbarItems.sysinfo.composerMode">
 				<source>Composer mode</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.gitrevision">
+			<trans-unit id="toolbarItems.sysinfo.gitrevision" resname="toolbarItems.sysinfo.gitrevision">
 				<source>GIT Revision</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.operatingsystem">
+			<trans-unit id="toolbarItems.sysinfo.operatingsystem" resname="toolbarItems.sysinfo.operatingsystem">
 				<source>Operating System</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.webserver">
+			<trans-unit id="toolbarItems.sysinfo.webserver" resname="toolbarItems.sysinfo.webserver">
 				<source>Webserver</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.typo3-version">
+			<trans-unit id="toolbarItems.sysinfo.typo3-version" resname="toolbarItems.sysinfo.typo3-version">
 				<source>TYPO3 Version</source>
 			</trans-unit>
-			<trans-unit id="extension.not.installed">
+			<trans-unit id="extension.not.installed" resname="extension.not.installed">
 				<source>Extension "%s" is not installed.</source>
 			</trans-unit>
-			<trans-unit id="link.to.filefile.correctly">
+			<trans-unit id="link.to.filefile.correctly" resname="link.to.filefile.correctly">
 				<source>Please, do not link to this page.</source>
 			</trans-unit>
-			<trans-unit id="csh_tooltip_loading">
+			<trans-unit id="csh_tooltip_loading" resname="csh_tooltip_loading">
 				<source>Loading help...</source>
 			</trans-unit>
-			<trans-unit id="error.database_schema_mismatch">
+			<trans-unit id="error.database_schema_mismatch" resname="error.database_schema_mismatch">
 				<source>A SQL error occurred. This may indicate a schema mismatch between TCA and the database. Try running database compare in the Install Tool.</source>
 			</trans-unit>
-			<trans-unit id="error.database_schema_mismatch_title">
+			<trans-unit id="error.database_schema_mismatch_title" resname="error.database_schema_mismatch_title">
 				<source>Database Error</source>
 			</trans-unit>
-			<trans-unit id="error.items_proc_func_error">
+			<trans-unit id="error.items_proc_func_error" resname="error.items_proc_func_error">
 				<source>An error occurred trying to process items for field "%1$s" (%2$s).</source>
 			</trans-unit>
-			<trans-unit id="error.invalidEmail">
+			<trans-unit id="error.invalidEmail" resname="error.invalidEmail">
 				<source>"%s" is not a valid e-mail address.</source>
 			</trans-unit>
-			<trans-unit id="error.adminCanNotChangeSystemMaintainer">
+			<trans-unit id="error.adminCanNotChangeSystemMaintainer" resname="error.adminCanNotChangeSystemMaintainer">
 				<source>Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.</source>
 			</trans-unit>
-			<trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer">
+			<trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" resname="formEngine.beUser.admin.information.userIsSystemMaintainer">
 				<source>This user is a system maintainer</source>
 			</trans-unit>
-			<trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer">
+			<trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer" resname="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer">
 				<source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
 			</trans-unit>
-			<trans-unit id="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed">
+			<trans-unit id="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed" resname="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed">
 				<source>This user is a system maintainer. Changing the admin flag and changing password is denied.</source>
 			</trans-unit>
-			<trans-unit id="error.backendUserGroupListTypeError.header">
+			<trans-unit id="error.backendUserGroupListTypeError.header" resname="error.backendUserGroupListTypeError.header">
 				<source>Possible misconfiguration detected</source>
 			</trans-unit>
-			<trans-unit id="error.backendUserGroupListTypeError.message">
+			<trans-unit id="error.backendUserGroupListTypeError.message" resname="error.backendUserGroupListTypeError.message">
 				<source>Editing of at least one plugin was enabled but editing the page content type "Insert Plugin" is still disallowed. Group members won't be able to edit plugins unless you activate editing for the content type.</source>
 			</trans-unit>
-			<trans-unit id="error.missingLanguageIsocode">
+			<trans-unit id="error.missingLanguageIsocode" resname="error.missingLanguageIsocode">
 				<source>Missing ISO code for language "%s" (UID %d), please edit the language record and set it.</source>
 			</trans-unit>
-			<trans-unit id="labels.deleteTitle">
+			<trans-unit id="labels.deleteTitle" resname="labels.deleteTitle">
 				<source>Revert to default Constant</source>
 			</trans-unit>
-			<trans-unit id="labels.editTitle">
+			<trans-unit id="labels.editTitle" resname="labels.editTitle">
 				<source>Edit this Constant</source>
 			</trans-unit>
-			<trans-unit id="pageTranslation">
+			<trans-unit id="pageTranslation" resname="pageTranslation">
 				<source>Page Translation</source>
 			</trans-unit>
-			<trans-unit id="filestorage.invalidpathexception.title">
+			<trans-unit id="filestorage.invalidpathexception.title" resname="filestorage.invalidpathexception.title">
 				<source>Error in Path</source>
 			</trans-unit>
-			<trans-unit id="filestorage.invalidpathexception.message">
+			<trans-unit id="filestorage.invalidpathexception.message" resname="filestorage.invalidpathexception.message">
 				<source>You entered an invalid path for this File Storage. Note that "../" and "//" are not allowed when using an absolute path.</source>
 			</trans-unit>
 		</body>

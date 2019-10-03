@@ -3,10 +3,10 @@
 	<file t3:id="1440157535" source-language="en" datatype="plaintext" original="messages" date="2015-08-21T11:45:35Z" product-name="filelist">
 		<header/>
 		<body>
-			<trans-unit id="search">
+			<trans-unit id="search" resname="search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.no_results">
+			<trans-unit id="flashmessage.no_results" resname="flashmessage.no_results">
 				<source>No results found</source>
 			</trans-unit>
 		</body>

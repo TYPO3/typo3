@@ -3,61 +3,61 @@
 	<file t3:id="1415815000" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="taskcenter">
 		<header/>
 		<body>
-			<trans-unit id="taskcenter">
+			<trans-unit id="taskcenter" resname="taskcenter">
 				<source>Taskcenter</source>
 			</trans-unit>
-			<trans-unit id="choose_task">
+			<trans-unit id="choose_task" resname="choose_task">
 				<source>Task</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
 				<source>Tasks</source>
 			</trans-unit>
-			<trans-unit id="task_overview">
+			<trans-unit id="task_overview" resname="task_overview">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="task_tasks">
+			<trans-unit id="task_tasks" resname="task_tasks">
 				<source>Tasks</source>
 			</trans-unit>
-			<trans-unit id="lReplyAddress">
+			<trans-unit id="lReplyAddress" resname="lReplyAddress">
 				<source>Reply address is your email</source>
 			</trans-unit>
-			<trans-unit id="lSelf">
+			<trans-unit id="lSelf" resname="lSelf">
 				<source>Self</source>
 			</trans-unit>
-			<trans-unit id="lSendNew">
+			<trans-unit id="lSendNew" resname="lSendNew">
 				<source>Send message</source>
 			</trans-unit>
-			<trans-unit id="lSendReply">
+			<trans-unit id="lSendReply" resname="lSendReply">
 				<source>Reply to message</source>
 			</trans-unit>
-			<trans-unit id="listSeparator_Groups">
+			<trans-unit id="listSeparator_Groups" resname="listSeparator_Groups">
 				<source>__Groups:__</source>
 			</trans-unit>
-			<trans-unit id="lHomedir">
+			<trans-unit id="lHomedir" resname="lHomedir">
 				<source>Home dir</source>
 			</trans-unit>
-			<trans-unit id="lNone">
+			<trans-unit id="lNone" resname="lNone">
 				<source>[none]</source>
 			</trans-unit>
-			<trans-unit id="lCreate">
+			<trans-unit id="lCreate" resname="lCreate">
 				<source>Create</source>
 			</trans-unit>
-			<trans-unit id="lCancel">
+			<trans-unit id="lCancel" resname="lCancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="lDelete_warning">
+			<trans-unit id="lDelete_warning" resname="lDelete_warning">
 				<source>Are you sure you want to delete this user?</source>
 			</trans-unit>
-			<trans-unit id="lDelete">
+			<trans-unit id="lDelete" resname="lDelete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="lUpdate">
+			<trans-unit id="lUpdate" resname="lUpdate">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="task_help_title">
+			<trans-unit id="task_help_title" resname="task_help_title">
 				<source>About the taskcenter</source>
 			</trans-unit>
-			<trans-unit id="task_help_description">
+			<trans-unit id="task_help_description" resname="task_help_description">
 				<source>Get more information about the taskcenter</source>
 			</trans-unit>
 		</body>

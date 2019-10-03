@@ -3,352 +3,352 @@
 	<file t3:id="1415815017" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="legend.label">
+			<trans-unit id="legend.label" resname="legend.label">
 				<source>Legend</source>
 			</trans-unit>
-			<trans-unit id="legend.edited">
+			<trans-unit id="legend.edited" resname="legend.edited">
 				<source>edited</source>
 			</trans-unit>
-			<trans-unit id="legend.moved">
+			<trans-unit id="legend.moved" resname="legend.moved">
 				<source>moved</source>
 			</trans-unit>
-			<trans-unit id="legend.deleted">
+			<trans-unit id="legend.deleted" resname="legend.deleted">
 				<source>deleted</source>
 			</trans-unit>
-			<trans-unit id="legend.new">
+			<trans-unit id="legend.new" resname="legend.new">
 				<source>created</source>
 			</trans-unit>
-			<trans-unit id="legend.hidden">
+			<trans-unit id="legend.hidden" resname="legend.hidden">
 				<source>hidden</source>
 			</trans-unit>
-			<trans-unit id="title">
+			<trans-unit id="title" resname="title">
 				<source>Workspaces</source>
 			</trans-unit>
-			<trans-unit id="ok">
+			<trans-unit id="ok" resname="ok">
 				<source>Ok</source>
 			</trans-unit>
-			<trans-unit id="cancel">
+			<trans-unit id="cancel" resname="cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="chooseMassAction">
+			<trans-unit id="chooseMassAction" resname="chooseMassAction">
 				<source>Choose mass action</source>
 			</trans-unit>
-			<trans-unit id="chooseSelectionAction">
+			<trans-unit id="chooseSelectionAction" resname="chooseSelectionAction">
 				<source>Choose selection action</source>
 			</trans-unit>
-			<trans-unit id="chooseAction">
+			<trans-unit id="chooseAction" resname="chooseAction">
 				<source>Choose staging action</source>
 			</trans-unit>
-			<trans-unit id="item">
+			<trans-unit id="item" resname="item">
 				<source>item</source>
 			</trans-unit>
-			<trans-unit id="items">
+			<trans-unit id="items" resname="items">
 				<source>items</source>
 			</trans-unit>
-			<trans-unit id="recordsToDisplay">
+			<trans-unit id="recordsToDisplay" resname="recordsToDisplay">
 				<source>Records to display</source>
 			</trans-unit>
-			<trans-unit id="reviewandpublish">
+			<trans-unit id="reviewandpublish" resname="reviewandpublish">
 				<source>review and publish</source>
 			</trans-unit>
-			<trans-unit id="workspacelist">
+			<trans-unit id="workspacelist" resname="workspacelist">
 				<source>Workspace List</source>
 			</trans-unit>
-			<trans-unit id="editorInLive" xml:space="preserve">
+			<trans-unit id="editorInLive" resname="editorInLive" xml:space="preserve">
 				<source>You are in LIVE workspace. You have to select a draft workspace before you can review and
 					publish changes.
 				</source>
 			</trans-unit>
-			<trans-unit id="actionSendToStage">
+			<trans-unit id="actionSendToStage" resname="actionSendToStage">
 				<source>Send to stage</source>
 			</trans-unit>
-			<trans-unit id="publish_execute_action_option">
+			<trans-unit id="publish_execute_action_option" resname="publish_execute_action_option">
 				<source>Publish to LIVE</source>
 			</trans-unit>
-			<trans-unit id="close">
+			<trans-unit id="close" resname="close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="runMassAction.done">
+			<trans-unit id="runMassAction.done" resname="runMassAction.done">
 				<source>Done processing %d elements</source>
 			</trans-unit>
-			<trans-unit id="runMassAction.init">
+			<trans-unit id="runMassAction.init" resname="runMassAction.init">
 				<source>init</source>
 			</trans-unit>
-			<trans-unit id="tooltip.publishAll">
+			<trans-unit id="tooltip.publishAll" resname="tooltip.publishAll">
 				<source>Really publish entire workspace?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.swapAll">
+			<trans-unit id="tooltip.swapAll" resname="tooltip.swapAll">
 				<source>Really swap entire workspace?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.discardAll">
+			<trans-unit id="tooltip.discardAll" resname="tooltip.discardAll">
 				<source>Do you really want to discard changes from the whole workspace?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.publishSelected">
+			<trans-unit id="tooltip.publishSelected" resname="tooltip.publishSelected">
 				<source>Really publish selected elements?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.swapSelected">
+			<trans-unit id="tooltip.swapSelected" resname="tooltip.swapSelected">
 				<source>Really swap selected elements?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.discardSelected">
+			<trans-unit id="tooltip.discardSelected" resname="tooltip.discardSelected">
 				<source>Really discard changes of the selected elements?</source>
 			</trans-unit>
-			<trans-unit id="tooltip.affectWholeWorkspace" xml:space="preserve">
+			<trans-unit id="tooltip.affectWholeWorkspace" resname="tooltip.affectWholeWorkspace" xml:space="preserve">
 				<source>Please note that this will affect all changes in the current workspace, which may be more than
 					you are currently seeing on your screen.
 				</source>
 			</trans-unit>
-			<trans-unit id="tooltip.generatePagePreview">
+			<trans-unit id="tooltip.generatePagePreview" resname="tooltip.generatePagePreview">
 				<source>Generate page preview links</source>
 			</trans-unit>
-			<trans-unit id="tooltip.showChanges">
+			<trans-unit id="tooltip.showChanges" resname="tooltip.showChanges">
 				<source>Show changes</source>
 			</trans-unit>
-			<trans-unit id="previewLink">
+			<trans-unit id="previewLink" resname="previewLink">
 				<source>Preview Link</source>
 			</trans-unit>
-			<trans-unit id="error.noResponse">
+			<trans-unit id="error.noResponse" resname="error.noResponse">
 				<source>The server did not send any response whether the action was successful.</source>
 			</trans-unit>
-			<trans-unit id="rowDetails">
+			<trans-unit id="rowDetails" resname="rowDetails">
 				<source>Row details...</source>
 			</trans-unit>
-			<trans-unit id="column.difference">
+			<trans-unit id="column.difference" resname="column.difference">
 				<source>Difference</source>
 			</trans-unit>
-			<trans-unit id="column.changeDate">
+			<trans-unit id="column.changeDate" resname="column.changeDate">
 				<source>Modification</source>
 			</trans-unit>
-			<trans-unit id="column.stage">
+			<trans-unit id="column.stage" resname="column.stage">
 				<source>Current Stage</source>
 			</trans-unit>
-			<trans-unit id="column.actions">
+			<trans-unit id="column.actions" resname="column.actions">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="column.wsPath">
+			<trans-unit id="column.wsPath" resname="column.wsPath">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="column.wsTitle">
+			<trans-unit id="column.wsTitle" resname="column.wsTitle">
 				<source>Changed</source>
 			</trans-unit>
-			<trans-unit id="column.uid">
+			<trans-unit id="column.uid" resname="column.uid">
 				<source>WS ID</source>
 			</trans-unit>
-			<trans-unit id="column.oid">
+			<trans-unit id="column.oid" resname="column.oid">
 				<source>Live ID</source>
 			</trans-unit>
-			<trans-unit id="column.workspaceName">
+			<trans-unit id="column.workspaceName" resname="column.workspaceName">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="column.livePath">
+			<trans-unit id="column.livePath" resname="column.livePath">
 				<source>Live path</source>
 			</trans-unit>
-			<trans-unit id="column.liveTitle">
+			<trans-unit id="column.liveTitle" resname="column.liveTitle">
 				<source>Live title</source>
 			</trans-unit>
-			<trans-unit id="column.wsSwapColumn">
+			<trans-unit id="column.wsSwapColumn" resname="column.wsSwapColumn">
 				<source>Swap workspace</source>
 			</trans-unit>
-			<trans-unit id="column.integrity">
+			<trans-unit id="column.integrity" resname="column.integrity">
 				<source>Integrity</source>
 			</trans-unit>
-			<trans-unit id="tooltip.viewElementAction">
+			<trans-unit id="tooltip.viewElementAction" resname="tooltip.viewElementAction">
 				<source>Preview element</source>
 			</trans-unit>
-			<trans-unit id="tooltip.editElementAction">
+			<trans-unit id="tooltip.editElementAction" resname="tooltip.editElementAction">
 				<source>Edit element</source>
 			</trans-unit>
-			<trans-unit id="tooltip.openPage">
+			<trans-unit id="tooltip.openPage" resname="tooltip.openPage">
 				<source>Open version of page</source>
 			</trans-unit>
-			<trans-unit id="tooltip.sendToPrevStage">
+			<trans-unit id="tooltip.sendToPrevStage" resname="tooltip.sendToPrevStage">
 				<source>Send record to previous Stage</source>
 			</trans-unit>
-			<trans-unit id="tooltip.sendToNextStage">
+			<trans-unit id="tooltip.sendToNextStage" resname="tooltip.sendToNextStage">
 				<source>Send record to next Stage</source>
 			</trans-unit>
-			<trans-unit id="tooltip.discardVersion">
+			<trans-unit id="tooltip.discardVersion" resname="tooltip.discardVersion">
 				<source>Discard workspace version of record.</source>
 			</trans-unit>
-			<trans-unit id="tooltip.swap">
+			<trans-unit id="tooltip.swap" resname="tooltip.swap">
 				<source>Swap live and workspace versions of record</source>
 			</trans-unit>
-			<trans-unit id="tooltip.expand">
+			<trans-unit id="tooltip.expand" resname="tooltip.expand">
 				<source>Expand element and show relations</source>
 			</trans-unit>
-			<trans-unit id="tooltip.showHistory">
+			<trans-unit id="tooltip.showHistory" resname="tooltip.showHistory">
 				<source>Show history of workspace version</source>
 			</trans-unit>
-			<trans-unit id="window.discard.title">
+			<trans-unit id="window.discard.title" resname="window.discard.title">
 				<source>Discard workspace version of record.</source>
 			</trans-unit>
-			<trans-unit id="window.discardAll.title">
+			<trans-unit id="window.discardAll.title" resname="window.discardAll.title">
 				<source>Discard all workspace version of current page.</source>
 			</trans-unit>
-			<trans-unit id="window.discard.message">
+			<trans-unit id="window.discard.message" resname="window.discard.message">
 				<source>Do you really want to discard this version from workspace?</source>
 			</trans-unit>
-			<trans-unit id="window.discardAll.message">
+			<trans-unit id="window.discardAll.message" resname="window.discardAll.message">
 				<source>Do you really want to discard all versions from page?</source>
 			</trans-unit>
-			<trans-unit id="window.swap.title">
+			<trans-unit id="window.swap.title" resname="window.swap.title">
 				<source>Swap version</source>
 			</trans-unit>
-			<trans-unit id="window.swap.message">
+			<trans-unit id="window.swap.message" resname="window.swap.message">
 				<source>Do you really want to swap this version?</source>
 			</trans-unit>
-			<trans-unit id="window.massAction.title">
+			<trans-unit id="window.massAction.title" resname="window.massAction.title">
 				<source>Prepare to start mass action</source>
 			</trans-unit>
-			<trans-unit id="window.selectionAction.title">
+			<trans-unit id="window.selectionAction.title" resname="window.selectionAction.title">
 				<source>Prepare to execute actions on selection</source>
 			</trans-unit>
-			<trans-unit id="error.stageId.integer">
+			<trans-unit id="error.stageId.integer" resname="error.stageId.integer">
 				<source>StageId is supposed to be an integer</source>
 			</trans-unit>
-			<trans-unit id="error.stageId.invalid" xml:space="preserve">
+			<trans-unit id="error.stageId.invalid" resname="error.stageId.invalid" xml:space="preserve">
 				<source>The stage to be used seems to be invalid and cannot be used. Please consider to use the update
 					wizard in the install tool to fix this.
 				</source>
 			</trans-unit>
-			<trans-unit id="error.sendToNextStage.noRecordFound">
+			<trans-unit id="error.sendToNextStage.noRecordFound" resname="error.sendToNextStage.noRecordFound">
 				<source>The record element could not be found.</source>
 			</trans-unit>
-			<trans-unit id="error.sendToPrevStage.noPreviousStage">
+			<trans-unit id="error.sendToPrevStage.noPreviousStage" resname="error.sendToPrevStage.noPreviousStage">
 				<source>The record element is already in editing stage, there is no previous stage.</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo">
+			<trans-unit id="window.sendToNextStageWindow.itemsWillBeSentTo" resname="window.sendToNextStageWindow.itemsWillBeSentTo">
 				<source>The selected element(s) will be sent to</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.selectAll">
+			<trans-unit id="window.sendToNextStageWindow.selectAll" resname="window.sendToNextStageWindow.selectAll">
 				<source>Select all</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.deselectAll">
+			<trans-unit id="window.sendToNextStageWindow.deselectAll" resname="window.sendToNextStageWindow.deselectAll">
 				<source>Uncheck all</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.sendMailTo">
+			<trans-unit id="window.sendToNextStageWindow.sendMailTo" resname="window.sendToNextStageWindow.sendMailTo">
 				<source>Send mail to</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.additionalRecipients">
+			<trans-unit id="window.sendToNextStageWindow.additionalRecipients" resname="window.sendToNextStageWindow.additionalRecipients">
 				<source>Additional recipients</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint">
+			<trans-unit id="window.sendToNextStageWindow.additionalRecipients.hint" resname="window.sendToNextStageWindow.additionalRecipients.hint">
 				<source>One recipient per line</source>
 			</trans-unit>
-			<trans-unit id="window.sendToNextStageWindow.comments">
+			<trans-unit id="window.sendToNextStageWindow.comments" resname="window.sendToNextStageWindow.comments">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="window.recordChanges">
+			<trans-unit id="window.recordChanges" resname="window.recordChanges">
 				<source>Record changes</source>
 			</trans-unit>
-			<trans-unit id="window.recordInformation">
+			<trans-unit id="window.recordInformation" resname="window.recordInformation">
 				<source>Information for "{0}"</source>
 			</trans-unit>
-			<trans-unit id="window.recordChanges.tabs.changeSummary">
+			<trans-unit id="window.recordChanges.tabs.changeSummary" resname="window.recordChanges.tabs.changeSummary">
 				<source>Summary of changes</source>
 			</trans-unit>
-			<trans-unit id="window.recordChanges.tabs.comments">
+			<trans-unit id="window.recordChanges.tabs.comments" resname="window.recordChanges.tabs.comments">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="window.recordChanges.tabs.history">
+			<trans-unit id="window.recordChanges.tabs.history" resname="window.recordChanges.tabs.history">
 				<source>History</source>
 			</trans-unit>
-			<trans-unit id="window.recordHistory">
+			<trans-unit id="window.recordHistory" resname="window.recordHistory">
 				<source>History of record "{0}"</source>
 			</trans-unit>
-			<trans-unit id="error.getStageTitle.stageNotFound">
+			<trans-unit id="error.getStageTitle.stageNotFound" resname="error.getStageTitle.stageNotFound">
 				<source>Stage not found</source>
 			</trans-unit>
-			<trans-unit id="info.newpage">
+			<trans-unit id="info.newpage" resname="info.newpage">
 				<source>New Page!</source>
 			</trans-unit>
-			<trans-unit id="info.newpage.detail">
+			<trans-unit id="info.newpage.detail" resname="info.newpage.detail">
 				<source>The previewed page has been created in a workspace and has no live counterpart.</source>
 			</trans-unit>
-			<trans-unit id="preview.visualPreview">
+			<trans-unit id="preview.visualPreview" resname="preview.visualPreview">
 				<source>Visual preview</source>
 			</trans-unit>
-			<trans-unit id="preview.listView">
+			<trans-unit id="preview.listView" resname="preview.listView">
 				<source>List view</source>
 			</trans-unit>
-			<trans-unit id="preview.livePreview">
+			<trans-unit id="preview.livePreview" resname="preview.livePreview">
 				<source>Live</source>
 			</trans-unit>
-			<trans-unit id="preview.livePreviewDetail">
+			<trans-unit id="preview.livePreviewDetail" resname="preview.livePreviewDetail">
 				<source>Click this element to hide the workspace version and see the live version of the page.</source>
 			</trans-unit>
-			<trans-unit id="preview.workspacePreview">
+			<trans-unit id="preview.workspacePreview" resname="preview.workspacePreview">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="preview.workspacePreviewDetail">
+			<trans-unit id="preview.workspacePreviewDetail" resname="preview.workspacePreviewDetail">
 				<source>Click this element to hide the live version and see the workspace version of the page.</source>
 			</trans-unit>
-			<trans-unit id="preview.modeSlider">
+			<trans-unit id="preview.modeSlider" resname="preview.modeSlider">
 				<source>Slider</source>
 			</trans-unit>
-			<trans-unit id="preview.modeVbox">
+			<trans-unit id="preview.modeVbox" resname="preview.modeVbox">
 				<source>Vertical</source>
 			</trans-unit>
-			<trans-unit id="preview.modeHbox">
+			<trans-unit id="preview.modeHbox" resname="preview.modeHbox">
 				<source>Horizontal</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_publish">
+			<trans-unit id="label_doaction_publish" resname="label_doaction_publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_swap">
+			<trans-unit id="label_doaction_swap" resname="label_doaction_swap">
 				<source>Swap</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_discard">
+			<trans-unit id="label_doaction_discard" resname="label_doaction_discard">
 				<source>Discard</source>
 			</trans-unit>
-			<trans-unit id="label_doaction_generatePreviewLinks">
+			<trans-unit id="label_doaction_generatePreviewLinks" resname="label_doaction_generatePreviewLinks">
 				<source>Generate Workspace Preview Links</source>
 			</trans-unit>
-			<trans-unit id="info.elementAlreadyModified">
+			<trans-unit id="info.elementAlreadyModified" resname="info.elementAlreadyModified">
 				<source>Element is in workspace stage "%s", modifications will send it back to "%s".</source>
 			</trans-unit>
-			<trans-unit id="live_workspace">
+			<trans-unit id="live_workspace" resname="live_workspace">
 				<source>Live Workspace</source>
 			</trans-unit>
-			<trans-unit id="workspace_version">
+			<trans-unit id="workspace_version" resname="workspace_version">
 				<source>Workspace version</source>
 			</trans-unit>
-			<trans-unit id="current_step">
+			<trans-unit id="current_step" resname="current_step">
 				<source><![CDATA[<b>Current stage step</b>: {0} (<b>{1}</b>/{2})]]></source>
 			</trans-unit>
-			<trans-unit id="path">
+			<trans-unit id="path" resname="path">
 				<source><![CDATA[<b>Path</b>: {0}]]></source>
 			</trans-unit>
-			<trans-unit id="stage">
+			<trans-unit id="stage" resname="stage">
 				<source>Stage {0}</source>
 			</trans-unit>
-			<trans-unit id="comments">
+			<trans-unit id="comments" resname="comments">
 				<source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
 			</trans-unit>
-			<trans-unit id="language.allLanguages">
+			<trans-unit id="language.allLanguages" resname="language.allLanguages">
 				<source>all languages</source>
 			</trans-unit>
-			<trans-unit id="language.selectLanguage">
+			<trans-unit id="language.selectLanguage" resname="language.selectLanguage">
 				<source>all languages</source>
 			</trans-unit>
-			<trans-unit id="integrity.dependsOnDefaultLanguageRecord">
+			<trans-unit id="integrity.dependsOnDefaultLanguageRecord" resname="integrity.dependsOnDefaultLanguageRecord">
 				<source><![CDATA[Record "%s" depends on default language record]]></source>
 			</trans-unit>
-			<trans-unit id="integrity.isDefaultLanguageRecord">
+			<trans-unit id="integrity.isDefaultLanguageRecord" resname="integrity.isDefaultLanguageRecord">
 				<source><![CDATA[Default language record for record "%s"]]></source>
 			</trans-unit>
-			<trans-unit id="integrity.hasIssuesDescription">
+			<trans-unit id="integrity.hasIssuesDescription" resname="integrity.hasIssuesDescription">
 				<source>The integrity check discovered several issues, see status icons infront of each record for further details.</source>
 			</trans-unit>
-			<trans-unit id="integrity.hasIssuesQuestion">
+			<trans-unit id="integrity.hasIssuesQuestion" resname="integrity.hasIssuesQuestion">
 				<source>Do you want to continue?</source>
 			</trans-unit>
-			<trans-unit id="status.info">
+			<trans-unit id="status.info" resname="status.info">
 				<source>Information</source>
 			</trans-unit>
-			<trans-unit id="status.warning">
+			<trans-unit id="status.warning" resname="status.warning">
 				<source>Warning</source>
 			</trans-unit>
-			<trans-unit id="status.error">
+			<trans-unit id="status.error" resname="status.error">
 				<source>Error</source>
 			</trans-unit>
 		</body>

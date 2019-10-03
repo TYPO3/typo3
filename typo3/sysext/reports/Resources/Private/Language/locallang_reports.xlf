@@ -3,217 +3,217 @@
 	<file t3:id="1415814909" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:35Z" product-name="reports">
 		<header/>
 		<body>
-			<trans-unit id="status_report_title">
+			<trans-unit id="status_report_title" resname="status_report_title">
 				<source>Status Report</source>
 			</trans-unit>
-			<trans-unit id="status_report_description">
+			<trans-unit id="status_report_description" resname="status_report_description">
 				<source>Get a status report about your site's operation and any detected problems.</source>
 			</trans-unit>
-			<trans-unit id="status_report_explanation">
+			<trans-unit id="status_report_explanation" resname="status_report_explanation">
 				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
 			</trans-unit>
-			<trans-unit id="status_ok">
+			<trans-unit id="status_ok" resname="status_ok">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="status_wrongValue">
+			<trans-unit id="status_wrongValue" resname="status_wrongValue">
 				<source>Wrong value detected</source>
 			</trans-unit>
-			<trans-unit id="status_info">
+			<trans-unit id="status_info" resname="status_info">
 				<source>Information</source>
 			</trans-unit>
-			<trans-unit id="status_insecure">
+			<trans-unit id="status_insecure" resname="status_insecure">
 				<source>Insecure</source>
 			</trans-unit>
-			<trans-unit id="status_disabled">
+			<trans-unit id="status_disabled" resname="status_disabled">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="status_enabled">
+			<trans-unit id="status_enabled" resname="status_enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="status_enabledPermanently">
+			<trans-unit id="status_enabledPermanently" resname="status_enabledPermanently">
 				<source>Enabled permanently</source>
 			</trans-unit>
-			<trans-unit id="status_enabledTemporarily">
+			<trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily">
 				<source>Enabled temporarily</source>
 			</trans-unit>
-			<trans-unit id="status_empty">
+			<trans-unit id="status_empty" resname="status_empty">
 				<source>Empty</source>
 			</trans-unit>
-			<trans-unit id="status_none">
+			<trans-unit id="status_none" resname="status_none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="status_connectionFailed">
+			<trans-unit id="status_connectionFailed" resname="status_connectionFailed">
 				<source>Connection Failed</source>
 			</trans-unit>
-			<trans-unit id="status_checkFailed">
+			<trans-unit id="status_checkFailed" resname="status_checkFailed">
 				<source>Check Failed</source>
 			</trans-unit>
-			<trans-unit id="status_updateComplete">
+			<trans-unit id="status_updateComplete" resname="status_updateComplete">
 				<source>Update Complete</source>
 			</trans-unit>
-			<trans-unit id="status_updateIncomplete">
+			<trans-unit id="status_updateIncomplete" resname="status_updateIncomplete">
 				<source>Update Incomplete</source>
 			</trans-unit>
-			<trans-unit id="status_problemNotification">
+			<trans-unit id="status_problemNotification" resname="status_problemNotification">
 				<source>One or more problems were detected with your TYPO3 installation. Please check the status report for more information.</source>
 			</trans-unit>
-			<trans-unit id="status_allNotification">
+			<trans-unit id="status_allNotification" resname="status_allNotification">
 				<source>This report contains all System Status Notifications from your TYPO3 installation. Please check the status report for more information.</source>
 			</trans-unit>
-			<trans-unit id="status_typo3">
+			<trans-unit id="status_typo3" resname="status_typo3">
 				<source>TYPO3 System</source>
 			</trans-unit>
-			<trans-unit id="status_system">
+			<trans-unit id="status_system" resname="status_system">
 				<source>System</source>
 			</trans-unit>
-			<trans-unit id="status_security">
+			<trans-unit id="status_security" resname="status_security">
 				<source>Security</source>
 			</trans-unit>
-			<trans-unit id="status_configuration">
+			<trans-unit id="status_configuration" resname="status_configuration">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_referenceIndex">
+			<trans-unit id="status_referenceIndex" resname="status_referenceIndex">
 				<source>Reference Index</source>
 			</trans-unit>
-			<trans-unit id="status_fal">
+			<trans-unit id="status_fal" resname="status_fal">
 				<source>File Abstraction Layer</source>
 			</trans-unit>
-			<trans-unit id="status_missingFiles">
+			<trans-unit id="status_missingFiles" resname="status_missingFiles">
 				<source>Files flagged as missing</source>
 			</trans-unit>
-			<trans-unit id="status_missingFilesCount">
+			<trans-unit id="status_missingFilesCount" resname="status_missingFilesCount">
 				<source>%1$s files</source>
 			</trans-unit>
-			<trans-unit id="status_missingFilesMessage">
+			<trans-unit id="status_missingFilesMessage" resname="status_missingFilesMessage">
 				<source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
 			</trans-unit>
-			<trans-unit id="status_memcachedConfiguration">
+			<trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration">
 				<source>Memcached Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_PhpSafeMode">
+			<trans-unit id="status_PhpSafeMode" resname="status_PhpSafeMode">
 				<source>PHP safe_mode</source>
 			</trans-unit>
-			<trans-unit id="status_PhpMagicQuotesGpc">
+			<trans-unit id="status_PhpMagicQuotesGpc" resname="status_PhpMagicQuotesGpc">
 				<source>PHP magic_quotes_gpc</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedFilePermissions">
+			<trans-unit id="status_CreatedFilePermissions" resname="status_CreatedFilePermissions">
 				<source>Permissions of created files</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedFilePermissions.writable">
+			<trans-unit id="status_CreatedFilePermissions.writable" resname="status_CreatedFilePermissions.writable">
 				<source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedDirectoryPermissions">
+			<trans-unit id="status_CreatedDirectoryPermissions" resname="status_CreatedDirectoryPermissions">
 				<source>Permissions of created directories</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedDirectoryPermissions.writable">
+			<trans-unit id="status_CreatedDirectoryPermissions.writable" resname="status_CreatedDirectoryPermissions.writable">
 				<source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet">
+			<trans-unit id="status_MysqlDatabaseCharacterSet" resname="status_MysqlDatabaseCharacterSet">
 				<source>MySQL Database Character Set</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" resname="status_MysqlDatabaseCharacterSet_CheckFailed">
 				<source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" resname="status_MysqlDatabaseCharacterSet_Unsupported">
 				<source>Your default database uses character set "%1$s", but only "utf8" or "utf8mb4" is supported with TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok" resname="status_MysqlDatabaseCharacterSet_Ok">
 				<source>Your default database uses utf-8. All good.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_Info">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Info" resname="status_MysqlDatabaseCharacterSet_Info">
 				<source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" resname="status_MysqlDatabaseCharacterSet_MixedCollations">
 				<source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
 			</trans-unit>
-			<trans-unit id="status_encryptedConnectionStatus">
+			<trans-unit id="status_encryptedConnectionStatus" resname="status_encryptedConnectionStatus">
 				<source>Encrypted backend connection (HTTPS)</source>
 			</trans-unit>
-			<trans-unit id="status_encryptedConnectionStatus_insecure">
+			<trans-unit id="status_encryptedConnectionStatus_insecure" resname="status_encryptedConnectionStatus_insecure">
 				<source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
 			</trans-unit>
-			<trans-unit id="status_lockSslStatus">
+			<trans-unit id="status_lockSslStatus" resname="status_lockSslStatus">
 				<source>Backend only accessible through HTTPS</source>
 			</trans-unit>
-			<trans-unit id="status_lockSslStatus_insecure">
+			<trans-unit id="status_lockSslStatus_insecure" resname="status_lockSslStatus_insecure">
 				<source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
 			</trans-unit>
-			<trans-unit id="status_trustedHostsPattern">
+			<trans-unit id="status_trustedHostsPattern" resname="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
 			</trans-unit>
-			<trans-unit id="status_adminUserAccount">
+			<trans-unit id="status_adminUserAccount" resname="status_adminUserAccount">
 				<source>Admin User Account</source>
 			</trans-unit>
-			<trans-unit id="status_encryptionKey">
+			<trans-unit id="status_encryptionKey" resname="status_encryptionKey">
 				<source>Encryption Key</source>
 			</trans-unit>
-			<trans-unit id="status_fileDenyPattern">
+			<trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern">
 				<source>File Deny Pattern</source>
 			</trans-unit>
-			<trans-unit id="status_htaccessUploadProtection">
+			<trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection">
 				<source>.htaccess Upload Protection</source>
 			</trans-unit>
-			<trans-unit id="status_installToolPassword">
+			<trans-unit id="status_installToolPassword" resname="status_installToolPassword">
 				<source>Install Tool Password</source>
 			</trans-unit>
-			<trans-unit id="status_installTool">
+			<trans-unit id="status_installTool" resname="status_installTool">
 				<source>Install Tool</source>
 			</trans-unit>
-			<trans-unit id="status_phpVersion">
+			<trans-unit id="status_phpVersion" resname="status_phpVersion">
 				<source>PHP Version</source>
 			</trans-unit>
-			<trans-unit id="status_phpTooOld">
+			<trans-unit id="status_phpTooOld" resname="status_phpTooOld">
 				<source>Your PHP installation is too old.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemory">
+			<trans-unit id="status_phpMemory" resname="status_phpMemory">
 				<source>PHP Memory Limit</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryRecommendation">
+			<trans-unit id="status_phpMemoryRecommendation" resname="status_phpMemoryRecommendation">
 				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is recommended, especially if your site uses additional extensions.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryRequirement">
+			<trans-unit id="status_phpMemoryRequirement" resname="status_phpMemoryRequirement">
 				<source>Depending on your configuration, TYPO3 can run with a %1$s PHP memory limit. However, a %2$s PHP memory limit or above is required especially if your site uses additional extensions.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryEditLimit">
+			<trans-unit id="status_phpMemoryEditLimit" resname="status_phpMemoryEditLimit">
 				<source>Increase the memory limit by editing the memory_limit parameter in the file %s and then restart your web server (or contact your system administrator or hosting provider for assistance).</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryContactAdmin">
+			<trans-unit id="status_phpMemoryContactAdmin" resname="status_phpMemoryContactAdmin">
 				<source>Contact your system administrator or hosting provider for assistance with increasing your PHP memory limit.</source>
 			</trans-unit>
-			<trans-unit id="status_phpMemoryUnlimited">
+			<trans-unit id="status_phpMemoryUnlimited" resname="status_phpMemoryUnlimited">
 				<source>unlimited</source>
 			</trans-unit>
-			<trans-unit id="status_phpPeakMemory">
+			<trans-unit id="status_phpPeakMemory" resname="status_phpPeakMemory">
 				<source>PHP peak memory usage</source>
 			</trans-unit>
-			<trans-unit id="status_phpPeakMemoryTooHigh">
+			<trans-unit id="status_phpPeakMemoryTooHigh" resname="status_phpPeakMemoryTooHigh">
 				<source>During a request %2$s of the memory limit was used. On %4$s a request to %5$s used %1$s of %3$s.</source>
 			</trans-unit>
-			<trans-unit id="status_phpPeakMemoryClearFlag">
+			<trans-unit id="status_phpPeakMemoryClearFlag" resname="status_phpPeakMemoryClearFlag">
 				<source>Clear this flag</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobals">
+			<trans-unit id="status_phpRegisterGlobals" resname="status_phpRegisterGlobals">
 				<source>PHP Register Globals</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsEnabled">
+			<trans-unit id="status_phpRegisterGlobalsEnabled" resname="status_phpRegisterGlobalsEnabled">
 				<source>%s is enabled. TYPO3 requires this configuration directive to be disabled.</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsSecurity">
+			<trans-unit id="status_phpRegisterGlobalsSecurity" resname="status_phpRegisterGlobalsSecurity">
 				<source>Your site may not be secure when %s is enabled.</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsHowToChange">
+			<trans-unit id="status_phpRegisterGlobalsHowToChange" resname="status_phpRegisterGlobalsHowToChange">
 				<source>how to change configuration settings</source>
 			</trans-unit>
-			<trans-unit id="status_phpRegisterGlobalsPHPManual">
+			<trans-unit id="status_phpRegisterGlobalsPHPManual" resname="status_phpRegisterGlobalsPHPManual">
 				<source>The PHP manual has instructions for %s.</source>
 			</trans-unit>
-			<trans-unit id="status_webServer">
+			<trans-unit id="status_webServer" resname="status_webServer">
 				<source>Web Server</source>
 			</trans-unit>
-			<trans-unit id="status_webServer_infoText">
+			<trans-unit id="status_webServer_infoText" resname="status_webServer_infoText">
 				<source>For your Web Server some notifications have been found</source>
 			</trans-unit>
-			<trans-unit id="status_webServer_threadStackSize" xml:space="preserve">
+			<trans-unit id="status_webServer_threadStackSize" resname="status_webServer_threadStackSize" xml:space="preserve">
 				<source><![CDATA[Fluid uses complex regular expressions which require a lot of stack space during the first processing.
 On Windows the default stack size for Apache is a lot smaller than on unix.
 You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
@@ -222,79 +222,79 @@ You can increase the size to 8MB (default on unix) by adding to the httpd.conf:
 <br />&lt;/IfModule&gt;
 <br />Restart Apache after this change.]]></source>
 			</trans-unit>
-			<trans-unit id="status_phpModules">
+			<trans-unit id="status_phpModules" resname="status_phpModules">
 				<source>PHP Modules</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesMissing">
+			<trans-unit id="status_phpModulesMissing" resname="status_phpModulesMissing">
 				<source>One or more modules are missing.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesList">
+			<trans-unit id="status_phpModulesList" resname="status_phpModulesList">
 				<source>The following PHP module(s) is/are missing: %s.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesInfo">
+			<trans-unit id="status_phpModulesInfo" resname="status_phpModulesInfo">
 				<source>You need to install and enable these modules to let TYPO3 function correctly.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesGroup">
+			<trans-unit id="status_phpModulesGroup" resname="status_phpModulesGroup">
 				<source>one of: %s</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesPresent">
+			<trans-unit id="status_phpModulesPresent" resname="status_phpModulesPresent">
 				<source>All required modules are installed.</source>
 			</trans-unit>
-			<trans-unit id="status_installEnabledTemporarily">
+			<trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily">
 				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_PhpSafeModeEnabled">
+			<trans-unit id="status_configuration_PhpSafeModeEnabled" resname="status_configuration_PhpSafeModeEnabled">
 				<source>PHP INI setting safe_mode "On" is deprecated since PHP 5.3 and is not supported by TYPO3 anymore.</source>
 			</trans-unit>
-			<trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled">
+			<trans-unit id="status_configuration_PhpMagicQuotesGpcEnabled" resname="status_configuration_PhpMagicQuotesGpcEnabled">
 				<source>PHP INI setting magic_quotes_gpc "On" is deprecated since PHP 5.3. You are advised to set it to "Off" until it gets completely removed.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskTitle">
+			<trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle">
 				<source>System Status Update</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskDescription">
+			<trans-unit id="status_updateTaskDescription" resname="status_updateTaskDescription">
 				<source>Runs a system status check and sends notifications if problems have been found.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail">
+			<trans-unit id="status_updateTaskField_notificationEmail" resname="status_updateTaskField_notificationEmail">
 				<source>Notification Email Address</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmails">
+			<trans-unit id="status_updateTaskField_notificationEmails" resname="status_updateTaskField_notificationEmails">
 				<source>Notification Email Addresses (one per line)</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail_invalid">
+			<trans-unit id="status_updateTaskField_notificationEmail_invalid" resname="status_updateTaskField_notificationEmail_invalid">
 				<source>Empty or invalid notification email address.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmails_invalid">
+			<trans-unit id="status_updateTaskField_notificationEmails_invalid" resname="status_updateTaskField_notificationEmails_invalid">
 				<source>Empty or invalid notification email addresses.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationAll">
+			<trans-unit id="status_updateTaskField_notificationAll" resname="status_updateTaskField_notificationAll">
 				<source>Always send notification mail (not only on errors or warnings)</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_subject">
+			<trans-unit id="status_updateTask_email_subject" resname="status_updateTask_email_subject">
 				<source>System Status Notification for site %s</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_site">
+			<trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_issues">
+			<trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues">
 				<source>Issues</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsage">
+			<trans-unit id="status_xclassUsage" resname="status_xclassUsage">
 				<source>XCLASS used</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsageFound">
+			<trans-unit id="status_xclassUsageFound" resname="status_xclassUsageFound">
 				<source>Your system registers XCLASS</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsageFound_message">
+			<trans-unit id="status_xclassUsageFound_message" resname="status_xclassUsageFound_message">
 				<source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsageFound_message_detail">
+			<trans-unit id="status_xclassUsageFound_message_detail" resname="status_xclassUsageFound_message_detail">
 				<source>%2$s registers an XCLASS of %1$s</source>
 			</trans-unit>
-			<trans-unit id="status_compatibility7Usage">
+			<trans-unit id="status_compatibility7Usage" resname="status_compatibility7Usage">
 				<source>Extension compatibility7</source>
 			</trans-unit>
-			<trans-unit id="status_compatibility7Usage_message">
+			<trans-unit id="status_compatibility7Usage_message" resname="status_compatibility7Usage_message">
 				<source>Extension compatibility7 is loaded. You should check that every third-party extension is natively compatible with this version of TYPO3 and then unload this compatibility extension. As long as this compatibility extension is loaded, you will suffer performance drawbacks</source>
 			</trans-unit>
 		</body>

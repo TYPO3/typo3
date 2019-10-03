@@ -3,70 +3,70 @@
 	<file t3:id="1522780424" source-language="en" datatype="plaintext" original="messages" date="2018-02-27T22:22:32Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="overview.title">
+			<trans-unit id="overview.title" resname="overview.title">
 				<source>Site Configuration</source>
 			</trans-unit>
-			<trans-unit id="overview.site">
+			<trans-unit id="overview.site" resname="overview.site">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="overview.configuration">
+			<trans-unit id="overview.configuration" resname="overview.configuration">
 				<source>Configuration Folder</source>
 			</trans-unit>
-			<trans-unit id="overview.noPages.title">
+			<trans-unit id="overview.noPages.title" resname="overview.noPages.title">
 				<source>No pages found!</source>
 			</trans-unit>
-			<trans-unit id="overview.noPages.message">
+			<trans-unit id="overview.noPages.message" resname="overview.noPages.message">
 				<source>Please add at least one page through the Page module.</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteConfiguration">
+			<trans-unit id="overview.noSiteConfiguration" resname="overview.noSiteConfiguration">
 				<source>This site does not have a configuration, yet.</source>
 			</trans-unit>
-			<trans-unit id="overview.addSiteConfiguration">
+			<trans-unit id="overview.addSiteConfiguration" resname="overview.addSiteConfiguration">
 				<source>Add new site configuration for this site</source>
 			</trans-unit>
-			<trans-unit id="overview.deleteSiteConfiguration">
+			<trans-unit id="overview.deleteSiteConfiguration" resname="overview.deleteSiteConfiguration">
 				<source>Delete site configuration</source>
 			</trans-unit>
-			<trans-unit id="overview.fullUrlPrefix">
+			<trans-unit id="overview.fullUrlPrefix" resname="overview.fullUrlPrefix">
 				<source>Full URL prefix</source>
 			</trans-unit>
-			<trans-unit id="overview.baseUrl">
+			<trans-unit id="overview.baseUrl" resname="overview.baseUrl">
 				<source>Base URLs</source>
 			</trans-unit>
-			<trans-unit id="overview.unassignedSites.title">
+			<trans-unit id="overview.unassignedSites.title" resname="overview.unassignedSites.title">
 				<source>Unassigned site configurations</source>
 			</trans-unit>
-			<trans-unit id="overview.unassignedSites.description">
+			<trans-unit id="overview.unassignedSites.description" resname="overview.unassignedSites.description">
 				<source>The following sites don't belong to any page anymore and can be removed.</source>
 			</trans-unit>
-			<trans-unit id="validation.identifierRenamed.title">
+			<trans-unit id="validation.identifierRenamed.title" resname="validation.identifierRenamed.title">
 				<source>Renamed identifier</source>
 			</trans-unit>
-			<trans-unit id="validation.identifierRenamed.message">
+			<trans-unit id="validation.identifierRenamed.message" resname="validation.identifierRenamed.message">
 				<source>Given site identifier "%1s" already exists. It has been renamed to "%2s". Maybe you want to edit the site again and give it a better name.</source>
 			</trans-unit>
-			<trans-unit id="validation.identifierExists.title">
+			<trans-unit id="validation.identifierExists.title" resname="validation.identifierExists.title">
 				<source>Identifier not changed</source>
 			</trans-unit>
-			<trans-unit id="validation.identifierExists.message">
+			<trans-unit id="validation.identifierExists.message" resname="validation.identifierExists.message">
 				<source>Given site identifier "%1s" already exists and points to a different site. The existing identifier "%2s" for this site is kept.';</source>
 			</trans-unit>
-			<trans-unit id="validation.required.title">
+			<trans-unit id="validation.required.title" resname="validation.required.title">
 				<source>Site configuration not saved</source>
 			</trans-unit>
-			<trans-unit id="validation.required.message">
+			<trans-unit id="validation.required.message" resname="validation.required.message">
 				<source>Field "%1s" is a required field, but no value has been provided.</source>
 			</trans-unit>
-			<trans-unit id="validation.duplicateErrorCode.title">
+			<trans-unit id="validation.duplicateErrorCode.title" resname="validation.duplicateErrorCode.title">
 				<source>Duplicate error code removed</source>
 			</trans-unit>
-			<trans-unit id="validation.duplicateErrorCode.message">
+			<trans-unit id="validation.duplicateErrorCode.message" resname="validation.duplicateErrorCode.message">
 				<source>Two error handler configurations for error code "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
 			</trans-unit>
-			<trans-unit id="validation.duplicateLanguageId.title">
+			<trans-unit id="validation.duplicateLanguageId.title" resname="validation.duplicateLanguageId.title">
 				<source>Duplicate language configuration removed</source>
 			</trans-unit>
-			<trans-unit id="validation.duplicateLanguageId.message">
+			<trans-unit id="validation.duplicateLanguageId.message" resname="validation.duplicateLanguageId.message">
 				<source>Two language configurations for language "%1s" found. This would be an invalid configuration, the dangling one has been removed.</source>
 			</trans-unit>
 		</body>

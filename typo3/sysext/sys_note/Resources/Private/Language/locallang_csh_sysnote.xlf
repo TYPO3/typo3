@@ -3,31 +3,31 @@
 	<file t3:id="1415814997" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
-			<trans-unit id=".description">
+			<trans-unit id=".description" resname=".description">
 				<source>Internal reminder note attached to a page.</source>
 			</trans-unit>
-			<trans-unit id=".details">
+			<trans-unit id=".details" resname=".details">
 				<source>This provides a simple way to attach informative notes to a page regarding backend-related issues. Use it as you like for reminders, instructions, etc.</source>
 			</trans-unit>
-			<trans-unit id="_.seeAlso">
+			<trans-unit id="_.seeAlso" resname="_.seeAlso">
 				<source>pages</source>
 			</trans-unit>
-			<trans-unit id="category.description">
+			<trans-unit id="category.description" resname="category.description">
 				<source>Select a category which describes the character of the note.</source>
 			</trans-unit>
-			<trans-unit id="subject.description">
+			<trans-unit id="subject.description" resname="subject.description">
 				<source>Enter a title for the note.</source>
 			</trans-unit>
-			<trans-unit id="message.description">
+			<trans-unit id="message.description" resname="message.description">
 				<source>This is the note itself.</source>
 			</trans-unit>
-			<trans-unit id="author.description">
+			<trans-unit id="author.description" resname="author.description">
 				<source>Enter your name.</source>
 			</trans-unit>
-			<trans-unit id="email.description">
+			<trans-unit id="email.description" resname="email.description">
 				<source>Enter your email address.</source>
 			</trans-unit>
-			<trans-unit id="personal.description">
+			<trans-unit id="personal.description" resname="personal.description">
 				<source>Check this if you don't want other users to see this note.</source>
 			</trans-unit>
 		</body>

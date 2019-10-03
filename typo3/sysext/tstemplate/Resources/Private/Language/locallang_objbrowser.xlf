@@ -3,136 +3,136 @@
 	<file t3:id="1415815006" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="constants">
+			<trans-unit id="constants" resname="constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="setup">
+			<trans-unit id="setup" resname="setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="all">
+			<trans-unit id="all" resname="all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="plainSubstitution">
+			<trans-unit id="plainSubstitution" resname="plainSubstitution">
 				<source>Plain substitution (default)</source>
 			</trans-unit>
-			<trans-unit id="substitutedGreen">
+			<trans-unit id="substitutedGreen" resname="substitutedGreen">
 				<source>Substituted constants in green</source>
 			</trans-unit>
-			<trans-unit id="unsubstitutedGreen">
+			<trans-unit id="unsubstitutedGreen" resname="unsubstitutedGreen">
 				<source>UN-substituted constants in green</source>
 			</trans-unit>
-			<trans-unit id="currentTemplate">
+			<trans-unit id="currentTemplate" resname="currentTemplate">
 				<source>Current template</source>
 			</trans-unit>
-			<trans-unit id="badProperty">
+			<trans-unit id="badProperty" resname="badProperty">
 				<source>Bad property!</source>
 			</trans-unit>
-			<trans-unit id="noSpaces">
+			<trans-unit id="noSpaces" resname="noSpaces">
 				<source>You must enter a property with characters a-z, A-Z and 0-9, no spaces!</source>
 			</trans-unit>
-			<trans-unit id="nothingUpdated">
+			<trans-unit id="nothingUpdated" resname="nothingUpdated">
 				<source>Nothing was updated!</source>
 			</trans-unit>
-			<trans-unit id="propertyAdded">
+			<trans-unit id="propertyAdded" resname="propertyAdded">
 				<source>Property added</source>
 			</trans-unit>
-			<trans-unit id="valueUpdated">
+			<trans-unit id="valueUpdated" resname="valueUpdated">
 				<source>Value updated</source>
 			</trans-unit>
-			<trans-unit id="objectCleared">
+			<trans-unit id="objectCleared" resname="objectCleared">
 				<source>Object cleared</source>
 			</trans-unit>
-			<trans-unit id="updateButton">
+			<trans-unit id="updateButton" resname="updateButton">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="editProperty">
+			<trans-unit id="editProperty" resname="editProperty">
 				<source>Edit object/property value</source>
 			</trans-unit>
-			<trans-unit id="addButton">
+			<trans-unit id="addButton" resname="addButton">
 				<source>Add</source>
 			</trans-unit>
-			<trans-unit id="addProperty">
+			<trans-unit id="addProperty" resname="addProperty">
 				<source>Add object property</source>
 			</trans-unit>
-			<trans-unit id="clear">
+			<trans-unit id="clear" resname="clear">
 				<source>Clear?</source>
 			</trans-unit>
-			<trans-unit id="clearButton">
+			<trans-unit id="clearButton" resname="clearButton">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="clearObject">
+			<trans-unit id="clearObject" resname="clearObject">
 				<source>Clear object</source>
 			</trans-unit>
-			<trans-unit id="edit">
+			<trans-unit id="edit" resname="edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="noCurrentTemplate">
+			<trans-unit id="noCurrentTemplate" resname="noCurrentTemplate">
 				<source>You cannot edit properties and values, if there's no current template.</source>
 			</trans-unit>
-			<trans-unit id="addKey">
+			<trans-unit id="addKey" resname="addKey">
 				<source>Add key &quot;%s&quot; to Object List</source>
 			</trans-unit>
-			<trans-unit id="back">
+			<trans-unit id="back" resname="back">
 				<source>Back</source>
 			</trans-unit>
-			<trans-unit id="browse">
+			<trans-unit id="browse" resname="browse">
 				<source>Browse</source>
 			</trans-unit>
-			<trans-unit id="objectList">
+			<trans-unit id="objectList" resname="objectList">
 				<source>Object List</source>
 			</trans-unit>
-			<trans-unit id="search">
+			<trans-unit id="search" resname="search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="regExp">
+			<trans-unit id="regExp" resname="regExp">
 				<source>Regular expressions</source>
 			</trans-unit>
-			<trans-unit id="errorsWarnings">
+			<trans-unit id="errorsWarnings" resname="errorsWarnings">
 				<source>Errors and warnings</source>
 			</trans-unit>
-			<trans-unit id="errorShowDetails">
+			<trans-unit id="errorShowDetails" resname="errorShowDetails">
 				<source>Show details</source>
 			</trans-unit>
-			<trans-unit id="removeKey">
+			<trans-unit id="removeKey" resname="removeKey">
 				<source>Remove key from OL</source>
 			</trans-unit>
-			<trans-unit id="setupRoot">
+			<trans-unit id="setupRoot" resname="setupRoot">
 				<source>setup root</source>
 			</trans-unit>
-			<trans-unit id="constantRoot">
+			<trans-unit id="constantRoot" resname="constantRoot">
 				<source>constants root</source>
 			</trans-unit>
-			<trans-unit id="displayComments">
+			<trans-unit id="displayComments" resname="displayComments">
 				<source>Display comments</source>
 			</trans-unit>
-			<trans-unit id="sortAlphabetically">
+			<trans-unit id="sortAlphabetically" resname="sortAlphabetically">
 				<source>Sort alphabetically</source>
 			</trans-unit>
-			<trans-unit id="cropLines">
+			<trans-unit id="cropLines" resname="cropLines">
 				<source>Crop lines</source>
 			</trans-unit>
-			<trans-unit id="displayConstants">
+			<trans-unit id="displayConstants" resname="displayConstants">
 				<source>Display constants</source>
 			</trans-unit>
-			<trans-unit id="displayOptions">
+			<trans-unit id="displayOptions" resname="displayOptions">
 				<source>Display options</source>
 			</trans-unit>
-			<trans-unit id="conditions">
+			<trans-unit id="conditions" resname="conditions">
 				<source>Conditions</source>
 			</trans-unit>
-			<trans-unit id="setConditions">
+			<trans-unit id="setConditions" resname="setConditions">
 				<source>Set conditions</source>
 			</trans-unit>
-			<trans-unit id="severity.1">
+			<trans-unit id="severity.1" resname="severity.1">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="severity.2">
+			<trans-unit id="severity.2" resname="severity.2">
 				<source>Warning</source>
 			</trans-unit>
-			<trans-unit id="severity.3">
+			<trans-unit id="severity.3" resname="severity.3">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="error.1446559458">
+			<trans-unit id="error.1446559458" resname="error.1446559458">
 				<source>Error evaluating regular expression "%s".</source>
 			</trans-unit>
 		</body>

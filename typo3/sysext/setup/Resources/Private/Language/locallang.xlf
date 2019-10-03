@@ -3,367 +3,367 @@
 	<file t3:id="1415814990" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="setup">
 		<header/>
 		<body>
-			<trans-unit id="UserSettings">
+			<trans-unit id="UserSettings" resname="UserSettings">
 				<source>User Settings</source>
 			</trans-unit>
-			<trans-unit id="language">
+			<trans-unit id="language" resname="language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="lang_default">
+			<trans-unit id="lang_default" resname="lang_default">
 				<source>English</source>
 			</trans-unit>
-			<trans-unit id="lang_af">
+			<trans-unit id="lang_af" resname="lang_af">
 				<source>Afrikaans</source>
 			</trans-unit>
-			<trans-unit id="lang_ar">
+			<trans-unit id="lang_ar" resname="lang_ar">
 				<source>Arabic</source>
 			</trans-unit>
-			<trans-unit id="lang_ba">
+			<trans-unit id="lang_ba" resname="lang_ba">
 				<source>Bosnian</source>
 			</trans-unit>
-			<trans-unit id="lang_bs">
+			<trans-unit id="lang_bs" resname="lang_bs">
 				<source>Bosnian</source>
 			</trans-unit>
-			<trans-unit id="lang_bg">
+			<trans-unit id="lang_bg" resname="lang_bg">
 				<source>Bulgarian</source>
 			</trans-unit>
-			<trans-unit id="lang_ca">
+			<trans-unit id="lang_ca" resname="lang_ca">
 				<source>Catalan</source>
 			</trans-unit>
-			<trans-unit id="lang_ch">
+			<trans-unit id="lang_ch" resname="lang_ch">
 				<source>Chinese (Simple)</source>
 			</trans-unit>
-			<trans-unit id="lang_cs">
+			<trans-unit id="lang_cs" resname="lang_cs">
 				<source>Czech</source>
 			</trans-unit>
-			<trans-unit id="lang_cz">
+			<trans-unit id="lang_cz" resname="lang_cz">
 				<source>Czech</source>
 			</trans-unit>
-			<trans-unit id="lang_da">
+			<trans-unit id="lang_da" resname="lang_da">
 				<source>Danish</source>
 			</trans-unit>
-			<trans-unit id="lang_dk">
+			<trans-unit id="lang_dk" resname="lang_dk">
 				<source>Danish</source>
 			</trans-unit>
-			<trans-unit id="lang_de">
+			<trans-unit id="lang_de" resname="lang_de">
 				<source>German</source>
 			</trans-unit>
-			<trans-unit id="lang_el">
+			<trans-unit id="lang_el" resname="lang_el">
 				<source>Greek</source>
 			</trans-unit>
-			<trans-unit id="lang_gr">
+			<trans-unit id="lang_gr" resname="lang_gr">
 				<source>Greek</source>
 			</trans-unit>
-			<trans-unit id="lang_eo">
+			<trans-unit id="lang_eo" resname="lang_eo">
 				<source>Esperanto</source>
 			</trans-unit>
-			<trans-unit id="lang_es">
+			<trans-unit id="lang_es" resname="lang_es">
 				<source>Spanish</source>
 			</trans-unit>
-			<trans-unit id="lang_et">
+			<trans-unit id="lang_et" resname="lang_et">
 				<source>Estonian</source>
 			</trans-unit>
-			<trans-unit id="lang_eu">
+			<trans-unit id="lang_eu" resname="lang_eu">
 				<source>Basque</source>
 			</trans-unit>
-			<trans-unit id="lang_fa">
+			<trans-unit id="lang_fa" resname="lang_fa">
 				<source>Persian</source>
 			</trans-unit>
-			<trans-unit id="lang_fi">
+			<trans-unit id="lang_fi" resname="lang_fi">
 				<source>Finnish</source>
 			</trans-unit>
-			<trans-unit id="lang_fo">
+			<trans-unit id="lang_fo" resname="lang_fo">
 				<source>Faroese</source>
 			</trans-unit>
-			<trans-unit id="lang_fr">
+			<trans-unit id="lang_fr" resname="lang_fr">
 				<source>French</source>
 			</trans-unit>
-			<trans-unit id="lang_fr_CA">
+			<trans-unit id="lang_fr_CA" resname="lang_fr_CA">
 				<source>French (Canada)</source>
 			</trans-unit>
-			<trans-unit id="lang_qc">
+			<trans-unit id="lang_qc" resname="lang_qc">
 				<source>French (Canada)</source>
 			</trans-unit>
-			<trans-unit id="lang_ga">
+			<trans-unit id="lang_ga" resname="lang_ga">
 				<source>Galician</source>
 			</trans-unit>
-			<trans-unit id="lang_gl">
+			<trans-unit id="lang_gl" resname="lang_gl">
 				<source>Galician</source>
 			</trans-unit>
-			<trans-unit id="lang_he">
+			<trans-unit id="lang_he" resname="lang_he">
 				<source>Hebrew</source>
 			</trans-unit>
-			<trans-unit id="lang_hi">
+			<trans-unit id="lang_hi" resname="lang_hi">
 				<source>Hindi</source>
 			</trans-unit>
-			<trans-unit id="lang_hr">
+			<trans-unit id="lang_hr" resname="lang_hr">
 				<source>Croatian</source>
 			</trans-unit>
-			<trans-unit id="lang_hu">
+			<trans-unit id="lang_hu" resname="lang_hu">
 				<source>Hungarian</source>
 			</trans-unit>
-			<trans-unit id="lang_is">
+			<trans-unit id="lang_is" resname="lang_is">
 				<source>Icelandic</source>
 			</trans-unit>
-			<trans-unit id="lang_it">
+			<trans-unit id="lang_it" resname="lang_it">
 				<source>Italian</source>
 			</trans-unit>
-			<trans-unit id="lang_ja">
+			<trans-unit id="lang_ja" resname="lang_ja">
 				<source>Japanese</source>
 			</trans-unit>
-			<trans-unit id="lang_jp">
+			<trans-unit id="lang_jp" resname="lang_jp">
 				<source>Japanese</source>
 			</trans-unit>
-			<trans-unit id="lang_ge">
+			<trans-unit id="lang_ge" resname="lang_ge">
 				<source>Georgian</source>
 			</trans-unit>
-			<trans-unit id="lang_ka">
+			<trans-unit id="lang_ka" resname="lang_ka">
 				<source>Georgian</source>
 			</trans-unit>
-			<trans-unit id="lang_kl">
+			<trans-unit id="lang_kl" resname="lang_kl">
 				<source>Greenlandic</source>
 			</trans-unit>
-			<trans-unit id="lang_km">
+			<trans-unit id="lang_km" resname="lang_km">
 				<source>Khmer</source>
 			</trans-unit>
-			<trans-unit id="lang_ko">
+			<trans-unit id="lang_ko" resname="lang_ko">
 				<source>Korean</source>
 			</trans-unit>
-			<trans-unit id="lang_kr">
+			<trans-unit id="lang_kr" resname="lang_kr">
 				<source>Korean</source>
 			</trans-unit>
-			<trans-unit id="lang_lt">
+			<trans-unit id="lang_lt" resname="lang_lt">
 				<source>Lithuanian</source>
 			</trans-unit>
-			<trans-unit id="lang_lv">
+			<trans-unit id="lang_lv" resname="lang_lv">
 				<source>Latvian</source>
 			</trans-unit>
-			<trans-unit id="lang_ms">
+			<trans-unit id="lang_ms" resname="lang_ms">
 				<source>Bahasa Malaysia</source>
 			</trans-unit>
-			<trans-unit id="lang_my">
+			<trans-unit id="lang_my" resname="lang_my">
 				<source>Bahasa Malaysia</source>
 			</trans-unit>
-			<trans-unit id="lang_nl">
+			<trans-unit id="lang_nl" resname="lang_nl">
 				<source>Dutch</source>
 			</trans-unit>
-			<trans-unit id="lang_no">
+			<trans-unit id="lang_no" resname="lang_no">
 				<source>Norwegian</source>
 			</trans-unit>
-			<trans-unit id="lang_pl">
+			<trans-unit id="lang_pl" resname="lang_pl">
 				<source>Polish</source>
 			</trans-unit>
-			<trans-unit id="lang_pt">
+			<trans-unit id="lang_pt" resname="lang_pt">
 				<source>Portuguese</source>
 			</trans-unit>
-			<trans-unit id="lang_br">
+			<trans-unit id="lang_br" resname="lang_br">
 				<source>Brazilian Portuguese</source>
 			</trans-unit>
-			<trans-unit id="lang_pt_BR">
+			<trans-unit id="lang_pt_BR" resname="lang_pt_BR">
 				<source>Brazilian Portuguese</source>
 			</trans-unit>
-			<trans-unit id="lang_ro">
+			<trans-unit id="lang_ro" resname="lang_ro">
 				<source>Romanian</source>
 			</trans-unit>
-			<trans-unit id="lang_ru">
+			<trans-unit id="lang_ru" resname="lang_ru">
 				<source>Russian</source>
 			</trans-unit>
-			<trans-unit id="lang_sk">
+			<trans-unit id="lang_sk" resname="lang_sk">
 				<source>Slovak</source>
 			</trans-unit>
-			<trans-unit id="lang_si">
+			<trans-unit id="lang_si" resname="lang_si">
 				<source>Slovenian</source>
 			</trans-unit>
-			<trans-unit id="lang_sl">
+			<trans-unit id="lang_sl" resname="lang_sl">
 				<source>Slovenian</source>
 			</trans-unit>
-			<trans-unit id="lang_sq">
+			<trans-unit id="lang_sq" resname="lang_sq">
 				<source>Albanian</source>
 			</trans-unit>
-			<trans-unit id="lang_sr">
+			<trans-unit id="lang_sr" resname="lang_sr">
 				<source>Serbian</source>
 			</trans-unit>
-			<trans-unit id="lang_se">
+			<trans-unit id="lang_se" resname="lang_se">
 				<source>Swedish</source>
 			</trans-unit>
-			<trans-unit id="lang_sv">
+			<trans-unit id="lang_sv" resname="lang_sv">
 				<source>Swedish</source>
 			</trans-unit>
-			<trans-unit id="lang_th">
+			<trans-unit id="lang_th" resname="lang_th">
 				<source>Thai</source>
 			</trans-unit>
-			<trans-unit id="lang_tr">
+			<trans-unit id="lang_tr" resname="lang_tr">
 				<source>Turkish</source>
 			</trans-unit>
-			<trans-unit id="lang_ua">
+			<trans-unit id="lang_ua" resname="lang_ua">
 				<source>Ukrainian</source>
 			</trans-unit>
-			<trans-unit id="lang_uk">
+			<trans-unit id="lang_uk" resname="lang_uk">
 				<source>Ukrainian</source>
 			</trans-unit>
-			<trans-unit id="lang_vi">
+			<trans-unit id="lang_vi" resname="lang_vi">
 				<source>Vietnamese</source>
 			</trans-unit>
-			<trans-unit id="lang_vn">
+			<trans-unit id="lang_vn" resname="lang_vn">
 				<source>Vietnamese</source>
 			</trans-unit>
-			<trans-unit id="lang_hk">
+			<trans-unit id="lang_hk" resname="lang_hk">
 				<source>Chinese (Trad)</source>
 			</trans-unit>
-			<trans-unit id="lang_zh">
+			<trans-unit id="lang_zh" resname="lang_zh">
 				<source>Chinese (Trad)</source>
 			</trans-unit>
-			<trans-unit id="default">
+			<trans-unit id="default" resname="default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="simulate">
+			<trans-unit id="simulate" resname="simulate">
 				<source>Simulate backend user</source>
 			</trans-unit>
-			<trans-unit id="opening">
+			<trans-unit id="opening" resname="opening">
 				<source>Startup</source>
 			</trans-unit>
-			<trans-unit id="personal_data">
+			<trans-unit id="personal_data" resname="personal_data">
 				<source>Personal data</source>
 			</trans-unit>
-			<trans-unit id="showThumbs">
+			<trans-unit id="showThumbs" resname="showThumbs">
 				<source>Show Thumbnails by default</source>
 			</trans-unit>
-			<trans-unit id="startModule">
+			<trans-unit id="startModule" resname="startModule">
 				<source>Start up in the following module</source>
 			</trans-unit>
-			<trans-unit id="emailMeAtLogin">
+			<trans-unit id="emailMeAtLogin" resname="emailMeAtLogin">
 				<source>Notify me by email when somebody logs in from my account</source>
 			</trans-unit>
-			<trans-unit id="helpText">
+			<trans-unit id="helpText" resname="helpText">
 				<source>Show help text when applicable</source>
 			</trans-unit>
-			<trans-unit id="maxTitleLen">
+			<trans-unit id="maxTitleLen" resname="maxTitleLen">
 				<source>Max. Title Length</source>
 			</trans-unit>
-			<trans-unit id="edit_RTE">
+			<trans-unit id="edit_RTE" resname="edit_RTE">
 				<source>Enable Rich Text Editor (if available)</source>
 			</trans-unit>
-			<trans-unit id="edit_docModuleUpload">
+			<trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload">
 				<source>File upload directly in Doc-module</source>
 			</trans-unit>
-			<trans-unit id="showHiddenFilesAndFolders">
+			<trans-unit id="showHiddenFilesAndFolders" resname="showHiddenFilesAndFolders">
 				<source>Show hidden files and folders in the filelist</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas">
+			<trans-unit id="resizeTextareas" resname="resizeTextareas">
 				<source>Make Textareas resizable</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas_MaxHeight">
+			<trans-unit id="resizeTextareas_MaxHeight" resname="resizeTextareas_MaxHeight">
 				<source>Maximal Height of resizable Textarea in Pixel</source>
 			</trans-unit>
-			<trans-unit id="flexibleTextareas_MaxHeight">
+			<trans-unit id="flexibleTextareas_MaxHeight" resname="flexibleTextareas_MaxHeight">
 				<source>Maximal Height of flexible Textareas in Pixel</source>
 			</trans-unit>
-			<trans-unit id="resizeTextareas_Flexible">
+			<trans-unit id="resizeTextareas_Flexible" resname="resizeTextareas_Flexible">
 				<source>Make Textareas flexible</source>
 			</trans-unit>
-			<trans-unit id="editFunctionsTab">
+			<trans-unit id="editFunctionsTab" resname="editFunctionsTab">
 				<source>Edit and Advanced functions</source>
 			</trans-unit>
-			<trans-unit id="edit_functions">
+			<trans-unit id="edit_functions" resname="edit_functions">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="setToStandard">
+			<trans-unit id="setToStandard" resname="setToStandard">
 				<source>Reset all Values to default</source>
 			</trans-unit>
-			<trans-unit id="resetSectionHeader">
+			<trans-unit id="resetSectionHeader" resname="resetSectionHeader">
 				<source>Reset Settings</source>
 			</trans-unit>
-			<trans-unit id="resetConfiguration">
+			<trans-unit id="resetConfiguration" resname="resetConfiguration">
 				<source>Reset Configuration and Clear Temporary Data</source>
 			</trans-unit>
-			<trans-unit id="resetConfigurationButton">
+			<trans-unit id="resetConfigurationButton" resname="resetConfigurationButton">
 				<source>Reset user settings to default state</source>
 			</trans-unit>
-			<trans-unit id="setToStandardQuestion">
+			<trans-unit id="setToStandardQuestion" resname="setToStandardQuestion">
 				<source>Are you sure you want to reset all values to default?</source>
 			</trans-unit>
-			<trans-unit id="functions">
+			<trans-unit id="functions" resname="functions">
 				<source>Advanced functions</source>
 			</trans-unit>
-			<trans-unit id="copyLevels">
+			<trans-unit id="copyLevels" resname="copyLevels">
 				<source>Recursive Copy: Enter the number of page sublevels to include, when a page is copied</source>
 			</trans-unit>
-			<trans-unit id="recursiveDelete">
+			<trans-unit id="recursiveDelete" resname="recursiveDelete">
 				<source>Recursive Delete(!): Allow ALL subpages to be deleted when deleting a page</source>
 			</trans-unit>
-			<trans-unit id="activateChanges">
+			<trans-unit id="activateChanges" resname="activateChanges">
 				<source>Notice! In order to activate most of these changes, please reload the backend (eg. logout and login again).</source>
 			</trans-unit>
-			<trans-unit id="levels">
+			<trans-unit id="levels" resname="levels">
 				<source>levels</source>
 			</trans-unit>
-			<trans-unit id="beUser_realName">
+			<trans-unit id="beUser_realName" resname="beUser_realName">
 				<source>Your name</source>
 			</trans-unit>
-			<trans-unit id="beUser_avatar">
+			<trans-unit id="beUser_avatar" resname="beUser_avatar">
 				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="beUser_email">
+			<trans-unit id="beUser_email" resname="beUser_email">
 				<source>Your email address</source>
 			</trans-unit>
-			<trans-unit id="save">
+			<trans-unit id="save" resname="save">
 				<source>Save Configuration</source>
 			</trans-unit>
-			<trans-unit id="newPassword">
+			<trans-unit id="newPassword" resname="newPassword">
 				<source>New password</source>
 			</trans-unit>
-			<trans-unit id="newPasswordAgain">
+			<trans-unit id="newPasswordAgain" resname="newPasswordAgain">
 				<source>New password, again</source>
 			</trans-unit>
-			<trans-unit id="newPassword_ok">
+			<trans-unit id="newPassword_ok" resname="newPassword_ok">
 				<source>Password was updated.</source>
 			</trans-unit>
-			<trans-unit id="passwordCurrent">
+			<trans-unit id="passwordCurrent" resname="passwordCurrent">
 				<source>Current password</source>
 			</trans-unit>
-			<trans-unit id="passwordHeader">
+			<trans-unit id="passwordHeader" resname="passwordHeader">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="setupWasUpdated">
+			<trans-unit id="setupWasUpdated" resname="setupWasUpdated">
 				<source>User settings were updated.</source>
 			</trans-unit>
-			<trans-unit id="newPassword_failed">
+			<trans-unit id="newPassword_failed" resname="newPassword_failed">
 				<source>Password was NOT updated because you didn't enter the same password twice.</source>
 			</trans-unit>
-			<trans-unit id="oldPassword_failed">
+			<trans-unit id="oldPassword_failed" resname="oldPassword_failed">
 				<source>Password was NOT updated because you didn't enter the correct current password.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.label">
+			<trans-unit id="enableInstallTool.label" resname="enableInstallTool.label">
 				<source>Install Tool Access</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.createFile">
+			<trans-unit id="enableInstallTool.createFile" resname="enableInstallTool.createFile">
 				<source>Create Install Tool Enable File</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.file">
+			<trans-unit id="enableInstallTool.file" resname="enableInstallTool.file">
 				<source>Install Tool Enable file</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileCreate_ok">
+			<trans-unit id="enableInstallTool.fileCreate_ok" resname="enableInstallTool.fileCreate_ok">
 				<source>The Install Tool Enable file has been created.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileCreate_failed">
+			<trans-unit id="enableInstallTool.fileCreate_failed" resname="enableInstallTool.fileCreate_failed">
 				<source>The Install Tool Enable file could not be created.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.deleteFile">
+			<trans-unit id="enableInstallTool.deleteFile" resname="enableInstallTool.deleteFile">
 				<source>Delete Install Tool Enable File</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileDelete_ok">
+			<trans-unit id="enableInstallTool.fileDelete_ok" resname="enableInstallTool.fileDelete_ok">
 				<source>The Install Tool Enable file has been deleted.</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileDelete_failed">
+			<trans-unit id="enableInstallTool.fileDelete_failed" resname="enableInstallTool.fileDelete_failed">
 				<source>The Install Tool Enable file could not be deleted!</source>
 			</trans-unit>
-			<trans-unit id="enableInstallTool.fileHasKeep">
+			<trans-unit id="enableInstallTool.fileHasKeep" resname="enableInstallTool.fileHasKeep">
 				<source>The Install Tool file has the content "KEEP_FILE" and can not be deleted!</source>
 			</trans-unit>
-			<trans-unit id="settingsAreReset">
+			<trans-unit id="settingsAreReset" resname="settingsAreReset">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
 			</trans-unit>
-			<trans-unit id="startModule.firstInMenu">
+			<trans-unit id="startModule.firstInMenu" resname="startModule.firstInMenu">
 				<source>- First module in menu -</source>
 			</trans-unit>
 		</body>

@@ -3,25 +3,25 @@
 	<file t3:id="1477231202" source-language="en" datatype="plaintext" original="messages" date="2016-10-23T20:22:33Z" product-name="tabs">
 		<header/>
 		<body>
-			<trans-unit id="general">
+			<trans-unit id="general" resname="general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="access">
+			<trans-unit id="access" resname="access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="accesscapabilities">
+			<trans-unit id="accesscapabilities" resname="accesscapabilities">
 				<source>Access capabilities</source>
 			</trans-unit>
-			<trans-unit id="categories">
+			<trans-unit id="categories" resname="categories">
 				<source>Categories</source>
 			</trans-unit>
-			<trans-unit id="notes">
+			<trans-unit id="notes" resname="notes">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="language">
+			<trans-unit id="language" resname="language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="extended">
+			<trans-unit id="extended" resname="extended">
 				<source>Extended</source>
 			</trans-unit>
 		</body>

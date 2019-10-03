@@ -3,64 +3,64 @@
     <file t3:id="1520862805" source-language="en" datatype="plaintext" original="messages" date="2018-03-12T13:52:01Z" product-name="adminpanel">
         <header/>
         <body>
-            <trans-unit id="module.label">
+            <trans-unit id="module.label" resname="module.label">
                 <source>Info</source>
             </trans-unit>
-            <trans-unit id="module.shortinfo">
+            <trans-unit id="module.shortinfo" resname="module.shortinfo">
                 <source>(Load Time: %s ms)</source>
             </trans-unit>
-            <trans-unit id="imagesOnPage">
+            <trans-unit id="imagesOnPage" resname="imagesOnPage">
                 <source>Images on this page</source>
             </trans-unit>
-            <trans-unit id="imagesSize">
+            <trans-unit id="imagesSize" resname="imagesSize">
                 <source>Total image file sizes</source>
             </trans-unit>
-            <trans-unit id="DocumentSize">
+            <trans-unit id="DocumentSize" resname="DocumentSize">
                 <source>Document size</source>
             </trans-unit>
-            <trans-unit id="pageUid">
+            <trans-unit id="pageUid" resname="pageUid">
                 <source>Page Uid</source>
             </trans-unit>
-            <trans-unit id="pageType">
+            <trans-unit id="pageType" resname="pageType">
                 <source>Page type</source>
             </trans-unit>
-            <trans-unit id="groupList">
+            <trans-unit id="groupList" resname="groupList">
                 <source>Frontenduser group combination</source>
             </trans-unit>
-            <trans-unit id="noCache">
+            <trans-unit id="noCache" resname="noCache">
                 <source>Page cached</source>
             </trans-unit>
-            <trans-unit id="noCache_yes">
+            <trans-unit id="noCache_yes" resname="noCache_yes">
                 <source>Yes</source>
             </trans-unit>
-            <trans-unit id="noCache_no">
+            <trans-unit id="noCache_no" resname="noCache_no">
                 <source>No</source>
             </trans-unit>
-            <trans-unit id="countUserInt">
+            <trans-unit id="countUserInt" resname="countUserInt">
                 <source>Count of USER_INT objects</source>
             </trans-unit>
-            <trans-unit id="feuserName">
+            <trans-unit id="feuserName" resname="feuserName">
                 <source>Name of logged in FE-User</source>
             </trans-unit>
-            <trans-unit id="feuserId">
+            <trans-unit id="feuserId" resname="feuserId">
                 <source>Id of logged in FE-User</source>
             </trans-unit>
-            <trans-unit id="totalParsetime">
+            <trans-unit id="totalParsetime" resname="totalParsetime">
                 <source>Total parsetime</source>
             </trans-unit>
-            <trans-unit id="key">
+            <trans-unit id="key" resname="key">
                 <source>Key</source>
             </trans-unit>
-            <trans-unit id="value">
+            <trans-unit id="value" resname="value">
                 <source>Value</source>
             </trans-unit>
-            <trans-unit id="sub.general.label">
+            <trans-unit id="sub.general.label" resname="sub.general.label">
                 <source>General</source>
             </trans-unit>
-            <trans-unit id="sub.php.label">
+            <trans-unit id="sub.php.label" resname="sub.php.label">
                 <source>PHP</source>
             </trans-unit>
-            <trans-unit id="sub.request.label">
+            <trans-unit id="sub.request.label" resname="sub.request.label">
                 <source>REQUEST</source>
             </trans-unit>
         </body>

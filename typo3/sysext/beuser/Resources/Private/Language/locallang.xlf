@@ -3,166 +3,166 @@
 	<file t3:id="1415814783" source-language="en" datatype="plaintext" original="messages" date="2012-07-16T10:11:32Z" product-name="beuser">
 		<header/>
 		<body>
-			<trans-unit id="activeSessions">
+			<trans-unit id="activeSessions" resname="activeSessions">
 				<source>Active Sessions</source>
 			</trans-unit>
-			<trans-unit id="userName">
+			<trans-unit id="userName" resname="userName">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="realName">
+			<trans-unit id="realName" resname="realName">
 				<source>Real Name</source>
 			</trans-unit>
-			<trans-unit id="lastAccess">
+			<trans-unit id="lastAccess" resname="lastAccess">
 				<source>Last access</source>
 			</trans-unit>
-			<trans-unit id="ipAddress">
+			<trans-unit id="ipAddress" resname="ipAddress">
 				<source>IP address</source>
 			</trans-unit>
-			<trans-unit id="backendUserListing">
+			<trans-unit id="backendUserListing" resname="backendUserListing">
 				<source>Backend User Listing</source>
 			</trans-unit>
-			<trans-unit id="subGroups">
+			<trans-unit id="subGroups" resname="subGroups">
 				<source>Sub Groups</source>
 			</trans-unit>
-			<trans-unit id="email">
+			<trans-unit id="email" resname="email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="admin">
+			<trans-unit id="admin" resname="admin">
 				<source>Admin</source>
 			</trans-unit>
-			<trans-unit id="users">
+			<trans-unit id="users" resname="users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="yes">
+			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="no">
+			<trans-unit id="no" resname="no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="never">
+			<trans-unit id="never" resname="never">
 				<source>Never</source>
 			</trans-unit>
-			<trans-unit id="delete">
+			<trans-unit id="delete" resname="delete">
 				<source>Delete backend user (!)</source>
 			</trans-unit>
-			<trans-unit id="disable">
+			<trans-unit id="disable" resname="disable">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="disable_compare">
+			<trans-unit id="disable_compare" resname="disable_compare">
 				<source>Is active?</source>
 			</trans-unit>
-			<trans-unit id="startDateAndTime">
+			<trans-unit id="startDateAndTime" resname="startDateAndTime">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="endDateAndTime">
+			<trans-unit id="endDateAndTime" resname="endDateAndTime">
 				<source>Stop</source>
 			</trans-unit>
-			<trans-unit id="lastLogin">
+			<trans-unit id="lastLogin" resname="lastLogin">
 				<source>Last login</source>
 			</trans-unit>
-			<trans-unit id="allowedLanguages">
+			<trans-unit id="allowedLanguages" resname="allowedLanguages">
 				<source>Limit to languages</source>
 			</trans-unit>
-			<trans-unit id="dbMountPoints">
+			<trans-unit id="dbMountPoints" resname="dbMountPoints">
 				<source>DB mountpoints</source>
 			</trans-unit>
-			<trans-unit id="fileMounts">
+			<trans-unit id="fileMounts" resname="fileMounts">
 				<source>File mountpoints</source>
 			</trans-unit>
-			<trans-unit id="disableIpLock">
+			<trans-unit id="disableIpLock" resname="disableIpLock">
 				<source>Disable IP lock</source>
 			</trans-unit>
-			<trans-unit id="compareBackendUsers">
+			<trans-unit id="compareBackendUsers" resname="compareBackendUsers">
 				<source>Compare backend users</source>
 			</trans-unit>
-			<trans-unit id="compareUserList">
+			<trans-unit id="compareUserList" resname="compareUserList">
 				<source>Compare user list</source>
 			</trans-unit>
-			<trans-unit id="status">
+			<trans-unit id="status" resname="status">
 				<source>Status</source>
 			</trans-unit>
-			<trans-unit id="both">
+			<trans-unit id="both" resname="both">
 				<source>Both</source>
 			</trans-unit>
-			<trans-unit id="any">
+			<trans-unit id="any" resname="any">
 				<source>Any</source>
 			</trans-unit>
-			<trans-unit id="adminOnly">
+			<trans-unit id="adminOnly" resname="adminOnly">
 				<source>Admin only</source>
 			</trans-unit>
-			<trans-unit id="normalUserOnly">
+			<trans-unit id="normalUserOnly" resname="normalUserOnly">
 				<source>Normal users only</source>
 			</trans-unit>
-			<trans-unit id="activeOnly">
+			<trans-unit id="activeOnly" resname="activeOnly">
 				<source>Active only</source>
 			</trans-unit>
-			<trans-unit id="inactiveOnly">
+			<trans-unit id="inactiveOnly" resname="inactiveOnly">
 				<source>Inactive only</source>
 			</trans-unit>
-			<trans-unit id="loginBefore">
+			<trans-unit id="loginBefore" resname="loginBefore">
 				<source>Logged in before</source>
 			</trans-unit>
-			<trans-unit id="neverLoggedIn">
+			<trans-unit id="neverLoggedIn" resname="neverLoggedIn">
 				<source>Never logged in</source>
 			</trans-unit>
-			<trans-unit id="filter">
+			<trans-unit id="filter" resname="filter">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="reallyLogout">
+			<trans-unit id="reallyLogout" resname="reallyLogout">
 				<source>Really logout</source>
 			</trans-unit>
-			<trans-unit id="endSession">
+			<trans-unit id="endSession" resname="endSession">
 				<source>End session</source>
 			</trans-unit>
-			<trans-unit id="backendUsers">
+			<trans-unit id="backendUsers" resname="backendUsers">
 				<source>Backend users</source>
 			</trans-unit>
-			<trans-unit id="compareUsers">
+			<trans-unit id="compareUsers" resname="compareUsers">
 				<source>Compare backend users</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroupsMenu">
+			<trans-unit id="backendUserGroupsMenu" resname="backendUserGroupsMenu">
 				<source>Backend user groups</source>
 			</trans-unit>
-			<trans-unit id="onlineUsers">
+			<trans-unit id="onlineUsers" resname="onlineUsers">
 				<source>Online users</source>
 			</trans-unit>
-			<trans-unit id="backendUserAdministration">
+			<trans-unit id="backendUserAdministration" resname="backendUserAdministration">
 				<source>Backend User Administration</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroup">
+			<trans-unit id="backendUserGroup" resname="backendUserGroup">
 				<source>User group</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroups">
+			<trans-unit id="backendUserGroups" resname="backendUserGroups">
 				<source>Member of groups</source>
 			</trans-unit>
-			<trans-unit id="changeToMode">
+			<trans-unit id="changeToMode" resname="changeToMode">
 				<source>[change-to mode]</source>
 			</trans-unit>
-			<trans-unit id="switchBackMode">
+			<trans-unit id="switchBackMode" resname="switchBackMode">
 				<source>Switch to user</source>
 			</trans-unit>
-			<trans-unit id="confirm">
+			<trans-unit id="confirm" resname="confirm">
 				<source>Are you sure you want to delete this backend user %s?</source>
 			</trans-unit>
-			<trans-unit id="section.compare">
+			<trans-unit id="section.compare" resname="section.compare">
 				<source>Compare</source>
 			</trans-unit>
-			<trans-unit id="compare">
+			<trans-unit id="compare" resname="compare">
 				<source>Compare</source>
 			</trans-unit>
-			<trans-unit id="terminateSessionSuccess">
+			<trans-unit id="terminateSessionSuccess" resname="terminateSessionSuccess">
 				<source>Session successfully terminated.</source>
 			</trans-unit>
-			<trans-unit id="backendUserGroupListing">
+			<trans-unit id="backendUserGroupListing" resname="backendUserGroupListing">
 				<source>Backend User Group Listing</source>
 			</trans-unit>
-			<trans-unit id="online">
+			<trans-unit id="online" resname="online">
 				<source>online</source>
 			</trans-unit>
-			<trans-unit id="visibility.hide">
+			<trans-unit id="visibility.hide" resname="visibility.hide">
 				<source>hide</source>
 			</trans-unit>
-			<trans-unit id="visibility.unhide">
+			<trans-unit id="visibility.unhide" resname="visibility.unhide">
 				<source>unhide</source>
 			</trans-unit>
 		</body>
