@@ -3,28 +3,28 @@
 	<file t3:id="1415815020" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:38Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
 				<source>Workspaces</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
 				<source>This module contains the overview of all elements within the current workspace and it enables to continue the review and publishing workflow for them.</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
 				<source>Create and handle versioning workflows</source>
 			</trans-unit>
-			<trans-unit id="stage_ready_to_publish">
+			<trans-unit id="stage_ready_to_publish" resname="stage_ready_to_publish">
 				<source>Ready to publish</source>
 			</trans-unit>
-			<trans-unit id="previewText">
+			<trans-unit id="previewText" resname="previewText">
 				<source>Preview of workspace %s (%s)</source>
 			</trans-unit>
-			<trans-unit id="stopPreview">
+			<trans-unit id="stopPreview" resname="stopPreview">
 				<source>Stop preview</source>
 			</trans-unit>
-			<trans-unit id="previewLogoutSuccess">
+			<trans-unit id="previewLogoutSuccess" resname="previewLogoutSuccess">
 				<source>You logged out from Workspace preview mode. Click this link to %1$s go back to the website%2$s</source>
 			</trans-unit>
-			<trans-unit id="previewLogoutError">
+			<trans-unit id="previewLogoutError" resname="previewLogoutError">
 				<source>%1$sERROR!%2$sTemplate File "%3$s" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.</source>
 			</trans-unit>
 		</body>

@@ -3,16 +3,16 @@
 	<file t3:id="1486156389" source-language="en" datatype="plaintext" original="messages" date="2017-02-03T21:13:02Z" product-name="recordlist">
 		<header/>
 		<body>
-			<trans-unit id="error.linkHandlerTitleMissing">
+			<trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing">
 				<source>[title missing]</source>
 			</trans-unit>
-			<trans-unit id="clearcache.title">
+			<trans-unit id="clearcache.title" resname="clearcache.title">
 				<source>Page cache</source>
 			</trans-unit>
-			<trans-unit id="clearcache.message.success">
+			<trans-unit id="clearcache.message.success" resname="clearcache.message.success">
 				<source>Successfully cleared page cache</source>
 			</trans-unit>
-			<trans-unit id="clearcache.message.error">
+			<trans-unit id="clearcache.message.error" resname="clearcache.message.error">
 				<source>Page cache could not cleared</source>
 			</trans-unit>
 		</body>

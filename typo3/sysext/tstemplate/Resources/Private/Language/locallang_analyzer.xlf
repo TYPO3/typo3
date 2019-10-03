@@ -3,58 +3,58 @@
 	<file t3:id="1415815003" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="currentTemplate">
+			<trans-unit id="currentTemplate" resname="currentTemplate">
 				<source>Current template</source>
 			</trans-unit>
-			<trans-unit id="title">
+			<trans-unit id="title" resname="title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="rootlevel">
+			<trans-unit id="rootlevel" resname="rootlevel">
 				<source>Rootlevel</source>
 			</trans-unit>
-			<trans-unit id="clearSetup">
+			<trans-unit id="clearSetup" resname="clearSetup">
 				<source>Clear Setup</source>
 			</trans-unit>
-			<trans-unit id="clearConstants">
+			<trans-unit id="clearConstants" resname="clearConstants">
 				<source>Clear Constants</source>
 			</trans-unit>
-			<trans-unit id="pid">
+			<trans-unit id="pid" resname="pid">
 				<source>PID</source>
 			</trans-unit>
-			<trans-unit id="rootline">
+			<trans-unit id="rootline" resname="rootline">
 				<source>Rootline</source>
 			</trans-unit>
-			<trans-unit id="templateHierarchy">
+			<trans-unit id="templateHierarchy" resname="templateHierarchy">
 				<source>Template hierarchy</source>
 			</trans-unit>
-			<trans-unit id="displayOptions">
+			<trans-unit id="displayOptions" resname="displayOptions">
 				<source>Display Options</source>
 			</trans-unit>
-			<trans-unit id="lineNumbers">
+			<trans-unit id="lineNumbers" resname="lineNumbers">
 				<source>Line numbers</source>
 			</trans-unit>
-			<trans-unit id="syntaxHighlight">
+			<trans-unit id="syntaxHighlight" resname="syntaxHighlight">
 				<source>Syntax highlight</source>
 			</trans-unit>
-			<trans-unit id="comments">
+			<trans-unit id="comments" resname="comments">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="cropLines">
+			<trans-unit id="cropLines" resname="cropLines">
 				<source>Crop lines</source>
 			</trans-unit>
-			<trans-unit id="blockMode">
+			<trans-unit id="blockMode" resname="blockMode">
 				<source>Block mode</source>
 			</trans-unit>
-			<trans-unit id="constants">
+			<trans-unit id="constants" resname="constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="setup">
+			<trans-unit id="setup" resname="setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="viewCompleteTS">
+			<trans-unit id="viewCompleteTS" resname="viewCompleteTS">
 				<source>View the complete TS Listing</source>
 			</trans-unit>
-			<trans-unit id="completeTS">
+			<trans-unit id="completeTS" resname="completeTS">
 				<source>Complete TS</source>
 			</trans-unit>
 		</body>

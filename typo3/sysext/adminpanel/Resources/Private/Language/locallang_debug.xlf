@@ -4,58 +4,58 @@
 		  product-name="adminpanel">
 		<header/>
 		<body>
-			<trans-unit id="module.label">
+			<trans-unit id="module.label" resname="module.label">
 				<source>Debug</source>
 			</trans-unit>
-			<trans-unit id="module.shortinfo">
+			<trans-unit id="module.shortinfo" resname="module.shortinfo">
 				<source>(%s Errors/Warnings)</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.label">
+			<trans-unit id="submodule.log.label" resname="submodule.log.label">
 				<source>Log</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.message">
+			<trans-unit id="submodule.log.message" resname="submodule.log.message">
 				<source>Log Message</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.component">
+			<trans-unit id="submodule.log.component" resname="submodule.log.component">
 				<source>Component</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.level">
+			<trans-unit id="submodule.log.level" resname="submodule.log.level">
 				<source>Level</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.groupByComponent">
+			<trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent">
 				<source>Group by Component</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.groupByLevel">
+			<trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel">
 				<source>Group by Level</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.startLevel">
+			<trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel">
 				<source>Display only levels equal or higher to</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.noEntries">
+			<trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries">
 				<source>No log entries.</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.label">
+			<trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label">
 				<source>Query Information</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.query">
+			<trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query">
 				<source>Query</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queries">
+			<trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries">
 				<source>Queries</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.backtrace">
+			<trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace">
 				<source>Backtrace</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.doctrineDebug">
+			<trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug">
 				<source>SQL Debug</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.sqlQuery">
+			<trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery">
 				<source>SQL Query</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queryCount">
+			<trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount">
 				<source>Count</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queryTime">
+			<trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
 				<source>Total Time [ms]</source>
 			</trans-unit>
 		</body>

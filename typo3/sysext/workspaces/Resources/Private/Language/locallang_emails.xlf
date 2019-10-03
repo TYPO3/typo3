@@ -3,10 +3,10 @@
 	<file t3:id="1415815010" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="subject">
+			<trans-unit id="subject" resname="subject">
 				<source>TYPO3 Workspace Note: Stage Change for ###ELEMENT_NAME###</source>
 			</trans-unit>
-			<trans-unit id="message" xml:space="preserve">
+			<trans-unit id="message" resname="message" xml:space="preserve">
 				<source>At the TYPO3 site "###SITE_NAME###" (###SITE_URL###)
 in workspace "###WORKSPACE_TITLE###" (###WORKSPACE_UID###)
 the stage has changed for the element(s) "###RECORD_TITLE###" (###ELEMENT_NAME###) at location "###RECORD_PATH###" in the page tree:

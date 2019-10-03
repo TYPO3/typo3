@@ -3,31 +3,31 @@
 	<file t3:id="1415814996" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
-			<trans-unit id="internal_note">
+			<trans-unit id="internal_note" resname="internal_note">
 				<source>Internal notes</source>
 			</trans-unit>
-			<trans-unit id="author">
+			<trans-unit id="author" resname="author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="date">
+			<trans-unit id="date" resname="date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="personal">
+			<trans-unit id="personal" resname="personal">
 				<source>Personal</source>
 			</trans-unit>
-			<trans-unit id="category.1">
+			<trans-unit id="category.1" resname="category.1">
 				<source>Instructions</source>
 			</trans-unit>
-			<trans-unit id="category.2">
+			<trans-unit id="category.2" resname="category.2">
 				<source>Template</source>
 			</trans-unit>
-			<trans-unit id="category.3">
+			<trans-unit id="category.3" resname="category.3">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="category.4">
+			<trans-unit id="category.4" resname="category.4">
 				<source>To-do</source>
 			</trans-unit>
-			<trans-unit id="yes">
+			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>
 			</trans-unit>
 		</body>

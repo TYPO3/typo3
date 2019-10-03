@@ -3,136 +3,136 @@
 	<file t3:id="1415814847" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="deleteItem">
+			<trans-unit id="deleteItem" resname="deleteItem">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning">
+			<trans-unit id="deleteWarning" resname="deleteWarning">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="undoLastChange">
+			<trans-unit id="undoLastChange" resname="undoLastChange">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="recordHistory">
+			<trans-unit id="recordHistory" resname="recordHistory">
 				<source>View record change history</source>
 			</trans-unit>
-			<trans-unit id="editWholeRecord">
+			<trans-unit id="editWholeRecord" resname="editWholeRecord">
 				<source>Edit whole record</source>
 			</trans-unit>
-			<trans-unit id="openDocs">
+			<trans-unit id="openDocs" resname="openDocs">
 				<source>OPEN DOCUMENTS</source>
 			</trans-unit>
-			<trans-unit id="noDocuments">
+			<trans-unit id="noDocuments" resname="noDocuments">
 				<source>No open documents</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg">
+			<trans-unit id="noDocuments_msg" resname="noDocuments_msg">
 				<source>There are no open documents available to edit.</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg2">
+			<trans-unit id="noDocuments_msg2" resname="noDocuments_msg2">
 				<source>You can go to %s to find the page or the record you wish to edit.</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_msg3">
+			<trans-unit id="noDocuments_msg3" resname="noDocuments_msg3">
 				<source>You can select one of your most recently edited records from this list</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_pagemodule">
+			<trans-unit id="noDocuments_pagemodule" resname="noDocuments_pagemodule">
 				<source>the Web&gt;Page module</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_OR">
+			<trans-unit id="noDocuments_OR" resname="noDocuments_OR">
 				<source>or</source>
 			</trans-unit>
-			<trans-unit id="noDocuments_listmodule">
+			<trans-unit id="noDocuments_listmodule" resname="noDocuments_listmodule">
 				<source>the Web&gt;List module</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.duplicate_record_changed.cancel">
+			<trans-unit id="buttons.confirm.duplicate_record_changed.cancel" resname="buttons.confirm.duplicate_record_changed.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.confirm.duplicate_record_changed.no">
+			<trans-unit id="button.confirm.duplicate_record_changed.no" resname="button.confirm.duplicate_record_changed.no">
 				<source>No, just duplicate the original</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.duplicate_record_changed.yes">
+			<trans-unit id="buttons.confirm.duplicate_record_changed.yes" resname="buttons.confirm.duplicate_record_changed.yes">
 				<source>Yes, save and duplicate this record</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.close_without_save.yes">
+			<trans-unit id="buttons.confirm.close_without_save.yes" resname="buttons.confirm.close_without_save.yes">
 				<source>Yes, discard my changes</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.close_without_save.no">
+			<trans-unit id="buttons.confirm.close_without_save.no" resname="buttons.confirm.close_without_save.no">
 				<source>No, I will continue editing</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.save_and_close">
+			<trans-unit id="buttons.confirm.save_and_close" resname="buttons.confirm.save_and_close">
 				<source>Save and close</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.duplicate_record_changed.title">
+			<trans-unit id="label.confirm.duplicate_record_changed.title" resname="label.confirm.duplicate_record_changed.title">
 				<source>Do you want to save before duplicating this record?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.duplicate_record_changed.content">
+			<trans-unit id="label.confirm.duplicate_record_changed.content" resname="label.confirm.duplicate_record_changed.content">
 				<source>You currently have unsaved changes. Do you want to save your changes before duplicating this record?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.new_record_changed.title">
+			<trans-unit id="label.confirm.new_record_changed.title" resname="label.confirm.new_record_changed.title">
 				<source>Do you want to save before adding?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.new_record_changed.content">
+			<trans-unit id="label.confirm.new_record_changed.content" resname="label.confirm.new_record_changed.content">
 				<source>You need to save your changes before creating a new record. Do you want to save and create now?</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.new_record_changed.cancel">
+			<trans-unit id="buttons.confirm.new_record_changed.cancel" resname="buttons.confirm.new_record_changed.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.new_record_changed.no">
+			<trans-unit id="buttons.confirm.new_record_changed.no" resname="buttons.confirm.new_record_changed.no">
 				<source>No, just add</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.new_record_changed.yes">
+			<trans-unit id="buttons.confirm.new_record_changed.yes" resname="buttons.confirm.new_record_changed.yes">
 				<source>Yes, save and create now</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.view_record_changed.title">
+			<trans-unit id="label.confirm.view_record_changed.title" resname="label.confirm.view_record_changed.title">
 				<source>Do you want to save before viewing?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.view_record_changed.content">
+			<trans-unit id="label.confirm.view_record_changed.content" resname="label.confirm.view_record_changed.content">
 				<source>You currently have unsaved changes. You can either discard these changes or save and view them.</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.view_record_changed.content.is-new-page">
+			<trans-unit id="label.confirm.view_record_changed.content.is-new-page" resname="label.confirm.view_record_changed.content.is-new-page">
 				<source>You need to save your changes before viewing the page. Do you want to save and view them now?</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.view_record_changed.cancel">
+			<trans-unit id="buttons.confirm.view_record_changed.cancel" resname="buttons.confirm.view_record_changed.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.view_record_changed.no-save">
+			<trans-unit id="buttons.confirm.view_record_changed.no-save" resname="buttons.confirm.view_record_changed.no-save">
 				<source>View without changes</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.view_record_changed.save">
+			<trans-unit id="buttons.confirm.view_record_changed.save" resname="buttons.confirm.view_record_changed.save">
 				<source>Save changes and view</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.close_without_save.title">
+			<trans-unit id="label.confirm.close_without_save.title" resname="label.confirm.close_without_save.title">
 				<source>Do you want to close without saving?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.close_without_save.content">
+			<trans-unit id="label.confirm.close_without_save.content" resname="label.confirm.close_without_save.content">
 				<source>You currently have unsaved changes. Are you sure you want to discard these changes?</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_file.no">
+			<trans-unit id="buttons.confirm.delete_file.no" resname="buttons.confirm.delete_file.no">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_file.yes">
+			<trans-unit id="buttons.confirm.delete_file.yes" resname="buttons.confirm.delete_file.yes">
 				<source>Yes, delete this file</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_folder.yes">
+			<trans-unit id="buttons.confirm.delete_folder.yes" resname="buttons.confirm.delete_folder.yes">
 				<source>Yes, delete this folder</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_record.no">
+			<trans-unit id="buttons.confirm.delete_record.no" resname="buttons.confirm.delete_record.no">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_record.yes">
+			<trans-unit id="buttons.confirm.delete_record.yes" resname="buttons.confirm.delete_record.yes">
 				<source>Yes, delete this record</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.delete_record.title">
+			<trans-unit id="label.confirm.delete_record.title" resname="label.confirm.delete_record.title">
 				<source>Delete this record?</source>
 			</trans-unit>
-			<trans-unit id="label.confirm.delete_record.content">
+			<trans-unit id="label.confirm.delete_record.content" resname="label.confirm.delete_record.content">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_elements.no">
+			<trans-unit id="buttons.confirm.delete_elements.no" resname="buttons.confirm.delete_elements.no">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="buttons.confirm.delete_elements.yes">
+			<trans-unit id="buttons.confirm.delete_elements.yes" resname="buttons.confirm.delete_elements.yes">
 				<source>Yes, delete these elements</source>
 			</trans-unit>
-			<trans-unit id="buttons.reviewFailedValidationFields">
+			<trans-unit id="buttons.reviewFailedValidationFields" resname="buttons.reviewFailedValidationFields">
 				<source>Review fields with failed validations</source>
 			</trans-unit>
 		</body>

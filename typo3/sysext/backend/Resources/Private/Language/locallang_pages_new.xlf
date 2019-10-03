@@ -3,52 +3,52 @@
 	<file t3:id="1415815013" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="title">
+			<trans-unit id="title" resname="title">
 				<source>Create multiple pages</source>
 			</trans-unit>
 
-			<trans-unit id="canNotCreateNew.title">
+			<trans-unit id="canNotCreateNew.title" resname="canNotCreateNew.title">
 				<source>Insufficient permissions</source>
 			</trans-unit>
-			<trans-unit id="canNotCreateNew.message">
+			<trans-unit id="canNotCreateNew.message" resname="canNotCreateNew.message">
 				<source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
 			</trans-unit>
 
-			<trans-unit id="newPage">
+			<trans-unit id="newPage" resname="newPage">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="addMoreLines">
+			<trans-unit id="addMoreLines" resname="addMoreLines">
 				<source>Add more lines</source>
 			</trans-unit>
-			<trans-unit id="listEnd">
+			<trans-unit id="listEnd" resname="listEnd">
 				<source>Place new pages after the existing subpages</source>
 			</trans-unit>
-			<trans-unit id="hidePages">
+			<trans-unit id="hidePages" resname="hidePages">
 				<source>Hide new pages</source>
 			</trans-unit>
-			<trans-unit id="hidePagesInMenus">
+			<trans-unit id="hidePagesInMenus" resname="hidePagesInMenus">
 				<source>Hide new pages in menus</source>
 			</trans-unit>
-			<trans-unit id="create">
+			<trans-unit id="create" resname="create">
 				<source>Create pages</source>
 			</trans-unit>
-			<trans-unit id="reset">
+			<trans-unit id="reset" resname="reset">
 				<source>Clear fields</source>
 			</trans-unit>
 
-			<trans-unit id="newSubPages">
+			<trans-unit id="newSubPages" resname="newSubPages">
 				<source>New page structure</source>
 			</trans-unit>
-			<trans-unit id="noPagesCreated.title">
+			<trans-unit id="noPagesCreated.title" resname="noPagesCreated.title">
 				<source>No pages added</source>
 			</trans-unit>
-			<trans-unit id="noPagesCreated.message">
+			<trans-unit id="noPagesCreated.message" resname="noPagesCreated.message">
 				<source>No pages were created.</source>
 			</trans-unit>
-			<trans-unit id="pagesCreated.title">
+			<trans-unit id="pagesCreated.title" resname="pagesCreated.title">
 				<source>Pages added</source>
 			</trans-unit>
-			<trans-unit id="pagesCreated.message">
+			<trans-unit id="pagesCreated.message" resname="pagesCreated.message">
 				<source>The pages were created successfully.</source>
 			</trans-unit>
 		</body>

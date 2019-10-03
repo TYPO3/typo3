@@ -3,211 +3,211 @@
 	<file t3:id="1415814894" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:34Z" product-name="linkvalidator">
 		<header/>
 		<body>
-			<trans-unit id="linkvalidator">
+			<trans-unit id="linkvalidator" resname="linkvalidator">
 				<source>Link validator</source>
 			</trans-unit>
-			<trans-unit id="menu.introduction">
+			<trans-unit id="menu.introduction" resname="menu.introduction">
 				<source>Introduction</source>
 			</trans-unit>
-			<trans-unit id="menu.checkLinks">
+			<trans-unit id="menu.checkLinks" resname="menu.checkLinks">
 				<source>Check Links for validity</source>
 			</trans-unit>
-			<trans-unit id="menu.overview">
+			<trans-unit id="menu.overview" resname="menu.overview">
 				<source>Overview of links on website</source>
 			</trans-unit>
-			<trans-unit id="overview.header">
+			<trans-unit id="overview.header" resname="overview.header">
 				<source>Overview - choose options to check the links</source>
 			</trans-unit>
-			<trans-unit id="overview.all.header">
+			<trans-unit id="overview.all.header" resname="overview.all.header">
 				<source>Total amounts in tt_content</source>
 			</trans-unit>
-			<trans-unit id="overview.all.records">
+			<trans-unit id="overview.all.records" resname="overview.all.records">
 				<source>Records with ext. links</source>
 			</trans-unit>
-			<trans-unit id="overview.all.links">
+			<trans-unit id="overview.all.links" resname="overview.all.links">
 				<source>External links</source>
 			</trans-unit>
-			<trans-unit id="overview.branch.header">
+			<trans-unit id="overview.branch.header" resname="overview.branch.header">
 				<source>Amounts from actual branch in tt_content</source>
 			</trans-unit>
-			<trans-unit id="overview.branch.records">
+			<trans-unit id="overview.branch.records" resname="overview.branch.records">
 				<source>Records with ext. links</source>
 			</trans-unit>
-			<trans-unit id="overview.branch.links">
+			<trans-unit id="overview.branch.links" resname="overview.branch.links">
 				<source>External links</source>
 			</trans-unit>
-			<trans-unit id="overview.attention.header">
+			<trans-unit id="overview.attention.header" resname="overview.attention.header">
 				<source>Attention</source>
 			</trans-unit>
-			<trans-unit id="overview.attention.text">
+			<trans-unit id="overview.attention.text" resname="overview.attention.text">
 				<source>Checking links may take up to several minutes. Checking ONE link can last up to 3 seconds.</source>
 			</trans-unit>
-			<trans-unit id="Report">
+			<trans-unit id="Report" resname="Report">
 				<source>Report</source>
 			</trans-unit>
-			<trans-unit id="CheckLink">
+			<trans-unit id="CheckLink" resname="CheckLink">
 				<source>Check Links</source>
 			</trans-unit>
-			<trans-unit id="report.statistics.header">
+			<trans-unit id="report.statistics.header" resname="report.statistics.header">
 				<source>Show these types of broken links</source>
 			</trans-unit>
-			<trans-unit id="checklinks.statistics.header">
+			<trans-unit id="checklinks.statistics.header" resname="checklinks.statistics.header">
 				<source>Check these types of broken links</source>
 			</trans-unit>
-			<trans-unit id="report.func.title">
+			<trans-unit id="report.func.title" resname="report.func.title">
 				<source>Show this level</source>
 			</trans-unit>
-			<trans-unit id="checklinks.func.title">
+			<trans-unit id="checklinks.func.title" resname="checklinks.func.title">
 				<source>Check this level</source>
 			</trans-unit>
-			<trans-unit id="overviews.nbtotal">
+			<trans-unit id="overviews.nbtotal" resname="overviews.nbtotal">
 				<source>Broken links total</source>
 			</trans-unit>
-			<trans-unit id="hooks.db">
+			<trans-unit id="hooks.db" resname="hooks.db">
 				<source>Internal Links</source>
 			</trans-unit>
-			<trans-unit id="hooks.file">
+			<trans-unit id="hooks.file" resname="hooks.file">
 				<source>File Links</source>
 			</trans-unit>
-			<trans-unit id="hooks.external">
+			<trans-unit id="hooks.external" resname="hooks.external">
 				<source>External Links</source>
 			</trans-unit>
-			<trans-unit id="hooks.linkhandler">
+			<trans-unit id="hooks.linkhandler" resname="hooks.linkhandler">
 				<source>Linkhandler Links</source>
 			</trans-unit>
-			<trans-unit id="label_refresh">
+			<trans-unit id="label_refresh" resname="label_refresh">
 				<source>Refresh display</source>
 			</trans-unit>
-			<trans-unit id="label_update">
+			<trans-unit id="label_update" resname="label_update">
 				<source>Check links</source>
 			</trans-unit>
-			<trans-unit id="list.header">
+			<trans-unit id="list.header" resname="list.header">
 				<source>Listing of broken links</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.path">
+			<trans-unit id="list.tableHead.path" resname="list.tableHead.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.element">
+			<trans-unit id="list.tableHead.element" resname="list.tableHead.element">
 				<source>Element</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.headlink">
+			<trans-unit id="list.tableHead.headlink" resname="list.tableHead.headlink">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.linktarget">
+			<trans-unit id="list.tableHead.linktarget" resname="list.tableHead.linktarget">
 				<source>URL / Link Target</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.linkmessage">
+			<trans-unit id="list.tableHead.linkmessage" resname="list.tableHead.linkmessage">
 				<source>Error message</source>
 			</trans-unit>
-			<trans-unit id="list.tableHead.lastCheck">
+			<trans-unit id="list.tableHead.lastCheck" resname="list.tableHead.lastCheck">
 				<source>Last check</source>
 			</trans-unit>
-			<trans-unit id="list.edit">
+			<trans-unit id="list.edit" resname="list.edit">
 				<source>Edit element containing this broken link</source>
 			</trans-unit>
-			<trans-unit id="list.field">
+			<trans-unit id="list.field" resname="list.field">
 				<source>(Field: %s)</source>
 			</trans-unit>
-			<trans-unit id="list.no.headline">
+			<trans-unit id="list.no.headline" resname="list.no.headline">
 				<source>no headline</source>
 			</trans-unit>
-			<trans-unit id="list.report.pagedeleted">
+			<trans-unit id="list.report.pagedeleted" resname="list.report.pagedeleted">
 				<source>Page '###title###' (###uid###) is deleted.</source>
 			</trans-unit>
-			<trans-unit id="list.report.pagenotvisible">
+			<trans-unit id="list.report.pagenotvisible" resname="list.report.pagenotvisible">
 				<source>Page '###title###' (###uid###) is not visible.</source>
 			</trans-unit>
-			<trans-unit id="list.report.pagenotexisting">
+			<trans-unit id="list.report.pagenotexisting" resname="list.report.pagenotexisting">
 				<source>Page (###uid###) does not exist.</source>
 			</trans-unit>
-			<trans-unit id="list.report.contentmoved">
+			<trans-unit id="list.report.contentmoved" resname="list.report.contentmoved">
 				<source>Element '###title###' (###uid###) is not located on page ###wrongpage###, but on page ###rightpage###.</source>
 			</trans-unit>
-			<trans-unit id="list.report.contentdeleted">
+			<trans-unit id="list.report.contentdeleted" resname="list.report.contentdeleted">
 				<source>Element '###title###' (###uid###) is deleted.</source>
 			</trans-unit>
-			<trans-unit id="list.report.contentnotvisible">
+			<trans-unit id="list.report.contentnotvisible" resname="list.report.contentnotvisible">
 				<source>Element '###title###' (###uid###) is not visible.</source>
 			</trans-unit>
-			<trans-unit id="list.report.contentnotexisting">
+			<trans-unit id="list.report.contentnotexisting" resname="list.report.contentnotexisting">
 				<source>Element (###uid###) does not exist.</source>
 			</trans-unit>
-			<trans-unit id="list.report.rownotvisible">
+			<trans-unit id="list.report.rownotvisible" resname="list.report.rownotvisible">
 				<source>###title### row (###uid###) is not visible.</source>
 			</trans-unit>
-			<trans-unit id="list.report.rowdeleted">
+			<trans-unit id="list.report.rowdeleted" resname="list.report.rowdeleted">
 				<source>###title### row (###uid###) is deleted.</source>
 			</trans-unit>
-			<trans-unit id="list.report.rowdeleted.default.title">
+			<trans-unit id="list.report.rowdeleted.default.title" resname="list.report.rowdeleted.default.title">
 				<source>Linked</source>
 			</trans-unit>
-			<trans-unit id="list.report.rownotexisting">
+			<trans-unit id="list.report.rownotexisting" resname="list.report.rownotexisting">
 				<source>Row (###uid###) does not exist.</source>
 			</trans-unit>
-			<trans-unit id="list.report.noinformation">
+			<trans-unit id="list.report.noinformation" resname="list.report.noinformation">
 				<source>No information about the error is available.</source>
 			</trans-unit>
-			<trans-unit id="list.report.noresponse">
+			<trans-unit id="list.report.noresponse" resname="list.report.noresponse">
 				<source>External Link not reachable.</source>
 			</trans-unit>
-			<trans-unit id="list.report.redirectloop">
+			<trans-unit id="list.report.redirectloop" resname="list.report.redirectloop">
 				<source>A redirect loop occurred. (%s: %s)</source>
 			</trans-unit>
-			<trans-unit id="list.report.pageforbidden403">
+			<trans-unit id="list.report.pageforbidden403" resname="list.report.pageforbidden403">
 				<source>Accessing this address is not allowed (403).</source>
 			</trans-unit>
-			<trans-unit id="list.report.pagenotfound404">
+			<trans-unit id="list.report.pagenotfound404" resname="list.report.pagenotfound404">
 				<source>The requested url was not found (404).</source>
 			</trans-unit>
-			<trans-unit id="list.report.externalerror">
+			<trans-unit id="list.report.externalerror" resname="list.report.externalerror">
 				<source>External Link returned HTTP error code (%s).</source>
 			</trans-unit>
-			<trans-unit id="list.report.filenotexisting">
+			<trans-unit id="list.report.filenotexisting" resname="list.report.filenotexisting">
 				<source>File doesn't exist.</source>
 			</trans-unit>
-			<trans-unit id="list.report.timeout">
+			<trans-unit id="list.report.timeout" resname="list.report.timeout">
 				<source>Operation timeout. The specified time-out period was reached according to the conditions.</source>
 			</trans-unit>
-			<trans-unit id="list.report.internalerror500">
+			<trans-unit id="list.report.internalerror500" resname="list.report.internalerror500">
 				<source>Internal Server Error (500)</source>
 			</trans-unit>
-			<trans-unit id="list.report.couldnotresolvehost">
+			<trans-unit id="list.report.couldnotresolvehost" resname="list.report.couldnotresolvehost">
 				<source>Could not resolve host. The given remote host was not resolved.</source>
 			</trans-unit>
-			<trans-unit id="list.report.errornetworkdata">
+			<trans-unit id="list.report.errornetworkdata" resname="list.report.errornetworkdata">
 				<source>Failure with receiving network data.</source>
 			</trans-unit>
-			<trans-unit id="list.report.otherhttpcode">
+			<trans-unit id="list.report.otherhttpcode" resname="list.report.otherhttpcode">
 				<source>An error occurred (%s): "%s".</source>
 			</trans-unit>
-			<trans-unit id="list.report.httpexception">
+			<trans-unit id="list.report.httpexception" resname="list.report.httpexception">
 				<source>Exception: %s</source>
 			</trans-unit>
-			<trans-unit id="list.report.networkexception">
+			<trans-unit id="list.report.networkexception" resname="list.report.networkexception">
 				<source>Network error / invalid domain</source>
 			</trans-unit>
-			<trans-unit id="list.msg.ok">
+			<trans-unit id="list.msg.ok" resname="list.msg.ok">
 				<source>Ok</source>
 			</trans-unit>
-			<trans-unit id="list.msg.lastRun">
+			<trans-unit id="list.msg.lastRun" resname="list.msg.lastRun">
 				<source>%1$s %2$s</source>
 			</trans-unit>
-			<trans-unit id="list.no.broken.links.title">
+			<trans-unit id="list.no.broken.links.title" resname="list.no.broken.links.title">
 				<source>No broken links to show!</source>
 			</trans-unit>
-			<trans-unit id="list.no.broken.links">
+			<trans-unit id="list.no.broken.links" resname="list.no.broken.links">
 				<source>There are no broken links to be displayed.</source>
 			</trans-unit>
-			<trans-unit id="no.access.title">
+			<trans-unit id="no.access.title" resname="no.access.title">
 				<source>No access!</source>
 			</trans-unit>
-			<trans-unit id="no.access">
+			<trans-unit id="no.access" resname="no.access">
 				<source>You do not have access to these listings.</source>
 			</trans-unit>
-			<trans-unit id="label_update-link-list">
+			<trans-unit id="label_update-link-list" resname="label_update-link-list">
 				<source>Checking links, please stand by.</source>
 			</trans-unit>
-			<trans-unit id="label_refresh-link-list">
+			<trans-unit id="label_refresh-link-list" resname="label_refresh-link-list">
 				<source>Refreshing link list, please stand by.</source>
 			</trans-unit>
 		</body>

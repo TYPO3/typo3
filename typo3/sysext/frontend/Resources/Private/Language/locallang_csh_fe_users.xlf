@@ -3,93 +3,93 @@
 	<file t3:id="1415814796" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="context_help">
 		<header/>
 		<body>
-			<trans-unit id="username.description">
+			<trans-unit id="username.description" resname="username.description">
 				<source>Enter the username of the website user. This is needed to login.</source>
 			</trans-unit>
-			<trans-unit id="username.syntax">
+			<trans-unit id="username.syntax" resname="username.syntax">
 				<source>A username is required and must be in lowercase without spaces in it. The username must be unique among other usernames in the page where it's saved. If it is not unique a number will be prepended automatically.</source>
 			</trans-unit>
-			<trans-unit id="_username.seeAlso">
+			<trans-unit id="_username.seeAlso" resname="_username.seeAlso">
 				<source>Creating Frontend Users and Groups | https://docs.typo3.org/typo3cms/GettingStartedTutorial/EditAndCreatePagesAndContent/CreateUsersGroups/</source>
 			</trans-unit>
-			<trans-unit id="password.description">
+			<trans-unit id="password.description" resname="password.description">
 				<source>Enter the password for the username above. This is needed to login.</source>
 			</trans-unit>
-			<trans-unit id="password.syntax">
+			<trans-unit id="password.syntax" resname="password.syntax">
 				<source>A password is required and must be in lowercase without spaces in it.</source>
 			</trans-unit>
-			<trans-unit id="usergroup.description">
+			<trans-unit id="usergroup.description" resname="usergroup.description">
 				<source>Select a user group for the username.</source>
 			</trans-unit>
-			<trans-unit id="usergroup.details">
+			<trans-unit id="usergroup.details" resname="usergroup.details">
 				<source>When a user logs in he is able to view all content which is access restricted to the user &lt;em&gt;group(s)&lt;/em&gt; the user is a member of. Therefore the user login primarily makes sense with regard to the member groups.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.description">
+			<trans-unit id="lockToDomain.description" resname="lockToDomain.description">
 				<source>Enter the host name from which the user is forced to login. NOTICE: this is not a security feature and can be circumvented by faking HTTP_HOST.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.details">
+			<trans-unit id="lockToDomain.details" resname="lockToDomain.details">
 				<source>A TYPO3 system may have multiple domains pointing to it. Therefore this option secures that users can login only from a certain host name.</source>
 			</trans-unit>
-			<trans-unit id="lockToDomain.syntax">
+			<trans-unit id="lockToDomain.syntax" resname="lockToDomain.syntax">
 				<source>Either a domain name, "www.typo3.org" or an IP address, "10.34.222.83"</source>
 			</trans-unit>
-			<trans-unit id="_lockToDomain.seeAlso">
+			<trans-unit id="_lockToDomain.seeAlso" resname="_lockToDomain.seeAlso">
 				<source>fe_groups:lockToDomain</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="name.description">
+			<trans-unit id="name.description" resname="name.description">
 				<source>Enter the regular name of the user, both first- and surname.</source>
 			</trans-unit>
-			<trans-unit id="address.description">
+			<trans-unit id="address.description" resname="address.description">
 				<source>Enter the street address of the user.</source>
 			</trans-unit>
-			<trans-unit id="www.description">
+			<trans-unit id="www.description" resname="www.description">
 				<source>Enter the homepage URL</source>
 			</trans-unit>
-			<trans-unit id="title.description">
+			<trans-unit id="title.description" resname="title.description">
 				<source>Enter the job title, eg. 'Director' or 'Accountant'.</source>
 			</trans-unit>
-			<trans-unit id="company.description">
+			<trans-unit id="company.description" resname="company.description">
 				<source>Enter the name of the company in which the user is employed.</source>
 			</trans-unit>
-			<trans-unit id="image.description">
+			<trans-unit id="image.description" resname="image.description">
 				<source>Insert a photo of the user.</source>
 			</trans-unit>
-			<trans-unit id="disable.description">
+			<trans-unit id="disable.description" resname="disable.description">
 				<source>This option will temporarily disable the user from logging in.</source>
 			</trans-unit>
-			<trans-unit id="_disable.seeAlso">
+			<trans-unit id="_disable.seeAlso" resname="_disable.seeAlso">
 				<source>fe_users:starttime,fe_users:endtime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="starttime.description">
+			<trans-unit id="starttime.description" resname="starttime.description">
 				<source>Enter the date from which the account is active.</source>
 			</trans-unit>
-			<trans-unit id="starttime.syntax" xml:space="preserve">
+			<trans-unit id="starttime.syntax" resname="starttime.syntax" xml:space="preserve">
 				<source>The syntax is dd-mm-yy, but you can just enter a "d" in the field to insert todays date. Or "d+10" to insert the date 10 days from now etc.
 The field will re-format any input to fit the format it understands so you can just experiment and you will be able to clearly see how dates should be entered.</source>
 			</trans-unit>
-			<trans-unit id="_starttime.seeAlso">
+			<trans-unit id="_starttime.seeAlso" resname="_starttime.seeAlso">
 				<source>fe_users:disable,fe_users:endtime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="endtime.description">
+			<trans-unit id="endtime.description" resname="endtime.description">
 				<source>Enter the date from which the account is disabled.</source>
 			</trans-unit>
-			<trans-unit id="endtime.syntax">
+			<trans-unit id="endtime.syntax" resname="endtime.syntax">
 				<source>See "Start"</source>
 			</trans-unit>
-			<trans-unit id="_endtime.seeAlso">
+			<trans-unit id="_endtime.seeAlso" resname="_endtime.seeAlso">
 				<source>fe_users:disable,fe_users:starttime</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id="lastlogin.description">
+			<trans-unit id="lastlogin.description" resname="lastlogin.description">
 				<source>This field shows the user's last log in date.</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.description">
+			<trans-unit id="TSconfig.description" resname="TSconfig.description">
 				<source>Enter additional TSconfig for the user (advanced).</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.details" xml:space="preserve">
+			<trans-unit id="TSconfig.details" resname="TSconfig.details" xml:space="preserve">
 				<source>This field allows you to enter TypoScript style configuration values for the user. Currently there are no system defined keys. If there ever will be, they will be described in detail in the administrative documentation.
 
 The primary use of this field (as well as the 'sister'-field in the Website usergroup table) is for custom purposes. In this case, you should use the root-key "user" for your customly defined values. Thus you don't risk any future system keys to interfere with your configuration.
@@ -116,32 +116,32 @@ if ($userTSConfig["user."]["printUserName"]) {
 return $GLOBALS["TSFE"]-&gt;fe_user-&gt;user["name"];
 }</source>
 			</trans-unit>
-			<trans-unit id="TSconfig.syntax">
+			<trans-unit id="TSconfig.syntax" resname="TSconfig.syntax">
 				<source>TypoScript syntax, without conditions and constants.</source>
 			</trans-unit>
-			<trans-unit id="_TSconfig.seeAlso" xml:space="preserve">
+			<trans-unit id="_TSconfig.seeAlso" resname="_TSconfig.seeAlso" xml:space="preserve">
 				<source>TSconfig for TSFE | https://docs.typo3.org/typo3cms/TSconfigReference/PageTsconfig/TCEmain/
 pages:TSconfig,
 fe_groups:TSconfig,
 be_users:TSconfig,
 be_groups:TSconfig</source>
 			</trans-unit>
-			<trans-unit id=".description">
+			<trans-unit id=".description" resname=".description">
 				<source>A website login user.</source>
 			</trans-unit>
-			<trans-unit id=".details">
+			<trans-unit id=".details" resname=".details">
 				<source>These are users with a username and password who are allowed specific access to otherwise restricted areas on your website.</source>
 			</trans-unit>
-			<trans-unit id="_.seeAlso" xml:space="preserve">
+			<trans-unit id="_.seeAlso" resname="_.seeAlso" xml:space="preserve">
 				<source>fe_groups
 be_users</source>
 			</trans-unit>
-			<trans-unit id="_.image" xml:space="preserve">
+			<trans-unit id="_.image" resname="_.image" xml:space="preserve">
 				<source>EXT:frontend/Resources/Public/Images/cshimages/feusers_1.png,
 EXT:frontend/Resources/Public/Images/cshimages/feusers_2.png,</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
-			<trans-unit id=".image_descr" xml:space="preserve">
+			<trans-unit id=".image_descr" resname=".image_descr" xml:space="preserve">
 				<source>Part of the form for editing a frontend user.
 A typical login box (standard) on the website where frontend users can login.</source>
 			</trans-unit>

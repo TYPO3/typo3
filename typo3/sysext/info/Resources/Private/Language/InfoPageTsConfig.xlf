@@ -3,67 +3,67 @@
 	<file t3:id="1415814840" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:33Z" product-name="info_pagetsconfig">
 		<header/>
 		<body>
-			<trans-unit id="tsconf_title">
+			<trans-unit id="tsconf_title" resname="tsconf_title">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_0">
+			<trans-unit id="tsconf_parts_0" resname="tsconf_parts_0">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1">
+			<trans-unit id="tsconf_parts_1" resname="tsconf_parts_1">
 				<source>Module key ('mod') with overruling user settings</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1a">
+			<trans-unit id="tsconf_parts_1a" resname="tsconf_parts_1a">
 				<source>Module: Web&gt;Page</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1b">
+			<trans-unit id="tsconf_parts_1b" resname="tsconf_parts_1b">
 				<source>Module: Web&gt;View</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1c">
+			<trans-unit id="tsconf_parts_1c" resname="tsconf_parts_1c">
 				<source>Module: Web&gt;Modules</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1d">
+			<trans-unit id="tsconf_parts_1d" resname="tsconf_parts_1d">
 				<source>Module: Web&gt;List</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1e">
+			<trans-unit id="tsconf_parts_1e" resname="tsconf_parts_1e">
 				<source>Module: Web&gt;Info</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1f">
+			<trans-unit id="tsconf_parts_1f" resname="tsconf_parts_1f">
 				<source>Module: Web&gt;Func</source>
 			</trans-unit>
-			<trans-unit id="tsconf_parts_1g">
+			<trans-unit id="tsconf_parts_1g" resname="tsconf_parts_1g">
 				<source>Module: Web&gt;Template</source>
 			</trans-unit>
-			<trans-unit id="tsconf_configFields">
+			<trans-unit id="tsconf_configFields" resname="tsconf_configFields">
 				<source>View TSconfig fields content</source>
 			</trans-unit>
-			<trans-unit id="editThisColumn">
+			<trans-unit id="editThisColumn" resname="editThisColumn">
 				<source>Edit the field '%s' for all listed pages</source>
 			</trans-unit>
-			<trans-unit id="editTSconfig">
+			<trans-unit id="editTSconfig" resname="editTSconfig">
 				<source>Edit TSconfig for this page</source>
 			</trans-unit>
-			<trans-unit id="editTSconfig_all">
+			<trans-unit id="editTSconfig_all" resname="editTSconfig_all">
 				<source>Edit TSconfig for all shown pages</source>
 			</trans-unit>
-			<trans-unit id="editTSconfig_default">
+			<trans-unit id="editTSconfig_default" resname="editTSconfig_default">
 				<source>Default Configuration from TYPO3_CONF_VARS</source>
 			</trans-unit>
-			<trans-unit id="mod_pagetsconfig">
+			<trans-unit id="mod_pagetsconfig" resname="mod_pagetsconfig">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="sort_alphabetic">
+			<trans-unit id="sort_alphabetic" resname="sort_alphabetic">
 				<source>Sort alphabetically</source>
 			</trans-unit>
-			<trans-unit id="pagetitle">
+			<trans-unit id="pagetitle" resname="pagetitle">
 				<source>Pagetitle:</source>
 			</trans-unit>
-			<trans-unit id="included_tsconfig_files">
+			<trans-unit id="included_tsconfig_files" resname="included_tsconfig_files">
 				<source>Included Files:</source>
 			</trans-unit>
-			<trans-unit id="written_tsconfig_lines">
+			<trans-unit id="written_tsconfig_lines" resname="written_tsconfig_lines">
 				<source>Lines:</source>
 			</trans-unit>
-			<trans-unit id="tsconf_noPageTSconfig">
+			<trans-unit id="tsconf_noPageTSconfig" resname="tsconf_noPageTSconfig">
 				<source>There are no pages containing custom Page TSconfig settings in the page configuration.</source>
 			</trans-unit>
 		</body>

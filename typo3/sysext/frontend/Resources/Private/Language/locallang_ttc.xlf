@@ -3,856 +3,856 @@
 	<file t3:id="1415814791" source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="CType_formlabel">
+			<trans-unit id="CType_formlabel" resname="CType_formlabel">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="CType.I.0">
+			<trans-unit id="CType.I.0" resname="CType.I.0">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="CType.I.1">
+			<trans-unit id="CType.I.1" resname="CType.I.1">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="CType.I.2">
+			<trans-unit id="CType.I.2" resname="CType.I.2">
 				<source>Text &amp; Images</source>
 			</trans-unit>
-			<trans-unit id="CType.I.3">
+			<trans-unit id="CType.I.3" resname="CType.I.3">
 				<source>Images</source>
 			</trans-unit>
-			<trans-unit id="CType.I.4">
+			<trans-unit id="CType.I.4" resname="CType.I.4">
 				<source>Bullet List</source>
 			</trans-unit>
-			<trans-unit id="CType.I.5">
+			<trans-unit id="CType.I.5" resname="CType.I.5">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="CType.I.6">
+			<trans-unit id="CType.I.6" resname="CType.I.6">
 				<source>File Links</source>
 			</trans-unit>
-			<trans-unit id="CType.I.8">
+			<trans-unit id="CType.I.8" resname="CType.I.8">
 				<source>Form</source>
 			</trans-unit>
-			<trans-unit id="CType.I.9">
+			<trans-unit id="CType.I.9" resname="CType.I.9">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="CType.I.10">
+			<trans-unit id="CType.I.10" resname="CType.I.10">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="CType.I.11">
+			<trans-unit id="CType.I.11" resname="CType.I.11">
 				<source>Textbox</source>
 			</trans-unit>
-			<trans-unit id="CType.I.12">
+			<trans-unit id="CType.I.12" resname="CType.I.12">
 				<source>Special Menus</source>
 			</trans-unit>
-			<trans-unit id="CType.I.13">
+			<trans-unit id="CType.I.13" resname="CType.I.13">
 				<source>Insert Records</source>
 			</trans-unit>
-			<trans-unit id="CType.I.14">
+			<trans-unit id="CType.I.14" resname="CType.I.14">
 				<source>Insert Plugin</source>
 			</trans-unit>
-			<trans-unit id="CType.I.15">
+			<trans-unit id="CType.I.15" resname="CType.I.15">
 				<source>Script</source>
 			</trans-unit>
-			<trans-unit id="CType.I.16">
+			<trans-unit id="CType.I.16" resname="CType.I.16">
 				<source>Divider</source>
 			</trans-unit>
-			<trans-unit id="CType.I.17">
+			<trans-unit id="CType.I.17" resname="CType.I.17">
 				<source>HTML</source>
 			</trans-unit>
-			<trans-unit id="CType.textmedia">
+			<trans-unit id="CType.textmedia" resname="CType.textmedia">
 				<source>Text &amp; Media</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_abstract">
+			<trans-unit id="CType.menu_abstract" resname="CType.menu_abstract">
 				<source>Abstracts</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_categorized_pages">
+			<trans-unit id="CType.menu_categorized_pages" resname="CType.menu_categorized_pages">
 				<source>Categorized pages</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_categorized_content">
+			<trans-unit id="CType.menu_categorized_content" resname="CType.menu_categorized_content">
 				<source>Categorized content</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_pages">
+			<trans-unit id="CType.menu_pages" resname="CType.menu_pages">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_subpages">
+			<trans-unit id="CType.menu_subpages" resname="CType.menu_subpages">
 				<source>Subpages</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_recently_updated">
+			<trans-unit id="CType.menu_recently_updated" resname="CType.menu_recently_updated">
 				<source>Recently updated pages</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_related_pages">
+			<trans-unit id="CType.menu_related_pages" resname="CType.menu_related_pages">
 				<source>Related pages</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_section">
+			<trans-unit id="CType.menu_section" resname="CType.menu_section">
 				<source>Section index</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_section_pages">
+			<trans-unit id="CType.menu_section_pages" resname="CType.menu_section_pages">
 				<source>Section index of subpages from selected pages</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_sitemap">
+			<trans-unit id="CType.menu_sitemap" resname="CType.menu_sitemap">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="CType.menu_sitemap_pages">
+			<trans-unit id="CType.menu_sitemap_pages" resname="CType.menu_sitemap_pages">
 				<source>Sitemaps of selected pages</source>
 			</trans-unit>
-			<trans-unit id="CType.div.standard">
+			<trans-unit id="CType.div.standard" resname="CType.div.standard">
 				<source>Standard</source>
 			</trans-unit>
-			<trans-unit id="CType.div.lists">
+			<trans-unit id="CType.div.lists" resname="CType.div.lists">
 				<source>Lists</source>
 			</trans-unit>
-			<trans-unit id="CType.div.menu">
+			<trans-unit id="CType.div.menu" resname="CType.div.menu">
 				<source>Menu</source>
 			</trans-unit>
-			<trans-unit id="CType.div.forms">
+			<trans-unit id="CType.div.forms" resname="CType.div.forms">
 				<source>Forms</source>
 			</trans-unit>
-			<trans-unit id="CType.div.special">
+			<trans-unit id="CType.div.special" resname="CType.div.special">
 				<source>Special</source>
 			</trans-unit>
-			<trans-unit id="layout.I.1">
+			<trans-unit id="layout.I.1" resname="layout.I.1">
 				<source>Layout 1</source>
 			</trans-unit>
-			<trans-unit id="layout.I.2">
+			<trans-unit id="layout.I.2" resname="layout.I.2">
 				<source>Layout 2</source>
 			</trans-unit>
-			<trans-unit id="layout.I.3">
+			<trans-unit id="layout.I.3" resname="layout.I.3">
 				<source>Layout 3</source>
 			</trans-unit>
-			<trans-unit id="colPos">
+			<trans-unit id="colPos" resname="colPos">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="colPos_formlabel">
+			<trans-unit id="colPos_formlabel" resname="colPos_formlabel">
 				<source>Column</source>
 			</trans-unit>
-			<trans-unit id="colPos.I.0">
+			<trans-unit id="colPos.I.0" resname="colPos.I.0">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="colPos.I.1">
+			<trans-unit id="colPos.I.1" resname="colPos.I.1">
 				<source>Normal</source>
 			</trans-unit>
-			<trans-unit id="colPos.I.2">
+			<trans-unit id="colPos.I.2" resname="colPos.I.2">
 				<source>Right</source>
 			</trans-unit>
-			<trans-unit id="colPos.I.3">
+			<trans-unit id="colPos.I.3" resname="colPos.I.3">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="colPos.I.unused">
+			<trans-unit id="colPos.I.unused" resname="colPos.I.unused">
 				<source>Unused</source>
 			</trans-unit>
-			<trans-unit id="date">
+			<trans-unit id="date" resname="date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="date_formlabel">
+			<trans-unit id="date_formlabel" resname="date_formlabel">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="header">
+			<trans-unit id="header" resname="header">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="header_formlabel">
+			<trans-unit id="header_formlabel" resname="header_formlabel">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="header.ALT.shortcut_formlabel">
+			<trans-unit id="header.ALT.shortcut_formlabel" resname="header.ALT.shortcut_formlabel">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
-			<trans-unit id="header.ALT.script_formlabel">
+			<trans-unit id="header.ALT.script_formlabel" resname="header.ALT.script_formlabel">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
-			<trans-unit id="header.ALT.div_formlabel">
+			<trans-unit id="header.ALT.div_formlabel" resname="header.ALT.div_formlabel">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
-			<trans-unit id="header.ALT.html_formlabel">
+			<trans-unit id="header.ALT.html_formlabel" resname="header.ALT.html_formlabel">
 				<source>Name (not visible in frontend)</source>
 			</trans-unit>
-			<trans-unit id="header_position">
+			<trans-unit id="header_position" resname="header_position">
 				<source>Align</source>
 			</trans-unit>
-			<trans-unit id="header_position_formlabel">
+			<trans-unit id="header_position_formlabel" resname="header_position_formlabel">
 				<source>Alignment</source>
 			</trans-unit>
-			<trans-unit id="header_position.I.1">
+			<trans-unit id="header_position.I.1" resname="header_position.I.1">
 				<source>Center</source>
 			</trans-unit>
-			<trans-unit id="header_position.I.2">
+			<trans-unit id="header_position.I.2" resname="header_position.I.2">
 				<source>Right</source>
 			</trans-unit>
-			<trans-unit id="header_position.I.3">
+			<trans-unit id="header_position.I.3" resname="header_position.I.3">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="header_link">
+			<trans-unit id="header_link" resname="header_link">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="header_link_formlabel">
+			<trans-unit id="header_link_formlabel" resname="header_link_formlabel">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="header_layout_formlabel">
+			<trans-unit id="header_layout_formlabel" resname="header_layout_formlabel">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="header_layout.I.1">
+			<trans-unit id="header_layout.I.1" resname="header_layout.I.1">
 				<source>Layout 1</source>
 			</trans-unit>
-			<trans-unit id="header_layout.I.2">
+			<trans-unit id="header_layout.I.2" resname="header_layout.I.2">
 				<source>Layout 2</source>
 			</trans-unit>
-			<trans-unit id="header_layout.I.3">
+			<trans-unit id="header_layout.I.3" resname="header_layout.I.3">
 				<source>Layout 3</source>
 			</trans-unit>
-			<trans-unit id="header_layout.I.4">
+			<trans-unit id="header_layout.I.4" resname="header_layout.I.4">
 				<source>Layout 4</source>
 			</trans-unit>
-			<trans-unit id="header_layout.I.5">
+			<trans-unit id="header_layout.I.5" resname="header_layout.I.5">
 				<source>Layout 5</source>
 			</trans-unit>
-			<trans-unit id="header_layout.I.6">
+			<trans-unit id="header_layout.I.6" resname="header_layout.I.6">
 				<source>Hidden</source>
 			</trans-unit>
-			<trans-unit id="bullets_type">
+			<trans-unit id="bullets_type" resname="bullets_type">
 				<source>Type of bullets</source>
 			</trans-unit>
-			<trans-unit id="bullets_type.0">
+			<trans-unit id="bullets_type.0" resname="bullets_type.0">
 				<source>Unordered list (bullets)</source>
 			</trans-unit>
-			<trans-unit id="bullets_type.1">
+			<trans-unit id="bullets_type.1" resname="bullets_type.1">
 				<source>Ordered list (numbers)</source>
 			</trans-unit>
-			<trans-unit id="bullets_type.2">
+			<trans-unit id="bullets_type.2" resname="bullets_type.2">
 				<source>Definition list</source>
 			</trans-unit>
-			<trans-unit id="bodytext.W.forms">
+			<trans-unit id="bodytext.W.forms" resname="bodytext.W.forms">
 				<source>Forms wizard</source>
 			</trans-unit>
-			<trans-unit id="imagewidth">
+			<trans-unit id="imagewidth" resname="imagewidth">
 				<source>Width (pixels)</source>
 			</trans-unit>
-			<trans-unit id="imagewidth_formlabel">
+			<trans-unit id="imagewidth_formlabel" resname="imagewidth_formlabel">
 				<source>Width (px)</source>
 			</trans-unit>
-			<trans-unit id="imageheight">
+			<trans-unit id="imageheight" resname="imageheight">
 				<source>Height (pixels)</source>
 			</trans-unit>
-			<trans-unit id="imageheight_formlabel">
+			<trans-unit id="imageheight_formlabel" resname="imageheight_formlabel">
 				<source>Height (px)</source>
 			</trans-unit>
-			<trans-unit id="imageorient">
+			<trans-unit id="imageorient" resname="imageorient">
 				<source>Position</source>
 			</trans-unit>
-			<trans-unit id="imageorient_formlabel">
+			<trans-unit id="imageorient_formlabel" resname="imageorient_formlabel">
 				<source>Position and Alignment</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.0">
+			<trans-unit id="imageorient.I.0" resname="imageorient.I.0">
 				<source>Above, center</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.1">
+			<trans-unit id="imageorient.I.1" resname="imageorient.I.1">
 				<source>Above, right</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.2">
+			<trans-unit id="imageorient.I.2" resname="imageorient.I.2">
 				<source>Above, left</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.3">
+			<trans-unit id="imageorient.I.3" resname="imageorient.I.3">
 				<source>Below, center</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.4">
+			<trans-unit id="imageorient.I.4" resname="imageorient.I.4">
 				<source>Below, right</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.5">
+			<trans-unit id="imageorient.I.5" resname="imageorient.I.5">
 				<source>Below, left</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.6">
+			<trans-unit id="imageorient.I.6" resname="imageorient.I.6">
 				<source>In text, right</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.7">
+			<trans-unit id="imageorient.I.7" resname="imageorient.I.7">
 				<source>In text, left</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.8">
+			<trans-unit id="imageorient.I.8" resname="imageorient.I.8">
 				<source>__No wrap:__</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.9">
+			<trans-unit id="imageorient.I.9" resname="imageorient.I.9">
 				<source>Beside Text, Right</source>
 			</trans-unit>
-			<trans-unit id="imageorient.I.10">
+			<trans-unit id="imageorient.I.10" resname="imageorient.I.10">
 				<source>Beside Text, Left</source>
 			</trans-unit>
-			<trans-unit id="imageborder">
+			<trans-unit id="imageborder" resname="imageborder">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="imageborder_formlabel">
+			<trans-unit id="imageborder_formlabel" resname="imageborder_formlabel">
 				<source>Border</source>
 			</trans-unit>
-			<trans-unit id="image_link">
+			<trans-unit id="image_link" resname="image_link">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="image_link_formlabel">
+			<trans-unit id="image_link_formlabel" resname="image_link_formlabel">
 				<source>Links (one per line, one link per image)</source>
 			</trans-unit>
-			<trans-unit id="image_zoom">
+			<trans-unit id="image_zoom" resname="image_zoom">
 				<source>Click-enlarge</source>
 			</trans-unit>
-			<trans-unit id="image_zoom_formlabel">
+			<trans-unit id="image_zoom_formlabel" resname="image_zoom_formlabel">
 				<source>Enlarge on Click</source>
 			</trans-unit>
-			<trans-unit id="image_frames">
+			<trans-unit id="image_frames" resname="image_frames">
 				<source>Frames</source>
 			</trans-unit>
-			<trans-unit id="image_frames_formlabel">
+			<trans-unit id="image_frames_formlabel" resname="image_frames_formlabel">
 				<source>Graphical Frames</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.0">
+			<trans-unit id="image_frames.I.0" resname="image_frames.I.0">
 				<source>(None)</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.1">
+			<trans-unit id="image_frames.I.1" resname="image_frames.I.1">
 				<source>Frame 1</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.2">
+			<trans-unit id="image_frames.I.2" resname="image_frames.I.2">
 				<source>Frame 2</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.3">
+			<trans-unit id="image_frames.I.3" resname="image_frames.I.3">
 				<source>Frame 3</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.4">
+			<trans-unit id="image_frames.I.4" resname="image_frames.I.4">
 				<source>Frame 4</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.5">
+			<trans-unit id="image_frames.I.5" resname="image_frames.I.5">
 				<source>Frame 5</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.6">
+			<trans-unit id="image_frames.I.6" resname="image_frames.I.6">
 				<source>Frame 6</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.7">
+			<trans-unit id="image_frames.I.7" resname="image_frames.I.7">
 				<source>Frame 7</source>
 			</trans-unit>
-			<trans-unit id="image_frames.I.8">
+			<trans-unit id="image_frames.I.8" resname="image_frames.I.8">
 				<source>Frame 8</source>
 			</trans-unit>
-			<trans-unit id="imagecols">
+			<trans-unit id="imagecols" resname="imagecols">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="imagecols_formlabel">
+			<trans-unit id="imagecols_formlabel" resname="imagecols_formlabel">
 				<source>Number of Columns</source>
 			</trans-unit>
-			<trans-unit id="image_altText">
+			<trans-unit id="image_altText" resname="image_altText">
 				<source>Alternative Text</source>
 			</trans-unit>
-			<trans-unit id="altText_formlabel">
+			<trans-unit id="altText_formlabel" resname="altText_formlabel">
 				<source>Alternative Labels (one per line)</source>
 			</trans-unit>
-			<trans-unit id="image_titleText">
+			<trans-unit id="image_titleText" resname="image_titleText">
 				<source>Title Text</source>
 			</trans-unit>
-			<trans-unit id="titleText_formlabel">
+			<trans-unit id="titleText_formlabel" resname="titleText_formlabel">
 				<source>Titles (one per line)</source>
 			</trans-unit>
-			<trans-unit id="image_longdescURL">
+			<trans-unit id="image_longdescURL" resname="image_longdescURL">
 				<source>Long Description URL</source>
 			</trans-unit>
-			<trans-unit id="images.addFileReference">
+			<trans-unit id="images.addFileReference" resname="images.addFileReference">
 				<source>Add image</source>
 			</trans-unit>
-			<trans-unit id="longdescURL_formlabel">
+			<trans-unit id="longdescURL_formlabel" resname="longdescURL_formlabel">
 				<source>Long Description URLs (one per line)</source>
 			</trans-unit>
-			<trans-unit id="cols">
+			<trans-unit id="cols" resname="cols">
 				<source>Columns</source>
 			</trans-unit>
-			<trans-unit id="cols.I.0">
+			<trans-unit id="cols.I.0" resname="cols.I.0">
 				<source>Auto</source>
 			</trans-unit>
-			<trans-unit id="recursive.I.0">
+			<trans-unit id="recursive.I.0" resname="recursive.I.0">
 				<source>0 levels (only selected page)</source>
 			</trans-unit>
-			<trans-unit id="recursive.I.1">
+			<trans-unit id="recursive.I.1" resname="recursive.I.1">
 				<source>1 level</source>
 			</trans-unit>
-			<trans-unit id="recursive.I.2">
+			<trans-unit id="recursive.I.2" resname="recursive.I.2">
 				<source>2 levels</source>
 			</trans-unit>
-			<trans-unit id="recursive.I.3">
+			<trans-unit id="recursive.I.3" resname="recursive.I.3">
 				<source>3 levels</source>
 			</trans-unit>
-			<trans-unit id="recursive.I.4">
+			<trans-unit id="recursive.I.4" resname="recursive.I.4">
 				<source>4 levels</source>
 			</trans-unit>
-			<trans-unit id="recursive.I.5">
+			<trans-unit id="recursive.I.5" resname="recursive.I.5">
 				<source>Infinite</source>
 			</trans-unit>
-			<trans-unit id="menu_type">
+			<trans-unit id="menu_type" resname="menu_type">
 				<source>Menu Type</source>
 			</trans-unit>
-			<trans-unit id="menu_type_formlabel">
+			<trans-unit id="menu_type_formlabel" resname="menu_type_formlabel">
 				<source>Menu Type</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.0">
+			<trans-unit id="menu_type.I.0" resname="menu_type.I.0">
 				<source>Menu of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.1">
+			<trans-unit id="menu_type.I.1" resname="menu_type.I.1">
 				<source>Menu of subpages of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.2">
+			<trans-unit id="menu_type.I.2" resname="menu_type.I.2">
 				<source>Menu of subpages of selected pages including abstracts</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.3">
+			<trans-unit id="menu_type.I.3" resname="menu_type.I.3">
 				<source>Menu of subpages of selected pages including sections</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.4">
+			<trans-unit id="menu_type.I.4" resname="menu_type.I.4">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.5">
+			<trans-unit id="menu_type.I.5" resname="menu_type.I.5">
 				<source>Section index (page content marked for section menus)</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.6">
+			<trans-unit id="menu_type.I.6" resname="menu_type.I.6">
 				<source>Recently updated pages</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.7">
+			<trans-unit id="menu_type.I.7" resname="menu_type.I.7">
 				<source>Related pages (based on keywords)</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.8">
+			<trans-unit id="menu_type.I.8" resname="menu_type.I.8">
 				<source>Sitemaps of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.categorized_pages">
+			<trans-unit id="menu_type.I.categorized_pages" resname="menu_type.I.categorized_pages">
 				<source>Pages for selected categories</source>
 			</trans-unit>
-			<trans-unit id="menu_type.I.categorized_content">
+			<trans-unit id="menu_type.I.categorized_content" resname="menu_type.I.categorized_content">
 				<source>Content elements for selected categories</source>
 			</trans-unit>
-			<trans-unit id="list_type">
+			<trans-unit id="list_type" resname="list_type">
 				<source>Plugin</source>
 			</trans-unit>
-			<trans-unit id="list_type_formlabel">
+			<trans-unit id="list_type_formlabel" resname="list_type_formlabel">
 				<source>Selected Plugin</source>
 			</trans-unit>
-			<trans-unit id="media">
+			<trans-unit id="media" resname="media">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="media.dataAttributes">
+			<trans-unit id="media.dataAttributes" resname="media.dataAttributes">
 				<source>Additional data-* Attributes for HTML5 video tag</source>
 			</trans-unit>
-			<trans-unit id="media.dataAttributes.attributeName">
+			<trans-unit id="media.dataAttributes.attributeName" resname="media.dataAttributes.attributeName">
 				<source>Name of attribute (without data-)</source>
 			</trans-unit>
-			<trans-unit id="media.dataAttributes.content">
+			<trans-unit id="media.dataAttributes.content" resname="media.dataAttributes.content">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="media.ALT.uploads_formlabel">
+			<trans-unit id="media.ALT.uploads_formlabel" resname="media.ALT.uploads_formlabel">
 				<source>Select single files</source>
 			</trans-unit>
-			<trans-unit id="media.addFileReference">
+			<trans-unit id="media.addFileReference" resname="media.addFileReference">
 				<source>Add file</source>
 			</trans-unit>
-			<trans-unit id="multimedia">
+			<trans-unit id="multimedia" resname="multimedia">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="multimedia_formlabel">
+			<trans-unit id="multimedia_formlabel" resname="multimedia_formlabel">
 				<source>Selected Media File</source>
 			</trans-unit>
-			<trans-unit id="file_collections">
+			<trans-unit id="file_collections" resname="file_collections">
 				<source>File collections</source>
 			</trans-unit>
-			<trans-unit id="file_collections.ALT.uploads_formlabel">
+			<trans-unit id="file_collections.ALT.uploads_formlabel" resname="file_collections.ALT.uploads_formlabel">
 				<source>Select file collections</source>
 			</trans-unit>
-			<trans-unit id="filelink_size">
+			<trans-unit id="filelink_size" resname="filelink_size">
 				<source>Show File Size</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting">
+			<trans-unit id="filelink_sorting" resname="filelink_sorting">
 				<source>Sort file list</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.none">
+			<trans-unit id="filelink_sorting.none" resname="filelink_sorting.none">
 					<source>no sorting</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.extension">
+			<trans-unit id="filelink_sorting.extension" resname="filelink_sorting.extension">
 					<source>by file extension</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.name">
+			<trans-unit id="filelink_sorting.name" resname="filelink_sorting.name">
 					<source>by filename</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.type">
+			<trans-unit id="filelink_sorting.type" resname="filelink_sorting.type">
 					<source>by file type</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.size">
+			<trans-unit id="filelink_sorting.size" resname="filelink_sorting.size">
 					<source>by file size</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.creation_date">
+			<trans-unit id="filelink_sorting.creation_date" resname="filelink_sorting.creation_date">
 					<source>by file creation date</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.modification_date">
+			<trans-unit id="filelink_sorting.modification_date" resname="filelink_sorting.modification_date">
 					<source>by file modification date</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting.title">
+			<trans-unit id="filelink_sorting.title" resname="filelink_sorting.title">
 					<source>by file metadata title</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting_direction">
+			<trans-unit id="filelink_sorting_direction" resname="filelink_sorting_direction">
 				<source>Sorting direction</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting_direction.ascending">
+			<trans-unit id="filelink_sorting_direction.ascending" resname="filelink_sorting_direction.ascending">
 					<source>Ascending (default)</source>
 			</trans-unit>
-			<trans-unit id="filelink_sorting_direction.descending">
+			<trans-unit id="filelink_sorting_direction.descending" resname="filelink_sorting_direction.descending">
 					<source>Descending</source>
 			</trans-unit>
-			<trans-unit id="filelink_size_formlabel">
+			<trans-unit id="filelink_size_formlabel" resname="filelink_size_formlabel">
 				<source>Display File Size Information</source>
 			</trans-unit>
-			<trans-unit id="target">
+			<trans-unit id="target" resname="target">
 				<source>Target</source>
 			</trans-unit>
-			<trans-unit id="target.I.1">
+			<trans-unit id="target.I.1" resname="target.I.1">
 				<source>New window</source>
 			</trans-unit>
-			<trans-unit id="records">
+			<trans-unit id="records" resname="records">
 				<source>Items</source>
 			</trans-unit>
-			<trans-unit id="records_formlabel">
+			<trans-unit id="records_formlabel" resname="records_formlabel">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="space_before_class">
+			<trans-unit id="space_before_class" resname="space_before_class">
 				<source>Space Before</source>
 			</trans-unit>
-			<trans-unit id="space_before_class_formlabel">
+			<trans-unit id="space_before_class_formlabel" resname="space_before_class_formlabel">
 				<source>Space Before</source>
 			</trans-unit>
-			<trans-unit id="space_after_class">
+			<trans-unit id="space_after_class" resname="space_after_class">
 				<source>Space After</source>
 			</trans-unit>
-			<trans-unit id="space_after_class_formlabel">
+			<trans-unit id="space_after_class_formlabel" resname="space_after_class_formlabel">
 				<source>Space After</source>
 			</trans-unit>
-			<trans-unit id="space_class_none">
+			<trans-unit id="space_class_none" resname="space_class_none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="space_class_extra_small">
+			<trans-unit id="space_class_extra_small" resname="space_class_extra_small">
 				<source>Extra Small</source>
 			</trans-unit>
-			<trans-unit id="space_class_small">
+			<trans-unit id="space_class_small" resname="space_class_small">
 				<source>Small</source>
 			</trans-unit>
-			<trans-unit id="space_class_medium">
+			<trans-unit id="space_class_medium" resname="space_class_medium">
 				<source>Medium</source>
 			</trans-unit>
-			<trans-unit id="space_class_large">
+			<trans-unit id="space_class_large" resname="space_class_large">
 				<source>Large</source>
 			</trans-unit>
-			<trans-unit id="space_class_extra_large">
+			<trans-unit id="space_class_extra_large" resname="space_class_extra_large">
 				<source>Extra Large</source>
 			</trans-unit>
-			<trans-unit id="frame_class">
+			<trans-unit id="frame_class" resname="frame_class">
 				<source>Frame</source>
 			</trans-unit>
-			<trans-unit id="frame_class_formlabel">
+			<trans-unit id="frame_class_formlabel" resname="frame_class_formlabel">
 				<source>Frame</source>
 			</trans-unit>
-			<trans-unit id="frame_class.default">
+			<trans-unit id="frame_class.default" resname="frame_class.default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="frame_class.ruler_before">
+			<trans-unit id="frame_class.ruler_before" resname="frame_class.ruler_before">
 				<source>Ruler Before</source>
 			</trans-unit>
-			<trans-unit id="frame_class.ruler_after">
+			<trans-unit id="frame_class.ruler_after" resname="frame_class.ruler_after">
 				<source>Ruler After</source>
 			</trans-unit>
-			<trans-unit id="frame_class.indent">
+			<trans-unit id="frame_class.indent" resname="frame_class.indent">
 				<source>Indent</source>
 			</trans-unit>
-			<trans-unit id="frame_class.indent_left">
+			<trans-unit id="frame_class.indent_left" resname="frame_class.indent_left">
 				<source>Indent, 33/66%</source>
 			</trans-unit>
-			<trans-unit id="frame_class.indent_right">
+			<trans-unit id="frame_class.indent_right" resname="frame_class.indent_right">
 				<source>Indent, 66/33%</source>
 			</trans-unit>
-			<trans-unit id="frame_class.none">
+			<trans-unit id="frame_class.none" resname="frame_class.none">
 				<source>No Frame</source>
 			</trans-unit>
-			<trans-unit id="splash_layout">
+			<trans-unit id="splash_layout" resname="splash_layout">
 				<source>Textbox Type</source>
 			</trans-unit>
-			<trans-unit id="splash_layout_formlabel">
+			<trans-unit id="splash_layout_formlabel" resname="splash_layout_formlabel">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="splash_layout.I.1">
+			<trans-unit id="splash_layout.I.1" resname="splash_layout.I.1">
 				<source>Image Shadow</source>
 			</trans-unit>
-			<trans-unit id="splash_layout.I.2">
+			<trans-unit id="splash_layout.I.2" resname="splash_layout.I.2">
 				<source>Image Frame 1</source>
 			</trans-unit>
-			<trans-unit id="splash_layout.I.3">
+			<trans-unit id="splash_layout.I.3" resname="splash_layout.I.3">
 				<source>Image Frame 2</source>
 			</trans-unit>
-			<trans-unit id="splash_layout.I.4">
+			<trans-unit id="splash_layout.I.4" resname="splash_layout.I.4">
 				<source>__Graphical:__</source>
 			</trans-unit>
-			<trans-unit id="splash_layout.I.5">
+			<trans-unit id="splash_layout.I.5" resname="splash_layout.I.5">
 				<source>Postit 1</source>
 			</trans-unit>
-			<trans-unit id="sectionIndex">
+			<trans-unit id="sectionIndex" resname="sectionIndex">
 				<source>Index</source>
 			</trans-unit>
-			<trans-unit id="sectionIndex_formlabel">
+			<trans-unit id="sectionIndex_formlabel" resname="sectionIndex_formlabel">
 				<source>Show in Section Menus</source>
 			</trans-unit>
-			<trans-unit id="linkToTop">
+			<trans-unit id="linkToTop" resname="linkToTop">
 				<source>To top</source>
 			</trans-unit>
-			<trans-unit id="linkToTop_formlabel">
+			<trans-unit id="linkToTop_formlabel" resname="linkToTop_formlabel">
 				<source>Append with Link to Top of Page</source>
 			</trans-unit>
-			<trans-unit id="rte_enabled">
+			<trans-unit id="rte_enabled" resname="rte_enabled">
 				<source>Disable Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="rte_enabled_formlabel">
+			<trans-unit id="rte_enabled_formlabel" resname="rte_enabled_formlabel">
 				<source>Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="rte_enabled.I.0">
+			<trans-unit id="rte_enabled.I.0" resname="rte_enabled.I.0">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pi_flexform">
+			<trans-unit id="pi_flexform" resname="pi_flexform">
 				<source>Plugin Options</source>
 			</trans-unit>
-			<trans-unit id="accessibility_title">
+			<trans-unit id="accessibility_title" resname="accessibility_title">
 				<source>Block title</source>
 			</trans-unit>
-			<trans-unit id="accessibility_bypass">
+			<trans-unit id="accessibility_bypass" resname="accessibility_bypass">
 				<source>Add link to bypass block</source>
 			</trans-unit>
-			<trans-unit id="accessibility_bypass_text">
+			<trans-unit id="accessibility_bypass_text" resname="accessibility_bypass_text">
 				<source>Link text to bypass block</source>
 			</trans-unit>
-			<trans-unit id="selected_categories">
+			<trans-unit id="selected_categories" resname="selected_categories">
 				<source>Selected categories</source>
 			</trans-unit>
-			<trans-unit id="category_field">
+			<trans-unit id="category_field" resname="category_field">
 				<source>Category field</source>
 			</trans-unit>
-			<trans-unit id="ALT.imgOptions">
+			<trans-unit id="ALT.imgOptions" resname="ALT.imgOptions">
 				<source>Image Options</source>
 			</trans-unit>
-			<trans-unit id="ALT.imgLinks">
+			<trans-unit id="ALT.imgLinks" resname="ALT.imgLinks">
 				<source>Image Links</source>
 			</trans-unit>
-			<trans-unit id="ALT.imgDimensions">
+			<trans-unit id="ALT.imgDimensions" resname="ALT.imgDimensions">
 				<source>Image Dimensions</source>
 			</trans-unit>
-			<trans-unit id="select_key_formlabel">
+			<trans-unit id="select_key_formlabel" resname="select_key_formlabel">
 				<source>Plugin Mode</source>
 			</trans-unit>
-			<trans-unit id="select_key.ALT.uploads">
+			<trans-unit id="select_key.ALT.uploads" resname="select_key.ALT.uploads">
 				<source>Read from Path</source>
 			</trans-unit>
-			<trans-unit id="select_key.ALT.uploads_formlabel">
+			<trans-unit id="select_key.ALT.uploads_formlabel" resname="select_key.ALT.uploads_formlabel">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="select_key.ALT.script_formlabel">
+			<trans-unit id="select_key.ALT.script_formlabel" resname="select_key.ALT.script_formlabel">
 				<source>PHP Code</source>
 			</trans-unit>
-			<trans-unit id="imagecaption.ALT.uploads">
+			<trans-unit id="imagecaption.ALT.uploads" resname="imagecaption.ALT.uploads">
 				<source>Descriptions</source>
 			</trans-unit>
-			<trans-unit id="imagecaption.ALT.uploads_formlabel">
+			<trans-unit id="imagecaption.ALT.uploads_formlabel" resname="imagecaption.ALT.uploads_formlabel">
 				<source>File Descriptions (one per line)</source>
 			</trans-unit>
-			<trans-unit id="imagecaption.ALT.script">
+			<trans-unit id="imagecaption.ALT.script" resname="imagecaption.ALT.script">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.mailform">
+			<trans-unit id="bodytext.ALT.mailform" resname="bodytext.ALT.mailform">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.mailform_formlabel">
+			<trans-unit id="bodytext.ALT.mailform_formlabel" resname="bodytext.ALT.mailform_formlabel">
 				<source>Form Structure</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.mailform">
+			<trans-unit id="pages.ALT.mailform" resname="pages.ALT.mailform">
 				<source>Target Page</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.searchform">
+			<trans-unit id="pages.ALT.searchform" resname="pages.ALT.searchform">
 				<source>Target page</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.loginform">
+			<trans-unit id="pages.ALT.loginform" resname="pages.ALT.loginform">
 				<source>Selected pages: Target (1st), Frontend user container (2nd)</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.search">
+			<trans-unit id="pages.ALT.search" resname="pages.ALT.search">
 				<source>Send to Page</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.login">
+			<trans-unit id="pages.ALT.login" resname="pages.ALT.login">
 				<source>Send to Page</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.menu_formlabel">
+			<trans-unit id="pages.ALT.menu_formlabel" resname="pages.ALT.menu_formlabel">
 				<source>Selected Pages</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.list_formlabel">
+			<trans-unit id="pages.ALT.list_formlabel" resname="pages.ALT.list_formlabel">
 				<source>Record Storage Page</source>
 			</trans-unit>
-			<trans-unit id="pages.ALT.script_formlabel">
+			<trans-unit id="pages.ALT.script_formlabel" resname="pages.ALT.script_formlabel">
 				<source>Starting Point for This Script</source>
 			</trans-unit>
-			<trans-unit id="subheader.ALT.mailform">
+			<trans-unit id="subheader.ALT.mailform" resname="subheader.ALT.mailform">
 				<source>Recipient Email</source>
 			</trans-unit>
-			<trans-unit id="subheader.ALT.mailform_formlabel">
+			<trans-unit id="subheader.ALT.mailform_formlabel" resname="subheader.ALT.mailform_formlabel">
 				<source>Recipient Email</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.html">
+			<trans-unit id="bodytext.ALT.html" resname="bodytext.ALT.html">
 				<source>HTML</source>
 			</trans-unit>
-			<trans-unit id="menu.ALT.accessibility_title_formlabel">
+			<trans-unit id="menu.ALT.accessibility_title_formlabel" resname="menu.ALT.accessibility_title_formlabel">
 				<source>Menu block title</source>
 			</trans-unit>
-			<trans-unit id="menu.ALT.accessibility_bypass_formlabel">
+			<trans-unit id="menu.ALT.accessibility_bypass_formlabel" resname="menu.ALT.accessibility_bypass_formlabel">
 				<source>Add link to bypass navigation block</source>
 			</trans-unit>
-			<trans-unit id="menu.ALT.accessibility_bypass_text_formlabel">
+			<trans-unit id="menu.ALT.accessibility_bypass_text_formlabel" resname="menu.ALT.accessibility_bypass_text_formlabel">
 				<source>Link text to bypass navigation block</source>
 			</trans-unit>
-			<trans-unit id="tabs.text">
+			<trans-unit id="tabs.text" resname="tabs.text">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="tabs.media">
+			<trans-unit id="tabs.media" resname="tabs.media">
 				<source>Media</source>
 			</trans-unit>
-			<trans-unit id="tabs.plugin">
+			<trans-unit id="tabs.plugin" resname="tabs.plugin">
 				<source>Plugin</source>
 			</trans-unit>
-			<trans-unit id="sys_language_uid_formlabel">
+			<trans-unit id="sys_language_uid_formlabel" resname="sys_language_uid_formlabel">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="subheader_formlabel">
+			<trans-unit id="subheader_formlabel" resname="subheader_formlabel">
 				<source>Subheader</source>
 			</trans-unit>
-			<trans-unit id="hidden_formlabel">
+			<trans-unit id="hidden_formlabel" resname="hidden_formlabel">
 				<source>Content Element</source>
 			</trans-unit>
-			<trans-unit id="hidden.I.0">
+			<trans-unit id="hidden.I.0" resname="hidden.I.0">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="starttime_formlabel">
+			<trans-unit id="starttime_formlabel" resname="starttime_formlabel">
 				<source>Publish Date</source>
 			</trans-unit>
-			<trans-unit id="endtime_formlabel">
+			<trans-unit id="endtime_formlabel" resname="endtime_formlabel">
 				<source>Expiration Date</source>
 			</trans-unit>
-			<trans-unit id="fe_group_formlabel">
+			<trans-unit id="fe_group_formlabel" resname="fe_group_formlabel">
 				<source>Usergroup Access Rights</source>
 			</trans-unit>
-			<trans-unit id="layout_formlabel">
+			<trans-unit id="layout_formlabel" resname="layout_formlabel">
 				<source>Layout</source>
 			</trans-unit>
-			<trans-unit id="bodytext_formlabel">
+			<trans-unit id="bodytext_formlabel" resname="bodytext_formlabel">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.bulletlist_formlabel">
+			<trans-unit id="bodytext.ALT.bulletlist_formlabel" resname="bodytext.ALT.bulletlist_formlabel">
 				<source>Bullet List</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.table_formlabel">
+			<trans-unit id="bodytext.ALT.table_formlabel" resname="bodytext.ALT.table_formlabel">
 				<source>Table Structure</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.media_formlabel">
+			<trans-unit id="bodytext.ALT.media_formlabel" resname="bodytext.ALT.media_formlabel">
 				<source>Alternative Content</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.textbox_formlabel">
+			<trans-unit id="bodytext.ALT.textbox_formlabel" resname="bodytext.ALT.textbox_formlabel">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.script_formlabel">
+			<trans-unit id="bodytext.ALT.script_formlabel" resname="bodytext.ALT.script_formlabel">
 				<source>Parameters to pass to the script</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.html_formlabel">
+			<trans-unit id="bodytext.ALT.html_formlabel" resname="bodytext.ALT.html_formlabel">
 				<source>HTML Code</source>
 			</trans-unit>
-			<trans-unit id="image_formlabel">
+			<trans-unit id="image_formlabel" resname="image_formlabel">
 				<source>Images</source>
 			</trans-unit>
-			<trans-unit id="image.ALT.textbox_formlabel">
+			<trans-unit id="image.ALT.textbox_formlabel" resname="image.ALT.textbox_formlabel">
 				<source>Image Files</source>
 			</trans-unit>
-			<trans-unit id="imagecaption_formlabel">
+			<trans-unit id="imagecaption_formlabel" resname="imagecaption_formlabel">
 				<source>Captions (one per line)</source>
 			</trans-unit>
-			<trans-unit id="imagecaption.ALT.script_formlabel">
+			<trans-unit id="imagecaption.ALT.script_formlabel" resname="imagecaption.ALT.script_formlabel">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="field.default.hidden">
+			<trans-unit id="field.default.hidden" resname="field.default.hidden">
 				<source>Visibility of content element</source>
 			</trans-unit>
-			<trans-unit id="field.table.bodytext">
+			<trans-unit id="field.table.bodytext" resname="field.table.bodytext">
 				<source>Table content</source>
 			</trans-unit>
-			<trans-unit id="palette.general">
+			<trans-unit id="palette.general" resname="palette.general">
 				<source>Content Element</source>
 			</trans-unit>
-			<trans-unit id="palette.headers">
+			<trans-unit id="palette.headers" resname="palette.headers">
 				<source>Headlines</source>
 			</trans-unit>
-			<trans-unit id="palette.header">
+			<trans-unit id="palette.header" resname="palette.header">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="palette.visibility">
+			<trans-unit id="palette.visibility" resname="palette.visibility">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="palette.access">
+			<trans-unit id="palette.access" resname="palette.access">
 				<source>Publish Dates and Access Rights</source>
 			</trans-unit>
-			<trans-unit id="palette.frames">
+			<trans-unit id="palette.frames" resname="palette.frames">
 				<source>Content Element Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.textlayout">
+			<trans-unit id="palette.textlayout" resname="palette.textlayout">
 				<source>Text Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.imagefiles">
+			<trans-unit id="palette.imagefiles" resname="palette.imagefiles">
 				<source>Images and Captions</source>
 			</trans-unit>
-			<trans-unit id="palette.imagelinks">
+			<trans-unit id="palette.imagelinks" resname="palette.imagelinks">
 				<source>Behavior</source>
 			</trans-unit>
-			<trans-unit id="palette.image_accessibility">
+			<trans-unit id="palette.image_accessibility" resname="palette.image_accessibility">
 				<source>Accessibility</source>
 			</trans-unit>
-			<trans-unit id="palette.image_settings">
+			<trans-unit id="palette.image_settings" resname="palette.image_settings">
 				<source>Image Adjustments</source>
 			</trans-unit>
-			<trans-unit id="palette.imageblock">
+			<trans-unit id="palette.imageblock" resname="palette.imageblock">
 				<source>Image Alignment</source>
 			</trans-unit>
-			<trans-unit id="palette.mailform">
+			<trans-unit id="palette.mailform" resname="palette.mailform">
 				<source>Target and Recipient</source>
 			</trans-unit>
-			<trans-unit id="palette.searchform">
+			<trans-unit id="palette.searchform" resname="palette.searchform">
 				<source>Search Results</source>
 			</trans-unit>
-			<trans-unit id="palette.loginform">
+			<trans-unit id="palette.loginform" resname="palette.loginform">
 				<source>Redirect Target and Frontend User Container</source>
 			</trans-unit>
-			<trans-unit id="palette.multimediafiles">
+			<trans-unit id="palette.multimediafiles" resname="palette.multimediafiles">
 				<source>Media Files and Parameters</source>
 			</trans-unit>
-			<trans-unit id="palette.textbox">
+			<trans-unit id="palette.textbox" resname="palette.textbox">
 				<source>Render Text into Images</source>
 			</trans-unit>
-			<trans-unit id="palette.menu">
+			<trans-unit id="palette.menu" resname="palette.menu">
 				<source>Menu and Sitemap</source>
 			</trans-unit>
-			<trans-unit id="palette.menu_accessibility">
+			<trans-unit id="palette.menu_accessibility" resname="palette.menu_accessibility">
 				<source>Accessibility</source>
 			</trans-unit>
-			<trans-unit id="palette.uploads_layout">
+			<trans-unit id="palette.uploads_layout" resname="palette.uploads_layout">
 				<source>Filelinks Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.table_layout">
+			<trans-unit id="palette.table_layout" resname="palette.table_layout">
 				<source>Table Layout</source>
 			</trans-unit>
-			<trans-unit id="palette.appearanceLinks">
+			<trans-unit id="palette.appearanceLinks" resname="palette.appearanceLinks">
 				<source>Links</source>
 			</trans-unit>
-			<trans-unit id="tabs.access">
+			<trans-unit id="tabs.access" resname="tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="tabs.appearance">
+			<trans-unit id="tabs.appearance" resname="tabs.appearance">
 				<source>Appearance</source>
 			</trans-unit>
-			<trans-unit id="tabs.behaviour">
+			<trans-unit id="tabs.behaviour" resname="tabs.behaviour">
 				<source>Behaviour</source>
 			</trans-unit>
-			<trans-unit id="tabs.script">
+			<trans-unit id="tabs.script" resname="tabs.script">
 				<source>Script</source>
 			</trans-unit>
-			<trans-unit id="tabs.images">
+			<trans-unit id="tabs.images" resname="tabs.images">
 				<source>Images</source>
 			</trans-unit>
-			<trans-unit id="tabs.extended">
+			<trans-unit id="tabs.extended" resname="tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="tabs.accessibility">
+			<trans-unit id="tabs.accessibility" resname="tabs.accessibility">
 				<source>Accessibility</source>
 			</trans-unit>
 		</body>

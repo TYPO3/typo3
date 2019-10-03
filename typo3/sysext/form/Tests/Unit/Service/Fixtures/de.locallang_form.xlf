@@ -3,7 +3,7 @@
     <file t3:id="1485819230" source-language="en" target-language="de" datatype="plaintext" original="messages" date="2017-01-30T03:38:32Z" product-name="tests">
         <header/>
         <body>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" resname="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
                 <source>FORM EN</source>
                 <target>FORM DE</target>
             </trans-unit>

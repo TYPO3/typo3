@@ -3,19 +3,19 @@
 	<file t3:id="1428074821" source-language="en" datatype="plaintext" original="messages" date="2015-04-04T17:30:25Z" product-name="core">
 		<header/>
 		<body>
-			<trans-unit id="debuggerconsole.autoscroll" xml:space="preserve">
+			<trans-unit id="debuggerconsole.autoscroll" resname="debuggerconsole.autoscroll" xml:space="preserve">
 				<source>Scroll down automatically</source>
 			</trans-unit>
-			<trans-unit id="debuggerconsole.toggle.expand" xml:space="preserve">
+			<trans-unit id="debuggerconsole.toggle.expand" resname="debuggerconsole.toggle.expand" xml:space="preserve">
 				<source>Expand</source>
 			</trans-unit>
-			<trans-unit id="debuggerconsole.toggle.collapse" xml:space="preserve">
+			<trans-unit id="debuggerconsole.toggle.collapse" resname="debuggerconsole.toggle.collapse" xml:space="preserve">
 				<source>Collapse</source>
 			</trans-unit>
-			<trans-unit id="debuggerconsole.clear" xml:space="preserve">
+			<trans-unit id="debuggerconsole.clear" resname="debuggerconsole.clear" xml:space="preserve">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="debuggerconsole.close" xml:space="preserve">
+			<trans-unit id="debuggerconsole.close" resname="debuggerconsole.close" xml:space="preserve">
 				<source>Close</source>
 			</trans-unit>
 		</body>
