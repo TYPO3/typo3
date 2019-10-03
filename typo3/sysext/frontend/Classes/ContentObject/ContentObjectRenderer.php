@@ -5179,7 +5179,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $this->wrap($finalAnchorTag . $linkText . '</a>', $wrap);
     }
 
-    protected function addSecurityRelValues(array $tagAttributes, string $target, string $url): array
+    protected function addSecurityRelValues(array $tagAttributes, ?string $target, string $url): array
     {
         $relAttribute = 'noopener noreferrer';
         if ($target !== '_blank' || $this->isInternalUrl($url)) {
