@@ -108,7 +108,7 @@ class SearchTermRestriction implements QueryRestrictionInterface
                 // Assemble the search condition only if the field makes sense to be searched
                 if ($fieldType === 'text'
                     || $fieldType === 'flex'
-                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/date|time|int/', $evalRules)))
+                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
                 ) {
                     $constraintsForParts[] = $searchConstraint;
                 }
