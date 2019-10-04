@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
-	<file t3:id="1499934742" source-language="en" datatype="plaintext" original="messages" date="2017-07-13T10:32:32Z" product-name="rsaauth">
+	<file t3:id="1499934742" source-language="en" datatype="plaintext" original="EXT:rsaauth/Resources/Private/Language/locallang_report.xlf" date="2017-07-13T10:32:32Z" product-name="rsaauth">
 		<header/>
 		<body>
 			<trans-unit id="report.title" resname="report.title">
