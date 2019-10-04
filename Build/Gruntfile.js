@@ -205,7 +205,7 @@ module.exports = function (grunt) {
         tasks: 'css'
       },
       ts: {
-        files: '<%= paths.sysext %>*/**/TypeScript/**/*.ts',
+        files: '<%= paths.typescript %>/**/*.ts',
         tasks: 'scripts'
       }
     },
