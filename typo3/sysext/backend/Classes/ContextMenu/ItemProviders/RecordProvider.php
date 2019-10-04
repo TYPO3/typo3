@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -434,21 +435,19 @@ class RecordProvider extends AbstractProvider
                 $additionalParams = '&L=' . $language;
             }
         }
-        $javascriptLink = BackendUtility::viewOnClick(
-            $this->getPreviewPid(),
-            '',
-            null,
-            $anchorSection,
-            '',
-            $additionalParams
-        );
-        $extractedLink = '';
-        if (preg_match('/window\\.open\\(\'([^\']+)\'/i', $javascriptLink, $match)) {
-            // Clean JSON-serialized ampersands ('&')
-            // @see GeneralUtility::quoteJSvalue()
-            $extractedLink = json_decode('"' . trim($match[1], '"') . '"');
+
+        try {
+            return BackendUtility::getPreviewUrl(
+                $this->getPreviewPid(),
+                '',
+                null,
+                $anchorSection,
+                '',
+                $additionalParams
+            );
+        } catch (UnableToLinkToPageException $e) {
+            return '';
         }
-        return $extractedLink;
     }
 
     /**

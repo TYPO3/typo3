@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
  */
 
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -479,6 +481,30 @@ class PageProvider extends RecordProvider
      */
     protected function getPreviewPid(): int
     {
-        return (int)$this->record['uid'];
+        return $this->record['sys_language_uid'] === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
+    }
+
+    /**
+     * Returns the view link
+     *
+     * @return string
+     */
+    protected function getViewLink(): string
+    {
+        $language = (int)$this->record['sys_language_uid'];
+        $additionalParams = ($language > 0) ? '&L=' . $language : '';
+
+        try {
+            return BackendUtility::getPreviewUrl(
+                $this->getPreviewPid(),
+                '',
+                null,
+                '',
+                '',
+                $additionalParams
+            );
+        } catch (UnableToLinkToPageException $e) {
+            return '';
+        }
     }
 }
