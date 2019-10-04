@@ -3542,9 +3542,8 @@ class DatabaseRecordList
                 $fieldType = $fieldConfig['type'];
                 $evalRules = $fieldConfig['eval'] ?: '';
                 if ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int')) {
-                    if (is_array($fieldConfig['search'])
-                        && in_array('pidonly', $fieldConfig['search'], true)
-                        && $currentPid > 0
+                    if (!isset($fieldConfig['search']['pidonly'])
+                        || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
                     ) {
                         $constraints[] = $expressionBuilder->andX(
                             $expressionBuilder->eq($fieldName, (int)$this->searchString),
