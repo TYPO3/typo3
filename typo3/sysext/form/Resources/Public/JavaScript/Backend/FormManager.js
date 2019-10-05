@@ -136,7 +136,7 @@ define(['jquery'], function($) {
         if ('array' === $.type(_configuration['accessibleFormStorageFolders'])) {
           for (var i = 0, len1 = _configuration['accessibleFormStorageFolders'].length; i < len1; ++i) {
             folders.push({
-              label: _configuration['accessibleFormStorageFolders'][i]['label'],
+              label: _configuration['accessibleFormStorageFolders'][i]['label'] + ' (' + _configuration['accessibleFormStorageFolders'][i]['value'] + ')',
               value: _configuration['accessibleFormStorageFolders'][i]['value']
             });
           }
