@@ -1106,11 +1106,12 @@ class AbstractPlugin
         }
         // Search word:
         if ($this->piVars['sword'] && $this->internal['searchFieldList']) {
-            $queryBuilder->andWhere(
-                QueryHelper::stripLogicalOperatorPrefix(
-                    $this->cObj->searchWhere($this->piVars['sword'], $this->internal['searchFieldList'], $table)
-                )
+            $searchWhere = QueryHelper::stripLogicalOperatorPrefix(
+                $this->cObj->searchWhere($this->piVars['sword'], $this->internal['searchFieldList'], $table)
             );
+            if (!empty($searchWhere)) {
+                $queryBuilder->andWhere($searchWhere);
+            }
         }
 
         if ($count) {
