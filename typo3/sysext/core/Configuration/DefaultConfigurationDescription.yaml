@@ -144,7 +144,12 @@ SYS:
             description: 'Enable the severity of log messages to be logged (see systemLog option) - Only messages with same or higher severity are logged.'
         UTF8filesystem:
             type: bool
-            description: 'If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.'
+            description: |
+              <p>
+                If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
+                <strong>IMPORTANT:</strong> This requires a UTF-8 compatible locale in order to work. Otherwise problems with filenames containing special characters will occur.
+                See [SYS][systemLocale] and <a href="http://php.net/manual/en/function.setlocale.php" target="_blank" rel="noopener noreferrer">setlocale()</a>.
+              </p>
         systemLocale:
             type: text
             description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="http://php.net/manual/en/function.setlocale.php" target="_blank" rel="noopener noreferrer">setlocale()</a>.'
