@@ -564,6 +564,20 @@ class ContentObjectRendererTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function searchWhereWithTooShortSearchWordWillReturnValidWhereStatement()
+    {
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $subject = new ContentObjectRenderer($tsfe);
+        $subject->start([], 'tt_content');
+
+        $expected = '';
+        $actual = $subject->searchWhere('ab', 'header,bodytext', 'tt_content');
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
      * @return array
      */
     protected function getLibParseFunc()

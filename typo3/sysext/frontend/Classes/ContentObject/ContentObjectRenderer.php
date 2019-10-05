@@ -6107,7 +6107,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
     public function searchWhere($searchWords, $searchFieldList, $searchTable)
     {
         if (!$searchWords) {
-            return ' AND 1=1';
+            return '';
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -6134,6 +6134,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if ($searchWordConstraint->count()) {
                 $where->add($searchWordConstraint);
             }
+        }
+
+        if ((string)$where === '') {
+            return '';
         }
 
         return ' AND ' . (string)$where;
