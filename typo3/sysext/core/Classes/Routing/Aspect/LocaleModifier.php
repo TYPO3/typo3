@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 
 /**
@@ -44,7 +45,7 @@ use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
  *             - locale: 'de_.*'
  *               value: 'übersicht'
  */
-class LocaleModifier implements ModifiableAspectInterface
+class LocaleModifier implements ModifiableAspectInterface, SiteLanguageAwareInterface
 {
     use SiteLanguageAwareTrait;
 
