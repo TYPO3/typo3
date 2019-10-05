@@ -394,7 +394,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS,
                 true
             );
-            $filesFromStorageFolders = $filesFromStorageFolders + $files;
+            $filesFromStorageFolders = array_merge($filesFromStorageFolders, array_values($files));
             $storage->resetFileAndFolderNameFiltersToDefault();
         }
 
