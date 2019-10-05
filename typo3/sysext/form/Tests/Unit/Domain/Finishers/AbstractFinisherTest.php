@@ -445,6 +445,44 @@ class AbstractFinisherTest extends UnitTestCase
     /**
      * @test
      */
+    public function substituteRuntimeReferencesReturnsResolvesElementIdentiiersInArrayKeys(): void
+    {
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $elementIdentifier1 = 'element-identifier-1';
+        $elementValue1 = 'norbert';
+        $elementIdentifier2 = 'element-identifier-2';
+        $elementValue2 = ['stan', 'steve'];
+
+        $input = [
+            '{' . $elementIdentifier1 . '}' => [
+                'lisa',
+                '{' . $elementIdentifier2 . '}',
+            ],
+        ];
+        $expected = [
+            'norbert' => [
+                'lisa',
+                ['stan', 'steve'],
+            ]
+        ];
+
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            $elementIdentifier1 => $elementValue1,
+            $elementIdentifier2 => $elementValue2
+        ]);
+
+        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
     public function substituteRuntimeReferencesThrowsExceptionOnMultipleVariablesResolvedAsArray(): void
     {
         $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(

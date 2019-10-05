@@ -280,12 +280,13 @@ abstract class AbstractFinisher implements FinisherInterface
 
         // resolve (recursively) all array items
         if (is_array($needle)) {
-            return array_map(
-                function ($item) use ($formRuntime) {
-                    return $this->substituteRuntimeReferences($item, $formRuntime);
-                },
-                $needle
-            );
+            $substitutedNeedle = [];
+            foreach ($needle as $key => $item) {
+                $key = $this->substituteRuntimeReferences($key, $formRuntime);
+                $item = $this->substituteRuntimeReferences($item, $formRuntime);
+                $substitutedNeedle[$key] = $item;
+            }
+            return $substitutedNeedle;
         }
 
         // substitute one(!) variable in string which either could result
