@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  */
 
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
+use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -98,8 +98,8 @@ class AspectFactory
      */
     protected function enrich(AspectInterface $aspect, SiteLanguage $language): AspectInterface
     {
-        if (in_array(SiteLanguageAwareTrait::class, class_uses($aspect), true)) {
-            /** @var $aspect SiteLanguageAwareTrait */
+        // the check for the trait can be removed at any time after TYPO3 v11
+        if ($aspect instanceof SiteLanguageAwareInterface || in_array(SiteLanguageAwareTrait::class, class_uses($aspect), true)) {
             $aspect->setSiteLanguage($language);
         }
         return $aspect;

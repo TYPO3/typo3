@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -43,7 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *           routeFieldName: 'path_segment'
  *           routeValuePrefix: '/'
  */
-class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
+class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
 {
     use SiteLanguageAwareTrait;
 

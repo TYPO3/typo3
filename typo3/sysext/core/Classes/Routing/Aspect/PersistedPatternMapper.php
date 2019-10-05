@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -46,7 +47,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal might change its options in the future, be aware that there might be modifications.
  */
-class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
+class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
 {
     use SiteLanguageAwareTrait;
 

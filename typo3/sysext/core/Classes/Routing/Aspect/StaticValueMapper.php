@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 
 /**
@@ -37,7 +38,7 @@ use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
  *           2k18: '2018'
  *           next: '2019'
  */
-class StaticValueMapper implements StaticMappableAspectInterface, \Countable
+class StaticValueMapper implements StaticMappableAspectInterface, SiteLanguageAwareInterface, \Countable
 {
     use SiteLanguageAwareTrait;
 
