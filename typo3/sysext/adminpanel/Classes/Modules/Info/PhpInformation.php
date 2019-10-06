@@ -59,7 +59,7 @@ class PhpInformation extends AbstractSubModule implements DataProviderInterface
                     'PHP_VERSION' => PHP_VERSION,
                     'PHP_OS' => PHP_OS,
                     'PHP_SAPI' => PHP_SAPI,
-                    'Peak Memory Usage' => memory_get_peak_usage(),
+                    'Peak Memory Usage' => GeneralUtility::formatSize(memory_get_peak_usage()),
                 ],
                 'loadedExtensions' => implode(', ', get_loaded_extensions()),
                 'constants' => get_defined_constants(true),
