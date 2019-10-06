@@ -331,7 +331,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             }
         }
 
-        return $forms;
+        return $this->sortForms($forms);
     }
 
     /**
@@ -770,5 +770,28 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     protected function looksLikeAFormDefinition(array $data): bool
     {
         return isset($data['identifier'], $data['type']) && !empty($data['identifier']) && trim($data['type']) === 'Form';
+    }
+
+    /**
+     * @param array $forms
+     * @return array
+     */
+    protected function sortForms(array $forms): array
+    {
+        $keys = $this->formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];
+        $ascending = $this->formSettings['persistenceManager']['sortAscending'] ?? true;
+
+        usort($forms, function (array $a, array $b) use ($keys) {
+            foreach ($keys as $key) {
+                if (isset($a[$key]) && isset($b[$key])) {
+                    $diff = strcasecmp((string)$a[$key], (string)$b[$key]);
+                    if ($diff) {
+                        return $diff;
+                    }
+                }
+            }
+        });
+
+        return ($ascending) ? $forms : array_reverse($forms);
     }
 }

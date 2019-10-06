@@ -15,6 +15,8 @@ Full default configuration
         10: '1:/form_definitions/'
       allowSaveToExtensionPaths: false
       allowDeleteFromExtensionPaths: false
+      sortByKeys: ['name', 'fileUid']
+      sortAscending: true
     prototypes:
       standard:
         formElementsDefinition:
