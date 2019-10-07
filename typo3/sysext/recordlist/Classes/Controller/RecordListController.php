@@ -551,12 +551,22 @@ class RecordListController
         if (!empty($dblist->HTMLcode)) {
             $output .= $dblist->HTMLcode;
         } else {
+            if (isset($this->table, $GLOBALS['TCA'][$this->table]['ctrl']['title'])) {
+                if (strpos($GLOBALS['TCA'][$this->table]['ctrl']['title'], 'LLL:') === 0) {
+                    $ll = sprintf($lang->getLL('noRecordsOfTypeOnThisPage'), $lang->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']));
+                } else {
+                    $ll = sprintf($lang->getLL('noRecordsOfTypeOnThisPage'), $GLOBALS['TCA'][$this->table]['ctrl']['title']);
+                }
+            } else {
+                $ll = $lang->getLL('noRecordsOnThisPage');
+            }
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
-                $lang->getLL('noRecordsOnThisPage'),
+                $ll,
                 '',
                 FlashMessage::INFO
             );
+            unset($ll);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageService $flashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             /** @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue $defaultFlashMessageQueue */
