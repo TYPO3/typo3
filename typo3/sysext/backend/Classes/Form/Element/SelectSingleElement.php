@@ -196,7 +196,6 @@ class SelectSingleElement extends AbstractFormElement
             'name' => $parameterArray['itemFormElName'],
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
             'class' => 'form-control form-control-adapt',
-            'data-original-value' => $selectedValue,
         ];
         if ($size) {
             $selectAttributes['size'] = $size;

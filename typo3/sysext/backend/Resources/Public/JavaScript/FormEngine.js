@@ -1225,34 +1225,20 @@ define(['jquery',
 
   FormEngine.requestConfirmationOnFieldChange = function(fieldName, showConfirmation) {
     const $field = FormEngine.getFieldElement(fieldName);
-
     $field.on('change', function() {
-      const originalValue = $field.data('original-value');
-      let documentUpdated = false;
-
       if (showConfirmation) {
-        if ($field.val() != originalValue) {
-          const $modal = Modal.confirm(
-            TYPO3.lang['FormEngine.refreshRequiredTitle'],
-            TYPO3.lang['FormEngine.refreshRequiredContent']
-          );
+        const $modal = Modal.confirm(
+          TYPO3.lang['FormEngine.refreshRequiredTitle'],
+          TYPO3.lang['FormEngine.refreshRequiredContent']
+        );
 
-          $modal.on('button.clicked', function(e) {
-            if (e.target.name === 'ok') {
-              FormEngine.saveDocument();
-              documentUpdated = true
-            }
-            Modal.dismiss();
-          });
-          $modal.on('hide.bs.modal', function(e) {
-            // Revert to previous value if document is not saved.
-            // Trigger js event to update icon in custom select input.
-            if (!documentUpdated && originalValue) {
-              $field.val(originalValue);
-              $field.trigger('change');
-            }
-          });
-        }
+        $modal.on('button.clicked', function(e) {
+          if (e.target.name === 'ok') {
+            FormEngine.saveDocument();
+          }
+
+          Modal.dismiss();
+        });
       } else {
         FormEngine.saveDocument();
       }
