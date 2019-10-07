@@ -159,6 +159,9 @@
 			<trans-unit id="noRecordsOnThisPage" resname="noRecordsOnThisPage">
 				<source>There are no records on this page.</source>
 			</trans-unit>
+			<trans-unit id="noRecordsOfTypeOnThisPage" resname="noRecordsOfTypeOnThisPage">
+                <source>There are no records of type "%s" on this page.</source>
+            </trans-unit>
 			<trans-unit id="button.cancel" resname="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
