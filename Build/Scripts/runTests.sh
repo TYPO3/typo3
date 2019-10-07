@@ -471,6 +471,10 @@ case ${TEST_SUITE} in
         docker images typo3gmbh/php*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
         # remove "dangling" typo3gmbh/phpXY images (those tagged as <none>)
         docker images typo3gmbh/php* --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
+        # pull typo3gmbh/js:latest versions of those ones that exist locally
+        docker images typo3gmbh/js:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}
+        # remove "dangling" typo3gmbh/js images (those tagged as <none>)
+        docker images typo3gmbh/js --filter "dangling=true" --format "{{.ID}}" | xargs -I {} docker rmi {}
         ;;
     *)
         echo "Invalid -s option argument ${TEST_SUITE}" >&2
