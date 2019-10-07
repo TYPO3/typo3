@@ -220,6 +220,9 @@ SYS:
               betaTranslationServer:
                 type: bool
                 description: 'If on, the new translation server is used which is filled by exports of https://crowdin.com/project/typo3-cms. This setting will be removed as soon as the new integration is stable.'
+              felogin.extbase:
+                type: bool
+                description: 'If activated, and if extension "felogin" is loaded, extbase based code will be used instead of pibase version'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

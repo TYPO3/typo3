@@ -1,0 +1,95 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:flashMessages/>
+<f:if condition="{cookieWarning}">
+    <f:render partial="CookieWarning" />
+</f:if>
+
+<f:if condition="{messageKey}">
+    <h3>
+        <f:render partial="RenderLabelOrMessage" arguments="{key: '{messageKey}_header'}"/>
+    </h3>
+    <p>
+        <f:render partial="RenderLabelOrMessage" arguments="{key: '{messageKey}_message'}"/>
+    </p>
+</f:if>
+<f:if condition="{onSubmit}">
+    <f:then>
+        <f:form target="_top" fieldNamePrefix="" action="login" onsubmit="{onSubmit}">
+            <f:render section="content" arguments="{_all}"/>
+        </f:form>
+    </f:then>
+    <f:else>
+        <f:form target="_top" fieldNamePrefix="" action="login">
+            <f:render section="content" arguments="{_all}"/>
+        </f:form>
+    </f:else>
+</f:if>
+
+<f:if condition="{settings.showForgotPassword}">
+    <f:link.action action="recovery" controller="PasswordRecovery">
+        <f:render partial="RenderLabelOrMessage" arguments="{key: 'forgot_header'}"/>
+    </f:link.action>
+</f:if>
+
+<f:section name="content">
+    <fieldset>
+        <legend>
+            <f:translate key="login"/>
+        </legend>
+        <div>
+            <label>
+                <f:translate key="username"/>
+                <f:form.textfield name="user"/>
+            </label>
+        </div>
+        <div>
+            <label>
+                <f:translate key="password"/>
+                <f:form.password name="pass" data="{rsa-encryption: ''}"/>
+            </label>
+        </div>
+
+        <f:if condition="{permaloginStatus} > -1">
+            <div>
+                <label>
+                    <f:translate id="permalogin"/>
+                    <f:if condition="{permaloginStatus} == 1">
+                        <f:then>
+                            <f:form.hidden name="permalogin" value="0" additionalAttributes="{disabled: 'disabled'}"/>
+                            <f:form.checkbox name="permalogin" id="permalogin" value="1" checked="checked"/>
+                        </f:then>
+                        <f:else>
+                            <f:form.hidden name="permalogin" value="0"/>
+                            <f:form.checkbox name="permalogin" id="permalogin" value="1"/>
+                        </f:else>
+                    </f:if>
+                </label>
+            </div>
+        </f:if>
+
+        <div>
+            <f:form.submit value="{f:translate(key: 'login')}" name="submit"/>
+        </div>
+
+        <div class="felogin-hidden">
+            <f:form.hidden name="logintype" value="login"/>
+            <f:form.hidden name="pid" value="{storagePid}"/>
+            <f:if condition="{redirectURL}!=''">
+                <f:form.hidden name="redirect_url" value="{redirectURL}" />
+            </f:if>
+            <f:if condition="{referer}!=''">
+                <f:form.hidden name="referer" value="{referer}" />
+            </f:if>
+            <f:if condition="{redirectReferrer}!=''">
+                <f:form.hidden name="redirectReferrer" value="off" />
+            </f:if>
+            <f:if condition="{noRedirect}!=''">
+                <f:form.hidden name="noredirect" value="1" />
+            </f:if>
+
+            {extraHidden}
+        </div>
+    </fieldset>
+</f:section>
+</html>

@@ -1,0 +1,4 @@
+styles.content.loginform {
+  # cat = Frontend Login/02_Template/100; type=string; label= Login template: Enter the path for the HTML template to be used
+  templateFile = EXT:felogin/Resources/Private/Templates/FrontendLogin.html
+}

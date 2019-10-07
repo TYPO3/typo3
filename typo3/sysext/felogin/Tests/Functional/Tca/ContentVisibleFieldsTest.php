@@ -1,5 +1,7 @@
 <?php
-namespace TYPO3\CMS\Felogin\Tests\Functional\Tca;
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Tca;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,13 +17,21 @@ namespace TYPO3\CMS\Felogin\Tests\Functional\Tca;
  */
 
 use TYPO3\CMS\Backend\Tests\Functional\Form\FormTestService;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-class ContentVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
+class ContentVisibleFieldsTest extends FunctionalTestCase
 {
+    /**
+     * @var array
+     */
     protected $coreExtensionsToLoad = ['felogin'];
 
+    /**
+     * @var array
+     */
     protected static $contentFields = [
         'CType',
         'colPos',
@@ -42,13 +52,35 @@ class ContentVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\F
     /**
      * @test
      */
-    public function contentFormContainsExpectedFields()
+    public function piBaseLoginFormContainsExpectedFields(): void
     {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['features']['felogin.extbase'] = false;
+        // Reload TCA now, as the TCA is different based on the feature toggle
+        Bootstrap::loadBaseTca(false);
         $this->setUpBackendUserFromFixture(1);
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
 
         $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
         $formResult = $formEngineTestService->createNewRecordForm('tt_content', ['CType' => 'login']);
+
+        foreach (static::$contentFields as $expectedField) {
+            self::assertNotFalse(
+                $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
+                'The field ' . $expectedField . ' is not in the form HTML'
+            );
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function loginFormContainsExpectedFields(): void
+    {
+        $this->setUpBackendUserFromFixture(1);
+        $GLOBALS['LANG'] = GeneralUtility::makeInstance(LanguageService::class);
+
+        $formEngineTestService = GeneralUtility::makeInstance(FormTestService::class);
+        $formResult = $formEngineTestService->createNewRecordForm('tt_content', ['CType' => 'felogin_login']);
 
         foreach (static::$contentFields as $expectedField) {
             self::assertNotFalse(

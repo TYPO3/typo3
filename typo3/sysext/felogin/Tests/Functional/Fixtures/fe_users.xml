@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <fe_users>
+        <uid>1</uid>
+        <name>Foo Bar</name>
+        <username>foobar</username>
+        <email>foo@bar.baz</email>
+        <felogin_forgotHash>cf8edd6fa435b4a9fcbb953f81bd84f2</felogin_forgotHash>
+        <felogin_redirectPid>10</felogin_redirectPid>
+    </fe_users>
+    <fe_users>
+        <uid>2</uid>
+        <username>user-with-username-without-email</username>
+        <email></email>
+    </fe_users>
+</dataset>

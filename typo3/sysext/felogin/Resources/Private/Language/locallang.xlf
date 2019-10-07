@@ -3,6 +3,9 @@
 	<file t3:id="1415814821" source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin">
 		<header/>
 		<body>
+			<trans-unit id="login_user_info" resname="login_user_info">
+				<source>You are now logged in as '%s'</source>
+			</trans-unit>
 			<trans-unit id="welcome_header" resname="welcome_header">
 				<source>User login</source>
 			</trans-unit>
@@ -137,6 +140,33 @@ For security reasons, this link is only active until %s. If you do not visit the
 			</trans-unit>
 			<trans-unit id="enter_your_data" resname="enter_your_data">
 				<source>Username or email address</source>
+			</trans-unit>
+			<trans-unit id="password_recovery_mail_header" resname="password_recovery_mail_header">
+				<source>Your new password</source>
+			</trans-unit>
+			<trans-unit id="password_recovery_link_expired" resname="password_recovery_link_expired">
+				<source>Your password recovery link is expired.</source>
+			</trans-unit>
+			<trans-unit id="empty_password_and_password_repeat" resname="empty_password_and_password_repeat">
+				<source>New password and new password repeat cannot be empty</source>
+			</trans-unit>
+			<trans-unit id="password_must_match_repeated" resname="password_must_match_repeated">
+				<source>New Password must match repeated password.</source>
+			</trans-unit>
+			<trans-unit id="forgot_validate_reset_password_html" resname="forgot_validate_reset_password_html" xml:space="preserve">
+				<source>&lt;p&gt;Dear %s,&lt;/p&gt;
+&lt;p&gt;This email was sent in response to your request to reset your password. Please click on the link below.&lt;/p&gt;
+&lt;p&gt;%s&lt;/p&gt;
+&lt;p&gt;For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.&lt;/p&gt;
+				</source>
+			</trans-unit>
+			<trans-unit id="forgot_validate_reset_password_plaintext" resname="forgot_validate_reset_password" xml:space="preserve">
+				<source>Dear %s,
+
+This email was sent in response to your request to reset your password. Please click on the link below.
+%s
+
+For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
 			</trans-unit>
 		</body>
 	</file>

@@ -1,0 +1,104 @@
+# Setting "felogin" plugin TypoScript
+plugin.tx_felogin_pi1 = USER_INT
+plugin.tx_felogin_pi1 {
+  userFunc = TYPO3\CMS\Felogin\Controller\FrontendLoginController->main
+
+  # Storage
+  storagePid = {$styles.content.loginform.pid}
+  recursive = {$styles.content.loginform.recursive}
+
+  # Template
+  templateFile = {$styles.content.loginform.templateFile}
+  feloginBaseURL = {$styles.content.loginform.feloginBaseURL}
+  dateFormat = {$styles.content.loginform.dateFormat}
+
+  # Features
+  showForgotPasswordLink = {$styles.content.loginform.showForgotPasswordLink}
+  showPermaLogin = {$styles.content.loginform.showPermaLogin}
+  showLogoutFormAfterLogin = {$styles.content.loginform.showLogoutFormAfterLogin}
+
+  # E-Mail Settings
+  email_from = {$styles.content.loginform.emailFrom}
+  email_fromName = {$styles.content.loginform.emailFromName}
+  replyTo = {$styles.content.loginform.replyToEmail}
+
+  # Redirects
+  redirectMode = {$styles.content.loginform.redirectMode}
+  redirectFirstMethod = {$styles.content.loginform.redirectFirstMethod}
+  redirectPageLogin = {$styles.content.loginform.redirectPageLogin}
+  redirectPageLoginError = {$styles.content.loginform.redirectPageLoginError}
+  redirectPageLogout = {$styles.content.loginform.redirectPageLogout}
+  redirectDisable = {$styles.content.loginform.redirectDisable}
+
+  # Security
+  forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime}
+  newPasswordMinLength = {$styles.content.loginform.newPasswordMinLength}
+  domains = {$styles.content.loginform.domains}
+  exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
+
+  # should a wrapper class be set for this content element
+  wrapContentInBaseClass = 1
+
+  # typolink-configuration for links / urls
+  # parameter and additionalParams are set by extension
+  linkConfig {
+    target =
+    ATagParams = rel="nofollow"
+  }
+
+  # preserve GET vars - define "all" or comma separated list of GET-vars that should be included by link generation
+  preserveGETvars = all
+
+  welcomeHeader_stdWrap {
+    required = 1
+    wrap = <h3>|</h3>
+    htmlSpecialChars = 1
+  }
+
+  successHeader_stdWrap < .welcomeHeader_stdWrap
+  logoutHeader_stdWrap < .welcomeHeader_stdWrap
+  errorHeader_stdWrap < .welcomeHeader_stdWrap
+  forgotHeader_stdWrap < .welcomeHeader_stdWrap
+  changePasswordHeader_stdWrap < .welcomeHeader_stdWrap
+
+  welcomeMessage_stdWrap {
+    required = 1
+    wrap = <div>|</div>
+    htmlSpecialChars = 1
+  }
+
+  successMessage_stdWrap < .welcomeMessage_stdWrap
+  logoutMessage_stdWrap < .welcomeMessage_stdWrap
+  errorMessage_stdWrap < .welcomeMessage_stdWrap
+  forgotMessage_stdWrap < .welcomeMessage_stdWrap
+  forgotErrorMessage_stdWrap < .welcomeMessage_stdWrap
+  forgotResetMessageEmailSentMessage_stdWrap < .welcomeMessage_stdWrap
+  changePasswordNotValidMessage_stdWrap < .welcomeMessage_stdWrap
+  changePasswordTooShortMessage_stdWrap < .welcomeMessage_stdWrap
+  changePasswordNotEqualMessage_stdWrap < .welcomeMessage_stdWrap
+  changePasswordMessage_stdWrap < .welcomeMessage_stdWrap
+  changePasswordDoneMessage_stdWrap < .welcomeMessage_stdWrap
+
+  cookieWarning_stdWrap {
+    required = 1
+    wrap = <p style="color:red; font-weight:bold;">|</p>
+    htmlSpecialChars = 1
+  }
+
+  # stdWrap for fe_users fields used in Messages
+  userfields {
+    username {
+      htmlSpecialChars = 1
+      wrap = <strong>|</strong>
+    }
+  }
+}
+
+# Setting "felogin" plugin TypoScript
+tt_content.login =< lib.contentElement
+tt_content.login {
+  templateName = Generic
+  variables {
+    content =< plugin.tx_felogin_pi1
+  }
+}

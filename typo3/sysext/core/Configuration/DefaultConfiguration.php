@@ -78,6 +78,7 @@ return [
             'security.frontend.keepSessionDataOnLogout' => false,
             'rearrangedRedirectMiddlewares' => false,
             'betaTranslationServer' => false,
+            'felogin.extbase' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',

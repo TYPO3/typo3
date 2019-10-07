@@ -31,12 +31,14 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"TYPO3\\CMS\\Felogin\\": "Classes/"
+			"TYPO3\\CMS\\Felogin\\": "Classes/",
+			"TYPO3\\CMS\\FrontendLogin\\": "Classes/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"TYPO3\\CMS\\Felogin\\Tests\\": "Tests/"
+			"TYPO3\\CMS\\Felogin\\Tests\\": "Tests/",
+			"TYPO3\\CMS\\FrontendLogin\\Tests\\": "Tests/"
 		}
 	}
 }

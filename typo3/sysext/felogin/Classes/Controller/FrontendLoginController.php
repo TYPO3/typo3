@@ -28,8 +28,8 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
-use TYPO3\CMS\Felogin\Validation\RedirectUrlValidator;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use TYPO3\CMS\FrontendLogin\Validation\RedirectUrlValidator;
 
 /**
  * Plugin 'Website User Login' for the 'felogin' extension.

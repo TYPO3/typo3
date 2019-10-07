@@ -22,6 +22,7 @@ return [
         'features' => [
             'unifiedPageTranslationHandling' => true,
             'rearrangedRedirectMiddlewares' => true,
+            'felogin.extbase' => true,
         ],
     ],
 ];

@@ -24,10 +24,9 @@ use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
- * Class MigrateFeloginPlugins
- * @internal
+ * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class MigrateFeloginPlugins implements UpgradeWizardInterface
+final class MigrateFeloginPlugins implements UpgradeWizardInterface
 {
     /**
      * @var array Flexform fields which we are interested in updating

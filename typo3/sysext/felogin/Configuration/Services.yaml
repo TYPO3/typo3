@@ -4,5 +4,8 @@ services:
     autoconfigure: true
     public: false
 
-  TYPO3\CMS\Felogin\:
-    resource: '../Classes/*'
+  TYPO3\CMS\FrontendLogin\Service\:
+    resource: '../Classes/Service/*'
+
+  TYPO3\CMS\FrontendLogin\Domain\Repository\:
+    resource: '../Classes/Domain/Repository/*'
