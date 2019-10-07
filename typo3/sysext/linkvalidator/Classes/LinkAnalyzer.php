@@ -286,16 +286,24 @@ class LinkAnalyzer
                         /** @var $softRefObj \TYPO3\CMS\Core\Database\SoftReferenceIndex */
                         $softRefObj = BackendUtility::softRefParserObj($spKey);
                         // If there is an object returned...
-                        if (is_object($softRefObj)) {
-                            // Do processing
-                            $resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $spParams);
-                            if (!empty($resultArray['elements'])) {
-                                if ($spKey === 'typolink_tag') {
-                                    $this->analyseTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
-                                } else {
-                                    $this->analyseLinks($resultArray, $results, $record, $field, $table);
-                                }
-                            }
+                        if (!is_object($softRefObj)) {
+                            continue;
+                        }
+                        $softRefParams = $spParams;
+                        if (!is_array($softRefParams)) {
+                            // set subst such that findRef will return substitutes for urls, emails etc
+                            $softRefParams = ['subst' => true];
+                        }
+
+                        $resultArray = $softRefObj->findRef($table, $field, $idRecord, $valueField, $spKey, $softRefParams);
+                        if (empty($resultArray['elements'])) {
+                            continue;
+                        }
+
+                        if ($spKey === 'typolink_tag') {
+                            $this->analyseTypoLinks($resultArray, $results, $htmlParser, $record, $field, $table);
+                        } else {
+                            $this->analyseLinks($resultArray, $results, $record, $field, $table);
                         }
                     }
                 }
