@@ -137,6 +137,7 @@ class ExternalLinktype extends AbstractLinktype
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             $this->errorParams['errorType'] = 'network';
+            $this->errorParams['exception'] = $e->getMessage();
             $this->errorParams['message'] = $this->getErrorMessage($this->errorParams);
         } catch (\Exception $e) {
             // Generic catch for anything else that may go wrong
@@ -182,10 +183,14 @@ class ExternalLinktype extends AbstractLinktype
                 break;
             case 'network':
                 $message = $lang->getLL('list.report.networkexception');
+                if ($errorParams['exception']) {
+                    $message .= ':' . $errorParams['exception'];
+                }
                 break;
             default:
                 $message = sprintf($lang->getLL('list.report.otherhttpcode'), $errorType, $errorParams['exception']);
         }
+
         return $message;
     }
 
