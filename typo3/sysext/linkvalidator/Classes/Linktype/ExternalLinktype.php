@@ -212,13 +212,19 @@ class ExternalLinktype extends AbstractLinktype
     }
 
     /**
-     * Convert given URL to punycode to handle domains with non-ASCII characters
+     * Convert domain to punycode to handle domains with non-ASCII characters
      *
      * @param string $url
      * @return string
      */
     protected function preprocessUrl(string $url): string
     {
-        return (string)HttpUtility::idn_to_ascii($url);
+        $parts = parse_url($url);
+        $newDomain = (string)HttpUtility::idn_to_ascii($parts['host']);
+        if (strcmp($parts['host'], $newDomain) !== 0) {
+            $parts['host'] = $newDomain;
+            $url = HttpUtility::buildUrl($parts);
+        }
+        return $url;
     }
 }
