@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Mail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\NamedAddress;
+use TYPO3\CMS\Core\Exception\InvalidArgumentException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -32,18 +33,13 @@ class MailMessage extends Email
     protected $mailer;
 
     /**
-     * @var string This will be added as X-Mailer to all outgoing mails
-     */
-    protected $mailerHeader = 'TYPO3';
-
-    /**
      * TRUE if the message has been sent.
      *
      * @var bool
      */
     protected $sent = false;
 
-    private function initializeMailer()
+    private function initializeMailer(): void
     {
         $this->mailer = GeneralUtility::makeInstance(Mailer::class);
     }
@@ -56,7 +52,7 @@ class MailMessage extends Email
      *
      * @return bool whether the message was accepted or not
      */
-    public function send()
+    public function send(): bool
     {
         $this->initializeMailer();
         $this->sent = false;
@@ -73,7 +69,7 @@ class MailMessage extends Email
      *
      * @return bool
      */
-    public function isSent()
+    public function isSent(): bool
     {
         return $this->sent;
     }
@@ -90,20 +86,22 @@ class MailMessage extends Email
      * Set the subject of the message.
      *
      * @param string $subject
+     * @return MailMessage
      */
-    public function setSubject($subject)
+    public function setSubject($subject): self
     {
-        $this->subject($subject);
+        return $this->subject($subject);
     }
 
     /**
      * Set the origination date of the message as a UNIX timestamp.
      *
      * @param int $date
+     * @return MailMessage
      */
-    public function setDate($date)
+    public function setDate($date): self
     {
-        $this->date(new \DateTime('@' . $date));
+        return $this->date(new \DateTime('@' . $date));
     }
 
     /**
@@ -112,7 +110,7 @@ class MailMessage extends Email
      * @param string $address
      * @return MailMessage
      */
-    public function setReturnPath($address)
+    public function setReturnPath($address): self
     {
         return $this->returnPath($address);
     }
@@ -126,10 +124,9 @@ class MailMessage extends Email
      * @param string $name optional
      * @return MailMessage
      */
-    public function setSender($address, $name = null)
+    public function setSender($address, $name = null): self
     {
-        $address = $this->convertNamedAddress($address, $name);
-        return $this->sender($address);
+        return $this->sender(...$this->convertNamedAddress($address, $name));
     }
 
     /**
@@ -139,15 +136,16 @@ class MailMessage extends Email
      *
      * If $name is passed and the first parameter is a string, this name will be
      * associated with the address.
+     * If $name is passed and the first parameter is not a string, an exception is thrown.
      *
      * @param string|array $addresses
      * @param string $name optional
      * @return MailMessage
      */
-    public function setFrom($addresses, $name = null)
+    public function setFrom($addresses, $name = null): self
     {
-        $addresses = $this->convertNamedAddress($addresses, $name);
-        return $this->from($addresses, $name);
+        $this->checkArguments($addresses, $name);
+        return $this->from(...$this->convertNamedAddress($addresses, $name));
     }
 
     /**
@@ -157,15 +155,16 @@ class MailMessage extends Email
      *
      * If $name is passed and the first parameter is a string, this name will be
      * associated with the address.
+     * If $name is passed and the first parameter is not a string, an exception is thrown.
      *
      * @param string|array $addresses
      * @param string $name optional
      * @return MailMessage
      */
-    public function setReplyTo($addresses, $name = null)
+    public function setReplyTo($addresses, $name = null): self
     {
-        $addresses = $this->convertNamedAddress($addresses, $name);
-        return $this->replyTo($addresses);
+        $this->checkArguments($addresses, $name);
+        return $this->replyTo(...$this->convertNamedAddress($addresses, $name));
     }
 
     /**
@@ -176,71 +175,80 @@ class MailMessage extends Email
      *
      * If $name is passed and the first parameter is a string, this name will be
      * associated with the address.
+     * If $name is passed and the first parameter is not a string, an exception is thrown.
      *
      * @param string|array $addresses
      * @param string $name optional
      * @return MailMessage
      */
-    public function setTo($addresses, $name = null)
+    public function setTo($addresses, $name = null): self
     {
-        $addresses = $this->convertNamedAddress($addresses, $name);
-        return $this->to($addresses);
+        $this->checkArguments($addresses, $name);
+        return $this->to(...$this->convertNamedAddress($addresses, $name));
     }
 
     /**
      * Set the Cc addresses of this message.
      *
+     * If multiple recipients will receive the message an array should be used.
+     * Example: array('receiver@domain.org', 'other@domain.org' => 'A name')
+     *
      * If $name is passed and the first parameter is a string, this name will be
      * associated with the address.
+     * If $name is passed and the first parameter is not a string, an exception is thrown.
      *
      * @param string|array $addresses
      * @param string $name optional
      * @return MailMessage
      */
-    public function setCc($addresses, $name = null)
+    public function setCc($addresses, $name = null): self
     {
-        $addresses = $this->convertNamedAddress($addresses, $name);
-        return $this->cc($addresses);
+        $this->checkArguments($addresses, $name);
+        return $this->cc(...$this->convertNamedAddress($addresses, $name));
     }
 
     /**
      * Set the Bcc addresses of this message.
      *
+     * If multiple recipients will receive the message an array should be used.
+     * Example: array('receiver@domain.org', 'other@domain.org' => 'A name')
+     *
      * If $name is passed and the first parameter is a string, this name will be
      * associated with the address.
+     * If $name is passed and the first parameter is not a string, an exception is thrown.
      *
      * @param string|array $addresses
      * @param string $name optional
      * @return MailMessage
      */
-    public function setBcc($addresses, $name = null)
+    public function setBcc($addresses, $name = null): self
     {
-        $addresses = $this->convertNamedAddress($addresses, $name);
-        return $this->bcc($addresses);
+        $this->checkArguments($addresses, $name);
+        return $this->bcc(...$this->convertNamedAddress($addresses, $name));
     }
 
     /**
      * Ask for a delivery receipt from the recipient to be sent to $addresses.
      *
-     * @param array $addresses
+     * @param string $address
      * @return MailMessage
      */
-    public function setReadReceiptTo($addresses)
+    public function setReadReceiptTo(string $address): self
     {
-        $addresses = $this->convertNamedAddress($addresses);
-        return $this->setReadReceiptTo($addresses);
+        $this->getHeaders()->addMailboxHeader('Disposition-Notification-To', $address);
+        return $this;
     }
 
     /**
      * Converts Addresses into Address/NamedAddress objects.
      *
      * @param string|array $args
-     * @return string|array
+     * @return Address[]
      */
-    protected function convertNamedAddress(...$args)
+    protected function convertNamedAddress(...$args): array
     {
         if (isset($args[1])) {
-            return new NamedAddress($args[0], $args[1]);
+            return [new NamedAddress($args[0], $args[1])];
         }
         if (is_string($args[0]) || is_array($args[0])) {
             return $this->convertAddresses($args[0]);
@@ -252,12 +260,12 @@ class MailMessage extends Email
      * Converts Addresses into Address/NamedAddress objects.
      *
      * @param string|array $addresses
-     * @return string|array
+     * @return Address[]
      */
-    protected function convertAddresses($addresses)
+    protected function convertAddresses($addresses): array
     {
         if (!is_array($addresses)) {
-            return Address::create($addresses);
+            return [Address::create($addresses)];
         }
         $newAddresses = [];
         foreach ($addresses as $email => $name) {
@@ -271,53 +279,39 @@ class MailMessage extends Email
         return $newAddresses;
     }
 
-    /**
-     * compatibility methods to allow for associative arrays as [name => email address]
-     * as it was possible in TYPO3 v9 / SwiftMailer.
-     */
+    //
+    // Compatibility methods, as it was possible in TYPO3 v9 / SwiftMailer.
+    //
 
-    /**
-     * @inheritdoc
-     */
-    public function addFrom(...$addresses)
+    public function addFrom(...$addresses): Email
     {
-        $addresses = $this->convertNamedAddress(...$addresses);
-        return parent::addFrom(...$addresses);
+        return parent::addFrom(...$this->convertNamedAddress(...$addresses));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function addReplyTo(...$addresses)
+    public function addReplyTo(...$addresses): Email
     {
-        $addresses = $this->convertNamedAddress(...$addresses);
-        return parent::addReplyTo(...$addresses);
+        return parent::addReplyTo(...$this->convertNamedAddress(...$addresses));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function addTo(...$addresses)
+    public function addTo(...$addresses): Email
     {
-        $addresses = $this->convertNamedAddress(...$addresses);
-        return parent::addTo(...$addresses);
+        return parent::addTo(...$this->convertNamedAddress(...$addresses));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function addCc(...$addresses)
+    public function addCc(...$addresses): Email
     {
-        $addresses = $this->convertNamedAddress(...$addresses);
-        return parent::addCc(...$addresses);
+        return parent::addCc(...$this->convertNamedAddress(...$addresses));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function addBcc(...$addresses)
+    public function addBcc(...$addresses): Email
     {
-        $addresses = $this->convertNamedAddress(...$addresses);
-        return parent::addBcc(...$addresses);
+        return parent::addBcc(...$this->convertNamedAddress(...$addresses));
+    }
+
+    protected function checkArguments($addresses, string $name = null): void
+    {
+        if ($name !== null && !is_string($addresses)) {
+            throw new InvalidArgumentException('The combination of a name and an array of addresses is invalid.', 1570543657);
+        }
     }
 }
