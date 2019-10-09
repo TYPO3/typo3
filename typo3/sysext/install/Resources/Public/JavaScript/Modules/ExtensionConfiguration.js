@@ -22,8 +22,9 @@ define([
   'TYPO3/CMS/Install/InfoBox',
   'TYPO3/CMS/Install/Severity',
   'TYPO3/CMS/Backend/Notification',
+  'TYPO3/CMS/Backend/ModuleMenu',
   'bootstrap'
-], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification) {
+], function($, Router, FlashMessage, ProgressBar, InfoBox, Severity, Notification, ModuleMenu) {
   'use strict';
 
   return {
@@ -133,6 +134,9 @@ define([
             data.status.forEach(function(element) {
               Notification.showMessage(element.title, element.message, element.severity);
             });
+            if ($('body').data('context') === 'backend') {
+              ModuleMenu.App.refreshMenu();
+            }
           } else {
             Notification.error('Something went wrong');
           }
