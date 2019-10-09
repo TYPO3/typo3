@@ -17,6 +17,7 @@ import 'bootstrap';
 import '../../Renderable/Clearable';
 import Router = require('../../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import ModuleMenu = require('TYPO3/CMS/Backend/ModuleMenu');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ExtensionConfiguration
@@ -121,6 +122,9 @@ class ExtensionConfiguration extends AbstractInteractableModule {
           data.status.forEach((element: any): void => {
             Notification.showMessage(element.title, element.message, element.severity);
           });
+          if ($('body').data('context') === 'backend') {
+            ModuleMenu.App.refreshMenu();
+          }
         } else {
           Notification.error('Something went wrong');
         }
