@@ -75,7 +75,12 @@ class Router {
       }
     });
 
-    this.executeSilentConfigurationUpdate();
+    const $context = $(this.selectorBody).data('context');
+    if ($context === 'backend') {
+      this.executeSilentConfigurationUpdate();
+    } else {
+      this.preAccessCheck();
+    }
   }
 
   public registerInstallToolRoutes(): void {
@@ -365,6 +370,26 @@ class Router {
   public updateLoadingInfo(info: string): void {
     const $outputContainer = $(this.selectorBody);
     $outputContainer.find('#t3js-ui-block-detail').text(info);
+  }
+
+  private preAccessCheck(): void {
+    this.updateLoadingInfo('Execute pre access check');
+    $.ajax({
+      url: this.getUrl('preAccessCheck', 'layout'),
+      cache: false,
+      success: (data: { [key: string]: any }): void => {
+        if (data.installToolLocked) {
+          this.checkEnableInstallToolFile();
+        } else if (!data.isAuthorized) {
+          this.showLogin();
+        } else {
+          this.executeSilentConfigurationUpdate();
+        }
+      },
+      error: (xhr: JQueryXHR): void => {
+        this.handleAjaxError(xhr);
+      },
+    });
   }
 }
 
