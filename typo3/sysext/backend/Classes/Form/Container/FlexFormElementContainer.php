@@ -95,7 +95,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
                     }
                 }
-                $fakeParameterArray['itemFormElID'] = $parameterArray['itemFormElID'] . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName);
+                $fakeParameterArray['itemFormElID'] = $parameterArray['itemFormElID'] . '_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $flexFormFieldName) . '_' . md5($fakeParameterArray['itemFormElName']);
                 if (isset($flexFormRowData[$flexFormFieldName]['vDEF'])) {
                     $fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName]['vDEF'];
                 } else {
