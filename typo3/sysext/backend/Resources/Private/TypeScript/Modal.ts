@@ -213,6 +213,7 @@ class Modal {
       buttons,
       ajaxCallback: callback,
       ajaxTarget: target,
+      content: url,
     });
   }
 
