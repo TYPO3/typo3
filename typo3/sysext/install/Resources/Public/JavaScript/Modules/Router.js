@@ -85,7 +85,11 @@ define([
         }
       });
 
-      this.executeSilentConfigurationUpdate();
+      if ($(this.selectorBody).data('context') === 'backend') {
+        this.executeSilentConfigurationUpdate();
+      } else {
+        this.preAccessCheck();
+      }
     },
 
     registerInstallToolRoutes: function() {
@@ -114,6 +118,27 @@ define([
         url = url + '&install[action]=' + action;
       }
       return url;
+    },
+
+    preAccessCheck: function() {
+      this.updateLoadingInfo("Execute pre access check");
+      var self = this;
+      $.ajax({
+        url: this.getUrl("preAccessCheck", "layout"),
+        cache: false,
+        success: function(data) {
+          if (data.installToolLocked) {
+            self.checkEnableInstallToolFile();
+          } else if (!data.isAuthorized) {
+            self.showLogin();
+          } else {
+            self.executeSilentConfigurationUpdate();
+          }
+        },
+        error: function(xhr) {
+          self.handleAjaxError(xhr);
+        }
+      })
     },
 
     executeSilentConfigurationUpdate: function() {

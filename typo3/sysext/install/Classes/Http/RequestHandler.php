@@ -100,7 +100,12 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $action = $actionName . 'Action';
 
         $session = $this->initializeSession();
-        if ($actionName === 'init') {
+        if ($actionName === 'preAccessCheck') {
+            $response = new JsonResponse([
+                'installToolLocked' => !$this->checkEnableInstallToolFile(),
+                'isAuthorized' => $session->isAuthorized()
+            ]);
+        } elseif ($actionName === 'init') {
             $controller = new LayoutController();
             $response = $controller->initAction($request);
         } elseif ($actionName === 'checkEnableInstallToolFile') {
