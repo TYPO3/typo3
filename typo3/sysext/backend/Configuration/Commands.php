@@ -9,10 +9,12 @@
  */
 return [
     'backend:lock' => [
-        'class' => \TYPO3\CMS\Backend\Command\LockBackendCommand::class
+        'class' => \TYPO3\CMS\Backend\Command\LockBackendCommand::class,
+        'schedulable' => false
     ],
     'backend:unlock' => [
-        'class' => \TYPO3\CMS\Backend\Command\UnlockBackendCommand::class
+        'class' => \TYPO3\CMS\Backend\Command\UnlockBackendCommand::class,
+        'schedulable' => false,
     ],
     'referenceindex:update' => [
         'class' => \TYPO3\CMS\Backend\Command\ReferenceIndexUpdateCommand::class
