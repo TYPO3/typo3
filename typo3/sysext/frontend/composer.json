@@ -21,9 +21,6 @@
 	"suggest": {
 		"typo3/cms-adminpanel": "Provides additional information and functionality for backend users in the frontend."
 	},
-	"replace": {
-		"frontend": "*"
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "9.3.x-dev"
