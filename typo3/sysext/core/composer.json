@@ -75,7 +75,6 @@
 		"symfony/routing": "4.2.7"
 	},
 	"replace": {
-		"core": "*",
 		"typo3/cms-lang": "*",
 		"typo3/cms-saltedpasswords": "*",
 		"typo3/cms-sv": "*"

@@ -21,7 +21,6 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"backend": "*",
 		"typo3/cms-context-help": "*",
 		"typo3/cms-cshmanual": "*",
 		"typo3/cms-func-wizards": "*",

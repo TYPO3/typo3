@@ -22,9 +22,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"linkvalidator": "*"
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "10.2.x-dev"

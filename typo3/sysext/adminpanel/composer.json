@@ -25,9 +25,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"adminpanel": "*"
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "10.2.x-dev"

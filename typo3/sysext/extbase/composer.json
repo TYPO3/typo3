@@ -27,9 +27,6 @@
 		"typo3/cms": "*",
 		"phpdocumentor/reflection-docblock": ">= 4.3.2"
 	},
-	"replace": {
-		"extbase": "*"
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "10.2.x-dev"
