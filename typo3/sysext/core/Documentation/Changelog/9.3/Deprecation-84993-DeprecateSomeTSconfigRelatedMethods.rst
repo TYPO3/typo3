@@ -81,7 +81,7 @@ PHP notice level warnings::
 
     // Switch an old getTSConfigVal() to getTSConfig(), note the parenthesis:
     $value = (bool)$backendUser->getTSConfigVal('options.someToggle');
-    $value = (bool)($backendUser->getTSConfig()['options.']['someToggle] ?? false);
+    $value = (bool)($backendUser->getTSConfig()['options.']['someToggle'] ?? false);
 
     // Switch an old getTSConfigProp() to getTSConfig(), note the parenthesis and the trailing dot:
     $value = (array)$backendUser->getTSConfigProp('options.somePartWithSubToggles');
