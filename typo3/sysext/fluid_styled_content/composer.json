@@ -20,9 +20,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"fluid_styled_content": "*"
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "9.2.x-dev"
