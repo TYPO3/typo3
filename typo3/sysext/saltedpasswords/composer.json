@@ -22,9 +22,6 @@
 	"suggest": {
 		"typo3/cms-rsaauth": "*"
 	},
-	"replace": {
-		"saltedpasswords": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {

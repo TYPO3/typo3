@@ -19,9 +19,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"recordlist": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {

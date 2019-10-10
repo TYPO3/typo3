@@ -17,9 +17,6 @@
 		"typo3/cms-core": "8.7.*@dev",
 		"typo3/cms-func": "8.7.*@dev"
 	},
-	"replace": {
-		"wizard_sortpages": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {

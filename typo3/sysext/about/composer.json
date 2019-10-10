@@ -19,10 +19,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"about": "*",
-		"aboutmodules": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {

@@ -19,9 +19,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"sys_note": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {

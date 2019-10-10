@@ -17,9 +17,6 @@
 		"typo3/cms-core": "8.7.*@dev",
 		"typo3/cms-frontend": "8.7.*@dev"
 	},
-	"replace": {
-		"css_styled_content": "*"
-	},
 	"autoload": {
 		"psr-4": {
 			"TYPO3\\CMS\\CssStyledContent\\": "Classes/"
