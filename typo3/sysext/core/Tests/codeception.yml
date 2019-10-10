@@ -11,3 +11,6 @@ extensions:
   enabled:
     - Codeception\Extension\RunFailed
     - Codeception\Extension\Recorder
+modules:
+  enabled:
+    - Filesystem
