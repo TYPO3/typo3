@@ -18,9 +18,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"felogin": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"Package": {

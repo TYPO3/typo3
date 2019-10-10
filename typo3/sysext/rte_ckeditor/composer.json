@@ -18,9 +18,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"rte_ckeditor": "*"
-	},
 	"suggest": {
 		"typo3/cms-setup": "*"
 	},

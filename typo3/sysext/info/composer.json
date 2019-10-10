@@ -19,7 +19,6 @@
 		"typo3/cms": "*"
 	},
 	"replace": {
-		"info": "*",
 		"typo3/cms-info-pagetsconfig": "*"
 	},
 	"extra": {

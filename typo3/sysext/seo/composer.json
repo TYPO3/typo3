@@ -20,9 +20,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"seo": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "seo",

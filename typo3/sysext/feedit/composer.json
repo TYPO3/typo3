@@ -24,9 +24,6 @@
 	"conflict": {
 		"typo3/cms": "*"
 	},
-	"replace": {
-		"feedit": "*"
-	},
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "feedit"
