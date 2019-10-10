@@ -91,9 +91,13 @@ PHP notice level warnings::
 Change :php:`BackendUtility->getModTSconfig()` related calls to use :php:`BackendUtility::getPagesTSconfig($pid)` instead.
 Note this method does not return the 'properties' and 'value' sub array as :php:`->getModTSconfig()` did::
 
-    // Switch an old getModTSconfig() to getPagesTSConfig():
-    $configArray = BackendUtility::getModTSconfig($id, 'mod.web_list');
+    // Switch an old getModTSconfig() to getPagesTSConfig() for array of properties:
+    $configArray = BackendUtility::getModTSconfig($pid, 'mod.web_list');
     $configArray['properties'] = BackendUtility::getPagesTSconfig($pid)['mod.']['web_list.'] ?? [];
+
+    // Switch an old getModTSconfig() to getPagesTSConfig() for single value:
+    $configArray = BackendUtility::getModTSconfig($pid, 'TCEFORM.sys_dmail_group.select_categories.PAGE_TSCONFIG_IDLIST');
+    $configArray['value'] = BackendUtility::getPagesTSconfig($pid)['TCEFORM.']['sys_dmail_group.']['select_categories.']['PAGE_TSCONFIG_IDLIST'] ?? null;
 
 Methods :php:`BackendUtility::unsetMenuItems()` and :php:`DataHandler->getTCEMAIN_TSconfig()` have been rarely used
 and are dropped without substitution. Copy the code into consuming methods if you really need them.
