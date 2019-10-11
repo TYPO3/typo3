@@ -13,6 +13,7 @@
 
 import {SeverityEnum} from './Enum/Severity';
 import * as $ from 'jquery';
+import AjaxDataHandler = require('./AjaxDataHandler');
 import InfoWindow = require('./InfoWindow');
 import Modal = require('./Modal');
 import ModuleMenu = require('./ModuleMenu');
@@ -226,21 +227,16 @@ class ContextMenuActions {
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {
       if (e.target.getAttribute('name') === 'delete') {
-        const targetUrl = top.TYPO3.settings.RecordCommit.moduleUrl
-          + '&cmd[' + table + '][' + uid + '][delete]=1';
-
-        $.ajax({
-          url: targetUrl,
-          success: (): void => {
-            if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
-              if (uid === top.fsMod.recentIds.web) {
-                let node = Viewport.NavigationContainer.PageTree.getFirstNode();
-                Viewport.NavigationContainer.PageTree.selectNode(node);
-              }
-
-              Viewport.NavigationContainer.PageTree.refreshTree();
+        const xhr = AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1');
+        xhr.done((): void => {
+          if (table === 'pages' && Viewport.NavigationContainer.PageTree) {
+            if (uid === top.fsMod.recentIds.web) {
+              let node = Viewport.NavigationContainer.PageTree.getFirstNode();
+              Viewport.NavigationContainer.PageTree.selectNode(node);
             }
-          },
+
+            Viewport.NavigationContainer.PageTree.refreshTree();
+          }
         });
       }
       Modal.dismiss();
