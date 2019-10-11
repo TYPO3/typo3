@@ -1183,15 +1183,12 @@ class EditDocumentController
                                 $this->errorC++;
                                 // Try to fetch error message from "recordInternals" be user object
                                 // @todo: This construct should be logged and localized and de-uglified
-                                $message = $beUser->errorMsg;
-                                if (empty($message)) {
-                                    // Create message from exception.
-                                    $message = $e->getMessage() . ' ' . $e->getCode();
-                                }
-                                $editForm .= htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission'))
-                                    . '<br /><br />' . htmlspecialchars($message) . '<br /><br />';
+                                $message = (!empty($beUser->errorMsg)) ? $beUser->errorMsg : $message = $e->getMessage() . ' ' . $e->getCode();
+                                $title = $this->getLanguageService()
+                                    ->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noEditPermission');
+                                $editForm .= $this->getInfobox($message, $title);
                             } catch (DatabaseRecordException $e) {
-                                $editForm = '<div class="alert alert-warning">' . htmlspecialchars($e->getMessage()) . '</div>';
+                                $editForm .= $this->getInfobox($e->getMessage());
                             }
                         } // End of for each uid
                     }
@@ -1199,6 +1196,31 @@ class EditDocumentController
             }
         }
         return $editForm;
+    }
+
+    /**
+     * Helper function for rendering an Infobox
+     *
+     * @param string $message
+     * @param string|null $title
+     * @return string
+     */
+    protected function getInfobox(string $message, ?string $title = null): string
+    {
+        return '<div class="callout callout-danger">' .
+                '<div class="media">' .
+                    '<div class="media-left">' .
+                        '<span class="fa-stack fa-lg callout-icon">' .
+                            '<i class="fa fa-circle fa-stack-2x"></i>' .
+                            '<i class="fa fa-times fa-stack-1x"></i>' .
+                        '</span>' .
+                    '</div>' .
+                    '<div class="media-body">' .
+                        ($title ? '<h4 class="callout-title">' . htmlspecialchars($title) . '</h4>' : '') .
+                        '<div class="callout-body">' . htmlspecialchars($message) . '</div>' .
+                    '</div>' .
+                '</div>' .
+            '</div>';
     }
 
     /**
