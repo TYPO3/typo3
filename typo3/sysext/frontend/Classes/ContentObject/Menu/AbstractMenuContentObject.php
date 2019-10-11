@@ -835,7 +835,7 @@ abstract class AbstractMenuContentObject
                         if ($MP) {
                             $row['_MP_PARAM'] = $MP . ($row['_MP_PARAM'] ? ',' . $row['_MP_PARAM'] : '');
                         }
-                        $menuItems[$row['uid']] = $this->sys_page->getPageOverlay($row);
+                        $menuItems[] = $this->sys_page->getPageOverlay($row);
                     }
                 }
             }
