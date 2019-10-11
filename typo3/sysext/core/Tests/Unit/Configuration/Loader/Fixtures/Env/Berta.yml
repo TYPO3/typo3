@@ -1,0 +1,6 @@
+imports:
+    - { resource: Secondfile.yml }
+
+options:
+    - option1
+    - option2

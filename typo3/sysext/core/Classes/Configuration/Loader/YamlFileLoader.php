@@ -167,6 +167,7 @@ class YamlFileLoader
     {
         if (isset($content['imports']) && is_array($content['imports'])) {
             foreach ($content['imports'] as $import) {
+                $import = $this->processPlaceholders($import, $import);
                 $importedContent = $this->loadAndParse($import['resource'], $fileName);
                 // override the imported content with the one from the current file
                 $content = ArrayUtility::replaceAndAppendScalarValuesRecursive($importedContent, $content);

@@ -150,6 +150,30 @@ betterthanbefore: \'%firstset.myinitialversion%\'
         self::assertSame($expected, $output);
     }
 
+    /**
+     * Method checking for imports with env vars that they have been processed properly
+     * @test
+     */
+    public function loadWithImportAndEnvVars(): void
+    {
+        $loader = new YamlFileLoader();
+
+        putenv('foo=barbaz');
+        $output = $loader->load(__DIR__ . '/Fixtures/Env/Berta.yml');
+        putenv('foo=');
+
+        $expected = [
+            'loadedWithEnvVars' => 1,
+            'options' => [
+                'optionBefore',
+                'option1',
+                'option2',
+            ],
+        ];
+
+        self::assertSame($expected, $output);
+    }
+
     public function loadWithEnvVarDataProvider(): array
     {
         return [
