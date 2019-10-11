@@ -420,10 +420,10 @@ module.exports = function (grunt) {
           destPrefix: "<%= paths.ckeditor %>Public/JavaScript/Contrib"
         },
         files: {
-          'ckeditor.js': 'ckeditor/ckeditor.js',
-          'plugins/': 'ckeditor/plugins/',
-          'skins/': 'ckeditor/skins/',
-          'lang/': 'ckeditor/lang/'
+          'ckeditor.js': 'ckeditor4/ckeditor.js',
+          'plugins/': 'ckeditor4/plugins/',
+          'skins/': 'ckeditor4/skins/',
+          'lang/': 'ckeditor4/lang/'
         }
       },
       ckeditor_externalplugins: {
