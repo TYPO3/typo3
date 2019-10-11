@@ -487,7 +487,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 $copiedRow = $row;
                 unset($copiedRow['static_page_arguments']);
                 $title = $this->linkPageATagWrap(
-                    htmlspecialchars($title),
+                    $title,
                     $this->linkPage($row['page_id'], $copiedRow)
                 );
             }
@@ -504,7 +504,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                 }
             }
             $title = $this->linkPageATagWrap(
-                htmlspecialchars($title),
+                $title,
                 $this->linkPage($row['data_page_id'], $row, $markUpSwParams)
             );
         }
@@ -1631,11 +1631,17 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function linkPageATagWrap(string $linkText, array $linkData): string
     {
-        $target = !empty($linkData['target']) ? 'target="' . htmlspecialchars($linkData['target']) . '"' : '';
-
-        return '<a href="' . htmlspecialchars($linkData['uri']) . '" ' . $target . '>'
-            . htmlspecialchars($linkText)
-            . '</a>';
+        $attributes = [
+            'href' => $linkData['uri']
+        ];
+        if (!empty($linkData['target'])) {
+            $attributes['target'] = $linkData['target'];
+        }
+        return sprintf(
+            '<a %s>%s</a>',
+            GeneralUtility::implodeAttributes($attributes, true),
+            htmlspecialchars($linkText, ENT_QUOTES | ENT_HTML5)
+        );
     }
 
     /**
