@@ -106,7 +106,10 @@ class ReportController
         if ($action === 'index') {
             $this->indexAction();
         } elseif ($action === 'detail') {
-            $this->detailAction($request);
+            $response = $this->detailAction($request);
+            if ($response instanceof ResponseInterface) {
+                return $response;
+            }
         } else {
             throw new \RuntimeException(
                 'Reports module has only "index" and "detail" action, ' . (string)$action . ' given',
@@ -147,6 +150,7 @@ class ReportController
      * Display a single report
      *
      * @param ServerRequestInterface $request
+     * @return ResponseInterface|null
      */
     protected function detailAction(ServerRequestInterface $request)
     {
@@ -155,6 +159,15 @@ class ReportController
         $report = $request->getQueryParams()['report'] ?? $request->getParsedBody()['report'];
 
         $reportClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'][$extension][$report]['report'] ?? null;
+
+        if ($reportClass === null || !class_exists($reportClass)) {
+            $this->resetState();
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            return new RedirectResponse((string)$uriBuilder->buildUriFromRoute('system_reports', [
+                'action' => 'index',
+                'redirect' => 1,
+            ]), 303);
+        }
 
         $reportInstance = GeneralUtility::makeInstance($reportClass, $this);
 
@@ -245,6 +258,15 @@ class ReportController
             'extension' => $extension,
             'report' => $report,
         ];
+        $this->getBackendUser()->writeUC();
+    }
+
+    /**
+     * Reset state in user settings
+     */
+    protected function resetState(): void
+    {
+        $this->getBackendUser()->uc['reports']['selection'] = [];
         $this->getBackendUser()->writeUC();
     }
 
