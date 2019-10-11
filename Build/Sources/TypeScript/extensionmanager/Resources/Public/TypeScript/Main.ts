@@ -135,7 +135,7 @@ class ExtensionManager {
       }).on('click', 'a[data-action=update-extension]', (e: JQueryEventObject): void => {
         e.preventDefault();
         $.ajax({
-          url: $(this).attr('href'),
+          url: $(e.currentTarget).attr('href'),
           dataType: 'json',
           beforeSend: (): void => {
             NProgress.start();
