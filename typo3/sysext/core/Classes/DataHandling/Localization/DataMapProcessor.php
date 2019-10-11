@@ -1389,7 +1389,9 @@ class DataMapProcessor
         }
 
         foreach ($GLOBALS['TCA'][$tableName]['columns'] as $fieldName => $configuration) {
-            if (($configuration['l10n_mode'] ?? null) === 'exclude') {
+            if (($configuration['l10n_mode'] ?? null) === 'exclude'
+                && ($configuration['config']['type'] ?? null) !== 'none'
+            ) {
                 $localizationExcludeFieldNames[] = $fieldName;
             }
         }
