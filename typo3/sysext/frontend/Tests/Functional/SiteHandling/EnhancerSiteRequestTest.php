@@ -857,6 +857,77 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $this->assertPageArgumentsEquals($testSet);
     }
 
+    /**
+     * @return array
+     */
+    public function pageTypeDecoratorIndexCanBePartOfSlugDataProvider(): array
+    {
+        $testSets = [];
+        foreach (Builder::create()->declarePageTypes() as $pageTypeDeclaration) {
+            $testSet = TestSet::create()
+                ->withMergedApplicables($pageTypeDeclaration)
+                ->withVariables($pageTypeDeclaration->getVariables());
+
+            $testSetForPageContainingIndexInSlug =
+                TestSet::create($testSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(3200)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/stock-index[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    )
+            ;
+            $testSets = array_merge(
+                $testSets,
+                [$testSetForPageContainingIndexInSlug->describe() => [$testSetForPageContainingIndexInSlug]]
+            );
+        }
+        return $testSets;
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider pageTypeDecoratorIndexCanBePartOfSlugDataProvider
+     */
+    public function pageTypeDecoratorIndexCanBePartOfSlug(TestSet $testSet): void
+    {
+        $builder = Builder::create();
+        $targetUri = $builder->compileUrl($testSet);
+        /** @var LanguageContext $languageContext */
+        $languageContext = $testSet->getSingleApplicable(LanguageContext::class);
+        $expectedLanguageId = $languageContext->getLanguageId();
+        $expectation = $builder->compileResolveArguments($testSet);
+
+        $overrides = [
+            'routeEnhancers' => [
+                'PageType' => $builder->compilePageTypeConfiguration($testSet),
+            ]
+        ];
+        $this->mergeSiteConfiguration('archive-acme-com', $overrides);
+
+        $allParameters = array_replace_recursive(
+            $expectation['dynamicArguments'],
+            $expectation['staticArguments']
+        );
+        $expectation['pageId'] = $testSet->getTargetPageId();
+        $expectation['languageId'] = $expectedLanguageId;
+        $expectation['requestQueryParams'] = $allParameters;
+        $expectation['_GET'] = $allParameters;
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($targetUri),
+            $this->internalRequestContext,
+            true
+        );
+
+        $pageArguments = json_decode((string)$response->getBody(), true);
+        self::assertEquals($expectation, $pageArguments);
+    }
+
     public function routeIdentifiersAreResolvedDataProvider(): array
     {
         return [
