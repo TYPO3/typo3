@@ -157,7 +157,8 @@ class SlugService implements LoggerAwareInterface
 
     protected function createRedirect(string $originalSlug, int $pageId, int $languageId, int $pid): void
     {
-        $basePath = rtrim($this->site->getLanguageById($languageId)->getBase()->getPath(), '/');
+        $siteLanguage = $this->site->getLanguageById($languageId);
+        $basePath = rtrim($siteLanguage->getBase()->getPath(), '/');
 
         /** @var DateTimeAspect $date */
         $date = $this->context->getAspect('date');
@@ -176,7 +177,7 @@ class SlugService implements LoggerAwareInterface
             'disabled' => 0,
             'starttime' => 0,
             'endtime' => $this->redirectTTL > 0 ? $endtime->getTimestamp() : 0,
-            'source_host' => $this->site->getBase()->getHost() ?: '*',
+            'source_host' => $siteLanguage->getBase()->getHost() ?: '*',
             'source_path' => $basePath . $originalSlug,
             'is_regexp' => 0,
             'force_https' => 0,

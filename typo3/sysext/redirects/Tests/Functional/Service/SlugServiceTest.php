@@ -63,7 +63,7 @@ class SlugServiceTest extends FunctionalTestCase
             'title' => 'German',
             'enabled' => true,
             'languageId' => '1',
-            'base' => '/de/',
+            'base' => 'https://de.example.com/',
             'typo3Language' => 'de',
             'locale' => 'de_DE.UTF-8',
             'iso-639-1' => 'de',
@@ -71,6 +71,19 @@ class SlugServiceTest extends FunctionalTestCase
             'hreflang' => 'de-de',
             'direction' => 'ltr',
             'flag' => 'de',
+        ],
+        [
+            'title' => 'Spanish',
+            'enabled' => true,
+            'languageId' => '2',
+            'base' => '/es/',
+            'typo3Language' => 'es',
+            'locale' => 'es_ES.UTF-8',
+            'iso-639-1' => 'es',
+            'navigationTitle' => 'Spanish',
+            'hreflang' => 'es-es',
+            'direction' => 'ltr',
+            'flag' => 'es',
         ],
     ];
 
@@ -119,10 +132,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -158,16 +171,16 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/', 'target' => 't3://page?uid=1&_language=0'],
-            ['source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
-            ['source_path' => '/dummy-1-3', 'target' => 't3://page?uid=3&_language=0'],
-            ['source_path' => '/dummy-1-4', 'target' => 't3://page?uid=4&_language=0'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
-            ['source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
-            ['source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=0'],
-            ['source_path' => '/dummy-1-3/dummy-1-3-9', 'target' => 't3://page?uid=9&_language=0'],
-            ['source_path' => '/dummy-1-4/dummy-1-4-10', 'target' => 't3://page?uid=10&_language=0'],
+            ['source_host' => '*', 'source_path' => '/', 'target' => 't3://page?uid=1&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=3&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-4', 'target' => 't3://page?uid=4&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-3/dummy-1-3-9', 'target' => 't3://page?uid=9&_language=0'],
+            ['source_host' => '*', 'source_path' => '/dummy-1-4/dummy-1-4-10', 'target' => 't3://page?uid=10&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -203,10 +216,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/sub-folder/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
-            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
-            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
-            ['source_path' => '/sub-folder/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
+            ['source_host' => '*', 'source_path' => '/sub-folder/dummy-1-2', 'target' => 't3://page?uid=2&_language=0'],
+            ['source_host' => '*', 'source_path' => '/sub-folder/dummy-1-2/dummy-1-2-5', 'target' => 't3://page?uid=5&_language=0'],
+            ['source_host' => '*', 'source_path' => '/sub-folder/dummy-1-2/dummy-1-2-6', 'target' => 't3://page?uid=6&_language=0'],
+            ['source_host' => '*', 'source_path' => '/sub-folder/dummy-1-2/dummy-1-2-7', 'target' => 't3://page?uid=7&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -244,8 +257,8 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/de/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
-            ['source_path' => '/de/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -283,8 +296,48 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/sub-folder/de/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
-            ['source_path' => '/sub-folder/de/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3', 'target' => 't3://page?uid=31&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/sub-folder/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=32&_language=1'],
+        ];
+
+        $this->assertSlugsAndRedirectsExists($slugs, $redirects);
+    }
+
+    /**
+     * This test should prove, that a renaming of a subtree works as expected
+     * and all slugs of sub pages are renamed and redirects are created.
+     *
+     * We test here that rebuildSlugsForSlugChange works with languages and a base in a sub-folder.
+     * @test
+     */
+    public function rebuildSlugsForSlugChangeRenamesSubSlugsAndCreatesRedirectsWithDefaultLanguageInSubFolder(): void
+    {
+        $this->buildBaseSiteWithLanguagesInSubFolder();
+        $this->createSubject();
+        $this->importDataSet(__DIR__ . '/Fixtures/SlugServiceTest_pages_test3.xml');
+        $this->subject->rebuildSlugsForSlugChange(3, '/dummy-1-3', '/test-new', $this->correlationId);
+
+        // These are the slugs after rebuildSlugsForSlugChange() has run
+        $slugs = [
+            '/',
+            '/dummy-1-2',
+            '/test-new',
+            '/dummy-1-3',
+            '/dummy-1-4',
+            '/dummy-1-2/dummy-1-2-5',
+            '/dummy-1-2/dummy-1-2-6',
+            '/dummy-1-2/dummy-1-2-7',
+            '/dummy-1-3/dummy-1-3-8',
+            '/test-new/dummy-1-3-8',
+            '/test-new/dummy-1-3-9',
+            '/dummy-1-4/dummy-1-4-10',
+        ];
+
+        // This redirects should exists, after rebuildSlugsForSlugChange() has run
+        $redirects = [
+            ['source_host' => '*', 'source_path' => '/sub-folder/en/dummy-1-3', 'target' => 't3://page?uid=3&_language=0'],
+            ['source_host' => '*', 'source_path' => '/sub-folder/en/dummy-1-3/dummy-1-3-8', 'target' => 't3://page?uid=8&_language=0'],
+            ['source_host' => '*', 'source_path' => '/sub-folder/en/dummy-1-3/dummy-1-3-9', 'target' => 't3://page?uid=9&_language=0'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -318,10 +371,10 @@ class SlugServiceTest extends FunctionalTestCase
 
         // This redirects should exists, after rebuildSlugsForSlugChange() has run
         $redirects = [
-            ['source_path' => '/de/', 'target' => 't3://page?uid=5&_language=1'],
-            ['source_path' => '/de/dummy-1-2', 'target' => 't3://page?uid=6&_language=1'],
-            ['source_path' => '/de/dummy-1-3', 'target' => 't3://page?uid=7&_language=1'],
-            ['source_path' => '/de/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=8&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/', 'target' => 't3://page?uid=5&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2', 'target' => 't3://page?uid=6&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-3', 'target' => 't3://page?uid=7&_language=1'],
+            ['source_host' => 'de.example.com', 'source_path' => '/dummy-1-2/dummy-1-2-3', 'target' => 't3://page?uid=8&_language=1'],
         ];
 
         $this->assertSlugsAndRedirectsExists($slugs, $redirects);
@@ -360,10 +413,18 @@ class SlugServiceTest extends FunctionalTestCase
 
     protected function buildBaseSiteWithLanguagesInSubFolder(): void
     {
+        $languages = $this->languages;
+        array_walk($languages, static function (&$languageData) {
+            $languageData['base'] = (
+                strpos($languageData['base'], 'http') === false
+                    ? $languageData['base']
+                    : $languageData['base'] . 'sub-folder/'
+            );
+        });
         $configuration = [
             'rootPageId' => 1,
             'base' => '/sub-folder',
-            'languages' => $this->languages,
+            'languages' => $languages,
         ];
         $siteConfiguration = GeneralUtility::makeInstance(SiteConfiguration::class);
         $siteConfiguration->write('testing', $configuration);
@@ -393,6 +454,7 @@ class SlugServiceTest extends FunctionalTestCase
         self::assertCount(count($redirects), $redirectRecords);
         foreach ($redirectRecords as $record) {
             $combination = [
+                'source_host' => $record['source_host'],
                 'source_path' => $record['source_path'],
                 'target' => $record['target'],
             ];
