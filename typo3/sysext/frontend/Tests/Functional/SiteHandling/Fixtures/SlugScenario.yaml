@@ -137,6 +137,7 @@ entities:
             - self: {id: 3110, title: 'EN: Markets', slug: '/markets'}
             - self: {id: 3120, title: 'EN: Products', slug: '/products'}
             - self: {id: 3130, title: 'EN: Partners', slug: '/partners'}
+        - self: {id: 3200, title: 'EN: Stock Index', slug: '/stock-index'}
     - self: {id: 7000, title: 'Common Collection', type: *pageFolder, root: true, slug: '/common'}
       children:
         - self: {id: 7100, title: 'Announcements & News', slug: '/common/news'}
