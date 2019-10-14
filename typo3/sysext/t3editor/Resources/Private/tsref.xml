@@ -4807,7 +4807,7 @@ In this example the MYLINK subpart will be substituted by the wrap which is the 
 		</property>
 	</type>
 	<type id="TEXT" extends="stdWrap">
-		<property name="value" type="value">
+		<property name="value" type="stdWrap">
 			<description><![CDATA[text, wrap with stdWrap properties]]></description>
 			<default><![CDATA[
 ]]></default>
