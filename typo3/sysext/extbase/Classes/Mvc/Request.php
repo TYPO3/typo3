@@ -402,7 +402,7 @@ class Request implements RequestInterface
      *
      * @param string $argumentName Name of the argument
      *
-     * @return string Value of the argument
+     * @return string|array Value of the argument
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
      */
     public function getArgument($argumentName)
