@@ -25,7 +25,7 @@
     "bootstrap-sass": "^3.4.1",
     "bootstrap-slider": "^9.7.3",
     "chosen-js": "^1.7.0",
-    "ckeditor": "^4.11.1",
+    "ckeditor4": "^4.13.0",
     "cropper": "^2.3.4",
     "d3": "^4.10.0",
     "datatables": "^1.10.13",
