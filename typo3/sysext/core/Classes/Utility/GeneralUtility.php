@@ -2447,9 +2447,10 @@ class GeneralUtility
     /**
      * Returns an array with the names of folders in a specific path
      * Will return 'error' (string) if there were an error with reading directory content.
+     * Will return null if provided path is false.
      *
      * @param string $path Path to list directories from
-     * @return array Returns an array with the directory entries as values. If no path, the return value is nothing.
+     * @return array|string|null Returns an array with the directory entries as values. If no path is provided, the return value will be null.
      */
     public static function get_dirs($path)
     {
