@@ -28,7 +28,10 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * Example
  * =======
  *
- * ``{link}`` contains: ``19 _blank - "testtitle with whitespace" &X=y``.
+ * ``{link}`` contains: ``t3://page?uid=2&arg1=val1#9 _blank some-css-class "Title containing Whitespace"``.
+ *
+ * Or a legacy version from older TYPO3 versions:
+ * ``{link}`` contains: ``9 _blank - "testtitle with whitespace" &X=y``.
  *
  * Minimal usage
  * -------------
