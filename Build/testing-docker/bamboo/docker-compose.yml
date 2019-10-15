@@ -24,7 +24,7 @@ services:
     networks:
       - test
   mssql2017cu9:
-    image: microsoft/mssql-server-linux:2017-CU9
+    image: mcr.microsoft.com/mssql/server:2017-CU9-ubuntu
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: Test1234!
