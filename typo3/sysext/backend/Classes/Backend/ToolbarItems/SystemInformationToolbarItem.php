@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -168,8 +169,15 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $view = $this->getFluidTemplateObject('SystemInformationDropDown.html');
+
+        try {
+            $environmentToolUrl = (string)$uriBuilder->buildUriFromRoute('tools_toolsenvironment');
+        } catch (RouteNotFoundException $e) {
+            $environmentToolUrl = '';
+        }
+
         $view->assignMultiple([
-            'environmentToolUrl' => (string)$uriBuilder->buildUriFromRoute('tools_toolsenvironment'),
+            'environmentToolUrl' => $environmentToolUrl,
             'messages' => $this->systemMessages,
             'count' => $this->totalCount > $this->maximumCountInBadge ? $this->maximumCountInBadge . '+' : $this->totalCount,
             'severityBadgeClass' => $this->severityBadgeClass,
