@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Test Resources',
     'description' => 'Test Resources',
     'category' => 'example',
-    'version' => '8.7.28',
+    'version' => '8.7.29',
     'state' => 'beta',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.28'
+            'typo3' => '8.7.29'
         ],
         'conflicts' => [],
         'suggests' => [],
