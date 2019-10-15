@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The container handles single elements.
@@ -85,6 +84,25 @@ class FlexFormElementContainer extends AbstractContainer
                     $fakeParameterArray['fieldConf']['description'] = $flexFormFieldArray['description'];
                 }
 
+                $alertMsgOnChange = '';
+                if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
+                    if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
+                        $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
+                                . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
+                                . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
+                            . ')'
+                            . '.on('
+                                . '"button.clicked",'
+                                . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
+                            . ');';
+                    } else {
+                        $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm();}';
+                    }
+                }
+                if ($alertMsgOnChange) {
+                    $fakeParameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
+                }
+
                 $originalFieldName = $parameterArray['itemFormElName'];
                 $fakeParameterArray['itemFormElName'] = $parameterArray['itemFormElName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][vDEF]';
                 if ($fakeParameterArray['itemFormElName'] !== $originalFieldName) {
@@ -119,14 +137,6 @@ class FlexFormElementContainer extends AbstractContainer
                     $options['renderType'] = $flexFormFieldArray['config']['type'];
                 }
                 $childResult = $this->nodeFactory->create($options)->render();
-
-                // Create a JavaScript code line which will ask the user to save/update the form due to changing the element.
-                // This is used for eg. "type" fields and others configured with "onChange"
-                if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
-                    $showConfirmation = $this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE) ? 'true' : 'false';
-
-                    $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine' => 'function (FormEngine) {FormEngine.requestConfirmationOnFieldChange(' . GeneralUtility::quoteJSvalue($parameterArray['itemFormElName']) . ', ' . $showConfirmation . ');}'];
-                }
 
                 if (!empty($childResult['html'])) {
                     // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
