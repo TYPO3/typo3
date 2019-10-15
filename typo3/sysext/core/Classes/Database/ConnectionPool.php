@@ -18,6 +18,10 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Events;
 use Doctrine\DBAL\Types\Type;
+use TYPO3\CMS\Core\Database\Driver\PDOMySql\Driver as PDOMySqlDriver;
+use TYPO3\CMS\Core\Database\Driver\PDOPgSql\Driver as PDOPgSqlDriver;
+use TYPO3\CMS\Core\Database\Driver\PDOSqlite\Driver as PDOSqliteDriver;
+use TYPO3\CMS\Core\Database\Driver\PDOSqlsrv\Driver as PDOSqlsrvDriver;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaAlterTableListener;
 use TYPO3\CMS\Core\Database\Schema\EventListener\SchemaColumnDefinitionListener;
@@ -54,6 +58,21 @@ class ConnectionPool
     protected $customDoctrineTypes = [
         EnumType::TYPE => EnumType::class,
         SetType::TYPE => SetType::class,
+    ];
+
+    /**
+     * List of custom drivers and their mappings to the driver classes.
+     *
+     * @var string[]
+     */
+    protected static $driverMap = [
+        'pdo_mysql' => PDOMySqlDriver::class,
+        'pdo_sqlite' => PDOSqliteDriver::class,
+        'pdo_pgsql' => PDOPgSqlDriver::class,
+        'pdo_sqlsrv' => PDOSqlsrvDriver::class,
+        // TODO: not supported yet, need to be checked later
+//        'pdo_oci' => PDOOCIDriver::class,
+//        'drizzle_pdo_mysql' => DrizzlePDOMySQLDriver::class,
     ];
 
     /**
@@ -131,6 +150,22 @@ class ConnectionPool
     }
 
     /**
+     * Map custom driver class for certain driver
+     *
+     * @param array $connectionParams
+     * @return array
+     */
+    protected function mapCustomDriver(array $connectionParams): array
+    {
+        // if no custom driver is provided, map TYPO3 specific drivers
+        if (!isset($connectionParams['driverClass']) && isset(static::$driverMap[$connectionParams['driver']])) {
+            $connectionParams['driverClass'] = static::$driverMap[$connectionParams['driver']];
+        }
+
+        return $connectionParams;
+    }
+
+    /**
      * Creates a connection object based on the specified parameters
      *
      * @param array $connectionParams
@@ -143,11 +178,7 @@ class ConnectionPool
             $connectionParams['charset'] = 'utf8';
         }
 
-        // Force consistent handling of binary objects across datbase platforms
-        // MySQL returns strings by default, PostgreSQL streams.
-        if (strpos($connectionParams['driver'], 'pdo_') === 0) {
-            $connectionParams['driverOptions'][\PDO::ATTR_STRINGIFY_FETCHES] = true;
-        }
+        $connectionParams = $this->mapCustomDriver($connectionParams);
 
         /** @var Connection $conn */
         $conn = DriverManager::getConnection($connectionParams);

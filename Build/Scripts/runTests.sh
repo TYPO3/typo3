@@ -30,6 +30,8 @@ setUpDockerComposeDotEnv() {
     echo "SCRIPT_VERBOSE=${SCRIPT_VERBOSE}" >> .env
     echo "PHPUNIT_RANDOM=${PHPUNIT_RANDOM}" >> .env
     echo "CGLCHECK_DRY_RUN=${CGLCHECK_DRY_RUN}" >> .env
+    # Set a custom database driver provided by option: -a
+    [[ ! -z "$DATABASE_DRIVER" ]] && echo "DATABASE_DRIVER=${DATABASE_DRIVER}" >> .env
 }
 
 # Load help text into $HELP
@@ -45,6 +47,16 @@ Usage: $0 [options] [file]
 No arguments: Run all unit tests with PHP 7.2
 
 Options:
+    -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
+        Only with -s functional
+        Specifies to use another driver, following combinations are available:
+            - mariadb
+                - mysqli (default)
+                - pdo_mysql
+            - mssql
+                - sqlsrv (default)
+                - pdo_sqlsrv
+
     -s <...>
         Specifies which test suite to run
             - acceptance: backend acceptance tests
@@ -80,6 +92,7 @@ Options:
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
             - mssql: use mssql microsoft sql server
+            - mssql2017latest: use latest version of microsoft sql server 2017
             - postgres: use postgres
             - sqlite: use sqlite
 
@@ -183,8 +196,11 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=();
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":s:d:p:e:xy:o:nhuv" OPT; do
+while getopts ":a:s:d:p:e:xy:o:nhuv" OPT; do
     case ${OPT} in
+        a)
+            DATABASE_DRIVER=${OPTARG}
+            ;;
         s)
             TEST_SUITE=${OPTARG}
             ;;
@@ -369,13 +385,21 @@ case ${TEST_SUITE} in
         setUpDockerComposeDotEnv
         case ${DBMS} in
             mariadb)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mariadb10
                 docker-compose run functional_mariadb10
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mssql2017cu9
                 docker-compose run functional_mssql2017cu9
+                SUITE_EXIT_CODE=$?
+                ;;
+            mssql2017latest)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_functional_mssql2017latest
+                docker-compose run functional_mssql2017latest
                 SUITE_EXIT_CODE=$?
                 ;;
             postgres)
