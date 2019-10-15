@@ -5,11 +5,13 @@
 <h3 class="dropdown-headline">
     <f:translate key="systemmessage.header"/>
 </h3>
-<p class="dropdown-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
-    <f:format.raw>
-        <f:translate key="systemmessage.intro" arguments="{0: '{environmentToolUrl}'}"/>
-    </f:format.raw>
-</p>
+<f:if condition="{environmentToolUrl}">
+    <p class="dropdown-text typo3-module-menu-item submodule mod-tools_toolsenvironment" data-modulename="tools_toolsenvironment">
+        <f:format.raw>
+            <f:translate key="systemmessage.intro" arguments="{0: environmentToolUrl}"/>
+        </f:format.raw>
+    </p>
+</f:if>
 
 <f:if condition="{systemInformation}">
     <hr>
