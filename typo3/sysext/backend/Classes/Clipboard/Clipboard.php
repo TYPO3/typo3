@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -764,8 +765,8 @@ class Clipboard
                     list($table, $uid) = explode('|', $k);
                     // Rendering files/directories on the clipboard
                     if ($table === '_FILE') {
-                        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($v);
-                        if ($file !== null) {
+                        $file = ResourceFactory::getInstance()->getObjectFromCombinedIdentifier($v);
+                        if ($file instanceof AbstractFile) {
                             $params['tx_impexp']['record'][] = 'sys_file:' . $file->getUid();
                         }
                     } else {
