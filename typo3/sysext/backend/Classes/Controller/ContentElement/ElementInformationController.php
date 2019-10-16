@@ -175,6 +175,8 @@ class ElementInformationController
                     if (!empty($this->row['t3ver_oid'])) {
                         $t3OrigRow = BackendUtility::getRecord($this->table, (int)$this->row['t3ver_oid']);
                         $this->pageInfo = BackendUtility::readPageAccess((int)$t3OrigRow['pid'], $this->permsClause);
+                    } else {
+                        $this->pageInfo = BackendUtility::readPageAccess($this->row['pid'], $this->permsClause);
                     }
                     $this->access = is_array($this->pageInfo);
                 }
