@@ -85,4 +85,74 @@ class BitSetTest extends UnitTestCase
         static::assertTrue($bitSet->get(0b100));
         static::assertFalse($bitSet->get(0b10));
     }
+
+    /**
+     * @test
+     */
+    public function andPerformsABinaryAnd(): void
+    {
+        $bitSet = new BitSet(0b101);
+        $bitSet->and(new BitSet(0b111));
+
+        // 0b101 & 0b111 === 0b101 ≙ 5
+        static::assertSame(5, $bitSet->__toInt());
+        static::assertSame('0b101', $bitSet->__toString());
+    }
+
+    /**
+     * @test
+     */
+    public function orPerformsABinaryOr(): void
+    {
+        $bitSet = new BitSet(0b101);
+        $bitSet->or(new BitSet(0b011));
+
+        // 0b101 | 0b011 === 0b111 ≙ 7
+        static::assertSame(7, $bitSet->__toInt());
+        static::assertSame('0b111', $bitSet->__toString());
+    }
+
+    /**
+     * @test
+     */
+    public function xorPerformsABinaryXor(): void
+    {
+        $bitSet = new BitSet(0b1001);
+        $bitSet->xor(new BitSet(0b1010));
+
+        // 0b1001 ^ 0b1010 === 0b11 ≙ 3
+        static::assertSame(3, $bitSet->__toInt());
+        static::assertSame('0b11', $bitSet->__toString());
+    }
+
+    /**
+     * @test
+     */
+    public function andNotPerformsABinaryAndNot(): void
+    {
+        $bitSet = new BitSet(0b111);
+        $bitSet->andNot(new BitSet(0b101));
+
+        // 0b111 & ~0b101 === 0b10 ≙ 2
+        static::assertSame(2, $bitSet->__toInt());
+        static::assertSame('0b10', $bitSet->__toString());
+    }
+
+    /**
+     * @test
+     */
+    public function __toIntReturnsIntegerRepresentationOfBitSet()
+    {
+        $bitSet = new BitSet(0b010);
+        static::assertSame(2, $bitSet->__toInt());
+    }
+
+    /**
+     * @test
+     */
+    public function __toStringReturnsBinaryStringRepresentationOfBitSet()
+    {
+        $bitSet = new BitSet(13);
+        static::assertSame('0b1101', $bitSet->__toString());
+    }
 }
