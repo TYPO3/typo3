@@ -76,7 +76,7 @@ class LocalizationRepository
                 )
             )
             ->groupBy('tt_content_orig.sys_language_uid');
-        $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser());
+        $this->getAllowedLanguageConstraintsForBackendUser($pageId, $queryBuilder, $this->getBackendUser(), 'tt_content_orig');
 
         return $queryBuilder->execute()->fetch() ?: [];
     }
@@ -151,8 +151,9 @@ class LocalizationRepository
      * @param int $pageId
      * @param QueryBuilder $queryBuilder
      * @param BackendUserAuthentication $backendUser
+     * @param string $alias
      */
-    protected function getAllowedLanguageConstraintsForBackendUser(int $pageId, QueryBuilder $queryBuilder, BackendUserAuthentication $backendUser): void
+    protected function getAllowedLanguageConstraintsForBackendUser(int $pageId, QueryBuilder $queryBuilder, BackendUserAuthentication $backendUser, string $alias = ''): void
     {
         if ($backendUser->isAdmin()) {
             return;
@@ -161,7 +162,7 @@ class LocalizationRepository
         $allowedLanguages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
         $queryBuilder->andWhere(
             $queryBuilder->expr()->in(
-                'sys_language_uid',
+                ($alias === '' ? '' : ($alias . '.')) . 'sys_language_uid',
                 $queryBuilder->createNamedParameter(array_keys($allowedLanguages), Connection::PARAM_INT_ARRAY)
             )
         );
