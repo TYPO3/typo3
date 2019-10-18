@@ -32,5 +32,12 @@
     </div>
 </td>
 <td>
+    <f:if condition="{extension.documentationLink}">
+        <a href="{extension.documentationLink}" class="btn btn-default" target="_blank" rel="noreferrer" title="{f:translate(key: 'extensionList.showAllVersions.readOnline')}">
+            <core:icon identifier="actions-system-extension-documentation" size="small" />
+        </a>
+    </f:if>
+</td>
+<td>
     <span class="label label-{extension.stateString}">{extension.stateString}</span>
 </td>

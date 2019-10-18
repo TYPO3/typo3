@@ -168,6 +168,9 @@ class ExtensionXmlPushParser extends AbstractExtensionXmlParser
             case 't3xfilemd5':
                 $this->t3xfilemd5 = $this->elementData;
                 break;
+            case 'documentation_link':
+                $this->documentationLink = $this->elementData;
+                break;
         }
     }
 

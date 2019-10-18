@@ -153,6 +153,11 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $dependencies;
 
     /**
+     * @var string
+     */
+    protected $documentationLink = '';
+
+    /**
      * @internal
      * @var int
      */
@@ -598,5 +603,21 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getAlldownloadcounter()
     {
         return $this->alldownloadcounter;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocumentationLink(): string
+    {
+        return $this->documentationLink;
+    }
+
+    /**
+     * @param string $documentationLink
+     */
+    public function setDocumentationLink(string $documentationLink): void
+    {
+        $this->documentationLink = $documentationLink;
     }
 }

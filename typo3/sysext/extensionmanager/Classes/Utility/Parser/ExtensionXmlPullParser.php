@@ -133,6 +133,9 @@ class ExtensionXmlPullParser extends AbstractExtensionXmlParser
             case 't3xfilemd5':
                 $this->t3xfilemd5 = $this->getElementValue($elementName);
                 break;
+            case 'documentation_link':
+                $this->documentationLink = $this->getElementValue($elementName);
+                break;
         }
     }
 

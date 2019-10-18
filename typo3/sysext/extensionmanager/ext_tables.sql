@@ -35,6 +35,7 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   integer_version int(11) NOT NULL default '0',
   current_version int(3) NOT NULL default '0',
   lastreviewedversion int(3) NOT NULL default '0',
+  documentation_link varchar(2048),
 
   KEY index_extrepo (extension_key,repository),
   KEY index_versionrepo (integer_version,repository,extension_key),

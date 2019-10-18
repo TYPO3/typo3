@@ -12,7 +12,7 @@ return [
         ]
     ],
     'interface' => [
-        'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash,serialized_dependencies'
+        'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash,serialized_dependencies,documentation_link'
     ],
     'columns' => [
         'extension_key' => [
@@ -132,9 +132,15 @@ return [
                 'size' => 30,
             ],
         ],
+        'documentation_link' => [
+            'label' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xlf:tx_extensionmanager_domain_model_extension.documentation_link',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
     ],
     'types' => [
-        '0' => ['showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies']
+        '0' => ['showitem' => 'extensionkey, version, integer_version, title, description, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies, documentation_link']
     ],
     'palettes' => [
         '1' => ['showitem' => '']

@@ -141,6 +141,9 @@
 			<trans-unit id="extensionList.header.author" resname="extensionList.header.author">
 				<source>Author</source>
 			</trans-unit>
+			<trans-unit id="extensionList.header.manual" resname="extensionList.header.manual">
+				<source>Manual</source>
+			</trans-unit>
 			<trans-unit id="searchTemplate.searchExtensions" resname="searchTemplate.searchExtensions">
 				<source>Search extensions</source>
 			</trans-unit>

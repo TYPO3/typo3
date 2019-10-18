@@ -71,7 +71,8 @@ class ExtensionListUtility implements \SplObserver
         'category',
         'description',
         'serialized_dependencies',
-        'update_comment'
+        'update_comment',
+        'documentation_link'
     ];
 
     /**
@@ -251,7 +252,8 @@ class ExtensionListUtility implements \SplObserver
             $this->extensionModel->getCategoryIndexFromStringOrNumber($subject->getCategory() ?: ''),
             $subject->getDescription() ?: '',
             $subject->getDependencies() ?: '',
-            $subject->getUploadcomment() ?: ''
+            $subject->getUploadcomment() ?: '',
+            $subject->getDocumentationLink() ?: '',
         ];
         ++$this->sumRecords;
     }
