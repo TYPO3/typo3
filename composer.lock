@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdedeb5096a504de3bde639ce8bc0515",
+    "content-hash": "126c6511007ca8075f8f295b2b0d0128",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -3176,16 +3176,16 @@
         },
         {
             "name": "typo3/phar-stream-wrapper",
-            "version": "v3.1.2",
+            "version": "v3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/phar-stream-wrapper.git",
-                "reference": "df7609a2f6cc4013d7bd12f1a2412d127b28f771"
+                "reference": "586ff60beea128e069a5dc271d3d8133a9bc460a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/df7609a2f6cc4013d7bd12f1a2412d127b28f771",
-                "reference": "df7609a2f6cc4013d7bd12f1a2412d127b28f771",
+                "url": "https://api.github.com/repos/TYPO3/phar-stream-wrapper/zipball/586ff60beea128e069a5dc271d3d8133a9bc460a",
+                "reference": "586ff60beea128e069a5dc271d3d8133a9bc460a",
                 "shasum": ""
             },
             "require": {
@@ -3222,7 +3222,7 @@
                 "security",
                 "stream-wrapper"
             ],
-            "time": "2019-05-14T13:14:14+00:00"
+            "time": "2019-10-18T11:57:16+00:00"
         },
         {
             "name": "typo3fluid/fluid",
@@ -6436,8 +6436,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
