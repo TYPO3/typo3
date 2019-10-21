@@ -1,0 +1,111 @@
+.. include:: ../Includes.txt
+
+
+.. _configuration:
+
+=============
+Configuration
+=============
+
+Target group: **Developers, Integrators**
+
+
+TypoScript Settings
+===================
+
+There are a couple of TypoScript settings that can influence the output regarding search engine optimization.
+
+* `config.pageTitleFirst <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#pagetitlefirst>`__
+* `config.pageTitleSeparator <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#pagetitleseparator>`__
+* `config.pageTitleProviders <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#pagetitleproviders>`__
+* `config.noPageTitle <https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/Setup/Config/Index.html#nopagetitle>`__
+
+Site configuration
+==================
+
+From version 9 of TYPO3, the configuration of sites is done with the Site Management module. As the settings for
+your websites are important for SEO purposes as well, please make sure you check the following fields.
+
+.. figure:: ../Images/site.png
+   :class: with-shadow
+   :alt: example site
+
+   Example site
+
+To get more in depth information about the site handling please refer to the :ref:`t3coreapi:sitehandling` docs.
+
+Domains
+-------
+
+Please ensure, that you have configured your sites so that they all have an entry point. This is used for
+generating the canonical tags, for example.
+
+.. warning::
+
+   Please be aware that for SEO purposes it is best practise to use a fully qualified domain (for example: https://www.example.com).
+   Therefor we don't support the SEO enhancements in TYPO3 without a full domain. It might work, but it is not officially
+   supported.
+
+Language
+--------
+
+Ensure, that you setup the languages correctly. All languages should have the right information in the :guilabel:`Locale`
+and :guilabel:`Language Tag` field. When set correctly, TYPO3 will automatically connect your page in the different languages
+for search engines. This it to ensure that the search engine knows which page to show when someone is searching in a
+specific language.
+
+.. hint::
+
+   Even if you have only one language, make sure your :guilabel:`Locale` and :guilabel:`Language Tag` fields are set correctly.
+   Giving wrong information to search engines will not help you to rank higher.
+
+See :ref:`t3coreapi:sitehandling-addingLanguages` for more details.
+
+Error pages
+-----------
+
+Although TYPO3 will respond with a HTTP status code 404 (Not found) when a page is not found, it is best practise to
+have a proper message telling the user that the page they requested is not available and to guide them to another
+page or for example to a search function of your website.
+
+See :ref:`t3coreapi:sitehandling-errorHandling` for more details.
+
+robots.txt
+----------
+
+The robots.txt is a powerful tool and should be used with care. It will deny or allow search engines to access your pages.
+By blocking access to your pages, search engines won't crawl these pages. You should make sure that this will not
+prevent the search engines from finding important pages.
+
+It is best practise to keep your robots.txt as clean as possible. An example of a minimal version of your robots.txt:
+
+.. code-block:: php
+
+   # This space intentionally left blank. Only add entries when you know how powerful the robots.txt is.
+   User-agent: *
+
+On :ref:`t3coreapi:sitehandling-staticRoutes` you can find more details on how to create a static route that will show
+this information when visiting https://www.example.com/robots.txt.
+
+When you want to disallow specific URLs, you can use the :ref:`index-page` option in the backend or set the robot HTTP
+header `X-Robots-tag` manually.
+
+Redirects
+---------
+
+Having correct redirects is a very important part of SEO. Especially the status code that is used for redirects is
+really important. Please use the appropriate status code for your use case.
+
+External Resources:
+
+* See `Tutorial of redirect module in TYPO3 <https://www.toujou.de/en/service/tutorials/redirects/>`__ by toujou
+* An `Overview which redirect to use in your situation <https://yoast.com/which-redirect/>`__ by Yoast
+
+
+Working links
+=============
+
+Links in your website are quite important. You can use third party applications to check all your links, but you can
+also use the the core extension linkvalidator to ensure, all the links in your site are working as expected.
+
+Please check the documentation of :ref:`linkvalidator:start` .
