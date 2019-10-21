@@ -11,14 +11,14 @@ Adding your own content elements
 
    This part is written for developers!
 
-A content element can be based on already available fields in the `tt_content` table,
-or it might be that you need extra fields. This is done the same way as you do for
-your own extensions, extending TCA. Depending on the data in the `tt_content` table,
+A content element can be based on already available fields in the `tt_content` table
+and/or extra fields you can add to the `tt_content` table. This is done the same way as you do for
+your own extensions by extending TCA. Depending on the data in the `tt_content` table,
 you can send the data immediately to the Fluid template or use a data processor in
 front to do some data manipulation. The content elements in the extension "fluid_styled_content"
 are using both as well. A data processor is sometimes used to convert a string (like
-the `bodytext` field in content element "table") to an array, so Fluid does not
-have to deal with this manipulation or transformation.
+the `bodytext` field in content element "table") to an array or fetch a related record 
+(e.g. a FAL file), so Fluid does not have to deal with this manipulation or transformation.
 
 
 .. _AddingCE-use-an-extension:
