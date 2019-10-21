@@ -34,7 +34,7 @@ DataProvider, which is highly unlikely.
 Migration
 =========
 
-Instead of accessing :php:`$result['parentPageTca'] within a custom FormDataProvider or FormRenderNode,
+Instead of accessing :php:`$result['parentPageTca']` within a custom FormDataProvider or FormRenderNode,
 :php:`$GLOBALS['TCA']['pages']` can be accessed directly.
 
 .. index:: TCA, NotScanned
