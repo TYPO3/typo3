@@ -230,6 +230,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      * @param array $flexFormConfiguration The full flexForm configuration
      * @throws Exception\ParseErrorException
      * @return array the modified framework configuration, if needed
+     * @deprecated since TYPO3 v10, will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0.
      */
     protected function overrideControllerConfigurationWithSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration): array
     {

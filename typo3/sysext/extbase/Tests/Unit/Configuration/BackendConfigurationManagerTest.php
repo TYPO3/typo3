@@ -259,7 +259,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
+            ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false
@@ -290,7 +290,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration', 'getQueryGenerator'],
+            ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration', 'getQueryGenerator'],
             [],
             '',
             false
@@ -315,7 +315,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
+            ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false
@@ -336,7 +336,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $abstractConfigurationManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager::class,
-            ['overrideControllerConfigurationWithSwitchableControllerActions', 'getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
+            ['getContextSpecificFrameworkConfiguration', 'getTypoScriptSetup', 'getPluginConfiguration', 'getControllerConfiguration'],
             [],
             '',
             false

@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 
 /**
  * @internal this is not part of TYPO3 Core API as it is a concrete hook implementation.
+ * @deprecated since TYPO3 v10, will be removed when support for switchable controller actions is removed
  */
 class CheckFlexFormValue
 {

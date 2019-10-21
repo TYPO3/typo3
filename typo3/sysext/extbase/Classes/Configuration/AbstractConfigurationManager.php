@@ -241,9 +241,19 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      *
      * @param array &$frameworkConfiguration
      * @param array $switchableControllerActions
+     * @deprecated since TYPO3 v10, will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0.
      */
     protected function overrideControllerConfigurationWithSwitchableControllerActions(array &$frameworkConfiguration, array $switchableControllerActions): void
     {
+        trigger_error(
+            sprintf(
+                'Plugin "%s" of extension "%s" uses switchable controller actions which has been marked as deprecated as of version TYPO3 10 and will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0',
+                $frameworkConfiguration['pluginName'],
+                $frameworkConfiguration['extensionName']
+            ),
+            E_USER_DEPRECATED
+        );
+
         $controllerAliasToClass = [];
         foreach ($frameworkConfiguration['controllerConfiguration'] as $controllerClass => $controllerConfiguration) {
             $controllerAliasToClass[$controllerConfiguration['alias']] = $controllerClass;
