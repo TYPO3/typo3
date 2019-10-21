@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Web;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -23,6 +24,15 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
+        'environmentService' => 'Property \TYPO3\CMS\Extbase\Mvc\Web\Response::$environmentService is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0'
+    ];
+
     /**
      * The HTTP headers which will be sent in the response
      *
@@ -135,12 +145,14 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response
 
     /**
      * @var \TYPO3\CMS\Extbase\Service\EnvironmentService
+     * @deprecated
      */
-    protected $environmentService;
+    private $environmentService;
 
     /**
      * @param \TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
+     * @deprecated since TYPO3 10.2, will be removed in 11.0
      */
     public function injectEnvironmentService(\TYPO3\CMS\Extbase\Service\EnvironmentService $environmentService)
     {

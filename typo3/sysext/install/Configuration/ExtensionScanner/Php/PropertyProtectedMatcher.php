@@ -1253,4 +1253,9 @@ return [
             'Breaking-87511-RemoveViewFormatToObjectNameMapProperty.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Web\Response->environmentService' => [
+        'restFiles' => [
+            'Deprecation-89468-DeprecateInjectionOfEnvironmentServiceInWebRequest.rst',
+        ],
+    ],
 ];
