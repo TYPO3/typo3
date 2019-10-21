@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
@@ -25,7 +26,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -520,13 +520,8 @@ class ActionControllerTest extends UnitTestCase
      */
     public function rendersAndAssignsAssetsFromViewIntoPageRenderer($viewMock, $expectedHeader, $expectedFooter)
     {
-        $objectManager = $this->prophesize(ObjectManager::class);
         $pageRenderer = $this->prophesize(PageRenderer::class);
-        if (!$viewMock instanceof FluidTemplateView) {
-            $objectManager->get(Argument::any())->shouldNotBeCalled();
-        } else {
-            $objectManager->get(PageRenderer::class)->willReturn($pageRenderer->reveal());
-        }
+        GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer->reveal());
         if (!empty(trim($expectedHeader ?? ''))) {
             $pageRenderer->addHeaderData($expectedHeader)->shouldBeCalled();
         } else {
@@ -542,9 +537,6 @@ class ActionControllerTest extends UnitTestCase
         $viewProperty = new \ReflectionProperty($subject, 'view');
         $viewProperty->setAccessible(true);
         $viewProperty->setValue($subject, $viewMock);
-        $objectManagerProperty = new \ReflectionProperty($subject, 'objectManager');
-        $objectManagerProperty->setAccessible(true);
-        $objectManagerProperty->setValue($subject, $objectManager->reveal());
 
         $method = new \ReflectionMethod($subject, 'renderAssetsForRequest');
         $method->setAccessible(true);

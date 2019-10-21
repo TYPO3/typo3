@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -191,7 +192,7 @@ class ActionController extends AbstractController
             // asset processing if the View doesn't match, so we don't risk breaking custom Views.
             return;
         }
-        $pageRenderer = $this->objectManager->get(PageRenderer::class);
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $variables = ['request' => $request, 'arguments' => $this->arguments];
         $headerAssets = $this->view->renderSection('HeaderAssets', $variables, true);
         $footerAssets = $this->view->renderSection('FooterAssets', $variables, true);
