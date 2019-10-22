@@ -39,6 +39,11 @@ class Driver extends DoctrinePDOMySqlDriver
                 $password,
                 $driverOptions
             );
+
+            // use prepared statements for pdo_mysql per default to retrieve native data types
+            if (!isset($driverOptions[\PDO::ATTR_EMULATE_PREPARES])) {
+                $conn->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+            }
         } catch (PDOException $e) {
             throw DBALException::driverException($this, $e);
         }
