@@ -235,6 +235,7 @@ public class NightlySpec extends AbstractCoreSpec {
                 Task composerTask = getComposerTaskByStageNumber(phpVersion, stageNumber);
                 jobs.add(this.getJobAcceptanceTestInstallMysql(stageNumber, phpVersion, composerTask, false));
                 jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(stageNumber, numberOfAcceptanceTestJobs, phpVersion, composerTask, false));
+                jobs.addAll(this.getJobsAcceptanceTestsPageTreeMysql(stageNumber, phpVersion, composerTask, false));
             }
         }
         return jobs;

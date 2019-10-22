@@ -1,0 +1,22 @@
+class_name: BackendTester
+modules:
+  enabled:
+    - WebDriver:
+        url: http://web:8000/typo3temp/var/tests/acceptance
+        browser: chrome
+        wait: 1
+        host: chrome
+    - \TYPO3\TestingFramework\Core\Acceptance\Helper\Acceptance
+    - \TYPO3\TestingFramework\Core\Acceptance\Helper\Login:
+        sessions:
+            # This sessions must exist in the database fixture to get a logged in state.
+            editor: ff83dfd81e20b34c27d3e97771a4525a
+            admin: 886526ce72b86870739cc41991144ec1
+    - Asserts
+
+extensions:
+    enabled:
+        - TYPO3\CMS\Core\Tests\Acceptance\Support\Extension\PageTreeCoreEnvironment
+
+groups:
+  AcceptanceTests-Job-*: AcceptanceTests-Job-*
