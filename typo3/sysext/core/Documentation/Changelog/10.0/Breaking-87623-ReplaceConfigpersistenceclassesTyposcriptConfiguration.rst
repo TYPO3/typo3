@@ -11,7 +11,7 @@ Description
 
 The configuration of classes in the context of the Extbase persistence is no longer possible via typoscript.
 All typoscript concerning the configuration of classes in that context needs to be converted to php, residing
-in :file:`EXT:Configuration/Extbase/Persistence/Classes.php`.
+in :file:`EXT:extension/Configuration/Extbase/Persistence/Classes.php`.
 
 
 Impact
@@ -34,7 +34,7 @@ Migration
 =========
 
 Every extension that used typoscript for such configuration must provide a php configuration class called:
-:file:`EXT:Configuration/Extbase/Persistence/Classes.php`
+:file:`EXT:extension/Configuration/Extbase/Persistence/Classes.php`
 
 The migration is best described by an example:
 
