@@ -51,6 +51,9 @@ Options:
     -a <mysqli|pdo_mysql|sqlsrv|pdo_sqlsrv>
         Only with -s functional
         Specifies to use another driver, following combinations are available:
+            - mysql55
+                - mysqli (default)
+                - pdo_mysql
             - mariadb
                 - mysqli (default)
                 - pdo_mysql
@@ -88,10 +91,11 @@ Options:
             - unitJavascript: JavaScript unit tests
             - unitRandom: PHP unit tests in random order, add -o <number> to use specific seed
 
-    -d <mariadb|mssql|postgres|sqlite>
+    -d <mariadb|mysql55|mssql|postgres|sqlite>
         Only with -s install|functional
         Specifies on which DBMS tests are performed
             - mariadb (default): use mariadb
+            - mysql55: use MySQL 5.5 server
             - mssql: use mssql microsoft sql server
             - mssql2017latest: use latest version of microsoft sql server 2017
             - postgres: use postgres
@@ -390,6 +394,12 @@ case ${TEST_SUITE} in
                 [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
                 docker-compose run prepare_functional_mariadb10
                 docker-compose run functional_mariadb10
+                SUITE_EXIT_CODE=$?
+                ;;
+            mysql55)
+                [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
+                docker-compose run prepare_functional_mysql55
+                docker-compose run functional_mysql55
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql)
