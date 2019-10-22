@@ -98,12 +98,19 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobIntegrationVarious(0, "PHP72", this.getTaskComposerInstall("PHP72"), false));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(0, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(0, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(0, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(0, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(0, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(0, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, this.numberOfFunctionalPgsqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
+
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, this.numberOfFunctionalSqliteJobs, "PHP73", this.getTaskComposerInstall("PHP73"), false));
 
@@ -144,12 +151,19 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsComposerMaxStage.add(this.getJobIntegrationVarious(1, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
 
-        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysql(1, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
-        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysql(1, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
-        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssql(1, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
-        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssql(1, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(1, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(1, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(1, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(1, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
+
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(1, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(1, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(1, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
+        jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(1, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
+
         jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsPgsql(1, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
         jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsPgsql(1, this.numberOfFunctionalPgsqlJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
+
         jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMax("PHP72"), false));
         jobsComposerMaxStage.addAll(this.getJobsFunctionalTestsSqlite(1, this.numberOfFunctionalSqliteJobs, "PHP73", this.getTaskComposerUpdateMax("PHP73"), false));
 
@@ -186,10 +200,15 @@ public class NightlySpec extends AbstractCoreSpec {
 
         jobsComposerMinStage.add(this.getJobIntegrationVarious(2, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
 
-        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysql(2, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
-        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysql(2, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
-        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssql(2, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
-        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssql(2, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(2, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(2, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(2, this.numberOfFunctionalMysqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverPdoMysql(2, this.numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
+
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(2, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverSqlSrv(2, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(2, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
+        jobsComposerMinStage.addAll(this.getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(2, this.numberOfFunctionalMssqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
         jobsComposerMinStage.addAll(this.getJobsFunctionalTestsPgsql(2, this.numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));
         jobsComposerMinStage.addAll(this.getJobsFunctionalTestsPgsql(2, this.numberOfFunctionalPgsqlJobs, "PHP73", this.getTaskComposerUpdateMin("PHP73"), false));
         jobsComposerMinStage.addAll(this.getJobsFunctionalTestsSqlite(2, this.numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerUpdateMin("PHP72"), false));

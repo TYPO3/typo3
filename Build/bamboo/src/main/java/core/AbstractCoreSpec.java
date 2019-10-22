@@ -549,7 +549,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Jobs for mysql based functional tests
+     * Jobs for mysql based functional tests with driver mysqli
      *
      * @param int stageNumber
      * @param int numberOfChunks
@@ -557,7 +557,7 @@ abstract public class AbstractCoreSpec {
      * @param Task composerTask
      * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMysql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+    protected ArrayList<Job> getJobsFunctionalTestsMysqlWithDriverMySqli(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -565,7 +565,7 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Func mysql " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMY" + stageNumber + requirementIdentifier + formattedI))
+            jobs.add(new Job("Func mysql " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMYI" + stageNumber + requirementIdentifier + formattedI))
                 .description("Run functional tests on mysql DB " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
@@ -585,6 +585,7 @@ abstract public class AbstractCoreSpec {
                             "        -u ${HOST_UID} \\\n" +
                             "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=mysqli \\\n" +
                             "        -e typo3DatabaseName=func_test \\\n" +
                             "        -e typo3DatabaseUsername=root \\\n" +
                             "        -e typo3DatabasePassword=funcp \\\n" +
@@ -617,7 +618,7 @@ abstract public class AbstractCoreSpec {
     }
 
     /**
-     * Jobs for mssql based functional tests
+     * Jobs for mysql based functional tests with driver pdo_mysql
      *
      * @param int stageNumber
      * @param int numberOfChunks
@@ -625,7 +626,7 @@ abstract public class AbstractCoreSpec {
      * @param Task composerTask
      * @param Boolean isSecurity
      */
-    protected ArrayList<Job> getJobsFunctionalTestsMssql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+    protected ArrayList<Job> getJobsFunctionalTestsMysqlWithDriverPdoMysql(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (int i=1; i<=numberOfChunks; i++) {
@@ -633,8 +634,77 @@ abstract public class AbstractCoreSpec {
             if (i < 10) {
                 formattedI = "0" + i;
             }
-            jobs.add(new Job("Func mssql " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMS" + stageNumber + requirementIdentifier + formattedI))
-                .description("Run functional tests on mysql DB " + requirementIdentifier)
+            jobs.add(new Job("Func mysql with pdo " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMYP" + stageNumber + requirementIdentifier + formattedI))
+                .description("Run functional tests on mysql DB with PDO driver " + requirementIdentifier)
+                .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+                .tasks(
+                    this.getTaskGitCloneRepository(),
+                    this.getTaskGitCherryPick(isSecurity),
+                    this.getTaskStopDanglingContainers(),
+                    composerTask,
+                    this.getTaskDockerDependenciesFunctionalMariadb10(),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
+                    new ScriptTask()
+                        .description("Run phpunit with functional chunk " + formattedI)
+                        .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                        .inlineBody(
+                            this.getScriptTaskBashInlineBody() +
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=pdo_mysql \\\n" +
+                            "        -e typo3DatabaseName=func_test \\\n" +
+                            "        -e typo3DatabaseUsername=root \\\n" +
+                            "        -e typo3DatabasePassword=funcp \\\n" +
+                            "        -e typo3DatabaseHost=mariadb10 \\\n" +
+                            "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
+                            "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                        )
+                )
+                .finalTasks(
+                    this.getTaskStopDockerDependencies(),
+                    new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                        .resultDirectories("test-reports/phpunit.xml")
+                )
+                .requirements(
+                    this.getRequirementDocker10()
+                )
+                .cleanWorkingDirectory(true)
+            );
+        }
+
+        return jobs;
+    }
+
+    /**
+     * Jobs for mssql based functional tests with driver sqlsrv
+     *
+     * @param int stageNumber
+     * @param int numberOfChunks
+     * @param String requirementIdentifier
+     * @param Task composerTask
+     * @param Boolean isSecurity
+     */
+    protected ArrayList<Job> getJobsFunctionalTestsMssqlWithDriverSqlSrv(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+        ArrayList<Job> jobs = new ArrayList<Job>();
+
+        for (int i=1; i<=numberOfChunks; i++) {
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Func mssql sqlsrv " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMSS" + stageNumber + requirementIdentifier + formattedI))
+                .description("Run functional tests on mysql DB with sqlsrv driver " + requirementIdentifier)
                 .pluginConfigurations(this.getDefaultJobPluginConfiguration())
                 .tasks(
                     this.getTaskGitCloneRepository(),
@@ -654,6 +724,78 @@ abstract public class AbstractCoreSpec {
                             "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
                             "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
                             "        -e typo3DatabaseDriver=sqlsrv \\\n" +
+                            "        -e typo3DatabaseName=func \\\n" +
+                            "        -e typo3DatabasePassword=Test1234! \\\n" +
+                            "        -e typo3DatabaseUsername=SA \\\n" +
+                            "        -e typo3DatabaseHost=localhost \\\n" +
+                            "        -e typo3DatabasePort=1433 \\\n" +
+                            "        -e typo3DatabaseCharset=utf-8 \\\n" +
+                            "        -e typo3DatabaseHost=mssql2017cu9 \\\n" +
+                            "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
+                            "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; php -n -c /etc/php/cli-no-xdebug/php.ini bin/phpunit $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpunit --exclude-group not-mssql --log-junit test-reports/phpunit.xml -c " + this.testingFrameworkBuildPath + "FunctionalTests-Job-" + i + ".xml"
+                        )
+                )
+                .finalTasks(
+                    this.getTaskStopDockerDependencies(),
+                    new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                        .resultDirectories("test-reports/phpunit.xml")
+                )
+                .requirements(
+                    this.getRequirementDocker10()
+                )
+                .cleanWorkingDirectory(true)
+            );
+        }
+
+        return jobs;
+    }
+
+    /**
+     * Jobs for mssql based functional tests with driver pdo_sqlsrv
+     *
+     * @param int stageNumber
+     * @param int numberOfChunks
+     * @param String requirementIdentifier
+     * @param Task composerTask
+     * @param Boolean isSecurity
+     */
+    protected ArrayList<Job> getJobsFunctionalTestsMssqlWithDriverPdoSqlSrv(int stageNumber, int numberOfChunks, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+        ArrayList<Job> jobs = new ArrayList<Job>();
+
+        for (int i=1; i<=numberOfChunks; i++) {
+            String formattedI = "" + i;
+            if (i < 10) {
+                formattedI = "0" + i;
+            }
+            jobs.add(new Job("Func mssql pdo " + stageNumber + " " + requirementIdentifier + " " + formattedI, new BambooKey("FMSP" + stageNumber + requirementIdentifier + formattedI))
+                .description("Run functional tests on mssql DB with PDO driver " + requirementIdentifier)
+                .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+                .tasks(
+                    this.getTaskGitCloneRepository(),
+                    this.getTaskGitCherryPick(isSecurity),
+                    this.getTaskStopDanglingContainers(),
+                    composerTask,
+                    this.getTaskDockerDependenciesFunctionalMssql(),
+                    this.getTaskSplitFunctionalJobs(numberOfChunks, requirementIdentifier),
+                    new ScriptTask()
+                        .description("Run phpunit with functional chunk " + formattedI)
+                        .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                        .inlineBody(
+                            this.getScriptTaskBashInlineBody() +
+                            "function phpunit() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseDriver=pdo_sqlsrv \\\n" +
                             "        -e typo3DatabaseName=func \\\n" +
                             "        -e typo3DatabasePassword=Test1234! \\\n" +
                             "        -e typo3DatabaseUsername=SA \\\n" +
