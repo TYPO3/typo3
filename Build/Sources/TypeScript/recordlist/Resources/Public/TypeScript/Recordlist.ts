@@ -17,7 +17,6 @@ import Icons = require('TYPO3/CMS/Backend/Icons');
 
 declare global {
   const T3_THIS_LOCATION: string;
-  const editList: Function;
 }
 
 interface IconIdentifier {
@@ -131,7 +130,7 @@ class Recordlist {
 
       $.each(pipes, (pipeIndex: string, pipe: string): void => {
         if (pipe === 'editList') {
-          value = editList(tableName, value);
+          value = this.editList(tableName, value);
         }
       });
 
@@ -141,10 +140,36 @@ class Recordlist {
     window.location.href = uri;
   }
 
+  private editList(table: string, idList: string): string {
+    const list: Array<string> = [];
+
+    let pointer = 0;
+    let pos = idList.indexOf(',');
+    while (pos !== -1) {
+      if (this.getCheckboxState(table + '|' + idList.substr(pointer, pos - pointer))) {
+        list.push(idList.substr(pointer, pos - pointer));
+      }
+      pointer = pos + 1;
+      pos = idList.indexOf(',', pointer);
+    }
+
+    if (this.getCheckboxState(table + '|' + idList.substr(pointer))) {
+      list.push(idList.substr(pointer));
+    }
+
+    return list.length > 0 ? list.join(',') : idList;
+  }
+
   private disableButton = (event: JQueryEventObject): void => {
     const $me = $(event.currentTarget);
 
     $me.prop('disable', true).addClass('disabled');
+  }
+
+  private getCheckboxState(CBname: string): boolean {
+    const fullName = 'CBC[' + CBname + ']';
+    const checkbox: HTMLInputElement = document.querySelector('form[name="dblistForm"] [name="' + fullName + '"]');
+    return checkbox.checked;
   }
 }
 

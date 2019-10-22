@@ -4011,45 +4011,6 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Returning JavaScript for ClipBoard functionality.
-     *
-     * @return string
-     */
-    public function CBfunctions()
-    {
-        return '
-		// checkOffCB()
-	function checkOffCB(listOfCBnames, link) {	//
-		var checkBoxes, flag, i;
-		var checkBoxes = listOfCBnames.split(",");
-		if (link.rel === "") {
-			link.rel = "allChecked";
-			flag = true;
-		} else {
-			link.rel = "";
-			flag = false;
-		}
-		for (i = 0; i < checkBoxes.length; i++) {
-			setcbValue(checkBoxes[i], flag);
-		}
-	}
-		// cbValue()
-	function cbValue(CBname) {	//
-		var CBfullName = "CBC["+CBname+"]";
-		return (document.dblistForm[CBfullName] && document.dblistForm[CBfullName].checked ? 1 : 0);
-	}
-		// setcbValue()
-	function setcbValue(CBname,flag) {	//
-		CBfullName = "CBC["+CBname+"]";
-		if(document.dblistForm[CBfullName]) {
-			document.dblistForm[CBfullName].checked = flag ? "on" : 0;
-		}
-	}
-
-		';
-    }
-
-    /**
      * Initializes page languages
      */
     public function initializeLanguages()

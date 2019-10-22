@@ -366,7 +366,9 @@ class RecordListController
             // Render the list of tables:
             $dblist->generateList();
             $listUrl = $dblist->listURL();
+
             // Add JavaScript functions to the page:
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ClipboardComponent');
 
             $this->moduleTemplate->addJavaScriptCode(
                 'RecordListInlineJS',
@@ -392,28 +394,8 @@ class RecordListController
 					}
 				}
 				' . $this->moduleTemplate->redirectUrls($listUrl) . '
-				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {
 					window.location.href="' . (string)$uriBuilder->buildUriFromRoute('record_edit', ['returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')]) . '&edit["+table+"]["+idList+"]=edit"+addParams;
-				}
-				function editList(table,idList) {
-					var list="";
-
-						// Checking how many is checked, how many is not
-					var pointer=0;
-					var pos = idList.indexOf(",");
-					while (pos!=-1) {
-						if (cbValue(table+"|"+idList.substr(pointer,pos-pointer))) {
-							list+=idList.substr(pointer,pos-pointer)+",";
-						}
-						pointer=pos+1;
-						pos = idList.indexOf(",",pointer);
-					}
-					if (cbValue(table+"|"+idList.substr(pointer))) {
-						list+=idList.substr(pointer)+",";
-					}
-
-					return list ? list : idList;
 				}
 
 				if (top.fsMod) top.fsMod.recentIds["web"] = ' . (int)$this->id . ';

@@ -506,8 +506,7 @@ class FileList
                         if ($this->folderObject->checkActionPermission('delete')) {
                             $cells[] = $this->linkClipboardHeaderIcon('<span title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_deleteMarked')) . '">' . $this->iconFactory->getIcon('actions-edit-delete', Icon::SIZE_SMALL)->render(), $table, 'delete', $this->getLanguageService()->getLL('clip_deleteMarkedWarning'));
                         }
-                        $onClick = 'checkOffCB(' . GeneralUtility::quoteJSvalue(implode(',', $this->CBnames)) . ', this); return false;';
-                        $cells[] = '<a class="btn btn-default" rel="" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_markRecords')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
+                        $cells[] = '<a class="btn btn-default t3js-toggle-all-checkboxes" data-checkboxes-names="' . htmlspecialchars(implode(',', $this->CBnames)) . '" rel="" href="#" title="' . htmlspecialchars($this->getLanguageService()->getLL('clip_markRecords')) . '">' . $this->iconFactory->getIcon('actions-document-select', Icon::SIZE_SMALL)->render() . '</a>';
                     }
                     $theData[$v] = implode('', $cells);
                 } elseif ($v === '_REF_') {
@@ -706,45 +705,6 @@ class FileList
                 break;
         }
         return $content;
-    }
-
-    /**
-     * Returning JavaScript for ClipBoard functionality.
-     *
-     * @return string
-     */
-    public function CBfunctions()
-    {
-        return '
-		// checkOffCB()
-	function checkOffCB(listOfCBnames, link) {	//
-		var checkBoxes, flag, i;
-		var checkBoxes = listOfCBnames.split(",");
-		if (link.rel === "") {
-			link.rel = "allChecked";
-			flag = true;
-		} else {
-			link.rel = "";
-			flag = false;
-		}
-		for (i = 0; i < checkBoxes.length; i++) {
-			setcbValue(checkBoxes[i], flag);
-		}
-	}
-		// cbValue()
-	function cbValue(CBname) {	//
-		var CBfullName = "CBC["+CBname+"]";
-		return (document.dblistForm[CBfullName] && document.dblistForm[CBfullName].checked ? 1 : 0);
-	}
-		// setcbValue()
-	function setcbValue(CBname,flag) {	//
-		CBfullName = "CBC["+CBname+"]";
-		if(document.dblistForm[CBfullName]) {
-			document.dblistForm[CBfullName].checked = flag ? "on" : 0;
-		}
-	}
-
-		';
     }
 
     /**
