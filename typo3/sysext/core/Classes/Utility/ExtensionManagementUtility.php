@@ -1011,6 +1011,7 @@ class ExtensionManagementUtility
         $priority = 0;
         $quality = 0;
         if (!is_array($excludeServiceKeys)) {
+            trigger_error('ExtensionManagementUtility::findService() expects the third method argument to be an array instead of a comma-separated string. TYPO3 v11.0 will only support arrays as third argument for $excludeServiceKeys', E_USER_DEPRECATED);
             $excludeServiceKeys = GeneralUtility::trimExplode(',', $excludeServiceKeys, true);
         }
         if (is_array($GLOBALS['T3_SERVICES'][$serviceType])) {

@@ -3722,6 +3722,7 @@ class GeneralUtility
     {
         $error = false;
         if (!is_array($excludeServiceKeys)) {
+            trigger_error('GeneralUtility::makeInstanceService expects the third method argument to be an array instead of a comma-separated string. TYPO3 v11.0 will only support arrays as third argument for $excludeServiceKeys', E_USER_DEPRECATED);
             $excludeServiceKeys = self::trimExplode(',', $excludeServiceKeys, true);
         }
         $requestInfo = [
