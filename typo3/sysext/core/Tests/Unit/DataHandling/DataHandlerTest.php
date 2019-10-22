@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -525,7 +527,7 @@ class DataHandlerTest extends UnitTestCase
         $backendUser->expects(self::once())->method('writelog');
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, 0, 42, 0, 'details');
+        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::MESSAGE, 'details');
     }
 
     /**
@@ -537,7 +539,7 @@ class DataHandlerTest extends UnitTestCase
         $backendUser->expects(self::never())->method('writelog');
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, 0, 42, 0, 'details');
+        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::MESSAGE, 'details');
     }
 
     /**
@@ -550,7 +552,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetailsUnique = $this->getUniqueId('details');
-        $this->subject->log('', 23, 0, 42, 1, $logDetailsUnique);
+        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, $logDetailsUnique);
         self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
 
@@ -564,7 +566,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetails = $this->getUniqueId('details');
-        $this->subject->log('', 23, 0, 42, 1, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
+        $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }

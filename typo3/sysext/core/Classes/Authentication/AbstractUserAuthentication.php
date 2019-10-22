@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -553,7 +556,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($loginData['status'] === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
                 // $type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid
-                $this->writelog(255, 2, 0, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
+                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 2, 'User %s logged out', [$this->user['username']], '', 0, 0);
             }
             $this->logger->info('User logged out. Id: ' . $this->id);
             $this->logoff();
@@ -727,7 +730,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
 
             // User logged in - write that to the log!
             if ($this->writeStdLog && $activeLogin) {
-                $this->writelog(255, 1, 0, 1, 'User %s logged in from ###IP###', [$tempuser[$this->username_column]], '', '', '');
+                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGIN, SystemLogErrorClassification::MESSAGE, 1, 'User %s logged in from ###IP###', [$tempuser[$this->username_column]], '', '', '');
             }
             if ($activeLogin) {
                 $this->logger->info('User ' . $tempuser[$this->username_column] . ' logged in from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR'));

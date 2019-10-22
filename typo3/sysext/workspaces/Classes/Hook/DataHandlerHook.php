@@ -31,6 +31,9 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
+use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
+use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -231,10 +234,10 @@ class DataHandlerHook
                         $this->version_clearWSID($table, (int)$id, false, $dataHandler);
                     }
                 } else {
-                    $dataHandler->newlog('Tried to delete record from another workspace', 1);
+                    $dataHandler->newlog('Tried to delete record from another workspace', SystemLogErrorClassification::USER_ERROR);
                 }
             } else {
-                $dataHandler->newlog('Versioning not enabled for record with an online ID (t3ver_oid) given', 2);
+                $dataHandler->newlog('Versioning not enabled for record with an online ID (t3ver_oid) given', SystemLogErrorClassification::SYSTEM_ERROR);
             }
         } elseif ($dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
             // Look, if record is "online" then delete directly.
@@ -377,7 +380,7 @@ class DataHandlerHook
                 $recordWasMoved = false;
             }
         } else {
-            $dataHandler->newlog('Move attempt failed due to workspace restrictions: ' . implode(' // ', $workspaceAccessBlocked), 1);
+            $dataHandler->newlog('Move attempt failed due to workspace restrictions: ' . implode(' // ', $workspaceAccessBlocked), SystemLogErrorClassification::USER_ERROR);
         }
     }
 
@@ -660,7 +663,7 @@ class DataHandlerHook
             if ($dataHandler->enableLogging) {
                 $propertyArray = $dataHandler->getRecordProperties($table, $id);
                 $pid = $propertyArray['pid'];
-                $dataHandler->log($table, $id, 0, 0, 0, 'Notification email for stage change was sent to "' . $emailRecipients . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+                $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "' . $emailRecipients . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
             }
         }
     }
@@ -711,7 +714,7 @@ class DataHandlerHook
     protected function version_setStage($table, $id, $stageId, string $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = [])
     {
         if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $id)) {
-            $dataHandler->newlog('Attempt to set stage for record failed: ' . $errorCode, 1);
+            $dataHandler->newlog('Attempt to set stage for record failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
         } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
             $record = BackendUtility::getRecord($table, $id);
             $stat = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
@@ -731,20 +734,20 @@ class DataHandlerHook
                 if ($dataHandler->enableLogging) {
                     $propertyArray = $dataHandler->getRecordProperties($table, $id);
                     $pid = $propertyArray['pid'];
-                    $dataHandler->log($table, $id, 0, 0, 0, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+                    $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
                 }
                 // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
-                $dataHandler->log($table, $id, 6, 0, 0, 'Stage raised...', 30, ['comment' => $comment, 'stage' => $stageId]);
+                $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Stage raised...', 30, ['comment' => $comment, 'stage' => $stageId]);
                 if ((int)$stat['stagechg_notification'] > 0) {
                     $this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$stat, $stageId, $comment];
                     $this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = $table . ':' . $id;
                     $this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['alternativeRecipients'] = $notificationAlternativeRecipients;
                 }
             } else {
-                $dataHandler->newlog('The member user tried to set a stage value "' . $stageId . '" that was not allowed', 1);
+                $dataHandler->newlog('The member user tried to set a stage value "' . $stageId . '" that was not allowed', SystemLogErrorClassification::USER_ERROR);
             }
         } else {
-            $dataHandler->newlog('Attempt to set stage for record failed because you do not have edit access', 1);
+            $dataHandler->newlog('Attempt to set stage for record failed because you do not have edit access', SystemLogErrorClassification::USER_ERROR);
         }
     }
 
@@ -781,7 +784,7 @@ class DataHandlerHook
                     $table,
                     $id
                 ),
-                1
+                SystemLogErrorClassification::USER_ERROR
             );
             return;
         }
@@ -798,36 +801,36 @@ class DataHandlerHook
                     $id,
                     $swapWith
                 ),
-                2
+                SystemLogErrorClassification::SYSTEM_ERROR
             );
             return;
         }
         if (!$dataHandler->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid'])) {
-            $dataHandler->newlog('User could not publish records from workspace #' . $swapVersion['t3ver_wsid'], 1);
+            $dataHandler->newlog('User could not publish records from workspace #' . $swapVersion['t3ver_wsid'], SystemLogErrorClassification::USER_ERROR);
             return;
         }
         $wsAccess = $dataHandler->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
         if (!($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10)) {
-            $dataHandler->newlog('Records in workspace #' . $swapVersion['t3ver_wsid'] . ' can only be published when in "Publish" stage.', 1);
+            $dataHandler->newlog('Records in workspace #' . $swapVersion['t3ver_wsid'] . ' can only be published when in "Publish" stage.', SystemLogErrorClassification::USER_ERROR);
             return;
         }
         if (!($dataHandler->doesRecordExist($table, $swapWith, 'show') && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
-            $dataHandler->newlog('You cannot publish a record you do not have edit and show permissions for', 1);
+            $dataHandler->newlog('You cannot publish a record you do not have edit and show permissions for', SystemLogErrorClassification::USER_ERROR);
             return;
         }
         if ($swapIntoWS && !$dataHandler->BE_USER->workspaceSwapAccess()) {
-            $dataHandler->newlog('Workspace #' . $swapVersion['t3ver_wsid'] . ' does not support swapping.', 1);
+            $dataHandler->newlog('Workspace #' . $swapVersion['t3ver_wsid'] . ' does not support swapping.', SystemLogErrorClassification::USER_ERROR);
             return;
         }
         // Check if the swapWith record really IS a version of the original!
         if (!(((int)$swapVersion['t3ver_oid'] > 0 && (int)$curVersion['t3ver_oid'] === 0) && (int)$swapVersion['t3ver_oid'] === (int)$id)) {
-            $dataHandler->newlog('In swap version, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', 2);
+            $dataHandler->newlog('In swap version, either t3ver_oid was not set or the t3ver_oid didn\'t match the id of the online version as it must!', SystemLogErrorClassification::SYSTEM_ERROR);
             return;
         }
         // Lock file name:
         $lockFileName = Environment::getVarPath() . '/lock/swap' . $table . '_' . $id . '.ser';
         if (@is_file($lockFileName)) {
-            $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', 2);
+            $dataHandler->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', SystemLogErrorClassification::SYSTEM_ERROR);
             return;
         }
 
@@ -980,7 +983,7 @@ class DataHandlerHook
         }
 
         if (!empty($sqlErrors)) {
-            $dataHandler->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
+            $dataHandler->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), SystemLogErrorClassification::SYSTEM_ERROR);
         } else {
             // Register swapped ids for later remapping:
             $this->remappedIds[$table][$id] = $swapWith;
@@ -1010,7 +1013,7 @@ class DataHandlerHook
                 $dataHandler->deleteEl($table, $id, true);
             }
             if ($dataHandler->enableLogging) {
-                $dataHandler->log($table, $id, 0, 0, 0, ($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
+                $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, ($swapIntoWS ? 'Swapping' : 'Publishing') . ' successful for table "' . $table . '" uid ' . $id . '=>' . $swapWith, -1, [], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
             }
 
             // Update reference index of the live record:
@@ -1022,7 +1025,7 @@ class DataHandlerHook
             } else {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
-            $theLogId = $dataHandler->log($table, $id, 2, $propArr['pid'], 0, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
+            $theLogId = $dataHandler->log($table, $id, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $id], $propArr['event_pid']);
             $dataHandler->setHistory($table, $id, $theLogId);
             // Update reference index of the offline record:
             $dataHandler->addRemapStackRefIndex($table, $swapWith);
@@ -1033,7 +1036,7 @@ class DataHandlerHook
             } else {
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_tcemain.xlf:version_swap.online_record_updated');
             }
-            $theLogId = $dataHandler->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, [$propArr['header'], $table . ':' . $swapWith], $propArr['event_pid']);
+            $theLogId = $dataHandler->log($table, $swapWith, DatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, $label, 10, [$propArr['header'], $table . ':' . $swapWith], $propArr['event_pid']);
             $dataHandler->setHistory($table, $swapWith, $theLogId);
 
             $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
@@ -1045,9 +1048,9 @@ class DataHandlerHook
             if ($dataHandler->enableLogging) {
                 $propArr = $dataHandler->getRecordProperties($table, $id);
                 $pid = $propArr['pid'];
-                $dataHandler->log($table, $id, 0, 0, 0, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+                $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
             }
-            $dataHandler->log($table, $id, 6, 0, 0, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
+            $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Published', 30, ['comment' => $comment, 'stage' => $stageId]);
 
             // Clear cache:
             $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
@@ -1159,11 +1162,11 @@ class DataHandlerHook
     protected function version_clearWSID(string $table, int $versionId, bool $flush, DataHandler $dataHandler): void
     {
         if ($errorCode = $dataHandler->BE_USER->workspaceCannotEditOfflineVersion($table, $versionId)) {
-            $dataHandler->newlog('Attempt to reset workspace for record failed: ' . $errorCode, 1);
+            $dataHandler->newlog('Attempt to reset workspace for record failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
             return;
         }
         if (!$dataHandler->checkRecordUpdateAccess($table, $versionId)) {
-            $dataHandler->newlog('Attempt to reset workspace for record failed because you do not have edit access', 1);
+            $dataHandler->newlog('Attempt to reset workspace for record failed because you do not have edit access', SystemLogErrorClassification::USER_ERROR);
             return;
         }
         $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $versionId, 'uid,t3ver_state');

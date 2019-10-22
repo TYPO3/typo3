@@ -26,6 +26,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
+use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
@@ -2143,7 +2147,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ['workspace_id' => $this->user['workspace_id']],
                 ['uid' => (int)$this->user['uid']]
             );
-            $this->writelog(4, 0, 0, 0, 'User changed workspace to "' . $this->workspace . '"', []);
+            $this->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'User changed workspace to "' . $this->workspace . '"', []);
         }
     }
 
@@ -2374,7 +2378,7 @@ This is a dump of the failures:
                 $mail->setTo($email)->subject($subject)->text($email_body);
                 $mail->send();
                 // Logout written to log
-                $this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$rowCount, $secondsBack, $email]);
+                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::SEND_FAILURE_WARNING_EMAIL, SystemLogErrorClassification::MESSAGE, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', [$rowCount, $secondsBack, $email]);
             }
         }
     }

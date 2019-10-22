@@ -20,6 +20,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -59,7 +62,7 @@ class LogoutController
             return;
         }
         // Logout written to log
-        $this->getBackendUser()->writelog(255, 2, 0, 1, 'User %s logged out from TYPO3 Backend', [$this->getBackendUser()->user['username']]);
+        $this->getBackendUser()->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 1, 'User %s logged out from TYPO3 Backend', [$this->getBackendUser()->user['username']]);
         /** @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection $backendFormProtection */
         $backendFormProtection = FormProtectionFactory::get();
         $backendFormProtection->removeSessionTokenFromRegistry();

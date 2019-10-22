@@ -20,6 +20,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
+use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
+use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -216,9 +219,10 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                 'sys_log',
                 [
                     'userid' => $userId,
-                    'type' => 5,
-                    'action' => 0,
-                    'error' => $severity,
+                    'type' => SystemLogType::ERROR,
+                    'action' => SystemLogGenericAction::UNDEFINED,
+                    'error' => SystemLogErrorClassification::SYSTEM_ERROR,
+                    'level' => $severity,
                     'details_nr' => 0,
                     'details' => str_replace('%', '%%', $logMessage),
                     'log_data' => empty($data) ? '' : serialize($data),
