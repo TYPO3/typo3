@@ -14,4 +14,11 @@
 export enum KeyTypesEnum {
   ENTER = 13,
   ESCAPE = 27,
+  SPACE = 32,
+  END = 35,
+  HOME,
+  LEFT,
+  UP,
+  RIGHT,
+  DOWN
 }

@@ -292,6 +292,8 @@ class TreeController
             'nameSourceField' => $nameSourceField,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
+            'siblingsCount' => $page['siblingsCount'] ?? 1,
+            'siblingsPosition' => $page['siblingsPosition'] ?? 1,
         ];
 
         if (!empty($page['_children'])) {
@@ -331,8 +333,12 @@ class TreeController
         }
 
         $items[] = $item;
-        if (!$stopPageTree) {
+        if (!$stopPageTree && is_array($page['_children'])) {
+            $siblingsCount = count($page['_children']);
+            $siblingsPosition = 0;
             foreach ($page['_children'] as $child) {
+                $child['siblingsCount'] = $siblingsCount;
+                $child['siblingsPosition'] = ++$siblingsPosition;
                 $items = array_merge($items, $this->pagesToFlatArray($child, $entryPoint, $depth + 1, ['backgroundColor' => $backgroundColor]));
             }
         }

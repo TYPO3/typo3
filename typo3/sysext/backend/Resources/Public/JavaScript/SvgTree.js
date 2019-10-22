@@ -24,8 +24,9 @@ define(
     'TYPO3/CMS/Backend/Notification',
     'TYPO3/CMS/Backend/Icons',
     'TYPO3/CMS/Backend/Tooltip',
+    'TYPO3/CMS/Backend/Enum/KeyTypes'
   ],
-  function($, d3, ContextMenu, Modal, Severity, Notification, Icons, Tooltip) {
+  function($, d3, ContextMenu, Modal, Severity, Notification, Icons, Tooltip, KeyTypes) {
     'use strict';
 
     /**
@@ -198,7 +199,8 @@ define(
           })
           .on('mouseout', function() {
             _this.isOverSvg = false;
-          });
+          })
+          .on('keydown', this.handleKeyboardInteraction.bind(_this));
 
         this.container = this.svg
           .append('g')
@@ -209,7 +211,8 @@ define(
         this.linksContainer = this.container.append('g')
           .attr('class', 'links');
         this.nodesContainer = this.container.append('g')
-          .attr('class', 'nodes');
+          .attr('class', 'nodes')
+          .attr('role', 'tree');
         if (this.settings.showIcons) {
           this.iconsContainer = this.svg.append('defs');
           this.data.icons = {};
@@ -235,6 +238,112 @@ define(
       },
 
       /**
+       * Add keydown handling to allow keyboard navigation inside the tree
+       */
+      handleKeyboardInteraction: function() {
+        var e = d3.event;
+        var currentNode = d3.select(e.target).datum();
+        var keyTypesEnum = KeyTypes.KeyTypesEnum;
+        var charCodes = [
+          keyTypesEnum.ENTER,
+          keyTypesEnum.SPACE,
+          keyTypesEnum.END,
+          keyTypesEnum.HOME,
+          keyTypesEnum.LEFT,
+          keyTypesEnum.UP,
+          keyTypesEnum.RIGHT,
+          keyTypesEnum.DOWN
+        ];
+        if (charCodes.indexOf(e.keyCode) === -1) {
+          return;
+        }
+        e.preventDefault();
+        switch (e.keyCode) {
+          case keyTypesEnum.END:
+            // scroll to end, select last node
+            var parent = e.target.parentNode;
+            this.scrollTop = this.wrapper[0].lastElementChild.scrollHeight + this.settings.nodeHeight - this.viewportHeight;
+            this.wrapper.scrollTop(this.scrollTop);
+            this.updateScrollPosition();
+            this.update();
+            this.switchFocus(parent.lastElementChild);
+            break;
+          case keyTypesEnum.HOME:
+            // scroll to top, select first node
+            var parent = e.target.parentNode;
+            this.scrollTop = this.nodes[0].y;
+            this.wrapper.scrollTop(this.scrollTop);
+            this.update();
+            this.switchFocus(parent.firstElementChild);
+            break;
+          case keyTypesEnum.LEFT:
+            if (currentNode.expanded) {
+              // collapse node
+              this.hideChildren(currentNode);
+              this.prepareDataForVisibleNodes();
+              this.update();
+            } else {
+              // go to parent node
+              var parentNode = this.nodes[currentNode.parents[0]];
+              this.scrollNodeIntoVisibleArea(parentNode, 'up');
+              this.switchFocusNode(parentNode);
+            }
+            break;
+          case keyTypesEnum.UP:
+            // select previous visible node on any level
+            this.scrollNodeIntoVisibleArea(currentNode, 'up');
+            this.switchFocus(e.target.previousSibling);
+            break;
+          case keyTypesEnum.RIGHT:
+            if (currentNode.expanded) {
+              // the current node is expanded, goto first child (next element on the list)
+              this.scrollNodeIntoVisibleArea(currentNode, 'down');
+              this.switchFocus(e.target.nextSibling);
+            } else {
+              if (currentNode.hasChildren) {
+                // expand currentNode
+                this.showChildren(currentNode);
+                this.prepareDataForVisibleNodes();
+                this.update();
+                this.switchFocus(e.target);
+              }
+              //do nothing if node has no children
+            }
+            break;
+          case keyTypesEnum.DOWN:
+            // select next visible node on any level
+            // check if node is at end of viewport and scroll down if so
+            this.scrollNodeIntoVisibleArea(currentNode, 'down');
+            this.switchFocus(e.target.nextSibling);
+            break;
+          case keyTypesEnum.ENTER:
+          case keyTypesEnum.SPACE:
+            this.selectNode(currentNode);
+        }
+      },
+
+      /**
+       * If node is at the top of the viewport and direction is up, scroll up by the height of one item
+       * If node is at the bottom of the viewport and direction is down, scroll down by the height of one item
+       *
+       * @param node node to show
+       * @param direction direction you intend to go
+       * @returns {boolean}
+       */
+      scrollNodeIntoVisibleArea(node, direction = 'up') {
+        if (direction === 'up' && this.scrollTop > node.y - this.settings.nodeHeight) {
+          this.scrollTop = node.y - this.settings.nodeHeight;
+        } else if (direction === 'down' && this.scrollTop + this.viewportHeight <= node.y + (3 * this.settings.nodeHeight)) {
+          this.scrollTop = this.scrollTop + this.settings.nodeHeight;
+        } else {
+          return false;
+        }
+        this.wrapper.scrollTop(this.scrollTop);
+        this.update();
+        return true;
+      },
+
+      /**
        * Update svg tree after changed window height
        */
       resize: function() {
@@ -244,6 +353,32 @@ define(
             _this.updateWrapperHeight();
           }
         });
+      },
+
+      /**
+       * Make the DOM element given as parameter focusable and focus it
+       *
+       * @param {HTMLElement} element
+       */
+      switchFocus: function(element) {
+        if (element !== null) {
+          var visibleElements = element.parentNode.querySelectorAll('[tabindex]');
+          visibleElements.forEach( function (visibleElement) {
+            visibleElement.setAttribute('tabindex','-1');
+          });
+          element.setAttribute('tabindex', '0');
+          element.focus();
+        }
+      },
+
+      /**
+       * Make the DOM element of the node given as parameter focusable and focus it
+       *
+       * @param {Node} node
+       */
+      switchFocusNode: function(node) {
+        var nodeElement = document.getElementById('identifier-' + this.getNodeStateIdentifier(node));
+        this.switchFocus(nodeElement);
       },
 
       /**
@@ -494,9 +629,13 @@ define(
       update: function() {
         var _this = this;
         var visibleRows = Math.ceil(_this.viewportHeight / _this.settings.nodeHeight + 1);
-        var position = Math.floor(Math.max(_this.scrollTop, 0) / _this.settings.nodeHeight);
+        var position = Math.floor(Math.max(_this.scrollTop - (_this.settings.nodeHeight * 2), 0) / _this.settings.nodeHeight);
 
         var visibleNodes = this.data.nodes.slice(position, position + visibleRows);
+        var focusableElement = this.wrapper[0].querySelector('[tabindex="0"]');
+        var checkedNodeInViewport = visibleNodes.find(function (node) {
+          return node.checked;
+        });
         var nodes = this.nodesContainer.selectAll('.node').data(visibleNodes, function(d) {
           return d.stateIdentifier;
         });
@@ -531,9 +670,27 @@ define(
 
         // update nodes
         nodes
+            .attr('tabindex', function (node, index) {
+              if (typeof checkedNodeInViewport !== 'undefined') {
+                if (checkedNodeInViewport === node) {
+                  return '0';
+                }
+              } else {
+                if (focusableElement === null) {
+                  if (index === 0) {
+                    return '0';
+                  }
+                } else {
+                  if (d3.select(focusableElement).datum() === node) {
+                    return '0';
+                  }
+                }
+              }
+            return '-1';
+          })
           .attr('transform', this.getNodeTransform)
           .select('.node-name')
-          .text(this.getNodeLabel.bind(this));
+          .text(this.getNodeLabel);
 
         nodes
           .select('.chevron')
@@ -554,7 +711,7 @@ define(
             .attr('xlink:href', this.getIconOverlayId);
           nodes
             .select('use.node-icon-locked')
-            .attr('xlink:href', function (node) {
+            .attr('xlink:href', function(node) {
               return '#icon-' + (node.locked ? 'warning-in-use' : '');
             });
 
@@ -586,6 +743,7 @@ define(
           })
           .on('click', function(node) {
             _this.selectNode(node);
+            _this.switchFocusNode(node);
           })
           .on('contextmenu', function(node) {
             _this.dispatch.call('nodeRightClick', node, this);
@@ -632,12 +790,17 @@ define(
       },
 
       /**
-       * Renders links(lines) between parent and child nodes
+       * Renders links(lines) between parent and child nodes and is also used for grouping the children
+       * The line element of the first child is used as role=group node to group the children programmatically
        */
       updateLinks: function() {
         var _this = this;
         var visibleLinks = this.data.links.filter(function(linkData) {
-          return linkData.source.y <= _this.scrollBottom && linkData.target.y >= _this.scrollTop;
+          return linkData.source.y <= _this.scrollBottom && linkData.target.y >= _this.scrollTop - _this.settings.nodeHeight;
+        });
+        visibleLinks.forEach(function(link) {
+          link.source.owns = link.source.owns || [];
+          link.source.owns.push('identifier-' + link.target.stateIdentifier);
         });
 
         var links = this.linksContainer
@@ -653,10 +816,29 @@ define(
         links.enter()
           .append('path')
           .attr('class', 'link')
+          .attr('id', this.getGroupIdentifier)
+          .attr('role', function(link) {
+            return link.target.siblingsPosition === 1 && link.source.owns.length > 0 ? 'group' : null
+          })
+          .attr('aria-owns', function(link) {
+            return link.target.siblingsPosition === 1 && link.source.owns.length > 0 ? link.source.owns.join(' ') : null
+          })
 
           // create + update
           .merge(links)
           .attr('d', this.getLinkPath.bind(_this));
+      },
+
+      /**
+       * If the link target is the first child, set the group identifier.
+       * The group with this id is used for grouping the siblings, thus the identifier uses the stateIdentifier of
+       * the link source item.
+       *
+       * @param {Link} link
+       * @returns {String|null}
+       */
+      getGroupIdentifier: function(link) {
+        return link.target.siblingsPosition === 1 ? 'group-identifier-' + link.source.stateIdentifier : null;
       },
 
       /**
@@ -734,7 +916,7 @@ define(
             .attr('title', this.getNodeTitle)
             .attr('data-toggle', 'tooltip')
             .on('click', function(node) {
-                _this.clickOnIcon(node, this);
+              _this.clickOnIcon(node, this);
             });
 
           nodeContainer
@@ -756,13 +938,13 @@ define(
         }
 
         Tooltip.initialize('[data-toggle="tooltip"]', {
-            delay: {
-                "show": 50,
-                "hide": 50
-            },
-            trigger: 'hover',
-            container: 'body',
-            placement: 'right',
+          delay: {
+            "show": 50,
+            "hide": 50
+          },
+          trigger: 'hover',
+          container: 'body',
+          placement: 'right',
         });
 
         this.dispatch.call('updateSvg', this, nodeEnter);
@@ -783,7 +965,7 @@ define(
 
         return node
           .append('text')
-          .attr('dx', function (node) {
+          .attr('dx', function(node) {
             return _this.textPosition + (node.locked ? 15 : 0);
           })
           .attr('dy', 5)
@@ -804,6 +986,19 @@ define(
           .enter()
           .append('g')
           .attr('class', this.getNodeClass)
+          .attr('id', function(node) {
+            return 'identifier-' + node.stateIdentifier;
+          })
+          .attr('role', 'treeitem')
+          .attr('aria-owns', function(node) {
+            return (node.hasChildren ? 'group-identifier-' + node.stateIdentifier : null);
+          })
+          .attr('aria-level', this.getNodeDepth)
+          .attr('aria-setsize', this.getNodeSetsize)
+          .attr('aria-posinset', this.getNodePositionInSet)
+          .attr('aria-expanded', function(node) {
+            return (node.hasChildren ? node.expanded : null);
+          })
           .attr('transform', this.getNodeTransform)
           .attr('data-state-id', this.getNodeStateIdentifier)
           .attr('title', this.getNodeTitle)
@@ -839,6 +1034,33 @@ define(
         return node.identifier;
       },
 
+      /**
+       * Returns the depth of a node
+       *
+       * @param {Node} node
+       * @returns {Number}
+       */
+      getNodeDepth: function(node) {
+        return node.depth;
+      },
+
+      /**
+       *
+       * @param {Node} node
+       * @returns {Number}
+       */
+      getNodeSetsize: function(node) {
+        return node.siblingsCount;
+      },
+
+      /**
+       *
+       * @param {Node} node
+       * @returns {Number}
+       */
+      getNodePositionInSet  : function(node) {
+        return node.siblingsPosition;
+      },
       /**
        * Computes the tree item state identifier based on the data
        *
@@ -1143,6 +1365,7 @@ define(
        */
       hideChildren: function(node) {
         node.expanded = false;
+        this.setExpandedState(node);
       },
 
       /**
@@ -1152,6 +1375,20 @@ define(
        */
       showChildren: function(node) {
         node.expanded = true;
+        this.setExpandedState(node);
+      },
+
+      /**
+       * Updates the expanded state of the DOM element that belongs to the node.
+       * This is required because the node is not recreated on update and thus the change in the expanded state
+       * of the node data is not represented in DOM on hideChildren and showChildren.
+       *
+       * @param {Node} node
+       */
+      setExpandedState: function(node) {
+        document
+          .getElementById('identifier-' + this.getNodeStateIdentifier(node))
+          .setAttribute('aria-expanded', (node.hasChildren ? node.expanded : null));
       },
 
       /**
