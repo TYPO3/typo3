@@ -28,6 +28,11 @@ class MaintenanceCest extends AbstractCest
         $I->click('Maintenance');
         $I->see('Maintenance', 'h1');
     }
+
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function flushCacheWorks(BackendTester $I)
     {
         $I->click('Flush cache');
@@ -35,6 +40,10 @@ class MaintenanceCest extends AbstractCest
         $I->see('Caches cleared', '.alert-success h4');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function analyzeDatabaseStructureWorks(BackendTester $I)
     {
         $I->click('Analyze database');
@@ -46,6 +55,10 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function removeTemporaryAssetsWorks(BackendTester $I)
     {
         $I->click('Scan temporary files');
@@ -55,6 +68,10 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function dumpAutoloadWorks(BackendTester $I)
     {
         $I->click('Dump autoload');
@@ -62,6 +79,10 @@ class MaintenanceCest extends AbstractCest
         $I->see('Successfully dumped class loading information for extensions.', '.alert-success h4');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function clearPersistentTablesWorks(BackendTester $I)
     {
         $I->click('Scan tables');
@@ -71,6 +92,10 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function createAdminUserWorks(BackendTester $I)
     {
         $I->click('Create Administrator');
@@ -80,6 +105,10 @@ class MaintenanceCest extends AbstractCest
         $I->waitForElementNotVisible('.modal-dialog');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function resetBackendUserPreferencesWorks(BackendTester $I)
     {
         $I->click('Reset backend user preferences');
@@ -87,6 +116,10 @@ class MaintenanceCest extends AbstractCest
         $I->see('Preferences of all backend users have been reset', '.alert-success h4');
     }
 
+    /**
+     * @param BackendTester $I
+     * @throws \Exception
+     */
     public function manageLanguagePacksWorks(BackendTester $I)
     {
         $I->click('Manage languages');

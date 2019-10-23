@@ -65,6 +65,7 @@ Options:
         Specifies which test suite to run
             - acceptance: backend acceptance tests
             - acceptancePagetree: backend acceptance tests for page tree
+            - acceptanceInstallTool: acceptance tests for stand alone install tool
             - buildCss: execute scss to css builder
             - buildJavascript: execute typescript to javascript builder
             - cglGit: test and fix latest committed patch for CGL compliance
@@ -286,6 +287,13 @@ case ${TEST_SUITE} in
         setUpDockerComposeDotEnv
         docker-compose run prepare_acceptance_pagetree_mariadb10
         docker-compose run acceptance_pagetree_mariadb10
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
+    acceptanceInstallTool)
+        setUpDockerComposeDotEnv
+        docker-compose run prepare_acceptance_installtool_mariadb10
+        docker-compose run acceptance_installtool_mariadb10
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;

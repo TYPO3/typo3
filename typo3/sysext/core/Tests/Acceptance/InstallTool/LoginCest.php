@@ -21,6 +21,9 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\BackendTester;
 
 class LoginCest extends AbstractCest
 {
+    /**
+     * @param BackendTester $I
+     */
     public function installToolLogin(BackendTester $I)
     {
         $I->amGoingTo('assert the install tool is locked in the first place');
