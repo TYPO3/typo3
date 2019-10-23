@@ -144,13 +144,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The rootLine (all the way to tree root, not only the current site!)
      * @var array
      */
-    public $rootLine = '';
+    public $rootLine = [];
 
     /**
      * The pagerecord
      * @var array
      */
-    public $page = '';
+    public $page = [];
 
     /**
      * This will normally point to the same value as id, but can be changed to
