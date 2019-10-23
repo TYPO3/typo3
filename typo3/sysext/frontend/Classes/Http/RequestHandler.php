@@ -216,7 +216,7 @@ class RequestHandler implements RequestHandlerInterface
         // Reset the content variables:
         $controller->content = '';
         $htmlTagAttributes = [];
-        $htmlLang = $siteLanguage && $siteLanguage->getTwoLetterIsoCode() ? $siteLanguage->getTwoLetterIsoCode() : '';
+        $htmlLang = $siteLanguage && $siteLanguage->getHreflang() ? $siteLanguage->getHreflang() : '';
 
         if ($siteLanguage && $siteLanguage->getDirection()) {
             $htmlTagAttributes['dir'] = htmlspecialchars($siteLanguage->getDirection());
