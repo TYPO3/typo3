@@ -291,7 +291,7 @@ class RequestHandler implements RequestHandlerInterface, PsrRequestHandlerInterf
         $direction = $controller->config['config']['htmlTag_dir'] ?? null;
         if ($siteLanguage !== null) {
             $direction = $siteLanguage->getDirection();
-            $htmlLang = $siteLanguage->getTwoLetterIsoCode();
+            $htmlLang = $siteLanguage->getHreflang();
         }
 
         if ($direction) {
