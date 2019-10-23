@@ -32,12 +32,14 @@ define(['jquery',
      */
     var PageTree = function() {
       SvgTree.call(this);
+      this.originalNodes = [];
       this.settings.defaultProperties = {
         hasChildren: false,
         nameSourceField: 'title',
         prefix: '',
         suffix: '',
         locked: false,
+        loaded: false,
         overlayIcon: '',
         selectable: true,
         expanded: false,
@@ -51,6 +53,7 @@ define(['jquery',
     };
 
     PageTree.prototype = Object.create(SvgTree.prototype);
+
     var _super_ = SvgTree.prototype;
 
     /**
@@ -201,6 +204,16 @@ define(['jquery',
     };
 
     /**
+     * Finds node by its stateIdentifier (e.g. "0_360")
+     * @return {Node}
+     */
+    PageTree.prototype.getNodeByIdentifier = function(identifier) {
+      return this.nodes.find(function (node) {
+        return node.stateIdentifier === identifier;
+      });
+    };
+
+    /**
      * Observer for the selectedNode event
      *
      * @param {Node} node
@@ -278,8 +291,57 @@ define(['jquery',
     };
 
     PageTree.prototype.showChildren = function(node) {
+      this.loadChildrenOfNode(node);
       _super_.showChildren(node);
       Persistent.set('BackendComponents.States.Pagetree.stateHash.' + node.stateIdentifier, 1);
+    };
+
+    /**
+     * Loads child nodes via Ajax (used when expanding a collapesed node)
+     *
+     * @param parentNode
+     * @return {boolean}
+     */
+    PageTree.prototype.loadChildrenOfNode = function(parentNode) {
+      if (parentNode.loaded) {
+        return;
+      }
+      var _this = this;
+      _this.nodesAddPlaceholder();
+      d3.json(_this.settings.dataUrl + '&pid=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&pidDepth=' + parentNode.depth, function(error, json) {
+          if (error) {
+            var title = TYPO3.lang.pagetree_networkErrorTitle;
+            var desc = TYPO3.lang.pagetree_networkErrorDesc;
+
+            if (error && error.target && (error.target.status || error.target.statusText)) {
+              title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
+            }
+
+            Notification.error(
+              title,
+              desc);
+
+            _this.nodesRemovePlaceholder();
+            throw error;
+          }
+
+          var nodes = Array.isArray(json) ? json : [];
+          //first element is a parent
+          nodes.shift();
+          var index = _this.nodes.indexOf(parentNode) + 1;
+          //adding fetched node after parent
+          nodes.forEach(function (node, offset) {
+            _this.nodes.splice(index + offset, 0, node);
+          });
+
+          parentNode.loaded = true;
+          _this.setParametersNode();
+          _this.prepareDataForVisibleNodes();
+          _this.update();
+          _this.nodesRemovePlaceholder();
+          _this.switchFocusNode(parentNode);
+        });
+
     };
 
     PageTree.prototype.updateNodeBgClass = function(nodeBg) {
@@ -382,6 +444,51 @@ define(['jquery',
             _this.clickOnLabel(node, this);
           }
         });
+    };
+
+    PageTree.prototype.filterTree = function(searchQuery) {
+      var _this = this;
+      _this.nodesAddPlaceholder();
+
+      d3.json(_this.settings.filterUrl + '&q=' + searchQuery, function(error, json) {
+        if (error) {
+          var title = TYPO3.lang.pagetree_networkErrorTitle;
+          var desc = TYPO3.lang.pagetree_networkErrorDesc;
+
+          if (error && error.target && (error.target.status || error.target.statusText)) {
+            title += ' - ' + (error.target.status || '') + ' ' + (error.target.statusText || '');
+          }
+
+          Notification.error(
+            title,
+            desc);
+
+          _this.nodesRemovePlaceholder();
+          throw error;
+        }
+
+        var nodes = Array.isArray(json) ? json : [];
+        if (nodes.length > 0) {
+          if (_this.originalNodes.length === 0) {
+            _this.originalNodes = JSON.stringify(_this.nodes);
+          }
+          _this.replaceData(nodes);
+        }
+        _this.nodesRemovePlaceholder();
+      });
+    };
+
+    PageTree.prototype.resetFilter = function() {
+        if (this.originalNodes.length > 0) {
+          var currentlySelected = this.getSelectedNodes()[0];
+          this.nodes = JSON.parse(this.originalNodes);
+          this.originalNodes = '';
+          if (currentlySelected) {
+            this.selectNode(this.getNodeByIdentifier(currentlySelected.stateIdentifier));
+          }
+        } else {
+          this.refreshTree();
+        }
     };
 
     PageTree.prototype.setTemporaryMountPoint = function(pid) {
