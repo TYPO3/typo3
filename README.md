@@ -14,7 +14,7 @@ Getting Started
 TYPO3 requires a web server with PHP and a database (e.g. MySQL).
 Accessing the backend through a supported browser.
 
-Please see the [Installation Guide](https://docs.typo3.org/typo3cms/InstallationGuide/) 
+Please see the [Installation Guide](https://docs.typo3.org/typo3cms/InstallationGuide/)
 in order to set up a basic TYPO3 installation on your web server.
 
 What is TYPO3?
@@ -128,6 +128,21 @@ synchronized mirror of the primary TYPO3 core git repository:
 If you want to file a bug report, take a look at:
 
 * [https://forge.typo3.org](https://forge.typo3.org/projects/typo3cms-core/issues)
+
+Security
+--------
+
+If you learn about a potential security issue in the TYPO3 core or in
+an extension, please always contact the TYPO3 Security Team via security@typo3.org.
+Please always include the version number where you've discovered the issue.
+If we can confirm a problem in a third-party extension, we will inform the
+author immediately.
+
+If you discover a security problem in your own extension, please inform
+the TYPO3 Security Team as well. They can help you to fix it, and they
+may want to issue an advisory once it is fixed.
+
+For more details see [TYPO3 Security Team](https://typo3.org/community/teams/security/).
 
 Final notes
 -----------
