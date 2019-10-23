@@ -84,6 +84,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
             }
         }
 
+        $isPublicAsString = $isPublic ? '1' : '0';
         $fieldInformationResult = $this->renderFieldInformation();
         $fieldInformationHtml = $fieldInformationResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($this->initializeResultArray(), $fieldInformationResult, false);
@@ -99,17 +100,17 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
         $html[] =               '<input type="checkbox"';
         $html[] =                   ' class="checkbox-input"';
         $html[] =                   ' value="1"';
-        $html[] =                   ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
-        $html[] =                   ' id="' . htmlspecialchars($checkboxId) . '"';
+        $html[] =                   ' data-formengine-input-name="' . htmlspecialchars($parameterArray['itemFormElName'], ENT_QUOTES) . '"';
+        $html[] =                   ' id="' . htmlspecialchars($checkboxId, ENT_QUOTES) . '"';
         $html[] =                   $checkboxParameters;
         $html[] =                   $isPublic ? ' checked="checked"' : '';
         $html[] =               '/>';
-        $html[] =               '<label class="checkbox-label" for="' . htmlspecialchars($checkboxId) . '">';
-        $html[] =                   '<span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode('&nbsp;', $isPublic ? '1' : '0') . '</span>';
+        $html[] =               '<label class="checkbox-label" for="' . htmlspecialchars($checkboxId, ENT_QUOTES) . '">';
+        $html[] =                   '<span class="checkbox-label-text">' . $this->appendValueToLabelInDebugMode('&nbsp;', $isPublicAsString) . '</span>';
         $html[] =               '</label>';
         $html[] =               '<input type="hidden"';
-        $html[] =                   ' name="' . htmlspecialchars($parameterArray['itemFormElName']) . '"';
-        $html[] =                   ' value="' . htmlspecialchars((string)$isPublic) . '"';
+        $html[] =                   ' name="' . htmlspecialchars($parameterArray['itemFormElName'], ENT_QUOTES) . '"';
+        $html[] =                   ' value="' . $isPublicAsString . '"';
         $html[] =               ' />';
         $html[] =           '</div>';
         $html[] =       '</div>';
