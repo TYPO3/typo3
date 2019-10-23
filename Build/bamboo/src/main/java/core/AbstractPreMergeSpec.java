@@ -55,6 +55,7 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
 
         jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, numberOfAcceptanceTestJobs, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
         jobsMainStage.addAll(this.getJobsAcceptanceTestsPageTreeMysql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
+        jobsMainStage.addAll(this.getJobsAcceptanceTestsInstallToolMysql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
 
         jobsMainStage.add(this.getJobIntegrationPhpStan(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
         jobsMainStage.add(this.getJobIntegrationDocBlocks(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));

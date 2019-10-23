@@ -338,7 +338,7 @@ abstract class AbstractCoreSpec {
                 this.getTaskStopDanglingContainers(),
                 composerTask,
                 this.getTaskPrepareAcceptanceTest(),
-                this.getTaskDockerDependenciesAcceptanceInstallPostgres10(),
+                this.getTaskDockerDependenciesAcceptancePostgres10(),
                 new ScriptTask()
                     .description("Install TYPO3 on postgresql 10")
                     .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
@@ -553,6 +553,63 @@ abstract class AbstractCoreSpec {
                             "}\n" +
                             "\n" +
                             "codecept run PageTree -d -c typo3/sysext/core/Tests/codeception.yml --xml reports.xml --html reports.html\n"
+                    )
+            )
+            .finalTasks(
+                this.getTaskStopDockerDependencies(),
+                new TestParserTask(TestParserTaskProperties.TestType.JUNIT)
+                    .resultDirectories("typo3temp/var/tests/AcceptanceReports/reports.xml")
+            )
+            .artifacts(new Artifact()
+                .name("Test Report")
+                .copyPattern("typo3temp/var/tests/AcceptanceReports/")
+                .shared(false)
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true)
+        );
+
+        return jobs;
+    }
+
+    ArrayList<Job> getJobsAcceptanceTestsInstallToolMysql(int stageNumber, String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+        String name = getTaskNamePartForComposer(stageNumber);
+        ArrayList<Job> jobs = new ArrayList<Job>();
+
+        jobs.add(new Job("Accept InstallTool my " + name + " " + requirementIdentifier, new BambooKey("ACITMY" + stageNumber + requirementIdentifier))
+            .description("Run acceptance tests for install tool " + requirementIdentifier)
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(isSecurity),
+                this.getTaskStopDanglingContainers(),
+                composerTask,
+                this.getTaskPrepareAcceptanceTest(),
+                this.getTaskDockerDependenciesAcceptanceBackendMariadb10(),
+                new ScriptTask()
+                    .description("Execute codeception acceptance test for standalone install tool.")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                            "function codecept() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        -e typo3DatabaseName=func_test \\\n" +
+                            "        -e typo3DatabaseUsername=root \\\n" +
+                            "        -e typo3DatabasePassword=funcp  \\\n" +
+                            "        -e typo3DatabaseHost=mariadb10  \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --network ${BAMBOO_COMPOSE_PROJECT_NAME}_test \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/codecept $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "codecept run InstallTool -d -c typo3/sysext/core/Tests/codeception.yml --env=mysql --xml reports.xml --html reports.html\n"
                     )
             )
             .finalTasks(
@@ -1744,7 +1801,7 @@ abstract class AbstractCoreSpec {
     /**
      * Start docker sibling containers to execute acceptance install tests on postgres
      */
-    private Task getTaskDockerDependenciesAcceptanceInstallPostgres10() {
+    private Task getTaskDockerDependenciesAcceptancePostgres10() {
         return new ScriptTask()
             .description("Start docker siblings for acceptance test install postgres")
             .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
