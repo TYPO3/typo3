@@ -274,7 +274,7 @@ class NodeFactoryTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1431872546);
         $mockNode = new \stdClass();
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->disableOriginalConstructor()
@@ -346,7 +346,7 @@ class NodeFactoryTest extends UnitTestCase
             ],
         ];
         $mockNode = $this->createMock(NodeInterface::class);
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -373,7 +373,7 @@ class NodeFactoryTest extends UnitTestCase
             ],
         ];
         $mockNode = $this->createMock(NodeInterface::class);
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -400,7 +400,7 @@ class NodeFactoryTest extends UnitTestCase
             ],
         ];
         $mockNode = $this->createMock(NodeInterface::class);
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -425,7 +425,7 @@ class NodeFactoryTest extends UnitTestCase
         ];
         $mockResolver = $this->getMockBuilder(\stdClass::class)->getMock();
 
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -463,7 +463,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockResolver1 = $this->createMock(NodeResolverInterface::class);
         $mockResolver2 = $this->createMock(NodeResolverInterface::class);
 
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -503,7 +503,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockResolver1 = $this->createMock(NodeResolverInterface::class);
         $mockResolver2 = $this->createMock(NodeResolverInterface::class);
 
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -538,7 +538,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockResolver1 = $this->createMock(NodeResolverInterface::class);
         $mockResolver1->expects(self::once())->method('resolve')->willReturn('fooNodeClass');
 
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
@@ -577,7 +577,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockResolver1 = $this->createMock(NodeResolverInterface::class);
         $mockResolver1->expects(self::once())->method('resolve')->willReturn('fooNodeClass');
 
-        /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
+        /** @var NodeFactory|\PHPUnit\Framework\MockObject\MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();

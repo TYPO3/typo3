@@ -26,7 +26,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
-     * @var RecordCollectionRepository|\PHPUnit_Framework_MockObject_MockObject
+     * @var RecordCollectionRepository|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

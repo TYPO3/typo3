@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DebugExceptionHandlerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

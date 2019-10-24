@@ -42,17 +42,17 @@ class BackendTest extends UnitTestCase
      */
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow()
     {
-        /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Backend|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $fixture = $this->getAccessibleMock(Backend::class, ['dummy'], [], '', false);
-        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit_Framework_MockObject_MockObject */
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper|\PHPUnit\Framework\MockObject\MockObject */
         $dataMapFactory = $this->createMock(DataMapFactory::class);
-        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit_Framework_MockObject_MockObject */
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap|\PHPUnit\Framework\MockObject\MockObject */
         $dataMap = $this->createMock(DataMap::class);
-        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit_Framework_MockObject_MockObject */
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap|\PHPUnit\Framework\MockObject\MockObject */
         $columnMap = $this->createMock(ColumnMap::class);
-        /* \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface|\PHPUnit\Framework\MockObject\MockObject */
         $storageBackend = $this->createMock(BackendInterface::class);
-        /* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /* \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $domainObject = $this->createMock(DomainObjectInterface::class);
 
         $mmMatchFields = [

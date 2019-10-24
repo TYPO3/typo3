@@ -33,12 +33,12 @@ class AbstractWidgetControllerTest extends UnitTestCase
      */
     public function canHandleWidgetRequest()
     {
-        /** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
+        /** @var WidgetRequest|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject $abstractWidgetController */
+        /** @var AbstractWidgetController|\PHPUnit\Framework\MockObject\MockObject $abstractWidgetController */
         $abstractWidgetController = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -53,12 +53,12 @@ class AbstractWidgetControllerTest extends UnitTestCase
     {
         $widgetContext = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
         $widgetContext->expects(self::once())->method('getWidgetConfiguration')->willReturn('myConfiguration');
-        /** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
+        /** @var WidgetRequest|\PHPUnit\Framework\MockObject\MockObject $request */
         $request = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
         $request->expects(self::once())->method('getWidgetContext')->willReturn($widgetContext);
-        /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
+        /** @var ResponseInterface|\PHPUnit\Framework\MockObject\MockObject $response */
         $response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
-        /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $abstractWidgetController */
+        /** @var AbstractWidgetController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $abstractWidgetController */
         $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, ['resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'], [], '', false);
         $mockUriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);

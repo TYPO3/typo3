@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class IntrospectionProcessorTest extends UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor
+     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor
      */
     protected $processor;
 

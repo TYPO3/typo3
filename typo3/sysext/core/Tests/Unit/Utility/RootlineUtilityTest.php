@@ -34,7 +34,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RootlineUtilityTest extends UnitTestCase
 {
     /**
-     * @var RootlineUtility|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var RootlineUtility|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

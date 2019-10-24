@@ -1567,7 +1567,7 @@ class FlexFormToolsTest extends UnitTestCase
             'callBackMethod_value' => 'dummy',
         ];
         $editData = [];
-        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(FlexFormTools::class)
             ->setMethods(['executeCallBackMethod'])
             ->getMock();
@@ -1596,7 +1596,7 @@ class FlexFormToolsTest extends UnitTestCase
             ],
         ];
         $editData2 = [];
-        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->createMock(FlexFormTools::class);
         self::assertEquals(
             $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA),

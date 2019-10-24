@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PackageManagerTest extends UnitTestCase
 {
     /**
-     * @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager
+     * @var PackageManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager
      */
     protected $packageManager;
 
@@ -42,7 +42,7 @@ class PackageManagerTest extends UnitTestCase
         parent::setUp();
         vfsStream::setup('Test');
 
-        /** @var PhpFrontend|\PHPUnit_Framework_MockObject_MockObject $mockCache */
+        /** @var PhpFrontend|\PHPUnit\Framework\MockObject\MockObject $mockCache */
         $mockCache = $this->getMockBuilder(PhpFrontend::class)
             ->setMethods(['has', 'set', 'getBackend'])
             ->disableOriginalConstructor()
@@ -171,7 +171,7 @@ class PackageManagerTest extends UnitTestCase
             file_put_contents($packagePath . 'ext_emconf.php', '<?php' . LF . '$EM_CONF[$_EXTKEY] = [];');
         }
 
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
+        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy'], [new DependencyOrderingService]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
@@ -214,7 +214,7 @@ class PackageManagerTest extends UnitTestCase
             $packagePaths[] = $packagePath;
         }
 
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
+        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $packageManager */
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['sortAndSavePackageStates', 'registerTransientClassLoadingInformationForPackage'], [new DependencyOrderingService]);
         $packageManager->_set('packagesBasePaths', $packagePaths);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');

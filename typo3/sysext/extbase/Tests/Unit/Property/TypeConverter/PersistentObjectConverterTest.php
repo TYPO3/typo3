@@ -31,27 +31,27 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class PersistentObjectConverterTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Property\TypeConverterInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $converter;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockReflectionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockPersistenceManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockObjectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockContainer;
 

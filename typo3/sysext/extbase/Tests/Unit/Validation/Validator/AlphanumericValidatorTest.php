@@ -26,7 +26,7 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString()
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();
@@ -38,7 +38,7 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters()
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();
@@ -50,7 +50,7 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();
@@ -62,7 +62,7 @@ class AlphanumericValidatorTest extends UnitTestCase
      */
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericUnicodeString()
     {
-        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var \TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\AlphanumericValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();

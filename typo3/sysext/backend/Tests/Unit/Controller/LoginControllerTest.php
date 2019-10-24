@@ -39,7 +39,7 @@ class LoginControllerTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var LoginController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var LoginController|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $loginControllerMock;
 

@@ -40,7 +40,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     protected $backupEnvironment = true;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $frontendControllerMock;
 

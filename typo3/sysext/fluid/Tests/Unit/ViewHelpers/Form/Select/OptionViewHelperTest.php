@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class OptionViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var OptionViewHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var OptionViewHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $viewHelper;
 

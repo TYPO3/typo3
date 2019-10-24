@@ -22,12 +22,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DownloadQueueTest extends UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
      */
     protected $downloadQueueMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Extension
      */
     protected $extensionMock;
 

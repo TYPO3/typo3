@@ -28,7 +28,7 @@ class RendererRegistryTest extends UnitTestCase
      * Initialize a RendererRegistry and mock createRendererInstance()
      *
      * @param array $createsRendererInstances
-     * @return \PHPUnit_Framework_MockObject_MockObject|RendererRegistry
+     * @return \PHPUnit\Framework\MockObject\MockObject|RendererRegistry
      */
     protected function getTestRendererRegistry(array $createsRendererInstances = [])
     {

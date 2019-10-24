@@ -212,13 +212,13 @@ class ApcuBackendTest extends UnitTestCase
      */
     public function flushRemovesOnlyOwnEntries()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $thisCache */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|FrontendInterface $thisCache */
         $thisCache = $this->createMock(FrontendInterface::class);
         $thisCache->expects(self::any())->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = new ApcuBackend('Testing');
         $thisBackend->setCache($thisCache);
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $thatCache */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|FrontendInterface $thatCache */
         $thatCache = $this->createMock(FrontendInterface::class);
         $thatCache->expects(self::any())->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = new ApcuBackend('Testing');
@@ -275,7 +275,7 @@ class ApcuBackendTest extends UnitTestCase
      */
     protected function setUpBackend($accessible = false)
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $cache */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|FrontendInterface $cache */
         $cache = $this->createMock(FrontendInterface::class);
         if ($accessible) {
             $accessibleClassName = $this->buildAccessibleProxy(ApcuBackend::class);

@@ -37,7 +37,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|TypoScriptFrontendController
+     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|TypoScriptFrontendController
      */
     protected $subject;
 
@@ -83,11 +83,11 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      * Setup a \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController object only for testing the header and footer
      * replacement during USER_INT rendering
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController
+     * @return \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController
      */
     protected function setupTsfeMockForHeaderFooterReplacementCheck()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController $tsfe */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setMethods([
                 'INTincScript_process',

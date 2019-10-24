@@ -32,7 +32,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getNameReturnsSetName()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $name = $this->getUniqueId('name_');
         $node->_set('name', $name);
@@ -44,7 +44,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getTargetPermissionReturnsSetTargetPermission()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $permission = '1234';
         $node->_set('targetPermission', $permission);
@@ -56,7 +56,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getChildrenReturnsSetChildren()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $children = ['1234'];
         $node->_set('children', $children);
@@ -68,7 +68,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getParentReturnsSetParent()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $node->_set('parent', $parent);
@@ -80,7 +80,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getAbsolutePathCallsParentForPathAndAppendsOwnName()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $parentPath = '/foo/bar';
@@ -96,7 +96,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function isWritableCallsParentIsWritable()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $parentMock = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         $parentMock->expects(self::once())->method('isWritable');
@@ -109,7 +109,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function isWritableReturnsWritableStatusOfParent()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $parentMock = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         $parentMock->expects(self::once())->method('isWritable')->willReturn(true);
@@ -122,7 +122,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function existsReturnsTrueIfNodeExists()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -135,7 +135,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function existsReturnsTrueIfIsLinkAndTargetIsDead()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
         $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_');
@@ -152,7 +152,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function existsReturnsFalseIfNodeNotExists()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -164,7 +164,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function fixPermissionThrowsExceptionIfPermissionAreAlreadyCorrect()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             AbstractNode::class,
             ['isPermissionCorrect', 'getAbsolutePath'],
@@ -187,7 +187,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             self::markTestSkipped('Test skipped if run on linux as root');
         }
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             AbstractNode::class,
             ['isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'getAbsolutePath'],
@@ -215,7 +215,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             self::markTestSkipped('Test skipped if run on linux as root');
         }
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             AbstractNode::class,
             ['isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'getAbsolutePath'],
@@ -240,7 +240,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function fixPermissionReturnsOkStatusIfPermissionCanBeFixedAndSetsPermissionToCorrectValue()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             AbstractNode::class,
             ['isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'getAbsolutePath'],
@@ -266,7 +266,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function isPermissionCorrectReturnsTrueOnWindowsOs()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs'], [], '', false);
         $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
         self::assertTrue($node->_call('isPermissionCorrect'));
@@ -277,7 +277,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function isPermissionCorrectReturnsFalseIfTargetPermissionAndCurrentPermissionAreNotIdentical()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs', 'getCurrentPermission'], [], '', false);
         $node->expects(self::any())->method('isWindowsOs')->willReturn(false);
         $node->expects(self::any())->method('getCurrentPermission')->willReturn('foo');
@@ -290,7 +290,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getCurrentPermissionReturnsCurrentDirectoryPermission()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
         chmod($path, 02775);
@@ -304,7 +304,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getCurrentPermissionReturnsCurrentFilePermission()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $file = $this->getVirtualTestFilePath('file_');
         touch($file);
@@ -321,7 +321,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366398198);
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $node->_call('getRelativePathBelowSiteRoot', '/tmp');
     }
@@ -331,7 +331,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getRelativePathCallsGetAbsolutePathIfPathIsNull()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             AbstractNode::class,
             ['getAbsolutePath'],
@@ -348,7 +348,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getRelativePathBelowSiteRootReturnsSingleForwardSlashIfGivenPathEqualsPathSiteConstant()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $result = $node->_call('getRelativePathBelowSiteRoot', Environment::getPublicPath() . '/');
         self::assertSame('/', $result);
@@ -359,7 +359,7 @@ class AbstractNodeTest extends FolderStructureTestCase
      */
     public function getRelativePathBelowSiteRootReturnsSubPath()
     {
-        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $result = $node->_call('getRelativePathBelowSiteRoot', Environment::getPublicPath() . '/foo/bar');
         self::assertSame('/foo/bar', $result);

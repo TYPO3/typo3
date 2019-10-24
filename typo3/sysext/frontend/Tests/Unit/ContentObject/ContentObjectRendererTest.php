@@ -84,17 +84,17 @@ class ContentObjectRendererTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|ContentObjectRenderer
+     * @var \PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface|ContentObjectRenderer
      */
     protected $subject;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TypoScriptFrontendController|AccessibleObjectInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController|AccessibleObjectInterface
      */
     protected $frontendControllerMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|TemplateService
+     * @var \PHPUnit\Framework\MockObject\MockObject|TemplateService
      */
     protected $templateServiceMock;
 
@@ -1997,7 +1997,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedSources(): void
     {
-        /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer */
+        /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -2092,7 +2092,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getImageSourceCollectionRendersDefinedLayoutKeyDefault($layoutKey, $configuration): void
     {
-        /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer */
+        /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -2216,7 +2216,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $xhtmlDoctype,
         $expectedHtml
     ): void {
-        /** @var $cObj \PHPUnit_Framework_MockObject_MockObject|ContentObjectRenderer */
+        /** @var $cObj \PHPUnit\Framework\MockObject\MockObject|ContentObjectRenderer */
         $cObj = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap', 'getImgResource'])
             ->getMock();
@@ -2450,7 +2450,7 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject | AbstractContentObject
+     * @return \PHPUnit\Framework\MockObject\MockObject | AbstractContentObject
      */
     protected function createContentObjectThrowingExceptionFixture()
     {

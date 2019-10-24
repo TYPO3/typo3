@@ -28,7 +28,7 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
 {
 
     /**
-     * @var LinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var LinkViewHelper|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $viewHelper;
 

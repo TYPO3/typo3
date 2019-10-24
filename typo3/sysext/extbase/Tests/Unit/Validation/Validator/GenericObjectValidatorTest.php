@@ -91,13 +91,13 @@ class GenericObjectValidatorTest extends UnitTestCase
     {
         $validator = new GenericObjectValidator();
 
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validatorForFoo */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validatorForFoo */
         $validatorForFoo = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
         $validatorForFoo->expects(self::once())->method('validate')->with('foovalue')->willReturn($validationResultForFoo);
 
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $validatorForBar */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $validatorForBar */
         $validatorForBar = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
@@ -159,7 +159,7 @@ class GenericObjectValidatorTest extends UnitTestCase
         $result = new Result();
         $result->addError($error);
 
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $mockUuidValidator */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $mockUuidValidator */
         $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
@@ -195,7 +195,7 @@ class GenericObjectValidatorTest extends UnitTestCase
         $result1 = new Result();
         $result1->addError($error1);
 
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $mockUuidValidator */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $mockUuidValidator */
         $mockUuidValidator = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
@@ -231,7 +231,7 @@ class GenericObjectValidatorTest extends UnitTestCase
         $result1 = new Result();
         $result1->addError($error1);
 
-        /** @var ValidatorInterface|\PHPUnit_Framework_MockObject_MockObject $mockValidatorUuidNot0xF */
+        /** @var ValidatorInterface|\PHPUnit\Framework\MockObject\MockObject $mockValidatorUuidNot0xF */
         $mockValidatorUuidNot0xF = $this->getMockBuilder(ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();

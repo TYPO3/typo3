@@ -32,12 +32,12 @@ class ProcessedFileTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Folder
+     * @var \PHPUnit\Framework\MockObject\MockObject|Folder
      */
     protected $folderMock;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ResourceStorage
+     * @var \PHPUnit\Framework\MockObject\MockObject|ResourceStorage
      */
     protected $storageMock;
 

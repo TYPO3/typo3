@@ -3900,7 +3900,7 @@ class GeneralUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->setMethods(['getPackagePath'])
             ->getMock();
-        /** @var PackageManager|\PHPUnit_Framework_MockObject_MockObject $packageManager */
+        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $packageManager */
         $packageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()

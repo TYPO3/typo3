@@ -244,7 +244,7 @@ class AbstractFormProtectionTest extends UnitTestCase
      */
     public function validateTokenForValidTokenNotCallsCreateValidationErrorMessage(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FormProtectionTesting $subject */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|FormProtectionTesting $subject */
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
@@ -262,7 +262,7 @@ class AbstractFormProtectionTest extends UnitTestCase
      */
     public function validateTokenForInvalidTokenCallsCreateValidationErrorMessage(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FormProtectionTesting $subject */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|FormProtectionTesting $subject */
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
@@ -280,7 +280,7 @@ class AbstractFormProtectionTest extends UnitTestCase
      */
     public function validateTokenForInvalidFormNameCallsCreateValidationErrorMessage(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|FormProtectionTesting $subject */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|FormProtectionTesting $subject */
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();

@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class GalleryProcessorTest extends UnitTestCase
 {
     /**
-     * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $contentObjectRenderer;
 

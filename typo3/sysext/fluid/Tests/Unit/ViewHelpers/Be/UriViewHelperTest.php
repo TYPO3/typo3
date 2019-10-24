@@ -27,7 +27,7 @@ class UriViewHelperTest extends ViewHelperBaseTestcase
 {
 
     /**
-     * @var UriViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var UriViewHelper|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $viewHelper;
 

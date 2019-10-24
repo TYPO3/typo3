@@ -185,7 +185,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function createFolderRecursiveSanitizesFilename(): void
     {
-        /** @var LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
+        /** @var LocalDriver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->createDriver([], ['sanitizeFilename']);
         $driver->expects(self::exactly(2))
             ->method('sanitizeFileName')
@@ -201,7 +201,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function determineBaseUrlUrlEncodesUriParts(): void
     {
-        /** @var LocalDriver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
+        /** @var LocalDriver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $driver */
         $driver = $this->getAccessibleMock(
             LocalDriver::class,
             ['hasCapability'],

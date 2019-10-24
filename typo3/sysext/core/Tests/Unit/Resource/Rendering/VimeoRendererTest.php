@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class VimeoRendererTest extends UnitTestCase
 {
     /**
-     * @var VimeoRenderer|\PHPUnit_Framework_MockObject_MockObject
+     * @var VimeoRenderer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 
@@ -38,7 +38,7 @@ class VimeoRendererTest extends UnitTestCase
     {
         parent::setUp();
 
-        /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
+        /** @var VimeoHelper|\PHPUnit\Framework\MockObject\MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331');
 
@@ -59,10 +59,10 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function canRenderReturnsTrueOnCorrectFile()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock1 */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock1 */
         $fileResourceMock1 = $this->createMock(File::class);
         $fileResourceMock1->expects(self::any())->method('getMimeType')->willReturn('video/vimeo');
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock2 */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock2 */
         $fileResourceMock2 = $this->createMock(File::class);
         $fileResourceMock2->expects(self::any())->method('getMimeType')->willReturn('video/unknown');
         $fileResourceMock2->expects(self::any())->method('getExtension')->willReturn('vimeo');
@@ -76,7 +76,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function canRenderReturnsFalseOnCorrectFile()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/youtube');
 
@@ -88,7 +88,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -102,7 +102,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithLoopIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -116,7 +116,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithAutoplayIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -130,10 +130,10 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithAutoplayFromReferenceIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        /** @var FileReference|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var FileReference|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileReferenceMock = $this->createMock(FileReference::class);
         $fileReferenceMock->expects(self::any())->method('getProperty')->willReturn(1);
         $fileReferenceMock->expects(self::any())->method('getOriginalFile')->willReturn($fileResourceMock);
@@ -149,7 +149,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithAutoplayAndWithoutControllsIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -163,7 +163,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithAdditionalAttributes()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -177,7 +177,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithDataAttributesForCustomization()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -191,7 +191,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithCombinationOfDataAndAdditionalAttributes()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -205,7 +205,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithCustomAllowIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -219,7 +219,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithCustomAllowAndAutoplayIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -233,14 +233,14 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithPrivateVimeoCodeIsCorrect()
     {
-        /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
+        /** @var VimeoHelper|\PHPUnit\Framework\MockObject\MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331/private0123');
 
         $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
         $subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -254,14 +254,14 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputIsEscaped()
     {
-        /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
+        /** @var VimeoHelper|\PHPUnit\Framework\MockObject\MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
         $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->willReturn('7331<script>danger</script>\'"random"quotes;');
 
         $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
         $subject->expects(self::any())->method('getOnlineMediaHelper')->willReturn($vimeoHelper);
 
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(
@@ -275,7 +275,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function renderOutputWithApiIsCorrect()
     {
-        /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
+        /** @var File|\PHPUnit\Framework\MockObject\MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
         self::assertSame(

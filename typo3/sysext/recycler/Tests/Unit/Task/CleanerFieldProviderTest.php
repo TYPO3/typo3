@@ -50,7 +50,7 @@ class CleanerFieldProviderTest extends UnitTestCase
 
     /**
      * @param array $mockedMethods
-     * @return \PHPUnit_Framework_MockObject_MockObject|SchedulerModuleController
+     * @return \PHPUnit\Framework\MockObject\MockObject|SchedulerModuleController
      */
     protected function getScheduleModuleControllerMock($mockedMethods = [])
     {

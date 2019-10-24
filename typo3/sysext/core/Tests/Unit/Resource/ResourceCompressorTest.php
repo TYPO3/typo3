@@ -30,7 +30,7 @@ class ResourceCompressorTest extends BaseTestCase
     protected $backupEnvironment = true;
 
     /**
-     * @var ResourceCompressor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var ResourceCompressor|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

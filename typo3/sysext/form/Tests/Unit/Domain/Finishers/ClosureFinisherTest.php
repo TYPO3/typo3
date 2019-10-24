@@ -37,7 +37,7 @@ class ClosureFinisherTest extends UnitTestCase
             return 'foobar';
         };
 
-        /** @var ClosureFinisher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockClosureFinisher */
+        /** @var ClosureFinisher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $mockClosureFinisher */
         $mockClosureFinisher = $this->getAccessibleMock(ClosureFinisher::class, ['dummy'], [], '', false);
 
         $mockClosureFinisher->_set('options', [

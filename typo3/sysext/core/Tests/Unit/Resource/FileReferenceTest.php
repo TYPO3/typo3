@@ -24,7 +24,7 @@ class FileReferenceTest extends UnitTestCase
     /**
      * @param array $fileReferenceProperties
      * @param array $originalFileProperties
-     * @return \TYPO3\CMS\Core\Resource\FileReference|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @return \TYPO3\CMS\Core\Resource\FileReference|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected function prepareFixture(array $fileReferenceProperties, array $originalFileProperties)
     {

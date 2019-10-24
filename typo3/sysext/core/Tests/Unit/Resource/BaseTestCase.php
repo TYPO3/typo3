@@ -130,7 +130,7 @@ abstract class BaseTestCase extends UnitTestCase
      *
      * @param string $identifier
      * @param array $mockedMethods the methods to mock
-     * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit_Framework_MockObject_MockObject
+     * @return \TYPO3\CMS\Core\Resource\File|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function getSimpleFileMock($identifier, $mockedMethods = [])
     {

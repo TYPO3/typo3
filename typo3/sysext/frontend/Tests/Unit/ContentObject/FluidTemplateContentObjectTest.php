@@ -38,22 +38,22 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var FluidTemplateContentObject|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var FluidTemplateContentObject|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 
     /**
-     * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $contentObjectRenderer;
 
     /**
-     * @var StandaloneView|\PHPUnit_Framework_MockObject_MockObject
+     * @var StandaloneView|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $standaloneView;
 
     /**
-     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     * @var Request|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $request;
 
@@ -625,7 +625,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
 
-        /** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
+        /** @var TypoScriptService|\PHPUnit\Framework\MockObject\MockObject $typoScriptServiceMock */
         $typoScriptServiceMock = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $typoScriptServiceMock
             ->expects(self::once())

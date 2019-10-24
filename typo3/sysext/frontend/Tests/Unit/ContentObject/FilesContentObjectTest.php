@@ -42,7 +42,7 @@ class FilesContentObjectTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \TYPO3\CMS\Frontend\ContentObject\FilesContentObject|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Frontend\ContentObject\FilesContentObject|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

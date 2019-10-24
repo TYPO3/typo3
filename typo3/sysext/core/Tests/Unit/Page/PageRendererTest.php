@@ -47,7 +47,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addBodyContentAddsContent()
     {
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
         $expectedReturnValue = 'ABCDE';
         $subject->addBodyContent('A');
@@ -64,7 +64,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addInlineLanguageLabelFileSetsInlineLanguageLabelFiles()
     {
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
         $fileReference = $this->getUniqueId('file_');
         $selectionPrefix = $this->getUniqueId('prefix_');
@@ -87,7 +87,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addInlineLanguageLabelFileSetsTwoDifferentInlineLanguageLabelFiles()
     {
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
         $fileReference1 = $this->getUniqueId('file1_');
         $selectionPrefix1 = $this->getUniqueId('prefix1_');
@@ -119,7 +119,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function addInlineLanguageLabelFileDoesNotSetSameLanguageFileTwice()
     {
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
         $fileReference = $this->getUniqueId('file2_');
         $selectionPrefix = $this->getUniqueId('prefix2_');
@@ -138,7 +138,7 @@ class PageRendererTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1284906026);
 
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
         $subject->_set('charSet', 'utf-8');
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
@@ -152,7 +152,7 @@ class PageRendererTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1284906026);
 
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
         $subject->_set('lang', 'default');
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
@@ -163,7 +163,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function includeLanguageFileForInlineDoesNotAddToInlineLanguageLabelsIfFileCouldNotBeRead()
     {
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
         $subject->_set('lang', 'default');
         $subject->_set('charSet', 'utf-8');
@@ -229,7 +229,7 @@ class PageRendererTest extends UnitTestCase
      */
     public function includeLanguageFileForInlineAddsProcessesLabelsToInlineLanguageLabels($llFileContent, $selectionPrefix, $stripFromSelectionName, $expectation)
     {
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['readLLfile'], [], '', false);
         $subject->_set('lang', 'default');
         $subject->_set('charSet', 'utf-8');
@@ -245,7 +245,7 @@ class PageRendererTest extends UnitTestCase
     public function getAddedMetaTag()
     {
         $this->resetSingletonInstances = true;
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
@@ -263,7 +263,7 @@ class PageRendererTest extends UnitTestCase
     public function overrideMetaTag()
     {
         $this->resetSingletonInstances = true;
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'Axel Foley');
         $subject->setMetaTag('nAme', 'Author', 'foobar');
@@ -282,7 +282,7 @@ class PageRendererTest extends UnitTestCase
     public function unsetAddedMetaTag()
     {
         $this->resetSingletonInstances = true;
-        /** @var PageRenderer|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['whatDoesThisDo']);
         $subject->setMetaTag('nAme', 'Author', 'foobar');
         $subject->removeMetaTag('naMe', 'AUTHOR');

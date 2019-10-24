@@ -108,7 +108,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
         ];
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
 
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['dummy'])
             ->disableOriginalConstructor()
@@ -177,7 +177,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromTsConfigIntoAccountIfUserIsNotAdmin(array $userTsConfiguration): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
@@ -319,7 +319,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsFromStorageOverwritesDefaultPermissions(array $defaultPermissions, $storageUid, array $storagePermissions, array $expectedPermissions): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
@@ -361,7 +361,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsFromStorageAlwaysReturnsDefaultPermissionsForAdmins(array $defaultPermissions, $storageUid, array $storagePermissions): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
@@ -513,7 +513,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsTakesUserDefaultPermissionsFromRecordIntoAccountIfUserIsNotAdmin(string $permissionValue, array $expectedPermissions): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin', 'getTSConfig'])
             ->getMock();
@@ -536,7 +536,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function getFilePermissionsGrantsAllPermissionsToAdminUsers(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin'])
             ->getMock();
@@ -572,7 +572,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationReturnsTrueIfPassedValueEqualsConfiguration(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -590,7 +590,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationAllowsSettingMultipleBitsInValue(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -661,7 +661,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationAlwaysReturnsFalseIfNoConfirmationIsSet(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -679,7 +679,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
      */
     public function jsConfirmationReturnsTrueIfConfigurationIsMissing(): void
     {
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['getTSConfig'])
             ->getMock();
@@ -766,7 +766,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             GeneralUtility::addInstance(ConnectionPool::class, $databaseProphecy->reveal());
         }
 
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $subject */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $subject */
         $subject = $this->getMockBuilder(BackendUserAuthentication::class)
             ->setMethods(['isAdmin'])
             ->getMock();

@@ -28,12 +28,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AbstractConfigurationManagerTest extends UnitTestCase
 {
     /**
-     * @var AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+     * @var AbstractConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
      */
     protected $abstractConfigurationManager;
 
     /**
-     * @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+     * @var TypoScriptService|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
      */
     protected $mockTypoScriptService;
 
@@ -395,7 +395,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function switchableControllerActionsAreNotOverriddenIfPluginNameIsSpecified(): void
     {
-        /** @var AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $abstractConfigurationManager */
+        /** @var AbstractConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
             [
@@ -422,7 +422,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function switchableControllerActionsAreOverriddenIfSpecifiedPluginIsTheCurrentPlugin(): void
     {
-        /** @var AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $abstractConfigurationManager */
+        /** @var AbstractConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $configuration = [
             'extensionName' => 'CurrentExtensionName',
             'pluginName' => 'CurrentPluginName',
@@ -455,7 +455,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function switchableControllerActionsAreOverriddenIfPluginNameIsNotSpecified(): void
     {
-        /** @var AbstractConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $abstractConfigurationManager */
+        /** @var AbstractConfigurationManager|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $abstractConfigurationManager */
         $configuration = ['switchableControllerActions' => ['overriddenSwitchableControllerActions']];
         $abstractConfigurationManager = $this->getAccessibleMock(
             AbstractConfigurationManager::class,
@@ -695,7 +695,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
      */
     public function getContentObjectTheCurrentContentObject(): void
     {
-        /** @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject $mockContentObject */
+        /** @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject $mockContentObject */
         $mockContentObject = $this->createMock(ContentObjectRenderer::class);
         $this->abstractConfigurationManager->setContentObject($mockContentObject);
         self::assertSame($this->abstractConfigurationManager->getContentObject(), $mockContentObject);

@@ -31,12 +31,12 @@ class AbstractTemplateViewTest extends UnitTestCase
     protected $view;
 
     /**
-     * @var RenderingContext|\PHPUnit_Framework_MockObject_MockObject
+     * @var RenderingContext|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $renderingContext;
 
     /**
-     * @var ViewHelperVariableContainer|\PHPUnit_Framework_MockObject_MockObject
+     * @var ViewHelperVariableContainer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $viewHelperVariableContainer;
 

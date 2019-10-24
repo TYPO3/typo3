@@ -30,17 +30,17 @@ class ObjectConverterTest extends UnitTestCase
     protected $converter;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockReflectionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockObjectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Extbase\Object\Container\Container|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockContainer;
 

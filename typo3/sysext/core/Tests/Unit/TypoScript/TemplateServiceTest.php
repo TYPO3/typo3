@@ -41,7 +41,7 @@ class TemplateServiceTest extends UnitTestCase
     protected $templateService;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|TemplateService
+     * @var \PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface|TemplateService
      */
     protected $templateServiceMock;
 

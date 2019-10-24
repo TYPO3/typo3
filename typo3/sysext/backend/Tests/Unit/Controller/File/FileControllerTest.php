@@ -30,27 +30,27 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class FileControllerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Resource\File|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Core\Resource\File|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $fileResourceMock;
 
     /**
-     * @var \TYPO3\CMS\Core\Resource\Folder|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Core\Resource\Folder|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $folderResourceMock;
 
     /**
-     * @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockFileProcessor;
 
     /**
-     * @var ServerRequest|\PHPUnit_Framework_MockObject_MockObject
+     * @var ServerRequest|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $request;
 
     /**
-     * @var Response|\PHPUnit_Framework_MockObject_MockObject
+     * @var Response|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $response;
 

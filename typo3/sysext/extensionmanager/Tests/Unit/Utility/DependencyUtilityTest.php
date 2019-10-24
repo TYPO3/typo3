@@ -45,7 +45,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooLow()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -63,7 +63,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooHigh()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -82,7 +82,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkTypo3DependencyThrowsExceptionIfIdentifierIsNotTypo3()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -99,7 +99,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkTypo3DependencyReturnsTrueIfVersionNumberIsInRange()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -116,7 +116,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkTypo3DependencyCanHandleEmptyVersionHighestVersion()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -133,7 +133,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkTypo3DependencyCanHandleEmptyVersionLowestVersion()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -150,7 +150,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooLow()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -168,7 +168,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooHigh()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -187,7 +187,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkPhpDependencyThrowsExceptionIfIdentifierIsNotTypo3()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -204,7 +204,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkPhpDependencyReturnsTrueIfVersionNumberIsInRange()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -221,7 +221,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkPhpDependencyCanHandleEmptyVersionHighestVersion()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -238,7 +238,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function checkPhpDependencyCanHandleEmptyVersionLowestVersion()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -267,7 +267,7 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyStorage = new \SplObjectStorage();
         $dependencyStorage->attach($dependencyMock);
         $extensionMock->setDependencies($dependencyStorage);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DependencyUtility $dependencyUtility */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DependencyUtility $dependencyUtility */
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)
             ->setMethods(['checkPhpDependency', 'checkTypo3Dependency'])
             ->getMock();
@@ -292,7 +292,7 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyStorage = new \SplObjectStorage();
         $dependencyStorage->attach($dependencyMock);
         $extensionMock->setDependencies($dependencyStorage);
-        /** @var \PHPUnit_Framework_MockObject_MockObject|DependencyUtility $dependencyUtility */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|DependencyUtility $dependencyUtility */
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)
             ->setMethods(['checkPhpDependency', 'checkTypo3Dependency'])
             ->getMock();
@@ -306,7 +306,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function isVersionCompatibleReturnsTrueForCompatibleVersion()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
@@ -323,7 +323,7 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function isVersionCompatibleReturnsFalseForIncompatibleVersion()
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|Dependency $dependencyMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();

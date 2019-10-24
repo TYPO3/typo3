@@ -166,7 +166,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function initializeFormElementExpectedCallInitializeFormObjectHooks(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock */
         $abstractFormElementMock = $this->getAccessibleMockForAbstractClass(
             AbstractFormElement::class,
             [],
@@ -176,7 +176,7 @@ class AbstractFormElementTest extends UnitTestCase
             true,
             []
         );
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $secondMock */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $secondMock */
         $secondMock = $this->getAccessibleMockForAbstractClass(
             AbstractFormElement::class,
             [],
@@ -208,7 +208,7 @@ class AbstractFormElementTest extends UnitTestCase
      */
     public function getUniqueIdentifierExpectedUnique(): void
     {
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock1 */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock1 */
         $abstractFormElementMock1 = $this->getAccessibleMockForAbstractClass(
             AbstractFormElement::class,
             [],
@@ -221,7 +221,7 @@ class AbstractFormElementTest extends UnitTestCase
             ]
         );
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock2 */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractFormElement $abstractFormElementMock2 */
         $abstractFormElementMock2 = $this->getAccessibleMockForAbstractClass(
             AbstractFormElement::class,
             [],

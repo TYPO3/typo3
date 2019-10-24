@@ -39,7 +39,7 @@ class ImageScriptServiceTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
+     * @var EnvironmentService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $environmentService;
 

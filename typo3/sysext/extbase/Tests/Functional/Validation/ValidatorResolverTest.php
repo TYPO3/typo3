@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     private $validatorResolver;
 

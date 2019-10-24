@@ -40,7 +40,7 @@ class CollectionValidatorTest extends UnitTestCase
     /**
      * @param array $options
      * @param array $mockedMethods
-     * @return \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @return \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected function getValidator(array $options = [], array $mockedMethods = ['translateErrorMessage'])
     {

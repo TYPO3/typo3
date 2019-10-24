@@ -36,7 +36,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222203);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $node->__construct([], null);
     }
@@ -49,7 +49,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366226639);
         $parent = $this->createMock(NodeInterface::class);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo/bar',
@@ -63,7 +63,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function constructorCallsCreateChildrenIfChildrenAreSet()
     {
         $parent = $this->createMock(NodeInterface::class);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['createChildren'],
@@ -88,7 +88,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function constructorSetsParent()
     {
         $parent = $this->createMock(NodeInterface::class);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo',
@@ -103,7 +103,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function constructorSetsTargetPermission()
     {
         $parent = $this->createMock(NodeInterface::class);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $targetPermission = '2550';
         $structure = [
@@ -119,7 +119,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsName()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
@@ -132,7 +132,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArray()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -155,7 +155,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithWarningStatusIfDirectoryNotExists()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -179,7 +179,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithErrorStatusIfNodeIsNotADirectory()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -204,7 +204,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithErrorStatusIfDirectoryExistsButIsNotWritable()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -229,7 +229,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithNoticeStatusIfDirectoryExistsButPermissionAreNotCorrect()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -254,7 +254,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithOkStatusIfDirectoryExistsAndPermissionAreCorrect()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
@@ -279,7 +279,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusCallsGetStatusOnChildren()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['exists', 'isDirectory', 'isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'isWritable'],
@@ -304,7 +304,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithOwnStatusAndStatusOfChild()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['exists', 'isDirectory', 'isPermissionCorrect', 'getRelativePathBelowSiteRoot', 'isWritable'],
@@ -332,7 +332,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function fixCallsFixSelfAndReturnsItsResult()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['fixSelf'],
@@ -350,7 +350,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function fixCallsFixOnChildrenAndReturnsMergedResult()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
         $uniqueReturnSelf = $this->getUniqueId('foo_');
         $node->expects(self::once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
@@ -373,7 +373,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function fixSelfCallsCreateDirectoryIfDirectoryDoesNotExistAndReturnsResult()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['exists', 'createDirectory', 'isPermissionCorrect'],
@@ -393,7 +393,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function fixSelfReturnsErrorStatusIfNodeExistsButIsNotADirectoryAndReturnsResult()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['exists', 'isWritable', 'getRelativePathBelowSiteRoot', 'isDirectory', 'getAbsolutePath'],
@@ -415,7 +415,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function fixSelfCallsFixPermissionIfDirectoryExistsButIsNotWritable()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             DirectoryNode::class,
             ['exists', 'isWritable', 'fixPermission'],
@@ -437,7 +437,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366740091);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $node->expects(self::once())->method('getAbsolutePath')->willReturn('');
         $node->expects(self::once())->method('exists')->willReturn(true);
@@ -449,7 +449,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function createDirectoryCreatesDirectory()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects(self::once())->method('exists')->willReturn(false);
@@ -464,7 +464,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function createDirectoryReturnsOkStatusIfDirectoryWasCreated()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects(self::once())->method('exists')->willReturn(false);
@@ -478,7 +478,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function createDirectoryReturnsErrorStatusIfDirectoryWasNotCreated()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
@@ -496,7 +496,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222204);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $brokenStructure = [
             [
@@ -513,7 +513,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222205);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $brokenStructure = [
             [
@@ -530,7 +530,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222206);
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $brokenStructure = [
             [
@@ -550,7 +550,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function getChildrenReturnsCreatedChild()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(NodeInterface::class);
         $childName = $this->getUniqueId('test_');
@@ -577,7 +577,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function isWritableReturnsFalseIfNodeDoesNotExist()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -589,7 +589,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function isWritableReturnsTrueIfNodeExistsAndFileCanBeCreated()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -604,7 +604,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             self::markTestSkipped('Test skipped if run on linux as root');
         }
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
@@ -617,7 +617,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function isDirectoryReturnsTrueIfNameIsADirectory()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -630,7 +630,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
      */
     public function isDirectoryReturnsFalseIfNameIsALinkToADirectory()
     {
-        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);

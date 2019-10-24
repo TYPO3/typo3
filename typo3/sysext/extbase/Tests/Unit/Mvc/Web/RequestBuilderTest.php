@@ -33,12 +33,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class RequestBuilderTest extends UnitTestCase
 {
     /**
-     * @var RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var RequestBuilder|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $requestBuilder;
 
     /**
-     * @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ConfigurationManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockConfigurationManager;
 
@@ -48,22 +48,22 @@ class RequestBuilderTest extends UnitTestCase
     protected $configuration;
 
     /**
-     * @var ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockObjectManager;
 
     /**
-     * @var ExtensionService|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExtensionService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockExtensionService;
 
     /**
-     * @var EnvironmentService|\PHPUnit_Framework_MockObject_MockObject
+     * @var EnvironmentService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockEnvironmentService;
 
     /**
-     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     * @var Request|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockRequest;
 

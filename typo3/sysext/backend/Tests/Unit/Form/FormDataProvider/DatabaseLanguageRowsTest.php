@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseLanguageRowsTest extends UnitTestCase
 {
     /**
-     * @var DatabaseLanguageRows|\PHPUnit_Framework_MockObject_MockObject
+     * @var DatabaseLanguageRows|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

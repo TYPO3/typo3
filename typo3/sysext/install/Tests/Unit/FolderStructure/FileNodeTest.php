@@ -34,7 +34,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366927513);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $node->__construct([], null);
     }
@@ -47,7 +47,7 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366222207);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo/bar',
@@ -61,7 +61,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function constructorSetsParent()
     {
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo',
@@ -76,7 +76,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function constructorSetsTargetPermission()
     {
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $targetPermission = '0660';
         $structure = [
@@ -92,7 +92,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsName()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
@@ -107,7 +107,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380364361);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $structure = [
@@ -123,7 +123,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsTargetContent()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $targetContent = $this->getUniqueId('content_');
@@ -140,7 +140,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function constructorSetsTargetContentToContentOfTargetContentFile()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $targetFile = $this->getVirtualTestFilePath('test_');
@@ -161,7 +161,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380364362);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $targetFile = $this->getVirtualTestFilePath('test_');
@@ -177,7 +177,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function targetContentIsNullIfNotGiven()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $structure = [
@@ -192,7 +192,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArray()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -216,7 +216,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithWarningStatusIFileNotExists()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -241,7 +241,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithErrorStatusIfNodeIsNotAFile()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -267,7 +267,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayNoticeStatusIfFileExistsButIsNotWritable()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -293,7 +293,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithNoticeStatusIfFileExistsButPermissionAreNotCorrect()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -319,7 +319,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithNoticeStatusIfFileExistsButContentIsNotCorrect()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -345,7 +345,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function getStatusReturnsArrayWithOkStatusIfFileExistsAndPermissionAreCorrect()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
@@ -371,7 +371,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixCallsFixSelfAndReturnsItsResult()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['fixSelf'],
@@ -389,7 +389,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixSelfCallsCreateFileIfFileDoesNotExistAndReturnsResult()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['exists', 'createFile', 'setContent', 'getAbsolutePath', 'isFile', 'isPermissionCorrect'],
@@ -412,7 +412,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixSelfCallsSetsContentIfFileCreationWasSuccessfulAndTargetContentIsNotNullAndReturnsResult()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['exists', 'createFile', 'setContent', 'getAbsolutePath', 'isFile', 'isPermissionCorrect'],
@@ -438,7 +438,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixSelfDoesNotCallSetContentIfFileCreationFailed()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['exists', 'createFile', 'setContent', 'getAbsolutePath', 'isFile', 'isPermissionCorrect'],
@@ -461,7 +461,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixSelfDoesNotCallSetContentIfFileTargetContentIsNull()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['exists', 'createFile', 'setContent', 'getAbsolutePath', 'isFile', 'isPermissionCorrect'],
@@ -484,7 +484,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixSelfReturnsErrorStatusIfNodeExistsButIsNotAFileAndReturnsResult()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['exists', 'createFile', 'getAbsolutePath', 'isFile', 'isPermissionCorrect', 'fixPermission'],
@@ -505,7 +505,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function fixSelfCallsFixPermissionIfFileExistsButPermissionAreWrong()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             FileNode::class,
             ['exists', 'createFile', 'getAbsolutePath', 'isFile', 'isPermissionCorrect', 'getRelativePathBelowSiteRoot'],
@@ -544,7 +544,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366398198);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $node->expects(self::once())->method('getAbsolutePath')->willReturn('');
         $node->expects(self::once())->method('exists')->willReturn(true);
@@ -556,7 +556,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function createFileReturnsOkStatusIfFileWasCreated()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         $node->expects(self::once())->method('exists')->willReturn(false);
@@ -570,7 +570,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function createFileCreatesFile()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         $node->expects(self::once())->method('exists')->willReturn(false);
@@ -585,7 +585,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function createFileReturnsErrorStatusIfFileWasNotCreated()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestDir();
         chmod($path, 02550);
@@ -603,7 +603,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1367056363);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -615,7 +615,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function isContentCorrectReturnsTrueIfTargetContentPropertyIsNull()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
@@ -629,7 +629,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function isContentCorrectReturnsTrueIfTargetContentEqualsCurrentContent()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         $content = $this->getUniqueId('content_');
@@ -644,7 +644,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function isContentCorrectReturnsFalseIfTargetContentNotEqualsCurrentContent()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         $content = $this->getUniqueId('content1_');
@@ -661,7 +661,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function isPermissionCorrectReturnsTrueIfTargetPermissionAndCurrentPermissionAreIdentical()
     {
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getCurrentPermission', 'isWindowsOs'], [], '', false);
         $node->expects(self::any())->method('isWindowsOs')->willReturn(false);
         $node->expects(self::any())->method('getCurrentPermission')->willReturn('0664');
@@ -681,7 +681,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1367060201);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -696,7 +696,7 @@ class FileNodeTest extends FolderStructureTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1367060202);
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
@@ -710,7 +710,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function setContentSetsContentToFile()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
@@ -727,7 +727,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function setContentReturnsOkStatusIfContentWasSuccessfullySet()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
@@ -745,7 +745,7 @@ class FileNodeTest extends FolderStructureTestCase
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
             self::markTestSkipped('Test skipped if run on linux as root');
         }
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $dir = $this->getVirtualTestDir('dir_');
         $file = $dir . '/' . $this->getUniqueId('file_');
@@ -762,7 +762,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function isFileReturnsTrueIfNameIsFile()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
@@ -776,7 +776,7 @@ class FileNodeTest extends FolderStructureTestCase
      */
     public function isFileReturnsFalseIfNameIsALinkFile()
     {
-        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);

@@ -87,7 +87,7 @@ class FolderLinkHandlerTest extends UnitTestCase
             ->willReturn($folderObject);
         $expected['folder'] = $folderObject;
 
-        /** @var FolderLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var FolderLinkHandler|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(FolderLinkHandler::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
         self::assertEquals($expected, $subject->resolveHandlerData($input));
@@ -113,7 +113,7 @@ class FolderLinkHandlerTest extends UnitTestCase
 
         $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
         $folderData = explode(':', $parameters['folder']);
-        /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
+        /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock(['getUid']);

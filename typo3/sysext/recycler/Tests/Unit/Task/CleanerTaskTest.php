@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class CleanerTaskTest extends UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask
+     * @var \PHPUnit\Framework\MockObject\MockObject|CleanerTask
      */
     protected $subject;
 
@@ -78,7 +78,7 @@ class CleanerTaskTest extends UnitTestCase
         $GLOBALS['TCA']['pages']['ctrl']['delete'] = 'deleted';
         $GLOBALS['TCA']['pages']['ctrl']['tstamp'] = 'tstamp';
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|CleanerTask $subject */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|CleanerTask $subject */
         $subject = $this->getMockBuilder(CleanerTask::class)
             ->setMethods(['getPeriodAsTimestamp'])
             ->disableOriginalConstructor()

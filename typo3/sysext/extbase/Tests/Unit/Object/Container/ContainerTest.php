@@ -40,7 +40,7 @@ class ContainerTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $logger;
 

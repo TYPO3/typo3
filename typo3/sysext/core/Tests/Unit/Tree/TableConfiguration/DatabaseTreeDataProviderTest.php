@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseTreeDataProviderTest extends UnitTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|DatabaseTreeDataProvider|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|DatabaseTreeDataProvider|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

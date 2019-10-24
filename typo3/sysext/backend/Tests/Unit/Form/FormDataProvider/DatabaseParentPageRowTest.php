@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseParentPageRowTest extends UnitTestCase
 {
     /**
-     * @var DatabaseParentPageRow|\PHPUnit_Framework_MockObject_MockObject
+     * @var DatabaseParentPageRow|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

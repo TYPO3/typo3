@@ -55,7 +55,7 @@ class InstallUtilityTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|InstallUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|InstallUtility|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $installMock;
 

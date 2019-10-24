@@ -91,7 +91,7 @@ class LoggerTest extends UnitTestCase
         $level = LogLevel::DEBUG;
         $message = 'test';
         $logger = new Logger($component);
-        /** @var $processor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $processor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface|\PHPUnit\Framework\MockObject\MockObject */
         $processor = $this->getMockBuilder(NullProcessor::class)
             ->setMethods(['processLogRecord'])
             ->getMock();
@@ -108,7 +108,7 @@ class LoggerTest extends UnitTestCase
     public function loggerLogsRecord()
     {
         $logger = new Logger('test.core.log');
-        /** @var NullWriter|\PHPUnit_Framework_MockObject_MockObject $writer */
+        /** @var NullWriter|\PHPUnit\Framework\MockObject\MockObject $writer */
         $writer = $this->getMockBuilder(NullWriter::class)
             ->setMethods(['writeLog'])
             ->getMock();

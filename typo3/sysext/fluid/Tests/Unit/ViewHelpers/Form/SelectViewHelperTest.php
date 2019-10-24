@@ -391,7 +391,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField()
     {
-        /** @var $mockPersistenceManager \PHPUnit_Framework_MockObject_MockObject|PersistenceManagerInterface */
+        /** @var $mockPersistenceManager \PHPUnit\Framework\MockObject\MockObject|PersistenceManagerInterface */
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturnCallback(
             function ($object) {

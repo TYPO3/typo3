@@ -27,7 +27,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class VimeoHelperTest extends UnitTestCase
 {
     /**
-     * @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var VimeoHelper|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 
@@ -59,7 +59,7 @@ class VimeoHelperTest extends UnitTestCase
      */
     public function transformUrlToFileReturnsExpectedResult($url, $videoId, $expectedResult): void
     {
-        /** @var Folder|\PHPUnit_Framework_MockObject_MockObject $mockedFolder */
+        /** @var Folder|\PHPUnit\Framework\MockObject\MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
 
         $this->subject->expects(self::any())->method('transformMediaIdToFile')

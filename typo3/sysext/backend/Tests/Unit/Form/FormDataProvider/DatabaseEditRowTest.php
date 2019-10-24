@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseEditRowTest extends UnitTestCase
 {
     /**
-     * @var DatabaseEditRow|\PHPUnit_Framework_MockObject_MockObject
+     * @var DatabaseEditRow|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

@@ -166,7 +166,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      */
     public function prepareDependenciesBuildsFullIdentifierList(array $dependencies, array $expectedDependencies)
     {
-        /** @var DependencyOrderingService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
+        /** @var DependencyOrderingService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
         $preparedDependencies = $dependencyOrderingService->_call('prepareDependencies', $dependencies);
         self::assertEquals($expectedDependencies, $preparedDependencies);
@@ -715,7 +715,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
      */
     public function findPathInGraphReturnsCorrectPath(array $graph, $from, $to, array $expected)
     {
-        /** @var DependencyOrderingService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
+        /** @var DependencyOrderingService|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
         $path = $dependencyOrderingService->_call('findPathInGraph', $graph, $from, $to);
 

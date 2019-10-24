@@ -441,11 +441,11 @@ class FileHandlingUtilityTest extends UnitTestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|FileHandlingUtility
+     * @return \PHPUnit\Framework\MockObject\MockObject|FileHandlingUtility
      */
     protected function getPreparedFileHandlingMockForDirectoryCreationTests()
     {
-        /** @var $fileHandlerMock FileHandlingUtility|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $fileHandlerMock FileHandlingUtility|\PHPUnit\Framework\MockObject\MockObject */
         $fileHandlerMock = $this->getMockBuilder(FileHandlingUtility::class)
             ->setMethods(['createNestedDirectory', 'getAbsolutePath', 'directoryExists'])
             ->getMock();

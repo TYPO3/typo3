@@ -25,17 +25,17 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class BackendFormProtectionTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 
     /**
-     * @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject
+     * @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $backendUserMock;
 
     /**
-     * @var Registry|\PHPUnit_Framework_MockObject_MockObject
+     * @var Registry|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $registryMock;
 

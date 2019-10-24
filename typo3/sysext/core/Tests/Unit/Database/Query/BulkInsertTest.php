@@ -322,7 +322,7 @@ class BulkInsertTest extends UnitTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('You can only insert 10 rows in a single INSERT statement with platform "mock".');
 
-        /** @var \PHPUnit_Framework_MockObject_MockObject|BulkInsertQuery $subject */
+        /** @var \PHPUnit\Framework\MockObject\MockObject|BulkInsertQuery $subject */
         $subject = $this->getAccessibleMock(
             BulkInsertQuery::class,
             ['getInsertMaxRows'],

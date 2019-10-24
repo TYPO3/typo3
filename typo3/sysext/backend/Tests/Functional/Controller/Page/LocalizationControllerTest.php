@@ -32,7 +32,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
     protected $assertionDataSetDirectory = 'typo3/sysext/backend/Tests/Functional/Controller/Page/Localization/CSV/DataSet/';
 
     /**
-     * @var LocalizationController|\PHPUnit_Framework_MockObject_MockObject
+     * @var LocalizationController|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

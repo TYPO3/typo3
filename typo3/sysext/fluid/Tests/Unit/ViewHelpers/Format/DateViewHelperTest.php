@@ -24,7 +24,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 class DateViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var DateViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var DateViewHelper|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 

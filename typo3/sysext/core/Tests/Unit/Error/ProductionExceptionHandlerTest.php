@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ProductionExceptionHandlerTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 
@@ -60,7 +60,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
     public function echoExceptionWebEscapesExceptionTitle()
     {
         $title = '<b>b</b><script>alert(1);</script>';
-        /** @var $exception \Exception|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $exception \Exception|\PHPUnit\Framework\MockObject\MockObject */
         $exception = $this->getMockBuilder('Exception')
             ->setMethods(['getTitle'])
             ->setConstructorArgs(['some message'])

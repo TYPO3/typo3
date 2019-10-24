@@ -23,7 +23,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DatabaseRecordTypeValueTest extends UnitTestCase
 {
     /**
-     * @var DatabaseRecordTypeValue|\PHPUnit_Framework_MockObject_MockObject
+     * @var DatabaseRecordTypeValue|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

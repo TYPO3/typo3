@@ -42,7 +42,7 @@ class DispatcherTest extends UnitTestCase
     protected $objectManagerProphecy;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $signalSlotDispatcher;
 

@@ -33,7 +33,7 @@ class CaseContentObjectTest extends UnitTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var CaseContentObject|\PHPUnit_Framework_MockObject_MockObject
+     * @var CaseContentObject|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 

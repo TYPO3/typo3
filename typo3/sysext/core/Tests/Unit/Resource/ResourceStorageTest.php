@@ -45,7 +45,7 @@ class ResourceStorageTest extends BaseTestCase
     protected $resetSingletonInstances = true;
 
     /**
-     * @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject
+     * @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 
@@ -55,7 +55,7 @@ class ResourceStorageTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        /** @var FileRepository|\PHPUnit_Framework_MockObject_MockObject $fileRepositoryMock */
+        /** @var FileRepository|\PHPUnit\Framework\MockObject\MockObject $fileRepositoryMock */
         $fileRepositoryMock = $this->createMock(FileRepository::class);
         GeneralUtility::setSingletonInstance(
             FileRepository::class,
@@ -74,7 +74,7 @@ class ResourceStorageTest extends BaseTestCase
      *
      * @param array $configuration
      * @param bool $mockPermissionChecks
-     * @param AbstractDriver|\PHPUnit_Framework_MockObject_MockObject $driverObject
+     * @param AbstractDriver|\PHPUnit\Framework\MockObject\MockObject $driverObject
      * @param ResourceFactory $resourceFactory
      * @param array $storageRecord
      * @param array $mockedMethods
@@ -149,7 +149,7 @@ class ResourceStorageTest extends BaseTestCase
      * @param $driverConfiguration
      * @param ResourceStorage $storageObject
      * @param array $mockedDriverMethods
-     * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject
+     * @return \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit\Framework\MockObject\MockObject
      */
     protected function createDriverMock(
         $driverConfiguration,
@@ -285,7 +285,7 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function addFileFailsIfFileDoesNotExist(): void
     {
-        /** @var Folder|\PHPUnit_Framework_MockObject_MockObject $mockedFolder */
+        /** @var Folder|\PHPUnit\Framework\MockObject\MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1319552745);
@@ -298,12 +298,12 @@ class ResourceStorageTest extends BaseTestCase
      */
     public function getPublicUrlReturnsNullIfStorageIsNotOnline(): void
     {
-        /** @var $driver LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $driver LocalDriver|\PHPUnit\Framework\MockObject\MockObject */
         $driver = $this->getMockBuilder(LocalDriver::class)
             ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
             ->getMock();
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['isOnline', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$driver, ['configuration' => []]])
@@ -355,14 +355,14 @@ class ResourceStorageTest extends BaseTestCase
         array $permissionsFromDriver,
         bool $expectedResult
     ): void {
-        /** @var $mockedDriver LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $mockedDriver LocalDriver|\PHPUnit\Framework\MockObject\MockObject */
         $mockedDriver = $this->createMock(LocalDriver::class);
         $mockedDriver->expects(self::any())->method('getPermissions')->willReturn($permissionsFromDriver);
         $mockedResourceFactory = $this->createMock(ResourceFactory::class);
-        /** @var $mockedFolder Folder|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $mockedFolder Folder|\PHPUnit\Framework\MockObject\MockObject */
         $mockedFolder = $this->createMock(Folder::class);
         // Let all other checks pass
-        /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['isWritable', 'isBrowsable', 'checkUserActionPermission', 'getResourceFactoryInstance'])
             ->setConstructorArgs([$mockedDriver, []])
@@ -574,7 +574,7 @@ class ResourceStorageTest extends BaseTestCase
             'name' => $fileInfo['name']
         ];
         $hash = 'asdfg';
-        /** @var $mockedDriver LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $mockedDriver LocalDriver|\PHPUnit\Framework\MockObject\MockObject */
         $mockedDriver = $this->getMockBuilder(LocalDriver::class)
             ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
             ->getMock();
@@ -583,7 +583,7 @@ class ResourceStorageTest extends BaseTestCase
         $this->subject->setDriver($mockedDriver);
         $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);
         $this->subject->expects(self::any())->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
-        /** @var $mockedFile File|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $mockedFile File|\PHPUnit\Framework\MockObject\MockObject */
         $mockedFile = $this->createMock(File::class);
         $mockedFile->expects(self::any())->method('getIdentifier')->willReturn($fileInfo['identifier']);
         // called by indexer because the properties are updated
@@ -620,7 +620,7 @@ class ResourceStorageTest extends BaseTestCase
         ]);
         $this->initializeVfs();
         $targetFolder = $this->getSimpleFolderMock('/targetFolder/');
-        /** @var $sourceDriver LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $sourceDriver LocalDriver|\PHPUnit\Framework\MockObject\MockObject */
         $sourceDriver = $this->createMock(LocalDriver::class);
         $sourceDriver->expects(self::once())->method('deleteFile')->with(self::equalTo($sourceFileIdentifier));
         $configuration = $this->convertConfigurationArrayToFlexformXml([]);
@@ -630,7 +630,7 @@ class ResourceStorageTest extends BaseTestCase
         $sourceFile->expects(self::any())->method('getStorage')->willReturn($sourceStorage);
         $sourceFile->expects(self::once())->method('getUpdatedProperties')->willReturn(array_keys($fileInfoDummy));
         $sourceFile->expects(self::once())->method('getProperties')->willReturn($fileInfoDummy);
-        /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\LocalDriver|\PHPUnit\Framework\MockObject\MockObject */
         $mockedDriver = $this->getMockBuilder(LocalDriver::class)
             ->setConstructorArgs([['basePath' => $this->getMountRootUrl()]])
             ->getMock();
@@ -694,12 +694,12 @@ class ResourceStorageTest extends BaseTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1325952534);
 
-        /** @var \TYPO3\CMS\Core\Resource\Folder|\PHPUnit_Framework_MockObject_MockObject $folderMock */
+        /** @var \TYPO3\CMS\Core\Resource\Folder|\PHPUnit\Framework\MockObject\MockObject $folderMock */
         $folderMock = $this->createMock(Folder::class);
-        /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\AbstractDriver|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $mockedDriver \TYPO3\CMS\Core\Resource\Driver\AbstractDriver|\PHPUnit\Framework\MockObject\MockObject */
         $mockedDriver = $this->getMockForAbstractClass(AbstractDriver::class);
         $mockedDriver->expects(self::once())->method('isFolderEmpty')->willReturn(false);
-        /** @var $subject ResourceStorage|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
+        /** @var $subject ResourceStorage|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ResourceStorage::class, ['checkFolderActionPermission'], [], '', false);
         $subject->expects(self::any())->method('checkFolderActionPermission')->willReturn(true);
         $subject->_set('driver', $mockedDriver);

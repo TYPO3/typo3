@@ -36,7 +36,7 @@ class LinkNodeTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380485700);
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $node->__construct([], null);
     }
@@ -49,7 +49,7 @@ class LinkNodeTest extends UnitTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380546061);
         $parent = $this->createMock(NodeInterface::class);
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo/bar',
@@ -63,7 +63,7 @@ class LinkNodeTest extends UnitTestCase
     public function constructorSetsParent()
     {
         $parent = $this->createMock(NodeInterface::class);
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $structure = [
             'name' => 'foo',
@@ -77,7 +77,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function constructorSetsName()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
@@ -90,7 +90,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function constructorSetsNameAndTarget()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
@@ -104,7 +104,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function getStatusReturnsArray()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['isWindowsOs', 'getAbsolutePath', 'exists'],
@@ -123,7 +123,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function getStatusReturnsArrayWithInformationStatusIfRunningOnWindows()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['isWindowsOs', 'getAbsolutePath', 'exists'],
@@ -144,7 +144,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function getStatusReturnsArrayWithErrorStatusIfLinkNotExists()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['isWindowsOs', 'getAbsolutePath', 'exists'],
@@ -166,7 +166,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function getStatusReturnsArrayWithWarningStatusIfNodeIsNotALink()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'getRelativePathBelowSiteRoot'],
@@ -186,7 +186,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function getStatusReturnsErrorStatusIfLinkTargetIsNotCorrect()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'isTargetCorrect', 'getCurrentTarget', 'getRelativePathBelowSiteRoot'],
@@ -208,7 +208,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function getStatusReturnsOkStatusIfLinkExistsAndTargetIsCorrect()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['isWindowsOs', 'getAbsolutePath', 'exists', 'isLink', 'isTargetCorrect', 'getRelativePathBelowSiteRoot'],
@@ -230,7 +230,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function fixReturnsEmptyArray()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['getRelativePathBelowSiteRoot'],
@@ -249,7 +249,7 @@ class LinkNodeTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380556246);
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists'], [], '', false);
         $node->expects(self::once())->method('exists')->willReturn(false);
         self::assertFalse($node->_call('isLink'));
@@ -260,7 +260,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isLinkReturnsTrueIfNameIsLink()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
         $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
@@ -278,7 +278,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isFileReturnsFalseIfNameIsAFile()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($path);
@@ -295,7 +295,7 @@ class LinkNodeTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380556245);
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists'], [], '', false);
         $node->expects(self::once())->method('exists')->willReturn(false);
         self::assertFalse($node->_call('isTargetCorrect'));
@@ -308,7 +308,7 @@ class LinkNodeTest extends UnitTestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1380556247);
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
         $node->expects(self::any())->method('exists')->willReturn(true);
         $node->expects(self::once())->method('isLink')->willReturn(false);
@@ -320,7 +320,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isTargetCorrectReturnsTrueIfNoExpectedLinkTargetIsSpecified()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
         $node->expects(self::any())->method('exists')->willReturn(true);
         $node->expects(self::any())->method('isLink')->willReturn(true);
@@ -333,7 +333,7 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isTargetCorrectAcceptsATargetWithATrailingSlash()
     {
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getCurrentTarget', 'getTarget'], [], '', false);
         $node->expects(self::any())->method('exists')->willReturn(true);
         $node->expects(self::any())->method('isLink')->willReturn(true);
@@ -354,7 +354,7 @@ class LinkNodeTest extends UnitTestCase
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
         $this->testFilesToDelete[] = $target;
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],
@@ -381,7 +381,7 @@ class LinkNodeTest extends UnitTestCase
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
         $this->testFilesToDelete[] = $target;
-        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(
             LinkNode::class,
             ['exists', 'isLink', 'getTarget', 'getAbsolutePath'],

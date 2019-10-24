@@ -257,7 +257,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
             $expected['folder'] = $folderObject;
         }
 
-        /** @var LegacyLinkNotationConverter|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var LegacyLinkNotationConverter|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(LegacyLinkNotationConverter::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
         self::assertEquals($expected, $subject->resolve($input));
@@ -306,7 +306,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->getMock();
             $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
             $folderData = explode(':', $parameters['folder']);
-            /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
+            /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)
                 ->setMethods(['getUid'])
                 ->disableOriginalConstructor()

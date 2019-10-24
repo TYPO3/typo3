@@ -22,7 +22,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class BackendLayoutViewTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Backend\View\BackendLayoutView|\PHPUnit_Framework_MockObject_MockObject
+     * @var \TYPO3\CMS\Backend\View\BackendLayoutView|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $backendLayoutView;
 

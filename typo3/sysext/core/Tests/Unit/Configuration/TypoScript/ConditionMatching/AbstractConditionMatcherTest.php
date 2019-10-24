@@ -41,7 +41,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
     protected $backupApplicationContext;
 
     /**
-     * @var AbstractConditionMatcher|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var AbstractConditionMatcher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $conditionMatcher;
 

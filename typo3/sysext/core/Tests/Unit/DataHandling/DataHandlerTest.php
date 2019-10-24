@@ -46,7 +46,7 @@ class DataHandlerTest extends UnitTestCase
     protected $singletonInstances = [];
 
     /**
-     * @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
+     * @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface
      */
     protected $subject;
 
@@ -434,7 +434,7 @@ class DataHandlerTest extends UnitTestCase
             ],
         ];
 
-        /** @var $subject DataHandler|\PHPUnit_Framework_MockObject_MockObject */
+        /** @var $subject DataHandler|\PHPUnit\Framework\MockObject\MockObject */
         $subject = $this->getMockBuilder(DataHandler::class)
             ->setMethods([
                 'newlog',
@@ -471,7 +471,7 @@ class DataHandlerTest extends UnitTestCase
         $subject->expects(self::once())->method('checkRecordUpdateAccess')->willReturn(true);
         $subject->expects(self::once())->method('unsetElementsToBeDeleted')->willReturnArgument(0);
 
-        /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
+        /** @var BackendUserAuthentication|\PHPUnit\Framework\MockObject\MockObject $backEndUser */
         $backEndUser = $this->createMock(BackendUserAuthentication::class);
         $backEndUser->workspace = 1;
         $backEndUser->workspaceRec = ['freeze' => false];
@@ -785,7 +785,7 @@ class DataHandlerTest extends UnitTestCase
     {
         $table = 'phpunit_dummy';
 
-        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $subject */
+        /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(
             DataHandler::class,
             ['dummy']
@@ -838,7 +838,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function deletePagesOnRootLevelIsDenied()
     {
-        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $dataHandlerMock */
+        /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $dataHandlerMock */
         $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
             ->setMethods(['canDeletePage', 'log'])
             ->getMock();
@@ -873,7 +873,7 @@ class DataHandlerTest extends UnitTestCase
             '1' => ['table' => $this->getUniqueId('bar_'), 'id' => 67]
         ];
 
-        /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $mockDataHandler */
+        /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $mockDataHandler */
         $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
         $mockDataHandler->expects(self::once())->method('getInlineFieldType')->willReturn('field');
         $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);

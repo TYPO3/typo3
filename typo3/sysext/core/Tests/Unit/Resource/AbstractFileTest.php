@@ -33,14 +33,14 @@ class AbstractFileTest extends UnitTestCase
         $parentIdentifier = '/parent/';
         $currentIdentifier = '/parent/current/';
 
-        /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorageForParent */
+        /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $mockedStorageForParent */
         $mockedStorageForParent = $this->createMock(ResourceStorage::class);
 
         /** @var AbstractFile $parentFolderFixture */
         $parentFolderFixture = $this->getMockForAbstractClass(AbstractFile::class);
         $parentFolderFixture->setIdentifier($parentIdentifier)->setStorage($mockedStorageForParent);
 
-        /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
+        /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)
             ->setMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
@@ -65,7 +65,7 @@ class AbstractFileTest extends UnitTestCase
      */
     public function storageIsNotAskedForMimeTypeForPersistedRecord(): void
     {
-        /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
+        /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
         $mockedStorage->expects(self::never())->method('getFileInfoByIdentifier')->with('/foo', 'mimetype');
         $subject = new File(['identifier' => '/foo', 'mime_type' => 'my/mime-type'], $mockedStorage);

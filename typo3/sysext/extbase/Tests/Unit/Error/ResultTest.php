@@ -46,7 +46,7 @@ class ResultTest extends UnitTestCase
 
     /**
      * @param string $type
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getMockMessage($type)
     {

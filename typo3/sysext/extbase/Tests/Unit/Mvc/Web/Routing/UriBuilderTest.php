@@ -50,22 +50,22 @@ class UriBuilderTest extends UnitTestCase
     protected $mockConfigurationManager;
 
     /**
-     * @var ContentObjectRenderer|\PHPUnit_Framework_MockObject_MockObject
+     * @var ContentObjectRenderer|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockContentObject;
 
     /**
-     * @var Request|\PHPUnit_Framework_MockObject_MockObject
+     * @var Request|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockRequest;
 
     /**
-     * @var ExtensionService|\PHPUnit_Framework_MockObject_MockObject
+     * @var ExtensionService|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockExtensionService;
 
     /**
-     * @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $uriBuilder;
 
@@ -438,7 +438,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriCreatesTypoLink()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['someTypoLinkConfiguration']);
@@ -473,7 +473,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriCreatesAbsoluteUrisIfSpecified()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -489,7 +489,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriSetsAbsoluteUriSchemeIfSpecified()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -506,7 +506,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriDoesNotSetAbsoluteUriSchemeIfCreateAbsoluteUriIsFalse()
     {
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
+        /** @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
         $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
@@ -771,7 +771,7 @@ class UriBuilderTest extends UnitTestCase
     {
         $mockValueObject = new ValueObjectFixture();
         $mockValueObject->name = 'foo';
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|object $mockUriBuilder */
+        /** @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|object $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['convertTransientObjectToArray']);
         $mockUriBuilder->expects(self::once())->method('convertTransientObjectToArray')->willReturn(['foo' => 'bar']);
         $actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockValueObject]);
@@ -788,7 +788,7 @@ class UriBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1260881688);
         $mockEntity = new EntityFixture();
         $mockEntity->name = 'foo';
-        /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|object $mockUriBuilder */
+        /** @var UriBuilder|\PHPUnit\Framework\MockObject\MockObject|object $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['dummy']);
         $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockEntity]);
     }

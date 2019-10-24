@@ -32,7 +32,7 @@ class CacheHashEnforcerTest extends UnitTestCase
     protected $subject;
 
     /**
-     * @var TypoScriptFrontendController|\PHPUnit_Framework_MockObject_MockObject
+     * @var TypoScriptFrontendController|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $frontendControllerMock;
 

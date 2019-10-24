@@ -102,7 +102,7 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithRelativePath()
     {
-        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
+        /** @var $subject \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
         $subject = $this->getAccessibleMock(
             ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],
@@ -122,7 +122,7 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function retrieveFileOrFolderObjectCallsGetFolderObjectFromCombinedIdentifierWithAbsolutePath()
     {
-        /** @var $subject \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
+        /** @var $subject \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|ResourceFactory */
         $subject = $this->getAccessibleMock(
             ResourceFactory::class,
             ['getFolderObjectFromCombinedIdentifier'],

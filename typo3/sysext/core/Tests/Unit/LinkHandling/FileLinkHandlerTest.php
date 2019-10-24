@@ -72,11 +72,11 @@ class FileLinkHandlerTest extends UnitTestCase
      */
     public function resolveFileReferencesToSplitParameters($input, $expected, $finalString)
     {
-        /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
+        /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var ResourceFactory|\PHPUnit_Framework_MockObject_MockObject $storageMock */
+        /** @var ResourceFactory|\PHPUnit\Framework\MockObject\MockObject $storageMock */
         $factory = $this->getMockBuilder(ResourceFactory::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -87,7 +87,7 @@ class FileLinkHandlerTest extends UnitTestCase
         $factory->expects(self::any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])->willReturn($fileObject);
         $expected['file'] = $fileObject;
 
-        /** @var FileLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var FileLinkHandler|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(FileLinkHandler::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
         self::assertEquals($expected, $subject->resolveHandlerData($input));
