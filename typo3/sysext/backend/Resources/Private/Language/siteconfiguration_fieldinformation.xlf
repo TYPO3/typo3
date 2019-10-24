@@ -13,6 +13,9 @@
 				<source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating
 					full URLs</source>
 			</trans-unit>
+			<trans-unit id="site.websiteTitle" resname="site.websiteTitle">
+				<source>The title of the website is used for the title tag in the frontend</source>
+			</trans-unit>
 			<trans-unit id="site.baseVariants" resname="site.baseVariants">
 				<source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
 			</trans-unit>
@@ -27,6 +30,9 @@
 			</trans-unit>
 			<trans-unit id="site_language.hreflang" resname="site_language.hreflang">
 				<source>Used within for "lang" and "hreflang" attributes</source>
+			</trans-unit>
+			<trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle">
+				<source>With this language based Website title, you can override the Website title for this language</source>
 			</trans-unit>
 			<trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle">
 				<source>Used within language-related menus</source>

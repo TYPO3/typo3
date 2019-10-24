@@ -57,6 +57,12 @@ class SiteLanguage
     protected $navigationTitle = '';
 
     /**
+     * Localized title of the site to be used in title tag.
+     * @var string
+     */
+    protected $websiteTitle = '';
+
+    /**
      * The flag key (like "gb" or "fr") used to be used in TYPO3's Backend.
      * @var string
      */
@@ -133,6 +139,9 @@ class SiteLanguage
         if (!empty($configuration['navigationTitle'])) {
             $this->navigationTitle = $configuration['navigationTitle'];
         }
+        if (!empty($configuration['websiteTitle'])) {
+            $this->websiteTitle = $configuration['websiteTitle'];
+        }
         if (!empty($configuration['flag'])) {
             $this->flagIdentifier = $configuration['flag'];
         }
@@ -184,6 +193,7 @@ class SiteLanguage
             'locale' => $this->getLocale(),
             'base' => (string)$this->getBase(),
             'title' => $this->getTitle(),
+            'websiteTitle' => $this->getWebsiteTitle(),
             'navigationTitle' => $this->getNavigationTitle(),
             'twoLetterIsoCode' => $this->getTwoLetterIsoCode(),
             'hreflang' => $this->getHreflang(),
@@ -234,6 +244,14 @@ class SiteLanguage
     public function getNavigationTitle(): string
     {
         return $this->navigationTitle ?: $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebsiteTitle(): string
+    {
+        return $this->websiteTitle;
     }
 
     /**

@@ -91,6 +91,7 @@ class SiteLanguageTest extends UnitTestCase
             'locale' => 'de',
             'base' => '/',
             'title' => 'Default',
+            'websiteTitle' => '',
             'twoLetterIsoCode' => 'en',
             'hreflang' => 'en-US',
             'direction' => '',

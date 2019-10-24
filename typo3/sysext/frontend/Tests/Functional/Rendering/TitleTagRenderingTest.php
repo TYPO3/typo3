@@ -67,6 +67,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
         $configuration = [
             'rootPageId' => $pageId,
             'base' => '/',
+            'websiteTitle' => '',
             'languages' => [
                 [
                     'title' => 'English',
@@ -76,6 +77,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
                     'typo3Language' => 'default',
                     'locale' => 'en_US.UTF-8',
                     'iso-639-1' => 'en',
+                    'websiteTitle' => '',
                     'navigationTitle' => '',
                     'hreflang' => '',
                     'direction' => '',

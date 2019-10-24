@@ -2883,21 +2883,44 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function printTitle(string $pageTitle, bool $noTitle = false, bool $showTitleFirst = false, string $pageTitleSeparator = ''): string
     {
-        $siteTitle = trim($this->tmpl->setup['sitetitle'] ?? '');
+        $websiteTitle = $this->getWebsiteTitle();
         $pageTitle = $noTitle ? '' : $pageTitle;
         if ($showTitleFirst) {
-            $temp = $siteTitle;
-            $siteTitle = $pageTitle;
+            $temp = $websiteTitle;
+            $websiteTitle = $pageTitle;
             $pageTitle = $temp;
         }
         // only show a separator if there are both site title and page title
-        if ($pageTitle === '' || $siteTitle === '') {
+        if ($pageTitle === '' || $websiteTitle === '') {
             $pageTitleSeparator = '';
         } elseif (empty($pageTitleSeparator)) {
             // use the default separator if non given
             $pageTitleSeparator = ': ';
         }
-        return $siteTitle . $pageTitleSeparator . $pageTitle;
+        return $websiteTitle . $pageTitleSeparator . $pageTitle;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getWebsiteTitle(): string
+    {
+        if ($this->language instanceof SiteLanguage
+            && trim($this->language->getWebsiteTitle()) !== ''
+        ) {
+            return trim($this->language->getWebsiteTitle());
+        }
+        if ($this->site instanceof SiteInterface
+            && trim($this->site->getConfiguration()['websiteTitle']) !== ''
+        ) {
+            return trim($this->site->getConfiguration()['websiteTitle']);
+        }
+        if (!empty($this->tmpl->setup['sitetitle'])) {
+            // @deprecated since TYPO3 v10.2 and will be removed in TYPO3 v11.0
+            return trim($this->tmpl->setup['sitetitle']);
+        }
+
+        return '';
     }
 
     /**

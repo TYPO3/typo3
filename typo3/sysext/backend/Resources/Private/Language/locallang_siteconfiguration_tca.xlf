@@ -15,6 +15,9 @@
 			<trans-unit id="site.base" resname="site.base">
 				<source>Entry Point</source>
 			</trans-unit>
+			<trans-unit id="site.websiteTitle" resname="site.websiteTitle">
+				<source>Website title</source>
+			</trans-unit>
 			<trans-unit id="site.baseVariants" resname="site.baseVariants">
 				<source>Variants for the Entry Point</source>
 			</trans-unit>
@@ -54,6 +57,9 @@
 			</trans-unit>
 			<trans-unit id="site_language.title" resname="site_language.title">
 				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle">
+				<source>Website title</source>
 			</trans-unit>
 			<trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle">
 				<source>Navigation Title</source>

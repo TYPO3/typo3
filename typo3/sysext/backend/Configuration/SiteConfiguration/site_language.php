@@ -53,6 +53,15 @@ return [
                 'placeholder' => '/',
             ],
         ],
+        'websiteTitle' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.websiteTitle',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.websiteTitle',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'trim',
+                'default' => '',
+            ],
+        ],
         'locale' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.locale',
             'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site_language.locale',
@@ -445,7 +454,7 @@ return [
         ],
         'rendering-related' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_language.palette.frontend',
-            'showitem' => 'navigationTitle, hreflang, direction, --linebreak--, fallbackType, --linebreak--, fallbacks'
+            'showitem' => 'websiteTitle, --linebreak--, navigationTitle, hreflang, direction, --linebreak--, fallbackType, --linebreak--, fallbacks'
         ]
     ]
 ];

@@ -53,6 +53,15 @@ return [
                 ],
             ],
         ],
+        'websiteTitle' => [
+            'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.websiteTitle',
+            'description' => 'LLL:EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf:site.websiteTitle',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'trim',
+                'default' => '',
+            ],
+        ],
         'languages' => [
             'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site.languages',
             'config' => [
@@ -107,7 +116,7 @@ return [
     ],
     'palettes' => [
         'default' => [
-            'showitem' => 'rootPageId, identifier'
+            'showitem' => 'rootPageId, identifier, --linebreak--, websiteTitle'
         ],
         'base' => [
             'showitem' => 'base, baseVariants'
