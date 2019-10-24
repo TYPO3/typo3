@@ -88,6 +88,9 @@ class SiteConfigurationController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        // forcing uncached sites will re-initialize `SiteFinder`
+        // which is used later by FormEngine (implicit behavior)
+        $this->siteFinder->getAllSites(false);
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
         $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'overview';
