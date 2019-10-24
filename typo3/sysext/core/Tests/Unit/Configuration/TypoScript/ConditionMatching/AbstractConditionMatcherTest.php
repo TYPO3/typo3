@@ -146,7 +146,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
             ->withHeader('foo', '1');
         $GLOBALS['TYPO3_REQUEST'] = $request;
         $this->initConditionMatcher();
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, [$expression])
         );
@@ -180,7 +180,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $GLOBALS['SIM_EXEC_TIME'] = gmmktime(11, 4, 0, 1, 17, 1945);
         GeneralUtility::makeInstance(Context::class)
             ->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $GLOBALS['SIM_EXEC_TIME'])));
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['date("' . $format . '") == ' . $expressionValue])
         );
@@ -193,36 +193,36 @@ class AbstractConditionMatcherTest extends UnitTestCase
     {
         $featureName = 'test.testFeature';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName] = true;
-        $this->assertTrue(
+        self::assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '")'])
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == true'])
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === true'])
         );
-        $this->assertFalse(
+        self::assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == false'])
         );
-        $this->assertFalse(
+        self::assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === false'])
         );
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['features'][$featureName] = false;
-        $this->assertFalse(
+        self::assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '")'])
         );
-        $this->assertFalse(
+        self::assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == true'])
         );
-        $this->assertFalse(
+        self::assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === true'])
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") == false'])
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['feature("' . $featureName . '") === false'])
         );
     }
@@ -254,7 +254,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
         // Test expression language
-        $this->assertTrue(
+        self::assertTrue(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($matchingContextCondition, '/') . '")'])
         );
     }
@@ -287,7 +287,7 @@ class AbstractConditionMatcherTest extends UnitTestCase
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
 
         // Test expression language
-        $this->assertFalse(
+        self::assertFalse(
             $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($notMatchingApplicationContextCondition, '/') . '")'])
         );
     }
@@ -359,6 +359,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = $devIpMask;
         $this->initConditionMatcher();
         $result = $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['ip("devIP")']);
-        $this->assertSame($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 }

@@ -74,7 +74,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function fixtureCanBeCreated()
     {
-        $this->assertTrue($this->subject instanceof DataHandler);
+        self::assertTrue($this->subject instanceof DataHandler);
     }
 
     //////////////////////////////////////////
@@ -86,7 +86,7 @@ class DataHandlerTest extends UnitTestCase
     public function adminIsAllowedToModifyNonAdminTable()
     {
         $this->subject->admin = true;
-        $this->assertTrue($this->subject->checkModifyAccessList('tt_content'));
+        self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
     /**
@@ -95,7 +95,7 @@ class DataHandlerTest extends UnitTestCase
     public function nonAdminIsNorAllowedToModifyNonAdminTable()
     {
         $this->subject->admin = false;
-        $this->assertFalse($this->subject->checkModifyAccessList('tt_content'));
+        self::assertFalse($this->subject->checkModifyAccessList('tt_content'));
     }
 
     /**
@@ -105,7 +105,7 @@ class DataHandlerTest extends UnitTestCase
     {
         $this->subject->admin = false;
         $this->backEndUser->groupData['tables_modify'] = 'tt_content';
-        $this->assertTrue($this->subject->checkModifyAccessList('tt_content'));
+        self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
     /**
@@ -114,7 +114,7 @@ class DataHandlerTest extends UnitTestCase
     public function adminIsAllowedToModifyAdminTable()
     {
         $this->subject->admin = true;
-        $this->assertTrue($this->subject->checkModifyAccessList('be_users'));
+        self::assertTrue($this->subject->checkModifyAccessList('be_users'));
     }
 
     /**
@@ -123,7 +123,7 @@ class DataHandlerTest extends UnitTestCase
     public function nonAdminIsNotAllowedToModifyAdminTable()
     {
         $this->subject->admin = false;
-        $this->assertFalse($this->subject->checkModifyAccessList('be_users'));
+        self::assertFalse($this->subject->checkModifyAccessList('be_users'));
     }
 
     /**
@@ -141,7 +141,7 @@ class DataHandlerTest extends UnitTestCase
         ];
         $this->subject->admin = false;
         $this->backEndUser->groupData['tables_modify'] = $tableName;
-        $this->assertFalse($this->subject->checkModifyAccessList($tableName));
+        self::assertFalse($this->subject->checkModifyAccessList($tableName));
     }
 
     /**
@@ -159,7 +159,7 @@ class DataHandlerTest extends UnitTestCase
         ];
         foreach ($testData as $value => $expectedReturnValue) {
             $returnValue = $this->subject->checkValue_input_Eval($value, ['double2'], '');
-            $this->assertSame($returnValue['value'], $expectedReturnValue);
+            self::assertSame($returnValue['value'], $expectedReturnValue);
         }
     }
 
@@ -193,7 +193,7 @@ class DataHandlerTest extends UnitTestCase
         // set before the assertion is performed, so it is restored even for failing tests
         date_default_timezone_set($oldTimezone);
 
-        $this->assertEquals($expectedOutput, $output['value']);
+        self::assertEquals($expectedOutput, $output['value']);
     }
 
     /**
@@ -205,7 +205,7 @@ class DataHandlerTest extends UnitTestCase
         $subject = new DataHandler();
         $inputValue = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
         $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
-        $this->assertSame($inputValue, $result['value']);
+        self::assertSame($inputValue, $result['value']);
     }
 
     /**
@@ -217,7 +217,7 @@ class DataHandlerTest extends UnitTestCase
         $inputValue = 'myPassword';
         $subject = new DataHandler();
         $result = $subject->checkValue_input_Eval($inputValue, ['saltedPassword'], '', 'be_users');
-        $this->assertNotSame($inputValue, $result['value']);
+        self::assertNotSame($inputValue, $result['value']);
     }
 
     /**
@@ -268,7 +268,7 @@ class DataHandlerTest extends UnitTestCase
             ]
         ];
         $returnValue = $this->subject->_call('checkValueForInput', $value, $tcaFieldConf, '', 0, 0, '');
-        $this->assertSame($returnValue['value'], $expectedReturnValue);
+        self::assertSame($returnValue['value'], $expectedReturnValue);
     }
 
     /**
@@ -324,7 +324,7 @@ class DataHandlerTest extends UnitTestCase
 
         date_default_timezone_set($previousTimezone);
 
-        $this->assertSame($returnValue['value'], $expected);
+        self::assertSame($returnValue['value'], $expected);
     }
 
     /**
@@ -386,7 +386,7 @@ class DataHandlerTest extends UnitTestCase
             ->setMethods(['checkModifyAccessList'])
             ->setMockClassName($hookClass)
             ->getMock();
-        $hookMock->expects($this->once())->method('checkModifyAccessList');
+        $hookMock->expects(self::once())->method('checkModifyAccessList');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
         GeneralUtility::addInstance($hookClass, $hookMock);
         $this->subject->checkModifyAccessList('tt_content');
@@ -400,7 +400,7 @@ class DataHandlerTest extends UnitTestCase
     public function doesCheckModifyAccessListHookModifyAccessAllowed()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = AllowAccessHookFixture::class;
-        $this->assertTrue($this->subject->checkModifyAccessList('tt_content'));
+        self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
     /////////////////////////////////////
@@ -418,7 +418,7 @@ class DataHandlerTest extends UnitTestCase
         $this->backEndUser->workspace = 1;
         $this->backEndUser->workspaceRec = ['freeze' => true];
         $subject->BE_USER = $this->backEndUser;
-        $this->assertFalse($subject->process_datamap());
+        self::assertFalse($subject->process_datamap());
     }
 
     /**
@@ -460,25 +460,25 @@ class DataHandlerTest extends UnitTestCase
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['flushCachesInGroupByTags'])
             ->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCachesInGroupByTags')->with('pages', []);
+        $cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', []);
 
-        $subject->expects($this->once())->method('getCacheManager')->willReturn($cacheManagerMock);
-        $subject->expects($this->once())->method('recordInfo')->will($this->returnValue(null));
-        $subject->expects($this->once())->method('checkModifyAccessList')->with('pages')->will($this->returnValue(true));
-        $subject->expects($this->once())->method('tableReadOnly')->with('pages')->will($this->returnValue(false));
-        $subject->expects($this->once())->method('checkRecordUpdateAccess')->will($this->returnValue(true));
-        $subject->expects($this->once())->method('unsetElementsToBeDeleted')->willReturnArgument(0);
+        $subject->expects(self::once())->method('getCacheManager')->willReturn($cacheManagerMock);
+        $subject->expects(self::once())->method('recordInfo')->will(self::returnValue(null));
+        $subject->expects(self::once())->method('checkModifyAccessList')->with('pages')->will(self::returnValue(true));
+        $subject->expects(self::once())->method('tableReadOnly')->with('pages')->will(self::returnValue(false));
+        $subject->expects(self::once())->method('checkRecordUpdateAccess')->will(self::returnValue(true));
+        $subject->expects(self::once())->method('unsetElementsToBeDeleted')->willReturnArgument(0);
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
         $backEndUser = $this->createMock(BackendUserAuthentication::class);
         $backEndUser->workspace = 1;
         $backEndUser->workspaceRec = ['freeze' => false];
-        $backEndUser->expects($this->once())->method('workspaceAllowAutoCreation')->will($this->returnValue(true));
-        $backEndUser->expects($this->once())->method('workspaceCannotEditRecord')->will($this->returnValue(true));
-        $backEndUser->expects($this->once())->method('recordEditAccessInternals')->with('pages', 1)->will($this->returnValue(true));
+        $backEndUser->expects(self::once())->method('workspaceAllowAutoCreation')->will(self::returnValue(true));
+        $backEndUser->expects(self::once())->method('workspaceCannotEditRecord')->will(self::returnValue(true));
+        $backEndUser->expects(self::once())->method('recordEditAccessInternals')->with('pages', 1)->will(self::returnValue(true));
         $subject->BE_USER = $backEndUser;
         $createdDataHandler = $this->createMock(DataHandler::class);
-        $createdDataHandler->expects($this->once())->method('start')->with([], [
+        $createdDataHandler->expects(self::once())->method('start')->with([], [
             'pages' => [
                 1 => [
                     'version' => [
@@ -488,8 +488,8 @@ class DataHandlerTest extends UnitTestCase
                 ]
             ]
         ]);
-        $createdDataHandler->expects($this->never())->method('process_datamap');
-        $createdDataHandler->expects($this->once())->method('process_cmdmap');
+        $createdDataHandler->expects(self::never())->method('process_datamap');
+        $createdDataHandler->expects(self::once())->method('process_cmdmap');
         GeneralUtility::addInstance(DataHandler::class, $createdDataHandler);
         $subject->process_datamap();
     }
@@ -503,7 +503,7 @@ class DataHandlerTest extends UnitTestCase
         $hookMock = $this->getMockBuilder($hookClass)
             ->setMethods(['checkFlexFormValue_beforeMerge'])
             ->getMock();
-        $hookMock->expects($this->once())->method('checkFlexFormValue_beforeMerge');
+        $hookMock->expects(self::once())->method('checkFlexFormValue_beforeMerge');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkFlexFormValue'][] = $hookClass;
         GeneralUtility::addInstance($hookClass, $hookMock);
         $flexFormToolsProphecy = $this->prophesize(FlexFormTools::class);
@@ -522,7 +522,7 @@ class DataHandlerTest extends UnitTestCase
     public function logCallsWriteLogOfBackendUserIfLoggingIsEnabled()
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->expects($this->once())->method('writelog');
+        $backendUser->expects(self::once())->method('writelog');
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
         $this->subject->log('', 23, 0, 42, 0, 'details');
@@ -534,7 +534,7 @@ class DataHandlerTest extends UnitTestCase
     public function logDoesNotCallWriteLogOfBackendUserIfLoggingIsDisabled()
     {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
-        $backendUser->expects($this->never())->method('writelog');
+        $backendUser->expects(self::never())->method('writelog');
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
         $this->subject->log('', 23, 0, 42, 0, 'details');
@@ -551,7 +551,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->errorLog = [];
         $logDetailsUnique = $this->getUniqueId('details');
         $this->subject->log('', 23, 0, 42, 1, $logDetailsUnique);
-        $this->assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
+        self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
 
     /**
@@ -566,7 +566,7 @@ class DataHandlerTest extends UnitTestCase
         $logDetails = $this->getUniqueId('details');
         $this->subject->log('', 23, 0, 42, 1, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
-        $this->assertStringEndsWith($expected, $this->subject->errorLog[0]);
+        self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
     }
 
     /**
@@ -589,7 +589,7 @@ class DataHandlerTest extends UnitTestCase
             $storedType,
             $allowNull
         );
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -803,7 +803,7 @@ class DataHandlerTest extends UnitTestCase
             ]
         ];
 
-        $this->assertEquals($expected, $subject->_call('getPlaceholderTitleForTableLabel', $table));
+        self::assertEquals($expected, $subject->_call('getPlaceholderTitleForTableLabel', $table));
     }
 
     /**
@@ -841,10 +841,10 @@ class DataHandlerTest extends UnitTestCase
             ->setMethods(['canDeletePage', 'log'])
             ->getMock();
         $dataHandlerMock
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('canDeletePage');
         $dataHandlerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('log')
             ->with('pages', 0, 0, 0, 2, 'Deleting all pages starting from the root-page is disabled.', -1, [], 0);
 
@@ -873,9 +873,9 @@ class DataHandlerTest extends UnitTestCase
 
         /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $mockDataHandler */
         $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
-        $mockDataHandler->expects($this->once())->method('getInlineFieldType')->will($this->returnValue('field'));
-        $mockDataHandler->expects($this->once())->method('createRelationHandlerInstance')->will($this->returnValue($mockRelationHandler));
-        $mockDataHandler->expects($this->never())->method('deleteAction');
+        $mockDataHandler->expects(self::once())->method('getInlineFieldType')->will(self::returnValue('field'));
+        $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->will(self::returnValue($mockRelationHandler));
+        $mockDataHandler->expects(self::never())->method('deleteAction');
         $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'foo', 'bar', $conf);
     }
 
@@ -932,7 +932,7 @@ class DataHandlerTest extends UnitTestCase
                 ['Item 3', 0]
             ]
         ];
-        $this->assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
+        self::assertSame($expectedResult, $this->subject->_call('checkValueForCheck', $result, $value, $tcaFieldConfiguration, '', 0, 0, ''));
     }
 
     /**
@@ -943,7 +943,7 @@ class DataHandlerTest extends UnitTestCase
         $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
         $GLOBALS['LANG']->init('default');
         $expectedResult = ['value' => ''];
-        $this->assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'string', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
+        self::assertSame($expectedResult, $this->subject->_call('checkValueForInput', null, ['type' => 'string', 'max' => 40], 'tt_content', 'NEW55c0e67f8f4d32.04974534', 89, 'table_caption'));
     }
 
     /**
@@ -955,7 +955,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function referenceValuesAreCasted($value, array $configuration, $expected)
     {
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $this->subject->_call('castReferenceValue', $value, $configuration)
         );
@@ -1024,6 +1024,6 @@ class DataHandlerTest extends UnitTestCase
         $languageServiceProphecy->sL('testLabel')->willReturn('(copy %s)');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
         $GLOBALS['TCA']['testTable']['ctrl']['prependAtCopy'] = 'testLabel';
-        $this->assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
+        self::assertEquals($expected, (new DataHandler())->clearPrefixFromValue('testTable', $input));
     }
 }

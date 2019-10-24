@@ -257,9 +257,9 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         );
 
         if ($expectedMessages !== null) {
-            static::assertEqualsCanonicalizing($expectedMessages, $entryMessages);
+            self::assertEqualsCanonicalizing($expectedMessages, $entryMessages);
         } elseif ($actualErrorLogEntries === $expectedErrorLogEntries) {
-            static::assertSame($expectedErrorLogEntries, $actualErrorLogEntries);
+            self::assertSame($expectedErrorLogEntries, $actualErrorLogEntries);
         } else {
             $failureMessage = sprintf(
                 'Expected %d entries in sys_log, but got %d' . LF,
@@ -267,7 +267,7 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
                 $actualErrorLogEntries
             );
             $failureMessage .= '* ' . implode(LF . '* ', $entryMessages) . LF;
-            static::fail($failureMessage);
+            self::fail($failureMessage);
         }
     }
 

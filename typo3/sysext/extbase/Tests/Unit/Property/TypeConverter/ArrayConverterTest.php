@@ -37,9 +37,9 @@ class ArrayConverterTest extends UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(['array', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        $this->assertEquals('array', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
+        self::assertEquals(['array', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        self::assertEquals('array', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**
@@ -48,7 +48,7 @@ class ArrayConverterTest extends UnitTestCase
     public function convertFromDoesNotModifyTheSourceArray()
     {
         $sourceArray = ['Foo' => 'Bar', 'Baz'];
-        $this->assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
+        self::assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ArrayConverterTest extends UnitTestCase
      */
     public function canConvertFromEmptyString($source, $expectedResult)
     {
-        $this->assertEquals($expectedResult, $this->converter->convertFrom($source, 'array'));
+        self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array'));
     }
 
     /**
@@ -94,6 +94,6 @@ class ArrayConverterTest extends UnitTestCase
      */
     public function canConvertFromReturnsCorrectBooleans($source, $expectedResult)
     {
-        $this->assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
+        self::assertSame($expectedResult, $this->converter->canConvertFrom($source, 'array'));
     }
 }

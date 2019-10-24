@@ -31,7 +31,7 @@ class HttpUtilityTest extends UnitTestCase
     public function isUrlBuiltCorrectly(array $urlParts, $expected)
     {
         $url = HttpUtility::buildUrl($urlParts);
-        $this->assertEquals($expected, $url);
+        self::assertEquals($expected, $url);
     }
 
     /**
@@ -90,9 +90,9 @@ class HttpUtilityTest extends UnitTestCase
     public function buildQueryStringBuildsValidParameterString($name, array $input, $expected)
     {
         if ($name === '') {
-            $this->assertSame($expected, HttpUtility::buildQueryString($input));
+            self::assertSame($expected, HttpUtility::buildQueryString($input));
         } else {
-            $this->assertSame($expected, HttpUtility::buildQueryString([$name => $input]));
+            self::assertSame($expected, HttpUtility::buildQueryString([$name => $input]));
         }
     }
 
@@ -103,7 +103,7 @@ class HttpUtilityTest extends UnitTestCase
     {
         $input = ['one' => '√', ''];
         $expected = 'foo%5Bone%5D=%E2%88%9A';
-        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '', true));
+        self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '', true));
     }
 
     /**
@@ -113,7 +113,7 @@ class HttpUtilityTest extends UnitTestCase
     {
         $input = ['one' => '√', ''];
         $expected = 'foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=';
-        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
+        self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
     }
 
     /**
@@ -123,7 +123,7 @@ class HttpUtilityTest extends UnitTestCase
     {
         $input = ['one' => ['two' => ['three' => '√']], ''];
         $expected = 'foo%5Bone%5D%5Btwo%5D%5Bthree%5D=%E2%88%9A&foo%5B0%5D=';
-        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
+        self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input]));
     }
 
     /**
@@ -133,7 +133,7 @@ class HttpUtilityTest extends UnitTestCase
     {
         $input = [];
         $expected = '';
-        $this->assertSame($expected, HttpUtility::buildQueryString($input, '?', true));
+        self::assertSame($expected, HttpUtility::buildQueryString($input, '?', true));
     }
 
     /**
@@ -143,6 +143,6 @@ class HttpUtilityTest extends UnitTestCase
     {
         $input = ['one' => ''];
         $expected = '';
-        $this->assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '?', true));
+        self::assertSame($expected, HttpUtility::buildQueryString(['foo' => $input], '?', true));
     }
 }

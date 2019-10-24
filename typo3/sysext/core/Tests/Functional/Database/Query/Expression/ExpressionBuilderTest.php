@@ -98,7 +98,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild%card1,wild%card,nowild%card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -135,7 +135,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nomatch1,match,nomatch2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -172,7 +172,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => '1,2,3',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -209,7 +209,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild%card1,wild%card,nowild%card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -246,7 +246,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild[card1,wild[card,nowild[card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -283,7 +283,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild]card1,wild]card,nowild]card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -320,7 +320,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild[]card1,wild[]card,nowild[]card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -357,7 +357,7 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild[foo]card1,wild[foo]card,nowild[foo]card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -394,6 +394,6 @@ class ExpressionBuilderTest extends FunctionalTestCase
                 'aCsvField' => 'nowild[%]card1,wild[%]card,nowild[%]card2',
             ],
         ];
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 }

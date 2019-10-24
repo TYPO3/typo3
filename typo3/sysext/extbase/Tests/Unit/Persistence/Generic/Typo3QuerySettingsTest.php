@@ -77,7 +77,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     public function setRespectStoragePageSetsRespectStoragePageCorrectly($input)
     {
         $this->typo3QuerySettings->setRespectStoragePage($input);
-        $this->assertEquals($input, $this->typo3QuerySettings->getRespectStoragePage());
+        self::assertEquals($input, $this->typo3QuerySettings->getRespectStoragePage());
     }
 
     /**
@@ -85,7 +85,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setRespectStoragePageAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setRespectStoragePage(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setRespectStoragePage(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -97,7 +97,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     public function setStoragePageIdsSetsStoragePageIdsCorrectly($input)
     {
         $this->typo3QuerySettings->setStoragePageIds($input);
-        $this->assertEquals($input, $this->typo3QuerySettings->getStoragePageIds());
+        self::assertEquals($input, $this->typo3QuerySettings->getStoragePageIds());
     }
 
     /**
@@ -105,7 +105,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setStoragePageIdsAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setStoragePageIds([1, 2, 3]) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setStoragePageIds([1, 2, 3]) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -117,7 +117,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     public function setRespectSysLanguageSetsRespectSysLanguageCorrectly($input)
     {
         $this->typo3QuerySettings->setRespectSysLanguage($input);
-        $this->assertEquals($input, $this->typo3QuerySettings->getRespectSysLanguage());
+        self::assertEquals($input, $this->typo3QuerySettings->getRespectSysLanguage());
     }
 
     /**
@@ -125,7 +125,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setRespectSysLanguageAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setRespectSysLanguage(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setRespectSysLanguage(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -133,7 +133,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setLanguageUidAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setLanguageUid(42) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setLanguageUid(42) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -145,7 +145,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     public function setIgnoreEnableFieldsSetsIgnoreEnableFieldsCorrectly($input)
     {
         $this->typo3QuerySettings->setIgnoreEnableFields($input);
-        $this->assertEquals($input, $this->typo3QuerySettings->getIgnoreEnableFields());
+        self::assertEquals($input, $this->typo3QuerySettings->getIgnoreEnableFields());
     }
 
     /**
@@ -153,7 +153,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setIgnoreEnableFieldsAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setIgnoreEnableFields(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setIgnoreEnableFields(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -165,7 +165,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     public function setEnableFieldsToBeIgnoredSetsEnableFieldsToBeIgnoredCorrectly($input)
     {
         $this->typo3QuerySettings->setEnableFieldsToBeIgnored($input);
-        $this->assertEquals($input, $this->typo3QuerySettings->getEnableFieldsToBeIgnored());
+        self::assertEquals($input, $this->typo3QuerySettings->getEnableFieldsToBeIgnored());
     }
 
     /**
@@ -173,7 +173,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setEnableFieldsToBeIgnoredAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setEnableFieldsToBeIgnored(['starttime', 'endtime']) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 
     /**
@@ -185,7 +185,7 @@ class Typo3QuerySettingsTest extends UnitTestCase
     public function setIncludeDeletedSetsIncludeDeletedCorrectly($input)
     {
         $this->typo3QuerySettings->setIncludeDeleted($input);
-        $this->assertEquals($input, $this->typo3QuerySettings->getIncludeDeleted());
+        self::assertEquals($input, $this->typo3QuerySettings->getIncludeDeleted());
     }
 
     /**
@@ -193,6 +193,6 @@ class Typo3QuerySettingsTest extends UnitTestCase
      */
     public function setIncludeDeletedAllowsChaining()
     {
-        $this->assertTrue($this->typo3QuerySettings->setIncludeDeleted(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
+        self::assertTrue($this->typo3QuerySettings->setIncludeDeleted(true) instanceof \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface);
     }
 }

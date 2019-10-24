@@ -41,7 +41,7 @@ class AbstractFinisherTest extends UnitTestCase
             false
         );
 
-        $this->assertNull($mockAbstractFinisher->_call('parseOption', 'translation'));
+        self::assertNull($mockAbstractFinisher->_call('parseOption', 'translation'));
     }
 
     /**
@@ -58,7 +58,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $mockAbstractFinisher->_set('options', []);
 
-        $this->assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
+        self::assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
     }
 
     /**
@@ -75,7 +75,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $mockAbstractFinisher->_set('options', []);
 
-        $this->assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
+        self::assertNull($mockAbstractFinisher->_call('parseOption', 'foo'));
     }
 
     /**
@@ -96,7 +96,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $expected = false;
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'foo1'));
+        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'foo1'));
     }
 
     /**
@@ -119,7 +119,7 @@ class AbstractFinisherTest extends UnitTestCase
         );
 
         $mockAbstractFinisher
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('translateFinisherOption')
             ->willReturnArgument(0);
 
@@ -141,7 +141,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
+        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
 
     /**
@@ -165,7 +165,7 @@ class AbstractFinisherTest extends UnitTestCase
         );
 
         $mockAbstractFinisher
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('translateFinisherOption')
             ->willReturnArgument(0);
 
@@ -187,7 +187,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
+        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
 
     /**
@@ -215,7 +215,7 @@ class AbstractFinisherTest extends UnitTestCase
         $expected = 'subject: ' . $elementValue;
 
         $mockAbstractFinisher
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('translateFinisherOption')
             ->willReturn($translationValue);
 
@@ -234,7 +234,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
+        self::assertSame($expected, $mockAbstractFinisher->_call('parseOption', 'subject'));
     }
 
     /**
@@ -254,7 +254,7 @@ class AbstractFinisherTest extends UnitTestCase
         $input = ['bar', 'foobar', ['x', 'y']];
         $expected = ['bar', 'foobar', ['x', 'y']];
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -274,7 +274,7 @@ class AbstractFinisherTest extends UnitTestCase
         $input = 'foobar';
         $expected = 'foobar';
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -297,7 +297,7 @@ class AbstractFinisherTest extends UnitTestCase
             $elementIdentifier => $expected
         ]);
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -325,7 +325,7 @@ class AbstractFinisherTest extends UnitTestCase
             $elementIdentifier2 => $elementValue2
         ]);
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -348,7 +348,7 @@ class AbstractFinisherTest extends UnitTestCase
             $elementIdentifier => $expected
         ]);
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -392,7 +392,7 @@ class AbstractFinisherTest extends UnitTestCase
             $elementIdentifier2 => $elementValue2
         ]);
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -419,7 +419,7 @@ class AbstractFinisherTest extends UnitTestCase
         $finisherContextProphecy->getFinisherVariableProvider(Argument::cetera())->willReturn(new FinisherVariableProvider);
         $mockAbstractFinisher->_set('finisherContext', $finisherContextProphecy->reveal());
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
@@ -439,7 +439,7 @@ class AbstractFinisherTest extends UnitTestCase
 
         $formRuntimeProphecy = $this->prophesize(FormRuntime::class);
 
-        $this->assertEquals(1, preg_match($expected, (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal())));
+        self::assertEquals(1, preg_match($expected, (string)$mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal())));
     }
 
     /**

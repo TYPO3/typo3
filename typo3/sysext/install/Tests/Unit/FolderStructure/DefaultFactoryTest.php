@@ -29,6 +29,6 @@ class DefaultFactoryTest extends UnitTestCase
     public function getStructureReturnsInstanceOfStructureFacadeInterface()
     {
         $object = new DefaultFactory();
-        $this->assertInstanceOf(StructureFacadeInterface::class, $object->getStructure());
+        self::assertInstanceOf(StructureFacadeInterface::class, $object->getStructure());
     }
 }

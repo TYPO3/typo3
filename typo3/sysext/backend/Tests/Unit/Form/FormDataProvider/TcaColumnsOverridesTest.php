@@ -54,7 +54,7 @@ class TcaColumnsOverridesTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['types']['foo']['columnsOverrides']);
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -88,6 +88,6 @@ class TcaColumnsOverridesTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['aConfig'] = 'aDifferentValue';
         unset($expected['processedTca']['types']['foo']['columnsOverrides']);
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 }

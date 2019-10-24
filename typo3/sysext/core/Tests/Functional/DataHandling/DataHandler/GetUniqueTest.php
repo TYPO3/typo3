@@ -62,7 +62,7 @@ class GetUniqueTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTe
     {
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->enableLogging = false;
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $dataHandler->getUnique('pages', 'title', $value, 0, 0)
         );

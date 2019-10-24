@@ -107,6 +107,6 @@ class FileExtensionFilterTest extends UnitTestCase
         $filter->setAllowedFileExtensions($allowedExtensions);
         $filter->setDisallowedFileExtensions($disallowedExtensions);
         $result = $filter->_call('isAllowed', $fileExtension);
-        $this->assertEquals($isAllowed, $result);
+        self::assertEquals($isAllowed, $result);
     }
 }

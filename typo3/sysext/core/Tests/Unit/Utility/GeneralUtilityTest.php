@@ -129,7 +129,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $_GET = $get;
         $_POST = $post;
-        $this->assertSame($expected, GeneralUtility::_GP($key));
+        self::assertSame($expected, GeneralUtility::_GP($key));
     }
 
     /**
@@ -166,7 +166,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $_POST = $post;
         $_GET = $get;
-        $this->assertEquals($expected, GeneralUtility::_GPmerged('cake'));
+        self::assertEquals($expected, GeneralUtility::_GPmerged('cake'));
     }
 
     /**
@@ -215,7 +215,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function canRetrieveGlobalInputsThroughGet($key, $get, $expected)
     {
         $_GET = $get;
-        $this->assertSame($expected, GeneralUtility::_GET($key));
+        self::assertSame($expected, GeneralUtility::_GET($key));
     }
 
     /**
@@ -225,7 +225,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function canRetrieveGlobalInputsThroughPost($key, $post, $expected)
     {
         $_POST = $post;
-        $this->assertSame($expected, GeneralUtility::_POST($key));
+        self::assertSame($expected, GeneralUtility::_POST($key));
     }
 
     ///////////////////////////
@@ -257,7 +257,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpIPv4ReturnsTrueForMatchingAddress($ip, $list)
     {
-        $this->assertTrue(GeneralUtility::cmpIPv4($ip, $list));
+        self::assertTrue(GeneralUtility::cmpIPv4($ip, $list));
     }
 
     /**
@@ -283,7 +283,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpIPv4ReturnsFalseForNotMatchingAddress($ip, $list)
     {
-        $this->assertFalse(GeneralUtility::cmpIPv4($ip, $list));
+        self::assertFalse(GeneralUtility::cmpIPv4($ip, $list));
     }
 
     ///////////////////////////
@@ -316,7 +316,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpIPv6ReturnsTrueForMatchingAddress($ip, $list)
     {
-        $this->assertTrue(GeneralUtility::cmpIPv6($ip, $list));
+        self::assertTrue(GeneralUtility::cmpIPv6($ip, $list));
     }
 
     /**
@@ -344,7 +344,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpIPv6ReturnsFalseForNotMatchingAddress($ip, $list)
     {
-        $this->assertFalse(GeneralUtility::cmpIPv6($ip, $list));
+        self::assertFalse(GeneralUtility::cmpIPv6($ip, $list));
     }
 
     ///////////////////////////////
@@ -372,7 +372,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function IPv6Hex2BinCorrectlyConvertsAddresses($hex, $binary)
     {
-        $this->assertTrue(GeneralUtility::IPv6Hex2Bin($hex) === $binary);
+        self::assertTrue(GeneralUtility::IPv6Hex2Bin($hex) === $binary);
     }
 
     ///////////////////////////////
@@ -401,7 +401,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function IPv6Bin2HexCorrectlyConvertsAddresses($binary, $hex)
     {
-        $this->assertEquals(GeneralUtility::IPv6Bin2Hex($binary), $hex);
+        self::assertEquals(GeneralUtility::IPv6Bin2Hex($binary), $hex);
     }
 
     ////////////////////////////////////////////////
@@ -430,7 +430,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function normalizeIPv6CorrectlyNormalizesAddresses($compressed, $normalized)
     {
-        $this->assertEquals($normalized, GeneralUtility::normalizeIPv6($compressed));
+        self::assertEquals($normalized, GeneralUtility::normalizeIPv6($compressed));
     }
 
     /**
@@ -439,7 +439,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function compressIPv6CorrectlyCompressesAdresses($compressed, $normalized)
     {
-        $this->assertEquals($compressed, GeneralUtility::compressIPv6($normalized));
+        self::assertEquals($compressed, GeneralUtility::compressIPv6($normalized));
     }
 
     /**
@@ -448,9 +448,9 @@ class GeneralUtilityTest extends UnitTestCase
     public function compressIPv6CorrectlyCompressesAdressWithSomeAddressOnRightSide()
     {
         if (strtolower(PHP_OS) === 'darwin') {
-            $this->markTestSkipped('This test does not work on OSX / Darwin OS.');
+            self::markTestSkipped('This test does not work on OSX / Darwin OS.');
         }
-        $this->assertEquals('::f0f', GeneralUtility::compressIPv6('0000:0000:0000:0000:0000:0000:0000:0f0f'));
+        self::assertEquals('::f0f', GeneralUtility::compressIPv6('0000:0000:0000:0000:0000:0000:0000:0f0f'));
     }
 
     ///////////////////////////////
@@ -477,7 +477,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validIpReturnsTrueForValidIp($ip)
     {
-        $this->assertTrue(GeneralUtility::validIP($ip));
+        self::assertTrue(GeneralUtility::validIP($ip));
     }
 
     /**
@@ -504,7 +504,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validIpReturnsFalseForInvalidIp($ip)
     {
-        $this->assertFalse(GeneralUtility::validIP($ip));
+        self::assertFalse(GeneralUtility::validIP($ip));
     }
 
     ///////////////////////////////
@@ -537,7 +537,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpFqdnReturnsTrue($baseHost, $list)
     {
-        $this->assertTrue(GeneralUtility::cmpFQDN($baseHost, $list));
+        self::assertTrue(GeneralUtility::cmpFQDN($baseHost, $list));
     }
 
     /**
@@ -559,7 +559,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function cmpFqdnReturnsFalse($baseHost, $list)
     {
-        $this->assertFalse(GeneralUtility::cmpFQDN($baseHost, $list));
+        self::assertFalse(GeneralUtility::cmpFQDN($baseHost, $list));
     }
 
     ///////////////////////////////
@@ -572,7 +572,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function inListForItemContainedReturnsTrue($haystack)
     {
-        $this->assertTrue(GeneralUtility::inList($haystack, 'findme'));
+        self::assertTrue(GeneralUtility::inList($haystack, 'findme'));
     }
 
     /**
@@ -597,7 +597,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function inListForItemNotContainedReturnsFalse($haystack)
     {
-        $this->assertFalse(GeneralUtility::inList($haystack, 'findme'));
+        self::assertFalse(GeneralUtility::inList($haystack, 'findme'));
     }
 
     /**
@@ -625,7 +625,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmFromListRemovesElementsFromCommaSeparatedList($initialList, $listWithElementRemoved)
     {
-        $this->assertSame($listWithElementRemoved, GeneralUtility::rmFromList('removeme', $initialList));
+        self::assertSame($listWithElementRemoved, GeneralUtility::rmFromList('removeme', $initialList));
     }
 
     /**
@@ -665,7 +665,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function expandListExpandsIntegerRanges($list, $expectation)
     {
-        $this->assertSame($expectation, GeneralUtility::expandList($list));
+        self::assertSame($expectation, GeneralUtility::expandList($list));
     }
 
     /**
@@ -694,7 +694,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function expandListExpandsForTwoThousandElementsExpandsOnlyToThousandElementsMaximum()
     {
         $list = GeneralUtility::expandList('1-2000');
-        $this->assertSame(1000, count(explode(',', $list)));
+        self::assertSame(1000, count(explode(',', $list)));
     }
 
     ///////////////////////////////
@@ -708,7 +708,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function uniqueListUnifiesCommaSeparatedList($initialList, $unifiedList)
     {
-        $this->assertSame($unifiedList, GeneralUtility::uniqueList($initialList));
+        self::assertSame($unifiedList, GeneralUtility::uniqueList($initialList));
     }
 
     /**
@@ -752,7 +752,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function isFirstPartOfStrReturnsTrueForMatchingFirstPart($string, $part)
     {
-        $this->assertTrue(GeneralUtility::isFirstPartOfStr($string, $part));
+        self::assertTrue(GeneralUtility::isFirstPartOfStr($string, $part));
     }
 
     /**
@@ -788,7 +788,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function isFirstPartOfStrReturnsFalseForNotMatchingFirstPart($string, $part)
     {
-        $this->assertFalse(GeneralUtility::isFirstPartOfStr($string, $part));
+        self::assertFalse(GeneralUtility::isFirstPartOfStr($string, $part));
     }
 
     ///////////////////////////////
@@ -800,7 +800,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function formatSizeTranslatesBytesToHigherOrderRepresentation($size, $labels, $base, $expected)
     {
-        $this->assertEquals($expected, GeneralUtility::formatSize($size, $labels, $base));
+        self::assertEquals($expected, GeneralUtility::formatSize($size, $labels, $base));
     }
 
     /**
@@ -879,7 +879,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function splitCalcCorrectlySplitsExpression($expected, $expression)
     {
-        $this->assertEquals($expected, GeneralUtility::splitCalc($expression, '+-*/'));
+        self::assertEquals($expected, GeneralUtility::splitCalc($expression, '+-*/'));
     }
 
     ///////////////////////////////
@@ -893,7 +893,7 @@ class GeneralUtilityTest extends UnitTestCase
         $string = '<typo3 version="6.0">&nbsp;</typo3>';
         $encoded = htmlspecialchars($string);
         $decoded = htmlspecialchars_decode($encoded);
-        $this->assertEquals($string, $decoded);
+        self::assertEquals($string, $decoded);
     }
 
     //////////////////////////////////
@@ -928,7 +928,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validEmailReturnsTrueForValidMailAddress($address)
     {
-        $this->assertTrue(GeneralUtility::validEmail($address));
+        self::assertTrue(GeneralUtility::validEmail($address));
     }
 
     /**
@@ -976,7 +976,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validEmailReturnsFalseForInvalidMailAddress($address)
     {
-        $this->assertFalse(GeneralUtility::validEmail($address));
+        self::assertFalse(GeneralUtility::validEmail($address));
     }
 
     //////////////////////////////////
@@ -990,7 +990,7 @@ class GeneralUtilityTest extends UnitTestCase
         $testString = '1,foo,2';
         $expectedArray = [1, 0, 2];
         $actualArray = GeneralUtility::intExplode(',', $testString);
-        $this->assertEquals($expectedArray, $actualArray);
+        self::assertEquals($expectedArray, $actualArray);
     }
 
     //////////////////////////////////
@@ -1018,7 +1018,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function implodeArrayForUrlBuildsValidParameterString($name, $input, $expected)
     {
-        $this->assertSame($expected, GeneralUtility::implodeArrayForUrl($name, $input));
+        self::assertSame($expected, GeneralUtility::implodeArrayForUrl($name, $input));
     }
 
     /**
@@ -1028,7 +1028,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $input = ['one' => '√', ''];
         $expected = '&foo[one]=%E2%88%9A';
-        $this->assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', true));
+        self::assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', true));
     }
 
     /**
@@ -1038,7 +1038,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $input = ['one' => '√', ''];
         $expected = '&foo%5Bone%5D=%E2%88%9A&foo%5B0%5D=';
-        $this->assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', false, true));
+        self::assertSame($expected, GeneralUtility::implodeArrayForUrl('foo', $input, '', false, true));
     }
 
     /**
@@ -1047,7 +1047,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function explodeUrl2ArrayTransformsParameterStringToFlatArray($input, $expected)
     {
-        $this->assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
+        self::assertEquals($expected, GeneralUtility::explodeUrl2Array($input));
     }
 
     /**
@@ -1076,7 +1076,7 @@ class GeneralUtilityTest extends UnitTestCase
         $getArray = ['foo' => 1, 'cake' => 'lie'];
         $expected = ['foo' => 1];
         $result = GeneralUtility::compileSelectedGetVarsFromArray($filter, $getArray, false);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -1089,7 +1089,7 @@ class GeneralUtilityTest extends UnitTestCase
         $getArray = ['foo' => 1, 'cake' => 'lie'];
         $expected = ['foo' => 1, 'bar' => '2'];
         $result = GeneralUtility::compileSelectedGetVarsFromArray($filter, $getArray, true);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     //////////////////////////////////
@@ -1172,7 +1172,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function revExplodeCorrectlyExplodesStringForGivenPartsCount($delimiter, $testString, $count, $expectedArray)
     {
         $actualArray = GeneralUtility::revExplode($delimiter, $testString, $count);
-        $this->assertEquals($expectedArray, $actualArray);
+        self::assertEquals($expectedArray, $actualArray);
     }
 
     /**
@@ -1183,7 +1183,7 @@ class GeneralUtilityTest extends UnitTestCase
         $testString = 'even:more:of:my:words:here';
         $expectedArray = ['even:more:of:my', 'words', 'here'];
         $actualArray = GeneralUtility::revExplode(':', $testString, 3);
-        $this->assertEquals($expectedArray, $actualArray);
+        self::assertEquals($expectedArray, $actualArray);
     }
 
     //////////////////////////////////
@@ -1201,7 +1201,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function trimExplodeReturnsCorrectResult($delimiter, $testString, $removeEmpty, $limit, $expectedResult)
     {
-        $this->assertSame($expectedResult, GeneralUtility::trimExplode($delimiter, $testString, $removeEmpty, $limit));
+        self::assertSame($expectedResult, GeneralUtility::trimExplode($delimiter, $testString, $removeEmpty, $limit));
     }
 
     /**
@@ -1446,7 +1446,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getBytesFromSizeMeasurementCalculatesCorrectByteValue($expected, $byteString)
     {
-        $this->assertEquals($expected, GeneralUtility::getBytesFromSizeMeasurement($byteString));
+        self::assertEquals($expected, GeneralUtility::getBytesFromSizeMeasurement($byteString));
     }
 
     //////////////////////////////////
@@ -1457,7 +1457,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getIndpEnvTypo3SitePathReturnNonEmptyString()
     {
-        $this->assertTrue(strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')) >= 1);
+        self::assertTrue(strlen(GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')) >= 1);
     }
 
     /**
@@ -1478,7 +1478,7 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        $this->assertEquals('/', $result[0]);
+        self::assertEquals('/', $result[0]);
     }
 
     /**
@@ -1488,7 +1488,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getIndpEnvTypo3SitePathReturnsStringStartingWithDrive()
     {
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        $this->assertRegExp('/^[a-z]:\//i', $result);
+        self::assertRegExp('/^[a-z]:\//i', $result);
     }
 
     /**
@@ -1497,7 +1497,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getIndpEnvTypo3SitePathReturnsStringEndingWithSlash()
     {
         $result = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
-        $this->assertEquals('/', $result[strlen($result) - 1]);
+        self::assertEquals('/', $result[strlen($result) - 1]);
     }
 
     /**
@@ -1524,7 +1524,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getIndpEnvTypo3HostOnlyParsesHostnamesAndIpAdresses($httpHost, $expectedIp)
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
-        $this->assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
+        self::assertEquals($expectedIp, GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
     }
 
     /**
@@ -1533,7 +1533,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function isAllowedHostHeaderValueReturnsFalseIfTrusedHostsIsNotConfigured()
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern']);
-        $this->assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue('evil.foo.bar'));
+        self::assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue('evil.foo.bar'));
     }
 
     /**
@@ -1576,7 +1576,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function isAllowedHostHeaderValueReturnsTrueIfHostValueMatches($httpHost, $hostNamePattern)
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
-        $this->assertTrue(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
+        self::assertTrue(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
     }
 
     /**
@@ -1588,7 +1588,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function isAllowedHostHeaderValueReturnsFalseIfHostValueMatches($httpHost, $hostNamePattern)
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = $hostNamePattern;
-        $this->assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
+        self::assertFalse(GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
     }
 
     public function serverNamePatternDataProvider()
@@ -1686,7 +1686,7 @@ class GeneralUtilityTest extends UnitTestCase
         $_SERVER['SERVER_NAME'] = $serverName;
         $_SERVER['SERVER_PORT'] = $serverPort;
         $_SERVER['HTTPS'] = $ssl;
-        $this->assertSame($isAllowed, GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
+        self::assertSame($isAllowed, GeneralUtilityFixture::isAllowedHostHeaderValue($httpHost));
     }
 
     /**
@@ -1701,7 +1701,7 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtilityFixture::getIndpEnv('TYPO3_REQUEST_HOST');
         GeneralUtility::flushInternalRuntimeCaches();
         GeneralUtilityFixture::getIndpEnv('TYPO3_REQUEST_URL');
-        $this->assertSame(4, GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount);
+        self::assertSame(4, GeneralUtilityFixture::$isAllowedHostHeaderValueCallCount);
     }
 
     /**
@@ -1729,7 +1729,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = GeneralUtility::ENV_TRUSTED_HOSTS_PATTERN_ALLOW_ALL;
-        $this->assertSame($httpHost, GeneralUtility::getIndpEnv('HTTP_HOST'));
+        self::assertSame($httpHost, GeneralUtility::getIndpEnv('HTTP_HOST'));
     }
 
     /**
@@ -1739,7 +1739,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getIndpEnvTypo3PortParsesHostnamesAndIpAdresses($httpHost, $dummy, $expectedPort)
     {
         $_SERVER['HTTP_HOST'] = $httpHost;
-        $this->assertEquals($expectedPort, GeneralUtility::getIndpEnv('TYPO3_PORT'));
+        self::assertEquals($expectedPort, GeneralUtility::getIndpEnv('TYPO3_PORT'));
     }
 
     //////////////////////////////////
@@ -1764,7 +1764,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function underscoredToUpperCamelCase($expected, $inputString)
     {
-        $this->assertEquals($expected, GeneralUtility::underscoredToUpperCamelCase($inputString));
+        self::assertEquals($expected, GeneralUtility::underscoredToUpperCamelCase($inputString));
     }
 
     //////////////////////////////////
@@ -1789,7 +1789,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function underscoredToLowerCamelCase($expected, $inputString)
     {
-        $this->assertEquals($expected, GeneralUtility::underscoredToLowerCamelCase($inputString));
+        self::assertEquals($expected, GeneralUtility::underscoredToLowerCamelCase($inputString));
     }
 
     //////////////////////////////////
@@ -1816,7 +1816,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function camelCaseToLowerCaseUnderscored($expected, $inputString)
     {
-        $this->assertEquals($expected, GeneralUtility::camelCaseToLowerCaseUnderscored($inputString));
+        self::assertEquals($expected, GeneralUtility::camelCaseToLowerCaseUnderscored($inputString));
     }
 
     //////////////////////////////////
@@ -1858,7 +1858,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validURLReturnsTrueForValidResource($url)
     {
-        $this->assertTrue(GeneralUtility::isValidUrl($url));
+        self::assertTrue(GeneralUtility::isValidUrl($url));
     }
 
     /**
@@ -1893,7 +1893,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validURLReturnsFalseForInvalidRessoure($url)
     {
-        $this->assertFalse(GeneralUtility::isValidUrl($url));
+        self::assertFalse(GeneralUtility::isValidUrl($url));
     }
 
     //////////////////////////////////
@@ -1905,7 +1905,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function isOnCurrentHostReturnsTrueWithCurrentHost()
     {
         $testUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        $this->assertTrue(GeneralUtility::isOnCurrentHost($testUrl));
+        self::assertTrue(GeneralUtility::isOnCurrentHost($testUrl));
     }
 
     /**
@@ -1964,7 +1964,7 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getBackendPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $this->assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
+        self::assertEquals($path, GeneralUtility::sanitizeLocalUrl($path));
     }
 
     /**
@@ -1985,7 +1985,7 @@ class GeneralUtilityTest extends UnitTestCase
             Environment::getBackendPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $this->assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
+        self::assertEquals(rawurlencode($path), GeneralUtility::sanitizeLocalUrl(rawurlencode($path)));
     }
 
     /**
@@ -2041,7 +2041,7 @@ class GeneralUtilityTest extends UnitTestCase
         );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
-        $this->assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
+        self::assertEquals($url, GeneralUtility::sanitizeLocalUrl($url));
     }
 
     /**
@@ -2066,7 +2066,7 @@ class GeneralUtilityTest extends UnitTestCase
         );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['SCRIPT_NAME'] = $subDirectory . 'typo3/index.php';
-        $this->assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
+        self::assertEquals(rawurlencode($url), GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
     }
 
     /**
@@ -2093,7 +2093,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlDeniesPlainInvalidUrls($url)
     {
-        $this->assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
+        self::assertEquals('', GeneralUtility::sanitizeLocalUrl($url));
     }
 
     /**
@@ -2102,7 +2102,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function sanitizeLocalUrlDeniesEncodedInvalidUrls($url)
     {
-        $this->assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
+        self::assertEquals('', GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
     }
 
     ////////////////////////////////////////
@@ -2119,7 +2119,7 @@ class GeneralUtilityTest extends UnitTestCase
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
-        $this->assertFalse($fileExists);
+        self::assertFalse($fileExists);
     }
 
     /**
@@ -2132,7 +2132,7 @@ class GeneralUtilityTest extends UnitTestCase
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
-        $this->assertFalse($fileExists);
+        self::assertFalse($fileExists);
     }
 
     /**
@@ -2144,7 +2144,7 @@ class GeneralUtilityTest extends UnitTestCase
         $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         $returnValue = GeneralUtility::unlink_tempfile($testFilename);
-        $this->assertTrue($returnValue);
+        self::assertTrue($returnValue);
     }
 
     /**
@@ -2153,7 +2153,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileReturnsNullIfFileDoesNotExist()
     {
         $returnValue = GeneralUtility::unlink_tempfile(Environment::getVarPath() . '/tests/' . $this->getUniqueId('i_do_not_exist'));
-        $this->assertNull($returnValue);
+        self::assertNull($returnValue);
     }
 
     /**
@@ -2162,7 +2162,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileReturnsNullIfFileIsNowWithinTypo3temp()
     {
         $returnValue = GeneralUtility::unlink_tempfile('/tmp/typo3-unit-test-unlink_tempfile');
-        $this->assertNull($returnValue);
+        self::assertNull($returnValue);
     }
 
     //////////////////////////////////////
@@ -2177,7 +2177,7 @@ class GeneralUtilityTest extends UnitTestCase
         $filePath = GeneralUtility::tempnam('foo');
         $this->testFilesToDelete[] = $filePath;
         $fileName = basename($filePath);
-        $this->assertStringStartsWith('foo', $fileName);
+        self::assertStringStartsWith('foo', $fileName);
     }
 
     /**
@@ -2187,7 +2187,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $filePath = GeneralUtility::tempnam('foo');
         $this->testFilesToDelete[] = $filePath;
-        $this->assertStringNotContainsString('\\', $filePath);
+        self::assertStringNotContainsString('\\', $filePath);
     }
 
     /**
@@ -2197,7 +2197,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $filePath = GeneralUtility::tempnam('foo');
         $this->testFilesToDelete[] = $filePath;
-        $this->assertStringStartsWith(Environment::getVarPath() . '/transient/', $filePath);
+        self::assertStringStartsWith(Environment::getVarPath() . '/transient/', $filePath);
     }
 
     //////////////////////////////////////
@@ -2226,7 +2226,7 @@ class GeneralUtilityTest extends UnitTestCase
             ],
             'propertyB' => 3
         ];
-        $this->assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
+        self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
     /**
@@ -2253,7 +2253,7 @@ class GeneralUtilityTest extends UnitTestCase
             ],
             'propertyB' => 3
         ];
-        $this->assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
+        self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
     /**
@@ -2278,7 +2278,7 @@ class GeneralUtilityTest extends UnitTestCase
             ],
             'propertyB' => 3
         ];
-        $this->assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
+        self::assertEquals($expectedResult, GeneralUtility::removeDotsFromTS($typoScript));
     }
 
     //////////////////////////////////////
@@ -2290,7 +2290,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getDirsReturnsArrayOfDirectoriesFromGivenDirectory()
     {
         $directories = GeneralUtility::get_dirs(Environment::getLegacyConfigPath() . '/');
-        $this->assertIsArray($directories);
+        self::assertIsArray($directories);
     }
 
     /**
@@ -2301,7 +2301,7 @@ class GeneralUtilityTest extends UnitTestCase
         $path = 'foo';
         $result = GeneralUtility::get_dirs($path);
         $expectedResult = 'error';
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     //////////////////////////////////
@@ -2313,8 +2313,8 @@ class GeneralUtilityTest extends UnitTestCase
     public function hmacReturnsHashOfProperLength()
     {
         $hmac = GeneralUtility::hmac('message');
-        $this->assertTrue(!empty($hmac) && is_string($hmac));
-        $this->assertTrue(strlen($hmac) == 40);
+        self::assertTrue(!empty($hmac) && is_string($hmac));
+        self::assertTrue(strlen($hmac) == 40);
     }
 
     /**
@@ -2324,7 +2324,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $msg0 = 'message';
         $msg1 = 'message';
-        $this->assertEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));
+        self::assertEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));
     }
 
     /**
@@ -2334,7 +2334,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $msg0 = 'message0';
         $msg1 = 'message1';
-        $this->assertNotEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));
+        self::assertNotEquals(GeneralUtility::hmac($msg0), GeneralUtility::hmac($msg1));
     }
 
     //////////////////////////////////
@@ -2399,7 +2399,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function quoteJsValueTest($input, $expected)
     {
-        $this->assertSame('\'' . $expected . '\'', GeneralUtility::quoteJSvalue($input));
+        self::assertSame('\'' . $expected . '\'', GeneralUtility::quoteJSvalue($input));
     }
 
     ///////////////////////////
@@ -2412,7 +2412,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript']);
         $testString = $this->getUniqueId('string');
-        $this->assertSame($testString, GeneralUtility::minifyJavaScript($testString));
+        self::assertSame($testString, GeneralUtility::minifyJavaScript($testString));
     }
 
     ///////////////////////////////
@@ -2425,7 +2425,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsGroup()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2435,7 +2435,7 @@ class GeneralUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $currentGroupId;
         GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
-        $this->assertEquals($currentGroupId, filegroup($filename));
+        self::assertEquals($currentGroupId, filegroup($filename));
     }
 
     /**
@@ -2444,7 +2444,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsPermissionsToFile()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2454,8 +2454,8 @@ class GeneralUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0660', substr(decoct(fileperms($filename)), 2));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0660', substr(decoct(fileperms($filename)), 2));
     }
 
     /**
@@ -2464,7 +2464,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsPermissionsToHiddenFile()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2474,8 +2474,8 @@ class GeneralUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0660', substr(decoct(fileperms($filename)), 2));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0660', substr(decoct(fileperms($filename)), 2));
     }
 
     /**
@@ -2484,7 +2484,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsPermissionsToDirectory()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2494,8 +2494,8 @@ class GeneralUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0770';
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0770', substr(decoct(fileperms($directory)), 1));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
     }
 
     /**
@@ -2504,7 +2504,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsPermissionsToDirectoryWithTrailingSlash()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2515,8 +2515,8 @@ class GeneralUtilityTest extends UnitTestCase
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory . '/');
         // Get actual permissions and clean up
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0770', substr(decoct(fileperms($directory)), 1));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
     }
 
     /**
@@ -2525,7 +2525,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsPermissionsToHiddenDirectory()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2536,8 +2536,8 @@ class GeneralUtilityTest extends UnitTestCase
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
         // Get actual permissions and clean up
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0770', substr(decoct(fileperms($directory)), 1));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0770', substr(decoct(fileperms($directory)), 1));
     }
 
     /**
@@ -2546,7 +2546,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsCorrectlySetsPermissionsRecursive()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory and file structure
         $baseDirectory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
@@ -2581,14 +2581,14 @@ class GeneralUtilityTest extends UnitTestCase
         $resultBarFilePermissions = substr(decoct(fileperms($baseDirectory . '/.bar/.file')), 2);
         $resultBarFile2Permissions = substr(decoct(fileperms($baseDirectory . '/.bar/..file2')), 2);
         // Test if everything was ok
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0770', $resultBaseDirectoryPermissions);
-        $this->assertEquals('0660', $resultBaseFilePermissions);
-        $this->assertEquals('0770', $resultFooDirectoryPermissions);
-        $this->assertEquals('0660', $resultFooFilePermissions);
-        $this->assertEquals('0770', $resultBarDirectoryPermissions);
-        $this->assertEquals('0660', $resultBarFilePermissions);
-        $this->assertEquals('0660', $resultBarFile2Permissions);
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0770', $resultBaseDirectoryPermissions);
+        self::assertEquals('0660', $resultBaseFilePermissions);
+        self::assertEquals('0770', $resultFooDirectoryPermissions);
+        self::assertEquals('0660', $resultFooFilePermissions);
+        self::assertEquals('0770', $resultBarDirectoryPermissions);
+        self::assertEquals('0660', $resultBarFilePermissions);
+        self::assertEquals('0660', $resultBarFile2Permissions);
     }
 
     /**
@@ -2597,14 +2597,14 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsDoesNotSetPermissionsToNotAllowedPath()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
         $filename = Environment::getVarPath() . '/tests/../../../typo3temp/var/tests/' . $this->getUniqueId('test_');
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
-        $this->assertFalse($fixPermissionsResult);
+        self::assertFalse($fixPermissionsResult);
     }
 
     /**
@@ -2613,7 +2613,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsPermissionsWithRelativeFileReference()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filename = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
@@ -2623,8 +2623,8 @@ class GeneralUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0660', substr(decoct(fileperms(Environment::getPublicPath() . '/' . $filename)), 2));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0660', substr(decoct(fileperms(Environment::getPublicPath() . '/' . $filename)), 2));
     }
 
     /**
@@ -2633,7 +2633,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsDefaultPermissionsToFile()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
@@ -2641,8 +2641,8 @@ class GeneralUtilityTest extends UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']);
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($filename);
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0644', substr(decoct(fileperms($filename)), 2));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0644', substr(decoct(fileperms($filename)), 2));
     }
 
     /**
@@ -2651,7 +2651,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function fixPermissionsSetsDefaultPermissionsToDirectory()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($directory);
@@ -2659,8 +2659,8 @@ class GeneralUtilityTest extends UnitTestCase
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
         $fixPermissionsResult = GeneralUtilityFilesystemFixture::fixPermissions($directory);
         clearstatcache();
-        $this->assertTrue($fixPermissionsResult);
-        $this->assertEquals('0755', substr(decoct(fileperms($directory)), 1));
+        self::assertTrue($fixPermissionsResult);
+        self::assertEquals('0755', substr(decoct(fileperms($directory)), 1));
     }
 
     ///////////////////////////////
@@ -2674,8 +2674,8 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
-        $this->assertTrue($mkdirResult);
-        $this->assertTrue(is_dir($directory));
+        self::assertTrue($mkdirResult);
+        self::assertTrue(is_dir($directory));
     }
 
     /**
@@ -2686,8 +2686,8 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('.test_');
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
-        $this->assertTrue($mkdirResult);
-        $this->assertTrue(is_dir($directory));
+        self::assertTrue($mkdirResult);
+        self::assertTrue(is_dir($directory));
     }
 
     /**
@@ -2698,8 +2698,8 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_') . '/';
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
-        $this->assertTrue($mkdirResult);
-        $this->assertTrue(is_dir($directory));
+        self::assertTrue($mkdirResult);
+        self::assertTrue(is_dir($directory));
     }
 
     /**
@@ -2708,7 +2708,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function mkdirSetsPermissionsOfCreatedDirectory()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         $oldUmask = umask(19);
@@ -2717,7 +2717,7 @@ class GeneralUtilityTest extends UnitTestCase
         clearstatcache();
         $resultDirectoryPermissions = substr(decoct(fileperms($directory)), 1);
         umask($oldUmask);
-        $this->assertEquals($resultDirectoryPermissions, '0772');
+        self::assertEquals($resultDirectoryPermissions, '0772');
     }
 
     /**
@@ -2732,7 +2732,7 @@ class GeneralUtilityTest extends UnitTestCase
             GeneralUtilityFilesystemFixture::mkdir($directory);
             clearstatcache();
             $resultDirectoryGroup = filegroup($directory);
-            $this->assertEquals($resultDirectoryGroup, $swapGroup);
+            self::assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
 
@@ -2751,12 +2751,12 @@ class GeneralUtilityTest extends UnitTestCase
     private function checkGroups($methodName)
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
             return false;
         }
         $groups = posix_getgroups();
         if (count($groups) <= 1) {
-            $this->markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
+            self::markTestSkipped($methodName . '() test cannot be done when the web server user is only member of 1 group.');
             return false;
         }
         $secondaryGroups = array_diff($groups, [posix_getegid()]);
@@ -2813,7 +2813,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function writeFileToTypo3tempDirFailsWithInvalidPath($invalidFilePath, string $expectedResult)
     {
         $result = GeneralUtility::writeFileToTypo3tempDir($invalidFilePath, 'dummy content to be written');
-        $this->assertSame($result, $expectedResult);
+        self::assertSame($result, $expectedResult);
     }
 
     /**
@@ -2850,9 +2850,9 @@ class GeneralUtilityTest extends UnitTestCase
 
         $result = GeneralUtility::writeFileToTypo3tempDir($filePath, $dummyContent);
 
-        $this->assertNull($result);
-        $this->assertFileExists($filePath);
-        $this->assertStringEqualsFile($filePath, $dummyContent);
+        self::assertNull($result);
+        self::assertFileExists($filePath);
+        self::assertStringEqualsFile($filePath, $dummyContent);
     }
 
     ///////////////////////////////
@@ -2865,7 +2865,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
         GeneralUtility::mkdir_deep($directory);
-        $this->assertTrue(is_dir($directory));
+        self::assertTrue(is_dir($directory));
     }
 
     /**
@@ -2876,7 +2876,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = $this->getVirtualTestDir() . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
         $subDirectory = $directory . '/foo';
         GeneralUtility::mkdir_deep($subDirectory);
-        $this->assertTrue(is_dir($subDirectory));
+        self::assertTrue(is_dir($subDirectory));
     }
 
     /**
@@ -2902,7 +2902,7 @@ class GeneralUtilityTest extends UnitTestCase
         FileStreamWrapper::init(Environment::getPublicPath());
         FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', true);
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $directoryToCreate);
-        $this->assertTrue(is_dir(Environment::getPublicPath() . '/' . $directoryToCreate));
+        self::assertTrue(is_dir(Environment::getPublicPath() . '/' . $directoryToCreate));
         FileStreamWrapper::destroy();
     }
 
@@ -2912,7 +2912,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function mkdirDeepFixesPermissionsOfCreatedDirectory()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
@@ -2921,7 +2921,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
-        $this->assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
+        self::assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
     /**
@@ -2930,7 +2930,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function mkdirDeepFixesPermissionsOnNewParentDirectory()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $directory = $this->getUniqueId('mkdirdeeptest_');
         $subDirectory = $directory . '/bar';
@@ -2940,7 +2940,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
         clearstatcache();
         umask($oldUmask);
-        $this->assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
+        self::assertEquals('777', substr(decoct(fileperms(Environment::getVarPath() . '/tests/' . $directory)), -3, 3));
     }
 
     /**
@@ -2949,7 +2949,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function mkdirDeepDoesNotChangePermissionsOfExistingSubDirectories()
     {
         if (Environment::isWindows()) {
-            $this->markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
+            self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $baseDirectory = Environment::getVarPath() . '/tests/';
         $existingDirectory = $this->getUniqueId('test_existing_') . '/';
@@ -2958,7 +2958,7 @@ class GeneralUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = $baseDirectory . $existingDirectory;
         chmod($baseDirectory . $existingDirectory, 482);
         GeneralUtility::mkdir_deep($baseDirectory . $existingDirectory . $newSubDirectory);
-        $this->assertEquals(742, (int)substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
+        self::assertEquals(742, (int)substr(decoct(fileperms($baseDirectory . $existingDirectory)), 2));
     }
 
     /**
@@ -2974,7 +2974,7 @@ class GeneralUtilityTest extends UnitTestCase
             $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
             $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
-            $this->assertEquals($resultDirectoryGroup, $swapGroup);
+            self::assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
 
@@ -2992,7 +2992,7 @@ class GeneralUtilityTest extends UnitTestCase
             $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
             $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
-            $this->assertEquals($resultDirectoryGroup, $swapGroup);
+            self::assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
 
@@ -3010,7 +3010,7 @@ class GeneralUtilityTest extends UnitTestCase
             $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
             $resultDirectoryGroup = filegroup(Environment::getVarPath() . '/tests/' . $directory);
-            $this->assertEquals($resultDirectoryGroup, $swapGroup);
+            self::assertEquals($resultDirectoryGroup, $swapGroup);
         }
     }
 
@@ -3023,7 +3023,7 @@ class GeneralUtilityTest extends UnitTestCase
         $baseDirectory = $this->getUniqueId('test_');
         vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
         GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/sub');
-        $this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
+        self::assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
     }
 
     /**
@@ -3060,7 +3060,7 @@ class GeneralUtilityTest extends UnitTestCase
         $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($file);
         GeneralUtility::rmdir($file);
-        $this->assertFalse(file_exists($file));
+        self::assertFalse(file_exists($file));
     }
 
     /**
@@ -3070,7 +3070,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($file);
-        $this->assertTrue(GeneralUtility::rmdir($file));
+        self::assertTrue(GeneralUtility::rmdir($file));
     }
 
     /**
@@ -3079,7 +3079,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function rmdirReturnFalseIfNoFileWasRemoved()
     {
         $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
-        $this->assertFalse(GeneralUtility::rmdir($file));
+        self::assertFalse(GeneralUtility::rmdir($file));
     }
 
     /**
@@ -3090,7 +3090,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_');
         mkdir($directory);
         GeneralUtility::rmdir($directory);
-        $this->assertFalse(file_exists($directory));
+        self::assertFalse(file_exists($directory));
     }
 
     /**
@@ -3101,7 +3101,7 @@ class GeneralUtilityTest extends UnitTestCase
         $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
         mkdir($directory);
         GeneralUtility::rmdir($directory);
-        $this->assertFalse(file_exists($directory));
+        self::assertFalse(file_exists($directory));
     }
 
     /**
@@ -3115,9 +3115,9 @@ class GeneralUtilityTest extends UnitTestCase
         touch($directory . $file);
         $this->testFilesToDelete[] = $directory;
         $return = GeneralUtility::rmdir($directory);
-        $this->assertTrue(file_exists($directory));
-        $this->assertTrue(file_exists($directory . $file));
-        $this->assertFalse($return);
+        self::assertTrue(file_exists($directory));
+        self::assertTrue(file_exists($directory . $file));
+        self::assertFalse($return);
     }
 
     /**
@@ -3130,8 +3130,8 @@ class GeneralUtilityTest extends UnitTestCase
         mkdir($directory . 'sub/');
         touch($directory . 'sub/file');
         $return = GeneralUtility::rmdir($directory, true);
-        $this->assertFalse(file_exists($directory));
-        $this->assertTrue($return);
+        self::assertFalse(file_exists($directory));
+        self::assertTrue($return);
     }
 
     /**
@@ -3145,7 +3145,7 @@ class GeneralUtilityTest extends UnitTestCase
         $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
         symlink($existingDirectory, $symlinkName);
         GeneralUtility::rmdir($symlinkName, true);
-        $this->assertFalse(is_link($symlinkName));
+        self::assertFalse(is_link($symlinkName));
     }
 
     /**
@@ -3160,7 +3160,7 @@ class GeneralUtilityTest extends UnitTestCase
         rmdir($notExistingDirectory);
 
         GeneralUtility::rmdir($symlinkName, true);
-        $this->assertFalse(is_link($symlinkName));
+        self::assertFalse(is_link($symlinkName));
     }
 
     /**
@@ -3174,7 +3174,7 @@ class GeneralUtilityTest extends UnitTestCase
         symlink($notExistingFile, $symlinkName);
         unlink($notExistingFile);
         GeneralUtility::rmdir($symlinkName, true);
-        $this->assertFalse(is_link($symlinkName));
+        self::assertFalse(is_link($symlinkName));
     }
 
     ///////////////////////////////////
@@ -3228,7 +3228,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        $this->assertTrue(in_array('testA.txt', $files));
+        self::assertTrue(in_array('testA.txt', $files));
     }
 
     /**
@@ -3238,7 +3238,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        $this->assertTrue(in_array('.secret.txt', $files));
+        self::assertTrue(in_array('.secret.txt', $files));
     }
 
     /**
@@ -3272,10 +3272,10 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, $fileExtensions);
-        $this->assertTrue(in_array('double.setup.typoscript', $files));
-        $this->assertTrue(in_array('testA.txt', $files));
-        $this->assertTrue(in_array('test.js', $files));
-        $this->assertTrue(in_array('test.css', $files));
+        self::assertTrue(in_array('double.setup.typoscript', $files));
+        self::assertTrue(in_array('testA.txt', $files));
+        self::assertTrue(in_array('test.js', $files));
+        self::assertTrue(in_array('test.css', $files));
     }
 
     /**
@@ -3285,9 +3285,9 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, 'txt,js');
-        $this->assertTrue(in_array('testA.txt', $files));
-        $this->assertTrue(in_array('test.js', $files));
-        $this->assertFalse(in_array('test.css', $files));
+        self::assertTrue(in_array('testA.txt', $files));
+        self::assertTrue(in_array('test.js', $files));
+        self::assertFalse(in_array('test.css', $files));
     }
 
     /**
@@ -3297,8 +3297,8 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl, '', false, '', 'excludeMe.*');
-        $this->assertTrue(in_array('test.js', $files));
-        $this->assertFalse(in_array('excludeMe.txt', $files));
+        self::assertTrue(in_array('test.js', $files));
+        self::assertFalse(in_array('excludeMe.txt', $files));
     }
 
     /**
@@ -3307,7 +3307,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirCanPrependPath()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $this->assertTrue(
+        self::assertTrue(
             in_array(
                 $vfsStreamUrl . '/testA.txt',
                 GeneralUtility::getFilesInDir($vfsStreamUrl, '', true)
@@ -3321,7 +3321,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirDoesSortAlphabeticallyByDefault()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $this->assertSame(
+        self::assertSame(
             array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false)),
             ['.secret.txt', 'double.setup.typoscript', 'excludeMe.txt', 'test.css', 'test.js', 'testA.txt', 'testB.txt', 'testC.txt']
         );
@@ -3341,7 +3341,7 @@ class GeneralUtilityTest extends UnitTestCase
             }
         }
         asort($files);
-        $this->assertSame(
+        self::assertSame(
             array_values(GeneralUtility::getFilesInDir($vfsStreamUrl, '', false, 'mtime')),
             array_keys($files)
         );
@@ -3353,7 +3353,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirReturnsArrayWithMd5OfElementAndPathAsArrayKey()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $this->assertArrayHasKey(
+        self::assertArrayHasKey(
             md5($vfsStreamUrl . '/testA.txt'),
             GeneralUtility::getFilesInDir($vfsStreamUrl)
         );
@@ -3365,7 +3365,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function getFilesInDirDoesNotFindDirectories()
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
-        $this->assertFalse(
+        self::assertFalse(
             in_array(
                 'subDirectory',
                 GeneralUtility::getFilesInDir($vfsStreamUrl)
@@ -3383,8 +3383,8 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $vfsStreamUrl = $this->getFilesInDirCreateTestDirectory();
         $files = GeneralUtility::getFilesInDir($vfsStreamUrl);
-        $this->assertFalse(in_array('..', $files));
-        $this->assertFalse(in_array('.', $files));
+        self::assertFalse(in_array('..', $files));
+        self::assertFalse(in_array('.', $files));
     }
 
     ///////////////////////////////
@@ -3402,13 +3402,13 @@ class GeneralUtilityTest extends UnitTestCase
         $fileInfo = GeneralUtility::split_fileref($directory);
         $directoryCreated = is_dir($directory);
         rmdir($directory);
-        $this->assertTrue($directoryCreated);
-        $this->assertIsArray($fileInfo);
-        $this->assertEquals($directoryPath, $fileInfo['path']);
-        $this->assertEquals($directoryName, $fileInfo['file']);
-        $this->assertEquals($directoryName, $fileInfo['filebody']);
-        $this->assertEquals('', $fileInfo['fileext']);
-        $this->assertArrayNotHasKey('realFileext', $fileInfo);
+        self::assertTrue($directoryCreated);
+        self::assertIsArray($fileInfo);
+        self::assertEquals($directoryPath, $fileInfo['path']);
+        self::assertEquals($directoryName, $fileInfo['file']);
+        self::assertEquals($directoryName, $fileInfo['filebody']);
+        self::assertEquals('', $fileInfo['fileext']);
+        self::assertArrayNotHasKey('realFileext', $fileInfo);
     }
 
     /**
@@ -3418,11 +3418,11 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $testFile = 'fileadmin/media/someFile.png';
         $fileInfo = GeneralUtility::split_fileref($testFile);
-        $this->assertIsArray($fileInfo);
-        $this->assertEquals('fileadmin/media/', $fileInfo['path']);
-        $this->assertEquals('someFile.png', $fileInfo['file']);
-        $this->assertEquals('someFile', $fileInfo['filebody']);
-        $this->assertEquals('png', $fileInfo['fileext']);
+        self::assertIsArray($fileInfo);
+        self::assertEquals('fileadmin/media/', $fileInfo['path']);
+        self::assertEquals('someFile.png', $fileInfo['file']);
+        self::assertEquals('someFile', $fileInfo['filebody']);
+        self::assertEquals('png', $fileInfo['fileext']);
     }
 
     /////////////////////////////
@@ -3453,7 +3453,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function dirnameWithDataProvider($input, $expectedValue)
     {
-        $this->assertEquals($expectedValue, GeneralUtility::dirname($input));
+        self::assertEquals($expectedValue, GeneralUtility::dirname($input));
     }
 
     /////////////////////////////////////
@@ -3504,7 +3504,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function resolveBackPathWithDataProvider($input, $expectedValue)
     {
-        $this->assertEquals($expectedValue, GeneralUtility::resolveBackPath($input));
+        self::assertEquals($expectedValue, GeneralUtility::resolveBackPath($input));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -3582,7 +3582,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function makeInstanceReturnsClassInstance()
     {
         $className = get_class($this->getMockBuilder('foo')->getMock());
-        $this->assertTrue(GeneralUtility::makeInstance($className) instanceof $className);
+        self::assertTrue(GeneralUtility::makeInstance($className) instanceof $className);
     }
 
     /**
@@ -3591,8 +3591,8 @@ class GeneralUtilityTest extends UnitTestCase
     public function makeInstancePassesParametersToConstructor()
     {
         $instance = GeneralUtility::makeInstance(TwoParametersConstructorFixture::class, 'one parameter', 'another parameter');
-        $this->assertEquals('one parameter', $instance->constructorParameter1, 'The first constructor parameter has not been set.');
-        $this->assertEquals('another parameter', $instance->constructorParameter2, 'The second constructor parameter has not been set.');
+        self::assertEquals('one parameter', $instance->constructorParameter1, 'The first constructor parameter has not been set.');
+        self::assertEquals('another parameter', $instance->constructorParameter2, 'The second constructor parameter has not been set.');
     }
 
     /**
@@ -3602,7 +3602,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         GeneralUtilityFixture::resetFinalClassNameCache();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
-        $this->assertInstanceOf(ReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
+        self::assertInstanceOf(ReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
 
     /**
@@ -3613,7 +3613,7 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtilityFixture::resetFinalClassNameCache();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][OriginalClassFixture::class] = ['className' => ReplacementClassFixture::class];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][ReplacementClassFixture::class] = ['className' => OtherReplacementClassFixture::class];
-        $this->assertInstanceOf(OtherReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
+        self::assertInstanceOf(OtherReplacementClassFixture::class, GeneralUtility::makeInstance(OriginalClassFixture::class));
     }
 
     /**
@@ -3622,7 +3622,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function makeInstanceCalledTwoTimesForNonSingletonClassReturnsDifferentInstances()
     {
         $className = get_class($this->getMockBuilder('foo')->getMock());
-        $this->assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
+        self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
     /**
@@ -3631,7 +3631,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function makeInstanceCalledTwoTimesForSingletonClassReturnsSameInstance()
     {
         $className = get_class($this->createMock(\TYPO3\CMS\Core\SingletonInterface::class));
-        $this->assertSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
+        self::assertSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
     /**
@@ -3642,7 +3642,7 @@ class GeneralUtilityTest extends UnitTestCase
         $className = get_class($this->createMock(\TYPO3\CMS\Core\SingletonInterface::class));
         $instance = GeneralUtility::makeInstance($className);
         GeneralUtility::purgeInstances();
-        $this->assertNotSame($instance, GeneralUtility::makeInstance($className));
+        self::assertNotSame($instance, GeneralUtility::makeInstance($className));
     }
 
     /**
@@ -3651,7 +3651,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function makeInstanceInjectsLogger()
     {
         $instance = GeneralUtility::makeInstance(GeneralUtilityMakeInstanceInjectLoggerFixture::class);
-        $this->assertInstanceOf(LoggerInterface::class, $instance->getLogger());
+        self::assertInstanceOf(LoggerInterface::class, $instance->getLogger());
     }
 
     /**
@@ -3689,7 +3689,7 @@ class GeneralUtilityTest extends UnitTestCase
         $instance = $this->createMock(\TYPO3\CMS\Core\SingletonInterface::class);
         $singletonClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($singletonClassName, $instance);
-        $this->assertSame($instance, GeneralUtility::makeInstance($singletonClassName));
+        self::assertSame($instance, GeneralUtility::makeInstance($singletonClassName));
     }
 
     /**
@@ -3702,7 +3702,7 @@ class GeneralUtilityTest extends UnitTestCase
         $instance2 = new $singletonClassName();
         GeneralUtility::setSingletonInstance($singletonClassName, $instance1);
         GeneralUtility::setSingletonInstance($singletonClassName, $instance2);
-        $this->assertSame($instance2, GeneralUtility::makeInstance($singletonClassName));
+        self::assertSame($instance2, GeneralUtility::makeInstance($singletonClassName));
     }
 
     /**
@@ -3714,8 +3714,8 @@ class GeneralUtilityTest extends UnitTestCase
         $instanceClassName = get_class($instance);
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
-        $this->assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
-        $this->assertSame($registeredSingletonInstances[$instanceClassName], $instance);
+        self::assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
+        self::assertSame($registeredSingletonInstances[$instanceClassName], $instance);
     }
 
     /**
@@ -3728,7 +3728,7 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::setSingletonInstance($instanceClassName, $instance);
         GeneralUtility::resetSingletonInstances([]);
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
-        $this->assertArrayNotHasKey($instanceClassName, $registeredSingletonInstances);
+        self::assertArrayNotHasKey($instanceClassName, $registeredSingletonInstances);
     }
 
     /**
@@ -3742,8 +3742,8 @@ class GeneralUtilityTest extends UnitTestCase
             [$instanceClassName => $instance]
         );
         $registeredSingletonInstances = GeneralUtility::getSingletonInstances();
-        $this->assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
-        $this->assertSame($registeredSingletonInstances[$instanceClassName], $instance);
+        self::assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
+        self::assertSame($registeredSingletonInstances[$instanceClassName], $instance);
     }
 
     /**
@@ -3793,7 +3793,7 @@ class GeneralUtilityTest extends UnitTestCase
         $instance = $this->createMock('stdClass');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
-        $this->assertSame($instance, GeneralUtility::makeInstance($className));
+        self::assertSame($instance, GeneralUtility::makeInstance($className));
     }
 
     /**
@@ -3804,7 +3804,7 @@ class GeneralUtilityTest extends UnitTestCase
         $instance = $this->createMock('stdClass');
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
-        $this->assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
+        self::assertNotSame(GeneralUtility::makeInstance($className), GeneralUtility::makeInstance($className));
     }
 
     /**
@@ -3817,8 +3817,8 @@ class GeneralUtilityTest extends UnitTestCase
         GeneralUtility::addInstance($className, $instance1);
         $instance2 = new $className();
         GeneralUtility::addInstance($className, $instance2);
-        $this->assertSame($instance1, GeneralUtility::makeInstance($className), 'The first returned instance does not match the first added instance.');
-        $this->assertSame($instance2, GeneralUtility::makeInstance($className), 'The second returned instance does not match the second added instance.');
+        self::assertSame($instance1, GeneralUtility::makeInstance($className), 'The first returned instance does not match the first added instance.');
+        self::assertSame($instance2, GeneralUtility::makeInstance($className), 'The second returned instance does not match the second added instance.');
     }
 
     /**
@@ -3830,7 +3830,7 @@ class GeneralUtilityTest extends UnitTestCase
         $className = get_class($instance);
         GeneralUtility::addInstance($className, $instance);
         GeneralUtility::purgeInstances();
-        $this->assertNotSame($instance, GeneralUtility::makeInstance($className));
+        self::assertNotSame($instance, GeneralUtility::makeInstance($className));
     }
 
     /**
@@ -3905,21 +3905,21 @@ class GeneralUtilityTest extends UnitTestCase
             ->setMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $package->expects($this->any())
+        $package->expects(self::any())
             ->method('getPackagePath')
-            ->will($this->returnValue(Environment::getPublicPath() . '/typo3/sysext/foo/'));
-        $packageManager->expects($this->any())
+            ->will(self::returnValue(Environment::getPublicPath() . '/typo3/sysext/foo/'));
+        $packageManager->expects(self::any())
             ->method('isPackageActive')
-            ->with($this->equalTo('foo'))
-            ->will($this->returnValue(true));
-        $packageManager->expects($this->any())
+            ->with(self::equalTo('foo'))
+            ->will(self::returnValue(true));
+        $packageManager->expects(self::any())
             ->method('getPackage')
             ->with('foo')
-            ->will($this->returnValue($package));
+            ->will(self::returnValue($package));
         ExtensionManagementUtility::setPackageManager($packageManager);
 
         $result = GeneralUtility::getFileAbsFileName($path);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -3964,7 +3964,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validPathStrDetectsInvalidCharacters($path)
     {
-        $this->assertFalse(GeneralUtility::validPathStr($path));
+        self::assertFalse(GeneralUtility::validPathStr($path));
     }
 
     /**
@@ -3988,7 +3988,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function validPathStrWorksWithUnicodeFileNames($path)
     {
-        $this->assertTrue(GeneralUtility::validPathStr($path));
+        self::assertTrue(GeneralUtility::validPathStr($path));
     }
 
     /**
@@ -4014,7 +4014,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function verifyNulCharacterFilesAgainstPatternWithoutFileDenyPattern(string $deniedFile)
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '';
-        $this->assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
+        self::assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
     }
 
     /**
@@ -4091,7 +4091,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function verifyFilenameAgainstDenyPatternDetectsNotAllowedFiles($deniedFile)
     {
-        $this->assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
+        self::assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
     }
 
     /**
@@ -4119,7 +4119,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function verifyFilenameAgainstDenyPatternAcceptAllowedFiles(string $allowedFile)
     {
-        $this->assertTrue(GeneralUtility::verifyFilenameAgainstDenyPattern($allowedFile));
+        self::assertTrue(GeneralUtility::verifyFilenameAgainstDenyPattern($allowedFile));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -4146,8 +4146,8 @@ class GeneralUtilityTest extends UnitTestCase
 
         GeneralUtility::copyDirectory($sourceDirectory, $targetDirectory);
 
-        $this->assertFileExists($absoluteTargetDirectory . 'file');
-        $this->assertFileExists($absoluteTargetDirectory . 'foo/file');
+        self::assertFileExists($absoluteTargetDirectory . 'file');
+        self::assertFileExists($absoluteTargetDirectory . 'foo/file');
     }
 
     /**
@@ -4170,8 +4170,8 @@ class GeneralUtilityTest extends UnitTestCase
 
         GeneralUtility::copyDirectory($absoluteSourceDirectory, $absoluteTargetDirectory);
 
-        $this->assertFileExists($absoluteTargetDirectory . 'file');
-        $this->assertFileExists($absoluteTargetDirectory . 'foo/file');
+        self::assertFileExists($absoluteTargetDirectory . 'file');
+        self::assertFileExists($absoluteTargetDirectory . 'foo/file');
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -4227,7 +4227,7 @@ class GeneralUtilityTest extends UnitTestCase
         $result = GeneralUtility::callUserFunction(function () {
             return 'Worked fine';
         }, $inputData, $this, '');
-        $this->assertEquals('Worked fine', $result);
+        self::assertEquals('Worked fine', $result);
     }
 
     /**
@@ -4237,7 +4237,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $inputData = ['foo' => 'bar'];
         $result = GeneralUtility::callUserFunction(self::class . '->user_calledUserFunction', $inputData, $this);
-        $this->assertEquals('Worked fine', $result);
+        self::assertEquals('Worked fine', $result);
     }
 
     /**
@@ -4258,7 +4258,7 @@ class GeneralUtilityTest extends UnitTestCase
             $reference->assertEquals($inputData, $parameters, 'Passed data doesn\'t match expected output');
             return 'Worked fine';
         };
-        $this->assertEquals('Worked fine', GeneralUtility::callUserFunction($closure, $inputData, $this));
+        self::assertEquals('Worked fine', GeneralUtility::callUserFunction($closure, $inputData, $this));
     }
 
     /**
@@ -4268,7 +4268,7 @@ class GeneralUtilityTest extends UnitTestCase
     {
         $inputData = ['foo' => 'bar'];
         $result = GeneralUtility::callUserFunction("\t" . self::class . '->user_calledUserFunction ', $inputData, $this);
-        $this->assertEquals('Worked fine', $result);
+        self::assertEquals('Worked fine', $result);
     }
 
     /**
@@ -4286,7 +4286,7 @@ class GeneralUtilityTest extends UnitTestCase
             }
         }
         GeneralUtility::rmdir($directory);
-        $this->assertTrue($check);
+        self::assertTrue($check);
     }
 
     /**
@@ -4303,7 +4303,7 @@ class GeneralUtilityTest extends UnitTestCase
 
         $output = GeneralUtility::array2xml($input);
 
-        $this->assertEquals('<phparray>
+        self::assertEquals('<phparray>
 	<el type="array"></el>
 </phparray>', $output);
     }
@@ -4384,7 +4384,7 @@ class GeneralUtilityTest extends UnitTestCase
                 ]
             ],
         ];
-        $this->assertSame($expected, GeneralUtility::xml2array($input));
+        self::assertSame($expected, GeneralUtility::xml2array($input));
     }
 
     /**
@@ -4446,7 +4446,7 @@ class GeneralUtilityTest extends UnitTestCase
                 ]
             ],
         ];
-        $this->assertSame($expected, GeneralUtility::xml2array($input, 'T3:'));
+        self::assertSame($expected, GeneralUtility::xml2array($input, 'T3:'));
     }
 
     /**
@@ -4513,7 +4513,7 @@ class GeneralUtilityTest extends UnitTestCase
             ],
             '_DOCUMENT_TAG' => $docTag
         ];
-        $this->assertSame($expected, GeneralUtility::xml2array($input, '', true));
+        self::assertSame($expected, GeneralUtility::xml2array($input, '', true));
     }
 
     /**
@@ -4568,7 +4568,7 @@ class GeneralUtilityTest extends UnitTestCase
                 ]
             ],
         ];
-        $this->assertSame($expected, GeneralUtility::xml2array($input));
+        self::assertSame($expected, GeneralUtility::xml2array($input));
     }
 
     /**
@@ -4596,7 +4596,7 @@ class GeneralUtilityTest extends UnitTestCase
                     </field>
                 </data>
             </T3:T3FlexForms>';
-        $this->assertStringContainsString('No memory', GeneralUtility::xml2array($input));
+        self::assertStringContainsString('No memory', GeneralUtility::xml2array($input));
     }
 
     /**
@@ -4689,7 +4689,7 @@ class GeneralUtilityTest extends UnitTestCase
         $cacheProphecy->set('generalUtilityXml2Array', Argument::cetera())->shouldBeCalled();
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
         $result = GeneralUtility::xml2array($input);
-        $this->assertSame($expected, $result['index']['vDEF']);
+        self::assertSame($expected, $result['index']['vDEF']);
     }
 
     public function splitHeaderLinesDataProvider(): array

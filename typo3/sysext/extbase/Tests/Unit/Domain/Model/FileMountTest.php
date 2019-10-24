@@ -37,7 +37,7 @@ class FileMountTest extends UnitTestCase
      */
     public function getTitleInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTitle());
+        self::assertSame('', $this->subject->getTitle());
     }
 
     /**
@@ -47,7 +47,7 @@ class FileMountTest extends UnitTestCase
     {
         $title = 'foobar mount';
         $this->subject->setTitle($title);
-        $this->assertSame($title, $this->subject->getTitle());
+        self::assertSame($title, $this->subject->getTitle());
     }
 
     /**
@@ -57,7 +57,7 @@ class FileMountTest extends UnitTestCase
     {
         $description = 'This is the foobar mount, used for foo and bar';
         $this->subject->setDescription($description);
-        $this->assertSame($description, $this->subject->getDescription());
+        self::assertSame($description, $this->subject->getDescription());
     }
 
     /**
@@ -65,7 +65,7 @@ class FileMountTest extends UnitTestCase
      */
     public function getPathInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getPath());
+        self::assertSame('', $this->subject->getPath());
     }
 
     /**
@@ -75,7 +75,7 @@ class FileMountTest extends UnitTestCase
     {
         $path = 'foo/bar/';
         $this->subject->setPath($path);
-        $this->assertSame($path, $this->subject->getPath());
+        self::assertSame($path, $this->subject->getPath());
     }
 
     /**
@@ -83,7 +83,7 @@ class FileMountTest extends UnitTestCase
      */
     public function getIsAbsolutePathInitiallyReturnsFalse()
     {
-        $this->assertFalse($this->subject->getIsAbsolutePath());
+        self::assertFalse($this->subject->getIsAbsolutePath());
     }
 
     /**
@@ -92,6 +92,6 @@ class FileMountTest extends UnitTestCase
     public function setIsAbsolutePathCanSetBaseIsAbsolutePathToTrue()
     {
         $this->subject->setIsAbsolutePath(true);
-        $this->assertTrue($this->subject->getIsAbsolutePath());
+        self::assertTrue($this->subject->getIsAbsolutePath());
     }
 }

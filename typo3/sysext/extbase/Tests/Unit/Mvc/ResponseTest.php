@@ -37,7 +37,7 @@ class ResponseTest extends UnitTestCase
      */
     public function propertyContentInitiallyIsNull()
     {
-        $this->assertNull($this->mockResponse->_get('content'));
+        self::assertNull($this->mockResponse->_get('content'));
     }
 
     /**
@@ -46,7 +46,7 @@ class ResponseTest extends UnitTestCase
     public function setContentSetsContentCorrectly()
     {
         $this->mockResponse->setContent('foo');
-        $this->assertSame('foo', $this->mockResponse->_get('content'));
+        self::assertSame('foo', $this->mockResponse->_get('content'));
     }
 
     /**
@@ -56,7 +56,7 @@ class ResponseTest extends UnitTestCase
     {
         $this->mockResponse->_set('content', 'foo');
         $this->mockResponse->appendContent('bar');
-        $this->assertSame('foobar', $this->mockResponse->_get('content'));
+        self::assertSame('foobar', $this->mockResponse->_get('content'));
     }
 
     /**
@@ -65,7 +65,7 @@ class ResponseTest extends UnitTestCase
     public function getContentReturnsContentCorrectly()
     {
         $this->mockResponse->_set('content', 'foo');
-        $this->assertSame('foo', $this->mockResponse->getContent());
+        self::assertSame('foo', $this->mockResponse->getContent());
     }
 
     /**
@@ -74,6 +74,6 @@ class ResponseTest extends UnitTestCase
     public function __toStringReturnsActualContent()
     {
         $this->mockResponse->_set('content', 'foo');
-        $this->assertSame('foo', (string)$this->mockResponse);
+        self::assertSame('foo', (string)$this->mockResponse);
     }
 }

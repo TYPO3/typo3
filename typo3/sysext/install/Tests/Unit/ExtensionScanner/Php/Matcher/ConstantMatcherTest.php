@@ -57,7 +57,7 @@ class ConstantMatcherTest extends UnitTestCase
         foreach ($subject->getMatches() as $hit) {
             $actualHitLineNumbers[] = $hit['line'];
         }
-        $this->assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
+        self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
     /**
@@ -106,6 +106,6 @@ class ConstantMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
 
         $result = $subject->getMatches();
-        $this->assertSame($expected[0]['restFiles'], $result[0]['restFiles']);
+        self::assertSame($expected[0]['restFiles'], $result[0]['restFiles']);
     }
 }

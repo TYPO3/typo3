@@ -33,8 +33,8 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
     public function executeCallsCollectGarbageOfConfiguredBackend()
     {
         $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
-        $cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
-        $cache->expects($this->atLeastOnce())->method('collectGarbage');
+        $cache->expects(self::any())->method('getIdentifier')->will(self::returnValue('cache'));
+        $cache->expects(self::atLeastOnce())->method('collectGarbage');
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $mockCacheManager->registerCache($cache);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);
@@ -59,8 +59,8 @@ class CachingFrameworkGarbageCollectionTest extends UnitTestCase
     public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend()
     {
         $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class);
-        $cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
-        $cache->expects($this->never())->method('collectGarbage');
+        $cache->expects(self::any())->method('getIdentifier')->will(self::returnValue('cache'));
+        $cache->expects(self::never())->method('collectGarbage');
         $mockCacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
         $mockCacheManager->registerCache($cache);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $mockCacheManager);

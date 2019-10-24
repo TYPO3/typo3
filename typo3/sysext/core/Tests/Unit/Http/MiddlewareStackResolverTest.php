@@ -55,7 +55,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
             'secondMiddleware' => 'anotherClassName',
             'firstMiddleware' => 'aClassName',
         ];
-        $this->assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack'));
     }
 
     /**
@@ -80,7 +80,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
         );
         // empty array expected
         $expected = [];
-        $this->assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack'));
     }
 
     /**
@@ -111,7 +111,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
             // firstMiddleware is missing, RequestMiddlewares.php of Package2 sets disables=true on firstMiddleware
             'secondMiddleware' => 'anotherClassName',
         ];
-        $this->assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack'));
     }
 
     /**
@@ -143,6 +143,6 @@ class MiddlewareStackResolverTest extends UnitTestCase
             'firstMiddleware' => 'replacedClassName',
             'secondMiddleware' => 'anotherClassName',
         ];
-        $this->assertEquals($expected, $subject->resolve('testStack'));
+        self::assertEquals($expected, $subject->resolve('testStack'));
     }
 }

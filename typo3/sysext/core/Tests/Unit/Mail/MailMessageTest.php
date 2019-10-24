@@ -49,7 +49,7 @@ class MailMessageTest extends UnitTestCase
      */
     public function isSentReturnsFalseIfMailWasNotSent(): void
     {
-        $this->assertFalse($this->subject->isSent());
+        self::assertFalse($this->subject->isSent());
     }
 
     /**
@@ -58,9 +58,9 @@ class MailMessageTest extends UnitTestCase
     public function setSubjectWorksAsExpected(): void
     {
         $this->subject->setSubject('Test');
-        $this->assertSame('Test', $this->subject->getSubject());
+        self::assertSame('Test', $this->subject->getSubject());
         $this->subject->setSubject('Test2');
-        $this->assertSame('Test2', $this->subject->getSubject());
+        self::assertSame('Test2', $this->subject->getSubject());
     }
 
     /**
@@ -70,10 +70,10 @@ class MailMessageTest extends UnitTestCase
     {
         $time = time();
         $this->subject->setDate($time);
-        $this->assertSame($time, (int)$this->subject->getDate()->format('U'));
+        self::assertSame($time, (int)$this->subject->getDate()->format('U'));
         $time++;
         $this->subject->setDate($time);
-        $this->assertSame($time, (int)$this->subject->getDate()->format('U'));
+        self::assertSame($time, (int)$this->subject->getDate()->format('U'));
     }
 
     /**
@@ -82,11 +82,11 @@ class MailMessageTest extends UnitTestCase
     public function setReturnPathWorksAsExpected(): void
     {
         $this->subject->setReturnPath('noreply@typo3.com');
-        $this->assertInstanceOf(Address::class, $this->subject->getReturnPath());
-        $this->assertSame('noreply@typo3.com', $this->subject->getReturnPath()->getAddress());
+        self::assertInstanceOf(Address::class, $this->subject->getReturnPath());
+        self::assertSame('noreply@typo3.com', $this->subject->getReturnPath()->getAddress());
         $this->subject->setReturnPath('no-reply@typo3.com');
-        $this->assertInstanceOf(Address::class, $this->subject->getReturnPath());
-        $this->assertSame('no-reply@typo3.com', $this->subject->getReturnPath()->getAddress());
+        self::assertInstanceOf(Address::class, $this->subject->getReturnPath());
+        self::assertSame('no-reply@typo3.com', $this->subject->getReturnPath()->getAddress());
     }
 
     public function setSenderAddressDataProvider(): array
@@ -107,9 +107,9 @@ class MailMessageTest extends UnitTestCase
     public function setSenderWorksAsExpected($address, $name, $expectedString): void
     {
         $this->subject->setSender($address, $name);
-        $this->assertInstanceOf(Address::class, $this->subject->getSender());
-        $this->assertSame($address, $this->subject->getSender()->getAddress());
-        $this->assertSame($expectedString, $this->subject->getSender()->toString());
+        self::assertInstanceOf(Address::class, $this->subject->getSender());
+        self::assertSame($address, $this->subject->getSender()->getAddress());
+        self::assertSame($expectedString, $this->subject->getSender()->toString());
     }
 
     public function globalSetAddressDataProvider(): array
@@ -279,7 +279,7 @@ class MailMessageTest extends UnitTestCase
     public function setReadReceiptToToWorksAsExpected(): void
     {
         $this->subject->setReadReceiptTo('foo@example.com');
-        $this->assertSame('foo@example.com', $this->subject->getHeaders()->get('Disposition-Notification-To')->getAddress()->getAddress());
+        self::assertSame('foo@example.com', $this->subject->getHeaders()->get('Disposition-Notification-To')->getAddress()->getAddress());
     }
 
     public function exceptionIsThrownForInvalidArgumentCombinationsDataProvider(): array
@@ -314,10 +314,10 @@ class MailMessageTest extends UnitTestCase
      */
     protected function assertCorrectAddresses(array $dataToCheck, array $expectedAddresses): void
     {
-        $this->assertIsArray($dataToCheck);
-        $this->assertCount(count($expectedAddresses), $dataToCheck);
+        self::assertIsArray($dataToCheck);
+        self::assertCount(count($expectedAddresses), $dataToCheck);
         foreach ($dataToCheck as $singleAddress) {
-            $this->assertContains($singleAddress->toString(), $expectedAddresses);
+            self::assertContains($singleAddress->toString(), $expectedAddresses);
         }
     }
 }

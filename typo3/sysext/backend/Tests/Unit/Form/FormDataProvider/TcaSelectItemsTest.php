@@ -194,7 +194,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $expected = $input;
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -268,7 +268,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $expected['databaseRow']['aField'] = ['aValue'];
 
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -305,7 +305,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['aValue'];
 
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -399,7 +399,7 @@ class TcaSelectItemsTest extends UnitTestCase
             ]
         ];
 
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -464,7 +464,7 @@ class TcaSelectItemsTest extends UnitTestCase
             ]
         ];
 
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -613,7 +613,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -695,7 +695,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -769,7 +769,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -843,7 +843,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -938,7 +938,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -1033,7 +1033,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -1088,7 +1088,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -1154,7 +1154,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -1216,7 +1216,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $result = (new TcaSelectItems)->addData($input);
 
         $result['processedTca']['columns']['aField']['config']['items'][0][2] = str_replace([CR, LF, "\t"], '', $result['processedTca']['columns']['aField']['config']['items'][0][2]);
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -1268,7 +1268,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $result = (new TcaSelectItems)->addData($input);
 
-        $this->assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
+        self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
     }
 
     /**
@@ -1348,7 +1348,7 @@ class TcaSelectItemsTest extends UnitTestCase
             null,
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -1402,7 +1402,7 @@ class TcaSelectItemsTest extends UnitTestCase
             null,
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -1898,7 +1898,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -1995,7 +1995,7 @@ class TcaSelectItemsTest extends UnitTestCase
 
         $expected['databaseRow']['aField'] = [];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2081,7 +2081,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
         $expected['databaseRow']['aField'] = [];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2139,7 +2139,7 @@ class TcaSelectItemsTest extends UnitTestCase
             $expected['processedTca']['columns']['aField']['config']['items'][2]
         );
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2190,7 +2190,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = [];
         $expected['processedTca']['columns']['aField']['config']['items'] = [];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2264,7 +2264,7 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2321,7 +2321,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
         $expected['processedTca']['columns']['aField']['config']['items'] = array_values($expected['processedTca']['columns']['aField']['config']['items']);
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2377,7 +2377,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][2]);
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2431,7 +2431,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = [];
         unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2491,7 +2491,7 @@ class TcaSelectItemsTest extends UnitTestCase
             [ 'keepMe', 'keep', null, null ],
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2540,7 +2540,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = ['keep'];
         unset($expected['processedTca']['columns']['aField']['config']['items'][1]);
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2582,7 +2582,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['doktype'] = ['keep'];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2632,7 +2632,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['doktype'] = ['keep'];
         unset($expected['processedTca']['columns']['doktype']['config']['items'][1]);
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2684,7 +2684,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'maxitems' => 99999,
         ];
 
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2870,7 +2870,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected['databaseRow']['aField'] = ['aValue'];
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
 
-        $this->assertSame($expected, (new TcaSelectItems)->addData($input));
+        self::assertSame($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2931,7 +2931,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = $relationHandlerUids;
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -2990,7 +2990,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = $relationHandlerUids;
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3043,7 +3043,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo', 1];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3079,7 +3079,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'bar'
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3109,7 +3109,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = [];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3146,7 +3146,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'c',
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3183,7 +3183,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = ['foo'];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3230,7 +3230,7 @@ class TcaSelectItemsTest extends UnitTestCase
             ['[ INVALID VALUE "1" ]', '1', null, null],
             ['foo', 'foo', null, null],
         ];
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3272,7 +3272,7 @@ class TcaSelectItemsTest extends UnitTestCase
             'bar'
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3313,7 +3313,7 @@ class TcaSelectItemsTest extends UnitTestCase
             4 => 'bar',
         ];
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 
     /**
@@ -3483,6 +3483,6 @@ class TcaSelectItemsTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField'] = $relationHandlerUids;
 
-        $this->assertEquals($expected, (new TcaSelectItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
 }

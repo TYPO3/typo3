@@ -48,7 +48,7 @@ class WincacheBackendTest extends UnitTestCase
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
         $inCache = $backend->has($identifier);
-        $this->assertTrue($inCache, 'WinCache backend failed to set and check entry');
+        self::assertTrue($inCache, 'WinCache backend failed to set and check entry');
     }
 
     /**
@@ -61,7 +61,7 @@ class WincacheBackendTest extends UnitTestCase
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data);
         $fetchedData = $backend->get($identifier);
-        $this->assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
+        self::assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
     }
 
     /**
@@ -75,7 +75,7 @@ class WincacheBackendTest extends UnitTestCase
         $backend->set($identifier, $data);
         $backend->remove($identifier);
         $inCache = $backend->has($identifier);
-        $this->assertFalse($inCache, 'Failed to set and remove data from WinCache backend');
+        self::assertFalse($inCache, 'Failed to set and remove data from WinCache backend');
     }
 
     /**
@@ -90,7 +90,7 @@ class WincacheBackendTest extends UnitTestCase
         $otherData = 'some other data';
         $backend->set($identifier, $otherData);
         $fetchedData = $backend->get($identifier);
-        $this->assertEquals($otherData, $fetchedData, 'WinCache backend failed to overwrite and retrieve data');
+        self::assertEquals($otherData, $fetchedData, 'WinCache backend failed to overwrite and retrieve data');
     }
 
     /**
@@ -103,9 +103,9 @@ class WincacheBackendTest extends UnitTestCase
         $identifier = $this->getUniqueId('MyIdentifier');
         $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
-        $this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
+        self::assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
-        $this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
+        self::assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
     }
 
     /**
@@ -119,7 +119,7 @@ class WincacheBackendTest extends UnitTestCase
         $backend->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tagX']);
         $backend->set($identifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
-        $this->assertEquals([], $retrieved, 'Found entry which should no longer exist.');
+        self::assertEquals([], $retrieved, 'Found entry which should no longer exist.');
     }
 
     /**
@@ -130,7 +130,7 @@ class WincacheBackendTest extends UnitTestCase
         $backend = $this->setUpBackend();
         $identifier = $this->getUniqueId('NonExistingIdentifier');
         $inCache = $backend->has($identifier);
-        $this->assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
+        self::assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
     }
 
     /**
@@ -141,7 +141,7 @@ class WincacheBackendTest extends UnitTestCase
         $backend = $this->setUpBackend();
         $identifier = $this->getUniqueId('NonExistingIdentifier');
         $inCache = $backend->remove($identifier);
-        $this->assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
+        self::assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
     }
 
     /**
@@ -155,9 +155,9 @@ class WincacheBackendTest extends UnitTestCase
         $backend->set('BackendWincacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
         $backend->set('BackendWincacheTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
-        $this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-        $this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-        $this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+        self::assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
+        self::assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
+        self::assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
     }
 
     /**
@@ -171,9 +171,9 @@ class WincacheBackendTest extends UnitTestCase
         $backend->set('BackendWincacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
         $backend->set('BackendWincacheTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special', 'UnitTestTag%boring');
-        $this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-        $this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-        $this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+        self::assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
+        self::assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
+        self::assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
     }
 
     /**
@@ -187,9 +187,9 @@ class WincacheBackendTest extends UnitTestCase
         $backend->set('BackendWincacheTest2', $data);
         $backend->set('BackendWincacheTest3', $data);
         $backend->flush();
-        $this->assertFalse($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-        $this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-        $this->assertFalse($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+        self::assertFalse($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
+        self::assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
+        self::assertFalse($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
     }
 
     /**
@@ -199,20 +199,20 @@ class WincacheBackendTest extends UnitTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thisCache */
         $thisCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
-        $thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
+        $thisCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thisCache'));
         $thisBackend = new WincacheBackend('Testing');
         $thisBackend->setCache($thisCache);
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $thatCache */
         $thatCache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
-        $thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
+        $thatCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thatCache'));
         $thatBackend = new WincacheBackend('Testing');
         $thatBackend->setCache($thatCache);
         $thisBackend->set('thisEntry', 'Hello');
         $thatBackend->set('thatEntry', 'World!');
         $thatBackend->flush();
-        $this->assertEquals('Hello', $thisBackend->get('thisEntry'));
-        $this->assertFalse($thatBackend->has('thatEntry'));
+        self::assertEquals('Hello', $thisBackend->get('thisEntry'));
+        self::assertFalse($thatBackend->has('thatEntry'));
     }
 
     /**
@@ -226,8 +226,8 @@ class WincacheBackendTest extends UnitTestCase
         $data = str_repeat('abcde', 1024 * 1024);
         $identifier = $this->getUniqueId('tooLargeData');
         $backend->set($identifier, $data);
-        $this->assertTrue($backend->has($identifier));
-        $this->assertEquals($backend->get($identifier), $data);
+        self::assertTrue($backend->has($identifier));
+        self::assertEquals($backend->get($identifier), $data);
     }
 
     /**
@@ -240,13 +240,13 @@ class WincacheBackendTest extends UnitTestCase
 
         $backend = $this->setUpBackend(true);
         $backend->_call('addIdentifierToTags', $identifier, $tags);
-        $this->assertSame(
+        self::assertSame(
             $tags,
             $backend->_call('findTagsByIdentifier', $identifier)
         );
 
         $backend->_call('addIdentifierToTags', $identifier, $tags);
-        $this->assertSame(
+        self::assertSame(
             $tags,
             $backend->_call('findTagsByIdentifier', $identifier)
         );

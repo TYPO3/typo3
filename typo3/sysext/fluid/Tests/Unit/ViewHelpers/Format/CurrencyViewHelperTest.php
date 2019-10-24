@@ -208,6 +208,6 @@ class CurrencyViewHelperTest extends ViewHelperBaseTestcase
         );
         $this->setArgumentsUnderTest($this->viewHelper, $arguments);
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expected, $actualResult);
+        self::assertEquals($expected, $actualResult);
     }
 }

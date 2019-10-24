@@ -46,7 +46,7 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('Source', $actualResult);
+        self::assertEquals('Source', $actualResult);
     }
 
     /**
@@ -62,7 +62,7 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
         );
 
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('Source', $actualResult);
+        self::assertEquals('Source', $actualResult);
     }
 
     /**
@@ -79,7 +79,7 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertSame($source, $actualResult);
+        self::assertSame($source, $actualResult);
     }
 
     /**
@@ -98,7 +98,7 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
         );
 
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -120,7 +120,7 @@ class UrlencodeViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->render();
-        $this->assertSame($expectation, $actualResult);
+        self::assertSame($expectation, $actualResult);
     }
 
     /**

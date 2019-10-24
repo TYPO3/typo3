@@ -39,7 +39,7 @@ class ConstraintTest extends UnitTestCase
     {
         $date = new \DateTime();
         $this->subject->setManualDateStart($date);
-        $this->assertEquals($date, $this->subject->getManualDateStart());
+        self::assertEquals($date, $this->subject->getManualDateStart());
     }
 
     /**
@@ -48,7 +48,7 @@ class ConstraintTest extends UnitTestCase
     public function setManualDateStartForNoArgumentSetsManualDateStart()
     {
         $this->subject->setManualDateStart();
-        $this->assertNull($this->subject->getManualDateStart());
+        self::assertNull($this->subject->getManualDateStart());
     }
 
     /**
@@ -58,7 +58,7 @@ class ConstraintTest extends UnitTestCase
     {
         $date = new \DateTime();
         $this->subject->setManualDateStop($date);
-        $this->assertEquals($date, $this->subject->getManualDateStop());
+        self::assertEquals($date, $this->subject->getManualDateStop());
     }
 
     /**
@@ -67,6 +67,6 @@ class ConstraintTest extends UnitTestCase
     public function setManualDateStopForNoArgumentSetsManualDateStop()
     {
         $this->subject->setManualDateStop();
-        $this->assertNull($this->subject->getManualDateStop());
+        self::assertNull($this->subject->getManualDateStop());
     }
 }

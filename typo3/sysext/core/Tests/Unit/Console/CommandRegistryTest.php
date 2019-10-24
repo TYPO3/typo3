@@ -91,8 +91,8 @@ class CommandRegistryTest extends UnitTestCase
         $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal());
         $commands = iterator_to_array($commandRegistry);
 
-        $this->assertCount(2, $commands);
-        $this->assertContainsOnlyInstancesOf(Command::class, $commands);
+        self::assertCount(2, $commands);
+        self::assertContainsOnlyInstancesOf(Command::class, $commands);
     }
 
     /**
@@ -132,7 +132,7 @@ class CommandRegistryTest extends UnitTestCase
         $commandRegistry = new CommandRegistry($this->packageManagerProphecy->reveal());
         $command = $commandRegistry->getCommandByIdentifier('first:command');
 
-        $this->assertInstanceOf(Command::class, $command);
+        self::assertInstanceOf(Command::class, $command);
     }
 
     /**

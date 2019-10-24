@@ -53,7 +53,7 @@ class ContextTest extends UnitTestCase
             'myfirst' => new UserAspect(),
             'mysecond' => new UserAspect(),
         ]);
-        $this->assertTrue($subject->hasAspect($aspectName));
+        self::assertTrue($subject->hasAspect($aspectName));
     }
 
     /**
@@ -81,7 +81,7 @@ class ContextTest extends UnitTestCase
             'myfirst' => new UserAspect(),
             'mysecond' => new UserAspect(),
         ]);
-        $this->assertFalse($subject->hasAspect($aspectName));
+        self::assertFalse($subject->hasAspect($aspectName));
     }
 
     /**
@@ -93,8 +93,8 @@ class ContextTest extends UnitTestCase
             'coolio' => new UserAspect(),
             'uncoolio' => new Registry()
         ]);
-        $this->assertTrue($subject->hasAspect('coolio'));
-        $this->assertFalse($subject->hasAspect('uncoolio'));
+        self::assertTrue($subject->hasAspect('coolio'));
+        self::assertFalse($subject->hasAspect('uncoolio'));
     }
 
     /**
@@ -122,7 +122,7 @@ class ContextTest extends UnitTestCase
             'coolio' => $aspect
         ]);
 
-        $this->assertSame($aspect, $subject->getAspect('coolio'));
+        self::assertSame($aspect, $subject->getAspect('coolio'));
     }
 
     /**
@@ -152,7 +152,7 @@ class ContextTest extends UnitTestCase
         ]);
 
         $result = $subject->getPropertyFromAspect('coolio', 'unknownproperty', $defaultValue);
-        $this->assertEquals($defaultValue, $result);
+        self::assertEquals($defaultValue, $result);
     }
 
     /**
@@ -166,7 +166,7 @@ class ContextTest extends UnitTestCase
         ]);
 
         $result = $subject->getPropertyFromAspect('coolio', 'id');
-        $this->assertEquals(13, $result);
+        self::assertEquals(13, $result);
     }
 
     /**
@@ -178,7 +178,7 @@ class ContextTest extends UnitTestCase
         $subject = new Context();
 
         $subject->setAspect('coolio', $aspect);
-        $this->assertSame($aspect, $subject->getAspect('coolio'));
+        self::assertSame($aspect, $subject->getAspect('coolio'));
     }
 
     /**
@@ -193,7 +193,7 @@ class ContextTest extends UnitTestCase
         ]);
 
         $subject->setAspect('coolio', $aspectOverride);
-        $this->assertNotSame($initialAspect, $subject->getAspect('coolio'));
-        $this->assertSame($aspectOverride, $subject->getAspect('coolio'));
+        self::assertNotSame($initialAspect, $subject->getAspect('coolio'));
+        self::assertSame($aspectOverride, $subject->getAspect('coolio'));
     }
 }

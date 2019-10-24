@@ -61,7 +61,7 @@ class QueryFactoryTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->setMethods(['buildDataMap', 'convertClassNameToTableName'])
             ->getMock();
-        $this->dataMapFactory->expects($this->any())->method('buildDataMap')->will($this->returnValue($this->dataMap));
+        $this->dataMapFactory->expects(self::any())->method('buildDataMap')->will(self::returnValue($this->dataMap));
 
         $this->queryFactory = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory(
             $this->objectManager,
@@ -90,22 +90,22 @@ class QueryFactoryTest extends UnitTestCase
      */
     public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult)
     {
-        $this->dataMap->expects($this->any())->method('getIsStatic')->will($this->returnValue($static));
-        $this->dataMap->expects($this->any())->method('getRootLevel')->will($this->returnValue($rootLevel));
+        $this->dataMap->expects(self::any())->method('getIsStatic')->will(self::returnValue($static));
+        $this->dataMap->expects(self::any())->method('getRootLevel')->will(self::returnValue($rootLevel));
 
         $query = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
-        $this->objectManager->expects($this->at(0))->method('get')
+        $this->objectManager->expects(self::at(0))->method('get')
             ->with(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class)
-            ->will($this->returnValue($query));
+            ->will(self::returnValue($query));
 
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
-        $this->objectManager->expects($this->at(1))->method('get')
+        $this->objectManager->expects(self::at(1))->method('get')
             ->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)
-            ->will($this->returnValue($querySettings));
-        $query->expects($this->once())->method('setQuerySettings')->with($querySettings);
+            ->will(self::returnValue($querySettings));
+        $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
         $this->queryFactory->create($this->className);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedResult,
             $querySettings->getRespectStoragePage()
         );

@@ -83,7 +83,7 @@ class TcaRecordTitleTest extends UnitTestCase
         $expected = $input;
         $expected['recordTitle'] = 'Test';
 
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -115,7 +115,7 @@ class TcaRecordTitleTest extends UnitTestCase
         $expected = $input;
         $expected['recordTitle'] = 'Test';
 
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -151,7 +151,7 @@ class TcaRecordTitleTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['recordTitle'] = 'aValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -188,7 +188,7 @@ class TcaRecordTitleTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['recordTitle'] = 'aFormattedLabel';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -221,7 +221,7 @@ class TcaRecordTitleTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['recordTitle'] = 'aValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -250,7 +250,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'NEW56017ee37d10e587251374';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -399,7 +399,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = $expectedTitle;
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -437,7 +437,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'anotherValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -481,7 +481,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'additionalValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -520,7 +520,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aField, anotherField';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -565,7 +565,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aField, anotherField, additionalValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -610,7 +610,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aField, additionalValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -646,7 +646,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'bar';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -683,7 +683,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'foo';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -823,7 +823,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = $expectedTitle;
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -867,7 +867,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'aValue, anotherValue';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -902,7 +902,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -942,7 +942,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'foo, baz';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -1000,7 +1000,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = '';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -1038,7 +1038,7 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'foo, bar';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 
     /**
@@ -1068,6 +1068,6 @@ class TcaRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTitle'] = 'text';
-        $this->assertSame($expected, (new TcaRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaRecordTitle)->addData($input));
     }
 }

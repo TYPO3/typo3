@@ -100,7 +100,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
 
         foreach ($scopes as $scopePath => $expectedScopeValue) {
-            static::assertSame($expectedScopeValue, $responseStructure->getScopePath($scopePath));
+            self::assertSame($expectedScopeValue, $responseStructure->getScopePath($scopePath));
         }
     }
 
@@ -116,7 +116,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         );
 
         $response = $this->executeFrontendRequest(new InternalRequest($url), $this->internalRequestContext);
-        static::assertSame(404, $response->getStatusCode());
+        self::assertSame(404, $response->getStatusCode());
     }
 
     /**
@@ -152,6 +152,6 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         $json = json_decode((string)$response->getBody(), true);
         $json = $this->filterMenu($json);
 
-        static::assertSame($expectation, $json);
+        self::assertSame($expectation, $json);
     }
 }

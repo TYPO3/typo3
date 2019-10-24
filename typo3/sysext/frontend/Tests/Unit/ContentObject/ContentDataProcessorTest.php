@@ -86,7 +86,7 @@ class ContentDataProcessorTest extends UnitTestCase
             ]
         ];
         $variables = [];
-        $this->assertSame(
+        self::assertSame(
             ['foo' => 'bar'],
             $this->contentDataProcessor->process($contentObjectRendererStub, $config, $variables)
         );

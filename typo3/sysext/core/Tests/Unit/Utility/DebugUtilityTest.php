@@ -42,7 +42,7 @@ class DebugUtilityTest extends UnitTestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<script>alert(\'Hello world!\')</script>',
             $output
         );
@@ -61,7 +61,7 @@ class DebugUtilityTest extends UnitTestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '&lt;script&gt;alert(\'Hello world!\')&lt;/script&gt;',
             $output
         );
@@ -113,6 +113,6 @@ class DebugUtilityTest extends UnitTestCase
      */
     public function convertVariableToStringReturnsVariableContent($variable, $expected)
     {
-        $this->assertSame($expected, DebugUtility::convertVariableToString($variable));
+        self::assertSame($expected, DebugUtility::convertVariableToString($variable));
     }
 }

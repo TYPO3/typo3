@@ -83,7 +83,7 @@ class LocalesTest extends UnitTestCase
         $detectedLanguage = (new Locales)->getPreferredClientLanguage(
             $acceptLanguageHeader
         );
-        $this->assertSame($expected, $detectedLanguage);
+        self::assertSame($expected, $detectedLanguage);
     }
 
     /**
@@ -93,10 +93,10 @@ class LocalesTest extends UnitTestCase
     {
         $language = new SiteLanguage(0, '', new Uri('/'), []);
         $result = Locales::setSystemLocaleFromSiteLanguage($language);
-        static::assertFalse($result);
+        self::assertFalse($result);
         $currentLocale = setlocale(LC_COLLATE, 0);
         // Check that the locale was not overridden
-        static::assertEquals($this->originalLocale, $currentLocale);
+        self::assertEquals($this->originalLocale, $currentLocale);
     }
 
     /**
@@ -107,10 +107,10 @@ class LocalesTest extends UnitTestCase
         $locale = 'en_US';
         $language = new SiteLanguage(0, $locale, new Uri('/'), []);
         $result = Locales::setSystemLocaleFromSiteLanguage($language);
-        static::assertTrue($result);
+        self::assertTrue($result);
         $currentLocale = setlocale(LC_COLLATE, 0);
         // Check that the locale was overridden
-        static::assertEquals($locale, $currentLocale);
+        self::assertEquals($locale, $currentLocale);
     }
 
     /**
@@ -122,9 +122,9 @@ class LocalesTest extends UnitTestCase
         $locale = 'af_EUR';
         $language = new SiteLanguage(0, $locale, new Uri('/'), []);
         $result = Locales::setSystemLocaleFromSiteLanguage($language);
-        static::assertFalse($result);
+        self::assertFalse($result);
         $currentLocale = setlocale(LC_COLLATE, 0);
         // Check that the locale was not overridden
-        static::assertEquals($this->originalLocale, $currentLocale);
+        self::assertEquals($this->originalLocale, $currentLocale);
     }
 }

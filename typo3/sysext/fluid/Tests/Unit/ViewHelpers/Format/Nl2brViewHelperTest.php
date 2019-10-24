@@ -50,7 +50,7 @@ class Nl2brViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('<p class="bodytext">Some Text without line breaks</p>', $actualResult);
+        self::assertEquals('<p class="bodytext">Some Text without line breaks</p>', $actualResult);
     }
 
     /**
@@ -69,7 +69,7 @@ class Nl2brViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('Line 1<br />' . chr(10) . 'Line 2', $actualResult);
+        self::assertEquals('Line 1<br />' . chr(10) . 'Line 2', $actualResult);
     }
 
     /**
@@ -88,6 +88,6 @@ class Nl2brViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('Line 1<br />' . chr(13) . chr(10) . 'Line 2', $actualResult);
+        self::assertEquals('Line 1<br />' . chr(13) . chr(10) . 'Line 2', $actualResult);
     }
 }

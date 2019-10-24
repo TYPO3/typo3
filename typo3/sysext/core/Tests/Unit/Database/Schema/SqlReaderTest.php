@@ -42,9 +42,9 @@ class SqlReaderTest extends UnitTestCase
             LF .
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);'
         );
-        $this->assertCount(2, $result);
-        $this->assertStringStartsWith('CREATE TABLE', $result[0]);
-        $this->assertStringStartsWith('INSERT INTO', $result[1]);
+        self::assertCount(2, $result);
+        self::assertStringStartsWith('CREATE TABLE', $result[0]);
+        self::assertStringStartsWith('INSERT INTO', $result[1]);
     }
 
     /**
@@ -59,8 +59,8 @@ class SqlReaderTest extends UnitTestCase
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);',
             '^CREATE TABLE'
         );
-        $this->assertCount(1, $result);
-        $this->assertStringStartsWith('CREATE TABLE', array_pop($result));
+        self::assertCount(1, $result);
+        self::assertStringStartsWith('CREATE TABLE', array_pop($result));
     }
 
     /**
@@ -75,8 +75,8 @@ class SqlReaderTest extends UnitTestCase
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);'
         );
 
-        $this->assertCount(1, $result);
-        $this->assertStringStartsWith('INSERT', array_pop($result));
+        self::assertCount(1, $result);
+        self::assertStringStartsWith('INSERT', array_pop($result));
     }
 
     /**
@@ -93,8 +93,8 @@ class SqlReaderTest extends UnitTestCase
             'VALUES(1);'
         );
 
-        $this->assertCount(1, $result);
-        $this->assertSame('INSERT INTO aTestTable(`aTestField`) VALUES(1);', array_pop($result));
+        self::assertCount(1, $result);
+        self::assertSame('INSERT INTO aTestTable(`aTestField`) VALUES(1);', array_pop($result));
     }
 
     /**
@@ -108,7 +108,7 @@ class SqlReaderTest extends UnitTestCase
             LF .
             'INSERT INTO aTestTable(`aTestField`) VALUES(1);'
         );
-        $this->assertCount(1, $result);
-        $this->assertStringStartsWith('CREATE TABLE', array_pop($result));
+        self::assertCount(1, $result);
+        self::assertStringStartsWith('CREATE TABLE', array_pop($result));
     }
 }

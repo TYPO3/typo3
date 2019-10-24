@@ -63,7 +63,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
 
-        $this->assertEquals(new TestRegistryServiceProvider(), $registry->get('core'));
+        self::assertEquals(new TestRegistryServiceProvider(), $registry->get('core'));
     }
 
     public function testRegistryCaches()
@@ -71,8 +71,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $this->mockPackages(['core' => TestRegistryServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
 
-        $this->assertEquals(new TestRegistryServiceProvider(), $registry->get('core'));
-        $this->assertSame($registry->get('core'), $registry->get('core'));
+        self::assertEquals(new TestRegistryServiceProvider(), $registry->get('core'));
+        self::assertSame($registry->get('core'), $registry->get('core'));
     }
 
     public function testRegistryPassesPackageAsConstructorArgument()
@@ -80,8 +80,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $this->mockPackages(['core' => TestStatefulServiceProvider::class]);
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
 
-        $this->assertInstanceOf(TestStatefulServiceProvider::class, $registry->get('core'));
-        $this->assertInstanceOf(Package::class, $registry->get('core')->package);
+        self::assertInstanceOf(TestStatefulServiceProvider::class, $registry->get('core'));
+        self::assertInstanceOf(Package::class, $registry->get('core')->package);
     }
 
     public function testGetException()
@@ -99,11 +99,11 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
 
         $services = $registry->getFactories('core');
-        $this->assertArrayHasKey('serviceA', $services);
+        self::assertArrayHasKey('serviceA', $services);
 
         $services2 = $registry->getFactories('core');
 
-        $this->assertSame($services['serviceA'], $services2['serviceA']);
+        self::assertSame($services['serviceA'], $services2['serviceA']);
     }
 
     public function testExtendServices()
@@ -112,11 +112,11 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $registry = new ServiceProviderRegistry($this->packageManagerProphecy->reveal());
 
         $services = $registry->getExtensions('core');
-        $this->assertArrayHasKey('serviceB', $services);
+        self::assertArrayHasKey('serviceB', $services);
 
         $services2 = $registry->getExtensions('core');
 
-        $this->assertSame($services['serviceB'], $services2['serviceB']);
+        self::assertSame($services['serviceB'], $services2['serviceB']);
     }
 
     public function testGetServiceFactory()
@@ -127,7 +127,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $service = $registry->createService('core', 'param', $containerProphecy->reveal());
 
-        $this->assertEquals(42, $service);
+        self::assertEquals(42, $service);
     }
 
     public function testGetServiceExtension()
@@ -138,7 +138,7 @@ class ServiceProviderRegistryTest extends UnitTestCase
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $service = $registry->extendService('core', 'serviceB', $containerProphecy->reveal(), null);
 
-        $this->assertInstanceOf(\stdClass::class, $service);
+        self::assertInstanceOf(\stdClass::class, $service);
     }
 
     public function testIterator()
@@ -152,8 +152,8 @@ class ServiceProviderRegistryTest extends UnitTestCase
 
         $i = 0;
         foreach ($registry as $key => $provider) {
-            $this->assertEquals(array_keys($packages)[$i], $key);
-            $this->assertInstanceOf(TestRegistryServiceProvider::class, $registry->get($key));
+            self::assertEquals(array_keys($packages)[$i], $key);
+            self::assertInstanceOf(TestRegistryServiceProvider::class, $registry->get($key));
             $i++;
         }
     }

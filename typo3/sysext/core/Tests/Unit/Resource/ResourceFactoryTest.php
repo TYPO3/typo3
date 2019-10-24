@@ -70,9 +70,9 @@ class ResourceFactoryTest extends UnitTestCase
         $path = $this->getUniqueId();
         $name = $this->getUniqueId();
         $storageCollection = $this->subject->createFolderObject($mockedMount, $path, $name, 0);
-        $this->assertSame($mockedMount, $storageCollection->getStorage());
-        $this->assertEquals($path, $storageCollection->getIdentifier());
-        $this->assertEquals($name, $storageCollection->getName());
+        self::assertSame($mockedMount, $storageCollection->getStorage());
+        self::assertEquals($path, $storageCollection->getIdentifier());
+        self::assertEquals($name, $storageCollection->getName());
     }
 
     /**********************************
@@ -87,10 +87,10 @@ class ResourceFactoryTest extends UnitTestCase
         $driverFixtureClass = get_class($mockedDriver);
         \TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
         $mockedRegistry = $this->createMock(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class);
-        $mockedRegistry->expects($this->once())->method('getDriverClass')->with($this->equalTo($driverFixtureClass))->will($this->returnValue($driverFixtureClass));
+        $mockedRegistry->expects(self::once())->method('getDriverClass')->with(self::equalTo($driverFixtureClass))->will(self::returnValue($driverFixtureClass));
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\Driver\DriverRegistry::class, $mockedRegistry);
         $obj = $this->subject->getDriverObject($driverFixtureClass, []);
-        $this->assertInstanceOf(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, $obj);
+        self::assertInstanceOf(\TYPO3\CMS\Core\Resource\Driver\AbstractDriver::class, $obj);
     }
 
     /***********************************
@@ -111,7 +111,7 @@ class ResourceFactoryTest extends UnitTestCase
             false
         );
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('typo3');
         $subject->retrieveFileOrFolderObject('typo3');
@@ -131,7 +131,7 @@ class ResourceFactoryTest extends UnitTestCase
             false
         );
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFolderObjectFromCombinedIdentifier')
             ->with('typo3');
         $subject->retrieveFileOrFolderObject(Environment::getPublicPath() . '/typo3');
@@ -144,7 +144,7 @@ class ResourceFactoryTest extends UnitTestCase
     {
         $this->subject = $this->getAccessibleMock(ResourceFactory::class, ['getFileObjectFromCombinedIdentifier'], [], '', false);
         $filename = 'typo3temp/var/tests/4711.txt';
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getFileObjectFromCombinedIdentifier')
             ->with($filename);
         // Create and prepare test file
@@ -167,7 +167,7 @@ class ResourceFactoryTest extends UnitTestCase
     public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId)
     {
         $this->subject->_set('localDriverStorageCache', $storageConfiguration);
-        $this->assertSame($expectedStorageId, $this->subject->_callRef('findBestMatchingStorageByLocalPath', $path));
+        self::assertSame($expectedStorageId, $this->subject->_callRef('findBestMatchingStorageByLocalPath', $path));
     }
 
     /**

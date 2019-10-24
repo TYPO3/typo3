@@ -32,7 +32,7 @@ class LogManagerTest extends UnitTestCase
      */
     public function logManagerReturnsLoggerWhenRequestedWithGetLogger()
     {
-        $this->assertInstanceOf(Logger::class, (new LogManager())->getLogger('test'));
+        self::assertInstanceOf(Logger::class, (new LogManager())->getLogger('test'));
     }
 
     /**
@@ -40,7 +40,7 @@ class LogManagerTest extends UnitTestCase
      */
     public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames()
     {
-        $this->assertSame('test.a.b', (new LogManager())->getLogger('test_a_b')->getName());
+        self::assertSame('test.a.b', (new LogManager())->getLogger('test_a_b')->getName());
     }
 
     /**
@@ -48,7 +48,7 @@ class LogManagerTest extends UnitTestCase
      */
     public function logManagerTurnsNamespaceStyleLoggerNamesIntoDotStyleLoggerNames()
     {
-        $this->assertSame('test.a.b', (new LogManager())->getLogger('test\\a\\b')->getName());
+        self::assertSame('test.a.b', (new LogManager())->getLogger('test\\a\\b')->getName());
     }
 
     /**
@@ -61,7 +61,7 @@ class LogManagerTest extends UnitTestCase
         $logger->registerLogger($loggerName);
         $logger1 = $logger->getLogger($loggerName);
         $logger2 = $logger->getLogger($loggerName);
-        $this->assertSame($logger1, $logger2);
+        self::assertSame($logger1, $logger2);
     }
 
     /**
@@ -79,7 +79,7 @@ class LogManagerTest extends UnitTestCase
         ];
         $logger = (new LogManager())->getLogger($component);
         $writers = $logger->getWriters();
-        $this->assertInstanceOf($writer, $writers[$level][0]);
+        self::assertInstanceOf($writer, $writers[$level][0]);
     }
 
     /**
@@ -97,6 +97,6 @@ class LogManagerTest extends UnitTestCase
         ];
         $logger = (new LogManager())->getLogger($component);
         $processors = $logger->getProcessors();
-        $this->assertInstanceOf($processor, $processors[$level][0]);
+        self::assertInstanceOf($processor, $processors[$level][0]);
     }
 }

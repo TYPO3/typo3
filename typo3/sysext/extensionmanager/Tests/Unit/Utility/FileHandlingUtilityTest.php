@@ -63,10 +63,10 @@ class FileHandlingUtilityTest extends UnitTestCase
     {
         $extKey = $this->createFakeExtension();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir'], [], '', false);
-        $fileHandlerMock->expects($this->once())
+        $fileHandlerMock->expects(self::once())
             ->method('removeDirectory')
             ->with(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
-        $fileHandlerMock->expects($this->any())
+        $fileHandlerMock->expects(self::any())
             ->method('getExtensionDir')
             ->willReturn(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
         $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
@@ -118,7 +118,7 @@ class FileHandlingUtilityTest extends UnitTestCase
     public function getAbsolutePathReturnsAbsolutePathForValidRelativePaths($validRelativePath, $expectedAbsolutePath)
     {
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
-        $this->assertSame($expectedAbsolutePath, $fileHandlerMock->_call('getAbsolutePath', $validRelativePath));
+        self::assertSame($expectedAbsolutePath, $fileHandlerMock->_call('getAbsolutePath', $validRelativePath));
     }
 
     /**
@@ -128,10 +128,10 @@ class FileHandlingUtilityTest extends UnitTestCase
     {
         $extKey = $this->createFakeExtension();
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['removeDirectory', 'addDirectory', 'getExtensionDir']);
-        $fileHandlerMock->expects($this->once())
+        $fileHandlerMock->expects(self::once())
             ->method('addDirectory')
             ->with(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
-        $fileHandlerMock->expects($this->any())
+        $fileHandlerMock->expects(self::any())
             ->method('getExtensionDir')
             ->willReturn(Environment::getVarPath() . '/tests/ext-' . $extKey . '/');
         $fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
@@ -159,7 +159,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $this->testFilesToDelete[] = $extDirPath;
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('addDirectory', $extDirPath);
-        $this->assertTrue(is_dir($extDirPath));
+        self::assertTrue(is_dir($extDirPath));
     }
 
     /**
@@ -171,7 +171,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         @mkdir($extDirPath);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('removeDirectory', $extDirPath);
-        $this->assertFalse(is_dir($extDirPath));
+        self::assertFalse(is_dir($extDirPath));
     }
 
     /**
@@ -186,7 +186,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         symlink($absoluteFilePath, $absoluteSymlinkPath);
         $fileHandler = new FileHandlingUtility();
         $fileHandler->removeDirectory($absoluteSymlinkPath);
-        $this->assertFalse(is_link($absoluteSymlinkPath));
+        self::assertFalse(is_link($absoluteSymlinkPath));
     }
 
     /**
@@ -208,7 +208,7 @@ class FileHandlingUtilityTest extends UnitTestCase
 
         $fileHandler = new FileHandlingUtility();
         $fileHandler->removeDirectory($absoluteSymlinkPath);
-        $this->assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
+        self::assertTrue(is_file($absoluteDirectoryPath . $relativeFilePath));
     }
 
     /**
@@ -228,9 +228,9 @@ class FileHandlingUtilityTest extends UnitTestCase
             'writeExtensionFiles',
             'reloadPackageInformation',
         ]);
-        $fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue([]));
-        $fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue([]));
-        $fileHandlerMock->expects($this->once())->method('makeAndClearExtensionDir')->with($extensionData['extKey']);
+        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->will(self::returnValue([]));
+        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->will(self::returnValue([]));
+        $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey']);
         $fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
     }
 
@@ -295,11 +295,11 @@ class FileHandlingUtilityTest extends UnitTestCase
             'writeExtensionFiles',
             'reloadPackageInformation',
         ]);
-        $fileHandlerMock->expects($this->once())->method('extractFilesArrayFromExtensionData')->will($this->returnValue($files));
-        $fileHandlerMock->expects($this->once())->method('extractDirectoriesFromExtensionData')->will($this->returnValue($directories));
-        $fileHandlerMock->expects($this->once())->method('createDirectoriesForExtensionFiles')->with($directories);
-        $fileHandlerMock->expects($this->once())->method('writeExtensionFiles')->with($cleanedFiles);
-        $fileHandlerMock->expects($this->once())->method('reloadPackageInformation')->with('test');
+        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->will(self::returnValue($files));
+        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->will(self::returnValue($directories));
+        $fileHandlerMock->expects(self::once())->method('createDirectoriesForExtensionFiles')->with($directories);
+        $fileHandlerMock->expects(self::once())->method('writeExtensionFiles')->with($cleanedFiles);
+        $fileHandlerMock->expects(self::once())->method('reloadPackageInformation')->with('test');
         $fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
     }
 
@@ -317,8 +317,8 @@ class FileHandlingUtilityTest extends UnitTestCase
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $extractedFiles = $fileHandlerMock->_call('extractFilesArrayFromExtensionData', $extensionData);
-        $this->assertArrayHasKey('filename1', $extractedFiles);
-        $this->assertArrayHasKey('filename2', $extractedFiles);
+        self::assertArrayHasKey('filename1', $extractedFiles);
+        self::assertArrayHasKey('filename2', $extractedFiles);
     }
 
     /**
@@ -345,7 +345,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         $rootPath = ($extDirPath = $this->fakedExtensions[$this->createFakeExtension()]['siteAbsPath']);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_call('writeExtensionFiles', $files, $rootPath);
-        $this->assertTrue(file_exists($rootPath . 'ChangeLog'));
+        self::assertTrue(file_exists($rootPath . 'ChangeLog'));
     }
 
     /**
@@ -396,7 +396,7 @@ class FileHandlingUtilityTest extends UnitTestCase
             'doc/',
             'mod/doc/'
         ];
-        $this->assertSame($expected, array_values($extractedDirectories));
+        self::assertSame($expected, array_values($extractedDirectories));
     }
 
     /**
@@ -410,11 +410,11 @@ class FileHandlingUtilityTest extends UnitTestCase
             'mod/doc/'
         ];
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
-        $this->assertFalse(is_dir($rootPath . 'doc/'));
-        $this->assertFalse(is_dir($rootPath . 'mod/doc/'));
+        self::assertFalse(is_dir($rootPath . 'doc/'));
+        self::assertFalse(is_dir($rootPath . 'mod/doc/'));
         $fileHandlerMock->_call('createDirectoriesForExtensionFiles', $directories, $rootPath);
-        $this->assertTrue(is_dir($rootPath . 'doc/'));
-        $this->assertTrue(is_dir($rootPath . 'mod/doc/'));
+        self::assertTrue(is_dir($rootPath . 'doc/'));
+        self::assertTrue(is_dir($rootPath . 'mod/doc/'));
     }
 
     /**
@@ -433,11 +433,11 @@ class FileHandlingUtilityTest extends UnitTestCase
         ];
         $rootPath = $this->fakedExtensions[$extKey]['siteAbsPath'];
         $emConfUtilityMock = $this->getAccessibleMock(EmConfUtility::class, ['constructEmConf']);
-        $emConfUtilityMock->expects($this->once())->method('constructEmConf')->with($extensionData)->will($this->returnValue(var_export($extensionData['EM_CONF'], true)));
+        $emConfUtilityMock->expects(self::once())->method('constructEmConf')->with($extensionData)->will(self::returnValue(var_export($extensionData['EM_CONF'], true)));
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_set('emConfUtility', $emConfUtilityMock);
         $fileHandlerMock->_call('writeEmConfToFile', $extensionData, $rootPath);
-        $this->assertTrue(file_exists($rootPath . 'ext_emconf.php'));
+        self::assertTrue(file_exists($rootPath . 'ext_emconf.php'));
     }
 
     /**
@@ -449,9 +449,9 @@ class FileHandlingUtilityTest extends UnitTestCase
         $fileHandlerMock = $this->getMockBuilder(FileHandlingUtility::class)
             ->setMethods(['createNestedDirectory', 'getAbsolutePath', 'directoryExists'])
             ->getMock();
-        $fileHandlerMock->expects($this->any())
+        $fileHandlerMock->expects(self::any())
             ->method('getAbsolutePath')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
         return $fileHandlerMock;
     }
 
@@ -474,12 +474,12 @@ class FileHandlingUtilityTest extends UnitTestCase
             FileHandlingUtility::class,
             ['getAbsoluteExtensionPath', 'getExtensionVersion']
         );
-        $fileHandlerMock->expects($this->any())
+        $fileHandlerMock->expects(self::any())
             ->method('getAbsoluteExtensionPath')
-            ->will($this->returnValue($extensionRoot));
-        $fileHandlerMock->expects($this->any())
+            ->will(self::returnValue($extensionRoot));
+        $fileHandlerMock->expects(self::any())
             ->method('getExtensionVersion')
-            ->will($this->returnValue('0.0.0'));
+            ->will(self::returnValue('0.0.0'));
 
         // Add files and directories to extension:
         touch($extensionRoot . 'emptyFile.txt');
@@ -494,22 +494,22 @@ class FileHandlingUtilityTest extends UnitTestCase
 
         $expectedFilename = Environment::getVarPath() . '/transient/' . $extKey . '_0.0.0_' . date('YmdHi', 42) . '.zip';
         $this->testFilesToDelete[] = $filename;
-        $this->assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
+        self::assertEquals($expectedFilename, $filename, 'Archive file name differs from expectation');
 
         // File was created
-        $this->assertTrue(file_exists($filename), 'Zip file not created');
+        self::assertTrue(file_exists($filename), 'Zip file not created');
 
         // Read archive and check its contents
         $archive = new \ZipArchive();
-        $this->assertTrue($archive->open($filename), 'Unable to open archive');
-        $this->assertEquals($archive->statName('emptyFile.txt')['size'], 0, 'Empty file not in archive');
-        $this->assertEquals($archive->getFromName('notEmptyFile.txt'), 'content', 'Expected content not found');
-        $this->assertFalse($archive->statName('.hiddenFile'), 'Hidden file not in archive');
-        $this->assertTrue(is_array($archive->statName('emptyDir/')), 'Empty directory not in archive');
-        $this->assertTrue(is_array($archive->statName('notEmptyDir/')), 'Not empty directory not in archive');
-        $this->assertTrue(is_array($archive->statName('notEmptyDir/file.txt')), 'File within directory not in archive');
+        self::assertTrue($archive->open($filename), 'Unable to open archive');
+        self::assertEquals($archive->statName('emptyFile.txt')['size'], 0, 'Empty file not in archive');
+        self::assertEquals($archive->getFromName('notEmptyFile.txt'), 'content', 'Expected content not found');
+        self::assertFalse($archive->statName('.hiddenFile'), 'Hidden file not in archive');
+        self::assertTrue(is_array($archive->statName('emptyDir/')), 'Empty directory not in archive');
+        self::assertTrue(is_array($archive->statName('notEmptyDir/')), 'Not empty directory not in archive');
+        self::assertTrue(is_array($archive->statName('notEmptyDir/file.txt')), 'File within directory not in archive');
 
         // Check that the archive has no additional content
-        $this->assertEquals($archive->numFiles, 5, 'Too many or too less files in archive');
+        self::assertEquals($archive->numFiles, 5, 'Too many or too less files in archive');
     }
 }

@@ -135,7 +135,7 @@ class TcaFlexProcessTest extends UnitTestCase
             'sheets' => [],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -217,7 +217,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -299,7 +299,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -381,7 +381,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -463,7 +463,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -529,7 +529,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -603,7 +603,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -677,7 +677,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -753,7 +753,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -862,7 +862,7 @@ class TcaFlexProcessTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -928,7 +928,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $expected = $input;
         $expected['databaseRow']['aField']['data']['sDEF']['lDEF']['aFlexField']['vDEF'] = 'defaultValue';
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**
@@ -1138,7 +1138,7 @@ class TcaFlexProcessTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['section_1']['children']['2']
             =  $expected['processedTca']['columns']['aField']['config']['ds']['sheets']['sDEF']['ROOT']['el']['section_1']['el']['container_1'];
 
-        $this->assertEquals($expected, (new TcaFlexProcess())->addData($input));
+        self::assertEquals($expected, (new TcaFlexProcess())->addData($input));
     }
 
     /**

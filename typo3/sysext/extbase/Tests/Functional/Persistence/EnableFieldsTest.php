@@ -55,7 +55,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     public function protectedRecordsNotFoundIfNoUserLoggedIn()
     {
         $responseSections = $this->getFrontendResponse(1)->getResponseSections('Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1'));
     }
 
@@ -65,7 +65,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     public function onlyReturnProtectedRecordsForTheFirstUserGroup()
     {
         $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 1)->getResponseSections('Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
     }
 
@@ -75,7 +75,7 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     public function onlyReturnProtectedRecordsForTheSecondUserGroup()
     {
         $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 2)->getResponseSections('Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 
@@ -86,12 +86,12 @@ class EnableFieldsTest extends AbstractDataHandlerActionTestCase
     {
         // first request to fill the query cache
         $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 1)->getResponseSections('Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog2'));
 
         // second request with other frontenduser
         $responseSections = $this->getFrontendResponse(1, 0, 0, 0, true, 2)->getResponseSections('Extbase:list()');
-        $this->assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Blog)->setField('title')->setValues('Blog1', 'Blog3'));
     }
 }

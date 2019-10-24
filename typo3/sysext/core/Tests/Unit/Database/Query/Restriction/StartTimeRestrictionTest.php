@@ -51,6 +51,6 @@ class StartTimeRestrictionTest extends AbstractRestrictionTestCase
 
         $subject = new StartTimeRestriction(42);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('"aTable"."myStartTimeField" <= 42', (string)$expression);
+        self::assertSame('"aTable"."myStartTimeField" <= 42', (string)$expression);
     }
 }

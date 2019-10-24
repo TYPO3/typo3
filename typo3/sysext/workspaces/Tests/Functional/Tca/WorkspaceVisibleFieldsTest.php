@@ -76,7 +76,7 @@ class WorkspaceVisibleFieldsTest extends FunctionalTestCase
         $formResult = $formEngineTestService->createNewRecordForm('sys_workspace');
 
         foreach (static::$workspaceFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );

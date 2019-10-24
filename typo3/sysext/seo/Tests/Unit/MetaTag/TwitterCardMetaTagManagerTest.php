@@ -32,7 +32,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
         $manager = new TwitterCardMetaTagManager();
         $handledProperties = $manager->getAllHandledProperties();
 
-        $this->assertNotEmpty($handledProperties);
+        self::assertNotEmpty($handledProperties);
     }
 
     /**
@@ -53,8 +53,8 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
             (array)$property['subProperties']
         );
 
-        $this->assertEquals($expected, $manager->getProperty($property['property']));
-        $this->assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
+        self::assertEquals($expected, $manager->getProperty($property['property']));
+        self::assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
     }
 
     /**
@@ -188,7 +188,7 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
         $expected = '<meta name="twitter:image" content="/path/to/image" />' . PHP_EOL .
             '<meta name="twitter:title" content="This is the new title" />';
 
-        $this->assertEquals($expected, $manager->renderAllProperties());
+        self::assertEquals($expected, $manager->renderAllProperties());
     }
 
     /**
@@ -198,17 +198,17 @@ class TwitterCardMetaTagManagerTest extends UnitTestCase
     {
         $manager = new TwitterCardMetaTagManager();
         $manager->addProperty('twitter:title', 'Title');
-        $this->assertEquals([['content' => 'Title', 'subProperties' => []]], $manager->getProperty('twitter:title'));
+        self::assertEquals([['content' => 'Title', 'subProperties' => []]], $manager->getProperty('twitter:title'));
 
         $manager->removeProperty('twitter:title');
-        $this->assertEquals([], $manager->getProperty('twitter:title'));
+        self::assertEquals([], $manager->getProperty('twitter:title'));
 
         $manager->addProperty('twitter:title', 'Title');
         $manager->addProperty('twitter:description', 'Description');
 
         $manager->removeAllProperties();
 
-        $this->assertEquals([], $manager->getProperty('twitter:title'));
-        $this->assertEquals([], $manager->getProperty('twitter:description'));
+        self::assertEquals([], $manager->getProperty('twitter:title'));
+        self::assertEquals([], $manager->getProperty('twitter:description'));
     }
 }

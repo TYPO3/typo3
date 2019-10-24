@@ -27,9 +27,9 @@ class VisibilityAspectTest extends UnitTestCase
     public function getterReturnsProperDefaultValues()
     {
         $subject = new VisibilityAspect();
-        $this->assertFalse($subject->includeHiddenPages());
-        $this->assertFalse($subject->includeHiddenContent());
-        $this->assertFalse($subject->includeDeletedRecords());
+        self::assertFalse($subject->includeHiddenPages());
+        self::assertFalse($subject->includeHiddenContent());
+        self::assertFalse($subject->includeDeletedRecords());
     }
 
     /**
@@ -38,9 +38,9 @@ class VisibilityAspectTest extends UnitTestCase
     public function getterReturnsProperValues()
     {
         $subject = new VisibilityAspect(true, true, true);
-        $this->assertTrue($subject->includeHiddenPages());
-        $this->assertTrue($subject->includeHiddenContent());
-        $this->assertTrue($subject->includeDeletedRecords());
+        self::assertTrue($subject->includeHiddenPages());
+        self::assertTrue($subject->includeHiddenContent());
+        self::assertTrue($subject->includeDeletedRecords());
     }
 
     /**
@@ -49,9 +49,9 @@ class VisibilityAspectTest extends UnitTestCase
     public function getReturnsProperValues()
     {
         $subject = new VisibilityAspect(true, true, true);
-        $this->assertTrue($subject->get('includeHiddenPages'));
-        $this->assertTrue($subject->get('includeHiddenContent'));
-        $this->assertTrue($subject->get('includeDeletedRecords'));
+        self::assertTrue($subject->get('includeHiddenPages'));
+        self::assertTrue($subject->get('includeHiddenContent'));
+        self::assertTrue($subject->get('includeDeletedRecords'));
     }
 
     /**

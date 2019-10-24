@@ -76,7 +76,7 @@ class MimeTypeValidatorTest extends UnitTestCase
             ->getMock();
 
         $file = new File(['name' => 'foo', 'identifier' => '/foo', 'mime_type' => 'image/png'], $mockedStorage);
-        $this->assertTrue($validator->validate($file)->hasErrors());
+        self::assertTrue($validator->validate($file)->hasErrors());
     }
 
     /**
@@ -90,7 +90,7 @@ class MimeTypeValidatorTest extends UnitTestCase
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
-        $this->assertFalse($validator->validate('')->hasErrors());
+        self::assertFalse($validator->validate('')->hasErrors());
     }
 
     /**
@@ -104,6 +104,6 @@ class MimeTypeValidatorTest extends UnitTestCase
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
-        $this->assertTrue($validator->validate('string')->hasErrors());
+        self::assertTrue($validator->validate('string')->hasErrors());
     }
 }

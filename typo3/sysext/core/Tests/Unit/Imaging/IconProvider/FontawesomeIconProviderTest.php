@@ -51,7 +51,7 @@ class FontawesomeIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithNameReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['name' => 'times']);
-        $this->assertEquals('<span class="icon-unify"><i class="fa fa-times"></i></span>', $this->icon->getMarkup());
+        self::assertEquals('<span class="icon-unify"><i class="fa fa-times"></i></span>', $this->icon->getMarkup());
     }
 
     /**

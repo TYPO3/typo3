@@ -133,8 +133,8 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['getProperty', 'hasProperty'])
             ->disableOriginalConstructor()
             ->getMock();
-        $image->expects($this->any())->method('hasProperty')->willReturn(true);
-        $image->expects($this->any())->method('getProperty')->willReturnMap([
+        $image->expects(self::any())->method('hasProperty')->willReturn(true);
+        $image->expects(self::any())->method('getProperty')->willReturnMap([
             ['width', $arguments['width']],
             ['height', $arguments['height']],
             ['alternative', 'alternative'],
@@ -144,13 +144,13 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $originalFile = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $originalFile->expects($this->any())->method('getProperties')->willReturn([]);
+        $originalFile->expects(self::any())->method('getProperties')->willReturn([]);
 
         $processedFile = $this->getMockBuilder(ProcessedFile::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $processedFile->expects($this->any())->method('getProperty')->willReturnMap([
+        $processedFile->expects(self::any())->method('getProperty')->willReturnMap([
             ['width', $arguments['width']],
             ['height', $arguments['height']],
         ]);
@@ -158,9 +158,9 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $this->inject($image, 'originalFile', $originalFile);
         $this->inject($image, 'propertiesOfFileReference', []);
         $imageService = $this->createMock(ImageService::class);
-        $imageService->expects($this->once())->method('getImage')->willReturn($image);
-        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($processedFile);
-        $imageService->expects($this->once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
+        $imageService->expects(self::once())->method('getImage')->willReturn($image);
+        $imageService->expects(self::once())->method('applyProcessingInstructions')->with($image, self::anything())->willReturn($processedFile);
+        $imageService->expects(self::once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
 
         $this->inject($this->viewHelper, 'imageService', $imageService);
 
@@ -169,9 +169,9 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
             ->getMock();
         $index = -1;
         foreach ($expected as $expectedAttribute => $expectedValue) {
-            $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
+            $tagBuilder->expects(self::at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
         }
-        $tagBuilder->expects($this->once())->method('render');
+        $tagBuilder->expects(self::once())->method('render');
         $this->inject($this->viewHelper, 'tag', $tagBuilder);
 
         $this->viewHelper->render();
@@ -236,21 +236,21 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['getProperty', 'hasProperty'])
             ->disableOriginalConstructor()
             ->getMock();
-        $image->expects($this->any())->method('hasProperty')->willReturn(false);
+        $image->expects(self::any())->method('hasProperty')->willReturn(false);
 
         $e = new \InvalidArgumentException('', 1556282257);
-        $image->expects($this->any())->method('getProperty')->willThrowException($e);
+        $image->expects(self::any())->method('getProperty')->willThrowException($e);
 
         $originalFile = $this->getMockBuilder(File::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $originalFile->expects($this->any())->method('getProperties')->willReturn([]);
+        $originalFile->expects(self::any())->method('getProperties')->willReturn([]);
 
         $processedFile = $this->getMockBuilder(ProcessedFile::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $processedFile->expects($this->any())->method('getProperty')->willReturnMap([
+        $processedFile->expects(self::any())->method('getProperty')->willReturnMap([
             ['width', $arguments['width']],
             ['height', $arguments['height']],
         ]);
@@ -258,9 +258,9 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $this->inject($image, 'originalFile', $originalFile);
         $this->inject($image, 'propertiesOfFileReference', []);
         $imageService = $this->createMock(ImageService::class);
-        $imageService->expects($this->once())->method('getImage')->willReturn($image);
-        $imageService->expects($this->once())->method('applyProcessingInstructions')->with($image, $this->anything())->willReturn($processedFile);
-        $imageService->expects($this->once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
+        $imageService->expects(self::once())->method('getImage')->willReturn($image);
+        $imageService->expects(self::once())->method('applyProcessingInstructions')->with($image, self::anything())->willReturn($processedFile);
+        $imageService->expects(self::once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
 
         $this->inject($this->viewHelper, 'imageService', $imageService);
 
@@ -269,9 +269,9 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
             ->getMock();
         $index = -1;
         foreach ($expected as $expectedAttribute => $expectedValue) {
-            $tagBuilder->expects($this->at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
+            $tagBuilder->expects(self::at(++ $index))->method('addAttribute')->with($expectedAttribute, $expectedValue);
         }
-        $tagBuilder->expects($this->once())->method('render');
+        $tagBuilder->expects(self::once())->method('render');
         $this->inject($this->viewHelper, 'tag', $tagBuilder);
 
         $this->viewHelper->render();

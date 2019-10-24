@@ -39,7 +39,7 @@ class GetUniqueTranslationTest extends AbstractDataHandlerActionTestCase
         $originalLanguageRecord = BackendUtility::getRecord('pages', self::PAGE_DATAHANDLER);
         $translatedRecord = BackendUtility::getRecord('pages', $newPageId);
 
-        $this->assertEquals('datahandler', $originalLanguageRecord['keywords']);
-        $this->assertEquals('datahandler', $translatedRecord['keywords']);
+        self::assertEquals('datahandler', $originalLanguageRecord['keywords']);
+        self::assertEquals('datahandler', $translatedRecord['keywords']);
     }
 }

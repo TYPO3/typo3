@@ -62,7 +62,7 @@ class ClassesConfigurationFactoryTest extends UnitTestCase
         $reflectionMethod->setAccessible(true);
         $classes = $reflectionMethod->invoke($classesConfigurationFactory, $classes);
 
-        static::assertSame(
+        self::assertSame(
             [
                 Fixture\Domain\Model\A::class => [
                     'properties' => [

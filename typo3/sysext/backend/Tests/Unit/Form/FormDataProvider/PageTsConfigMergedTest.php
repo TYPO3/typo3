@@ -47,7 +47,7 @@ class PageTsConfigMergedTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['pageTsConfig'] = $input['pageTsConfig'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -70,7 +70,7 @@ class PageTsConfigMergedTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['pageTsConfig'] = $input['pageTsConfig'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -105,7 +105,7 @@ class PageTsConfigMergedTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -141,6 +141,6 @@ class PageTsConfigMergedTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 }

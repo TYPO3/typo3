@@ -47,7 +47,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
     public function canHandleRequestReturnsTrueIfCorrectGetParameterIsSet()
     {
         $_GET['fluid-widget-id'] = 123;
-        $this->assertTrue($this->widgetRequestHandler->canHandleRequest());
+        self::assertTrue($this->widgetRequestHandler->canHandleRequest());
     }
 
     /**
@@ -56,7 +56,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
     public function canHandleRequestReturnsFalsefGetParameterIsNotSet()
     {
         $_GET['some-other-id'] = 123;
-        $this->assertFalse($this->widgetRequestHandler->canHandleRequest());
+        self::assertFalse($this->widgetRequestHandler->canHandleRequest());
     }
 
     /**
@@ -68,7 +68,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
             ->setMethods(['handleRequest'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
+        self::assertTrue($this->widgetRequestHandler->getPriority() > $defaultWebRequestHandler->getPriority());
     }
 
     /**
@@ -81,7 +81,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
         $requestBuilder = $this->getMockBuilder(WidgetRequestBuilder::class)
             ->setMethods(['build'])
             ->getMock();
-        $requestBuilder->expects($this->once())->method('build')->willReturn($request);
+        $requestBuilder->expects(self::once())->method('build')->willReturn($request);
         $objectManager = $this->prophesize(ObjectManager::class);
         $handler->injectObjectManager($objectManager->reveal());
         $objectManager->get(\Prophecy\Argument::any())->willReturn($this->createMock(Response::class));
@@ -89,7 +89,7 @@ class WidgetRequestHandlerTest extends UnitTestCase
             ->setMethods(['dispatch'])
             ->disableOriginalConstructor()
             ->getMock();
-        $requestDispatcher->expects($this->once())->method('dispatch')->with($request);
+        $requestDispatcher->expects(self::once())->method('dispatch')->with($request);
         $this->inject($handler, 'widgetRequestBuilder', $requestBuilder);
         $this->inject($handler, 'dispatcher', $requestDispatcher);
         $handler->handleRequest();

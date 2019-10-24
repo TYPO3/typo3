@@ -44,7 +44,7 @@ class NumberValidatorTest extends UnitTestCase
      */
     public function numberValidatorReturnsTrueForASimpleInteger()
     {
-        $this->assertFalse($this->validator->validate(1029437)->hasErrors());
+        self::assertFalse($this->validator->validate(1029437)->hasErrors());
     }
 
     /**
@@ -55,6 +55,6 @@ class NumberValidatorTest extends UnitTestCase
         $expectedResult = new \TYPO3\CMS\Extbase\Error\Result();
         // we only test for the error code, after the message translation method is mocked
         $expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error('', 1221563685));
-        $this->assertEquals($expectedResult, $this->validator->validate('not a number'));
+        self::assertEquals($expectedResult, $this->validator->validate('not a number'));
     }
 }

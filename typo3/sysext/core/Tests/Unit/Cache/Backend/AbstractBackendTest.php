@@ -31,6 +31,6 @@ class AbstractBackendTest extends UnitTestCase
     {
         // The fixture class implements methods setSomeOption() and getSomeOption()
         $backend = new ConcreteBackendFixture('Testing', ['someOption' => 'someValue']);
-        $this->assertSame('someValue', $backend->getSomeOption());
+        self::assertSame('someValue', $backend->getSomeOption());
     }
 }

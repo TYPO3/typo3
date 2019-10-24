@@ -78,11 +78,11 @@ class XmlSitemapPagesTest extends AbstractTestCase
      */
     public function checkIfPagesSiteMapContainsExpectedEntries($urlPattern): void
     {
-        $this->assertEquals(200, $this->response->getStatusCode());
-        $this->assertArrayHasKey('Content-Length', $this->response->getHeaders());
-        $this->assertGreaterThan(0, $this->response->getHeader('Content-Length')[0]);
+        self::assertEquals(200, $this->response->getStatusCode());
+        self::assertArrayHasKey('Content-Length', $this->response->getHeaders());
+        self::assertGreaterThan(0, $this->response->getHeader('Content-Length')[0]);
 
-        $this->assertRegExp($urlPattern, (string)$this->response->getBody());
+        self::assertRegExp($urlPattern, (string)$this->response->getBody());
     }
 
     /**

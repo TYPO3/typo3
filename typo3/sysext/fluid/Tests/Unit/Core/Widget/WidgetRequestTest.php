@@ -29,11 +29,11 @@ class WidgetRequestTest extends UnitTestCase
         $widgetContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class)
             ->setMethods(['getControllerObjectName'])
             ->getMock();
-        $widgetContext->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('Tx_Fluid_ControllerObjectName'));
+        $widgetContext->expects(self::once())->method('getControllerObjectName')->will(self::returnValue('Tx_Fluid_ControllerObjectName'));
         $widgetRequest = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)
             ->setMethods(['setControllerObjectName'])
             ->getMock();
-        $widgetRequest->expects($this->once())->method('setControllerObjectName')->with('Tx_Fluid_ControllerObjectName');
+        $widgetRequest->expects(self::once())->method('setControllerObjectName')->with('Tx_Fluid_ControllerObjectName');
         $widgetRequest->setWidgetContext($widgetContext);
     }
 
@@ -45,11 +45,11 @@ class WidgetRequestTest extends UnitTestCase
         $widgetContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class)
             ->setMethods(['getParentPluginNamespace', 'getWidgetIdentifier'])
             ->getMock();
-        $widgetContext->expects($this->once())->method('getParentPluginNamespace')->will($this->returnValue('foo'));
-        $widgetContext->expects($this->once())->method('getWidgetIdentifier')->will($this->returnValue('bar'));
+        $widgetContext->expects(self::once())->method('getParentPluginNamespace')->will(self::returnValue('foo'));
+        $widgetContext->expects(self::once())->method('getWidgetIdentifier')->will(self::returnValue('bar'));
         $widgetRequest = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, ['dummy']);
         $widgetRequest->_set('widgetContext', $widgetContext);
-        $this->assertEquals('foo[bar]', $widgetRequest->getArgumentPrefix());
+        self::assertEquals('foo[bar]', $widgetRequest->getArgumentPrefix());
     }
 
     /**
@@ -62,6 +62,6 @@ class WidgetRequestTest extends UnitTestCase
             ->setMethods(['setControllerObjectName'])
             ->getMock();
         $widgetRequest->setWidgetContext($widgetContext);
-        $this->assertSame($widgetContext, $widgetRequest->getWidgetContext());
+        self::assertSame($widgetContext, $widgetRequest->getWidgetContext());
     }
 }

@@ -58,7 +58,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $_GET['id'] = 123;
         $expectedResult = 123;
         $actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -70,7 +70,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $_POST['id'] = 321;
         $expectedResult = 321;
         $actualResult = $this->backendConfigurationManager->_call('getCurrentPageId');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -78,10 +78,10 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound()
     {
-        $this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue(['foo' => 'bar']));
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue(['foo' => 'bar']));
         $expectedResult = [];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -104,15 +104,15 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
-        $this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue($testSetup));
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar'
             ]
         ];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -135,15 +135,15 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
-        $this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue($testSetup));
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar'
             ]
         ];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -189,9 +189,9 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testPluginSettings
             ]
         ];
-        $this->mockTypoScriptService->expects($this->at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will($this->returnValue($testExtensionSettingsConverted));
-        $this->mockTypoScriptService->expects($this->at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will($this->returnValue($testPluginSettingsConverted));
-        $this->backendConfigurationManager->expects($this->once())->method('getTypoScriptSetup')->will($this->returnValue($testSetup));
+        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will(self::returnValue($testExtensionSettingsConverted));
+        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will(self::returnValue($testPluginSettingsConverted));
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue($testSetup));
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar',
@@ -202,7 +202,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
             ]
         ];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -213,7 +213,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = null;
         $expectedResult = [];
         $actualResult = $this->backendConfigurationManager->_call('getControllerConfiguration', 'SomeExtensionName', 'SomePluginName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -241,7 +241,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['SomeExtensionName']['modules']['SomePluginName']['controllers'] = $controllerConfiguration;
         $expectedResult = $controllerConfiguration;
         $actualResult = $this->backendConfigurationManager->_call('getControllerConfiguration', 'SomeExtensionName', 'SomePluginName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -265,14 +265,14 @@ class BackendConfigurationManagerTest extends UnitTestCase
             false
         );
         $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
-        $queryGenerator->expects($this->any())
+        $queryGenerator->expects(self::any())
             ->method('getTreeList')
-            ->will($this->onConsecutiveCalls('4', '', '5,6'));
+            ->will(self::onConsecutiveCalls('4', '', '5,6'));
         GeneralUtility::addInstance(QueryGenerator::class, $queryGenerator);
 
         $expectedResult = [4, 5, 6];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -296,14 +296,14 @@ class BackendConfigurationManagerTest extends UnitTestCase
             false
         );
         $queryGenerator = $this->createMock(\TYPO3\CMS\Core\Database\QueryGenerator::class);
-        $queryGenerator->expects($this->any())
+        $queryGenerator->expects(self::any())
             ->method('getTreeList')
-            ->will($this->onConsecutiveCalls('4', '', '3,5,6'));
+            ->will(self::onConsecutiveCalls('4', '', '3,5,6'));
         GeneralUtility::addInstance(QueryGenerator::class, $queryGenerator);
 
         $expectedResult = [4, 3, 5, 6];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -323,7 +323,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $expectedResult = [1, 2, 3];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -344,6 +344,6 @@ class BackendConfigurationManagerTest extends UnitTestCase
 
         $expectedResult = [1, 2, 3];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 }

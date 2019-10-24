@@ -79,7 +79,7 @@ class YamlSourceTest extends UnitTestCase
 # Header 2
 ';
 
-        $this->assertSame($expected, $mockYamlSource->_call('getHeaderFromFile', $input));
+        self::assertSame($expected, $mockYamlSource->_call('getHeaderFromFile', $input));
     }
 
     /**
@@ -101,6 +101,6 @@ class YamlSourceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockYamlSource->_call('load', $input));
+        self::assertSame($expected, $mockYamlSource->_call('load', $input));
     }
 }

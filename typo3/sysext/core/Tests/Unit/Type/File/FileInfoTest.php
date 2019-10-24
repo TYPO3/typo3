@@ -28,6 +28,6 @@ class FileInfoTest extends UnitTestCase
     {
         $className = 'TYPO3\CMS\Core\Type\File\FileInfo';
         $classInstance = new \TYPO3\CMS\Core\Type\File\FileInfo('FooFileName');
-        $this->assertInstanceOf($className, $classInstance);
+        self::assertInstanceOf($className, $classInstance);
     }
 }

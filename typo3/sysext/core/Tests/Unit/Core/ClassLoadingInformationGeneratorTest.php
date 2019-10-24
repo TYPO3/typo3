@@ -94,7 +94,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
-        $this->assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
+        self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
 
     /**
@@ -128,7 +128,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         /** @var ClassLoader|\PHPUnit_Framework_MockObject_MockObject $classLoaderMock */
         $classLoaderMock = $this->createMock(ClassLoader::class);
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [], __DIR__);
-        $this->assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
+        self::assertEquals($expectedClassMap, $generator->buildClassAliasMapForPackage($packageMock));
     }
 
     /**
@@ -268,8 +268,8 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__);
         $files = $generator->buildAutoloadInformationFiles();
 
-        $this->assertArrayHasKey('psr-4File', $files);
-        $this->assertArrayHasKey('classMapFile', $files);
+        self::assertArrayHasKey('psr-4File', $files);
+        self::assertArrayHasKey('classMapFile', $files);
         foreach ($expectedPsr4Files as $expectation) {
             if ($expectation[0] === '!') {
                 $expectedCount = 0;
@@ -279,7 +279,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 $expectedCount = 1;
                 $message = sprintf('File "%s" is expected to be in psr-4, but is not.', $expectation);
             }
-            $this->assertSame($expectedCount, substr_count($files['psr-4File'], $expectation), $message);
+            self::assertSame($expectedCount, substr_count($files['psr-4File'], $expectation), $message);
         }
         foreach ($expectedClassMapFiles as $expectation) {
             if ($expectation[0] === '!') {
@@ -290,7 +290,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
                 $expectedCount = 1;
                 $message = sprintf('File "%s" is expected to be in class map, but is not.', $expectation);
             }
-            $this->assertSame($expectedCount, substr_count($files['classMapFile'], $expectation), $message);
+            self::assertSame($expectedCount, substr_count($files['classMapFile'], $expectation), $message);
         }
     }
 
@@ -378,15 +378,15 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
         $generator = new ClassLoadingInformationGenerator($classLoaderMock, [$this->createPackageMock($packageManifest)], __DIR__, true);
         $files = $generator->buildAutoloadInformationFiles();
 
-        $this->assertArrayHasKey('psr-4File', $files);
-        $this->assertArrayHasKey('classMapFile', $files);
+        self::assertArrayHasKey('psr-4File', $files);
+        self::assertArrayHasKey('classMapFile', $files);
         foreach ($expectedPsr4Files as $expectation) {
             if ($expectation[0] === '!') {
                 $expectedCount = 0;
             } else {
                 $expectedCount = 1;
             }
-            $this->assertSame($expectedCount, substr_count($files['psr-4File'], $expectation), '' . $expectation);
+            self::assertSame($expectedCount, substr_count($files['psr-4File'], $expectation), '' . $expectation);
         }
         foreach ($expectedClassMapFiles as $expectation) {
             if ($expectation[0] === '!') {
@@ -394,7 +394,7 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
             } else {
                 $expectedCount = 1;
             }
-            $this->assertSame($expectedCount, substr_count($files['classMapFile'], $expectation), '' . $expectation);
+            self::assertSame($expectedCount, substr_count($files['classMapFile'], $expectation), '' . $expectation);
         }
     }
 
@@ -405,8 +405,8 @@ class ClassLoadingInformationGeneratorTest extends UnitTestCase
     protected function createPackageMock($packageManifest)
     {
         $packageMock = $this->createMock(PackageInterface::class);
-        $packageMock->expects($this->any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
-        $packageMock->expects($this->any())->method('getValueFromComposerManifest')->willReturn(
+        $packageMock->expects(self::any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/test_extension/');
+        $packageMock->expects(self::any())->method('getValueFromComposerManifest')->willReturn(
             json_decode(json_encode($packageManifest))
         );
 

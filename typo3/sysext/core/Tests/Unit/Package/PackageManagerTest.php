@@ -51,10 +51,10 @@ class PackageManagerTest extends UnitTestCase
             ->setMethods(['has', 'set', 'getBackend', 'getCacheDirectory'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockCache->expects($this->any())->method('has')->will($this->returnValue(false));
-        $mockCache->expects($this->any())->method('set')->will($this->returnValue(true));
-        $mockCache->expects($this->any())->method('getBackend')->will($this->returnValue($mockCacheBackend));
-        $mockCacheBackend->expects($this->any())->method('getCacheDirectory')->will($this->returnValue('vfs://Test/Cache'));
+        $mockCache->expects(self::any())->method('has')->will(self::returnValue(false));
+        $mockCache->expects(self::any())->method('set')->will(self::returnValue(true));
+        $mockCache->expects(self::any())->method('getBackend')->will(self::returnValue($mockCacheBackend));
+        $mockCacheBackend->expects(self::any())->method('getCacheDirectory')->will(self::returnValue('vfs://Test/Cache'));
         $this->packageManager = $this->getAccessibleMock(
             PackageManager::class,
             ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
@@ -103,7 +103,7 @@ class PackageManagerTest extends UnitTestCase
         $this->createPackage('TYPO3.MyPackage');
         $package = $this->packageManager->getPackage('TYPO3.MyPackage');
 
-        $this->assertInstanceOf(Package::class, $package, 'The result of getPackage() was no valid package object.');
+        self::assertInstanceOf(Package::class, $package, 'The result of getPackage() was no valid package object.');
     }
 
     /**
@@ -146,7 +146,7 @@ class PackageManagerTest extends UnitTestCase
 
         $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
         $actualPackageKeys = array_keys($packageStates['packages']);
-        $this->assertEquals(sort($expectedPackageKeys), sort($actualPackageKeys));
+        self::assertEquals(sort($expectedPackageKeys), sort($actualPackageKeys));
     }
 
     /**
@@ -190,7 +190,7 @@ class PackageManagerTest extends UnitTestCase
         $packageManager->_call('sortAndSavePackageStates');
 
         $packageStates = require 'vfs://Test/Configuration/PackageStates.php';
-        $this->assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
+        self::assertEquals('Application/' . $packageKey . '/', $packageStates['packages'][$packageKey]['packagePath']);
     }
 
     /**
@@ -232,7 +232,7 @@ class PackageManagerTest extends UnitTestCase
         }
 
         $actualPackageStatesConfiguration = $packageManager->_get('packageStatesConfiguration');
-        $this->assertEquals($expectedPackageStatesConfiguration, $actualPackageStatesConfiguration['packages']);
+        self::assertEquals($expectedPackageStatesConfiguration, $actualPackageStatesConfiguration['packages']);
     }
 
     /**
@@ -258,10 +258,10 @@ class PackageManagerTest extends UnitTestCase
         $actualPackage = $this->createPackage($packageKey);
         $actualPackagePath = $actualPackage->getPackagePath();
 
-        $this->assertEquals($expectedPackagePath, $actualPackagePath);
-        $this->assertTrue(is_dir($actualPackagePath), 'Package path should exist after createPackage()');
-        $this->assertEquals($packageKey, $actualPackage->getPackageKey());
-        $this->assertTrue($this->packageManager->isPackageAvailable($packageKey));
+        self::assertEquals($expectedPackagePath, $actualPackagePath);
+        self::assertTrue(is_dir($actualPackagePath), 'Package path should exist after createPackage()');
+        self::assertEquals($packageKey, $actualPackage->getPackageKey());
+        self::assertTrue($this->packageManager->isPackageAvailable($packageKey));
     }
 
     /**
@@ -277,13 +277,13 @@ class PackageManagerTest extends UnitTestCase
 
         $this->createPackage($packageKey);
 
-        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
 
         $this->packageManager->deactivatePackage($packageKey);
-        $this->assertFalse($this->packageManager->isPackageActive($packageKey));
+        self::assertFalse($this->packageManager->isPackageActive($packageKey));
 
         $this->packageManager->activatePackage($packageKey);
-        $this->assertTrue($this->packageManager->isPackageActive($packageKey));
+        self::assertTrue($this->packageManager->isPackageActive($packageKey));
     }
 
     /**
@@ -300,7 +300,7 @@ class PackageManagerTest extends UnitTestCase
 
         $package = $this->createPackage('Acme.YetAnotherTestPackage');
         $package->setProtected(true);
-        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
         $this->packageManager->deactivatePackage('Acme.YetAnotherTestPackage');
     }
 
@@ -315,7 +315,7 @@ class PackageManagerTest extends UnitTestCase
         $this->expectException(UnknownPackageException::class);
         $this->expectExceptionCode(1166543253);
 
-        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
         $this->packageManager->deletePackage('PrettyUnlikelyThatThisPackageExists');
     }
 
@@ -347,15 +347,15 @@ class PackageManagerTest extends UnitTestCase
     {
         $this->createPackage('Acme.YetAnotherTestPackage');
 
-        $this->packageManager->expects($this->any())->method('sortActivePackagesByDependencies')->will($this->returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
 
-        $this->assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
-        $this->assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
+        self::assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
+        self::assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
 
         $this->packageManager->deletePackage('Acme.YetAnotherTestPackage');
 
-        $this->assertFalse($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
-        $this->assertFalse($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
+        self::assertFalse($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
+        self::assertFalse($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
     }
 
     /**
@@ -394,7 +394,7 @@ class PackageManagerTest extends UnitTestCase
         $packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
         $packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
 
-        $this->assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));
+        self::assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));
     }
 
     /**
@@ -648,11 +648,11 @@ class PackageManagerTest extends UnitTestCase
     public function buildDependencyGraphBuildsCorrectGraph(array $unsortedPackageStatesConfiguration, array $frameworkPackageKeys, array $expectedGraph): void
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
-        $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
+        $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 
         $dependencyGraph = $packageManager->_call('buildDependencyGraph', $unsortedPackageStatesConfiguration);
 
-        $this->assertEquals($expectedGraph, $dependencyGraph);
+        self::assertEquals($expectedGraph, $dependencyGraph);
     }
 
     /**
@@ -777,11 +777,11 @@ class PackageManagerTest extends UnitTestCase
     public function sortPackageStatesConfigurationByDependencyMakesSureThatDependantPackagesAreStandingBeforeAPackageInTheInternalPackagesAndPackagesConfigurationArrays($unsortedPackageStatesConfiguration, $frameworkPackageKeys, $expectedSortedPackageKeys): void
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
-        $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
+        $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn($frameworkPackageKeys);
 
         $sortedPackageKeys = $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
 
-        $this->assertEquals($expectedSortedPackageKeys, $sortedPackageKeys, 'The package states configurations have not been ordered according to their dependencies!');
+        self::assertEquals($expectedSortedPackageKeys, $sortedPackageKeys, 'The package states configurations have not been ordered according to their dependencies!');
     }
 
     /**
@@ -802,7 +802,7 @@ class PackageManagerTest extends UnitTestCase
         $this->expectExceptionCode(1381960494);
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['findFrameworkPackages'], [new DependencyOrderingService]);
-        $packageManager->expects($this->any())->method('findFrameworkPackages')->willReturn([]);
+        $packageManager->expects(self::any())->method('findFrameworkPackages')->willReturn([]);
 
         $packageManager->_call('sortPackageStatesConfigurationByDependency', $unsortedPackageStatesConfiguration);
     }

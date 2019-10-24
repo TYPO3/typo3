@@ -63,7 +63,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['types']['aType']['showitem'] = 'keepMe';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -100,7 +100,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
         $expected['processedTca']['types']['aType']['showitem'] = 'keepMe';
         $expected['processedTca']['types']['cType']['showitem'] = 'keepMe';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -157,7 +157,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -189,7 +189,7 @@ class InlineOverrideChildTcaTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aType']['config']['default'] = '42';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**

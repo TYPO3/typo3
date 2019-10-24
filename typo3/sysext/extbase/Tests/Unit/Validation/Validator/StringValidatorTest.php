@@ -28,7 +28,7 @@ class StringValidatorTest extends UnitTestCase
      */
     public function stringValidatorShouldValidateString()
     {
-        $this->assertFalse((new StringValidator())->validate('Hello World')->hasErrors());
+        self::assertFalse((new StringValidator())->validate('Hello World')->hasErrors());
     }
 
     /**
@@ -41,7 +41,7 @@ class StringValidatorTest extends UnitTestCase
             ->setMethods(['translateErrorMessage'])
             ->getMock();
 
-        $this->assertTrue($validator->validate(42)->hasErrors());
+        self::assertTrue($validator->validate(42)->hasErrors());
     }
 
     /**
@@ -62,6 +62,6 @@ class StringValidatorTest extends UnitTestCase
             }
         };
 
-        $this->assertTrue($validator->validate($object)->hasErrors());
+        self::assertTrue($validator->validate($object)->hasErrors());
     }
 }

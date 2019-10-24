@@ -85,7 +85,7 @@ class CommandUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['binSetup'] = $globalsBinSetup;
         $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
         $result = $commandUtilityMock->_call('getConfiguredApps');
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -201,6 +201,6 @@ class CommandUtilityTest extends UnitTestCase
     {
         $commandUtilityMock = $this->getAccessibleMock(CommandUtility::class, ['dummy']);
         $actualQuoted = $commandUtilityMock->_call('unQuoteFilenames', $source);
-        $this->assertEquals($expectedQuoted, $actualQuoted);
+        self::assertEquals($expectedQuoted, $actualQuoted);
     }
 }

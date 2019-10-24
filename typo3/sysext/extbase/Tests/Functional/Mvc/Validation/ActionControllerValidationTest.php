@@ -94,14 +94,14 @@ class ActionControllerValidationTest extends FunctionalTestCase
         /* @var \TYPO3\CMS\Extbase\Error\Error $titleLengthError */
         $titleMappingResults = $request->getOriginalRequestMappingResults()->forProperty('blogPost.title');
         $titleErrors = $titleMappingResults->getFlattenedErrors();
-        $this->assertCount(count($expectedErrorCodes), $titleErrors['']);
+        self::assertCount(count($expectedErrorCodes), $titleErrors['']);
 
         $titleErrors = $titleErrors[''];
         /** @var Error $titleError */
         foreach ($titleErrors as $titleError) {
-            $this->assertContains($titleError->getCode(), $expectedErrorCodes);
+            self::assertContains($titleError->getCode(), $expectedErrorCodes);
         }
-        $this->assertEquals('testFormAction', $response->getContent());
+        self::assertEquals('testFormAction', $response->getContent());
     }
 
     /**
@@ -156,11 +156,11 @@ class ActionControllerValidationTest extends FunctionalTestCase
 
         /* @var \TYPO3\CMS\Extbase\Error\Error $titleLengthError */
         $errors = $request->getOriginalRequestMappingResults()->getFlattenedErrors();
-        $this->assertCount(1, $errors['blog.title']);
-        $this->assertCount(1, $errors['blog.description']);
-        $this->assertCount(1, $errors['blogPost.title']);
+        self::assertCount(1, $errors['blog.title']);
+        self::assertCount(1, $errors['blog.description']);
+        self::assertCount(1, $errors['blogPost.title']);
 
-        $this->assertEquals('testFormAction', $response->getContent());
+        self::assertEquals('testFormAction', $response->getContent());
     }
 
     /**

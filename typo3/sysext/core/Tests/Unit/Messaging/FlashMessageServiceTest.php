@@ -37,7 +37,7 @@ class FlashMessageServiceTest extends UnitTestCase
      */
     public function flashMessageServiceInitiallyIsEmpty()
     {
-        $this->assertSame([], $this->flashMessageService->_get('flashMessageQueues'));
+        self::assertSame([], $this->flashMessageService->_get('flashMessageQueues'));
     }
 
     /**
@@ -45,7 +45,7 @@ class FlashMessageServiceTest extends UnitTestCase
      */
     public function getMessageQueueByIdentifierRegistersNewFlashmessageQueuesOnlyOnce()
     {
-        $this->assertSame(
+        self::assertSame(
             $this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages'),
             $this->flashMessageService->getMessageQueueByIdentifier('core.template.flashMessages')
         );

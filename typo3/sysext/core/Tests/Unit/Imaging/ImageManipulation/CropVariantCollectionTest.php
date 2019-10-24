@@ -77,7 +77,7 @@ class CropVariantCollectionTest extends UnitTestCase
         $cropVariant1 = self::$tca;
         $cropVariant2 = self::$tca;
         $cropVariantCollection = CropVariantCollection::create(json_encode(['default' => $cropVariant1, 'Second' => $cropVariant2]));
-        $this->assertInstanceOf(CropVariantCollection::class, $cropVariantCollection);
+        self::assertInstanceOf(CropVariantCollection::class, $cropVariantCollection);
 
         $assertSameValues = function ($expected, $actual) use (&$assertSameValues) {
             if (is_array($expected)) {
@@ -109,7 +109,7 @@ class CropVariantCollectionTest extends UnitTestCase
      */
     public function createEmptyWorks()
     {
-        $this->assertTrue(CropVariantCollection::create('')->getCropArea()->isEmpty());
+        self::assertTrue(CropVariantCollection::create('')->getCropArea()->isEmpty());
     }
 
     /**
@@ -118,6 +118,6 @@ class CropVariantCollectionTest extends UnitTestCase
     public function castToStringReturnsJsonArrayOnEmptyInput(): void
     {
         $variants = new CropVariantCollection([]);
-        $this->assertSame('[]', (string)$variants);
+        self::assertSame('[]', (string)$variants);
     }
 }

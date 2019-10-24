@@ -40,6 +40,6 @@ class TreeNodeCollectionTest extends UnitTestCase
         foreach ($nodeCollection as $node) {
             $ids[] = $node->getId();
         }
-        $this->assertSame($expected, $ids);
+        self::assertSame($expected, $ids);
     }
 }

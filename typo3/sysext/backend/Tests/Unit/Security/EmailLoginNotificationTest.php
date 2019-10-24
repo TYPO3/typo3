@@ -43,7 +43,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->once())->method('sendEmail');
+        $subject->expects(self::once())->method('sendEmail');
         $subject->emailAtLogin(['user' => $userData], $backendUser);
     }
 
@@ -69,7 +69,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->never())->method('sendEmail');
+        $subject->expects(self::never())->method('sendEmail');
         $subject->emailAtLogin(['user' => $userData], $backendUser);
     }
 
@@ -95,7 +95,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->never())->method('sendEmail');
+        $subject->expects(self::never())->method('sendEmail');
         $subject->emailAtLogin(['user' => $userData], $backendUser);
     }
 
@@ -112,7 +112,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects($this->any())->method('isAdmin')->willReturn(true);
+        $backendUser->expects(self::any())->method('isAdmin')->willReturn(true);
 
         $userData = [
             'username' => 'karl'
@@ -122,7 +122,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->once())->method('sendEmail')->with(
+        $subject->expects(self::once())->method('sendEmail')->with(
             'typo3-admin@acme.com',
             '[AdminLoginWarning] At "My TYPO3 Inc." from 127.0.0.1'
         );
@@ -142,7 +142,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects($this->any())->method('isAdmin')->willReturn(true);
+        $backendUser->expects(self::any())->method('isAdmin')->willReturn(true);
 
         $userData = [
             'username' => 'karl'
@@ -152,7 +152,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->once())->method('sendEmail')->with(
+        $subject->expects(self::once())->method('sendEmail')->with(
             'typo3-admin@acme.com',
             '[AdminLoginWarning] At "My TYPO3 Inc." from 127.0.0.1'
         );
@@ -172,7 +172,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects($this->any())->method('isAdmin')->willReturn(false);
+        $backendUser->expects(self::any())->method('isAdmin')->willReturn(false);
 
         $userData = [
             'username' => 'karl'
@@ -182,7 +182,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->once())->method('sendEmail')->with(
+        $subject->expects(self::once())->method('sendEmail')->with(
             'typo3-admin@acme.com',
             '[LoginWarning] At "My TYPO3 Inc." from 127.0.0.1'
         );
@@ -202,7 +202,7 @@ class EmailLoginNotificationTest extends UnitTestCase
         $backendUser = $this->getMockBuilder(BackendUserAuthentication::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $backendUser->expects($this->any())->method('isAdmin')->willReturn(false);
+        $backendUser->expects(self::any())->method('isAdmin')->willReturn(false);
 
         $userData = [
             'username' => 'karl'
@@ -212,7 +212,7 @@ class EmailLoginNotificationTest extends UnitTestCase
             EmailLoginNotification::class,
             ['sendEmail', 'compileEmailBody']
         );
-        $subject->expects($this->never())->method('sendEmail');
+        $subject->expects(self::never())->method('sendEmail');
         $subject->emailAtLogin(['user' => $userData], $backendUser);
     }
 }

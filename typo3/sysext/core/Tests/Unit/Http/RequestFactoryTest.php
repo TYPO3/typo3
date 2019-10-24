@@ -31,7 +31,7 @@ class RequestFactoryTest extends UnitTestCase
     public function implementsPsr17FactoryInterface()
     {
         $factory = new RequestFactory();
-        $this->assertInstanceOf(RequestFactoryInterface::class, $factory);
+        self::assertInstanceOf(RequestFactoryInterface::class, $factory);
     }
 
     /**
@@ -41,7 +41,7 @@ class RequestFactoryTest extends UnitTestCase
     {
         $factory = new RequestFactory();
         $request = $factory->createRequest('POST', '/');
-        $this->assertSame('POST', $request->getMethod());
+        self::assertSame('POST', $request->getMethod());
     }
 
     /**
@@ -53,15 +53,15 @@ class RequestFactoryTest extends UnitTestCase
         $request = $factory->createRequest('GET', '/');
         $body = $request->getBody();
 
-        $this->assertInstanceOf(RequestInterface::class, $request);
+        self::assertInstanceOf(RequestInterface::class, $request);
 
-        $this->assertSame('', $body->__toString());
-        $this->assertSame(0, $body->getSize());
-        $this->assertTrue($body->isSeekable());
+        self::assertSame('', $body->__toString());
+        self::assertSame(0, $body->getSize());
+        self::assertTrue($body->isSeekable());
 
         $body->write('Foo');
-        $this->assertSame(3, $body->getSize());
-        $this->assertSame('Foo', $body->__toString());
+        self::assertSame(3, $body->getSize());
+        self::assertSame('Foo', $body->__toString());
     }
 
     /**

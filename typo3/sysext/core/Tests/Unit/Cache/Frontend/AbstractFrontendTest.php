@@ -53,7 +53,7 @@ class AbstractFrontendTest extends UnitTestCase
                     ->setMethods(['__construct', 'get', 'set', 'has', 'remove', 'flush', 'flushByTag', 'collectGarbage'])
                     ->setConstructorArgs([$identifier, $mockBackend])
                     ->getMock();
-                $this->fail('Identifier "' . $identifier . '" was not rejected.');
+                self::fail('Identifier "' . $identifier . '" was not rejected.');
             } catch (\InvalidArgumentException $exception) {
             }
         }
@@ -69,7 +69,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects($this->once())->method('flush');
+        $backend->expects(self::once())->method('flush');
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
@@ -87,7 +87,7 @@ class AbstractFrontendTest extends UnitTestCase
 
         $identifier = 'someCacheIdentifier';
         $backend = $this->createMock(\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface::class);
-        $backend->expects($this->never())->method('flushByTag');
+        $backend->expects(self::never())->method('flushByTag');
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
@@ -106,7 +106,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setMethods(['setCache', 'get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects($this->once())->method('flushByTag')->with($tag);
+        $backend->expects(self::once())->method('flushByTag')->with($tag);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
@@ -125,7 +125,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setMethods(['setCache', 'get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'flushByTags', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects($this->once())->method('flushByTags')->with([$tag]);
+        $backend->expects(self::once())->method('flushByTags')->with([$tag]);
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
@@ -143,7 +143,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects($this->once())->method('collectGarbage');
+        $backend->expects(self::once())->method('collectGarbage');
         $cache = $this->getMockBuilder(\TYPO3\CMS\Core\Cache\Frontend\VariableFrontend::class)
             ->setMethods(['__construct', 'get', 'set', 'has', 'remove'])
             ->setConstructorArgs([$identifier, $backend])
@@ -163,7 +163,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $entryIdentifier) {
-            $this->assertFalse($cache->isValidEntryIdentifier($entryIdentifier), 'Invalid identifier "' . $entryIdentifier . '" was not rejected.');
+            self::assertFalse($cache->isValidEntryIdentifier($entryIdentifier), 'Invalid identifier "' . $entryIdentifier . '" was not rejected.');
         }
     }
 
@@ -179,7 +179,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['_', 'abcdef', 'foo', 'bar123', '3some', '_bl_a', 'some&', 'one%TWO', str_repeat('x', 250)] as $entryIdentifier) {
-            $this->assertTrue($cache->isValidEntryIdentifier($entryIdentifier), 'Valid identifier "' . $entryIdentifier . '" was not accepted.');
+            self::assertTrue($cache->isValidEntryIdentifier($entryIdentifier), 'Valid identifier "' . $entryIdentifier . '" was not accepted.');
         }
     }
 
@@ -195,7 +195,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#'] as $tag) {
-            $this->assertFalse($cache->isValidTag($tag), 'Invalid tag "' . $tag . '" was not rejected.');
+            self::assertFalse($cache->isValidTag($tag), 'Invalid tag "' . $tag . '" was not rejected.');
         }
     }
 
@@ -211,7 +211,7 @@ class AbstractFrontendTest extends UnitTestCase
             ->setConstructorArgs([$identifier, $backend])
             ->getMock();
         foreach (['abcdef', 'foo-bar', 'foo_baar', 'bar123', '3some', 'file%Thing', 'some&', '%x%', str_repeat('x', 250)] as $tag) {
-            $this->assertTrue($cache->isValidTag($tag), 'Valid tag "' . $tag . '" was not accepted.');
+            self::assertTrue($cache->isValidTag($tag), 'Valid tag "' . $tag . '" was not accepted.');
         }
     }
 }

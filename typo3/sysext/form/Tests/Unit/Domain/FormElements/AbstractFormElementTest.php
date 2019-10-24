@@ -34,8 +34,8 @@ class AbstractFormElementTest extends UnitTestCase
     {
         /** @var AbstractFormElement $subject */
         $subject = $this->getMockForAbstractClass(AbstractFormElement::class, ['an_id', 'a_type']);
-        $this->assertNotNull($subject);
-        $this->assertCount(0, $subject->getProperties());
+        self::assertNotNull($subject);
+        self::assertCount(0, $subject->getProperties());
     }
 
     /**
@@ -50,11 +50,11 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('buz', 'qax');
         $properties = $subject->getProperties();
 
-        $this->assertCount(2, $properties);
-        $this->assertTrue(array_key_exists('foo', $properties));
-        $this->assertEquals('bar', $properties['foo']);
-        $this->assertTrue(array_key_exists('buz', $properties));
-        $this->assertEquals('qax', $properties['buz']);
+        self::assertCount(2, $properties);
+        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertEquals('bar', $properties['foo']);
+        self::assertTrue(array_key_exists('buz', $properties));
+        self::assertEquals('qax', $properties['buz']);
     }
 
     /**
@@ -69,9 +69,9 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('foo', 'buz');
 
         $properties = $subject->getProperties();
-        $this->assertEquals(1, \count($properties));
-        $this->assertTrue(array_key_exists('foo', $properties));
-        $this->assertEquals('buz', $properties['foo']);
+        self::assertEquals(1, \count($properties));
+        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertEquals('buz', $properties['foo']);
     }
 
     /**
@@ -85,14 +85,14 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('foo', ['bar' => 'baz', 'bla' => 'blubb']);
         $properties = $subject->getProperties();
 
-        $this->assertCount(1, $properties);
-        $this->assertTrue(array_key_exists('foo', $properties));
+        self::assertCount(1, $properties);
+        self::assertTrue(array_key_exists('foo', $properties));
 
         //check arrays details
-        $this->assertTrue(\is_array($properties['foo']));
-        $this->assertCount(2, $properties['foo']);
-        $this->assertTrue(array_key_exists('bar', $properties['foo']));
-        $this->assertEquals('baz', $properties['foo']['bar']);
+        self::assertTrue(\is_array($properties['foo']));
+        self::assertCount(2, $properties['foo']);
+        self::assertTrue(array_key_exists('bar', $properties['foo']));
+        self::assertEquals('baz', $properties['foo']['bar']);
     }
 
     /**
@@ -107,7 +107,7 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('foo-2', ['bar-2' => 'foo-3']);
         $subject->setProperty('foo-2', null);
 
-        $this->assertSame($expected, $subject->getProperties());
+        self::assertSame($expected, $subject->getProperties());
     }
 
     /**
@@ -129,7 +129,7 @@ class AbstractFormElementTest extends UnitTestCase
         $subject->setProperty('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
         $subject->setProperty('foo-2', ['bar-3' => null]);
 
-        $this->assertSame($expected, $subject->getProperties());
+        self::assertSame($expected, $subject->getProperties());
     }
 
     /**
@@ -190,7 +190,7 @@ class AbstractFormElementTest extends UnitTestCase
         );
 
         $secondMock->
-        expects($this->once())
+        expects(self::once())
             ->method('initializeFormElement')
             ->with($abstractFormElementMock);
 
@@ -286,7 +286,7 @@ class AbstractFormElementTest extends UnitTestCase
 
         $abstractFormElementMock->setDefaultValue($input);
 
-        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
     }
 
     /**
@@ -317,7 +317,7 @@ class AbstractFormElementTest extends UnitTestCase
 
         $abstractFormElementMock->setDefaultValue($input);
 
-        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
     }
 
     /**
@@ -371,7 +371,7 @@ class AbstractFormElementTest extends UnitTestCase
         $abstractFormElementMock->setDefaultValue($input1);
         $abstractFormElementMock->setDefaultValue($input2);
 
-        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
     }
 
     /**
@@ -425,6 +425,6 @@ class AbstractFormElementTest extends UnitTestCase
         $abstractFormElementMock->setDefaultValue($input1);
         $abstractFormElementMock->setDefaultValue($input2);
 
-        $this->assertSame($expected, $abstractFormElementMock->getDefaultValue());
+        self::assertSame($expected, $abstractFormElementMock->getDefaultValue());
     }
 }

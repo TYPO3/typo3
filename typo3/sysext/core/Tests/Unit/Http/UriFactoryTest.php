@@ -31,7 +31,7 @@ class UriFactoryTest extends UnitTestCase
     public function implementsPsr17FactoryInterface()
     {
         $factory = new UriFactory();
-        $this->assertInstanceOf(UriFactoryInterface::class, $factory);
+        self::assertInstanceOf(UriFactoryInterface::class, $factory);
     }
 
     /**
@@ -42,11 +42,11 @@ class UriFactoryTest extends UnitTestCase
         $factory = new UriFactory();
         $uri = $factory->createUri('https://user:pass@domain.localhost:3000/path?query');
 
-        $this->assertInstanceOf(UriInterface::class, $uri);
-        $this->assertSame('user:pass', $uri->getUserInfo());
-        $this->assertSame('domain.localhost', $uri->getHost());
-        $this->assertSame(3000, $uri->getPort());
-        $this->assertSame('/path', $uri->getPath());
-        $this->assertSame('query', $uri->getQuery());
+        self::assertInstanceOf(UriInterface::class, $uri);
+        self::assertSame('user:pass', $uri->getUserInfo());
+        self::assertSame('domain.localhost', $uri->getHost());
+        self::assertSame(3000, $uri->getPort());
+        self::assertSame('/path', $uri->getPath());
+        self::assertSame('query', $uri->getQuery());
     }
 }

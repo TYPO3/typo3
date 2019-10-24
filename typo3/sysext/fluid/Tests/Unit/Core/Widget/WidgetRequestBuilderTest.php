@@ -59,14 +59,14 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $this->widgetRequestBuilder = $this->getAccessibleMock(WidgetRequestBuilder::class, ['setArgumentsFromRawRequestData']);
         $this->mockWidgetRequest = $this->createMock(WidgetRequest::class);
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects($this->once())->method('get')->with(WidgetRequest::class)->will($this->returnValue($this->mockWidgetRequest));
+        $this->mockObjectManager->expects(self::once())->method('get')->with(WidgetRequest::class)->will(self::returnValue($this->mockWidgetRequest));
         $this->widgetRequestBuilder->_set('objectManager', $this->mockObjectManager);
         $this->mockWidgetContext = $this->createMock(WidgetContext::class);
         $this->mockAjaxWidgetContextHolder = $this->createMock(AjaxWidgetContextHolder::class);
         $this->widgetRequestBuilder->injectAjaxWidgetContextHolder($this->mockAjaxWidgetContextHolder);
         $environmentServiceMock = $this->createMock(EnvironmentService::class);
-        $environmentServiceMock->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
-        $environmentServiceMock->expects($this->any())->method('isEnvironmentInBackendMode')->willReturn(false);
+        $environmentServiceMock->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $environmentServiceMock->expects(self::any())->method('isEnvironmentInBackendMode')->willReturn(false);
         $this->widgetRequestBuilder->injectEnvironmentService($environmentServiceMock);
     }
 
@@ -106,8 +106,8 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'fluid-widget-id' => 'foo'
         ];
         $requestUri = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setRequestURI')->with($requestUri);
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setRequestURI')->with($requestUri);
         $this->widgetRequestBuilder->build();
     }
 
@@ -127,8 +127,8 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'fluid-widget-id' => 'foo'
         ];
         $baseUri = GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setBaseURI')->with($baseUri);
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setBaseURI')->with($baseUri);
         $this->widgetRequestBuilder->build();
     }
 
@@ -147,8 +147,8 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $_GET = [
             'fluid-widget-id' => 'foo'
         ];
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setMethod')->with('POST');
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setMethod')->with('POST');
         $this->widgetRequestBuilder->build();
     }
 
@@ -171,8 +171,8 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $_POST = [
             'post' => 'bar'
         ];
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setArguments')->with($_POST);
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setArguments')->with($_POST);
         $this->widgetRequestBuilder->build();
     }
 
@@ -195,8 +195,8 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $_POST = [
             'post' => 'bar'
         ];
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setArguments')->with($_GET);
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setArguments')->with($_GET);
         $this->widgetRequestBuilder->build();
     }
 
@@ -216,8 +216,8 @@ class WidgetRequestBuilderTest extends UnitTestCase
             'action' => 'myAction',
             'fluid-widget-id' => 'foo'
         ];
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setControllerActionName')->with('myAction');
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setControllerActionName')->with('myAction');
         $this->widgetRequestBuilder->build();
     }
 
@@ -236,9 +236,9 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $_GET = [
             'fluid-widget-id' => '123'
         ];
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->with('123')->will($this->returnValue($this->mockWidgetContext));
-        $this->mockWidgetRequest->expects($this->once())->method('setWidgetContext')->with($this->mockWidgetContext);
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->with('123')->will(self::returnValue($this->mockWidgetContext));
+        $this->mockWidgetRequest->expects(self::once())->method('setWidgetContext')->with($this->mockWidgetContext);
         $this->widgetRequestBuilder->build();
     }
 
@@ -257,9 +257,9 @@ class WidgetRequestBuilderTest extends UnitTestCase
         $_GET = [
             'fluid-widget-id' => 'foo'
         ];
-        $this->mockAjaxWidgetContextHolder->expects($this->once())->method('get')->will($this->returnValue($this->mockWidgetContext));
+        $this->mockAjaxWidgetContextHolder->expects(self::once())->method('get')->will(self::returnValue($this->mockWidgetContext));
         $expected = $this->mockWidgetRequest;
         $actual = $this->widgetRequestBuilder->build();
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

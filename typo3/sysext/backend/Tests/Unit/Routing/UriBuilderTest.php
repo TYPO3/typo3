@@ -95,7 +95,7 @@ class UriBuilderTest extends UnitTestCase
             $routeParameters
         );
 
-        $this->assertEquals($expectation, $uri->__toString());
+        self::assertEquals($expectation, $uri->__toString());
     }
 
     /**

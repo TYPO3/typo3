@@ -279,7 +279,7 @@ class NodeFactoryTest extends UnitTestCase
             ->setMethods(['instantiate'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockSubject->expects($this->once())->method('instantiate')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::once())->method('instantiate')->will(self::returnValue($mockNode));
         $mockSubject->create(['renderType' => 'foo']);
     }
 
@@ -292,7 +292,7 @@ class NodeFactoryTest extends UnitTestCase
         $unknownElementRevelation = $unknownElementProphecy->reveal();
         GeneralUtility::addInstance(UnknownElement::class, $unknownElementRevelation);
         $subject = new NodeFactory();
-        $this->assertSame($unknownElementRevelation, $subject->create(['renderType' => 'foo']));
+        self::assertSame($unknownElementRevelation, $subject->create(['renderType' => 'foo']));
     }
 
     /**
@@ -308,7 +308,7 @@ class NodeFactoryTest extends UnitTestCase
         $selectTreeElementRevelation = $selectTreeElementProphecy->reveal();
         GeneralUtility::addInstance(SelectTreeElement::class, $selectTreeElementRevelation);
         $subject = new NodeFactory();
-        $this->assertSame($selectTreeElementRevelation, $subject->create($data));
+        self::assertSame($selectTreeElementRevelation, $subject->create($data));
     }
 
     /**
@@ -329,7 +329,7 @@ class NodeFactoryTest extends UnitTestCase
         $selectSingleElementProphecy = $this->prophesize(SelectSingleElement::class);
         $selectSingleElementRevelation = $selectSingleElementProphecy->reveal();
         GeneralUtility::addInstance(SelectSingleElement::class, $selectSingleElementRevelation);
-        $this->assertSame($selectSingleElementRevelation, $subject->create($data));
+        self::assertSame($selectSingleElementRevelation, $subject->create($data));
     }
 
     /**
@@ -350,7 +350,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->once())->method('instantiate')->with('stdClass')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::once())->method('instantiate')->with('stdClass')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 
@@ -377,7 +377,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->once())->method('instantiate')->with('foo2Class')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::once())->method('instantiate')->with('foo2Class')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 
@@ -404,7 +404,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->once())->method('instantiate')->with('foo2Class')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::once())->method('instantiate')->with('foo2Class')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 
@@ -429,7 +429,7 @@ class NodeFactoryTest extends UnitTestCase
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->at(0))->method('instantiate')->will($this->returnValue($mockResolver));
+        $mockSubject->expects(self::at(0))->method('instantiate')->will(self::returnValue($mockResolver));
         $mockSubject->create($data);
     }
 
@@ -467,9 +467,9 @@ class NodeFactoryTest extends UnitTestCase
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->at(0))->method('instantiate')->with('foo2Class')->will($this->returnValue($mockResolver2));
-        $mockSubject->expects($this->at(1))->method('instantiate')->with('foo1Class')->will($this->returnValue($mockResolver1));
-        $mockSubject->expects($this->at(2))->method('instantiate')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::at(0))->method('instantiate')->with('foo2Class')->will(self::returnValue($mockResolver2));
+        $mockSubject->expects(self::at(1))->method('instantiate')->with('foo1Class')->will(self::returnValue($mockResolver1));
+        $mockSubject->expects(self::at(2))->method('instantiate')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 
@@ -507,9 +507,9 @@ class NodeFactoryTest extends UnitTestCase
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->at(0))->method('instantiate')->with('foo1Class')->will($this->returnValue($mockResolver1));
-        $mockSubject->expects($this->at(1))->method('instantiate')->with('foo2Class')->will($this->returnValue($mockResolver2));
-        $mockSubject->expects($this->at(2))->method('instantiate')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::at(0))->method('instantiate')->with('foo1Class')->will(self::returnValue($mockResolver1));
+        $mockSubject->expects(self::at(1))->method('instantiate')->with('foo2Class')->will(self::returnValue($mockResolver2));
+        $mockSubject->expects(self::at(2))->method('instantiate')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 
@@ -536,14 +536,14 @@ class NodeFactoryTest extends UnitTestCase
             ],
         ];
         $mockResolver1 = $this->createMock(NodeResolverInterface::class);
-        $mockResolver1->expects($this->once())->method('resolve')->will($this->returnValue('fooNodeClass'));
+        $mockResolver1->expects(self::once())->method('resolve')->will(self::returnValue('fooNodeClass'));
 
         /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->at(0))->method('instantiate')->will($this->returnValue($mockResolver1));
-        $mockSubject->expects($this->at(1))->method('instantiate')->with('fooNodeClass')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::at(0))->method('instantiate')->will(self::returnValue($mockResolver1));
+        $mockSubject->expects(self::at(1))->method('instantiate')->with('fooNodeClass')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 
@@ -575,14 +575,14 @@ class NodeFactoryTest extends UnitTestCase
             ],
         ];
         $mockResolver1 = $this->createMock(NodeResolverInterface::class);
-        $mockResolver1->expects($this->once())->method('resolve')->will($this->returnValue('fooNodeClass'));
+        $mockResolver1->expects(self::once())->method('resolve')->will(self::returnValue('fooNodeClass'));
 
         /** @var NodeFactory|\PHPUnit_Framework_MockObject_MockObject $mockSubject */
         $mockSubject = $this->getMockBuilder(NodeFactory::class)
             ->setMethods(['instantiate'])
             ->getMock();
-        $mockSubject->expects($this->at(0))->method('instantiate')->with('foo1Class')->will($this->returnValue($mockResolver1));
-        $mockSubject->expects($this->at(1))->method('instantiate')->with('fooNodeClass')->will($this->returnValue($mockNode));
+        $mockSubject->expects(self::at(0))->method('instantiate')->with('foo1Class')->will(self::returnValue($mockResolver1));
+        $mockSubject->expects(self::at(1))->method('instantiate')->with('fooNodeClass')->will(self::returnValue($mockNode));
         $mockSubject->create($data);
     }
 }

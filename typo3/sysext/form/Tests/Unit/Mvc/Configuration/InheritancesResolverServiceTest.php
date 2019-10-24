@@ -72,7 +72,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
     }
 
     /**
@@ -113,7 +113,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
     }
 
     /**
@@ -146,7 +146,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
     }
 
     /**
@@ -211,7 +211,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
     }
 
     /**
@@ -255,7 +255,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
     }
 
     /**
@@ -348,7 +348,7 @@ class InheritancesResolverServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
+        self::assertSame($expected, $this->subject->reset()->setReferenceConfiguration($input)->getResolvedConfiguration($input));
     }
 
     /**

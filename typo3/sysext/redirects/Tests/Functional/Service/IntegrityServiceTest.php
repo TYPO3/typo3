@@ -172,10 +172,10 @@ class IntegrityServiceTest extends FunctionalTestCase
     {
         $matches = 0;
         foreach ($generator as $reportedConflict) {
-            $this->assertContains($reportedConflict, $expectedConflicts);
+            self::assertContains($reportedConflict, $expectedConflicts);
             $matches++;
         }
-        $this->assertSame(count($expectedConflicts), $matches);
+        self::assertSame(count($expectedConflicts), $matches);
     }
 
     private function prophesizeSiteFinder(): ObjectProphecy

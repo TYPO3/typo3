@@ -84,6 +84,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
         /** @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
         $result = $subject->_call('createTypolinkParameterFromArguments', $input, $additionalParametersFromFluid);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 }

@@ -32,7 +32,7 @@ class LinkButtonTest extends UnitTestCase
     {
         $button = new LinkButton();
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -45,7 +45,7 @@ class LinkButtonTest extends UnitTestCase
         $button = new LinkButton();
         $button->setHref('#')->setTitle('huhu');
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -59,7 +59,7 @@ class LinkButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setHref('husel')->setIcon($icon);
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -73,7 +73,7 @@ class LinkButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setTitle('husel')->setIcon($icon);
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -87,6 +87,6 @@ class LinkButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setTitle('husel')->setHref('husel')->setIcon($icon);
         $isValid = $button->isValid();
-        $this->assertTrue($isValid);
+        self::assertTrue($isValid);
     }
 }

@@ -48,7 +48,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderReturnsResultOfContentObjectRenderer()
     {
-        $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
+        $this->subject->expects(self::any())->method('renderChildren')->will(self::returnValue('innerContent'));
         $this->subject->setArguments([
             'parameter' => '42',
             'target' => '',
@@ -58,9 +58,9 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
             'additionalAttributes' => [],
         ]);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
-        $contentObjectRendererMock->expects($this->once())->method('stdWrap')->will($this->returnValue('foo'));
+        $contentObjectRendererMock->expects(self::once())->method('stdWrap')->will(self::returnValue('foo'));
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
-        $this->assertEquals('foo', $this->subject->render());
+        self::assertEquals('foo', $this->subject->render());
     }
 
     /**
@@ -72,7 +72,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
         $addQueryStringMethod = 'GET';
         $addQueryStringExclude = 'cHash';
 
-        $this->subject->expects($this->any())->method('renderChildren')->will($this->returnValue('innerContent'));
+        $this->subject->expects(self::any())->method('renderChildren')->will(self::returnValue('innerContent'));
         $this->subject->setArguments([
             'parameter' => '42',
             'target' => '',
@@ -86,7 +86,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
             'absolute' => false
         ]);
         $contentObjectRendererMock = $this->createMock(ContentObjectRenderer::class);
-        $contentObjectRendererMock->expects($this->once())
+        $contentObjectRendererMock->expects(self::once())
             ->method('stdWrap')
             ->with(
                 'innerContent',
@@ -103,9 +103,9 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                     ],
                 ]
             )
-            ->will($this->returnValue('foo'));
+            ->will(self::returnValue('foo'));
         GeneralUtility::addInstance(ContentObjectRenderer::class, $contentObjectRendererMock);
-        $this->assertEquals('foo', $this->subject->render());
+        self::assertEquals('foo', $this->subject->render());
     }
 
     /**
@@ -223,6 +223,6 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
             $titleFromFluid,
             $additionalParametersFromFluid
         );
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 }

@@ -66,7 +66,7 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('<p>hello world</p>', $actualResult);
+        self::assertEquals('<p>hello world</p>', $actualResult);
     }
 
     /**
@@ -90,7 +90,7 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('<p>hello world</p>', $actualResult);
+        self::assertEquals('<p>hello world</p>', $actualResult);
     }
 
     /**
@@ -115,6 +115,6 @@ class TranslateViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('default', $actualResult);
+        self::assertEquals('default', $actualResult);
     }
 }

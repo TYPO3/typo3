@@ -93,7 +93,7 @@ class RequestHandlerTest extends UnitTestCase
         $cObj->stdWrap(Argument::cetera())->shouldNotBeCalled();
         $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $cObj->reveal());
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -244,7 +244,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
         $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
@@ -281,7 +281,7 @@ class RequestHandlerTest extends UnitTestCase
         ];
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
         $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
@@ -320,7 +320,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
         $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
@@ -412,7 +412,7 @@ class RequestHandlerTest extends UnitTestCase
         ];
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
-        $subject->expects($this->any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
+        $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
         $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
 
@@ -438,8 +438,8 @@ class RequestHandlerTest extends UnitTestCase
 
         $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
         $subject->_call('resetGlobalsToCurrentRequest', $request);
-        $this->assertEquals($_GET, $getVars);
-        $this->assertEquals($_POST, $postVars);
+        self::assertEquals($_GET, $getVars);
+        self::assertEquals($_POST, $postVars);
     }
 
     /**
@@ -464,7 +464,7 @@ class RequestHandlerTest extends UnitTestCase
 
         $subject = $this->getAccessibleMock(RequestHandler::class, ['dummy'], [], '', false);
         $subject->_call('resetGlobalsToCurrentRequest', $request);
-        $this->assertEquals($_GET, $modifiedGetVars);
-        $this->assertEquals($_POST, $modifiedPostVars);
+        self::assertEquals($_GET, $modifiedGetVars);
+        self::assertEquals($_POST, $modifiedPostVars);
     }
 }

@@ -28,7 +28,7 @@ class Md5PasswordHashTest extends UnitTestCase
      */
     public function getHashedPasswordReturnsNullWithEmptyPassword()
     {
-        $this->assertNull((new Md5PasswordHash())->getHashedPassword(''));
+        self::assertNull((new Md5PasswordHash())->getHashedPassword(''));
     }
 
     /**
@@ -36,7 +36,7 @@ class Md5PasswordHashTest extends UnitTestCase
      */
     public function getHashedPasswordReturnsNotNullWithNonEmptyPassword()
     {
-        $this->assertNotNull((new Md5PasswordHash())->getHashedPassword('a'));
+        self::assertNotNull((new Md5PasswordHash())->getHashedPassword('a'));
     }
 
     /**
@@ -47,7 +47,7 @@ class Md5PasswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->isValidSaltedPW($saltedHashPassword));
+        self::assertTrue($subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -62,7 +62,7 @@ class Md5PasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY/';
-        $this->assertTrue((new Md5PasswordHash())->checkPassword($password, $saltedHashPassword));
+        self::assertTrue((new Md5PasswordHash())->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -74,7 +74,7 @@ class Md5PasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$1$GNu9HdMt$RwkPb28pce4nXZfnplVZY';
-        $this->assertFalse((new Md5PasswordHash())->checkPassword($password, $saltedHashPassword));
+        self::assertFalse((new Md5PasswordHash())->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -90,7 +90,7 @@ class Md5PasswordHashTest extends UnitTestCase
         $password = 'aEjOtY';
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -106,7 +106,7 @@ class Md5PasswordHashTest extends UnitTestCase
         $password = '01369';
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -122,7 +122,7 @@ class Md5PasswordHashTest extends UnitTestCase
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -142,7 +142,7 @@ class Md5PasswordHashTest extends UnitTestCase
         $password .= chr(215) . chr(247);
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -167,7 +167,7 @@ class Md5PasswordHashTest extends UnitTestCase
         }
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -179,7 +179,7 @@ class Md5PasswordHashTest extends UnitTestCase
         $password1 = $password . 'INVALID';
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->checkPassword($password1, $saltedHashPassword));
+        self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
@@ -190,6 +190,6 @@ class Md5PasswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new Md5PasswordHash();
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
+        self::assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 }

@@ -28,7 +28,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('someArgumentName', 'theValue');
-        $this->assertEquals('theValue', $request->getArgument('someArgumentName'));
+        self::assertEquals('theValue', $request->getArgument('someArgumentName'));
     }
 
     /**
@@ -63,7 +63,7 @@ class RequestTest extends UnitTestCase
         $request->setArgument('someKey', 'shouldBeOverridden');
         $request->setArguments($arguments);
         $actualResult = $request->getArguments();
-        $this->assertEquals($arguments, $actualResult);
+        self::assertEquals($arguments, $actualResult);
     }
 
     /**
@@ -74,8 +74,8 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(['setArgument'])
             ->getMock();
-        $request->expects($this->at(0))->method('setArgument')->with('key1', 'value1');
-        $request->expects($this->at(1))->method('setArgument')->with('key2', 'value2');
+        $request->expects(self::at(0))->method('setArgument')->with('key1', 'value1');
+        $request->expects(self::at(1))->method('setArgument')->with('key2', 'value2');
         $request->setArguments(['key1' => 'value1', 'key2' => 'value2']);
     }
 
@@ -87,9 +87,9 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(['setControllerExtensionName'])
             ->getMock();
-        $request->expects($this->any())->method('setControllerExtensionName')->with('MyExtension');
+        $request->expects(self::any())->method('setControllerExtensionName')->with('MyExtension');
         $request->setArgument('@extension', 'MyExtension');
-        $this->assertFalse($request->hasArgument('@extension'));
+        self::assertFalse($request->hasArgument('@extension'));
     }
 
     /**
@@ -100,9 +100,9 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(['setControllerSubpackageKey'])
             ->getMock();
-        $request->expects($this->any())->method('setControllerSubpackageKey')->with('MySubPackage');
+        $request->expects(self::any())->method('setControllerSubpackageKey')->with('MySubPackage');
         $request->setArgument('@subpackage', 'MySubPackage');
-        $this->assertFalse($request->hasArgument('@subpackage'));
+        self::assertFalse($request->hasArgument('@subpackage'));
     }
 
     /**
@@ -113,9 +113,9 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(['setControllerName'])
             ->getMock();
-        $request->expects($this->any())->method('setControllerName')->with('MyController');
+        $request->expects(self::any())->method('setControllerName')->with('MyController');
         $request->setArgument('@controller', 'MyController');
-        $this->assertFalse($request->hasArgument('@controller'));
+        self::assertFalse($request->hasArgument('@controller'));
     }
 
     /**
@@ -126,9 +126,9 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(['setControllerActionName'])
             ->getMock();
-        $request->expects($this->any())->method('setControllerActionName')->with('foo');
+        $request->expects(self::any())->method('setControllerActionName')->with('foo');
         $request->setArgument('@action', 'foo');
-        $this->assertFalse($request->hasArgument('@action'));
+        self::assertFalse($request->hasArgument('@action'));
     }
 
     /**
@@ -139,9 +139,9 @@ class RequestTest extends UnitTestCase
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
             ->setMethods(['setFormat'])
             ->getMock();
-        $request->expects($this->any())->method('setFormat')->with('txt');
+        $request->expects(self::any())->method('setFormat')->with('txt');
         $request->setArgument('@format', 'txt');
-        $this->assertFalse($request->hasArgument('@format'));
+        self::assertFalse($request->hasArgument('@format'));
     }
 
     /**
@@ -151,7 +151,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('__referrer', 'foo');
-        $this->assertFalse($request->hasArgument('__referrer'));
+        self::assertFalse($request->hasArgument('__referrer'));
     }
 
     /**
@@ -161,7 +161,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('__referrer', 'foo');
-        $this->assertSame('foo', $request->getInternalArgument('__referrer'));
+        self::assertSame('foo', $request->getInternalArgument('__referrer'));
     }
 
     /**
@@ -170,7 +170,7 @@ class RequestTest extends UnitTestCase
     public function hasInternalArgumentShouldReturnNullIfArgumentNotFound()
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
-        $this->assertNull($request->getInternalArgument('__nonExistingInternalArgument'));
+        self::assertNull($request->getInternalArgument('__nonExistingInternalArgument'));
     }
 
     /**
@@ -181,7 +181,7 @@ class RequestTest extends UnitTestCase
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $object = new \stdClass();
         $request->setArgument('__theKey', $object);
-        $this->assertSame($object, $request->getInternalArgument('__theKey'));
+        self::assertSame($object, $request->getInternalArgument('__theKey'));
     }
 
     /**
@@ -196,7 +196,7 @@ class RequestTest extends UnitTestCase
         ];
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArguments($arguments);
-        $this->assertEquals($arguments, $request->getArguments());
+        self::assertEquals($arguments, $request->getArguments());
     }
 
     /**
@@ -206,8 +206,8 @@ class RequestTest extends UnitTestCase
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('existingArgument', 'theValue');
-        $this->assertTrue($request->hasArgument('existingArgument'));
-        $this->assertFalse($request->hasArgument('notExistingArgument'));
+        self::assertTrue($request->hasArgument('existingArgument'));
+        self::assertFalse($request->hasArgument('notExistingArgument'));
     }
 
     /**
@@ -219,9 +219,9 @@ class RequestTest extends UnitTestCase
             ->setMethods(['getControllerObjectName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue(''));
+        $request->expects(self::once())->method('getControllerObjectName')->will(self::returnValue(''));
         $request->setControllerActionName('theAction');
-        $this->assertEquals('theAction', $request->getControllerActionName());
+        self::assertEquals('theAction', $request->getControllerActionName());
     }
 
     /**
@@ -231,7 +231,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setFormat('html');
-        $this->assertEquals('html', $request->getFormat());
+        self::assertEquals('html', $request->getFormat());
     }
 
     /**
@@ -240,9 +240,9 @@ class RequestTest extends UnitTestCase
     public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain()
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
-        $this->assertFalse($request->isDispatched());
+        self::assertFalse($request->isDispatched());
         $request->setDispatched(true);
-        $this->assertTrue($request->isDispatched());
+        self::assertTrue($request->isDispatched());
     }
 
     /**
@@ -307,6 +307,6 @@ class RequestTest extends UnitTestCase
             'controllerName' => $request->_get('controllerName'),
         ];
 
-        $this->assertSame($controllerArguments, $actualControllerArguments);
+        self::assertSame($controllerArguments, $actualControllerArguments);
     }
 }

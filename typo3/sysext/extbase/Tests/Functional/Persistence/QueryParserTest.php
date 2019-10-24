@@ -80,7 +80,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         );
 
         $result = $query->execute()->toArray();
-        $this->assertEquals(3, count($result));
+        self::assertEquals(3, count($result));
     }
 
     /**
@@ -97,7 +97,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             $query->equals('tags.name', 'Tag12')
         );
         $result = $query->execute()->toArray();
-        $this->assertEquals(2, count($result));
+        self::assertEquals(2, count($result));
     }
 
     /**
@@ -116,7 +116,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         );
 
         $result = $query->execute()->toArray();
-        $this->assertCount(3, $result);
+        self::assertCount(3, $result);
     }
 
     /**
@@ -134,7 +134,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         );
         $result = $query->execute()->toArray();
         // there are 16 post in total, 2 without author, 1 hidden, 1 deleted => 12 posts
-        $this->assertCount(12, $result);
+        self::assertCount(12, $result);
     }
 
     /**
@@ -152,7 +152,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             )
         );
         $result = $query->execute()->toArray();
-        $this->assertCount(2, $result);
+        self::assertCount(2, $result);
     }
 
     /**
@@ -171,7 +171,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
             )
         );
         $result = $query->execute()->toArray();
-        $this->assertCount(1, $result);
+        self::assertCount(1, $result);
     }
 
     /**
@@ -185,7 +185,7 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
 
         $result = $query->matching($query->contains('usergroup', 1))
             ->execute();
-        $this->assertCount(3, $result);
+        self::assertCount(3, $result);
     }
 
     /**
@@ -196,6 +196,6 @@ class QueryParserTest extends \TYPO3\TestingFramework\Core\Functional\Functional
         $postRepository = $this->objectManager->get('ExtbaseTeam\\BlogExample\\Domain\\Repository\\PostRepository');
         $query = $postRepository->createQuery();
         $post = $query->matching($query->equals('uid', 1))->execute()->current();
-        $this->assertCount(3, $post->getCategories());
+        self::assertCount(3, $post->getCategories());
     }
 }

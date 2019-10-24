@@ -59,7 +59,7 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
         foreach ($subject->getMatches() as $hit) {
             $actualHitLineNumbers[] = $hit['line'];
         }
-        $this->assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
+        self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
     /**
@@ -214,9 +214,9 @@ class MethodArgumentRequiredStaticMatcherTest extends UnitTestCase
 
         $result = $subject->getMatches();
         if (isset($expected[0], $result[0])) {
-            $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+            self::assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
         } else {
-            $this->assertEquals($expected, $result);
+            self::assertEquals($expected, $result);
         }
     }
 }

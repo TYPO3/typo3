@@ -67,16 +67,16 @@ class ConnectionTest extends UnitTestCase
             )
             ->getMock();
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('getExpressionBuilder')
-            ->will($this->returnValue(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection)));
+            ->will(self::returnValue(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection)));
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('connect');
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('getDatabasePlatform')
-            ->will($this->returnValue(new MockPlatform()));
+            ->will(self::returnValue(new MockPlatform()));
     }
 
     /**
@@ -84,7 +84,7 @@ class ConnectionTest extends UnitTestCase
      */
     public function createQueryBuilderReturnsInstanceOfTypo3QueryBuilder()
     {
-        $this->assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
+        self::assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
     }
 
     /**
@@ -145,7 +145,7 @@ class ConnectionTest extends UnitTestCase
      */
     public function quoteIdentifier(string $input, string $expected)
     {
-        $this->assertSame($expected, $this->connection->quoteIdentifier($input));
+        self::assertSame($expected, $this->connection->quoteIdentifier($input));
     }
 
     /**
@@ -163,7 +163,7 @@ class ConnectionTest extends UnitTestCase
             '"anotherField"',
         ];
 
-        $this->assertSame($expected, $this->connection->quoteIdentifiers($input));
+        self::assertSame($expected, $this->connection->quoteIdentifiers($input));
     }
 
     /**
@@ -213,10 +213,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
     {
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->will($this->returnValue(1));
+            ->will(self::returnValue(1));
 
         $this->connection->insert(...$args);
     }
@@ -226,10 +226,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function bulkInsert()
     {
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with('INSERT INTO "aTestTable" ("aField") VALUES (?), (?)', ['aValue', 'anotherValue'])
-            ->will($this->returnValue(2));
+            ->will(self::returnValue(2));
 
         $this->connection->bulkInsert('aTestTable', [['aField' => 'aValue'], ['aField' => 'anotherValue']], ['aField']);
     }
@@ -277,10 +277,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
     {
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->will($this->returnValue(1));
+            ->will(self::returnValue(1));
 
         $this->connection->update(...$args);
     }
@@ -328,10 +328,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes)
     {
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->will($this->returnValue(1));
+            ->will(self::returnValue(1));
 
         $this->connection->delete(...$args);
     }
@@ -412,10 +412,10 @@ class ConnectionTest extends UnitTestCase
     {
         $resultStatement = $this->createMock(Statement::class);
 
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
-            ->will($this->returnValue($resultStatement));
+            ->will(self::returnValue($resultStatement));
 
         $this->connection->select(...$args);
     }
@@ -462,15 +462,15 @@ class ConnectionTest extends UnitTestCase
     {
         $resultStatement = $this->createMock(Statement::class);
 
-        $resultStatement->expects($this->once())
+        $resultStatement->expects(self::once())
             ->method('fetchColumn')
             ->with(0)
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
 
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
-            ->will($this->returnValue($resultStatement));
+            ->will(self::returnValue($resultStatement));
 
         $this->connection->count(...$args);
     }
@@ -480,10 +480,10 @@ class ConnectionTest extends UnitTestCase
      */
     public function truncateQuery()
     {
-        $this->connection->expects($this->once())
+        $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with('TRUNCATE "aTestTable"')
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
 
         $this->connection->truncate('aTestTable', false);
     }
@@ -503,13 +503,13 @@ class ConnectionTest extends UnitTestCase
         $wrappedConnectionProphet->requiresQueryForServerVersion()->willReturn(false);
         $wrappedConnectionProphet->getServerVersion()->willReturn('5.7.11');
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('getDriver')
             ->willReturn($driverProphet->reveal());
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('getWrappedConnection')
             ->willReturn($wrappedConnectionProphet->reveal());
 
-        $this->assertSame('mock 5.7.11', $this->connection->getServerVersion());
+        self::assertSame('mock 5.7.11', $this->connection->getServerVersion());
     }
 }

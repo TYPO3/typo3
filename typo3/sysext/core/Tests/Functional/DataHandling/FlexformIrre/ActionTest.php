@@ -58,6 +58,6 @@ class ActionTest extends AbstractDataHandlerActionTestCase
             ->execute()
             ->fetchColumn(0);
 
-        $this->assertEquals(2, $referenceCount);
+        self::assertEquals(2, $referenceCount);
     }
 }

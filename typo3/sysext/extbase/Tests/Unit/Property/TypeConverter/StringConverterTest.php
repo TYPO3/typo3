@@ -37,9 +37,9 @@ class StringConverterTest extends UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(['string', 'integer'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        $this->assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
+        self::assertEquals(['string', 'integer'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        self::assertEquals('string', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**
@@ -47,7 +47,7 @@ class StringConverterTest extends UnitTestCase
      */
     public function convertFromShouldReturnSourceString()
     {
-        $this->assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
+        self::assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
     }
 
     /**
@@ -55,7 +55,7 @@ class StringConverterTest extends UnitTestCase
      */
     public function canConvertFromShouldReturnTrue()
     {
-        $this->assertTrue($this->converter->canConvertFrom('myString', 'string'));
+        self::assertTrue($this->converter->canConvertFrom('myString', 'string'));
     }
 
     /**
@@ -63,6 +63,6 @@ class StringConverterTest extends UnitTestCase
      */
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
-        $this->assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+        self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }
 }

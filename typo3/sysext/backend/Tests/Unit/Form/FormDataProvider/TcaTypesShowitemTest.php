@@ -58,7 +58,7 @@ class TcaTypesShowitemTest extends UnitTestCase
         $expected['processedTca']['types']['aType'] = [
             'showitem' => 'foo',
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -96,7 +96,7 @@ class TcaTypesShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -144,7 +144,7 @@ class TcaTypesShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -182,7 +182,7 @@ class TcaTypesShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -230,7 +230,7 @@ class TcaTypesShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -269,7 +269,7 @@ class TcaTypesShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -324,6 +324,6 @@ class TcaTypesShowitemTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 }

@@ -56,7 +56,7 @@ class SiteTest extends UnitTestCase
             'base' => $input,
             'languages' => []
         ]);
-        $this->assertEquals(new Uri($expected), $subject->getBase());
+        self::assertEquals(new Uri($expected), $subject->getBase());
     }
 
     /**
@@ -120,7 +120,7 @@ class SiteTest extends UnitTestCase
                 ]
             ]
         ]);
-        $this->assertEquals(new Uri($expected), $subject->getLanguageById(0)->getBase());
+        self::assertEquals(new Uri($expected), $subject->getLanguageById(0)->getBase());
     }
 
     /**
@@ -152,9 +152,9 @@ class SiteTest extends UnitTestCase
         $fluidProphecy = $this->prophesize(FluidPageErrorHandler::class);
         GeneralUtility::addInstance(FluidPageErrorHandler::class, $fluidProphecy->reveal());
 
-        $this->assertEquals(true, $subject->getErrorHandler(123) instanceof PageErrorHandlerInterface);
-        $this->assertEquals(true, $subject->getErrorHandler(124) instanceof PageErrorHandlerInterface);
-        $this->assertEquals(true, $subject->getErrorHandler(125) instanceof PageErrorHandlerInterface);
+        self::assertEquals(true, $subject->getErrorHandler(123) instanceof PageErrorHandlerInterface);
+        self::assertEquals(true, $subject->getErrorHandler(124) instanceof PageErrorHandlerInterface);
+        self::assertEquals(true, $subject->getErrorHandler(125) instanceof PageErrorHandlerInterface);
     }
 
     /**

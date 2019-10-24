@@ -73,7 +73,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
     public function getTypoScriptSetupReturnsSetupFromTsfe(): void
     {
         $GLOBALS['TSFE']->tmpl->setup = ['foo' => 'bar'];
-        $this->assertEquals(['foo' => 'bar'], $this->frontendConfigurationManager->_call('getTypoScriptSetup'));
+        self::assertEquals(['foo' => 'bar'], $this->frontendConfigurationManager->_call('getTypoScriptSetup'));
     }
 
     /**
@@ -88,7 +88,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'SomeExtensionName',
             'SomePluginName'
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -111,7 +111,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -119,7 +119,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             ]
         ];
         $actualResult = $this->frontendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -142,7 +142,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects($this->any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will($this->returnValue($testSettingsConverted));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -154,7 +154,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'SomeExtensionName',
             'SomePluginName'
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -200,8 +200,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testPluginSettings
             ]
         ];
-        $this->mockTypoScriptService->expects($this->at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will($this->returnValue($testExtensionSettingsConverted));
-        $this->mockTypoScriptService->expects($this->at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will($this->returnValue($testPluginSettingsConverted));
+        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will(self::returnValue($testExtensionSettingsConverted));
+        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will(self::returnValue($testPluginSettingsConverted));
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -217,7 +217,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'SomeExtensionName',
             'SomePluginName'
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -232,7 +232,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'SomeExtensionName',
             'SomePluginName'
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -264,7 +264,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'SomeExtensionName',
             'SomePluginName'
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -293,7 +293,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             $frameworkConfiguration,
             $flexFormConfiguration
         );
-        $this->assertSame($frameworkConfiguration, $actualResult);
+        self::assertSame($frameworkConfiguration, $actualResult);
     }
 
     /**
@@ -341,7 +341,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             $frameworkConfiguration,
             $flexFormConfiguration
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -396,15 +396,15 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $frontendConfigurationManager->expects($this->at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will($this->returnValue(['overridden' => 'storagePid']));
-        $frontendConfigurationManager->expects($this->at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->will($this->returnValue(['overridden' => 'pluginConfiguration']));
-        $frontendConfigurationManager->expects($this->at(2))->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->will($this->returnValue(['overridden' => 'flexFormConfiguration']));
+        $frontendConfigurationManager->expects(self::at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will(self::returnValue(['overridden' => 'storagePid']));
+        $frontendConfigurationManager->expects(self::at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->will(self::returnValue(['overridden' => 'pluginConfiguration']));
+        $frontendConfigurationManager->expects(self::at(2))->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->will(self::returnValue(['overridden' => 'flexFormConfiguration']));
         $expectedResult = ['overridden' => 'flexFormConfiguration'];
         $actualResult = $frontendConfigurationManager->_call(
             'getContextSpecificFrameworkConfiguration',
             $frameworkConfiguration
         );
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -430,14 +430,14 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects($this->any())
+        $cObjectMock->expects(self::any())
             ->method('getTreeList')
-            ->will($this->onConsecutiveCalls('4', '', '898,12'));
+            ->will(self::onConsecutiveCalls('4', '', '898,12'));
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
         $expectedResult = [4, 898, 12];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -463,14 +463,14 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects($this->any())
+        $cObjectMock->expects(self::any())
             ->method('getTreeList')
-            ->will($this->onConsecutiveCalls('3,4', '', '898,12'));
+            ->will(self::onConsecutiveCalls('3,4', '', '898,12'));
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
         $expectedResult = [3, 4, 898, 12];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -496,12 +496,12 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         );
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects($this->never())->method('getTreeList');
+        $cObjectMock->expects(self::never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
         $expectedResult = [1, 2, 3];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -528,12 +528,12 @@ class FrontendConfigurationManagerTest extends UnitTestCase
 
         /** @var $cObjectMock ContentObjectRenderer */
         $cObjectMock = $this->createMock(ContentObjectRenderer::class);
-        $cObjectMock->expects($this->never())->method('getTreeList');
+        $cObjectMock->expects(self::never())->method('getTreeList');
         $abstractConfigurationManager->setContentObject($cObjectMock);
 
         $expectedResult = [1, 2, 3];
         $actualResult = $abstractConfigurationManager->_call('getRecursiveStoragePids', $storagePids, $recursive);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -548,7 +548,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         ];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '0,1,2,3']],
             $this->frontendConfigurationManager->_call(
                 'mergeConfigurationIntoFrameworkConfiguration',
@@ -564,11 +564,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly(): void
     {
-        $this->mockContentObject->expects($this->any())->method('getTreeList')->will($this->returnValue('1,2,3'));
+        $this->mockContentObject->expects(self::any())->method('getTreeList')->will(self::returnValue('1,2,3'));
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '0,1,2,3']],
             $this->frontendConfigurationManager->_call(
                 'overrideStoragePidIfStartingPointIsSet',
@@ -582,11 +582,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromGetTreeList(): void
     {
-        $this->mockContentObject->expects($this->any())->method('getTreeList')->will($this->returnValue(''));
+        $this->mockContentObject->expects(self::any())->method('getTreeList')->will(self::returnValue(''));
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '0']],
             $this->frontendConfigurationManager->_call(
                 'overrideStoragePidIfStartingPointIsSet',
@@ -604,7 +604,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->setMethods(['convertFlexFormContentToArray'])
             ->getMock();
-        $flexFormService->expects($this->once())->method('convertFlexFormContentToArray')->will($this->returnValue([
+        $flexFormService->expects(self::once())->method('convertFlexFormContentToArray')->will(self::returnValue([
             'persistence' => [
                 'storagePid' => '0,1,2,3'
             ]
@@ -614,7 +614,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $this->mockContentObject->data = ['pi_flexform' => '<XML_ARRAY>'];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '0,1,2,3']],
             $this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
         );
@@ -629,13 +629,13 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->setMethods(['convertFlexFormContentToArray'])
             ->getMock();
-        $flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+        $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
         $this->mockContentObject->data = ['pi_flexform' => ''];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '98']],
             $this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
         );
@@ -650,13 +650,13 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->setMethods(['convertFlexFormContentToArray'])
             ->getMock();
-        $flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+        $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
         $this->mockContentObject->data = ['pi_flexform' => ['persistence' => ['storagePid' => '0,1,2,3']]];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '0,1,2,3']],
             $this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
         );
@@ -671,13 +671,13 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->setMethods(['convertFlexFormContentToArray'])
             ->getMock();
-        $flexFormService->expects($this->never())->method('convertFlexFormContentToArray');
+        $flexFormService->expects(self::never())->method('convertFlexFormContentToArray');
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
         $this->mockContentObject->data = ['pi_flexform' => []];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
-        $this->assertSame(
+        self::assertSame(
             ['persistence' => ['storagePid' => '98']],
             $this->frontendConfigurationManager->_call('overrideConfigurationFromFlexForm', $frameworkConfiguration)
         );
@@ -699,7 +699,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 
-        $this->mockTypoScriptService->expects($this->once())->method('convertTypoScriptArrayToPlainArray')->will($this->returnValue([
+        $this->mockTypoScriptService->expects(self::once())->method('convertTypoScriptArrayToPlainArray')->will(self::returnValue([
             'persistence' => [
                 'storagePid' => '0,1,2,3'
             ],
@@ -710,7 +710,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'foo' => 'bar'
             ],
         ]));
-        $frontendConfigurationManager->expects($this->any())->method('getTypoScriptSetup')->will($this->returnValue([
+        $frontendConfigurationManager->expects(self::any())->method('getTypoScriptSetup')->will(self::returnValue([
             'plugin.' => [
                 'tx_ext_pi1.' => [
                     'persistence.' => [
@@ -739,7 +739,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'foo' => 'qux'
             ],
         ];
-        $this->assertSame(
+        self::assertSame(
             [
                 'extensionName' => 'ext',
                 'pluginName' => 'pi1',

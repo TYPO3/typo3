@@ -82,9 +82,9 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->gc_probability = -1;
         $subject->start();
 
-        $this->assertArrayNotHasKey('uid', $subject->user);
-        $this->assertEquals('bar', $subject->getSessionData('foo'));
-        $this->assertEquals($uniqueSessionId, $subject->id);
+        self::assertArrayNotHasKey('uid', $subject->user);
+        self::assertEquals('bar', $subject->getSessionData('foo'));
+        self::assertEquals($uniqueSessionId, $subject->id);
     }
 
     /**
@@ -172,7 +172,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->start();
         $subject->setSessionData('foo', 'bar');
         $subject->removeSessionData();
-        $this->assertNull($subject->getSessionData('someKey'));
+        self::assertNull($subject->getSessionData('someKey'));
     }
 
     /**
@@ -232,10 +232,10 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
         $subject->start();
-        $this->assertEmpty($subject->getSessionData($uniqueSessionId));
-        $this->assertEmpty($subject->user);
+        self::assertEmpty($subject->getSessionData($uniqueSessionId));
+        self::assertEmpty($subject->user);
         $subject->setSessionData('foo', 'bar');
-        $this->assertNotNull($subject->getSessionData('foo'));
+        self::assertNotNull($subject->getSessionData('foo'));
 
         // Suppress "headers already sent" errors - phpunit does that internally already
         $prev = error_reporting(0);
@@ -315,8 +315,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->gc_probability = -1;
         $subject->start();
 
-        $this->assertNotNull($subject->user);
-        $this->assertEquals('existingUserName', $subject->user['username']);
+        self::assertNotNull($subject->user);
+        self::assertEquals('existingUserName', $subject->user['username']);
     }
 
     /**
@@ -387,8 +387,8 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->method('getCookie')->willReturn(null);
 
         $subject->start();
-        $this->assertFalse($subject->_get('loginFailure'));
-        $this->assertEquals('existingUserName', $subject->user['username']);
+        self::assertFalse($subject->_get('loginFailure'));
+        self::assertEquals('existingUserName', $subject->user['username']);
     }
 
     /**
@@ -398,7 +398,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function canPreserveSessionDataWhenAuthenticating()
     {
-        $this->markTestSkipped('Test is flaky, convert to a functional test');
+        self::markTestSkipped('Test is flaky, convert to a functional test');
         // Mock SessionBackend
         $sessionBackend = $this->getMockBuilder(SessionBackendInterface::class)->getMock();
 
@@ -422,9 +422,9 @@ class FrontendUserAuthenticationTest extends UnitTestCase
 
         $expectedUserId = 1;
 
-        $sessionBackend->expects($this->once())->method('set')->with(
+        $sessionBackend->expects(self::once())->method('set')->with(
             'newSessionId',
-            $this->equalTo($expectedSessionRecord)
+            self::equalTo($expectedSessionRecord)
         )->willReturnArgument(1);
 
         $this->subject->method('getSessionBackend')->willReturn($sessionBackend);
@@ -454,11 +454,11 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         // New session should be stored with with old values
         $this->subject->start();
 
-        $this->assertEquals('newSessionId', $this->subject->id);
-        $this->assertEquals($expectedUserId, $this->subject->user['uid']);
+        self::assertEquals('newSessionId', $this->subject->id);
+        self::assertEquals($expectedUserId, $this->subject->user['uid']);
         $this->subject->setSessionData('foobar', 'baz');
-        $this->assertArraySubset(['foo' => 'bar'], $this->subject->_get('sessionData'));
-        $this->assertTrue($this->subject->sesData_change);
+        self::assertArraySubset(['foo' => 'bar'], $this->subject->_get('sessionData'));
+        self::assertTrue($this->subject->sesData_change);
     }
 
     /**
@@ -468,7 +468,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function canRemoveSessionData()
     {
-        $this->markTestSkipped('Test is flaky, convert to a functional test');
+        self::markTestSkipped('Test is flaky, convert to a functional test');
         // Mock SessionBackend
         $sessionBackend = $this->getMockBuilder(SessionBackendInterface::class)->getMock();
         $sessionBackend->method('get')->willReturn(
@@ -486,9 +486,9 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $this->subject->start();
 
         $this->subject->removeSessionData();
-        $this->assertEmpty($this->subject->getSessionData('foo'));
+        self::assertEmpty($this->subject->getSessionData('foo'));
         $this->subject->storeSessionData();
-        $this->assertEmpty($this->subject->getSessionData('foo'));
+        self::assertEmpty($this->subject->getSessionData('foo'));
     }
 
     /**
@@ -498,7 +498,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function destroysAnonymousSessionIfDataIsNull()
     {
-        $this->markTestSkipped('Test is flaky, convert to a functional test');
+        self::markTestSkipped('Test is flaky, convert to a functional test');
         $sessionBackend = $this->getMockBuilder(SessionBackendInterface::class)->getMock();
         // Mock SessionBackend
         $this->subject->method('getSessionBackend')->willReturn($sessionBackend);
@@ -510,16 +510,16 @@ class FrontendUserAuthenticationTest extends UnitTestCase
             'ses_data' => serialize(['foo' => 'bar'])
         ];
 
-        $sessionBackend->expects($this->at(0))->method('get')->willThrowException(new SessionNotFoundException('testing', 1486045419));
-        $sessionBackend->expects($this->at(1))->method('get')->willThrowException(new SessionNotFoundException('testing', 1486045420));
-        $sessionBackend->expects($this->at(2))->method('get')->willReturn(
+        $sessionBackend->expects(self::at(0))->method('get')->willThrowException(new SessionNotFoundException('testing', 1486045419));
+        $sessionBackend->expects(self::at(1))->method('get')->willThrowException(new SessionNotFoundException('testing', 1486045420));
+        $sessionBackend->expects(self::at(2))->method('get')->willReturn(
             [
                 'ses_id' => 'newSessionId',
                 'ses_anonymous' => 1
             ]
         );
 
-        $sessionBackend->expects($this->once())
+        $sessionBackend->expects(self::once())
             ->method('set')
             ->with('newSessionId', new \PHPUnit_Framework_Constraint_ArraySubset($expectedSessionRecord))
             ->willReturn([
@@ -530,17 +530,17 @@ class FrontendUserAuthenticationTest extends UnitTestCase
 
         // Can set and store session data
         $this->subject->start();
-        $this->assertEmpty($this->subject->_get('sessionData'));
-        $this->assertEmpty($this->subject->user);
+        self::assertEmpty($this->subject->_get('sessionData'));
+        self::assertEmpty($this->subject->user);
         $this->subject->setSessionData('foo', 'bar');
-        $this->assertNotNull($this->subject->getSessionData('foo'));
+        self::assertNotNull($this->subject->getSessionData('foo'));
         $this->subject->storeSessionData();
 
         // Should delete session after setting to null
         $this->subject->setSessionData('foo', null);
-        $this->assertNull($this->subject->getSessionData('foo'));
-        $sessionBackend->expects($this->once())->method('remove')->with('newSessionId');
-        $sessionBackend->expects($this->never())->method('update');
+        self::assertNull($this->subject->getSessionData('foo'));
+        $sessionBackend->expects(self::once())->method('remove')->with('newSessionId');
+        $sessionBackend->expects(self::never())->method('update');
 
         $this->subject->storeSessionData();
     }
@@ -551,7 +551,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function sessionDataShouldBePreservedOnLogout()
     {
-        $this->markTestSkipped('Test is flaky, convert to a functional test');
+        self::markTestSkipped('Test is flaky, convert to a functional test');
         $sessionBackend = $this->getMockBuilder(SessionBackendInterface::class)->getMock();
         $this->subject->method('getSessionBackend')->willReturn($sessionBackend);
         $this->subject->method('createSessionId')->willReturn('newSessionId');
@@ -579,16 +579,16 @@ class FrontendUserAuthenticationTest extends UnitTestCase
 
         ]);
 
-        $sessionBackend->expects($this->once())->method('set')->with('newSessionId', $this->anything())->willReturnArgument(1);
-        $sessionBackend->expects($this->once())->method('remove')->with('existingId');
+        $sessionBackend->expects(self::once())->method('set')->with('newSessionId', self::anything())->willReturnArgument(1);
+        $sessionBackend->expects(self::once())->method('remove')->with('existingId');
 
         // start
         $this->subject->start();
         // asset that session data is there
-        $this->assertNotEmpty($this->subject->user);
-        $this->assertEquals(1, (int)$this->subject->user['ses_anonymous']);
-        $this->assertEquals(['foo' => 'bar'], $this->subject->_get('sessionData'));
+        self::assertNotEmpty($this->subject->user);
+        self::assertEquals(1, (int)$this->subject->user['ses_anonymous']);
+        self::assertEquals(['foo' => 'bar'], $this->subject->_get('sessionData'));
 
-        $this->assertEquals('newSessionId', $this->subject->id);
+        self::assertEquals('newSessionId', $this->subject->id);
     }
 }

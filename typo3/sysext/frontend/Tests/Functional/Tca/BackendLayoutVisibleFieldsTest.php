@@ -40,7 +40,7 @@ class BackendLayoutVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functi
         $formResult = $formEngineTestService->createNewRecordForm('backend_layout');
 
         foreach (static::$backendLayoutFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );

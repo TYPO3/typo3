@@ -58,7 +58,7 @@ class InstallToolFormProtectionTest extends UnitTestCase
 
         $this->subject->_call('retrieveSessionToken');
 
-        $this->assertTrue(
+        self::assertTrue(
             $this->subject->validateToken($tokenId, $formName, $action, $formInstanceName)
         );
     }
@@ -74,7 +74,7 @@ class InstallToolFormProtectionTest extends UnitTestCase
 
         $this->subject->persistSessionToken();
 
-        $this->assertEquals(
+        self::assertEquals(
             '881ffea2159ac72182557b79dc0c723f5a8d20136f9fab56cdd4f8b3a1dbcfcd',
             $_SESSION['installToolFormToken']
         );

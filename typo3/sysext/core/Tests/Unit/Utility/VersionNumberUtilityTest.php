@@ -69,7 +69,7 @@ class VersionNumberUtilityTest extends UnitTestCase
     public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion)
     {
         VersionNumberUtilityFixture::$versionNumber = $currentVersion;
-        $this->assertEquals($expectedVersion, VersionNumberUtilityFixture::getNumericTypo3Version());
+        self::assertEquals($expectedVersion, VersionNumberUtilityFixture::getNumericTypo3Version());
     }
 
     /**
@@ -111,6 +111,6 @@ class VersionNumberUtilityTest extends UnitTestCase
     public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange($versionString, $expectedResult)
     {
         $versions = VersionNumberUtility::convertVersionsStringToVersionNumbers($versionString);
-        $this->assertEquals($expectedResult, $versions);
+        self::assertEquals($expectedResult, $versions);
     }
 }

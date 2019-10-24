@@ -60,78 +60,78 @@ class ValidatorResolverTest extends \TYPO3\TestingFramework\Core\Functional\Func
 
         /** @var array $baseValidatorConjunctions */
         $baseValidatorConjunctions = $this->validatorResolver->_get('baseValidatorConjunctions');
-        static::assertTrue(is_array($baseValidatorConjunctions));
-        static::assertCount(2, $baseValidatorConjunctions);
-        static::assertArrayHasKey(\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\Model::class, $baseValidatorConjunctions);
-        static::assertArrayHasKey(\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\AnotherModel::class, $baseValidatorConjunctions);
+        self::assertTrue(is_array($baseValidatorConjunctions));
+        self::assertCount(2, $baseValidatorConjunctions);
+        self::assertArrayHasKey(\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\Model::class, $baseValidatorConjunctions);
+        self::assertArrayHasKey(\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\AnotherModel::class, $baseValidatorConjunctions);
 
         /** @var ConjunctionValidator $conjunctionValidator */
         $conjunctionValidator = $baseValidatorConjunctions[\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\Model::class];
-        static::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
+        self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 
         $baseValidators = $conjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $baseValidators);
+        self::assertInstanceOf(\SplObjectStorage::class, $baseValidators);
         $baseValidators->rewind();
 
         /** @var GenericObjectValidator $validator */
         $validator = $baseValidators->current();
-        static::assertInstanceOf(GenericObjectValidator::class, $validator);
+        self::assertInstanceOf(GenericObjectValidator::class, $validator);
 
         $propertyValidators = $validator->getPropertyValidators();
-        static::assertCount(4, $propertyValidators);
-        static::assertArrayHasKey('foo', $propertyValidators);
-        static::assertArrayHasKey('bar', $propertyValidators);
-        static::assertArrayHasKey('baz', $propertyValidators);
-        static::assertArrayHasKey('qux', $propertyValidators);
+        self::assertCount(4, $propertyValidators);
+        self::assertArrayHasKey('foo', $propertyValidators);
+        self::assertArrayHasKey('bar', $propertyValidators);
+        self::assertArrayHasKey('baz', $propertyValidators);
+        self::assertArrayHasKey('qux', $propertyValidators);
 
         /** @var \SplObjectStorage $fooPropertyValidators */
         $fooPropertyValidators = $propertyValidators['foo'];
-        static::assertInstanceOf(\SplObjectStorage::class, $fooPropertyValidators);
-        static::assertCount(3, $fooPropertyValidators);
+        self::assertInstanceOf(\SplObjectStorage::class, $fooPropertyValidators);
+        self::assertCount(3, $fooPropertyValidators);
 
         $fooPropertyValidators->rewind();
         /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
-        static::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        static::assertSame(['minimum' => 1, 'maximum' => PHP_INT_MAX], $propertyValidator->getOptions());
+        self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
+        self::assertSame(['minimum' => 1, 'maximum' => PHP_INT_MAX], $propertyValidator->getOptions());
 
         $fooPropertyValidators->next();
         /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
-        static::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
-        static::assertSame(['minimum' => 0, 'maximum' => 10], $propertyValidator->getOptions());
+        self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
+        self::assertSame(['minimum' => 0, 'maximum' => 10], $propertyValidator->getOptions());
 
         $fooPropertyValidators->next();
         $propertyValidator = $fooPropertyValidators->current();
-        static::assertInstanceOf(NotEmptyValidator::class, $propertyValidator);
+        self::assertInstanceOf(NotEmptyValidator::class, $propertyValidator);
 
         /** @var \SplObjectStorage $barPropertyValidators */
         $barPropertyValidators = $propertyValidators['bar'];
-        static::assertInstanceOf(\SplObjectStorage::class, $barPropertyValidators);
-        static::assertCount(1, $barPropertyValidators);
+        self::assertInstanceOf(\SplObjectStorage::class, $barPropertyValidators);
+        self::assertCount(1, $barPropertyValidators);
 
         $barPropertyValidators->rewind();
         $propertyValidator = $barPropertyValidators->current();
-        static::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $propertyValidator);
+        self::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $propertyValidator);
 
         /** @var \SplObjectStorage $bazPropertyValidators */
         $bazPropertyValidators = $propertyValidators['baz'];
-        static::assertInstanceOf(\SplObjectStorage::class, $bazPropertyValidators);
-        static::assertCount(1, $bazPropertyValidators);
+        self::assertInstanceOf(\SplObjectStorage::class, $bazPropertyValidators);
+        self::assertCount(1, $bazPropertyValidators);
 
         $bazPropertyValidators->rewind();
         $propertyValidator = $bazPropertyValidators->current();
-        static::assertInstanceOf(CollectionValidator::class, $propertyValidator);
+        self::assertInstanceOf(CollectionValidator::class, $propertyValidator);
 
         /** @var \SplObjectStorage $quxPropertyValidators */
         $quxPropertyValidators = $propertyValidators['qux'];
-        static::assertInstanceOf(\SplObjectStorage::class, $quxPropertyValidators);
-        static::assertCount(1, $quxPropertyValidators);
+        self::assertInstanceOf(\SplObjectStorage::class, $quxPropertyValidators);
+        self::assertCount(1, $quxPropertyValidators);
 
         $quxPropertyValidators->rewind();
         $propertyValidator = $quxPropertyValidators->current();
-        static::assertInstanceOf(ConjunctionValidator::class, $propertyValidator);
-        static::assertSame(
+        self::assertInstanceOf(ConjunctionValidator::class, $propertyValidator);
+        self::assertSame(
             $baseValidatorConjunctions[\TYPO3\CMS\Extbase\Tests\Functional\Validation\Fixture\Domain\Model\AnotherModel::class],
             $propertyValidator
         );

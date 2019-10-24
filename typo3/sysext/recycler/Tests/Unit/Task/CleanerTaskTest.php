@@ -56,7 +56,7 @@ class CleanerTaskTest extends UnitTestCase
         $period = 14;
         $this->subject->setPeriod($period);
 
-        $this->assertEquals($period, $this->subject->getPeriod());
+        self::assertEquals($period, $this->subject->getPeriod());
     }
 
     /**
@@ -67,7 +67,7 @@ class CleanerTaskTest extends UnitTestCase
         $tables = ['pages', 'tt_content'];
         $this->subject->setTcaTables($tables);
 
-        $this->assertEquals($tables, $this->subject->getTcaTables());
+        self::assertEquals($tables, $this->subject->getTcaTables());
     }
 
     /**
@@ -84,7 +84,7 @@ class CleanerTaskTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setTcaTables(['pages']);
-        $subject->expects($this->once())->method('getPeriodAsTimestamp')->willReturn(400);
+        $subject->expects(self::once())->method('getPeriodAsTimestamp')->willReturn(400);
 
         /** @var Connection|ObjectProphecy $connection */
         $connection = $this->prophesize(Connection::class);
@@ -114,7 +114,7 @@ class CleanerTaskTest extends UnitTestCase
         $connectionPool->getQueryBuilderForTable('pages')->willReturn($queryBuilderProphet->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
 
-        $this->assertTrue($subject->execute());
+        self::assertTrue($subject->execute());
     }
 
     /**
@@ -149,6 +149,6 @@ class CleanerTaskTest extends UnitTestCase
             ->shouldBeCalled()
             ->willThrow(new \Doctrine\DBAL\DBALException('testing', 1476122315));
 
-        $this->assertFalse($this->subject->execute());
+        self::assertFalse($this->subject->execute());
     }
 }

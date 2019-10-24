@@ -44,7 +44,7 @@ class SetTypeTest extends UnitTestCase
     public function getNameReturnsTypeIdentifier()
     {
         $subject = Type::getType(SetType::TYPE);
-        $this->assertSame(SetType::TYPE, $subject->getName());
+        self::assertSame(SetType::TYPE, $subject->getName());
     }
 
     /**
@@ -64,7 +64,7 @@ class SetTypeTest extends UnitTestCase
         );
 
         $subject = Type::getType(SetType::TYPE);
-        $this->assertSame(
+        self::assertSame(
             "SET('aValue', 'anotherValue')",
             $subject->getSQLDeclaration($fieldDeclaration, $databaseProphet->reveal())
         );

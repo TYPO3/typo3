@@ -44,10 +44,10 @@ class UserRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abstr
     {
         $deletedPages = $this->getDeletedPages(1, 0);
         $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3.xml');
-        $this->assertCount(1, $deletedPages);
-        $this->assertArrayHasKey('pages', $deletedPages);
-        $this->assertCount(2, $deletedPages['pages']);
-        $this->assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
+        self::assertCount(1, $deletedPages);
+        self::assertArrayHasKey('pages', $deletedPages);
+        self::assertCount(2, $deletedPages['pages']);
+        self::assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
     }
 
     /**
@@ -57,10 +57,10 @@ class UserRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abstr
     {
         $deletedPages = $this->getDeletedPages(1, 1);
         $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3_4_5.xml');
-        $this->assertCount(1, $deletedPages);
-        $this->assertArrayHasKey('pages', $deletedPages);
-        $this->assertCount(3, $deletedPages['pages']);
-        $this->assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
+        self::assertCount(1, $deletedPages);
+        self::assertArrayHasKey('pages', $deletedPages);
+        self::assertCount(3, $deletedPages['pages']);
+        self::assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
     }
 
     /**
@@ -69,7 +69,7 @@ class UserRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abstr
     public function canNotRetrieveDeletedPagesOutsideWebmount()
     {
         $deletedPages = $this->getDeletedPages(6, 0);
-        $this->assertCount(0, $deletedPages);
+        self::assertCount(0, $deletedPages);
     }
 
     /**
@@ -78,6 +78,6 @@ class UserRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abstr
     public function canNotRetrieveDeletedWithNoAccess()
     {
         $deletedPages = $this->getDeletedPages(7, 0);
-        $this->assertCount(0, $deletedPages);
+        self::assertCount(0, $deletedPages);
     }
 }

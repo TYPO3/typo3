@@ -180,7 +180,7 @@ class FrontendLoginControllerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(FrontendLoginController::class, ['dummy'], ['_',  $this->createMock(TypoScriptFrontendController::class)]);
         $subject->cObj = $this->createMock(ContentObjectRenderer::class);
         $subject->conf['preserveGETvars'] = $preserveVars;
-        $this->assertSame($expected, $subject->_call('getPreserveGetVars'));
+        self::assertSame($expected, $subject->_call('getPreserveGetVars'));
     }
 
     public function processUserFieldsRespectsDefaultConfigurationForStdWrapDataProvider()
@@ -266,7 +266,7 @@ class FrontendLoginControllerTest extends UnitTestCase
         $subject->cObj = new ContentObjectRenderer();
         $subject->_set('frontendController', $tsfe);
         $subject->_set('conf', $conf);
-        $this->assertEquals($expectedMarkers, $subject->_call('getUserFieldMarkers'));
+        self::assertEquals($expectedMarkers, $subject->_call('getUserFieldMarkers'));
     }
 
     /**
@@ -283,6 +283,6 @@ class FrontendLoginControllerTest extends UnitTestCase
         $subject->_set('logintype', LoginType::LOGIN);
         $subject->_set('referer', 'http://www.example.com/snafu');
         $subject->_set('userIsLoggedIn', true);
-        $this->assertSame(['http://www.example.com/snafu'], $subject->_call('processRedirect'));
+        self::assertSame(['http://www.example.com/snafu'], $subject->_call('processRedirect'));
     }
 }

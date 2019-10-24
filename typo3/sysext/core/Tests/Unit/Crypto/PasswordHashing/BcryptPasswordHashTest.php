@@ -66,7 +66,7 @@ class BcryptPasswordHashTest extends UnitTestCase
      */
     public function getHashedPasswordReturnsNullOnEmptyPassword()
     {
-        $this->assertNull($this->subject->getHashedPassword(''));
+        self::assertNull($this->subject->getHashedPassword(''));
     }
 
     /**
@@ -75,8 +75,8 @@ class BcryptPasswordHashTest extends UnitTestCase
     public function getHashedPasswordReturnsString()
     {
         $hash = $this->subject->getHashedPassword('password');
-        $this->assertNotNull($hash);
-        $this->assertTrue(is_string($hash));
+        self::assertNotNull($hash);
+        self::assertTrue(is_string($hash));
     }
 
     /**
@@ -85,7 +85,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword()
     {
         $hash = $this->subject->getHashedPassword('password');
-        $this->assertTrue($this->subject->isValidSaltedPW($hash));
+        self::assertTrue($this->subject->isValidSaltedPW($hash));
     }
 
     /**
@@ -97,7 +97,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     {
         $password = 'aEjOtY';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -109,7 +109,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     {
         $password = '01369';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -121,7 +121,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -137,7 +137,7 @@ class BcryptPasswordHashTest extends UnitTestCase
         }
         $password .= chr(215) . chr(247);
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -156,7 +156,7 @@ class BcryptPasswordHashTest extends UnitTestCase
             $password .= chr($i);
         }
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -167,7 +167,7 @@ class BcryptPasswordHashTest extends UnitTestCase
         $password = 'password';
         $password1 = $password . 'INVALID';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertFalse($this->subject->checkPassword($password1, $hash));
+        self::assertFalse($this->subject->checkPassword($password1, $hash));
     }
 
     /**
@@ -176,7 +176,7 @@ class BcryptPasswordHashTest extends UnitTestCase
     public function isHashUpdateNeededReturnsFalseForJustGeneratedHash()
     {
         $hash = $this->subject->getHashedPassword('password');
-        $this->assertFalse($this->subject->isHashUpdateNeeded($hash));
+        self::assertFalse($this->subject->isHashUpdateNeeded($hash));
     }
 
     /**
@@ -187,7 +187,7 @@ class BcryptPasswordHashTest extends UnitTestCase
         $subject = new BcryptPasswordHash(['cost' => 10]);
         $hash = $subject->getHashedPassword('password');
         $subject = new BcryptPasswordHash(['cost' => 11]);
-        $this->assertTrue($subject->isHashUpdateNeeded($hash));
+        self::assertTrue($subject->isHashUpdateNeeded($hash));
     }
 
     /**
@@ -200,7 +200,7 @@ class BcryptPasswordHashTest extends UnitTestCase
         $password1 = 'pass' . "\x00" . 'word';
         $password2 = 'pass' . "\x00" . 'phrase';
         $hash = $this->subject->getHashedPassword($password1);
-        $this->assertFalse($this->subject->checkPassword($password2, $hash));
+        self::assertFalse($this->subject->checkPassword($password2, $hash));
     }
 
     /**
@@ -214,6 +214,6 @@ class BcryptPasswordHashTest extends UnitTestCase
         $password1 = $prefix . 'one';
         $password2 = $prefix . 'two';
         $hash = $this->subject->getHashedPassword($password1);
-        $this->assertFalse($this->subject->checkPassword($password2, $hash));
+        self::assertFalse($this->subject->checkPassword($password2, $hash));
     }
 }

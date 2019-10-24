@@ -53,7 +53,7 @@ class SiteConfigurationDataGroupTest extends UnitTestCase
 
         $input = ['foo'];
 
-        $this->assertEquals($input, $this->subject->compile($input));
+        self::assertEquals($input, $this->subject->compile($input));
     }
 
     /**
@@ -75,7 +75,7 @@ class SiteConfigurationDataGroupTest extends UnitTestCase
         $providerResult = ['foo'];
         $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
-        $this->assertEquals($providerResult, $this->subject->compile([]));
+        self::assertEquals($providerResult, $this->subject->compile([]));
     }
 
     /**

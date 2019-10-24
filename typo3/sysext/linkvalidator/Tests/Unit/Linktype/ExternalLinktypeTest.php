@@ -177,6 +177,6 @@ class ExternalLinktypeTest extends UnitTestCase
         $method = new \ReflectionMethod($subject, 'preprocessUrl');
         $method->setAccessible(true);
         $result = $method->invokeArgs($subject, [$inputUrl]);
-        $this->assertEquals($result, $expectedResult);
+        self::assertEquals($result, $expectedResult);
     }
 }

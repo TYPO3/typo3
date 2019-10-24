@@ -62,13 +62,13 @@ class VimeoHelperTest extends UnitTestCase
         /** @var Folder|\PHPUnit_Framework_MockObject_MockObject $mockedFolder */
         $mockedFolder = $this->createMock(Folder::class);
 
-        $this->subject->expects($this->any())->method('transformMediaIdToFile')
+        $this->subject->expects(self::any())->method('transformMediaIdToFile')
             ->with($videoId, $mockedFolder, $this->extension)
-            ->will($this->returnValue($expectedResult));
+            ->will(self::returnValue($expectedResult));
 
         $result = $this->subject->transformUrlToFile($url . $videoId, $mockedFolder);
 
-        $this->assertSame($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 
     public function transformUrlDataProvider()

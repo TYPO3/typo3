@@ -67,9 +67,9 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->testFilesToDelete[] = $defaultConfigurationFile;
 
         $this->subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getDefaultConfigurationFileLocation')
-            ->will($this->returnValue($defaultConfigurationFile));
+            ->will(self::returnValue($defaultConfigurationFile));
         $this->subject->getDefaultConfiguration();
     }
 
@@ -88,9 +88,9 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->testFilesToDelete[] = $configurationFile;
 
         $this->subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getLocalConfigurationFileLocation')
-            ->will($this->returnValue($configurationFile));
+            ->will(self::returnValue($configurationFile));
         $this->subject->getLocalConfiguration();
     }
 
@@ -119,10 +119,10 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue($currentLocalConfiguration));
-        $this->subject->expects($this->once())
+            ->will(self::returnValue($currentLocalConfiguration));
+        $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
 
@@ -139,15 +139,15 @@ class ConfigurationManagerTest extends UnitTestCase
                 'getDefaultConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDefaultConfiguration')
-            ->will($this->returnValue(
+            ->will(self::returnValue(
                 [
                     'path' => 'value',
                 ]
             ));
 
-        $this->assertSame('value', $this->subject->getDefaultConfigurationValueByPath('path'));
+        self::assertSame('value', $this->subject->getDefaultConfigurationValueByPath('path'));
     }
 
     /**
@@ -160,15 +160,15 @@ class ConfigurationManagerTest extends UnitTestCase
                 'getLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue(
+            ->will(self::returnValue(
                 [
                     'path' => 'value',
                 ]
             ));
 
-        $this->assertSame('value', $this->subject->getLocalConfigurationValueByPath('path'));
+        self::assertSame('value', $this->subject->getLocalConfigurationValueByPath('path'));
     }
 
     /**
@@ -182,22 +182,22 @@ class ConfigurationManagerTest extends UnitTestCase
                 'getLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDefaultConfiguration')
-            ->will($this->returnValue(
+            ->will(self::returnValue(
                 [
                     'path' => 'value',
                 ]
             ));
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue(
+            ->will(self::returnValue(
                 [
                     'path' => 'valueOverride',
                 ]
             ));
 
-        $this->assertSame('valueOverride', $this->subject->getConfigurationValueByPath('path'));
+        self::assertSame('valueOverride', $this->subject->getConfigurationValueByPath('path'));
     }
 
     /**
@@ -208,11 +208,11 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->createSubjectWithMockedMethods([
             'isValidLocalConfigurationPath',
         ]);
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('isValidLocalConfigurationPath')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
 
-        $this->assertFalse($this->subject->setLocalConfigurationValueByPath('path', 'value'));
+        self::assertFalse($this->subject->setLocalConfigurationValueByPath('path', 'value'));
     }
 
     /**
@@ -236,13 +236,13 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('isValidLocalConfigurationPath')
-            ->will($this->returnValue(true));
-        $this->subject->expects($this->once())
+            ->will(self::returnValue(true));
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue($currentLocalConfiguration));
-        $this->subject->expects($this->once())
+            ->will(self::returnValue($currentLocalConfiguration));
+        $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
 
@@ -271,13 +271,13 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->any())
+        $this->subject->expects(self::any())
             ->method('isValidLocalConfigurationPath')
-            ->will($this->returnValue(true));
-        $this->subject->expects($this->once())
+            ->will(self::returnValue(true));
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue($currentLocalConfiguration));
-        $this->subject->expects($this->once())
+            ->will(self::returnValue($currentLocalConfiguration));
+        $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
 
@@ -308,10 +308,10 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue($currentLocalConfiguration));
-        $this->subject->expects($this->once())
+            ->will(self::returnValue($currentLocalConfiguration));
+        $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
 
@@ -319,7 +319,7 @@ class ConfigurationManagerTest extends UnitTestCase
             'toRemove1',
             'toRemove2',
         ];
-        $this->assertTrue($this->subject->removeLocalConfigurationKeysByPath($removePaths));
+        self::assertTrue($this->subject->removeLocalConfigurationKeysByPath($removePaths));
     }
 
     /**
@@ -336,14 +336,14 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue($currentLocalConfiguration));
-        $this->subject->expects($this->never())
+            ->will(self::returnValue($currentLocalConfiguration));
+        $this->subject->expects(self::never())
             ->method('writeLocalConfiguration');
 
         $removeNothing = [];
-        $this->assertFalse($this->subject->removeLocalConfigurationKeysByPath($removeNothing));
+        self::assertFalse($this->subject->removeLocalConfigurationKeysByPath($removeNothing));
     }
 
     /**
@@ -360,14 +360,14 @@ class ConfigurationManagerTest extends UnitTestCase
                 'writeLocalConfiguration',
             ]
         );
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will($this->returnValue($currentLocalConfiguration));
-        $this->subject->expects($this->never())
+            ->will(self::returnValue($currentLocalConfiguration));
+        $this->subject->expects(self::never())
             ->method('writeLocalConfiguration');
 
         $removeNonExisting = ['notPresent'];
-        $this->assertFalse($this->subject->removeLocalConfigurationKeysByPath($removeNonExisting));
+        self::assertFalse($this->subject->removeLocalConfigurationKeysByPath($removeNonExisting));
     }
 
     /**
@@ -377,7 +377,7 @@ class ConfigurationManagerTest extends UnitTestCase
     public function canWriteConfigurationReturnsFalseIfLocalConfigurationFileIsNotWritable(): void
     {
         if (\function_exists('posix_getegid') && posix_getegid() === 0) {
-            $this->markTestSkipped('Test skipped if run on linux as root');
+            self::markTestSkipped('Test skipped if run on linux as root');
         }
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
@@ -395,7 +395,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         chmod($absoluteFile, 0644);
 
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     /**
@@ -420,7 +420,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $result = $subject->canWriteConfiguration();
 
-        $this->assertTrue($result);
+        self::assertTrue($result);
         $this->testFilesToDelete[] = $absoluteDirectory;
     }
 
@@ -432,7 +432,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $configurationFile = Environment::getVarPath() . '/tests/' . $this->getUniqueId('localConfiguration');
         if (!is_file($configurationFile)) {
             if (!$fh = fopen($configurationFile, 'wb')) {
-                $this->markTestSkipped('Can not create file ' . $configurationFile . '. Please check your write permissions.');
+                self::markTestSkipped('Can not create file ' . $configurationFile . '. Please check your write permissions.');
             }
             fclose($fh);
         }
@@ -446,9 +446,9 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->testFilesToDelete[] = $configurationFile;
 
         $this->subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getLocalConfigurationFileLocation')
-            ->will($this->returnValue($configurationFile));
+            ->will(self::returnValue($configurationFile));
 
         $pairs = [
             'foo' => 42,
@@ -462,7 +462,7 @@ class ConfigurationManagerTest extends UnitTestCase
             '];' . LF;
 
         $this->subject->writeLocalConfiguration($pairs);
-        $this->assertSame($expectedContent, file_get_contents($configurationFile));
+        self::assertSame($expectedContent, file_get_contents($configurationFile));
     }
 
     /**
@@ -514,9 +514,9 @@ class ConfigurationManagerTest extends UnitTestCase
         $subject->_set('factoryConfigurationFile', $factoryConfigurationFile);
 
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('writeLocalConfiguration')
-            ->with($this->arrayHasKey($uniqueContentString));
+            ->with(self::arrayHasKey($uniqueContentString));
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
 
@@ -560,9 +560,9 @@ class ConfigurationManagerTest extends UnitTestCase
         $subject->_set('additionalFactoryConfigurationFile', $additionalFactoryConfigurationFile);
 
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('writeLocalConfiguration')
-            ->with($this->arrayHasKey($uniqueContentString));
+            ->with(self::arrayHasKey($uniqueContentString));
         $subject->createLocalConfigurationFromFactoryConfiguration();
     }
 
@@ -574,7 +574,7 @@ class ConfigurationManagerTest extends UnitTestCase
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
         $subject->_set('whiteListedLocalConfigurationPaths', ['foo/bar']);
-        $this->assertTrue($subject->_call('isValidLocalConfigurationPath', 'foo/bar/baz'));
+        self::assertTrue($subject->_call('isValidLocalConfigurationPath', 'foo/bar/baz'));
     }
 
     /**
@@ -585,6 +585,6 @@ class ConfigurationManagerTest extends UnitTestCase
         /** @var $subject ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $subject = $this->getAccessibleMock(ConfigurationManager::class, ['dummy']);
         $subject->_set('whiteListedLocalConfigurationPaths', ['foo/bar']);
-        $this->assertFalse($subject->_call('isValidLocalConfigurationPath', 'bar/baz'));
+        self::assertFalse($subject->_call('isValidLocalConfigurationPath', 'bar/baz'));
     }
 }

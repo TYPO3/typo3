@@ -37,8 +37,8 @@ class InputHiddenElementTest extends UnitTestCase
         $subject->_set('data', $data);
         $result = $subject->render();
         $additionalHiddenFieldsResult = array_pop($result['additionalHiddenFields']);
-        $this->assertStringContainsString('name="foo"', $additionalHiddenFieldsResult);
-        $this->assertStringContainsString('value="bar"', $additionalHiddenFieldsResult);
-        $this->assertStringContainsString('type="hidden"', $additionalHiddenFieldsResult);
+        self::assertStringContainsString('name="foo"', $additionalHiddenFieldsResult);
+        self::assertStringContainsString('value="bar"', $additionalHiddenFieldsResult);
+        self::assertStringContainsString('type="hidden"', $additionalHiddenFieldsResult);
     }
 }

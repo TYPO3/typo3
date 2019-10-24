@@ -172,7 +172,7 @@ class UploadedFileTest extends UnitTestCase
     {
         $stream = new Stream('php://temp');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
-        $this->assertSame($stream, $upload->getStream());
+        self::assertSame($stream, $upload->getStream());
     }
 
     /**
@@ -183,7 +183,7 @@ class UploadedFileTest extends UnitTestCase
         $stream = fopen('php://temp', 'wb+');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
         $uploadStream = $upload->getStream()->detach();
-        $this->assertSame($stream, $uploadStream);
+        self::assertSame($stream, $uploadStream);
     }
 
     /**
@@ -196,7 +196,7 @@ class UploadedFileTest extends UnitTestCase
         $uploadStream = $upload->getStream();
         $r = new \ReflectionProperty($uploadStream, 'stream');
         $r->setAccessible(true);
-        $this->assertSame($stream, $r->getValue($uploadStream));
+        self::assertSame($stream, $r->getValue($uploadStream));
     }
 
     /**
@@ -210,9 +210,9 @@ class UploadedFileTest extends UnitTestCase
 
         $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        self::assertTrue(file_exists($to));
         $contents = file_get_contents($to);
-        $this->assertEquals($stream->__toString(), $contents);
+        self::assertEquals($stream->__toString(), $contents);
     }
 
     /**
@@ -259,7 +259,7 @@ class UploadedFileTest extends UnitTestCase
 
         $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        self::assertTrue(file_exists($to));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717308);
@@ -277,7 +277,7 @@ class UploadedFileTest extends UnitTestCase
 
         $this->tmpFile = $to = GeneralUtility::tempnam('psr7');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        self::assertTrue(file_exists($to));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1436717306);

@@ -278,7 +278,7 @@ class InlineStackProcessorTest extends UnitTestCase
         $subject = $this->getAccessibleMock(InlineStackProcessor::class, ['dummy']);
         $subject->initializeByParsingDomObjectIdString($string);
         $structure = $subject->_get('inlineStructure');
-        $this->assertEquals($expectedInlineStructure, $structure);
+        self::assertEquals($expectedInlineStructure, $structure);
     }
 
     /**
@@ -290,7 +290,7 @@ class InlineStackProcessorTest extends UnitTestCase
         /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor;
         $subject->initializeByParsingDomObjectIdString($string);
-        $this->assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
+        self::assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
     }
 
     /**
@@ -302,6 +302,6 @@ class InlineStackProcessorTest extends UnitTestCase
         /** @var InlineStackProcessor|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = new InlineStackProcessor;
         $subject->initializeByParsingDomObjectIdString($string);
-        $this->assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));
+        self::assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));
     }
 }

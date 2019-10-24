@@ -28,7 +28,7 @@ class FluidTemplateCacheTest extends UnitTestCase
     public function flushCallsFlushOnBackend()
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
-        $backend->expects($this->once())->method('flush');
+        $backend->expects(self::once())->method('flush');
         $instance = new FluidTemplateCache('dummy', $backend);
         $instance->flush();
     }
@@ -42,7 +42,7 @@ class FluidTemplateCacheTest extends UnitTestCase
             ->setMethods(['requireOnce'])
             ->disableOriginalConstructor()
             ->getMock();
-        $instance->expects($this->once())->method('requireOnce')->with('foobar');
+        $instance->expects(self::once())->method('requireOnce')->with('foobar');
         $instance->get('foobar');
     }
 
@@ -52,11 +52,11 @@ class FluidTemplateCacheTest extends UnitTestCase
     public function setCallsSetOnBackend()
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
-        $backend->expects($this->once())->method('set')->with(
+        $backend->expects(self::once())->method('set')->with(
             'test',
             '<?php' . LF . 'test' . LF . '#',
             ['foobar'],
-            $this->anything()
+            self::anything()
         );
         $instance = new FluidTemplateCache('dummy', $backend);
         $instance->set('test', 'test', ['foobar']);
@@ -68,11 +68,11 @@ class FluidTemplateCacheTest extends UnitTestCase
     public function setRemovesLeadingPhpTagBeforeCallingParentWhichAddsLeadingPhpTag()
     {
         $backend = $this->createMock(PhpCapableBackendInterface::class);
-        $backend->expects($this->once())->method('set')->with(
+        $backend->expects(self::once())->method('set')->with(
             'test',
             '<?php' . LF . 'test' . LF . '#',
             ['foobar'],
-            $this->anything()
+            self::anything()
         );
         $instance = new FluidTemplateCache('dummy', $backend);
         $instance->set('test', '<?php' . LF . 'test', ['foobar']);

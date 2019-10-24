@@ -46,7 +46,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function forceIntegerInRangeForcesIntegerIntoDefaultBoundaries($expected, $value)
     {
-        $this->assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0));
+        self::assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0));
     }
 
     /**
@@ -54,7 +54,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function forceIntegerInRangeSetsDefaultValueIfZeroValueIsGiven()
     {
-        $this->assertEquals(42, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
+        self::assertEquals(42, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
     }
 
     //////////////////////////////////
@@ -65,7 +65,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function convertToPositiveIntegerReturnsZeroForNegativeValues()
     {
-        $this->assertEquals(0, \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger(-123));
+        self::assertEquals(0, \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger(-123));
     }
 
     /**
@@ -73,7 +73,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues()
     {
-        $this->assertEquals(123, \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger(123));
+        self::assertEquals(123, \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger(123));
     }
 
     ///////////////////////////////
@@ -103,7 +103,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function canBeInterpretedAsIntegerReturnsTrue($int)
     {
-        $this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
+        self::assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
     }
 
     /**
@@ -152,7 +152,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function canBeInterpretedAsIntegerReturnsFalse($int)
     {
-        $this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
+        self::assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
     }
 
     ///////////////////////////////
@@ -188,7 +188,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function canBeInterpretedAsFloatReturnsTrue($val)
     {
-        $this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsFloat($val));
+        self::assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsFloat($val));
     }
 
     /**
@@ -233,7 +233,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function canBeInterpretedAsFloatReturnsFalse($int)
     {
-        $this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsFloat($int));
+        self::assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsFloat($int));
     }
 
     //////////////////////////////////
@@ -269,7 +269,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function calculateWithPriorityToAdditionAndSubtractionCorrectlyCalculatesExpression($expected, $expression)
     {
-        $this->assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction($expression));
+        self::assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction($expression));
     }
 
     //////////////////////////////////
@@ -297,7 +297,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression)
     {
-        $this->assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses($expression));
+        self::assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses($expression));
     }
 
     //////////////////////////////////
@@ -308,7 +308,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function isIntegerInRangeIncludesLowerBoundary()
     {
-        $this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(1, 1, 2));
+        self::assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(1, 1, 2));
     }
 
     /**
@@ -316,7 +316,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function isIntegerInRangeIncludesUpperBoundary()
     {
-        $this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(2, 1, 2));
+        self::assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(2, 1, 2));
     }
 
     /**
@@ -324,7 +324,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function isIntegerInRangeAcceptsValueInRange()
     {
-        $this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(10, 1, 100));
+        self::assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(10, 1, 100));
     }
 
     /**
@@ -332,7 +332,7 @@ class MathUtilityTest extends UnitTestCase
      */
     public function isIntegerInRangeRejectsValueOutsideOfRange()
     {
-        $this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(10, 1, 2));
+        self::assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(10, 1, 2));
     }
 
     /**
@@ -357,6 +357,6 @@ class MathUtilityTest extends UnitTestCase
      */
     public function isIntegerInRangeRejectsOtherDataTypes($inputValue)
     {
-        $this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange($inputValue, 0, 10));
+        self::assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange($inputValue, 0, 10));
     }
 }

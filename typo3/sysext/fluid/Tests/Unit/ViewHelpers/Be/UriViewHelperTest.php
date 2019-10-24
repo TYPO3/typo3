@@ -59,10 +59,10 @@ class UriViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['registerArgument'])
             ->getMock();
 
-        $viewHelper->expects($this->at(0))->method('registerArgument')->with('route', 'string', $this->anything());
-        $viewHelper->expects($this->at(1))->method('registerArgument')->with('parameters', 'array', $this->anything());
-        $viewHelper->expects($this->at(2))->method('registerArgument')
-            ->with('referenceType', 'string', $this->anything(), false, UriBuilder::ABSOLUTE_PATH);
+        $viewHelper->expects(self::at(0))->method('registerArgument')->with('route', 'string', self::anything());
+        $viewHelper->expects(self::at(1))->method('registerArgument')->with('parameters', 'array', self::anything());
+        $viewHelper->expects(self::at(2))->method('registerArgument')
+            ->with('referenceType', 'string', self::anything(), false, UriBuilder::ABSOLUTE_PATH);
         $viewHelper->initializeArguments();
     }
 
@@ -79,10 +79,10 @@ class UriViewHelperTest extends ViewHelperBaseTestcase
 
         GeneralUtility::setSingletonInstance(UriBuilder::class, $this->uriBuilderMock);
 
-        $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
+        $this->uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
 
-        $this->assertEquals('theUri', $this->viewHelper->render());
+        self::assertEquals('theUri', $this->viewHelper->render());
     }
 
     /**
@@ -99,7 +99,7 @@ class UriViewHelperTest extends ViewHelperBaseTestcase
         );
         GeneralUtility::setSingletonInstance(UriBuilder::class, $this->uriBuilderMock);
 
-        $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
+        $this->uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');
         $this->viewHelper->render();
     }

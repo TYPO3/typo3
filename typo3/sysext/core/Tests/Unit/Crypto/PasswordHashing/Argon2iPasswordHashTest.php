@@ -77,7 +77,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
      */
     public function getHashedPasswordReturnsNullOnEmptyPassword()
     {
-        $this->assertNull($this->subject->getHashedPassword(''));
+        self::assertNull($this->subject->getHashedPassword(''));
     }
 
     /**
@@ -86,8 +86,8 @@ class Argon2iPasswordHashTest extends UnitTestCase
     public function getHashedPasswordReturnsString()
     {
         $hash = $this->subject->getHashedPassword('password');
-        $this->assertNotNull($hash);
-        $this->assertTrue(is_string($hash));
+        self::assertNotNull($hash);
+        self::assertTrue(is_string($hash));
     }
 
     /**
@@ -96,7 +96,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     public function isValidSaltedPwValidatesHastCreatedByGetHashedPassword()
     {
         $hash = $this->subject->getHashedPassword('password');
-        $this->assertTrue($this->subject->isValidSaltedPW($hash));
+        self::assertTrue($this->subject->isValidSaltedPW($hash));
     }
 
     /**
@@ -108,7 +108,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         $password = 'aEjOtY';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -120,7 +120,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         $password = '01369';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -132,7 +132,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -148,7 +148,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
         }
         $password .= chr(215) . chr(247);
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -167,7 +167,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
             $password .= chr($i);
         }
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertTrue($this->subject->checkPassword($password, $hash));
+        self::assertTrue($this->subject->checkPassword($password, $hash));
     }
 
     /**
@@ -178,7 +178,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
         $password = 'password';
         $password1 = $password . 'INVALID';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertFalse($this->subject->checkPassword($password1, $hash));
+        self::assertFalse($this->subject->checkPassword($password1, $hash));
     }
 
     /**
@@ -188,7 +188,7 @@ class Argon2iPasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $hash = $this->subject->getHashedPassword($password);
-        $this->assertFalse($this->subject->isHashUpdateNeeded($hash));
+        self::assertFalse($this->subject->isHashUpdateNeeded($hash));
     }
 
     /**
@@ -208,18 +208,18 @@ class Argon2iPasswordHashTest extends UnitTestCase
         $newOptions = $originalOptions;
         $newOptions['memory_cost'] = $newOptions['memory_cost'] + 1;
         $subject = new Argon2iPasswordHash($newOptions);
-        $this->assertTrue($subject->isHashUpdateNeeded($hash));
+        self::assertTrue($subject->isHashUpdateNeeded($hash));
 
         // Change $timeCost
         $newOptions = $originalOptions;
         $newOptions['time_cost'] = $newOptions['time_cost'] + 1;
         $subject = new Argon2iPasswordHash($newOptions);
-        $this->assertTrue($subject->isHashUpdateNeeded($hash));
+        self::assertTrue($subject->isHashUpdateNeeded($hash));
 
         // Change $threads
         $newOptions = $originalOptions;
         $newOptions['threads'] = $newOptions['threads'] + 1;
         $subject = new Argon2iPasswordHash($newOptions);
-        $this->assertTrue($subject->isHashUpdateNeeded($hash));
+        self::assertTrue($subject->isHashUpdateNeeded($hash));
     }
 }

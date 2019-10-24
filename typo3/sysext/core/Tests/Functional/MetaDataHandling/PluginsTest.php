@@ -65,11 +65,11 @@ class PluginsTest extends AbstractTestCase
             ])
         );
         $body = (string)$response->getBody();
-        $this->assertStringContainsString('<h1>MetaData-Test</h1>', $body);
+        self::assertStringContainsString('<h1>MetaData-Test</h1>', $body);
         if ($expectPluginOutput) {
-            $this->assertStringContainsString('TYPO3\CMS\TestMeta\Controller::setMetaData', $body);
+            self::assertStringContainsString('TYPO3\CMS\TestMeta\Controller::setMetaData', $body);
         } else {
-            $this->assertStringNotContainsString('TYPO3\CMS\TestMeta\Controller::setMetaData', $body);
+            self::assertStringNotContainsString('TYPO3\CMS\TestMeta\Controller::setMetaData', $body);
         }
     }
 
@@ -105,9 +105,9 @@ class PluginsTest extends AbstractTestCase
             ])
         );
         $body = (string)$uncachedResponse->getBody();
-        $this->assertStringContainsString('<title>' . $expectedTitle . '</title>', $body);
+        self::assertStringContainsString('<title>' . $expectedTitle . '</title>', $body);
         if ($expectedMetaOgTitle !== '') {
-            $this->assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '" />', $body, 'first hit, not cached');
+            self::assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '" />', $body, 'first hit, not cached');
         }
 
         // Second hit to check the cached version
@@ -117,9 +117,9 @@ class PluginsTest extends AbstractTestCase
             ])
         );
         $body = (string)$cachedResponse->getBody();
-        $this->assertStringContainsString('<title>' . $expectedTitle . '</title>', $body);
+        self::assertStringContainsString('<title>' . $expectedTitle . '</title>', $body);
         if ($expectedMetaOgTitle !== '') {
-            $this->assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '" />', $body, 'second hit, cached');
+            self::assertStringContainsString('<meta name="og:title" content="' . $expectedMetaOgTitle . '" />', $body, 'second hit, cached');
         }
     }
 }

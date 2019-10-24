@@ -46,7 +46,7 @@ class MiddlewareDispatcherTest extends UnitTestCase
         $dispatcher = new MiddlewareDispatcher($kernel);
         $response = $dispatcher->handle(new ServerRequest);
 
-        $this->assertSame(204, $response->getStatusCode());
+        self::assertSame(204, $response->getStatusCode());
     }
 
     /**
@@ -89,9 +89,9 @@ class MiddlewareDispatcherTest extends UnitTestCase
 
         $response = $dispatcher->handle(new ServerRequest);
 
-        $this->assertSame(['3', '2', '1', '0'], $response->getHeader('X-SEQ-PRE-REQ-HANDLER'));
-        $this->assertSame(['0', '1', '2', '3'], $response->getHeader('X-SEQ-POST-REQ-HANDLER'));
-        $this->assertSame(204, $response->getStatusCode());
+        self::assertSame(['3', '2', '1', '0'], $response->getHeader('X-SEQ-PRE-REQ-HANDLER'));
+        self::assertSame(['0', '1', '2', '3'], $response->getHeader('X-SEQ-POST-REQ-HANDLER'));
+        self::assertSame(204, $response->getStatusCode());
     }
 
     /**
@@ -116,8 +116,8 @@ class MiddlewareDispatcherTest extends UnitTestCase
         $dispatcher = new MiddlewareDispatcher($kernel, [MiddlewareFixture::class, $middleware]);
         $response = $dispatcher->handle(new ServerRequest);
 
-        $this->assertFalse(MiddlewareFixture::$hasBeenInstantiated);
-        $this->assertSame(404, $response->getStatusCode());
+        self::assertFalse(MiddlewareFixture::$hasBeenInstantiated);
+        self::assertSame(404, $response->getStatusCode());
     }
 
     /**
@@ -165,8 +165,8 @@ class MiddlewareDispatcherTest extends UnitTestCase
         $response1 = $dispatcher->handle(new ServerRequest);
         $response2 = $dispatcher->handle(new ServerRequest);
 
-        $this->assertSame(204, $response1->getStatusCode());
-        $this->assertSame(204, $response2->getStatusCode());
+        self::assertSame(204, $response1->getStatusCode());
+        self::assertSame(204, $response2->getStatusCode());
     }
 
     /**
@@ -205,8 +205,8 @@ class MiddlewareDispatcherTest extends UnitTestCase
 
         $response = $dispatcher->handle(new ServerRequest);
 
-        $this->assertSame(204, $response->getStatusCode());
-        $this->assertSame(['nested', 'outer'], $response->getHeader('X-TRACE'));
+        self::assertSame(204, $response->getStatusCode());
+        self::assertSame(['nested', 'outer'], $response->getHeader('X-TRACE'));
     }
 
     /**
@@ -236,6 +236,6 @@ class MiddlewareDispatcherTest extends UnitTestCase
         $dispatcher = new MiddlewareDispatcher($kernel, ['somemiddlewarename'], $containerProphecy->reveal());
         $response = $dispatcher->handle(new ServerRequest);
 
-        $this->assertSame(404, $response->getStatusCode());
+        self::assertSame(404, $response->getStatusCode());
     }
 }

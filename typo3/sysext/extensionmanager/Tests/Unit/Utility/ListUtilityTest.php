@@ -42,9 +42,9 @@ class ListUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $packageManagerMock
-                ->expects($this->any())
+                ->expects(self::any())
                 ->method('getActivePackages')
-                ->will($this->returnValue([
+                ->will(self::returnValue([
                     'lang' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'saltedpasswords' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
@@ -123,7 +123,7 @@ class ListUtilityTest extends UnitTestCase
      */
     public function getAvailableAndInstalledExtensionsTest($availableExtensions, $expectedResult)
     {
-        $this->assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
+        self::assertEquals($expectedResult, $this->subject->getAvailableAndInstalledExtensions($availableExtensions));
     }
 
     /**
@@ -161,8 +161,8 @@ class ListUtilityTest extends UnitTestCase
     {
         $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
         $emConfUtilityMock = $this->getMockBuilder(EmConfUtility::class)->getMock();
-        $emConfUtilityMock->expects($this->any())->method('includeEmConf')->will($this->returnValue($emConf));
+        $emConfUtilityMock->expects(self::any())->method('includeEmConf')->will(self::returnValue($emConf));
         $this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
-        $this->assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
+        self::assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
     }
 }

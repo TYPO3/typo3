@@ -91,7 +91,7 @@ class FileWriterTest extends UnitTestCase
         vfsStream::newFile($this->logFileName)->at(vfsStreamWrapper::getRoot());
         $writer = GeneralUtility::makeInstance(FileWriter::class);
         $writer->setLogFile($this->getDefaultFileName());
-        $this->assertEquals($this->getDefaultFileName(), $writer->getLogFile());
+        self::assertEquals($this->getDefaultFileName(), $writer->getLogFile());
     }
 
     /**
@@ -102,7 +102,7 @@ class FileWriterTest extends UnitTestCase
         $writer = GeneralUtility::makeInstance(FileWriter::class);
         $tempFile = rtrim(sys_get_temp_dir(), '/\\') . '/typo3.log';
         $writer->setLogFile($tempFile);
-        $this->assertEquals($tempFile, $writer->getLogFile());
+        self::assertEquals($tempFile, $writer->getLogFile());
     }
 
     /**
@@ -112,7 +112,7 @@ class FileWriterTest extends UnitTestCase
     {
         $this->setUpVfsStream();
         $this->createWriter();
-        $this->assertTrue(vfsStreamWrapper::getRoot()->hasChild($this->logFileDirectory));
+        self::assertTrue(vfsStreamWrapper::getRoot()->hasChild($this->logFileDirectory));
     }
 
     /**
@@ -122,7 +122,7 @@ class FileWriterTest extends UnitTestCase
     {
         $this->setUpVfsStream();
         $this->createWriter();
-        $this->assertTrue(vfsStreamWrapper::getRoot()->getChild($this->logFileDirectory)->hasChild($this->logFileName));
+        self::assertTrue(vfsStreamWrapper::getRoot()->getChild($this->logFileDirectory)->hasChild($this->logFileName));
     }
 
     /**
@@ -149,7 +149,7 @@ class FileWriterTest extends UnitTestCase
         $this->setUpVfsStream();
         $this->createWriter()->writeLog($record);
         $logFileContents = trim(file_get_contents($this->getDefaultFileName()));
-        $this->assertEquals($expectedResult, $logFileContents);
+        self::assertEquals($expectedResult, $logFileContents);
     }
 
     /**
@@ -171,7 +171,7 @@ class FileWriterTest extends UnitTestCase
 
         $this->createWriter('encoded-data')->writeLog($recordWithData);
         $logFileContents = trim(file_get_contents($this->getDefaultFileName('encoded-data')));
-        $this->assertStringContainsString($expectedResult, $logFileContents);
+        self::assertStringContainsString($expectedResult, $logFileContents);
     }
 
     /**
@@ -192,8 +192,8 @@ class FileWriterTest extends UnitTestCase
         $firstLogFileContents = trim(file_get_contents($this->getDefaultFileName()));
         $secondLogFileContents = trim(file_get_contents($this->getDefaultFileName('second-')));
 
-        $this->assertEquals($expectedResult, $firstLogFileContents);
-        $this->assertEquals($expectedResult, $secondLogFileContents);
+        self::assertEquals($expectedResult, $firstLogFileContents);
+        self::assertEquals($expectedResult, $secondLogFileContents);
     }
 
     /**
@@ -210,7 +210,7 @@ class FileWriterTest extends UnitTestCase
             ->setMethods(['createLogFile'])
             ->getMock();
 
-        $secondWriter->expects($this->never())->method('createLogFile');
+        $secondWriter->expects(self::never())->method('createLogFile');
 
         $logFilePrefix = $this->getUniqueId('unique');
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
@@ -231,8 +231,8 @@ class FileWriterTest extends UnitTestCase
             ->setMethods(['closeLogFile'])
             ->getMock();
 
-        $firstWriter->expects($this->never())->method('closeLogFile');
-        $secondWriter->expects($this->once())->method('closeLogFile');
+        $firstWriter->expects(self::never())->method('closeLogFile');
+        $secondWriter->expects(self::once())->method('closeLogFile');
 
         $logFilePrefix = $this->getUniqueId('unique');
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));

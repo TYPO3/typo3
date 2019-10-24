@@ -51,7 +51,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('http://www.some-domain.tld', $actualResult);
+        self::assertEquals('http://www.some-domain.tld', $actualResult);
     }
 
     /**
@@ -66,7 +66,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('http://www.some-domain.tld', $actualResult);
+        self::assertEquals('http://www.some-domain.tld', $actualResult);
     }
 
     /**
@@ -82,7 +82,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('ftp://some-domain.tld', $actualResult);
+        self::assertEquals('ftp://some-domain.tld', $actualResult);
     }
 
     /**
@@ -98,6 +98,6 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('some-domain.tld', $actualResult);
+        self::assertEquals('some-domain.tld', $actualResult);
     }
 }

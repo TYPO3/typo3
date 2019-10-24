@@ -95,7 +95,7 @@ class TemplateServiceTest extends UnitTestCase
         $this->packageManagerProphecy->getActivePackages()->shouldNotBeCalled();
 
         $this->templateService->runThroughTemplates([], 0);
-        $this->assertFalse(
+        self::assertFalse(
             in_array('test.Core.TypoScript = 1', $this->templateService->config, true)
         );
     }
@@ -114,22 +114,22 @@ class TemplateServiceTest extends UnitTestCase
             ->setMethods(['getPackagePath', 'getPackageKey'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockPackage->expects($this->any())->method('getPackagePath')->will($this->returnValue(__DIR__ . '/Fixtures/'));
-        $mockPackage->expects($this->any())->method('getPackageKey')->will($this->returnValue('core'));
+        $mockPackage->expects(self::any())->method('getPackagePath')->will(self::returnValue(__DIR__ . '/Fixtures/'));
+        $mockPackage->expects(self::any())->method('getPackageKey')->will(self::returnValue('core'));
 
         $mockPackageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockPackageManager->expects($this->any())->method('isPackageActive')->will($this->returnValue(true));
-        $mockPackageManager->expects($this->any())->method('getPackage')->will($this->returnValue($mockPackage));
+        $mockPackageManager->expects(self::any())->method('isPackageActive')->will(self::returnValue(true));
+        $mockPackageManager->expects(self::any())->method('getPackage')->will(self::returnValue($mockPackage));
         ExtensionManagementUtility::setPackageManager($mockPackageManager);
         $this->packageManagerProphecy->getActivePackages()->willReturn(['core' => $mockPackage]);
 
         $this->templateService->setProcessExtensionStatics(true);
         $this->templateService->runThroughTemplates([], 0);
 
-        $this->assertTrue(
+        self::assertTrue(
             in_array('test.Core.TypoScript = 1', $this->templateService->config, true)
         );
     }
@@ -157,7 +157,7 @@ class TemplateServiceTest extends UnitTestCase
 
         $this->templateServiceMock->_set('rootLine', $originalRootline);
         $this->templateServiceMock->updateRootlineData($updatedRootline);
-        $this->assertEquals($expectedRootline, $this->templateServiceMock->_get('rootLine'));
+        self::assertEquals($expectedRootline, $this->templateServiceMock->_get('rootLine'));
     }
 
     /**

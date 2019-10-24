@@ -31,7 +31,7 @@ class FileLockStrategyTest extends UnitTestCase
     {
         GeneralUtility::rmdir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER, true);
         new FileLockStrategy('999999999');
-        $this->assertTrue(is_dir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER));
+        self::assertTrue(is_dir(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER));
     }
 
     /**
@@ -40,6 +40,6 @@ class FileLockStrategyTest extends UnitTestCase
     public function constructorSetsFilePathToExpectedValue()
     {
         $lock = $this->getAccessibleMock(FileLockStrategy::class, ['dummy'], ['999999999']);
-        $this->assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
+        self::assertSame(Environment::getVarPath() . '/' . FileLockStrategy::FILE_LOCK_FOLDER . 'flock_' . md5('999999999'), $lock->_get('filePath'));
     }
 }

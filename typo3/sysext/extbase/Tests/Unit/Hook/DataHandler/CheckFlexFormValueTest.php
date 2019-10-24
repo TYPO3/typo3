@@ -57,6 +57,6 @@ class CheckFlexFormValueTest extends UnitTestCase
             ->getMock();
         $checkFlexFormValue->checkFlexFormValue_beforeMerge($dataHandler, $currentFlexFormDataArray, $newFlexFormDataArray);
 
-        $this->assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);
+        self::assertSame($expectedFlexFormDataArray, $currentFlexFormDataArray);
     }
 }

@@ -33,7 +33,7 @@ class SessionManagerTest extends UnitTestCase
     public function getSessionBackendUsesDefaultBackendFromConfiguration()
     {
         $subject = new SessionManager();
-        $this->assertInstanceOf(DatabaseSessionBackend::class, $subject->getSessionBackend('BE'));
+        self::assertInstanceOf(DatabaseSessionBackend::class, $subject->getSessionBackend('BE'));
     }
 
     /**
@@ -52,7 +52,7 @@ class SessionManagerTest extends UnitTestCase
         $backendProphecy->validateConfiguration(Argument::cetera())->shouldBeCalled();
         GeneralUtility::addInstance($backendClassName, $backendRevelation);
         $subject = new SessionManager();
-        $this->assertInstanceOf($backendClassName, $subject->getSessionBackend('myidentifier'));
+        self::assertInstanceOf($backendClassName, $subject->getSessionBackend('myidentifier'));
     }
 
     /**

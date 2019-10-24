@@ -111,7 +111,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
         $frontendConfigurationManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getContentObject')
             ->willReturn($contentObject);
 
@@ -181,7 +181,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
     /**
@@ -245,7 +245,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
         $frontendConfigurationManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getContentObject')
             ->willReturn($contentObject);
 
@@ -331,7 +331,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
     /**
@@ -395,7 +395,7 @@ class FormFrontendControllerTest extends UnitTestCase
 
         $frontendConfigurationManager = $this->createMock(FrontendConfigurationManager::class);
         $frontendConfigurationManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getContentObject')
             ->willReturn($contentObject);
 
@@ -476,7 +476,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideByFlexFormSettings', $input));
     }
 
     /**
@@ -545,7 +545,7 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
     }
 
     /**
@@ -626,6 +626,6 @@ class FormFrontendControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
+        self::assertSame($expected, $mockController->_call('overrideByTypoScriptSettings', $input));
     }
 }

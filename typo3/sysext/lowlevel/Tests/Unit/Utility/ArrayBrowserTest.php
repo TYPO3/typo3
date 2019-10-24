@@ -40,7 +40,7 @@ class ArrayBrowserTest extends UnitTestCase
      */
     public function depthKeysWithEmptyFirstParameterAddsNothing()
     {
-        $this->assertEquals([], $this->subject->depthKeys([], []));
+        self::assertEquals([], $this->subject->depthKeys([], []));
     }
 
     /**
@@ -48,6 +48,6 @@ class ArrayBrowserTest extends UnitTestCase
      */
     public function depthKeysWithNumericKeyAddsOneNumberForKeyFromFirstArray()
     {
-        $this->assertEquals([0 => 1], $this->subject->depthKeys(['foo'], []));
+        self::assertEquals([0 => 1], $this->subject->depthKeys(['foo'], []));
     }
 }

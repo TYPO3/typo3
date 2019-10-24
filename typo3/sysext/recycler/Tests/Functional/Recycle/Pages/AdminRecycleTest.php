@@ -44,10 +44,10 @@ class AdminRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abst
     {
         $deletedPages = $this->getDeletedPages(1, 0);
         $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3.xml');
-        $this->assertCount(1, $deletedPages);
-        $this->assertArrayHasKey('pages', $deletedPages);
-        $this->assertCount(3, $deletedPages['pages']);
-        $this->assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
+        self::assertCount(1, $deletedPages);
+        self::assertArrayHasKey('pages', $deletedPages);
+        self::assertCount(3, $deletedPages['pages']);
+        self::assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
     }
 
     /**
@@ -57,9 +57,9 @@ class AdminRecycleTest extends \TYPO3\CMS\Recycler\Tests\Functional\Recycle\Abst
     {
         $deletedPages = $this->getDeletedPages(1, 1);
         $assertData = $this->loadDataSet($this->assertionDataSetDirectory . 'deletedPage-3_4_5_7.xml');
-        $this->assertCount(1, $deletedPages);
-        $this->assertArrayHasKey('pages', $deletedPages);
-        $this->assertCount(4, $deletedPages['pages']);
-        $this->assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
+        self::assertCount(1, $deletedPages);
+        self::assertArrayHasKey('pages', $deletedPages);
+        self::assertCount(4, $deletedPages['pages']);
+        self::assertSame($assertData[0]['uid'], $deletedPages[0]['uid']);
     }
 }

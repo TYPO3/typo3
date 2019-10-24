@@ -113,6 +113,6 @@ class ControllerArgumentsMappingTest extends \TYPO3\TestingFramework\Core\Functi
 
         $this->controller->processRequest($this->request, $this->response);
 
-        $this->assertEquals($expectedTitle, $this->response->getContent());
+        self::assertEquals($expectedTitle, $this->response->getContent());
     }
 }

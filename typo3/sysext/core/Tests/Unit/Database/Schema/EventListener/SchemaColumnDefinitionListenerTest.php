@@ -65,8 +65,8 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         );
 
         $this->subject->onSchemaColumnDefinition($event);
-        $this->assertNotTrue($event->isDefaultPrevented());
-        $this->assertNull($event->getColumn());
+        self::assertNotTrue($event->isDefaultPrevented());
+        self::assertNull($event->getColumn());
     }
 
     /**
@@ -91,10 +91,10 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         );
 
         $this->subject->onSchemaColumnDefinition($event);
-        $this->assertTrue($event->isDefaultPrevented());
-        $this->assertInstanceOf(Column::class, $event->getColumn());
-        $this->assertInstanceOf(EnumType::class, $event->getColumn()->getType());
-        $this->assertSame(['value1', 'value2', 'value3'], $event->getColumn()->getPlatformOption('unquotedValues'));
+        self::assertTrue($event->isDefaultPrevented());
+        self::assertInstanceOf(Column::class, $event->getColumn());
+        self::assertInstanceOf(EnumType::class, $event->getColumn()->getType());
+        self::assertSame(['value1', 'value2', 'value3'], $event->getColumn()->getPlatformOption('unquotedValues'));
     }
 
     /**
@@ -119,9 +119,9 @@ class SchemaColumnDefinitionListenerTest extends UnitTestCase
         );
 
         $this->subject->onSchemaColumnDefinition($event);
-        $this->assertTrue($event->isDefaultPrevented());
-        $this->assertInstanceOf(Column::class, $event->getColumn());
-        $this->assertInstanceOf(SetType::class, $event->getColumn()->getType());
-        $this->assertSame(['value1', 'value3'], $event->getColumn()->getPlatformOption('unquotedValues'));
+        self::assertTrue($event->isDefaultPrevented());
+        self::assertInstanceOf(Column::class, $event->getColumn());
+        self::assertInstanceOf(SetType::class, $event->getColumn()->getType());
+        self::assertSame(['value1', 'value3'], $event->getColumn()->getPlatformOption('unquotedValues'));
     }
 }

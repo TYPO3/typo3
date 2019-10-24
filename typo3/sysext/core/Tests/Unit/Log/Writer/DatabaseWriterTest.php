@@ -35,6 +35,6 @@ class DatabaseWriterTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $subject->setLogTable($logTable);
-        $this->assertSame($logTable, $subject->getLogTable());
+        self::assertSame($logTable, $subject->getLogTable());
     }
 }

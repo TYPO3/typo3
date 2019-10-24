@@ -77,8 +77,8 @@ class ConnectionMigratorTest extends UnitTestCase
         $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$this->getTable()]);
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedTablesToRenames', $originalSchemaDiff);
 
-        $this->assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->newName);
-        $this->assertEquals(
+        self::assertStringStartsWith('zzz_deleted_', $renamedSchemaDiff->changedTables[0]->newName);
+        self::assertEquals(
             $this->maxIdentifierLength,
             strlen($renamedSchemaDiff->changedTables[0]->newName)
         );
@@ -93,11 +93,11 @@ class ConnectionMigratorTest extends UnitTestCase
         $originalSchemaDiff->changedTables[0]->removedColumns[] = $this->getColumn();
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
 
-        $this->assertStringStartsWith(
+        self::assertStringStartsWith(
             'zzz_deleted_',
             $renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName()
         );
-        $this->assertEquals(
+        self::assertEquals(
             $this->maxIdentifierLength,
             strlen($renamedSchemaDiff->changedTables[0]->changedColumns[0]->column->getName())
         );

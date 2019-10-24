@@ -30,7 +30,7 @@ class PageAccessFailureReasonsTest extends UnitTestCase
     {
         $subject = new PageAccessFailureReasons();
         $message = $subject->getMessageForReason(PageAccessFailureReasons::NO_PAGES_FOUND);
-        $this->assertEquals('No page on rootlevel found', $message);
+        self::assertEquals('No page on rootlevel found', $message);
     }
 
     /**

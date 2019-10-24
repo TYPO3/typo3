@@ -90,9 +90,9 @@ class CreateTableFragmentTest extends UnitTestCase
     public function canParseCreateTableFragment(string $statement, string $tableName, bool $isTemporary)
     {
         $subject = $this->createSubject($statement);
-        $this->assertInstanceOf(CreateTableStatement::class, $subject);
-        $this->assertSame($tableName, $subject->tableName->schemaObjectName);
-        $this->assertSame($isTemporary, $subject->isTemporary);
+        self::assertInstanceOf(CreateTableStatement::class, $subject);
+        self::assertSame($tableName, $subject->tableName->schemaObjectName);
+        self::assertSame($isTemporary, $subject->isTemporary);
     }
 
     /**

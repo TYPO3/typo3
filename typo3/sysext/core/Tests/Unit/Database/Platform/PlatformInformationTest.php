@@ -51,7 +51,7 @@ class PlatformInformationTest extends UnitTestCase
      */
     public function maxBindParameters(AbstractPlatform $platform)
     {
-        $this->assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
     }
 
     /**
@@ -62,7 +62,7 @@ class PlatformInformationTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
-        $this->assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxBindParameters($platform));
     }
 
     /**
@@ -72,7 +72,7 @@ class PlatformInformationTest extends UnitTestCase
      */
     public function maxIdentifierLength(AbstractPlatform $platform)
     {
-        $this->assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
     }
 
     /**
@@ -83,6 +83,6 @@ class PlatformInformationTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1500958070);
         $platform = $this->prophesize(AbstractPlatform::class)->reveal();
-        $this->assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
+        self::assertGreaterThanOrEqual(1, PlatformInformation::getMaxIdentifierLength($platform));
     }
 }

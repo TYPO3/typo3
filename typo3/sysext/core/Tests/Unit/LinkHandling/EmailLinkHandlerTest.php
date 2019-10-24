@@ -70,7 +70,7 @@ class EmailLinkHandlerTest extends UnitTestCase
     public function resolveReturnsSplitParameters($input, $expected, $finalString)
     {
         $subject = new EmailLinkHandler();
-        $this->assertEquals($expected, $subject->resolveHandlerData($input));
+        self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
     /**
@@ -85,6 +85,6 @@ class EmailLinkHandlerTest extends UnitTestCase
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
     {
         $subject = new EmailLinkHandler();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 }

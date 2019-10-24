@@ -543,19 +543,19 @@ class IndexDefinitionTest extends UnitTestCase
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11), %s);', $indexDefinition);
         $subject = $this->createSubject($statement);
 
-        $this->assertInstanceOf(CreateIndexDefinitionItem::class, $subject);
-        $this->assertSame($indexName, $subject->indexName->schemaObjectName);
-        $this->assertSame($isPrimary, $subject->isPrimary);
-        $this->assertSame($isUnique, $subject->isUnique);
-        $this->assertSame($isFulltext, $subject->isFulltext);
-        $this->assertSame($isSpatial, $subject->isSpatial);
-        $this->assertSame($indexType, $subject->indexType);
-        $this->assertEquals($indexOptions, $subject->options);
+        self::assertInstanceOf(CreateIndexDefinitionItem::class, $subject);
+        self::assertSame($indexName, $subject->indexName->schemaObjectName);
+        self::assertSame($isPrimary, $subject->isPrimary);
+        self::assertSame($isUnique, $subject->isUnique);
+        self::assertSame($isFulltext, $subject->isFulltext);
+        self::assertSame($isSpatial, $subject->isSpatial);
+        self::assertSame($indexType, $subject->indexType);
+        self::assertEquals($indexOptions, $subject->options);
 
         foreach ($indexColumns as $index => $column) {
-            $this->assertSame($column[0], $subject->columnNames[$index]->columnName->schemaObjectName);
-            $this->assertSame($column[1], $subject->columnNames[$index]->length);
-            $this->assertSame($column[2], $subject->columnNames[$index]->direction);
+            self::assertSame($column[0], $subject->columnNames[$index]->columnName->schemaObjectName);
+            self::assertSame($column[1], $subject->columnNames[$index]->length);
+            self::assertSame($column[2], $subject->columnNames[$index]->direction);
         }
     }
 

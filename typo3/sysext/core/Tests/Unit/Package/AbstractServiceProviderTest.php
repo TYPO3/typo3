@@ -57,7 +57,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertEquals($expected, $middlewares);
+        self::assertEquals($expected, $middlewares);
     }
 
     /**
@@ -92,7 +92,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertEquals($expected, $middlewares);
+        self::assertEquals($expected, $middlewares);
     }
 
     /**
@@ -128,7 +128,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertEquals($expected, $middlewares);
+        self::assertEquals($expected, $middlewares);
     }
 
     /**
@@ -163,7 +163,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertEquals($expected, $middlewares);
+        self::assertEquals($expected, $middlewares);
     }
 
     /**
@@ -177,7 +177,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $className = get_class($this->getMockBuilder('foo')->getMock());
         $newClosure = $this->getClosureForNew();
         $instance = $newClosure($containerProphecy->reveal(), $className);
-        $this->assertTrue($instance instanceof $className);
+        self::assertTrue($instance instanceof $className);
     }
 
     /**
@@ -198,7 +198,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $className = GeneralUtilityMakeInstanceInjectLoggerFixture::class;
         $newClosure = $this->getClosureForNew();
         $instance = $newClosure($containerProphecy->reveal(), $className);
-        $this->assertInstanceOf(LoggerInterface::class, $instance->getLogger());
+        self::assertInstanceOf(LoggerInterface::class, $instance->getLogger());
     }
 
     /**

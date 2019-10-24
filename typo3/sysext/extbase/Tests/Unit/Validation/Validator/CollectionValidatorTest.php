@@ -63,7 +63,7 @@ class CollectionValidatorTest extends UnitTestCase
      */
     public function collectionValidatorReturnsNoErrorsForANullValue()
     {
-        $this->assertFalse($this->validator->validate(null)->hasErrors());
+        self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
     /**
@@ -71,7 +71,7 @@ class CollectionValidatorTest extends UnitTestCase
      */
     public function collectionValidatorFailsForAValueNotBeingACollection()
     {
-        $this->assertTrue($this->validator->validate(new \stdClass())->hasErrors());
+        self::assertTrue($this->validator->validate(new \stdClass())->hasErrors());
     }
 
     /**
@@ -82,10 +82,10 @@ class CollectionValidatorTest extends UnitTestCase
         // todo: this test is rather complex, consider making it a functional test with fixtures
 
         $this->validator->_set('options', ['elementValidator' => 'EmailAddress']);
-        $this->mockValidatorResolver->expects($this->exactly(4))
+        $this->mockValidatorResolver->expects(self::exactly(4))
             ->method('createValidator')
             ->with('EmailAddress')
-            ->will($this->returnValue(
+            ->will(self::returnValue(
                 $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
                     ->setMethods(['translateErrorMessage'])
                     ->getMock()
@@ -100,8 +100,8 @@ class CollectionValidatorTest extends UnitTestCase
 
         $result = $this->validator->validate($arrayOfEmailAddresses);
 
-        $this->assertTrue($result->hasErrors());
-        $this->assertCount(2, $result->getFlattenedErrors());
+        self::assertTrue($result->hasErrors());
+        self::assertCount(2, $result->getFlattenedErrors());
     }
 
     /**
@@ -137,20 +137,20 @@ class CollectionValidatorTest extends UnitTestCase
             ->setConstructorArgs([[]])
             ->getMock();
 
-        $this->mockValidatorResolver->expects($this->any())
+        $this->mockValidatorResolver->expects(self::any())
             ->method('createValidator')
             ->with('Integer')
-            ->will($this->returnValue($integerValidator));
-        $this->mockValidatorResolver->expects($this->any())
+            ->will(self::returnValue($integerValidator));
+        $this->mockValidatorResolver->expects(self::any())
             ->method('buildBaseValidatorConjunction')
-            ->will($this->returnValue($aValidator));
+            ->will(self::returnValue($aValidator));
 
         // Add validators to properties
         $aValidator->addPropertyValidator('b', $this->validator);
         $aValidator->addPropertyValidator('integer', $integerValidator);
 
         $result = $aValidator->validate($A)->getFlattenedErrors();
-        $this->assertEquals(1221560494, $result['b.0'][0]->getCode());
+        self::assertEquals(1221560494, $result['b.0'][0]->getCode());
     }
 
     /**
@@ -169,8 +169,8 @@ class CollectionValidatorTest extends UnitTestCase
         );
         // only in this test case we want to mock the isValid method
         $validator = $this->getValidator(['elementType' => $elementType], ['isValid']);
-        $validator->expects($this->never())->method('isValid');
-        $this->mockValidatorResolver->expects($this->never())->method('createValidator');
+        $validator->expects(self::never())->method('isValid');
+        $this->mockValidatorResolver->expects(self::never())->method('createValidator');
         $validator->validate($lazyObjectStorage);
     }
 
@@ -187,11 +187,11 @@ class CollectionValidatorTest extends UnitTestCase
         $objectStorage->attach($entity);
         $aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator([]);
 
-        $this->mockValidatorResolver->expects($this->never())->method('createValidator');
-        $this->mockValidatorResolver->expects($this->once())
+        $this->mockValidatorResolver->expects(self::never())->method('createValidator');
+        $this->mockValidatorResolver->expects(self::once())
             ->method('getBaseValidatorConjunction')
             ->with($elementType)
-            ->will($this->returnValue($aValidator));
+            ->will(self::returnValue($aValidator));
 
         $this->validator->_set('options', ['elementType' => $elementType]);
 

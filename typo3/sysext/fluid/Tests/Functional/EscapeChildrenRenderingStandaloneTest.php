@@ -126,6 +126,6 @@ class EscapeChildrenRenderingStandaloneTest extends FunctionalTestCase
 
         $view->assign('settings', ['test' => '<strong>Bla</strong>']);
 
-        $this->assertSame($expectedOutput, $view->render());
+        self::assertSame($expectedOutput, $view->render());
     }
 }

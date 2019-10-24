@@ -69,14 +69,14 @@ class LocallangXmlParserTest extends UnitTestCase
     public function canParseLlxmlInEnglish()
     {
         $LOCAL_LANG = (new LocallangXmlParser)->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default');
-        $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'This is label #1',
             'label2' => 'This is label #2',
             'label3' => 'This is label #3'
         ];
         foreach ($expectedLabels as $key => $expectedLabel) {
-            $this->assertEquals($expectedLabel, $LOCAL_LANG['default'][$key][0]['target']);
+            self::assertEquals($expectedLabel, $LOCAL_LANG['default'][$key][0]['target']);
         }
     }
 
@@ -86,14 +86,14 @@ class LocallangXmlParserTest extends UnitTestCase
     public function canParseLlxmlInMd5Code()
     {
         $LOCAL_LANG = (new LocallangXmlParser)->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5');
-        $this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => '409a6edbc70dbeeccbfe5f1e569d6717',
             'label2' => 'b5dc71ae9f52ecb9e7704c50562e39b0',
             'label3' => '51eac55fa5ca15789ce9bbb0cf927296'
         ];
         foreach ($expectedLabels as $key => $expectedLabel) {
-            $this->assertEquals($expectedLabel, $LOCAL_LANG['md5'][$key][0]['target']);
+            self::assertEquals($expectedLabel, $LOCAL_LANG['md5'][$key][0]['target']);
         }
     }
 
@@ -109,9 +109,9 @@ class LocallangXmlParserTest extends UnitTestCase
         // This test case is odd: The system under test does NOT
         // return 'target' at all if there is no such translation.
         // @todo: Either change / fix subject, or adapt test and test name!
-        $this->assertNull($localLang['fr']['label1'][0]['target'] ?? null);
-        $this->assertNull($localLang['fr']['label2'][0]['target'] ?? null);
-        $this->assertNull($localLang['fr']['label3'][0]['target'] ?? null);
+        self::assertNull($localLang['fr']['label1'][0]['target'] ?? null);
+        self::assertNull($localLang['fr']['label2'][0]['target'] ?? null);
+        self::assertNull($localLang['fr']['label3'][0]['target'] ?? null);
     }
 
     /**
@@ -127,8 +127,8 @@ class LocallangXmlParserTest extends UnitTestCase
             $factory->getParsedData(self::getFixtureFilePath('locallang.xml'), 'default'),
             $factory->getParsedData(self::getFixtureFilePath('locallang.xml'), 'md5')
         );
-        $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
-        $this->assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('md5', $LOCAL_LANG, 'md5 key not found in $LOCAL_LANG');
         $expectedLabels = [
             'default' => [
                 'label1' => 'This is my 1st label',
@@ -143,7 +143,7 @@ class LocallangXmlParserTest extends UnitTestCase
         ];
         foreach ($expectedLabels as $languageKey => $expectedLanguageLabels) {
             foreach ($expectedLanguageLabels as $key => $expectedLabel) {
-                $this->assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
+                self::assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
             }
         }
     }
@@ -185,6 +185,6 @@ class LocallangXmlParserTest extends UnitTestCase
 
         $LOCAL_LANG = $factory->getParsedData(self::getFixtureFilePath('locallangNumericKeys.xml'), 'fr');
 
-        $this->assertEquals($expectedResult, $LOCAL_LANG['fr'][$key][0]['target']);
+        self::assertEquals($expectedResult, $LOCAL_LANG['fr'][$key][0]['target']);
     }
 }

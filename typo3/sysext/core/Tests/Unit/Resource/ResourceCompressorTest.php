@@ -94,7 +94,7 @@ class ResourceCompressorTest extends BaseTestCase
     {
         $result = $this->subject->_call('cssFixStatements', $input);
         $resultWithReadableLinefeed = str_replace(LF, 'LF', $result);
-        $this->assertEquals($expected, $resultWithReadableLinefeed);
+        self::assertEquals($expected, $resultWithReadableLinefeed);
     }
 
     /**
@@ -110,16 +110,16 @@ class ResourceCompressorTest extends BaseTestCase
                 'compress' => true,
             ]
         ];
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('compressCssFile')
             ->with($fileName)
-            ->will($this->returnValue($compressedFileName));
+            ->will(self::returnValue($compressedFileName));
 
         $result = $this->subject->compressCssFiles($testFileFixture);
 
-        $this->assertArrayHasKey($compressedFileName, $result);
-        $this->assertArrayHasKey('compress', $result[$compressedFileName]);
-        $this->assertFalse($result[$compressedFileName]['compress']);
+        self::assertArrayHasKey($compressedFileName, $result);
+        self::assertArrayHasKey('compress', $result[$compressedFileName]);
+        self::assertFalse($result[$compressedFileName]['compress']);
     }
 
     /**
@@ -135,16 +135,16 @@ class ResourceCompressorTest extends BaseTestCase
                 'compress' => true,
             ]
         ];
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('compressJsFile')
             ->with($fileName)
-            ->will($this->returnValue($compressedFileName));
+            ->will(self::returnValue($compressedFileName));
 
         $result = $this->subject->compressJsFiles($testFileFixture);
 
-        $this->assertArrayHasKey($compressedFileName, $result);
-        $this->assertArrayHasKey('compress', $result[$compressedFileName]);
-        $this->assertFalse($result[$compressedFileName]['compress']);
+        self::assertArrayHasKey($compressedFileName, $result);
+        self::assertArrayHasKey('compress', $result[$compressedFileName]);
+        self::assertFalse($result[$compressedFileName]['compress']);
     }
 
     /**
@@ -161,15 +161,15 @@ class ResourceCompressorTest extends BaseTestCase
                 'media' => 'all',
             ]
         ];
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('createMergedCssFile')
-            ->will($this->returnValue($concatenatedFileName));
+            ->will(self::returnValue($concatenatedFileName));
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
 
-        $this->assertArrayHasKey($concatenatedFileName, $result);
-        $this->assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
-        $this->assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
+        self::assertArrayHasKey($concatenatedFileName, $result);
+        self::assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
+        self::assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
     }
 
     /**
@@ -198,21 +198,21 @@ class ResourceCompressorTest extends BaseTestCase
                 'media' => 'screen',
             ],
         ];
-        $this->subject->expects($this->exactly(2))
+        $this->subject->expects(self::exactly(2))
             ->method('createMergedCssFile')
-            ->will($this->onConsecutiveCalls(
-                $this->returnValue('merged_' . $allFileName),
-                $this->returnValue('merged_' . $screenFileName1)
+            ->will(self::onConsecutiveCalls(
+                self::returnValue('merged_' . $allFileName),
+                self::returnValue('merged_' . $screenFileName1)
             ));
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
 
-        $this->assertEquals([
+        self::assertEquals([
             'merged_' . $allFileName,
             'merged_' . $screenFileName1
         ], array_keys($result));
-        $this->assertEquals('all', $result['merged_' . $allFileName]['media']);
-        $this->assertEquals('screen', $result['merged_' . $screenFileName1]['media']);
+        self::assertEquals('all', $result['merged_' . $allFileName]['media']);
+        self::assertEquals('screen', $result['merged_' . $screenFileName1]['media']);
     }
 
     /**
@@ -242,10 +242,10 @@ class ResourceCompressorTest extends BaseTestCase
             ],
         ];
         // Replace mocked method getFilenameFromMainDir by passthrough callback
-        $this->subject->expects($this->any())->method('getFilenameFromMainDir')->willReturnArgument(0);
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::any())->method('getFilenameFromMainDir')->willReturnArgument(0);
+        $this->subject->expects(self::once())
             ->method('createMergedCssFile')
-            ->with($this->equalTo([$screen3FileName, $screen1FileName, $screen2FileName]));
+            ->with(self::equalTo([$screen3FileName, $screen1FileName, $screen2FileName]));
 
         $this->subject->concatenateCssFiles($testFileFixture);
     }
@@ -275,19 +275,19 @@ class ResourceCompressorTest extends BaseTestCase
                 'media' => 'screen',
             ],
         ];
-        $this->subject->expects($this->any())->method('getFilenameFromMainDir')->willReturnArgument(0);
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::any())->method('getFilenameFromMainDir')->willReturnArgument(0);
+        $this->subject->expects(self::once())
             ->method('createMergedCssFile')
-            ->with($this->equalTo([$screen1FileName, $screen3FileName]))
-            ->will($this->returnValue('merged_screen'));
+            ->with(self::equalTo([$screen1FileName, $screen3FileName]))
+            ->will(self::returnValue('merged_screen'));
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
-        $this->assertEquals([
+        self::assertEquals([
             $screen2FileName,
             'merged_screen'
         ], array_keys($result));
-        $this->assertEquals('screen', $result[$screen2FileName]['media']);
-        $this->assertEquals('screen', $result['merged_screen']['media']);
+        self::assertEquals('screen', $result[$screen2FileName]['media']);
+        self::assertEquals('screen', $result['merged_screen']['media']);
     }
 
     /**
@@ -304,15 +304,15 @@ class ResourceCompressorTest extends BaseTestCase
                 'section' => 'top',
             ]
         ];
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('createMergedJsFile')
-            ->will($this->returnValue($concatenatedFileName));
+            ->will(self::returnValue($concatenatedFileName));
 
         $result = $this->subject->concatenateJsFiles($testFileFixture);
 
-        $this->assertArrayHasKey($concatenatedFileName, $result);
-        $this->assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
-        $this->assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
+        self::assertArrayHasKey($concatenatedFileName, $result);
+        self::assertArrayHasKey('excludeFromConcatenation', $result[$concatenatedFileName]);
+        self::assertTrue($result[$concatenatedFileName]['excludeFromConcatenation']);
     }
 
     /**
@@ -433,13 +433,13 @@ class ResourceCompressorTest extends BaseTestCase
     public function concatenateJsFileAddsAsyncPropertyIfAllFilesAreAsync(array $input, bool $expected): void
     {
         $concatenatedFileName = 'merged_foo.js';
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('createMergedJsFile')
-            ->will($this->returnValue($concatenatedFileName));
+            ->will(self::returnValue($concatenatedFileName));
 
         $result = $this->subject->concatenateJsFiles($input);
 
-        $this->assertSame($expected, $result[$concatenatedFileName]['async']);
+        self::assertSame($expected, $result[$concatenatedFileName]['async']);
     }
 
     /**
@@ -476,7 +476,7 @@ class ResourceCompressorTest extends BaseTestCase
     public function calcFunctionMustRetainWhitespaces($input, $expected): void
     {
         $result = $this->subject->_call('compressCssString', $input);
-        $this->assertSame($expected, trim($result));
+        self::assertSame($expected, trim($result));
     }
 
     /**
@@ -531,7 +531,7 @@ class ResourceCompressorTest extends BaseTestCase
         if (strpos($relativeFilename, $this->subject->_get('targetDirectory')) === false) {
             $compressedCss = $this->subject->_call('cssFixRelativeUrlPaths', $compressedCss, PathUtility::dirname($relativeFilename) . '/');
         }
-        $this->assertEquals(file_get_contents($expected), $compressedCss, 'Group of file CSS assets optimized correctly.');
+        self::assertEquals(file_get_contents($expected), $compressedCss, 'Group of file CSS assets optimized correctly.');
     }
 
     /**
@@ -587,7 +587,7 @@ class ResourceCompressorTest extends BaseTestCase
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
         $subject->setRootPath($bePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
-        $this->assertSame($expected, $relativeToRootPath);
+        self::assertSame($expected, $relativeToRootPath);
     }
 
     /**
@@ -639,6 +639,6 @@ class ResourceCompressorTest extends BaseTestCase
         $subject = $this->getAccessibleMock(ResourceCompressor::class, ['dummy']);
         $subject->setRootPath($fePath . '/');
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
-        $this->assertSame($expected, $relativeToRootPath);
+        self::assertSame($expected, $relativeToRootPath);
     }
 }

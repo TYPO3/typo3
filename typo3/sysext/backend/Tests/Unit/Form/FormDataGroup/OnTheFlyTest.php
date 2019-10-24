@@ -64,7 +64,7 @@ class OnTheFlyTest extends UnitTestCase
             'foo',
         ];
 
-        $this->assertEquals($input, $this->subject->compile($input));
+        self::assertEquals($input, $this->subject->compile($input));
     }
 
     /**
@@ -83,7 +83,7 @@ class OnTheFlyTest extends UnitTestCase
         $providerResult = ['foo'];
         $formDataProviderProphecy->addData(Argument::cetera())->shouldBeCalled()->willReturn($providerResult);
 
-        $this->assertEquals($providerResult, $this->subject->compile([]));
+        self::assertEquals($providerResult, $this->subject->compile([]));
     }
 
     /**

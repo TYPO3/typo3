@@ -44,6 +44,6 @@ class UserTsConfigTest extends UnitTestCase
         $backendUserAuthenticationProphecy->getTSConfig()->willReturn($expected);
         $GLOBALS['BE_USER'] = $backendUserAuthenticationProphecy->reveal();
         $result = $this->subject->addData([]);
-        $this->assertEquals($expected, $result['userTsConfig']);
+        self::assertEquals($expected, $result['userTsConfig']);
     }
 }

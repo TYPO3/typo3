@@ -36,7 +36,7 @@ class ListRendererTest extends UnitTestCase
             'messageTitle',
             FlashMessage::NOTICE
         );
-        $this->assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
+        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><h4 class="alert-title">messageTitle</h4><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
     }
 
     /**
@@ -51,6 +51,6 @@ class ListRendererTest extends UnitTestCase
             '',
             FlashMessage::NOTICE
         );
-        $this->assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
+        self::assertSame('<ul class="typo3-messages"><li class="alert alert-notice"><p class="alert-message">messageBody</p></li></ul>', $rendererClass->render([$flashMessage]));
     }
 }

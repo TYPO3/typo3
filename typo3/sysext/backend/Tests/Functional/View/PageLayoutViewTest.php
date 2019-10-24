@@ -71,11 +71,11 @@ class PageLayoutViewTest extends FunctionalTestCase
 
         preg_match_all('/<option value=.+<\/option>/', $result, $matches);
         $resultingOptions = GeneralUtility::trimExplode('</option>', $matches[0][0], true);
-        $this->assertCount(4, $resultingOptions);
+        self::assertCount(4, $resultingOptions);
         // first entry is the empty option
-        $this->assertStringEndsWith('german', $resultingOptions[1]);
-        $this->assertStringEndsWith('french', $resultingOptions[2]);
-        $this->assertStringEndsWith('polish', $resultingOptions[3]);
+        self::assertStringEndsWith('german', $resultingOptions[1]);
+        self::assertStringEndsWith('french', $resultingOptions[2]);
+        self::assertStringEndsWith('polish', $resultingOptions[3]);
     }
 
     /**
@@ -90,9 +90,9 @@ class PageLayoutViewTest extends FunctionalTestCase
 
         preg_match_all('/<option value=.+<\/option>/', $result, $matches);
         $resultingOptions = GeneralUtility::trimExplode('</option>', $matches[0][0], true);
-        $this->assertCount(3, $resultingOptions);
+        self::assertCount(3, $resultingOptions);
         // first entry is the empty option
-        $this->assertStringEndsWith('german', $resultingOptions[1]);
-        $this->assertStringEndsWith('french', $resultingOptions[2]);
+        self::assertStringEndsWith('german', $resultingOptions[1]);
+        self::assertStringEndsWith('french', $resultingOptions[2]);
     }
 }

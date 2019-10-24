@@ -35,7 +35,7 @@ class ImageInfoTest extends UnitTestCase
     {
         $className = \TYPO3\CMS\Core\Type\File\ImageInfo::class;
         $classInstance = new \TYPO3\CMS\Core\Type\File\ImageInfo('FooFileName');
-        $this->assertInstanceOf($className, $classInstance);
+        self::assertInstanceOf($className, $classInstance);
     }
 
     /**
@@ -99,8 +99,8 @@ class ImageInfoTest extends UnitTestCase
         $imageInfo = new ImageInfo($root->url() . '/' . $testFile);
         $imageInfo->setLogger($loggerProphecy->reveal());
 
-        $this->assertSame($width, $imageInfo->getWidth());
-        $this->assertSame($height, $imageInfo->getHeight());
+        self::assertSame($width, $imageInfo->getWidth());
+        self::assertSame($height, $imageInfo->getHeight());
 
         GeneralUtility::makeInstance(GraphicalFunctions::class);
     }
@@ -130,7 +130,7 @@ class ImageInfoTest extends UnitTestCase
         $imageInfo = new ImageInfo(__DIR__ . '/../Fixture/' . $file);
         $imageInfo->setLogger($logger);
 
-        $this->assertSame($width, $imageInfo->getWidth());
-        $this->assertSame($height, $imageInfo->getHeight());
+        self::assertSame($width, $imageInfo->getWidth());
+        self::assertSame($height, $imageInfo->getHeight());
     }
 }

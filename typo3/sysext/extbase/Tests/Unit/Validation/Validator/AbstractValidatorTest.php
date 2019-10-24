@@ -33,7 +33,7 @@ class AbstractValidatorTest extends UnitTestCase
         ];
         $expectedOptions = $inputOptions;
         $validator = $this->getAccessibleMock(AbstractValidatorClass::class, ['dummy'], [$inputOptions]);
-        $this->assertSame($expectedOptions, $validator->_get('options'));
+        self::assertSame($expectedOptions, $validator->_get('options'));
     }
 
     /**
@@ -47,7 +47,7 @@ class AbstractValidatorTest extends UnitTestCase
             'demoOption' => PHP_INT_MAX
         ];
         $validator = $this->getAccessibleMock(AbstractValidatorClass::class, ['dummy'], [$inputOptions]);
-        $this->assertSame($expectedOptions, $validator->_get('options'));
+        self::assertSame($expectedOptions, $validator->_get('options'));
     }
 
     /**

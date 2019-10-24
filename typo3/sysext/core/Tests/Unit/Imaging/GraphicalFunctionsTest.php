@@ -108,7 +108,7 @@ class GraphicalFunctionsTest extends UnitTestCase
     public function getScaleForImage($info, $width, $height, $options, $expected)
     {
         $result = (new GraphicalFunctions())->getImageScale($info, $width, $height, $options);
-        $this->assertEquals($result, $expected);
+        self::assertEquals($result, $expected);
     }
 
     /**
@@ -127,9 +127,9 @@ class GraphicalFunctionsTest extends UnitTestCase
 
         $subject = $this->getAccessibleMock(GraphicalFunctions::class, ['executeIdentifyCommandForImageFile'], [], '', false);
         $subject->_set('processorEnabled', true);
-        $subject->expects($this->once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('123 234 png PNG');
+        $subject->expects(self::once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('123 234 png PNG');
         $result = $subject->imageMagickIdentify($file);
-        $this->assertEquals($result, $expected);
+        self::assertEquals($result, $expected);
     }
 
     /**
@@ -148,8 +148,8 @@ class GraphicalFunctionsTest extends UnitTestCase
 
         $subject = $this->getAccessibleMock(GraphicalFunctions::class, ['executeIdentifyCommandForImageFile'], [], '', false);
         $subject->_set('processorEnabled', true);
-        $subject->expects($this->once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('200+0+0 400+0+0 png PNG');
+        $subject->expects(self::once())->method('executeIdentifyCommandForImageFile')->with($file)->willReturn('200+0+0 400+0+0 png PNG');
         $result = $subject->imageMagickIdentify($file);
-        $this->assertEquals($result, $expected);
+        self::assertEquals($result, $expected);
     }
 }

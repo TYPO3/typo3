@@ -39,7 +39,7 @@ class Typo3StatusTest extends UnitTestCase
         $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
-        $this->assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
+        self::assertSame(\TYPO3\CMS\Reports\Status::OK, $statusObject->getSeverity());
     }
 
     /**
@@ -55,6 +55,6 @@ class Typo3StatusTest extends UnitTestCase
         $fixture = new \TYPO3\CMS\Reports\Report\Status\Typo3Status;
         $result = $fixture->getStatus();
         $statusObject = $result['registeredXclass'];
-        $this->assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
+        self::assertSame(\TYPO3\CMS\Reports\Status::NOTICE, $statusObject->getSeverity());
     }
 }

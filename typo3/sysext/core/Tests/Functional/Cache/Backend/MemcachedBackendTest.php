@@ -30,10 +30,10 @@ class MemcachedBackendTest extends FunctionalTestCase
     protected function setUp(): void
     {
         if (!extension_loaded('memcache') && !extension_loaded('memcached')) {
-            $this->markTestSkipped('Neither "memcache" nor "memcached" extension was available');
+            self::markTestSkipped('Neither "memcache" nor "memcached" extension was available');
         }
         if (!getenv('typo3TestingMemcachedHost')) {
-            $this->markTestSkipped('environment variable "typo3TestingMemcachedHost" must be set to run this test');
+            self::markTestSkipped('environment variable "typo3TestingMemcachedHost" must be set to run this test');
         }
         // Note we assume that if that typo3TestingMemcachedHost env is set, we can use that for testing,
         // there is no test to see if the daemon is actually up and running. Tests will fail if env
@@ -95,7 +95,7 @@ class MemcachedBackendTest extends FunctionalTestCase
 
         $identifier = $this->getUniqueId('MyIdentifier');
         $subject->set($identifier, 'Some data');
-        $this->assertTrue($subject->has($identifier));
+        self::assertTrue($subject->has($identifier));
     }
 
     /**
@@ -112,7 +112,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $data = 'Some data';
         $identifier = $this->getUniqueId('MyIdentifier');
         $subject->set($identifier, $data);
-        $this->assertEquals($data, $subject->get($identifier));
+        self::assertEquals($data, $subject->get($identifier));
     }
 
     /**
@@ -139,7 +139,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         ];
 
         $subject->set('myIdentifier', $data);
-        $this->assertSame($data, $subject->get('myIdentifier'));
+        self::assertSame($data, $subject->get('myIdentifier'));
     }
 
     /**
@@ -157,8 +157,8 @@ class MemcachedBackendTest extends FunctionalTestCase
 
         $data = str_repeat('abcde', 1024 * 1024);
         $subject->set('tooLargeData', $data);
-        $this->assertTrue($subject->has('tooLargeData'));
-        $this->assertEquals($subject->get('tooLargeData'), $data);
+        self::assertTrue($subject->has('tooLargeData'));
+        self::assertEquals($subject->get('tooLargeData'), $data);
     }
 
     /**
@@ -176,7 +176,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('MyIdentifier');
         $subject->set($identifier, $data);
         $subject->remove($identifier);
-        $this->assertFalse($subject->has($identifier));
+        self::assertFalse($subject->has($identifier));
     }
 
     /**
@@ -195,7 +195,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $subject->set($identifier, $data);
         $otherData = 'some other data';
         $subject->set($identifier, $otherData);
-        $this->assertEquals($otherData, $subject->get($identifier));
+        self::assertEquals($otherData, $subject->get($identifier));
     }
 
     /**
@@ -213,9 +213,9 @@ class MemcachedBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('MyIdentifier');
         $subject->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $subject->findIdentifiersByTag('UnitTestTag%tag1');
-        $this->assertEquals($identifier, $retrieved[0]);
+        self::assertEquals($identifier, $retrieved[0]);
         $retrieved = $subject->findIdentifiersByTag('UnitTestTag%tag2');
-        $this->assertEquals($identifier, $retrieved[0]);
+        self::assertEquals($identifier, $retrieved[0]);
     }
 
     /**
@@ -233,7 +233,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('MyIdentifier');
         $subject->set($identifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $subject->set($identifier, $data, ['UnitTestTag%tag3']);
-        $this->assertEquals([], $subject->findIdentifiersByTag('UnitTestTag%tagX'));
+        self::assertEquals([], $subject->findIdentifiersByTag('UnitTestTag%tagX'));
     }
 
     /**
@@ -248,7 +248,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $subject->setCache($frontendProphecy->reveal());
 
         $identifier = $this->getUniqueId('NonExistingIdentifier');
-        $this->assertFalse($subject->has($identifier));
+        self::assertFalse($subject->has($identifier));
     }
 
     /**
@@ -263,7 +263,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $subject->setCache($frontendProphecy->reveal());
 
         $identifier = $this->getUniqueId('NonExistingIdentifier');
-        $this->assertFalse($subject->remove($identifier));
+        self::assertFalse($subject->remove($identifier));
     }
 
     /**
@@ -282,9 +282,9 @@ class MemcachedBackendTest extends FunctionalTestCase
         $subject->set('BackendMemcacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
         $subject->set('BackendMemcacheTest3', $data, ['UnitTestTag%test']);
         $subject->flushByTag('UnitTestTag%special');
-        $this->assertTrue($subject->has('BackendMemcacheTest1'));
-        $this->assertFalse($subject->has('BackendMemcacheTest2'));
-        $this->assertTrue($subject->has('BackendMemcacheTest3'));
+        self::assertTrue($subject->has('BackendMemcacheTest1'));
+        self::assertFalse($subject->has('BackendMemcacheTest2'));
+        self::assertTrue($subject->has('BackendMemcacheTest3'));
     }
 
     /**
@@ -303,9 +303,9 @@ class MemcachedBackendTest extends FunctionalTestCase
         $subject->set('BackendMemcacheTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
         $subject->set('BackendMemcacheTest3', $data, ['UnitTestTag%test']);
         $subject->flushByTags(['UnitTestTag%special', 'UnitTestTag%boring']);
-        $this->assertFalse($subject->has('BackendMemcacheTest1'));
-        $this->assertFalse($subject->has('BackendMemcacheTest2'));
-        $this->assertTrue($subject->has('BackendMemcacheTest3'));
+        self::assertFalse($subject->has('BackendMemcacheTest1'));
+        self::assertFalse($subject->has('BackendMemcacheTest2'));
+        self::assertTrue($subject->has('BackendMemcacheTest3'));
     }
 
     /**
@@ -324,9 +324,9 @@ class MemcachedBackendTest extends FunctionalTestCase
         $subject->set('BackendMemcacheTest2', $data);
         $subject->set('BackendMemcacheTest3', $data);
         $subject->flush();
-        $this->assertFalse($subject->has('BackendMemcacheTest1'));
-        $this->assertFalse($subject->has('BackendMemcacheTest2'));
-        $this->assertFalse($subject->has('BackendMemcacheTest3'));
+        self::assertFalse($subject->has('BackendMemcacheTest1'));
+        self::assertFalse($subject->has('BackendMemcacheTest2'));
+        self::assertFalse($subject->has('BackendMemcacheTest3'));
     }
 
     /**
@@ -348,7 +348,7 @@ class MemcachedBackendTest extends FunctionalTestCase
         $thatBackend->set('thatEntry', 'World!');
         $thatBackend->flush();
 
-        $this->assertEquals('Hello', $thisBackend->get('thisEntry'));
-        $this->assertFalse($thatBackend->has('thatEntry'));
+        self::assertEquals('Hello', $thisBackend->get('thisEntry'));
+        self::assertFalse($thatBackend->has('thatEntry'));
     }
 }

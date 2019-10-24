@@ -82,6 +82,6 @@ class TcaPreparationTest extends UnitTestCase
         $connectionPool->getConnectionForTable(Argument::any())->willReturn($connection->reveal());
         GeneralUtility::addInstance(ConnectionPool::class, $connectionPool->reveal());
         $subject = new TcaPreparation();
-        $this->assertEquals($expected, $subject->prepare($input));
+        self::assertEquals($expected, $subject->prepare($input));
     }
 }

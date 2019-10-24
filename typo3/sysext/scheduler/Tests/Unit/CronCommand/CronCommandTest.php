@@ -57,7 +57,7 @@ class CronCommandTest extends UnitTestCase
     public function constructorSetsNormalizedCronCommandSections()
     {
         $instance = new CronCommand('2-3 * * * *');
-        $this->assertSame(['2,3', '*', '*', '*', '*'], $instance->getCronCommandSections());
+        self::assertSame(['2,3', '*', '*', '*', '*'], $instance->getCronCommandSections());
     }
 
     /**
@@ -78,7 +78,7 @@ class CronCommandTest extends UnitTestCase
         $instance = new CronCommand('* * * * *');
         $currentTime = time();
         $expectedTime = $currentTime - ($currentTime % 60) + 60;
-        $this->assertSame($expectedTime, $instance->getTimestamp());
+        self::assertSame($expectedTime, $instance->getTimestamp());
     }
 
     /**
@@ -87,7 +87,7 @@ class CronCommandTest extends UnitTestCase
     public function constructorSetsTimestampToGivenTimestampPlusSixtySeconds()
     {
         $instance = new CronCommand('* * * * *', self::TIMESTAMP);
-        $this->assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
+        self::assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
     }
 
     /**
@@ -96,7 +96,7 @@ class CronCommandTest extends UnitTestCase
     public function constructorSetsTimestampToGiveTimestampRoundedDownToSixtySeconds()
     {
         $instance = new CronCommand('* * * * *', self::TIMESTAMP + 1);
-        $this->assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
+        self::assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
     }
 
     /**
@@ -248,7 +248,7 @@ class CronCommandTest extends UnitTestCase
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
         $instance->calculateNextValue();
-        $this->assertSame($expectedTimestamp, $instance->getTimestamp());
+        self::assertSame($expectedTimestamp, $instance->getTimestamp());
     }
 
     /**
@@ -262,7 +262,7 @@ class CronCommandTest extends UnitTestCase
     {
         $instance = new CronCommand($cronCommand, $startTimestamp);
         $instance->calculateNextValue();
-        $this->assertSame(strtotime($expectedTimestamp), $instance->getTimestamp());
+        self::assertSame(strtotime($expectedTimestamp), $instance->getTimestamp());
     }
 
     /**
@@ -277,7 +277,7 @@ class CronCommandTest extends UnitTestCase
     {
         $instance = new CronCommand($cronCommand, $firstTimestamp);
         $instance->calculateNextValue();
-        $this->assertSame($secondTimestamp, $instance->getTimestamp());
+        self::assertSame($secondTimestamp, $instance->getTimestamp());
     }
 
     /**
@@ -292,7 +292,7 @@ class CronCommandTest extends UnitTestCase
     {
         $instance = new CronCommand($cronCommand, strtotime($firstTimestamp));
         $instance->calculateNextValue();
-        $this->assertSame(strtotime($secondTimestamp), $instance->getTimestamp());
+        self::assertSame(strtotime($secondTimestamp), $instance->getTimestamp());
     }
 
     /**
@@ -305,7 +305,7 @@ class CronCommandTest extends UnitTestCase
         $instance = new CronCommand('* 3 28 mar *', self::TIMESTAMP);
         $instance->calculateNextValue();
         date_default_timezone_set($backupTimezone);
-        $this->assertSame(1269741600, $instance->getTimestamp());
+        self::assertSame(1269741600, $instance->getTimestamp());
     }
 
     /**
@@ -325,7 +325,7 @@ class CronCommandTest extends UnitTestCase
     public function getTimestampReturnsInteger()
     {
         $instance = new CronCommand('* * * * *');
-        $this->assertIsInt($instance->getTimestamp());
+        self::assertIsInt($instance->getTimestamp());
     }
 
     /**
@@ -334,6 +334,6 @@ class CronCommandTest extends UnitTestCase
     public function getCronCommandSectionsReturnsArray()
     {
         $instance = new CronCommand('* * * * *');
-        $this->assertIsArray($instance->getCronCommandSections());
+        self::assertIsArray($instance->getCronCommandSections());
     }
 }

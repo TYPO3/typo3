@@ -64,7 +64,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     {
         $type = RecordCollectionRepository::TYPE_Static;
         $objects = $this->subject->findByType($type);
-        $this->assertNull($objects);
+        self::assertNull($objects);
     }
 
     /**
@@ -79,9 +79,9 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         ]);
 
         $objects = $this->subject->findByType($type);
-        $this->assertCount(2, $objects);
-        $this->assertInstanceOf(StaticRecordCollection::class, $objects[0]);
-        $this->assertInstanceOf(StaticRecordCollection::class, $objects[1]);
+        self::assertCount(2, $objects);
+        self::assertInstanceOf(StaticRecordCollection::class, $objects[0]);
+        self::assertInstanceOf(StaticRecordCollection::class, $objects[1]);
     }
 
     /**
@@ -90,7 +90,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
     public function doesFindByTableNameReturnNull()
     {
         $objects = $this->subject->findByTableName($this->testTableName);
-        $this->assertNull($objects);
+        self::assertNull($objects);
     }
 
     /**
@@ -105,9 +105,9 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         ]);
         $objects = $this->subject->findByTableName($this->testTableName);
 
-        $this->assertCount(2, $objects);
-        $this->assertInstanceOf(StaticRecordCollection::class, $objects[0]);
-        $this->assertInstanceOf(StaticRecordCollection::class, $objects[1]);
+        self::assertCount(2, $objects);
+        self::assertInstanceOf(StaticRecordCollection::class, $objects[0]);
+        self::assertInstanceOf(StaticRecordCollection::class, $objects[1]);
     }
 
     /**
@@ -118,7 +118,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         $type = RecordCollectionRepository::TYPE_Static;
         $objects = $this->subject->findByTypeAndTableName($type, $this->testTableName);
 
-        $this->assertNull($objects);
+        self::assertNull($objects);
     }
 
     /**
@@ -133,9 +133,9 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         ]);
         $objects = $this->subject->findByTypeAndTableName($type, $this->testTableName);
 
-        $this->assertCount(2, $objects);
-        $this->assertInstanceOf(StaticRecordCollection::class, $objects[0]);
-        $this->assertInstanceOf(StaticRecordCollection::class, $objects[1]);
+        self::assertCount(2, $objects);
+        self::assertInstanceOf(StaticRecordCollection::class, $objects[0]);
+        self::assertInstanceOf(StaticRecordCollection::class, $objects[1]);
     }
 
     /**
@@ -158,7 +158,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         ]);
         $object = $this->subject->findByUid(1);
 
-        $this->assertInstanceOf(StaticRecordCollection::class, $object);
+        self::assertInstanceOf(StaticRecordCollection::class, $object);
     }
 
     /**
@@ -181,7 +181,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         ]);
         $object = $this->subject->findByUid(1);
 
-        $this->assertNull($object);
+        self::assertNull($object);
     }
 
     /**
@@ -215,9 +215,9 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         $futureObject  = $this->subject->findByUid(2);
         $expiredObject = $this->subject->findByUid(3);
 
-        $this->assertInstanceOf(StaticRecordCollection::class, $hiddenObject);
-        $this->assertInstanceOf(StaticRecordCollection::class, $futureObject);
-        $this->assertInstanceOf(StaticRecordCollection::class, $expiredObject);
+        self::assertInstanceOf(StaticRecordCollection::class, $hiddenObject);
+        self::assertInstanceOf(StaticRecordCollection::class, $futureObject);
+        self::assertInstanceOf(StaticRecordCollection::class, $expiredObject);
     }
 
     /**
@@ -240,7 +240,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         ]);
         $object = $this->subject->findByUid(1);
 
-        $this->assertInstanceOf(StaticRecordCollection::class, $object);
+        self::assertInstanceOf(StaticRecordCollection::class, $object);
     }
 
     /**
@@ -281,10 +281,10 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         $futureObject  = $this->subject->findByUid(3);
         $expiredObject = $this->subject->findByUid(4);
 
-        $this->assertNull($deletedObject);
-        $this->assertNull($hiddenObject);
-        $this->assertNull($futureObject);
-        $this->assertNull($expiredObject);
+        self::assertNull($deletedObject);
+        self::assertNull($hiddenObject);
+        self::assertNull($futureObject);
+        self::assertNull($expiredObject);
     }
 
     /**

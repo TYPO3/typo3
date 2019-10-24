@@ -76,6 +76,6 @@ class InterfaceMethodChangedMatcherTest extends UnitTestCase
         foreach ($subject->getMatches() as $match) {
             $actualHitLineNumbers[] = $match['line'];
         }
-        $this->assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
+        self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 }

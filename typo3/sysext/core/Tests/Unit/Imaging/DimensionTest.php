@@ -52,8 +52,8 @@ class DimensionTest extends UnitTestCase
     public function getWidthReturnsValidInteger()
     {
         $value = $this->subject->getWidth();
-        $this->assertEquals($this->width, $value);
-        $this->assertIsInt($value);
+        self::assertEquals($this->width, $value);
+        self::assertIsInt($value);
     }
 
     /**
@@ -62,7 +62,7 @@ class DimensionTest extends UnitTestCase
     public function getHeightReturnsValidInteger()
     {
         $value = $this->subject->getHeight();
-        $this->assertEquals($this->height, $value);
-        $this->assertIsInt($value);
+        self::assertEquals($this->height, $value);
+        self::assertIsInt($value);
     }
 }

@@ -84,12 +84,12 @@ class AbstractControllerTest extends UnitTestCase
             ->setConstructorArgs([$this->getUniqueId('identifier_')])
             ->getMock();
 
-        $flashMessageQueue->expects($this->once())->method('enqueue')->with($this->equalTo($expectedMessage));
+        $flashMessageQueue->expects(self::once())->method('enqueue')->with(self::equalTo($expectedMessage));
 
         $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
             ->setMethods(['getFlashMessageQueue'])
             ->getMock();
-        $controllerContext->expects($this->once())->method('getFlashMessageQueue')->will($this->returnValue($flashMessageQueue));
+        $controllerContext->expects(self::once())->method('getFlashMessageQueue')->will(self::returnValue($flashMessageQueue));
 
         $controller = $this->getMockForAbstractClass(
             \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,

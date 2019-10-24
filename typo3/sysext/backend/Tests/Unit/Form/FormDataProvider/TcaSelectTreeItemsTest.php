@@ -178,7 +178,7 @@ class TcaSelectTreeItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'] = [
             'fake', 'tree', 'data',
         ];
-        $this->assertEquals($expected, (new TcaSelectTreeItems)->addData($input));
+        self::assertEquals($expected, (new TcaSelectTreeItems)->addData($input));
     }
 
     /**

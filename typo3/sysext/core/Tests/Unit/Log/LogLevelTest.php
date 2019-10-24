@@ -28,7 +28,7 @@ class LogLevelTest extends UnitTestCase
     {
         $validLevels = [0, 1, 2, 3, 4, 5, 6, 7];
         foreach ($validLevels as $validLevel) {
-            $this->assertTrue(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($validLevel));
+            self::assertTrue(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($validLevel));
         }
     }
 
@@ -39,7 +39,7 @@ class LogLevelTest extends UnitTestCase
     {
         $invalidLevels = [-1, 8];
         foreach ($invalidLevels as $invalidLevel) {
-            $this->assertFalse(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($invalidLevel));
+            self::assertFalse(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($invalidLevel));
         }
     }
 
@@ -71,6 +71,6 @@ class LogLevelTest extends UnitTestCase
      */
     public function normalizeLevelConvertsValidLevelFromStringToInteger()
     {
-        $this->assertEquals(7, \TYPO3\CMS\Core\Log\LogLevel::normalizeLevel('debug'));
+        self::assertEquals(7, \TYPO3\CMS\Core\Log\LogLevel::normalizeLevel('debug'));
     }
 }

@@ -130,7 +130,7 @@ text
      */
     public function getSubpart(string $content, string $marker, string $expected): void
     {
-        $this->assertSame($expected, $this->templateService->getSubpart($content, $marker));
+        self::assertSame($expected, $this->templateService->getSubpart($content, $marker));
     }
 
     /**
@@ -272,7 +272,7 @@ hello
         bool $keepMarker,
         string $expected
     ): void {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->templateService->substituteSubpart($content, $marker, $subpartContent, $recursive, $keepMarker)
         );
@@ -371,7 +371,7 @@ hello
         bool $deleteUnused,
         string $expected
     ): void {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->templateService->substituteMarkerArray($content, $markContentArray, $wrap, $uppercase, $deleteUnused)
         );
@@ -407,7 +407,7 @@ hello
      */
     public function substituteMarker(string $content, string $marker, $markContent, string $expected): void
     {
-        $this->assertSame($expected, $this->templateService->substituteMarker($content, $marker, $markContent));
+        self::assertSame($expected, $this->templateService->substituteMarker($content, $marker, $markContent));
     }
 
     /**
@@ -444,7 +444,7 @@ world
      */
     public function substituteSubpartArray(string $content, array $subpartsContent, string $expected): void
     {
-        $this->assertSame($expected, $this->templateService->substituteSubpartArray($content, $subpartsContent));
+        self::assertSame($expected, $this->templateService->substituteSubpartArray($content, $subpartsContent));
     }
 
     /**
@@ -662,7 +662,7 @@ Value 2.2
         bool $deleteUnused,
         string $expected
     ): void {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->templateService->substituteMarkerAndSubpartArrayRecursive(
                 $template,
@@ -796,6 +796,6 @@ Value 2.2
             $subpartContentArray,
             $wrappedSubpartContentArray
         );
-        $this->assertSame($expectedContent, $resultContent);
+        self::assertSame($expectedContent, $resultContent);
     }
 }

@@ -152,8 +152,8 @@ class TableOptionsTest extends UnitTestCase
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11)) %s;', $tableOptionsSQL);
         $subject = $this->createSubject($statement);
 
-        $this->assertInstanceOf(CreateTableStatement::class, $subject);
-        $this->assertSame($expectedTableOptions, $subject->tableOptions);
+        self::assertInstanceOf(CreateTableStatement::class, $subject);
+        self::assertSame($expectedTableOptions, $subject->tableOptions);
     }
 
     /**

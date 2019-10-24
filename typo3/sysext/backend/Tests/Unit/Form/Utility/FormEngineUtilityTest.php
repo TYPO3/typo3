@@ -32,7 +32,7 @@ class FormEngineUtilityTest extends UnitTestCase
             'title' => 'aTitle',
         ];
         $expected = $input;
-        $this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
+        self::assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
     }
 
     /**
@@ -49,7 +49,7 @@ class FormEngineUtilityTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['simpleArray'] = '1,2';
-        $this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
+        self::assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
     }
 
     /**
@@ -72,6 +72,6 @@ class FormEngineUtilityTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['simpleArray'] = 'aValue,anotherValue';
-        $this->assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
+        self::assertEquals($expected, FormEngineUtility::databaseRowCompatibility($input));
     }
 }

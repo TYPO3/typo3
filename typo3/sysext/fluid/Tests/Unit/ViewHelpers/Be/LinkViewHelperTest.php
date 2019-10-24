@@ -69,16 +69,16 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['registerTagAttribute', 'registerUniversalTagAttributes', 'registerArgument'])
             ->getMock();
 
-        $viewHelper->expects($this->at(2))->method('registerArgument')->with('route', 'string', $this->anything());
-        $viewHelper->expects($this->at(3))->method('registerArgument')->with('parameters', 'array', $this->anything());
-        $viewHelper->expects($this->at(4))->method('registerArgument')
-            ->with('referenceType', 'string', $this->anything());
+        $viewHelper->expects(self::at(2))->method('registerArgument')->with('route', 'string', self::anything());
+        $viewHelper->expects(self::at(3))->method('registerArgument')->with('parameters', 'array', self::anything());
+        $viewHelper->expects(self::at(4))->method('registerArgument')
+            ->with('referenceType', 'string', self::anything());
 
-        $viewHelper->expects($this->at(5))->method('registerTagAttribute')->with('name', 'string', $this->anything());
-        $viewHelper->expects($this->at(6))->method('registerTagAttribute')->with('rel', 'string', $this->anything());
-        $viewHelper->expects($this->at(7))->method('registerTagAttribute')->with('rev', 'string', $this->anything());
-        $viewHelper->expects($this->at(8))->method('registerTagAttribute')->with('target', 'string', $this->anything());
-        $viewHelper->expects($this->once())->method('registerUniversalTagAttributes');
+        $viewHelper->expects(self::at(5))->method('registerTagAttribute')->with('name', 'string', self::anything());
+        $viewHelper->expects(self::at(6))->method('registerTagAttribute')->with('rel', 'string', self::anything());
+        $viewHelper->expects(self::at(7))->method('registerTagAttribute')->with('rev', 'string', self::anything());
+        $viewHelper->expects(self::at(8))->method('registerTagAttribute')->with('target', 'string', self::anything());
+        $viewHelper->expects(self::once())->method('registerUniversalTagAttributes');
         $viewHelper->initializeArguments();
     }
 
@@ -95,13 +95,13 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
 
         GeneralUtility::setSingletonInstance(UriBuilder::class, $this->uriBuilderMock);
 
-        $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
+        $this->uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
 
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('href', 'theUri');
-        $this->tagBuilder->expects($this->once())->method('setContent');
-        $this->tagBuilder->expects($this->once())->method('forceClosingTag')->with(true);
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('href', 'theUri');
+        $this->tagBuilder->expects(self::once())->method('setContent');
+        $this->tagBuilder->expects(self::once())->method('forceClosingTag')->with(true);
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $this->viewHelper->render();
     }
@@ -120,7 +120,7 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
         );
         GeneralUtility::setSingletonInstance(UriBuilder::class, $this->uriBuilderMock);
 
-        $this->uriBuilderMock->expects($this->once())->method('buildUriFromRoute')
+        $this->uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
             ->with('theRouteArgument', [], 'theReferenceTypeArgument')->willReturn('theUri');
         $this->viewHelper->render();
     }

@@ -32,7 +32,7 @@ class MenuTest extends UnitTestCase
     {
         $menu = new Menu();
         $isValid = $menu->isValid($menu);
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -45,7 +45,7 @@ class MenuTest extends UnitTestCase
         $menu = new Menu();
         $menu->setIdentifier('husel');
         $isValid = $menu->isValid($menu);
-        $this->assertTrue($isValid);
+        self::assertTrue($isValid);
     }
 
     /**
@@ -60,7 +60,7 @@ class MenuTest extends UnitTestCase
         $expected = new Menu();
         $expected->setIdentifier('MenuIdent');
         $expected->setLabel('MenuLabel');
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -88,6 +88,6 @@ class MenuTest extends UnitTestCase
             'Foo' => $menu2
         ];
 
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 }

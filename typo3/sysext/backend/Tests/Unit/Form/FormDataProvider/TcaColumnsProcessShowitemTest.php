@@ -80,7 +80,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected = $input;
         $expected['columnsToProcess'] = ['keepMe'];
 
-        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -122,7 +122,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected = $input;
         $expected['columnsToProcess'] = ['keepMe'];
 
-        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -168,7 +168,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         $expected = $input;
         $expected['columnsToProcess'] = ['aField', 'anotherField'];
 
-        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -205,7 +205,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             'inlineExpandCollapseStateArray' => [],
         ];
         $expected = $input;
-        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -249,7 +249,7 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 
     /**
@@ -291,6 +291,6 @@ class TcaColumnsProcessShowitemTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['columnsToProcess'] = ['aField'];
-        $this->assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessShowitem)->addData($input));
     }
 }

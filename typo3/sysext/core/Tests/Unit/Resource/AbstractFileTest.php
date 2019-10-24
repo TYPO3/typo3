@@ -45,14 +45,14 @@ class AbstractFileTest extends UnitTestCase
             ->setMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockedStorage->expects($this->once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will($this->returnValue($parentIdentifier));
-        $mockedStorage->expects($this->once())->method('getFolder')->with($parentIdentifier)->will($this->returnValue($parentFolderFixture));
+        $mockedStorage->expects(self::once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will(self::returnValue($parentIdentifier));
+        $mockedStorage->expects(self::once())->method('getFolder')->with($parentIdentifier)->will(self::returnValue($parentFolderFixture));
 
         /** @var AbstractFile $currentFolderFixture */
         $currentFolderFixture = $this->getMockForAbstractClass(AbstractFile::class);
         $currentFolderFixture->setIdentifier($currentIdentifier)->setStorage($mockedStorage);
 
-        $this->assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());
+        self::assertSame($parentFolderFixture, $currentFolderFixture->getParentFolder());
     }
 
     /**
@@ -67,9 +67,9 @@ class AbstractFileTest extends UnitTestCase
     {
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $mockedStorage */
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)->disableOriginalConstructor()->getMock();
-        $mockedStorage->expects($this->never())->method('getFileInfoByIdentifier')->with('/foo', 'mimetype');
+        $mockedStorage->expects(self::never())->method('getFileInfoByIdentifier')->with('/foo', 'mimetype');
         $subject = new File(['identifier' => '/foo', 'mime_type' => 'my/mime-type'], $mockedStorage);
 
-        $this->assertEquals('my/mime-type', $subject->getMimeType());
+        self::assertEquals('my/mime-type', $subject->getMimeType());
     }
 }

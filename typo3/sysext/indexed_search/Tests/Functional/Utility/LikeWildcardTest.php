@@ -44,7 +44,7 @@ class LikeWildcardTest extends FunctionalTestCase
             $expected = addcslashes($expected, '\\');
         }
         $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;
-        $this->assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
+        self::assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
     }
 
     /**

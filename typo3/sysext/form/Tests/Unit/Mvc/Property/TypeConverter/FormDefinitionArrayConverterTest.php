@@ -76,11 +76,11 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         $formDefinitionValidationService->validateFormDefinitionProperties(Argument::cetera())->shouldBeCalled();
         $formDefinitionValidationService->isPropertyValueEqualToHistoricalValue(Argument::cetera())->willReturn(true);
 
-        $typeConverter->expects($this->any())->method(
+        $typeConverter->expects(self::any())->method(
             'retrieveSessionToken'
         )->willReturn($sessionToken);
 
-        $typeConverter->expects($this->any())->method(
+        $typeConverter->expects(self::any())->method(
             'getFormDefinitionValidationService'
         )->willReturn($formDefinitionValidationService->reveal());
 
@@ -98,8 +98,8 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         ];
         $result = $typeConverter->convertFrom($input, FormDefinitionArray::class);
 
-        $this->assertInstanceOf(FormDefinitionArray::class, $result);
-        $this->assertSame($expected, $result->getArrayCopy());
+        self::assertInstanceOf(FormDefinitionArray::class, $result);
+        self::assertSame($expected, $result->getArrayCopy());
     }
 
     /**
@@ -161,7 +161,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
             '_value' => 'yyy',
         ];
 
-        $this->assertSame($expected, $typeConverter->_call('transformMultiValueElementsForFormFramework', $input));
+        self::assertSame($expected, $typeConverter->_call('transformMultiValueElementsForFormFramework', $input));
     }
 
     /**
@@ -175,7 +175,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         $sessionToken = '123';
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
 
-        $typeConverter->expects($this->any())->method(
+        $typeConverter->expects(self::any())->method(
             'retrieveSessionToken'
         )->willReturn($sessionToken);
 
@@ -206,7 +206,7 @@ class FormDefinitionArrayConverterTest extends UnitTestCase
         $sessionToken = '123';
         $typeConverter = $this->getAccessibleMock(FormDefinitionArrayConverter::class, ['retrieveSessionToken'], [], '', false);
 
-        $typeConverter->expects($this->any())->method(
+        $typeConverter->expects(self::any())->method(
             'retrieveSessionToken'
         )->willReturn($sessionToken);
 

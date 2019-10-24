@@ -45,7 +45,7 @@ class PhpDocPropertyTypeExtractorTest extends UnitTestCase
      */
     public function testExtract(string $property, ?array $type, ?string $shortDescription, ?string $longDescription): void
     {
-        $this->assertEquals($type, static::$extractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\Dummy', $property));
+        self::assertEquals($type, static::$extractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\Dummy', $property));
     }
 
     /**
@@ -58,7 +58,7 @@ class PhpDocPropertyTypeExtractorTest extends UnitTestCase
     {
         $noPrefixExtractor = new PhpDocExtractor(null, [], [], []);
 
-        $this->assertEquals($type, $noPrefixExtractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\Dummy', $property));
+        self::assertEquals($type, $noPrefixExtractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\Dummy', $property));
     }
 
     /**
@@ -110,7 +110,7 @@ class PhpDocPropertyTypeExtractorTest extends UnitTestCase
     public function testExtractCollection(string $property, array $type, ?string $shortDescription, ?string $longDescription): void
     {
         if (!class_exists(Collection::class)) {
-            $this->markTestSkipped('Collections are not implemented in current phpdocumentor/type-resolver version');
+            self::markTestSkipped('Collections are not implemented in current phpdocumentor/type-resolver version');
         }
 
         $this->testExtract($property, $type, $shortDescription, $longDescription);
@@ -150,7 +150,7 @@ class PhpDocPropertyTypeExtractorTest extends UnitTestCase
     {
         $customExtractor = new PhpDocExtractor(null, ['add', 'remove'], ['is', 'can']);
 
-        $this->assertEquals($type, $customExtractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\Dummy', $property));
+        self::assertEquals($type, $customExtractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\Dummy', $property));
     }
 
     /**
@@ -259,6 +259,6 @@ class PhpDocPropertyTypeExtractorTest extends UnitTestCase
      */
     public function testDocBlockFallback(string $property, array $types): void
     {
-        $this->assertEquals($types, static::$extractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\DockBlockFallback', $property));
+        self::assertEquals($types, static::$extractor->getTypes('Symfony\Component\PropertyInfo\Tests\Fixtures\DockBlockFallback', $property));
     }
 }

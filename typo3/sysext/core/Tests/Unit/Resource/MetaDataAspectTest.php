@@ -45,7 +45,7 @@ class MetaDataAspectTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(12));
+        $this->storageMock->expects(self::any())->method('getUid')->will(self::returnValue(12));
     }
 
     /**
@@ -70,7 +70,7 @@ class MetaDataAspectTest extends UnitTestCase
         ];
         $file = new File([], $this->storageMock, $metaData);
 
-        $this->assertSame($metaData, $file->getMetaData()->get());
+        self::assertSame($metaData, $file->getMetaData()->get());
     }
 
     /**
@@ -95,7 +95,7 @@ class MetaDataAspectTest extends UnitTestCase
             'description' => 'This file is presented by TYPO3',
         ];
 
-        $this->assertSame($expected, $file->getMetaData()->get());
+        self::assertSame($expected, $file->getMetaData()->get());
     }
 
     /**
@@ -116,7 +116,7 @@ class MetaDataAspectTest extends UnitTestCase
         $metaDataAspectMock->add($metaData);
         $metaDataAspectMock->remove();
 
-        $this->assertEmpty($metaDataAspectMock->get());
+        self::assertEmpty($metaDataAspectMock->get());
     }
 
     /**
@@ -156,10 +156,10 @@ class MetaDataAspectTest extends UnitTestCase
         $metaDataRepositoryMock = $this->getMockBuilder(MetaDataRepository::class)
             ->setMethods(['findByFileUid', 'getTableFields', 'update', 'getSignalSlotDispatcher'])
             ->getMock();
-        $metaDataRepositoryMock->expects($this->any())->method('findByFileUid')->willReturn([]);
-        $metaDataRepositoryMock->expects($this->any())->method('getTableFields')->willReturn(['title' => 'sometype']);
-        $metaDataRepositoryMock->expects($this->never())->method('update');
-        $metaDataRepositoryMock->expects($this->any())->method('getSignalSlotDispatcher')->willReturn($dispatcherProphecy->reveal());
+        $metaDataRepositoryMock->expects(self::any())->method('findByFileUid')->willReturn([]);
+        $metaDataRepositoryMock->expects(self::any())->method('getTableFields')->willReturn(['title' => 'sometype']);
+        $metaDataRepositoryMock->expects(self::never())->method('update');
+        $metaDataRepositoryMock->expects(self::any())->method('getSignalSlotDispatcher')->willReturn($dispatcherProphecy->reveal());
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $file->getMetaData()->add($metaData)->save();
@@ -176,7 +176,7 @@ class MetaDataAspectTest extends UnitTestCase
             'newlyCreated' => true,
         ];
 
-        $this->assertSame($expected, $file->getMetaData()->get());
+        self::assertSame($expected, $file->getMetaData()->get());
     }
 
     /**
@@ -192,7 +192,7 @@ class MetaDataAspectTest extends UnitTestCase
             ->setMethods(['loadFromRepository', 'createMetaDataRecord', 'update'])
             ->getMock();
 
-        $metaDataRepositoryMock->expects($this->any())->method('createMetaDataRecord')->willReturn($metaData);
+        $metaDataRepositoryMock->expects(self::any())->method('createMetaDataRecord')->willReturn($metaData);
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $metaDataRepositoryMock);
 
         $metaDataAspectMock = $this->getMockBuilder(MetaDataAspect::class)
@@ -200,11 +200,11 @@ class MetaDataAspectTest extends UnitTestCase
             ->setMethods(['loadFromRepository'])
             ->getMock();
 
-        $metaDataAspectMock->expects($this->any())->method('loadFromRepository')->will($this->onConsecutiveCalls([], $metaData));
+        $metaDataAspectMock->expects(self::any())->method('loadFromRepository')->will(self::onConsecutiveCalls([], $metaData));
         $metaDataAspectMock->add($metaData)->save();
         $metaDataAspectMock->add(['testproperty' => 'testvalue'])->save();
 
-        $this->assertSame(['foo' => 'bar', 'testproperty' => 'testvalue'], $metaDataAspectMock->get());
+        self::assertSame(['foo' => 'bar', 'testproperty' => 'testvalue'], $metaDataAspectMock->get());
     }
 
     /**
@@ -254,7 +254,7 @@ class MetaDataAspectTest extends UnitTestCase
     {
         $file = new File([], $this->storageMock, $metaData);
 
-        $this->assertSame($has['expected'], isset($file->getMetaData()[$has['property']]));
-        $this->assertSame($get['expected'], $file->getMetaData()[$get['property']] ?? null);
+        self::assertSame($has['expected'], isset($file->getMetaData()[$has['property']]));
+        self::assertSame($get['expected'], $file->getMetaData()[$get['property']] ?? null);
     }
 }

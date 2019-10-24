@@ -49,7 +49,7 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
 
         $record = BackendUtility::getRecord('tt_content', $recordUid);
 
-        $this->assertEquals(1, $record['tx_testdatahandler_checkbox']);
+        self::assertEquals(1, $record['tx_testdatahandler_checkbox']);
     }
 
     /**
@@ -65,6 +65,6 @@ class CheckValueTestForCheckboxes extends AbstractDataHandlerActionTestCase
 
         $record = BackendUtility::getRecord('tt_content', $recordUid);
 
-        $this->assertEquals(2, $record['tx_testdatahandler_checkbox']);
+        self::assertEquals(2, $record['tx_testdatahandler_checkbox']);
     }
 }

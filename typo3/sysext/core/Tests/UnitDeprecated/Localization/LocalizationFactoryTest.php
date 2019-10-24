@@ -76,8 +76,8 @@ class LocalizationFactoryTest extends UnitTestCase
         // Get override value
         $overrideLL = $subject->getParsedData('EXT:core/Resources/Private/Language/locallang_core.xlf', 'default');
 
-        $this->assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
-        $this->assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);
-        $this->assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
+        self::assertNotEquals($overrideLL['default']['buttons.logout'][0]['target'], '');
+        self::assertNotEquals($defaultLL['default']['buttons.logout'][0]['target'], $overrideLL['default']['buttons.logout'][0]['target']);
+        self::assertEquals($overrideLL['default']['buttons.logout'][0]['target'], 'EXIT');
     }
 }

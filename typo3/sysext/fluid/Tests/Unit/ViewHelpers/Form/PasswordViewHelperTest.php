@@ -42,7 +42,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
             ->setMethods(['setTagName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('input');
+        $mockTagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('input');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
     }
@@ -56,11 +56,11 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
             ->setMethods(['addAttribute', 'setContent', 'render'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'password');
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
-        $mockTagBuilder->expects($this->at(2))->method('addAttribute')->with('value', 'Current value');
-        $mockTagBuilder->expects($this->once())->method('render');
+        $mockTagBuilder->expects(self::at(0))->method('addAttribute')->with('type', 'password');
+        $mockTagBuilder->expects(self::at(1))->method('addAttribute')->with('name', 'NameOfTextbox');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('NameOfTextbox');
+        $mockTagBuilder->expects(self::at(2))->method('addAttribute')->with('value', 'Current value');
+        $mockTagBuilder->expects(self::once())->method('render');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
         $arguments = [
@@ -78,7 +78,7 @@ class PasswordViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
      */
     public function renderCallsSetErrorClassAttribute()
     {
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->expects(self::once())->method('setErrorClassAttribute');
         $this->viewHelper->render();
     }
 }

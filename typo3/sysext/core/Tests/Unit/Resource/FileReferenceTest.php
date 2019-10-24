@@ -30,10 +30,10 @@ class FileReferenceTest extends UnitTestCase
     {
         $fixture = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\FileReference::class, ['dummy'], [], '', false);
         $originalFileMock = $this->getAccessibleMock(\TYPO3\CMS\Core\Resource\File::class, [], [], '', false);
-        $originalFileMock->expects($this->any())
+        $originalFileMock->expects(self::any())
             ->method('getProperties')
             ->will(
-                $this->returnValue($originalFileProperties)
+                self::returnValue($originalFileProperties)
             );
         $fixture->_set('originalFile', $originalFileMock);
         $fixture->_set('propertiesOfFileReference', $fileReferenceProperties);
@@ -80,7 +80,7 @@ class FileReferenceTest extends UnitTestCase
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         $actual = $fixture->getProperties();
-        $this->assertSame($expectedMergedProperties, $actual);
+        self::assertSame($expectedMergedProperties, $actual);
     }
 
     /**
@@ -94,7 +94,7 @@ class FileReferenceTest extends UnitTestCase
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         foreach ($expectedMergedProperties as $key => $_) {
-            $this->assertTrue($fixture->hasProperty($key));
+            self::assertTrue($fixture->hasProperty($key));
         }
     }
 
@@ -109,7 +109,7 @@ class FileReferenceTest extends UnitTestCase
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
         foreach ($expectedMergedProperties as $key => $expectedValue) {
-            $this->assertSame($expectedValue, $fixture->getProperty($key));
+            self::assertSame($expectedValue, $fixture->getProperty($key));
         }
     }
 
@@ -139,7 +139,7 @@ class FileReferenceTest extends UnitTestCase
     public function getPropertyDoesNotThrowExceptionForPropertyOnlyAvailableInOriginalFile($fileReferenceProperties, $originalFileProperties)
     {
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
-        $this->assertSame($originalFileProperties['file_only_property'], $fixture->getProperty('file_only_property'));
+        self::assertSame($originalFileProperties['file_only_property'], $fixture->getProperty('file_only_property'));
     }
 
     /**

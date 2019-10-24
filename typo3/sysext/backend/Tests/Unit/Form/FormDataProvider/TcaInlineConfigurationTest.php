@@ -87,7 +87,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             ],
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -110,7 +110,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 23;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -133,7 +133,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 0;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -156,7 +156,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 23;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -179,7 +179,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 1;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -208,7 +208,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
         $expected['processedTca']['columns']['aField']['config']['appearance']['enabledControls']['dragdrop'] = false;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -249,7 +249,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'foreignTable' => 'anotherForeignTableName',
         ];
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -292,7 +292,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config']['appearance']['useCombination'] = true;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -317,7 +317,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = true;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -342,7 +342,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = false;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -367,7 +367,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = true;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -392,7 +392,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = false;
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -612,7 +612,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             ],
             'foreignTable' => 'anotherForeignTableName',
         ];
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 
     /**
@@ -687,6 +687,6 @@ class TcaInlineConfigurationTest extends UnitTestCase
             ],
             'foreignTable' => 'anotherForeignTableName',
         ];
-        $this->assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
+        self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
 }

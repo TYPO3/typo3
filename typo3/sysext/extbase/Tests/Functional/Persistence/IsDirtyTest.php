@@ -80,7 +80,7 @@ class IsDirtyTest extends FunctionalTestCase
     public function objectFetchedFromDbIsNotDirty()
     {
         $blog = $this->blogRepository->findByUid(3);
-        $this->assertFalse($blog->_isDirty());
+        self::assertFalse($blog->_isDirty());
     }
 
     /**
@@ -89,13 +89,13 @@ class IsDirtyTest extends FunctionalTestCase
     public function lazyLoadingProxyReplacedByRealInstanceIsNotDirty()
     {
         $blog = $this->blogRepository->findByUid(3);
-        $this->assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); // precondition
+        self::assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); // precondition
 
         $admin = $this->adminRepository->findByUid(3);
-        $this->assertInstanceOf(Administrator::class, $admin); // precondition
+        self::assertInstanceOf(Administrator::class, $admin); // precondition
 
         $blog->setAdministrator($admin);
-        $this->assertFalse($blog->_isDirty());
+        self::assertFalse($blog->_isDirty());
     }
 
     /**
@@ -104,10 +104,10 @@ class IsDirtyTest extends FunctionalTestCase
     public function lazyLoadingProxyReplacedByWrongInstanceIsDirty()
     {
         $blog = $this->blogRepository->findByUid(3);
-        $this->assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); //precondition
+        self::assertInstanceOf(LazyLoadingProxy::class, $blog->getAdministrator()); //precondition
 
         $blog->setAdministrator(new Administrator());
-        $this->assertTrue($blog->_isDirty());
+        self::assertTrue($blog->_isDirty());
     }
 
     /**
@@ -117,16 +117,16 @@ class IsDirtyTest extends FunctionalTestCase
     {
         $blog = $this->blogRepository->findByUid(3);
         $lazyLoadingProxy = $blog->getAdministrator();
-        $this->assertInstanceOf(LazyLoadingProxy::class, $lazyLoadingProxy); //precondition
+        self::assertInstanceOf(LazyLoadingProxy::class, $lazyLoadingProxy); //precondition
 
         $admin = $this->adminRepository->findByUid(3);
-        $this->assertInstanceOf(Administrator::class, $admin); // precondition
+        self::assertInstanceOf(Administrator::class, $admin); // precondition
 
         $blog->setAdministrator($admin);
         $blog->_memorizeCleanState();
 
         $blog->_setProperty('administrator', $lazyLoadingProxy);
-        $this->assertFalse($blog->_isDirty());
+        self::assertFalse($blog->_isDirty());
     }
 
     /**
@@ -135,17 +135,17 @@ class IsDirtyTest extends FunctionalTestCase
     public function lazyLoadingProxyByWrongLazyLoadingProxyIsDirtyAndUpdated()
     {
         $blogOne = $this->blogRepository->findByUid(3);
-        $this->assertInstanceOf(LazyLoadingProxy::class, $blogOne->getAdministrator()); //precondition
+        self::assertInstanceOf(LazyLoadingProxy::class, $blogOne->getAdministrator()); //precondition
 
         $blogTwo = $this->blogRepository->findByUid(2);
-        $this->assertInstanceOf(LazyLoadingProxy::class, $blogTwo->getAdministrator()); //precondition
+        self::assertInstanceOf(LazyLoadingProxy::class, $blogTwo->getAdministrator()); //precondition
 
         $blogOne->_setProperty('administrator', $blogTwo->getAdministrator());
-        $this->assertTrue($blogOne->_isDirty());
+        self::assertTrue($blogOne->_isDirty());
 
         $this->blogRepository->update($blogOne);
 
         $updatedBlogOne = $this->blogRepository->findByUid(3);
-        $this->assertSame($updatedBlogOne->getAdministrator()->getUid(), $blogTwo->getAdministrator()->getUid());
+        self::assertSame($updatedBlogOne->getAdministrator()->getUid(), $blogTwo->getAdministrator()->getUid());
     }
 }

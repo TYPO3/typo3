@@ -77,6 +77,6 @@ class SourceHostTest extends UnitTestCase
     public function evaluateFieldValueWorksWithDifferentInputs(string $input, string $expected)
     {
         $subject = new SourceHost();
-        $this->assertSame($expected, $subject->evaluateFieldValue($input));
+        self::assertSame($expected, $subject->evaluateFieldValue($input));
     }
 }

@@ -25,7 +25,7 @@ class SessionTest extends UnitTestCase
     protected function createContainer(): Container
     {
         $psrContainer = $this->getMockBuilder(\Psr\Container\ContainerInterface::class)->setMethods(['has', 'get'])->getMock();
-        $psrContainer->expects($this->any())->method('has')->will($this->returnValue(false));
+        $psrContainer->expects(self::any())->method('has')->will(self::returnValue(false));
         return new Container($psrContainer);
     }
 
@@ -39,7 +39,7 @@ class SessionTest extends UnitTestCase
         $session->registerReconstitutedEntity($someObject);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
-        $this->assertTrue($ReconstitutedEntities->contains($someObject));
+        self::assertTrue($ReconstitutedEntities->contains($someObject));
     }
 
     /**
@@ -54,7 +54,7 @@ class SessionTest extends UnitTestCase
         $session->unregisterReconstitutedEntity($someObject);
 
         $ReconstitutedEntities = $session->getReconstitutedEntities();
-        $this->assertFalse($ReconstitutedEntities->contains($someObject));
+        self::assertFalse($ReconstitutedEntities->contains($someObject));
     }
 
     /**
@@ -67,8 +67,8 @@ class SessionTest extends UnitTestCase
         $session = new Session($this->createContainer());
         $session->registerObject($object1, 12345);
 
-        $this->assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
-        $this->assertFalse($session->hasObject($object2), 'Session claims it does have unregistered object.');
+        self::assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
+        self::assertFalse($session->hasObject($object2), 'Session claims it does have unregistered object.');
     }
 
     /**
@@ -79,8 +79,8 @@ class SessionTest extends UnitTestCase
         $session = new Session($this->createContainer());
         $session->registerObject(new \stdClass(), 12345);
 
-        $this->assertTrue($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
-        $this->assertFalse($session->hasIdentifier('67890', 'stdClass'), 'Session claims it does have unregistered object.');
+        self::assertTrue($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
+        self::assertFalse($session->hasIdentifier('67890', 'stdClass'), 'Session claims it does have unregistered object.');
     }
 
     /**
@@ -92,7 +92,7 @@ class SessionTest extends UnitTestCase
         $session = new Session($this->createContainer());
         $session->registerObject($object, 12345);
 
-        $this->assertEquals($session->getIdentifierByObject($object), 12345, 'Did not get UUID registered for object.');
+        self::assertEquals($session->getIdentifierByObject($object), 12345, 'Did not get UUID registered for object.');
     }
 
     /**
@@ -104,7 +104,7 @@ class SessionTest extends UnitTestCase
         $session = new Session($this->createContainer());
         $session->registerObject($object, 12345);
 
-        $this->assertSame($session->getObjectByIdentifier('12345', 'stdClass'), $object, 'Did not get object registered for UUID.');
+        self::assertSame($session->getObjectByIdentifier('12345', 'stdClass'), $object, 'Did not get object registered for UUID.');
     }
 
     /**
@@ -118,17 +118,17 @@ class SessionTest extends UnitTestCase
         $session->registerObject($object1, 12345);
         $session->registerObject($object2, 67890);
 
-        $this->assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
-        $this->assertTrue($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
-        $this->assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
-        $this->assertTrue($session->hasIdentifier('67890', 'stdClass'), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasObject($object1), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasIdentifier('67890', 'stdClass'), 'Session claims it does not have registered object.');
 
         $session->unregisterObject($object1);
 
-        $this->assertFalse($session->hasObject($object1), 'Session claims it does have unregistered object.');
-        $this->assertFalse($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
-        $this->assertTrue($session->hasObject($object2), 'Session claims it does not have registered object.');
-        $this->assertTrue($session->hasIdentifier('67890', 'stdClass'), 'Session claims it does not have registered object.');
+        self::assertFalse($session->hasObject($object1), 'Session claims it does have unregistered object.');
+        self::assertFalse($session->hasIdentifier('12345', 'stdClass'), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasObject($object2), 'Session claims it does not have registered object.');
+        self::assertTrue($session->hasIdentifier('67890', 'stdClass'), 'Session claims it does not have registered object.');
     }
 
     /**
@@ -138,7 +138,7 @@ class SessionTest extends UnitTestCase
     {
         $persistenceSession = new Session($this->createContainer());
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
-        $this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+        self::assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
     }
 
     /**
@@ -150,7 +150,7 @@ class SessionTest extends UnitTestCase
         $entity = $this->createMock(AbstractEntity::class);
         $persistenceSession->registerReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
-        $this->assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
+        self::assertTrue($reconstitutedObjects->contains($entity), 'The object was not registered as reconstituted.');
     }
 
     /**
@@ -163,6 +163,6 @@ class SessionTest extends UnitTestCase
         $persistenceSession->registerReconstitutedEntity($entity);
         $persistenceSession->unregisterReconstitutedEntity($entity);
         $reconstitutedObjects = $persistenceSession->getReconstitutedEntities();
-        $this->assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
+        self::assertEquals(0, count($reconstitutedObjects), 'The reconstituted objects storage was not empty.');
     }
 }

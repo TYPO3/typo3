@@ -43,7 +43,7 @@ class WebProcessorTest extends UnitTestCase
         $processor = new WebProcessor();
         $logRecord = $processor->processLogRecord($logRecord);
         foreach ($environmentVariables as $key => $value) {
-            $this->assertEquals($value, $logRecord['data'][$key]);
+            self::assertEquals($value, $logRecord['data'][$key]);
         }
     }
 }

@@ -118,7 +118,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
     public function updateIsNotRequiredHavingUpdatedFormDefinitions()
     {
         $this->createStorageFormDefinition('updated', false);
-        $this->assertFalse($this->invokeCheckForUpdate());
+        self::assertFalse($this->invokeCheckForUpdate());
     }
 
     /**
@@ -127,7 +127,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
     public function updateIsRequiredHavingOutdatedStorageFormDefinitions()
     {
         $this->createStorageFormDefinition('legacy', true);
-        $this->assertTrue($this->invokeCheckForUpdate());
+        self::assertTrue($this->invokeCheckForUpdate());
     }
 
     /**
@@ -140,7 +140,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $this->createStorageFileIdentifier('updated.form.yaml'),
             'updated'
         );
-        $this->assertFalse($this->invokeCheckForUpdate());
+        self::assertFalse($this->invokeCheckForUpdate());
     }
 
     /**
@@ -158,7 +158,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             'updated',
             $finisherOverrides
         );
-        $this->assertFalse($this->invokeCheckForUpdate());
+        self::assertFalse($this->invokeCheckForUpdate());
     }
 
     /**
@@ -173,7 +173,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $this->createStorageFileIdentifier('updated.yaml'),
             'updated'
         );
-        $this->assertTrue($this->invokeCheckForUpdate());
+        self::assertTrue($this->invokeCheckForUpdate());
     }
 
     /**
@@ -193,7 +193,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             'updated',
             $finisherOverrides
         );
-        $this->assertTrue($this->invokeCheckForUpdate());
+        self::assertTrue($this->invokeCheckForUpdate());
     }
 
     /**
@@ -202,7 +202,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
     public function updateIsNotRequiredHavingOutdatedExtensionFormDefinitions()
     {
         $this->setUpAllowedExtensionPaths();
-        $this->assertFalse($this->invokeCheckForUpdate());
+        self::assertFalse($this->invokeCheckForUpdate());
     }
 
     /**
@@ -215,7 +215,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $this->createExtensionFileIdentifier('updated.form.yaml'),
             'updated'
         );
-        $this->assertFalse($this->invokeCheckForUpdate());
+        self::assertFalse($this->invokeCheckForUpdate());
     }
 
     /**
@@ -228,7 +228,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $this->createExtensionFileIdentifier('updated.yaml'),
             'updated'
         );
-        $this->assertTrue($this->invokeCheckForUpdate());
+        self::assertTrue($this->invokeCheckForUpdate());
     }
 
     /**
@@ -246,7 +246,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             'updated',
             $finisherOverrides
         );
-        $this->assertTrue($this->invokeCheckForUpdate());
+        self::assertTrue($this->invokeCheckForUpdate());
     }
 
     /*
@@ -264,10 +264,10 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
     public function performUpdateSucceedsHavingOutdatedStorageFormDefinitions()
     {
         $this->createStorageFormDefinition('legacy', true);
-        $this->assertTrue(
+        self::assertTrue(
             $this->invokePerformUpdate()
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->storageFolder->hasFile('legacy.form.yaml')
         );
     }
@@ -289,14 +289,14 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $this->createStorageFileIdentifier('updated.yaml'),
             'updated'
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->invokePerformUpdate()
         );
         $expectedFileIdentifier = $this->createStorageFileIdentifier(
             'updated.form.yaml'
         );
         foreach ($this->retrieveAllFlexForms() as $flexForm) {
-            $this->assertSame(
+            self::assertSame(
                 $expectedFileIdentifier,
                 $flexForm['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF']
             );
@@ -326,7 +326,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             'updated',
             $finisherOverrides
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->invokePerformUpdate()
         );
         $expectedFileIdentifier = $this->createStorageFileIdentifier(
@@ -338,7 +338,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $finisherOverrides
         );
         foreach ($this->retrieveAllFlexForms() as $flexForm) {
-            $this->assertSame(
+            self::assertSame(
                 $expectedFileIdentifier,
                 $flexForm['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'] ?? null
             );
@@ -348,7 +348,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
                     'settings.finishers.%s.value',
                     $finisherIdentifier
                 );
-                $this->assertSame(
+                self::assertSame(
                     $finisherValue,
                     $flexForm['data'][$sheetIdentifier]['lDEF'][$propertyName]['vDEF'] ?? null
                 );
@@ -371,14 +371,14 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             $this->createExtensionFileIdentifier('updated.yaml'),
             'updated'
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->invokePerformUpdate()
         );
         $expectedFileIdentifier = $this->createExtensionFileIdentifier(
             'updated.form.yaml'
         );
         foreach ($this->retrieveAllFlexForms() as $flexForm) {
-            $this->assertSame(
+            self::assertSame(
                 $expectedFileIdentifier,
                 $flexForm['data']['sDEF']['lDEF']['settings.persistenceIdentifier']['vDEF'] ?? null
             );
@@ -406,7 +406,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
             'updated',
             $finisherOverrides
         );
-        $this->assertTrue(
+        self::assertTrue(
             $this->invokePerformUpdate()
         );
     }

@@ -64,6 +64,6 @@ class TextTypesTest extends AbstractDataTypeBaseTestCase
     {
         $subject = $this->createSubject($columnDefinition);
 
-        $this->assertInstanceOf($className, $subject->dataType);
+        self::assertInstanceOf($className, $subject->dataType);
     }
 }

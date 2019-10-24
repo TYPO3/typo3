@@ -62,8 +62,8 @@ class ImageScriptServiceTest extends UnitTestCase
     {
         $reference = $this->getAccessibleMock(FileReference::class, [], [], '', false);
         $file = $this->createMock(File::class);
-        $file->expects($this->once())->method('process')->willReturn($this->createMock(ProcessedFile::class));
-        $reference->expects($this->once())->method('getOriginalFile')->willReturn($file);
+        $file->expects(self::once())->method('process')->willReturn($this->createMock(ProcessedFile::class));
+        $reference->expects(self::once())->method('getOriginalFile')->willReturn($file);
         $reference->_set('file', $file);
 
         $this->subject->applyProcessingInstructions($reference, []);
@@ -87,14 +87,14 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUri($imageUri, $expected): void
     {
-        $this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $this->environmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
         $file = $this->createMock(File::class);
-        $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
+        $file->expects(self::once())->method('getPublicUrl')->willReturn($imageUri);
 
-        $this->assertSame($expected, $this->subject->getImageUri($file));
+        self::assertSame($expected, $this->subject->getImageUri($file));
     }
 
     /**
@@ -115,13 +115,13 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     public function prefixIsCorrectlyAppliedToGetImageUriWithForcedAbsoluteUrl($imageUri, $expected): void
     {
-        $this->environmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $this->environmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->absRefPrefix = '/prefix/';
 
         $file = $this->createMock(File::class);
-        $file->expects($this->once())->method('getPublicUrl')->willReturn($imageUri);
+        $file->expects(self::once())->method('getPublicUrl')->willReturn($imageUri);
 
-        $this->assertSame($expected, $this->subject->getImageUri($file, true));
+        self::assertSame($expected, $this->subject->getImageUri($file, true));
     }
 }

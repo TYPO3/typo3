@@ -42,7 +42,7 @@ class OrderedProviderListTest extends UnitTestCase
 
         $subject = new OrderedProviderList();
         $subject->setProviderList([]);
-        $this->assertEquals($input, $subject->compile($input));
+        self::assertEquals($input, $subject->compile($input));
     }
 
     /**
@@ -65,7 +65,7 @@ class OrderedProviderListTest extends UnitTestCase
         $subject->setProviderList([
             FormDataProviderInterface::class => [],
         ]);
-        $this->assertEquals($providerResult, $subject->compile([]));
+        self::assertEquals($providerResult, $subject->compile([]));
     }
 
     /**
@@ -85,7 +85,7 @@ class OrderedProviderListTest extends UnitTestCase
             ],
         ]);
         $input = ['foo'];
-        $this->assertEquals($input, $subject->compile($input));
+        self::assertEquals($input, $subject->compile($input));
     }
 
     /**

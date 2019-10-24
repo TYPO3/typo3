@@ -230,7 +230,7 @@ class FormInlineAjaxControllerTest extends UnitTestCase
         $mockObject->method('getBackendUserAuthentication')->willReturn($backendUser);
         $result = $mockObject->_call('getInlineExpandCollapseStateArray');
 
-        $this->assertEmpty($result);
+        self::assertEmpty($result);
     }
 
     /**
@@ -255,6 +255,6 @@ class FormInlineAjaxControllerTest extends UnitTestCase
         $mockObject->method('getBackendUserAuthentication')->willReturn($backendUser);
         $result = $mockObject->_call('getInlineExpandCollapseStateArray');
 
-        $this->assertNotEmpty($result);
+        self::assertNotEmpty($result);
     }
 }

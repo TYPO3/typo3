@@ -68,11 +68,11 @@ class ActionControllerTest extends UnitTestCase
     public function resolveActionMethodNameReturnsTheCurrentActionMethodNameFromTheRequest()
     {
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
+        $mockRequest->expects(self::once())->method('getControllerActionName')->will(self::returnValue('fooBar'));
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooBarAction'], [], '', false);
         $mockController->_set('request', $mockRequest);
-        $this->assertEquals('fooBarAction', $mockController->_call('resolveActionMethodName'));
+        self::assertEquals('fooBarAction', $mockController->_call('resolveActionMethodName'));
     }
 
     /**
@@ -83,7 +83,7 @@ class ActionControllerTest extends UnitTestCase
         $this->expectException(NoSuchActionException::class);
         $this->expectExceptionCode(1186669086);
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->expects($this->once())->method('getControllerActionName')->will($this->returnValue('fooBar'));
+        $mockRequest->expects(self::once())->method('getControllerActionName')->will(self::returnValue('fooBar'));
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockController = $this->getAccessibleMock(ActionController::class, ['otherBarAction'], [], '', false);
         $mockController->_set('request', $mockRequest);
@@ -101,9 +101,9 @@ class ActionControllerTest extends UnitTestCase
         $mockArguments = $this->getMockBuilder(Arguments::class)
             ->setMethods(['addNewArgument', 'removeAll'])
             ->getMock();
-        $mockArguments->expects($this->at(0))->method('addNewArgument')->with('stringArgument', 'string', true);
-        $mockArguments->expects($this->at(1))->method('addNewArgument')->with('integerArgument', 'integer', true);
-        $mockArguments->expects($this->at(2))->method('addNewArgument')->with('objectArgument', 'F3_Foo_Bar', true);
+        $mockArguments->expects(self::at(0))->method('addNewArgument')->with('stringArgument', 'string', true);
+        $mockArguments->expects(self::at(1))->method('addNewArgument')->with('integerArgument', 'integer', true);
+        $mockArguments->expects(self::at(2))->method('addNewArgument')->with('objectArgument', 'F3_Foo_Bar', true);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
 
         $classSchemaMethod = new ClassSchema\Method(
@@ -144,14 +144,14 @@ class ActionControllerTest extends UnitTestCase
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getMethod')
             ->with('fooAction')
             ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSchema')
             ->with(get_class($mockController))
             ->willReturn($classSchemaMock);
@@ -169,9 +169,9 @@ class ActionControllerTest extends UnitTestCase
     {
         $mockRequest = $this->createMock(Request::class);
         $mockArguments = $this->createMock(Arguments::class);
-        $mockArguments->expects($this->at(0))->method('addNewArgument')->with('arg1', 'string', true);
-        $mockArguments->expects($this->at(1))->method('addNewArgument')->with('arg2', 'array', false, [21]);
-        $mockArguments->expects($this->at(2))->method('addNewArgument')->with('arg3', 'string', false, 42);
+        $mockArguments->expects(self::at(0))->method('addNewArgument')->with('arg1', 'string', true);
+        $mockArguments->expects(self::at(1))->method('addNewArgument')->with('arg2', 'array', false, [21]);
+        $mockArguments->expects(self::at(2))->method('addNewArgument')->with('arg3', 'string', false, 42);
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction', 'evaluateDontValidateAnnotations'], [], '', false);
 
         $classSchemaMethod = new ClassSchema\Method(
@@ -213,14 +213,14 @@ class ActionControllerTest extends UnitTestCase
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getMethod')
             ->with('fooAction')
             ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSchema')
             ->with(get_class($mockController))
             ->willReturn($classSchemaMock);
@@ -260,14 +260,14 @@ class ActionControllerTest extends UnitTestCase
 
         $classSchemaMock = $this->createMock(ClassSchema::class);
         $classSchemaMock
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getMethod')
             ->with('fooAction')
             ->willReturn($classSchemaMethod);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSchema')
             ->with(get_class($mockController))
             ->willReturn($classSchemaMock);
@@ -290,13 +290,13 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
         /** @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($configuration));
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
             ->setMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setTemplateRootPaths'])
             ->getMock();
-        $view->expects($this->once())->method('setTemplateRootPaths')->with($expected);
+        $view->expects(self::once())->method('setTemplateRootPaths')->with($expected);
         $mockController->_call('setViewConfiguration', $view);
     }
 
@@ -368,13 +368,13 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
         /** @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($configuration));
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
             ->setMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setlayoutRootPaths'])
             ->getMock();
-        $view->expects($this->once())->method('setlayoutRootPaths')->with($expected);
+        $view->expects(self::once())->method('setlayoutRootPaths')->with($expected);
         $mockController->_call('setViewConfiguration', $view);
     }
 
@@ -446,13 +446,13 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
         /** @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($configuration));
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
             ->setMethods(['setControllerContext', 'assign', 'assignMultiple', 'canRender', 'render', 'initializeView', 'setpartialRootPaths'])
             ->getMock();
-        $view->expects($this->once())->method('setpartialRootPaths')->with($expected);
+        $view->expects(self::once())->method('setpartialRootPaths')->with($expected);
         $mockController->_call('setViewConfiguration', $view);
     }
 
@@ -549,14 +549,14 @@ class ActionControllerTest extends UnitTestCase
     public function headerAssetDataProvider()
     {
         $viewWithHeaderData = $this->getMockBuilder(FluidTemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithHeaderData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
-        $viewWithHeaderData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn(null);
+        $viewWithHeaderData->expects(self::at(0))->method('renderSection')->with('HeaderAssets', self::anything(), true)->willReturn('custom-header-data');
+        $viewWithHeaderData->expects(self::at(1))->method('renderSection')->with('FooterAssets', self::anything(), true)->willReturn(null);
         $viewWithFooterData = $this->getMockBuilder(FluidTemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithFooterData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn(null);
-        $viewWithFooterData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $viewWithFooterData->expects(self::at(0))->method('renderSection')->with('HeaderAssets', self::anything(), true)->willReturn(null);
+        $viewWithFooterData->expects(self::at(1))->method('renderSection')->with('FooterAssets', self::anything(), true)->willReturn('custom-footer-data');
         $viewWithBothData = $this->getMockBuilder(FluidTemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithBothData->expects($this->at(0))->method('renderSection')->with('HeaderAssets', $this->anything(), true)->willReturn('custom-header-data');
-        $viewWithBothData->expects($this->at(1))->method('renderSection')->with('FooterAssets', $this->anything(), true)->willReturn('custom-footer-data');
+        $viewWithBothData->expects(self::at(0))->method('renderSection')->with('HeaderAssets', self::anything(), true)->willReturn('custom-header-data');
+        $viewWithBothData->expects(self::at(1))->method('renderSection')->with('FooterAssets', self::anything(), true)->willReturn('custom-footer-data');
         $invalidView = $this->getMockBuilder(AbstractTemplateView::class)->disableOriginalConstructor()->getMockForAbstractClass();
         return [
             [$viewWithHeaderData, 'custom-header-data', null],

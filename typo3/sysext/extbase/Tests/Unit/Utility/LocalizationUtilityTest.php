@@ -236,7 +236,7 @@ class LocalizationUtilityTest extends UnitTestCase
             ]
         ];
         $result = $method->invoke(null, $input);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -244,7 +244,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateForEmptyStringKeyReturnsNull()
     {
-        $this->assertNull(LocalizationUtility::translate('', 'extbase'));
+        self::assertNull(LocalizationUtility::translate('', 'extbase'));
     }
 
     /**
@@ -252,7 +252,7 @@ class LocalizationUtilityTest extends UnitTestCase
      */
     public function translateForEmptyStringKeyWithArgumentsReturnsNull()
     {
-        $this->assertNull(LocalizationUtility::translate('', 'extbase', ['argument']));
+        self::assertNull(LocalizationUtility::translate('', 'extbase', ['argument']));
     }
 
     /**
@@ -318,7 +318,7 @@ class LocalizationUtilityTest extends UnitTestCase
         ];
         $GLOBALS['LANG'] = $this->LOCAL_LANG;
 
-        $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, null, $altLanguageKeys));
+        self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, null, $altLanguageKeys));
     }
 
     /**
@@ -342,7 +342,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->LOCAL_LANG);
         $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
-        $this->assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
+        self::assertEquals($expected, LocalizationUtility::translate($key, 'core', $arguments, $languageKey, $altLanguageKeys));
     }
 
     /**
@@ -469,7 +469,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $property->setAccessible(true);
         $result = $property->getValue();
 
-        $this->assertEquals($expected, $result[$this->languageFilePath][$languageKey]);
+        self::assertEquals($expected, $result[$this->languageFilePath][$languageKey]);
     }
 
     /**
@@ -504,8 +504,8 @@ class LocalizationUtilityTest extends UnitTestCase
         $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
-        $this->assertNotNull($result);
-        $this->assertEquals('', $result);
+        self::assertNotNull($result);
+        self::assertEquals('', $result);
     }
 
     /**
@@ -546,7 +546,7 @@ class LocalizationUtilityTest extends UnitTestCase
         $GLOBALS['LANG'] = new \TYPO3\CMS\Core\Localization\LanguageService();
 
         $result = LocalizationUtility::translate('key1', 'core', null, 'dk');
-        $this->assertNotNull($result);
-        $this->assertEquals('I am a new key and there is no xlf file', $result);
+        self::assertNotNull($result);
+        self::assertEquals('I am a new key and there is no xlf file', $result);
     }
 }

@@ -39,8 +39,8 @@ class CodeStatisticsTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
 
-        $this->assertTrue($subject->isFileIgnored());
-        $this->assertEquals(2, $subject->getNumberOfIgnoredLines());
-        $this->assertEquals(7, $subject->getNumberOfEffectiveCodeLines());
+        self::assertTrue($subject->isFileIgnored());
+        self::assertEquals(2, $subject->getNumberOfIgnoredLines());
+        self::assertEquals(7, $subject->getNumberOfEffectiveCodeLines());
     }
 }

@@ -58,7 +58,7 @@ class FormEditorControllerTest extends UnitTestCase
         ], [], '', false);
 
         $mockTranslationService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('translate')
             ->willReturnArgument(4);
 
@@ -136,7 +136,7 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('getInsertRenderablesPanelConfiguration', $input));
+        self::assertSame($expected, $mockController->_call('getInsertRenderablesPanelConfiguration', $input));
     }
 
     /**
@@ -156,7 +156,7 @@ class FormEditorControllerTest extends UnitTestCase
         ], [], '', false);
 
         $mockTranslationService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
@@ -270,7 +270,7 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('getFormEditorDefinitions'));
+        self::assertSame($expected, $mockController->_call('getFormEditorDefinitions'));
     }
 
     /**
@@ -468,7 +468,7 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('transformMultiValuePropertiesForFormEditor', $input, 'type', $multiValueProperties));
+        self::assertSame($expected, $mockController->_call('transformMultiValuePropertiesForFormEditor', $input, 'type', $multiValueProperties));
     }
 
     /**
@@ -503,6 +503,6 @@ class FormEditorControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('filterEmptyArrays', $input));
+        self::assertSame($expected, $mockController->_call('filterEmptyArrays', $input));
     }
 }

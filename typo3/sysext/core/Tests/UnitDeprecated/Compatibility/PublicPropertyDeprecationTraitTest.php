@@ -86,7 +86,7 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
      */
     public function issetWorksAsExpected(bool $expected, string $property)
     {
-        $this->assertSame($expected, isset($this->fixture->$property));
+        self::assertSame($expected, isset($this->fixture->$property));
     }
 
     /**
@@ -95,17 +95,17 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
     public function unknownPropertyCanBeHandledAsUsual()
     {
         // Uses __isset()
-        $this->assertFalse(isset($this->fixture->unknownProperty));
+        self::assertFalse(isset($this->fixture->unknownProperty));
         // Uses __set()
         $this->fixture->unknownProperty = 23;
         // Don't uses __isset()
-        $this->assertTrue(isset($this->fixture->unknownProperty));
+        self::assertTrue(isset($this->fixture->unknownProperty));
         // Don't uses __get()
-        $this->assertSame(23, $this->fixture->unknownProperty);
+        self::assertSame(23, $this->fixture->unknownProperty);
         // Don't uses __unset()
         unset($this->fixture->unknownProperty);
         // Uses __isset()
-        $this->assertFalse(isset($this->fixture->unknownProperty));
+        self::assertFalse(isset($this->fixture->unknownProperty));
     }
 
     /**
@@ -113,12 +113,12 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
      */
     public function publicPropertyCanBeHandledAsUsual()
     {
-        $this->assertFalse(isset($this->fixture->unsetPublicProperty));
+        self::assertFalse(isset($this->fixture->unsetPublicProperty));
         $this->fixture->unsetPublicProperty = 23;
-        $this->assertTrue(isset($this->fixture->unsetPublicProperty));
-        $this->assertSame(23, $this->fixture->unsetPublicProperty);
+        self::assertTrue(isset($this->fixture->unsetPublicProperty));
+        self::assertSame(23, $this->fixture->unsetPublicProperty);
         unset($this->fixture->unsetPublicProperty);
-        $this->assertFalse(isset($this->fixture->unsetPublicProperty));
+        self::assertFalse(isset($this->fixture->unsetPublicProperty));
     }
 
     /**
@@ -126,12 +126,12 @@ class PublicPropertyDeprecationTraitTest extends UnitTestCase
      */
     public function taggedPropertyCanBeHandledLikePublicProperty()
     {
-        $this->assertFalse(isset($this->fixture->unsetTaggedProperty));
+        self::assertFalse(isset($this->fixture->unsetTaggedProperty));
         $this->fixture->unsetTaggedProperty = 23;
-        $this->assertTrue(isset($this->fixture->unsetTaggedProperty));
-        $this->assertSame(23, $this->fixture->unsetTaggedProperty);
+        self::assertTrue(isset($this->fixture->unsetTaggedProperty));
+        self::assertSame(23, $this->fixture->unsetTaggedProperty);
         unset($this->fixture->unsetTaggedProperty);
-        $this->assertFalse(isset($this->fixture->unsetTaggedProperty));
+        self::assertFalse(isset($this->fixture->unsetTaggedProperty));
     }
 
     /**

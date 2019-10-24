@@ -226,7 +226,7 @@ class CObjectViewHelperTest extends ViewHelperBaseTestcase
 
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
         $expectedResult = 'Hello World';
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**

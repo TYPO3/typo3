@@ -37,7 +37,7 @@ class MethodParameterTest extends UnitTestCase
      */
     public function classSchemaDetectsMandatoryParams(): void
     {
-        static::assertFalse(
+        self::assertFalse(
             (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
             ->getMethod('methodWithMandatoryParam')
             ->getParameter('param')
@@ -50,9 +50,9 @@ class MethodParameterTest extends UnitTestCase
      */
     public function classSchemaDetectsNullableParams(): void
     {
-        static::markTestSkipped('Skip until MethodParameter::allowsNull() is needed and properly implemented');
+        self::markTestSkipped('Skip until MethodParameter::allowsNull() is needed and properly implemented');
 
-        static::assertTrue(
+        self::assertTrue(
             (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
                 ->getMethod('methodWithNullableParam')
                 ->getParameter('param')
@@ -65,7 +65,7 @@ class MethodParameterTest extends UnitTestCase
      */
     public function classSchemaDetectsDefaultValueParams(): void
     {
-        static::assertSame(
+        self::assertSame(
             'foo',
             (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
                 ->getMethod('methodWithDefaultValueParam')
@@ -79,7 +79,7 @@ class MethodParameterTest extends UnitTestCase
      */
     public function classSchemaDetectsParamTypeFromTypeHint(): void
     {
-        static::assertSame(
+        self::assertSame(
             'string',
             (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
                 ->getMethod('methodWithTypeHintedParam')
@@ -95,8 +95,8 @@ class MethodParameterTest extends UnitTestCase
     {
         $classSchemaMethod = (new ClassSchema(DummyControllerWithIgnoreValidationDoctrineAnnotation::class))
             ->getMethod('someAction');
-        static::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
-        static::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
+        self::assertTrue($classSchemaMethod->getParameter('foo')->ignoreValidation());
+        self::assertTrue($classSchemaMethod->getParameter('bar')->ignoreValidation());
 
         static::expectException(ClassSchema\Exception\NoSuchMethodParameterException::class);
         $classSchemaMethod->getParameter('baz')->ignoreValidation();
@@ -108,10 +108,10 @@ class MethodParameterTest extends UnitTestCase
     public function classSchemaDetectsConstructorArgumentsWithDependencies(): void
     {
         $classSchema = new ClassSchema(DummyClassWithConstructorAndConstructorArgumentsWithDependencies::class);
-        static::assertTrue($classSchema->hasConstructor());
+        self::assertTrue($classSchema->hasConstructor());
 
         $method = $classSchema->getMethod('__construct');
-        static::assertSame(DummyClassWithGettersAndSetters::class, $method->getParameter('foo')->getDependency());
+        self::assertSame(DummyClassWithGettersAndSetters::class, $method->getParameter('foo')->getDependency());
     }
 
     /**
@@ -121,7 +121,7 @@ class MethodParameterTest extends UnitTestCase
     {
         $this->resetSingletonInstances = true;
         $classSchema = new ClassSchema(DummyController::class);
-        static::assertSame(
+        self::assertSame(
             [
                 [
                     'name' => 'StringLength',

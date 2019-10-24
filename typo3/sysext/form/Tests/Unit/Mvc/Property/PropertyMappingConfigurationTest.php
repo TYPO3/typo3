@@ -70,7 +70,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getPropertyMappingConfiguration')
             ->willReturn($this->extbasePropertyMappingConfiguration);
 
@@ -81,7 +81,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $this->rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProcessingRule')
             ->willReturn($this->processingRule);
 
@@ -92,12 +92,12 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRootForm')
             ->willReturn($this->rootForm);
 
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getIdentifier')
             ->willReturn('foobar');
 
@@ -127,19 +127,19 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // No validators
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         // Mime Types not important
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['allowedMimeTypes' => []]);
 
         // Check if the UploadFileReference is included
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->with(UploadedFileReferenceConverter::class);
 
@@ -167,19 +167,19 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         // Add some Mime types
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProperties')
             ->willReturn($mimeTypes);
 
         // Expect the array to contain the MimeTypeValidator
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->willReturnCallback(function ($class, $config) {
                 $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $config);
@@ -212,7 +212,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $objectManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturnMap([
                 [MimeTypeValidator::class, $mimeTypeValidator],
@@ -223,19 +223,19 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         // Set the file mount
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '/tmp']);
 
         // Expect the array to contain the /tmp upload directory
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->willReturnCallback(function ($class, $config) {
                 $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $config);
@@ -268,7 +268,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $objectManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturnMap([
                 [MimeTypeValidator::class, $mimeTypeValidator],
@@ -279,24 +279,24 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         $this->rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getPersistenceIdentifier')
             ->willReturn('/tmp/somefile');
 
         // Set the file mount
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '']);
 
         // Expect the array to contain the /tmp upload directory
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->willReturnCallback(function ($class, $config) {
                 $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $config);
@@ -329,7 +329,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $objectManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturnMap([
                 [MimeTypeValidator::class, $mimeTypeValidator],
@@ -340,24 +340,24 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
         // Don't add any validators for now
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn(new \SplObjectStorage());
 
         $this->rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getPersistenceIdentifier')
             ->willReturn('');
 
         // Set the file mount
         $this->fileUpload
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getProperties')
             ->willReturn(['saveToFileMount' => '']);
 
         // Expect the array to contain the /tmp upload directory
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->willReturnCallback(function ($class, $config) {
                 $this->assertArrayNotHasKey(UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER, $config);
@@ -390,7 +390,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $objectManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturnMap([
                 [MimeTypeValidator::class, $mimeTypeValidator],
@@ -404,13 +404,13 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         $validators->attach($otherValidator);
 
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn($validators);
 
         // Expect the array to contain the /tmp upload directory
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->willReturnCallback(function ($class, $config) use ($otherValidator) {
                 $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $config);
@@ -446,7 +446,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ->getMock();
 
         $objectManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturnMap([
                 [MimeTypeValidator::class, $mimeTypeValidator],
@@ -460,13 +460,13 @@ class PropertyMappingConfigurationTest extends UnitTestCase
         $validators->attach($notEmptyValidator);
 
         $this->processingRule
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getValidators')
             ->willReturn($validators);
 
         // Expect the array to contain the /tmp upload directory
         $this->extbasePropertyMappingConfiguration
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('setTypeConverterOptions')
             ->willReturnCallback(function ($class, $config) use ($notEmptyValidator) {
                 $this->assertArrayHasKey(UploadedFileReferenceConverter::CONFIGURATION_FILE_VALIDATORS, $config);

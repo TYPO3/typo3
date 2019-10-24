@@ -56,8 +56,8 @@ class BackendUserConfigurationTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals('A', $this->backendUserConfiguration->get('key'));
-        $this->assertEquals('B', $this->backendUserConfiguration->get('nested.key'));
+        self::assertEquals('A', $this->backendUserConfiguration->get('key'));
+        self::assertEquals('B', $this->backendUserConfiguration->get('nested.key'));
     }
 
     /**
@@ -71,7 +71,7 @@ class BackendUserConfigurationTest extends UnitTestCase
         ];
         $this->backendUser->reveal()->uc = $configuration;
 
-        $this->assertEquals($configuration, $this->backendUserConfiguration->getAll());
+        self::assertEquals($configuration, $this->backendUserConfiguration->getAll());
     }
 
     /**

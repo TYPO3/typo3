@@ -84,8 +84,8 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('numberOfPages', 100);
         $this->controller->_set('currentPage', 50);
         $this->controller->_call('calculateDisplayRange');
-        $this->assertSame(46, $this->controller->_get('displayRangeStart'));
-        $this->assertSame(53, $this->controller->_get('displayRangeEnd'));
+        self::assertSame(46, $this->controller->_get('displayRangeStart'));
+        self::assertSame(53, $this->controller->_get('displayRangeEnd'));
     }
 
     /**
@@ -97,8 +97,8 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('numberOfPages', 100);
         $this->controller->_set('currentPage', 50);
         $this->controller->_call('calculateDisplayRange');
-        $this->assertSame(47, $this->controller->_get('displayRangeStart'));
-        $this->assertSame(53, $this->controller->_get('displayRangeEnd'));
+        self::assertSame(47, $this->controller->_get('displayRangeStart'));
+        self::assertSame(53, $this->controller->_get('displayRangeEnd'));
     }
 
     /**
@@ -110,8 +110,8 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('numberOfPages', 100);
         $this->controller->_set('currentPage', 1);
         $this->controller->_call('calculateDisplayRange');
-        $this->assertSame(1, $this->controller->_get('displayRangeStart'));
-        $this->assertSame(8, $this->controller->_get('displayRangeEnd'));
+        self::assertSame(1, $this->controller->_get('displayRangeStart'));
+        self::assertSame(8, $this->controller->_get('displayRangeEnd'));
     }
 
     /**
@@ -123,8 +123,8 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('numberOfPages', 100);
         $this->controller->_set('currentPage', 1);
         $this->controller->_call('calculateDisplayRange');
-        $this->assertSame(1, $this->controller->_get('displayRangeStart'));
-        $this->assertSame(7, $this->controller->_get('displayRangeEnd'));
+        self::assertSame(1, $this->controller->_get('displayRangeStart'));
+        self::assertSame(7, $this->controller->_get('displayRangeEnd'));
     }
 
     /**
@@ -136,8 +136,8 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('numberOfPages', 100);
         $this->controller->_set('currentPage', 100);
         $this->controller->_call('calculateDisplayRange');
-        $this->assertSame(93, $this->controller->_get('displayRangeStart'));
-        $this->assertSame(100, $this->controller->_get('displayRangeEnd'));
+        self::assertSame(93, $this->controller->_get('displayRangeStart'));
+        self::assertSame(100, $this->controller->_get('displayRangeEnd'));
     }
 
     /**
@@ -149,8 +149,8 @@ class PaginateControllerTest extends UnitTestCase
         $this->controller->_set('numberOfPages', 100);
         $this->controller->_set('currentPage', 100);
         $this->controller->_call('calculateDisplayRange');
-        $this->assertSame(94, $this->controller->_get('displayRangeStart'));
-        $this->assertSame(100, $this->controller->_get('displayRangeEnd'));
+        self::assertSame(94, $this->controller->_get('displayRangeStart'));
+        self::assertSame(100, $this->controller->_get('displayRangeEnd'));
     }
 
     /**
@@ -160,10 +160,10 @@ class PaginateControllerTest extends UnitTestCase
     {
         $mockQueryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
         $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
-        $mockQueryResult->expects($this->any())->method('getQuery')->will($this->returnValue($mockQuery));
+        $mockQueryResult->expects(self::any())->method('getQuery')->will(self::returnValue($mockQuery));
         $this->controller->_set('objects', $mockQueryResult);
         $this->controller->indexAction();
-        $this->assertSame($mockQueryResult, $this->controller->_get('objects'));
+        self::assertSame($mockQueryResult, $this->controller->_get('objects'));
     }
 
     /**
@@ -174,7 +174,7 @@ class PaginateControllerTest extends UnitTestCase
         $objects = [];
         $this->controller->_set('objects', $objects);
         $this->controller->indexAction();
-        $this->assertSame($objects, $this->controller->_get('objects'));
+        self::assertSame($objects, $this->controller->_get('objects'));
     }
 
     /**
@@ -185,7 +185,7 @@ class PaginateControllerTest extends UnitTestCase
         $objects = new ObjectStorage();
         $this->controller->_set('objects', $objects);
         $this->controller->indexAction();
-        $this->assertSame($objects, $this->controller->_get('objects'));
+        self::assertSame($objects, $this->controller->_get('objects'));
     }
 
     /**
@@ -203,7 +203,7 @@ class PaginateControllerTest extends UnitTestCase
         for ($j = 0; $j <= 9; $j++) {
             $expectedPortion[] = $objects->toArray()[$j];
         }
-        $this->assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 0));
+        self::assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 0));
     }
 
     /**
@@ -222,7 +222,7 @@ class PaginateControllerTest extends UnitTestCase
         for ($j = 10; $j <= 19; $j++) {
             $expectedPortion[] = $objects->toArray()[$j];
         }
-        $this->assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 10));
+        self::assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 10));
     }
 
     /**
@@ -241,7 +241,7 @@ class PaginateControllerTest extends UnitTestCase
         for ($j = 20; $j <= 25; $j++) {
             $expectedPortion[] = $objects->toArray()[$j];
         }
-        $this->assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 20));
+        self::assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 20));
     }
 
     /**
@@ -259,7 +259,7 @@ class PaginateControllerTest extends UnitTestCase
         for ($j = 0; $j <= 9; $j++) {
             $expectedPortion = array_slice($objects, 0, 10);
         }
-        $this->assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 0));
+        self::assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 0));
     }
 
     /**
@@ -278,6 +278,6 @@ class PaginateControllerTest extends UnitTestCase
         for ($j = 10; $j <= 19; $j++) {
             $expectedPortion = array_slice($objects, 10, 10);
         }
-        $this->assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 10));
+        self::assertSame($expectedPortion, $this->controller->_call('prepareObjectsSlice', 10, 10));
     }
 }

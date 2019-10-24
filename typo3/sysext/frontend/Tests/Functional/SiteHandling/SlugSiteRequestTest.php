@@ -130,8 +130,8 @@ class SlugSiteRequestTest extends AbstractTestCase
             new InternalRequest($uri),
             $this->internalRequestContext
         );
-        static::assertSame($expectedStatusCode, $response->getStatusCode());
-        static::assertSame($expectedHeaders, $response->getHeaders());
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
     /**
@@ -175,8 +175,8 @@ class SlugSiteRequestTest extends AbstractTestCase
             new InternalRequest($uri),
             $this->internalRequestContext
         );
-        static::assertSame($expectedStatusCode, $response->getStatusCode());
-        static::assertSame($expectedHeaders, $response->getHeaders());
+        self::assertSame($expectedStatusCode, $response->getStatusCode());
+        self::assertSame($expectedHeaders, $response->getHeaders());
     }
 
     /**
@@ -207,15 +207,15 @@ class SlugSiteRequestTest extends AbstractTestCase
             (string)$response->getBody()
         );
 
-        static::assertSame(
+        self::assertSame(
             $expectedStatusCode,
             $response->getStatusCode()
         );
-        static::assertSame(
+        self::assertSame(
             $this->siteTitle,
             $responseStructure->getScopePath('template/sitetitle')
         );
-        static::assertSame(
+        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -237,7 +237,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $uri = 'https://website.other/any/invalid/slug';
         $response = $this->executeFrontendRequest(new InternalRequest($uri));
-        static::assertSame(404, $response->getStatusCode());
+        self::assertSame(404, $response->getStatusCode());
     }
 
     /**
@@ -260,11 +260,11 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame(
+        self::assertSame(
             404,
             $response->getStatusCode()
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             'message: The requested page does not exist',
             (string)$response->getBody()
         );
@@ -289,11 +289,11 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame(
+        self::assertSame(
             404,
             $response->getStatusCode()
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             'message: The requested page does not exist',
             (string)$response->getBody()
         );
@@ -352,15 +352,15 @@ class SlugSiteRequestTest extends AbstractTestCase
             (string)$response->getBody()
         );
 
-        static::assertSame(
+        self::assertSame(
             200,
             $response->getStatusCode()
         );
-        static::assertSame(
+        self::assertSame(
             $this->siteTitle,
             $responseStructure->getScopePath('template/sitetitle')
         );
-        static::assertSame(
+        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -419,15 +419,15 @@ class SlugSiteRequestTest extends AbstractTestCase
             (string)$response->getBody()
         );
 
-        static::assertSame(
+        self::assertSame(
             200,
             $response->getStatusCode()
         );
-        static::assertSame(
+        self::assertSame(
             $this->siteTitle,
             $responseStructure->getScopePath('template/sitetitle')
         );
-        static::assertSame(
+        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -485,15 +485,15 @@ class SlugSiteRequestTest extends AbstractTestCase
             (string)$response->getBody()
         );
 
-        static::assertSame(
+        self::assertSame(
             200,
             $response->getStatusCode()
         );
-        static::assertSame(
+        self::assertSame(
             $this->siteTitle,
             $responseStructure->getScopePath('template/sitetitle')
         );
-        static::assertSame(
+        self::assertSame(
             $expectedPageTitle,
             $responseStructure->getScopePath('page/title')
         );
@@ -543,15 +543,15 @@ class SlugSiteRequestTest extends AbstractTestCase
                 ->withFrontendUserId($frontendUserId)
         );
 
-        static::assertSame(
+        self::assertSame(
             403,
             $response->getStatusCode()
         );
-        static::assertThat(
+        self::assertThat(
             (string)$response->getBody(),
-            static::logicalOr(
-                static::stringContains('Reason: ID was not an accessible page'),
-                static::stringContains('Reason: Subsection was found and not accessible')
+            self::logicalOr(
+                self::stringContains('Reason: ID was not an accessible page'),
+                self::stringContains('Reason: Subsection was found and not accessible')
             )
         );
     }
@@ -578,19 +578,19 @@ class SlugSiteRequestTest extends AbstractTestCase
                 ->withFrontendUserId($frontendUserId)
         );
 
-        static::assertSame(
+        self::assertSame(
             403,
             $response->getStatusCode()
         );
-        static::assertStringContainsString(
+        self::assertStringContainsString(
             'reasons: code,fe_group',
             (string)$response->getBody()
         );
-        static::assertThat(
+        self::assertThat(
             (string)$response->getBody(),
-            static::logicalOr(
-                static::stringContains('message: ID was not an accessible page'),
-                static::stringContains('message: Subsection was found and not accessible')
+            self::logicalOr(
+                self::stringContains('message: ID was not an accessible page'),
+                self::stringContains('message: Subsection was found and not accessible')
             )
         );
     }
@@ -605,7 +605,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      */
     public function restrictedPageSendsForbiddenResponseWithUnauthorizedVisitorWithHavingPageErrorHandling(string $uri, int $frontendUserId)
     {
-        $this->markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
+        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
 
         $this->writeSiteConfiguration(
             'website-local',
@@ -620,7 +620,7 @@ class SlugSiteRequestTest extends AbstractTestCase
                 ->withFrontendUserId($frontendUserId)
         );
 
-        static::assertSame(
+        self::assertSame(
             403,
             $response->getStatusCode()
         );
@@ -649,15 +649,15 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
         $json = json_decode((string)$response->getBody(), true);
 
-        static::assertSame(
+        self::assertSame(
             403,
             $response->getStatusCode()
         );
-        static::assertThat(
+        self::assertThat(
             $json['message'] ?? null,
-            static::logicalOr(
-                static::identicalTo('ID was not an accessible page'),
-                static::identicalTo('Subsection was found and not accessible')
+            self::logicalOr(
+                self::identicalTo('ID was not an accessible page'),
+                self::identicalTo('Subsection was found and not accessible')
             )
         );
     }
@@ -706,7 +706,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             new InternalRequest($uri),
             $this->internalRequestContext
         );
-        static::assertSame(404, $response->getStatusCode());
+        self::assertSame(404, $response->getStatusCode());
     }
 
     /**
@@ -729,15 +729,15 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame(
+        self::assertSame(
             404,
             $response->getStatusCode()
         );
-        static::assertThat(
+        self::assertThat(
             (string)$response->getBody(),
-            static::logicalOr(
-                static::stringContains('message: Request parameters could not be validated (&amp;cHash empty)'),
-                static::stringContains('message: Request parameters could not be validated (&amp;cHash comparison failed)')
+            self::logicalOr(
+                self::stringContains('message: Request parameters could not be validated (&amp;cHash empty)'),
+                self::stringContains('message: Request parameters could not be validated (&amp;cHash comparison failed)')
             )
         );
     }
@@ -751,7 +751,7 @@ class SlugSiteRequestTest extends AbstractTestCase
      */
     public function pageRequestSendsNotFoundResponseWithInvalidCacheHashWithHavingPageErrorHandling(string $uri)
     {
-        $this->markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
+        self::markTestSkipped('Skipped until PageContentErrorHandler::handlePageError does not use HTTP anymore');
 
         $this->writeSiteConfiguration(
             'website-local',
@@ -765,7 +765,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame(
+        self::assertSame(
             404,
             $response->getStatusCode()
         );
@@ -792,15 +792,15 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
         $json = json_decode((string)$response->getBody(), true);
 
-        static::assertSame(
+        self::assertSame(
             404,
             $response->getStatusCode()
         );
-        static::assertThat(
+        self::assertThat(
             $json['message'] ?? null,
-            static::logicalOr(
-                static::identicalTo('Request parameters could not be validated (&cHash empty)'),
-                static::identicalTo('Request parameters could not be validated (&cHash comparison failed)')
+            self::logicalOr(
+                self::identicalTo('Request parameters could not be validated (&cHash empty)'),
+                self::identicalTo('Request parameters could not be validated (&cHash comparison failed)')
             )
         );
     }
@@ -856,7 +856,7 @@ class SlugSiteRequestTest extends AbstractTestCase
         $responseStructure = ResponseContent::fromString(
             (string)$response->getBody()
         );
-        static::assertSame(
+        self::assertSame(
             '1',
             $responseStructure->getScopePath('getpost/testing.value')
         );

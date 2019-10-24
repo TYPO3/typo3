@@ -71,7 +71,7 @@ class IconTest extends UnitTestCase
      */
     public function renderAndCastToStringReturnsTheSameCode()
     {
-        $this->assertEquals($this->subject->render(), (string)$this->subject);
+        self::assertEquals($this->subject->render(), (string)$this->subject);
     }
 
     /**
@@ -79,7 +79,7 @@ class IconTest extends UnitTestCase
      */
     public function getIdentifierReturnsCorrectIdentifier()
     {
-        $this->assertEquals($this->iconIdentifier, $this->subject->getIdentifier());
+        self::assertEquals($this->iconIdentifier, $this->subject->getIdentifier());
     }
 
     /**
@@ -87,7 +87,7 @@ class IconTest extends UnitTestCase
      */
     public function getOverlayIdentifierReturnsCorrectIdentifier()
     {
-        $this->assertEquals($this->overlayIdentifier, $this->subject->getOverlayIcon()->getIdentifier());
+        self::assertEquals($this->overlayIdentifier, $this->subject->getOverlayIcon()->getIdentifier());
     }
 
     /**
@@ -95,7 +95,7 @@ class IconTest extends UnitTestCase
      */
     public function getSizedentifierReturnsCorrectIdentifier()
     {
-        $this->assertEquals(Icon::SIZE_SMALL, $this->subject->getSize());
+        self::assertEquals(Icon::SIZE_SMALL, $this->subject->getSize());
     }
 
     /**
@@ -103,6 +103,6 @@ class IconTest extends UnitTestCase
      */
     public function getStateReturnsCorrectIdentifier()
     {
-        $this->assertTrue($this->subject->getState()->equals(IconState::STATE_DISABLED));
+        self::assertTrue($this->subject->getState()->equals(IconState::STATE_DISABLED));
     }
 }

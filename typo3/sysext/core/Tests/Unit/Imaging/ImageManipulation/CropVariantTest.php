@@ -84,8 +84,8 @@ class CropVariantTest extends UnitTestCase
     public function createFromTcaWorks()
     {
         $cropVariant = CropVariant::createFromConfiguration(self::$expectedConfig['id'], self::$tca);
-        $this->assertInstanceOf(CropVariant::class, $cropVariant);
-        $this->assertSame(self::$expectedConfig, $cropVariant->asArray());
+        self::assertInstanceOf(CropVariant::class, $cropVariant);
+        self::assertSame(self::$expectedConfig, $cropVariant->asArray());
     }
 
     /**
@@ -95,7 +95,7 @@ class CropVariantTest extends UnitTestCase
     {
         $tca = self::$tca;
         unset($tca['selectedRatio']);
-        $this->assertInstanceOf(CropVariant::class, CropVariant::createFromConfiguration(self::$expectedConfig['id'], $tca));
+        self::assertInstanceOf(CropVariant::class, CropVariant::createFromConfiguration(self::$expectedConfig['id'], $tca));
     }
 
     /**

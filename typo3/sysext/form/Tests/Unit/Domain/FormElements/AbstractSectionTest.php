@@ -52,7 +52,7 @@ class AbstractSectionTest extends UnitTestCase
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString()
     {
         $section = new Section('foobar', 'foobar');
-        $this->assertInstanceOf(AbstractSection::class, $section);
+        self::assertInstanceOf(AbstractSection::class, $section);
     }
 
     /**
@@ -66,11 +66,11 @@ class AbstractSectionTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRenderingOptions')
             ->willReturn(['skipUnknownElements' => false]);
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTypeDefinitions')
             ->willReturn([]);
 
@@ -87,7 +87,7 @@ class AbstractSectionTest extends UnitTestCase
         );
 
         $mockAbstractSection
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getRootForm')
             ->willReturn($rootForm);
 
@@ -108,11 +108,11 @@ class AbstractSectionTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRenderingOptions')
             ->willReturn(['skipUnknownElements' => true]);
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTypeDefinitions')
             ->willReturn([]);
 
@@ -131,7 +131,7 @@ class AbstractSectionTest extends UnitTestCase
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|AbstractSection $mockAbstractSection */
         $mockAbstractSection
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRootForm')
             ->willReturn($rootForm);
 
@@ -141,9 +141,9 @@ class AbstractSectionTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
         $result = $mockAbstractSection->createElement('foo', 'bar');
 
-        $this->assertInstanceOf(UnknownFormElement::class, $result);
-        $this->assertSame('foo', $result->getIdentifier());
-        $this->assertSame('bar', $result->getType());
+        self::assertInstanceOf(UnknownFormElement::class, $result);
+        self::assertSame('foo', $result->getIdentifier());
+        self::assertSame('bar', $result->getType());
     }
 
     /**
@@ -157,11 +157,11 @@ class AbstractSectionTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRenderingOptions')
             ->willReturn(['skipUnknownElements' => true]);
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTypeDefinitions')
             ->willReturn(['foobar' => []]);
 
@@ -179,7 +179,7 @@ class AbstractSectionTest extends UnitTestCase
         );
 
         $mockAbstractSection
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRootForm')
             ->willReturn($rootForm);
 
@@ -214,11 +214,11 @@ class AbstractSectionTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRenderingOptions')
             ->willReturn([]);
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTypeDefinitions')
             ->willReturn(
                 [
@@ -229,7 +229,7 @@ class AbstractSectionTest extends UnitTestCase
             );
 
         $mockAbstractSection
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRootForm')
             ->willReturn($rootForm);
 
@@ -267,11 +267,11 @@ class AbstractSectionTest extends UnitTestCase
         unset($typeDefinitionWithoutImplementationClassName['implementationClassName']);
 
         $implementationMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('initializeFormElement');
 
         $implementationMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setOptions')
             ->with($typeDefinitionWithoutImplementationClassName);
 
@@ -294,16 +294,16 @@ class AbstractSectionTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRenderingOptions')
             ->willReturn([]);
         $rootForm
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTypeDefinitions')
             ->willReturn(['foobar' => $typeDefinition]);
 
         $mockAbstractSection
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRootForm')
             ->willReturn($rootForm);
 

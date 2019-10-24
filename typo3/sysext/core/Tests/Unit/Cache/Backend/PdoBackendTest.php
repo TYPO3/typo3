@@ -56,7 +56,7 @@ class PdoBackendTest extends UnitTestCase
         $data = 'Some data';
         $identifier = 'MyIdentifier';
         $backend->set($identifier, $data);
-        $this->assertTrue($backend->has($identifier));
+        self::assertTrue($backend->has($identifier));
     }
 
     /**
@@ -69,7 +69,7 @@ class PdoBackendTest extends UnitTestCase
         $identifier = 'MyIdentifier';
         $backend->set($identifier, $data);
         $fetchedData = $backend->get($identifier);
-        $this->assertEquals($data, $fetchedData);
+        self::assertEquals($data, $fetchedData);
     }
 
     /**
@@ -82,7 +82,7 @@ class PdoBackendTest extends UnitTestCase
         $identifier = 'MyIdentifier';
         $backend->set($identifier, $data);
         $backend->remove($identifier);
-        $this->assertFalse($backend->has($identifier));
+        self::assertFalse($backend->has($identifier));
     }
 
     /**
@@ -97,7 +97,7 @@ class PdoBackendTest extends UnitTestCase
         $otherData = 'some other data';
         $backend->set($identifier, $otherData);
         $fetchedData = $backend->get($identifier);
-        $this->assertEquals($otherData, $fetchedData);
+        self::assertEquals($otherData, $fetchedData);
     }
 
     /**
@@ -110,9 +110,9 @@ class PdoBackendTest extends UnitTestCase
         $entryIdentifier = 'MyIdentifier';
         $backend->set($entryIdentifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
-        $this->assertEquals($entryIdentifier, $retrieved[0]);
+        self::assertEquals($entryIdentifier, $retrieved[0]);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
-        $this->assertEquals($entryIdentifier, $retrieved[0]);
+        self::assertEquals($entryIdentifier, $retrieved[0]);
     }
 
     /**
@@ -126,7 +126,7 @@ class PdoBackendTest extends UnitTestCase
         $backend->set($entryIdentifier, $data, ['UnitTestTag%tag1', 'UnitTestTag%tag2']);
         $backend->set($entryIdentifier, $data, ['UnitTestTag%tag3']);
         $retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
-        $this->assertEquals([], $retrieved);
+        self::assertEquals([], $retrieved);
     }
 
     /**
@@ -141,7 +141,7 @@ class PdoBackendTest extends UnitTestCase
         $data2 = 'data2';
         $GLOBALS['EXEC_TIME'] += 2;
         $backend->set($entryIdentifier, $data2, [], 10);
-        $this->assertEquals($data2, $backend->get($entryIdentifier));
+        self::assertEquals($data2, $backend->get($entryIdentifier));
     }
 
     /**
@@ -151,7 +151,7 @@ class PdoBackendTest extends UnitTestCase
     {
         $backend = $this->setUpBackend();
         $identifier = 'NonExistingIdentifier';
-        $this->assertFalse($backend->has($identifier));
+        self::assertFalse($backend->has($identifier));
     }
 
     /**
@@ -161,7 +161,7 @@ class PdoBackendTest extends UnitTestCase
     {
         $backend = $this->setUpBackend();
         $identifier = 'NonExistingIdentifier';
-        $this->assertFalse($backend->remove($identifier));
+        self::assertFalse($backend->remove($identifier));
     }
 
     /**
@@ -175,9 +175,9 @@ class PdoBackendTest extends UnitTestCase
         $backend->set('PdoBackendTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
         $backend->set('PdoBackendTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTag('UnitTestTag%special');
-        $this->assertTrue($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
-        $this->assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
-        $this->assertTrue($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
+        self::assertTrue($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
+        self::assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
+        self::assertTrue($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
     }
 
     /**
@@ -191,9 +191,9 @@ class PdoBackendTest extends UnitTestCase
         $backend->set('PdoBackendTest2', $data, ['UnitTestTag%test', 'UnitTestTag%special']);
         $backend->set('PdoBackendTest3', $data, ['UnitTestTag%test']);
         $backend->flushByTags(['UnitTestTag%special', 'UnitTestTags%boring']);
-        $this->assertFalse($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
-        $this->assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
-        $this->assertTrue($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
+        self::assertFalse($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
+        self::assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
+        self::assertTrue($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
     }
 
     /**
@@ -207,9 +207,9 @@ class PdoBackendTest extends UnitTestCase
         $backend->set('PdoBackendTest2', $data);
         $backend->set('PdoBackendTest3', $data);
         $backend->flush();
-        $this->assertFalse($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
-        $this->assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
-        $this->assertFalse($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
+        self::assertFalse($backend->has('PdoBackendTest1'), 'PdoBackendTest1');
+        self::assertFalse($backend->has('PdoBackendTest2'), 'PdoBackendTest2');
+        self::assertFalse($backend->has('PdoBackendTest3'), 'PdoBackendTest3');
     }
 
     /**
@@ -218,18 +218,18 @@ class PdoBackendTest extends UnitTestCase
     public function flushRemovesOnlyOwnEntries()
     {
         $thisCache = $this->createMock(FrontendInterface::class);
-        $thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
+        $thisCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thisCache'));
         $thisBackend = $this->setUpBackend();
         $thisBackend->setCache($thisCache);
         $thatCache = $this->createMock(FrontendInterface::class);
-        $thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
+        $thatCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thatCache'));
         $thatBackend = $this->setUpBackend();
         $thatBackend->setCache($thatCache);
         $thisBackend->set('thisEntry', 'Hello');
         $thatBackend->set('thatEntry', 'World!');
         $thatBackend->flush();
-        $this->assertEquals('Hello', $thisBackend->get('thisEntry'));
-        $this->assertFalse($thatBackend->has('thatEntry'));
+        self::assertEquals('Hello', $thisBackend->get('thisEntry'));
+        self::assertFalse($thatBackend->has('thatEntry'));
     }
 
     /**
@@ -241,10 +241,10 @@ class PdoBackendTest extends UnitTestCase
         $data = 'some data' . microtime();
         $entryIdentifier = 'BackendPDORemovalTest';
         $backend->set($entryIdentifier, $data, [], 1);
-        $this->assertTrue($backend->has($entryIdentifier));
+        self::assertTrue($backend->has($entryIdentifier));
         $GLOBALS['EXEC_TIME'] += 2;
         $backend->collectGarbage();
-        $this->assertFalse($backend->has($entryIdentifier));
+        self::assertFalse($backend->has($entryIdentifier));
     }
 
     /**
@@ -259,16 +259,16 @@ class PdoBackendTest extends UnitTestCase
         $backend->set($entryIdentifier . 'B', $data, [], 10);
         $backend->set($entryIdentifier . 'C', $data, [], 1);
         $backend->set($entryIdentifier . 'D', $data, [], 1);
-        $this->assertTrue($backend->has($entryIdentifier . 'A'));
-        $this->assertTrue($backend->has($entryIdentifier . 'B'));
-        $this->assertTrue($backend->has($entryIdentifier . 'C'));
-        $this->assertTrue($backend->has($entryIdentifier . 'D'));
+        self::assertTrue($backend->has($entryIdentifier . 'A'));
+        self::assertTrue($backend->has($entryIdentifier . 'B'));
+        self::assertTrue($backend->has($entryIdentifier . 'C'));
+        self::assertTrue($backend->has($entryIdentifier . 'D'));
         $GLOBALS['EXEC_TIME'] += 2;
         $backend->collectGarbage();
-        $this->assertTrue($backend->has($entryIdentifier . 'A'));
-        $this->assertTrue($backend->has($entryIdentifier . 'B'));
-        $this->assertFalse($backend->has($entryIdentifier . 'C'));
-        $this->assertFalse($backend->has($entryIdentifier . 'D'));
+        self::assertTrue($backend->has($entryIdentifier . 'A'));
+        self::assertTrue($backend->has($entryIdentifier . 'B'));
+        self::assertFalse($backend->has($entryIdentifier . 'C'));
+        self::assertFalse($backend->has($entryIdentifier . 'D'));
     }
 
     /**
@@ -279,7 +279,7 @@ class PdoBackendTest extends UnitTestCase
     protected function setUpBackend()
     {
         $mockCache = $this->createMock(FrontendInterface::class);
-        $mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('TestCache'));
+        $mockCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('TestCache'));
         $backend = GeneralUtility::makeInstance(PdoBackend::class, 'Testing');
         $backend->setCache($mockCache);
         $backend->setDataSourceName('sqlite::memory:');

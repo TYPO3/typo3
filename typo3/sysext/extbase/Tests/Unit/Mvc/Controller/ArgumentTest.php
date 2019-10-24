@@ -76,8 +76,8 @@ class ArgumentTest extends UnitTestCase
      */
     public function passingDataTypeToConstructorReallySetsTheDataType()
     {
-        $this->assertEquals('string', $this->simpleValueArgument->getDataType(), 'The specified data type has not been set correctly.');
-        $this->assertEquals('someName', $this->simpleValueArgument->getName(), 'The specified name has not been set correctly.');
+        self::assertEquals('string', $this->simpleValueArgument->getDataType(), 'The specified data type has not been set correctly.');
+        self::assertEquals('someName', $this->simpleValueArgument->getName(), 'The specified name has not been set correctly.');
     }
 
     /**
@@ -86,7 +86,7 @@ class ArgumentTest extends UnitTestCase
     public function setShortNameProvidesFluentInterface()
     {
         $returnedArgument = $this->simpleValueArgument->setShortName('x');
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+        self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
     }
 
     /**
@@ -119,7 +119,7 @@ class ArgumentTest extends UnitTestCase
     public function shortNameCanBeRetrievedAgain()
     {
         $this->simpleValueArgument->setShortName('x');
-        $this->assertEquals('x', $this->simpleValueArgument->getShortName());
+        self::assertEquals('x', $this->simpleValueArgument->getShortName());
     }
 
     /**
@@ -128,8 +128,8 @@ class ArgumentTest extends UnitTestCase
     public function setRequiredShouldProvideFluentInterfaceAndReallySetRequiredState()
     {
         $returnedArgument = $this->simpleValueArgument->setRequired(true);
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
-        $this->assertTrue($this->simpleValueArgument->isRequired());
+        self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+        self::assertTrue($this->simpleValueArgument->isRequired());
     }
 
     /**
@@ -138,8 +138,8 @@ class ArgumentTest extends UnitTestCase
     public function setDefaultValueShouldProvideFluentInterfaceAndReallySetDefaultValue()
     {
         $returnedArgument = $this->simpleValueArgument->setDefaultValue('default');
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
-        $this->assertSame('default', $this->simpleValueArgument->getDefaultValue());
+        self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+        self::assertSame('default', $this->simpleValueArgument->getDefaultValue());
     }
 
     /**
@@ -149,8 +149,8 @@ class ArgumentTest extends UnitTestCase
     {
         $mockValidator = $this->createMock(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class);
         $returnedArgument = $this->simpleValueArgument->setValidator($mockValidator);
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
-        $this->assertSame($mockValidator, $this->simpleValueArgument->getValidator());
+        self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+        self::assertSame($mockValidator, $this->simpleValueArgument->getValidator());
     }
 
     /**
@@ -159,7 +159,7 @@ class ArgumentTest extends UnitTestCase
     public function setValueProvidesFluentInterface()
     {
         $returnedArgument = $this->simpleValueArgument->setValue(null);
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
+        self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
     }
 
     /**
@@ -170,7 +170,7 @@ class ArgumentTest extends UnitTestCase
         $this->simpleValueArgument = new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('dummy', 'string');
         $this->simpleValueArgument = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class, ['dummy'], ['dummy', 'string']);
         $this->simpleValueArgument->setValue(null);
-        $this->assertNull($this->simpleValueArgument->getValue());
+        self::assertNull($this->simpleValueArgument->getValue());
     }
 
     /**
@@ -178,7 +178,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function setValueUsesMatchingInstanceAsIs()
     {
-        $this->mockPropertyMapper->expects($this->never())->method('convert');
+        $this->mockPropertyMapper->expects(self::never())->method('convert');
         $this->objectArgument->setValue(new \DateTime());
     }
 
@@ -187,8 +187,8 @@ class ArgumentTest extends UnitTestCase
      */
     protected function setupPropertyMapperAndSetValue()
     {
-        $this->mockPropertyMapper->expects($this->once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->will($this->returnValue('convertedValue'));
-        $this->mockPropertyMapper->expects($this->once())->method('getMessages')->will($this->returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
+        $this->mockPropertyMapper->expects(self::once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->will(self::returnValue('convertedValue'));
+        $this->mockPropertyMapper->expects(self::once())->method('getMessages')->will(self::returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
         return $this->simpleValueArgument->setValue('someRawValue');
     }
 
@@ -198,8 +198,8 @@ class ArgumentTest extends UnitTestCase
     public function setValueShouldCallPropertyMapperCorrectlyAndStoreResultInValue()
     {
         $this->setupPropertyMapperAndSetValue();
-        $this->assertSame('convertedValue', $this->simpleValueArgument->getValue());
-        $this->assertTrue($this->simpleValueArgument->isValid());
+        self::assertSame('convertedValue', $this->simpleValueArgument->getValue());
+        self::assertTrue($this->simpleValueArgument->isValid());
     }
 
     /**
@@ -207,7 +207,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function setValueShouldBeFluentInterface()
     {
-        $this->assertSame($this->simpleValueArgument, $this->setupPropertyMapperAndSetValue());
+        self::assertSame($this->simpleValueArgument, $this->setupPropertyMapperAndSetValue());
     }
 
     /**
@@ -221,11 +221,11 @@ class ArgumentTest extends UnitTestCase
             ->getMock();
         $validationMessages = new \TYPO3\CMS\Extbase\Error\Result();
         $validationMessages->addError($error);
-        $mockValidator->expects($this->once())->method('validate')->with('convertedValue')->will($this->returnValue($validationMessages));
+        $mockValidator->expects(self::once())->method('validate')->with('convertedValue')->will(self::returnValue($validationMessages));
         $this->simpleValueArgument->setValidator($mockValidator);
         $this->setupPropertyMapperAndSetValue();
-        $this->assertFalse($this->simpleValueArgument->isValid());
-        $this->assertEquals([$error], $this->simpleValueArgument->validate()->getErrors());
+        self::assertFalse($this->simpleValueArgument->isValid());
+        self::assertEquals([$error], $this->simpleValueArgument->validate()->getErrors());
     }
 
     /**
@@ -233,7 +233,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function defaultPropertyMappingConfigurationDoesNotAllowCreationOrModificationOfObjects()
     {
-        $this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        $this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        self::assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
     }
 }

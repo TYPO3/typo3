@@ -67,12 +67,12 @@ class SessionManagerTest extends FunctionalTestCase
     {
         $backendSessionBackend = $this->subject->getSessionBackend('BE');
         $allActiveSessions = $backendSessionBackend->getAll();
-        $this->assertCount(3, $allActiveSessions);
+        self::assertCount(3, $allActiveSessions);
         $this->subject->invalidateAllSessionsByUserId($backendSessionBackend, 1);
         $allActiveSessions = $backendSessionBackend->getAll();
-        $this->assertCount(1, $allActiveSessions);
-        $this->assertSame('randomSessionId3', $allActiveSessions[0]['ses_id']);
-        $this->assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
+        self::assertCount(1, $allActiveSessions);
+        self::assertSame('randomSessionId3', $allActiveSessions[0]['ses_id']);
+        self::assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
     }
 
     /**
@@ -82,11 +82,11 @@ class SessionManagerTest extends FunctionalTestCase
     {
         $frontendSessionBackend = $this->subject->getSessionBackend('FE');
         $allActiveSessions = $frontendSessionBackend->getAll();
-        $this->assertCount(3, $allActiveSessions);
+        self::assertCount(3, $allActiveSessions);
         $this->subject->invalidateAllSessionsByUserId($frontendSessionBackend, 1);
         $allActiveSessions = $frontendSessionBackend->getAll();
-        $this->assertCount(1, $allActiveSessions);
-        $this->assertSame('randomSessionId3', $allActiveSessions[0]['ses_id']);
-        $this->assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
+        self::assertCount(1, $allActiveSessions);
+        self::assertSame('randomSessionId3', $allActiveSessions[0]['ses_id']);
+        self::assertSame(2, (int)$allActiveSessions[0]['ses_userid']);
     }
 }

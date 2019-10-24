@@ -137,7 +137,7 @@ class MailerTest extends UnitTestCase
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getStream()->getPort();
-        $this->assertEquals(25, $port);
+        self::assertEquals(25, $port);
     }
 
     /**
@@ -148,7 +148,7 @@ class MailerTest extends UnitTestCase
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getStream()->getPort();
-        $this->assertEquals(25, $port);
+        self::assertEquals(25, $port);
     }
 
     /**
@@ -159,7 +159,7 @@ class MailerTest extends UnitTestCase
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getStream()->getPort();
-        $this->assertEquals(12345, $port);
+        self::assertEquals(12345, $port);
     }
 
     /**
@@ -171,8 +171,8 @@ class MailerTest extends UnitTestCase
         $this->subject->injectMailSettings($settings);
         $transport = $this->subject->getRealTransport();
 
-        $this->assertInstanceOf(TransportInterface::class, $transport);
-        $this->assertNotInstanceOf(DelayedTransportInterface::class, $transport);
+        self::assertInstanceOf(TransportInterface::class, $transport);
+        self::assertNotInstanceOf(DelayedTransportInterface::class, $transport);
     }
 
     /**

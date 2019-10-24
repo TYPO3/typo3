@@ -27,11 +27,11 @@ class WorkspaceAspectTest extends UnitTestCase
     public function getterReturnsProperDefaultValues()
     {
         $subject = new WorkspaceAspect();
-        $this->assertTrue($subject->isLive());
-        $this->assertEquals(0, $subject->getId());
-        $this->assertEquals(0, $subject->get('id'));
-        $this->assertTrue($subject->get('isLive'));
-        $this->assertFalse($subject->get('isOffline'));
+        self::assertTrue($subject->isLive());
+        self::assertEquals(0, $subject->getId());
+        self::assertEquals(0, $subject->get('id'));
+        self::assertTrue($subject->get('isLive'));
+        self::assertFalse($subject->get('isOffline'));
     }
 
     /**
@@ -40,11 +40,11 @@ class WorkspaceAspectTest extends UnitTestCase
     public function getterReturnsProperCustomValues()
     {
         $subject = new WorkspaceAspect(13);
-        $this->assertEquals(13, $subject->getId());
-        $this->assertEquals(13, $subject->get('id'));
-        $this->assertFalse($subject->isLive());
-        $this->assertFalse($subject->get('isLive'));
-        $this->assertTrue($subject->get('isOffline'));
+        self::assertEquals(13, $subject->getId());
+        self::assertEquals(13, $subject->get('id'));
+        self::assertFalse($subject->isLive());
+        self::assertFalse($subject->get('isLive'));
+        self::assertTrue($subject->get('isOffline'));
     }
 
     /**

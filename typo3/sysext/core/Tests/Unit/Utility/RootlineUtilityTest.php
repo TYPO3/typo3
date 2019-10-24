@@ -56,7 +56,7 @@ class RootlineUtilityTest extends UnitTestCase
             [1, '', new Context()]
         );
 
-        $this->subject->expects(static::any())->method('resolvePageId')->willReturnArgument(0);
+        $this->subject->expects(self::any())->method('resolvePageId')->willReturnArgument(0);
     }
 
     protected function tearDown(): void
@@ -76,7 +76,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     protected function assertIsSubset(array $subsetCandidate, array $superset): void
     {
-        $this->assertSame($subsetCandidate, array_intersect_assoc($subsetCandidate, $superset));
+        self::assertSame($subsetCandidate, array_intersect_assoc($subsetCandidate, $superset));
     }
 
     /**
@@ -85,7 +85,7 @@ class RootlineUtilityTest extends UnitTestCase
     public function isMountedPageWithoutMountPointsReturnsFalse(): void
     {
         $this->subject->__construct(1, '', new Context());
-        $this->assertFalse($this->subject->isMountedPage());
+        self::assertFalse($this->subject->isMountedPage());
     }
 
     /**
@@ -94,7 +94,7 @@ class RootlineUtilityTest extends UnitTestCase
     public function isMountedPageWithMatchingMountPointParameterReturnsTrue(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
-        $this->assertTrue($this->subject->isMountedPage());
+        self::assertTrue($this->subject->isMountedPage());
     }
 
     /**
@@ -103,7 +103,7 @@ class RootlineUtilityTest extends UnitTestCase
     public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse(): void
     {
         $this->subject->__construct(1, '99-99', new Context());
-        $this->assertFalse($this->subject->isMountedPage());
+        self::assertFalse($this->subject->isMountedPage());
     }
 
     /**
@@ -128,7 +128,7 @@ class RootlineUtilityTest extends UnitTestCase
     public function processMountedPageWithMountedPageNotThrowsException(): void
     {
         $this->subject->__construct(1, '1-99', new Context());
-        $this->assertNotEmpty($this->subject->_call(
+        self::assertNotEmpty($this->subject->_call(
             'processMountedPage',
             ['uid' => 1],
             ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
@@ -146,8 +146,8 @@ class RootlineUtilityTest extends UnitTestCase
             ['uid' => 1],
             ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
         );
-        $this->assertTrue(isset($result['_MOUNTED_FROM']));
-        $this->assertSame(1, $result['_MOUNTED_FROM']);
+        self::assertTrue(isset($result['_MOUNTED_FROM']));
+        self::assertSame(1, $result['_MOUNTED_FROM']);
     }
 
     /**
@@ -161,8 +161,8 @@ class RootlineUtilityTest extends UnitTestCase
             ['uid' => 1],
             ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1]
         );
-        $this->assertTrue(isset($result['_MP_PARAM']));
-        $this->assertSame('1-99', $result['_MP_PARAM']);
+        self::assertTrue(isset($result['_MP_PARAM']));
+        self::assertSame('1-99', $result['_MP_PARAM']);
     }
 
     /**
@@ -176,8 +176,8 @@ class RootlineUtilityTest extends UnitTestCase
             ['uid' => 1],
             ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]
         );
-        $this->assertTrue(isset($result['_MOUNT_OL']));
-        $this->assertSame(true, $result['_MOUNT_OL']);
+        self::assertTrue(isset($result['_MOUNT_OL']));
+        self::assertSame(true, $result['_MOUNT_OL']);
     }
 
     /**
@@ -194,8 +194,8 @@ class RootlineUtilityTest extends UnitTestCase
             'pid' => 5,
             'title' => 'TestCase'
         ]);
-        $this->assertTrue(isset($result['_MOUNT_PAGE']));
-        $this->assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
+        self::assertTrue(isset($result['_MOUNT_PAGE']));
+        self::assertSame(['uid' => 99, 'pid' => 5, 'title' => 'TestCase'], $result['_MOUNT_PAGE']);
     }
 
     /**
@@ -219,7 +219,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsGroupFieldAsLocal(): void
     {
-        $this->assertFalse($this->subject->_call('columnHasRelationToResolve', [
+        self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'type' => 'group'
         ]));
     }
@@ -229,7 +229,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsGroupFieldWithMMAsRemote2(): void
     {
-        $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
+        self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'group',
                 'MM' => 'tx_xyz'
@@ -242,7 +242,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsInlineFieldAsLocal(): void
     {
-        $this->assertFalse($this->subject->_call('columnHasRelationToResolve', [
+        self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'inline'
             ]
@@ -254,7 +254,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsInlineFieldWithForeignKeyAsRemote(): void
     {
-        $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
+        self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'inline',
                 'foreign_field' => 'xyz'
@@ -267,7 +267,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsInlineFieldWithFMMAsRemote(): void
     {
-        $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
+        self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'inline',
                 'MM' => 'xyz'
@@ -280,7 +280,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsSelectFieldAsLocal(): void
     {
-        $this->assertFalse($this->subject->_call('columnHasRelationToResolve', [
+        self::assertFalse($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'select'
             ]
@@ -292,7 +292,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function columnHasRelationToResolveDetectsSelectFieldWithMMAsRemote(): void
     {
-        $this->assertTrue($this->subject->_call('columnHasRelationToResolve', [
+        self::assertTrue($this->subject->_call('columnHasRelationToResolve', [
             'config' => [
                 'type' => 'select',
                 'MM' => 'xyz'
@@ -305,19 +305,19 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierContainsAllContextParameters(): void
     {
-        $this->subject->expects(static::any())->method('resolvePageId')->willReturn(42);
+        $this->subject->expects(self::any())->method('resolvePageId')->willReturn(42);
 
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(15));
         $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
         $this->subject->__construct(42, '47-11', $context);
-        $this->assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
         $this->subject->__construct(42, '47-11', $context);
-        $this->assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_15', $this->subject->getCacheIdentifier());
 
         $context->setAspect('workspace', new WorkspaceAspect(0));
         $this->subject->__construct(42, '47-11', $context);
-        $this->assertSame('42_47-11_8_0', $this->subject->getCacheIdentifier());
+        self::assertSame('42_47-11_8_0', $this->subject->getCacheIdentifier());
     }
 
     /**
@@ -326,7 +326,7 @@ class RootlineUtilityTest extends UnitTestCase
      */
     public function getCacheIdentifierReturnsValidIdentifierWithCommasInMountPointParameter(): void
     {
-        $this->subject->expects(static::any())->method('resolvePageId')->willReturn(42);
+        $this->subject->expects(self::any())->method('resolvePageId')->willReturn(42);
 
         /** @var AbstractFrontend $cacheFrontendMock */
         $cacheFrontendMock = $this->getMockForAbstractClass(
@@ -340,6 +340,6 @@ class RootlineUtilityTest extends UnitTestCase
         $context->setAspect('language', new LanguageAspect(8, 8, LanguageAspect::OVERLAYS_OFF));
 
         $this->subject->__construct(42, '47-11,48-12', $context);
-        $this->assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
+        self::assertTrue($cacheFrontendMock->isValidEntryIdentifier($this->subject->getCacheIdentifier()));
     }
 }

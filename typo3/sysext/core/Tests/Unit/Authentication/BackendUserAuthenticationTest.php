@@ -183,15 +183,15 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAdmin')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
 
         $subject->setLogger(new NullLogger());
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTSConfig')
-            ->will($this->returnValue([
+            ->will(self::returnValue([
                 'permissions.' => [
                     'file.' => [
                         'default.' => $userTsConfiguration
@@ -207,7 +207,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             }
         );
 
-        $this->assertEquals($expectedPermissions, $subject->getFilePermissions());
+        self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
     /**
@@ -324,22 +324,22 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
-        $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
+        $storageMock->expects(self::any())->method('getUid')->will(self::returnValue($storageUid));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAdmin')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFilePermissions')
-            ->will($this->returnValue($defaultPermissions));
+            ->will(self::returnValue($defaultPermissions));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTSConfig')
-            ->will($this->returnValue([
+            ->will(self::returnValue([
                 'permissions.' => [
                     'file.' => [
                         'storage.' => [
@@ -349,7 +349,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 ]
             ]));
 
-        $this->assertEquals($expectedPermissions, $subject->getFilePermissionsForStorage($storageMock));
+        self::assertEquals($expectedPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
 
     /**
@@ -366,22 +366,22 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->setMethods(['isAdmin', 'getFilePermissions', 'getTSConfig'])
             ->getMock();
         $storageMock = $this->createMock(ResourceStorage::class);
-        $storageMock->expects($this->any())->method('getUid')->will($this->returnValue($storageUid));
+        $storageMock->expects(self::any())->method('getUid')->will(self::returnValue($storageUid));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAdmin')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFilePermissions')
-            ->will($this->returnValue($defaultPermissions));
+            ->will(self::returnValue($defaultPermissions));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTSConfig')
-            ->will($this->returnValue([
+            ->will(self::returnValue([
                 'permissions.' => [
                     'file.' => [
                         'storage.' => [
@@ -391,7 +391,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 ]
             ]));
 
-        $this->assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
+        self::assertEquals($defaultPermissions, $subject->getFilePermissionsForStorage($storageMock));
     }
 
     /**
@@ -519,16 +519,16 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAdmin')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTSConfig')
-            ->will($this->returnValue([]));
+            ->will(self::returnValue([]));
         $subject->groupData['file_permissions'] = $permissionValue;
-        $this->assertEquals($expectedPermissions, $subject->getFilePermissions());
+        self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
     /**
@@ -542,9 +542,9 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->getMock();
 
         $subject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAdmin')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
 
         $expectedPermissions = [
             'addFile' => true,
@@ -564,7 +564,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             'recursivedeleteFolder' => true
         ];
 
-        $this->assertEquals($expectedPermissions, $subject->getFilePermissions());
+        self::assertEquals($expectedPermissions, $subject->getFilePermissions());
     }
 
     /**
@@ -581,8 +581,8 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 'alertPopups' => 1
             ],
         ]);
-        $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
-        $this->assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
+        self::assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+        self::assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
 
     /**
@@ -599,8 +599,8 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 'alertPopups' => 3
             ],
         ]);
-        $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
-        $this->assertTrue($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
+        self::assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+        self::assertTrue($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
 
     /**
@@ -624,11 +624,11 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 'alertPopups' => $jsConfirmation
             ],
         ]);
-        $this->assertEquals($typeChangeAllowed, $subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
-        $this->assertEquals($copyMovePasteAllowed, $subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
-        $this->assertEquals($deleteAllowed, $subject->jsConfirmation(JsConfirmation::DELETE));
-        $this->assertEquals($feEditAllowed, $subject->jsConfirmation(JsConfirmation::FE_EDIT));
-        $this->assertEquals($otherAllowed, $subject->jsConfirmation(JsConfirmation::OTHER));
+        self::assertEquals($typeChangeAllowed, $subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+        self::assertEquals($copyMovePasteAllowed, $subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
+        self::assertEquals($deleteAllowed, $subject->jsConfirmation(JsConfirmation::DELETE));
+        self::assertEquals($feEditAllowed, $subject->jsConfirmation(JsConfirmation::FE_EDIT));
+        self::assertEquals($otherAllowed, $subject->jsConfirmation(JsConfirmation::OTHER));
     }
 
     /**
@@ -670,8 +670,8 @@ class BackendUserAuthenticationTest extends UnitTestCase
                 'alertPopups' => 0
             ],
         ]);
-        $this->assertFalse($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
-        $this->assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
+        self::assertFalse($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+        self::assertFalse($subject->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE));
     }
 
     /**
@@ -684,7 +684,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->setMethods(['getTSConfig'])
             ->getMock();
 
-        $this->assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
+        self::assertTrue($subject->jsConfirmation(JsConfirmation::TYPE_CHANGE));
     }
 
     /**
@@ -771,13 +771,13 @@ class BackendUserAuthenticationTest extends UnitTestCase
             ->setMethods(['isAdmin'])
             ->getMock();
         $subject->setLogger(new NullLogger());
-        $subject->expects($this->any())
+        $subject->expects(self::any())
             ->method('isAdmin')
-            ->will($this->returnValue($admin));
+            ->will(self::returnValue($admin));
 
         $subject->user = ['uid' => 123];
         $subject->groupList = $groups;
 
-        $this->assertEquals($expected, $subject->getPagePermsClause($perms));
+        self::assertEquals($expected, $subject->getPagePermsClause($perms));
     }
 }

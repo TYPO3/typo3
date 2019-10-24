@@ -72,14 +72,14 @@ class XliffParserTest extends UnitTestCase
     public function canParseXliffInEnglish()
     {
         $LOCAL_LANG = (new XliffParser)->getParsedData($this->xliffFileNames['locallang'], 'default');
-        $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'This is label #1',
             'label2' => 'This is label #2',
             'label3' => 'This is label #3'
         ];
         foreach ($expectedLabels as $key => $expectedLabel) {
-            $this->assertEquals($expectedLabel, $LOCAL_LANG['default'][$key][0]['target']);
+            self::assertEquals($expectedLabel, $LOCAL_LANG['default'][$key][0]['target']);
         }
     }
 
@@ -89,14 +89,14 @@ class XliffParserTest extends UnitTestCase
     public function canParseXliffInFrench()
     {
         $LOCAL_LANG = (new XliffParser)->getParsedData($this->xliffFileNames['locallang'], 'fr');
-        $this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'Ceci est le libellé no. 1',
             'label2' => 'Ceci est le libellé no. 2',
             'label3' => 'Ceci est le libellé no. 3'
         ];
         foreach ($expectedLabels as $key => $expectedLabel) {
-            $this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
+            self::assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
         }
     }
 
@@ -114,8 +114,8 @@ class XliffParserTest extends UnitTestCase
             $factory->getParsedData($this->xliffFileNames['locallang'], 'default'),
             $factory->getParsedData($this->xliffFileNames['locallang'], 'fr')
         );
-        $this->assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
-        $this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('default', $LOCAL_LANG, 'default key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
         $expectedLabels = [
             'default' => [
                 'label1' => 'This is my 1st label',
@@ -130,7 +130,7 @@ class XliffParserTest extends UnitTestCase
         ];
         foreach ($expectedLabels as $languageKey => $expectedLanguageLabels) {
             foreach ($expectedLanguageLabels as $key => $expectedLabel) {
-                $this->assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
+                self::assertEquals($expectedLabel, $LOCAL_LANG[$languageKey][$key][0]['target']);
             }
         }
     }
@@ -147,14 +147,14 @@ class XliffParserTest extends UnitTestCase
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['fr'][$this->xliffFileNames['locallang']][] = $this->xliffFileNames['locallang_override_fr'];
         $LOCAL_LANG = $factory->getParsedData($this->xliffFileNames['locallang'], 'fr');
-        $this->assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
+        self::assertArrayHasKey('fr', $LOCAL_LANG, 'fr key not found in $LOCAL_LANG');
         $expectedLabels = [
             'label1' => 'Ceci est mon 1er libellé',
             'label2' => 'Ceci est le libellé no. 2',
             'label3' => 'Ceci est mon 3e libellé'
         ];
         foreach ($expectedLabels as $key => $expectedLabel) {
-            $this->assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
+            self::assertEquals($expectedLabel, $LOCAL_LANG['fr'][$key][0]['target']);
         }
     }
 }

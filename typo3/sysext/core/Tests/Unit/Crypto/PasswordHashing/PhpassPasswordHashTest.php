@@ -49,7 +49,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     public function getHashedPasswordReturnsNullWithEmptyPassword()
     {
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
-        $this->assertNull($subject->getHashedPassword(''));
+        self::assertNull($subject->getHashedPassword(''));
     }
 
     /**
@@ -58,7 +58,7 @@ class PhpassPasswordHashTest extends UnitTestCase
     public function getHashedPasswordReturnsNotNullWithNotEmptyPassword()
     {
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
-        $this->assertNotNull($subject->getHashedPassword('a'));
+        self::assertNotNull($subject->getHashedPassword('a'));
     }
 
     /**
@@ -69,7 +69,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->isValidSaltedPW($saltedHashPassword));
+        self::assertTrue($subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -85,7 +85,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = 'password';
         $saltedHashPassword = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -98,7 +98,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = 'password';
         $saltedHashPassword = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
-        $this->assertFalse($subject->checkPassword($password, $saltedHashPassword));
+        self::assertFalse($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -114,7 +114,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = 'aEjOtY';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -130,7 +130,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = '01369';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -146,7 +146,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -166,7 +166,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password .= chr(215) . chr(247);
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -191,7 +191,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         }
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -203,7 +203,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password1 = $password . 'INVALID';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->checkPassword($password1, $saltedHashPassword));
+        self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
@@ -214,7 +214,7 @@ class PhpassPasswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
+        self::assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
     /**
@@ -226,6 +226,6 @@ class PhpassPasswordHashTest extends UnitTestCase
         $subject = new PhpassPasswordHash(['hash_count' => 7]);
         $saltedHashPassword = $subject->getHashedPassword($password);
         $subject = new PhpassPasswordHash(['hash_count' => 8]);
-        $this->assertTrue($subject->isHashUpdateNeeded($saltedHashPassword));
+        self::assertTrue($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 }

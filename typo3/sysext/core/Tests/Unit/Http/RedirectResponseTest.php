@@ -33,7 +33,7 @@ class RedirectResponseTest extends UnitTestCase
                 0 => 'theRedirectUrl',
             ]
         ];
-        $this->assertSame($expected, $subject->getHeaders());
+        self::assertSame($expected, $subject->getHeaders());
     }
 
     /**
@@ -45,7 +45,7 @@ class RedirectResponseTest extends UnitTestCase
         $expected = [
             0 => 'theRedirectUrl',
         ];
-        $this->assertSame($expected, $subject->getHeader('location'));
+        self::assertSame($expected, $subject->getHeader('location'));
     }
 
     /**
@@ -69,7 +69,7 @@ class RedirectResponseTest extends UnitTestCase
             ],
         ];
         $subject = new RedirectResponse('url', 302, $input);
-        $this->assertSame($expected, $subject->getHeaders());
+        self::assertSame($expected, $subject->getHeaders());
     }
 
     /**
@@ -84,7 +84,7 @@ class RedirectResponseTest extends UnitTestCase
             0 => 'anotherHeaderValue',
         ];
         $subject = new RedirectResponse('url', 302, $input);
-        $this->assertSame($expected, $subject->getHeader('lowercasedheadername'));
+        self::assertSame($expected, $subject->getHeader('lowercasedheadername'));
     }
 
     /**
@@ -99,6 +99,6 @@ class RedirectResponseTest extends UnitTestCase
             0 => 'aHeaderValue',
         ];
         $subject = new RedirectResponse('url', 302, $input);
-        $this->assertSame($expected, $subject->getHeader('camelCasedHeaderName'));
+        self::assertSame($expected, $subject->getHeader('camelCasedHeaderName'));
     }
 }

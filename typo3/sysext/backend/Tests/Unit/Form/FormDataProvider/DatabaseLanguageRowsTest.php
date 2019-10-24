@@ -63,7 +63,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
                 'columns' => [],
             ],
         ];
-        $this->assertEquals($input, $this->subject->addData($input));
+        self::assertEquals($input, $this->subject->addData($input));
     }
 
     /**
@@ -87,7 +87,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
 
-        $this->subject->expects($this->once())->method('getRecordWorkspaceOverlay')->willReturn([]);
+        $this->subject->expects(self::once())->method('getRecordWorkspaceOverlay')->willReturn([]);
 
         $this->expectException(DatabaseDefaultLanguageException::class);
         $this->expectExceptionCode(1438249426);
@@ -123,12 +123,12 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
 
-        $this->subject->expects($this->once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
+        $this->subject->expects(self::once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -167,13 +167,13 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'sys_language_uid' => 0,
         ];
 
-        $this->subject->expects($this->once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
+        $this->subject->expects(self::once())->method('getRecordWorkspaceOverlay')->willReturn($defaultLanguageRow);
 
         $expected = $input;
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
         $expected['defaultLanguageDiffRow']['tt_content:42'] = $diffSource;
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -238,7 +238,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
-        $this->subject->expects($this->at(0))
+        $this->subject->expects(self::at(0))
             ->method('getRecordWorkspaceOverlay')
             ->with('tt_content', 23)
             ->willReturn($defaultLanguageRow);
@@ -249,7 +249,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $translationProphecy->translationInfo('tt_content', 23, 3)->shouldBeCalled()->willReturn($translationResult);
 
         // This is the real check: The "additional overlay" should be fetched
-        $this->subject->expects($this->at(1))
+        $this->subject->expects(self::at(1))
             ->method('getRecordWorkspaceOverlay')
             ->with('tt_content', 43)
             ->willReturn($recordWsolResult);
@@ -264,7 +264,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -333,7 +333,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
-        $this->subject->expects($this->at(0))
+        $this->subject->expects(self::at(0))
             ->method('getRecordWorkspaceOverlay')
             ->with('tt_content', 23)
             ->willReturn($defaultLanguageRow);
@@ -345,7 +345,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $translationProphecy->translationInfo('tt_content', 23, 2)->shouldNotBeCalled();
 
         // This is the real check: The "additional overlay" should be fetched
-        $this->subject->expects($this->at(1))
+        $this->subject->expects(self::at(1))
             ->method('getRecordWorkspaceOverlay')
             ->with('tt_content', 43)
             ->willReturn($recordWsolResult);
@@ -360,7 +360,7 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             ],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -420,11 +420,11 @@ class DatabaseLanguageRowsTest extends UnitTestCase
             'text' => 'default language text',
             'sys_language_uid' => 0,
         ];
-        $this->subject->expects($this->at(0))
+        $this->subject->expects(self::at(0))
             ->method('getRecordWorkspaceOverlay')
             ->with('tt_content', 23)
             ->willReturn($defaultLanguageRow);
-        $this->subject->expects($this->at(1))
+        $this->subject->expects(self::at(1))
             ->method('getRecordWorkspaceOverlay')
             ->with('tt_content', 24)
             ->willReturn($sourceLanguageRow);
@@ -433,6 +433,6 @@ class DatabaseLanguageRowsTest extends UnitTestCase
         $expected['defaultLanguageRow'] = $defaultLanguageRow;
         $expected['sourceLanguageRow'] = $sourceLanguageRow;
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 }

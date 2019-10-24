@@ -38,6 +38,6 @@ class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
         $more[] = $expression;
         $expression = $this->expressionBuilder->andX($expression);
 
-        $this->assertSame('("aTable"."deleted" = 0) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 123) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 123))', (string)$expression);
+        self::assertSame('("aTable"."deleted" = 0) AND ("aTable"."myHiddenField" = 0) AND ("aTable"."myStartTimeField" <= 123) AND (("aTable"."myEndTimeField" = 0) OR ("aTable"."myEndTimeField" > 123))', (string)$expression);
     }
 }

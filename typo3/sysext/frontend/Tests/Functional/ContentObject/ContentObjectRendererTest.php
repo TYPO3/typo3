@@ -225,7 +225,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
                     $value = str_replace(['[', ']'], [$quoteChar, $quoteChar], $value);
                 }
             }
-            $this->assertEquals($value, $result[$field]);
+            self::assertEquals($value, $result[$field]);
         }
     }
 
@@ -242,14 +242,14 @@ class ContentObjectRendererTest extends FunctionalTestCase
             'pidInList' => '16, -35'
         ];
 
-        $this->subject->expects($this->at(0))
+        $this->subject->expects(self::at(0))
             ->method('getTreeList')
             ->with(-16, 15)
-            ->will($this->returnValue('15,16'));
-        $this->subject->expects($this->at(1))
+            ->will(self::returnValue('15,16'));
+        $this->subject->expects(self::at(1))
             ->method('getTreeList')
             ->with(-35, 15)
-            ->will($this->returnValue('15,35'));
+            ->will(self::returnValue('15,35'));
 
         $this->subject->getQuery('tt_content', $conf, true);
     }
@@ -269,10 +269,10 @@ class ContentObjectRendererTest extends FunctionalTestCase
             'recursive' => '4'
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getTreeList')
             ->with(-27)
-            ->will($this->returnValue('27'));
+            ->will(self::returnValue('27'));
 
         $this->subject->getQuery('tt_content', $conf, true);
     }
@@ -443,12 +443,12 @@ class ContentObjectRendererTest extends FunctionalTestCase
         // @todo Merge with existing link generation test
         // reason for failing is, that PageLinkBuilder is using a context-specific
         // instance of PageRepository instead of reusing a shared global instance
-        $this->markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
+        self::markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
 
         $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
             ->setMethods(['getPage'])
             ->getMock();
-        $pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn($pageArray);
+        $pageRepositoryMockObject->expects(self::any())->method('getPage')->willReturn($pageArray);
 
         $typoScriptFrontendController = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setConstructorArgs([null, 1, 0])
@@ -467,7 +467,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $GLOBALS['TSFE'] = $typoScriptFrontendController;
 
         $subject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $this->assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
+        self::assertEquals($expectedResult, $subject->typoLink($linkText, $configuration));
     }
 
     /**
@@ -478,10 +478,10 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $expected = '<a href="mailto:test@example.com">Send me an email</a>';
         $subject = new ContentObjectRenderer();
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
 
         $result = $subject->typoLink('Send me an email', ['parameter' => 'test@example.com']);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -494,11 +494,11 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $tsfe->spamProtectEmailAddresses = 1;
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
-        $this->assertEquals('<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+uftuAfybnqmf\/dpn\');">Send me an email</a>', $result);
+        self::assertEquals('<a href="javascript:linkTo_UnCryptMailto(\'nbjmup+uftuAfybnqmf\/dpn\');">Send me an email</a>', $result);
 
         $tsfe->spamProtectEmailAddresses = 'ascii';
         $result = $subject->typoLink('Send me an email', ['parameter' => 'mailto:test@example.com']);
-        $this->assertEquals('<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#101;&#115;&#116;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">Send me an email</a>', $result);
+        self::assertEquals('<a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#116;&#101;&#115;&#116;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">Send me an email</a>', $result);
     }
 
     /**
@@ -509,12 +509,12 @@ class ContentObjectRendererTest extends FunctionalTestCase
         // @todo Merge with existing link generation test
         // reason for failing is, that PageLinkBuilder is using a context-specific
         // instance of PageRepository instead of reusing a shared global instance
-        $this->markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
+        self::markTestIncomplete('This test has side effects and is based on non-asserted assumptions');
 
         $pageRepositoryMockObject = $this->getMockBuilder(PageRepository::class)
             ->setMethods(['getPage'])
             ->getMock();
-        $pageRepositoryMockObject->expects($this->any())->method('getPage')->willReturn([
+        $pageRepositoryMockObject->expects(self::any())->method('getPage')->willReturn([
             'uid' => 1,
             'title' => 'Page title',
         ]);
@@ -560,7 +560,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
             'section' => 'content',
         ];
 
-        $this->assertEquals('<a href="#content">Page title</a>', $subject->typoLink('', $configuration));
+        self::assertEquals('<a href="#content">Page title</a>', $subject->typoLink('', $configuration));
     }
 
     /**
@@ -574,7 +574,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
 
         $expected = '';
         $actual = $subject->searchWhere('ab', 'header,bodytext', 'tt_content');
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**

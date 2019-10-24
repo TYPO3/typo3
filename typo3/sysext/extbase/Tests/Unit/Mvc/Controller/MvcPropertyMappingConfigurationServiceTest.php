@@ -123,7 +123,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $requestHashService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class)
             ->setMethods(['serializeAndHashFormFieldArray'])
             ->getMock();
-        $requestHashService->expects($this->once())->method('serializeAndHashFormFieldArray')->with($expected);
+        $requestHashService->expects(self::once())->method('serializeAndHashFormFieldArray')->with($expected);
         $requestHashService->generateTrustedPropertiesToken($input);
     }
 
@@ -159,7 +159,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $hashService = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class))
             ->setMethods(['appendHmac'])
             ->getMock();
-        $hashService->expects($this->once())->method('appendHmac')->with(json_encode($formFieldArray))->will($this->returnValue(json_encode($formFieldArray) . $mockHash));
+        $hashService->expects(self::once())->method('appendHmac')->with(json_encode($formFieldArray))->will(self::returnValue(json_encode($formFieldArray) . $mockHash));
 
         $requestHashService = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class))
             ->setMethods(['dummy'])
@@ -168,7 +168,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 
         $expected = json_encode($formFieldArray) . $mockHash;
         $actual = $requestHashService->_call('serializeAndHashFormFieldArray', $formFieldArray);
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**
@@ -177,7 +177,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet()
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects($this->any())->method('getInternalArgument')->with('__trustedProperties')->will($this->returnValue(null));
+        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->will(self::returnValue(null));
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 
         $requestHashService = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
@@ -204,7 +204,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
             'nonExistingArgument' => 1
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
-        $this->assertFalse($arguments->hasArgument('nonExistingArgument'));
+        self::assertFalse($arguments->hasArgument('nonExistingArgument'));
     }
 
     /**
@@ -222,13 +222,13 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
-        $this->assertTrue($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED), 'ConfigurationValue is not CONFIGURATION_MODIFICATION_ALLOWED at line ' . __LINE__);
-        $this->assertNull($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED), 'ConfigurationValue is not NULL at line ' . __LINE__);
-        $this->assertFalse($propertyMappingConfiguration->shouldMap('someProperty'), 'Value is not FALSE at line ' . __LINE__);
+        self::assertTrue($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED), 'ConfigurationValue is not CONFIGURATION_MODIFICATION_ALLOWED at line ' . __LINE__);
+        self::assertNull($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED), 'ConfigurationValue is not NULL at line ' . __LINE__);
+        self::assertFalse($propertyMappingConfiguration->shouldMap('someProperty'), 'Value is not FALSE at line ' . __LINE__);
 
-        $this->assertTrue($propertyMappingConfiguration->forProperty('nested')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED), 'ConfigurationValue is not CONFIGURATION_MODIFICATION_ALLOWED at line ' . __LINE__);
-        $this->assertNull($propertyMappingConfiguration->forProperty('nested')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED), 'ConfigurationValue is not NULL at line ' . __LINE__);
-        $this->assertFalse($propertyMappingConfiguration->forProperty('nested')->shouldMap('someProperty'), 'Value is not FALSE at line ' . __LINE__);
+        self::assertTrue($propertyMappingConfiguration->forProperty('nested')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED), 'ConfigurationValue is not CONFIGURATION_MODIFICATION_ALLOWED at line ' . __LINE__);
+        self::assertNull($propertyMappingConfiguration->forProperty('nested')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED), 'ConfigurationValue is not NULL at line ' . __LINE__);
+        self::assertFalse($propertyMappingConfiguration->forProperty('nested')->shouldMap('someProperty'), 'Value is not FALSE at line ' . __LINE__);
     }
 
     /**
@@ -243,13 +243,13 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
-        $this->assertNull($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
-        $this->assertTrue($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        $this->assertFalse($propertyMappingConfiguration->shouldMap('someProperty'));
+        self::assertNull($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        self::assertTrue($propertyMappingConfiguration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        self::assertFalse($propertyMappingConfiguration->shouldMap('someProperty'));
 
-        $this->assertNull($propertyMappingConfiguration->forProperty('bar')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
-        $this->assertTrue($propertyMappingConfiguration->forProperty('bar')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        $this->assertFalse($propertyMappingConfiguration->forProperty('bar')->shouldMap('someProperty'));
+        self::assertNull($propertyMappingConfiguration->forProperty('bar')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        self::assertTrue($propertyMappingConfiguration->forProperty('bar')->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        self::assertFalse($propertyMappingConfiguration->forProperty('bar')->shouldMap('someProperty'));
     }
 
     /**
@@ -264,8 +264,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
-        $this->assertFalse($propertyMappingConfiguration->shouldMap('someProperty'));
-        $this->assertTrue($propertyMappingConfiguration->shouldMap('bar'));
+        self::assertFalse($propertyMappingConfiguration->shouldMap('someProperty'));
+        self::assertTrue($propertyMappingConfiguration->shouldMap('bar'));
     }
 
     /**
@@ -282,9 +282,9 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         ];
         $arguments = $this->initializePropertyMappingConfiguration($trustedProperties);
         $propertyMappingConfiguration = $arguments->getArgument('foo')->getPropertyMappingConfiguration();
-        $this->assertFalse($propertyMappingConfiguration->shouldMap('someProperty'));
-        $this->assertTrue($propertyMappingConfiguration->shouldMap('bar'));
-        $this->assertTrue($propertyMappingConfiguration->forProperty('bar')->shouldMap('foo'));
+        self::assertFalse($propertyMappingConfiguration->shouldMap('someProperty'));
+        self::assertTrue($propertyMappingConfiguration->shouldMap('bar'));
+        self::assertTrue($propertyMappingConfiguration->forProperty('bar')->shouldMap('foo'));
     }
 
     /**
@@ -297,12 +297,12 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     protected function initializePropertyMappingConfiguration(array $trustedProperties)
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects($this->any())->method('getInternalArgument')->with('__trustedProperties')->will($this->returnValue('fooTrustedProperties'));
+        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->will(self::returnValue('fooTrustedProperties'));
 
         $mockHashService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Security\Cryptography\HashService::class)
             ->setMethods(['validateAndStripHmac'])
             ->getMock();
-        $mockHashService->expects($this->once())->method('validateAndStripHmac')->with('fooTrustedProperties')->will($this->returnValue(json_encode($trustedProperties)));
+        $mockHashService->expects(self::once())->method('validateAndStripHmac')->with('fooTrustedProperties')->will(self::returnValue(json_encode($trustedProperties)));
 
         $requestHashService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, ['dummy']);
         $requestHashService->_set('hashService', $mockHashService);
@@ -313,8 +313,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
 
         $mockArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguration);
-        $mockArgument->expects($this->any())->method('getName')->will($this->returnValue('foo'));
-        $mockObjectManager->expects($this->once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)->will($this->returnValue($mockArgument));
+        $mockArgument->expects(self::any())->method('getName')->will(self::returnValue('foo'));
+        $mockObjectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)->will(self::returnValue($mockArgument));
 
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, ['dummy']);
         $arguments->_set('objectManager', $mockObjectManager);

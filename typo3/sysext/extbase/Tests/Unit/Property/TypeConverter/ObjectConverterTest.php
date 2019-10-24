@@ -66,9 +66,9 @@ class ObjectConverterTest extends UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(['array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        $this->assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
+        self::assertEquals(['array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        self::assertEquals('object', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**
@@ -94,7 +94,7 @@ class ObjectConverterTest extends UnitTestCase
      */
     public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject($className, $expected)
     {
-        $this->assertEquals($expected, $this->converter->canConvertFrom('myInputData', $className));
+        self::assertEquals($expected, $this->converter->canConvertFrom('myInputData', $className));
     }
 
     /**
@@ -103,7 +103,7 @@ class ObjectConverterTest extends UnitTestCase
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType(): void
     {
         $classSchemaMock = $this->createMock(ClassSchema::class);
-        $classSchemaMock->expects($this->any())->method('getMethod')->with('__construct')->willReturn(new ClassSchema\Method(
+        $classSchemaMock->expects(self::any())->method('getMethod')->with('__construct')->willReturn(new ClassSchema\Method(
             '__construct',
             [
                 'params' => [
@@ -117,15 +117,15 @@ class ObjectConverterTest extends UnitTestCase
         ));
 
         $this->mockReflectionService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getClassSchema')
             ->with('TheTargetType')
             ->willReturn($classSchemaMock);
 
-        $this->mockContainer->expects($this->any())->method('getImplementationClassName')->will($this->returnValue('TheTargetType'));
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue('TheTargetType'));
 
         $configuration = new PropertyMappingConfiguration();
         $configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, []);
-        $this->assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
+        self::assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
     }
 }

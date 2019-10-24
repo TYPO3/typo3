@@ -37,9 +37,9 @@ class FloatConverterTest extends UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(['float', 'integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        $this->assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
+        self::assertEquals(['float', 'integer', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        self::assertEquals('float', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**
@@ -47,7 +47,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromShouldCastTheStringToFloat()
     {
-        $this->assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
+        self::assertSame(1.5, $this->converter->convertFrom('1.5', 'float'));
     }
 
     /**
@@ -55,7 +55,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromReturnsNullIfEmptyStringSpecified()
     {
-        $this->assertNull($this->converter->convertFrom('', 'float'));
+        self::assertNull($this->converter->convertFrom('', 'float'));
     }
 
     /**
@@ -63,7 +63,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromShouldAcceptIntegers()
     {
-        $this->assertSame((float)123, $this->converter->convertFrom(123, 'float'));
+        self::assertSame((float)123, $this->converter->convertFrom(123, 'float'));
     }
 
     /**
@@ -73,16 +73,16 @@ class FloatConverterTest extends UnitTestCase
     {
         $mockMappingConfiguration = $this->createMock(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('getConfigurationValue')
             ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::CONFIGURATION_THOUSANDS_SEPARATOR)
             ->willReturn('.');
         $mockMappingConfiguration
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('getConfigurationValue')
             ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\FloatConverter::CONFIGURATION_DECIMAL_POINT)
             ->willReturn(',');
-        $this->assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
+        self::assertSame(1024.42, $this->converter->convertFrom('1.024,42', 'float', [], $mockMappingConfiguration));
     }
 
     /**
@@ -90,7 +90,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
     {
-        $this->assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'float'));
+        self::assertInstanceOf(\TYPO3\CMS\Extbase\Error\Error::class, $this->converter->convertFrom('not numeric', 'float'));
     }
 
     /**
@@ -98,7 +98,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function canConvertFromShouldReturnTrue()
     {
-        $this->assertTrue($this->converter->canConvertFrom('1.5', 'float'));
+        self::assertTrue($this->converter->canConvertFrom('1.5', 'float'));
     }
 
     /**
@@ -106,7 +106,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function canConvertFromShouldReturnTrueForAnEmptyValue()
     {
-        $this->assertTrue($this->converter->canConvertFrom('', 'integer'));
+        self::assertTrue($this->converter->canConvertFrom('', 'integer'));
     }
 
     /**
@@ -114,7 +114,7 @@ class FloatConverterTest extends UnitTestCase
      */
     public function canConvertFromShouldReturnTrueForANullValue()
     {
-        $this->assertTrue($this->converter->canConvertFrom(null, 'integer'));
+        self::assertTrue($this->converter->canConvertFrom(null, 'integer'));
     }
 
     /**
@@ -122,6 +122,6 @@ class FloatConverterTest extends UnitTestCase
      */
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
-        $this->assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
+        self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
     }
 }

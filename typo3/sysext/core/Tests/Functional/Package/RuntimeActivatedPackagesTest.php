@@ -35,6 +35,6 @@ class RuntimeActivatedPackagesTest extends FunctionalTestCase
      */
     public function runtimeActivatedPackageIsLoaded()
     {
-        $this->assertTrue(ExtensionManagementUtility::isLoaded('felogin'));
+        self::assertTrue(ExtensionManagementUtility::isLoaded('felogin'));
     }
 }

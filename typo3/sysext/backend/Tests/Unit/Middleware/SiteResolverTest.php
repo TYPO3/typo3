@@ -53,6 +53,6 @@ class SiteResolverTest extends UnitTestCase
         };
         $requestHandler->setIncomingRequest($incomingRequest);
         $response = $subject->process($incomingRequest, $requestHandler);
-        $this->assertEquals(200, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
     }
 }

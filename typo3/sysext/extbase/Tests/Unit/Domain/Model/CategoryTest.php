@@ -37,7 +37,7 @@ class CategoryTest extends UnitTestCase
      */
     public function getTitleInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->fixture->getTitle());
+        self::assertSame('', $this->fixture->getTitle());
     }
 
     /**
@@ -46,7 +46,7 @@ class CategoryTest extends UnitTestCase
     public function setTitleSetsTitle()
     {
         $this->fixture->setTitle('foo bar');
-        $this->assertSame('foo bar', $this->fixture->getTitle());
+        self::assertSame('foo bar', $this->fixture->getTitle());
     }
 
     /**
@@ -54,7 +54,7 @@ class CategoryTest extends UnitTestCase
      */
     public function getDescriptionInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->fixture->getDescription());
+        self::assertSame('', $this->fixture->getDescription());
     }
 
     /**
@@ -63,7 +63,7 @@ class CategoryTest extends UnitTestCase
     public function setDescriptionSetsDescription()
     {
         $this->fixture->setDescription('foo bar');
-        $this->assertSame('foo bar', $this->fixture->getDescription());
+        self::assertSame('foo bar', $this->fixture->getDescription());
     }
 
     /**
@@ -71,7 +71,7 @@ class CategoryTest extends UnitTestCase
      */
     public function getParentInitiallyReturnsNull()
     {
-        $this->assertNull($this->fixture->getParent());
+        self::assertNull($this->fixture->getParent());
     }
 
     /**
@@ -81,6 +81,6 @@ class CategoryTest extends UnitTestCase
     {
         $parent = new \TYPO3\CMS\Extbase\Domain\Model\Category();
         $this->fixture->setParent($parent);
-        $this->assertSame($parent, $this->fixture->getParent());
+        self::assertSame($parent, $this->fixture->getParent());
     }
 }

@@ -40,10 +40,10 @@ class VimeoRendererTest extends UnitTestCase
 
         /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
-        $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331'));
+        $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->will(self::returnValue('7331'));
 
         $this->subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
-        $this->subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
+        $this->subject->expects(self::any())->method('getOnlineMediaHelper')->will(self::returnValue($vimeoHelper));
     }
 
     /**
@@ -51,7 +51,7 @@ class VimeoRendererTest extends UnitTestCase
      */
     public function getPriorityReturnsCorrectValue()
     {
-        $this->assertSame(1, $this->subject->getPriority());
+        self::assertSame(1, $this->subject->getPriority());
     }
 
     /**
@@ -61,14 +61,14 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock1 */
         $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->expects($this->any())->method('getMimeType')->will($this->returnValue('video/vimeo'));
+        $fileResourceMock1->expects(self::any())->method('getMimeType')->will(self::returnValue('video/vimeo'));
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock2 */
         $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->expects($this->any())->method('getMimeType')->will($this->returnValue('video/unknown'));
-        $fileResourceMock2->expects($this->any())->method('getExtension')->will($this->returnValue('vimeo'));
+        $fileResourceMock2->expects(self::any())->method('getMimeType')->will(self::returnValue('video/unknown'));
+        $fileResourceMock2->expects(self::any())->method('getExtension')->will(self::returnValue('vimeo'));
 
-        $this->assertTrue($this->subject->canRender($fileResourceMock1));
-        $this->assertTrue($this->subject->canRender($fileResourceMock2));
+        self::assertTrue($this->subject->canRender($fileResourceMock1));
+        self::assertTrue($this->subject->canRender($fileResourceMock2));
     }
 
     /**
@@ -78,9 +78,9 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/youtube'));
+        $fileResourceMock->expects(self::any())->method('getMimeType')->will(self::returnValue('video/youtube'));
 
-        $this->assertFalse($this->subject->canRender($fileResourceMock));
+        self::assertFalse($this->subject->canRender($fileResourceMock));
     }
 
     /**
@@ -91,7 +91,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200')
         );
@@ -105,7 +105,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?loop=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['loop' => 1])
         );
@@ -119,7 +119,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
@@ -135,10 +135,10 @@ class VimeoRendererTest extends UnitTestCase
 
         /** @var FileReference|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileReferenceMock = $this->createMock(FileReference::class);
-        $fileReferenceMock->expects($this->any())->method('getProperty')->will($this->returnValue(1));
-        $fileReferenceMock->expects($this->any())->method('getOriginalFile')->willReturn($fileResourceMock);
+        $fileReferenceMock->expects(self::any())->method('getProperty')->will(self::returnValue(1));
+        $fileReferenceMock->expects(self::any())->method('getOriginalFile')->willReturn($fileResourceMock);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileReferenceMock, '300m', '200')
         );
@@ -152,7 +152,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="autoplay; fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['autoplay' => 1])
         );
@@ -166,7 +166,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" sanitizetest="&lt;&gt;&quot;&apos;test" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload', '<"\'>sanitize^&test' => '<>"\'test']])
         );
@@ -180,7 +180,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen data-player-handler="vimeo" data-custom-playerId="player-123" data-sanitizetest="test" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['data' => ['player-handler' => 'vimeo', 'custom-playerId' => 'player-123', '*sanitize&test"' => 'test']])
         );
@@ -194,7 +194,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen foo="bar" custom-play="preload" data-player-handler="vimeo" data-custom-playerId="player-123" width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['data' => ['player-handler' => 'vimeo', 'custom-playerId' => 'player-123'], 'additionalAttributes' => ['foo' => 'bar', 'custom-play' => 'preload']])
         );
@@ -208,7 +208,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar'])
         );
@@ -222,7 +222,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?autoplay=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="foo; bar"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['allow' => 'foo; bar', 'autoplay' => 1])
         );
@@ -235,15 +235,15 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
-        $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331/private0123'));
+        $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->will(self::returnValue('7331/private0123'));
 
         $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
-        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
+        $subject->expects(self::any())->method('getOnlineMediaHelper')->will(self::returnValue($vimeoHelper));
 
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331/private0123?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
@@ -256,15 +256,15 @@ class VimeoRendererTest extends UnitTestCase
     {
         /** @var VimeoHelper|\PHPUnit_Framework_MockObject_MockObject $vimeoHelper */
         $vimeoHelper = $this->getAccessibleMock(VimeoHelper::class, ['getOnlineMediaId'], ['vimeo']);
-        $vimeoHelper->expects($this->any())->method('getOnlineMediaId')->will($this->returnValue('7331<script>danger</script>\'"random"quotes;'));
+        $vimeoHelper->expects(self::any())->method('getOnlineMediaId')->will(self::returnValue('7331<script>danger</script>\'"random"quotes;'));
 
         $subject = $this->getAccessibleMock(VimeoRenderer::class, ['getOnlineMediaHelper'], []);
-        $subject->expects($this->any())->method('getOnlineMediaHelper')->will($this->returnValue($vimeoHelper));
+        $subject->expects(self::any())->method('getOnlineMediaHelper')->will(self::returnValue($vimeoHelper));
 
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331&lt;script&gt;danger&lt;/script&gt;&apos;&quot;random&quot;quotes;?title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $subject->render($fileResourceMock, '300m', '200')
         );
@@ -278,7 +278,7 @@ class VimeoRendererTest extends UnitTestCase
         /** @var File|\PHPUnit_Framework_MockObject_MockObject $fileResourceMock */
         $fileResourceMock = $this->createMock(File::class);
 
-        $this->assertSame(
+        self::assertSame(
             '<iframe src="https://player.vimeo.com/video/7331?api=1&amp;title=0&amp;byline=0&amp;portrait=0" allowfullscreen width="300" height="200" allow="fullscreen"></iframe>',
             $this->subject->render($fileResourceMock, '300m', '200', ['api' => 1])
         );

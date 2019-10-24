@@ -40,13 +40,13 @@ class TypoScriptServiceTest extends UnitTestCase
         $fakeTypoScriptFrontendController->cObj = $mockContentObjectRenderer;
 
         $mockContentObjectRenderer
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('cObjGetSingle')
             ->with('TEXT', ['value' => 'rambo'])
-            ->will($this->returnValue('rambo'));
+            ->will(self::returnValue('rambo'));
 
         $mockTypoScriptService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTypoScriptFrontendController')
             ->willReturn($fakeTypoScriptFrontendController);
 
@@ -64,6 +64,6 @@ class TypoScriptServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockTypoScriptService->_call('resolveTypoScriptConfiguration', $input));
+        self::assertSame($expected, $mockTypoScriptService->_call('resolveTypoScriptConfiguration', $input));
     }
 }

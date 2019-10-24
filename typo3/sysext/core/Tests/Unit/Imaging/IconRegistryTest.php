@@ -57,7 +57,7 @@ class IconRegistryTest extends UnitTestCase
     public function getDefaultIconIdentifierReturnsTheCorrectDefaultIconIdentifierString()
     {
         $result = (new IconRegistry)->getDefaultIconIdentifier();
-        $this->assertEquals($result, 'default-not-found');
+        self::assertEquals($result, 'default-not-found');
     }
 
     /**
@@ -67,7 +67,7 @@ class IconRegistryTest extends UnitTestCase
     {
         $subject = new IconRegistry();
         $result = $subject->isRegistered($subject->getDefaultIconIdentifier());
-        $this->assertEquals($result, true);
+        self::assertEquals($result, true);
     }
 
     /**
@@ -76,7 +76,7 @@ class IconRegistryTest extends UnitTestCase
     public function isRegisteredReturnsFalseForNotRegisteredIcon()
     {
         $result = (new IconRegistry)->isRegistered($this->notRegisteredIconIdentifier);
-        $this->assertEquals($result, false);
+        self::assertEquals($result, false);
     }
 
     /**
@@ -86,12 +86,12 @@ class IconRegistryTest extends UnitTestCase
     {
         $unregisterdIcon = 'foo-bar-unregistered';
         $subject = new IconRegistry();
-        $this->assertFalse($subject->isRegistered($unregisterdIcon));
+        self::assertFalse($subject->isRegistered($unregisterdIcon));
         $subject->registerIcon($unregisterdIcon, FontawesomeIconProvider::class, [
             'name' => 'pencil',
             'additionalClasses' => 'fa-fw'
         ]);
-        $this->assertTrue($subject->isRegistered($unregisterdIcon));
+        self::assertTrue($subject->isRegistered($unregisterdIcon));
     }
 
     /**
@@ -123,10 +123,10 @@ class IconRegistryTest extends UnitTestCase
     {
         $result = (new IconRegistry)->getIconConfigurationByIdentifier('default-not-found');
         // result must contain at least provider and options array
-        $this->assertArrayHasKey('provider', $result);
-        $this->assertArrayHasKey('options', $result);
+        self::assertArrayHasKey('provider', $result);
+        self::assertArrayHasKey('options', $result);
         // the provider must implement the IconProviderInterface
-        $this->assertTrue(in_array(IconProviderInterface::class, class_implements($result['provider'])));
+        self::assertTrue(in_array(IconProviderInterface::class, class_implements($result['provider'])));
     }
 
     /**
@@ -134,7 +134,7 @@ class IconRegistryTest extends UnitTestCase
      */
     public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentiefiers()
     {
-        $this->assertIsArray((new IconRegistry)->getAllRegisteredIconIdentifiers());
+        self::assertIsArray((new IconRegistry)->getAllRegisteredIconIdentifiers());
     }
 
     /**
@@ -143,8 +143,8 @@ class IconRegistryTest extends UnitTestCase
     public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers()
     {
         $result = (new IconRegistry)->getAllRegisteredIconIdentifiers();
-        $this->assertIsArray($result);
-        $this->assertContains('default-not-found', $result);
+        self::assertIsArray($result);
+        self::assertContains('default-not-found', $result);
     }
 
     /**
@@ -153,7 +153,7 @@ class IconRegistryTest extends UnitTestCase
     public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForEmptyFileExtension()
     {
         $result = (new IconRegistry)->getIconIdentifierForFileExtension('');
-        $this->assertEquals('mimetypes-other-other', $result);
+        self::assertEquals('mimetypes-other-other', $result);
     }
 
     /**
@@ -162,7 +162,7 @@ class IconRegistryTest extends UnitTestCase
     public function getIconIdentifierForFileExtensionReturnsDefaultIconIdentifierForUnknownFileExtension()
     {
         $result = (new IconRegistry)->getIconIdentifierForFileExtension('xyz');
-        $this->assertEquals('mimetypes-other-other', $result);
+        self::assertEquals('mimetypes-other-other', $result);
     }
 
     /**
@@ -171,7 +171,7 @@ class IconRegistryTest extends UnitTestCase
     public function getIconIdentifierForFileExtensionReturnsImageIconIdentifierForImageFileExtension()
     {
         $result = (new IconRegistry)->getIconIdentifierForFileExtension('jpg');
-        $this->assertEquals('mimetypes-media-image', $result);
+        self::assertEquals('mimetypes-media-image', $result);
     }
 
     /**
@@ -182,7 +182,7 @@ class IconRegistryTest extends UnitTestCase
         $subject = new IconRegistry();
         $subject->registerFileExtension('abc', 'xyz');
         $result = $subject->getIconIdentifierForFileExtension('abc');
-        $this->assertEquals('xyz', $result);
+        self::assertEquals('xyz', $result);
     }
 
     /**
@@ -193,7 +193,7 @@ class IconRegistryTest extends UnitTestCase
         $subject = new IconRegistry();
         $subject->registerFileExtension('jpg', 'xyz');
         $result = $subject->getIconIdentifierForFileExtension('jpg');
-        $this->assertEquals('xyz', $result);
+        self::assertEquals('xyz', $result);
     }
 
     /**
@@ -204,7 +204,7 @@ class IconRegistryTest extends UnitTestCase
         $subject = new IconRegistry();
         $subject->registerMimeTypeIcon('foo/bar', 'mimetype-foo-bar');
         $result = $subject->getIconIdentifierForMimeType('foo/bar');
-        $this->assertEquals('mimetype-foo-bar', $result);
+        self::assertEquals('mimetype-foo-bar', $result);
     }
 
     /**
@@ -215,7 +215,7 @@ class IconRegistryTest extends UnitTestCase
         $subject = new IconRegistry();
         $subject->registerMimeTypeIcon('video/*', 'mimetype-foo-bar');
         $result = $subject->getIconIdentifierForMimeType('video/*');
-        $this->assertEquals('mimetype-foo-bar', $result);
+        self::assertEquals('mimetype-foo-bar', $result);
     }
 
     /**
@@ -224,6 +224,6 @@ class IconRegistryTest extends UnitTestCase
     public function getIconIdentifierForMimeTypeWithUnknowMimeTypeReturnNull()
     {
         $result = (new IconRegistry)->getIconIdentifierForMimeType('bar/foo');
-        $this->assertEquals(null, $result);
+        self::assertEquals(null, $result);
     }
 }

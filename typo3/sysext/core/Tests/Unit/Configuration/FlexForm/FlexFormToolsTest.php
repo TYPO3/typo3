@@ -118,7 +118,7 @@ class FlexFormToolsTest extends UnitTestCase
             DataStructureIdentifierPreProcessHookReturnEmptyArray::class
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -130,7 +130,7 @@ class FlexFormToolsTest extends UnitTestCase
             DataStructureIdentifierPreProcessHookReturnArray::class
         ];
         $expected = '{"type":"myExtension","further":"data"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -144,7 +144,7 @@ class FlexFormToolsTest extends UnitTestCase
             DataStructureIdentifierPreProcessHookThrowException::class
         ];
         $expected = '{"type":"myExtension","further":"data"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -223,7 +223,7 @@ class FlexFormToolsTest extends UnitTestCase
             DataStructureIdentifierPostProcessHookReturnArray::class
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default","myExtensionData":"foo"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -255,7 +255,7 @@ class FlexFormToolsTest extends UnitTestCase
             ],
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -270,7 +270,7 @@ class FlexFormToolsTest extends UnitTestCase
         ];
         $this->expectException(InvalidTcaException::class);
         $this->expectExceptionCode(1463652560);
-        $this->assertSame('default', (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        self::assertSame('default', (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
     }
 
     /**
@@ -363,7 +363,7 @@ class FlexFormToolsTest extends UnitTestCase
             'aField' => 'thePointerValue',
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"thePointerValue"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -383,7 +383,7 @@ class FlexFormToolsTest extends UnitTestCase
             'aField' => 'thePointerValue',
         ];
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -519,7 +519,7 @@ class FlexFormToolsTest extends UnitTestCase
                 'ds_pointerField' => 'firstField,secondField'
             ],
         ];
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -802,7 +802,7 @@ class FlexFormToolsTest extends UnitTestCase
             'aPointerField' => '<T3DataStructure>...',
         ];
         $expected = '{"type":"record","tableName":"aTableName","uid":42,"fieldName":"aPointerField"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -870,7 +870,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetch()->willReturn($secondRow, $thirdRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":1,"fieldName":"tx_templavoila_ds"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -929,7 +929,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetch()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_ds"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -992,7 +992,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetch()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"aTableName","uid":2,"fieldName":"tx_templavoila_next_ds"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -1012,7 +1012,7 @@ class FlexFormToolsTest extends UnitTestCase
             'aPointerField' => 42,
         ];
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
     }
 
     /**
@@ -1076,7 +1076,7 @@ class FlexFormToolsTest extends UnitTestCase
         $statementProphecy->fetch()->willReturn($secondRow);
 
         $expected = '{"type":"record","tableName":"foreignTableName","uid":42,"fieldName":"foreignTableField"}';
-        $this->assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
+        self::assertSame($expected, (new FlexFormTools())->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $initialRow));
     }
 
     /**
@@ -1142,7 +1142,7 @@ class FlexFormToolsTest extends UnitTestCase
         $expected = [
             'sheets' => '',
         ];
-        $this->assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1157,7 +1157,7 @@ class FlexFormToolsTest extends UnitTestCase
         $expected = [
             'sheets' => '',
         ];
-        $this->assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1174,7 +1174,7 @@ class FlexFormToolsTest extends UnitTestCase
         $expected = [
             'sheets' => '',
         ];
-        $this->assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1223,7 +1223,7 @@ class FlexFormToolsTest extends UnitTestCase
         $expected = [
             'sheets' => '',
         ];
-        $this->assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1275,7 +1275,7 @@ class FlexFormToolsTest extends UnitTestCase
         $expected = [
             'sheets' => '',
         ];
-        $this->assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1321,7 +1321,7 @@ class FlexFormToolsTest extends UnitTestCase
                 ],
             ]
         ];
-        $this->assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1407,7 +1407,7 @@ class FlexFormToolsTest extends UnitTestCase
                 ],
             ]
         ];
-        $this->assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1447,7 +1447,7 @@ class FlexFormToolsTest extends UnitTestCase
                 ],
             ]
         ];
-        $this->assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1487,7 +1487,7 @@ class FlexFormToolsTest extends UnitTestCase
                 ],
             ]
         ];
-        $this->assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1547,7 +1547,7 @@ class FlexFormToolsTest extends UnitTestCase
                 'foo' => 'bar'
             ]
         ];
-        $this->assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, (new FlexFormTools())->parseDataStructureByIdentifier($identifier));
     }
 
     /**
@@ -1571,7 +1571,7 @@ class FlexFormToolsTest extends UnitTestCase
         $subject = $this->getMockBuilder(FlexFormTools::class)
             ->setMethods(['executeCallBackMethod'])
             ->getMock();
-        $subject->expects($this->never())->method('executeCallBackMethod');
+        $subject->expects(self::never())->method('executeCallBackMethod');
         $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA);
     }
 
@@ -1598,7 +1598,7 @@ class FlexFormToolsTest extends UnitTestCase
         $editData2 = [];
         /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->createMock(FlexFormTools::class);
-        $this->assertEquals(
+        self::assertEquals(
             $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData, $pA),
             $subject->traverseFlexFormXMLData_recurse($dataStruct, $editData2, $pA)
         );

@@ -67,7 +67,7 @@ class CategoryRegistryTest extends UnitTestCase
      */
     public function doesAddReturnTrueOnDefinedTable(): void
     {
-        $this->assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
+        self::assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
     }
 
     /**
@@ -75,8 +75,8 @@ class CategoryRegistryTest extends UnitTestCase
      */
     public function doesAddReturnTrueOnDefinedTableTheFirstTimeAndFalseTheSecondTime(): void
     {
-        $this->assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
-        $this->assertFalse($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
+        self::assertTrue($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
+        self::assertFalse($this->subject->add('test_extension_a', $this->tables['first'], 'categories'));
     }
 
     /**
@@ -132,8 +132,8 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->add('test_extension_a', $this->tables['second'], 'categories');
         $this->subject->applyTcaForPreRegisteredTables();
 
-        $this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-        $this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
+        self::assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
     }
 
     /**
@@ -145,8 +145,8 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->add('test_extension_b', $this->tables['second'], 'categories');
         $this->subject->applyTcaForPreRegisteredTables();
 
-        $this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-        $this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
+        self::assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
     }
 
     /**
@@ -158,8 +158,8 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->add('test_extension_b', $this->tables['first'], 'categories2');
         $this->subject->applyTcaForPreRegisteredTables();
 
-        $this->assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-        $this->assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
     }
 
     /**
@@ -171,8 +171,8 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories2');
         $this->subject->applyTcaForPreRegisteredTables();
 
-        $this->assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-        $this->assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories1', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories2', $GLOBALS['TCA'][$this->tables['first']]['columns']);
     }
 
     /**
@@ -186,11 +186,11 @@ class CategoryRegistryTest extends UnitTestCase
         $definitions = $this->subject->getDatabaseTableDefinitions();
         $matches = [];
         preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
-        $this->assertCount(2, $matches[0]);
-        $this->assertEquals($matches[1][0], $this->tables['first']);
-        $this->assertEquals($matches[2][0], 'categories');
-        $this->assertEquals($matches[1][1], $this->tables['second']);
-        $this->assertEquals($matches[2][1], 'categories');
+        self::assertCount(2, $matches[0]);
+        self::assertEquals($matches[1][0], $this->tables['first']);
+        self::assertEquals($matches[2][0], 'categories');
+        self::assertEquals($matches[1][1], $this->tables['second']);
+        self::assertEquals($matches[2][1], 'categories');
     }
 
     /**
@@ -203,9 +203,9 @@ class CategoryRegistryTest extends UnitTestCase
         $definitions = $this->subject->getDatabaseTableDefinition('test_extension_a');
         $matches = [];
         preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
-        $this->assertCount(1, $matches[0]);
-        $this->assertEquals($matches[1][0], $this->tables['first']);
-        $this->assertEquals($matches[2][0], 'categories');
+        self::assertCount(1, $matches[0]);
+        self::assertEquals($matches[1][0], $this->tables['first']);
+        self::assertEquals($matches[2][0], 'categories');
     }
 
     /**
@@ -216,8 +216,8 @@ class CategoryRegistryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = $this->tables['first'] . ',' . $this->tables['second'];
         $this->subject->applyTcaForPreRegisteredTables();
 
-        $this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
-        $this->assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
+        self::assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['first']]['columns']);
+        self::assertArrayHasKey('categories', $GLOBALS['TCA'][$this->tables['second']]['columns']);
     }
 
     /**
@@ -229,8 +229,8 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->add('test_extension_b', $this->tables['second'], 'categories');
         $this->subject->applyTcaForPreRegisteredTables();
 
-        $this->assertNotEmpty($GLOBALS['TCA'][$this->tables['first']]['columns']['categories']);
-        $this->assertNotEmpty($GLOBALS['TCA'][$this->tables['second']]['columns']['categories']);
+        self::assertNotEmpty($GLOBALS['TCA'][$this->tables['first']]['columns']['categories']);
+        self::assertNotEmpty($GLOBALS['TCA'][$this->tables['second']]['columns']['categories']);
     }
 
     /**
@@ -239,7 +239,7 @@ class CategoryRegistryTest extends UnitTestCase
     public function isRegisteredReturnsTrueIfElementIsAlreadyRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
-        $this->assertTrue($this->subject->isRegistered($this->tables['first'], 'categories'));
+        self::assertTrue($this->subject->isRegistered($this->tables['first'], 'categories'));
     }
 
     /**
@@ -248,8 +248,8 @@ class CategoryRegistryTest extends UnitTestCase
     public function isRegisteredReturnsFalseIfElementIsNotRegistered(): void
     {
         $this->subject->add('test_extension_a', $this->tables['first'], 'categories');
-        $this->assertFalse($this->subject->isRegistered($this->tables['first'], '_not_registered'));
-        $this->assertFalse($this->subject->isRegistered($this->tables['second'], 'categories'));
+        self::assertFalse($this->subject->isRegistered($this->tables['first'], '_not_registered'));
+        self::assertFalse($this->subject->isRegistered($this->tables['second'], 'categories'));
     }
 
     /**
@@ -261,7 +261,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertStringContainsString('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
+            self::assertStringContainsString('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
     }
 
@@ -274,7 +274,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertStringNotContainsString('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
+            self::assertStringNotContainsString('--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category', $typeConfig['showitem']);
         }
     }
 
@@ -285,7 +285,7 @@ class CategoryRegistryTest extends UnitTestCase
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories', ['typesList' => '0']);
         $this->subject->applyTcaForPreRegisteredTables();
-        $this->assertSame('', $GLOBALS['TCA'][$this->tables['first']]['types'][1]['showitem']);
+        self::assertSame('', $GLOBALS['TCA'][$this->tables['first']]['types'][1]['showitem']);
     }
 
     /**
@@ -298,7 +298,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->applyTcaForPreRegisteredTables();
 
         foreach ($GLOBALS['TCA'][$this->tables['first']]['types'] as $typeConfig) {
-            $this->assertSame(
+            self::assertSame(
                 1,
                 substr_count($typeConfig['showitem'], '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
             );
@@ -312,7 +312,7 @@ class CategoryRegistryTest extends UnitTestCase
     {
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
         $result = $this->subject->add('text_extension_a', $this->tables['first'], 'categories1', [], true);
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     /**
@@ -323,7 +323,7 @@ class CategoryRegistryTest extends UnitTestCase
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1');
         $GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd'] = ['showitem' => ''];
         $this->subject->add('text_extension_a', $this->tables['first'], 'categories1', [], true);
-        $this->assertSame(
+        self::assertSame(
             1,
             substr_count($GLOBALS['TCA'][$this->tables['first']]['types']['newtypeafterfirstadd']['showitem'], '--div--;LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_category.tabs.category')
         );

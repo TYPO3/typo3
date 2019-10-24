@@ -69,7 +69,7 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertTrue($validator->validate(true)->hasErrors());
+        self::assertTrue($validator->validate(true)->hasErrors());
     }
 
     /**
@@ -84,7 +84,7 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertTrue($validator->validate($input)->hasErrors());
+        self::assertTrue($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -99,7 +99,7 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -114,7 +114,7 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -129,7 +129,7 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -144,7 +144,7 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -159,6 +159,6 @@ class DateRangeValidatorTest extends UnitTestCase
             ->setConstructorArgs([$options])
             ->getMock();
 
-        $this->assertTrue($validator->validate($input)->hasErrors());
+        self::assertTrue($validator->validate($input)->hasErrors());
     }
 }

@@ -49,11 +49,11 @@ class DatabaseEditRowTest extends UnitTestCase
             'uid' => 10,
             'pid' => 123
         ];
-        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
+        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
 
         $result = $this->subject->addData($input);
 
-        $this->assertSame($resultRow, $result['databaseRow']);
+        self::assertSame($resultRow, $result['databaseRow']);
     }
 
     /**
@@ -69,7 +69,7 @@ class DatabaseEditRowTest extends UnitTestCase
         $resultRow = [
             'uid' => 10,
         ];
-        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn($resultRow);
+        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn($resultRow);
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1437663061);
@@ -104,7 +104,7 @@ class DatabaseEditRowTest extends UnitTestCase
             'command' => 'edit',
             'vanillaUid' => 10,
         ];
-        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn([]);
+        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn([]);
 
         $this->expectException(DatabaseRecordException::class);
         $this->expectExceptionCode(1437656081);
@@ -122,13 +122,13 @@ class DatabaseEditRowTest extends UnitTestCase
             'command' => 'edit',
             'vanillaUid' => 10,
         ];
-        $this->subject->expects($this->once())->method('getDatabaseRow')->willReturn([]);
+        $this->subject->expects(self::once())->method('getDatabaseRow')->willReturn([]);
 
         try {
             $this->subject->addData($input);
         } catch (DatabaseRecordException $e) {
-            $this->assertSame('tt_content', $e->getTableName());
-            $this->assertSame(10, $e->getUid());
+            self::assertSame('tt_content', $e->getTableName());
+            self::assertSame(10, $e->getUid());
         }
     }
 
@@ -149,10 +149,10 @@ class DatabaseEditRowTest extends UnitTestCase
             'databaseRow' => $virtualRow
         ];
         $resultRow = $virtualRow;
-        $this->subject->expects($this->never())->method('getDatabaseRow');
+        $this->subject->expects(self::never())->method('getDatabaseRow');
 
         $result = $this->subject->addData($input);
 
-        $this->assertSame($resultRow, $result['databaseRow']);
+        self::assertSame($resultRow, $result['databaseRow']);
     }
 }

@@ -34,7 +34,7 @@ class EmConfUtilityTest extends UnitTestCase
         ];
         $fixture = new EmConfUtility();
         $emConf = $fixture->constructEmConf($extensionData);
-        $this->assertStringContainsString('Extension Manager/Repository config file for ext', $emConf);
+        self::assertStringContainsString('Extension Manager/Repository config file for ext', $emConf);
     }
 
     /**
@@ -57,7 +57,7 @@ class EmConfUtilityTest extends UnitTestCase
             ],
         ];
         $fixture = new EmConfUtility();
-        $this->assertEquals($expected, $fixture->fixEmConf($input));
+        self::assertEquals($expected, $fixture->fixEmConf($input));
     }
 
     /**
@@ -81,6 +81,6 @@ class EmConfUtilityTest extends UnitTestCase
             ],
         ];
         $fixture = new EmConfUtility();
-        $this->assertEquals($expected, $fixture->fixEmConf($input));
+        self::assertEquals($expected, $fixture->fixEmConf($input));
     }
 }

@@ -71,7 +71,7 @@ class MetaTagManagerRegistryTest extends UnitTestCase
 
         $managers = $metaTagManagerRegistry->getAllManagers();
 
-        $this->assertEquals($expected, $managers);
+        self::assertEquals($expected, $managers);
     }
 
     /**

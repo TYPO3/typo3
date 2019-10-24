@@ -51,7 +51,7 @@ class PaddingViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('foo       ', $actualResult);
+        self::assertEquals('foo       ', $actualResult);
     }
 
     /**
@@ -72,7 +72,7 @@ class PaddingViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('foo-=-=-=-', $actualResult);
+        self::assertEquals('foo-=-=-=-', $actualResult);
     }
 
     /**
@@ -92,7 +92,7 @@ class PaddingViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('some long string', $actualResult);
+        self::assertEquals('some long string', $actualResult);
     }
 
     /**
@@ -113,7 +113,7 @@ class PaddingViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('12300', $actualResult);
+        self::assertEquals('12300', $actualResult);
     }
 
     /**
@@ -130,6 +130,6 @@ class PaddingViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('foo00', $actualResult);
+        self::assertEquals('foo00', $actualResult);
     }
 }

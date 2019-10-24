@@ -81,7 +81,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $nodeFactoryProphecy->create($expectedChildDataArray)->willReturn($singleFieldContainerProphecy->reveal());
         $containerResult = (new PaletteAndSingleContainer($nodeFactoryProphecy->reveal(), $input))->render();
         // Expect label is in answer HTML
-        $this->assertStringContainsString($labelReference, $containerResult['html']);
+        self::assertStringContainsString($labelReference, $containerResult['html']);
     }
 
     /**
@@ -138,7 +138,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $nodeFactoryProphecy->create($expectedChildDataArray)->willReturn($singleFieldContainerProphecy->reveal());
         $containerResult = (new PaletteAndSingleContainer($nodeFactoryProphecy->reveal(), $input))->render();
         // Expect label is in answer HTML
-        $this->assertStringContainsString($labelReference, $containerResult['html']);
+        self::assertStringContainsString($labelReference, $containerResult['html']);
     }
 
     /**
@@ -196,6 +196,6 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $nodeFactoryProphecy->create($expectedChildDataArray)->willReturn($singleFieldContainerProphecy->reveal());
         $containerResult = (new PaletteAndSingleContainer($nodeFactoryProphecy->reveal(), $input))->render();
         // Expect label is in answer HTML
-        $this->assertStringContainsString($labelReferenceFieldArray, $containerResult['html']);
+        self::assertStringContainsString($labelReferenceFieldArray, $containerResult['html']);
     }
 }

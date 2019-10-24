@@ -142,6 +142,6 @@ class PageLayoutControllerTest extends FunctionalTestCase
         $this->backendUser->workspace = $workspaceId;
         $this->subject->_set('id', $pageId);
         $actualResult = $this->subject->_call('currentPageHasSubPages');
-        static::assertSame($expectation, $actualResult);
+        self::assertSame($expectation, $actualResult);
     }
 }

@@ -31,7 +31,7 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
-        $this->assertEquals([$flashMessage], $flashMessageQueue->getAllMessages());
+        self::assertEquals([$flashMessage], $flashMessageQueue->getAllMessages());
     }
 
     /**
@@ -50,11 +50,11 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
 
         $filteredFlashMessages = $flashMessageQueue->getAllMessages(FlashMessage::NOTICE);
 
-        $this->assertEquals(count($filteredFlashMessages), 1);
+        self::assertEquals(count($filteredFlashMessages), 1);
 
         reset($filteredFlashMessages);
         $flashMessage = current($filteredFlashMessages);
-        $this->assertEquals($messages[0], $flashMessage);
+        self::assertEquals($messages[0], $flashMessage);
     }
 
     /**
@@ -66,7 +66,7 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
         $flashMessage = new FlashMessage('Foo', 'Bar', FlashMessage::OK, true);
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
-        $this->assertEquals([$flashMessage], $flashMessageQueue->getAllMessagesAndFlush());
+        self::assertEquals([$flashMessage], $flashMessageQueue->getAllMessagesAndFlush());
     }
 
     /**
@@ -79,7 +79,7 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
         $flashMessageQueue->getAllMessagesAndFlush();
-        $this->assertEquals([], $flashMessageQueue->getAllMessagesAndFlush());
+        self::assertEquals([], $flashMessageQueue->getAllMessagesAndFlush());
     }
 
     /**
@@ -98,14 +98,14 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
 
         $filteredFlashMessages = $flashMessageQueue->getAllMessagesAndFlush(FlashMessage::NOTICE);
 
-        $this->assertEquals(count($filteredFlashMessages), 1);
+        self::assertEquals(count($filteredFlashMessages), 1);
 
         reset($filteredFlashMessages);
         $flashMessage = current($filteredFlashMessages);
-        $this->assertEquals($messages[0], $flashMessage);
+        self::assertEquals($messages[0], $flashMessage);
 
-        $this->assertEquals([], $flashMessageQueue->getAllMessages(FlashMessage::NOTICE));
-        $this->assertEquals([$messages[1]], array_values($flashMessageQueue->getAllMessages()));
+        self::assertEquals([], $flashMessageQueue->getAllMessages(FlashMessage::NOTICE));
+        self::assertEquals([$messages[1]], array_values($flashMessageQueue->getAllMessages()));
     }
 
     /**
@@ -120,7 +120,7 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
         $flashMessageQueue->addMessage($flashMessage1);
         $flashMessageQueue->addMessage($flashMessage2);
 
-        $this->assertCount(2, $flashMessageQueue->getAllMessages());
+        self::assertCount(2, $flashMessageQueue->getAllMessages());
     }
 
     /**
@@ -133,7 +133,7 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
         $flashMessageQueue = new FlashMessageQueue('core.template.flashMessages');
         $flashMessageQueue->addMessage($flashMessage);
         $flashMessageQueue->clear();
-        $this->assertCount(0, $flashMessageQueue);
+        self::assertCount(0, $flashMessageQueue);
     }
 
     /**
@@ -148,6 +148,6 @@ class FlashMessageQueueTest extends \TYPO3\TestingFramework\Core\Functional\Func
         $flashMessageQueue->addMessage($flashMessage1);
         $flashMessageQueue->addMessage($flashMessage2);
 
-        $this->assertCount(1, $flashMessageQueue);
+        self::assertCount(1, $flashMessageQueue);
     }
 }

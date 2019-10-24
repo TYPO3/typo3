@@ -558,7 +558,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['field_1']['displayCond']);
 
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -619,7 +619,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['field_1']['config']['ds']['sheets']['sDEF']['ROOT']['el']['foo']['displayCond']);
 
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -3634,7 +3634,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
             'processedTca' => $processedTca,
         ];
         $expected = ArrayUtility::removeByPath($input, 'processedTca/' . $processedTcaFieldToBeRemovedPath);
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -3919,7 +3919,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         } else {
             unset($expected['processedTca']['columns']['testField']);
         }
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -3963,7 +3963,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         } else {
             unset($expected['processedTca']['columns']['testField']);
         }
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -3993,7 +3993,7 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']['displayCond']);
 
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 
     /**
@@ -4022,6 +4022,6 @@ class EvaluateDisplayConditionsTest extends UnitTestCase
 
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']);
-        $this->assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
+        self::assertSame($expected, (new EvaluateDisplayConditions())->addData($input));
     }
 }

@@ -49,32 +49,32 @@ class TypoScriptFrontendControllerTest extends FunctionalTestCase
      */
     public function getFirstTimeValueForRecordReturnCorrectData()
     {
-        $this->assertSame(
+        self::assertSame(
             $this->getFirstTimeValueForRecordCall('tt_content:2', 1),
             2,
             'The next start/endtime should be 2'
         );
-        $this->assertSame(
+        self::assertSame(
             $this->getFirstTimeValueForRecordCall('tt_content:2', 2),
             3,
             'The next start/endtime should be 3'
         );
-        $this->assertSame(
+        self::assertSame(
             $this->getFirstTimeValueForRecordCall('tt_content:2', 4),
             5,
             'The next start/endtime should be 5'
         );
-        $this->assertSame(
+        self::assertSame(
             $this->getFirstTimeValueForRecordCall('tt_content:2', 5),
             PHP_INT_MAX,
             'The next start/endtime should be PHP_INT_MAX as there are no more'
         );
-        $this->assertSame(
+        self::assertSame(
             $this->getFirstTimeValueForRecordCall('tt_content:3', 1),
             PHP_INT_MAX,
             'Should be PHP_INT_MAX as table has not this PID'
         );
-        $this->assertSame(
+        self::assertSame(
             $this->getFirstTimeValueForRecordCall('fe_groups:2', 1),
             PHP_INT_MAX,
             'Should be PHP_INT_MAX as table fe_groups has no start/endtime in TCA'

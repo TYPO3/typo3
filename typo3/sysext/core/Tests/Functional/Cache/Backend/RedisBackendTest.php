@@ -37,7 +37,7 @@ class RedisBackendTest extends FunctionalTestCase
     protected function setUp(): void
     {
         if (!getenv('typo3TestingRedisHost')) {
-            $this->markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
+            self::markTestSkipped('environment variable "typo3TestingRedisHost" must be set to run this test');
         }
         // Note we assume that if that typo3TestingRedisHost env is set, we can use that for testing,
         // there is no test to see if the daemon is actually up and running. Tests will fail if env
@@ -225,7 +225,7 @@ class RedisBackendTest extends FunctionalTestCase
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
         }
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     /**
@@ -237,7 +237,7 @@ class RedisBackendTest extends FunctionalTestCase
         $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data');
-        $this->assertSame(\Redis::REDIS_STRING, $redis->type('identData:' . $identifier));
+        self::assertSame(\Redis::REDIS_STRING, $redis->type('identData:' . $identifier));
     }
 
     /**
@@ -252,7 +252,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->setDefaultLifetime($defaultLifetime);
         $subject->set($identifier, 'data');
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        $this->assertSame($defaultLifetime, $lifetimeRegisteredInBackend);
+        self::assertSame($defaultLifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
@@ -266,7 +266,7 @@ class RedisBackendTest extends FunctionalTestCase
         $lifetime = 43;
         $subject->set($identifier, 'data', [], $lifetime);
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        $this->assertSame($lifetime, $lifetimeRegisteredInBackend);
+        self::assertSame($lifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
@@ -279,7 +279,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data', [], 0);
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        $this->assertSame(31536000, $lifetimeRegisteredInBackend);
+        self::assertSame(31536000, $lifetimeRegisteredInBackend);
     }
 
     /**
@@ -294,7 +294,7 @@ class RedisBackendTest extends FunctionalTestCase
         $otherData = 'data 2';
         $subject->set($identifier, $otherData);
         $fetchedData = $subject->get($identifier);
-        $this->assertSame($otherData, $fetchedData);
+        self::assertSame($otherData, $fetchedData);
     }
 
     /**
@@ -310,7 +310,7 @@ class RedisBackendTest extends FunctionalTestCase
         $lifetime = 42;
         $subject->set($identifier, $data, [], $lifetime);
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        $this->assertSame($lifetime, $lifetimeRegisteredInBackend);
+        self::assertSame($lifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
@@ -328,7 +328,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->setDefaultLifetime($newDefaultLifetime);
         $subject->set($identifier, $data, [], $newDefaultLifetime);
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        $this->assertSame($newDefaultLifetime, $lifetimeRegisteredInBackend);
+        self::assertSame($newDefaultLifetime, $lifetimeRegisteredInBackend);
     }
 
     /**
@@ -344,7 +344,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, $data, [], $lifetime);
         $subject->set($identifier, $data, [], 0);
         $lifetimeRegisteredInBackend = $redis->ttl('identData:' . $identifier);
-        $this->assertSame(31536000, $lifetimeRegisteredInBackend);
+        self::assertSame(31536000, $lifetimeRegisteredInBackend);
     }
 
     /**
@@ -356,7 +356,7 @@ class RedisBackendTest extends FunctionalTestCase
         $redis = $this->setUpRedis();
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data', ['tag']);
-        $this->assertSame(\Redis::REDIS_SET, $redis->type('identTags:' . $identifier));
+        self::assertSame(\Redis::REDIS_SET, $redis->type('identTags:' . $identifier));
     }
 
     /**
@@ -371,7 +371,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, 'data', $tags);
         $savedTags = $redis->sMembers('identTags:' . $identifier);
         sort($savedTags);
-        $this->assertSame($tags, $savedTags);
+        self::assertSame($tags, $savedTags);
     }
 
     /**
@@ -385,7 +385,7 @@ class RedisBackendTest extends FunctionalTestCase
         $tags = ['fooTag', 'barTag'];
         $subject->set($identifier, 'data', $tags);
         $subject->set($identifier, 'data', []);
-        $this->assertSame([], $redis->sMembers('identTags:' . $identifier));
+        self::assertSame([], $redis->sMembers('identTags:' . $identifier));
     }
 
     /**
@@ -402,7 +402,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, 'data', $secondTagSet);
         $actualTagSet = $redis->sMembers('identTags:' . $identifier);
         sort($actualTagSet);
-        $this->assertSame($secondTagSet, $actualTagSet);
+        self::assertSame($secondTagSet, $actualTagSet);
     }
 
     /**
@@ -415,7 +415,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $tag = 'tag';
         $subject->set($identifier, 'data', [$tag]);
-        $this->assertSame(\Redis::REDIS_SET, $redis->type('tagIdents:' . $tag));
+        self::assertSame(\Redis::REDIS_SET, $redis->type('tagIdents:' . $tag));
     }
 
     /**
@@ -429,7 +429,7 @@ class RedisBackendTest extends FunctionalTestCase
         $tag = 'thisTag';
         $subject->set($identifier, 'data', [$tag]);
         $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
-        $this->assertSame([$identifier], $savedTagToIdentifiersMemberArray);
+        self::assertSame([$identifier], $savedTagToIdentifiersMemberArray);
     }
 
     /**
@@ -448,7 +448,7 @@ class RedisBackendTest extends FunctionalTestCase
         sort($savedTagToIdentifiersMemberArray);
         $identifierArray = [$firstIdentifier, $secondIdentifier];
         sort($identifierArray);
-        $this->assertSame([$firstIdentifier, $secondIdentifier], $savedTagToIdentifiersMemberArray);
+        self::assertSame([$firstIdentifier, $secondIdentifier], $savedTagToIdentifiersMemberArray);
     }
 
     /**
@@ -463,7 +463,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, 'data', [$tag]);
         $subject->set($identifier, 'data', []);
         $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
-        $this->assertSame([], $savedTagToIdentifiersMemberArray);
+        self::assertSame([], $savedTagToIdentifiersMemberArray);
     }
 
     /**
@@ -478,7 +478,7 @@ class RedisBackendTest extends FunctionalTestCase
         $tag = 'thisTag';
         $subject->set($identifier, 'data', [$tag]);
         $savedTagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
-        $this->assertSame([$identifier], $savedTagToIdentifiersMemberArray);
+        self::assertSame([$identifier], $savedTagToIdentifiersMemberArray);
     }
 
     /**
@@ -498,7 +498,7 @@ class RedisBackendTest extends FunctionalTestCase
             $uncompresedStoredData = @gzuncompress($redis->get('identData:' . $identifier));
         } catch (\Exception $e) {
         }
-        $this->assertEquals($data, $uncompresedStoredData, 'Original and compressed data don\'t match');
+        self::assertEquals($data, $uncompresedStoredData, 'Original and compressed data don\'t match');
     }
 
     /**
@@ -514,7 +514,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $data = 'some data ' . microtime();
         $subject->set($identifier, $data);
-        $this->assertGreaterThan(0, substr_count($redis->get('identData:' . $identifier), $data), 'Plaintext data not found');
+        self::assertGreaterThan(0, substr_count($redis->get('identData:' . $identifier), $data), 'Plaintext data not found');
     }
 
     /**
@@ -536,7 +536,7 @@ class RedisBackendTest extends FunctionalTestCase
     {
         $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
-        $this->assertFalse($subject->has($identifier));
+        self::assertFalse($subject->has($identifier));
     }
 
     /**
@@ -547,7 +547,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data');
-        $this->assertTrue($subject->has($identifier));
+        self::assertTrue($subject->has($identifier));
     }
 
     /**
@@ -574,7 +574,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, $data);
         $fetchedData = $subject->get($identifier);
-        $this->assertSame($data, $fetchedData);
+        self::assertSame($data, $fetchedData);
     }
 
     /**
@@ -587,7 +587,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, $data);
         $fetchedData = $subject->get($identifier);
-        $this->assertSame($data, $fetchedData);
+        self::assertSame($data, $fetchedData);
     }
 
     /**
@@ -608,7 +608,7 @@ class RedisBackendTest extends FunctionalTestCase
     public function removeReturnsFalseIfNoEntryWasDeleted()
     {
         $subject = $this->setUpSubject();
-        $this->assertFalse($subject->remove($this->getUniqueId('identifier')));
+        self::assertFalse($subject->remove($this->getUniqueId('identifier')));
     }
 
     /**
@@ -619,7 +619,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject = $this->setUpSubject();
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data');
-        $this->assertTrue($subject->remove($identifier));
+        self::assertTrue($subject->remove($identifier));
     }
 
     /**
@@ -631,7 +631,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data');
         $subject->remove($identifier);
-        $this->assertFalse($subject->has($identifier));
+        self::assertFalse($subject->has($identifier));
     }
 
     /**
@@ -650,7 +650,7 @@ class RedisBackendTest extends FunctionalTestCase
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
         }
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     /**
@@ -665,7 +665,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier, 'data', [$tag]);
         $subject->remove($identifier);
         $tagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
-        $this->assertSame([], $tagToIdentifiersMemberArray);
+        self::assertSame([], $tagToIdentifiersMemberArray);
     }
 
     /**
@@ -682,7 +682,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($secondIdentifier, 'data', [$tag]);
         $subject->remove($firstIdentifier);
         $tagToIdentifiersMemberArray = $redis->sMembers('tagIdents:' . $tag);
-        $this->assertSame([$secondIdentifier], $tagToIdentifiersMemberArray);
+        self::assertSame([$secondIdentifier], $tagToIdentifiersMemberArray);
     }
 
     /**
@@ -703,7 +703,7 @@ class RedisBackendTest extends FunctionalTestCase
     public function findIdentifiersByTagReturnsEmptyArrayForNotExistingTag()
     {
         $subject = $this->setUpSubject();
-        $this->assertSame([], $subject->findIdentifiersByTag('thisTag'));
+        self::assertSame([], $subject->findIdentifiersByTag('thisTag'));
     }
 
     /**
@@ -724,7 +724,7 @@ class RedisBackendTest extends FunctionalTestCase
         $expectedResult = [$firstIdentifier, $thirdIdentifier];
         $actualResult = $subject->findIdentifiersByTag('thisTag');
         sort($actualResult);
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -737,7 +737,7 @@ class RedisBackendTest extends FunctionalTestCase
         $identifier = $this->getUniqueId('identifier');
         $subject->set($identifier, 'data');
         $subject->flush();
-        $this->assertSame([], $redis->getKeys('*'));
+        self::assertSame([], $redis->getKeys('*'));
     }
 
     /**
@@ -769,7 +769,7 @@ class RedisBackendTest extends FunctionalTestCase
             $subject->has($identifier . 'B'),
             $subject->has($identifier . 'C')
         ];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -791,7 +791,7 @@ class RedisBackendTest extends FunctionalTestCase
             $subject->has($identifier . 'C'),
             $subject->has($identifier . 'D')
         ];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -805,7 +805,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier . 'A', 'data', ['tag1']);
         $subject->set($identifier . 'C', 'data', ['tag1', 'tag2']);
         $subject->flushByTag('tag1');
-        $this->assertSame([], $redis->getKeys('temp*'));
+        self::assertSame([], $redis->getKeys('temp*'));
     }
 
     /**
@@ -824,7 +824,7 @@ class RedisBackendTest extends FunctionalTestCase
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
         }
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     /**
@@ -841,7 +841,7 @@ class RedisBackendTest extends FunctionalTestCase
         $tagNotToRemove = 'tag2';
         $subject->set($identifierNotToBeRemoved, 'data', [$tagNotToRemove]);
         $subject->flushByTag($tagToRemove);
-        $this->assertSame([$tagNotToRemove], $redis->sMembers('identTags:' . $identifierNotToBeRemoved));
+        self::assertSame([$tagNotToRemove], $redis->sMembers('identTags:' . $identifierNotToBeRemoved));
     }
 
     /**
@@ -860,7 +860,7 @@ class RedisBackendTest extends FunctionalTestCase
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
         }
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     /**
@@ -875,7 +875,7 @@ class RedisBackendTest extends FunctionalTestCase
         $subject->set($identifier . 'B', 'data', ['tag1', 'tag2']);
         $subject->set($identifier . 'C', 'data', ['tag2']);
         $subject->flushByTag('tag1');
-        $this->assertSame([$identifier . 'C'], $redis->sMembers('tagIdents:tag2'));
+        self::assertSame([$identifier . 'C'], $redis->sMembers('tagIdents:tag2'));
     }
 
     /**
@@ -895,7 +895,7 @@ class RedisBackendTest extends FunctionalTestCase
             // Since 3.1.4 of phpredis/phpredis the return types has been changed
             $result = (bool)$result;
         }
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     /**
@@ -925,7 +925,7 @@ class RedisBackendTest extends FunctionalTestCase
             $resultA,
             $resultB
         ];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -948,6 +948,6 @@ class RedisBackendTest extends FunctionalTestCase
             $redis->sMembers('tagIdents:tag1'),
             $redis->sMembers('tagIdents:tag2')
         ];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 }

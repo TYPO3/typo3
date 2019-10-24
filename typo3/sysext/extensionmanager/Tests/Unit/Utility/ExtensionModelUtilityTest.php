@@ -42,10 +42,10 @@ class ExtensionModelUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, ['dummy']);
-        $objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
+        $objectManagerMock->expects(self::any())->method('get')->will(self::returnValue($dependencyModelMock));
         $dependencyUtility->_set('objectManager', $objectManagerMock);
         $objectStorage = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
-        $this->assertTrue($objectStorage instanceof \SplObjectStorage);
+        self::assertTrue($objectStorage instanceof \SplObjectStorage);
     }
 
     /**
@@ -64,11 +64,11 @@ class ExtensionModelUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, ['setIdentifier']);
-        $objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
+        $objectManagerMock->expects(self::any())->method('get')->will(self::returnValue($dependencyModelMock));
         $dependencyUtility->_set('objectManager', $objectManagerMock);
-        $dependencyModelMock->expects($this->at(0))->method('setIdentifier')->with('php');
-        $dependencyModelMock->expects($this->at(1))->method('setIdentifier')->with('typo3');
-        $dependencyModelMock->expects($this->at(2))->method('setIdentifier')->with('fn_lib');
+        $dependencyModelMock->expects(self::at(0))->method('setIdentifier')->with('php');
+        $dependencyModelMock->expects(self::at(1))->method('setIdentifier')->with('typo3');
+        $dependencyModelMock->expects(self::at(2))->method('setIdentifier')->with('fn_lib');
         $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
     }
 
@@ -138,10 +138,10 @@ class ExtensionModelUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $dependencyModelMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::class, ['setHighestVersion', 'setLowestVersion']);
-        $objectManagerMock->expects($this->any())->method('get')->will($this->returnValue($dependencyModelMock));
+        $objectManagerMock->expects(self::any())->method('get')->will(self::returnValue($dependencyModelMock));
         $dependencyUtility->_set('objectManager', $objectManagerMock);
-        $dependencyModelMock->expects($this->atLeastOnce())->method('setLowestVersion')->with($this->identicalTo($returnValue[0]));
-        $dependencyModelMock->expects($this->atLeastOnce())->method('setHighestVersion')->with($this->identicalTo($returnValue[1]));
+        $dependencyModelMock->expects(self::atLeastOnce())->method('setLowestVersion')->with(self::identicalTo($returnValue[0]));
+        $dependencyModelMock->expects(self::atLeastOnce())->method('setHighestVersion')->with(self::identicalTo($returnValue[1]));
         $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
     }
 
@@ -157,6 +157,6 @@ class ExtensionModelUtilityTest extends UnitTestCase
         /** @var $dependencyUtility \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility */
         $dependencyUtility = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class, ['dummy']);
         $dependencyObject = $dependencyUtility->convertDependenciesToObjects($serializedDependencies);
-        $this->assertSame(0, $dependencyObject->count());
+        self::assertSame(0, $dependencyObject->count());
     }
 }

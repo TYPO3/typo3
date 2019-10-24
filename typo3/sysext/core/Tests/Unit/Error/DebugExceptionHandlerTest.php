@@ -49,7 +49,7 @@ class DebugExceptionHandlerTest extends UnitTestCase
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertStringContainsString(htmlspecialchars($message), $output);
-        $this->assertStringNotContainsString($message, $output);
+        self::assertStringContainsString(htmlspecialchars($message), $output);
+        self::assertStringNotContainsString($message, $output);
     }
 }

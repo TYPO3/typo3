@@ -59,13 +59,13 @@ class FrontendUsersVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functi
         $formResult = $formEngineTestService->createNewRecordForm('fe_users');
 
         foreach (static::$frontendUsersFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );
         }
 
-        $this->assertNotFalse(
+        self::assertNotFalse(
             strpos($formResult['html'], 'Last login'),
             'The field Last login is not in the HTML'
         );

@@ -54,7 +54,7 @@ class EventDispatcherTest extends UnitTestCase
      */
     public function implementsPsrInterface()
     {
-        $this->assertInstanceOf(EventDispatcherInterface::class, $this->eventDispatcher);
+        self::assertInstanceOf(EventDispatcherInterface::class, $this->eventDispatcher);
     }
 
     /**
@@ -71,8 +71,8 @@ class EventDispatcherTest extends UnitTestCase
         });
 
         $ret = $this->eventDispatcher->dispatch($event);
-        $this->assertSame($event, $ret);
-        $this->assertEquals(1, $event->invoked);
+        self::assertSame($event, $ret);
+        self::assertEquals(1, $event->invoked);
     }
 
     /**
@@ -95,8 +95,8 @@ class EventDispatcherTest extends UnitTestCase
         });
 
         $ret = $this->eventDispatcher->dispatch($event);
-        $this->assertSame($event, $ret);
-        $this->assertEquals(0, $event->invoked);
+        self::assertSame($event, $ret);
+        self::assertEquals(0, $event->invoked);
     }
 
     /**
@@ -114,8 +114,8 @@ class EventDispatcherTest extends UnitTestCase
         });
 
         $ret = $this->eventDispatcher->dispatch($event);
-        $this->assertSame($event, $ret);
-        $this->assertEquals(2, $event->invoked);
+        self::assertSame($event, $ret);
+        self::assertEquals(2, $event->invoked);
     }
 
     /**
@@ -144,8 +144,8 @@ class EventDispatcherTest extends UnitTestCase
         });
 
         $ret = $this->eventDispatcher->dispatch($event);
-        $this->assertSame($event, $ret);
-        $this->assertEquals(2, $event->invoked);
+        self::assertSame($event, $ret);
+        self::assertEquals(2, $event->invoked);
     }
 
     /**

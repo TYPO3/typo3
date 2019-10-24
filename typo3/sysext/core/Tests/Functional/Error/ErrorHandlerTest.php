@@ -46,7 +46,7 @@ class ErrorHandlerTest extends FunctionalTestCase
             'The second error should be caught by ErrorHandler as well.',
             E_USER_DEPRECATED
         );
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**
@@ -69,11 +69,11 @@ class ErrorHandlerTest extends FunctionalTestCase
     public function handleErrorOnlyHandlesRegisteredErrorLevels(): void
     {
         // Make sure the core error handler does not return due to error_reporting being 0
-        static::assertNotSame(0, error_reporting());
+        self::assertNotSame(0, error_reporting());
 
         // Make sure the core error handler does not return true due to a deprecation error
         $logManagerMock = $this->createMock(LogManager::class);
-        $logManagerMock->expects($this->never())->method('getLogger')->with('TYPO3.CMS.deprecations');
+        $logManagerMock->expects(self::never())->method('getLogger')->with('TYPO3.CMS.deprecations');
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
 
         /** @var Logger|MockObject $logger */
@@ -83,7 +83,7 @@ class ErrorHandlerTest extends FunctionalTestCase
             ->getMock();
 
         // Make sure the assigned logger does not log
-        $logger->expects($this->never())->method('log');
+        $logger->expects(self::never())->method('log');
 
         /** @var ErrorHandler|AccessibleObjectInterface $coreErrorHandler */
         $coreErrorHandler = new ErrorHandler(
@@ -121,7 +121,7 @@ class ErrorHandlerTest extends FunctionalTestCase
         $existingHandler = set_error_handler([$customErrorHandler, 'handleError'], E_ALL);
         $customErrorHandler->setExistingHandler($existingHandler);
 
-        static::assertTrue($customErrorHandler->handleError(E_NOTICE, 'Notice error message', __FILE__, __LINE__));
+        self::assertTrue($customErrorHandler->handleError(E_NOTICE, 'Notice error message', __FILE__, __LINE__));
         // This assertion is the base assertion but as \TYPO3\CMS\Core\Error\ErrorHandler::handleError has a few return
         // points that return true, the expectation on dependency objects are in place. We want to be sure that the
         // first return point is used by checking that the method does not log anything, which happens before later

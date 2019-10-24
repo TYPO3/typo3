@@ -41,7 +41,7 @@ class ResponseTest extends UnitTestCase
      */
     public function testStatusCodeIs200ByDefault()
     {
-        $this->assertEquals(200, $this->response->getStatusCode());
+        self::assertEquals(200, $this->response->getStatusCode());
     }
 
     /**
@@ -50,8 +50,8 @@ class ResponseTest extends UnitTestCase
     public function testStatusCodeMutatorReturnsCloneWithChanges()
     {
         $response = $this->response->withStatus(400);
-        $this->assertNotSame($this->response, $response);
-        $this->assertEquals(400, $response->getStatusCode());
+        self::assertNotSame($this->response, $response);
+        self::assertEquals(400, $response->getStatusCode());
     }
 
     /**
@@ -86,7 +86,7 @@ class ResponseTest extends UnitTestCase
     public function testReasonPhraseDefaultsToStandards()
     {
         $response = $this->response->withStatus(422);
-        $this->assertEquals('Unprocessable Entity', $response->getReasonPhrase());
+        self::assertEquals('Unprocessable Entity', $response->getReasonPhrase());
     }
 
     /**
@@ -95,7 +95,7 @@ class ResponseTest extends UnitTestCase
     public function testCanSetCustomReasonPhrase()
     {
         $response = $this->response->withStatus(422, 'Foo Bar!');
-        $this->assertEquals('Foo Bar!', $response->getReasonPhrase());
+        self::assertEquals('Foo Bar!', $response->getReasonPhrase());
     }
 
     /**
@@ -119,9 +119,9 @@ class ResponseTest extends UnitTestCase
         ];
 
         $response = new Response($body, $status, $headers);
-        $this->assertSame($body, $response->getBody());
-        $this->assertEquals(302, $response->getStatusCode());
-        $this->assertEquals($headers, $response->getHeaders());
+        self::assertSame($body, $response->getBody());
+        self::assertEquals(302, $response->getStatusCode());
+        self::assertEquals($headers, $response->getHeaders());
     }
 
     /**
@@ -198,7 +198,7 @@ class ResponseTest extends UnitTestCase
             'x-valid-array'  => ['VALID'],
         ];
         $response = new Response('php://memory', 200, $headers);
-        $this->assertEquals($expected, $response->getHeaders());
+        self::assertEquals($expected, $response->getHeaders());
     }
 
     /**
@@ -241,6 +241,6 @@ class ResponseTest extends UnitTestCase
         $expected = [
             0 => 'foo',
         ];
-        $this->assertSame($expected, $subject->getHeader('location'));
+        self::assertSame($expected, $subject->getHeader('location'));
     }
 }

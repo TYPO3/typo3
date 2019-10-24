@@ -71,7 +71,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     {
         $logManagerMock = $this->getMockBuilder(LogManager::class)->getMock();
         $loggerMock = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $logManagerMock->expects($this->any())
+        $logManagerMock->expects(self::any())
             ->method('getLogger')
             ->willReturn($loggerMock);
         GeneralUtility::setSingletonInstance(LogManager::class, $logManagerMock);
@@ -193,7 +193,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         // Force hostname
         $_SERVER['HTTP_HOST'] = 'localhost';
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
-        $this->assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
+        self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
 
     /**
@@ -228,7 +228,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             'forceAbsoluteUrl' => '1'
         ];
 
-        $this->assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
+        self::assertEquals($expected, $subject->_call('forceAbsoluteUrl', $url, $configuration));
     }
 
     /**
@@ -352,6 +352,6 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             $respectFrameSetOption,
             $fallbackTarget
         );
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 }

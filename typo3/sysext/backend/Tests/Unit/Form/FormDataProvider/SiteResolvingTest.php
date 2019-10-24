@@ -45,7 +45,7 @@ class SiteResolvingTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['site'] = $siteProphecy->reveal();
-        $this->assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
+        self::assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
     }
 
     /**
@@ -63,6 +63,6 @@ class SiteResolvingTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['site'] = $siteProphecy->reveal();
-        $this->assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
+        self::assertSame($expected, (new SiteResolving($siteFinderProphecy->reveal()))->addData($input));
     }
 }

@@ -26,7 +26,7 @@ class RedisSessionBackendTest extends UnitTestCase
     protected function setUp(): void
     {
         if (!class_exists(\Redis::class)) {
-            $this->markTestSkipped('Redis class needs to be available to test RedisSessionBackend');
+            self::markTestSkipped('Redis class needs to be available to test RedisSessionBackend');
         }
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';

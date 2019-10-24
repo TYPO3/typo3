@@ -46,7 +46,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function endsWithReturnsTrueForMatchingLastPart($string, $part)
     {
-        $this->assertTrue(StringUtility::endsWith($string, $part));
+        self::assertTrue(StringUtility::endsWith($string, $part));
     }
 
     /**
@@ -71,7 +71,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function endsWithReturnsFalseForNotMatchingLastPart($string, $part)
     {
-        $this->assertFalse(StringUtility::endsWith($string, $part));
+        self::assertFalse(StringUtility::endsWith($string, $part));
     }
 
     /**
@@ -135,7 +135,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function beginsWithReturnsTrueForMatchingFirstPart($string, $part)
     {
-        $this->assertTrue(StringUtility::beginsWith($string, $part));
+        self::assertTrue(StringUtility::beginsWith($string, $part));
     }
 
     /**
@@ -158,7 +158,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function beginsWithReturnsFalseForNotMatchingFirstPart($string, $part)
     {
-        $this->assertFalse(StringUtility::beginsWith($string, $part));
+        self::assertFalse(StringUtility::beginsWith($string, $part));
     }
 
     /**
@@ -209,7 +209,7 @@ class StringUtilityTest extends UnitTestCase
     public function getUniqueIdReturnsIdWithPrefix()
     {
         $id = StringUtility::getUniqueId('NEW');
-        $this->assertEquals('NEW', substr($id, 0, 3));
+        self::assertEquals('NEW', substr($id, 0, 3));
     }
 
     /**
@@ -217,7 +217,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function getUniqueIdReturnsIdWithoutDot()
     {
-        $this->assertStringNotContainsString('.', StringUtility::getUniqueId());
+        self::assertStringNotContainsString('.', StringUtility::getUniqueId());
     }
 
     /**
@@ -228,7 +228,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function escapeCssSelector(string $selector, string $expectedValue)
     {
-        $this->assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
+        self::assertEquals($expectedValue, StringUtility::escapeCssSelector($selector));
     }
 
     /**
@@ -254,7 +254,7 @@ class StringUtilityTest extends UnitTestCase
     public function removeByteOrderMark(string $input, string $expectedValue): void
     {
         // assertContains is necessary as one test contains non-string characters
-        $this->assertSame($expectedValue, StringUtility::removeByteOrderMark(hex2bin($input)));
+        self::assertSame($expectedValue, StringUtility::removeByteOrderMark(hex2bin($input)));
     }
 
     /**
@@ -283,7 +283,7 @@ class StringUtilityTest extends UnitTestCase
      */
     public function searchStringWildcard($haystack, $needle, $result)
     {
-        $this->assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
+        self::assertSame($result, StringUtility::searchStringWildcard($haystack, $needle));
     }
 
     /**

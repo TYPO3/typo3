@@ -148,7 +148,7 @@ class SlugHelperTest extends UnitTestCase
             'dummyField',
             $configuration
         );
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->sanitize($input)
         );
@@ -190,7 +190,7 @@ class SlugHelperTest extends UnitTestCase
             'dummyField',
             ['generatorOptions' => ['fields' => ['title']]]
         );
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)
         );
@@ -348,7 +348,7 @@ class SlugHelperTest extends UnitTestCase
             'slug',
             $configuration
         );
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->sanitize($input)
         );
@@ -390,7 +390,7 @@ class SlugHelperTest extends UnitTestCase
             'slug',
             ['generatorOptions' => ['fields' => ['title']]]
         );
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)
         );
@@ -505,11 +505,11 @@ class SlugHelperTest extends UnitTestCase
                 $options
             ]
         );
-        $subject->expects(static::at(0))
+        $subject->expects(self::at(0))
             ->method('resolveParentPageRecord')->with(13)->willReturn($parentPage);
-        $subject->expects(static::at(1))
+        $subject->expects(self::at(1))
             ->method('resolveParentPageRecord')->with(10)->willReturn(null);
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->generate(['title' => $input, 'uid' => 13], 13)
         );
@@ -636,7 +636,7 @@ class SlugHelperTest extends UnitTestCase
             'slug',
             ['generatorOptions' => $options['generatorOptions']]
         );
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->generate([
                 'title' => $input['title'],
@@ -673,7 +673,7 @@ class SlugHelperTest extends UnitTestCase
             $options
         );
         $expected = '/prepend/products';
-        static::assertEquals(
+        self::assertEquals(
             $expected,
             $subject->generate([
                 'title' => 'Products',

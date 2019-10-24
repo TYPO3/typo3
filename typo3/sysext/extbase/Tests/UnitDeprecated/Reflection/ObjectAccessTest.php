@@ -53,7 +53,7 @@ class ObjectAccessTest extends UnitTestCase
     public function getPropertyReturnsExpectedValueForUnexposedPropertyIfForceDirectAccessIsTrue()
     {
         $property = ObjectAccess::getProperty($this->dummyObject, 'unexposedProperty', true);
-        $this->assertEquals($property, 'unexposed', 'A property of a given object was not returned correctly.');
+        self::assertEquals($property, 'unexposed', 'A property of a given object was not returned correctly.');
     }
 
     /**
@@ -63,7 +63,7 @@ class ObjectAccessTest extends UnitTestCase
     {
         $this->dummyObject->unknownProperty = 'unknown';
         $property = ObjectAccess::getProperty($this->dummyObject, 'unknownProperty', true);
-        $this->assertEquals($property, 'unknown', 'A property of a given object was not returned correctly.');
+        self::assertEquals($property, 'unknown', 'A property of a given object was not returned correctly.');
     }
 
     /**

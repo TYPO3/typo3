@@ -571,7 +571,7 @@ class RedirectServiceTest extends UnitTestCase
 
         $frontendUserAuthentication = new FrontendUserAuthentication();
         $site = new Site('dummy', 13, []);
-        $redirectService->expects($this->once())->method('getUriFromCustomLinkDetails')
+        $redirectService->expects(self::once())->method('getUriFromCustomLinkDetails')
             ->with($redirectTargetMatch, $frontendUserAuthentication, $site, $linkDetails, $queryParams)
             ->willReturn($uri);
         $result = $redirectService->getTargetUrl($redirectTargetMatch, [], $frontendUserAuthentication, $site);

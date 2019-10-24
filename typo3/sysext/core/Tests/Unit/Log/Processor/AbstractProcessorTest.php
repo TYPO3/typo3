@@ -49,7 +49,7 @@ class AbstractProcessorTest extends UnitTestCase
         $processor = $this->getMockBuilder(\TYPO3\CMS\Core\Log\Processor\ProcessorInterface::class)
             ->setMethods(['processLogRecord'])
             ->getMock();
-        $processor->expects($this->once())->method('processLogRecord')->willReturn($logRecord);
+        $processor->expects(self::once())->method('processLogRecord')->willReturn($logRecord);
 
         $logger->addWriter($level, $writer);
         $logger->addProcessor($level, $processor);

@@ -51,8 +51,8 @@ class BackendUserControllerTest extends UnitTestCase
             $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', $id);
         }
 
-        static::assertCount(BackendUserController::RECENT_USERS_LIMIT, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
-        static::assertSame($expected, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
+        self::assertCount(BackendUserController::RECENT_USERS_LIMIT, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
+        self::assertSame($expected, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
     }
 
     /**
@@ -63,6 +63,6 @@ class BackendUserControllerTest extends UnitTestCase
         $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);
         $GLOBALS['BE_USER']->uc['recentSwitchedToUsers'] = $this->subject->_call('generateListOfMostRecentSwitchedUsers', 100);
 
-        static::assertCount(1, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
+        self::assertCount(1, $GLOBALS['BE_USER']->uc['recentSwitchedToUsers']);
     }
 }

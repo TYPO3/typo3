@@ -64,9 +64,9 @@ class XmlSitemapIndexTest extends AbstractTestCase
             ])
         );
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
-        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
-        $this->assertRegExp('/<loc>http:\/\/localhost\/\?sitemap=pages&amp;type=1533906435&amp;cHash=[^<]+<\/loc>/', (string)$response->getBody());
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertArrayHasKey('Content-Length', $response->getHeaders());
+        self::assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        self::assertRegExp('/<loc>http:\/\/localhost\/\?sitemap=pages&amp;type=1533906435&amp;cHash=[^<]+<\/loc>/', (string)$response->getBody());
     }
 }

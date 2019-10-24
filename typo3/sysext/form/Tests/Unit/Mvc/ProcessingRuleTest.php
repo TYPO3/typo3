@@ -46,7 +46,7 @@ class ProcessingRuleTest extends UnitTestCase
         $mockProcessingRule->addValidator(new TestValidator());
         $validators = $mockProcessingRule->_get('validator')->getValidators();
         $validators->rewind();
-        $this->assertInstanceOf(AbstractValidator::class, $validators->current());
+        self::assertInstanceOf(AbstractValidator::class, $validators->current());
     }
 
     /**
@@ -71,7 +71,7 @@ class ProcessingRuleTest extends UnitTestCase
         $mockProcessingRule->_set('validator', new ConjunctionValidator([]));
 
         $input = 'someValue';
-        $this->assertSame($input, $mockProcessingRule->_call('process', $input));
+        self::assertSame($input, $mockProcessingRule->_call('process', $input));
     }
 
     /**
@@ -97,6 +97,6 @@ class ProcessingRuleTest extends UnitTestCase
         $input = 'addError';
         $mockProcessingRule->_call('process', $input);
 
-        $this->assertTrue($mockProcessingRule->_get('processingMessages')->hasErrors());
+        self::assertTrue($mockProcessingRule->_get('processingMessages')->hasErrors());
     }
 }

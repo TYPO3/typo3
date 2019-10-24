@@ -57,7 +57,7 @@ class FunctionCallMatcherTest extends UnitTestCase
         foreach ($subject->getMatches() as $hit) {
             $actualHitLineNumbers[] = $hit['line'];
         }
-        $this->assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
+        self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
     /**
@@ -98,6 +98,6 @@ EOC;
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
 
-        $this->assertEmpty($subject->getMatches());
+        self::assertEmpty($subject->getMatches());
     }
 }

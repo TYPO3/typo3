@@ -38,7 +38,7 @@ class ExtensionConfigurationTest extends UnitTestCase
             ],
         ];
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['someExtension'] = $extConf;
-        $this->assertSame((new ExtensionConfiguration())->get('someExtension'), $extConf);
+        self::assertSame((new ExtensionConfiguration())->get('someExtension'), $extConf);
     }
 
     /**
@@ -52,7 +52,7 @@ class ExtensionConfigurationTest extends UnitTestCase
                 'someFlag' => 'foo',
             ],
         ];
-        $this->assertSame((new ExtensionConfiguration())->get('someExtension', 'aFeature'), 'iAmEnabled');
+        self::assertSame((new ExtensionConfiguration())->get('someExtension', 'aFeature'), 'iAmEnabled');
     }
 
     /**
@@ -66,7 +66,7 @@ class ExtensionConfigurationTest extends UnitTestCase
                 'someFlag' => 'foo',
             ],
         ];
-        $this->assertSame((new ExtensionConfiguration())->get('someExtension', 'aFlagCategory'), ['someFlag' => 'foo']);
+        self::assertSame((new ExtensionConfiguration())->get('someExtension', 'aFlagCategory'), ['someFlag' => 'foo']);
     }
 
     /**

@@ -34,7 +34,7 @@ class PharStreamWrapperInterceptorTest extends FunctionalTestCase
     {
         parent::setUp();
         if (!in_array('phar', stream_get_wrappers())) {
-            $this->markTestSkipped('Phar stream wrapper is not registered');
+            self::markTestSkipped('Phar stream wrapper is not registered');
         }
         // PharStreamWrapper is not initialized here since it relies on being
         // properly defined in \TYPO3\CMS\Core\Core\Bootstrap - thus, it tests

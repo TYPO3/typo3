@@ -62,7 +62,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             [],
             $givenIdentifier
         );
-        $this->assertEquals($givenIdentifier, $result);
+        self::assertEquals($givenIdentifier, $result);
     }
 
     /**
@@ -77,7 +77,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             ['CType' => 'form_formframework'],
             []
         );
-        $this->assertEquals(
+        self::assertEquals(
             ['ext-form-persistenceIdentifier' => '', 'ext-form-overrideFinishers' => ''],
             $result
         );
@@ -119,7 +119,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             $row,
             $incomingIdentifier
         );
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -154,7 +154,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             $row,
             []
         );
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -168,7 +168,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             $dataStructure,
             []
         );
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -240,7 +240,7 @@ class DataStructureIdentifierHookTest extends UnitTestCase
             ['ext-form-persistenceIdentifier' => '']
         );
 
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**

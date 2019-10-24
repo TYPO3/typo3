@@ -52,7 +52,7 @@ class SvgIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'fileadmin/foo.svg']);
-        $this->assertEquals('<img src="fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
     }
 
     /**
@@ -61,7 +61,7 @@ class SvgIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => '/fileadmin/foo.svg']);
-        $this->assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
     }
 
     /**
@@ -70,7 +70,7 @@ class SvgIconProviderTest extends UnitTestCase
     public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'EXT:core/Resources/Public/Images/foo.svg']);
-        $this->assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
     }
 
     /**
@@ -84,6 +84,6 @@ class SvgIconProviderTest extends UnitTestCase
         file_put_contents($testFile, $svgTestFileContent);
         $this->testFilesToDelete[] = GeneralUtility::tempnam(uniqid('svg_') . '.svg');
         $this->subject->prepareIconMarkup($this->icon, ['source' => $testFile]);
-        $this->assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE));
+        self::assertEquals('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="#CD201F" d="M11 12l3-2v6H2v-6l3 2 3-2 3 2z"/></svg>', $this->icon->getMarkup(SvgIconProvider::MARKUP_IDENTIFIER_INLINE));
     }
 }

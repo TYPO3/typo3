@@ -90,15 +90,15 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $this->viewHelper->injectAjaxWidgetContextHolder($this->ajaxWidgetContextHolder);
         $this->widgetContext = $this->createMock(WidgetContext::class);
         $this->objectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->objectManager->expects($this->at(0))->method('get')->with(WidgetContext::class)->will($this->returnValue($this->widgetContext));
+        $this->objectManager->expects(self::at(0))->method('get')->with(WidgetContext::class)->will(self::returnValue($this->widgetContext));
         $this->viewHelper->injectObjectManager($this->objectManager);
         $this->request = $this->createMock(Request::class);
         $this->controllerContext = $this->createMock(ControllerContext::class);
-        $this->controllerContext->expects($this->any())->method('getRequest')->will($this->returnValue($this->request));
+        $this->controllerContext->expects(self::any())->method('getRequest')->will(self::returnValue($this->request));
         $this->renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
             ->setMethods(['getControllerContext'])
             ->getMock();
-        $this->renderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
+        $this->renderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->viewHelper->_set('renderingContext', $this->renderingContext);
     }
 
@@ -117,7 +117,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
     {
         $this->viewHelper->_set('ajaxWidget', true);
         $this->viewHelper->setArguments(['storeSession' => true]);
-        $this->ajaxWidgetContextHolder->expects($this->once())->method('store')->with($this->widgetContext);
+        $this->ajaxWidgetContextHolder->expects(self::once())->method('store')->with($this->widgetContext);
         $this->callViewHelper();
     }
 
@@ -128,7 +128,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
     {
         $this->viewHelper->_set('ajaxWidget', true);
         $this->viewHelper->setArguments(['storeSession' => false]);
-        $this->ajaxWidgetContextHolder->expects($this->never())->method('store')->with($this->widgetContext);
+        $this->ajaxWidgetContextHolder->expects(self::never())->method('store')->with($this->widgetContext);
         $this->callViewHelper();
     }
 
@@ -138,22 +138,22 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
     public function callViewHelper()
     {
         $mockViewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
-        $mockViewHelperVariableContainer->expects($this->any())->method('get')->willReturnArgument(2);
+        $mockViewHelperVariableContainer->expects(self::any())->method('get')->willReturnArgument(2);
         $mockRenderingContext = $this->createMock(RenderingContextFixture::class);
-        $mockRenderingContext->expects($this->atLeastOnce())->method('getViewHelperVariableContainer')->will($this->returnValue($mockViewHelperVariableContainer));
-        $mockRenderingContext->expects($this->any())->method('getControllerContext')->willReturn($this->controllerContext);
+        $mockRenderingContext->expects(self::atLeastOnce())->method('getViewHelperVariableContainer')->will(self::returnValue($mockViewHelperVariableContainer));
+        $mockRenderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->viewHelper->setRenderingContext($mockRenderingContext);
-        $this->viewHelper->expects($this->once())->method('getWidgetConfiguration')->will($this->returnValue('Some Widget Configuration'));
-        $this->widgetContext->expects($this->once())->method('setWidgetConfiguration')->with('Some Widget Configuration');
-        $this->widgetContext->expects($this->once())->method('setWidgetIdentifier')->with('@widget_0');
+        $this->viewHelper->expects(self::once())->method('getWidgetConfiguration')->will(self::returnValue('Some Widget Configuration'));
+        $this->widgetContext->expects(self::once())->method('setWidgetConfiguration')->with('Some Widget Configuration');
+        $this->widgetContext->expects(self::once())->method('setWidgetIdentifier')->with('@widget_0');
         $this->viewHelper->_set('controller', new \stdClass());
         $this->viewHelper->_set('renderingContext', $mockRenderingContext);
-        $this->widgetContext->expects($this->once())->method('setControllerObjectName')->with('stdClass');
-        $this->viewHelper->expects($this->once())->method('validateArguments');
-        $this->viewHelper->expects($this->once())->method('initialize');
-        $this->viewHelper->expects($this->once())->method('callRenderMethod')->will($this->returnValue('renderedResult'));
+        $this->widgetContext->expects(self::once())->method('setControllerObjectName')->with('stdClass');
+        $this->viewHelper->expects(self::once())->method('validateArguments');
+        $this->viewHelper->expects(self::once())->method('initialize');
+        $this->viewHelper->expects(self::once())->method('callRenderMethod')->will(self::returnValue('renderedResult'));
         $output = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('renderedResult', $output);
+        self::assertEquals('renderedResult', $output);
     }
 
     /**
@@ -165,13 +165,13 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $node2 = $this->createMock(TextNode::class);
         $node3 = $this->createMock(AbstractNode::class);
         $rootNode = $this->createMock(RootNode::class);
-        $rootNode->expects($this->at(0))->method('addChildNode')->with($node1);
-        $rootNode->expects($this->at(1))->method('addChildNode')->with($node2);
-        $rootNode->expects($this->at(2))->method('addChildNode')->with($node3);
-        $this->objectManager->expects($this->once())->method('get')->with(RootNode::class)->will($this->returnValue($rootNode));
+        $rootNode->expects(self::at(0))->method('addChildNode')->with($node1);
+        $rootNode->expects(self::at(1))->method('addChildNode')->with($node2);
+        $rootNode->expects(self::at(2))->method('addChildNode')->with($node3);
+        $this->objectManager->expects(self::once())->method('get')->with(RootNode::class)->will(self::returnValue($rootNode));
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $this->viewHelper->_set('renderingContext', $renderingContext);
-        $this->widgetContext->expects($this->once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
+        $this->widgetContext->expects(self::once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
         $this->viewHelper->setChildNodes([$node1, $node2, $node3]);
     }
 
@@ -199,15 +199,15 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         // Initial Setup
         $widgetRequest = $this->createMock(WidgetRequest::class);
         $response = $this->createMock(Response::class);
-        $this->objectManager->expects($this->at(0))->method('get')->with(WidgetRequest::class)->will($this->returnValue($widgetRequest));
-        $this->objectManager->expects($this->at(1))->method('get')->with(Response::class)->will($this->returnValue($response));
+        $this->objectManager->expects(self::at(0))->method('get')->with(WidgetRequest::class)->will(self::returnValue($widgetRequest));
+        $this->objectManager->expects(self::at(1))->method('get')->with(Response::class)->will(self::returnValue($response));
         // Widget Context is set
-        $widgetRequest->expects($this->once())->method('setWidgetContext')->with($this->widgetContext);
+        $widgetRequest->expects(self::once())->method('setWidgetContext')->with($this->widgetContext);
         // The namespaced arguments are passed to the sub-request
         // and the action name is extracted from the namespace.
-        $this->controllerContext->expects($this->once())->method('getRequest')->will($this->returnValue($this->request));
-        $this->widgetContext->expects($this->once())->method('getWidgetIdentifier')->will($this->returnValue('widget-1'));
-        $this->request->expects($this->once())->method('getArguments')->will($this->returnValue([
+        $this->controllerContext->expects(self::once())->method('getRequest')->will(self::returnValue($this->request));
+        $this->widgetContext->expects(self::once())->method('getWidgetIdentifier')->will(self::returnValue('widget-1'));
+        $this->request->expects(self::once())->method('getArguments')->will(self::returnValue([
             'k1' => 'k2',
             'widget-1' => [
                 'arg1' => 'val1',
@@ -215,16 +215,16 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
                 'action' => 'myAction'
             ]
         ]));
-        $widgetRequest->expects($this->once())->method('setArguments')->with([
+        $widgetRequest->expects(self::once())->method('setArguments')->with([
             'arg1' => 'val1',
             'arg2' => 'val2'
         ]);
-        $widgetRequest->expects($this->once())->method('setControllerActionName')->with('myAction');
+        $widgetRequest->expects(self::once())->method('setControllerActionName')->with('myAction');
         // Controller is called
-        $controller->expects($this->once())->method('processRequest')->with($widgetRequest, $response);
+        $controller->expects(self::once())->method('processRequest')->with($widgetRequest, $response);
         $output = $this->viewHelper->_call('initiateSubRequest');
         // SubResponse is returned
-        $this->assertSame($response, $output);
+        self::assertSame($response, $output);
     }
 
     /**
@@ -236,7 +236,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
             ->setMethods(['dummy'])
             ->getMock();
         $viewHelper->setArguments(['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'], $this->callInaccessibleMethod($viewHelper, 'getWidgetConfiguration'));
+        self::assertEquals(['foo' => 'bar'], $this->callInaccessibleMethod($viewHelper, 'getWidgetConfiguration'));
     }
 
     /**
@@ -254,10 +254,10 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $compiler = $this->getMockBuilder(TemplateCompiler::class)
             ->setMethods(['disable'])
             ->getMock();
-        $compiler->expects($this->once())->method('disable');
+        $compiler->expects(self::once())->method('disable');
         $code = ''; // referenced
         $result = $viewHelper->compile('', '', $code, $node, $compiler);
-        $this->assertEquals('\'\'', $result);
-        $this->assertEquals('', $code);
+        self::assertEquals('\'\'', $result);
+        self::assertEquals('', $code);
     }
 }

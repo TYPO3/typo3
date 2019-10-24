@@ -205,10 +205,10 @@ class TitleTagRenderingTest extends FunctionalTestCase
         );
         $content = (string)$response->getBody();
         if ($expectations['assertRegExp']) {
-            $this->assertRegExp($expectations['assertRegExp'], $content);
+            self::assertRegExp($expectations['assertRegExp'], $content);
         }
         if ($expectations['assertNotRegExp']) {
-            $this->assertNotRegExp($expectations['assertNotRegExp'], $content);
+            self::assertNotRegExp($expectations['assertNotRegExp'], $content);
         }
     }
 
@@ -224,7 +224,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
 
         $template = $connection->select(['uid', 'sitetitle'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetch();
         if (empty($template)) {
-            $this->fail('Cannot find root template on page with id: "' . $pageId . '"');
+            self::fail('Cannot find root template on page with id: "' . $pageId . '"');
         }
         $updateFields['sitetitle'] = $siteTitle;
         $connection->update(

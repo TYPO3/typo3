@@ -57,11 +57,11 @@ class CategoryCollectionTest extends FunctionalTestCase
     {
         $subject = new CategoryCollection('tx_test_test');
         $subject->fromArray($this->collectionRecord);
-        $this->assertEquals($this->collectionRecord['uid'], $subject->getIdentifier());
-        $this->assertEquals($this->collectionRecord['uid'], $subject->getUid());
-        $this->assertEquals($this->collectionRecord['title'], $subject->getTitle());
-        $this->assertEquals($this->collectionRecord['description'], $subject->getDescription());
-        $this->assertEquals($this->collectionRecord['table_name'], $subject->getItemTableName());
+        self::assertEquals($this->collectionRecord['uid'], $subject->getIdentifier());
+        self::assertEquals($this->collectionRecord['uid'], $subject->getUid());
+        self::assertEquals($this->collectionRecord['title'], $subject->getTitle());
+        self::assertEquals($this->collectionRecord['description'], $subject->getDescription());
+        self::assertEquals($this->collectionRecord['table_name'], $subject->getItemTableName());
     }
 
     /**
@@ -71,7 +71,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     public function canCreateDummyCollection()
     {
         $collection = CategoryCollection::create($this->collectionRecord);
-        $this->assertInstanceOf(CategoryCollection::class, $collection);
+        self::assertInstanceOf(CategoryCollection::class, $collection);
     }
 
     /**
@@ -81,7 +81,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     public function canCreateDummyCollectionAndFillItems()
     {
         $collection = CategoryCollection::create($this->collectionRecord, true);
-        $this->assertInstanceOf(CategoryCollection::class, $collection);
+        self::assertInstanceOf(CategoryCollection::class, $collection);
     }
 
     /**
@@ -94,8 +94,8 @@ class CategoryCollectionTest extends FunctionalTestCase
         $method = new \ReflectionMethod(CategoryCollection::class, 'getCollectedRecords');
         $method->setAccessible(true);
         $records = $method->invoke($subject);
-        $this->assertIsArray($records);
-        $this->assertEmpty($records);
+        self::assertIsArray($records);
+        self::assertEmpty($records);
     }
 
     /**
@@ -104,7 +104,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      */
     public function isStorageTableNameEqualsToSysCategory()
     {
-        $this->assertEquals('sys_category', CategoryCollection::getStorageTableName());
+        self::assertEquals('sys_category', CategoryCollection::getStorageTableName());
     }
 
     /**
@@ -113,7 +113,7 @@ class CategoryCollectionTest extends FunctionalTestCase
      */
     public function isStorageItemsFieldEqualsToItems()
     {
-        $this->assertEquals('items', CategoryCollection::getStorageItemsField());
+        self::assertEquals('items', CategoryCollection::getStorageItemsField());
     }
 
     /**
@@ -124,7 +124,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         /** @var $collection CategoryCollection */
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
         // Check the number of record
-        $this->assertEquals(5, $collection->count());
+        self::assertEquals(5, $collection->count());
         // Check that the first record is the one expected
         $queryBuilder = $this->getConnectionPool()
             ->getQueryBuilderForTable('tx_test_test');
@@ -136,7 +136,7 @@ class CategoryCollectionTest extends FunctionalTestCase
             ->execute();
         $record = $statement->fetch();
         $collection->rewind();
-        $this->assertEquals($record, $collection->current());
+        self::assertEquals($record, $collection->current());
         // Add a new record
         $fakeRecord = [
             'uid' => 6,
@@ -146,7 +146,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         ];
         // Check the number of records
         $collection->add($fakeRecord);
-        $this->assertEquals(6, $collection->count());
+        self::assertEquals(6, $collection->count());
     }
 
     /**
@@ -164,7 +164,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         ];
         // Check the number of records
         $collection->add($fakeRecord);
-        $this->assertEquals(6, $collection->count());
+        self::assertEquals(6, $collection->count());
     }
 
     /**
@@ -175,7 +175,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         /** @var $collection CategoryCollection */
         $collection = CategoryCollection::load(1, false, 'tx_test_test');
         // Check the number of record
-        $this->assertEquals(0, $collection->count());
+        self::assertEquals(0, $collection->count());
     }
 
     /**
@@ -192,6 +192,6 @@ class CategoryCollectionTest extends FunctionalTestCase
             ->update('sys_category_record_mm', $fakeName, ['uid_foreign' => 1]);
         // Check the number of records
         $collection = CategoryCollection::load(1, true, 'tx_test_test');
-        $this->assertEquals(4, $collection->count());
+        self::assertEquals(4, $collection->count());
     }
 }

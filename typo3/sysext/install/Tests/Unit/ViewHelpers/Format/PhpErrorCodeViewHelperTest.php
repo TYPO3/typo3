@@ -74,6 +74,6 @@ class PhpErrorCodeViewHelperTest extends ViewHelperBaseTestcase
             'phpErrorCode' => $errorCode
         ]);
         $actualString = $this->viewHelper->render();
-        $this->assertEquals($expectedString, $actualString);
+        self::assertEquals($expectedString, $actualString);
     }
 }

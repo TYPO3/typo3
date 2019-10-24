@@ -53,8 +53,8 @@ class SiteConfigurationOverridesTest extends FunctionalTestCase
     {
         $columnsConfiguration = $this->subject['site']['columns'];
 
-        $this->assertArrayHasKey('tx_a_a', $columnsConfiguration);
-        $this->assertArrayHasKey('tx_b_a', $columnsConfiguration);
+        self::assertArrayHasKey('tx_a_a', $columnsConfiguration);
+        self::assertArrayHasKey('tx_b_a', $columnsConfiguration);
     }
 
     /**
@@ -64,8 +64,8 @@ class SiteConfigurationOverridesTest extends FunctionalTestCase
     {
         $showitemConfiguration = $this->subject['site']['types']['0']['showitem'];
 
-        $this->assertSame(1, mb_substr_count($showitemConfiguration, 'tx_a_a'));
-        $this->assertSame(1, mb_substr_count($showitemConfiguration, 'tx_b_a'));
+        self::assertSame(1, mb_substr_count($showitemConfiguration, 'tx_a_a'));
+        self::assertSame(1, mb_substr_count($showitemConfiguration, 'tx_b_a'));
     }
 
     /**
@@ -75,6 +75,6 @@ class SiteConfigurationOverridesTest extends FunctionalTestCase
     {
         $columnsConfiguration = $this->subject['site']['columns'];
 
-        $this->assertSame('Awesome description by extension b', $columnsConfiguration['tx_a_a']['description']);
+        self::assertSame('Awesome description by extension b', $columnsConfiguration['tx_a_a']['description']);
     }
 }

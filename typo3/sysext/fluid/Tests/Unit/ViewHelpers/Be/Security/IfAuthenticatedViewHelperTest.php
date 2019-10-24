@@ -58,7 +58,7 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
             $this->prophesize(RenderingContextInterface::class)->reveal()
         );
 
-        $this->assertEquals('then child', $actualResult);
+        self::assertEquals('then child', $actualResult);
     }
 
     /**
@@ -75,6 +75,6 @@ class IfAuthenticatedViewHelperTest extends ViewHelperBaseTestcase
             $this->prophesize(RenderingContextInterface::class)->reveal()
         );
 
-        $this->assertEquals('else child', $actualResult);
+        self::assertEquals('else child', $actualResult);
     }
 }

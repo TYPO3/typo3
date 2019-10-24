@@ -51,7 +51,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
         ];
         $result = $this->subject->addData($input);
 
-        $this->assertArrayNotHasKey('defaultLanguagePageRow', $result);
+        self::assertArrayNotHasKey('defaultLanguagePageRow', $result);
     }
 
     /**
@@ -68,7 +68,7 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
             ]
         ];
         $result = $this->subject->addData($input);
-        $this->assertSame($input, $result);
+        self::assertSame($input, $result);
     }
 
     /**
@@ -93,12 +93,12 @@ class DatabaseDefaultLanguagePageRowTest extends UnitTestCase
             'l10n_parent' => 0
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRow')
             ->with($input['tableName'], 13)
             ->willReturn($defaultLanguagePageRow);
 
         $result = $this->subject->addData($input);
-        $this->assertEquals($defaultLanguagePageRow, $result['defaultLanguagePageRow']);
+        self::assertEquals($defaultLanguagePageRow, $result['defaultLanguagePageRow']);
     }
 }

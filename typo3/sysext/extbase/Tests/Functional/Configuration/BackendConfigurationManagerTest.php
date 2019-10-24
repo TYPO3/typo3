@@ -46,7 +46,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Funct
         );
 
         $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
-        $this->assertEquals(123, $actualResult);
+        self::assertEquals(123, $actualResult);
     }
 
     /**
@@ -70,7 +70,7 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Funct
         );
 
         $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
-        $this->assertEquals(1, $actualResult);
+        self::assertEquals(1, $actualResult);
     }
 
     /**
@@ -86,6 +86,6 @@ class BackendConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Funct
 
         $expectedResult = AbstractConfigurationManager::DEFAULT_BACKEND_STORAGE_PID;
         $actualResult = $backendConfigurationManager->_call('getCurrentPageId');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 }

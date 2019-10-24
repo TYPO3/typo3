@@ -40,7 +40,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType()
     {
         $factory = new MenuContentObjectFactory;
-        $this->assertIsObject($factory->getMenuObjectByType('TMENU'));
+        self::assertIsObject($factory->getMenuObjectByType('TMENU'));
     }
 
     /**
@@ -49,7 +49,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType()
     {
         $factory = new MenuContentObjectFactory;
-        $this->assertIsObject($factory->getMenuObjectByType('tmenu'));
+        self::assertIsObject($factory->getMenuObjectByType('tmenu'));
     }
 
     /**
@@ -60,7 +60,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
         $factory = new MenuContentObjectFactory;
         $selfClassName = static::class;
         $factory->registerMenuType('TMENU', $selfClassName);
-        $this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType('TMENU'));
+        self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType('TMENU'));
     }
 
     /**
@@ -72,7 +72,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
         $selfClassName = static::class;
         $uniqueMenuType = $this->getUniqueId('foo_');
         $factory->registerMenuType($uniqueMenuType, $selfClassName);
-        $this->assertInstanceOf($selfClassName, $factory->getMenuObjectByType($uniqueMenuType));
+        self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType($uniqueMenuType));
     }
 
     /**

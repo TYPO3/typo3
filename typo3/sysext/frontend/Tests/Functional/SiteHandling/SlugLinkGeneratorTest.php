@@ -203,7 +203,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -276,7 +276,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -353,7 +353,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -416,7 +416,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -484,7 +484,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withFrontendUserId($frontendUserId)
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -561,7 +561,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                 ->withFrontendUserId($frontendUserId)
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -640,7 +640,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             $expectation
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -778,7 +778,7 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         $json = json_decode((string)$response->getBody(), true);
         $json = $this->filterMenu($json);
 
-        static::assertSame($expectation, $json);
+        self::assertSame($expectation, $json);
     }
 
     /**
@@ -848,6 +848,6 @@ class SlugLinkGeneratorTest extends AbstractTestCase
         $json = json_decode((string)$response->getBody(), true);
         $json = $this->filterMenu($json);
 
-        static::assertSame($expectation, $json);
+        self::assertSame($expectation, $json);
     }
 }

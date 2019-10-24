@@ -159,6 +159,6 @@ class ClipboardTest extends FunctionalTestCase
             $this->subject->getLocalizations('pages', $record),
             'title'
         );
-        static::assertEqualsCanonicalizing($expectation, $actualResult);
+        self::assertEqualsCanonicalizing($expectation, $actualResult);
     }
 }

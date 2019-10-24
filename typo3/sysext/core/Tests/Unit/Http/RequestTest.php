@@ -42,7 +42,7 @@ class RequestTest extends UnitTestCase
      */
     public function getMethodIsGetByDefault()
     {
-        $this->assertEquals('GET', $this->request->getMethod());
+        self::assertEquals('GET', $this->request->getMethod());
     }
 
     /**
@@ -51,8 +51,8 @@ class RequestTest extends UnitTestCase
     public function getMethodMutatorReturnsCloneWithChangedMethod()
     {
         $request = $this->request->withMethod('GET');
-        $this->assertNotSame($this->request, $request);
-        $this->assertEquals('GET', $request->getMethod());
+        self::assertNotSame($this->request, $request);
+        self::assertEquals('GET', $request->getMethod());
     }
 
     /**
@@ -60,7 +60,7 @@ class RequestTest extends UnitTestCase
      */
     public function getUriIsNullByDefault()
     {
-        $this->assertNull($this->request->getUri());
+        self::assertNull($this->request->getUri());
     }
 
     /**
@@ -78,11 +78,11 @@ class RequestTest extends UnitTestCase
     public function withUriReturnsNewInstanceWithNewUri()
     {
         $request = $this->request->withUri(new Uri('https://example.com:10082/foo/bar?baz=bat'));
-        $this->assertNotSame($this->request, $request);
+        self::assertNotSame($this->request, $request);
         $request2 = $request->withUri(new Uri('/baz/bat?foo=bar'));
-        $this->assertNotSame($this->request, $request2);
-        $this->assertNotSame($request, $request2);
-        $this->assertEquals('/baz/bat?foo=bar', (string)$request2->getUri());
+        self::assertNotSame($this->request, $request2);
+        self::assertNotSame($request, $request2);
+        self::assertEquals('/baz/bat?foo=bar', (string)$request2->getUri());
     }
 
     /**
@@ -102,13 +102,13 @@ class RequestTest extends UnitTestCase
             $headers
         );
 
-        $this->assertSame($uri, $request->getUri());
-        $this->assertEquals('POST', $request->getMethod());
-        $this->assertSame($body, $request->getBody());
+        self::assertSame($uri, $request->getUri());
+        self::assertEquals('POST', $request->getMethod());
+        self::assertSame($body, $request->getBody());
         $testHeaders = $request->getHeaders();
         foreach ($headers as $key => $value) {
-            $this->assertArrayHasKey($key, $testHeaders);
-            $this->assertEquals($value, $testHeaders[$key]);
+            self::assertArrayHasKey($key, $testHeaders);
+            self::assertEquals($value, $testHeaders[$key]);
         }
     }
 
@@ -220,7 +220,7 @@ class RequestTest extends UnitTestCase
             'x-valid-array'  => ['VALID'],
         ];
         $request = new Request(null, null, 'php://memory', $headers);
-        $this->assertEquals($expected, $request->getHeaders());
+        self::assertEquals($expected, $request->getHeaders());
     }
 
     /**
@@ -229,7 +229,7 @@ class RequestTest extends UnitTestCase
     public function getRequestTargetIsSlashWhenNoUriPresent()
     {
         $request = new Request();
-        $this->assertEquals('/', $request->getRequestTarget());
+        self::assertEquals('/', $request->getRequestTarget());
     }
 
     /**
@@ -239,7 +239,7 @@ class RequestTest extends UnitTestCase
     {
         $request = (new Request())
             ->withUri(new Uri('http://example.com'));
-        $this->assertEquals('/', $request->getRequestTarget());
+        self::assertEquals('/', $request->getRequestTarget());
     }
 
     /**
@@ -281,7 +281,7 @@ class RequestTest extends UnitTestCase
      */
     public function getRequestTargetWhenUriIsPresent($request, $expected)
     {
-        $this->assertEquals($expected, $request->getRequestTarget());
+        self::assertEquals($expected, $request->getRequestTarget());
     }
 
     /**
@@ -306,7 +306,7 @@ class RequestTest extends UnitTestCase
     public function getRequestTargetCanProvideARequestTarget($requestTarget)
     {
         $request = (new Request())->withRequestTarget($requestTarget);
-        $this->assertEquals($requestTarget, $request->getRequestTarget());
+        self::assertEquals($requestTarget, $request->getRequestTarget());
     }
 
     /**
@@ -328,7 +328,7 @@ class RequestTest extends UnitTestCase
         $request = (new Request())->withUri(new Uri('https://example.com/foo/bar'));
         $original = $request->getRequestTarget();
         $newRequest = $request->withUri(new Uri('http://mwop.net/bar/baz'));
-        $this->assertNotEquals($original, $newRequest->getRequestTarget());
+        self::assertNotEquals($original, $newRequest->getRequestTarget());
     }
 
     /**
@@ -348,8 +348,8 @@ class RequestTest extends UnitTestCase
     {
         $request = new Request('http://example.com');
         $headers = $request->getHeaders();
-        $this->assertArrayHasKey('host', $headers);
-        $this->assertTrue(in_array('example.com', $headers['host']));
+        self::assertArrayHasKey('host', $headers);
+        self::assertTrue(in_array('example.com', $headers['host']));
     }
 
     /**
@@ -359,7 +359,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new Request();
         $headers = $request->getHeaders();
-        $this->assertArrayNotHasKey('host', $headers);
+        self::assertArrayNotHasKey('host', $headers);
     }
 
     /**
@@ -369,7 +369,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new Request(new Uri());
         $headers = $request->getHeaders();
-        $this->assertArrayNotHasKey('host', $headers);
+        self::assertArrayNotHasKey('host', $headers);
     }
 
     /**
@@ -379,7 +379,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new Request('http://example.com');
         $header = $request->getHeader('host');
-        $this->assertEquals(['example.com'], $header);
+        self::assertEquals(['example.com'], $header);
     }
 
     /**
@@ -388,7 +388,7 @@ class RequestTest extends UnitTestCase
     public function getHeaderWithHostReturnsEmptyArrayIfNoUriPresent()
     {
         $request = new Request();
-        $this->assertSame([], $request->getHeader('host'));
+        self::assertSame([], $request->getHeader('host'));
     }
 
     /**
@@ -397,7 +397,7 @@ class RequestTest extends UnitTestCase
     public function getHeaderWithHostReturnsEmptyArrayIfUriDoesNotContainHost()
     {
         $request = new Request(new Uri());
-        $this->assertSame([], $request->getHeader('host'));
+        self::assertSame([], $request->getHeader('host'));
     }
 
     /**
@@ -407,7 +407,7 @@ class RequestTest extends UnitTestCase
     {
         $request = new Request('http://example.com');
         $header = $request->getHeaderLine('host');
-        $this->assertStringContainsString('example.com', $header);
+        self::assertStringContainsString('example.com', $header);
     }
 
     /**
@@ -416,7 +416,7 @@ class RequestTest extends UnitTestCase
     public function getHeaderLineWithHostReturnsEmptyStringIfNoUriPresent()
     {
         $request = new Request();
-        $this->assertSame('', $request->getHeaderLine('host'));
+        self::assertSame('', $request->getHeaderLine('host'));
     }
 
     /**
@@ -425,7 +425,7 @@ class RequestTest extends UnitTestCase
     public function getHeaderLineWithHostReturnsEmptyStringIfUriDoesNotContainHost()
     {
         $request = new Request(new Uri());
-        $this->assertSame('', $request->getHeaderLine('host'));
+        self::assertSame('', $request->getHeaderLine('host'));
     }
 
     /**
@@ -439,7 +439,7 @@ class RequestTest extends UnitTestCase
         $uri = (new Uri())->withHost('www.example.com');
         $new = $request->withUri($uri, true);
 
-        $this->assertEquals('example.com', $new->getHeaderLine('Host'));
+        self::assertEquals('example.com', $new->getHeaderLine('Host'));
     }
 
     /**
@@ -453,7 +453,7 @@ class RequestTest extends UnitTestCase
         $uri = new Uri();
         $new = $request->withUri($uri);
 
-        $this->assertEquals('example.com', $new->getHeaderLine('Host'));
+        self::assertEquals('example.com', $new->getHeaderLine('Host'));
     }
 
     /**
@@ -469,7 +469,7 @@ class RequestTest extends UnitTestCase
             ->withPort(10081);
         $new = $request->withUri($uri);
 
-        $this->assertEquals('www.example.com:10081', $new->getHeaderLine('Host'));
+        self::assertEquals('www.example.com:10081', $new->getHeaderLine('Host'));
     }
 
     /**
@@ -493,8 +493,8 @@ class RequestTest extends UnitTestCase
     public function headerCanBeRetrieved($header, $value, $expected)
     {
         $request = new Request(null, null, 'php://memory', [$header => $value]);
-        $this->assertEquals([$expected], $request->getHeader(strtolower($header)));
-        $this->assertEquals([$expected], $request->getHeader(strtoupper($header)));
+        self::assertEquals([$expected], $request->getHeader(strtolower($header)));
+        self::assertEquals([$expected], $request->getHeader(strtoupper($header)));
     }
 
     /**

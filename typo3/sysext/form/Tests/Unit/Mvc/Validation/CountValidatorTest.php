@@ -39,7 +39,7 @@ class CountValidatorTest extends UnitTestCase
             'steve'
         ];
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -58,7 +58,7 @@ class CountValidatorTest extends UnitTestCase
             'steve'
         ];
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -77,7 +77,7 @@ class CountValidatorTest extends UnitTestCase
             'steve'
         ];
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -97,7 +97,7 @@ class CountValidatorTest extends UnitTestCase
             'francine'
         ];
 
-        $this->assertTrue($validator->validate($input)->hasErrors());
+        self::assertTrue($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -115,6 +115,6 @@ class CountValidatorTest extends UnitTestCase
             'klaus',
         ];
 
-        $this->assertTrue($validator->validate($input)->hasErrors());
+        self::assertTrue($validator->validate($input)->hasErrors());
     }
 }

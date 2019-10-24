@@ -37,7 +37,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getTitleInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTitle());
+        self::assertSame('', $this->subject->getTitle());
     }
 
     /**
@@ -47,7 +47,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $title = 'foo bar';
         $this->subject->setTitle($title);
-        $this->assertSame($title, $this->subject->getTitle());
+        self::assertSame($title, $this->subject->getTitle());
     }
 
     /**
@@ -55,7 +55,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getDescriptionInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getDescription());
+        self::assertSame('', $this->subject->getDescription());
     }
 
     /**
@@ -65,7 +65,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $description = 'foo bar';
         $this->subject->setDescription($description);
-        $this->assertSame($description, $this->subject->getDescription());
+        self::assertSame($description, $this->subject->getDescription());
     }
 
     /**
@@ -75,7 +75,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $subGroups = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $this->subject->setSubGroups($subGroups);
-        $this->assertSame($subGroups, $this->subject->getSubGroups());
+        self::assertSame($subGroups, $this->subject->getSubGroups());
     }
 
     /**
@@ -89,11 +89,11 @@ class BackendUserGroupTest extends UnitTestCase
         $group2->setTitle('bar');
         $this->subject->addSubGroup($group1);
         $this->subject->addSubGroup($group2);
-        $this->assertEquals(count($this->subject->getSubGroups()), 2);
+        self::assertEquals(count($this->subject->getSubGroups()), 2);
         $this->subject->removeSubGroup($group1);
-        $this->assertEquals(count($this->subject->getSubGroups()), 1);
+        self::assertEquals(count($this->subject->getSubGroups()), 1);
         $this->subject->removeSubGroup($group2);
-        $this->assertEquals(count($this->subject->getSubGroups()), 0);
+        self::assertEquals(count($this->subject->getSubGroups()), 0);
     }
 
     /**
@@ -108,7 +108,7 @@ class BackendUserGroupTest extends UnitTestCase
         $this->subject->addSubGroup($group1);
         $this->subject->addSubGroup($group2);
         $this->subject->removeAllSubGroups();
-        $this->assertEquals(count($this->subject->getSubGroups()), 0);
+        self::assertEquals(count($this->subject->getSubGroups()), 0);
     }
 
     /**
@@ -116,7 +116,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getModulesInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getModules());
+        self::assertSame('', $this->subject->getModules());
     }
 
     /**
@@ -126,7 +126,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $modules = 'foo,bar';
         $this->subject->setModules($modules);
-        $this->assertSame($modules, $this->subject->getModules());
+        self::assertSame($modules, $this->subject->getModules());
     }
 
     /**
@@ -134,7 +134,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getTablesListeningInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTablesListening());
+        self::assertSame('', $this->subject->getTablesListening());
     }
 
     /**
@@ -144,7 +144,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $tablesListening = 'foo,bar';
         $this->subject->setTablesListening($tablesListening);
-        $this->assertSame($tablesListening, $this->subject->getTablesListening());
+        self::assertSame($tablesListening, $this->subject->getTablesListening());
     }
 
     /**
@@ -152,7 +152,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getTablesModifyInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTablesModify());
+        self::assertSame('', $this->subject->getTablesModify());
     }
 
     /**
@@ -160,7 +160,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getPageTypesInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getPageTypes());
+        self::assertSame('', $this->subject->getPageTypes());
     }
 
     /**
@@ -170,7 +170,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $pageTypes = 'foo,bar';
         $this->subject->setPageTypes($pageTypes);
-        $this->assertSame($pageTypes, $this->subject->getPageTypes());
+        self::assertSame($pageTypes, $this->subject->getPageTypes());
     }
 
     /**
@@ -180,7 +180,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $tablesModify = 'foo,bar';
         $this->subject->setTablesModify($tablesModify);
-        $this->assertSame($tablesModify, $this->subject->getTablesModify());
+        self::assertSame($tablesModify, $this->subject->getTablesModify());
     }
 
     /**
@@ -188,7 +188,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getAllowedExcludeFieldsInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getAllowedExcludeFields());
+        self::assertSame('', $this->subject->getAllowedExcludeFields());
     }
 
     /**
@@ -198,7 +198,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $allowedExcludeFields = 'foo,bar';
         $this->subject->setAllowedExcludeFields($allowedExcludeFields);
-        $this->assertSame($allowedExcludeFields, $this->subject->getAllowedExcludeFields());
+        self::assertSame($allowedExcludeFields, $this->subject->getAllowedExcludeFields());
     }
 
     /**
@@ -206,7 +206,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getExplicitlyAllowAndDenyInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getExplicitlyAllowAndDeny());
+        self::assertSame('', $this->subject->getExplicitlyAllowAndDeny());
     }
 
     /**
@@ -216,7 +216,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $explicitlyAllowAndDeny = 'foo,bar';
         $this->subject->setExplicitlyAllowAndDeny($explicitlyAllowAndDeny);
-        $this->assertSame($explicitlyAllowAndDeny, $this->subject->getExplicitlyAllowAndDeny());
+        self::assertSame($explicitlyAllowAndDeny, $this->subject->getExplicitlyAllowAndDeny());
     }
 
     /**
@@ -224,7 +224,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getAllowedLanguagesInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getAllowedLanguages());
+        self::assertSame('', $this->subject->getAllowedLanguages());
     }
 
     /**
@@ -234,7 +234,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $allowedLanguages = '1,0';
         $this->subject->setAllowedLanguages($allowedLanguages);
-        $this->assertSame($allowedLanguages, $this->subject->getAllowedLanguages());
+        self::assertSame($allowedLanguages, $this->subject->getAllowedLanguages());
     }
 
     /**
@@ -242,7 +242,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getWorkspacePermissionInitiallyReturnsFalse()
     {
-        $this->assertFalse($this->subject->getWorkspacePermission());
+        self::assertFalse($this->subject->getWorkspacePermission());
     }
 
     /**
@@ -251,7 +251,7 @@ class BackendUserGroupTest extends UnitTestCase
     public function setWorkspacePermissionSetsWorkspacePermission()
     {
         $this->subject->setWorkspacePermissions(true);
-        $this->assertTrue($this->subject->getWorkspacePermission());
+        self::assertTrue($this->subject->getWorkspacePermission());
     }
 
     /**
@@ -259,7 +259,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getDatabaseMountsInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getDatabaseMounts());
+        self::assertSame('', $this->subject->getDatabaseMounts());
     }
 
     /**
@@ -269,7 +269,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $mounts = '1,42';
         $this->subject->setDatabaseMounts($mounts);
-        $this->assertSame($mounts, $this->subject->getDatabaseMounts());
+        self::assertSame($mounts, $this->subject->getDatabaseMounts());
     }
 
     /**
@@ -277,7 +277,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getFileOperationPermissionsInitiallyReturnsZero()
     {
-        $this->assertSame(0, $this->subject->getFileOperationPermissions());
+        self::assertSame(0, $this->subject->getFileOperationPermissions());
     }
 
     /**
@@ -287,7 +287,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $permission = 7;
         $this->subject->setFileOperationPermissions($permission);
-        $this->assertSame($permission, $this->subject->getFileOperationPermissions());
+        self::assertSame($permission, $this->subject->getFileOperationPermissions());
     }
 
     /**
@@ -296,11 +296,11 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsFileOperationAllowedReturnsFalse()
     {
         $this->subject->setFileOperationPermissions(0);
-        $this->assertFalse($this->subject->isFileOperationAllowed());
+        self::assertFalse($this->subject->isFileOperationAllowed());
         $this->subject->setFileOperationPermissions(2);
-        $this->assertFalse($this->subject->isFileOperationAllowed());
+        self::assertFalse($this->subject->isFileOperationAllowed());
         $this->subject->setFileOperationPermissions(6);
-        $this->assertFalse($this->subject->isFileOperationAllowed());
+        self::assertFalse($this->subject->isFileOperationAllowed());
     }
 
     /**
@@ -309,9 +309,9 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsFileOperationAllowedReturnsTrue()
     {
         $this->subject->setFileOperationPermissions(1);
-        $this->assertTrue($this->subject->isFileOperationAllowed());
+        self::assertTrue($this->subject->isFileOperationAllowed());
         $this->subject->setFileOperationPermissions(3);
-        $this->assertTrue($this->subject->isFileOperationAllowed());
+        self::assertTrue($this->subject->isFileOperationAllowed());
     }
 
     /**
@@ -321,7 +321,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setFileOperationAllowed(true);
-        $this->assertTrue($this->subject->isFileOperationAllowed());
+        self::assertTrue($this->subject->isFileOperationAllowed());
     }
 
     /**
@@ -330,11 +330,11 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsDirectoryRemoveRecursivelyAllowedReturnsFalse()
     {
         $this->subject->setFileOperationPermissions(1);
-        $this->assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
+        self::assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
         $this->subject->setFileOperationPermissions(15);
-        $this->assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
+        self::assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
         $this->subject->setFileOperationPermissions(7);
-        $this->assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
+        self::assertFalse($this->subject->isDirectoryRemoveRecursivelyAllowed());
     }
 
     /**
@@ -343,9 +343,9 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsDirectoryRemoveRecursivelyAllowedReturnsTrue()
     {
         $this->subject->setFileOperationPermissions(16);
-        $this->assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
+        self::assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
         $this->subject->setFileOperationPermissions(31);
-        $this->assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
+        self::assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
     }
 
     /**
@@ -355,7 +355,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setDirectoryRemoveRecursivelyAllowed(true);
-        $this->assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
+        self::assertTrue($this->subject->isDirectoryRemoveRecursivelyAllowed());
     }
 
     /**
@@ -364,11 +364,11 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsDirectoryCopyAllowedReturnsFalse()
     {
         $this->subject->setFileOperationPermissions(0);
-        $this->assertFalse($this->subject->isDirectoryCopyAllowed());
+        self::assertFalse($this->subject->isDirectoryCopyAllowed());
         $this->subject->setFileOperationPermissions(7);
-        $this->assertFalse($this->subject->isDirectoryCopyAllowed());
+        self::assertFalse($this->subject->isDirectoryCopyAllowed());
         $this->subject->setFileOperationPermissions(23);
-        $this->assertFalse($this->subject->isDirectoryCopyAllowed());
+        self::assertFalse($this->subject->isDirectoryCopyAllowed());
     }
 
     /**
@@ -377,9 +377,9 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsDirectoryCopyAllowedReturnsTrue()
     {
         $this->subject->setFileOperationPermissions(8);
-        $this->assertTrue($this->subject->isDirectoryCopyAllowed());
+        self::assertTrue($this->subject->isDirectoryCopyAllowed());
         $this->subject->setFileOperationPermissions(15);
-        $this->assertTrue($this->subject->isDirectoryCopyAllowed());
+        self::assertTrue($this->subject->isDirectoryCopyAllowed());
     }
 
     /**
@@ -389,7 +389,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setDirectoryCopyAllowed(true);
-        $this->assertTrue($this->subject->isDirectoryCopyAllowed());
+        self::assertTrue($this->subject->isDirectoryCopyAllowed());
     }
 
     /**
@@ -398,11 +398,11 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsDirectoryOperationAllowedReturnsFalse()
     {
         $this->subject->setFileOperationPermissions(0);
-        $this->assertFalse($this->subject->isDirectoryOperationAllowed());
+        self::assertFalse($this->subject->isDirectoryOperationAllowed());
         $this->subject->setFileOperationPermissions(3);
-        $this->assertFalse($this->subject->isDirectoryOperationAllowed());
+        self::assertFalse($this->subject->isDirectoryOperationAllowed());
         $this->subject->setFileOperationPermissions(11);
-        $this->assertFalse($this->subject->isDirectoryOperationAllowed());
+        self::assertFalse($this->subject->isDirectoryOperationAllowed());
     }
 
     /**
@@ -411,9 +411,9 @@ class BackendUserGroupTest extends UnitTestCase
     public function getIsDirectoryOperationAllowedReturnsTrue()
     {
         $this->subject->setFileOperationPermissions(4);
-        $this->assertTrue($this->subject->isDirectoryOperationAllowed());
+        self::assertTrue($this->subject->isDirectoryOperationAllowed());
         $this->subject->setFileOperationPermissions(7);
-        $this->assertTrue($this->subject->isDirectoryOperationAllowed());
+        self::assertTrue($this->subject->isDirectoryOperationAllowed());
     }
 
     /**
@@ -423,7 +423,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $this->subject->setFileOperationPermissions(0);
         $this->subject->setDirectoryOperationAllowed(true);
-        $this->assertTrue($this->subject->isDirectoryOperationAllowed());
+        self::assertTrue($this->subject->isDirectoryOperationAllowed());
     }
 
     /**
@@ -431,7 +431,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getLockToDomainInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getLockToDomain());
+        self::assertSame('', $this->subject->getLockToDomain());
     }
 
     /**
@@ -441,7 +441,7 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $lockToDomain = 'foo.bar';
         $this->subject->setLockToDomain($lockToDomain);
-        $this->assertSame($lockToDomain, $this->subject->getLockToDomain());
+        self::assertSame($lockToDomain, $this->subject->getLockToDomain());
     }
 
     /**
@@ -449,7 +449,7 @@ class BackendUserGroupTest extends UnitTestCase
      */
     public function getTsConfigInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTsConfig());
+        self::assertSame('', $this->subject->getTsConfig());
     }
 
     /**
@@ -459,6 +459,6 @@ class BackendUserGroupTest extends UnitTestCase
     {
         $tsConfig = 'foo bar';
         $this->subject->setTsConfig($tsConfig);
-        $this->assertSame($tsConfig, $this->subject->getTsConfig());
+        self::assertSame($tsConfig, $this->subject->getTsConfig());
     }
 }

@@ -32,8 +32,8 @@ class FilePathSanitizerTest extends UnitTestCase
     public function sanitizeReturnsUrlCorrectly(): void
     {
         $subject = new FilePathSanitizer();
-        $this->assertSame('http://example.com', $subject->sanitize('http://example.com'));
-        $this->assertSame('https://example.com', $subject->sanitize('https://example.com'));
+        self::assertSame('http://example.com', $subject->sanitize('http://example.com'));
+        self::assertSame('https://example.com', $subject->sanitize('https://example.com'));
     }
 
     /**
@@ -42,7 +42,7 @@ class FilePathSanitizerTest extends UnitTestCase
     public function sanitizeReturnsFileCorrectly(): void
     {
         $subject = new FilePathSanitizer();
-        $this->assertSame('typo3/index.php', $subject->sanitize('typo3/index.php'));
+        self::assertSame('typo3/index.php', $subject->sanitize('typo3/index.php'));
     }
 
     /**
@@ -61,7 +61,7 @@ class FilePathSanitizerTest extends UnitTestCase
     public function sanitizeThrowsExceptionWithInvalidFileName(): void
     {
         $this->expectException(InvalidFileNameException::class);
-        $this->assertNull((new FilePathSanitizer())->sanitize('  '));
-        $this->assertNull((new FilePathSanitizer())->sanitize('something/../else'));
+        self::assertNull((new FilePathSanitizer())->sanitize('  '));
+        self::assertNull((new FilePathSanitizer())->sanitize('something/../else'));
     }
 }

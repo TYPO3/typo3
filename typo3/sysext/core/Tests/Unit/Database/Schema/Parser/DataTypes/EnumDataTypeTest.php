@@ -61,7 +61,7 @@ class EnumDataTypeTest extends AbstractDataTypeBaseTestCase
     {
         $subject = $this->createSubject($columnDefinition);
 
-        $this->assertInstanceOf($className, $subject->dataType);
-        $this->assertSame($values, $subject->dataType->getValues());
+        self::assertInstanceOf($className, $subject->dataType);
+        self::assertSame($values, $subject->dataType->getValues());
     }
 }

@@ -61,7 +61,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      */
     public function fileDenyPatternMatchesPhpExtension($phpExtension)
     {
-        $this->assertGreaterThan(0, preg_match('/' . FILE_DENY_PATTERN_DEFAULT . '/', $phpExtension), $phpExtension);
+        self::assertGreaterThan(0, preg_match('/' . FILE_DENY_PATTERN_DEFAULT . '/', $phpExtension), $phpExtension);
     }
 
     /**
@@ -71,7 +71,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         $fakedLocalPart = $this->getUniqueId('Test');
         $GLOBALS['_SERVER']['argv'][0] = $fakedLocalPart;
-        $this->assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
+        self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
 
     /**
@@ -82,7 +82,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         $fakedLocalPart = $this->getUniqueId('Test');
         unset($GLOBALS['_SERVER']['argv']);
         $GLOBALS['_ENV']['_'] = $fakedLocalPart;
-        $this->assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
+        self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
 
     /**
@@ -94,7 +94,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         unset($GLOBALS['_SERVER']['argv']);
         unset($GLOBALS['_ENV']['_']);
         $GLOBALS['_SERVER']['_'] = $fakedLocalPart;
-        $this->assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
+        self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
 
     /**
@@ -105,7 +105,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         $GLOBALS['_SERVER']['argv'][0] = 'foo';
         $fakedAbsolutePart = '/' . $this->getUniqueId('Absolute') . '/';
         $_SERVER['PWD'] = $fakedAbsolutePart;
-        $this->assertStringStartsWith($fakedAbsolutePart, $this->subject->_call('getPathThisScriptCli'));
+        self::assertStringStartsWith($fakedAbsolutePart, $this->subject->_call('getPathThisScriptCli'));
     }
 
     /**
@@ -115,7 +115,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         unset($GLOBALS['T3_SERVICES']);
         $this->subject->_call('initializeGlobalVariables');
-        $this->assertIsArray($GLOBALS['T3_SERVICES']);
+        self::assertIsArray($GLOBALS['T3_SERVICES']);
     }
 
     /**
@@ -142,7 +142,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         unset($GLOBALS[$variable]);
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
-        $this->assertTrue(isset($GLOBALS[$variable]));
+        self::assertTrue(isset($GLOBALS[$variable]));
     }
 
     /**
@@ -151,7 +151,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds()
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
-        $this->assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
+        self::assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
     }
 
     /**
@@ -160,7 +160,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds()
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
-        $this->assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);
+        self::assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);
     }
 
     /**
@@ -172,7 +172,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         $this->subject->_call('initializeBasicErrorReporting');
         $actualReporting = error_reporting();
         error_reporting($backupReporting);
-        $this->assertEquals(0, $actualReporting & E_STRICT);
+        self::assertEquals(0, $actualReporting & E_STRICT);
     }
 
     /**
@@ -184,7 +184,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         $this->subject->_call('initializeBasicErrorReporting');
         $actualReporting = error_reporting();
         error_reporting($backupReporting);
-        $this->assertEquals(0, $actualReporting & E_NOTICE);
+        self::assertEquals(0, $actualReporting & E_NOTICE);
     }
 
     /**
@@ -196,6 +196,6 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
         $this->subject->_call('initializeBasicErrorReporting');
         $actualReporting = error_reporting();
         error_reporting($backupReporting);
-        $this->assertEquals(0, $actualReporting & E_DEPRECATED);
+        self::assertEquals(0, $actualReporting & E_DEPRECATED);
     }
 }

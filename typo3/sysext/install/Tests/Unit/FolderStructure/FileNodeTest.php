@@ -67,7 +67,7 @@ class FileNodeTest extends FolderStructureTestCase
             'name' => 'foo',
         ];
         $node->__construct($structure, $parent);
-        $this->assertSame($parent, $node->_call('getParent'));
+        self::assertSame($parent, $node->_call('getParent'));
     }
 
     /**
@@ -84,7 +84,7 @@ class FileNodeTest extends FolderStructureTestCase
             'targetPermission' => $targetPermission,
         ];
         $node->__construct($structure, $parent);
-        $this->assertSame($targetPermission, $node->_call('getTargetPermission'));
+        self::assertSame($targetPermission, $node->_call('getTargetPermission'));
     }
 
     /**
@@ -97,7 +97,7 @@ class FileNodeTest extends FolderStructureTestCase
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $name = $this->getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
-        $this->assertSame($name, $node->getName());
+        self::assertSame($name, $node->getName());
     }
 
     /**
@@ -132,7 +132,7 @@ class FileNodeTest extends FolderStructureTestCase
             'targetContent' => $targetContent,
         ];
         $node->__construct($structure, $parent);
-        $this->assertSame($targetContent, $node->_get('targetContent'));
+        self::assertSame($targetContent, $node->_get('targetContent'));
     }
 
     /**
@@ -151,7 +151,7 @@ class FileNodeTest extends FolderStructureTestCase
             'targetContentFile' => $targetFile,
         ];
         $node->__construct($structure, $parent);
-        $this->assertSame($targetContent, $node->_get('targetContent'));
+        self::assertSame($targetContent, $node->_get('targetContent'));
     }
 
     /**
@@ -184,7 +184,7 @@ class FileNodeTest extends FolderStructureTestCase
             'name' => 'foo',
         ];
         $node->__construct($structure, $parent);
-        $this->assertNull($node->_get('targetContent'));
+        self::assertNull($node->_get('targetContent'));
     }
 
     /**
@@ -202,13 +202,13 @@ class FileNodeTest extends FolderStructureTestCase
         );
         // do not use var path here, as file nodes explicitly check for public path
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
-        $this->assertIsArray($node->getStatus());
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(true));
+        self::assertIsArray($node->getStatus());
     }
 
     /**
@@ -225,15 +225,15 @@ class FileNodeTest extends FolderStructureTestCase
             false
         );
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(true));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -251,15 +251,15 @@ class FileNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(true));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -277,15 +277,15 @@ class FileNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(true));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -303,15 +303,15 @@ class FileNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(true));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -329,15 +329,15 @@ class FileNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(false));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -355,15 +355,15 @@ class FileNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isContentCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isContentCorrect')->will(self::returnValue(true));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -380,8 +380,8 @@ class FileNodeTest extends FolderStructureTestCase
             false
         );
         $uniqueReturn = [$this->getUniqueId('foo_')];
-        $node->expects($this->once())->method('fixSelf')->will($this->returnValue($uniqueReturn));
-        $this->assertSame($uniqueReturn, $node->fix());
+        $node->expects(self::once())->method('fixSelf')->will(self::returnValue($uniqueReturn));
+        self::assertSame($uniqueReturn, $node->fix());
     }
 
     /**
@@ -397,14 +397,14 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
         $message = new FlashMessage('foo');
-        $node->expects($this->once())->method('createFile')->will($this->returnValue($message));
+        $node->expects(self::once())->method('createFile')->will(self::returnValue($message));
         $actualReturn = $node->_call('fixSelf');
         $actualReturn = $actualReturn[0];
-        $this->assertSame($message, $actualReturn);
+        self::assertSame($message, $actualReturn);
     }
 
     /**
@@ -420,17 +420,17 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
         $message1 = new FlashMessage('foo');
-        $node->expects($this->any())->method('createFile')->will($this->returnValue($message1));
+        $node->expects(self::any())->method('createFile')->will(self::returnValue($message1));
         $node->_set('targetContent', 'foo');
         $message2 = new FlashMessage('foo');
-        $node->expects($this->once())->method('setContent')->will($this->returnValue($message2));
+        $node->expects(self::once())->method('setContent')->will(self::returnValue($message2));
         $actualReturn = $node->_call('fixSelf');
         $actualReturn = $actualReturn[1];
-        $this->assertSame($message2, $actualReturn);
+        self::assertSame($message2, $actualReturn);
     }
 
     /**
@@ -446,13 +446,13 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
         $message = new FlashMessage('foo', '', FlashMessage::ERROR);
-        $node->expects($this->any())->method('createFile')->will($this->returnValue($message));
+        $node->expects(self::any())->method('createFile')->will(self::returnValue($message));
         $node->_set('targetContent', 'foo');
-        $node->expects($this->never())->method('setContent');
+        $node->expects(self::never())->method('setContent');
         $node->_call('fixSelf');
     }
 
@@ -469,13 +469,13 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
         $message = new FlashMessage('foo');
-        $node->expects($this->any())->method('createFile')->will($this->returnValue($message));
+        $node->expects(self::any())->method('createFile')->will(self::returnValue($message));
         $node->_set('targetContent', null);
-        $node->expects($this->never())->method('setContent');
+        $node->expects(self::never())->method('setContent');
         $node->_call('fixSelf');
     }
 
@@ -492,12 +492,12 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(false));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(false));
         $message = new FlashMessage('foo');
-        $node->expects($this->once())->method('fixPermission')->will($this->returnValue($message));
-        $this->assertSame([$message], $node->_call('fixSelf'));
+        $node->expects(self::once())->method('fixPermission')->will(self::returnValue($message));
+        self::assertSame([$message], $node->_call('fixSelf'));
     }
 
     /**
@@ -513,9 +513,9 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->once())->method('isFile')->will($this->returnValue(false));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::once())->method('isFile')->will(self::returnValue(false));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
         $resultArray = $node->_call('fixSelf');
     }
 
@@ -531,10 +531,10 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isFile')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $this->assertIsArray($node->_call('fixSelf'));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isFile')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        self::assertIsArray($node->_call('fixSelf'));
     }
 
     /**
@@ -546,8 +546,8 @@ class FileNodeTest extends FolderStructureTestCase
         $this->expectExceptionCode(1366398198);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $node->expects($this->once())->method('getAbsolutePath')->will($this->returnValue(''));
-        $node->expects($this->once())->method('exists')->will($this->returnValue(true));
+        $node->expects(self::once())->method('getAbsolutePath')->will(self::returnValue(''));
+        $node->expects(self::once())->method('exists')->will(self::returnValue(true));
         $node->_call('createFile');
     }
 
@@ -559,10 +559,10 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
-        $node->expects($this->once())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
-        $this->assertSame(FlashMessage::OK, $node->_call('createFile')->getSeverity());
+        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        self::assertSame(FlashMessage::OK, $node->_call('createFile')->getSeverity());
     }
 
     /**
@@ -573,11 +573,11 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
-        $node->expects($this->once())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($path));
+        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
         $node->_call('createFile');
-        $this->assertTrue(is_file($path));
+        self::assertTrue(is_file($path));
     }
 
     /**
@@ -590,10 +590,10 @@ class FileNodeTest extends FolderStructureTestCase
         $path = $this->getVirtualTestDir();
         chmod($path, 02550);
         $subPath = $path . '/' . $this->getUniqueId('file_');
-        $node->expects($this->once())->method('exists')->will($this->returnValue(false));
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($subPath));
-        $node->expects($this->any())->method('getRelativePathBelowSiteRoot')->will($this->returnValue($subPath));
-        $this->assertSame(FlashMessage::ERROR, $node->_call('createFile')->getSeverity());
+        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($subPath));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($subPath));
+        self::assertSame(FlashMessage::ERROR, $node->_call('createFile')->getSeverity());
     }
 
     /**
@@ -606,7 +606,7 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $node->_call('isContentCorrect');
     }
 
@@ -619,9 +619,9 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $node->_set('targetContent', null);
-        $this->assertTrue($node->_call('isContentCorrect'));
+        self::assertTrue($node->_call('isContentCorrect'));
     }
 
     /**
@@ -634,9 +634,9 @@ class FileNodeTest extends FolderStructureTestCase
         $path = $this->getVirtualTestFilePath('file_');
         $content = $this->getUniqueId('content_');
         file_put_contents($path, $content);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $node->_set('targetContent', $content);
-        $this->assertTrue($node->_call('isContentCorrect'));
+        self::assertTrue($node->_call('isContentCorrect'));
     }
 
     /**
@@ -650,9 +650,9 @@ class FileNodeTest extends FolderStructureTestCase
         $content = $this->getUniqueId('content1_');
         $targetContent = $this->getUniqueId('content2_');
         file_put_contents($path, $content);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $node->_set('targetContent', $targetContent);
-        $this->assertFalse($node->_call('isContentCorrect'));
+        self::assertFalse($node->_call('isContentCorrect'));
     }
 
     /**
@@ -663,15 +663,15 @@ class FileNodeTest extends FolderStructureTestCase
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getCurrentPermission', 'isWindowsOs'], [], '', false);
-        $node->expects($this->any())->method('isWindowsOs')->will($this->returnValue(false));
-        $node->expects($this->any())->method('getCurrentPermission')->will($this->returnValue('0664'));
+        $node->expects(self::any())->method('isWindowsOs')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getCurrentPermission')->will(self::returnValue('0664'));
         $targetPermission = '0664';
         $structure = [
             'name' => 'foo',
             'targetPermission' => $targetPermission,
         ];
         $node->__construct($structure, $parent);
-        $this->assertTrue($node->_call('isPermissionCorrect'));
+        self::assertTrue($node->_call('isPermissionCorrect'));
     }
 
     /**
@@ -684,7 +684,7 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $node->_set('targetContent', 'foo');
         $node->_call('setContent');
     }
@@ -700,7 +700,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $node->_set('targetContent', null);
         $node->_call('setContent');
     }
@@ -714,12 +714,12 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $targetContent = $this->getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
         $node->_call('setContent');
         $resultContent = file_get_contents($path);
-        $this->assertSame($targetContent, $resultContent);
+        self::assertSame($targetContent, $resultContent);
     }
 
     /**
@@ -731,10 +731,10 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
         $targetContent = $this->getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
-        $this->assertSame(FlashMessage::OK, $node->_call('setContent')->getSeverity());
+        self::assertSame(FlashMessage::OK, $node->_call('setContent')->getSeverity());
     }
 
     /**
@@ -743,7 +743,7 @@ class FileNodeTest extends FolderStructureTestCase
     public function setContentReturnsErrorStatusIfContentCanNotBeSetSet()
     {
         if (function_exists('posix_getegid') && posix_getegid() === 0) {
-            $this->markTestSkipped('Test skipped if run on linux as root');
+            self::markTestSkipped('Test skipped if run on linux as root');
         }
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
@@ -751,10 +751,10 @@ class FileNodeTest extends FolderStructureTestCase
         $file = $dir . '/' . $this->getUniqueId('file_');
         touch($file);
         chmod($file, 0440);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($file));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($file));
         $targetContent = $this->getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
-        $this->assertSame(FlashMessage::ERROR, $node->_call('setContent')->getSeverity());
+        self::assertSame(FlashMessage::ERROR, $node->_call('setContent')->getSeverity());
     }
 
     /**
@@ -766,8 +766,8 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $this->assertTrue($node->_call('isFile'));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        self::assertTrue($node->_call('isFile'));
     }
 
     /**
@@ -785,7 +785,7 @@ class FileNodeTest extends FolderStructureTestCase
         $file = $this->getUniqueId('file_');
         touch($path . '/' . $file);
         symlink($path . '/' . $file, $path . '/' . $link);
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path . '/' . $link));
-        $this->assertFalse($node->_call('isFile'));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path . '/' . $link));
+        self::assertFalse($node->_call('isFile'));
     }
 }

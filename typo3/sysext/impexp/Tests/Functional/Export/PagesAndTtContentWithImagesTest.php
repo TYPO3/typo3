@@ -58,9 +58,9 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
         $out = $subject->compileMemoryToFileContent('xml');
 
         $errors = $subject->printErrorLog();
-        $this->assertSame('', $errors);
+        self::assertSame('', $errors);
 
-        $this->assertXmlStringEqualsXmlFile(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image.xml',
             $out
         );
@@ -84,9 +84,9 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
             'File sha1 hash of 1:/user_upload/typo3_image2.jpg is not up-to-date in index! File added on current sha1.'
         ];
         $errors = $subject->errorLog;
-        $this->assertSame($expectedErrors, $errors);
+        self::assertSame($expectedErrors, $errors);
 
-        $this->assertXmlStringEqualsXmlFile(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-corrupt-image.xml',
             $out
         );
@@ -108,13 +108,13 @@ class PagesAndTtContentWithImagesTest extends AbstractImportExportTestCase
 
         $out = $subject->compileMemoryToFileContent('xml');
 
-        $this->assertXmlStringEqualsXmlFile(
+        self::assertXmlStringEqualsXmlFile(
             __DIR__ . '/../Fixtures/XmlExports/pages-and-ttcontent-with-image-but-not-included.xml',
             $out
         );
 
         $temporaryFilesDirectory = $subject->getTemporaryFilesPathForExport();
-        $this->assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');
+        self::assertFileEquals(__DIR__ . '/../Fixtures/Folders/fileadmin/user_upload/typo3_image2.jpg', $temporaryFilesDirectory . 'da9acdf1e105784a57bbffec9520969578287797');
     }
 
     /**

@@ -56,27 +56,27 @@ class FormRuntimeTest extends UnitTestCase
         ], [], '', false);
 
         $mockPage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getIndex')
             ->willReturn(1);
 
         $mockFormDefinition
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRendererClassName')
             ->willReturn('');
 
         $mockFormDefinition
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getIdentifier')
             ->willReturn('text-1');
 
         $mockFormRuntime
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAfterLastPage')
             ->willReturn(false);
 
         $mockFormRuntime
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('processVariants')
             ->willReturn(null);
 
@@ -116,27 +116,27 @@ class FormRuntimeTest extends UnitTestCase
         ], [], '', false);
 
         $mockPage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getIndex')
             ->willReturn(1);
 
         $mockFormDefinition
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRendererClassName')
             ->willReturn('fooRenderer');
 
         $mockFormDefinition
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getIdentifier')
             ->willReturn('text-1');
 
         $mockFormRuntime
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isAfterLastPage')
             ->willReturn(false);
 
         $mockFormRuntime
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('processVariants')
             ->willReturn(null);
 

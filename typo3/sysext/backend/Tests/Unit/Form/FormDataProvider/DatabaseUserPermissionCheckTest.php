@@ -55,7 +55,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData([]);
 
-        $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
+        self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
     /**
@@ -120,7 +120,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
+        self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
     /**
@@ -207,7 +207,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
+        self::assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
     }
 
     /**
@@ -231,7 +231,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
+        self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
     /**
@@ -399,7 +399,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
+        self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
     /**
@@ -423,7 +423,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
+        self::assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
     }
 
     /**
@@ -447,7 +447,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
+        self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
     /**
@@ -468,7 +468,7 @@ class DatabaseUserPermissionCheckTest extends UnitTestCase
 
         $result = (new DatabaseUserPermissionCheck)->addData($input);
 
-        $this->assertSame(Permission::ALL, $result['userPermissionOnPage']);
+        self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
     /**

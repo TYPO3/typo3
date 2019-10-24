@@ -32,7 +32,7 @@ class MailUtilityTest extends UnitTestCase
      */
     public function breakLinesForEmailReturnsEmptyStringIfEmptryStringIsGiven()
     {
-        $this->assertEmpty(MailUtility::breakLinesForEmail(''));
+        self::assertEmpty(MailUtility::breakLinesForEmail(''));
     }
 
     /**
@@ -44,7 +44,7 @@ class MailUtilityTest extends UnitTestCase
         $lineWidth = 76;
         $str = 'This text is not longer than 76 chars and therefore will not be broken.';
         $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        $this->assertEquals(1, count(explode($newlineChar, $returnString)));
+        self::assertEquals(1, count(explode($newlineChar, $returnString)));
     }
 
     /**
@@ -56,7 +56,7 @@ class MailUtilityTest extends UnitTestCase
         $lineWidth = 50;
         $str = 'This text is longer than 50 chars and therefore will be broken.';
         $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        $this->assertEquals(2, count(explode($newlineChar, $returnString)));
+        self::assertEquals(2, count(explode($newlineChar, $returnString)));
     }
 
     /**
@@ -69,7 +69,7 @@ class MailUtilityTest extends UnitTestCase
         // first space after 20 chars (more than $lineWidth)
         $str = 'abcdefghijklmnopqrst uvwxyz 123456';
         $returnString = MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
-        $this->assertEquals($returnString, 'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456');
+        self::assertEquals($returnString, 'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456');
     }
 
     /**
@@ -79,7 +79,7 @@ class MailUtilityTest extends UnitTestCase
     {
         $str = 'Mein Link auf eine News (Link: http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)';
         $returnString = MailUtility::breakLinesForEmail($str);
-        $this->assertEquals($returnString, 'Mein Link auf eine News (Link:' . LF . 'http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)');
+        self::assertEquals($returnString, 'Mein Link auf eine News (Link:' . LF . 'http://zzzzzzzzzzzzz.xxxxxxxxx.de/index.php?id=10&tx_ttnews%5Btt_news%5D=1&cHash=66f5af320da29b7ae1cda49047ca7358)');
     }
 
     /**
@@ -116,7 +116,7 @@ class MailUtilityTest extends UnitTestCase
     public function parseAddressesTest($source, $addressList)
     {
         $returnArray = MailUtility::parseAddresses($source);
-        $this->assertEquals($addressList, $returnArray);
+        self::assertEquals($addressList, $returnArray);
     }
 
     /**
@@ -154,6 +154,6 @@ class MailUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = $configuration;
         $returnArray = MailUtility::getSystemReplyTo();
-        $this->assertSame($expectedReplyTo, $returnArray);
+        self::assertSame($expectedReplyTo, $returnArray);
     }
 }

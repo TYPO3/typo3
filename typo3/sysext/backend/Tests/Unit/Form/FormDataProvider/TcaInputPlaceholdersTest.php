@@ -50,7 +50,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']['config']['placeholder']);
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -75,7 +75,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
 
         $expected = $input;
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -103,7 +103,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = 'anotherPlaceholder';
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -167,7 +167,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $aForeignTableInput['databaseRow']['aForeignField'];
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -202,7 +202,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         unset($expected['processedTca']['columns']['aField']['config']['placeholder']);
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -276,7 +276,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileProphecyResult['databaseRow']['sha1'];
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -342,7 +342,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataProphecyResult['databaseRow']['title'];
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -446,7 +446,7 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['placeholder'] = $sysFileMetadataProphecyResult['databaseRow']['title'];
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 
     /**
@@ -478,6 +478,6 @@ class TcaInputPlaceholdersTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL($labelString)->shouldBeCalled()->willReturn($localizedString);
 
-        $this->assertSame($expected, (new TcaInputPlaceholders)->addData($input));
+        self::assertSame($expected, (new TcaInputPlaceholders)->addData($input));
     }
 }

@@ -50,16 +50,16 @@ class ProcessorRegistryTest extends UnitTestCase
             false,
             ['getType', 'getName']
         );
-        $taskMock->expects($this->once())
+        $taskMock->expects(self::once())
             ->method('getType')
             ->willReturn('Image');
-        $taskMock->expects($this->once())
+        $taskMock->expects(self::once())
             ->method('getName')
             ->willReturn('CropScaleMask');
 
         $processor = $subject->getProcessorByTask($taskMock);
 
-        $this->assertInstanceOf(LocalImageProcessor::class, $processor);
+        self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }
 
     /**
@@ -118,15 +118,15 @@ class ProcessorRegistryTest extends UnitTestCase
             false,
             ['getType', 'getName']
         );
-        $taskMock->expects($this->once())
+        $taskMock->expects(self::once())
             ->method('getType')
             ->willReturn('Image');
-        $taskMock->expects($this->once())
+        $taskMock->expects(self::once())
             ->method('getName')
             ->willReturn('CropScaleMask');
 
         $processor = $subject->getProcessorByTask($taskMock);
 
-        $this->assertInstanceOf(LocalImageProcessor::class, $processor);
+        self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }
 }

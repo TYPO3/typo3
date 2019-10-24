@@ -76,6 +76,6 @@ class ResourceUtilityTest extends UnitTestCase
             $result,
             [ResourceUtility::class, 'recursiveFileListSortingHelper']
         );
-        $this->assertSame($expectedList, $result);
+        self::assertSame($expectedList, $result);
     }
 }

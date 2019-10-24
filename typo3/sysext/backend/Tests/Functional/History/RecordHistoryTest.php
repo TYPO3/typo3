@@ -52,6 +52,6 @@ class RecordHistoryTest extends FunctionalTestCase
      */
     public function findEventsForCorrelationWorksAsExpected(string $correlationId, int $amountOfEntries): void
     {
-        $this->assertCount($amountOfEntries, $this->subject->findEventsForCorrelation($correlationId));
+        self::assertCount($amountOfEntries, $this->subject->findEventsForCorrelation($correlationId));
     }
 }

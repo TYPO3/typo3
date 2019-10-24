@@ -36,7 +36,7 @@ class PlaintextRendererTest extends UnitTestCase
             'messageTitle',
             FlashMessage::NOTICE
         );
-        $this->assertSame('[NOTICE] messageTitle: messageBody', $rendererClass->render([$flashMessage]));
+        self::assertSame('[NOTICE] messageTitle: messageBody', $rendererClass->render([$flashMessage]));
     }
 
     /**
@@ -51,6 +51,6 @@ class PlaintextRendererTest extends UnitTestCase
             '',
             FlashMessage::NOTICE
         );
-        $this->assertSame('[NOTICE] messageBody', $rendererClass->render([$flashMessage]));
+        self::assertSame('[NOTICE] messageBody', $rendererClass->render([$flashMessage]));
     }
 }

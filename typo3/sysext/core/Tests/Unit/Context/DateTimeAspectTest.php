@@ -29,7 +29,7 @@ class DateTimeAspectTest extends UnitTestCase
         $dateObject = new \DateTimeImmutable('2018-07-15', new \DateTimeZone('Europe/Moscow'));
         $subject = new DateTimeAspect($dateObject);
         $result = $subject->getDateTime();
-        $this->assertSame($dateObject, $result);
+        self::assertSame($dateObject, $result);
     }
 
     /**
@@ -79,6 +79,6 @@ class DateTimeAspectTest extends UnitTestCase
     {
         $dateObject = new \DateTimeImmutable('2018-07-15T13:00:05', new \DateTimeZone('Europe/Moscow'));
         $subject = new DateTimeAspect($dateObject);
-        $this->assertEquals($expectedResult, $subject->get($key));
+        self::assertEquals($expectedResult, $subject->get($key));
     }
 }

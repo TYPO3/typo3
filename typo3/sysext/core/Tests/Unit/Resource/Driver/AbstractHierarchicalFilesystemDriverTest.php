@@ -41,7 +41,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
      */
     public function canonicalizeAndCheckFileIdentifierCanonicalizesPath($expectedPath, $fileIdentifier)
     {
-        $this->assertSame($expectedPath, $this->subject->_callRef('canonicalizeAndCheckFileIdentifier', $fileIdentifier));
+        self::assertSame($expectedPath, $this->subject->_callRef('canonicalizeAndCheckFileIdentifier', $fileIdentifier));
     }
 
     /**
@@ -93,7 +93,7 @@ class AbstractHierarchicalFilesystemDriverTest extends BaseTestCase
      */
     public function canonicalizeAndCheckFolderIdentifierCanonicalizesFolderIdentifier($expectedPath, $identifier)
     {
-        $this->assertSame($expectedPath, $this->subject->_callRef('canonicalizeAndCheckFolderIdentifier', $identifier));
+        self::assertSame($expectedPath, $this->subject->_callRef('canonicalizeAndCheckFolderIdentifier', $identifier));
     }
 
     /**

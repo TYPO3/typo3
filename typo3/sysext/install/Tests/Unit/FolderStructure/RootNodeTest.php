@@ -67,9 +67,9 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(true));
+            ->will(self::returnValue(true));
         $structure = [
             'name' => '/bar'
         ];
@@ -86,9 +86,9 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
         $structure = [
             'name' => 'C:/bar'
         ];
@@ -103,14 +103,14 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
         $structure = [
             'name' => '/bar'
         ];
         $node->__construct($structure, null);
-        $this->assertNull($node->_call('getParent'));
+        self::assertNull($node->_call('getParent'));
     }
 
     /**
@@ -121,9 +121,9 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
         $childName = $this->getUniqueId('test_');
         $structure = [
             'name' => '/foo',
@@ -138,8 +138,8 @@ class RootNodeTest extends UnitTestCase
         $children = $node->_call('getChildren');
         /** @var $child \TYPO3\CMS\install\FolderStructure\NodeInterface */
         $child = $children[0];
-        $this->assertInstanceOf(DirectoryNode::class, $child);
-        $this->assertSame($childName, $child->getName());
+        self::assertInstanceOf(DirectoryNode::class, $child);
+        self::assertSame($childName, $child->getName());
     }
 
     /**
@@ -150,16 +150,16 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
         $targetPermission = '2550';
         $structure = [
             'name' => '/foo',
             'targetPermission' => $targetPermission,
         ];
         $node->__construct($structure, null);
-        $this->assertSame($targetPermission, $node->_call('getTargetPermission'));
+        self::assertSame($targetPermission, $node->_call('getTargetPermission'));
     }
 
     /**
@@ -170,12 +170,12 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
         $name = '/' . $this->getUniqueId('test_');
         $node->__construct(['name' => $name], null);
-        $this->assertSame($name, $node->getName());
+        self::assertSame($name, $node->getName());
     }
 
     /**
@@ -195,13 +195,13 @@ class RootNodeTest extends UnitTestCase
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->once())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->once())->method('isDirectory')->will($this->returnValue(true));
-        $node->expects($this->once())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->once())->method('isWritable')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::once())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::once())->method('isDirectory')->will(self::returnValue(true));
+        $node->expects(self::once())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::once())->method('isWritable')->will(self::returnValue(true));
         $statusArray = $node->getStatus();
-        $this->assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
+        self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
     }
 
     /**
@@ -221,18 +221,18 @@ class RootNodeTest extends UnitTestCase
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects($this->any())->method('getAbsolutePath')->will($this->returnValue($path));
-        $node->expects($this->any())->method('exists')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isDirectory')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isPermissionCorrect')->will($this->returnValue(true));
-        $node->expects($this->any())->method('isWritable')->will($this->returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
         $childStatus = new FlashMessage('foo', '', FlashMessage::ERROR);
-        $node->expects($this->once())->method('getChildrenStatus')->will($this->returnValue([$childStatus]));
+        $node->expects(self::once())->method('getChildrenStatus')->will(self::returnValue([$childStatus]));
         $statusArray = $node->getStatus();
         $statusSelf = $statusArray[0];
         $statusOfChild = $statusArray[1];
-        $this->assertSame(FlashMessage::OK, $statusSelf->getSeverity());
-        $this->assertSame($childStatus, $statusOfChild);
+        self::assertSame(FlashMessage::OK, $statusSelf->getSeverity());
+        self::assertSame($childStatus, $statusOfChild);
     }
 
     /**
@@ -243,14 +243,14 @@ class RootNodeTest extends UnitTestCase
         /** @var $node RootNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(RootNode::class, ['isWindowsOs'], [], '', false);
         $node
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isWindowsOs')
-            ->will($this->returnValue(false));
+            ->will(self::returnValue(false));
         $path = '/foo/bar';
         $structure = [
             'name' => $path,
         ];
         $node->__construct($structure, null);
-        $this->assertSame($path, $node->getAbsolutePath());
+        self::assertSame($path, $node->getAbsolutePath());
     }
 }

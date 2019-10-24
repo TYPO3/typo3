@@ -63,6 +63,6 @@ class VariableFrontendTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         $subject = new VariableFrontend($identifier, $typo3DatabaseBackend);
 
         $subject->set('myIdentifier', $arrayToSerialize);
-        $this->assertSame($expected, $subject->get('myIdentifier'));
+        self::assertSame($expected, $subject->get('myIdentifier'));
     }
 }

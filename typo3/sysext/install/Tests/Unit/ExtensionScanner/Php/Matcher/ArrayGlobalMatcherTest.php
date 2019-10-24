@@ -55,7 +55,7 @@ class ArrayGlobalMatcherTest extends UnitTestCase
         foreach ($subject->getMatches() as $hit) {
             $actualHitLineNumbers[] = $hit['line'];
         }
-        $this->assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
+        self::assertEquals($expectedHitLineNumbers, $actualHitLineNumbers);
     }
 
     /**
@@ -103,6 +103,6 @@ class ArrayGlobalMatcherTest extends UnitTestCase
         $traverser->traverse($statements);
 
         $result = $subject->getMatches();
-        $this->assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
+        self::assertEquals($expected[0]['restFiles'], $result[0]['restFiles']);
     }
 }

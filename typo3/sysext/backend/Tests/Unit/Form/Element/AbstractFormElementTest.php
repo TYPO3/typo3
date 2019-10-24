@@ -283,6 +283,6 @@ class AbstractFormElementTest extends UnitTestCase
         $result = $subject->_call('formatValue', $config['format'], $itemValue, $config['format.'] ?? []);
         date_default_timezone_set($timezoneBackup);
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 }

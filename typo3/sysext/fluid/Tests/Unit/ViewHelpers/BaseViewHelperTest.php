@@ -30,6 +30,6 @@ class BaseViewHelperTest extends ViewHelperBaseTestcase
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $expectedResult = '<base href="' . $baseUri . '" />';
         $actualResult = $viewHelper->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 }

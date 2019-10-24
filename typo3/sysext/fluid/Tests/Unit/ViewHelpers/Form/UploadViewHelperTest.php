@@ -41,7 +41,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
     public function renderCorrectlySetsTagName()
     {
         $this->tagBuilder = $this->createMock(\TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder::class);
-        $this->tagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('input');
+        $this->tagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('input');
         $this->viewHelper->setTagBuilder($this->tagBuilder);
         $this->viewHelper->initializeArgumentsAndRender();
     }
@@ -55,14 +55,14 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['addAttribute', 'setContent', 'render'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects($this->at(0))->method('addAttribute')->with('type', 'file');
-        $mockTagBuilder->expects($this->at(1))->method('addAttribute')->with('name', 'someName');
-        $this->viewHelper->expects($this->at(0))->method('registerFieldNameForFormTokenGeneration')->with('someName[name]');
-        $this->viewHelper->expects($this->at(1))->method('registerFieldNameForFormTokenGeneration')->with('someName[type]');
-        $this->viewHelper->expects($this->at(2))->method('registerFieldNameForFormTokenGeneration')->with('someName[tmp_name]');
-        $this->viewHelper->expects($this->at(3))->method('registerFieldNameForFormTokenGeneration')->with('someName[error]');
-        $this->viewHelper->expects($this->at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
-        $mockTagBuilder->expects($this->once())->method('render');
+        $mockTagBuilder->expects(self::at(0))->method('addAttribute')->with('type', 'file');
+        $mockTagBuilder->expects(self::at(1))->method('addAttribute')->with('name', 'someName');
+        $this->viewHelper->expects(self::at(0))->method('registerFieldNameForFormTokenGeneration')->with('someName[name]');
+        $this->viewHelper->expects(self::at(1))->method('registerFieldNameForFormTokenGeneration')->with('someName[type]');
+        $this->viewHelper->expects(self::at(2))->method('registerFieldNameForFormTokenGeneration')->with('someName[tmp_name]');
+        $this->viewHelper->expects(self::at(3))->method('registerFieldNameForFormTokenGeneration')->with('someName[error]');
+        $this->viewHelper->expects(self::at(4))->method('registerFieldNameForFormTokenGeneration')->with('someName[size]');
+        $mockTagBuilder->expects(self::once())->method('render');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
         $arguments = [
             'name' => 'someName'
@@ -77,7 +77,7 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderCallsSetErrorClassAttribute()
     {
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->expects(self::once())->method('setErrorClassAttribute');
         $this->viewHelper->initializeArgumentsAndRender();
     }
 
@@ -96,6 +96,6 @@ class UploadViewHelperTest extends ViewHelperBaseTestcase
         ];
         $this->viewHelper->setArguments($arguments);
         $result = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('<input multiple="multiple" type="file" name="someName[]" />', $result);
+        self::assertEquals('<input multiple="multiple" type="file" name="someName[]" />', $result);
     }
 }

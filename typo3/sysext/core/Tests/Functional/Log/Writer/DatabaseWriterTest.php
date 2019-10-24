@@ -56,6 +56,6 @@ class DatabaseWriterTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             )
             ->fetch();
 
-        $this->assertEquals($logRecordData, $rowInDatabase);
+        self::assertEquals($logRecordData, $rowInDatabase);
     }
 }

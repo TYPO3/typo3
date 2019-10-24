@@ -68,7 +68,7 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
             '',
             true
         );
-        $this->assertEquals($key, $subject->getKey());
+        self::assertEquals($key, $subject->getKey());
     }
 
     /**
@@ -91,8 +91,8 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         $subject->_set('items', $this->items);
         $subject->_set('numberOfItemsPerPage', $numberOfItemsPerPage);
 
-        $subject->expects($this->any())->method('defineUrl')->will(
-            $this->returnCallback(
+        $subject->expects(self::any())->method('defineUrl')->will(
+            self::returnCallback(
                 function ($input) {
                     return $input;
                 }
@@ -102,9 +102,9 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         $returnedItems = $subject->getItems();
         $expectedReturnedItems = array_slice($this->items, 0, $numberOfItemsPerPage);
 
-        $this->assertLessThanOrEqual($numberOfItemsPerPage, count($returnedItems));
+        self::assertLessThanOrEqual($numberOfItemsPerPage, count($returnedItems));
 
-        $this->assertEquals($expectedReturnedItems, $returnedItems);
+        self::assertEquals($expectedReturnedItems, $returnedItems);
     }
 
     /**
@@ -125,7 +125,7 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
 
         $subject->_set('items', $this->items);
 
-        $this->assertEquals(1535655756, $subject->getLastModified());
+        self::assertEquals(1535655756, $subject->getLastModified());
     }
 
     /**

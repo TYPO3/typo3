@@ -85,7 +85,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
             ],
         ]);
 
-        $saveToDatabaseFinisher->expects($this->once())->method('process')->with(0);
+        $saveToDatabaseFinisher->expects(self::once())->method('process')->with(0);
 
         $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
     }
@@ -171,7 +171,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
             ],
         ]);
 
-        $saveToDatabaseFinisher->expects($this->exactly(2))->method('process')->withConsecutive([0], [1]);
+        $saveToDatabaseFinisher->expects(self::exactly(2))->method('process')->withConsecutive([0], [1]);
 
         $saveToDatabaseFinisher->execute($this->prophesize(FinisherContext::class)->reveal());
     }
@@ -195,7 +195,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $databaseData = $saveToDatabaseFinisher->_call('prepareData', $elementsConfiguration, []);
 
         $expected = '#^([0-9]{10})$#';
-        $this->assertEquals(1, preg_match($expected, $databaseData['date']));
+        self::assertEquals(1, preg_match($expected, $databaseData['date']));
     }
 
     /**

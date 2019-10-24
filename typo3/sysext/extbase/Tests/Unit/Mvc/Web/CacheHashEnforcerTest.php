@@ -56,7 +56,7 @@ class CacheHashEnforcerTest extends UnitTestCase
         $request = new Request();
         $request->setArguments(['foo' => 'bar']);
         $this->frontendControllerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('reqCHash');
 
         $this->subject->enforceForRequest($request, 'tx_foo');
@@ -69,7 +69,7 @@ class CacheHashEnforcerTest extends UnitTestCase
     {
         $request = new Request();
         $this->frontendControllerMock
-            ->expects($this->never())
+            ->expects(self::never())
             ->method('reqCHash');
 
         $this->subject->enforceForRequest($request, 'tx_foo');

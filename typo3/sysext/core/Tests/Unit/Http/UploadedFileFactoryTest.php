@@ -32,7 +32,7 @@ class UploadedFileFactoryTest extends UnitTestCase
     public function implementsPsr17FactoryInterface()
     {
         $factory = new UploadedFileFactory();
-        $this->assertInstanceOf(UploadedFileFactoryInterface::class, $factory);
+        self::assertInstanceOf(UploadedFileFactoryInterface::class, $factory);
     }
 
     /**
@@ -44,10 +44,10 @@ class UploadedFileFactoryTest extends UnitTestCase
         $factory = new UploadedFileFactory();
         $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal(), 0);
 
-        $this->assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
-        $this->assertSame(UPLOAD_ERR_OK, $uploadedFile->getError());
-        $this->assertNull($uploadedFile->getClientFileName());
-        $this->assertNull($uploadedFile->getClientMediaType());
+        self::assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
+        self::assertSame(UPLOAD_ERR_OK, $uploadedFile->getError());
+        self::assertNull($uploadedFile->getClientFileName());
+        self::assertNull($uploadedFile->getClientMediaType());
     }
 
     /**
@@ -59,10 +59,10 @@ class UploadedFileFactoryTest extends UnitTestCase
         $factory = new UploadedFileFactory();
         $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal(), 0, UPLOAD_ERR_NO_FILE, 'filename.html', 'text/html');
 
-        $this->assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
-        $this->assertSame(UPLOAD_ERR_NO_FILE, $uploadedFile->getError());
-        $this->assertSame('filename.html', $uploadedFile->getClientFileName());
-        $this->assertSame('text/html', $uploadedFile->getClientMediaType());
+        self::assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
+        self::assertSame(UPLOAD_ERR_NO_FILE, $uploadedFile->getError());
+        self::assertSame('filename.html', $uploadedFile->getClientFileName());
+        self::assertSame('text/html', $uploadedFile->getClientMediaType());
     }
 
     /**
@@ -76,7 +76,7 @@ class UploadedFileFactoryTest extends UnitTestCase
         $factory = new UploadedFileFactory();
         $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal());
 
-        $this->assertSame(5, $uploadedFile->getSize());
+        self::assertSame(5, $uploadedFile->getSize());
     }
 
     /**
@@ -93,6 +93,6 @@ class UploadedFileFactoryTest extends UnitTestCase
         $factory = new UploadedFileFactory();
         $uploadedFile = $factory->createUploadedFile($streamProphecy->reveal());
 
-        $this->assertSame(3, $uploadedFile->getSize());
+        self::assertSame(3, $uploadedFile->getSize());
     }
 }

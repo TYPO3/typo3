@@ -80,7 +80,7 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        $this->assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input));
     }
 
     /**
@@ -135,7 +135,7 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        $this->assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input));
     }
 
     /**
@@ -173,7 +173,7 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        $this->assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input));
     }
 
     /**
@@ -211,7 +211,7 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        $this->assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input));
     }
 
     /**
@@ -477,6 +477,6 @@ class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        $this->assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input));
     }
 }

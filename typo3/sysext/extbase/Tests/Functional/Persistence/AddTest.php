@@ -85,7 +85,7 @@ class AddTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             )
             ->execute()
             ->fetchColumn(0);
-        $this->assertEquals(1, $newBlogCount);
+        self::assertEquals(1, $newBlogCount);
     }
 
     /**
@@ -115,7 +115,7 @@ class AddTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             )
             ->execute()
             ->fetch();
-        $this->assertEquals(0, $newBlogRecord['sys_language_uid']);
+        self::assertEquals(0, $newBlogRecord['sys_language_uid']);
     }
 
     /**
@@ -146,7 +146,7 @@ class AddTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             )
             ->execute()
             ->fetch();
-        $this->assertEquals(-1, $newBlogRecord['sys_language_uid']);
+        self::assertEquals(-1, $newBlogRecord['sys_language_uid']);
     }
 
     /**
@@ -183,6 +183,6 @@ class AddTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             )
             ->execute()
             ->fetch();
-        $this->assertNull($newBlogRecord['subtitle']);
+        self::assertNull($newBlogRecord['subtitle']);
     }
 }

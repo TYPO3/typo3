@@ -54,7 +54,7 @@ class IntegerValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function integerValidatorReturnsNoErrorsForAValidInteger($integer)
     {
-        $this->assertFalse($this->validator->validate($integer)->hasErrors());
+        self::assertFalse($this->validator->validate($integer)->hasErrors());
     }
 
     /**
@@ -78,7 +78,7 @@ class IntegerValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger)
     {
-        $this->assertTrue($this->validator->validate($invalidInteger)->hasErrors());
+        self::assertTrue($this->validator->validate($invalidInteger)->hasErrors());
     }
 
     /**
@@ -86,6 +86,6 @@ class IntegerValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
      */
     public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        $this->assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
+        self::assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
     }
 }

@@ -183,6 +183,6 @@ class ModuleLoaderTest extends UnitTestCase
     {
         $moduleLoader = new ModuleLoader();
         $moduleLoader->addLabelsForModule($moduleName, $labels);
-        $this->assertEquals($expectedResult, $moduleLoader->getLabelsForModule($moduleName));
+        self::assertEquals($expectedResult, $moduleLoader->getLabelsForModule($moduleName));
     }
 }

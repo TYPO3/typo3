@@ -32,7 +32,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     public function implementsPsr17FactoryInterface()
     {
         $factory = new ServerRequestFactory();
-        $this->assertInstanceOf(ServerRequestFactoryInterface::class, $factory);
+        self::assertInstanceOf(ServerRequestFactoryInterface::class, $factory);
     }
 
     /**
@@ -42,7 +42,7 @@ class ServerRequestFactoryTest extends UnitTestCase
     {
         $factory = new ServerRequestFactory();
         $request = $factory->createServerRequest('POST', '/');
-        $this->assertSame('POST', $request->getMethod());
+        self::assertSame('POST', $request->getMethod());
     }
 
     /**
@@ -54,15 +54,15 @@ class ServerRequestFactoryTest extends UnitTestCase
         $request = $factory->createServerRequest('GET', '/');
         $body = $request->getBody();
 
-        $this->assertInstanceOf(ServerRequestInterface::class, $request);
+        self::assertInstanceOf(ServerRequestInterface::class, $request);
 
-        $this->assertSame('', $body->__toString());
-        $this->assertSame(0, $body->getSize());
-        $this->assertTrue($body->isSeekable());
+        self::assertSame('', $body->__toString());
+        self::assertSame(0, $body->getSize());
+        self::assertTrue($body->isSeekable());
 
         $body->write('Foo');
-        $this->assertSame(3, $body->getSize());
-        $this->assertSame('Foo', $body->__toString());
+        self::assertSame(3, $body->getSize());
+        self::assertSame('Foo', $body->__toString());
     }
 
     /**
@@ -159,10 +159,10 @@ class ServerRequestFactoryTest extends UnitTestCase
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
-        $this->assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['image']);
-        $this->assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['image'] instanceof UploadedFile);
-        $this->assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0]);
-        $this->assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0] instanceof UploadedFile);
+        self::assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['image']);
+        self::assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['image'] instanceof UploadedFile);
+        self::assertNotEmpty($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0]);
+        self::assertTrue($uploadedFiles['tx_uploadexample_piexample']['newExample']['imageCollection'][0] instanceof UploadedFile);
     }
 
     /**
@@ -178,7 +178,7 @@ class ServerRequestFactoryTest extends UnitTestCase
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
-        $this->assertEmpty($uploadedFiles);
+        self::assertEmpty($uploadedFiles);
     }
 
     /**
@@ -201,6 +201,6 @@ class ServerRequestFactoryTest extends UnitTestCase
 
         $uploadedFiles = ServerRequestFactory::fromGlobals()->getUploadedFiles();
 
-        $this->assertEmpty($uploadedFiles);
+        self::assertEmpty($uploadedFiles);
     }
 }

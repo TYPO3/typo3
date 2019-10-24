@@ -54,6 +54,6 @@ class ClosureFinisherTest extends UnitTestCase
         $mockClosureFinisher->_set('finisherContext', $revealedFinisherContext);
         $closure = $mockClosureFinisher->_call('parseOption', 'closure');
 
-        $this->assertSame('foobar', $closure($revealedFinisherContext));
+        self::assertSame('foobar', $closure($revealedFinisherContext));
     }
 }

@@ -56,6 +56,6 @@ class TcaInlineIsOnSymmetricSideTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['isOnSymmetricSide'] = true;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 }

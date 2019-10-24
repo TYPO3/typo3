@@ -33,8 +33,8 @@ class ColumnDefinitionItemTest extends UnitTestCase
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(checksum VARCHAR(64));');
 
-        $this->assertInstanceOf(CreateColumnDefinitionItem::class, $subject);
-        $this->assertSame($subject->columnName->schemaObjectName, 'checksum');
+        self::assertInstanceOf(CreateColumnDefinitionItem::class, $subject);
+        self::assertSame($subject->columnName->schemaObjectName, 'checksum');
     }
 
     /**
@@ -48,7 +48,7 @@ class ColumnDefinitionItemTest extends UnitTestCase
     {
         $subject = $this->createSubject('CREATE TABLE `aTable`(aField VARCHAR(64), );');
 
-        $this->assertInstanceOf(CreateColumnDefinitionItem::class, $subject);
+        self::assertInstanceOf(CreateColumnDefinitionItem::class, $subject);
     }
 
     /**

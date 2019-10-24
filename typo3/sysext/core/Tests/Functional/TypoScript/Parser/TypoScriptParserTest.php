@@ -50,6 +50,6 @@ class TypoScriptParserTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         // call done by the cache framework to trigger the issue.
         $res = unserialize(serialize($res));
         $res['TSconfig']['RTE.']['default.']['FE.']['proc.']['entryHTMLparser_db.']['tags.'] = 'This';
-        $this->assertEquals([], $res['TSconfig']['RTE.']['default.']['proc.']['entryHTMLparser_db.']['tags.']);
+        self::assertEquals([], $res['TSconfig']['RTE.']['default.']['proc.']['entryHTMLparser_db.']['tags.']);
     }
 }

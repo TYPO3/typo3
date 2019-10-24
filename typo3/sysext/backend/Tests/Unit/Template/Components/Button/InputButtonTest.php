@@ -32,7 +32,7 @@ class InputButtonTest extends UnitTestCase
     {
         $button = new InputButton();
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -45,7 +45,7 @@ class InputButtonTest extends UnitTestCase
         $button = new InputButton();
         $button->setName('husel')->setValue('1')->setTitle('huhu');
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -59,7 +59,7 @@ class InputButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setName('husel')->setValue('1')->setIcon($icon);
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -73,7 +73,7 @@ class InputButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setTitle('husel')->setValue('1')->setIcon($icon);
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -87,7 +87,7 @@ class InputButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setTitle('husel')->setName('husel')->setIcon($icon);
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -101,6 +101,6 @@ class InputButtonTest extends UnitTestCase
         $icon = new Icon();
         $button->setTitle('husel')->setName('husel')->setIcon($icon)->setValue('1');
         $isValid = $button->isValid();
-        $this->assertTrue($isValid);
+        self::assertTrue($isValid);
     }
 }

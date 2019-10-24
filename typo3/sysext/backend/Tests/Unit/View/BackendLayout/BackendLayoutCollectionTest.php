@@ -40,7 +40,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
         $identifier = $this->getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
 
-        $this->assertEquals($identifier, $backendLayoutCollection->getIdentifier());
+        self::assertEquals($identifier, $backendLayoutCollection->getIdentifier());
     }
 
     /**
@@ -57,7 +57,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $backendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
 
         $backendLayoutCollection->add($backendLayoutMock);
     }
@@ -76,12 +76,12 @@ class BackendLayoutCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $firstBackendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $firstBackendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
         $secondBackendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $secondBackendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $secondBackendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
 
         $backendLayoutCollection->add($firstBackendLayoutMock);
         $backendLayoutCollection->add($secondBackendLayoutMock);
@@ -99,10 +99,10 @@ class BackendLayoutCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects($this->once())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
+        $backendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
 
         $backendLayoutCollection->add($backendLayoutMock);
 
-        $this->assertEquals($backendLayoutMock, $backendLayoutCollection->get($backendLayoutIdentifier));
+        self::assertEquals($backendLayoutMock, $backendLayoutCollection->get($backendLayoutIdentifier));
     }
 }

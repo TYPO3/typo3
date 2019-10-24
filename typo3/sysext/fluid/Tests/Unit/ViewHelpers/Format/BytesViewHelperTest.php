@@ -138,7 +138,7 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expected, $actualResult);
+        self::assertEquals($expected, $actualResult);
     }
 
     /**
@@ -158,6 +158,6 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('12 KB', $actualResult);
+        self::assertEquals('12 KB', $actualResult);
     }
 }

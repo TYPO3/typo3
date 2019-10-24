@@ -69,7 +69,7 @@ class SiteLanguageTest extends UnitTestCase
             'fallbacks' => $input
         ];
         $subject = new SiteLanguage(1, 'fr', new Uri('/'), $configuration);
-        $this->assertSame($expected, $subject->getFallbackLanguageIds());
+        self::assertSame($expected, $subject->getFallbackLanguageIds());
     }
 
     /**
@@ -103,6 +103,6 @@ class SiteLanguageTest extends UnitTestCase
                 2
             ],
         ];
-        $this->assertSame($expected, $subject->toArray());
+        self::assertSame($expected, $subject->toArray());
     }
 }

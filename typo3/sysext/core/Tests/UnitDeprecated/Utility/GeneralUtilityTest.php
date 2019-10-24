@@ -36,7 +36,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function idnaEncodeConvertsUnicodeCharsToASCIIString($actual, $expected)
     {
         $result = GeneralUtility::idnaEncode($actual);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**

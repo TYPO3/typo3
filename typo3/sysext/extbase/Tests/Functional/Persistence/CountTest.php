@@ -80,7 +80,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
     public function simpleCountTest()
     {
         $query = $this->postRepository->createQuery();
-        $this->assertSame($this->numberOfRecordsInFixture, $query->count());
+        self::assertSame($this->numberOfRecordsInFixture, $query->count());
     }
 
     /**
@@ -93,7 +93,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $query->setLimit($this->numberOfRecordsInFixture+1);
         $query->setOffset(6);
 
-        $this->assertSame($this->numberOfRecordsInFixture - 6, $query->count());
+        self::assertSame($this->numberOfRecordsInFixture - 6, $query->count());
     }
 
     /**
@@ -106,7 +106,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $query->setLimit($this->numberOfRecordsInFixture+1);
         $query->setOffset($this->numberOfRecordsInFixture + 5);
 
-        $this->assertSame(0, $query->count());
+        self::assertSame(0, $query->count());
     }
 
     /**
@@ -118,7 +118,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
 
         $query->setLimit(4);
 
-        $this->assertSame(4, $query->count());
+        self::assertSame(4, $query->count());
     }
 
     /**
@@ -132,7 +132,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
             ->setOffset($this->numberOfRecordsInFixture - 3)
             ->setLimit(4);
 
-        $this->assertSame(3, $query->count());
+        self::assertSame(3, $query->count());
     }
 
     /**
@@ -146,7 +146,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
             $query->in('uid', [1, 2, 3])
         );
 
-        $this->assertSame(3, $query->count());
+        self::assertSame(3, $query->count());
     }
 
     /**
@@ -162,7 +162,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
             $query->equals('blog.title', 'Blog1')
         );
 
-        $this->assertSame(10, $query->count());
+        self::assertSame(10, $query->count());
     }
 
     /**
@@ -178,7 +178,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
             $query->equals('relatedPosts.title', 'Post2')
         );
 
-        $this->assertSame(1, $query->count());
+        self::assertSame(1, $query->count());
     }
 
     /**
@@ -201,7 +201,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
         $result = $query->execute();
         $result->valid();
 
-        $this->assertSame(10, $result->count());
+        self::assertSame(10, $result->count());
     }
 
     /**
@@ -218,7 +218,7 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
                 $query->equals('tagsSpecial.name', 'SpecialTagForAuthor1')
             )
         );
-        $this->assertSame(1, $query->count());
+        self::assertSame(1, $query->count());
     }
 
     /**
@@ -235,6 +235,6 @@ class CountTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCa
                 $query->equals('tagsSpecial.name', 'SpecialTagForAuthor1')
             )
         );
-        $this->assertSame(4, $query->count());
+        self::assertSame(4, $query->count());
     }
 }

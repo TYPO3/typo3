@@ -150,7 +150,7 @@ class AbstractPluginTest extends UnitTestCase
 
         $this->abstractPlugin->conf['_DEFAULT_PI_VARS.'] = $input;
         $this->abstractPlugin->pi_setPiVarDefaults();
-        $this->assertEquals($expected, $this->abstractPlugin->piVars);
+        self::assertEquals($expected, $this->abstractPlugin->piVars);
     }
 
     /**
@@ -224,14 +224,14 @@ class AbstractPluginTest extends UnitTestCase
         GeneralUtility::addInstance($className, $resultBrowserHook);
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults'] = [$className];
 
-        $resultBrowserHook->expects($this->atLeastOnce())
+        $resultBrowserHook->expects(self::atLeastOnce())
             ->method('pi_list_browseresults')
             ->with(1, '', [], 'pointer', true, false, $this->abstractPlugin)
-            ->will($this->returnValue($returnValue));
+            ->will(self::returnValue($returnValue));
 
         $actualReturnValue = $this->abstractPlugin->pi_list_browseresults();
 
-        $this->assertSame($expected, $actualReturnValue);
+        self::assertSame($expected, $actualReturnValue);
 
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][AbstractPlugin::class]['pi_list_browseresults']);
     }

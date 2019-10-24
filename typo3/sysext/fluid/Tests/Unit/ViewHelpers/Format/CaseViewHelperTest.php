@@ -46,7 +46,7 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('', $actualResult);
+        self::assertEquals('', $actualResult);
     }
 
     /**
@@ -61,7 +61,7 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('SOME STRING', $actualResult);
+        self::assertEquals('SOME STRING', $actualResult);
     }
 
     /**
@@ -93,7 +93,7 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertSame('FOOB4R', $actualResult);
+        self::assertSame('FOOB4R', $actualResult);
     }
 
     /**
@@ -127,6 +127,6 @@ class CaseViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertSame($expected, $actualResult, sprintf('The conversion with mode "%s" did not perform as expected.', $mode));
+        self::assertSame($expected, $actualResult, sprintf('The conversion with mode "%s" did not perform as expected.', $mode));
     }
 }

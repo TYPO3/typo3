@@ -47,7 +47,7 @@ class MessageTest extends UnitTestCase
      */
     public function protocolHasAcceptableDefault()
     {
-        $this->assertEquals('1.1', $this->message->getProtocolVersion());
+        self::assertEquals('1.1', $this->message->getProtocolVersion());
     }
 
     /**
@@ -56,8 +56,8 @@ class MessageTest extends UnitTestCase
     public function protocolMutatorReturnsCloneWithChanges()
     {
         $message = $this->message->withProtocolVersion('1.0');
-        $this->assertNotSame($this->message, $message);
-        $this->assertEquals('1.0', $message->getProtocolVersion());
+        self::assertNotSame($this->message, $message);
+        self::assertEquals('1.0', $message->getProtocolVersion());
     }
 
     /**
@@ -65,7 +65,7 @@ class MessageTest extends UnitTestCase
      */
     public function usesStreamProvidedInConstructorAsBody()
     {
-        $this->assertSame($this->stream, $this->message->getBody());
+        self::assertSame($this->stream, $this->message->getBody());
     }
 
     /**
@@ -75,8 +75,8 @@ class MessageTest extends UnitTestCase
     {
         $stream = new Stream('php://memory', 'wb+');
         $message = $this->message->withBody($stream);
-        $this->assertNotSame($this->message, $message);
-        $this->assertSame($stream, $message->getBody());
+        self::assertNotSame($this->message, $message);
+        self::assertSame($stream, $message->getBody());
     }
 
     /**
@@ -85,8 +85,8 @@ class MessageTest extends UnitTestCase
     public function getHeaderReturnsHeaderValueAsArray()
     {
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
-        $this->assertNotSame($this->message, $message);
-        $this->assertEquals(['Foo', 'Bar'], $message->getHeader('X-Foo'));
+        self::assertNotSame($this->message, $message);
+        self::assertEquals(['Foo', 'Bar'], $message->getHeader('X-Foo'));
     }
 
     /**
@@ -95,8 +95,8 @@ class MessageTest extends UnitTestCase
     public function getHeaderLineReturnsHeaderValueAsCommaConcatenatedString()
     {
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
-        $this->assertNotSame($this->message, $message);
-        $this->assertEquals('Foo,Bar', $message->getHeaderLine('X-Foo'));
+        self::assertNotSame($this->message, $message);
+        self::assertEquals('Foo,Bar', $message->getHeaderLine('X-Foo'));
     }
 
     /**
@@ -105,8 +105,8 @@ class MessageTest extends UnitTestCase
     public function getHeadersKeepsHeaderCaseSensitivity()
     {
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
-        $this->assertNotSame($this->message, $message);
-        $this->assertEquals(['X-Foo' => ['Foo', 'Bar']], $message->getHeaders());
+        self::assertNotSame($this->message, $message);
+        self::assertEquals(['X-Foo' => ['Foo', 'Bar']], $message->getHeaders());
     }
 
     /**
@@ -117,8 +117,8 @@ class MessageTest extends UnitTestCase
         $message = $this->message
             ->withHeader('X-Foo', 'Foo')
             ->withAddedHeader('x-foo', 'Bar');
-        $this->assertNotSame($this->message, $message);
-        $this->assertEquals(['X-Foo' => ['Foo', 'Bar']], $message->getHeaders());
+        self::assertNotSame($this->message, $message);
+        self::assertEquals(['X-Foo' => ['Foo', 'Bar']], $message->getHeaders());
     }
 
     /**
@@ -126,7 +126,7 @@ class MessageTest extends UnitTestCase
      */
     public function hasHeaderReturnsFalseIfHeaderIsNotPresent()
     {
-        $this->assertFalse($this->message->hasHeader('X-Foo'));
+        self::assertFalse($this->message->hasHeader('X-Foo'));
     }
 
     /**
@@ -135,8 +135,8 @@ class MessageTest extends UnitTestCase
     public function hasHeaderReturnsTrueIfHeaderIsPresent()
     {
         $message = $this->message->withHeader('X-Foo', 'Foo');
-        $this->assertNotSame($this->message, $message);
-        $this->assertTrue($message->hasHeader('X-Foo'));
+        self::assertNotSame($this->message, $message);
+        self::assertTrue($message->hasHeader('X-Foo'));
     }
 
     /**
@@ -145,10 +145,10 @@ class MessageTest extends UnitTestCase
     public function addHeaderAppendsToExistingHeader()
     {
         $message = $this->message->withHeader('X-Foo', 'Foo');
-        $this->assertNotSame($this->message, $message);
+        self::assertNotSame($this->message, $message);
         $message2 = $message->withAddedHeader('X-Foo', 'Bar');
-        $this->assertNotSame($message, $message2);
-        $this->assertEquals('Foo,Bar', $message2->getHeaderLine('X-Foo'));
+        self::assertNotSame($message, $message2);
+        self::assertEquals('Foo,Bar', $message2->getHeaderLine('X-Foo'));
     }
 
     /**
@@ -157,12 +157,12 @@ class MessageTest extends UnitTestCase
     public function canRemoveHeaders()
     {
         $message = $this->message->withHeader('X-Foo', 'Foo');
-        $this->assertNotSame($this->message, $message);
-        $this->assertTrue($message->hasHeader('x-foo'));
+        self::assertNotSame($this->message, $message);
+        self::assertTrue($message->hasHeader('x-foo'));
         $message2 = $message->withoutHeader('x-foo');
-        $this->assertNotSame($this->message, $message2);
-        $this->assertNotSame($message, $message2);
-        $this->assertFalse($message2->hasHeader('X-Foo'));
+        self::assertNotSame($this->message, $message2);
+        self::assertNotSame($message, $message2);
+        self::assertFalse($message2->hasHeader('X-Foo'));
     }
 
     /**
@@ -174,14 +174,14 @@ class MessageTest extends UnitTestCase
             ->withHeader('X-Foo', 'Foo')
             ->withAddedHeader('x-foo', 'Bar')
             ->withAddedHeader('X-FOO', 'Baz');
-        $this->assertNotSame($this->message, $message);
-        $this->assertTrue($message->hasHeader('x-foo'));
+        self::assertNotSame($this->message, $message);
+        self::assertTrue($message->hasHeader('x-foo'));
         $message2 = $message->withoutHeader('x-foo');
-        $this->assertNotSame($this->message, $message2);
-        $this->assertNotSame($message, $message2);
-        $this->assertFalse($message2->hasHeader('X-Foo'));
+        self::assertNotSame($this->message, $message2);
+        self::assertNotSame($message, $message2);
+        self::assertFalse($message2->hasHeader('X-Foo'));
         $headers = $message2->getHeaders();
-        $this->assertEquals(0, count($headers));
+        self::assertEquals(0, count($headers));
     }
 
     /**
@@ -250,10 +250,10 @@ class MessageTest extends UnitTestCase
      */
     public function withoutHeaderDoesNothingIfHeaderDoesNotExist()
     {
-        $this->assertFalse($this->message->hasHeader('X-Foo'));
+        self::assertFalse($this->message->hasHeader('X-Foo'));
         $message = $this->message->withoutHeader('X-Foo');
-        $this->assertNotSame($this->message, $message);
-        $this->assertFalse($message->hasHeader('X-Foo'));
+        self::assertNotSame($this->message, $message);
+        self::assertFalse($message->hasHeader('X-Foo'));
     }
 
     /**
@@ -261,7 +261,7 @@ class MessageTest extends UnitTestCase
      */
     public function getHeaderReturnsAnEmptyArrayWhenHeaderDoesNotExist()
     {
-        $this->assertSame([], $this->message->getHeader('X-Foo-Bar'));
+        self::assertSame([], $this->message->getHeader('X-Foo-Bar'));
     }
 
     /**
@@ -269,7 +269,7 @@ class MessageTest extends UnitTestCase
      */
     public function getHeaderLineReturnsEmptyStringWhenHeaderDoesNotExist()
     {
-        $this->assertSame('', $this->message->getHeaderLine('X-Foo-Bar'));
+        self::assertSame('', $this->message->getHeaderLine('X-Foo-Bar'));
     }
 
     /**

@@ -73,14 +73,14 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorAddsLastBacktraceItemToLogRecord()
     {
-        $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
-        $this->assertEquals($this->dummyBacktrace[0]['file'], $logRecord['data']['file']);
-        $this->assertEquals($this->dummyBacktrace[0]['line'], $logRecord['data']['line']);
-        $this->assertEquals($this->dummyBacktrace[0]['class'], $logRecord['data']['class']);
-        $this->assertEquals($this->dummyBacktrace[0]['function'], $logRecord['data']['function']);
+        self::assertEquals($this->dummyBacktrace[0]['file'], $logRecord['data']['file']);
+        self::assertEquals($this->dummyBacktrace[0]['line'], $logRecord['data']['line']);
+        self::assertEquals($this->dummyBacktrace[0]['class'], $logRecord['data']['class']);
+        self::assertEquals($this->dummyBacktrace[0]['function'], $logRecord['data']['function']);
     }
 
     /**
@@ -104,15 +104,15 @@ class IntrospectionProcessorTest extends UnitTestCase
                 'function' => 'function888'
             ]
         );
-        $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($dummyBacktrace));
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
-        $this->assertEquals($this->dummyBacktrace[0]['file'], $logRecord['data']['file']);
-        $this->assertEquals($this->dummyBacktrace[0]['line'], $logRecord['data']['line']);
-        $this->assertEquals($this->dummyBacktrace[0]['class'], $logRecord['data']['class']);
-        $this->assertEquals($this->dummyBacktrace[0]['function'], $logRecord['data']['function']);
+        self::assertEquals($this->dummyBacktrace[0]['file'], $logRecord['data']['file']);
+        self::assertEquals($this->dummyBacktrace[0]['line'], $logRecord['data']['line']);
+        self::assertEquals($this->dummyBacktrace[0]['class'], $logRecord['data']['class']);
+        self::assertEquals($this->dummyBacktrace[0]['function'], $logRecord['data']['function']);
     }
 
     /**
@@ -133,16 +133,16 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace($number)
     {
-        $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
         $this->processor->setShiftBackTraceLevel($number);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
-        $this->assertEquals($this->dummyBacktrace[$number]['file'], $logRecord['data']['file']);
-        $this->assertEquals($this->dummyBacktrace[$number]['line'], $logRecord['data']['line']);
-        $this->assertEquals($this->dummyBacktrace[$number]['class'], $logRecord['data']['class']);
-        $this->assertEquals($this->dummyBacktrace[$number]['function'], $logRecord['data']['function']);
+        self::assertEquals($this->dummyBacktrace[$number]['file'], $logRecord['data']['file']);
+        self::assertEquals($this->dummyBacktrace[$number]['line'], $logRecord['data']['line']);
+        self::assertEquals($this->dummyBacktrace[$number]['class'], $logRecord['data']['class']);
+        self::assertEquals($this->dummyBacktrace[$number]['function'], $logRecord['data']['function']);
     }
 
     /**
@@ -150,16 +150,16 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorLeavesOneEntryIfGivenNumberOfEntriesFromBacktraceIsGreaterOrEqualNumberOfBacktraceLevels()
     {
-        $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
         $this->processor->setShiftBackTraceLevel(4);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
-        $this->assertEquals($this->dummyBacktrace[3]['file'], $logRecord['data']['file']);
-        $this->assertEquals($this->dummyBacktrace[3]['line'], $logRecord['data']['line']);
-        $this->assertEquals($this->dummyBacktrace[3]['class'], $logRecord['data']['class']);
-        $this->assertEquals($this->dummyBacktrace[3]['function'], $logRecord['data']['function']);
+        self::assertEquals($this->dummyBacktrace[3]['file'], $logRecord['data']['file']);
+        self::assertEquals($this->dummyBacktrace[3]['line'], $logRecord['data']['line']);
+        self::assertEquals($this->dummyBacktrace[3]['class'], $logRecord['data']['class']);
+        self::assertEquals($this->dummyBacktrace[3]['function'], $logRecord['data']['function']);
     }
 
     /**
@@ -167,16 +167,16 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function appendFullBacktraceAddsTheFullBacktraceAsStringToTheLog()
     {
-        $this->processor->expects($this->any())->method('getDebugBacktrace')->will($this->returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
 
         $this->processor->setAppendFullBackTrace(true);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
-        $this->assertContains($this->dummyBacktrace[0], $logRecord['data']['backtrace']);
-        $this->assertContains($this->dummyBacktrace[1], $logRecord['data']['backtrace']);
-        $this->assertContains($this->dummyBacktrace[2], $logRecord['data']['backtrace']);
-        $this->assertContains($this->dummyBacktrace[3], $logRecord['data']['backtrace']);
+        self::assertContains($this->dummyBacktrace[0], $logRecord['data']['backtrace']);
+        self::assertContains($this->dummyBacktrace[1], $logRecord['data']['backtrace']);
+        self::assertContains($this->dummyBacktrace[2], $logRecord['data']['backtrace']);
+        self::assertContains($this->dummyBacktrace[3], $logRecord['data']['backtrace']);
     }
 }

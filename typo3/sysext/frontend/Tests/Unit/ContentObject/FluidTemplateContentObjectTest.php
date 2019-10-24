@@ -87,9 +87,9 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->standaloneView = $this->createMock(StandaloneView::class);
         $this->request = $this->getMockBuilder(Request::class)->getMock();
         $this->standaloneView
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRequest')
-            ->will($this->returnValue($this->request));
+            ->will(self::returnValue($this->request));
         $this->subject->_set('view', $this->standaloneView);
     }
 
@@ -98,7 +98,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
      */
     public function constructSetsContentObjectRenderer(): void
     {
-        $this->assertSame($this->contentObjectRenderer, $this->subject->getContentObjectRenderer());
+        self::assertSame($this->contentObjectRenderer, $this->subject->getContentObjectRenderer());
     }
 
     /**
@@ -108,7 +108,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('initializeStandaloneViewInstance');
         $this->subject->render([]);
     }
@@ -120,7 +120,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $this->subject->render(['file' => 'foo', 'file.' => ['bar' => 'baz']]);
@@ -133,11 +133,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('stdWrap')
             ->with('dummyPath', ['wrap' => '|5/']);
         $this->contentObjectRenderer
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('stdWrap')
             ->with('', ['field' => 'someField']);
         $this->subject->render(
@@ -164,7 +164,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('setTemplatePathAndFilename')
             ->with(Environment::getFrameworkBasePath() . '/core/bar.html');
         $this->subject->render(['file' => 'EXT:core/bar.html']);
@@ -178,13 +178,13 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->addMockViewToSubject();
 
         $this->contentObjectRenderer
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('cObjGetSingle')
             ->with('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'])
-            ->will($this->returnValue('baz'));
+            ->will(self::returnValue('baz'));
 
         $this->standaloneView
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('setTemplateSource')
             ->with('baz');
 
@@ -204,11 +204,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->addMockViewToSubject();
 
         $this->standaloneView
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFormat')
-            ->will($this->returnValue('html'));
+            ->will(self::returnValue('html'));
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setTemplate')
             ->with('foo');
 
@@ -231,16 +231,16 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->addMockViewToSubject();
 
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('TEXT', ['value' => 'bar'])
-            ->will($this->returnValue('bar'));
+            ->will(self::returnValue('bar'));
         $this->standaloneView
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFormat')
-            ->will($this->returnValue('html'));
+            ->will(self::returnValue('html'));
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setTemplate')
             ->with('bar');
 
@@ -263,7 +263,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setLayoutRootPaths')
             ->with([Environment::getPublicPath() . '/foo/bar.html']);
         $this->subject->render(['layoutRootPath' => 'foo/bar.html']);
@@ -276,7 +276,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $this->subject->render(['layoutRootPath' => 'foo', 'layoutRootPath.' => ['bar' => 'baz']]);
@@ -289,7 +289,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('stdWrap')
             ->with('FILE', ['file' => 'foo/bar.html']);
         $this->subject->render(
@@ -312,7 +312,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setLayoutRootPaths')
             ->with([
                 10 => Environment::getPublicPath() . '/foo/bar.html',
@@ -328,7 +328,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setLayoutRootPaths')
             ->with([
                 0 => Environment::getPublicPath() . '/foo/main.html',
@@ -348,7 +348,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setPartialRootPaths')
             ->with([Environment::getPublicPath() . '/foo/bar.html']);
         $this->subject->render(['partialRootPath' => 'foo/bar.html']);
@@ -361,7 +361,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('stdWrap')
             ->with('FILE', ['file' => 'foo/bar.html']);
         $this->subject->render(
@@ -384,7 +384,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $this->subject->render(['partialRootPath' => 'foo', 'partialRootPath.' => ['bar' => 'baz']]);
@@ -397,7 +397,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setPartialRootPaths')
             ->with([10 => Environment::getPublicPath() . '/foo', 20 => Environment::getPublicPath() . '/bar']);
         $this->subject->render(['partialRootPaths.' => [10 => 'foo', 20 => 'bar']]);
@@ -410,7 +410,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setPartialRootPaths')
             ->with([
                 0 => Environment::getPublicPath() . '/main',
@@ -427,7 +427,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setFormat')
             ->with('xml');
         $this->subject->render(['format' => 'xml']);
@@ -440,7 +440,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $this->subject->render(['format' => 'foo', 'format.' => ['bar' => 'baz']]);
@@ -453,7 +453,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->request
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setPluginName')
             ->with('foo');
         $configuration = [
@@ -471,7 +471,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $configuration = [
@@ -492,7 +492,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->request
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setControllerExtensionName')
             ->with('foo');
         $configuration = [
@@ -510,7 +510,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $configuration = [
@@ -531,7 +531,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->request
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setControllerName')
             ->with('foo');
         $configuration = [
@@ -549,7 +549,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $configuration = [
@@ -570,7 +570,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->request
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setControllerActionName')
             ->with('foo');
         $configuration = [
@@ -588,7 +588,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('foo', ['bar' => 'baz']);
         $configuration = [
@@ -628,14 +628,14 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         /** @var TypoScriptService|\PHPUnit_Framework_MockObject_MockObject $typoScriptServiceMock */
         $typoScriptServiceMock = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $typoScriptServiceMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('convertTypoScriptArrayToPlainArray')
             ->with($configuration['settings.'])
-            ->will($this->returnValue($expectedSettingsToBeSet));
+            ->will(self::returnValue($expectedSettingsToBeSet));
         GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceMock);
 
         $this->standaloneView
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('assign')
             ->with('settings', $expectedSettingsToBeSet);
 
@@ -695,7 +695,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
             ->with('TEXT', ['value' => 'foo']);
         $this->subject->render($configuration);
@@ -716,11 +716,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
-            ->will($this->returnValue('foo'));
+            ->will(self::returnValue('foo'));
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('assignMultiple')
             ->with(['aVar' => 'foo', 'data' => [], 'current' => null]);
         $this->subject->render($configuration);
@@ -734,7 +734,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->addMockViewToSubject();
         $this->contentObjectRenderer->data = ['foo'];
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('assignMultiple')
             ->with(['data' => ['foo'], 'current' => null]);
         $this->subject->render([]);
@@ -749,7 +749,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->contentObjectRenderer->data = ['currentKey' => 'currentValue'];
         $this->contentObjectRenderer->currentValKey = 'currentKey';
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('assignMultiple')
             ->with(['data' => ['currentKey' => 'currentValue'], 'current' => 'currentValue']);
         $this->subject->render([]);
@@ -762,7 +762,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     {
         $this->addMockViewToSubject();
         $this->standaloneView
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('render');
         $this->subject->render([]);
     }
@@ -779,11 +779,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ],
         ];
         $this->standaloneView
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('render')
-            ->will($this->returnValue('baz'));
+            ->will(self::returnValue('baz'));
         $this->contentObjectRenderer
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with('baz', ['foo' => 'bar']);
         $this->subject->render($configuration);
@@ -806,17 +806,17 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             'addFooterData'
         ])->getMock();
         if (!empty(trim($expectedHeader))) {
-            $pageRendererMock->expects($this->once())->method('addHeaderData')->with($expectedHeader);
+            $pageRendererMock->expects(self::once())->method('addHeaderData')->with($expectedHeader);
         } else {
-            $pageRendererMock->expects($this->never())->method('addHeaderData');
+            $pageRendererMock->expects(self::never())->method('addHeaderData');
         }
         if (!empty(trim($expectedFooter))) {
-            $pageRendererMock->expects($this->once())->method('addFooterData')->with($expectedFooter);
+            $pageRendererMock->expects(self::once())->method('addFooterData')->with($expectedFooter);
         } else {
-            $pageRendererMock->expects($this->never())->method('addFooterData');
+            $pageRendererMock->expects(self::never())->method('addFooterData');
         }
         $subject = $this->getMockBuilder(FluidTemplateContentObject::class)->setMethods(['getPageRenderer'])->disableOriginalConstructor()->getMock();
-        $subject->expects($this->once())->method('getPageRenderer')->willReturn($pageRendererMock);
+        $subject->expects(self::once())->method('getPageRenderer')->willReturn($pageRendererMock);
         $viewProperty = new \ReflectionProperty($subject, 'view');
         $viewProperty->setAccessible(true);
         $viewProperty->setValue($subject, $viewMock);
@@ -832,36 +832,36 @@ class FluidTemplateContentObjectTest extends UnitTestCase
     public function headerAssetDataProvider(): array
     {
         $viewWithHeaderData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithHeaderData->expects($this->at(0))->method('renderSection')->with(
+        $viewWithHeaderData->expects(self::at(0))->method('renderSection')->with(
             'HeaderAssets',
-            $this->anything(),
+            self::anything(),
             true
         )->willReturn('custom-header-data');
-        $viewWithHeaderData->expects($this->at(1))->method('renderSection')->with(
+        $viewWithHeaderData->expects(self::at(1))->method('renderSection')->with(
             'FooterAssets',
-            $this->anything(),
+            self::anything(),
             true
         )->willReturn(null);
         $viewWithFooterData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithFooterData->expects($this->at(0))->method('renderSection')->with(
+        $viewWithFooterData->expects(self::at(0))->method('renderSection')->with(
             'HeaderAssets',
-            $this->anything(),
+            self::anything(),
             true
         )->willReturn(null);
-        $viewWithFooterData->expects($this->at(1))->method('renderSection')->with(
+        $viewWithFooterData->expects(self::at(1))->method('renderSection')->with(
             'FooterAssets',
-            $this->anything(),
+            self::anything(),
             true
         )->willReturn('custom-footer-data');
         $viewWithBothData = $this->getMockBuilder(TemplateView::class)->setMethods(['renderSection'])->disableOriginalConstructor()->getMock();
-        $viewWithBothData->expects($this->at(0))->method('renderSection')->with(
+        $viewWithBothData->expects(self::at(0))->method('renderSection')->with(
             'HeaderAssets',
-            $this->anything(),
+            self::anything(),
             true
         )->willReturn('custom-header-data');
-        $viewWithBothData->expects($this->at(1))->method('renderSection')->with(
+        $viewWithBothData->expects(self::at(1))->method('renderSection')->with(
             'FooterAssets',
-            $this->anything(),
+            self::anything(),
             true
         )->willReturn('custom-footer-data');
         return [

@@ -72,9 +72,9 @@ class FileControllerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->fileResourceMock->expects($this->any())->method('toArray')->will($this->returnValue(['id' => 'foo']));
-        $this->fileResourceMock->expects($this->any())->method('getModificationTime')->will($this->returnValue(123456789));
-        $this->fileResourceMock->expects($this->any())->method('getExtension')->will($this->returnValue('html'));
+        $this->fileResourceMock->expects(self::any())->method('toArray')->will(self::returnValue(['id' => 'foo']));
+        $this->fileResourceMock->expects(self::any())->method('getModificationTime')->will(self::returnValue(123456789));
+        $this->fileResourceMock->expects(self::any())->method('getExtension')->will(self::returnValue('html'));
 
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
@@ -89,8 +89,8 @@ class FileControllerTest extends UnitTestCase
     public function flattenResultDataValueReturnsAnythingElseAsIs()
     {
         $subject = $this->getAccessibleMock(FileController::class, ['dummy']);
-        $this->assertTrue($subject->_call('flattenResultDataValue', true));
-        $this->assertSame([], $subject->_call('flattenResultDataValue', []));
+        self::assertTrue($subject->_call('flattenResultDataValue', true));
+        self::assertSame([], $subject->_call('flattenResultDataValue', []));
     }
 
     /**
@@ -107,7 +107,7 @@ class FileControllerTest extends UnitTestCase
         $iconFactoryProphecy->getIconForFileExtension(Argument::cetera())->willReturn($iconProphecy->reveal());
 
         $result = $subject->_call('flattenResultDataValue', $this->fileResourceMock);
-        $this->assertSame(
+        self::assertSame(
             [
                 'id' => 'foo',
                 'date' => '29-11-73',
@@ -130,7 +130,7 @@ class FileControllerTest extends UnitTestCase
         $subject->_set('fileData', $fileData);
         $subject->_set('redirect', false);
 
-        $subject->expects($this->once())->method('main');
+        $subject->expects(self::once())->method('main');
 
         $subject->processAjaxRequest($this->request, $this->response);
     }
@@ -147,7 +147,7 @@ class FileControllerTest extends UnitTestCase
         $subject->_set('fileData', $fileData);
         $subject->_set('redirect', false);
 
-        $subject->expects($this->once())->method('main');
+        $subject->expects(self::once())->method('main');
 
         $subject->processAjaxRequest($this->request, $this->response);
     }
@@ -165,7 +165,7 @@ class FileControllerTest extends UnitTestCase
         $subject->_set('redirect', false);
 
         $result = $subject->processAjaxRequest($this->request, $this->response);
-        $this->assertEquals(200, $result->getStatusCode());
+        self::assertEquals(200, $result->getStatusCode());
     }
 
     /**
@@ -174,9 +174,9 @@ class FileControllerTest extends UnitTestCase
     public function processAjaxRequestReturnsStatus500IfErrorOccurs()
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
-        $this->mockFileProcessor->expects($this->any())->method('getErrorMessages')->will($this->returnValue(['error occured']));
+        $this->mockFileProcessor->expects(self::any())->method('getErrorMessages')->will(self::returnValue(['error occured']));
         $subject->_set('fileProcessor', $this->mockFileProcessor);
         $result = $subject->processAjaxRequest($this->request, $this->response);
-        $this->assertEquals(500, $result->getStatusCode());
+        self::assertEquals(500, $result->getStatusCode());
     }
 }

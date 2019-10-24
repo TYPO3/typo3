@@ -38,8 +38,8 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="' . $this->getUniqueId() . '">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
-        $this->assertEquals(1, count($result));
-        $this->assertEquals('', $result[0]['localPath']);
+        self::assertEquals(1, count($result));
+        self::assertEquals('', $result[0]['localPath']);
     }
 
     /**
@@ -51,8 +51,8 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
-        $this->assertEquals(1, count($result));
-        $this->assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
+        self::assertEquals(1, count($result));
+        self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -63,8 +63,8 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="index.php">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
-        $this->assertEquals(1, count($result));
-        $this->assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
+        self::assertEquals(1, count($result));
+        self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -75,8 +75,8 @@ class IndexerTest extends UnitTestCase
         $html = 'test <a href="typo3/index.php">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
-        $this->assertEquals(1, count($result));
-        $this->assertEquals(Environment::getPublicPath() . '/typo3/index.php', $result[0]['localPath']);
+        self::assertEquals(1, count($result));
+        self::assertEquals(Environment::getPublicPath() . '/typo3/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -95,8 +95,8 @@ class IndexerTest extends UnitTestCase
         $GLOBALS['TSFE']->config = $config;
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
-        $this->assertEquals(1, count($result));
-        $this->assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
+        self::assertEquals(1, count($result));
+        self::assertEquals(Environment::getPublicPath() . '/index.php', $result[0]['localPath']);
     }
 
     /**
@@ -108,7 +108,7 @@ class IndexerTest extends UnitTestCase
         $html = '<html><head><Base Href="' . $baseHref . '" /></head></html>';
         $subject = new Indexer();
         $result = $subject->extractBaseHref($html);
-        $this->assertEquals($baseHref, $result);
+        self::assertEquals($baseHref, $result);
     }
 
     /**
@@ -151,8 +151,8 @@ EOT;
 
         $subject = new Indexer();
         $result = $subject->typoSearchTags($body);
-        $this->assertTrue($result);
-        $this->assertEquals($expected, $body);
+        self::assertTrue($result);
+        self::assertEquals($expected, $body);
     }
 
     /**
@@ -207,7 +207,7 @@ EOT;
 
         $subject = new Indexer();
         $result = $subject->typoSearchTags($body);
-        $this->assertTrue($result);
-        $this->assertEquals($expected, $body);
+        self::assertTrue($result);
+        self::assertEquals($expected, $body);
     }
 }

@@ -47,8 +47,8 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderProvidesATagForValidLinkTarget()
     {
-        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue('index.php'));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->uriBuilder->expects(self::once())->method('build')->will(self::returnValue('index.php'));
+        $this->tagBuilder->expects(self::once())->method('render');
         $this->viewHelper->render();
     }
 
@@ -57,8 +57,8 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderWillNotProvideATagForNonValidLinkTarget()
     {
-        $this->uriBuilder->expects($this->once())->method('build')->will($this->returnValue(''));
-        $this->tagBuilder->expects($this->never())->method('render');
+        $this->uriBuilder->expects(self::once())->method('build')->will(self::returnValue(''));
+        $this->tagBuilder->expects(self::never())->method('render');
         $this->viewHelper->render();
     }
 }

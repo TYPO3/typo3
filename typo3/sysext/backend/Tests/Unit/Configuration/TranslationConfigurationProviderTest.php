@@ -51,6 +51,6 @@ class TranslationConfigurationProviderTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
 
         $languages = $this->subject->getSystemLanguages($pageId);
-        $this->assertArrayHasKey(0, $languages);
+        self::assertArrayHasKey(0, $languages);
     }
 }

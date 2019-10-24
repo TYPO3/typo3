@@ -110,7 +110,7 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     public function fetchOriginLanguage(int $pageId, int $localizedLanguage, ?array $expectedResult): void
     {
         $result = $this->subject->fetchOriginLanguage($pageId, $localizedLanguage);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -167,7 +167,7 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     public function getLocalizedRecordCount(int $pageId, int $localizedLanguage, int $expectedResult): void
     {
         $result = $this->subject->getLocalizedRecordCount($pageId, $localizedLanguage);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -231,6 +231,6 @@ class LocalizationRepositoryTest extends \TYPO3\TestingFramework\Core\Functional
     {
         $result = $this->subject->getRecordsToCopyDatabaseResult($pageId, $destLanguageId, $languageId, 'uid');
         $result = $result->fetchAll();
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 }

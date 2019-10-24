@@ -104,7 +104,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table']
         );
 
-        $this->assertCount(6, $this->getTableDetails()->getColumns());
+        self::assertCount(6, $this->getTableDetails()->getColumns());
     }
 
     /**
@@ -120,7 +120,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table']
         );
 
-        $this->assertTrue($this->schemaManager->tablesExist(['another_test_table']));
+        self::assertTrue($this->schemaManager->tablesExist(['another_test_table']));
     }
 
     /**
@@ -136,9 +136,9 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add']
         );
 
-        $this->assertCount(7, $this->getTableDetails()->getColumns());
-        $this->assertTrue($this->getTableDetails()->hasColumn('title'));
-        $this->assertTrue($this->getTableDetails()->hasColumn('description'));
+        self::assertCount(7, $this->getTableDetails()->getColumns());
+        self::assertTrue($this->getTableDetails()->hasColumn('title'));
+        self::assertTrue($this->getTableDetails()->hasColumn('description'));
     }
 
     /**
@@ -149,16 +149,16 @@ class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->readFixtureFile('changeExistingColumn');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
 
-        $this->assertEquals(50, $this->getTableDetails()->getColumn('title')->getLength());
-        $this->assertEmpty($this->getTableDetails()->getColumn('title')->getDefault());
+        self::assertEquals(50, $this->getTableDetails()->getColumn('title')->getLength());
+        self::assertEmpty($this->getTableDetails()->getColumn('title')->getDefault());
 
         $this->subject->migrate(
             $statements,
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']
         );
 
-        $this->assertEquals(100, $this->getTableDetails()->getColumn('title')->getLength());
-        $this->assertEquals('Title', $this->getTableDetails()->getColumn('title')->getDefault());
+        self::assertEquals(100, $this->getTableDetails()->getColumn('title')->getLength());
+        self::assertEquals('Title', $this->getTableDetails()->getColumn('title')->getDefault());
     }
 
     /**
@@ -180,7 +180,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add']
         );
 
-        $this->assertTrue($this->getTableDetails()->getColumn('aTestField')->getNotnull());
+        self::assertTrue($this->getTableDetails()->getColumn('aTestField')->getNotnull());
     }
 
     /**
@@ -196,8 +196,8 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['add']
         );
 
-        $this->assertFalse($this->getTableDetails()->getColumn('aTestField')->getNotnull());
-        $this->assertNull($this->getTableDetails()->getColumn('aTestField')->getDefault());
+        self::assertFalse($this->getTableDetails()->getColumn('aTestField')->getNotnull());
+        self::assertNull($this->getTableDetails()->getColumn('aTestField')->getDefault());
     }
 
     /**
@@ -216,8 +216,8 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']
         );
 
-        $this->assertFalse($this->getTableDetails()->hasColumn('hidden'));
-        $this->assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_hidden'));
+        self::assertFalse($this->getTableDetails()->hasColumn('hidden'));
+        self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_hidden'));
     }
 
     /**
@@ -233,8 +233,8 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change_table']
         );
 
-        $this->assertNotContains($this->tableName, $this->schemaManager->listTableNames());
-        $this->assertContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
+        self::assertNotContains($this->tableName, $this->schemaManager->listTableNames());
+        self::assertContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
     }
 
     /**
@@ -255,7 +255,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             $connection->getDatabasePlatform()
         );
         $connection->executeUpdate($statements[0]);
-        $this->assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
+        self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
 
         $statements = $this->readFixtureFile('newTable');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements, true);
@@ -264,7 +264,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['drop']
         );
 
-        $this->assertFalse($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
+        self::assertFalse($this->getTableDetails()->hasColumn('zzz_deleted_testfield'));
     }
 
     /**
@@ -273,8 +273,8 @@ class SchemaMigratorTest extends FunctionalTestCase
     public function dropUnusedTable()
     {
         $this->schemaManager->renameTable($this->tableName, 'zzz_deleted_' . $this->tableName);
-        $this->assertNotContains($this->tableName, $this->schemaManager->listTableNames());
-        $this->assertContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
+        self::assertNotContains($this->tableName, $this->schemaManager->listTableNames());
+        self::assertContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
 
         $statements = $this->readFixtureFile('newTable');
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements, true);
@@ -283,8 +283,8 @@ class SchemaMigratorTest extends FunctionalTestCase
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['drop_table']
         );
 
-        $this->assertNotContains($this->tableName, $this->schemaManager->listTableNames());
-        $this->assertNotContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
+        self::assertNotContains($this->tableName, $this->schemaManager->listTableNames());
+        self::assertNotContains('zzz_deleted_' . $this->tableName, $this->schemaManager->listTableNames());
     }
 
     /**
@@ -297,11 +297,11 @@ class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->readFixtureFile('addCreateChange');
         $this->subject->install($statements, true);
 
-        $this->assertContains('another_test_table', $this->schemaManager->listTableNames());
-        $this->assertTrue($this->getTableDetails()->hasColumn('title'));
-        $this->assertTrue($this->getTableDetails()->hasIndex('title'));
-        $this->assertTrue($this->getTableDetails()->getIndex('title')->isUnique());
-        $this->assertNotInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
+        self::assertContains('another_test_table', $this->schemaManager->listTableNames());
+        self::assertTrue($this->getTableDetails()->hasColumn('title'));
+        self::assertTrue($this->getTableDetails()->hasIndex('title'));
+        self::assertTrue($this->getTableDetails()->getIndex('title')->isUnique());
+        self::assertNotInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
     }
 
     /**
@@ -316,8 +316,8 @@ class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->readFixtureFile('addIndexOnChangedColumn');
         $this->subject->install($statements, true);
 
-        $this->assertNotInstanceOf(TextType::class, $this->getTableDetails()->getColumn('title')->getType());
-        $this->assertFalse($this->getTableDetails()->hasIndex('title'));
+        self::assertNotInstanceOf(TextType::class, $this->getTableDetails()->getColumn('title')->getType());
+        self::assertFalse($this->getTableDetails()->hasIndex('title'));
     }
 
     /**
@@ -357,7 +357,7 @@ class SchemaMigratorTest extends FunctionalTestCase
             'pid',
             'deleted'
         ];
-        $this->assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
+        self::assertEquals($expectedColumnsOfChangedIndex, $indexesAfterChange[$parentIndex[0]]->getColumns());
     }
 
     /**
@@ -371,11 +371,11 @@ class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->readFixtureFile('addCreateChange');
         $this->subject->install($statements);
 
-        $this->assertContains('another_test_table', $this->schemaManager->listTableNames());
-        $this->assertTrue($this->getTableDetails()->hasColumn('title'));
-        $this->assertTrue($this->getTableDetails()->hasIndex('title'));
-        $this->assertTrue($this->getTableDetails()->getIndex('title')->isUnique());
-        $this->assertInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
+        self::assertContains('another_test_table', $this->schemaManager->listTableNames());
+        self::assertTrue($this->getTableDetails()->hasColumn('title'));
+        self::assertTrue($this->getTableDetails()->hasIndex('title'));
+        self::assertTrue($this->getTableDetails()->getIndex('title')->isUnique());
+        self::assertInstanceOf(BigIntType::class, $this->getTableDetails()->getColumn('pid')->getType());
     }
 
     /**
@@ -391,7 +391,7 @@ class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->sqlReader->getInsertStatementArray($sqlCode);
         $this->subject->importStaticData($statements);
 
-        $this->assertEquals(2, $connection->count('*', $this->tableName, []));
+        self::assertEquals(2, $connection->count('*', $this->tableName, []));
     }
 
     /**
@@ -403,7 +403,7 @@ class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->sqlReader->getStatementArray($sqlCode);
         $this->subject->importStaticData($statements);
 
-        $this->assertNotContains('another_test_table', $this->schemaManager->listTableNames());
+        self::assertNotContains('another_test_table', $this->schemaManager->listTableNames());
     }
 
     /**
@@ -418,7 +418,7 @@ class SchemaMigratorTest extends FunctionalTestCase
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
 
         $index = array_keys($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'])[0];
-        $this->assertStringEndsWith(
+        self::assertStringEndsWith(
             'ENGINE = MyISAM',
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'][$index]
         );
@@ -429,8 +429,8 @@ class SchemaMigratorTest extends FunctionalTestCase
         );
 
         $updateSuggestions = $this->subject->getUpdateSuggestions($statements);
-        $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
-        $this->assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
+        self::assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
+        self::assertEmpty($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change']);
     }
 
     /**

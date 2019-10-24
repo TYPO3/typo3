@@ -95,6 +95,6 @@ class DatabaseSystemLanguageRowsTest extends UnitTestCase
                 ]
             ],
         ];
-        $this->assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows())->addData($input));
+        self::assertSame(array_merge($input, $expected), (new DatabaseSystemLanguageRows())->addData($input));
     }
 }

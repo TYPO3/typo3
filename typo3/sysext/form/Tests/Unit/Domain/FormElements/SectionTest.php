@@ -48,8 +48,8 @@ class SectionTest extends UnitTestCase
      */
     public function newInstanceHasNoProperties(): void
     {
-        $this->assertNotNull($this->sectionInstance);
-        $this->assertCount(0, $this->sectionInstance->getProperties());
+        self::assertNotNull($this->sectionInstance);
+        self::assertCount(0, $this->sectionInstance->getProperties());
     }
 
     /**
@@ -61,11 +61,11 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setProperty('buz', 'qax');
         $properties = $this->sectionInstance->getProperties();
 
-        $this->assertCount(2, $properties, json_encode($properties));
-        $this->assertTrue(array_key_exists('foo', $properties));
-        $this->assertEquals('bar', $properties['foo']);
-        $this->assertTrue(array_key_exists('buz', $properties));
-        $this->assertEquals('qax', $properties['buz']);
+        self::assertCount(2, $properties, json_encode($properties));
+        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertEquals('bar', $properties['foo']);
+        self::assertTrue(array_key_exists('buz', $properties));
+        self::assertEquals('qax', $properties['buz']);
     }
 
     /**
@@ -77,9 +77,9 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setProperty('foo', 'buz');
 
         $properties = $this->sectionInstance->getProperties();
-        $this->assertEquals(1, \count($properties));
-        $this->assertTrue(array_key_exists('foo', $properties));
-        $this->assertEquals('buz', $properties['foo']);
+        self::assertEquals(1, \count($properties));
+        self::assertTrue(array_key_exists('foo', $properties));
+        self::assertEquals('buz', $properties['foo']);
     }
 
     /**
@@ -90,14 +90,14 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setProperty('foo', ['bar' => 'baz', 'bla' => 'blubb']);
         $properties = $this->sectionInstance->getProperties();
 
-        $this->assertCount(1, $properties);
-        $this->assertTrue(array_key_exists('foo', $properties));
+        self::assertCount(1, $properties);
+        self::assertTrue(array_key_exists('foo', $properties));
 
         //check arrays details
-        $this->assertTrue(\is_array($properties['foo']));
-        $this->assertCount(2, $properties['foo']);
-        $this->assertTrue(array_key_exists('bar', $properties['foo']));
-        $this->assertEquals('baz', $properties['foo']['bar']);
+        self::assertTrue(\is_array($properties['foo']));
+        self::assertCount(2, $properties['foo']);
+        self::assertTrue(array_key_exists('bar', $properties['foo']));
+        self::assertEquals('baz', $properties['foo']['bar']);
     }
 
     /**
@@ -110,7 +110,7 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setProperty('foo-2', ['bar-2' => 'foo-3']);
         $this->sectionInstance->setProperty('foo-2', null);
 
-        $this->assertSame($expected, $this->sectionInstance->getProperties());
+        self::assertSame($expected, $this->sectionInstance->getProperties());
     }
 
     /**
@@ -130,7 +130,7 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setProperty('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
         $this->sectionInstance->setProperty('foo-2', ['bar-3' => null]);
 
-        $this->assertSame($expected, $this->sectionInstance->getProperties());
+        self::assertSame($expected, $this->sectionInstance->getProperties());
     }
 
     /**
@@ -141,7 +141,7 @@ class SectionTest extends UnitTestCase
         $expected = ['foo' => 'bar'];
         $this->sectionInstance->setRenderingOption('foo', 'bar');
 
-        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+        self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
     /**
@@ -152,7 +152,7 @@ class SectionTest extends UnitTestCase
         $expected = ['foo-1' => ['bar' => 'foo-2']];
         $this->sectionInstance->setRenderingOption('foo-1', ['bar' => 'foo-2']);
 
-        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+        self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
     /**
@@ -165,7 +165,7 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
         $this->sectionInstance->setRenderingOption('foo-2', null);
 
-        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+        self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
     /**
@@ -185,7 +185,7 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-3' => null]);
 
-        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+        self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 
     /**
@@ -206,6 +206,6 @@ class SectionTest extends UnitTestCase
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
         $this->sectionInstance->setRenderingOption('foo-2', ['bar-3' => 'foo-4']);
 
-        $this->assertSame($expected, $this->sectionInstance->getRenderingOptions());
+        self::assertSame($expected, $this->sectionInstance->getRenderingOptions());
     }
 }

@@ -86,7 +86,7 @@ class AddonRegistryTest extends UnitTestCase
             $actual[] = $addon->getIdentifier();
         }
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -107,7 +107,7 @@ class AddonRegistryTest extends UnitTestCase
             $actual[] = $addon->getIdentifier();
         }
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -123,6 +123,6 @@ class AddonRegistryTest extends UnitTestCase
 
         $actual = $this->subject->compileSettings($this->subject->getForMode());
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

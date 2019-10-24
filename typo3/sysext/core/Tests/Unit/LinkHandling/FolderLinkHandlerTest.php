@@ -83,14 +83,14 @@ class FolderLinkHandlerTest extends UnitTestCase
 
         // fake methods to return proper objects
         $folderObject = new Folder($storage, $expected['folder'], $expected['folder']);
-        $factory->expects($this->once())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
+        $factory->expects(self::once())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
             ->willReturn($folderObject);
         $expected['folder'] = $folderObject;
 
         /** @var FolderLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(FolderLinkHandler::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
-        $this->assertEquals($expected, $subject->resolveHandlerData($input));
+        self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
     /**
@@ -111,18 +111,18 @@ class FolderLinkHandlerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $folderObject->expects($this->any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
+        $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
         $folderData = explode(':', $parameters['folder']);
         /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock(['getUid']);
         $storage->method('getUid')->willReturn($folderData[0]);
-        $folderObject->expects($this->any())->method('getStorage')->willReturn($storage);
-        $folderObject->expects($this->any())->method('getIdentifier')->willReturn($folderData[1]);
+        $folderObject->expects(self::any())->method('getStorage')->willReturn($storage);
+        $folderObject->expects(self::any())->method('getIdentifier')->willReturn($folderData[1]);
         $parameters['folder'] = $folderObject;
 
         $subject = new FolderLinkHandler();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 }

@@ -83,14 +83,14 @@ class FileLinkHandlerTest extends UnitTestCase
 
         // fake methods to return proper objects
         $fileObject = new File(['identifier' => $expected['file'], 'name' => 'foobar.txt'], $storage);
-        $factory->expects($this->any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
-        $factory->expects($this->any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])->willReturn($fileObject);
+        $factory->expects(self::any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
+        $factory->expects(self::any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])->willReturn($fileObject);
         $expected['file'] = $fileObject;
 
         /** @var FileLinkHandler|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(FileLinkHandler::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
-        $this->assertEquals($expected, $subject->resolveHandlerData($input));
+        self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
     /**
@@ -115,11 +115,11 @@ class FileLinkHandlerTest extends UnitTestCase
         if (MathUtility::canBeInterpretedAsInteger($parameters['file'])) {
             $uid = $parameters['file'];
         }
-        $fileObject->expects($this->once())->method('getUid')->willReturn($uid);
-        $fileObject->expects($this->any())->method('getIdentifier')->willReturn($parameters['file']);
+        $fileObject->expects(self::once())->method('getUid')->willReturn($uid);
+        $fileObject->expects(self::any())->method('getIdentifier')->willReturn($parameters['file']);
         $parameters['file'] = $fileObject;
 
         $subject = new FileLinkHandler();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 }

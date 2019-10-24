@@ -65,7 +65,7 @@ class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        $this->assertEquals($expected, (new TcaInline)->addData($input));
+        self::assertEquals($expected, (new TcaInline)->addData($input));
     }
 
     /**
@@ -96,7 +96,7 @@ class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['type'] = 'input';
-        $this->assertEquals($expected, (new TcaInline)->addData($input));
+        self::assertEquals($expected, (new TcaInline)->addData($input));
     }
 
     /**
@@ -129,6 +129,6 @@ class TcaInlineTest extends UnitTestCase
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['children'] = [];
-        $this->assertEquals($expected, (new TcaInline)->addData($input));
+        self::assertEquals($expected, (new TcaInline)->addData($input));
     }
 }

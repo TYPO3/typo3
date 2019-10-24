@@ -88,7 +88,7 @@ class EnableFileServiceTest extends UnitTestCase
             Environment::getCurrentScript(),
             'UNIX'
         );
-        $this->assertEquals([], array_diff($expected, $subject->_call('getFirstInstallFilePaths')));
+        self::assertEquals([], array_diff($expected, $subject->_call('getFirstInstallFilePaths')));
     }
 
     /**
@@ -162,6 +162,6 @@ class EnableFileServiceTest extends UnitTestCase
         );
         $subject->_call('removeFirstInstallFile');
 
-        $this->assertEquals([], array_diff($expected, scandir('vfs://root/')));
+        self::assertEquals([], array_diff($expected, scandir('vfs://root/')));
     }
 }

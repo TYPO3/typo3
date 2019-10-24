@@ -74,7 +74,7 @@ class PageLinkHandlerTest extends UnitTestCase
         if (isset($expected['fragment'])) {
             unset($expected['fragment']);
         }
-        $this->assertEquals($expected, $subject->resolveHandlerData($input));
+        self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
     /**
@@ -89,6 +89,6 @@ class PageLinkHandlerTest extends UnitTestCase
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
     {
         $subject = new PageLinkHandler();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 }

@@ -47,6 +47,6 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertEquals('mailto:some@email.tld', $actualResult);
+        self::assertEquals('mailto:some@email.tld', $actualResult);
     }
 }

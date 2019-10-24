@@ -84,8 +84,8 @@ class PageArgumentValidatorTest extends UnitTestCase
         $subject->setLogger(new NullLogger());
 
         $response = $subject->process($request, $this->responseOutputHandler);
-        static::assertEquals(308, $response->getStatusCode());
-        static::assertEquals($expectedResult, $response->getHeader('Location')[0]);
+        self::assertEquals(308, $response->getStatusCode());
+        self::assertEquals($expectedResult, $response->getHeader('Location')[0]);
     }
 
     /**
@@ -102,7 +102,7 @@ class PageArgumentValidatorTest extends UnitTestCase
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
-        static::assertEquals(404, $response->getStatusCode());
+        self::assertEquals(404, $response->getStatusCode());
     }
 
     /**
@@ -115,7 +115,7 @@ class PageArgumentValidatorTest extends UnitTestCase
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
-        static::assertEquals(404, $response->getStatusCode());
+        self::assertEquals(404, $response->getStatusCode());
     }
 
     /**
@@ -132,7 +132,7 @@ class PageArgumentValidatorTest extends UnitTestCase
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
-        static::assertEquals(200, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -149,6 +149,6 @@ class PageArgumentValidatorTest extends UnitTestCase
 
         $subject = new PageArgumentValidator($this->cacheHashCalculator, $this->timeTrackerStub);
         $response = $subject->process($request, $this->responseOutputHandler);
-        static::assertEquals(404, $response->getStatusCode());
+        self::assertEquals(404, $response->getStatusCode());
     }
 }

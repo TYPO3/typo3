@@ -88,7 +88,7 @@ class TcaFlexPrepareTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 
     /**
@@ -159,7 +159,7 @@ class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 
     /**
@@ -238,7 +238,7 @@ class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 
     /**
@@ -282,6 +282,6 @@ class TcaFlexPrepareTest extends UnitTestCase
             'meta' => []
         ];
 
-        $this->assertEquals($expected, (new TcaFlexPrepare)->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare)->addData($input));
     }
 }

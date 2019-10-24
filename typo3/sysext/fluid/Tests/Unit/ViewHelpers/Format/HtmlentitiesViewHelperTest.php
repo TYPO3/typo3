@@ -54,7 +54,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('Some string', $actualResult);
+        self::assertEquals('Some string', $actualResult);
     }
 
     /**
@@ -69,7 +69,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $this->setArgumentsUnderTest($this->viewHelper);
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('Some string', $actualResult);
+        self::assertEquals('Some string', $actualResult);
     }
 
     /**
@@ -85,7 +85,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertSame($source, $actualResult);
+        self::assertSame($source, $actualResult);
     }
 
     /**
@@ -102,7 +102,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = 'Some special characters: &amp;&copy;&quot;&#039;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -120,7 +120,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = 'Some special characters: &amp;&copy;"\'';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -138,7 +138,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = 'Some special characters: &amp;&copy;&quot;&#039;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -155,7 +155,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = 'already &amp;quot;encoded&amp;quot;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -173,7 +173,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = 'already &quot;encoded&quot;';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -192,7 +192,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->render();
-        $this->assertSame($source, $actualResult);
+        self::assertSame($source, $actualResult);
     }
 
     /**
@@ -214,7 +214,7 @@ class HtmlentitiesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->render();
-        $this->assertSame($expectation, $actualResult);
+        self::assertSame($expectation, $actualResult);
     }
 
     /**

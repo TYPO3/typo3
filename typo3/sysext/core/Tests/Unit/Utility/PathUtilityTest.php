@@ -39,7 +39,7 @@ class PathUtilityTest extends UnitTestCase
     public function isCommonPrefixResolvedCorrectly(array $paths, $expected)
     {
         $commonPrefix = PathUtility::getCommonPrefix($paths);
-        $this->assertEquals($expected, $commonPrefix);
+        self::assertEquals($expected, $commonPrefix);
     }
 
     /**
@@ -133,7 +133,7 @@ class PathUtilityTest extends UnitTestCase
     public function isRelativePathResolvedCorrectly($source, $target, $expected)
     {
         $relativePath = PathUtility::getRelativePath($source, $target);
-        $this->assertEquals($expected, $relativePath);
+        self::assertEquals($expected, $relativePath);
     }
 
     /**
@@ -185,7 +185,7 @@ class PathUtilityTest extends UnitTestCase
     public function isTrailingSeparatorSanitizedCorrectly($path, $separator, $expected)
     {
         $sanitizedPath = PathUtility::sanitizeTrailingSeparator($path, $separator);
-        $this->assertEquals($expected, $sanitizedPath);
+        self::assertEquals($expected, $sanitizedPath);
     }
 
     /**
@@ -251,7 +251,7 @@ class PathUtilityTest extends UnitTestCase
     public function getAbsolutePathOfRelativeReferencedFileOrPathResolvesFileCorrectly($baseFileName, $includeFileName, $expectedFileName)
     {
         $resolvedFilename = PathUtility::getAbsolutePathOfRelativeReferencedFileOrPath($baseFileName, $includeFileName);
-        $this->assertEquals($expectedFileName, $resolvedFilename);
+        self::assertEquals($expectedFileName, $resolvedFilename);
     }
 
     /**
@@ -369,7 +369,7 @@ class PathUtilityTest extends UnitTestCase
             Environment::getCurrentScript(),
             'WINDOWS'
         );
-        $this->assertSame(
+        self::assertSame(
             $expectedResult,
             PathUtility::getCanonicalPath($inputName)
         );
@@ -410,7 +410,7 @@ class PathUtilityTest extends UnitTestCase
      */
     public function dirnameDuringBootstrapCorrectlyFetchesParent(string $inputPath, string $expectedResult): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expectedResult,
             PathUtility::dirnameDuringBootstrap($inputPath)
         );
@@ -451,7 +451,7 @@ class PathUtilityTest extends UnitTestCase
      */
     public function basenameDuringBootstrapCorrectlyFetchesBasename(string $inputPath, string $expectedResult): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expectedResult,
             PathUtility::basenameDuringBootstrap($inputPath)
         );
@@ -532,6 +532,6 @@ class PathUtilityTest extends UnitTestCase
             );
         }
 
-        $this->assertSame($expectedResult, PathUtility::isAbsolutePath($inputPath));
+        self::assertSame($expectedResult, PathUtility::isAbsolutePath($inputPath));
     }
 }

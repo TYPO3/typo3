@@ -90,11 +90,11 @@ class VariableProcessorTest extends UnitTestCase
     public function isRoutePathProcessed(?string $namespace, array $arguments, string $deflatedRoutePath)
     {
         $inflatedRoutePath = '/static/{aa}/{bb}/{some_cc}/tail';
-        static::assertSame(
+        self::assertSame(
             $deflatedRoutePath,
             $this->subject->deflateRoutePath($inflatedRoutePath, $namespace, $arguments)
         );
-        static::assertSame(
+        self::assertSame(
             $inflatedRoutePath,
             $this->subject->inflateRoutePath($deflatedRoutePath, $namespace, $arguments)
         );
@@ -131,11 +131,11 @@ class VariableProcessorTest extends UnitTestCase
     public function parametersAreProcessed(array $arguments, array $deflatedParameters)
     {
         $inflatedParameters = ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]];
-        static::assertEquals(
+        self::assertEquals(
             $deflatedParameters,
             $this->subject->deflateParameters($inflatedParameters, $arguments)
         );
-        static::assertEquals(
+        self::assertEquals(
             $inflatedParameters,
             $this->subject->inflateParameters($deflatedParameters, $arguments)
         );
@@ -208,11 +208,11 @@ class VariableProcessorTest extends UnitTestCase
     public function namespaceParametersAreProcessed(string $namespace, array $arguments, array $deflatedParameters)
     {
         $inflatedParameters = ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]];
-        static::assertEquals(
+        self::assertEquals(
             $deflatedParameters,
             $this->subject->deflateNamespaceParameters($inflatedParameters, $namespace, $arguments)
         );
-        static::assertEquals(
+        self::assertEquals(
             $inflatedParameters,
             $this->subject->inflateNamespaceParameters($deflatedParameters, $namespace, $arguments)
         );
@@ -275,11 +275,11 @@ class VariableProcessorTest extends UnitTestCase
     public function keysAreDeflated(?string $namespace, array $arguments, array $deflatedKeys)
     {
         $inflatedKeys = ['a' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']];
-        static::assertEquals(
+        self::assertEquals(
             $deflatedKeys,
             $this->subject->deflateKeys($inflatedKeys, $namespace, $arguments)
         );
-        static::assertEquals(
+        self::assertEquals(
             $inflatedKeys,
             $this->subject->inflateKeys($deflatedKeys, $namespace, $arguments)
         );

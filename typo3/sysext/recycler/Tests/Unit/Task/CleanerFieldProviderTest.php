@@ -41,11 +41,11 @@ class CleanerFieldProviderTest extends UnitTestCase
             ->setMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
+        $languageServiceMock->expects(self::any())->method('sL')->will(self::returnValue('titleTest'));
         $this->subject = $this->getMockBuilder(CleanerFieldProvider::class)
             ->setMethods(['getLanguageService', 'addMessage'])
             ->getMock();
-        $this->subject->expects($this->any())->method('getLanguageService')->willReturn($languageServiceMock);
+        $this->subject->expects(self::any())->method('getLanguageService')->willReturn($languageServiceMock);
     }
 
     /**
@@ -58,14 +58,14 @@ class CleanerFieldProviderTest extends UnitTestCase
             ->setMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $languageServiceMock->expects($this->any())->method('sL')->will($this->returnValue('titleTest'));
+        $languageServiceMock->expects(self::any())->method('sL')->will(self::returnValue('titleTest'));
 
         $mockedMethods = array_merge(['getLanguageService'], $mockedMethods);
         $scheduleModuleMock = $this->getMockBuilder(SchedulerModuleController::class)
             ->setMethods($mockedMethods)
             ->disableOriginalConstructor()
             ->getMock();
-        $scheduleModuleMock->expects($this->any())->method('getLanguageService')->willReturn($languageServiceMock);
+        $scheduleModuleMock->expects(self::any())->method('getLanguageService')->willReturn($languageServiceMock);
 
         return $scheduleModuleMock;
     }
@@ -98,9 +98,9 @@ class CleanerFieldProviderTest extends UnitTestCase
         ];
 
         $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
-        $this->subject->expects($this->atLeastOnce())
+        $this->subject->expects(self::atLeastOnce())
             ->method('addMessage')
-            ->with($this->equalTo('titleTest'), FlashMessage::ERROR);
+            ->with(self::equalTo('titleTest'), FlashMessage::ERROR);
 
         $this->subject->validateAdditionalFields($submittedData, $scheduleModuleControllerMock);
     }
@@ -145,7 +145,7 @@ class CleanerFieldProviderTest extends UnitTestCase
 
         $scheduleModuleControllerMock = $this->getScheduleModuleControllerMock();
         $GLOBALS['TCA']['pages'] = ['foo' => 'bar'];
-        $this->assertTrue($this->subject->validateAdditionalFields($submittedData, $scheduleModuleControllerMock));
+        self::assertTrue($this->subject->validateAdditionalFields($submittedData, $scheduleModuleControllerMock));
     }
 
     /**
@@ -160,13 +160,13 @@ class CleanerFieldProviderTest extends UnitTestCase
 
         $taskMock = $this->getMockBuilder(CleanerTask::class)->getMock();
 
-        $taskMock->expects($this->once())
+        $taskMock->expects(self::once())
             ->method('setTcaTables')
-            ->with($this->equalTo(['pages']));
+            ->with(self::equalTo(['pages']));
 
-        $taskMock->expects($this->once())
+        $taskMock->expects(self::once())
             ->method('setPeriod')
-            ->with($this->equalTo(14));
+            ->with(self::equalTo(14));
 
         $this->subject->saveAdditionalFields($submittedData, $taskMock);
     }

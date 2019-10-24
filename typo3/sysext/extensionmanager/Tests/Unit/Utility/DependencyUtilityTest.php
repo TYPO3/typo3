@@ -49,7 +49,7 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('15.0.0'));
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
@@ -67,8 +67,8 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('3.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('3.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
@@ -103,12 +103,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
     }
 
     /**
@@ -120,12 +120,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue(''));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue(''));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
     }
 
     /**
@@ -137,12 +137,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue(''));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue(''));
         $dependencyMock->setIdentifier('typo3');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
     }
 
     /**
@@ -154,7 +154,7 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('15.0.0'));
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
@@ -172,8 +172,8 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('3.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('3.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
@@ -208,12 +208,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
     }
 
     /**
@@ -225,12 +225,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue(''));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue(''));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
     }
 
     /**
@@ -242,12 +242,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue(''));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue(''));
         $dependencyMock->setIdentifier('php');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
     }
 
     /**
@@ -271,7 +271,7 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)
             ->setMethods(['checkPhpDependency', 'checkTypo3Dependency'])
             ->getMock();
-        $dependencyUtility->expects($this->atLeastOnce())->method('checkPhpDependency');
+        $dependencyUtility->expects(self::atLeastOnce())->method('checkPhpDependency');
         $dependencyUtility->checkDependencies($extensionMock);
     }
 
@@ -297,7 +297,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->setMethods(['checkPhpDependency', 'checkTypo3Dependency'])
             ->getMock();
 
-        $dependencyUtility->expects($this->atLeastOnce())->method('checkTypo3Dependency');
+        $dependencyUtility->expects(self::atLeastOnce())->method('checkTypo3Dependency');
         $dependencyUtility->checkDependencies($extensionMock);
     }
 
@@ -310,12 +310,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('15.0.0'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('15.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $version = '3.3.3';
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertTrue($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
+        self::assertTrue($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
     }
 
     /**
@@ -327,12 +327,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->atLeastOnce())->method('getHighestVersion')->will($this->returnValue('1.0.1'));
-        $dependencyMock->expects($this->atLeastOnce())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->will(self::returnValue('1.0.1'));
+        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $version = '3.3.3';
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
-        $this->assertFalse($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
+        self::assertFalse($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
     }
 
     /**
@@ -348,11 +348,11 @@ class DependencyUtilityTest extends UnitTestCase
         $listUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
             ->setMethods(['getAvailableExtensions'])
             ->getMock();
-        $listUtilityMock->expects($this->atLeastOnce())->method('getAvailableExtensions')->will($this->returnValue($availableExtensions));
+        $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->will(self::returnValue($availableExtensions));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('listUtility', $listUtilityMock);
 
-        $this->assertTrue($dependencyUtility->_call('isDependentExtensionAvailable', 'dummy'));
+        self::assertTrue($dependencyUtility->_call('isDependentExtensionAvailable', 'dummy'));
     }
 
     /**
@@ -368,11 +368,11 @@ class DependencyUtilityTest extends UnitTestCase
         $listUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
             ->setMethods(['getAvailableExtensions'])
             ->getMock();
-        $listUtilityMock->expects($this->atLeastOnce())->method('getAvailableExtensions')->will($this->returnValue($availableExtensions));
+        $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->will(self::returnValue($availableExtensions));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('listUtility', $listUtilityMock);
 
-        $this->assertFalse($dependencyUtility->_call('isDependentExtensionAvailable', '42'));
+        self::assertFalse($dependencyUtility->_call('isDependentExtensionAvailable', '42'));
     }
 
     /**
@@ -383,7 +383,7 @@ class DependencyUtilityTest extends UnitTestCase
         $emConfUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class)
             ->setMethods(['includeEmConf'])
             ->getMock();
-        $emConfUtility->expects($this->once())->method('includeEmConf')->will($this->returnValue([
+        $emConfUtility->expects(self::once())->method('includeEmConf')->will(self::returnValue([
             'key' => 'dummy',
             'version' => '1.0.0'
         ]));
@@ -391,15 +391,15 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getIdentifier'])
             ->getMock();
-        $dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
+        $dependencyMock->expects(self::once())->method('getIdentifier')->will(self::returnValue('dummy'));
         $dependencyUtility->_set('emConfUtility', $emConfUtility);
         $dependencyUtility->_set('availableExtensions', [
             'dummy' => [
                 'foo' => '42'
             ]
         ]);
-        $dependencyUtility->expects($this->once())->method('setAvailableExtensions');
-        $dependencyUtility->expects($this->once())->method('isVersionCompatible')->with('1.0.0', $this->anything());
+        $dependencyUtility->expects(self::once())->method('setAvailableExtensions');
+        $dependencyUtility->expects(self::once())->method('isVersionCompatible')->with('1.0.0', self::anything());
         $dependencyUtility->_call('isAvailableVersionCompatible', $dependencyMock);
     }
 
@@ -412,12 +412,12 @@ class DependencyUtilityTest extends UnitTestCase
             ->setMethods(['countByExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
-        $extensionRepositoryMock->expects($this->once())->method('countByExtensionKey')->with('test123')->will($this->returnValue(1));
+        $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->will(self::returnValue(1));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
         $count = $dependencyUtility->_call('isExtensionDownloadableFromTer', 'test123');
 
-        $this->assertTrue($count);
+        self::assertTrue($count);
     }
 
     /**
@@ -429,12 +429,12 @@ class DependencyUtilityTest extends UnitTestCase
             ->setMethods(['countByExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
-        $extensionRepositoryMock->expects($this->once())->method('countByExtensionKey')->with('test123')->will($this->returnValue(0));
+        $extensionRepositoryMock->expects(self::once())->method('countByExtensionKey')->with('test123')->will(self::returnValue(0));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
         $count = $dependencyUtility->_call('isExtensionDownloadableFromTer', 'test123');
 
-        $this->assertFalse($count);
+        self::assertFalse($count);
     }
 
     /**
@@ -445,19 +445,19 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getIdentifier', 'getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
-        $dependencyMock->expects($this->once())->method('getHighestVersion')->will($this->returnValue('10.0.0'));
-        $dependencyMock->expects($this->once())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::once())->method('getIdentifier')->will(self::returnValue('dummy'));
+        $dependencyMock->expects(self::once())->method('getHighestVersion')->will(self::returnValue('10.0.0'));
+        $dependencyMock->expects(self::once())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->setMethods(['countByVersionRangeAndExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
-        $extensionRepositoryMock->expects($this->once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->will($this->returnValue(2));
+        $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->will(self::returnValue(2));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
         $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyMock);
 
-        $this->assertTrue($count);
+        self::assertTrue($count);
     }
 
     /**
@@ -468,21 +468,21 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getIdentifier'])
             ->getMock();
-        $dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('dummy'));
+        $dependencyMock->expects(self::once())->method('getIdentifier')->will(self::returnValue('dummy'));
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->setMethods(['countByVersionRangeAndExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
-        $extensionRepositoryMock->expects($this->once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 2000000)->will($this->returnValue(0));
+        $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 2000000)->will(self::returnValue(0));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
-        $dependencyUtility->expects($this->once())->method('getLowestAndHighestIntegerVersions')->will($this->returnValue([
+        $dependencyUtility->expects(self::once())->method('getLowestAndHighestIntegerVersions')->will(self::returnValue([
             'lowestIntegerVersion' => 1000000,
             'highestIntegerVersion' => 2000000
         ]));
         $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyMock);
 
-        $this->assertFalse($count);
+        self::assertFalse($count);
     }
 
     /**
@@ -498,12 +498,12 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getHighestVersion', 'getLowestVersion'])
             ->getMock();
-        $dependencyMock->expects($this->once())->method('getHighestVersion')->will($this->returnValue('2.0.0'));
-        $dependencyMock->expects($this->once())->method('getLowestVersion')->will($this->returnValue('1.0.0'));
+        $dependencyMock->expects(self::once())->method('getHighestVersion')->will(self::returnValue('2.0.0'));
+        $dependencyMock->expects(self::once())->method('getLowestVersion')->will(self::returnValue('1.0.0'));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $versions = $dependencyUtility->_call('getLowestAndHighestIntegerVersions', $dependencyMock);
 
-        $this->assertSame($expectedVersions, $versions);
+        self::assertSame($expectedVersions, $versions);
     }
 
     /**
@@ -524,9 +524,9 @@ class DependencyUtilityTest extends UnitTestCase
         $dependencyMock = $this->getMockBuilder(Dependency::class)
             ->setMethods(['getIdentifier'])
             ->getMock();
-        $dependencyMock->expects($this->once())->method('getIdentifier')->will($this->returnValue('foobar'));
+        $dependencyMock->expects(self::once())->method('getIdentifier')->will(self::returnValue('foobar'));
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
-        $dependencyUtility->expects($this->once())->method('getLowestAndHighestIntegerVersions')->will($this->returnValue([
+        $dependencyUtility->expects(self::once())->method('getLowestAndHighestIntegerVersions')->will(self::returnValue([
             'lowestIntegerVersion' => 1000000,
             'highestIntegerVersion' => 2000000
         ]));
@@ -534,12 +534,12 @@ class DependencyUtilityTest extends UnitTestCase
             ->setMethods(['findByVersionRangeAndExtensionKeyOrderedByVersion'])
             ->setConstructorArgs([$this->objectManagerMock])
             ->getMock();
-        $extensionRepositoryMock->expects($this->once())->method('findByVersionRangeAndExtensionKeyOrderedByVersion')->with('foobar', 1000000, 2000000)->will($this->returnValue($myStorage));
+        $extensionRepositoryMock->expects(self::once())->method('findByVersionRangeAndExtensionKeyOrderedByVersion')->with('foobar', 1000000, 2000000)->will(self::returnValue($myStorage));
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
         $extension = $dependencyUtility->_call('getLatestCompatibleExtensionByIntegerVersionDependency', $dependencyMock);
 
-        $this->assertInstanceOf(Extension::class, $extension);
-        $this->assertSame('foo', $extension->getExtensionKey());
+        self::assertInstanceOf(Extension::class, $extension);
+        self::assertSame('foo', $extension->getExtensionKey());
     }
 
     /**
@@ -567,7 +567,7 @@ class DependencyUtilityTest extends UnitTestCase
         $bar3->setVersion('1.0.3');
 
         $input = [$foo1, $foo2, $bar1, $bar2, $bar3];
-        $this->assertEquals(['foo' => $foo2, 'bar' => $bar1], (new DependencyUtility())->filterYoungestVersionOfExtensionList($input, true));
+        self::assertEquals(['foo' => $foo2, 'bar' => $bar1], (new DependencyUtility())->filterYoungestVersionOfExtensionList($input, true));
     }
 
     /**
@@ -612,6 +612,6 @@ class DependencyUtilityTest extends UnitTestCase
         $bar2->setDependencies($suitableDependencies);
 
         $input = [$foo1, $foo2, $bar1, $bar2];
-        $this->assertEquals(['foo' => $foo1, 'bar' => $bar2], (new DependencyUtility())->filterYoungestVersionOfExtensionList($input, false));
+        self::assertEquals(['foo' => $foo1, 'bar' => $bar2], (new DependencyUtility())->filterYoungestVersionOfExtensionList($input, false));
     }
 }

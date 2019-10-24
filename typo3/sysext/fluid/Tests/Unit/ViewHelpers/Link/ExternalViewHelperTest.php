@@ -42,12 +42,12 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
-        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('a');
-        $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
-        $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
+        $mockTagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('a');
+        $mockTagBuilder->expects(self::once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
+        $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -66,12 +66,12 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
-        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('a');
-        $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
-        $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
+        $mockTagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('a');
+        $mockTagBuilder->expects(self::once())->method('addAttribute')->with('href', 'http://www.some-domain.tld');
+        $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -90,12 +90,12 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
-        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('a');
-        $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'ftp://some-domain.tld');
-        $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
+        $mockTagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('a');
+        $mockTagBuilder->expects(self::once())->method('addAttribute')->with('href', 'ftp://some-domain.tld');
+        $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -115,12 +115,12 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder = $this->getMockBuilder(TagBuilder::class)
             ->setMethods(['setTagName', 'addAttribute', 'setContent'])
             ->getMock();
-        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('a');
-        $mockTagBuilder->expects($this->once())->method('addAttribute')->with('href', 'some-domain.tld');
-        $mockTagBuilder->expects($this->once())->method('setContent')->with('some content');
+        $mockTagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('a');
+        $mockTagBuilder->expects(self::once())->method('addAttribute')->with('href', 'some-domain.tld');
+        $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects($this->any())->method('renderChildren')->will($this->returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,

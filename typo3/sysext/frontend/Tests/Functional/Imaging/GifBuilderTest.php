@@ -42,7 +42,7 @@ class GifBuilderTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         $storageRepository = (new StorageRepository())->findByUid(1);
         $file = $storageRepository->getFile('kasper-skarhoj1.jpg');
 
-        $this->assertFalse($file->isMissing());
+        self::assertFalse($file->isMissing());
 
         $fileArray = [
             'XY' => '[10.w],[10.h]',
@@ -74,7 +74,7 @@ class GifBuilderTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         $setup2 = $gifBuilder->setup;
         $fileName2 = $gifBuilder->gifBuild();
 
-        $this->assertSame($setup1, $setup2, 'The Setup resulting from two equal configurations must be equal');
-        $this->assertSame($fileName1, $fileName2);
+        self::assertSame($setup1, $setup2, 'The Setup resulting from two equal configurations must be equal');
+        self::assertSame($fileName1, $fileName2);
     }
 }

@@ -99,6 +99,6 @@ class TcaTextTest extends UnitTestCase
             )
             ->willReturn('processedContent');
 
-        $this->assertSame($expected, (new TcaText())->addData($input));
+        self::assertSame($expected, (new TcaText())->addData($input));
     }
 }

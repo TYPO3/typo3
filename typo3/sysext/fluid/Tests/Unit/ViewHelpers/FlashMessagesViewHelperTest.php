@@ -41,7 +41,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         $this->flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $this->controllerContext->expects($this->any())->method('getFlashMessageQueue')->will($this->returnValue($this->flashMessageQueue->reveal()));
+        $this->controllerContext->expects(self::any())->method('getFlashMessageQueue')->will(self::returnValue($this->flashMessageQueue->reveal()));
 
         $this->viewHelper = new FlashMessagesViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -59,7 +59,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
-        $this->assertEmpty($this->viewHelper->initializeArgumentsAndRender());
+        self::assertEmpty($this->viewHelper->initializeArgumentsAndRender());
     }
 
     /**
@@ -70,7 +70,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
         $queueIdentifier = 'myQueue';
 
         $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
-        $this->controllerContext->expects($this->once())->method('getFlashMessageQueue')->with($queueIdentifier)->will($this->returnValue($this->flashMessageQueue->reveal()));
+        $this->controllerContext->expects(self::once())->method('getFlashMessageQueue')->with($queueIdentifier)->will(self::returnValue($this->flashMessageQueue->reveal()));
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -79,7 +79,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
 
-        $this->assertEmpty($this->viewHelper->initializeArgumentsAndRender());
+        self::assertEmpty($this->viewHelper->initializeArgumentsAndRender());
     }
 
     /**
@@ -102,6 +102,6 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertEquals('a simple String', $actualResult);
+        self::assertEquals('a simple String', $actualResult);
     }
 }

@@ -119,9 +119,9 @@ class FormDataCompilerTest extends UnitTestCase
         ];
         $this->formDataGroupProphecy->compile(Argument::cetera())->willReturnArgument(0);
         $result = $this->subject->compile($input);
-        $this->assertEquals('pages', $result['tableName']);
-        $this->assertEquals(123, $result['vanillaUid']);
-        $this->assertEquals('edit', $result['command']);
+        self::assertEquals('pages', $result['tableName']);
+        self::assertEquals(123, $result['vanillaUid']);
+        self::assertEquals('edit', $result['command']);
     }
 
     /**
@@ -135,7 +135,7 @@ class FormDataCompilerTest extends UnitTestCase
             return $result;
         });
         $result = $this->subject->compile([]);
-        $this->assertEquals('newData', $result['databaseRow']);
+        self::assertEquals('newData', $result['databaseRow']);
     }
 
     /**

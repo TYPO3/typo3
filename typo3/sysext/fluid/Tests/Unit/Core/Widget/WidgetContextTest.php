@@ -44,7 +44,7 @@ class WidgetContextTest extends UnitTestCase
         $property->setAccessible(true);
         $property->setValue($this->widgetContext, $value);
         $method = 'get' . ucfirst($name);
-        $this->assertEquals($value, call_user_func_array([$this->widgetContext, $method], []));
+        self::assertEquals($value, call_user_func_array([$this->widgetContext, $method], []));
     }
 
     /**
@@ -58,7 +58,7 @@ class WidgetContextTest extends UnitTestCase
         $method = 'set' . ucfirst($name);
         $getter = 'get' . ucfirst($name);
         call_user_func_array([$this->widgetContext, $method], [$value]);
-        $this->assertEquals($value, $this->widgetContext->$getter());
+        self::assertEquals($value, $this->widgetContext->$getter());
     }
 
     /**
@@ -80,7 +80,7 @@ class WidgetContextTest extends UnitTestCase
     public function widgetIdentifierCanBeReadAgain()
     {
         $this->widgetContext->setWidgetIdentifier('myWidgetIdentifier');
-        $this->assertEquals('myWidgetIdentifier', $this->widgetContext->getWidgetIdentifier());
+        self::assertEquals('myWidgetIdentifier', $this->widgetContext->getWidgetIdentifier());
     }
 
     /**
@@ -89,7 +89,7 @@ class WidgetContextTest extends UnitTestCase
     public function ajaxWidgetIdentifierCanBeReadAgain()
     {
         $this->widgetContext->setAjaxWidgetIdentifier(42);
-        $this->assertEquals(42, $this->widgetContext->getAjaxWidgetIdentifier());
+        self::assertEquals(42, $this->widgetContext->getAjaxWidgetIdentifier());
     }
 
     /**
@@ -98,7 +98,7 @@ class WidgetContextTest extends UnitTestCase
     public function widgetConfigurationCanBeReadAgain()
     {
         $this->widgetContext->setWidgetConfiguration(['key' => 'value']);
-        $this->assertEquals(['key' => 'value'], $this->widgetContext->getWidgetConfiguration());
+        self::assertEquals(['key' => 'value'], $this->widgetContext->getWidgetConfiguration());
     }
 
     /**
@@ -107,7 +107,7 @@ class WidgetContextTest extends UnitTestCase
     public function controllerObjectNameCanBeReadAgain()
     {
         $this->widgetContext->setControllerObjectName('Tx_Fluid_Object_Name');
-        $this->assertEquals('Tx_Fluid_Object_Name', $this->widgetContext->getControllerObjectName());
+        self::assertEquals('Tx_Fluid_Object_Name', $this->widgetContext->getControllerObjectName());
     }
 
     /**
@@ -118,8 +118,8 @@ class WidgetContextTest extends UnitTestCase
         $viewHelperChildNodes = $this->createMock(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
         $renderingContext = $this->createMock(\TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface::class);
         $this->widgetContext->setViewHelperChildNodes($viewHelperChildNodes, $renderingContext);
-        $this->assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
-        $this->assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
+        self::assertSame($viewHelperChildNodes, $this->widgetContext->getViewHelperChildNodes());
+        self::assertSame($renderingContext, $this->widgetContext->getViewHelperChildNodeRenderingContext());
     }
 
     /**
@@ -127,7 +127,7 @@ class WidgetContextTest extends UnitTestCase
      */
     public function sleepReturnsExpectedPropertyNames()
     {
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'widgetIdentifier', 'ajaxWidgetIdentifier', 'widgetConfiguration', 'controllerObjectName',
                 'parentPluginNamespace', 'parentExtensionName', 'parentPluginName', 'widgetViewHelperClassName'

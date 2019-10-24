@@ -33,7 +33,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     public function orderByDependenciesBuildsCorrectOrder(array $items, $beforeKey, $afterKey, array $expectedOrderedItems)
     {
         $orderedItems = (new DependencyOrderingService())->orderByDependencies($items, $beforeKey, $afterKey);
-        $this->assertSame($expectedOrderedItems, $orderedItems);
+        self::assertSame($expectedOrderedItems, $orderedItems);
     }
 
     /**
@@ -169,7 +169,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
         /** @var DependencyOrderingService|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $dependencyOrderingService */
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
         $preparedDependencies = $dependencyOrderingService->_call('prepareDependencies', $dependencies);
-        $this->assertEquals($expectedDependencies, $preparedDependencies);
+        self::assertEquals($expectedDependencies, $preparedDependencies);
     }
 
     /**
@@ -225,7 +225,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     public function buildDependencyGraphBuildsValidGraph(array $dependencies, array $expectedGraph)
     {
         $graph = (new DependencyOrderingService())->buildDependencyGraph($dependencies);
-        $this->assertEquals($expectedGraph, $graph);
+        self::assertEquals($expectedGraph, $graph);
     }
 
     /**
@@ -597,7 +597,7 @@ class DependencyOrderingServiceTest extends UnitTestCase
     public function calculateOrderResolvesCorrectOrder(array $graph, array $expectedList)
     {
         $list = (new DependencyOrderingService())->calculateOrder($graph);
-        $this->assertSame($expectedList, $list);
+        self::assertSame($expectedList, $list);
     }
 
     /**
@@ -719,6 +719,6 @@ class DependencyOrderingServiceTest extends UnitTestCase
         $dependencyOrderingService = $this->getAccessibleMock(DependencyOrderingService::class, ['dummy']);
         $path = $dependencyOrderingService->_call('findPathInGraph', $graph, $from, $to);
 
-        $this->assertSame($expected, $path);
+        self::assertSame($expected, $path);
     }
 }

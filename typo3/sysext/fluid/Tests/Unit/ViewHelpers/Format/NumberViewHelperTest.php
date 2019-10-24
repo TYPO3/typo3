@@ -49,7 +49,7 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
             []
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('3.14', $actualResult);
+        self::assertEquals('3.14', $actualResult);
     }
 
     /**
@@ -64,7 +64,7 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('3,14', $actualResult);
+        self::assertEquals('3,14', $actualResult);
     }
 
     /**
@@ -79,7 +79,7 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('3.1416', $actualResult);
+        self::assertEquals('3.1416', $actualResult);
     }
 
     /**
@@ -97,6 +97,6 @@ class NumberViewHelperTest extends ViewHelperBaseTestcase
             ]
         );
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals('3,141.59', $actualResult);
+        self::assertEquals('3,141.59', $actualResult);
     }
 }

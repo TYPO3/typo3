@@ -59,7 +59,7 @@ class LocalizationFactoryTest extends UnitTestCase
         $cacheInstance->method('get')->willReturn(false);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = ['foo' => 'bar'];
 
-        $localizationFactory->expects($this->once())->method('localizationOverride');
+        $localizationFactory->expects(self::once())->method('localizationOverride');
         $localizationFactory->getParsedData('EXT:backend/Resources/Private/Language/locallang_layout.xlf', 'default');
     }
 }

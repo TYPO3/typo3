@@ -72,9 +72,9 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
         $expected = array_merge($this->testSessionRecord, ['ses_tstamp' => $GLOBALS['EXEC_TIME']]);
 
-        $this->assertEquals($record, $expected);
-        $this->assertSame($expected['ses_data'], $this->subject->get('randomSessionId')['ses_data']);
-        $this->assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
+        self::assertEquals($record, $expected);
+        self::assertSame($expected['ses_data'], $this->subject->get('randomSessionId')['ses_data']);
+        self::assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
     }
 
     /**
@@ -86,9 +86,9 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
 
         $expected = array_merge($this->testSessionRecord, ['ses_anonymous' => 1, 'ses_tstamp' => $GLOBALS['EXEC_TIME']]);
 
-        $this->assertEquals($record, $expected);
-        $this->assertSame($expected['ses_data'], $this->subject->get('randomSessionId')['ses_data']);
-        $this->assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
+        self::assertEquals($record, $expected);
+        self::assertSame($expected['ses_data'], $this->subject->get('randomSessionId')['ses_data']);
+        self::assertSame($expected['ses_userid'], (int)$this->subject->get('randomSessionId')['ses_userid']);
     }
 
     /**
@@ -117,8 +117,8 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $expectedMergedData = array_merge($this->testSessionRecord, $updateData);
         $this->subject->update('randomSessionId', $updateData);
         $fetchedRecord = $this->subject->get('randomSessionId');
-        $this->assertSame($expectedMergedData['ses_data'], $fetchedRecord['ses_data']);
-        $this->assertSame($expectedMergedData['ses_userid'], (int)$fetchedRecord['ses_userid']);
+        self::assertSame($expectedMergedData['ses_data'], $fetchedRecord['ses_data']);
+        self::assertSame($expectedMergedData['ses_userid'], (int)$fetchedRecord['ses_userid']);
     }
 
     /**
@@ -169,7 +169,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->set('randomSessionId', $this->testSessionRecord);
 
         // Remove session
-        $this->assertTrue($this->subject->remove('randomSessionId'));
+        self::assertTrue($this->subject->remove('randomSessionId'));
 
         // Check if session was really removed
         $this->expectException(SessionNotFoundException::class);
@@ -187,7 +187,7 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->set('randomSessionId2', $this->testSessionRecord);
 
         // Check if session was really removed
-        $this->assertEquals(2, count($this->subject->getAll()));
+        self::assertEquals(2, count($this->subject->getAll()));
     }
 
     /**
@@ -203,17 +203,17 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->set('anonymousSession', $anonymousSession);
 
         // Assert that we set authenticated session correctly
-        $this->assertSame(
+        self::assertSame(
             $authenticatedSession['ses_data'],
             $this->subject->get('authenticatedSession')['ses_data']
         );
-        $this->assertSame(
+        self::assertSame(
             $authenticatedSession['ses_userid'],
             (int)$this->subject->get('authenticatedSession')['ses_userid']
         );
 
         // assert that we set anonymous session correctly
-        $this->assertSame(
+        self::assertSame(
             $anonymousSession['ses_data'],
             $this->subject->get('anonymousSession')['ses_data']
         );
@@ -224,11 +224,11 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $this->subject->collectGarbage(60, 10);
 
         // Authenticated session should still be there
-        $this->assertSame(
+        self::assertSame(
             $authenticatedSession['ses_data'],
             $this->subject->get('authenticatedSession')['ses_data']
         );
-        $this->assertSame(
+        self::assertSame(
             $authenticatedSession['ses_userid'],
             (int)$this->subject->get('authenticatedSession')['ses_userid']
         );
@@ -251,6 +251,6 @@ class DatabaseSessionBackendTest extends FunctionalTestCase
         $sessionId = 'randomSessionId';
         $this->subject->set($sessionId, $this->testSessionRecord);
         $this->subject->update($sessionId, []);
-        $this->assertSame($updatedRecord['ses_data'], $this->subject->get($sessionId)['ses_data']);
+        self::assertSame($updatedRecord['ses_data'], $this->subject->get($sessionId)['ses_data']);
     }
 }

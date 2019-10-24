@@ -60,7 +60,7 @@ class ListenerProviderPassTest extends UnitTestCase
         $listenerProvider = $container->get(ListenerProvider::class);
         $listeners = $listenerProvider->getAllListenerDefinitions();
 
-        $this->assertEquals(
+        self::assertEquals(
             [
                 'TYPO3\\CMS\\Core\\Mail\\Event\\AfterMailerInitializationEvent' => [
                     [
@@ -101,6 +101,6 @@ class ListenerProviderPassTest extends UnitTestCase
         $listenerProvider = $container->get(ListenerProvider::class);
         $listeners = $listenerProvider->getAllListenerDefinitions();
 
-        $this->assertEquals([], $listeners);
+        self::assertEquals([], $listeners);
     }
 }

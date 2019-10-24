@@ -50,7 +50,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function cacheHashCalculationWorks($params, $expected)
     {
-        $this->assertEquals($expected, $this->subject->calculateCacheHash($params));
+        self::assertEquals($expected, $this->subject->calculateCacheHash($params));
     }
 
     /**
@@ -88,7 +88,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     public function getRelevantParametersWorks($params, $expected)
     {
         $actual = $this->subject->getRelevantParameters($params);
-        $this->assertEquals($expected, array_keys($actual));
+        self::assertEquals($expected, array_keys($actual));
     }
 
     /**
@@ -127,7 +127,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function canGenerateForParameters($params, $expected)
     {
-        $this->assertEquals($expected, $this->subject->generateForParameters($params));
+        self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
     /**
@@ -167,7 +167,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function parametersRequireCacheHashWorks($params, $expected)
     {
-        $this->assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
+        self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
     }
 
     /**
@@ -196,7 +196,7 @@ class CacheHashCalculatorTest extends UnitTestCase
         $method = new \ReflectionMethod(CacheHashCalculator::class, 'setCachedParametersWhiteList');
         $method->setAccessible(true);
         $method->invoke($this->subject, ['whitep1', 'whitep2']);
-        $this->assertEquals($expected, $this->subject->generateForParameters($params));
+        self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
     /**
@@ -223,7 +223,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     {
         $this->subject->setConfiguration($settings);
         $actual = $this->subject->getRelevantParameters($params);
-        $this->assertEquals($expected, array_keys($actual));
+        self::assertEquals($expected, array_keys($actual));
     }
 
     /**

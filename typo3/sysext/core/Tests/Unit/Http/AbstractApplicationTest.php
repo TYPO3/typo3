@@ -14,7 +14,7 @@ class AbstractApplicationTest extends UnitTestCase
     public function testCookiesAreSentAsMultipleHeaders()
     {
         if (!extension_loaded('xdebug')) {
-            $this->markTestSkipped('This test can only be executed if xdebug is present.');
+            self::markTestSkipped('This test can only be executed if xdebug is present.');
         }
 
         $application = new class extends AbstractApplication {
@@ -33,7 +33,7 @@ class AbstractApplicationTest extends UnitTestCase
 
         $application->sendResponse($response);
 
-        $this->assertSame([
+        self::assertSame([
             'Cache-Control: public, max-age=3600',
             'Set-Cookie: foo=bar',
             'Set-Cookie: baz=foobar',

@@ -345,19 +345,19 @@ class SlugServiceTest extends FunctionalTestCase
     protected function assertSlugsAndRedirectsExists(array $slugs, array $redirects): void
     {
         $pageRecords = $this->getAllRecords('pages');
-        $this->assertCount(count($slugs), $pageRecords);
+        self::assertCount(count($slugs), $pageRecords);
         foreach ($pageRecords as $record) {
-            $this->assertContains($record['slug'], $slugs, 'unexpected slug: ' . $record['slug']);
+            self::assertContains($record['slug'], $slugs, 'unexpected slug: ' . $record['slug']);
         }
 
         $redirectRecords = $this->getAllRecords('sys_redirect');
-        $this->assertCount(count($redirects), $redirectRecords);
+        self::assertCount(count($redirects), $redirectRecords);
         foreach ($redirectRecords as $record) {
             $combination = [
                 'source_path' => $record['source_path'],
                 'target' => $record['target'],
             ];
-            $this->assertContains($combination, $redirects, 'wrong redirect found');
+            self::assertContains($combination, $redirects, 'wrong redirect found');
         }
     }
 }

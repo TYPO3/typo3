@@ -105,20 +105,20 @@ class RequestBuilderTest extends UnitTestCase
         $this->mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['getServerRequestMethod', 'isEnvironmentInFrontendMode', 'isEnvironmentInBackendMode'])
             ->getMock();
-        $this->mockEnvironmentService->expects($this->any())->method('isEnvironmentInFrontendMode')->willReturn(true);
-        $this->mockEnvironmentService->expects($this->any())->method('isEnvironmentInBackendMode')->willReturn(false);
+        $this->mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
+        $this->mockEnvironmentService->expects(self::any())->method('isEnvironmentInBackendMode')->willReturn(false);
     }
 
     protected function injectDependencies(): void
     {
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockObjectManager->expects($this->any())->method('get')->with(Request::class)->will($this->returnValue($this->mockRequest));
+        $this->mockObjectManager->expects(self::any())->method('get')->with(Request::class)->will(self::returnValue($this->mockRequest));
         $this->requestBuilder->_set('objectManager', $this->mockObjectManager);
         $pluginNamespace = 'tx_' . strtolower($this->configuration['extensionName'] . '_' . $this->configuration['pluginName']);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue($pluginNamespace));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue($pluginNamespace));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
-        $this->mockEnvironmentService->expects($this->any())->method('getServerRequestMethod')->will($this->returnValue('GET'));
+        $this->mockEnvironmentService->expects(self::any())->method('getServerRequestMethod')->will(self::returnValue('GET'));
         $this->requestBuilder->_set('environmentService', $this->mockEnvironmentService);
     }
 
@@ -129,7 +129,7 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->injectDependencies();
         $request = $this->requestBuilder->build();
-        $this->assertSame($this->mockRequest, $request);
+        self::assertSame($this->mockRequest, $request);
     }
 
     /**
@@ -138,7 +138,7 @@ class RequestBuilderTest extends UnitTestCase
     public function buildSetsRequestPluginName(): void
     {
         $this->injectDependencies();
-        $this->mockRequest->expects($this->once())->method('setPluginName')->with('Pi1');
+        $this->mockRequest->expects(self::once())->method('setPluginName')->with('Pi1');
         $this->requestBuilder->build();
     }
 
@@ -148,7 +148,7 @@ class RequestBuilderTest extends UnitTestCase
     public function buildSetsRequestControllerExtensionName(): void
     {
         $this->injectDependencies();
-        $this->mockRequest->expects($this->once())->method('setControllerExtensionName')->with('MyExtension');
+        $this->mockRequest->expects(self::once())->method('setControllerExtensionName')->with('MyExtension');
         $this->requestBuilder->build();
     }
 
@@ -158,7 +158,7 @@ class RequestBuilderTest extends UnitTestCase
     public function buildSetsRequestControllerName(): void
     {
         $this->injectDependencies();
-        $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
+        $this->mockRequest->expects(self::once())->method('setControllerName')->with('TheFirstController');
         $this->requestBuilder->build();
     }
 
@@ -168,7 +168,7 @@ class RequestBuilderTest extends UnitTestCase
     public function buildSetsRequestControllerActionName(): void
     {
         $this->injectDependencies();
-        $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('show');
+        $this->mockRequest->expects(self::once())->method('setControllerActionName')->with('show');
         $this->requestBuilder->build();
     }
 
@@ -179,7 +179,7 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->injectDependencies();
         $expectedRequestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        $this->mockRequest->expects($this->once())->method('setRequestUri')->with($expectedRequestUri);
+        $this->mockRequest->expects(self::once())->method('setRequestUri')->with($expectedRequestUri);
         $this->requestBuilder->build();
     }
 
@@ -190,7 +190,7 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->injectDependencies();
         $expectedBaseUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-        $this->mockRequest->expects($this->once())->method('setBaseUri')->with($expectedBaseUri);
+        $this->mockRequest->expects(self::once())->method('setBaseUri')->with($expectedBaseUri);
         $this->requestBuilder->build();
     }
 
@@ -204,9 +204,9 @@ class RequestBuilderTest extends UnitTestCase
         $mockEnvironmentService = $this->getMockBuilder(EnvironmentService::class)
             ->setMethods(['getServerRequestMethod'])
             ->getMock();
-        $mockEnvironmentService->expects($this->once())->method('getServerRequestMethod')->will($this->returnValue($expectedMethod));
+        $mockEnvironmentService->expects(self::once())->method('getServerRequestMethod')->will(self::returnValue($expectedMethod));
         $this->requestBuilder->_set('environmentService', $mockEnvironmentService);
-        $this->mockRequest->expects($this->once())->method('setMethod')->with($expectedMethod);
+        $this->mockRequest->expects(self::once())->method('setMethod')->with($expectedMethod);
         $this->requestBuilder->build();
     }
 
@@ -219,7 +219,7 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1289843275);
         unset($this->configuration['extensionName']);
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
         $this->requestBuilder->build();
     }
@@ -233,7 +233,7 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectExceptionCode(1289843277);
         unset($this->configuration['pluginName']);
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->requestBuilder->build();
@@ -247,7 +247,7 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = [];
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->requestBuilder->build();
@@ -264,7 +264,7 @@ class RequestBuilderTest extends UnitTestCase
             'className' => 'MyExtension\Controller\TheFirstControllerController',
             'alias' => 'TheFirstController',
         ];
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->requestBuilder->build();
@@ -284,7 +284,7 @@ class RequestBuilderTest extends UnitTestCase
                 'actions' => ['foo']
             ]
         ];
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->requestBuilder->build();
@@ -324,8 +324,8 @@ class RequestBuilderTest extends UnitTestCase
         // testing at which position something gets called is fishy.
         // why not make this a functional test and test with an actual requestBuilder instance and check the arguments
         // later on?
-        $this->mockRequest->expects($this->at(9))->method('setArgument')->with('parameter1', 'value1');
-        $this->mockRequest->expects($this->at(10))->method('setArgument')->with(
+        $this->mockRequest->expects(self::at(9))->method('setArgument')->with('parameter1', 'value1');
+        $this->mockRequest->expects(self::at(10))->method('setArgument')->with(
             'parameter2',
             ['parameter3' => 'value3', 'parameter4' => 'value4']
         );
@@ -351,7 +351,7 @@ class RequestBuilderTest extends UnitTestCase
             ]
         ];
         // phew! Shitty position tests. Who thought this was a good idea?
-        $this->mockRequest->expects($this->at(8))->method('setFormat')->with('POST');
+        $this->mockRequest->expects(self::at(8))->method('setFormat')->with('POST');
         $this->requestBuilder->build();
     }
 
@@ -385,7 +385,7 @@ class RequestBuilderTest extends UnitTestCase
         ];
         $this->requestBuilder->build();
         $actualResult = $this->requestBuilder->_get('allowedControllerActions');
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -396,9 +396,9 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = [];
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->requestBuilder->build();
     }
@@ -414,7 +414,7 @@ class RequestBuilderTest extends UnitTestCase
                 'foo' => 'bar'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
+        $this->mockRequest->expects(self::once())->method('setControllerName')->with('TheFirstController');
         $this->requestBuilder->build();
     }
 
@@ -429,7 +429,7 @@ class RequestBuilderTest extends UnitTestCase
                 'controller' => 'TheSecondController'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheSecondController');
+        $this->mockRequest->expects(self::once())->method('setControllerName')->with('TheSecondController');
         $this->requestBuilder->build();
     }
 
@@ -440,9 +440,9 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->expectException(InvalidControllerNameException::class);
         $this->expectExceptionCode(1313855173);
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $_GET = [
             'tx_myextension_pi1' => [
@@ -460,9 +460,9 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857897);
         $this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $_GET = [
             'tx_myextension_pi1' => [
@@ -485,7 +485,7 @@ class RequestBuilderTest extends UnitTestCase
                 'controller' => 'SomeInvalidController'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheFirstController');
+        $this->mockRequest->expects(self::once())->method('setControllerName')->with('TheFirstController');
         $this->requestBuilder->build();
     }
 
@@ -497,9 +497,9 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1316104317);
         $this->configuration['controllerConfiguration'] = [];
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $this->requestBuilder->build();
     }
@@ -515,7 +515,7 @@ class RequestBuilderTest extends UnitTestCase
                 'controller' => 'TheThirdController'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('delete');
+        $this->mockRequest->expects(self::once())->method('setControllerActionName')->with('delete');
         $this->requestBuilder->build();
     }
 
@@ -530,7 +530,7 @@ class RequestBuilderTest extends UnitTestCase
                 'action' => 'create'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('create');
+        $this->mockRequest->expects(self::once())->method('setControllerActionName')->with('create');
         $this->requestBuilder->build();
     }
 
@@ -546,7 +546,7 @@ class RequestBuilderTest extends UnitTestCase
                 'action' => 'onlyInThirdController'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('onlyInThirdController');
+        $this->mockRequest->expects(self::once())->method('setControllerActionName')->with('onlyInThirdController');
         $this->requestBuilder->build();
     }
 
@@ -557,9 +557,9 @@ class RequestBuilderTest extends UnitTestCase
     {
         $this->expectException(InvalidActionNameException::class);
         $this->expectExceptionCode(1313855175);
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $_GET = [
             'tx_myextension_pi1' => [
@@ -577,9 +577,9 @@ class RequestBuilderTest extends UnitTestCase
         $this->expectException(PageNotFoundException::class);
         $this->expectExceptionCode(1313857898);
         $this->configuration['mvc']['throwPageNotFoundExceptionIfActionCantBeResolved'] = 1;
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->will($this->returnValue($this->configuration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($this->configuration));
         $this->requestBuilder->_set('configurationManager', $this->mockConfigurationManager);
-        $this->mockExtensionService->expects($this->any())->method('getPluginNamespace')->will($this->returnValue('tx_myextension_pi1'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_myextension_pi1'));
         $this->requestBuilder->_set('extensionService', $this->mockExtensionService);
         $_GET = [
             'tx_myextension_pi1' => [
@@ -603,8 +603,8 @@ class RequestBuilderTest extends UnitTestCase
                 'action' => 'someInvalidAction'
             ]
         ];
-        $this->mockRequest->expects($this->once())->method('setControllerName')->with('TheThirdController');
-        $this->mockRequest->expects($this->once())->method('setControllerActionName')->with('delete');
+        $this->mockRequest->expects(self::once())->method('setControllerName')->with('TheThirdController');
+        $this->mockRequest->expects(self::once())->method('setControllerActionName')->with('delete');
         $this->requestBuilder->build();
     }
 
@@ -824,6 +824,6 @@ class RequestBuilderTest extends UnitTestCase
         ];
         $requestBuilder = $this->getAccessibleMock(RequestBuilder::class, ['dummy'], [], '', false);
         $result = $requestBuilder->_call('untangleFilesArray', $convolutedFiles);
-        $this->assertSame($untangledFiles, $result);
+        self::assertSame($untangledFiles, $result);
     }
 }

@@ -48,7 +48,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $runtimeCache
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturn(false);
 
@@ -76,7 +76,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $runtimeCache
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturn(false);
 
@@ -148,7 +148,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $runtimeCache
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturn(false);
 
@@ -194,7 +194,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('exists')
             ->willReturn(false);
 
@@ -215,7 +215,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('exists')
             ->willReturn(true);
 
@@ -247,14 +247,14 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $runtimeCache
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturn(false);
 
         $mockFormPersistenceManager->_set('runtimeCache', $runtimeCache);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('exists')
             ->willReturn(true);
 
@@ -287,23 +287,23 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('checkFileActionPermission')
             ->willReturn(false);
 
         $file = new File(['name' => 'foo', 'identifier' => '', 'mime_type' => ''], $mockStorage);
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFile')
             ->willReturn($file);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('exists')
             ->willReturn(true);
 
@@ -326,7 +326,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $runtimeCache
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
             ->willReturn(false);
 
@@ -341,7 +341,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ]);
 
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.form.yaml';
-        $this->assertTrue($mockFormPersistenceManager->_call('exists', $input));
+        self::assertTrue($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -354,7 +354,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.txt';
-        $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
+        self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -373,7 +373,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ]);
 
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/BlankForm.yaml';
-        $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
+        self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -386,7 +386,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $input = 'EXT:form/Tests/Unit/Mvc/Persistence/Fixtures/_BlankForm.yaml';
-        $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
+        self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -402,17 +402,17 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('hasFile')
             ->willReturn(true);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
         $input = '-1:/user_uploads/_example.form.yaml';
-        $this->assertTrue($mockFormPersistenceManager->_call('exists', $input));
+        self::assertTrue($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -428,17 +428,17 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('hasFile')
             ->willReturn(true);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
         $input = '-1:/user_uploads/_example.php';
-        $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
+        self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -454,17 +454,17 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('hasFile')
             ->willReturn(false);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
         $input = '-1:/user_uploads/_example.yaml';
-        $this->assertFalse($mockFormPersistenceManager->_call('exists', $input));
+        self::assertFalse($mockFormPersistenceManager->_call('exists', $input));
     }
 
     /**
@@ -477,23 +477,23 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('exists')
             ->willReturn(true);
 
         $mockFormPersistenceManager
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('exists')
             ->willReturn(true);
 
         $mockFormPersistenceManager
-            ->expects($this->at(2))
+            ->expects(self::at(2))
             ->method('exists')
             ->willReturn(false);
 
         $input = 'example';
         $expected = '-1:/user_uploads/example_2.form.yaml';
-        $this->assertSame($expected, $mockFormPersistenceManager->_call('getUniquePersistenceIdentifier', $input, '-1:/user_uploads/'));
+        self::assertSame($expected, $mockFormPersistenceManager->_call('getUniquePersistenceIdentifier', $input, '-1:/user_uploads/'));
     }
 
     /**
@@ -507,13 +507,13 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         for ($attempts = 0; $attempts <= 99; $attempts++) {
             $mockFormPersistenceManager
-                ->expects($this->at($attempts))
+                ->expects(self::at($attempts))
                 ->method('exists')
                 ->willReturn(true);
         }
 
         $mockFormPersistenceManager
-            ->expects($this->at(100))
+            ->expects(self::at(100))
             ->method('exists')
             ->willReturn(false);
 
@@ -521,7 +521,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $expected = '#^-1:/user_uploads/example_([0-9]{10}).form.yaml$#';
 
         $returnValue = $mockFormPersistenceManager->_call('getUniquePersistenceIdentifier', $input, '-1:/user_uploads/');
-        $this->assertEquals(1, preg_match($expected, $returnValue));
+        self::assertEquals(1, preg_match($expected, $returnValue));
     }
 
     /**
@@ -537,7 +537,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('checkForDuplicateIdentifier')
             ->willReturn(true);
 
@@ -556,13 +556,13 @@ class FormPersistenceManagerTest extends UnitTestCase
 
         for ($attempts = 0; $attempts <= 99; $attempts++) {
             $mockFormPersistenceManager
-                ->expects($this->at($attempts))
+                ->expects(self::at($attempts))
                 ->method('checkForDuplicateIdentifier')
                 ->willReturn(true);
         }
 
         $mockFormPersistenceManager
-            ->expects($this->at(100))
+            ->expects(self::at(100))
             ->method('checkForDuplicateIdentifier')
             ->willReturn(false);
 
@@ -570,7 +570,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         $expected = '#^example_([0-9]{10})$#';
 
         $returnValue = $mockFormPersistenceManager->_call('getUniqueIdentifier', $input);
-        $this->assertEquals(1, preg_match($expected, $returnValue));
+        self::assertEquals(1, preg_match($expected, $returnValue));
     }
 
     /**
@@ -583,7 +583,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('listForms')
             ->willReturn([
                 0 => [
@@ -592,7 +592,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ]);
 
         $input = 'example';
-        $this->assertTrue($mockFormPersistenceManager->_call('checkForDuplicateIdentifier', $input));
+        self::assertTrue($mockFormPersistenceManager->_call('checkForDuplicateIdentifier', $input));
     }
 
     /**
@@ -605,7 +605,7 @@ class FormPersistenceManagerTest extends UnitTestCase
         ], [], '', false);
 
         $mockFormPersistenceManager
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('listForms')
             ->willReturn([
                 0 => [
@@ -614,7 +614,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ]);
 
         $input = 'other-example';
-        $this->assertFalse($mockFormPersistenceManager->_call('checkForDuplicateIdentifier', $input));
+        self::assertFalse($mockFormPersistenceManager->_call('checkForDuplicateIdentifier', $input));
     }
 
     /**
@@ -634,7 +634,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $storage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('checkFileActionPermission')
             ->willReturn(false);
 
@@ -645,7 +645,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $resourceFactory
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('retrieveFileOrFolderObject')
             ->willReturn($file);
 
@@ -672,12 +672,12 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('hasFolder')
             ->willReturn(false);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
@@ -702,23 +702,23 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('hasFolder')
             ->willReturn(true);
 
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('checkFileActionPermission')
             ->willReturn(false);
 
         $file = new File(['name' => 'foo', 'identifier' => '', 'mime_type' => ''], $mockStorage);
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getFile')
             ->willReturn($file);
 
         $mockFormPersistenceManager
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getStorageByUid')
             ->willReturn($mockStorage);
 
@@ -743,7 +743,7 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $mockStorageRepository
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('findByUid')
             ->willReturn(null);
 
@@ -772,12 +772,12 @@ class FormPersistenceManagerTest extends UnitTestCase
             ->getMock();
 
         $mockStorage
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('isBrowsable')
             ->willReturn(false);
 
         $mockStorageRepository
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('findByUid')
             ->willReturn($mockStorage);
 

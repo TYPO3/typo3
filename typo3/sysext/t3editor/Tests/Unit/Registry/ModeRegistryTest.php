@@ -44,7 +44,7 @@ class ModeRegistryTest extends UnitTestCase
         $this->subject->register($expected);
         $actual = $this->subject->getByIdentifier('test/mode/default/default');
 
-        static::assertSame($expected->getIdentifier(), $actual->getIdentifier());
+        self::assertSame($expected->getIdentifier(), $actual->getIdentifier());
     }
 
     /**
@@ -57,7 +57,7 @@ class ModeRegistryTest extends UnitTestCase
         $this->subject->register($firstDefaultMode)->register($expected);
         $actual = $this->subject->getDefaultMode();
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -69,7 +69,7 @@ class ModeRegistryTest extends UnitTestCase
         $this->subject->register($expected);
         $actual = $this->subject->getByFormatCode('code');
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -81,6 +81,6 @@ class ModeRegistryTest extends UnitTestCase
         $this->subject->register($expected);
         $actual = $this->subject->getByFileExtension('fext');
 
-        static::assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

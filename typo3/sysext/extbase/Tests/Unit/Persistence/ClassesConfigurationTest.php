@@ -30,7 +30,7 @@ class ClassesConfigurationTest extends UnitTestCase
     {
         $className = 'ClassName';
         $classesConfiguration = new ClassesConfiguration([$className => []]);
-        static::assertTrue($classesConfiguration->hasClass($className));
+        self::assertTrue($classesConfiguration->hasClass($className));
     }
 
     /**
@@ -40,7 +40,7 @@ class ClassesConfigurationTest extends UnitTestCase
     {
         $className = 'ClassName';
         $classesConfiguration = new ClassesConfiguration([]);
-        static::assertFalse($classesConfiguration->hasClass($className));
+        self::assertFalse($classesConfiguration->hasClass($className));
     }
 
     /**
@@ -54,7 +54,7 @@ class ClassesConfigurationTest extends UnitTestCase
             ]
         ];
         $classesConfiguration = new ClassesConfiguration($configuration);
-        static::assertSame(
+        self::assertSame(
             $configuration['ClassName'],
             $classesConfiguration->getConfigurationFor('ClassName')
         );
@@ -66,7 +66,7 @@ class ClassesConfigurationTest extends UnitTestCase
     public function getConfigurationForReturnsNull(): void
     {
         $classesConfiguration = new ClassesConfiguration([]);
-        static::assertNull($classesConfiguration->getConfigurationFor('ClassName'));
+        self::assertNull($classesConfiguration->getConfigurationFor('ClassName'));
     }
 
     /**
@@ -165,7 +165,7 @@ class ClassesConfigurationTest extends UnitTestCase
     public function getSubclasses(array $expected, array $configuration, string $className): void
     {
         $classesConfiguration = new ClassesConfiguration($configuration);
-        static::assertSame(
+        self::assertSame(
             $expected,
             $classesConfiguration->getSubClasses($className)
         );

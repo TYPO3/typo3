@@ -40,7 +40,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->removeAll();
 
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('"aTable"."pid" = 0', (string)$expression);
+        self::assertSame('"aTable"."pid" = 0', (string)$expression);
     }
 
     /**
@@ -60,7 +60,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->removeByType(get_class($restriction));
 
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('', (string)$expression);
+        self::assertSame('', (string)$expression);
     }
 
     /**
@@ -81,7 +81,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->removeAll();
 
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('', (string)$expression);
+        self::assertSame('', (string)$expression);
     }
 
     /**
@@ -98,7 +98,7 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->removeAll();
 
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('', (string)$expression);
+        self::assertSame('', (string)$expression);
     }
 
     /**
@@ -117,6 +117,6 @@ class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
         $subject->removeAll();
 
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        $this->assertSame('', (string)$expression);
+        self::assertSame('', (string)$expression);
     }
 }

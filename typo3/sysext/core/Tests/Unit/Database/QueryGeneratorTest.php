@@ -118,6 +118,6 @@ class QueryGeneratorTest extends UnitTestCase
     public function getSubscriptReturnsExpectedValues($input, array $expectedArray): void
     {
         $subject = new QueryGenerator();
-        $this->assertSame($expectedArray, $subject->getSubscript($input));
+        self::assertSame($expectedArray, $subject->getSubscript($input));
     }
 }

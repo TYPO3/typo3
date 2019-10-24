@@ -164,7 +164,7 @@ class HrefLangGeneratorTest extends FunctionalTestCase
             return;
         }
 
-        static::fail(
+        self::fail(
             'Array was not empty as expected, but contained these items:' . LF
             . '* ' . implode(LF . '* ', $items)
         );

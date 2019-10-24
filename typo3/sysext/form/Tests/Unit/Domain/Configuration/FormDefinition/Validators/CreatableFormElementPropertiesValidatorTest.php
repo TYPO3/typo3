@@ -39,13 +39,13 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
             [[], '', $validationDto]
         );
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
             ->willReturn('default');
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup')
             ->willReturn(true);
-        $typeConverter->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
 
         $typeConverter($input, '');
     }
@@ -62,13 +62,13 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
             [[], '', $validationDto]
         );
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
             ->willReturn('default');
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup')
             ->willReturn(true);
-        $typeConverter->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
 
         $failed = false;
         try {
@@ -76,6 +76,6 @@ class CreatableFormElementPropertiesValidatorTest extends UnitTestCase
         } catch (PropertyException $e) {
             $failed = true;
         }
-        $this->assertFalse($failed);
+        self::assertFalse($failed);
     }
 }

@@ -72,7 +72,7 @@ class DispatcherTest extends UnitTestCase
         $expectedSlots = [
             ['class' => get_class($mockSlot), 'method' => 'someSlotMethod', 'object' => null, 'passSignalInformation' => true]
         ];
-        $this->assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
+        self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
 
     /**
@@ -90,7 +90,7 @@ class DispatcherTest extends UnitTestCase
         $expectedSlots = [
             ['class' => null, 'method' => 'someSlotMethod', 'object' => $mockSlot, 'passSignalInformation' => true]
         ];
-        $this->assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
+        self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
 
     /**
@@ -107,7 +107,7 @@ class DispatcherTest extends UnitTestCase
         $expectedSlots = [
             ['class' => null, 'method' => '__invoke', 'object' => $mockSlot, 'passSignalInformation' => true]
         ];
-        $this->assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
+        self::assertSame($expectedSlots, $this->signalSlotDispatcher->getSlots(get_class($mockSignal), 'emitSomeSignal'));
     }
 
     /**
@@ -121,7 +121,7 @@ class DispatcherTest extends UnitTestCase
         };
         $this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, '', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'bar', ['bar', 'quux']);
-        $this->assertSame(['bar', 'quux'], $arguments);
+        self::assertSame(['bar', 'quux'], $arguments);
     }
 
     /**
@@ -135,7 +135,7 @@ class DispatcherTest extends UnitTestCase
         $this->objectManagerProphecy->get($slotClassName)->willReturn($mockSlot);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
-        $this->assertSame($mockSlot->arguments, ['bar', 'quux']);
+        self::assertSame($mockSlot->arguments, ['bar', 'quux']);
     }
 
     /**
@@ -144,16 +144,16 @@ class DispatcherTest extends UnitTestCase
     public function dispatchHandsOverArgumentsReturnedByAFormerSlot()
     {
         $firstMockSlot = $this->createMock(SlotFixture::class);
-        $firstMockSlot->expects($this->once())
+        $firstMockSlot->expects(self::once())
             ->method('slot')
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             ));
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
-        $secondMockSlot->expects($this->once())
+        $secondMockSlot->expects(self::once())
             ->method('slot')
             ->with('modified_bar', 'modified_quux');
 
@@ -169,16 +169,16 @@ class DispatcherTest extends UnitTestCase
     public function dispatchHandsOverArgumentsReturnedByAFormerSlotWithoutInterferingWithSignalSlotInformation()
     {
         $firstMockSlot = $this->createMock(SlotFixture::class);
-        $firstMockSlot->expects($this->once())
+        $firstMockSlot->expects(self::once())
             ->method('slot')
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             ));
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
-        $secondMockSlot->expects($this->once())
+        $secondMockSlot->expects(self::once())
             ->method('slot')
             ->with('modified_bar', 'modified_quux');
 
@@ -194,20 +194,20 @@ class DispatcherTest extends UnitTestCase
     public function dispatchHandsOverFormerArgumentsIfPreviousSlotDoesNotReturnAnything()
     {
         $firstMockSlot = $this->createMock(SlotFixture::class);
-        $firstMockSlot->expects($this->once())
+        $firstMockSlot->expects(self::once())
             ->method('slot')
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
             ));
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
-        $secondMockSlot->expects($this->once())
+        $secondMockSlot->expects(self::once())
             ->method('slot');
 
         $thirdMockSlot = $this->createMock(SlotFixture::class);
-        $thirdMockSlot->expects($this->once())
+        $thirdMockSlot->expects(self::once())
             ->method('slot')
             ->with('modified_bar', 'modified_quux');
 
@@ -227,9 +227,9 @@ class DispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1376683067);
 
         $mockSlot = $this->createMock(SlotFixture::class);
-        $mockSlot->expects($this->once())
+        $mockSlot->expects(self::once())
             ->method('slot')
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function () {
                     return 'string';
                 }
@@ -248,9 +248,9 @@ class DispatcherTest extends UnitTestCase
         $this->expectExceptionCode(1376683066);
 
         $mockSlot = $this->createMock(SlotFixture::class);
-        $mockSlot->expects($this->once())
+        $mockSlot->expects(self::once())
             ->method('slot')
-            ->will($this->returnCallback(
+            ->will(self::returnCallback(
                 function () {
                     return [1, 2, 3];
                 }
@@ -285,7 +285,7 @@ class DispatcherTest extends UnitTestCase
         $this->objectManagerProphecy->get($slotClassName)->willReturn($mockSlot);
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'unknownMethodName', true);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
-        $this->assertSame($mockSlot->arguments, ['bar', 'quux']);
+        self::assertSame($mockSlot->arguments, ['bar', 'quux']);
     }
 
     /**
@@ -299,7 +299,7 @@ class DispatcherTest extends UnitTestCase
         };
         $this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, '', true);
         $this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', ['bar', 'quux']);
-        $this->assertSame(['bar', 'quux', 'SignalClassName::methodName'], $arguments);
+        self::assertSame(['bar', 'quux', 'SignalClassName::methodName'], $arguments);
     }
 
     /**
@@ -317,7 +317,7 @@ class DispatcherTest extends UnitTestCase
      */
     public function dispatchReturnsEmptyArrayIfSignalNameAndOrSignalClassNameIsNotRegistered()
     {
-        $this->assertSame([], $this->signalSlotDispatcher->dispatch('ClassA', 'someNotRegisteredSignalName'));
+        self::assertSame([], $this->signalSlotDispatcher->dispatch('ClassA', 'someNotRegisteredSignalName'));
     }
 
     /**
@@ -325,7 +325,7 @@ class DispatcherTest extends UnitTestCase
      */
     public function dispatchReturnsEmptyArrayIfSignalDoesNotProvideAnyArguments()
     {
-        $this->assertSame([], $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
+        self::assertSame([], $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal'));
     }
 
     /**
@@ -338,6 +338,6 @@ class DispatcherTest extends UnitTestCase
             'a string',
             new \stdClass()
         ];
-        $this->assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
+        self::assertSame($arguments, $this->signalSlotDispatcher->dispatch('ClassA', 'emitSomeSignal', $arguments));
     }
 }

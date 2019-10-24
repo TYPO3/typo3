@@ -49,7 +49,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     public function getHashedPasswordWithEmptyPasswordResultsInNullSaltedPassword()
     {
         $password = '';
-        $this->assertNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
+        self::assertNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
     }
 
     /**
@@ -58,7 +58,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     public function getHashedPasswordWithNonEmptyPasswordResultsInNonNullSaltedPassword()
     {
         $password = 'a';
-        $this->assertNotNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
+        self::assertNotNull((new BlowfishPasswordHash(['hash_count' => 4]))->getHashedPassword($password));
     }
 
     /**
@@ -69,7 +69,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->isValidSaltedPW($saltedHashPassword));
+        self::assertTrue($subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -84,7 +84,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$2a$07$Rvtl6CyMhR8GZGhHypjwOuydeN0nKFAlgo1LmmGrLowtIrtkov5Na';
-        $this->assertTrue((new BlowfishPasswordHash(['hash_count' => 4]))->checkPassword($password, $saltedHashPassword));
+        self::assertTrue((new BlowfishPasswordHash(['hash_count' => 4]))->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -96,7 +96,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
     {
         $password = 'password';
         $saltedHashPassword = '$2a$07$Rvtl6CyMhR8GZGhHypjwOuydeN0nKFAlgo1LmmGrLowtIrtkov5N';
-        $this->assertFalse((new BlowfishPasswordHash(['hash_count' => 4]))->checkPassword($password, $saltedHashPassword));
+        self::assertFalse((new BlowfishPasswordHash(['hash_count' => 4]))->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -112,7 +112,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password = 'aEjOtY';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -128,7 +128,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password = '01369';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -144,7 +144,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -164,7 +164,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password .= chr(215) . chr(247);
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -189,7 +189,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         }
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -201,7 +201,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password1 = $password . 'INVALID';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->checkPassword($password1, $saltedHashPassword));
+        self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
@@ -212,7 +212,7 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
+        self::assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
     /**
@@ -223,6 +223,6 @@ class BlowfishPasswordHashTest extends UnitTestCase
         $subject = new BlowfishPasswordHash(['hash_count' => 4]);
         $hash = $subject->getHashedPassword('password');
         $subject = new BlowfishPasswordHash(['hash_count' => 5]);
-        $this->assertTrue($subject->isHashUpdateNeeded($hash));
+        self::assertTrue($subject->isHashUpdateNeeded($hash));
     }
 }

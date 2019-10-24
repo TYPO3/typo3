@@ -31,7 +31,7 @@ class FullyRenderedButtonTest extends UnitTestCase
     {
         $button = new FullyRenderedButton();
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -44,6 +44,6 @@ class FullyRenderedButtonTest extends UnitTestCase
         $button = new FullyRenderedButton();
         $button->setHtmlSource('<span>Husel</span>');
         $isValid = $button->isValid();
-        $this->assertTrue($isValid);
+        self::assertTrue($isValid);
     }
 }

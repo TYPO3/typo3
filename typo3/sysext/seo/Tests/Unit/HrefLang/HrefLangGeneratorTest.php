@@ -47,7 +47,7 @@ class HrefLangGeneratorTest extends UnitTestCase
             ]
         );
 
-        $check = $shouldBeCalled ? $this->once() : $this->never();
+        $check = $shouldBeCalled ? self::once() : self::never();
         $subject->expects($check)->method('getSiteLanguage');
         $subject->_call('getAbsoluteUrl', $url);
     }

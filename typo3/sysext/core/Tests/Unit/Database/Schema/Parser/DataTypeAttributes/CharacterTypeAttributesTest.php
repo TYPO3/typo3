@@ -66,6 +66,6 @@ class CharacterTypeAttributesTest extends AbstractDataTypeBaseTestCase
     {
         $subject = $this->createSubject($columnDefinition);
 
-        $this->assertSame($options, $subject->dataType->getOptions());
+        self::assertSame($options, $subject->dataType->getOptions());
     }
 }

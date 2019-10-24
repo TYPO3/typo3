@@ -107,7 +107,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
-        $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
+        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
 
     /**
@@ -183,7 +183,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
-        $this->assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }
 
     /**
@@ -371,7 +371,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
-        $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
+        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
 
     /**
@@ -471,7 +471,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
-        $this->assertEquals($expectedResult, $subject->RTE_transform($content, [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'rte', $thisConfig));
     }
 
     /**
@@ -623,6 +623,6 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
-        $this->assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }
 }

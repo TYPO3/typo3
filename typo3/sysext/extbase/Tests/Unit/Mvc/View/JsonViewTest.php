@@ -55,7 +55,7 @@ class JsonViewTest extends UnitTestCase
             ->getMock();
         $this->controllerContext = $this->createMock(ControllerContext::class);
         $this->response = $this->createMock(Response::class);
-        $this->controllerContext->expects($this->any())->method('getResponse')->will($this->returnValue($this->response));
+        $this->controllerContext->expects(self::any())->method('getResponse')->will(self::returnValue($this->response));
         $this->view->setControllerContext($this->controllerContext);
     }
 
@@ -188,7 +188,7 @@ class JsonViewTest extends UnitTestCase
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
 
-        $this->assertSame($expected, $actual, $description);
+        self::assertSame($expected, $actual, $description);
     }
 
     /**
@@ -244,11 +244,11 @@ class JsonViewTest extends UnitTestCase
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);
 
-        $persistenceManagerMock->expects($this->once())->method('getIdentifierByObject')->with($object->value1)->will($this->returnValue($dummyIdentifier));
+        $persistenceManagerMock->expects(self::once())->method('getIdentifierByObject')->with($object->value1)->will(self::returnValue($dummyIdentifier));
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
 
-        $this->assertSame($expected, $actual, $description);
+        self::assertSame($expected, $actual, $description);
     }
 
     /**
@@ -311,14 +311,14 @@ class JsonViewTest extends UnitTestCase
         $reflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
             ->setMethods([ 'getClassNameByObject' ])
             ->getMock();
-        $reflectionService->expects($this->any())->method('getClassNameByObject')->will($this->returnCallback(function ($object) {
+        $reflectionService->expects(self::any())->method('getClassNameByObject')->will(self::returnCallback(function ($object) {
             return get_class($object);
         }));
 
         $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, ['dummy'], [], '', false);
         $this->inject($jsonView, 'reflectionService', $reflectionService);
         $actual = $jsonView->_call('transformValue', $object, $configuration);
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -326,7 +326,7 @@ class JsonViewTest extends UnitTestCase
      */
     public function renderSetsContentTypeHeader(): void
     {
-        $this->response->expects($this->once())->method('setHeader')->with('Content-Type', 'application/json');
+        $this->response->expects(self::once())->method('setHeader')->with('Content-Type', 'application/json');
 
         $this->view->render();
     }
@@ -342,7 +342,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '{"foo":"Foo"}';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -355,7 +355,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '{"foo":"Foo","bar":"Bar"}';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -368,7 +368,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '"Foo"';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -382,7 +382,7 @@ class JsonViewTest extends UnitTestCase
         $actualResult = $this->view->render();
 
         $expectedResult = '"' . $value . '"';
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -408,7 +408,7 @@ class JsonViewTest extends UnitTestCase
         $actualResult = $this->view->render();
 
         $expectedResult = '"\\' . $character . '"';
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -421,7 +421,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = 'null';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -435,7 +435,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '"Value"';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -449,7 +449,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '"Foo"';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -465,7 +465,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '{"value":"Value1","secondValue":"Value2"}';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -485,7 +485,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '{"array":{"foo":{"bar":"Baz"}},"object":{"foo":"Foo"}}';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -506,7 +506,7 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '[{"name":"Foo"},{"name":"Bar"}]';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -527,6 +527,6 @@ class JsonViewTest extends UnitTestCase
 
         $expectedResult = '[{"name":"Foo","secret":true},{"name":"Bar","secret":true}]';
         $actualResult = $this->view->render();
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 }

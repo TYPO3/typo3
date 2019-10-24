@@ -66,7 +66,7 @@ class VersionNumberUtilityTest extends UnitTestCase
      */
     public function convertVersionNumberToIntegerConvertsVersionNumbersToIntegers($expected, $version)
     {
-        $this->assertEquals($expected, VersionNumberUtility::convertVersionNumberToInteger($version));
+        self::assertEquals($expected, VersionNumberUtility::convertVersionNumberToInteger($version));
     }
 
     /**
@@ -77,7 +77,7 @@ class VersionNumberUtilityTest extends UnitTestCase
     {
         // Make sure incoming value is an integer
         $versionNumber = (int)$versionNumber;
-        $this->assertEquals($expected, VersionNumberUtility::convertIntegerToVersionNumber($versionNumber));
+        self::assertEquals($expected, VersionNumberUtility::convertIntegerToVersionNumber($versionNumber));
     }
 
     /**

@@ -43,7 +43,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
-        $this->assertEquals('cache_test', $subject->getCacheTable());
+        self::assertEquals('cache_test', $subject->getCacheTable());
     }
 
     /**
@@ -57,7 +57,7 @@ class Typo3DatabaseBackendTest extends UnitTestCase
         $subject = new Typo3DatabaseBackend('Testing');
         $subject->setCache($frontendProphecy->reveal());
 
-        $this->assertEquals('cache_test_tags', $subject->getTagsTable());
+        self::assertEquals('cache_test_tags', $subject->getTagsTable());
     }
 
     /**

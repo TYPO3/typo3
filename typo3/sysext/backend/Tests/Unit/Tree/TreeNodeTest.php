@@ -55,7 +55,7 @@ class TreeNodeTest extends UnitTestCase
         }
         $fixture->setChildNodes($nodeCollection);
         $serializedString = trim($fixture->serialize());
-        $this->assertSame($expected, $serializedString);
+        self::assertSame($expected, $serializedString);
     }
 
     /**
@@ -67,7 +67,7 @@ class TreeNodeTest extends UnitTestCase
         $node = new TreeNode();
         $node->unserialize($source);
         $serializedString = $node->serialize();
-        $this->assertSame($source, $serializedString);
+        self::assertSame($source, $serializedString);
     }
 
     /**
@@ -79,9 +79,9 @@ class TreeNodeTest extends UnitTestCase
         $otherNode = new TreeNode(['id' => '5']);
         $otherNode->setId('25');
         $compareResult = $node->compareTo($otherNode);
-        $this->assertSame(-1, $compareResult);
+        self::assertSame(-1, $compareResult);
         $otherNode->setId('15');
         $compareResult = $node->compareTo($otherNode);
-        $this->assertSame(0, $compareResult);
+        self::assertSame(0, $compareResult);
     }
 }

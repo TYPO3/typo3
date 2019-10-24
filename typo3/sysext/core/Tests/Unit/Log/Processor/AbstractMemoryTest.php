@@ -29,7 +29,7 @@ class AbstractMemoryTest extends UnitTestCase
         /** @var $processor \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor */
         $processor = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor::class);
         $processor->setRealMemoryUsage(false);
-        $this->assertFalse($processor->getRealMemoryUsage());
+        self::assertFalse($processor->getRealMemoryUsage());
     }
 
     /**
@@ -40,6 +40,6 @@ class AbstractMemoryTest extends UnitTestCase
         /** @var $processor \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor */
         $processor = $this->getMockForAbstractClass(\TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor::class);
         $processor->setFormatSize(false);
-        $this->assertFalse($processor->getFormatSize());
+        self::assertFalse($processor->getFormatSize());
     }
 }

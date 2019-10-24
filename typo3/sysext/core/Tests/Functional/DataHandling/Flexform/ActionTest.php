@@ -105,7 +105,7 @@ class ActionTest extends AbstractDataHandlerActionTestCase
             ->execute()
             ->fetchColumn(0);
 
-        $this->assertEquals($expected, $flexFormContent);
+        self::assertEquals($expected, $flexFormContent);
     }
 
     /**
@@ -187,6 +187,6 @@ class ActionTest extends AbstractDataHandlerActionTestCase
             ->execute()
             ->fetchColumn(0);
 
-        $this->assertEquals($expected, $flexFormContent);
+        self::assertEquals($expected, $flexFormContent);
     }
 }

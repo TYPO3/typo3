@@ -43,10 +43,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu(1, 'uid, title');
-        $this->assertArrayHasKey(2, $rows);
-        $this->assertArrayHasKey(3, $rows);
-        $this->assertArrayHasKey(4, $rows);
-        $this->assertCount(3, $rows);
+        self::assertArrayHasKey(2, $rows);
+        self::assertArrayHasKey(3, $rows);
+        self::assertArrayHasKey(4, $rows);
+        self::assertCount(3, $rows);
     }
 
     /**
@@ -56,10 +56,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu(2, 'uid, title');
-        $this->assertArrayHasKey(5, $rows);
-        $this->assertArrayHasKey(6, $rows);
-        $this->assertArrayHasKey(7, $rows);
-        $this->assertCount(3, $rows);
+        self::assertArrayHasKey(5, $rows);
+        self::assertArrayHasKey(6, $rows);
+        self::assertArrayHasKey(7, $rows);
+        self::assertCount(3, $rows);
     }
 
     /**
@@ -69,12 +69,12 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $subject = new PageRepository();
         $rows = $subject->getMenu([2, 3], 'uid, title');
-        $this->assertArrayHasKey(5, $rows);
-        $this->assertArrayHasKey(6, $rows);
-        $this->assertArrayHasKey(7, $rows);
-        $this->assertArrayHasKey(8, $rows);
-        $this->assertArrayHasKey(9, $rows);
-        $this->assertCount(5, $rows);
+        self::assertArrayHasKey(5, $rows);
+        self::assertArrayHasKey(6, $rows);
+        self::assertArrayHasKey(7, $rows);
+        self::assertArrayHasKey(8, $rows);
+        self::assertArrayHasKey(9, $rows);
+        self::assertCount(5, $rows);
     }
 
     /**
@@ -87,12 +87,12 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         ]));
 
         $rows = $subject->getMenu([2, 3], 'uid, title');
-        $this->assertEquals('Attrappe 1-2-5', $rows[5]['title']);
-        $this->assertEquals('Attrappe 1-2-6', $rows[6]['title']);
-        $this->assertEquals('Dummy 1-2-7', $rows[7]['title']);
-        $this->assertEquals('Dummy 1-3-8', $rows[8]['title']);
-        $this->assertEquals('Attrappe 1-3-9', $rows[9]['title']);
-        $this->assertCount(5, $rows);
+        self::assertEquals('Attrappe 1-2-5', $rows[5]['title']);
+        self::assertEquals('Attrappe 1-2-6', $rows[6]['title']);
+        self::assertEquals('Dummy 1-2-7', $rows[7]['title']);
+        self::assertEquals('Dummy 1-3-8', $rows[8]['title']);
+        self::assertEquals('Attrappe 1-3-9', $rows[9]['title']);
+        self::assertCount(5, $rows);
     }
 
     /**
@@ -103,9 +103,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $subject = new PageRepository();
         $row = $subject->getPageOverlay(1, 1);
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
-        $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
@@ -115,8 +115,8 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
     {
         $subject = new PageRepository();
         $row = $subject->getPageOverlay(4, 1);
-        $this->assertIsArray($row);
-        $this->assertCount(0, $row);
+        self::assertIsArray($row);
+        self::assertCount(0, $row);
     }
 
     /**
@@ -128,10 +128,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $orig = $subject->getPage(1);
         $row = $subject->getPageOverlay($orig, 1);
         $this->assertOverlayRow($row);
-        $this->assertEquals(1, $row['uid']);
-        $this->assertEquals('Wurzel 1', $row['title']);
-        $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals(1, $row['uid']);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
@@ -142,9 +142,9 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $subject = new PageRepository();
         $orig = $subject->getPage(4);
         $row = $subject->getPageOverlay($orig, 1);
-        $this->assertIsArray($row);
-        $this->assertEquals(4, $row['uid']);
-        $this->assertEquals('Dummy 1-4', $row['title']);//original title
+        self::assertIsArray($row);
+        self::assertEquals(4, $row['uid']);
+        self::assertEquals('Dummy 1-4', $row['title']);//original title
     }
 
     /**
@@ -156,15 +156,15 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1]);
-        $this->assertIsArray($rows);
-        $this->assertCount(1, $rows);
-        $this->assertArrayHasKey(0, $rows);
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertArrayHasKey(0, $rows);
 
         $row = $rows[0];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
-        $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
@@ -176,22 +176,22 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1, 5]);
-        $this->assertIsArray($rows);
-        $this->assertCount(2, $rows);
-        $this->assertArrayHasKey(0, $rows);
-        $this->assertArrayHasKey(1, $rows);
+        self::assertIsArray($rows);
+        self::assertCount(2, $rows);
+        self::assertArrayHasKey(0, $rows);
+        self::assertArrayHasKey(1, $rows);
 
         $row = $rows[0];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
-        $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
 
         $row = $rows[1];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Attrappe 1-2-5', $row['title']);
-        $this->assertEquals('904', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Attrappe 1-2-5', $row['title']);
+        self::assertEquals('904', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
@@ -203,18 +203,18 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1, 4, 5, 8]);
-        $this->assertIsArray($rows);
-        $this->assertCount(2, $rows);
-        $this->assertArrayHasKey(0, $rows);
-        $this->assertArrayHasKey(2, $rows);
+        self::assertIsArray($rows);
+        self::assertCount(2, $rows);
+        self::assertArrayHasKey(0, $rows);
+        self::assertArrayHasKey(2, $rows);
 
         $row = $rows[0];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('Wurzel 1', $row['title']);
 
         $row = $rows[2];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Attrappe 1-2-5', $row['title']);
+        self::assertEquals('Attrappe 1-2-5', $row['title']);
     }
 
     /**
@@ -229,15 +229,15 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([$origRow]);
-        $this->assertIsArray($rows);
-        $this->assertCount(1, $rows);
-        $this->assertArrayHasKey(0, $rows);
+        self::assertIsArray($rows);
+        self::assertCount(1, $rows);
+        self::assertArrayHasKey(0, $rows);
 
         $row = $rows[0];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
-        $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
@@ -253,22 +253,22 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([1 => $orig1, 5 => $orig2]);
-        $this->assertIsArray($rows);
-        $this->assertCount(2, $rows);
-        $this->assertArrayHasKey(1, $rows);
-        $this->assertArrayHasKey(5, $rows);
+        self::assertIsArray($rows);
+        self::assertCount(2, $rows);
+        self::assertArrayHasKey(1, $rows);
+        self::assertArrayHasKey(5, $rows);
 
         $row = $rows[1];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
-        $this->assertEquals('901', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('901', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
 
         $row = $rows[5];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Attrappe 1-2-5', $row['title']);
-        $this->assertEquals('904', $row['_PAGES_OVERLAY_UID']);
-        $this->assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
+        self::assertEquals('Attrappe 1-2-5', $row['title']);
+        self::assertEquals('904', $row['_PAGES_OVERLAY_UID']);
+        self::assertEquals(1, $row['_PAGES_OVERLAY_LANGUAGE']);
     }
 
     /**
@@ -285,23 +285,23 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             'language' => new LanguageAspect(1)
         ]));
         $rows = $subject->getPagesOverlay([$orig1, $orig2, $orig3]);
-        $this->assertIsArray($rows);
-        $this->assertCount(3, $rows);
-        $this->assertArrayHasKey(0, $rows);
-        $this->assertArrayHasKey(1, $rows);
-        $this->assertArrayHasKey(2, $rows);
+        self::assertIsArray($rows);
+        self::assertCount(3, $rows);
+        self::assertArrayHasKey(0, $rows);
+        self::assertArrayHasKey(1, $rows);
+        self::assertArrayHasKey(2, $rows);
 
         $row = $rows[0];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Wurzel 1', $row['title']);
+        self::assertEquals('Wurzel 1', $row['title']);
 
         $row = $rows[1];
         $this->assertNotOverlayRow($row);
-        $this->assertEquals('Dummy 1-2-7', $row['title']);
+        self::assertEquals('Dummy 1-2-7', $row['title']);
 
         $row = $rows[2];
         $this->assertOverlayRow($row);
-        $this->assertEquals('Attrappe 1-3-9', $row['title']);
+        self::assertEquals('Attrappe 1-3-9', $row['title']);
     }
 
     /**
@@ -345,7 +345,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             $connection->quoteIdentifier('pages.doktype')
         );
 
-        $this->assertSame($expectedSQL, $subject->where_hid_del);
+        self::assertSame($expectedSQL, $subject->where_hid_del);
     }
 
     /**
@@ -370,7 +370,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
             $connection->quoteIdentifier('pages.doktype')
         );
 
-        $this->assertSame($expectedSQL, $subject->where_hid_del);
+        self::assertSame($expectedSQL, $subject->where_hid_del);
     }
 
     ////////////////////////////////
@@ -391,10 +391,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $pageRec = $subject->getPage(11);
 
-        $this->assertEquals(11, $pageRec['uid']);
-        $this->assertEquals(11, $pageRec['t3ver_oid']);
-        $this->assertEquals(987654321, $pageRec['t3ver_wsid']);
-        $this->assertEquals(-1, $pageRec['t3ver_state']);
+        self::assertEquals(11, $pageRec['uid']);
+        self::assertEquals(11, $pageRec['t3ver_oid']);
+        self::assertEquals(987654321, $pageRec['t3ver_wsid']);
+        self::assertEquals(-1, $pageRec['t3ver_state']);
     }
 
     /**
@@ -412,10 +412,10 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
 
         $pageRec = $subject->getWorkspaceVersionOfRecord($wsid, 'pages', 11);
 
-        $this->assertEquals(12, $pageRec['uid']);
-        $this->assertEquals(11, $pageRec['t3ver_oid']);
-        $this->assertEquals(987654321, $pageRec['t3ver_wsid']);
-        $this->assertEquals(-1, $pageRec['t3ver_state']);
+        self::assertEquals(12, $pageRec['uid']);
+        self::assertEquals(11, $pageRec['t3ver_oid']);
+        self::assertEquals(987654321, $pageRec['t3ver_wsid']);
+        self::assertEquals(-1, $pageRec['t3ver_state']);
     }
 
     ////////////////////////////////
@@ -439,14 +439,14 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
-        $this->assertThat(
+        self::assertThat(
             $conditions,
-            $this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)'),
+            self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)'),
             'Versioning placeholders'
         );
-        $this->assertThat(
+        self::assertThat(
             $conditions,
-            $this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)'),
+            self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)'),
             'Records from page -1'
         );
     }
@@ -470,14 +470,14 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
-        $this->assertThat(
+        self::assertThat(
             $conditions,
-            $this->logicalNot($this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
+            self::logicalNot(self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.t3ver_state') . ' <= 0)')),
             'No versioning placeholders'
         );
-        $this->assertThat(
+        self::assertThat(
             $conditions,
-            $this->stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)'),
+            self::stringContains(' AND (' . $connection->quoteIdentifier($table . '.pid') . ' <> -1)'),
             'Records from page -1'
         );
     }
@@ -501,30 +501,30 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
         $conditions = $subject->enableFields($table);
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
 
-        $this->assertThat(
+        self::assertThat(
             $conditions,
-            $this->stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 2))'),
+            self::stringContains(' AND ((' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 0) OR (' . $connection->quoteIdentifier($table . '.t3ver_wsid') . ' = 2))'),
             'No versioning placeholders'
         );
     }
 
     protected function assertOverlayRow($row)
     {
-        $this->assertIsArray($row);
+        self::assertIsArray($row);
 
-        $this->assertArrayHasKey('_PAGES_OVERLAY', $row);
-        $this->assertArrayHasKey('_PAGES_OVERLAY_UID', $row);
-        $this->assertArrayHasKey('_PAGES_OVERLAY_LANGUAGE', $row);
+        self::assertArrayHasKey('_PAGES_OVERLAY', $row);
+        self::assertArrayHasKey('_PAGES_OVERLAY_UID', $row);
+        self::assertArrayHasKey('_PAGES_OVERLAY_LANGUAGE', $row);
 
-        $this->assertTrue($row['_PAGES_OVERLAY']);
+        self::assertTrue($row['_PAGES_OVERLAY']);
     }
 
     protected function assertNotOverlayRow($row)
     {
-        $this->assertIsArray($row);
+        self::assertIsArray($row);
 
-        $this->assertFalse(isset($row['_PAGES_OVERLAY']));
-        $this->assertFalse(isset($row['_PAGES_OVERLAY_UID']));
-        $this->assertFalse(isset($row['_PAGES_OVERLAY_LANGUAGE']));
+        self::assertFalse(isset($row['_PAGES_OVERLAY']));
+        self::assertFalse(isset($row['_PAGES_OVERLAY_UID']));
+        self::assertFalse(isset($row['_PAGES_OVERLAY_LANGUAGE']));
     }
 }

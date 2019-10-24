@@ -115,7 +115,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
         ];
         $dataProvider = $this->subject::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
 
-        $this->assertInstanceOf($dataProviderMockClassName, $dataProvider);
+        self::assertInstanceOf($dataProviderMockClassName, $dataProvider);
     }
 
     /**

@@ -135,7 +135,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     public function resolveReturnsSplitParameters($input, $expected): void
     {
         $subject = new LegacyLinkNotationConverter();
-        $this->assertEquals($expected, $subject->resolve($input));
+        self::assertEquals($expected, $subject->resolve($input));
     }
 
     /**
@@ -151,7 +151,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
     {
         $subject = new LinkService();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 
     /**
@@ -237,11 +237,11 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         // fake methods to return proper objects
         if ($expected['type'] === LinkService::TYPE_FILE) {
             $fileObject = new File(['identifier' => $expected['file']], $storage);
-            $factory->expects($this->any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])
+            $factory->expects(self::any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])
                 ->willReturn($fileObject);
-            $factory->expects($this->any())->method('retrieveFileOrFolderObject')->with($expected['file'])
+            $factory->expects(self::any())->method('retrieveFileOrFolderObject')->with($expected['file'])
                 ->willReturn($fileObject);
-            $factory->expects($this->any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
+            $factory->expects(self::any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
             $expected['file'] = $fileObject;
         }
         // fake methods to return proper objects
@@ -250,9 +250,9 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 $expected['folder'] = substr($expected['folder'], 5);
             }
             $folderObject = new Folder($storage, $expected['folder'], $expected['folder']);
-            $factory->expects($this->any())->method('retrieveFileOrFolderObject')->with($expected['folder'])
+            $factory->expects(self::any())->method('retrieveFileOrFolderObject')->with($expected['folder'])
                 ->willReturn($folderObject);
-            $factory->expects($this->any())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
+            $factory->expects(self::any())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
                 ->willReturn($folderObject);
             $expected['folder'] = $folderObject;
         }
@@ -260,7 +260,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         /** @var LegacyLinkNotationConverter|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(LegacyLinkNotationConverter::class, ['dummy']);
         $subject->_set('resourceFactory', $factory);
-        $this->assertEquals($expected, $subject->resolve($input));
+        self::assertEquals($expected, $subject->resolve($input));
     }
 
     /**
@@ -287,8 +287,8 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
             if (MathUtility::canBeInterpretedAsInteger($parameters['file'])) {
                 $uid = $parameters['file'];
             }
-            $fileObject->expects($this->once())->method('getUid')->willReturn($uid);
-            $fileObject->expects($this->any())->method('getIdentifier')->willReturn($parameters['file']);
+            $fileObject->expects(self::once())->method('getUid')->willReturn($uid);
+            $fileObject->expects(self::any())->method('getIdentifier')->willReturn($parameters['file']);
             $parameters['file'] = $fileObject;
         }
         // fake methods to return proper objects
@@ -304,7 +304,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->setMethods(['getCombinedIdentifier', 'getStorage', 'getIdentifier'])
                 ->disableOriginalConstructor()
                 ->getMock();
-            $folderObject->expects($this->any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
+            $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
             $folderData = explode(':', $parameters['folder']);
             /** @var ResourceStorage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)
@@ -312,13 +312,13 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->disableOriginalConstructor()
                 ->getMock();
             $storage->method('getUid')->willReturn($folderData[0]);
-            $folderObject->expects($this->any())->method('getStorage')->willReturn($storage);
-            $folderObject->expects($this->any())->method('getIdentifier')->willReturn($folderData[1]);
+            $folderObject->expects(self::any())->method('getStorage')->willReturn($storage);
+            $folderObject->expects(self::any())->method('getIdentifier')->willReturn($folderData[1]);
             $parameters['folder'] = $folderObject;
         }
 
         $subject = new LinkService();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 
     /**

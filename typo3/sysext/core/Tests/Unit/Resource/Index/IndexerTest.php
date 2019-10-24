@@ -40,18 +40,18 @@ class IndexerTest extends UnitTestCase
             ->getMock();
 
         $indexFileRepositoryMock = $this->createMock(FileIndexRepository::class);
-        $subject->expects($this->any())->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
+        $subject->expects(self::any())->method('getFileIndexRepository')->willReturn($indexFileRepositoryMock);
 
         $fileMock = $this->createMock(File::class);
-        $fileMock->expects($this->any())->method('getUid')->willReturn(42);
-        $fileMock->expects($this->any())->method('getType')->willReturn(File::FILETYPE_TEXT);
-        $fileMock->expects($this->any())->method('getStorage')->willReturn($mockStorage);
+        $fileMock->expects(self::any())->method('getUid')->willReturn(42);
+        $fileMock->expects(self::any())->method('getType')->willReturn(File::FILETYPE_TEXT);
+        $fileMock->expects(self::any())->method('getStorage')->willReturn($mockStorage);
 
         $extractorServiceMock = $this->getMockBuilder(ExtractorService::class)->getMock();
-        $extractorServiceMock->expects($this->once())->method('extractMetaData')->with($fileMock);
-        $subject->expects($this->any())->method('getExtractorService')->willReturn($extractorServiceMock);
+        $extractorServiceMock->expects(self::once())->method('extractMetaData')->with($fileMock);
+        $subject->expects(self::any())->method('getExtractorService')->willReturn($extractorServiceMock);
 
-        $indexFileRepositoryMock->expects($this->once())->method('updateIndexingTime')->with($fileMock->getUid());
+        $indexFileRepositoryMock->expects(self::once())->method('updateIndexingTime')->with($fileMock->getUid());
 
         $subject->extractMetaData($fileMock);
     }

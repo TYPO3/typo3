@@ -218,7 +218,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
+        $this->subject->expects(self::any())->method('getResourceFactory')->will(self::returnValue($resourceFactory));
 
         $className = $this->getUniqueId('tx_coretest');
         $getImgResourceHookMock = $this->getMockBuilder(ContentObjectGetImageResourceHookInterface::class)
@@ -226,9 +226,9 @@ class ContentObjectRendererTest extends UnitTestCase
             ->setMockClassName($className)
             ->getMock();
         $getImgResourceHookMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getImgResourcePostProcess')
-            ->will($this->returnCallback([$this, 'isGetImgResourceHookCalledCallback']));
+            ->will(self::returnCallback([$this, 'isGetImgResourceHookCalledCallback']));
         $getImgResourceHookObjects = [$getImgResourceHookMock];
         $this->subject->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
         $this->subject->getImgResource('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', []);
@@ -250,10 +250,10 @@ class ContentObjectRendererTest extends UnitTestCase
         $imageResource,
         ContentObjectRenderer $parent
     ): array {
-        $this->assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $file);
-        $this->assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $imageResource['origFile']);
-        $this->assertTrue(is_array($fileArray));
-        $this->assertTrue($parent instanceof ContentObjectRenderer);
+        self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $file);
+        self::assertEquals('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', $imageResource['origFile']);
+        self::assertTrue(is_array($fileArray));
+        self::assertTrue($parent instanceof ContentObjectRenderer);
         return $imageResource;
     }
 
@@ -283,7 +283,7 @@ class ContentObjectRendererTest extends UnitTestCase
             $contentObjectName
         );
         $object = $this->subject->getContentObject($contentObjectName);
-        $this->assertInstanceOf($className, $object);
+        self::assertInstanceOf($className, $object);
     }
 
     /**
@@ -300,7 +300,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $classMap = [$contentObjectName => $className];
         $this->subject->setContentObjectClassMap($classMap);
         $object = $this->subject->getContentObject($contentObjectName);
-        $this->assertInstanceOf($className, $object);
+        self::assertInstanceOf($className, $object);
     }
 
     /**
@@ -319,7 +319,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->subject->setContentObjectClassMap($classMap);
         $classMap[$contentObjectName] = $className;
         $object = $this->subject->getContentObject($contentObjectName);
-        $this->assertNull($object);
+        self::assertNull($object);
     }
 
     /**
@@ -329,7 +329,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function willReturnNullForUnregisteredObject(): void
     {
         $object = $this->subject->getContentObject('FOO');
-        $this->assertNull($object);
+        self::assertNull($object);
     }
 
     /**
@@ -371,11 +371,11 @@ class ContentObjectRendererTest extends UnitTestCase
         string $objectName,
         string $className
     ): void {
-        $this->assertTrue(
+        self::assertTrue(
             is_subclass_of($className, AbstractContentObject::class)
         );
         $object = $this->subject->getContentObject($objectName);
-        $this->assertInstanceOf($className, $object);
+        self::assertInstanceOf($className, $object);
     }
 
     /////////////////////////////////////////
@@ -386,8 +386,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsExcludesParameters(): void
     {
-        $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
-            $this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
+        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->will(
+            self::returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
         );
         $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['exclude'] = [];
@@ -397,7 +397,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -425,7 +425,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $getQueryArgumentsConfiguration['exclude'] = implode(',', $getQueryArgumentsConfiguration['exclude']);
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2&key3[key32][key322]=value322');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -433,8 +433,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsOverrulesSingleParameter(): void
     {
-        $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
-            $this->returnValue('key1=value1')
+        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->will(
+            self::returnValue('key1=value1')
         );
         $getQueryArgumentsConfiguration = [];
         $overruleArguments = [
@@ -445,7 +445,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expectedResult = '&key1=value1Overruled';
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -487,7 +487,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key322]=value322Overruled');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -495,8 +495,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters(): void
     {
-        $this->subject->expects($this->any())->method('getEnvironmentVariable')->with($this->equalTo('QUERY_STRING'))->will(
-            $this->returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
+        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->will(
+            self::returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
         );
         $_GET = [
             'key1' => 'value1',
@@ -531,10 +531,10 @@ class ContentObjectRendererTest extends UnitTestCase
         // implicitly using default 'QUERY_STRING' as 'method'
         $expectedResult = $this->rawUrlEncodeSquareBracketsInUrl('&key2=value2Overruled&key3[key32][key321]=value321Overruled&key3[key32][key323]=value323Overruled');
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
         $getQueryArgumentsConfiguration['method'] = 'GET';
         $actualResult = $this->subject->getQueryArguments($getQueryArgumentsConfiguration, $overruleArguments, true);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -575,7 +575,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $configuration = ['method' => $method];
         $this->expectException(Warning::class);
         $this->expectExceptionMessage($expectedMessage);
-        static::assertSame($expectedResult, $this->subject->getQueryArguments($configuration));
+        self::assertSame($expectedResult, $this->subject->getQueryArguments($configuration));
     }
 
     /**
@@ -597,7 +597,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function cropIsMultibyteSafe(): void
     {
-        $this->assertEquals('бла', $this->subject->crop('бла', '3|...'));
+        self::assertEquals('бла', $this->subject->crop('бла', '3|...'));
     }
 
     //////////////////////////////
@@ -894,7 +894,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function cropHTML(string $expect, string $content, string $conf): void
     {
         $this->handleCharset($content, $expect);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->cropHTML($content, $conf)
         );
@@ -972,7 +972,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function round(float $expect, $content, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->_call('round', $content, $conf)
         );
@@ -989,7 +989,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 'wrap' => '<b>|</b>'
             ]
         ];
-        $this->assertSame(
+        self::assertSame(
             '<b>Test</b> 123',
             $this->subject->stdWrap('Test', $stdWrapConfiguration)
         );
@@ -1019,7 +1019,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 ]
             ]
         ];
-        $this->assertSame(
+        self::assertSame(
             'Counter:1',
             $this->subject->stdWrap('Counter:', $stdWrapConfiguration)
         );
@@ -1079,7 +1079,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function numberFormat(string $expects, $content, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expects,
             $this->subject->numberFormat($content, $conf)
         );
@@ -1149,7 +1149,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function replacement(string $expects, string $content, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expects,
             $this->subject->_call('replacement', $content, $conf)
         );
@@ -1222,7 +1222,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function calcAge(string $expect, int $timestamp, string $labels): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->calcAge($timestamp, $labels)
         );
@@ -1255,7 +1255,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrapReturnsExpectation(string $content, array $configuration, string $expectation): void
     {
-        $this->assertSame($expectation, $this->subject->stdWrap($content, $configuration));
+        self::assertSame($expectation, $this->subject->stdWrap($content, $configuration));
     }
 
     /**
@@ -1293,7 +1293,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function substring(string $expect, string $content, string $conf): void
     {
-        $this->assertSame($expect, $this->subject->substring($content, $conf));
+        self::assertSame($expect, $this->subject->substring($content, $conf));
     }
 
     ///////////////////////////////
@@ -1330,7 +1330,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'onlyInPost' => 'PostValue',
             'inGetAndPost' => 'ValueInPost',
         ];
-        $this->assertEquals($expectedValue, $this->subject->getData('gp:' . $key));
+        self::assertEquals($expectedValue, $this->subject->getData('gp:' . $key));
     }
 
     /**
@@ -1340,7 +1340,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeTsfe(): void
     {
-        $this->assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('tsfe:metaCharset'));
+        self::assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('tsfe:metaCharset'));
     }
 
     /**
@@ -1353,7 +1353,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $envName = $this->getUniqueId('frontendtest');
         $value = $this->getUniqueId('someValue');
         putenv($envName . '=' . $value);
-        $this->assertEquals($value, $this->subject->getData('getenv:' . $envName));
+        self::assertEquals($value, $this->subject->getData('getenv:' . $envName));
     }
 
     /**
@@ -1363,9 +1363,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeGetindpenv(): void
     {
-        $this->subject->expects($this->once())->method('getEnvironmentVariable')
-            ->with($this->equalTo('SCRIPT_FILENAME'))->will($this->returnValue('dummyPath'));
-        $this->assertEquals('dummyPath', $this->subject->getData('getindpenv:SCRIPT_FILENAME'));
+        $this->subject->expects(self::once())->method('getEnvironmentVariable')
+            ->with(self::equalTo('SCRIPT_FILENAME'))->will(self::returnValue('dummyPath'));
+        self::assertEquals('dummyPath', $this->subject->getData('getindpenv:SCRIPT_FILENAME'));
     }
 
     /**
@@ -1379,7 +1379,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = 'someValue';
         $field = [$key => $value];
 
-        $this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
+        self::assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
 
     /**
@@ -1394,7 +1394,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = 'somevalue';
         $field = ['somekey' => ['level1' => ['level2' => 'somevalue']]];
 
-        $this->assertEquals($value, $this->subject->getData('field:' . $key, $field));
+        self::assertEquals($value, $this->subject->getData('field:' . $key, $field));
     }
 
     /**
@@ -1406,9 +1406,9 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $uid = $this->getUniqueId();
         $file = $this->createMock(File::class);
-        $file->expects($this->once())->method('getUid')->will($this->returnValue($uid));
+        $file->expects(self::once())->method('getUid')->will(self::returnValue($uid));
         $this->subject->setCurrentFile($file);
-        $this->assertEquals($uid, $this->subject->getData('file:current:uid'));
+        self::assertEquals($uid, $this->subject->getData('file:current:uid'));
     }
 
     /**
@@ -1422,7 +1422,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = $this->getUniqueId('someValue');
         $this->subject->parameters[$key] = $value;
 
-        $this->assertEquals($value, $this->subject->getData('parameters:' . $key));
+        self::assertEquals($value, $this->subject->getData('parameters:' . $key));
     }
 
     /**
@@ -1436,7 +1436,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = $this->getUniqueId('someValue');
         $GLOBALS['TSFE']->register[$key] = $value;
 
-        $this->assertEquals($value, $this->subject->getData('register:' . $key));
+        self::assertEquals($value, $this->subject->getData('register:' . $key));
     }
 
     /**
@@ -1449,14 +1449,14 @@ class ContentObjectRendererTest extends UnitTestCase
         $frontendUser = $this->getMockBuilder(FrontendUserAuthentication::class)
             ->setMethods(['getSessionData'])
             ->getMock();
-        $frontendUser->expects($this->once())->method('getSessionData')->with('myext')->willReturn([
+        $frontendUser->expects(self::once())->method('getSessionData')->with('myext')->willReturn([
             'mydata' => [
                 'someValue' => 42,
             ],
         ]);
         $GLOBALS['TSFE']->fe_user = $frontendUser;
 
-        $this->assertEquals(42, $this->subject->getData('session:myext|mydata|someValue'));
+        self::assertEquals(42, $this->subject->getData('session:myext|mydata|someValue'));
     }
 
     /**
@@ -1473,7 +1473,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-        $this->assertEquals(2, $this->subject->getData('level'));
+        self::assertEquals(2, $this->subject->getData('level'));
     }
 
     /**
@@ -1483,7 +1483,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeGlobal(): void
     {
-        $this->assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('global:TSFE|metaCharset'));
+        self::assertEquals($GLOBALS['TSFE']->metaCharset, $this->subject->getData('global:TSFE|metaCharset'));
     }
 
     /**
@@ -1500,9 +1500,9 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-        $this->assertEquals('', $this->subject->getData('leveltitle:-1'));
+        self::assertEquals('', $this->subject->getData('leveltitle:-1'));
         // since "title3" is not set, it will slide to "title2"
-        $this->assertEquals('title2', $this->subject->getData('leveltitle:-1,slide'));
+        self::assertEquals('title2', $this->subject->getData('leveltitle:-1,slide'));
     }
 
     /**
@@ -1519,9 +1519,9 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-        $this->assertEquals('', $this->subject->getData('levelmedia:-1'));
+        self::assertEquals('', $this->subject->getData('levelmedia:-1'));
         // since "title3" is not set, it will slide to "title2"
-        $this->assertEquals('media2', $this->subject->getData('levelmedia:-1,slide'));
+        self::assertEquals('media2', $this->subject->getData('levelmedia:-1,slide'));
     }
 
     /**
@@ -1538,9 +1538,9 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-        $this->assertEquals(3, $this->subject->getData('leveluid:-1'));
+        self::assertEquals(3, $this->subject->getData('leveluid:-1'));
         // every element will have a uid - so adding slide doesn't really make sense, just for completeness
-        $this->assertEquals(3, $this->subject->getData('leveluid:-1,slide'));
+        self::assertEquals(3, $this->subject->getData('leveluid:-1,slide'));
     }
 
     /**
@@ -1557,8 +1557,8 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline;
-        $this->assertEquals('', $this->subject->getData('levelfield:-1,testfield'));
-        $this->assertEquals('field2', $this->subject->getData('levelfield:-1,testfield,slide'));
+        self::assertEquals('', $this->subject->getData('levelfield:-1,testfield'));
+        self::assertEquals('field2', $this->subject->getData('levelfield:-1,testfield,slide'));
     }
 
     /**
@@ -1579,7 +1579,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $GLOBALS['TSFE']->tmpl->rootLine = $rootline1;
         $GLOBALS['TSFE']->rootLine = $rootline2;
-        $this->assertEquals('field2', $this->subject->getData('fullrootline:-1,testfield'));
+        self::assertEquals('field2', $this->subject->getData('fullrootline:-1,testfield'));
     }
 
     /**
@@ -1592,8 +1592,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $format = 'Y-M-D';
         $defaultFormat = 'd/m Y';
 
-        $this->assertEquals(date($format, $GLOBALS['EXEC_TIME']), $this->subject->getData('date:' . $format));
-        $this->assertEquals(date($defaultFormat, $GLOBALS['EXEC_TIME']), $this->subject->getData('date'));
+        self::assertEquals(date($format, $GLOBALS['EXEC_TIME']), $this->subject->getData('date:' . $format));
+        self::assertEquals(date($defaultFormat, $GLOBALS['EXEC_TIME']), $this->subject->getData('date'));
     }
 
     /**
@@ -1605,7 +1605,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $uid = mt_rand();
         $GLOBALS['TSFE']->page['uid'] = $uid;
-        $this->assertEquals($uid, $this->subject->getData('page:uid'));
+        self::assertEquals($uid, $this->subject->getData('page:uid'));
     }
 
     /**
@@ -1619,7 +1619,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = $this->getUniqueId('someValue');
         $this->subject->data[$key] = $value;
         $this->subject->currentValKey = $key;
-        $this->assertEquals($value, $this->subject->getData('current'));
+        self::assertEquals($value, $this->subject->getData('current'));
     }
 
     /**
@@ -1631,11 +1631,11 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $dummyRecord = ['uid' => 5, 'title' => 'someTitle'];
 
-        $GLOBALS['TSFE']->sys_page->expects($this->atLeastOnce())->method('getRawRecord')->with(
+        $GLOBALS['TSFE']->sys_page->expects(self::atLeastOnce())->method('getRawRecord')->with(
             'tt_content',
             '106'
-        )->will($this->returnValue($dummyRecord));
-        $this->assertEquals($dummyRecord['title'], $this->subject->getData('db:tt_content:106:title'));
+        )->will(self::returnValue($dummyRecord));
+        self::assertEquals($dummyRecord['title'], $this->subject->getData('db:tt_content:106:title'));
     }
 
     /**
@@ -1647,8 +1647,8 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $key = $this->getUniqueId('someKey');
         $value = $this->getUniqueId('someValue');
-        $GLOBALS['TSFE']->expects($this->once())->method('sL')->with('LLL:' . $key)->will($this->returnValue($value));
-        $this->assertEquals($value, $this->subject->getData('lll:' . $key));
+        $GLOBALS['TSFE']->expects(self::once())->method('sL')->with('LLL:' . $key)->will(self::returnValue($value));
+        self::assertEquals($value, $this->subject->getData('lll:' . $key));
     }
 
     /**
@@ -1659,7 +1659,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypePath(): void
     {
         $filenameIn = 'typo3/sysext/frontend/Public/Icons/Extension.svg';
-        $this->assertEquals($filenameIn, $this->subject->getData('path:' . $filenameIn));
+        self::assertEquals($filenameIn, $this->subject->getData('path:' . $filenameIn));
     }
 
     /**
@@ -1674,10 +1674,10 @@ class ContentObjectRendererTest extends UnitTestCase
             'frontend.user' => new UserAspect(new FrontendUserAuthentication(), [0, -1])
         ]);
         GeneralUtility::setSingletonInstance(Context::class, $context);
-        $this->assertEquals(3, $this->subject->getData('context:workspace:id'));
-        $this->assertEquals('0,-1', $this->subject->getData('context:frontend.user:groupIds'));
-        $this->assertEquals(false, $this->subject->getData('context:frontend.user:isLoggedIn'));
-        $this->assertEquals(false, $this->subject->getData('context:frontend.user:foozball'));
+        self::assertEquals(3, $this->subject->getData('context:workspace:id'));
+        self::assertEquals('0,-1', $this->subject->getData('context:frontend.user:groupIds'));
+        self::assertEquals(false, $this->subject->getData('context:frontend.user:isLoggedIn'));
+        self::assertEquals(false, $this->subject->getData('context:frontend.user:foozball'));
     }
 
     /**
@@ -1698,8 +1698,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getAttribute('site')->willReturn($site);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
-        $this->assertEquals('http://example.com', $this->subject->getData('site:base'));
-        $this->assertEquals('yeah', $this->subject->getData('site:custom.config.nested'));
+        self::assertEquals('http://example.com', $this->subject->getData('site:base'));
+        self::assertEquals('yeah', $this->subject->getData('site:custom.config.nested'));
     }
 
     /**
@@ -1731,7 +1731,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getAttribute('site')->willReturn($site);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
-        $this->assertEquals('http://dev.com', $this->subject->getData('site:base'));
+        self::assertEquals('http://dev.com', $this->subject->getData('site:base'));
     }
 
     /**
@@ -1748,7 +1748,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $serverRequest->getAttribute('language')->willReturn($site);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
-        $this->assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
+        self::assertEquals('German', $this->subject->getData('siteLanguage:navigationTitle'));
     }
 
     /**
@@ -1760,7 +1760,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $recordNumber = mt_rand();
         $this->subject->parentRecordNumber = $recordNumber;
-        $this->assertEquals($recordNumber, $this->subject->getData('cobj:parentRecordNumber'));
+        self::assertEquals($recordNumber, $this->subject->getData('cobj:parentRecordNumber'));
     }
 
     /**
@@ -1782,7 +1782,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->getData('debug:rootLine');
         $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
-        $this->assertEquals($expectedResult, $cleanedResult);
+        self::assertEquals($expectedResult, $cleanedResult);
     }
 
     /**
@@ -1804,7 +1804,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->getData('debug:fullRootLine');
         $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
-        $this->assertEquals($expectedResult, $cleanedResult);
+        self::assertEquals($expectedResult, $cleanedResult);
     }
 
     /**
@@ -1824,7 +1824,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->getData('debug:data');
         $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
-        $this->assertEquals($expectedResult, $cleanedResult);
+        self::assertEquals($expectedResult, $cleanedResult);
     }
 
     /**
@@ -1844,7 +1844,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->getData('debug:register');
         $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
-        $this->assertEquals($expectedResult, $cleanedResult);
+        self::assertEquals($expectedResult, $cleanedResult);
     }
 
     /**
@@ -1863,7 +1863,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $result = $this->subject->getData('debug:page');
         $cleanedResult = str_replace(["\r", "\n", "\t", ' '], '', $result);
 
-        $this->assertEquals($expectedResult, $cleanedResult);
+        self::assertEquals($expectedResult, $cleanedResult);
     }
 
     /**
@@ -1872,7 +1872,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function aTagParamsHasLeadingSpaceIfNotEmpty(): void
     {
         $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
-        $this->assertEquals(' data-test="testdata"', $aTagParams);
+        self::assertEquals(' data-test="testdata"', $aTagParams);
     }
 
     /**
@@ -1882,7 +1882,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $GLOBALS['TSFE']->ATagParams = 'data-global="dataglobal"';
         $aTagParams = $this->subject->getATagParams(['ATagParams' => 'data-test="testdata"']);
-        $this->assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams);
+        self::assertEquals(' data-global="dataglobal" data-test="testdata"', $aTagParams);
     }
 
     /**
@@ -1893,7 +1893,7 @@ class ContentObjectRendererTest extends UnitTestCase
         // make sure global ATagParams are empty
         $GLOBALS['TSFE']->ATagParams = '';
         $aTagParams = $this->subject->getATagParams(['ATagParams' => '']);
-        $this->assertEquals('', $aTagParams);
+        self::assertEquals('', $aTagParams);
     }
 
     /**
@@ -1921,7 +1921,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $defaultImgTagTemplate = '<img src="###SRC###" width="###WIDTH###" height="###HEIGHT###" ###PARAMS### ###ALTPARAMS### ###BORDER######SELFCLOSINGTAGSLASH###>';
         $result = $this->subject->getImageTagTemplate($key, $configuration);
-        $this->assertEquals($result, $defaultImgTagTemplate);
+        self::assertEquals($result, $defaultImgTagTemplate);
     }
 
     /**
@@ -1957,7 +1957,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getImageTagTemplateReturnTemplateElementIdentifiedByKey($key, $configuration, $expectation): void
     {
         $result = $this->subject->getImageTagTemplate($key, $configuration);
-        $this->assertEquals($result, $expectation);
+        self::assertEquals($result, $expectation);
     }
 
     /**
@@ -1987,7 +1987,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $file
     ): void {
         $result = $this->subject->getImageSourceCollection($layoutKey, $configuration, $file);
-        $this->assertSame($result, '');
+        self::assertSame($result, '');
     }
 
     /**
@@ -2025,20 +2025,20 @@ class ContentObjectRendererTest extends UnitTestCase
 
         // Avoid calling of stdWrap
         $cObj
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('stdWrap')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
         // Avoid calling of imgResource
         $cObj
-            ->expects($this->exactly(1))
+            ->expects(self::exactly(1))
             ->method('getImgResource')
-            ->with($this->equalTo('testImageName'))
-            ->will($this->returnValue([100, 100, null, 'bar']));
+            ->with(self::equalTo('testImageName'))
+            ->will(self::returnValue([100, 100, null, 'bar']));
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
-        $this->assertEquals('---bar---', $result);
+        self::assertEquals('---bar---', $result);
     }
 
     /**
@@ -2103,13 +2103,13 @@ class ContentObjectRendererTest extends UnitTestCase
 
         // Avoid calling of stdWrap
         $cObj
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('stdWrap')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
-        $this->assertEmpty($result);
+        self::assertEmpty($result);
     }
 
     /**
@@ -2229,20 +2229,20 @@ class ContentObjectRendererTest extends UnitTestCase
 
         // Avoid calling of stdWrap
         $cObj
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('stdWrap')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
         // Avoid calling of imgResource
         $cObj
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('getImgResource')
-            ->with($this->equalTo('testImageName'))
-            ->will($this->returnValue([100, 100, null, 'bar-file.jpg']));
+            ->with(self::equalTo('testImageName'))
+            ->will(self::returnValue([100, 100, null, 'bar-file.jpg']));
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
-        $this->assertEquals($expectedHtml, $result);
+        self::assertEquals($expectedHtml, $result);
     }
 
     /**
@@ -2259,16 +2259,16 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->subject->start([], 'tt_content');
 
         // Avoid calling stdwrap and getImgResource
-        $this->subject->expects($this->any())
+        $this->subject->expects(self::any())
             ->method('stdWrap')
-            ->will($this->returnArgument(0));
+            ->will(self::returnArgument(0));
 
-        $this->subject->expects($this->any())
+        $this->subject->expects(self::any())
             ->method('getImgResource')
-            ->will($this->returnValue([100, 100, null, 'bar-file.jpg']));
+            ->will(self::returnValue([100, 100, null, 'bar-file.jpg']));
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject->expects($this->any())->method('getResourceFactory')->will($this->returnValue($resourceFactory));
+        $this->subject->expects(self::any())->method('getResourceFactory')->will(self::returnValue($resourceFactory));
 
         $className = $this->getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
         $getImageSourceCollectionHookMock = $this->getMockBuilder(
@@ -2281,9 +2281,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImageSourceCollection'][] = $className;
 
         $getImageSourceCollectionHookMock
-            ->expects($this->exactly(1))
+            ->expects(self::exactly(1))
             ->method('getOneSourceCollection')
-            ->will($this->returnCallback([$this, 'isGetOneSourceCollectionCalledCallback']));
+            ->will(self::returnCallback([$this, 'isGetOneSourceCollectionCalledCallback']));
 
         $configuration = [
             'layoutKey' => 'data',
@@ -2305,7 +2305,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $result = $this->subject->getImageSourceCollection('data', $configuration, $this->getUniqueId('testImage-'));
 
-        $this->assertSame($result, 'isGetOneSourceCollectionCalledCallback');
+        self::assertSame($result, 'isGetOneSourceCollectionCalledCallback');
     }
 
     /**
@@ -2324,8 +2324,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $oneSourceCollection,
         $parent
     ): string {
-        $this->assertTrue(is_array($sourceRenderConfiguration));
-        $this->assertTrue(is_array($sourceConfiguration));
+        self::assertTrue(is_array($sourceRenderConfiguration));
+        self::assertTrue(is_array($sourceConfiguration));
         return 'isGetOneSourceCollectionCalledCallback';
     }
 
@@ -2407,7 +2407,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ]
         ];
 
-        $this->assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
+        self::assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
     }
 
     /**
@@ -2428,7 +2428,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ]
         ];
 
-        $this->assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
+        self::assertSame('New message for testing', $this->subject->render($contentObjectFixture, $configuration));
     }
 
     /**
@@ -2457,7 +2457,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $contentObjectFixture = $this->getMockBuilder(AbstractContentObject::class)
             ->setConstructorArgs([$this->subject])
             ->getMock();
-        $contentObjectFixture->expects($this->once())
+        $contentObjectFixture->expects(self::once())
             ->method('render')
             ->willReturnCallback(function () {
                 throw new \LogicException('Exception during rendering', 1414513947);
@@ -2720,7 +2720,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_parseFuncReturnsParsedHtml($value, $configuration, $expectedResult): void
     {
-        $this->assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
+        self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
     /**
@@ -2840,7 +2840,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
-        $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 
     /**
@@ -2861,7 +2861,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $this->getFrontendController()->config['config'] = $settings;
         $typoScript = ['parameter' => $mailAddress];
 
-        $this->assertEquals($expected, $this->subject->typoLink($linkText, $typoScript));
+        self::assertEquals($expected, $this->subject->typoLink($linkText, $typoScript));
     }
 
     /**
@@ -3093,7 +3093,7 @@ class ContentObjectRendererTest extends UnitTestCase
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
-        $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 
     /**
@@ -3254,7 +3254,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TSFE']->absRefPrefix = $absRefPrefix;
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 
-        $this->assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
+        self::assertEquals($expectedResult, $this->subject->typoLink($linkText, $configuration));
     }
 
     /**
@@ -3266,7 +3266,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(LinkService::class, $linkService->reveal());
         $linkService->resolve('foo')->willThrow(InvalidPathException::class);
 
-        $this->assertSame('foo', $this->subject->typoLink('foo', ['parameter' => 'foo']));
+        self::assertSame('foo', $this->subject->typoLink('foo', ['parameter' => 'foo']));
     }
 
     /**
@@ -3295,7 +3295,7 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $expectedResult = 5;
         $amountOfEntries = $this->subject->splitObj('1, 2, 3, 4, 5', $conf);
-        $this->assertSame(
+        self::assertSame(
             $expectedResult,
             $amountOfEntries
         );
@@ -3369,13 +3369,13 @@ class ContentObjectRendererTest extends UnitTestCase
     public function calculateCacheKey(string $expect, array $conf, int $times, $with, $withWrap, $will): void
     {
         $subject = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrap']);
-        $subject->expects($this->exactly($times))
+        $subject->expects(self::exactly($times))
             ->method('stdWrap')
             ->with($with, $withWrap)
             ->willReturn($will);
 
         $result = $subject->_call('calculateCacheKey', $conf);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -3427,13 +3427,13 @@ class ContentObjectRendererTest extends UnitTestCase
             ['calculateCacheKey']
         );
         $subject
-            ->expects($this->exactly(1))
+            ->expects(self::exactly(1))
             ->method('calculateCacheKey')
             ->with($conf)
             ->willReturn($cacheKey);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('get')
             ->with($cacheKey)
             ->willReturn($cached);
@@ -3445,7 +3445,7 @@ class ContentObjectRendererTest extends UnitTestCase
             CacheManager::class,
             $cacheManager
         );
-        $this->assertSame($expect, $subject->_call('getFromCache', $conf));
+        self::assertSame($expect, $subject->_call('getFromCache', $conf));
     }
 
     /**
@@ -3536,7 +3536,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'one' => 1,
         ];
         $this->subject->_set('data', $data);
-        $this->assertSame($expect, $this->subject->getFieldVal($fields));
+        self::assertSame($expect, $this->subject->getFieldVal($fields));
     }
 
     /**
@@ -3568,7 +3568,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function caseshift(string $expect, string $content, string $case): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->caseshift($content, $case)
         );
@@ -3645,11 +3645,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['caseshift'])->getMock();
         $subject
-            ->expects($this->exactly(count($with)))
+            ->expects(self::exactly(count($with)))
             ->method('caseshift')
             ->withConsecutive(...$with)
-            ->will($this->onConsecutiveCalls(...$will));
-        $this->assertSame(
+            ->will(self::onConsecutiveCalls(...$will));
+        self::assertSame(
             $expect,
             $subject->HTMLcaseshift($content, $case)
         );
@@ -3686,8 +3686,8 @@ class ContentObjectRendererTest extends UnitTestCase
                 $notCallable += 1;
             }
         }
-        $this->assertSame(1, $notCallable);
-        $this->assertSame(82, $callable);
+        self::assertSame(1, $notCallable);
+        self::assertSame(82, $callable);
     }
 
     /**
@@ -3731,8 +3731,8 @@ class ContentObjectRendererTest extends UnitTestCase
                 $exceptions[] = $processor;
             }
         }
-        $this->assertSame($expectExceptions, $exceptions);
-        $this->assertSame(82, $count);
+        self::assertSame($expectExceptions, $exceptions);
+        self::assertSame(82, $count);
     }
 
     /***************************************************************************
@@ -3796,14 +3796,14 @@ class ContentObjectRendererTest extends UnitTestCase
         $hookObject1 = $this->createMock(
             ContentObjectStdWrapHookInterface::class
         );
-        $hookObject1->expects($this->once())
+        $hookObject1->expects(self::once())
             ->method($hookObjectCall)
             ->with($content, $conf)
             ->willReturn($processed1);
         $hookObject2 = $this->createMock(
             ContentObjectStdWrapHookInterface::class
         );
-        $hookObject2->expects($this->once())
+        $hookObject2->expects(self::once())
             ->method($hookObjectCall)
             ->with($processed1, $conf)
             ->willReturn($processed2);
@@ -3812,7 +3812,7 @@ class ContentObjectRendererTest extends UnitTestCase
             [$hookObject1, $hookObject2]
         );
         $result = $this->subject->$stdWrapMethod($content, $conf);
-        $this->assertSame($processed2, $result);
+        self::assertSame($processed2, $result);
     }
 
     /**
@@ -3888,11 +3888,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['HTMLparser_TSbridge'])->getMock();
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('HTMLparser_TSbridge')
             ->with($content, $conf['HTMLparser.'] ?? [])
             ->willReturn($will);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_HTMLparser($content, $conf)
         );
@@ -3931,7 +3931,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_addPageCacheTagsAddsPageTags(array $expectedTags, array $configuration): void
     {
         $this->subject->stdWrap_addPageCacheTags('', $configuration);
-        $this->assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
+        self::assertEquals($expectedTags, $this->frontendControllerMock->_get('pageCacheTags'));
     }
 
     /**
@@ -3957,11 +3957,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['calcAge'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('calcAge')
             ->with($difference, $conf['age'])
             ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_age($content, $conf));
+        self::assertSame($return, $subject->stdWrap_age($content, $conf));
     }
 
     /**
@@ -3989,11 +3989,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
             ->with($conf['append'], $conf['append.'], $debugKey)
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $content . $return,
             $subject->stdWrap_append($content, $conf)
         );
@@ -4042,7 +4042,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_br($expected, $input, $xhtmlDoctype): void
     {
         $GLOBALS['TSFE']->xhtmlDoctype = $xhtmlDoctype;
-        $this->assertSame($expected, $this->subject->stdWrap_br($input));
+        self::assertSame($expected, $this->subject->stdWrap_br($input));
     }
 
     /**
@@ -4092,7 +4092,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_brTag(string $input, string $expected, array $config): void
     {
-        $this->assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
+        self::assertEquals($expected, $this->subject->stdWrap_brTag($input, $config));
     }
 
     /**
@@ -4163,10 +4163,10 @@ class ContentObjectRendererTest extends UnitTestCase
         try {
             $this->setLocale(LC_NUMERIC, $locale);
         } catch (Exception $e) {
-            $this->markTestSkipped('Locale ' . $locale . ' is not available.');
+            self::markTestSkipped('Locale ' . $locale . ' is not available.');
         }
         $conf = ['bytes.' => $conf];
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_bytes($content, $conf)
         );
@@ -4197,11 +4197,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
             ->with($conf['cObject'], $conf['cObject.'], $debugKey)
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_cObject($content, $conf)
         );
@@ -4276,11 +4276,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap'])->getMock();
         $subject
-            ->expects($this->exactly(2))
+            ->expects(self::exactly(2))
             ->method('stdWrap')
             ->withConsecutive([$content, $firstConf], [$between, $secondConf])
-            ->will($this->onConsecutiveCalls($between, $expect));
-        $this->assertSame(
+            ->will(self::onConsecutiveCalls($between, $expect));
+        self::assertSame(
             $expect,
             $subject->stdWrap_orderedStdWrap($content, $conf)
         );
@@ -4360,11 +4360,11 @@ class ContentObjectRendererTest extends UnitTestCase
             ['getFromCache']
         );
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('getFromCache')
             ->with($with)
             ->willReturn($will);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_cacheRead($input, $conf)
         );
@@ -4447,23 +4447,23 @@ class ContentObjectRendererTest extends UnitTestCase
             ]
         );
         $subject
-            ->expects($this->exactly($timesCCK))
+            ->expects(self::exactly($timesCCK))
             ->method('calculateCacheKey')
             ->with($confCache)
             ->willReturn($key);
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('calculateCacheTags')
             ->with($confCache)
             ->willReturn($tags);
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('calculateCacheLifetime')
             ->with($confCache)
             ->willReturn($lifetime);
         $cacheFrontend = $this->createMock(CacheFrontendInterface::class);
         $cacheFrontend
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('set')
             ->with($key, $content, $tags, $lifetime)
             ->willReturn(null);
@@ -4491,11 +4491,11 @@ class ContentObjectRendererTest extends UnitTestCase
             $closure,
             $closure
         ];
-        $this->assertSame(
+        self::assertSame(
             $content,
             $subject->stdWrap_cacheStore($content, $conf)
         );
-        $this->assertSame($times * 3, $countCalls);
+        self::assertSame($times * 3, $countCalls);
     }
 
     /**
@@ -4521,11 +4521,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['HTMLcaseshift'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('HTMLcaseshift')
             ->with($content, $conf['case'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_case($content, $conf)
         );
@@ -4540,7 +4540,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $input = 'discarded';
         $expected = 'C';
-        $this->assertEquals($expected, $this->subject->stdWrap_char($input, ['char' => '67']));
+        self::assertEquals($expected, $this->subject->stdWrap_char($input, ['char' => '67']));
     }
 
     /**
@@ -4566,11 +4566,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['crop'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('crop')
             ->with($content, $conf['crop'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_crop($content, $conf)
         );
@@ -4599,11 +4599,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cropHTML'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cropHTML')
             ->with($content, $conf['cropHTML'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_cropHTML($content, $conf)
         );
@@ -4661,7 +4661,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_csConv(string $expected, string $input, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_csConv($input, $conf)
         );
@@ -4685,16 +4685,16 @@ class ContentObjectRendererTest extends UnitTestCase
             'currentValue_new' => 'new',
         ];
         $this->subject->_set('data', $data);
-        $this->assertSame(
+        self::assertSame(
             'currentValue_kidjls9dksoje',
             $this->subject->_get('currentValKey')
         );
-        $this->assertSame(
+        self::assertSame(
             'default',
             $this->subject->stdWrap_current('discarded', ['discarded'])
         );
         $this->subject->_set('currentValKey', 'currentValue_new');
-        $this->assertSame(
+        self::assertSame(
             'new',
             $this->subject->stdWrap_current('discarded', ['discarded'])
         );
@@ -4749,12 +4749,12 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject->_set('data', $data);
         $subject->_set('alternativeData', $alt);
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getData')
             ->with($conf['data'], $expect)
             ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_data('discard', $conf));
-        $this->assertSame('', $subject->_get('alternativeData'));
+        self::assertSame($return, $subject->stdWrap_data('discard', $conf));
+        self::assertSame('', $subject->_get('alternativeData'));
     }
 
     /**
@@ -4780,11 +4780,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['dataWrap'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('dataWrap')
             ->with($content, $conf['dataWrap'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_dataWrap($content, $conf)
         );
@@ -4843,7 +4843,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_date(string $expected, $content, array $conf, int $now): void
     {
         $GLOBALS['EXEC_TIME'] = $now;
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $this->subject->stdWrap_date($content, $conf)
         );
@@ -4859,7 +4859,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $expect = '<pre>&lt;p class=&quot;class&quot;&gt;&lt;br/&gt;'
             . '&lt;/p&gt;</pre>';
         $content = '<p class="class"><br/></p>';
-        $this->assertSame($expect, $this->subject->stdWrap_debug($content));
+        self::assertSame($expect, $this->subject->stdWrap_debug($content));
     }
 
     /**
@@ -4900,18 +4900,18 @@ class ContentObjectRendererTest extends UnitTestCase
         ob_start();
         $result = $this->subject->stdWrap_debugData($content);
         $out = ob_get_clean();
-        $this->assertSame($result, $content);
-        $this->assertStringContainsString('$cObj->data', $out);
-        $this->assertStringContainsString($value, $out);
-        $this->assertStringNotContainsString($altValue, $out);
+        self::assertSame($result, $content);
+        self::assertStringContainsString('$cObj->data', $out);
+        self::assertStringContainsString($value, $out);
+        self::assertStringNotContainsString($altValue, $out);
         // By adding alternative data both are returned together.
         $this->subject->alternativeData = [$key => $altValue];
         ob_start();
         $this->subject->stdWrap_debugData($content);
         $out = ob_get_clean();
-        $this->assertStringNotContainsString('$cObj->alternativeData', $out);
-        $this->assertStringContainsString($value, $out);
-        $this->assertStringContainsString($altValue, $out);
+        self::assertStringNotContainsString('$cObj->alternativeData', $out);
+        self::assertStringContainsString($value, $out);
+        self::assertStringContainsString($altValue, $out);
     }
 
     /**
@@ -4957,12 +4957,12 @@ class ContentObjectRendererTest extends UnitTestCase
         ob_start();
         $result = $this->subject->stdWrap_debugFunc($content, $conf);
         $out = ob_get_clean();
-        $this->assertSame($result, $content);
-        $this->assertStringContainsString($content, $out);
+        self::assertSame($result, $content);
+        self::assertStringContainsString($content, $out);
         if ($expectArray) {
-            $this->assertStringContainsString('=>', $out);
+            self::assertStringContainsString('=>', $out);
         } else {
-            $this->assertStringNotContainsString('=>', $out);
+            self::assertStringNotContainsString('=>', $out);
         }
     }
 
@@ -5038,7 +5038,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_doubleBrTag(string $expected, string $input, array $config): void
     {
-        $this->assertEquals($expected, $this->subject->stdWrap_doubleBrTag($input, $config));
+        self::assertEquals($expected, $this->subject->stdWrap_doubleBrTag($input, $config));
     }
 
     /**
@@ -5155,11 +5155,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['editIcons'])->getMock();
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('editIcons')
             ->with($content, $conf['editIcons'], $param3)
             ->willReturn($will);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_editIcons($content, $conf)
         );
@@ -5188,11 +5188,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['encaps_lineSplit'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('encaps_lineSplit')
             ->with($content, $conf['encapsLines.'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_encapsLines($content, $conf)
         );
@@ -5229,7 +5229,7 @@ class ContentObjectRendererTest extends UnitTestCase
         // empty tags where this is allowed according to HTML5
         $content = '<' . $input . ' id="myId" class="bodytext" />';
         $result = $this->subject->stdWrap_encapsLines($content, $conf);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -5383,11 +5383,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['editPanel'])->getMock();
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('editPanel')
             ->with($content, $conf['editPanel.'])
             ->willReturn($will);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_editPanel($content, $conf)
         );
@@ -5442,7 +5442,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_encodeForJavaScriptValue(string $expect, string $content): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_encodeForJavaScriptValue($content)
         );
@@ -5477,7 +5477,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_expandList(string $expected, string $content): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             $this->subject->stdWrap_expandList($content)
         );
@@ -5500,11 +5500,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['getFieldVal'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFieldVal')
             ->with($conf['field'])
             ->willReturn($expect);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_field('discarded', $conf)
         );
@@ -5621,11 +5621,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject->_set('data', $data);
         $subject->_set('stdWrapRecursionLevel', 1);
         $subject->_set('stopRendering', [1 => false]);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_fieldRequired($content, $conf)
         );
-        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+        self::assertSame($stop, $subject->_get('stopRendering')[1]);
     }
 
     /**
@@ -5679,7 +5679,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_hash(string $expect, string $content, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_hash($content, $conf)
         );
@@ -5727,7 +5727,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_htmlSpecialChars(string $expected, string $input, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_htmlSpecialChars($input, $conf)
         );
@@ -5841,12 +5841,12 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject->_set('stdWrapRecursionLevel', 1);
         $subject->_set('stopRendering', [1 => false]);
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('checkIf')
             ->with($conf['if.'] ?? null)
             ->willReturn($will);
-        $this->assertSame($expect, $subject->stdWrap_if($content, $conf));
-        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+        self::assertSame($expect, $subject->stdWrap_if($content, $conf));
+        self::assertSame($stop, $subject->_get('stopRendering')[1]);
     }
 
     /**
@@ -5892,7 +5892,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_ifBlank($expect, $content, array $conf): void
     {
         $result = $this->subject->stdWrap_ifBlank($content, $conf);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -5946,7 +5946,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_ifEmpty($expect, $content, array $conf): void
     {
         $result = $this->subject->stdWrap_ifEmpty($content, $conf);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -5988,7 +5988,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_ifNull($expect, $content, array $conf): void
     {
         $result = $this->subject->stdWrap_ifNull($content, $conf);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -6041,7 +6041,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_innerWrap(string $expected, string $input, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_innerWrap($input, $conf)
         );
@@ -6097,7 +6097,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_innerWrap2(string $expected, string $input, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_innerWrap2($input, $conf)
         );
@@ -6121,9 +6121,9 @@ class ContentObjectRendererTest extends UnitTestCase
         $return = $this->getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['insertData'])->getMock();
-        $subject->expects($this->once())->method('insertData')
+        $subject->expects(self::once())->method('insertData')
             ->with($content)->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_insertData($content, $conf)
         );
@@ -6153,7 +6153,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_insertDataAndInputExamples($expect, string $content): void
     {
-        $this->assertSame($expect, $this->subject->stdWrap_insertData($content));
+        self::assertSame($expect, $this->subject->stdWrap_insertData($content));
     }
 
     /**
@@ -6207,7 +6207,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_intval(int $expect, $content): void
     {
-        $this->assertSame($expect, $this->subject->stdWrap_intval($content));
+        self::assertSame($expect, $this->subject->stdWrap_intval($content));
     }
 
     /**
@@ -6265,7 +6265,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_keywords(string $expected, string $input): void
     {
-        $this->assertSame($expected, $this->subject->stdWrap_keywords($input));
+        self::assertSame($expected, $this->subject->stdWrap_keywords($input));
     }
 
     /**
@@ -6345,7 +6345,7 @@ class ContentObjectRendererTest extends UnitTestCase
             $this->frontendControllerMock
                 ->config['config']['language'] = $language;
         }
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_lang($input, $conf)
         );
@@ -6370,7 +6370,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 new SiteLanguage(2, 'en_UK', new Uri(), ['typo3Language' => $language])
             );
         }
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_lang($input, $conf)
         );
@@ -6402,7 +6402,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['listNum'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('listNum')
             ->with(
                 $content,
@@ -6410,7 +6410,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $conf['listNum.']['splitChar']
             )
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_listNum($content, $conf)
         );
@@ -6496,7 +6496,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_noTrimWrap(string $expect, string $content, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_noTrimWrap($content, $conf)
         );
@@ -6521,9 +6521,9 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['numRows'])->getMock();
-        $subject->expects($this->once())->method('numRows')
+        $subject->expects(self::once())->method('numRows')
             ->with($conf['numRows.'])->willReturn('return');
-        $this->assertSame(
+        self::assertSame(
             'return',
             $subject->stdWrap_numRows('discard', $conf)
         );
@@ -6552,11 +6552,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['numberFormat'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('numberFormat')
             ->with($content, $conf['numberFormat.'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_numberFormat($content, $conf)
         );
@@ -6612,7 +6612,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_outerWrap(string $expected, string $input, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_outerWrap($input, $conf)
         );
@@ -6700,7 +6700,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_override($expect, string $content, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_override($content, $conf)
         );
@@ -6730,11 +6730,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['parseFunc'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('parseFunc')
             ->with($content, $conf['parseFunc.'], $conf['parseFunc'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_parseFunc($content, $conf)
         );
@@ -6765,11 +6765,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
             ->with($conf['postCObject'], $conf['postCObject.'], $debugKey)
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $content . $return,
             $subject->stdWrap_postCObject($content, $conf)
         );
@@ -6797,11 +6797,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['callUserFunction'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('callUserFunction')
             ->with($conf['postUserFunc'], $conf['postUserFunc.'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_postUserFunc($content, $conf)
         );
@@ -6838,7 +6838,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $frontend = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()->setMethods(['uniqueHash'])
             ->getMock();
-        $frontend->expects($this->once())->method('uniqueHash')
+        $frontend->expects(self::once())->method('uniqueHash')
             ->with()->willReturn($uniqueHash);
         $frontend->config = [];
         $subject = $this->getAccessibleMock(
@@ -6846,7 +6846,7 @@ class ContentObjectRendererTest extends UnitTestCase
             null,
             [$frontend]
         );
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_postUserFuncInt($content, $conf)
         );
@@ -6857,7 +6857,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'type' => 'POSTUSERFUNC',
             'cObj' => serialize($subject)
         ];
-        $this->assertSame(
+        self::assertSame(
             $array,
             $frontend->config['INTincScript'][$substKey]
         );
@@ -6888,11 +6888,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
             ->with($conf['preCObject'], $conf['preCObject.'], $debugKey)
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return . $content,
             $subject->stdWrap_preCObject($content, $conf)
         );
@@ -6924,7 +6924,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['listNum'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('listNum')
             ->with(
                 $content,
@@ -6932,7 +6932,7 @@ class ContentObjectRendererTest extends UnitTestCase
                 $conf['preIfEmptyListNum.']['splitChar']
             )
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_preIfEmptyListNum($content, $conf)
         );
@@ -6995,11 +6995,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['prefixComment'])->getMock();
         $subject
-            ->expects($this->exactly($times))
+            ->expects(self::exactly($times))
             ->method('prefixComment')
             ->with($conf['prefixComment'] ?? null, [], $content)
             ->willReturn($will);
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $subject->stdWrap_prefixComment($content, $conf)
         );
@@ -7030,11 +7030,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('cObjGetSingle')
             ->with($conf['prepend'], $conf['prepend.'], $debugKey)
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return . $content,
             $subject->stdWrap_prepend($content, $conf)
         );
@@ -7079,7 +7079,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_prioriCalc($expect, string $content, array $conf): void
     {
         $result = $this->subject->stdWrap_prioriCalc($content, $conf);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -7104,10 +7104,10 @@ class ContentObjectRendererTest extends UnitTestCase
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['callUserFunction'])->getMock();
-        $subject->expects($this->once())->method('callUserFunction')
+        $subject->expects(self::once())->method('callUserFunction')
             ->with($conf['preUserFunc'], $conf['preUserFunc.'], $content)
             ->willReturn('return');
-        $this->assertSame(
+        self::assertSame(
             'return',
             $subject->stdWrap_preUserFunc($content, $conf)
         );
@@ -7142,7 +7142,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_rawUrlEncode(string $expect, string $content): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_rawUrlEncode($content)
         );
@@ -7171,11 +7171,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['replacement'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('replacement')
             ->with($content, $conf['replacement.'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_replacement($content, $conf)
         );
@@ -7225,8 +7225,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->subject;
         $subject->_set('stdWrapRecursionLevel', 1);
         $subject->_set('stopRendering', [1 => false]);
-        $this->assertSame($expect, $subject->stdWrap_required($content));
-        $this->assertSame($stop, $subject->_get('stopRendering')[1]);
+        self::assertSame($expect, $subject->stdWrap_required($content));
+        self::assertSame($stop, $subject->_get('stopRendering')[1]);
     }
 
     /**
@@ -7252,11 +7252,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['round'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('round')
             ->with($content, $conf['round.'])
             ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_round($content, $conf));
+        self::assertSame($return, $subject->stdWrap_round($content, $conf));
     }
 
     /**
@@ -7267,12 +7267,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_setContentToCurrent(): void
     {
         $content = $this->getUniqueId('content');
-        $this->assertNotSame($content, $this->subject->getData('current'));
-        $this->assertSame(
+        self::assertNotSame($content, $this->subject->getData('current'));
+        self::assertSame(
             $content,
             $this->subject->stdWrap_setContentToCurrent($content)
         );
-        $this->assertSame($content, $this->subject->getData('current'));
+        self::assertSame($content, $this->subject->getData('current'));
     }
 
     /**
@@ -7325,11 +7325,11 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_setCurrent(string $input, array $conf): void
     {
         if (isset($conf['setCurrent'])) {
-            $this->assertNotSame($conf['setCurrent'], $this->subject->getData('current'));
+            self::assertNotSame($conf['setCurrent'], $this->subject->getData('current'));
         }
-        $this->assertSame($input, $this->subject->stdWrap_setCurrent($input, $conf));
+        self::assertSame($input, $this->subject->stdWrap_setCurrent($input, $conf));
         if (isset($conf['setCurrent'])) {
-            $this->assertSame($conf['setCurrent'], $this->subject->getData('current'));
+            self::assertSame($conf['setCurrent'], $this->subject->getData('current'));
         }
     }
 
@@ -7356,11 +7356,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['splitObj'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('splitObj')
             ->with($content, $conf['split.'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_split($content, $conf)
         );
@@ -7388,11 +7388,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('stdWrap')
             ->with($content, $conf['stdWrap.'])
             ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_stdWrap($content, $conf));
+        self::assertSame($return, $subject->stdWrap_stdWrap($content, $conf));
     }
 
     /**
@@ -7463,7 +7463,7 @@ class ContentObjectRendererTest extends UnitTestCase
         string $expected
     ): void {
         $result = $this->subject->stdWrapValue($key, $configuration, $defaultValue);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -7571,7 +7571,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $conf = ['strPad.' => $conf];
         $result = $this->subject->stdWrap_strPad($content, $conf);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -7628,7 +7628,7 @@ class ContentObjectRendererTest extends UnitTestCase
         // Reset timezone
         date_default_timezone_set($timezoneBackup);
 
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -7640,7 +7640,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $content = '<html><p>Hello <span class="inline">inline tag<span>!</p><p>Hello!</p></html>';
         $expected = 'Hello inline tag!Hello!';
-        $this->assertSame($expected, $this->subject->stdWrap_stripHtml($content));
+        self::assertSame($expected, $this->subject->stdWrap_stripHtml($content));
     }
 
     /**
@@ -7707,7 +7707,7 @@ class ContentObjectRendererTest extends UnitTestCase
         // Reset timezone
         date_default_timezone_set($timezoneBackup);
 
-        $this->assertEquals($expect, $result);
+        self::assertEquals($expect, $result);
     }
 
     /**
@@ -7733,11 +7733,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['substring'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('substring')
             ->with($content, $conf['substring'])
             ->willReturn($return);
-        $this->assertSame(
+        self::assertSame(
             $return,
             $subject->stdWrap_substring($content, $conf)
         );
@@ -7804,7 +7804,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_trim(string $expect, $content): void
     {
         $result = $this->subject->stdWrap_trim($content);
-        $this->assertSame($expect, $result);
+        self::assertSame($expect, $result);
     }
 
     /**
@@ -7829,11 +7829,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['typolink'])->getMock();
         $subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('typolink')
             ->with($content, $conf['typolink.'])
             ->willReturn($return);
-        $this->assertSame($return, $subject->stdWrap_typolink($content, $conf));
+        self::assertSame($return, $subject->stdWrap_typolink($content, $conf));
     }
 
     /**
@@ -7896,7 +7896,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_wrap(string $expected, string $input, array $conf): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->stdWrap_wrap($input, $conf)
         );
@@ -7962,7 +7962,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_wrap2(string $expected, string $input, array $conf): void
     {
-        $this->assertSame($expected, $this->subject->stdWrap_wrap2($input, $conf));
+        self::assertSame($expected, $this->subject->stdWrap_wrap2($input, $conf));
     }
 
     /**
@@ -8025,7 +8025,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_wrap3(string $expected, string $input, array $conf): void
     {
-        $this->assertSame($expected, $this->subject->stdWrap_wrap3($input, $conf));
+        self::assertSame($expected, $this->subject->stdWrap_wrap3($input, $conf));
     }
 
     /**
@@ -8069,7 +8069,7 @@ class ContentObjectRendererTest extends UnitTestCase
         if ($wrapAlignConf !== null) {
             $conf['wrapAlign'] = $wrapAlignConf;
         }
-        $this->assertSame(
+        self::assertSame(
             $expect,
             $this->subject->stdWrap_wrapAlign($content, $conf)
         );
@@ -8094,7 +8094,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getCurrentTable(): void
     {
-        $this->assertEquals('tt_content', $this->subject->getCurrentTable());
+        self::assertEquals('tt_content', $this->subject->getCurrentTable());
     }
 
     /**
@@ -8162,7 +8162,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $this->templateServiceMock->rootLine = [3 => ['uid' => 55]];
         $actual = $this->subject->linkWrap($content, $wrap);
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**
@@ -8242,7 +8242,7 @@ class ContentObjectRendererTest extends UnitTestCase
         // The parameter $conf is never used. Just provide null.
         // Consider to improve the signature and deprecate the old one.
         $result = $this->subject->prefixComment($comment, null, $content);
-        $this->assertEquals($expect, $result);
+        self::assertEquals($expect, $result);
     }
 
     /**
@@ -8255,7 +8255,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $storageMock = $this->createMock(ResourceStorage::class);
         $file = new File(['testfile'], $storageMock);
         $this->subject->setCurrentFile($file);
-        $this->assertSame($file, $this->subject->getCurrentFile());
+        self::assertSame($file, $this->subject->getCurrentFile());
     }
 
     /**
@@ -8273,8 +8273,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $value = $this->getUniqueId();
         $this->subject->currentValKey = $key;
         $this->subject->setCurrentVal($value);
-        $this->assertEquals($value, $this->subject->getCurrentVal());
-        $this->assertEquals($value, $this->subject->data[$key]);
+        self::assertEquals($value, $this->subject->getCurrentVal());
+        self::assertEquals($value, $this->subject->data[$key]);
     }
 
     /**
@@ -8286,7 +8286,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $value = $this->getUniqueId();
         $this->subject->setUserObjectType($value);
-        $this->assertEquals($value, $this->subject->getUserObjectType());
+        self::assertEquals($value, $this->subject->getUserObjectType());
     }
 
     /**
@@ -8327,7 +8327,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function mailSpamProtectionWithTypeAscii(string $content, string $expected): void
     {
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $this->subject->_call('encryptEmail', $content, 'ascii')
         );

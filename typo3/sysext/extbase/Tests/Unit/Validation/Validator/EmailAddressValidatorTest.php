@@ -48,7 +48,7 @@ class EmailAddressValidatorTest extends UnitTestCase
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();
-        $this->assertFalse($subject->validate($address)->hasErrors());
+        self::assertFalse($subject->validate($address)->hasErrors());
     }
 
     /**
@@ -82,7 +82,7 @@ class EmailAddressValidatorTest extends UnitTestCase
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();
-        $this->assertTrue($subject->validate($address)->hasErrors());
+        self::assertTrue($subject->validate($address)->hasErrors());
     }
 
     /**
@@ -94,6 +94,6 @@ class EmailAddressValidatorTest extends UnitTestCase
         $subject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
             ->setMethods(['translateErrorMessage'])
             ->getMock();
-        $this->assertEquals(1, count($subject->validate('notAValidMail@Address')->getErrors()));
+        self::assertEquals(1, count($subject->validate('notAValidMail@Address')->getErrors()));
     }
 }

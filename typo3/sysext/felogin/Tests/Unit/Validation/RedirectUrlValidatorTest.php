@@ -120,7 +120,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getBackendPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $this->assertFalse($this->accessibleFixture->isValid($url));
+        self::assertFalse($this->accessibleFixture->isValid($url));
     }
 
     /**
@@ -161,7 +161,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
             Environment::getBackendPath() . '/index.php',
             Environment::isWindows() ? 'WINDOWS' : 'UNIX'
         );
-        $this->assertTrue($this->accessibleFixture->isValid($url));
+        self::assertTrue($this->accessibleFixture->isValid($url));
     }
 
     /**
@@ -190,7 +190,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
     {
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
-        $this->assertFalse($this->accessibleFixture->isValid($url));
+        self::assertFalse($this->accessibleFixture->isValid($url));
     }
 
     /**
@@ -231,7 +231,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
         );
         $this->testSitePath = '/subdir/';
         $this->setUpFakeSitePathAndHost();
-        $this->assertTrue($this->accessibleFixture->isValid($url));
+        self::assertTrue($this->accessibleFixture->isValid($url));
     }
 
     /**************************************************
@@ -291,7 +291,7 @@ class RedirectUrlValidatorTest extends UnitTestCase
         );
         $_SERVER['HTTP_HOST'] = $host;
         $_SERVER['HTTPS'] = $https;
-        $this->assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $url));
+        self::assertTrue($this->accessibleFixture->_call('isInCurrentDomain', $url));
     }
 
     /**
@@ -320,6 +320,6 @@ class RedirectUrlValidatorTest extends UnitTestCase
     public function isInCurrentDomainReturnsFalseIfDomainsAreDifferent($host, $url)
     {
         $_SERVER['HTTP_HOST'] = $host;
-        $this->assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $url));
+        self::assertFalse($this->accessibleFixture->_call('isInCurrentDomain', $url));
     }
 }

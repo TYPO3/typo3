@@ -38,7 +38,7 @@ class SetupModuleControllerTest extends UnitTestCase
         $setupModuleControllerMock->_set('setupIsUpdated', true);
 
         $setupModuleControllerMock
-            ->expects($this->atMost(2))
+            ->expects(self::atMost(2))
             ->method('getFlashMessage')
             ->withConsecutive(
                 ['setupWasUpdated', 'UserSettings'],
@@ -63,7 +63,7 @@ class SetupModuleControllerTest extends UnitTestCase
         $setupModuleControllerMock->_set('settingsAreResetToDefault', true);
 
         $setupModuleControllerMock
-            ->expects($this->atMost(2))
+            ->expects(self::atMost(2))
             ->method('getFlashMessage')
             ->withConsecutive(
                 ['settingsAreReset', 'resetConfiguration'],
@@ -89,7 +89,7 @@ class SetupModuleControllerTest extends UnitTestCase
         $setupModuleControllerMock->_set('passwordIsUpdated', SetupModuleController::PASSWORD_UPDATED);
 
         $setupModuleControllerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFlashMessage')
             ->withConsecutive(
                 ['newPassword_ok', 'newPassword']
@@ -114,7 +114,7 @@ class SetupModuleControllerTest extends UnitTestCase
         $setupModuleControllerMock->_set('passwordIsUpdated', SetupModuleController::PASSWORD_OLD_WRONG);
 
         $setupModuleControllerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFlashMessage')
             ->withConsecutive(
                 ['oldPassword_failed', 'newPassword']
@@ -139,7 +139,7 @@ class SetupModuleControllerTest extends UnitTestCase
         $setupModuleControllerMock->_set('passwordIsUpdated', SetupModuleController::PASSWORD_NOT_THE_SAME);
 
         $setupModuleControllerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getFlashMessage')
             ->withConsecutive(
                 ['newPassword_failed', 'newPassword']
@@ -165,7 +165,7 @@ class SetupModuleControllerTest extends UnitTestCase
         $flashMessage1 = new FlashMessage('foo', 'bar');
         $flashMessage2 = new FlashMessage('bar', 'foo');
         $setupModuleControllerMock
-            ->expects($this->atMost(2))
+            ->expects(self::atMost(2))
             ->method('getFlashMessage')
             ->withConsecutive(
                 ['settingsAreReset', 'resetConfiguration'],
@@ -176,7 +176,7 @@ class SetupModuleControllerTest extends UnitTestCase
             );
 
         $setupModuleControllerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('enqueueFlashMessages')
             ->with([$flashMessage1, $flashMessage2]);
         $setupModuleControllerMock->_call('addFlashMessages');

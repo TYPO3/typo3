@@ -172,7 +172,7 @@ class AspectFactoryTest extends UnitTestCase
             $settings,
             $this->languageProphecy->reveal()
         );
-        static::assertSame(array_keys($aspects), array_keys($expectation));
+        self::assertSame(array_keys($aspects), array_keys($expectation));
         array_walk($aspects, function ($aspect, $key) use ($expectation) {
             static::assertInstanceOf($expectation[$key], $aspect);
         });

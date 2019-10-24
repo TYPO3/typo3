@@ -63,7 +63,7 @@ class SiteConfigurationTest extends UnitTestCase
      */
     public function resolveAllExistingSitesReturnsEmptyArrayForNoSiteConfigsFound(): void
     {
-        $this->assertEmpty($this->siteConfiguration->resolveAllExistingSites());
+        self::assertEmpty($this->siteConfiguration->resolveAllExistingSites());
     }
 
     /**
@@ -79,10 +79,10 @@ class SiteConfigurationTest extends UnitTestCase
         GeneralUtility::mkdir($this->fixturePath . '/home');
         GeneralUtility::writeFile($this->fixturePath . '/home/config.yaml', $yamlFileContents);
         $sites = $this->siteConfiguration->resolveAllExistingSites();
-        $this->assertCount(1, $sites);
+        self::assertCount(1, $sites);
         $currentSite = current($sites);
-        $this->assertSame(42, $currentSite->getRootPageId());
-        $this->assertEquals(new Uri('https://example.com'), $currentSite->getBase());
+        self::assertSame(42, $currentSite->getRootPageId());
+        self::assertEquals(new Uri('https://example.com'), $currentSite->getBase());
     }
 
     /**

@@ -65,7 +65,7 @@ class CaseContentObjectTest extends UnitTestCase
         $conf = [
             'key' => 'not existing'
         ];
-        $this->assertSame('', $this->subject->render($conf));
+        self::assertSame('', $this->subject->render($conf));
     }
 
     /**
@@ -80,6 +80,6 @@ class CaseContentObjectTest extends UnitTestCase
                 'value' => 'expected value'
             ],
         ];
-        $this->assertSame('expected value', $this->subject->render($conf));
+        self::assertSame('expected value', $this->subject->render($conf));
     }
 }

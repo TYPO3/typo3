@@ -148,6 +148,6 @@ class IpLockerTest extends UnitTestCase
         $ipLocker = GeneralUtility::makeInstance(IpLocker::class, $lockIPv4PartCount, $lockIPv6PartCount);
         $lock = $ipLocker->getSessionIpLock($ipAddress);
 
-        $this->assertEquals($expectedLock, $lock);
+        self::assertEquals($expectedLock, $lock);
     }
 }

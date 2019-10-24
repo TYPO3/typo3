@@ -49,19 +49,19 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'pid' => 321
         ];
 
-        $this->subject->expects($this->at(0))
+        $this->subject->expects(self::at(0))
             ->method('getDatabaseRow')
             ->with($input['tableName'], 10)
             ->willReturn(['pid' => 123]);
 
-        $this->subject->expects($this->at(1))
+        $this->subject->expects(self::at(1))
             ->method('getDatabaseRow')
             ->with('pages', 123)
             ->willReturn($parentPageRow);
 
         $result = $this->subject->addData($input);
 
-        $this->assertSame($parentPageRow, $result['parentPageRow']);
+        self::assertSame($parentPageRow, $result['parentPageRow']);
     }
 
     /**
@@ -82,19 +82,19 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'uid' => 123,
             'pid' => 321
         ];
-        $this->subject->expects($this->at(0))
+        $this->subject->expects(self::at(0))
             ->method('getDatabaseRow')
             ->with($input['tableName'], 10)
             ->willReturn($neigborRow);
 
-        $this->subject->expects($this->at(1))
+        $this->subject->expects(self::at(1))
             ->method('getDatabaseRow')
             ->with('pages', 321)
             ->willReturn($parentPageRow);
 
         $result = $this->subject->addData($input);
 
-        $this->assertSame($neigborRow, $result['neighborRow']);
+        self::assertSame($neigborRow, $result['neighborRow']);
     }
 
     /**
@@ -108,14 +108,14 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'vanillaUid' => -10,
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRow')
             ->with($input['tableName'], 10)
             ->willReturn(['pid' => 0]);
 
         $result = $this->subject->addData($input);
 
-        $this->assertNull($result['parentPageRow']);
+        self::assertNull($result['parentPageRow']);
     }
 
     /**
@@ -133,14 +133,14 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'pid' => 321
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRow')
             ->with('pages', 123)
             ->willReturn($parentPageRow);
 
         $result = $this->subject->addData($input);
 
-        $this->assertSame($parentPageRow, $result['parentPageRow']);
+        self::assertSame($parentPageRow, $result['parentPageRow']);
     }
 
     /**
@@ -161,13 +161,13 @@ class DatabaseParentPageRowTest extends UnitTestCase
             'uid' => 321,
             'pid' => 456
         ];
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRow')
             ->with('pages', 321)
             ->willReturn($parentPageRow);
 
         $result = $this->subject->addData($input);
 
-        $this->assertSame($parentPageRow, $result['parentPageRow']);
+        self::assertSame($parentPageRow, $result['parentPageRow']);
     }
 }

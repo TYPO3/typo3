@@ -63,10 +63,10 @@ class BackendFormProtectionTest extends UnitTestCase
     public function generateTokenReadsTokenFromSessionData()
     {
         $this->backendUserMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getSessionData')
             ->with('formProtectionSessionToken')
-            ->will($this->returnValue([]));
+            ->will(self::returnValue([]));
         $this->subject->generateToken('foo');
     }
 
@@ -85,12 +85,12 @@ class BackendFormProtectionTest extends UnitTestCase
         );
 
         $this->backendUserMock
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getSessionData')
             ->with('formProtectionSessionToken')
-            ->will($this->returnValue($sessionToken));
+            ->will(self::returnValue($sessionToken));
 
-        $this->assertTrue(
+        self::assertTrue(
             $this->subject->validateToken($tokenId, $formName, $action, $formInstanceName)
         );
     }
@@ -112,7 +112,7 @@ class BackendFormProtectionTest extends UnitTestCase
     public function persistSessionTokenWritesTokenToSession()
     {
         $this->backendUserMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('setAndSaveSessionData');
         $this->subject->persistSessionToken();
     }

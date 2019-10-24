@@ -45,7 +45,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['retrieveSessionToken'])
             ->getMock();
-        $subject->expects($this->once())->method('retrieveSessionToken')->will($this->returnValue('token'));
+        $subject->expects(self::once())->method('retrieveSessionToken')->will(self::returnValue('token'));
         $subject->generateToken('foo');
         $subject->generateToken('foo');
     }
@@ -58,7 +58,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['retrieveSessionToken'])
             ->getMock();
-        $subject->expects($this->once())->method('retrieveSessionToken')->will($this->returnValue('token'));
+        $subject->expects(self::once())->method('retrieveSessionToken')->will(self::returnValue('token'));
         $subject->validateToken('foo', 'bar');
         $subject->validateToken('foo', 'bar');
     }
@@ -71,7 +71,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $tokenId = $this->subject->generateToken($formName);
         $this->subject->clean();
-        $this->assertFalse($this->subject->validateToken($tokenId, $formName));
+        self::assertFalse($this->subject->validateToken($tokenId, $formName));
     }
 
     /**
@@ -82,7 +82,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['persistSessionToken'])
             ->getMock();
-        $subject->expects($this->once())->method('persistSessionToken');
+        $subject->expects(self::once())->method('persistSessionToken');
         $subject->clean();
     }
 
@@ -128,7 +128,7 @@ class AbstractFormProtectionTest extends UnitTestCase
      */
     public function generateTokenReturns32CharacterHexToken(): void
     {
-        $this->assertRegExp('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
+        self::assertRegExp('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
     }
 
     /**
@@ -136,7 +136,7 @@ class AbstractFormProtectionTest extends UnitTestCase
      */
     public function generateTokenCalledTwoTimesWithSameParametersReturnsSameTokens(): void
     {
-        $this->assertEquals($this->subject->generateToken('foo', 'edit', 'bar'), $this->subject->generateToken('foo', 'edit', 'bar'));
+        self::assertEquals($this->subject->generateToken('foo', 'edit', 'bar'), $this->subject->generateToken('foo', 'edit', 'bar'));
     }
 
     ///////////////////////////////////
@@ -166,7 +166,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        $this->assertTrue($this->subject->validateToken($this->subject->generateToken($formName, $action, $formInstanceName), $formName, $action, $formInstanceName));
+        self::assertTrue($this->subject->validateToken($this->subject->generateToken($formName, $action, $formInstanceName), $formName, $action, $formInstanceName));
     }
 
     /**
@@ -175,7 +175,7 @@ class AbstractFormProtectionTest extends UnitTestCase
     public function validateTokenWithDataFromGenerateTokenWithMissingActionAndFormInstanceNameReturnsTrue(): void
     {
         $formName = 'foo';
-        $this->assertTrue($this->subject->validateToken($this->subject->generateToken($formName), $formName));
+        self::assertTrue($this->subject->validateToken($this->subject->generateToken($formName), $formName));
     }
 
     /**
@@ -188,7 +188,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $formInstanceName = 'bar';
         $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
         $this->subject->validateToken($tokenId, $formName, $action, $formInstanceName);
-        $this->assertTrue($this->subject->validateToken($tokenId, $formName, $action, $formInstanceName));
+        self::assertTrue($this->subject->validateToken($tokenId, $formName, $action, $formInstanceName));
     }
 
     /**
@@ -200,7 +200,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $action = 'edit';
         $formInstanceName = 'bar';
         $this->subject->generateToken($formName, $action, $formInstanceName);
-        $this->assertFalse($this->subject->validateToken('Hello world!', $formName, $action, $formInstanceName));
+        self::assertFalse($this->subject->validateToken('Hello world!', $formName, $action, $formInstanceName));
     }
 
     /**
@@ -212,7 +212,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $action = 'edit';
         $formInstanceName = 'bar';
         $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        $this->assertFalse($this->subject->validateToken($tokenId, 'espresso', $action, $formInstanceName));
+        self::assertFalse($this->subject->validateToken($tokenId, 'espresso', $action, $formInstanceName));
     }
 
     /**
@@ -224,7 +224,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $action = 'edit';
         $formInstanceName = 'bar';
         $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        $this->assertFalse($this->subject->validateToken($tokenId, $formName, 'delete', $formInstanceName));
+        self::assertFalse($this->subject->validateToken($tokenId, $formName, 'delete', $formInstanceName));
     }
 
     /**
@@ -236,7 +236,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $action = 'edit';
         $formInstanceName = 'bar';
         $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        $this->assertFalse($this->subject->validateToken($tokenId, $formName, $action, 'beer'));
+        self::assertFalse($this->subject->validateToken($tokenId, $formName, $action, 'beer'));
     }
 
     /**
@@ -248,7 +248,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
-        $subject->expects($this->never())->method('createValidationErrorMessage');
+        $subject->expects(self::never())->method('createValidationErrorMessage');
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
@@ -266,7 +266,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
-        $subject->expects($this->once())->method('createValidationErrorMessage');
+        $subject->expects(self::once())->method('createValidationErrorMessage');
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
@@ -284,7 +284,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['createValidationErrorMessage'])
             ->getMock();
-        $subject->expects($this->once())->method('createValidationErrorMessage');
+        $subject->expects(self::once())->method('createValidationErrorMessage');
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';

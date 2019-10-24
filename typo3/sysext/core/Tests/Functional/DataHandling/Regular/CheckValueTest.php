@@ -29,7 +29,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     {
         $record = $this->insertRecordWithRadioFieldValue('predefined value');
 
-        $this->assertEquals('predefined value', $record['tx_testdatahandler_radio']);
+        self::assertEquals('predefined value', $record['tx_testdatahandler_radio']);
     }
 
     /**
@@ -39,7 +39,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     {
         $record = $this->insertRecordWithRadioFieldValue('processed value');
 
-        $this->assertEquals('processed value', $record['tx_testdatahandler_radio']);
+        self::assertEquals('processed value', $record['tx_testdatahandler_radio']);
     }
 
     /**
@@ -49,7 +49,7 @@ class CheckValueTest extends AbstractDataHandlerActionTestCase
     {
         $record = $this->insertRecordWithRadioFieldValue('some other value');
 
-        $this->assertEquals('', $record['tx_testdatahandler_radio']);
+        self::assertEquals('', $record['tx_testdatahandler_radio']);
     }
 
     /**

@@ -31,7 +31,7 @@ class VideoTagRendererTest extends UnitTestCase
     {
         $VideoTagRenderer = new VideoTagRenderer();
 
-        $this->assertSame(1, $VideoTagRenderer->getPriority());
+        self::assertSame(1, $VideoTagRenderer->getPriority());
     }
 
     /**
@@ -42,18 +42,18 @@ class VideoTagRendererTest extends UnitTestCase
         $VideoTagRenderer = new VideoTagRenderer();
 
         $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
+        $fileResourceMock1->expects(self::any())->method('getMimeType')->will(self::returnValue('video/mp4'));
         $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->expects($this->any())->method('getMimeType')->will($this->returnValue('video/webm'));
+        $fileResourceMock2->expects(self::any())->method('getMimeType')->will(self::returnValue('video/webm'));
         $fileResourceMock3 = $this->createMock(File::class);
-        $fileResourceMock3->expects($this->any())->method('getMimeType')->will($this->returnValue('video/ogg'));
+        $fileResourceMock3->expects(self::any())->method('getMimeType')->will(self::returnValue('video/ogg'));
         $fileResourceMock4 = $this->createMock(File::class);
-        $fileResourceMock4->expects($this->any())->method('getMimeType')->will($this->returnValue('application/ogg'));
+        $fileResourceMock4->expects(self::any())->method('getMimeType')->will(self::returnValue('application/ogg'));
 
-        $this->assertTrue($VideoTagRenderer->canRender($fileResourceMock1));
-        $this->assertTrue($VideoTagRenderer->canRender($fileResourceMock2));
-        $this->assertTrue($VideoTagRenderer->canRender($fileResourceMock3));
-        $this->assertTrue($VideoTagRenderer->canRender($fileResourceMock4));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceMock1));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceMock2));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceMock3));
+        self::assertTrue($VideoTagRenderer->canRender($fileResourceMock4));
     }
 
     /**
@@ -64,9 +64,9 @@ class VideoTagRendererTest extends UnitTestCase
         $VideoTagRenderer = new VideoTagRenderer();
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('audio/mpeg'));
+        $fileResourceMock->expects(self::any())->method('getMimeType')->will(self::returnValue('audio/mpeg'));
 
-        $this->assertFalse($VideoTagRenderer->canRender($fileResourceMock));
+        self::assertFalse($VideoTagRenderer->canRender($fileResourceMock));
     }
 
     /**
@@ -148,10 +148,10 @@ class VideoTagRendererTest extends UnitTestCase
         $VideoTagRenderer = new VideoTagRenderer();
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects($this->any())->method('getMimeType')->will($this->returnValue('video/mp4'));
-        $fileResourceMock->expects($this->any())->method('getPublicUrl')->will($this->returnValue($url));
+        $fileResourceMock->expects(self::any())->method('getMimeType')->will(self::returnValue('video/mp4'));
+        $fileResourceMock->expects(self::any())->method('getPublicUrl')->will(self::returnValue($url));
 
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $VideoTagRenderer->render($fileResourceMock, '300m', '200', $arguments)
         );

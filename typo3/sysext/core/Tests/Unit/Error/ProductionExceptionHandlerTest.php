@@ -36,7 +36,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
             ->setMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->subject->expects($this->any())->method('discloseExceptionInformation')->will($this->returnValue(true));
+        $this->subject->expects(self::any())->method('discloseExceptionInformation')->will(self::returnValue(true));
     }
 
     /**
@@ -50,8 +50,8 @@ class ProductionExceptionHandlerTest extends UnitTestCase
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertStringContainsString(htmlspecialchars($message), $output);
-        $this->assertStringNotContainsString($message, $output);
+        self::assertStringContainsString(htmlspecialchars($message), $output);
+        self::assertStringNotContainsString($message, $output);
     }
 
     /**
@@ -65,12 +65,12 @@ class ProductionExceptionHandlerTest extends UnitTestCase
             ->setMethods(['getTitle'])
             ->setConstructorArgs(['some message'])
             ->getMock();
-        $exception->expects($this->any())->method('getTitle')->will($this->returnValue($title));
+        $exception->expects(self::any())->method('getTitle')->will(self::returnValue($title));
         ob_start();
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();
         ob_end_clean();
-        $this->assertStringContainsString(htmlspecialchars($title), $output);
-        $this->assertStringNotContainsString($title, $output);
+        self::assertStringContainsString(htmlspecialchars($title), $output);
+        self::assertStringNotContainsString($title, $output);
     }
 }

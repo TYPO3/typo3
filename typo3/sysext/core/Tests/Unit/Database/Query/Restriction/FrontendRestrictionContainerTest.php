@@ -178,6 +178,6 @@ class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
 
         $subject = new FrontendRestrictionContainer($context);
         $expression = $subject->buildExpression([$tableAlias => $tableName], $this->expressionBuilder);
-        $this->assertSame($expectedSQL, (string)$expression);
+        self::assertSame($expectedSQL, (string)$expression);
     }
 }

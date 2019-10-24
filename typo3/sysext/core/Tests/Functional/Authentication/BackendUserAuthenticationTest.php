@@ -70,6 +70,6 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
     public function getTranslatedPageOnWebMountIsInWebMountForNonAdminUser(): void
     {
         $result = $this->subject->isInWebMount(2);
-        $this->assertNotNull($result);
+        self::assertNotNull($result);
     }
 }

@@ -56,7 +56,7 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
             ]
         ];
 
-        $this->assertSame($input, $this->subject->addData($input));
+        self::assertSame($input, $this->subject->addData($input));
     }
 
     /**
@@ -101,6 +101,6 @@ class DatabaseRecordOverrideValuesTest extends UnitTestCase
             'renderType' => 'hidden',
         ];
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 }

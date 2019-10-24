@@ -34,6 +34,6 @@ class FlashMessageTest extends UnitTestCase
             'title' => 'aTitle',
             'message' => 'aMessage',
         ];
-        $this->assertEquals($expected, $message->jsonSerialize());
+        self::assertEquals($expected, $message->jsonSerialize());
     }
 }

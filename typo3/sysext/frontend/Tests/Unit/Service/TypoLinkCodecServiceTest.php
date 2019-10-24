@@ -44,7 +44,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
      */
     public function encodeReturnsExpectedResult(array $parts, $expected)
     {
-        $this->assertSame($expected, $this->subject->encode($parts));
+        self::assertSame($expected, $this->subject->encode($parts));
     }
 
     /**
@@ -91,7 +91,7 @@ class TypoLinkCodecServiceTest extends UnitTestCase
      */
     public function decodeReturnsExpectedResult($typoLink, array $expected)
     {
-        $this->assertSame($expected, $this->subject->decode($typoLink));
+        self::assertSame($expected, $this->subject->decode($typoLink));
     }
 
     /**

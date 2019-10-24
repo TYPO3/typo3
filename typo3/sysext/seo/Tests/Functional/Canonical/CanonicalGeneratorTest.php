@@ -93,6 +93,6 @@ class CanonicalGeneratorTest extends AbstractTestCase
     public function generate(int $uid, string $expectedCanonicalUrl): void
     {
         $typoScriptFrontendController = $this->initTypoScriptFrontendController($uid);
-        $this->assertSame($expectedCanonicalUrl, (new CanonicalGenerator($typoScriptFrontendController))->generate());
+        self::assertSame($expectedCanonicalUrl, (new CanonicalGenerator($typoScriptFrontendController))->generate());
     }
 }

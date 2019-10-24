@@ -36,7 +36,7 @@ class NumberRangeValidatorTest extends UnitTestCase
             ->setMethods(['dummy'])
             ->setConstructorArgs([$options])
             ->getMock();
-        $this->assertFalse($validator->validate(10.5)->hasErrors());
+        self::assertFalse($validator->validate(10.5)->hasErrors());
     }
 
     /**
@@ -49,7 +49,7 @@ class NumberRangeValidatorTest extends UnitTestCase
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
-        $this->assertTrue($validator->validate(1000.1)->hasErrors());
+        self::assertTrue($validator->validate(1000.1)->hasErrors());
     }
 
     /**
@@ -62,7 +62,7 @@ class NumberRangeValidatorTest extends UnitTestCase
             ->setMethods(['dummy'])
             ->setConstructorArgs([$options])
             ->getMock();
-        $this->assertFalse($validator->validate(100)->hasErrors());
+        self::assertFalse($validator->validate(100)->hasErrors());
     }
 
     /**
@@ -75,6 +75,6 @@ class NumberRangeValidatorTest extends UnitTestCase
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
-        $this->assertTrue($validator->validate('not a number')->hasErrors());
+        self::assertTrue($validator->validate('not a number')->hasErrors());
     }
 }

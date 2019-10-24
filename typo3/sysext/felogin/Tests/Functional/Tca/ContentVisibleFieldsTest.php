@@ -51,7 +51,7 @@ class ContentVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\F
         $formResult = $formEngineTestService->createNewRecordForm('tt_content', ['CType' => 'login']);
 
         foreach (static::$contentFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );

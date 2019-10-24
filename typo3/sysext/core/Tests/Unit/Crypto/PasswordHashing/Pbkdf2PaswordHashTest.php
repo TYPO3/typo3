@@ -50,7 +50,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
     {
         $password = '';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
-        $this->assertNull($subject->getHashedPassword($password));
+        self::assertNull($subject->getHashedPassword($password));
     }
 
     /**
@@ -60,7 +60,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
     {
         $password = 'a';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
-        $this->assertNotNull($subject->getHashedPassword($password));
+        self::assertNotNull($subject->getHashedPassword($password));
     }
 
     /**
@@ -71,7 +71,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->isValidSaltedPW($saltedHashPassword));
+        self::assertTrue($subject->isValidSaltedPW($saltedHashPassword));
     }
 
     /**
@@ -87,7 +87,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = 'password';
         $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68FfaQ';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -100,7 +100,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = 'password';
         $saltedHashPassword = '$pbkdf2-sha256$1000$woPhT0yoWm3AXJXSjuxJ3w$iZ6EvTulMqXlzr0NO8z5EyrklFcJk5Uw2Fqje68Ffa';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
-        $this->assertFalse($subject->checkPassword($password, $saltedHashPassword));
+        self::assertFalse($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -116,7 +116,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = 'aEjOtY';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -132,7 +132,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = '01369';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -148,7 +148,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = ' !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -168,7 +168,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password .= chr(215) . chr(247);
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -193,7 +193,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         }
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertTrue($subject->checkPassword($password, $saltedHashPassword));
+        self::assertTrue($subject->checkPassword($password, $saltedHashPassword));
     }
 
     /**
@@ -205,7 +205,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password1 = $password . 'INVALID';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->checkPassword($password1, $saltedHashPassword));
+        self::assertFalse($subject->checkPassword($password1, $saltedHashPassword));
     }
 
     /**
@@ -216,7 +216,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $password = 'password';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword($password);
-        $this->assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
+        self::assertFalse($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
     /**
@@ -227,7 +227,7 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
         $saltedHashPassword = $subject->getHashedPassword('password');
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1001]);
-        $this->assertTrue($subject->isHashUpdateNeeded($saltedHashPassword));
+        self::assertTrue($subject->isHashUpdateNeeded($saltedHashPassword));
     }
 
     /**
@@ -237,6 +237,6 @@ class Pbkdf2PaswordHashTest extends UnitTestCase
     {
         $passlibSaltedHash= '$pbkdf2-sha256$6400$.6UI/S.nXIk8jcbdHx3Fhg$98jZicV16ODfEsEZeYPGHU3kbrUrvUEXOPimVSQDD44';
         $subject = new Pbkdf2PasswordHash(['hash_count' => 1000]);
-        $this->assertTrue($subject->checkPassword('password', $passlibSaltedHash));
+        self::assertTrue($subject->checkPassword('password', $passlibSaltedHash));
     }
 }

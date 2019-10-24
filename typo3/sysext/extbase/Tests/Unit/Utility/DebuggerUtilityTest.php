@@ -36,7 +36,7 @@ class DebuggerUtilityTest extends UnitTestCase
             $objectStorage->attach($obj);
         }
         DebuggerUtility::var_dump($objectStorage, null, 8, true, false, true);
-        $this->assertTrue($objectStorage->valid());
+        self::assertTrue($objectStorage->valid());
     }
 
     /**
@@ -50,7 +50,7 @@ class DebuggerUtilityTest extends UnitTestCase
             yield 3;
         })();
         $result = DebuggerUtility::var_dump($generator, null, 8, true, false, true);
-        $this->assertStringContainsString('Generator', $result);
+        self::assertStringContainsString('Generator', $result);
     }
 
     /**
@@ -61,7 +61,7 @@ class DebuggerUtilityTest extends UnitTestCase
         $testObject = new \stdClass();
         $testObject->foo = 'bar';
         $result = DebuggerUtility::var_dump($testObject, null, 8, true, false, true);
-        $this->assertRegExp('/foo.*bar/', $result);
+        self::assertRegExp('/foo.*bar/', $result);
     }
 
     /**
@@ -71,7 +71,7 @@ class DebuggerUtilityTest extends UnitTestCase
     {
         $result = DebuggerUtility::var_dump(function (...$args) {
         }, null, 8, true, false, true);
-        $this->assertStringContainsString('function (...$args)', $result);
+        self::assertStringContainsString('function (...$args)', $result);
     }
 
     /**
@@ -84,7 +84,7 @@ class DebuggerUtilityTest extends UnitTestCase
         $testClass->notSoSecretData = 'I like burger.';
 
         $result = DebuggerUtility::var_dump($testClass, null, 8, true, false, true, null, ['secretData']);
-        $this->assertStringNotContainsString($testClass->secretData, $result);
+        self::assertStringNotContainsString($testClass->secretData, $result);
     }
 
     /**
@@ -96,7 +96,7 @@ class DebuggerUtilityTest extends UnitTestCase
         $testClass->data = 'I like burger.';
 
         $result = DebuggerUtility::var_dump($testClass, null, 8, true, false, true, [\stdClass::class]);
-        $this->assertStringNotContainsString($testClass->data, $result);
+        self::assertStringNotContainsString($testClass->data, $result);
     }
 
     /**
@@ -107,7 +107,7 @@ class DebuggerUtilityTest extends UnitTestCase
         $date = \DateTime::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
 
         $result = DebuggerUtility::var_dump($date, null, 8, true, false, true, [\stdClass::class]);
-        $this->assertStringContainsString('2018-11-26T09:27:28', $result);
+        self::assertStringContainsString('2018-11-26T09:27:28', $result);
     }
 
     /**
@@ -118,6 +118,6 @@ class DebuggerUtilityTest extends UnitTestCase
         $date = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2018-11-26 09:27:28', new \DateTimeZone('UTC'));
 
         $result = DebuggerUtility::var_dump($date, null, 8, true, false, true, [\stdClass::class]);
-        $this->assertStringContainsString('2018-11-26T09:27:28', $result);
+        self::assertStringContainsString('2018-11-26T09:27:28', $result);
     }
 }

@@ -94,7 +94,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('getAccessibleFormStorageFolders'));
+        self::assertSame($expected, $mockController->_call('getAccessibleFormStorageFolders'));
     }
 
     /**
@@ -110,7 +110,7 @@ class FormManagerControllerTest extends UnitTestCase
         ], [], '', false);
 
         $mockTranslationService
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('translateValuesRecursive')
             ->willReturnArgument(0);
 
@@ -125,9 +125,9 @@ class FormManagerControllerTest extends UnitTestCase
         $mockUriBuilder = $this->createMock(UriBuilder::class);
         $mockControllerContext = $this->createMock(ControllerContext::class);
         $mockControllerContext
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getUriBuilder')
-            ->will($this->returnValue($mockUriBuilder));
+            ->will(self::returnValue($mockUriBuilder));
 
         $mockController->_set('controllerContext', $mockControllerContext);
 
@@ -137,12 +137,12 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ]);
 
-        $mockUriBuilder->expects($this->any())->method('uriFor')->willReturn(
+        $mockUriBuilder->expects(self::any())->method('uriFor')->willReturn(
             '/typo3/index.php?some=param'
         );
 
         $mockController
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getAccessibleFormStorageFolders')
             ->willReturn([
                 0 => [
@@ -167,7 +167,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), $mockController->_call('getFormManagerAppInitialData'));
+        self::assertSame(json_encode($expected), $mockController->_call('getFormManagerAppInitialData'));
     }
 
     /**
@@ -218,7 +218,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('getAvailableFormDefinitions'));
+        self::assertSame($expected, $mockController->_call('getAvailableFormDefinitions'));
     }
 
     /**
@@ -264,17 +264,17 @@ class FormManagerControllerTest extends UnitTestCase
         ]);
 
         $mockController
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getModuleUrl')
             ->willReturn('/typo3/index.php?some=param');
 
         $mockController
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRecord')
             ->willReturn([ 'uid' => 1, 'pid' => 0 ]);
 
         $mockController
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRecordTitle')
             ->willReturn('record title');
 
@@ -288,7 +288,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $mockController->_call('getProcessedReferencesRows', 'fake'));
+        self::assertSame($expected, $mockController->_call('getProcessedReferencesRows', 'fake'));
     }
 
     /**
@@ -321,7 +321,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ]);
 
-        $this->assertTrue($mockController->_call('isValidTemplatePath', 'standard', 'EXT:form/Tests/Unit/Controller/Fixtures/SimpleContactForm.yaml'));
+        self::assertTrue($mockController->_call('isValidTemplatePath', 'standard', 'EXT:form/Tests/Unit/Controller/Fixtures/SimpleContactForm.yaml'));
     }
 
     /**
@@ -354,7 +354,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ]);
 
-        $this->assertFalse($mockController->_call('isValidTemplatePath', 'standard', 'EXT:form/Tests/Unit/Controller/Fixtures/NonExistingForm.yaml'));
+        self::assertFalse($mockController->_call('isValidTemplatePath', 'standard', 'EXT:form/Tests/Unit/Controller/Fixtures/NonExistingForm.yaml'));
     }
 
     /**
@@ -397,7 +397,7 @@ class FormManagerControllerTest extends UnitTestCase
             ],
         ]);
 
-        $this->assertFalse($mockController->_call('isValidTemplatePath', 'other', 'EXT:form/Tests/Unit/Controller/Fixtures/SimpleContactForm.yaml'));
+        self::assertFalse($mockController->_call('isValidTemplatePath', 'other', 'EXT:form/Tests/Unit/Controller/Fixtures/SimpleContactForm.yaml'));
     }
 
     /**
@@ -411,7 +411,7 @@ class FormManagerControllerTest extends UnitTestCase
 
         $input = 'test form';
         $expected = 'testform';
-        $this->assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
+        self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 
     /**
@@ -425,7 +425,7 @@ class FormManagerControllerTest extends UnitTestCase
 
         $input = 'téstform';
         $expected = 'testform';
-        $this->assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
+        self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 
     /**
@@ -439,6 +439,6 @@ class FormManagerControllerTest extends UnitTestCase
 
         $input = 'test form ä#!_-01';
         $expected = 'testformae_-01';
-        $this->assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
+        self::assertSame($expected, $mockController->_call('convertFormNameToIdentifier', $input));
     }
 }

@@ -56,7 +56,7 @@ class FloatValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function floatValidatorReturnsNoErrorsForAValidFloat($float)
     {
-        $this->assertFalse($this->validator->validate($float)->hasErrors());
+        self::assertFalse($this->validator->validate($float)->hasErrors());
     }
 
     /**
@@ -80,7 +80,7 @@ class FloatValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function floatValidatorReturnsErrorForAnInvalidFloat($float)
     {
-        $this->assertTrue($this->validator->validate($float)->hasErrors());
+        self::assertTrue($this->validator->validate($float)->hasErrors());
     }
 
     /**
@@ -88,6 +88,6 @@ class FloatValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
      */
     public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        $this->assertEquals(1, count($this->validator->validate(123456)->getErrors()));
+        self::assertEquals(1, count($this->validator->validate(123456)->getErrors()));
     }
 }

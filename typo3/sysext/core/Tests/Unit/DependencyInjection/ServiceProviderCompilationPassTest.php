@@ -96,9 +96,9 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $serviceA = $container->get('serviceA');
         $serviceD = $container->get('serviceD');
 
-        $this->assertInstanceOf(\stdClass::class, $serviceA);
-        $this->assertInstanceOf(\stdClass::class, $serviceD);
-        $this->assertEquals(42, $container->get('function'));
+        self::assertInstanceOf(\stdClass::class, $serviceA);
+        self::assertInstanceOf(\stdClass::class, $serviceD);
+        self::assertEquals(42, $container->get('function'));
     }
 
     public function testServiceProviderOverrides()
@@ -112,10 +112,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
         $serviceA = $container->get('serviceA');
         $serviceC = $container->get('serviceC');
 
-        $this->assertInstanceOf(\stdClass::class, $serviceA);
-        $this->assertEquals('foo', $serviceA->newProperty);
-        $this->assertEquals('bar', $serviceA->newProperty2);
-        $this->assertEquals('localhost', $serviceC->serviceB->parameter);
+        self::assertInstanceOf(\stdClass::class, $serviceA);
+        self::assertEquals('foo', $serviceA->newProperty);
+        self::assertEquals('bar', $serviceA->newProperty2);
+        self::assertEquals('localhost', $serviceC->serviceB->parameter);
     }
 
     public function testServiceProviderFactoryOverrides()
@@ -127,8 +127,8 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
 
         $serviceA = $container->get('serviceA');
 
-        $this->assertInstanceOf(\stdClass::class, $serviceA);
-        $this->assertEquals('remotehost', $serviceA->serviceB->parameter);
+        self::assertInstanceOf(\stdClass::class, $serviceA);
+        self::assertEquals('remotehost', $serviceA->serviceB->parameter);
     }
 
     public function testServiceProviderFactoryOverridesForSymfonyDefinedServices()
@@ -150,9 +150,9 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
 
         $serviceA = $container->get('serviceA');
 
-        $this->assertInstanceOf(\stdClass::class, $serviceA);
-        $this->assertEquals('remotehost', $serviceA->serviceB->parameter);
-        $this->assertEquals('foobar', $serviceA->serviceB->symfony_defined_parameter);
+        self::assertInstanceOf(\stdClass::class, $serviceA);
+        self::assertEquals('remotehost', $serviceA->serviceB->parameter);
+        self::assertEquals('foobar', $serviceA->serviceB->symfony_defined_parameter);
     }
 
     public function testServiceProviderFactoryOverrideResetsAutowiring()
@@ -175,10 +175,10 @@ class ServiceProviderCompilationPassTest extends UnitTestCase
 
         $serviceA = $container->get('serviceA');
 
-        $this->assertInstanceOf(\stdClass::class, $serviceA);
-        $this->assertEquals('remotehost', $serviceA->serviceB->parameter);
-        $this->assertEquals('foobar', $serviceA->serviceB->symfony_defined_parameter);
-        $this->assertFalse($container->getDefinition('serviceB')->isAutowired());
+        self::assertInstanceOf(\stdClass::class, $serviceA);
+        self::assertEquals('remotehost', $serviceA->serviceB->parameter);
+        self::assertEquals('foobar', $serviceA->serviceB->symfony_defined_parameter);
+        self::assertFalse($container->getDefinition('serviceB')->isAutowired());
     }
 
     public function testExceptionForNonNullableExtensionArgument()

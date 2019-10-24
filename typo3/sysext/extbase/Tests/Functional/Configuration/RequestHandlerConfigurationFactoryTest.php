@@ -36,7 +36,7 @@ class RequestHandlerConfigurationFactoryTest extends FunctionalTestCase
         $configuration = (new RequestHandlersConfigurationFactory())
             ->createRequestHandlersConfiguration();
 
-        static::assertSame(
+        self::assertSame(
             [
                 FrontendRequestHandler::class,
                 BackendRequestHandler::class,

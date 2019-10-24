@@ -36,6 +36,6 @@ class ConnectionPoolTest extends UnitTestCase
                 'anotherConfigDetail' => '',
             ],
         ];
-        $this->assertSame(['Default', 'klaus'], (new ConnectionPool())->getConnectionNames());
+        self::assertSame(['Default', 'klaus'], (new ConnectionPool())->getConnectionNames());
     }
 }

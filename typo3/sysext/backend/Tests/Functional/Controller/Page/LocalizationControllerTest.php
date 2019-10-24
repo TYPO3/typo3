@@ -214,7 +214,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         ]);
 
         $usedLanguages = (string)$this->subject->getUsedLanguagesInPage($request)->getBody();
-        $this->assertThat($usedLanguages, $this->stringContains('"uid":0'));
+        self::assertThat($usedLanguages, self::stringContains('"uid":0'));
     }
 
     /**
@@ -237,7 +237,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 
         $localizeSummary = $this->getReducedRecordLocalizeSummary();
 
-        $this->assertEquals($expectedRecords, $localizeSummary);
+        self::assertEquals($expectedRecords, $localizeSummary);
     }
 
     /**
@@ -260,7 +260,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
 
         $localizeSummary = $this->getReducedRecordLocalizeSummary();
 
-        $this->assertEquals($expectedRecords, $localizeSummary);
+        self::assertEquals($expectedRecords, $localizeSummary);
     }
 
     /**

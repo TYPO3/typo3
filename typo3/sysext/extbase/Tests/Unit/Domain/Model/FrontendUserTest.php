@@ -38,7 +38,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getUsernameInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getUsername());
+        self::assertSame('', $this->subject->getUsername());
     }
 
     /**
@@ -48,7 +48,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $username = 'don.juan';
         $this->subject->setUsername($username);
-        $this->assertSame($username, $this->subject->getUsername());
+        self::assertSame($username, $this->subject->getUsername());
     }
 
     /**
@@ -56,7 +56,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getPasswordInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getPassword());
+        self::assertSame('', $this->subject->getPassword());
     }
 
     /**
@@ -66,7 +66,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $password = 'f00Bar';
         $this->subject->setPassword($password);
-        $this->assertSame($password, $this->subject->getPassword());
+        self::assertSame($password, $this->subject->getPassword());
     }
 
     /**
@@ -77,7 +77,7 @@ class FrontendUserTest extends UnitTestCase
         $usergroup = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
         $usergroup->attach(new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo'));
         $this->subject->setUsergroup($usergroup);
-        $this->assertSame($usergroup, $this->subject->getUsergroup());
+        self::assertSame($usergroup, $this->subject->getUsergroup());
     }
 
     /**
@@ -86,9 +86,9 @@ class FrontendUserTest extends UnitTestCase
     public function addUsergroupAddsUserGroup()
     {
         $usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
-        $this->assertEquals(count($this->subject->getUsergroup()), 0);
+        self::assertEquals(count($this->subject->getUsergroup()), 0);
         $this->subject->addUsergroup($usergroup);
-        $this->assertEquals(count($this->subject->getUsergroup()), 1);
+        self::assertEquals(count($this->subject->getUsergroup()), 1);
     }
 
     /**
@@ -98,9 +98,9 @@ class FrontendUserTest extends UnitTestCase
     {
         $usergroup = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
         $this->subject->addUsergroup($usergroup);
-        $this->assertEquals(count($this->subject->getUsergroup()), 1);
+        self::assertEquals(count($this->subject->getUsergroup()), 1);
         $this->subject->removeUsergroup($usergroup);
-        $this->assertEquals(count($this->subject->getUsergroup()), 0);
+        self::assertEquals(count($this->subject->getUsergroup()), 0);
     }
 
     /**
@@ -108,7 +108,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getNameInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getName());
+        self::assertSame('', $this->subject->getName());
     }
 
     /**
@@ -118,7 +118,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $name = 'don juan';
         $this->subject->setName($name);
-        $this->assertSame($name, $this->subject->getName());
+        self::assertSame($name, $this->subject->getName());
     }
 
     /**
@@ -126,7 +126,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getFirstNameInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getFirstName());
+        self::assertSame('', $this->subject->getFirstName());
     }
 
     /**
@@ -136,7 +136,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $firstName = 'don';
         $this->subject->setFirstName($firstName);
-        $this->assertSame($firstName, $this->subject->getFirstName());
+        self::assertSame($firstName, $this->subject->getFirstName());
     }
 
     /**
@@ -144,7 +144,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getMiddleNameInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getMiddleName());
+        self::assertSame('', $this->subject->getMiddleName());
     }
 
     /**
@@ -154,7 +154,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $middleName = 'miguel';
         $this->subject->setMiddleName($middleName);
-        $this->assertSame($middleName, $this->subject->getMiddleName());
+        self::assertSame($middleName, $this->subject->getMiddleName());
     }
 
     /**
@@ -162,7 +162,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getLastNameInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getLastName());
+        self::assertSame('', $this->subject->getLastName());
     }
 
     /**
@@ -172,7 +172,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $lastName = 'juan';
         $this->subject->setLastName($lastName);
-        $this->assertSame($lastName, $this->subject->getLastName());
+        self::assertSame($lastName, $this->subject->getLastName());
     }
 
     /**
@@ -180,7 +180,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getAddressInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getAddress());
+        self::assertSame('', $this->subject->getAddress());
     }
 
     /**
@@ -190,7 +190,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $address = 'foobar 42, foo';
         $this->subject->setAddress($address);
-        $this->assertSame($address, $this->subject->getAddress());
+        self::assertSame($address, $this->subject->getAddress());
     }
 
     /**
@@ -198,7 +198,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getTelephoneInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTelephone());
+        self::assertSame('', $this->subject->getTelephone());
     }
 
     /**
@@ -208,7 +208,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $telephone = '42';
         $this->subject->setTelephone($telephone);
-        $this->assertSame($telephone, $this->subject->getTelephone());
+        self::assertSame($telephone, $this->subject->getTelephone());
     }
 
     /**
@@ -216,7 +216,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getFaxInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getFax());
+        self::assertSame('', $this->subject->getFax());
     }
 
     /**
@@ -226,7 +226,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $fax = '42';
         $this->subject->setFax($fax);
-        $this->assertSame($fax, $this->subject->getFax());
+        self::assertSame($fax, $this->subject->getFax());
     }
 
     /**
@@ -234,7 +234,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getEmailInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getEmail());
+        self::assertSame('', $this->subject->getEmail());
     }
 
     /**
@@ -244,7 +244,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $email = 'don.juan@example.com';
         $this->subject->setEmail($email);
-        $this->assertSame($email, $this->subject->getEmail());
+        self::assertSame($email, $this->subject->getEmail());
     }
 
     /**
@@ -252,7 +252,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getLockToDomainInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getLockToDomain());
+        self::assertSame('', $this->subject->getLockToDomain());
     }
 
     /**
@@ -262,7 +262,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $lockToDomain = 'foo.bar';
         $this->subject->setLockToDomain($lockToDomain);
-        $this->assertSame($lockToDomain, $this->subject->getLockToDomain());
+        self::assertSame($lockToDomain, $this->subject->getLockToDomain());
     }
 
     /**
@@ -270,7 +270,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getTitleInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getTitle());
+        self::assertSame('', $this->subject->getTitle());
     }
 
     /**
@@ -280,7 +280,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $title = 'foobar';
         $this->subject->setTitle($title);
-        $this->assertSame($title, $this->subject->getTitle());
+        self::assertSame($title, $this->subject->getTitle());
     }
 
     /**
@@ -288,7 +288,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getZipInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getZip());
+        self::assertSame('', $this->subject->getZip());
     }
 
     /**
@@ -298,7 +298,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $zip = '42';
         $this->subject->setZip($zip);
-        $this->assertSame($zip, $this->subject->getZip());
+        self::assertSame($zip, $this->subject->getZip());
     }
 
     /**
@@ -306,7 +306,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getCityInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getCity());
+        self::assertSame('', $this->subject->getCity());
     }
 
     /**
@@ -316,7 +316,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $city = 'foo';
         $this->subject->setCity($city);
-        $this->assertSame($city, $this->subject->getCity());
+        self::assertSame($city, $this->subject->getCity());
     }
 
     /**
@@ -324,7 +324,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getCountryInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getCountry());
+        self::assertSame('', $this->subject->getCountry());
     }
 
     /**
@@ -334,7 +334,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $country = 'foo';
         $this->subject->setCountry($country);
-        $this->assertSame($country, $this->subject->getCountry());
+        self::assertSame($country, $this->subject->getCountry());
     }
 
     /**
@@ -342,7 +342,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getWwwInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getWww());
+        self::assertSame('', $this->subject->getWww());
     }
 
     /**
@@ -352,7 +352,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $www = 'foo.bar';
         $this->subject->setWww($www);
-        $this->assertSame($www, $this->subject->getWww());
+        self::assertSame($www, $this->subject->getWww());
     }
 
     /**
@@ -360,7 +360,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getCompanyInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getCompany());
+        self::assertSame('', $this->subject->getCompany());
     }
 
     /**
@@ -370,7 +370,7 @@ class FrontendUserTest extends UnitTestCase
     {
         $company = 'foo bar';
         $this->subject->setCompany($company);
-        $this->assertSame($company, $this->subject->getCompany());
+        self::assertSame($company, $this->subject->getCompany());
     }
 
     /**
@@ -378,7 +378,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getImageInitiallyReturnsObjectStorage()
     {
-        $this->assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, $this->subject->getImage());
+        self::assertInstanceOf(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class, $this->subject->getImage());
     }
 
     /**
@@ -392,7 +392,7 @@ class FrontendUserTest extends UnitTestCase
         $images->attach($reference);
 
         $this->subject->setImage($images);
-        $this->assertSame($images, $this->subject->getImage());
+        self::assertSame($images, $this->subject->getImage());
     }
 
     /**
@@ -400,7 +400,7 @@ class FrontendUserTest extends UnitTestCase
      */
     public function getLastloginInitiallyReturnsNull()
     {
-        $this->assertNull($this->subject->getLastlogin());
+        self::assertNull($this->subject->getLastlogin());
     }
 
     /**
@@ -410,6 +410,6 @@ class FrontendUserTest extends UnitTestCase
     {
         $date = new \DateTime();
         $this->subject->setLastlogin($date);
-        $this->assertSame($date, $this->subject->getLastlogin());
+        self::assertSame($date, $this->subject->getLastlogin());
     }
 }

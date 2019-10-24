@@ -54,7 +54,7 @@ class BackendGroupsVisibleFieldsTest extends FunctionalTestCase
         $formResult = $formEngineTestService->createNewRecordForm('be_groups');
 
         foreach (static::$backendGroupsFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the HTML'
             );

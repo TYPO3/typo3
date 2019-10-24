@@ -46,7 +46,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
         ];
         $GLOBALS['TCA'][$input['tableName']] = $expected;
         $result = $this->subject->addData($input);
-        $this->assertEquals($expected, $result['processedTca']);
+        self::assertEquals($expected, $result['processedTca']);
     }
 
     /**
@@ -63,7 +63,7 @@ class InitializeProcessedTcaTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**

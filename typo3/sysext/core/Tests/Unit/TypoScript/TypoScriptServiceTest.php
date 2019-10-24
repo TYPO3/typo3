@@ -160,7 +160,7 @@ class TypoScriptServiceTest extends UnitTestCase
     ): void {
         $typoScriptService = new TypoScriptService();
         $processedSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptSettings);
-        $this->assertEquals($expectedSettings, $processedSettings);
+        self::assertEquals($expectedSettings, $processedSettings);
     }
 
     /**
@@ -294,7 +294,7 @@ class TypoScriptServiceTest extends UnitTestCase
     {
         $typoScriptService = new TypoScriptService();
         $converted = $typoScriptService->convertPlainArrayToTypoScriptArray($extbaseTS);
-        $this->assertEquals($converted, $classic);
+        self::assertEquals($converted, $classic);
     }
 
     /**
@@ -417,6 +417,6 @@ class TypoScriptServiceTest extends UnitTestCase
     {
         $serviceObject = new TypoScriptService();
         $actual = $serviceObject->explodeConfigurationForOptionSplit($configuration, $splitCount);
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

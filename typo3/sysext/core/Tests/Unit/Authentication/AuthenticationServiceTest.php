@@ -78,7 +78,7 @@ class AuthenticationServiceTest extends UnitTestCase
         $subject = new AuthenticationService();
         // Login data is modified by reference
         $subject->processLoginData($loginData, $passwordSubmissionStrategy);
-        $this->assertEquals($expectedProcessedData, $loginData);
+        self::assertEquals($expectedProcessedData, $loginData);
     }
 
     /**
@@ -88,7 +88,7 @@ class AuthenticationServiceTest extends UnitTestCase
     {
         $subject = new AuthenticationService();
         $subject->initAuth('mode', ['uident_text' => '', 'uname' => 'user'], [], null);
-        $this->assertSame(100, $subject->authUser([]));
+        self::assertSame(100, $subject->authUser([]));
     }
 
     /**
@@ -98,7 +98,7 @@ class AuthenticationServiceTest extends UnitTestCase
     {
         $subject = new AuthenticationService();
         $subject->initAuth('mode', ['uident_text' => 'foo', 'uname' => ''], [], null);
-        $this->assertSame(100, $subject->authUser([]));
+        self::assertSame(100, $subject->authUser([]));
     }
 
     /**
@@ -138,7 +138,7 @@ class AuthenticationServiceTest extends UnitTestCase
             'password' => 'aPlainTextPassword',
             'lockToDomain' => ''
         ];
-        $this->assertEquals(100, $subject->authUser($dbUser));
+        self::assertEquals(100, $subject->authUser($dbUser));
     }
 
     /**
@@ -167,7 +167,7 @@ class AuthenticationServiceTest extends UnitTestCase
             'password' => '$P$C/2Vr3ywuuPo5C7cs75YBnVhgBWpMP1',
             'lockToDomain' => ''
         ];
-        $this->assertSame(0, $subject->authUser($dbUser));
+        self::assertSame(0, $subject->authUser($dbUser));
     }
 
     /**
@@ -196,7 +196,7 @@ class AuthenticationServiceTest extends UnitTestCase
             'password' => '$argon2i$v=19$m=65536,t=16,p=2$LnUzc3ZISWJwQWlSbmpkYw$qD1sRsJFzkUmjcEaKzDeg6LtflwdTpo49VbH3tMeMXU',
             'lockToDomain' => ''
         ];
-        $this->assertSame(200, $subject->authUser($dbUser));
+        self::assertSame(200, $subject->authUser($dbUser));
     }
 
     /**
@@ -230,6 +230,6 @@ class AuthenticationServiceTest extends UnitTestCase
             'username' => 'lolli',
             'lockToDomain' => 'not.example.com'
         ];
-        $this->assertSame(0, $subject->authUser($dbUser));
+        self::assertSame(0, $subject->authUser($dbUser));
     }
 }

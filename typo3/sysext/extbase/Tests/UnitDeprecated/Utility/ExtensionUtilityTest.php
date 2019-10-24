@@ -67,12 +67,12 @@ class ExtensionUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', ['Blog' => 'index']);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertStringContainsString('
+        self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        self::assertStringContainsString('
 	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
-        $this->assertStringNotContainsString('USER_INT', $staticTypoScript);
+        self::assertStringNotContainsString('USER_INT', $staticTypoScript);
     }
 
     /**
@@ -84,7 +84,7 @@ class ExtensionUtilityTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = [];
         ExtensionUtility::configurePlugin('MyExtension', 'Pi1', ['Blog' => 'index']);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
     }
 
     /**
@@ -98,8 +98,8 @@ class ExtensionUtilityTest extends UnitTestCase
             'FirstController' => 'index'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertStringContainsString('
+        self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        self::assertStringContainsString('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
@@ -112,7 +112,7 @@ class ExtensionUtilityTest extends UnitTestCase
             ],
             'pluginType' => 'list_type'
         ];
-        $this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
     /**
@@ -128,8 +128,8 @@ class ExtensionUtilityTest extends UnitTestCase
             'First' => 'index,show'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertStringContainsString('
+        self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        self::assertStringContainsString('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
@@ -143,7 +143,7 @@ class ExtensionUtilityTest extends UnitTestCase
             ],
             'pluginType' => 'list_type'
         ];
-        $this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
     /**
@@ -159,8 +159,8 @@ class ExtensionUtilityTest extends UnitTestCase
             'First' => 'new,show'
         ]);
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
-        $this->assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
-        $this->assertStringContainsString('
+        self::assertStringContainsString('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
+        self::assertStringContainsString('
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
         $expectedResult = [
@@ -174,7 +174,7 @@ class ExtensionUtilityTest extends UnitTestCase
             ],
             'pluginType' => 'list_type'
         ];
-        $this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
     /**
@@ -214,7 +214,7 @@ class ExtensionUtilityTest extends UnitTestCase
             ],
             'pluginType' => 'list_type'
         ];
-        $this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
     /**
@@ -256,7 +256,7 @@ class ExtensionUtilityTest extends UnitTestCase
             ],
             'pluginType' => 'list_type'
         ];
-        $this->assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
+        self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
 
     /**
@@ -270,7 +270,7 @@ class ExtensionUtilityTest extends UnitTestCase
             'Pi2',
             'Testing'
         );
-        $this->assertSame(
+        self::assertSame(
             'indexedsearch_pi2',
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0][1]
         );

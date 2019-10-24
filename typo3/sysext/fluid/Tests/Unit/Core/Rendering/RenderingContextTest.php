@@ -50,13 +50,13 @@ class RenderingContextTest extends UnitTestCase
         $request = $this->getMockBuilder(Request::class)
             ->setMethods(['getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'])
             ->getMock();
-        $request->expects($this->exactly(2))->method('getControllerSubpackageKey')->willReturn('test1');
-        $request->expects($this->once())->method('getControllerName')->willReturn('test2');
+        $request->expects(self::exactly(2))->method('getControllerSubpackageKey')->willReturn('test1');
+        $request->expects(self::once())->method('getControllerName')->willReturn('test2');
         $controllerContext = $this->getMockBuilder(ControllerContext::class)
             ->setMethods(['getRequest'])
             ->getMock();
-        $controllerContext->expects($this->once())->method('getRequest')->willReturn($request);
-        $renderingContext->expects($this->once())->method('setControllerName')->with('test1\\test2');
+        $controllerContext->expects(self::once())->method('getRequest')->willReturn($request);
+        $renderingContext->expects(self::once())->method('setControllerName')->with('test1\\test2');
         $renderingContext->setControllerContext($controllerContext);
     }
 
@@ -67,7 +67,7 @@ class RenderingContextTest extends UnitTestCase
     {
         $templateVariableContainer = $this->createMock(StandardVariableProvider::class);
         $this->renderingContext->setVariableProvider($templateVariableContainer);
-        $this->assertSame($this->renderingContext->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
+        self::assertSame($this->renderingContext->getVariableProvider(), $templateVariableContainer, 'Template Variable Container could not be read out again.');
     }
 
     /**
@@ -79,9 +79,9 @@ class RenderingContextTest extends UnitTestCase
             ->setMethods(['getRequest'])
             ->disableOriginalConstructor()
             ->getMock();
-        $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));
+        $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));
         $this->renderingContext->setControllerContext($controllerContext);
-        $this->assertSame($this->renderingContext->getControllerContext(), $controllerContext);
+        self::assertSame($this->renderingContext->getControllerContext(), $controllerContext);
     }
 
     /**
@@ -91,7 +91,7 @@ class RenderingContextTest extends UnitTestCase
     {
         $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
         $this->renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
-        $this->assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
+        self::assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
     }
 
     /**
@@ -104,13 +104,13 @@ class RenderingContextTest extends UnitTestCase
     {
         $subject = new RenderingContextFixture();
         $request = $this->getMockBuilder(Request::class)->setMethods(['setControllerActionName'])->getMock();
-        $request->expects($this->at(0))->method('setControllerActionName')->with('index');
-        $request->expects($this->at(1))->method('setControllerActionName')->with(lcfirst($expected));
+        $request->expects(self::at(0))->method('setControllerActionName')->with('index');
+        $request->expects(self::at(1))->method('setControllerActionName')->with(lcfirst($expected));
         $controllerContext = $this->getMockBuilder(ControllerContext::class)->setMethods(['getRequest'])->getMock();
-        $controllerContext->expects($this->atLeastOnce())->method('getRequest')->willReturn($request);
+        $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($request);
         $subject->setControllerContext($controllerContext);
         $subject->setControllerAction($input);
-        $this->assertEquals($expected, $subject->getControllerAction());
+        self::assertEquals($expected, $subject->getControllerAction());
     }
 
     /**

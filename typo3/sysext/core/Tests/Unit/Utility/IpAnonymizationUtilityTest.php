@@ -57,7 +57,7 @@ class IpAnonymizationUtilityTest extends UnitTestCase
     {
         // set the default if $mask is null
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['ipAnonymization'] = 1;
-        $this->assertEquals($expected, IpAnonymizationUtility::anonymizeIp($address, $mask));
+        self::assertEquals($expected, IpAnonymizationUtility::anonymizeIp($address, $mask));
     }
 
     /**

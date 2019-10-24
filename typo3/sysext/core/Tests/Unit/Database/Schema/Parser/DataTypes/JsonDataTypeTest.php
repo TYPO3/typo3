@@ -31,6 +31,6 @@ class JsonDataTypeTest extends AbstractDataTypeBaseTestCase
     {
         $subject = $this->createSubject('JSON');
 
-        $this->assertInstanceOf(JsonDataType::class, $subject->dataType);
+        self::assertInstanceOf(JsonDataType::class, $subject->dataType);
     }
 }

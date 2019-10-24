@@ -33,19 +33,19 @@ class MethodTest extends UnitTestCase
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
 
         $methodDefinition = $classSchema->getMethod('publicMethod');
-        static::assertTrue($methodDefinition->isPublic());
-        static::assertFalse($methodDefinition->isProtected());
-        static::assertFalse($methodDefinition->isPrivate());
+        self::assertTrue($methodDefinition->isPublic());
+        self::assertFalse($methodDefinition->isProtected());
+        self::assertFalse($methodDefinition->isPrivate());
 
         $methodDefinition = $classSchema->getMethod('protectedMethod');
-        static::assertFalse($methodDefinition->isPublic());
-        static::assertTrue($methodDefinition->isProtected());
-        static::assertFalse($methodDefinition->isPrivate());
+        self::assertFalse($methodDefinition->isPublic());
+        self::assertTrue($methodDefinition->isProtected());
+        self::assertFalse($methodDefinition->isPrivate());
 
         $methodDefinition = $classSchema->getMethod('privateMethod');
-        static::assertFalse($methodDefinition->isPublic());
-        static::assertFalse($methodDefinition->isProtected());
-        static::assertTrue($methodDefinition->isPrivate());
+        self::assertFalse($methodDefinition->isPublic());
+        self::assertFalse($methodDefinition->isProtected());
+        self::assertTrue($methodDefinition->isPrivate());
     }
 
     /**
@@ -54,22 +54,22 @@ class MethodTest extends UnitTestCase
     public function classSchemaDetectsInjectMethods()
     {
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfMethods::class);
-        static::assertTrue($classSchema->hasInjectMethods());
+        self::assertTrue($classSchema->hasInjectMethods());
 
         $methodDefinition = $classSchema->getMethod('injectSettings');
-        static::assertFalse($methodDefinition->isInjectMethod());
+        self::assertFalse($methodDefinition->isInjectMethod());
 
         $methodDefinition = $classSchema->getMethod('injectMethodWithoutParam');
-        static::assertFalse($methodDefinition->isInjectMethod());
+        self::assertFalse($methodDefinition->isInjectMethod());
 
         $methodDefinition = $classSchema->getMethod('injectMethodThatIsProtected');
-        static::assertFalse($methodDefinition->isInjectMethod());
+        self::assertFalse($methodDefinition->isInjectMethod());
 
         $methodDefinition = $classSchema->getMethod('injectFoo');
-        static::assertTrue($methodDefinition->isInjectMethod());
+        self::assertTrue($methodDefinition->isInjectMethod());
 
         $injectMethods = $classSchema->getInjectMethods();
-        static::assertArrayHasKey('injectFoo', $injectMethods);
+        self::assertArrayHasKey('injectFoo', $injectMethods);
     }
 
     /**
@@ -77,7 +77,7 @@ class MethodTest extends UnitTestCase
      */
     public function classSchemaDetectsStaticMethods()
     {
-        static::assertTrue(
+        self::assertTrue(
             (new ClassSchema(DummyClassWithAllTypesOfMethods::class))
             ->getMethod('staticMethod')
             ->isStatic()

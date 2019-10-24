@@ -54,7 +54,7 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['anotherField'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -78,7 +78,7 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['uid_local'];
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -101,6 +101,6 @@ class TcaColumnsProcessPlaceholdersTest extends UnitTestCase
         ];
 
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 }

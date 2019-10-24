@@ -43,6 +43,6 @@ class AbstractBackendControllerTest extends UnitTestCase
             0 => 'typo3/sysext/form/Resources/Public/Css/form.css'
         ];
 
-        $this->assertSame($expected, $mockController->_call('resolveResourcePaths', $input));
+        self::assertSame($expected, $mockController->_call('resolveResourcePaths', $input));
     }
 }

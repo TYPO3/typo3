@@ -35,7 +35,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
     public function updateExtensionListTaskIsInstanceOfAbstractTask()
     {
         $taskMock = $this->getMockBuilder(UpdateExtensionListTask::class)->getMock();
-        $this->assertInstanceOf(AbstractTask::class, $taskMock);
+        self::assertInstanceOf(AbstractTask::class, $taskMock);
     }
 
     /**
@@ -45,21 +45,21 @@ class UpdateExtensionListTaskTest extends UnitTestCase
     {
         $repositoryHelper = $this->createMock(Helper::class);
         $repositoryHelper
-                ->expects($this->once())
+                ->expects(self::once())
                 ->method('updateExtList');
 
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $objectManagerMock
-                ->expects($this->at(0))
+                ->expects(self::at(0))
                 ->method('get')
                 ->with(Helper::class)
-                ->will($this->returnValue($repositoryHelper));
+                ->will(self::returnValue($repositoryHelper));
 
         $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $objectManagerMock
-                ->expects($this->at(1))
+                ->expects(self::at(1))
                 ->method('get')
-                ->will($this->returnValue($persistenceManagerMock));
+                ->will(self::returnValue($persistenceManagerMock));
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
@@ -78,20 +78,20 @@ class UpdateExtensionListTaskTest extends UnitTestCase
         $repositoryHelper = $this->createMock(Helper::class);
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $objectManagerMock
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('get')
             ->with(Helper::class)
-            ->will($this->returnValue($repositoryHelper));
+            ->will(self::returnValue($repositoryHelper));
 
         $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $persistenceManagerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('persistAll');
 
         $objectManagerMock
-                ->expects($this->at(1))
+                ->expects(self::at(1))
                 ->method('get')
-                ->will($this->returnValue($persistenceManagerMock));
+                ->will(self::returnValue($persistenceManagerMock));
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 

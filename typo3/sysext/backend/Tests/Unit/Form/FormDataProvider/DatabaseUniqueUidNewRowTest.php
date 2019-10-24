@@ -44,7 +44,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
                 'uid' => 42,
             ],
         ];
-        $this->assertSame($input, $this->subject->addData($input));
+        self::assertSame($input, $this->subject->addData($input));
     }
 
     /**
@@ -59,7 +59,7 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -89,6 +89,6 @@ class DatabaseUniqueUidNewRowTest extends UnitTestCase
         ];
         $result = $this->subject->addData($input);
         $result = substr($result['databaseRow']['uid'], 0, 3);
-        $this->assertSame('NEW', $result);
+        self::assertSame('NEW', $result);
     }
 }

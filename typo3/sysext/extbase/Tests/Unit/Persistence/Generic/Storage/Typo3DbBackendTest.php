@@ -64,29 +64,29 @@ class Typo3DbBackendTest extends UnitTestCase
             ->setMethods(['_getProperties'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockValueObject->expects($this->once())->method('_getProperties')
-            ->will($this->returnValue(['propertyName' => 'propertyValue']));
+        $mockValueObject->expects(self::once())->method('_getProperties')
+            ->will(self::returnValue(['propertyName' => 'propertyValue']));
         $mockColumnMap = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class)
             ->setMethods(['isPersistableProperty', 'getColumnName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockColumnMap->expects($this->any())->method('getColumnName')->will($this->returnValue('column_name'));
+        $mockColumnMap->expects(self::any())->method('getColumnName')->will(self::returnValue('column_name'));
         $tableName = 'tx_foo_table';
         $mockDataMap = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class)
             ->setMethods(['isPersistableProperty', 'getColumnMap', 'getTableName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockDataMap->expects($this->any())->method('isPersistableProperty')->will($this->returnValue(true));
-        $mockDataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($mockColumnMap));
-        $mockDataMap->expects($this->any())->method('getTableName')->will($this->returnValue($tableName));
+        $mockDataMap->expects(self::any())->method('isPersistableProperty')->will(self::returnValue(true));
+        $mockDataMap->expects(self::any())->method('getColumnMap')->will(self::returnValue($mockColumnMap));
+        $mockDataMap->expects(self::any())->method('getTableName')->will(self::returnValue($tableName));
         $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
             ->setMethods(['getDataMap', 'getPlainValue'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockDataMapper->expects($this->once())->method('getDataMap')
-            ->will($this->returnValue($mockDataMap));
-        $mockDataMapper->expects($this->once())->method('getPlainValue')
-            ->will($this->returnValue('plainPropertyValue'));
+        $mockDataMapper->expects(self::once())->method('getDataMap')
+            ->will(self::returnValue($mockDataMap));
+        $mockDataMapper->expects(self::once())->method('getPlainValue')
+            ->will(self::returnValue('plainPropertyValue'));
         $expectedUid = 52;
 
         $expressionBuilderProphet = $this->prophesize(ExpressionBuilder::class);
@@ -119,16 +119,16 @@ class Typo3DbBackendTest extends UnitTestCase
             false
         );
         $mockObjectManager = $this->createMock(ObjectManager::class);
-        $mockObjectManager->expects($this->any())
+        $mockObjectManager->expects(self::any())
             ->method('get')
             ->with(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
-            ->will($this->returnValue($mockDataMapper));
+            ->will(self::returnValue($mockDataMapper));
 
         $mockTypo3DbBackend->_set('objectManager', $mockObjectManager);
         $mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbBackend->_set('connectionPool', $connectionPoolProphet->reveal());
         $mockTypo3DbBackend->_set('environmentService', $environmentServiceProphet->reveal());
         $result = $mockTypo3DbBackend->_callRef('getUidOfAlreadyPersistedValueObject', $mockValueObject);
-        $this->assertSame($expectedUid, $result);
+        self::assertSame($expectedUid, $result);
     }
 }

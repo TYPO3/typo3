@@ -45,7 +45,7 @@ class StateTest extends UnitTestCase
     {
         $subject = new State($tableName, $states);
 
-        $this->assertInstanceOf(State::class, $subject);
+        self::assertInstanceOf(State::class, $subject);
     }
 
     /**
@@ -83,7 +83,7 @@ class StateTest extends UnitTestCase
 
         $subject = new State(static::TABLE_NAME, $states);
 
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $subject->toArray()
         );

@@ -167,7 +167,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function filterByValueRecursiveCorrectlyFiltersArray($needle, $haystack, $expectedResult)
     {
-        $this->assertEquals(
+        self::assertEquals(
             $expectedResult,
             ArrayUtility::filterByValueRecursive($needle, $haystack)
         );
@@ -179,7 +179,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function filterByValueRecursiveMatchesReferencesToSameObject()
     {
         $instance = new \stdClass();
-        $this->assertEquals(
+        self::assertEquals(
             [$instance],
             ArrayUtility::filterByValueRecursive($instance, [$instance])
         );
@@ -190,7 +190,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass()
     {
-        $this->assertEquals(
+        self::assertEquals(
             [],
             ArrayUtility::filterByValueRecursive(new \stdClass(), [new \stdClass()])
         );
@@ -204,7 +204,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function isValidPathReturnsTrueIfPathExists()
     {
-        $this->assertTrue(ArrayUtility::isValidPath(['foo' => 'bar'], 'foo'));
+        self::assertTrue(ArrayUtility::isValidPath(['foo' => 'bar'], 'foo'));
     }
 
     /**
@@ -212,7 +212,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function isValidPathReturnsFalseIfPathDoesNotExist()
     {
-        $this->assertFalse(ArrayUtility::isValidPath(['foo' => 'bar'], 'bar'));
+        self::assertFalse(ArrayUtility::isValidPath(['foo' => 'bar'], 'bar'));
     }
 
     ///////////////////////
@@ -245,7 +245,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathReturnsFirstIndexIfPathIsZero()
     {
-        $this->assertSame('foo', ArrayUtility::getValueByPath(['foo'], '0'));
+        self::assertSame('foo', ArrayUtility::getValueByPath(['foo'], '0'));
     }
 
     /**
@@ -253,7 +253,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathReturnsFirstIndexIfPathSegmentIsZero()
     {
-        $this->assertSame('bar', ArrayUtility::getValueByPath(['foo' => ['bar']], 'foo/0'));
+        self::assertSame('bar', ArrayUtility::getValueByPath(['foo' => ['bar']], 'foo/0'));
     }
 
     /**
@@ -457,7 +457,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function getValueByPathGetsCorrectValue(array $array, $path, $expectedResult)
     {
-        $this->assertEquals($expectedResult, ArrayUtility::getValueByPath($array, $path));
+        self::assertEquals($expectedResult, ArrayUtility::getValueByPath($array, $path));
     }
 
     /**
@@ -476,7 +476,7 @@ class ArrayUtilityTest extends UnitTestCase
         $searchPath = 'foo%bar%baz';
         $expected = 42;
         $delimiter = '%';
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             ArrayUtility::getValueByPath($input, $searchPath, $delimiter)
         );
@@ -523,7 +523,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function setValueByPathCanUseZeroAsPathSegment()
     {
-        $this->assertSame(['foo' => ['value']], ArrayUtility::setValueByPath(['foo' => []], 'foo/0', 'value'));
+        self::assertSame(['foo' => ['value']], ArrayUtility::setValueByPath(['foo' => []], 'foo/0', 'value'));
     }
 
     /**
@@ -531,7 +531,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function setValueByPathCanUseZeroAsPath()
     {
-        $this->assertSame(['value', 'bar'], ArrayUtility::setValueByPath(['foo', 'bar'], '0', 'value'));
+        self::assertSame(['value', 'bar'], ArrayUtility::setValueByPath(['foo', 'bar'], '0', 'value'));
     }
 
     /**
@@ -716,7 +716,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function setValueByPathSetsCorrectValue(array $array, $path, $value, $expectedResult)
     {
-        $this->assertEquals(
+        self::assertEquals(
             $expectedResult,
             ArrayUtility::setValueByPath($array, $path, $value)
         );
@@ -774,7 +774,7 @@ class ArrayUtilityTest extends UnitTestCase
             'foo' => ['bar']
         ];
 
-        $this->assertSame(['foo' => []], ArrayUtility::removeByPath($inputArray, 'foo/0'));
+        self::assertSame(['foo' => []], ArrayUtility::removeByPath($inputArray, 'foo/0'));
     }
 
     /**
@@ -784,7 +784,7 @@ class ArrayUtilityTest extends UnitTestCase
     {
         $inputArray = ['bar'];
 
-        $this->assertSame([], ArrayUtility::removeByPath($inputArray, '0'));
+        self::assertSame([], ArrayUtility::removeByPath($inputArray, '0'));
     }
 
     /**
@@ -838,7 +838,7 @@ class ArrayUtilityTest extends UnitTestCase
                 'keep' => 23,
             ],
         ];
-        $this->assertEquals(
+        self::assertEquals(
             $expected,
             ArrayUtility::removeByPath($inputArray, $path, '.')
         );
@@ -901,7 +901,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function removeByPathRemovesCorrectPath(array $array, $path, $expectedResult)
     {
-        $this->assertEquals(
+        self::assertEquals(
             $expectedResult,
             ArrayUtility::removeByPath($array, $path)
         );
@@ -935,7 +935,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
             'z' => null
         ];
-        $this->assertSame($expectedResult, ArrayUtility::sortByKeyRecursive($unsortedArray));
+        self::assertSame($expectedResult, ArrayUtility::sortByKeyRecursive($unsortedArray));
     }
 
     ///////////////////////
@@ -1075,7 +1075,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function sortArraysByKeyCheckIfSortingIsCorrect(array $array, $key, $ascending, $expectedResult)
     {
         $sortedArray = ArrayUtility::sortArraysByKey($array, $key, $ascending);
-        $this->assertSame($expectedResult, $sortedArray);
+        self::assertSame($expectedResult, $sortedArray);
     }
 
     /**
@@ -1128,7 +1128,7 @@ class ArrayUtilityTest extends UnitTestCase
                 '    \'qux\' => 0.1,' . LF .
                 '    \'qux2\' => 1.0E-9,' . LF .
             ']';
-        $this->assertSame($expected, ArrayUtility::arrayExport($array));
+        self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
     /**
@@ -1164,7 +1164,7 @@ class ArrayUtilityTest extends UnitTestCase
                 '    23 => \'integer key\',' . LF .
                 '    42 => \'string key representing integer\',' . LF .
             ']';
-        $this->assertSame($expected, ArrayUtility::arrayExport($array));
+        self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
     /**
@@ -1183,7 +1183,7 @@ class ArrayUtilityTest extends UnitTestCase
                 '    \'one\',' . LF .
                 '    \'two\',' . LF .
             ']';
-        $this->assertSame($expected, ArrayUtility::arrayExport($array));
+        self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
     /**
@@ -1204,7 +1204,7 @@ class ArrayUtilityTest extends UnitTestCase
                 '    3 => \'three\',' . LF .
                 '    4 => \'four\',' . LF .
             ']';
-        $this->assertSame($expected, ArrayUtility::arrayExport($array));
+        self::assertSame($expected, ArrayUtility::arrayExport($array));
     }
 
     ///////////////////////
@@ -1312,7 +1312,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function flattenCalculatesExpectedResult(array $array, array $expected)
     {
-        $this->assertEquals($expected, ArrayUtility::flatten($array));
+        self::assertEquals($expected, ArrayUtility::flatten($array));
     }
 
     /**
@@ -1434,7 +1434,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function flattenWithKeepDotsCalculatesExpectedResult(array $array, array $expected): void
     {
-        $this->assertEquals($expected, ArrayUtility::flatten($array, '', true));
+        self::assertEquals($expected, ArrayUtility::flatten($array, '', true));
     }
 
     ///////////////////////
@@ -1647,7 +1647,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function intersectRecursiveCalculatesExpectedResult(array $source, array $mask, array $expected)
     {
-        $this->assertSame($expected, ArrayUtility::intersectRecursive($source, $mask));
+        self::assertSame($expected, ArrayUtility::intersectRecursive($source, $mask));
     }
 
     ///////////////////////
@@ -1784,7 +1784,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function renumberKeysToAvoidLeapsIfKeysAreAllNumericReturnsExpectedOrder(array $inputArray, array $expected)
     {
-        $this->assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
+        self::assertEquals($expected, ArrayUtility::renumberKeysToAvoidLeapsIfKeysAreAllNumeric($inputArray));
     }
 
     /**
@@ -2038,7 +2038,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function mergeRecursiveWithOverruleCalculatesExpectedResult($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature, $expected)
     {
         ArrayUtility::mergeRecursiveWithOverrule($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature);
-        $this->assertEquals($expected, $input1);
+        self::assertEquals($expected, $input1);
     }
 
     //////////////////////////////////
@@ -2061,7 +2061,7 @@ class ArrayUtilityTest extends UnitTestCase
             '2' => 'test3'
         ];
         $actualResult = ArrayUtility::removeArrayEntryByValue($inputArray, $compareValue);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -2082,7 +2082,7 @@ class ArrayUtilityTest extends UnitTestCase
             '1' => []
         ];
         $actualResult = ArrayUtility::removeArrayEntryByValue($inputArray, $compareValue);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -2101,7 +2101,7 @@ class ArrayUtilityTest extends UnitTestCase
             '2' => 'bar'
         ];
         $actualResult = ArrayUtility::removeArrayEntryByValue($inputArray, $compareValue);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     //////////////////////////////////
@@ -2116,7 +2116,7 @@ class ArrayUtilityTest extends UnitTestCase
      */
     public function keepItemsInArrayWorksWithOneArgument($search, $array, $expected)
     {
-        $this->assertEquals($expected, ArrayUtility::keepItemsInArray($array, $search));
+        self::assertEquals($expected, ArrayUtility::keepItemsInArray($array, $search));
     }
 
     /**
@@ -2164,7 +2164,7 @@ class ArrayUtilityTest extends UnitTestCase
                 return $value[0];
             }
         );
-        $this->assertEquals($expected, $match);
+        self::assertEquals($expected, $match);
     }
 
     //////////////////////////////////
@@ -2190,7 +2190,7 @@ class ArrayUtilityTest extends UnitTestCase
             'three' => 'three'
         ];
         ArrayUtility::remapArrayKeys($array, $keyMapping);
-        $this->assertEquals($expected, $array);
+        self::assertEquals($expected, $array);
     }
 
     //////////////////////////////////////
@@ -2214,7 +2214,7 @@ class ArrayUtilityTest extends UnitTestCase
             'key2' => 'value2'
         ];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -2251,7 +2251,7 @@ class ArrayUtilityTest extends UnitTestCase
             ]
         ];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -2277,7 +2277,7 @@ class ArrayUtilityTest extends UnitTestCase
             'key3' => 'value3'
         ];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -2303,7 +2303,7 @@ class ArrayUtilityTest extends UnitTestCase
         ];
         $expectedResult = [];
         $actualResult = ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     //////////////////////////////////////
@@ -2342,7 +2342,7 @@ class ArrayUtilityTest extends UnitTestCase
             'zap'
         ];
         ArrayUtility::naturalKeySortRecursive($testArray);
-        $this->assertEquals($expectedResult, array_values($testArray));
+        self::assertEquals($expectedResult, array_values($testArray));
     }
 
     /**
@@ -2401,9 +2401,9 @@ class ArrayUtilityTest extends UnitTestCase
             'zap'
         ];
         ArrayUtility::naturalKeySortRecursive($testArray);
-        $this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa']['bad'])));
-        $this->assertEquals($expectedResult, array_values(array_keys($testArray['aaa'])));
-        $this->assertEquals($expectedResult, array_values(array_keys($testArray)));
+        self::assertEquals($expectedResult, array_values(array_keys($testArray['aaa']['bad'])));
+        self::assertEquals($expectedResult, array_values(array_keys($testArray['aaa'])));
+        self::assertEquals($expectedResult, array_values(array_keys($testArray)));
     }
 
     /**
@@ -2500,7 +2500,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue($input, $expected)
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input, true);
-        $this->assertEquals($result, $expected);
+        self::assertEquals($result, $expected);
     }
 
     /**
@@ -2566,7 +2566,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse($input, $expected)
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input);
-        $this->assertEquals($result, $expected);
+        self::assertEquals($result, $expected);
     }
 
     /**
@@ -2627,7 +2627,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function sortArrayWithIntegerKeysSortsNumericArrays(array $arrayToSort, array $expectedArray)
     {
         $sortedArray = ArrayUtility::sortArrayWithIntegerKeys($arrayToSort);
-        $this->assertSame($sortedArray, $expectedArray);
+        self::assertSame($sortedArray, $expectedArray);
     }
 
     /**
@@ -2699,7 +2699,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
+        self::assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
     }
 
     /**
@@ -2721,7 +2721,7 @@ class ArrayUtilityTest extends UnitTestCase
             30 => 'c',
         ];
 
-        $this->assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
+        self::assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
     }
 
     /**
@@ -2751,7 +2751,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
+        self::assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
     }
 
     /**
@@ -2781,7 +2781,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
+        self::assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
     }
 
     /**
@@ -2804,7 +2804,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, ArrayUtility::removeNullValuesRecursive($input));
+        self::assertSame($expected, ArrayUtility::removeNullValuesRecursive($input));
     }
 
     /**
@@ -2828,7 +2828,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
+        self::assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
     }
 
     /**
@@ -2864,7 +2864,7 @@ class ArrayUtilityTest extends UnitTestCase
             'objectWithStringConversion' => 'i am evil too',
         ];
 
-        $this->assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
+        self::assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
     }
 
     /**
@@ -2888,7 +2888,7 @@ class ArrayUtilityTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, ArrayUtility::convertBooleanStringsToBooleanRecursive($input));
+        self::assertSame($expected, ArrayUtility::convertBooleanStringsToBooleanRecursive($input));
     }
 
     /**
@@ -2965,7 +2965,7 @@ class ArrayUtilityTest extends UnitTestCase
     {
         // If no callback is supplied, all entries of array equal to FALSE (see converting to boolean) will be removed.
         $result = ArrayUtility::filterRecursive($input);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -3050,7 +3050,7 @@ class ArrayUtilityTest extends UnitTestCase
                 return $item !== '' && $item !== [] && $item !== null;
             }
         );
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -3111,7 +3111,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function filterRecursiveSupportsCallableCallback(array $input, array $expectedResult, callable $callback)
     {
         $result = ArrayUtility::filterRecursive($input, $callback);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -3156,7 +3156,7 @@ class ArrayUtilityTest extends UnitTestCase
     public function isAssociativeCorrectlyFindsStringKeys(array $array, bool $expectedResult)
     {
         $result = ArrayUtility::isAssociative($array);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -3245,6 +3245,6 @@ class ArrayUtilityTest extends UnitTestCase
     public function replaceAndAppendScalarValuesRecursiveCorrectlyMergesArrays(array $array1, array $array2, array $expectedResult)
     {
         $result = ArrayUtility::replaceAndAppendScalarValuesRecursive($array1, $array2);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 }

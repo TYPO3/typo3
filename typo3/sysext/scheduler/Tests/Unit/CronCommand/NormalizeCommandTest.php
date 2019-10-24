@@ -69,7 +69,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeConvertsCronCommand($expression, $expected): void
     {
         $result = NormalizeCommand::normalize($expression);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -97,7 +97,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function convertKeywordsToCronCommandConvertsValidKeywords($keyword, $expectedCronCommand): void
     {
         $result = NormalizeCommandAccessibleProxy::convertKeywordsToCronCommand($keyword);
-        $this->assertEquals($expectedCronCommand, $result);
+        self::assertEquals($expectedCronCommand, $result);
     }
 
     /**
@@ -107,7 +107,7 @@ class NormalizeCommandTest extends UnitTestCase
     {
         $invalidKeyword = 'foo';
         $result = NormalizeCommandAccessibleProxy::convertKeywordsToCronCommand($invalidKeyword);
-        $this->assertEquals($invalidKeyword, $result);
+        self::assertEquals($invalidKeyword, $result);
     }
 
     /**
@@ -133,7 +133,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeFieldsConvertsField($expression, $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeFields($expression);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -177,7 +177,7 @@ class NormalizeCommandTest extends UnitTestCase
         $expected
     ): void {
         $result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekdayField($expression, $isMonthField);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -243,7 +243,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeIntegerFieldReturnsNormalizedListForValidExpression($expression, $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeIntegerField($expression);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -298,7 +298,7 @@ class NormalizeCommandTest extends UnitTestCase
             3 => 'jan',
             4 => 'fri'
         ];
-        $this->assertSame($expectedResult, $result);
+        self::assertSame($expectedResult, $result);
     }
 
     /**
@@ -351,7 +351,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function convertRangeToListOfValuesReturnsCorrectListForValidRanges($range, $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::convertRangeToListOfValues($range);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -408,7 +408,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function reduceListOfValuesByStepValueReturnsCorrectListOfValues($stepExpression, $expected): void
     {
         $result = NormalizeCommandAccessibleProxy::reduceListOfValuesByStepValue($stepExpression);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -451,7 +451,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeMonthAndWeekdayNormalizesAMonth(): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekday('feb', true);
-        $this->assertSame('2', $result);
+        self::assertSame('2', $result);
     }
 
     /**
@@ -460,7 +460,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeMonthAndWeekdayNormalizesAWeekday(): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekday('fri', false);
-        $this->assertSame('5', $result);
+        self::assertSame('5', $result);
     }
 
     /**
@@ -469,7 +469,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeMonthAndWeekdayLeavesValueUnchanged(): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonthAndWeekday('2');
-        $this->assertSame('2', $result);
+        self::assertSame('2', $result);
     }
 
     /**
@@ -506,7 +506,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeMonthConvertsName($monthName, $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
-        $this->assertEquals($expectedInteger, $result);
+        self::assertEquals($expectedInteger, $result);
     }
 
     /**
@@ -518,7 +518,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeMonthReturnsInteger($monthName, $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeMonth($monthName);
-        $this->assertIsInt($result);
+        self::assertIsInt($result);
     }
 
     /**
@@ -609,7 +609,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeWeekdayConvertsName($weekday, $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
-        $this->assertEquals($expectedInteger, $result);
+        self::assertEquals($expectedInteger, $result);
     }
 
     /**
@@ -621,7 +621,7 @@ class NormalizeCommandTest extends UnitTestCase
     public function normalizeWeekdayReturnsInteger($weekday, $expectedInteger): void
     {
         $result = NormalizeCommandAccessibleProxy::normalizeWeekday($weekday);
-        $this->assertIsInt($result);
+        self::assertIsInt($result);
     }
 
     /**

@@ -621,7 +621,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         );
 
         $pageArguments = json_decode((string)$response->getBody(), true);
-        static::assertEquals($expectation, $pageArguments);
+        self::assertEquals($expectation, $pageArguments);
     }
 
     /**
@@ -653,6 +653,6 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         );
 
         $pageArguments = json_decode((string)$response->getBody(), true);
-        static::assertEquals($expectation, $pageArguments);
+        self::assertEquals($expectation, $pageArguments);
     }
 }

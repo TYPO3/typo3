@@ -56,7 +56,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'foo' => 'bar',
         ];
         $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
-        $this->assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
+        self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
     }
 
     /**
@@ -71,7 +71,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             ]
         ];
         $siteConfigurationProphecy = $this->prophesize(SiteConfiguration::class);
-        $this->assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
+        self::assertSame($input, (new SiteDatabaseEditRow($siteConfigurationProphecy->reveal()))->addData($input));
     }
 
     /**
@@ -128,7 +128,7 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'foo' => 'bar',
         ];
 
-        $this->assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
+        self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
     }
 
     /**
@@ -221,6 +221,6 @@ class SiteDatabaseEditRowTest extends UnitTestCase
             'pid' => 0,
         ];
 
-        $this->assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
+        self::assertEquals($expected, (new SiteDatabaseEditRow($siteConfiguration->reveal()))->addData($input));
     }
 }

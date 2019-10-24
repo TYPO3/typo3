@@ -47,7 +47,7 @@ class LockFactoryTest extends UnitTestCase
     public function addLockingStrategyAddsTheClassNameToTheInternalArray()
     {
         $this->mockFactory->addLockingStrategy(DummyLock::class);
-        $this->assertArrayHasKey(DummyLock::class, $this->mockFactory->_get('lockingStrategy'));
+        self::assertArrayHasKey(DummyLock::class, $this->mockFactory->_get('lockingStrategy'));
     }
 
     /**
@@ -68,7 +68,7 @@ class LockFactoryTest extends UnitTestCase
     {
         $this->mockFactory->_set('lockingStrategy', [FileLockStrategy::class => true, DummyLock::class => true]);
         $locker = $this->mockFactory->createLocker('id', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_SHARED);
-        $this->assertInstanceOf(FileLockStrategy::class, $locker);
+        self::assertInstanceOf(FileLockStrategy::class, $locker);
     }
 
     /**
@@ -78,7 +78,7 @@ class LockFactoryTest extends UnitTestCase
     {
         $this->mockFactory->_set('lockingStrategy', [SemaphoreLockStrategy::class => true, DummyLock::class => true]);
         $locker = $this->mockFactory->createLocker('id');
-        $this->assertInstanceOf(DummyLock::class, $locker);
+        self::assertInstanceOf(DummyLock::class, $locker);
     }
 
     /**

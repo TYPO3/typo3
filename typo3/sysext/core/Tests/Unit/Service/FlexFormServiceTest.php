@@ -104,7 +104,7 @@ class FlexFormServiceTest extends UnitTestCase
         // The subject calls xml2array statically, which calls a runtime cache, this need to be mocked.
         $cacheManagerMock = $this->createMock(\TYPO3\CMS\Core\Cache\CacheManager::class);
         $cacheMock = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
-        $cacheManagerMock->expects($this->any())->method('getCache')->will($this->returnValue($cacheMock));
+        $cacheManagerMock->expects(self::any())->method('getCache')->will(self::returnValue($cacheMock));
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Cache\CacheManager::class, $cacheManagerMock);
 
         $flexFormService = $this->getMockBuilder(\TYPO3\CMS\Core\Service\FlexFormService::class)
@@ -112,6 +112,6 @@ class FlexFormServiceTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $convertedFlexFormArray = $flexFormService->convertFlexFormContentToArray($input);
-        $this->assertSame($expected, $convertedFlexFormArray);
+        self::assertSame($expected, $convertedFlexFormArray);
     }
 }

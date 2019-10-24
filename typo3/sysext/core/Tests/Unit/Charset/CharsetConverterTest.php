@@ -55,7 +55,7 @@ class CharsetConverterTest extends UnitTestCase
         string $expectedString
     ) {
         $subject = new CharsetConverter();
-        $this->assertSame($expectedString, $subject->specCharsToASCII('utf-8', $input));
+        self::assertSame($expectedString, $subject->specCharsToASCII('utf-8', $input));
     }
 
     /**
@@ -89,6 +89,6 @@ class CharsetConverterTest extends UnitTestCase
     public function specCharsToAsciiConvertsInvalidInputToEmptyString($input)
     {
         $subject = new CharsetConverter();
-        $this->assertSame('', $subject->specCharsToASCII('utf-8', $input));
+        self::assertSame('', $subject->specCharsToASCII('utf-8', $input));
     }
 }

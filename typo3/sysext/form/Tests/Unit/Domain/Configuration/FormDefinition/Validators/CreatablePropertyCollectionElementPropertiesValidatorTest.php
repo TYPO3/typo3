@@ -39,10 +39,10 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
             [[], '', $validationDto]
         );
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup'
         )->willReturn('default');
-        $typeConverter->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
 
         $input = 'xxx';
         $typeConverter->_call('validatePropertyCollectionElementPredefinedDefaultValue', $input, $validationDto);
@@ -60,10 +60,10 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
             [[], '', $validationDto]
         );
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup'
         )->willReturn('default');
-        $typeConverter->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
 
         $input = 'default';
 
@@ -73,6 +73,6 @@ class CreatablePropertyCollectionElementPropertiesValidatorTest extends UnitTest
         } catch (PropertyException $e) {
             $failed = true;
         }
-        $this->assertFalse($failed);
+        self::assertFalse($failed);
     }
 }

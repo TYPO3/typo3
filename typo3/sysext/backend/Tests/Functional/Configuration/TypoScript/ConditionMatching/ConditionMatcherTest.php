@@ -57,9 +57,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function usergroupConditionMatchesSingleGroupId(): void
     {
-        $this->assertTrue($this->subject->match('[usergroup(13)]'));
-        $this->assertTrue($this->subject->match('[usergroup("13")]'));
-        $this->assertTrue($this->subject->match('[usergroup(\'13\')]'));
+        self::assertTrue($this->subject->match('[usergroup(13)]'));
+        self::assertTrue($this->subject->match('[usergroup("13")]'));
+        self::assertTrue($this->subject->match('[usergroup(\'13\')]'));
     }
 
     /**
@@ -69,8 +69,8 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function usergroupConditionMatchesMultipleUserGroupId(): void
     {
-        $this->assertTrue($this->subject->match('[usergroup("999,15,14,13")]'));
-        $this->assertTrue($this->subject->match('[usergroup(\'999,15,14,13\')]'));
+        self::assertTrue($this->subject->match('[usergroup("999,15,14,13")]'));
+        self::assertTrue($this->subject->match('[usergroup(\'999,15,14,13\')]'));
     }
 
     /**
@@ -80,8 +80,8 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function loginUserConditionMatchesAnyLoggedInUser(): void
     {
-        $this->assertTrue($this->subject->match('[loginUser("*")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'*\')]'));
+        self::assertTrue($this->subject->match('[loginUser("*")]'));
+        self::assertTrue($this->subject->match('[loginUser(\'*\')]'));
     }
 
     /**
@@ -91,9 +91,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function loginUserConditionMatchesSingleLoggedInUser(): void
     {
-        $this->assertTrue($this->subject->match('[loginUser(13)]'));
-        $this->assertTrue($this->subject->match('[loginUser("13")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'13\')]'));
+        self::assertTrue($this->subject->match('[loginUser(13)]'));
+        self::assertTrue($this->subject->match('[loginUser("13")]'));
+        self::assertTrue($this->subject->match('[loginUser(\'13\')]'));
     }
 
     /**
@@ -104,9 +104,9 @@ class ConditionMatcherTest extends FunctionalTestCase
     public function loginUserConditionDoesNotMatchSingleLoggedInUser(): void
     {
         $GLOBALS['BE_USER']->user['uid'] = 13;
-        $this->assertFalse($this->subject->match('[loginUser(999)]'));
-        $this->assertFalse($this->subject->match('[loginUser("999")]'));
-        $this->assertFalse($this->subject->match('[loginUser(\'999\')]'));
+        self::assertFalse($this->subject->match('[loginUser(999)]'));
+        self::assertFalse($this->subject->match('[loginUser("999")]'));
+        self::assertFalse($this->subject->match('[loginUser(\'999\')]'));
     }
 
     /**
@@ -116,8 +116,8 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function loginUserConditionMatchesMultipleLoggedInUsers(): void
     {
-        $this->assertTrue($this->subject->match('[loginUser("999,13")]'));
-        $this->assertTrue($this->subject->match('[loginUser(\'999,13\')]'));
+        self::assertTrue($this->subject->match('[loginUser("999,13")]'));
+        self::assertTrue($this->subject->match('[loginUser(\'999,13\')]'));
     }
 
     /**
@@ -127,9 +127,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function adminUserConditionMatchesAdminUser(): void
     {
-        $this->assertTrue($this->subject->match('[backend.user.isAdmin == true]'));
-        $this->assertTrue($this->subject->match('[backend.user.isAdmin != false]'));
-        $this->assertTrue($this->subject->match('[backend.user.isAdmin]'));
+        self::assertTrue($this->subject->match('[backend.user.isAdmin == true]'));
+        self::assertTrue($this->subject->match('[backend.user.isAdmin != false]'));
+        self::assertTrue($this->subject->match('[backend.user.isAdmin]'));
     }
 
     /**
@@ -141,7 +141,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $this->subject->setPageId(2);
         $this->subject->__construct();
-        $this->assertTrue($this->subject->match('[tree.level == 2]'));
+        self::assertTrue($this->subject->match('[tree.level == 2]'));
     }
 
     /**
@@ -153,7 +153,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $this->subject->setPageId(2);
         $this->subject->__construct();
-        $this->assertTrue($this->subject->match('[tree.level in [999,998,2]]'));
+        self::assertTrue($this->subject->match('[tree.level in [999,998,2]]'));
     }
 
     /**
@@ -163,7 +163,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function treeLevelConditionDoesNotMatchFaultyValue(): void
     {
-        $this->assertFalse($this->subject->match('[tree.level == 999]'));
+        self::assertFalse($this->subject->match('[tree.level == 999]'));
     }
 
     /**
@@ -175,9 +175,9 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $this->subject->setPageId(3);
         $this->subject->__construct();
-        $this->assertTrue($this->subject->match('[2 in tree.rootLineIds]'));
-        $this->assertTrue($this->subject->match('["2" in tree.rootLineIds]'));
-        $this->assertTrue($this->subject->match('[\'2\' in tree.rootLineIds]'));
+        self::assertTrue($this->subject->match('[2 in tree.rootLineIds]'));
+        self::assertTrue($this->subject->match('["2" in tree.rootLineIds]'));
+        self::assertTrue($this->subject->match('[\'2\' in tree.rootLineIds]'));
     }
 
     /**
@@ -188,7 +188,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
         $this->subject->setPageId(3);
-        $this->assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
+        self::assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
     }
 
     /**
@@ -200,7 +200,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $this->subject->setPageId(3);
         $this->subject->__construct();
-        $this->assertTrue($this->subject->match('[2 in tree.rootLineIds]'));
+        self::assertTrue($this->subject->match('[2 in tree.rootLineIds]'));
     }
 
     /**
@@ -212,7 +212,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $this->subject->setPageId(3);
         $this->subject->__construct();
-        $this->assertTrue($this->subject->match('[3 in tree.rootLineIds]'));
+        self::assertTrue($this->subject->match('[3 in tree.rootLineIds]'));
     }
 
     /**
@@ -223,7 +223,7 @@ class ConditionMatcherTest extends FunctionalTestCase
     public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline(): void
     {
         $this->subject->setPageId(3);
-        $this->assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
+        self::assertFalse($this->subject->match('[999 in tree.rootLineIds]'));
     }
 
     /**
@@ -234,9 +234,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function compatVersionConditionMatchesOlderRelease(): void
     {
-        $this->assertTrue($this->subject->match('[compatVersion(7.0)]'));
-        $this->assertTrue($this->subject->match('[compatVersion("7.0")]'));
-        $this->assertTrue($this->subject->match('[compatVersion(\'7.0\')]'));
+        self::assertTrue($this->subject->match('[compatVersion(7.0)]'));
+        self::assertTrue($this->subject->match('[compatVersion("7.0")]'));
+        self::assertTrue($this->subject->match('[compatVersion(\'7.0\')]'));
     }
 
     /**
@@ -247,9 +247,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function compatVersionConditionMatchesSameRelease(): void
     {
-        $this->assertTrue($this->subject->match('[compatVersion(' . TYPO3_branch . ')]'));
-        $this->assertTrue($this->subject->match('[compatVersion("' . TYPO3_branch . '")]'));
-        $this->assertTrue($this->subject->match('[compatVersion(\'' . TYPO3_branch . '\')]'));
+        self::assertTrue($this->subject->match('[compatVersion(' . TYPO3_branch . ')]'));
+        self::assertTrue($this->subject->match('[compatVersion("' . TYPO3_branch . '")]'));
+        self::assertTrue($this->subject->match('[compatVersion(\'' . TYPO3_branch . '\')]'));
     }
 
     /**
@@ -260,9 +260,9 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function compatVersionConditionDoesNotMatchNewerRelease(): void
     {
-        $this->assertFalse($this->subject->match('[compatVersion(15.0)]'));
-        $this->assertFalse($this->subject->match('[compatVersion("15.0")]'));
-        $this->assertFalse($this->subject->match('[compatVersion(\'15.0\')]'));
+        self::assertFalse($this->subject->match('[compatVersion(15.0)]'));
+        self::assertFalse($this->subject->match('[compatVersion("15.0")]'));
+        self::assertFalse($this->subject->match('[compatVersion(\'15.0\')]'));
     }
 
     /**
@@ -274,6 +274,6 @@ class ConditionMatcherTest extends FunctionalTestCase
     {
         $testKey = $this->getUniqueId('test');
         putenv($testKey . '=testValue');
-        $this->assertTrue($this->subject->match('[getenv("' . $testKey . '") == "testValue"]'));
+        self::assertTrue($this->subject->match('[getenv("' . $testKey . '") == "testValue"]'));
     }
 }

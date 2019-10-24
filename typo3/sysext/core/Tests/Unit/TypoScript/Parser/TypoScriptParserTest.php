@@ -260,7 +260,7 @@ class TypoScriptParserTest extends UnitTestCase
             $modifierArgument,
             $currentValue
         );
-        $this->assertEquals($expected, $actualValue);
+        self::assertEquals($expected, $actualValue);
     }
 
     public function executeGetEnvModifierDataProvider(): array
@@ -328,7 +328,7 @@ class TypoScriptParserTest extends UnitTestCase
             $modifierArgument,
             $currentValue
         );
-        $this->assertEquals($expected, $actualValue);
+        self::assertEquals($expected, $actualValue);
         foreach ($environmentVariables as $environmentVariable => $_) {
             putenv($environmentVariable);
         }
@@ -383,7 +383,7 @@ class TypoScriptParserTest extends UnitTestCase
         $typoScript = '$.10 = invalid';
         $this->typoScriptParser->parse($typoScript);
         $expected = 'Line 0: Object Name String, "$.10" contains invalid character "$". Must be alphanumeric or one of: "_:-\."';
-        $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+        self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
     /**
@@ -397,7 +397,7 @@ class TypoScriptParserTest extends UnitTestCase
         $typoScript = '[]';
         $this->typoScriptParser->parse($typoScript);
         $expected = 'Empty condition is always false, this does not make sense. At line 0';
-        $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+        self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
     /**
@@ -420,7 +420,7 @@ class TypoScriptParserTest extends UnitTestCase
     public function doubleSlashCommentsAreValid(string $typoScript): void
     {
         $this->typoScriptParser->parse($typoScript);
-        $this->assertEmpty($this->typoScriptParser->errors);
+        self::assertEmpty($this->typoScriptParser->errors);
     }
 
     /**
@@ -464,8 +464,8 @@ class TypoScriptParserTest extends UnitTestCase
         GeneralUtility::addInstance(ConditionMatcher::class, $p->reveal());
 
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
-        $this->assertStringContainsString('foo = bar', $resolvedIncludeLines);
-        $this->assertStringNotContainsString('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
+        self::assertStringContainsString('foo = bar', $resolvedIncludeLines);
+        self::assertStringNotContainsString('INCLUDE_TYPOSCRIPT', $resolvedIncludeLines);
     }
 
     /**
@@ -681,7 +681,7 @@ test.TYPO3Forever.TypoScript = 1
     public function importFiles(string $typoScript, string $expected): void
     {
         $resolvedIncludeLines = TypoScriptParser::checkIncludeLines($typoScript);
-        $this->assertEquals($expected, $resolvedIncludeLines);
+        self::assertEquals($expected, $resolvedIncludeLines);
     }
 
     /**
@@ -693,7 +693,7 @@ test.TYPO3Forever.TypoScript = 1
     public function typoScriptIsParsedToArray(string $typoScript, array $expected): void
     {
         $this->typoScriptParser->parse($typoScript);
-        $this->assertEquals($expected, $this->typoScriptParser->setup);
+        self::assertEquals($expected, $this->typoScriptParser->setup);
     }
 
     /**
@@ -1162,8 +1162,8 @@ test.TYPO3Forever.TypoScript = 1
         string $expectedRemainingKey
     ): void {
         [$keySegment, $remainingKey] = $this->typoScriptParser->_call('parseNextKeySegment', $key);
-        $this->assertSame($expectedKeySegment, $keySegment);
-        $this->assertSame($expectedRemainingKey, $remainingKey);
+        self::assertSame($expectedKeySegment, $keySegment);
+        self::assertSame($expectedRemainingKey, $remainingKey);
     }
 
     /**

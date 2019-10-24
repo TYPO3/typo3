@@ -277,7 +277,7 @@ class HookTest extends AbstractDataHandlerActionTestCase
         $message = 'Unexpected invocations of method "%s"';
         foreach ($methodNames as $methodName) {
             $invocations = $this->hookFixture->findInvocationsByMethodName($methodName);
-            $this->assertCount(
+            self::assertCount(
                 $count,
                 $invocations,
                 sprintf($message, $methodName)
@@ -304,11 +304,11 @@ class HookTest extends AbstractDataHandlerActionTestCase
     {
         $message = 'Unexpected hook payload amount found for method "%s"';
         $invocations = $this->hookFixture->findInvocationsByMethodName($methodName);
-        $this->assertNotNull($invocations);
+        self::assertNotNull($invocations);
 
         foreach ($assertions as $assertion) {
             $indexes = $this->findAllArrayValuesInHaystack($invocations, $assertion);
-            $this->assertCount(
+            self::assertCount(
                 1,
                 $indexes,
                 sprintf($message, $methodName)

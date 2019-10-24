@@ -188,7 +188,7 @@ class LinkServiceTest extends UnitTestCase
     public function resolveReturnsSplitParameters($input, $expected, $finalString)
     {
         $subject = new LinkService();
-        $this->assertEquals($expected, $subject->resolve($input));
+        self::assertEquals($expected, $subject->resolve($input));
     }
 
     /**
@@ -203,6 +203,6 @@ class LinkServiceTest extends UnitTestCase
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
     {
         $subject = new LinkService();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 }

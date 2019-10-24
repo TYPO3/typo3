@@ -66,7 +66,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     {
         $userMock = $this->createMock(BackendUserAuthentication::class);
         $userMock->user = ['uid' => $this->getUniqueId()];
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             BackendFormProtection::class,
             FormProtectionFactory::get(
                 BackendFormProtection::class,
@@ -88,7 +88,7 @@ class FormProtectionFactoryTest extends UnitTestCase
             $userMock,
             $this->createMock(Registry::class)
         ];
-        $this->assertSame(
+        self::assertSame(
             call_user_func_array([FormProtectionFactory::class, 'get'], $arguments),
             call_user_func_array([FormProtectionFactory::class, 'get'], $arguments)
         );
@@ -99,7 +99,7 @@ class FormProtectionFactoryTest extends UnitTestCase
      */
     public function getForTypeInstallToolReturnsInstallToolFormProtection()
     {
-        $this->assertTrue(FormProtectionFactory::get(InstallToolFormProtection::class) instanceof InstallToolFormProtection);
+        self::assertTrue(FormProtectionFactory::get(InstallToolFormProtection::class) instanceof InstallToolFormProtection);
     }
 
     /**
@@ -107,7 +107,7 @@ class FormProtectionFactoryTest extends UnitTestCase
      */
     public function getForTypeInstallToolCalledTwoTimesReturnsTheSameInstance()
     {
-        $this->assertSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(InstallToolFormProtection::class));
+        self::assertSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(InstallToolFormProtection::class));
     }
 
     /**
@@ -115,7 +115,7 @@ class FormProtectionFactoryTest extends UnitTestCase
      */
     public function getForTypesInstallToolAndDisabledReturnsDifferentInstances()
     {
-        $this->assertNotSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(DisabledFormProtection::class));
+        self::assertNotSame(FormProtectionFactory::get(InstallToolFormProtection::class), FormProtectionFactory::get(DisabledFormProtection::class));
     }
 
     /////////////////////////
@@ -128,7 +128,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     {
         $instance = new FormProtectionTesting();
         FormProtectionFactory::set(BackendFormProtection::class, $instance);
-        $this->assertSame($instance, FormProtectionFactory::get(BackendFormProtection::class));
+        self::assertSame($instance, FormProtectionFactory::get(BackendFormProtection::class));
     }
 
     /**
@@ -138,6 +138,6 @@ class FormProtectionFactoryTest extends UnitTestCase
     {
         $instance = new FormProtectionTesting();
         FormProtectionFactory::set(BackendFormProtection::class, $instance);
-        $this->assertNotSame($instance, FormProtectionFactory::get(InstallToolFormProtection::class));
+        self::assertNotSame($instance, FormProtectionFactory::get(InstallToolFormProtection::class));
     }
 }

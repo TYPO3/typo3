@@ -59,11 +59,11 @@ class TransportFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][FileSpool::class]['className'] = Fixtures\FakeFileSpoolFixture::class;
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(DelayedTransportInterface::class, $transport);
-        $this->assertInstanceOf(FakeFileSpoolFixture::class, $transport);
+        self::assertInstanceOf(DelayedTransportInterface::class, $transport);
+        self::assertInstanceOf(FakeFileSpoolFixture::class, $transport);
 
         $path = $transport->getPath();
-        $this->assertStringContainsString($mailSettings['transport_spool_filepath'], $path);
+        self::assertStringContainsString($mailSettings['transport_spool_filepath'], $path);
     }
 
     /**
@@ -89,8 +89,8 @@ class TransportFactoryTest extends UnitTestCase
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][MemorySpool::class]['className'] = Fixtures\FakeMemorySpoolFixture::class;
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(DelayedTransportInterface::class, $transport);
-        $this->assertInstanceOf(MemorySpool::class, $transport);
+        self::assertInstanceOf(DelayedTransportInterface::class, $transport);
+        self::assertInstanceOf(MemorySpool::class, $transport);
     }
 
     /**
@@ -113,10 +113,10 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(DelayedTransportInterface::class, $transport);
-        $this->assertInstanceOf(Fixtures\FakeValidSpoolFixture::class, $transport);
+        self::assertInstanceOf(DelayedTransportInterface::class, $transport);
+        self::assertInstanceOf(Fixtures\FakeValidSpoolFixture::class, $transport);
 
-        $this->assertSame($mailSettings, $transport->getSettings());
+        self::assertSame($mailSettings, $transport->getSettings());
     }
 
     /**
@@ -163,6 +163,6 @@ class TransportFactoryTest extends UnitTestCase
         ];
 
         $transport = (new TransportFactory())->get($mailSettings);
-        $this->assertInstanceOf(TransportInterface::class, $transport);
+        self::assertInstanceOf(TransportInterface::class, $transport);
     }
 }

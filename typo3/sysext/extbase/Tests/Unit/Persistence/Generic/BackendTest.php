@@ -65,27 +65,27 @@ class BackendTest extends UnitTestCase
         ];
 
         $columnMap
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getRelationTableName')
-            ->will($this->returnValue('myTable'));
+            ->will(self::returnValue('myTable'));
         $columnMap
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getRelationTableMatchFields')
-            ->will($this->returnValue($mmMatchFields));
+            ->will(self::returnValue($mmMatchFields));
         $columnMap
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getChildSortByFieldName')
-            ->will($this->returnValue(''));
+            ->will(self::returnValue(''));
         $dataMap
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getColumnMap')
-            ->will($this->returnValue($columnMap));
+            ->will(self::returnValue($columnMap));
         $dataMapFactory
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('buildDataMap')
-            ->will($this->returnValue($dataMap));
+            ->will(self::returnValue($dataMap));
         $storageBackend
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('addRow')
             ->with('myTable', $expectedRow, true);
 
@@ -110,13 +110,13 @@ class BackendTest extends UnitTestCase
         $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
         GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
 
-        $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue($fakeUuid));
 
         /** @var Backend $backend */
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
         $backend->_set('session', $session);
 
-        $this->assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
+        self::assertEquals($backend->getIdentifierByObject($object), $fakeUuid);
     }
 
     /**
@@ -141,13 +141,13 @@ class BackendTest extends UnitTestCase
         $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
         GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
 
-        $proxy->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($object));
-        $session->expects($this->once())->method('getIdentifierByObject')->with($object)->will($this->returnValue($fakeUuid));
+        $proxy->expects(self::once())->method('_loadRealInstance')->will(self::returnValue($object));
+        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue($fakeUuid));
 
         /** @var Backend $backend */
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
         $backend->_set('session', $session);
 
-        $this->assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);
+        self::assertEquals($backend->getIdentifierByObject($proxy), $fakeUuid);
     }
 }

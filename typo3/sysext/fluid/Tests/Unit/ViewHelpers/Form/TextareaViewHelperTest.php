@@ -43,7 +43,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
             ->setMethods(['setTagName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockTagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('textarea');
+        $mockTagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('textarea');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
         $this->viewHelper->initializeArgumentsAndRender();
@@ -63,7 +63,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
         $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<textarea name="NameOfTextarea">Current value</textarea>';
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -71,7 +71,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
      */
     public function renderCallsSetErrorClassAttribute()
     {
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->expects(self::once())->method('setErrorClassAttribute');
         $this->viewHelper->render();
     }
 
@@ -89,7 +89,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
         $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<textarea name="NameOfTextarea">some &lt;tag&gt; &amp; &quot;quotes&quot;</textarea>';
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -106,7 +106,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
         $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<textarea placeholder="SomePlaceholder" name="NameOfTextarea"></textarea>';
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -123,7 +123,7 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
         $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<textarea readonly="foo" name="NameOfTextarea"></textarea>';
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -140,6 +140,6 @@ class TextareaViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new Fixtures\EmptySyntaxTreeNode());
         $actual = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<textarea name="NameOfTextarea" required="required"></textarea>';
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

@@ -46,7 +46,7 @@ class TaskGroupVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional
         $formResult = $formEngineTestService->createNewRecordForm('tx_scheduler_task_group');
 
         foreach (static::$taskGroupFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );

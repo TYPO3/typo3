@@ -64,6 +64,6 @@ class AbstractExceptionHandlerTest extends UnitTestCase
     {
         $mock = $this->getAccessibleMockForAbstractClass(AbstractExceptionHandler::class, ['dummy']);
         $anonymizedUrl = $mock->_call('anonymizeToken', $originalUrl);
-        $this->assertSame($expectedUrl, $anonymizedUrl);
+        self::assertSame($expectedUrl, $anonymizedUrl);
     }
 }

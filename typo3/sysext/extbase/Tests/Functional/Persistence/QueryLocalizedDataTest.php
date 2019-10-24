@@ -88,7 +88,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         /** @var MockObject|EnvironmentService $environmentServiceMock */
         $environmentServiceMock = $this->createMock(EnvironmentService::class);
         $environmentServiceMock
-            ->expects($this->atLeast(1))
+            ->expects(self::atLeast(1))
             ->method('isEnvironmentInFrontendMode')
             ->willReturn(true);
         GeneralUtility::setSingletonInstance(EnvironmentService::class, $environmentServiceMock);
@@ -120,7 +120,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
         $post2 = $this->postRepository->findByUid(2);
 
-        $this->assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
+        self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -137,7 +137,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
         // with feature flag disable, you'll get default language object here too (Post 2).
         $post2translated = $this->postRepository->findByUid(11);
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty('_localizedUid'),
@@ -161,7 +161,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_OFF));
 
         $post2 = $this->postRepository->findByUid(2);
-        $this->assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
+        self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -177,7 +177,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $this->persistenceManager->clearState();
 
         $post2translated = $this->postRepository->findByUid(11);
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty('_localizedUid'),
@@ -201,7 +201,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON));
 
         $post2 = $this->postRepository->findByUid(2);
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -216,7 +216,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
         $post2translated = $this->postRepository->findByUid(11);
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty('_localizedUid'),
@@ -240,7 +240,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_OFF));
 
         $post2 = $this->postRepository->findByUid(2);
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -256,7 +256,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $this->persistenceManager->clearState();
 
         $post2translated = $this->postRepository->findByUid(11);
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
             $post2translated->_getProperty('_localizedUid'),
@@ -289,7 +289,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $post2 = $query->execute()->getFirst();
 
         //the expected state is the same with and without feature flag
-        $this->assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
+        self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -312,7 +312,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $post2 = $query->execute()->getFirst();
 
         //this assertion is true for both enabled and disabled flag
-        $this->assertNull($post2);
+        self::assertNull($post2);
 
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
@@ -324,7 +324,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertNull($post2);
+        self::assertNull($post2);
 
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
@@ -336,7 +336,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 2, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -367,7 +367,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
+        self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -390,7 +390,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $post2 = $query->execute()->getFirst();
 
         //this assertion is true for both enabled and disabled flag
-        $this->assertNull($post2);
+        self::assertNull($post2);
 
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
@@ -402,7 +402,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 2));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertNull($post2);
+        self::assertNull($post2);
 
         //this is needed because of https://forge.typo3.org/issues/59992
         $this->persistenceManager->clearState();
@@ -414,7 +414,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->matching($query->equals('uid', 11));
         $post2 = $query->execute()->getFirst();
 
-        $this->assertEquals(['Post 2 - DK', 11, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
+        self::assertEquals(['Post 2 - DK', 11, 11, 'Blog 1 DK', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
             $post2->_getProperty('_localizedUid'),
@@ -864,7 +864,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->setOffset(0);
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(count($expected), $posts);
+        self::assertCount(count($expected), $posts);
         $this->assertObjectsProperties($posts, $expected);
     }
 
@@ -1047,7 +1047,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(count($expected), $posts);
+        self::assertCount(count($expected), $posts);
         $this->assertObjectsProperties($posts, $expected);
     }
 
@@ -1165,7 +1165,7 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
 
         $posts = $query->execute()->toArray();
 
-        $this->assertCount(count($expected), $posts);
+        self::assertCount(count($expected), $posts);
         $this->assertObjectsProperties($posts, $expected);
     }
 
@@ -1185,9 +1185,9 @@ class QueryLocalizedDataTest extends \TYPO3\TestingFramework\Core\Functional\Fun
                 $actualPost[$propertyPath] = self::getPropertyPath($post, $propertyPath);
             }
             $actual[] = $actualPost;
-            $this->assertEquals($expected[$key], $actual[$key], 'Assertion of the $expected[' . $key . '] failed');
+            self::assertEquals($expected[$key], $actual[$key], 'Assertion of the $expected[' . $key . '] failed');
         }
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     /**

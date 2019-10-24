@@ -53,7 +53,7 @@ class ListenerProviderTest extends UnitTestCase
      */
     public function implementsPsrInterface()
     {
-        $this->assertInstanceOf(ListenerProviderInterface::class, $this->listenerProvider);
+        self::assertInstanceOf(ListenerProviderInterface::class, $this->listenerProvider);
     }
 
     /**
@@ -64,7 +64,7 @@ class ListenerProviderTest extends UnitTestCase
         $this->listenerProvider->addListener('Event\\Name', 'listener1');
         $this->listenerProvider->addListener('Event\\Name', 'listener2', 'methodName');
 
-        $this->assertEquals($this->listenerProvider->getAllListenerDefinitions(), [
+        self::assertEquals($this->listenerProvider->getAllListenerDefinitions(), [
             'Event\\Name' => [
                 [ 'service' => 'listener1', 'method' => null ],
                 [ 'service' => 'listener2', 'method' => 'methodName' ],
@@ -88,7 +88,7 @@ class ListenerProviderTest extends UnitTestCase
             $listener($event);
         }
 
-        $this->assertEquals(1, $event->invoked);
+        self::assertEquals(1, $event->invoked);
     }
 
     /**
@@ -107,7 +107,7 @@ class ListenerProviderTest extends UnitTestCase
             $listener($extendedEvent);
         }
 
-        $this->assertEquals(1, $extendedEvent->invoked);
+        self::assertEquals(1, $extendedEvent->invoked);
     }
 
     /**
@@ -131,7 +131,7 @@ class ListenerProviderTest extends UnitTestCase
             $listener($eventImplementation);
         }
 
-        $this->assertEquals(1, $eventImplementation->invoked);
+        self::assertEquals(1, $eventImplementation->invoked);
     }
 
     /**
@@ -154,7 +154,7 @@ class ListenerProviderTest extends UnitTestCase
             $listener($event);
         }
 
-        $this->assertEquals('ab', $event->sequence);
+        self::assertEquals('ab', $event->sequence);
     }
 
     /**

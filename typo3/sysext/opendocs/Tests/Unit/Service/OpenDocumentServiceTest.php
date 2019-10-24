@@ -63,7 +63,7 @@ class OpenDocumentServiceTest extends UnitTestCase
             'identifier2' => [ 'data2' ],
         ];
 
-        $this->assertEquals($expected, $openDocuments);
+        self::assertEquals($expected, $openDocuments);
     }
 
     /**
@@ -75,7 +75,7 @@ class OpenDocumentServiceTest extends UnitTestCase
 
         $openDocuments = $this->subject->getOpenDocuments();
 
-        $this->assertEquals([], $openDocuments);
+        self::assertEquals([], $openDocuments);
     }
 
     /**
@@ -92,7 +92,7 @@ class OpenDocumentServiceTest extends UnitTestCase
             'identifier1' => [ 'data1' ],
         ];
 
-        $this->assertEquals($expected, $recentDocuments);
+        self::assertEquals($expected, $recentDocuments);
     }
 
     /**
@@ -104,7 +104,7 @@ class OpenDocumentServiceTest extends UnitTestCase
 
         $recentDocuments = $this->subject->getRecentDocuments();
 
-        $this->assertEquals([], $recentDocuments);
+        self::assertEquals([], $recentDocuments);
     }
 
     /**

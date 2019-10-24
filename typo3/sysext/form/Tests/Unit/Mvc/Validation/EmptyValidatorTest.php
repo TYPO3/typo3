@@ -34,7 +34,7 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = '';
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -48,7 +48,7 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = null;
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -62,7 +62,7 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = [];
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -76,7 +76,7 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = 0;
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -90,7 +90,7 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = '0';
 
-        $this->assertFalse($validator->validate($input)->hasErrors());
+        self::assertFalse($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -104,7 +104,7 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = 'hellö';
 
-        $this->assertTrue($validator->validate($input)->hasErrors());
+        self::assertTrue($validator->validate($input)->hasErrors());
     }
 
     /**
@@ -118,6 +118,6 @@ class EmptyValidatorTest extends UnitTestCase
 
         $input = ['hellö'];
 
-        $this->assertTrue($validator->validate($input)->hasErrors());
+        self::assertTrue($validator->validate($input)->hasErrors());
     }
 }

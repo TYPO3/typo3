@@ -71,6 +71,6 @@ class ArrayFormFactoryTest extends UnitTestCase
         } catch (\TypeError $error) {
             $typeErrorExists = true;
         }
-        $this->assertFalse($typeErrorExists);
+        self::assertFalse($typeErrorExists);
     }
 }

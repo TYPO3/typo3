@@ -31,7 +31,7 @@ class MenuItemTest extends UnitTestCase
     {
         $menuItem = new MenuItem();
         $isValid = $menuItem->isValid($menuItem);
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -44,7 +44,7 @@ class MenuItemTest extends UnitTestCase
         $menuItem = new MenuItem();
         $menuItem->setTitle('huhu');
         $isValid = $menuItem->isValid($menuItem);
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -57,7 +57,7 @@ class MenuItemTest extends UnitTestCase
         $menuItem = new MenuItem();
         $menuItem->setHref('husel');
         $isValid = $menuItem->isValid($menuItem);
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -70,6 +70,6 @@ class MenuItemTest extends UnitTestCase
         $menuItem = new MenuItem();
         $menuItem->setTitle('husel')->setHref('husel');
         $isValid = $menuItem->isValid($menuItem);
-        $this->assertTrue($isValid);
+        self::assertTrue($isValid);
     }
 }

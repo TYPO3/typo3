@@ -110,6 +110,6 @@ class FieldControlTest extends UnitTestCase
         // We're not interested in testing the html merge here
         $expected['html'] = $result['html'];
 
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 }

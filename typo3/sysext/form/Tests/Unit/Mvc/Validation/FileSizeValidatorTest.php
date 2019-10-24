@@ -76,7 +76,7 @@ class FileSizeValidatorTest extends UnitTestCase
             ->getMock();
 
         $file = new File(['identifier' => '/foo', 'name'=> 'bar.txt', 'size' => '1'], $mockedStorage);
-        $this->assertTrue($validator->validate($file)->hasErrors());
+        self::assertTrue($validator->validate($file)->hasErrors());
     }
 
     /**
@@ -95,7 +95,7 @@ class FileSizeValidatorTest extends UnitTestCase
             ->getMock();
 
         $file = new File(['identifier' => '/foo', 'name' => 'bar.txt', 'size' => '1048577'], $mockedStorage);
-        $this->assertTrue($validator->validate($file)->hasErrors());
+        self::assertTrue($validator->validate($file)->hasErrors());
     }
 
     /**
@@ -109,7 +109,7 @@ class FileSizeValidatorTest extends UnitTestCase
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
-        $this->assertFalse($validator->validate('')->hasErrors());
+        self::assertFalse($validator->validate('')->hasErrors());
     }
 
     /**
@@ -123,6 +123,6 @@ class FileSizeValidatorTest extends UnitTestCase
             ->setConstructorArgs(['options' => $options])
             ->getMock();
 
-        $this->assertTrue($validator->validate('string')->hasErrors());
+        self::assertTrue($validator->validate('string')->hasErrors());
     }
 }

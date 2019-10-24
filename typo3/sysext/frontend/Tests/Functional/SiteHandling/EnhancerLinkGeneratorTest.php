@@ -284,7 +284,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertStringStartsWith($expectation, (string)$response->getBody());
+        self::assertStringStartsWith($expectation, (string)$response->getBody());
     }
 
     /**
@@ -350,7 +350,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -416,7 +416,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**
@@ -489,7 +489,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertStringStartsWith($expectation, (string)$response->getBody());
+        self::assertStringStartsWith($expectation, (string)$response->getBody());
     }
 
     /**
@@ -564,7 +564,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertStringStartsWith($expectation, (string)$response->getBody());
+        self::assertStringStartsWith($expectation, (string)$response->getBody());
     }
 
     /**
@@ -689,6 +689,6 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertStringStartsWith($expectation, (string)$response->getBody());
+        self::assertStringStartsWith($expectation, (string)$response->getBody());
     }
 }

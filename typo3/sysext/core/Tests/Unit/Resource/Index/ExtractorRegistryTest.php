@@ -34,7 +34,7 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorRegistry = $this->getMockExtractorRegistry([[$extractorClass, $extractorObject]]);
 
         $extractorRegistry->registerExtractionService($extractorClass);
-        $this->assertContains($extractorObject, $extractorRegistry->getExtractors());
+        self::assertContains($extractorObject, $extractorRegistry->getExtractors());
     }
 
     /**
@@ -72,19 +72,19 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorObject1 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
-        $extractorObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
+        $extractorObject1->expects(self::any())->method('getPriority')->will(self::returnValue(1));
 
         $extractorClass2 = 'ad9195e2487eea33c8a2abd5cf33cba4';
         $extractorObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
-        $extractorObject2->expects($this->any())->method('getPriority')->will($this->returnValue(10));
+        $extractorObject2->expects(self::any())->method('getPriority')->will(self::returnValue(10));
 
         $extractorClass3 = 'cef9aa4e1cd3aa7ff05dcdccb117156a';
         $extractorObject3 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
             ->setMockClassName($extractorClass3)
             ->getMock();
-        $extractorObject3->expects($this->any())->method('getPriority')->will($this->returnValue(2));
+        $extractorObject3->expects(self::any())->method('getPriority')->will(self::returnValue(2));
 
         $createdExtractorInstances = [
             [$extractorClass1, $extractorObject1],
@@ -99,9 +99,9 @@ class ExtractorRegistryTest extends UnitTestCase
 
         $extractorInstances = $extractorRegistry->getExtractors();
 
-        $this->assertTrue($extractorInstances[0] instanceof $extractorClass2);
-        $this->assertTrue($extractorInstances[1] instanceof $extractorClass3);
-        $this->assertTrue($extractorInstances[2] instanceof $extractorClass1);
+        self::assertTrue($extractorInstances[0] instanceof $extractorClass2);
+        self::assertTrue($extractorInstances[1] instanceof $extractorClass3);
+        self::assertTrue($extractorInstances[2] instanceof $extractorClass1);
     }
 
     /**
@@ -113,13 +113,13 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorObject1 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
             ->setMockClassName($extractorClass1)
             ->getMock();
-        $extractorObject1->expects($this->any())->method('getPriority')->will($this->returnValue(1));
+        $extractorObject1->expects(self::any())->method('getPriority')->will(self::returnValue(1));
 
         $extractorClass2 = 'ac318f1659d278b79b38262f23a78d5d';
         $extractorObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Index\ExtractorInterface::class)
             ->setMockClassName($extractorClass2)
             ->getMock();
-        $extractorObject2->expects($this->any())->method('getPriority')->will($this->returnValue(1));
+        $extractorObject2->expects(self::any())->method('getPriority')->will(self::returnValue(1));
 
         $createdExtractorInstances = [
             [$extractorClass1, $extractorObject1],
@@ -131,8 +131,8 @@ class ExtractorRegistryTest extends UnitTestCase
         $extractorRegistry->registerExtractionService($extractorClass2);
 
         $extractorInstances = $extractorRegistry->getExtractors();
-        $this->assertContains($extractorObject1, $extractorInstances);
-        $this->assertContains($extractorObject2, $extractorInstances);
+        self::assertContains($extractorObject1, $extractorInstances);
+        self::assertContains($extractorObject2, $extractorInstances);
     }
 
     /**
@@ -148,9 +148,9 @@ class ExtractorRegistryTest extends UnitTestCase
             ->getMock();
 
         if (!empty($createsExtractorInstances)) {
-            $extractorRegistry->expects($this->any())
+            $extractorRegistry->expects(self::any())
                 ->method('createExtractorInstance')
-                ->will($this->returnValueMap($createsExtractorInstances));
+                ->will(self::returnValueMap($createsExtractorInstances));
         }
 
         return $extractorRegistry;

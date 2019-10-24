@@ -139,7 +139,7 @@ class HtmlParserTest extends UnitTestCase
      */
     public function splitIntoBlock(string $tag, string $content, bool $eliminateExtraEndTags, array $expected): void
     {
-        $this->assertSame($expected, $this->subject->splitIntoBlock($tag, $content, $eliminateExtraEndTags));
+        self::assertSame($expected, $this->subject->splitIntoBlock($tag, $content, $eliminateExtraEndTags));
     }
 
     /**
@@ -151,7 +151,7 @@ class HtmlParserTest extends UnitTestCase
     public function xHtmlCleaningDoesNotModifyCDATA(string $source, string $expected): void
     {
         $result = $this->subject->HTMLcleaner($source, [], 1);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -192,7 +192,7 @@ class HtmlParserTest extends UnitTestCase
                 ]
             ]
         ];
-        $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+        self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
     /**
@@ -207,7 +207,7 @@ class HtmlParserTest extends UnitTestCase
         ];
         $content = '<span></span><span id="test"><div></span></div>';
         $expectedResult = '<span id="test"></span>';
-        $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+        self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
     /**
@@ -253,7 +253,7 @@ class HtmlParserTest extends UnitTestCase
             'allowTags' => 'div,span,b,i',
             'localNesting' => 'div,span,b,i',
         ];
-        $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+        self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
     /**
@@ -299,7 +299,7 @@ class HtmlParserTest extends UnitTestCase
             'allowTags' => 'span,div,b,i',
             'globalNesting' => 'span,div,b,i',
         ];
-        $this->assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
+        self::assertEquals($expectedResult, $this->parseConfigAndCleanHtml($tsConfig, $content));
     }
 
     /**
@@ -369,7 +369,7 @@ class HtmlParserTest extends UnitTestCase
         ];
 
         $result = $this->parseConfigAndCleanHtml($tsConfig, $content);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -417,7 +417,7 @@ class HtmlParserTest extends UnitTestCase
         ];
 
         $result = $this->parseConfigAndCleanHtml($tsConfig, $content);
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -460,7 +460,7 @@ class HtmlParserTest extends UnitTestCase
      */
     public function getFirstTag(string $str, string $expected): void
     {
-        $this->assertEquals($expected, $this->subject->getFirstTag($str));
+        self::assertEquals($expected, $this->subject->getFirstTag($str));
     }
 
     /**
@@ -516,7 +516,7 @@ class HtmlParserTest extends UnitTestCase
      */
     public function getFirstTagName(string $str, bool $preserveCase, string $expected): void
     {
-        $this->assertEquals($expected, $this->subject->getFirstTagName($str, $preserveCase));
+        self::assertEquals($expected, $this->subject->getFirstTagName($str, $preserveCase));
     }
 
     /**
@@ -554,7 +554,7 @@ class HtmlParserTest extends UnitTestCase
      */
     public function removeFirstAndLastTag(string $str, string $expectedResult): void
     {
-        $this->assertEquals($expectedResult, $this->subject->removeFirstAndLastTag($str));
+        self::assertEquals($expectedResult, $this->subject->removeFirstAndLastTag($str));
     }
 
     /**
@@ -599,7 +599,7 @@ class HtmlParserTest extends UnitTestCase
      */
     public function getTagAttributes(string $tag, array $expectedResult): void
     {
-        $this->assertEquals($expectedResult, $this->subject->get_tag_attributes($tag));
+        self::assertEquals($expectedResult, $this->subject->get_tag_attributes($tag));
     }
 
     /**
@@ -657,7 +657,7 @@ class HtmlParserTest extends UnitTestCase
         bool $treatNonBreakingSpaceAsEmpty,
         string $expectedResult
     ): void {
-        $this->assertEquals(
+        self::assertEquals(
             $expectedResult,
             $this->subject->stripEmptyTags($content, $tagList, $treatNonBreakingSpaceAsEmpty)
         );

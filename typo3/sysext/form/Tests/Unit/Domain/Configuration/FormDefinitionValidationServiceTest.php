@@ -122,7 +122,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         } catch (PropertyException $e) {
             $failed = true;
         }
-        $this->assertFalse($failed);
+        self::assertFalse($failed);
     }
 
     /**
@@ -241,7 +241,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         } catch (PropertyException $e) {
             $failed = true;
         }
-        $this->assertFalse($failed);
+        self::assertFalse($failed);
     }
 
     /**
@@ -269,18 +269,18 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         );
 
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('isFormElementPropertyDefinedInFormEditorSetup')
             ->willReturn($mockConfiguration['isFormElementPropertyDefinedInFormEditorSetup']);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn($mockConfiguration['isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup']);
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('getFormElementPredefinedDefaultValueFromFormEditorSetup')
             ->willReturn($mockConfiguration['getFormElementPredefinedDefaultValueFromFormEditorSetup']);
-        $typeConverter->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
-        $formDefinitionValidationService->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $formDefinitionValidationService->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
 
         $objectManager = $this->prophesize(ObjectManager::class);
@@ -298,7 +298,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         } catch (PropertyException $e) {
             $returnedExceptionCode = $e->getCode();
         }
-        $this->assertEquals($returnedExceptionCode, $exceptionCode);
+        self::assertEquals($returnedExceptionCode, $exceptionCode);
     }
 
     /**
@@ -326,18 +326,18 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         );
 
         $configurationService = $this->createMock(ConfigurationService::class);
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())
             ->method('isPropertyCollectionPropertyDefinedInFormEditorSetup')
             ->willReturn($mockConfiguration['isPropertyCollectionPropertyDefinedInFormEditorSetup']);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn($mockConfiguration['isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup']);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup'
         )->willReturn($mockConfiguration['getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup']);
-        $typeConverter->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $typeConverter->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
         $formDefinitionValidationService = $this->getAccessibleMock(FormDefinitionValidationService::class, ['getConfigurationService']);
-        $formDefinitionValidationService->expects($this->any())->method('getConfigurationService')->willReturn($configurationService);
+        $formDefinitionValidationService->expects(self::any())->method('getConfigurationService')->willReturn($configurationService);
         GeneralUtility::setSingletonInstance(FormDefinitionValidationService::class, $formDefinitionValidationService);
         $objectManager = $this->prophesize(ObjectManager::class);
         $objectManager->get(ConfigurationService::class)->willReturn($configurationService);
@@ -354,7 +354,7 @@ class FormDefinitionValidationServiceTest extends UnitTestCase
         } catch (PropertyException $e) {
             $returnedExceptionCode = $e->getCode();
         }
-        $this->assertEquals($returnedExceptionCode, $exceptionCode);
+        self::assertEquals($returnedExceptionCode, $exceptionCode);
     }
 
     /**

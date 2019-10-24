@@ -34,8 +34,8 @@ class PageRendererTest extends UnitTestCase
         $pageRenderer = $this->getMockBuilder(PageRenderer::class)
             ->setMethods(['reset', 'prepareRendering', 'renderJavaScriptAndCss', 'getPreparedMarkerArray', 'getTemplateForPart', 'getTypoScriptFrontendController'])
             ->getMock();
-        $pageRenderer->expects($this->any())->method('getTypoScriptFrontendController')->willReturn($tsfe->reveal());
-        $pageRenderer->expects($this->exactly(3))->method('reset');
+        $pageRenderer->expects(self::any())->method('getTypoScriptFrontendController')->willReturn($tsfe->reveal());
+        $pageRenderer->expects(self::exactly(3))->method('reset');
 
         $pageRenderer->render(PageRenderer::PART_COMPLETE);
         $pageRenderer->render(PageRenderer::PART_HEADER);
@@ -56,7 +56,7 @@ class PageRendererTest extends UnitTestCase
         $subject->addBodyContent('D');
         $subject->addBodyContent('E');
         $out = $subject->getBodyContent();
-        $this->assertEquals($expectedReturnValue, $out);
+        self::assertEquals($expectedReturnValue, $out);
     }
 
     /**
@@ -79,7 +79,7 @@ class PageRendererTest extends UnitTestCase
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $actualResult = $subject->getInlineLanguageLabelFiles();
 
-        $this->assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
+        self::assertSame($expectedInlineLanguageLabelFile, array_pop($actualResult));
     }
 
     /**
@@ -110,8 +110,8 @@ class PageRendererTest extends UnitTestCase
         $subject->addInlineLanguageLabelFile($fileReference2, $selectionPrefix2, $stripFromSelectionName2);
         $actualResult = $subject->getInlineLanguageLabelFiles();
 
-        $this->assertSame($expectedInlineLanguageLabelFile2, array_pop($actualResult));
-        $this->assertSame($expectedInlineLanguageLabelFile1, array_pop($actualResult));
+        self::assertSame($expectedInlineLanguageLabelFile2, array_pop($actualResult));
+        self::assertSame($expectedInlineLanguageLabelFile1, array_pop($actualResult));
     }
 
     /**
@@ -127,7 +127,7 @@ class PageRendererTest extends UnitTestCase
 
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
-        $this->assertSame(1, count($subject->getInlineLanguageLabelFiles()));
+        self::assertSame(1, count($subject->getInlineLanguageLabelFiles()));
     }
 
     /**
@@ -170,7 +170,7 @@ class PageRendererTest extends UnitTestCase
         $subject->_set('inlineLanguageLabels', []);
         $subject->method('readLLfile')->willReturn(false);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml');
-        $this->assertEquals([], $subject->_get('inlineLanguageLabels'));
+        self::assertEquals([], $subject->_get('inlineLanguageLabels'));
     }
 
     /**
@@ -236,7 +236,7 @@ class PageRendererTest extends UnitTestCase
         $subject->_set('inlineLanguageLabels', []);
         $subject->method('readLLfile')->willReturn($llFileContent);
         $subject->_call('includeLanguageFileForInline', 'someLLFile.xml', $selectionPrefix, $stripFromSelectionName);
-        $this->assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
+        self::assertEquals($expectation, $subject->_get('inlineLanguageLabels'));
     }
 
     /**
@@ -254,7 +254,7 @@ class PageRendererTest extends UnitTestCase
             'name' => 'author',
             'content' => 'foobar'
         ];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -273,7 +273,7 @@ class PageRendererTest extends UnitTestCase
             'name' => 'author',
             'content' => 'foobar'
         ];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -288,7 +288,7 @@ class PageRendererTest extends UnitTestCase
         $subject->removeMetaTag('naMe', 'AUTHOR');
         $actualResult = $subject->getMetaTag('naMe', 'AUTHOR');
         $expectedResult = [];
-        $this->assertSame($expectedResult, $actualResult);
+        self::assertSame($expectedResult, $actualResult);
     }
 
     /**
@@ -300,7 +300,7 @@ class PageRendererTest extends UnitTestCase
         $inlineLanguageLabels = [];
         $subject->_set('inlineLanguageLabels', $inlineLanguageLabels);
         $actual = $subject->_call('parseLanguageLabelsForJavaScript');
-        $this->assertEmpty($actual);
+        self::assertEmpty($actual);
     }
 
     /**
@@ -332,6 +332,6 @@ class PageRendererTest extends UnitTestCase
             'hello' => 'welt',
         ];
         $actual = $subject->_call('parseLanguageLabelsForJavaScript');
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 }

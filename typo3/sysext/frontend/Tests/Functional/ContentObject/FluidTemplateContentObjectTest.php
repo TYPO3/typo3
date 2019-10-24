@@ -74,7 +74,7 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
         );
         $result = $fluidTemplateContentObject->render($configuration);
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -122,6 +122,6 @@ class FluidTemplateContentObjectTest extends \TYPO3\TestingFramework\Core\Functi
         );
         $result = preg_replace('/\s+/', '', strip_tags($fluidTemplateContentObject->render($configuration)));
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 }

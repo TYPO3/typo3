@@ -29,7 +29,7 @@ class RandomTest extends UnitTestCase
     public function generateRandomBytesReturnsExpectedAmountOfBytes()
     {
         $subject = new Random();
-        $this->assertEquals(4, strlen($subject->generateRandomBytes(4)));
+        self::assertEquals(4, strlen($subject->generateRandomBytes(4)));
     }
 
     /**
@@ -66,6 +66,6 @@ class RandomTest extends UnitTestCase
     public function generateRandomHexStringReturnsExpectedAmountOfChars($numberOfChars)
     {
         $subject = new Random();
-        $this->assertEquals($numberOfChars, strlen($subject->generateRandomHexString($numberOfChars)));
+        self::assertEquals($numberOfChars, strlen($subject->generateRandomHexString($numberOfChars)));
     }
 }

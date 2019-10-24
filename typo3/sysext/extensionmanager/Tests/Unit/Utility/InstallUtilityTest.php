@@ -90,14 +90,14 @@ class InstallUtilityTest extends UnitTestCase
         );
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
-        $this->installMock->expects($this->any())
+        $this->installMock->expects(self::any())
             ->method('getExtensionArray')
             ->with($this->extensionKey)
-            ->will($this->returnCallback([$this, 'getExtensionData']));
-        $this->installMock->expects($this->any())
+            ->will(self::returnCallback([$this, 'getExtensionData']));
+        $this->installMock->expects(self::any())
             ->method('enrichExtensionWithDetails')
             ->with($this->extensionKey)
-            ->will($this->returnCallback([$this, 'getExtensionData']));
+            ->will(self::returnCallback([$this, 'getExtensionData']));
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));
@@ -144,12 +144,12 @@ class InstallUtilityTest extends UnitTestCase
      */
     public function installCallsUpdateDatabase()
     {
-        $this->installMock->expects($this->once())
+        $this->installMock->expects(self::once())
             ->method('updateDatabase')
             ->with([$this->extensionKey]);
 
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
+        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
     }
@@ -160,9 +160,9 @@ class InstallUtilityTest extends UnitTestCase
     public function installCallsLoadExtension()
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
+        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->expects($this->once())->method('loadExtension');
+        $this->installMock->expects(self::once())->method('loadExtension');
         $this->installMock->install($this->extensionKey);
     }
 
@@ -173,7 +173,7 @@ class InstallUtilityTest extends UnitTestCase
     {
         $this->extensionData['clearcacheonload'] = true;
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCaches');
+        $cacheManagerMock->expects(self::once())->method('flushCaches');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
     }
@@ -185,7 +185,7 @@ class InstallUtilityTest extends UnitTestCase
     {
         $this->extensionData['clearCacheOnLoad'] = true;
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCaches');
+        $cacheManagerMock->expects(self::once())->method('flushCaches');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
         $this->installMock->install($this->extensionKey);
     }
@@ -196,9 +196,9 @@ class InstallUtilityTest extends UnitTestCase
     public function installCallsReloadCaches()
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
+        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->expects($this->once())->method('reloadCaches');
+        $this->installMock->expects(self::once())->method('reloadCaches');
         $this->installMock->install($this->extensionKey);
     }
 
@@ -208,9 +208,9 @@ class InstallUtilityTest extends UnitTestCase
     public function installCallsSaveDefaultConfigurationWithExtensionKey()
     {
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
-        $cacheManagerMock->expects($this->once())->method('flushCachesInGroup');
+        $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
         $this->installMock->_set('cacheManager', $cacheManagerMock);
-        $this->installMock->expects($this->once())->method('saveDefaultConfiguration')->with($this->extensionKey);
+        $this->installMock->expects(self::once())->method('saveDefaultConfiguration')->with($this->extensionKey);
         $this->installMock->install($this->extensionKey);
     }
 
@@ -219,7 +219,7 @@ class InstallUtilityTest extends UnitTestCase
      */
     public function uninstallCallsUnloadExtension()
     {
-        $this->installMock->expects($this->once())->method('unloadExtension');
+        $this->installMock->expects(self::once())->method('unloadExtension');
         $this->installMock->uninstall($this->extensionKey);
     }
 
@@ -269,9 +269,9 @@ class InstallUtilityTest extends UnitTestCase
             ->setMethods(['get', 'set'])
             ->getMock();
         $registryMock
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('get')
-            ->will($this->returnValueMap(
+            ->will(self::returnValueMap(
                 [
                     ['extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsFalse, null, false],
                     ['extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsTrue, null, true],
@@ -287,7 +287,7 @@ class InstallUtilityTest extends UnitTestCase
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->_set('registry', $registryMock);
-        $installMock->expects($this->never())->method('getImportExportUtility');
+        $installMock->expects(self::never())->method('getImportExportUtility');
         $installMock->_call('importT3DFile', $this->fakedExtensions[$extKey]['siteRelPath']);
     }
 

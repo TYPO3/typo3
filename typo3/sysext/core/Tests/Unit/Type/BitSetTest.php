@@ -30,8 +30,8 @@ class BitSetTest extends UnitTestCase
     public function defaultBitSetOnlyHasZeroByteSet(): void
     {
         $bitSet = new BitSet();
-        static::assertTrue($bitSet->get(0b0));
-        static::assertFalse($bitSet->get(0b1));
+        self::assertTrue($bitSet->get(0b0));
+        self::assertFalse($bitSet->get(0b1));
     }
 
     /**
@@ -40,9 +40,9 @@ class BitSetTest extends UnitTestCase
     public function constructorSetsInternalSet(): void
     {
         $bitSet = new BitSet(0b1 | 0b100);
-        static::assertTrue($bitSet->get(0b1));
-        static::assertTrue($bitSet->get(0b100));
-        static::assertFalse($bitSet->get(0b10));
+        self::assertTrue($bitSet->get(0b1));
+        self::assertTrue($bitSet->get(0b100));
+        self::assertFalse($bitSet->get(0b10));
     }
 
     /**
@@ -51,12 +51,12 @@ class BitSetTest extends UnitTestCase
     public function setSetsBit(): void
     {
         $bitSet = new BitSet(0b101);
-        static::assertTrue($bitSet->get(0b1));
-        static::assertTrue($bitSet->get(0b100));
-        static::assertFalse($bitSet->get(0b10));
+        self::assertTrue($bitSet->get(0b1));
+        self::assertTrue($bitSet->get(0b100));
+        self::assertFalse($bitSet->get(0b10));
 
         $bitSet->set(0b10);
-        static::assertTrue($bitSet->get(0b10));
+        self::assertTrue($bitSet->get(0b10));
     }
 
     /**
@@ -65,13 +65,13 @@ class BitSetTest extends UnitTestCase
     public function setValueSetsBit(): void
     {
         $bitSet = new BitSet();
-        static::assertFalse($bitSet->get(0b1));
+        self::assertFalse($bitSet->get(0b1));
 
         $bitSet->setValue(0b1, true);
-        static::assertTrue($bitSet->get(0b1));
+        self::assertTrue($bitSet->get(0b1));
 
         $bitSet->setValue(0b1, false);
-        static::assertFalse($bitSet->get(0b1));
+        self::assertFalse($bitSet->get(0b1));
     }
 
     /**
@@ -81,9 +81,9 @@ class BitSetTest extends UnitTestCase
     {
         $bitSet = new BitSet(0b111);
         $bitSet->unset(0b10);
-        static::assertTrue($bitSet->get(0b1));
-        static::assertTrue($bitSet->get(0b100));
-        static::assertFalse($bitSet->get(0b10));
+        self::assertTrue($bitSet->get(0b1));
+        self::assertTrue($bitSet->get(0b100));
+        self::assertFalse($bitSet->get(0b10));
     }
 
     /**
@@ -95,8 +95,8 @@ class BitSetTest extends UnitTestCase
         $bitSet->and(new BitSet(0b111));
 
         // 0b101 & 0b111 === 0b101 ≙ 5
-        static::assertSame(5, $bitSet->__toInt());
-        static::assertSame('0b101', $bitSet->__toString());
+        self::assertSame(5, $bitSet->__toInt());
+        self::assertSame('0b101', $bitSet->__toString());
     }
 
     /**
@@ -108,8 +108,8 @@ class BitSetTest extends UnitTestCase
         $bitSet->or(new BitSet(0b011));
 
         // 0b101 | 0b011 === 0b111 ≙ 7
-        static::assertSame(7, $bitSet->__toInt());
-        static::assertSame('0b111', $bitSet->__toString());
+        self::assertSame(7, $bitSet->__toInt());
+        self::assertSame('0b111', $bitSet->__toString());
     }
 
     /**
@@ -121,8 +121,8 @@ class BitSetTest extends UnitTestCase
         $bitSet->xor(new BitSet(0b1010));
 
         // 0b1001 ^ 0b1010 === 0b11 ≙ 3
-        static::assertSame(3, $bitSet->__toInt());
-        static::assertSame('0b11', $bitSet->__toString());
+        self::assertSame(3, $bitSet->__toInt());
+        self::assertSame('0b11', $bitSet->__toString());
     }
 
     /**
@@ -134,8 +134,8 @@ class BitSetTest extends UnitTestCase
         $bitSet->andNot(new BitSet(0b101));
 
         // 0b111 & ~0b101 === 0b10 ≙ 2
-        static::assertSame(2, $bitSet->__toInt());
-        static::assertSame('0b10', $bitSet->__toString());
+        self::assertSame(2, $bitSet->__toInt());
+        self::assertSame('0b10', $bitSet->__toString());
     }
 
     /**
@@ -144,7 +144,7 @@ class BitSetTest extends UnitTestCase
     public function __toIntReturnsIntegerRepresentationOfBitSet()
     {
         $bitSet = new BitSet(0b010);
-        static::assertSame(2, $bitSet->__toInt());
+        self::assertSame(2, $bitSet->__toInt());
     }
 
     /**
@@ -153,6 +153,6 @@ class BitSetTest extends UnitTestCase
     public function __toStringReturnsBinaryStringRepresentationOfBitSet()
     {
         $bitSet = new BitSet(13);
-        static::assertSame('0b1101', $bitSet->__toString());
+        self::assertSame('0b1101', $bitSet->__toString());
     }
 }

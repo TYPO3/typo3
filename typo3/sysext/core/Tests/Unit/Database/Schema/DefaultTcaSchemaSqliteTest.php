@@ -47,7 +47,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
     public function enrichKeepsGivenTablesArrayWithEmptyTca()
     {
         $GLOBALS['TCA'] = [];
-        $this->assertEquals([], $this->subject->enrich([]));
+        self::assertEquals([], $this->subject->enrich([]));
     }
 
     /**
@@ -67,7 +67,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         $table->addColumn('pid', 'integer');
         $expected[] = $table;
 
-        $this->assertEquals($expected, $this->subject->enrich($input));
+        self::assertEquals($expected, $this->subject->enrich($input));
     }
 
     /**
@@ -93,7 +93,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         $table->addColumn('pid', 'integer');
         $expected[] = $table;
 
-        $this->assertEquals($expected, $this->subject->enrich($input));
+        self::assertEquals($expected, $this->subject->enrich($input));
     }
 
     /**
@@ -112,7 +112,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
 
         $result = $this->subject->enrich($input);
 
-        $this->assertInstanceOf(Column::class, $result[0]->getColumn('uid'));
+        self::assertInstanceOf(Column::class, $result[0]->getColumn('uid'));
     }
 
     /**
@@ -131,8 +131,8 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'autoincrement' => true,
             ]
         );
-        $this->assertEquals($expectedUidColumn, $result[0]->getColumn('uid'));
-        $this->assertNull($result[0]->getPrimaryKey());
+        self::assertEquals($expectedUidColumn, $result[0]->getColumn('uid'));
+        self::assertNull($result[0]->getPrimaryKey());
     }
 
     /**
@@ -151,7 +151,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
+        self::assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
     }
 
     /**
@@ -172,7 +172,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        $this->assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
+        self::assertEquals($expectedPidColumn, $result[0]->getColumn('pid'));
     }
 
     /**
@@ -193,7 +193,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('updatedon'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('updatedon'));
     }
 
     /**
@@ -214,7 +214,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('createdon'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('createdon'));
     }
 
     /**
@@ -235,7 +235,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('createdby'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('createdby'));
     }
 
     /**
@@ -256,7 +256,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('deleted'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('deleted'));
     }
 
     /**
@@ -279,7 +279,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('disabled'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('disabled'));
     }
 
     /**
@@ -302,7 +302,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('starttime'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('starttime'));
     }
 
     /**
@@ -325,7 +325,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('endtime'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('endtime'));
     }
 
     /**
@@ -348,7 +348,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'length' => 255,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('fe_group'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('fe_group'));
     }
 
     /**
@@ -369,7 +369,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('sorting'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('sorting'));
     }
 
     /**
@@ -380,7 +380,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         $GLOBALS['TCA']['aTable']['ctrl'] = [];
         $result = $this->subject->enrich([]);
         $expectedIndex = new Index('parent', ['pid']);
-        $this->assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
     /**
@@ -393,7 +393,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         ];
         $result = $this->subject->enrich([]);
         $expectedIndex = new Index('parent', ['pid', 'deleted']);
-        $this->assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
     /**
@@ -408,7 +408,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         ];
         $result = $this->subject->enrich([]);
         $expectedIndex = new Index('parent', ['pid', 'disabled']);
-        $this->assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
     /**
@@ -424,7 +424,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         ];
         $result = $this->subject->enrich([]);
         $expectedIndex = new Index('parent', ['pid', 'deleted', 'disabled']);
-        $this->assertEquals($expectedIndex, $result[0]->getIndex('parent'));
+        self::assertEquals($expectedIndex, $result[0]->getIndex('parent'));
     }
 
     /**
@@ -445,7 +445,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('sys_language_uid'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('sys_language_uid'));
     }
 
     /**
@@ -467,7 +467,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('l10n_parent'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_parent'));
     }
 
     /**
@@ -500,7 +500,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'length' => 65535,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('rowDescription'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('rowDescription'));
     }
 
     /**
@@ -521,7 +521,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('editlock'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('editlock'));
     }
 
     /**
@@ -543,7 +543,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('l10n_source'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_source'));
     }
 
     /**
@@ -577,7 +577,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'length' => 65535,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('l10n_state'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('l10n_state'));
     }
 
     /**
@@ -624,7 +624,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3_origuid'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3_origuid'));
     }
 
     /**
@@ -644,7 +644,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'notnull' => false,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('l18n_diffsource'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('l18n_diffsource'));
     }
 
     /**
@@ -665,7 +665,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_oid'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_oid'));
     }
 
     /**
@@ -686,7 +686,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_wsid'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_wsid'));
     }
 
     /**
@@ -707,7 +707,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_state'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_state'));
     }
 
     /**
@@ -728,7 +728,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => false,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_stage'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_stage'));
     }
 
     /**
@@ -749,7 +749,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_count'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_count'));
     }
 
     /**
@@ -770,7 +770,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_tstamp'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_tstamp'));
     }
 
     /**
@@ -791,7 +791,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
                 'unsigned' => true,
             ]
         );
-        $this->assertEquals($expectedColumn, $result[0]->getColumn('t3ver_move_id'));
+        self::assertEquals($expectedColumn, $result[0]->getColumn('t3ver_move_id'));
     }
 
     /**
@@ -804,6 +804,6 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         ];
         $result = $this->subject->enrich([]);
         $expectedIndex = new Index('t3ver_oid', ['t3ver_oid', 't3ver_wsid']);
-        $this->assertEquals($expectedIndex, $result[0]->getIndex('t3ver_oid'));
+        self::assertEquals($expectedIndex, $result[0]->getIndex('t3ver_oid'));
     }
 }

@@ -31,7 +31,7 @@ class StreamFactoryTest extends UnitTestCase
     public function implementsPsr17FactoryInterface()
     {
         $factory = new StreamFactory();
-        $this->assertInstanceOf(StreamFactoryInterface::class, $factory);
+        self::assertInstanceOf(StreamFactoryInterface::class, $factory);
     }
 
     /**
@@ -41,7 +41,7 @@ class StreamFactoryTest extends UnitTestCase
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream();
-        $this->assertSame('', $stream->__toString());
+        self::assertSame('', $stream->__toString());
     }
 
     /**
@@ -51,7 +51,7 @@ class StreamFactoryTest extends UnitTestCase
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('');
-        $this->assertSame('', $stream->__toString());
+        self::assertSame('', $stream->__toString());
     }
 
     /**
@@ -61,7 +61,7 @@ class StreamFactoryTest extends UnitTestCase
     {
         $factory = new StreamFactory();
         $stream = $factory->createStream('Foo');
-        $this->assertSame('Foo', $stream->__toString());
+        self::assertSame('Foo', $stream->__toString());
     }
 
     /**
@@ -72,7 +72,7 @@ class StreamFactoryTest extends UnitTestCase
         $factory = new StreamFactory();
         $stream = $factory->createStream();
         $stream->write('Foo');
-        $this->assertSame('Foo', $stream->__toString());
+        self::assertSame('Foo', $stream->__toString());
     }
 
     /**
@@ -83,7 +83,7 @@ class StreamFactoryTest extends UnitTestCase
         $factory = new StreamFactory();
         $stream = $factory->createStream('Foo');
         $stream->write('Bar');
-        $this->assertSame('FooBar', $stream->__toString());
+        self::assertSame('FooBar', $stream->__toString());
     }
 
     /**
@@ -96,7 +96,7 @@ class StreamFactoryTest extends UnitTestCase
 
         $factory = new StreamFactory();
         $stream = $factory->createStreamFromFile($fileName);
-        $this->assertSame('Foo', $stream->__toString());
+        self::assertSame('Foo', $stream->__toString());
     }
 
     /**
@@ -111,7 +111,7 @@ class StreamFactoryTest extends UnitTestCase
         $stream->write('Foo');
 
         $contents = file_get_contents($fileName);
-        $this->assertSame('Foo', $contents);
+        self::assertSame('Foo', $contents);
     }
 
     /**
@@ -153,7 +153,7 @@ class StreamFactoryTest extends UnitTestCase
 
         $factory = new StreamFactory();
         $stream = $factory->createStreamFromResource($resource);
-        $this->assertSame('Foo', $stream->__toString());
+        self::assertSame('Foo', $stream->__toString());
     }
 
     /**

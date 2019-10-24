@@ -37,7 +37,7 @@ class BackendUserTest extends UnitTestCase
      */
     public function getUidReturnsInitialValueForInt()
     {
-        $this->assertTrue($this->subject->getUid() === null, 'Not uid set after initialization.');
+        self::assertTrue($this->subject->getUid() === null, 'Not uid set after initialization.');
     }
 
     /**
@@ -45,7 +45,7 @@ class BackendUserTest extends UnitTestCase
      */
     public function getUserNameReturnsInitialValueForString()
     {
-        $this->assertTrue($this->subject->getUserName() === '', 'Username not empty');
+        self::assertTrue($this->subject->getUserName() === '', 'Username not empty');
     }
 
     /**
@@ -55,7 +55,7 @@ class BackendUserTest extends UnitTestCase
     {
         $newUserName = 'DonJuan';
         $this->subject->setUserName($newUserName);
-        $this->assertSame($this->subject->getUserName(), $newUserName);
+        self::assertSame($this->subject->getUserName(), $newUserName);
     }
 
     /**
@@ -63,7 +63,7 @@ class BackendUserTest extends UnitTestCase
      */
     public function getRealNameReturnInitialValueForString()
     {
-        $this->assertTrue($this->subject->getRealName() === '', 'Real name not empty');
+        self::assertTrue($this->subject->getRealName() === '', 'Real name not empty');
     }
 
     /**
@@ -73,7 +73,7 @@ class BackendUserTest extends UnitTestCase
     {
         $realName = 'Conceived at T3CON2018';
         $this->subject->setRealName($realName);
-        $this->assertSame($this->subject->getRealName(), $realName);
+        self::assertSame($this->subject->getRealName(), $realName);
     }
 
     /**
@@ -81,7 +81,7 @@ class BackendUserTest extends UnitTestCase
      */
     public function getAdminReturnInitialValueForBoolean()
     {
-        $this->assertTrue($this->subject->getIsAdministrator() === false, 'Admin status is correct.');
+        self::assertTrue($this->subject->getIsAdministrator() === false, 'Admin status is correct.');
     }
 
     /**
@@ -90,7 +90,7 @@ class BackendUserTest extends UnitTestCase
     public function setAdminToTrueSetsAdmin()
     {
         $this->subject->setIsAdministrator(true);
-        $this->assertTrue($this->subject->getIsAdministrator(), 'Admin status is not true, after setting to true.');
+        self::assertTrue($this->subject->getIsAdministrator(), 'Admin status is not true, after setting to true.');
     }
 
     /**
@@ -99,6 +99,6 @@ class BackendUserTest extends UnitTestCase
     public function setAdminToFalseSetsAdmin()
     {
         $this->subject->setIsAdministrator(false);
-        $this->assertFalse($this->subject->getIsAdministrator(), 'Admin status is not false, after setting to false.');
+        self::assertFalse($this->subject->getIsAdministrator(), 'Admin status is not false, after setting to false.');
     }
 }

@@ -39,7 +39,7 @@ class DemandTest extends UnitTestCase
     {
         $userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
         $this->subject->setUserType($userType);
-        $this->assertSame($this->subject->getUserType(), $userType);
+        self::assertSame($this->subject->getUserType(), $userType);
     }
 
     /**
@@ -49,7 +49,7 @@ class DemandTest extends UnitTestCase
     {
         $userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_ADMINONLY;
         $this->subject->setUserType($userType);
-        $this->assertSame($this->subject->getUserType(), $userType);
+        self::assertSame($this->subject->getUserType(), $userType);
     }
 
     /**
@@ -59,7 +59,7 @@ class DemandTest extends UnitTestCase
     {
         $userType = \TYPO3\CMS\Beuser\Domain\Model\Demand::USERTYPE_USERONLY;
         $this->subject->setUserType($userType);
-        $this->assertSame($this->subject->getUserType(), $userType);
+        self::assertSame($this->subject->getUserType(), $userType);
     }
 
     /**
@@ -69,7 +69,7 @@ class DemandTest extends UnitTestCase
     {
         $status = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
         $this->subject->setStatus($status);
-        $this->assertSame($this->subject->getStatus(), $status);
+        self::assertSame($this->subject->getStatus(), $status);
     }
 
     /**
@@ -79,7 +79,7 @@ class DemandTest extends UnitTestCase
     {
         $status = \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_ACTIVE;
         $this->subject->setStatus($status);
-        $this->assertSame($this->subject->getStatus(), $status);
+        self::assertSame($this->subject->getStatus(), $status);
     }
 
     /**
@@ -89,7 +89,7 @@ class DemandTest extends UnitTestCase
     {
         $status = \TYPO3\CMS\Beuser\Domain\Model\Demand::STATUS_INACTIVE;
         $this->subject->setStatus($status);
-        $this->assertSame($this->subject->getStatus(), $status);
+        self::assertSame($this->subject->getStatus(), $status);
     }
 
     /**
@@ -99,7 +99,7 @@ class DemandTest extends UnitTestCase
     {
         $login = \TYPO3\CMS\Beuser\Domain\Model\Demand::ALL;
         $this->subject->setLogins($login);
-        $this->assertSame($this->subject->getLogins(), $login);
+        self::assertSame($this->subject->getLogins(), $login);
     }
 
     /**
@@ -109,7 +109,7 @@ class DemandTest extends UnitTestCase
     {
         $login = \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_NONE;
         $this->subject->setLogins($login);
-        $this->assertSame($this->subject->getLogins(), $login);
+        self::assertSame($this->subject->getLogins(), $login);
     }
 
     /**
@@ -119,7 +119,7 @@ class DemandTest extends UnitTestCase
     {
         $login = \TYPO3\CMS\Beuser\Domain\Model\Demand::LOGIN_SOME;
         $this->subject->setLogins($login);
-        $this->assertSame($this->subject->getLogins(), $login);
+        self::assertSame($this->subject->getLogins(), $login);
     }
 
     /**
@@ -127,7 +127,7 @@ class DemandTest extends UnitTestCase
      */
     public function getUserNameInitialValueForString()
     {
-        $this->assertSame($this->subject->getUserName(), '', 'UserName must be empty string.');
+        self::assertSame($this->subject->getUserName(), '', 'UserName must be empty string.');
     }
 
     /**
@@ -137,6 +137,6 @@ class DemandTest extends UnitTestCase
     {
         $newUserName = 'User#ää*%^name';
         $this->subject->setUserName($newUserName);
-        $this->assertSame($this->subject->getUserName(), $newUserName, 'UserName is not as set before.');
+        self::assertSame($this->subject->getUserName(), $newUserName, 'UserName is not as set before.');
     }
 }

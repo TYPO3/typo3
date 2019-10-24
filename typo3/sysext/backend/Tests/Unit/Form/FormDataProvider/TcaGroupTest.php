@@ -54,7 +54,7 @@ class TcaGroupTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertSame($expected, (new TcaGroup)->addData($input));
+        self::assertSame($expected, (new TcaGroup)->addData($input));
     }
 
     /**
@@ -119,7 +119,7 @@ class TcaGroupTest extends UnitTestCase
             ]
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
-        $this->assertSame($expected, (new TcaGroup)->addData($input));
+        self::assertSame($expected, (new TcaGroup)->addData($input));
     }
 
     /**
@@ -190,6 +190,6 @@ class TcaGroupTest extends UnitTestCase
         ];
         $expected['processedTca']['columns']['aField']['config']['clipboardElements'] = [];
 
-        $this->assertSame($expected, (new TcaGroup)->addData($input));
+        self::assertSame($expected, (new TcaGroup)->addData($input));
     }
 }

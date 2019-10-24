@@ -79,8 +79,8 @@ class XmlSitemapRecordsTest extends AbstractTestCase
             )
         );
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertArrayHasKey('Content-Length', $response->getHeaders());
         $stream = $response->getBody();
         $stream->rewind();
         $content = $stream->getContents();
@@ -93,7 +93,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
             self::assertStringNotContainsString($notExpectedEntry, $content);
         }
 
-        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        self::assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
     }
 
     /**
@@ -145,8 +145,8 @@ class XmlSitemapRecordsTest extends AbstractTestCase
             )
         );
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertArrayHasKey('Content-Length', $response->getHeaders());
         $stream = $response->getBody();
         $stream->rewind();
         $content = $stream->getContents();
@@ -154,7 +154,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
         self::assertStringContainsString('<changefreq>hourly</changefreq>', $content);
         self::assertStringContainsString('<priority>0.7</priority>', $content);
 
-        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        self::assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
     }
 
     /**
@@ -176,8 +176,8 @@ class XmlSitemapRecordsTest extends AbstractTestCase
             )
         );
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertArrayHasKey('Content-Length', $response->getHeaders());
         $stream = $response->getBody();
         $stream->rewind();
         $content = $stream->getContents();
@@ -190,7 +190,7 @@ class XmlSitemapRecordsTest extends AbstractTestCase
             self::assertStringNotContainsString($notExpectedEntry, $content);
         }
 
-        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        self::assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
     }
 
     /**

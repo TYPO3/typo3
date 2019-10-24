@@ -32,7 +32,7 @@ class DateTimeValidatorTest extends UnitTestCase
         $validator = new DateTimeValidator();
         $result = $validator->validate($value);
 
-        $this->assertFalse($result->hasErrors());
+        self::assertFalse($result->hasErrors());
     }
 
     /**
@@ -68,6 +68,6 @@ class DateTimeValidatorTest extends UnitTestCase
             ->getMock();
         $result = $validator->validate(false);
 
-        $this->assertTrue($result->hasErrors());
+        self::assertTrue($result->hasErrors());
     }
 }

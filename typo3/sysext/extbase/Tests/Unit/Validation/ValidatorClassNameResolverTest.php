@@ -39,7 +39,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
     public function resolveResolvesFullyQualifiedClassNames(): void
     {
         $validatorIdentifier = IntegerValidator::class;
-        static::assertSame($validatorIdentifier, ValidatorClassNameResolver::resolve($validatorIdentifier));
+        self::assertSame($validatorIdentifier, ValidatorClassNameResolver::resolve($validatorIdentifier));
     }
 
     /**
@@ -47,11 +47,11 @@ class ValidatorClassNameResolverTest extends UnitTestCase
      */
     public function resolveResolvesCoreShorthandIdentifiers(): void
     {
-        static::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('int'));
-        static::assertSame(BooleanValidator::class, ValidatorClassNameResolver::resolve('bool'));
-        static::assertSame(FloatValidator::class, ValidatorClassNameResolver::resolve('double'));
-        static::assertSame(NumberValidator::class, ValidatorClassNameResolver::resolve('numeric'));
-        static::assertSame(FloatValidator::class, ValidatorClassNameResolver::resolve('float'));
+        self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('int'));
+        self::assertSame(BooleanValidator::class, ValidatorClassNameResolver::resolve('bool'));
+        self::assertSame(FloatValidator::class, ValidatorClassNameResolver::resolve('double'));
+        self::assertSame(NumberValidator::class, ValidatorClassNameResolver::resolve('numeric'));
+        self::assertSame(FloatValidator::class, ValidatorClassNameResolver::resolve('float'));
     }
 
     /**
@@ -59,7 +59,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
      */
     public function resolveResolvesExtensionShorthandIdentifiers(): void
     {
-        static::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('TYPO3.CMS.Extbase:Integer'));
+        self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('TYPO3.CMS.Extbase:Integer'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         $this->expectExceptionCode(1365799920);
         $this->expectExceptionMessage('Validator class TYPO3\CMS\Extbase\Validation\Validator\NonExistingValidator does not exist');
 
-        static::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('NonExisting'));
+        self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('NonExisting'));
     }
 
     /**
@@ -85,7 +85,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
             ValidatorInterface::class
         ));
 
-        static::assertSame(
+        self::assertSame(
             IntegerValidator::class,
             ValidatorClassNameResolver::resolve(ValidatorThatDoesNotImplementValidatorInterfaceValidator::class)
         );
@@ -117,7 +117,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
      */
     public function resolveWithShortHandNotationReturnsValidatorNameIfClassExists(string $validatorName, string $expectedClassName): void
     {
-        static::assertSame(
+        self::assertSame(
             $expectedClassName,
             ValidatorClassNameResolver::resolve($validatorName)
         );
@@ -155,7 +155,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         $validatorName = CustomValidator::class;
         $className = CustomValidator::class;
 
-        static::assertSame(
+        self::assertSame(
             $className,
             ValidatorClassNameResolver::resolve($validatorName)
         );
@@ -169,7 +169,7 @@ class ValidatorClassNameResolverTest extends UnitTestCase
         $validatorName = '\\' . CustomValidator::class;
         $className = CustomValidator::class;
 
-        static::assertSame(
+        self::assertSame(
             $className,
             ValidatorClassNameResolver::resolve($validatorName)
         );

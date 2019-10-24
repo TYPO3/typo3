@@ -53,12 +53,12 @@ class ProcessedFileTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
+        $this->storageMock->expects(self::any())->method('getUid')->will(self::returnValue(5));
 
         $this->folderMock = $this->createMock(Folder::class);
-        $this->folderMock->expects($this->any())->method('getStorage')->willReturn($this->storageMock);
+        $this->folderMock->expects(self::any())->method('getStorage')->willReturn($this->storageMock);
 
-        $this->storageMock->expects($this->any())->method('getProcessingFolder')->willReturn($this->folderMock);
+        $this->storageMock->expects(self::any())->method('getProcessingFolder')->willReturn($this->folderMock);
 
         $this->databaseRow = [
             'uid' => '1234567',
@@ -99,7 +99,7 @@ class ProcessedFileTest extends UnitTestCase
     public function propertiesOfProcessedFileAreSetFromDatabaseRow()
     {
         $processedFileObject = $this->getProcessedFileFixture();
-        $this->assertSame($this->databaseRow, $processedFileObject->getProperties());
+        self::assertSame($this->databaseRow, $processedFileObject->getProperties());
     }
 
     /**
@@ -107,7 +107,7 @@ class ProcessedFileTest extends UnitTestCase
      */
     public function deletingProcessedFileRemovesFile()
     {
-        $this->storageMock->expects($this->once())->method('deleteFile');
+        $this->storageMock->expects(self::once())->method('deleteFile');
         $processedDatabaseRow = $this->databaseRow;
         $processedDatabaseRow['identifier'] = 'processed_dummy.txt';
         $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);
@@ -119,7 +119,7 @@ class ProcessedFileTest extends UnitTestCase
      */
     public function deletingProcessedFileThatUsesOriginalFileDoesNotRemoveFile()
     {
-        $this->storageMock->expects($this->never())->method('deleteFile');
+        $this->storageMock->expects(self::never())->method('deleteFile');
         $processedDatabaseRow = $this->databaseRow;
         $processedDatabaseRow['identifier'] = null;
         $processedFile = $this->getProcessedFileFixture($processedDatabaseRow);

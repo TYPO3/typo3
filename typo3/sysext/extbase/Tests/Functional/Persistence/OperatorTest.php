@@ -73,7 +73,7 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             $query->equals('title', null)
         );
 
-        $this->assertSame(0, $query->count());
+        self::assertSame(0, $query->count());
     }
 
     /**
@@ -87,7 +87,7 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             $query->equals('title', 'PoSt1', false)
         );
 
-        $this->assertSame(2, $query->count());
+        self::assertSame(2, $query->count());
     }
 
     /**
@@ -108,6 +108,6 @@ class OperatorTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTes
             },
             $query->execute(true)
         );
-        $this->assertEquals([3, 4, 5], $result);
+        self::assertEquals([3, 4, 5], $result);
     }
 }

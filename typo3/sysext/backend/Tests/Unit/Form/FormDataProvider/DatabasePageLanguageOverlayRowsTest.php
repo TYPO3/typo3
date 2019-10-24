@@ -50,10 +50,10 @@ class DatabasePageLanguageOverlayRowsTest extends UnitTestCase
                 'sys_language_uid' => '2',
             ],
         ];
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRows')
             ->willReturn($expected['pageLanguageOverlayRows']);
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 }

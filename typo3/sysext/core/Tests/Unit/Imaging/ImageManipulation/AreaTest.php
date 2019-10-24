@@ -41,7 +41,7 @@ class AreaTest extends UnitTestCase
             'width' => 1.0,
             'height' => 0.5,
         ];
-        $this->assertSame($expectedResult, $relativeArea->asArray());
+        self::assertSame($expectedResult, $relativeArea->asArray());
     }
 
     public function applyRatioRestrictsAreaToRespectRatioDataProvider(): array
@@ -77,7 +77,7 @@ class AreaTest extends UnitTestCase
         $area = new Area(...$areaSize);
         $ratioFixture = new Ratio('dummy', 'dummy', $ratio);
         $areaData = $area->applyRatioRestriction($ratioFixture)->asArray();
-        $this->assertSame($areaData['width'] / $areaData['height'], $ratio);
+        self::assertSame($areaData['width'] / $areaData['height'], $ratio);
     }
 
     /**
@@ -88,6 +88,6 @@ class AreaTest extends UnitTestCase
         $area = new Area(0.1, 0.1, 0.2, 0.4);
         $ratioFixture = new Ratio('dummy', 'dummy', 0.0);
         $croppedArea = $area->applyRatioRestriction($ratioFixture);
-        $this->assertSame($area, $croppedArea);
+        self::assertSame($area, $croppedArea);
     }
 }

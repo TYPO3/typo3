@@ -126,6 +126,6 @@ class PlainDataResolverTest extends AbstractDataHandlerActionTestCase
     public function processSortingReturnsExpectedSequenceOfUids(array $input, array $expected, array $sortings): void
     {
         $subject = new PlainDataResolver('pages', [], $sortings);
-        $this->assertSame($expected, $subject->processSorting($input));
+        self::assertSame($expected, $subject->processSorting($input));
     }
 }

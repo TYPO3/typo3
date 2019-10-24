@@ -83,20 +83,20 @@ class ForeignKeyDefinitionTest extends UnitTestCase
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11), %s);', $indexDefinition);
         $subject = $this->createSubject($statement);
 
-        $this->assertInstanceOf(CreateForeignKeyDefinitionItem::class, $subject);
-        $this->assertSame($indexName, $subject->indexName->schemaObjectName);
-        $this->assertSame($foreignTableName, $subject->reference->tableName->schemaObjectName);
+        self::assertInstanceOf(CreateForeignKeyDefinitionItem::class, $subject);
+        self::assertSame($indexName, $subject->indexName->schemaObjectName);
+        self::assertSame($foreignTableName, $subject->reference->tableName->schemaObjectName);
 
         foreach ($indexColumns as $index => $column) {
-            $this->assertSame($column[0], $subject->columnNames[$index]->columnName->schemaObjectName);
-            $this->assertSame($column[1], $subject->columnNames[$index]->length);
-            $this->assertSame($column[2], $subject->columnNames[$index]->direction);
+            self::assertSame($column[0], $subject->columnNames[$index]->columnName->schemaObjectName);
+            self::assertSame($column[1], $subject->columnNames[$index]->length);
+            self::assertSame($column[2], $subject->columnNames[$index]->direction);
         }
 
         foreach ($foreignTableColumns as $index => $column) {
-            $this->assertSame($column[0], $subject->reference->columnNames[$index]->columnName->schemaObjectName);
-            $this->assertSame($column[1], $subject->reference->columnNames[$index]->length);
-            $this->assertSame($column[2], $subject->reference->columnNames[$index]->direction);
+            self::assertSame($column[0], $subject->reference->columnNames[$index]->columnName->schemaObjectName);
+            self::assertSame($column[1], $subject->reference->columnNames[$index]->length);
+            self::assertSame($column[2], $subject->reference->columnNames[$index]->direction);
         }
     }
 

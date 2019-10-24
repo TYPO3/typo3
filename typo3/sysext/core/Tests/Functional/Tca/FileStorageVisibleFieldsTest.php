@@ -46,7 +46,7 @@ class FileStorageVisibleFieldsTest extends FunctionalTestCase
         $formResult = $formEngineTestService->createNewRecordForm('sys_file_storage');
 
         foreach (static::$fileStorageFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );

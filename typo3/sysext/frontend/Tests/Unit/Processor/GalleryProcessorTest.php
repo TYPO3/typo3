@@ -161,7 +161,7 @@ class GalleryProcessorTest extends UnitTestCase
             ['files' => []]
         );
 
-        $this->assertEquals($expected, $processedData['gallery']['position']);
+        self::assertEquals($expected, $processedData['gallery']['position']);
     }
 
     /**
@@ -177,7 +177,7 @@ class GalleryProcessorTest extends UnitTestCase
             ['files' => []]
         );
 
-        $this->assertEquals(200, $processedData['gallery']['width']);
+        self::assertEquals(200, $processedData['gallery']['width']);
     }
 
     /**
@@ -193,7 +193,7 @@ class GalleryProcessorTest extends UnitTestCase
             ['files' => []]
         );
 
-        $this->assertEquals(100, $processedData['gallery']['width']);
+        self::assertEquals(100, $processedData['gallery']['width']);
     }
 
     /**
@@ -267,7 +267,7 @@ class GalleryProcessorTest extends UnitTestCase
             ['files' => $files]
         );
 
-        $this->assertEquals($expected, $processedData['gallery']['count']);
+        self::assertEquals($expected, $processedData['gallery']['count']);
     }
 
     /**
@@ -444,9 +444,9 @@ class GalleryProcessorTest extends UnitTestCase
         $files = [];
         foreach ($testFiles as $fileConfig) {
             $fileReference = $this->createMock(FileReference::class);
-            $fileReference->expects($this->any())
+            $fileReference->expects(self::any())
                 ->method('getProperty')
-                ->will($this->returnValueMap([
+                ->will(self::returnValueMap([
                     ['width', $fileConfig[0]],
                     ['height', $fileConfig[1]]
                 ]));
@@ -462,10 +462,10 @@ class GalleryProcessorTest extends UnitTestCase
         );
 
         foreach ($expected as $row => $columns) {
-            $this->assertArrayHasKey($row, $processedData['gallery']['rows'], 'Row exists');
+            self::assertArrayHasKey($row, $processedData['gallery']['rows'], 'Row exists');
             foreach ($columns as $column => $dimensions) {
-                $this->assertArrayHasKey($column, $processedData['gallery']['rows'][$row]['columns'], 'Column exists');
-                $this->assertEquals($dimensions, $processedData['gallery']['rows'][$row]['columns'][$column]['dimensions'], 'Dimensions match');
+                self::assertArrayHasKey($column, $processedData['gallery']['rows'][$row]['columns'], 'Column exists');
+                self::assertEquals($dimensions, $processedData['gallery']['rows'][$row]['columns'][$column]['dimensions'], 'Dimensions match');
             }
         }
     }

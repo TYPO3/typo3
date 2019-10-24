@@ -54,6 +54,6 @@ class ButtonViewHelperTest extends ViewHelperBaseTestcase
 
         $expectedResult = '<button type="submit" name="" value="">Button Content</button>';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 }

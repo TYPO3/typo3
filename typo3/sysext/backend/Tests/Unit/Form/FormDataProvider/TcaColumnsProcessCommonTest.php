@@ -39,7 +39,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['t3_origuid'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -59,7 +59,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['doktype'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -79,7 +79,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['relation_field'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -99,7 +99,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['sys_language_uid'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -119,7 +119,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['l10n_parent'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -139,7 +139,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['l18n_diffsource'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -168,7 +168,7 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['aField'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 
     /**
@@ -197,6 +197,6 @@ class TcaColumnsProcessCommonTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['aField', 'bField'];
-        $this->assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessCommon)->addData($input));
     }
 }

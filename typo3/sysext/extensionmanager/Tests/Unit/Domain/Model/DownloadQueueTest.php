@@ -50,7 +50,7 @@ class DownloadQueueTest extends UnitTestCase
         $this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
         $extensionStorage = $this->downloadQueueMock->_get('extensionStorage');
 
-        $this->assertArrayHasKey('foobar', $extensionStorage['download']);
+        self::assertArrayHasKey('foobar', $extensionStorage['download']);
     }
 
     /**
@@ -61,7 +61,7 @@ class DownloadQueueTest extends UnitTestCase
         $this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'update');
         $extensionStorage = $this->downloadQueueMock->_get('extensionStorage');
 
-        $this->assertArrayHasKey('foobar', $extensionStorage['update']);
+        self::assertArrayHasKey('foobar', $extensionStorage['update']);
     }
 
     /**
@@ -108,11 +108,11 @@ class DownloadQueueTest extends UnitTestCase
         ]);
         $extensionStorageBefore = $this->downloadQueueMock->_get('extensionStorage');
 
-        $this->assertTrue(array_key_exists('foobar', $extensionStorageBefore['download']));
+        self::assertTrue(array_key_exists('foobar', $extensionStorageBefore['download']));
 
         $this->downloadQueueMock->removeExtensionFromQueue($this->extensionMock);
         $extensionStorageAfter = $this->downloadQueueMock->_get('extensionStorage');
 
-        $this->assertFalse(array_key_exists('foobar', $extensionStorageAfter['download']));
+        self::assertFalse(array_key_exists('foobar', $extensionStorageAfter['download']));
     }
 }

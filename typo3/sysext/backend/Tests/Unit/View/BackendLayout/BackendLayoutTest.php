@@ -44,8 +44,8 @@ class BackendLayoutTest extends UnitTestCase
         $configuration = $this->getUniqueId('configuration');
         $backendLayout = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
 
-        $this->assertEquals($identifier, $backendLayout->getIdentifier());
-        $this->assertEquals($title, $backendLayout->getTitle());
-        $this->assertEquals($configuration, $backendLayout->getConfiguration());
+        self::assertEquals($identifier, $backendLayout->getIdentifier());
+        self::assertEquals($title, $backendLayout->getTitle());
+        self::assertEquals($configuration, $backendLayout->getConfiguration());
     }
 }

@@ -165,9 +165,9 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString($expectedTemplate, $content);
-        $this->assertStringContainsString($expectedPartial, $content);
-        $this->assertStringContainsString($expectedLayout, $content);
+        self::assertStringContainsString($expectedTemplate, $content);
+        self::assertStringContainsString($expectedPartial, $content);
+        self::assertStringContainsString($expectedLayout, $content);
     }
 
     /**
@@ -188,9 +188,9 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString($expectedTemplate, $content);
-        $this->assertStringContainsString($expectedPartial, $content);
-        $this->assertStringContainsString($expectedLayout, $content);
+        self::assertStringContainsString($expectedTemplate, $content);
+        self::assertStringContainsString($expectedPartial, $content);
+        self::assertStringContainsString($expectedLayout, $content);
     }
 
     /**
@@ -212,9 +212,9 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString($expectedTemplate, $content);
-        $this->assertStringContainsString($expectedPartial, $content);
-        $this->assertStringContainsString($expectedLayout, $content);
+        self::assertStringContainsString($expectedTemplate, $content);
+        self::assertStringContainsString($expectedPartial, $content);
+        self::assertStringContainsString($expectedLayout, $content);
     }
 
     /**
@@ -236,9 +236,9 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString($expectedTemplate, $content);
-        $this->assertStringContainsString($expectedPartial, $content);
-        $this->assertStringContainsString($expectedLayout, $content);
+        self::assertStringContainsString($expectedTemplate, $content);
+        self::assertStringContainsString($expectedPartial, $content);
+        self::assertStringContainsString($expectedLayout, $content);
     }
 
     /**
@@ -255,7 +255,7 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString('PAGINATE WIDGET', $content);
+        self::assertStringContainsString('PAGINATE WIDGET', $content);
     }
 
     /**
@@ -272,7 +272,7 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString('PAGINATE WIDGET', $content);
+        self::assertStringContainsString('PAGINATE WIDGET', $content);
     }
 
     /**
@@ -289,9 +289,9 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString('Base Template', $content);
-        $this->assertStringContainsString('Default Layout', $content);
-        $this->assertStringContainsString('Default Partial', $content);
+        self::assertStringContainsString('Base Template', $content);
+        self::assertStringContainsString('Default Layout', $content);
+        self::assertStringContainsString('Default Partial', $content);
     }
 
     /**
@@ -306,8 +306,8 @@ class TemplatesPathsTest extends FunctionalTestCase
 
         $content = $this->fetchFrontendResponseBody($requestArguments);
 
-        $this->assertStringContainsString('Base Template', $content);
-        $this->assertStringContainsString('Override Template', $content);
+        self::assertStringContainsString('Base Template', $content);
+        self::assertStringContainsString('Override Template', $content);
     }
 
     /**

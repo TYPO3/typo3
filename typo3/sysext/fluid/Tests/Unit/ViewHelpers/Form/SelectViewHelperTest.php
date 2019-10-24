@@ -46,7 +46,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectCorrectlySetsTagName()
     {
-        $this->tagBuilder->expects($this->atLeastOnce())->method('setTagName')->with('select');
+        $this->tagBuilder->expects(self::atLeastOnce())->method('setTagName')->with('select');
 
         $this->arguments['options'] = [];
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -59,10 +59,10 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectCreatesExpectedOptions()
     {
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $this->arguments['options'] = [
             'value1' => 'label1',
@@ -81,13 +81,13 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectShouldSetTheRequiredAttribute()
     {
-        $this->tagBuilder->expects($this->exactly(2))->method('addAttribute')->withConsecutive(
+        $this->tagBuilder->expects(self::exactly(2))->method('addAttribute')->withConsecutive(
             ['required', 'required'],
             ['name', 'myName']
         );
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $this->arguments['options'] = [
             'value1' => 'label1',
@@ -107,7 +107,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectCreatesExpectedOptionsWithArraysAndOptionValueFieldAndOptionLabelFieldSet()
     {
-        $this->tagBuilder->expects($this->once())->method('setContent')->with(
+        $this->tagBuilder->expects(self::once())->method('setContent')->with(
             '<option value="2"></option>' . \chr(10) .
             '<option value="-1">Bar</option>' . \chr(10) .
             '<option value="">Baz</option>' . \chr(10) .
@@ -144,7 +144,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectCreatesExpectedOptionsWithStdClassesAndOptionValueFieldAndOptionLabelFieldSet()
     {
-        $this->tagBuilder->expects($this->once())->method('setContent')->with(
+        $this->tagBuilder->expects(self::once())->method('setContent')->with(
             '<option value="2"></option>' . \chr(10) .
             '<option value="-1">Bar</option>' . \chr(10) .
             '<option value="">Baz</option>' . \chr(10) .
@@ -180,7 +180,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectCreatesExpectedOptionsWithArrayObjectsAndOptionValueFieldAndOptionLabelFieldSet()
     {
-        $this->tagBuilder->expects($this->once())->method('setContent')->with(
+        $this->tagBuilder->expects(self::once())->method('setContent')->with(
             '<option value="2"></option>' . \chr(10) .
             '<option value="-1">Bar</option>' . \chr(10) .
             '<option value="">Baz</option>' . \chr(10) .
@@ -217,10 +217,10 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function OrderOfOptionsIsNotAlteredByDefault()
     {
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value3">label3</option>' . \chr(10) . '<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value3">label3</option>' . \chr(10) . '<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $this->arguments['options'] = [
             'value3' => 'label3',
@@ -241,10 +241,10 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function optionsAreSortedByLabelIfSortByOptionLabelIsSet()
     {
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value1">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $this->arguments['options'] = [
             'value3' => 'label3',
@@ -274,13 +274,13 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
             $this->setLocale(LC_MONETARY, $locale);
             $this->setLocale(LC_TIME, $locale);
         } catch (Exception $e) {
-            $this->markTestSkipped('Locale ' . $locale . ' is not available.');
+            self::markTestSkipped('Locale ' . $locale . ' is not available.');
         }
 
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">Bamberg</option>' . \chr(10) . '<option value="value2" selected="selected">Bämm</option>' . \chr(10) . '<option value="value3">Bar</option>' . \chr(10) . '<option value="value4">Bär</option>' . \chr(10) . '<option value="value5">Burg</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value1">Bamberg</option>' . \chr(10) . '<option value="value2" selected="selected">Bämm</option>' . \chr(10) . '<option value="value3">Bar</option>' . \chr(10) . '<option value="value4">Bär</option>' . \chr(10) . '<option value="value5">Burg</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
         $this->arguments['options'] = [
             'value4' => 'Bär',
             'value2' => 'Bämm',
@@ -317,7 +317,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->setTagBuilder($this->tagBuilder);
         $result = $this->viewHelper->initializeArgumentsAndRender();
         $expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>' . \chr(10) . '<option value="value2">label2</option>' . \chr(10) . '<option value="value3" selected="selected">label3</option>' . \chr(10) . '</select>';
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**
@@ -326,13 +326,13 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectOnDomainObjectsCreatesExpectedOptions()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(2));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue(2));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName[__identity]');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName[__identity]');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="1">Ingmar</option>' . \chr(10) . '<option value="2" selected="selected">Sebastian</option>' . \chr(10) . '<option value="3">Robert</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName[__identity]');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName[__identity]');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="1">Ingmar</option>' . \chr(10) . '<option value="2" selected="selected">Sebastian</option>' . \chr(10) . '<option value="3">Robert</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
         $user_sk = new UserDomainClass(2, 'Sebastian', 'Kurfuerst');
@@ -359,7 +359,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function multipleSelectOnDomainObjectsCreatesExpectedOptions()
     {
         $this->tagBuilder = new TagBuilder();
-        $this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
+        $this->viewHelper->expects(self::exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
 
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
         $user_sk = new UserDomainClass(2, 'Sebastian', 'Kurfuerst');
@@ -383,7 +383,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
             '<option value="3" selected="selected">Lemke</option>' . \chr(10) .
             '</select>';
 
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -393,7 +393,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     {
         /** @var $mockPersistenceManager \PHPUnit_Framework_MockObject_MockObject|PersistenceManagerInterface */
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnCallback(
             function ($object) {
                 return $object->getId();
             }
@@ -401,7 +401,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->tagBuilder = new TagBuilder();
-        $this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
+        $this->viewHelper->expects(self::exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
 
         $user_is = new UserDomainClass(1, 'Ingmar', 'Schlecht');
         $user_sk = new UserDomainClass(2, 'Sebastian', 'Kurfuerst');
@@ -422,7 +422,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
             '<option value="2">Kurfuerst</option>' . \chr(10) .
             '<option value="3" selected="selected">Lemke</option>' . \chr(10) .
             '</select>';
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
     }
 
     /**
@@ -431,13 +431,13 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue('fakeUID'));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">fakeUID</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="fakeUID">fakeUID</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $user = new UserDomainClass(1, 'Ingmar', 'Schlecht');
 
@@ -456,19 +456,19 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue('fakeUID'));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue('fakeUID'));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">toStringResult</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="fakeUID">toStringResult</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
 
         $user = $this->getMockBuilder(UserDomainClass::class)
             ->setMethods(['__toString'])
             ->setConstructorArgs([1, 'Ingmar', 'Schlecht'])
             ->getMock();
-        $user->expects($this->atLeastOnce())->method('__toString')->will($this->returnValue('toStringResult'));
+        $user->expects(self::atLeastOnce())->method('__toString')->will(self::returnValue('toStringResult'));
 
         $this->arguments['options'] = [
             $user
@@ -485,7 +485,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(null));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue(null));
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);
@@ -511,7 +511,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
 
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->setTagBuilder($this->tagBuilder);
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->expects(self::once())->method('setErrorClassAttribute');
         $this->viewHelper->initializeArgumentsAndRender();
     }
 
@@ -520,7 +520,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function allOptionsAreSelectedIfSelectAllIsTrue()
     {
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10) . '<option value="value3" selected="selected">label3</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10) . '<option value="value3" selected="selected">label3</option>' . \chr(10));
 
         $this->arguments['options'] = [
             'value1' => 'label1',
@@ -541,7 +541,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function selectAllHasNoEffectIfValueIsSet()
     {
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . \chr(10) . '<option value="value2" selected="selected">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
 
         $this->arguments['options'] = [
             'value1' => 'label1',
@@ -563,10 +563,10 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function optionsContainPrependedItemWithEmptyValueIfPrependOptionLabelIsSet()
     {
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="">please choose</option>' . \chr(10) . '<option value="value1">label1</option>' . \chr(10) . '<option value="value2">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="">please choose</option>' . \chr(10) . '<option value="value1">label1</option>' . \chr(10) . '<option value="value2">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
         $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',
@@ -584,10 +584,10 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
      */
     public function optionsContainPrependedItemWithCorrectValueIfPrependOptionLabelAndPrependOptionValueAreSet()
     {
-        $this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
-        $this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-        $this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="-1">please choose</option>' . \chr(10) . '<option value="value1">label1</option>' . \chr(10) . '<option value="value2">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
-        $this->tagBuilder->expects($this->once())->method('render');
+        $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
+        $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
+        $this->tagBuilder->expects(self::once())->method('setContent')->with('<option value="-1">please choose</option>' . \chr(10) . '<option value="value1">label1</option>' . \chr(10) . '<option value="value2">label2</option>' . \chr(10) . '<option value="value3">label3</option>' . \chr(10));
+        $this->tagBuilder->expects(self::once())->method('render');
         $this->arguments['options'] = [
             'value1' => 'label1',
             'value2' => 'label2',

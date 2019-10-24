@@ -97,9 +97,9 @@ class TemplatePathsTest extends UnitTestCase
         $setter = 'set' . ucfirst($method);
         $getter = 'get' . ucfirst($method);
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['sanitizePath'])->getMock();
-        $subject->expects($this->any())->method('sanitizePath')->willReturnArgument(0);
+        $subject->expects(self::any())->method('sanitizePath')->willReturnArgument(0);
         $subject->$setter($paths);
-        $this->assertEquals($expected, $subject->$getter());
+        self::assertEquals($expected, $subject->$getter());
     }
 
     /**
@@ -108,7 +108,7 @@ class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInFrontendMode()
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -132,12 +132,12 @@ class TemplatePathsTest extends UnitTestCase
             ]
         ]);
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
-        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('isBackendMode')->willReturn(false);
-        $subject->expects($this->once())->method('isFrontendMode')->willReturn(true);
+        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
+        $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
+        $subject->expects(self::once())->method('isFrontendMode')->willReturn(true);
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
-        $this->assertSame([
+        self::assertSame([
             'templateRootPaths' => [
                 'test/Templates/',
                 'first',
@@ -165,7 +165,7 @@ class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationSortsTypoScriptConfiguredPathsCorrectlyInBackendMode()
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
             'module.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -189,12 +189,12 @@ class TemplatePathsTest extends UnitTestCase
             ]
         ]);
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
-        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('isBackendMode')->willReturn(true);
-        $subject->expects($this->never())->method('isFrontendMode');
+        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
+        $subject->expects(self::once())->method('isBackendMode')->willReturn(true);
+        $subject->expects(self::never())->method('isFrontendMode');
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
-        $this->assertSame([
+        self::assertSame([
             'templateRootPaths' => [
                 'test/Templates/',
                 'first',
@@ -222,7 +222,7 @@ class TemplatePathsTest extends UnitTestCase
     public function getContextSpecificViewConfigurationDoesNotResolveFromTypoScriptAndDoesNotSortInUnspecifiedMode()
     {
         $configurationManager = $this->getMockBuilder(ConfigurationManagerInterface::class)->getMockForAbstractClass();
-        $configurationManager->expects($this->once())->method('getConfiguration')->willReturn([
+        $configurationManager->expects(self::once())->method('getConfiguration')->willReturn([
             'plugin.' => [
                 'tx_test.' => [
                     'view.' => [
@@ -246,12 +246,12 @@ class TemplatePathsTest extends UnitTestCase
             ]
         ]);
         $subject = $this->getMockBuilder(TemplatePaths::class)->setMethods(['getConfigurationManager', 'getExtensionPrivateResourcesPath', 'getRuntimeCache', 'isBackendMode', 'isFrontendMode'])->getMock();
-        $subject->expects($this->once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
-        $subject->expects($this->once())->method('getConfigurationManager')->willReturn($configurationManager);
-        $subject->expects($this->once())->method('isBackendMode')->willReturn(false);
-        $subject->expects($this->once())->method('isFrontendMode')->willReturn(false);
+        $subject->expects(self::once())->method('getExtensionPrivateResourcesPath')->with('test')->willReturn('test/');
+        $subject->expects(self::once())->method('getConfigurationManager')->willReturn($configurationManager);
+        $subject->expects(self::once())->method('isBackendMode')->willReturn(false);
+        $subject->expects(self::once())->method('isFrontendMode')->willReturn(false);
         $result = $this->callInaccessibleMethod($subject, 'getContextSpecificViewConfiguration', 'test');
-        $this->assertSame([
+        self::assertSame([
             'templateRootPaths' => [
                 'test/Templates/'
             ],

@@ -49,7 +49,7 @@ class TemplateVisibleFieldsTest extends \TYPO3\TestingFramework\Core\Functional\
         $formResult = $formEngineTestService->createNewRecordForm('sys_template');
 
         foreach (static::$templateFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );

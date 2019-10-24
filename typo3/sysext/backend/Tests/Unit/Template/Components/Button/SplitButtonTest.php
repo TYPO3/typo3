@@ -33,7 +33,7 @@ class SplitButtonTest extends UnitTestCase
     {
         $button = new SplitButton();
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -51,7 +51,7 @@ class SplitButtonTest extends UnitTestCase
         $button->addItem($primaryAction);
 
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -75,7 +75,7 @@ class SplitButtonTest extends UnitTestCase
         $button->addItem($anotherPrimaryAction, true);
 
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -99,7 +99,7 @@ class SplitButtonTest extends UnitTestCase
         $button->addItem($anotherPrimaryAction, true);
 
         $isValid = $button->isValid();
-        $this->assertFalse($isValid);
+        self::assertFalse($isValid);
     }
 
     /**
@@ -121,6 +121,6 @@ class SplitButtonTest extends UnitTestCase
         $button->addItem($anotherAction);
 
         $isValid = $button->isValid();
-        $this->assertTrue($isValid);
+        self::assertTrue($isValid);
     }
 }

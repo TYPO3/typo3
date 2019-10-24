@@ -151,8 +151,8 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
 
         $subject = new SiteBaseRedirectResolver();
         $response = $subject->process($request, $this->siteFoundRequestHandler);
-        $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals($expectedRedirectUrl, $response->getHeader('Location')[0] ?? '');
+        self::assertEquals(307, $response->getStatusCode());
+        self::assertEquals($expectedRedirectUrl, $response->getHeader('Location')[0] ?? '');
     }
 
     /**
@@ -210,6 +210,6 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         $request = $request->withAttribute('language', $site->getLanguageById($languageId));
         $subject = new SiteBaseRedirectResolver();
         $response = $subject->process($request, $this->siteFoundRequestHandler);
-        $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+        self::assertEquals($expectedStatusCode, $response->getStatusCode());
     }
 }

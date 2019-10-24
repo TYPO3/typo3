@@ -37,7 +37,7 @@ class LogEntryTest extends UnitTestCase
      */
     public function getLogDataInitiallyReturnsEmptyArray()
     {
-        $this->assertSame([], $this->subject->getLogData());
+        self::assertSame([], $this->subject->getLogData());
     }
 
     /**
@@ -46,7 +46,7 @@ class LogEntryTest extends UnitTestCase
     public function getLogDataForEmptyStringLogDataReturnsEmptyArray()
     {
         $this->subject->setLogData('');
-        $this->assertSame([], $this->subject->getLogData());
+        self::assertSame([], $this->subject->getLogData());
     }
 
     /**
@@ -55,7 +55,7 @@ class LogEntryTest extends UnitTestCase
     public function getLogDataForGarbageStringLogDataReturnsEmptyArray()
     {
         $this->subject->setLogData('foo bar');
-        $this->assertSame([], $this->subject->getLogData());
+        self::assertSame([], $this->subject->getLogData());
     }
 
     /**
@@ -65,7 +65,7 @@ class LogEntryTest extends UnitTestCase
     {
         $logData = ['foo', 'bar'];
         $this->subject->setLogData(serialize($logData));
-        $this->assertSame($logData, $this->subject->getLogData());
+        self::assertSame($logData, $this->subject->getLogData());
     }
 
     /**
@@ -74,6 +74,6 @@ class LogEntryTest extends UnitTestCase
     public function getLogDataForSerializedObjectReturnsEmptyArray()
     {
         $this->subject->setLogData(new \stdClass());
-        $this->assertSame([], $this->subject->getLogData());
+        self::assertSame([], $this->subject->getLogData());
     }
 }

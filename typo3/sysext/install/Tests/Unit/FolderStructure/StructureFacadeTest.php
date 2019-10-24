@@ -33,10 +33,10 @@ class StructureFacadeTest extends UnitTestCase
         /** @var $facade StructureFacade|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $facade = $this->getAccessibleMock(StructureFacade::class, ['dummy'], [], '', false);
         $root = $this->createMock(RootNode::class);
-        $root->expects($this->once())->method('getStatus')->will($this->returnValue([]));
+        $root->expects(self::once())->method('getStatus')->will(self::returnValue([]));
         $facade->_set('structure', $root);
         $status = $facade->getStatus();
-        $this->assertInstanceOf(FlashMessageQueue::class, $status);
+        self::assertInstanceOf(FlashMessageQueue::class, $status);
     }
 
     /**
@@ -47,9 +47,9 @@ class StructureFacadeTest extends UnitTestCase
         /** @var $facade StructureFacade|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $facade = $this->getAccessibleMock(StructureFacade::class, ['dummy'], [], '', false);
         $root = $this->createMock(RootNode::class);
-        $root->expects($this->once())->method('fix')->will($this->returnValue([]));
+        $root->expects(self::once())->method('fix')->will(self::returnValue([]));
         $facade->_set('structure', $root);
         $status = $facade->fix();
-        $this->assertInstanceOf(FlashMessageQueue::class, $status);
+        self::assertInstanceOf(FlashMessageQueue::class, $status);
     }
 }

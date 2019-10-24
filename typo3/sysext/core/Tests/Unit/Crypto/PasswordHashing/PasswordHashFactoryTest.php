@@ -137,7 +137,7 @@ class PasswordHashFactoryTest extends UnitTestCase
         $phpassProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
         $hash = '$P$C7u7E10SBEie/Jbdz0jDtUcWhzgOPF.';
         $phpassProphecy->isValidSaltedPW($hash)->shouldBeCalled()->willReturn(true);
-        $this->assertSame($phpassRevelation, (new PasswordHashFactory())->get($hash, 'BE'));
+        self::assertSame($phpassRevelation, (new PasswordHashFactory())->get($hash, 'BE'));
     }
 
     /**
@@ -179,7 +179,7 @@ class PasswordHashFactoryTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['FE']['saltedPWHashingMethod'] = Argon2iPasswordHash::class;
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('FE');
-        $this->assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
+        self::assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
     }
 
     /**
@@ -189,7 +189,7 @@ class PasswordHashFactoryTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['saltedpasswords']['BE']['saltedPWHashingMethod'] = Argon2iPasswordHash::class;
         $hashInstance = (new PasswordHashFactory())->getDefaultHashInstance('BE');
-        $this->assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
+        self::assertInstanceOf(Argon2iPasswordHash::class, $hashInstance);
     }
 
     /**
@@ -257,7 +257,7 @@ class PasswordHashFactoryTest extends UnitTestCase
             'bar'
         ];
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['availablePasswordHashAlgorithms'] = $methods;
-        $this->assertSame($methods, PasswordHashFactory::getRegisteredSaltedHashingMethods());
+        self::assertSame($methods, PasswordHashFactory::getRegisteredSaltedHashingMethods());
     }
 
     /**

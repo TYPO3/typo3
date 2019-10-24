@@ -37,7 +37,7 @@ class PropertyTest extends UnitTestCase
     public function classSchemaDetectsPropertiesWithLazyAnnotation(): void
     {
         $classSchema = new ClassSchema(DummyClassWithLazyDoctrineAnnotation::class);
-        static::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')->isLazy());
+        self::assertTrue($classSchema->getProperty('propertyWithLazyAnnotation')->isLazy());
     }
 
     /**
@@ -48,19 +48,19 @@ class PropertyTest extends UnitTestCase
         $classSchema = new ClassSchema(DummyClassWithAllTypesOfProperties::class);
 
         $property = $classSchema->getProperty('publicProperty');
-        static::assertTrue($property->isPublic());
-        static::assertFalse($property->isProtected());
-        static::assertFalse($property->isPrivate());
+        self::assertTrue($property->isPublic());
+        self::assertFalse($property->isProtected());
+        self::assertFalse($property->isPrivate());
 
         $property = $classSchema->getProperty('protectedProperty');
-        static::assertFalse($property->isPublic());
-        static::assertTrue($property->isProtected());
-        static::assertFalse($property->isPrivate());
+        self::assertFalse($property->isPublic());
+        self::assertTrue($property->isProtected());
+        self::assertFalse($property->isPrivate());
 
         $property = $classSchema->getProperty('privateProperty');
-        static::assertFalse($property->isPublic());
-        static::assertFalse($property->isProtected());
-        static::assertTrue($property->isPrivate());
+        self::assertFalse($property->isPublic());
+        self::assertFalse($property->isProtected());
+        self::assertTrue($property->isPrivate());
     }
 
     /**
@@ -71,7 +71,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithInjectAnnotation');
 
-        static::assertTrue($property->isInjectProperty());
+        self::assertTrue($property->isInjectProperty());
     }
 
     /**
@@ -82,7 +82,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithTransientAnnotation');
 
-        static::assertTrue($property->isTransient());
+        self::assertTrue($property->isTransient());
     }
 
     /**
@@ -93,7 +93,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithCascadeAnnotation');
 
-        static::assertSame('remove', $property->getCascadeValue());
+        self::assertSame('remove', $property->getCascadeValue());
     }
 
     /**
@@ -104,7 +104,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithCascadeAnnotationWithoutVarAnnotation');
 
-        static::assertNull($property->getCascadeValue());
+        self::assertNull($property->getCascadeValue());
     }
 
     /**
@@ -115,8 +115,8 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithObjectStorageAnnotation');
 
-        static::assertSame(ObjectStorage::class, $property->getType());
-        static::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
+        self::assertSame(ObjectStorage::class, $property->getType());
+        self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
     }
 
     /**
@@ -127,8 +127,8 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyClassWithAllTypesOfProperties::class))
             ->getProperty('propertyWithObjectStorageAnnotationWithoutFQCN');
 
-        static::assertSame(ObjectStorage::class, $property->getType());
-        static::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
+        self::assertSame(ObjectStorage::class, $property->getType());
+        self::assertSame(DummyClassWithAllTypesOfProperties::class, $property->getElementType());
     }
 
     /**
@@ -140,7 +140,7 @@ class PropertyTest extends UnitTestCase
         $property = (new ClassSchema(DummyModel::class))
             ->getProperty('propertyWithValidateAnnotations');
 
-        static::assertSame(
+        self::assertSame(
             [
                 [
                     'name' => 'StringLength',

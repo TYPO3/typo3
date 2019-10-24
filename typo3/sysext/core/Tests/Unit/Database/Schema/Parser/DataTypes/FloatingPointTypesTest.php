@@ -107,8 +107,8 @@ class FloatingPointTypesTest extends AbstractDataTypeBaseTestCase
     ) {
         $subject = $this->createSubject($columnDefinition);
 
-        $this->assertInstanceOf($className, $subject->dataType);
-        $this->assertSame($precision, $subject->dataType->getPrecision());
-        $this->assertSame($scale, $subject->dataType->getScale());
+        self::assertInstanceOf($className, $subject->dataType);
+        self::assertSame($precision, $subject->dataType->getPrecision());
+        self::assertSame($scale, $subject->dataType->getScale());
     }
 }

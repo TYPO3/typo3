@@ -40,7 +40,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['uid'];
-        $this->assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
     }
 
     /**
@@ -62,7 +62,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = ['uid', 'aField', 'anotherField'];
-        $this->assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
     }
 
     /**
@@ -80,7 +80,7 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = [ 'aForeignLabelField' ];
-        $this->assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
     }
 
     /**
@@ -98,6 +98,6 @@ class TcaColumnsProcessRecordTitleTest extends UnitTestCase
 
         $expected = $input;
         $expected['columnsToProcess'] = [ 'aSymmetricLabelField' ];
-        $this->assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
+        self::assertSame($expected, (new TcaColumnsProcessRecordTitle)->addData($input));
     }
 }

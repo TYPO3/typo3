@@ -82,7 +82,7 @@ class TelephoneLinkHandlerTest extends UnitTestCase
     public function resolveReturnsSplitParameters($input, $expected): void
     {
         $subject = new TelephoneLinkHandler();
-        $this->assertEquals($expected, $subject->resolveHandlerData($input));
+        self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
     /**
@@ -97,6 +97,6 @@ class TelephoneLinkHandlerTest extends UnitTestCase
     public function splitParametersToUnifiedIdentifier($input, $parameters, $expected)
     {
         $subject = new TelephoneLinkHandler();
-        $this->assertEquals($expected, $subject->asString($parameters));
+        self::assertEquals($expected, $subject->asString($parameters));
     }
 }

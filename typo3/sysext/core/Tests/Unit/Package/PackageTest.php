@@ -38,7 +38,7 @@ class PackageTest extends UnitTestCase
         $this->expectExceptionCode(1166631890);
 
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
+        $packageManagerMock->expects(self::any())->method('isPackageKeyValid')->willReturn(true);
         new Package($packageManagerMock, 'Vendor.TestPackage', './ThisPackageSurelyDoesNotExist');
     }
 
@@ -65,9 +65,9 @@ class PackageTest extends UnitTestCase
         file_put_contents($packagePath . 'ext_emconf.php', '');
 
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
+        $packageManagerMock->expects(self::any())->method('isPackageKeyValid')->willReturn(true);
         $package = new Package($packageManagerMock, $packageKey, $packagePath);
-        $this->assertEquals($packageKey, $package->getPackageKey());
+        self::assertEquals($packageKey, $package->getPackageKey());
     }
 
     public function invalidPackageKeys()
@@ -106,11 +106,11 @@ class PackageTest extends UnitTestCase
         file_put_contents($packagePath . 'ext_emconf.php', '');
 
         $packageManagerMock = $this->createMock(PackageManager::class);
-        $packageManagerMock->expects($this->any())->method('isPackageKeyValid')->willReturn(true);
+        $packageManagerMock->expects(self::any())->method('isPackageKeyValid')->willReturn(true);
         $package = new Package($packageManagerMock, 'Vendor.Dummy', $packagePath);
 
-        $this->assertFalse($package->isProtected());
+        self::assertFalse($package->isProtected());
         $package->setProtected(true);
-        $this->assertTrue($package->isProtected());
+        self::assertTrue($package->isProtected());
     }
 }

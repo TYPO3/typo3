@@ -36,8 +36,8 @@ class RegularExpressionValidatorTest extends UnitTestCase
             ->setMethods(['translateErrorMessage'])
             ->setConstructorArgs([$options])
             ->getMock();
-        $this->assertFalse($validator->validate('simple1expression')->hasErrors());
-        $this->assertTrue($validator->validate('simple1expressions')->hasErrors());
+        self::assertFalse($validator->validate('simple1expression')->hasErrors());
+        self::assertTrue($validator->validate('simple1expressions')->hasErrors());
     }
 
     /**
@@ -52,6 +52,6 @@ class RegularExpressionValidatorTest extends UnitTestCase
             ->getMock();
         $errors = $validator->validate('some subject that will not match')->getErrors();
         // we only test for the error code, after the translation Method for message is mocked anyway
-        $this->assertEquals([new \TYPO3\CMS\Extbase\Validation\Error('', 1221565130)], $errors);
+        self::assertEquals([new \TYPO3\CMS\Extbase\Validation\Error('', 1221565130)], $errors);
     }
 }

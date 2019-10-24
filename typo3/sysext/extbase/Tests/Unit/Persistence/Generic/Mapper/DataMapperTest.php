@@ -55,8 +55,8 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['mapSingleRow', 'getTargetType'])
             ->getMock();
 
-        $dataMapper->expects($this->any())->method('getTargetType')->will($this->returnArgument(1));
-        $dataMapper->expects($this->once())->method('mapSingleRow')->with($rows[0])->will($this->returnValue($object));
+        $dataMapper->expects(self::any())->method('getTargetType')->will(self::returnArgument(1));
+        $dataMapper->expects(self::once())->method('mapSingleRow')->with($rows[0])->will(self::returnValue($object));
 
         $dataMapper->map(get_class($object), $rows);
     }
@@ -73,8 +73,8 @@ class DataMapperTest extends UnitTestCase
         $row = ['uid' => '1234'];
         $object = new \stdClass();
         $persistenceSession = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
-        $persistenceSession->expects($this->once())->method('hasIdentifier')->with('1234')->will($this->returnValue(true));
-        $persistenceSession->expects($this->once())->method('getObjectByIdentifier')->with('1234')->will($this->returnValue($object));
+        $persistenceSession->expects(self::once())->method('hasIdentifier')->with('1234')->will(self::returnValue(true));
+        $persistenceSession->expects(self::once())->method('getObjectByIdentifier')->with('1234')->will(self::returnValue($object));
 
         $dataMapper = $this->getAccessibleMock(
             DataMapper::class,
@@ -128,7 +128,7 @@ class DataMapperTest extends UnitTestCase
         $mockReflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
             ->setMethods(['getClassSchema'])
             ->getMock();
-        $mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema));
+        $mockReflectionService->expects(self::any())->method('getClassSchema')->will(self::returnValue($classSchema));
         $dataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy'], [], '', false);
         $dataMapFactory->_set('dataMaps', $dataMaps);
         $dataMapper = $this->getAccessibleMock(
@@ -146,10 +146,10 @@ class DataMapperTest extends UnitTestCase
         );
         $dataMapper->_call('thawProperties', $object, $row);
 
-        $this->assertEquals('firstValue', $object->firstProperty);
-        $this->assertEquals(1234, $object->secondProperty);
-        $this->assertEquals(1.234, $object->thirdProperty);
-        $this->assertEquals(false, $object->fourthProperty);
+        self::assertEquals('firstValue', $object->firstProperty);
+        self::assertEquals(1234, $object->secondProperty);
+        self::assertEquals(1.234, $object->thirdProperty);
+        self::assertEquals(false, $object->fourthProperty);
     }
 
     /**
@@ -168,11 +168,11 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
-        $dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
+        $dataMap->expects(self::any())->method('getColumnMap')->will(self::returnValue($columnMap));
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap'], [], '', false);
-        $dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
+        $dataMapper->expects(self::any())->method('getDataMap')->will(self::returnValue($dataMap));
         $result = $dataMapper->_call('fetchRelatedEager', $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class), 'SomeName', '');
-        $this->assertEquals(null, $result);
+        self::assertEquals(null, $result);
     }
 
     /**
@@ -191,11 +191,11 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
-        $dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
+        $dataMap->expects(self::any())->method('getColumnMap')->will(self::returnValue($columnMap));
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap'], [], '', false);
-        $dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
+        $dataMapper->expects(self::any())->method('getDataMap')->will(self::returnValue($dataMap));
         $result = $dataMapper->_call('fetchRelatedEager', $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class), 'SomeName', '');
-        $this->assertEquals([], $result);
+        self::assertEquals([], $result);
     }
 
     /**
@@ -215,12 +215,12 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['getColumnMap'])
             ->disableOriginalConstructor()
             ->getMock();
-        $dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
+        $dataMap->expects(self::any())->method('getColumnMap')->will(self::returnValue($columnMap));
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap', 'fetchRelated'], [], '', false);
-        $dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
-        $dataMapper->expects($this->never())->method('fetchRelated');
+        $dataMapper->expects(self::any())->method('getDataMap')->will(self::returnValue($dataMap));
+        $dataMapper->expects(self::never())->method('fetchRelated');
         $result = $dataMapper->_call('mapObjectToClassProperty', $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class), 'SomeName', '');
-        $this->assertEquals(null, $result);
+        self::assertEquals(null, $result);
     }
 
     /**
@@ -253,7 +253,7 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['has', 'get'])
             ->disableOriginalConstructor()
             ->getMock();
-        $psrContainer->expects($this->any())->method('has')->will($this->returnValue(false));
+        $psrContainer->expects(self::any())->method('has')->will(self::returnValue(false));
         $container = new Container($psrContainer);
 
         $session = new \TYPO3\CMS\Extbase\Persistence\Generic\Session(new Container($psrContainer));
@@ -263,9 +263,9 @@ class DataMapperTest extends UnitTestCase
             ->setMethods(['getClassSchema'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockReflectionService->expects($this->any())->method('getClassSchema')->will($this->returnValue($classSchema1));
+        $mockReflectionService->expects(self::any())->method('getClassSchema')->will(self::returnValue($classSchema1));
 
-        $dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
+        $dataMap->expects(self::any())->method('getColumnMap')->will(self::returnValue($columnMap));
 
         $dataMapper = $this->getAccessibleMock(
             DataMapper::class,
@@ -280,10 +280,10 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class),
             ]
         );
-        $dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
-        $dataMapper->expects($this->never())->method('getNonEmptyRelationValue');
+        $dataMapper->expects(self::any())->method('getDataMap')->will(self::returnValue($dataMap));
+        $dataMapper->expects(self::never())->method('getNonEmptyRelationValue');
         $result = $dataMapper->_call('mapObjectToClassProperty', $object, 'relationProperty', $identifier);
-        $this->assertEquals($child, $result);
+        self::assertEquals($child, $result);
     }
 
     /**
@@ -322,9 +322,9 @@ class DataMapperTest extends UnitTestCase
         $dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $value, $storageFormat);
 
         if ($expectedValue === null) {
-            $this->assertNull($dateTime);
+            self::assertNull($dateTime);
         } else {
-            $this->assertEquals($expectedValue, $dateTime->format('c'));
+            self::assertEquals($expectedValue, $dateTime->format('c'));
         }
     }
 
@@ -342,7 +342,7 @@ class DataMapperTest extends UnitTestCase
         /** @var $dateTime NULL|\DateTime */
         $dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $date, $storageFormat, $targetType);
 
-        $this->assertInstanceOf($targetType, $dateTime);
+        self::assertInstanceOf($targetType, $dateTime);
     }
 
     /**
@@ -357,9 +357,9 @@ class DataMapperTest extends UnitTestCase
         $columnMap->setDateTimeStorageFormat('datetime');
         $datetimeAsString = '2013-04-15 09:30:00';
         $input = new \DateTime($datetimeAsString, new \DateTimeZone('UTC'));
-        $this->assertEquals('2013-04-15 09:30:00', $subject->getPlainValue($input, $columnMap));
+        self::assertEquals('2013-04-15 09:30:00', $subject->getPlainValue($input, $columnMap));
         $columnMap->setDateTimeStorageFormat('date');
-        $this->assertEquals('2013-04-15', $subject->getPlainValue($input, $columnMap));
+        self::assertEquals('2013-04-15', $subject->getPlainValue($input, $columnMap));
     }
 
     /**
@@ -371,7 +371,7 @@ class DataMapperTest extends UnitTestCase
         /** @var DataMapper $dataMapper */
         $dataMapper = $this->createPartialMock(DataMapper::class, []);
 
-        $this->assertSame($expectedValue, $dataMapper->getPlainValue($input));
+        self::assertSame($expectedValue, $dataMapper->getPlainValue($input));
     }
 
     /**
@@ -409,7 +409,7 @@ class DataMapperTest extends UnitTestCase
         /** @var DataMapper $dataMapper */
         $dataMapper = $this->createPartialMock(DataMapper::class, []);
         $input = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy::class);
-        $input->expects($this->once())->method('_loadRealInstance')->will($this->returnValue($dataMapper));
+        $input->expects(self::once())->method('_loadRealInstance')->will(self::returnValue($dataMapper));
         $dataMapper->getPlainValue($input);
     }
 
@@ -422,7 +422,7 @@ class DataMapperTest extends UnitTestCase
         $dataMapper = $this->createPartialMock(DataMapper::class, []);
         $input = $this->createMock(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface::class);
 
-        $input->expects($this->once())->method('getUid')->will($this->returnValue(23));
-        $this->assertSame(23, $dataMapper->getPlainValue($input));
+        $input->expects(self::once())->method('getUid')->will(self::returnValue(23));
+        self::assertSame(23, $dataMapper->getPlainValue($input));
     }
 }

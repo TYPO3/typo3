@@ -200,7 +200,7 @@ class LoginControllerTest extends UnitTestCase
         $this->loginControllerMock->method('isLoginInProgress')->willReturn(true);
         $this->loginControllerMock->_set('loginRefresh', false);
 
-        $this->loginControllerMock->expects($this->once())->method('redirectToUrl');
+        $this->loginControllerMock->expects(self::once())->method('redirectToUrl');
         $this->loginControllerMock->_call(
             'checkRedirect',
             $this->prophesize(ServerRequest::class)->reveal(),
@@ -310,7 +310,7 @@ class LoginControllerTest extends UnitTestCase
 
         $GLOBALS['BE_USER']->user['uid'] = null;
 
-        $this->loginControllerMock->expects($this->never())->method('redirectToUrl');
+        $this->loginControllerMock->expects(self::never())->method('redirectToUrl');
         $this->loginControllerMock->_call(
             'checkRedirect',
             $this->prophesize(ServerRequest::class)->reveal(),

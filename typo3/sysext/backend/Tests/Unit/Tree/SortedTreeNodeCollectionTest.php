@@ -54,7 +54,7 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
         foreach ($nodeCollection as $node) {
             $ids[] = $node->getId();
         }
-        $this->assertSame($expected, $ids);
+        self::assertSame($expected, $ids);
     }
 
     /**
@@ -64,7 +64,7 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
     {
         $nodeCollection = $this->createTestCollection();
         $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => 5]);
-        $this->assertTrue($nodeCollection->contains($node));
+        self::assertTrue($nodeCollection->contains($node));
     }
 
     /**
@@ -74,13 +74,13 @@ class SortedTreeNodeCollectionTest extends UnitTestCase
     {
         $nodeCollection = $this->createTestCollection();
         $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => 15]);
-        $this->assertTrue($nodeCollection->contains($node));
+        self::assertTrue($nodeCollection->contains($node));
         $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => 99]);
-        $this->assertFalse($nodeCollection->contains($node));
+        self::assertFalse($nodeCollection->contains($node));
         $nodeCollection = $this->createTestCollectionWithTwoNodes();
         $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => 3]);
-        $this->assertTrue($nodeCollection->contains($node));
+        self::assertTrue($nodeCollection->contains($node));
         $node = new \TYPO3\CMS\Backend\Tree\TreeNode(['id' => 99]);
-        $this->assertFalse($nodeCollection->contains($node));
+        self::assertFalse($nodeCollection->contains($node));
     }
 }

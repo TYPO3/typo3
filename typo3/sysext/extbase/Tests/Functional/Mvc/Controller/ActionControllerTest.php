@@ -86,14 +86,14 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
 
         /** @var ConjunctionValidator $validator */
         $conjunctionValidator = $argument->getValidator();
-        static::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
+        self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 
         /** @var \SplObjectStorage $validators */
         $validators = $conjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $validators);
+        self::assertInstanceOf(\SplObjectStorage::class, $validators);
 
         $validators->rewind();
-        static::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $validators->current());
+        self::assertInstanceOf(Fixture\Validation\Validator\CustomValidator::class, $validators->current());
     }
 
     /**
@@ -121,14 +121,14 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
 
         /** @var ConjunctionValidator $validator */
         $conjunctionValidator = $argument->getValidator();
-        static::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
+        self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 
         /** @var \SplObjectStorage $validators */
         $validators = $conjunctionValidator->getValidators();
-        static::assertInstanceOf(\SplObjectStorage::class, $validators);
-        static::assertCount(1, $validators);
+        self::assertInstanceOf(\SplObjectStorage::class, $validators);
+        self::assertCount(1, $validators);
 
         $validators->rewind();
-        static::assertInstanceOf(NotEmptyValidator::class, $validators->current());
+        self::assertInstanceOf(NotEmptyValidator::class, $validators->current());
     }
 }

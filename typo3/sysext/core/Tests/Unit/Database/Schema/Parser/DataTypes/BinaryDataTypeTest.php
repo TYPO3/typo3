@@ -64,8 +64,8 @@ class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
     {
         $subject = $this->createSubject($columnDefinition);
 
-        $this->assertInstanceOf($className, $subject->dataType);
-        $this->assertSame($length, $subject->dataType->getLength());
+        self::assertInstanceOf($className, $subject->dataType);
+        self::assertSame($length, $subject->dataType->getLength());
     }
 
     /**

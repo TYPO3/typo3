@@ -54,8 +54,8 @@ class InputSlugElementTest extends UnitTestCase
             false
         );
 
-        static::assertSame('/en', $subject->_call('getPrefix', $site, -1));
-        static::assertSame('/en', $subject->_call('getPrefix', $site, 0));
-        static::assertSame('/de', $subject->_call('getPrefix', $site, 1));
+        self::assertSame('/en', $subject->_call('getPrefix', $site, -1));
+        self::assertSame('/en', $subject->_call('getPrefix', $site, 0));
+        self::assertSame('/de', $subject->_call('getPrefix', $site, 1));
     }
 }

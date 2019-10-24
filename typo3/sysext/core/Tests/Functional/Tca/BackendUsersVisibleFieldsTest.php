@@ -68,13 +68,13 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
         $formResult = $formEngineTestService->createNewRecordForm('be_users');
 
         foreach (static::$backendUserFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 strpos($formResult['html'], '[' . $expectedField . ']'),
                 'The field ' . $expectedField . ' is not in the HTML'
             );
         }
 
-        $this->assertNotFalse(
+        self::assertNotFalse(
             strpos($formResult['html'], 'Last login'),
             'The field lastlogin is not in the HTML'
         );
@@ -94,20 +94,20 @@ class BackendUsersVisibleFieldsTest extends FunctionalTestCase
         $expectedFields = array_diff(static::$backendUserFields, static::$adminHiddenFields);
 
         foreach ($expectedFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the HTML'
             );
         }
 
         foreach (static::$adminHiddenFields as $hiddenField) {
-            $this->assertFalse(
+            self::assertFalse(
                 $formEngineTestService->formHtmlContainsField($hiddenField, $formResult['html']),
                 'The field ' . $hiddenField . ' is in the HTML'
             );
         }
 
-        $this->assertNotFalse(
+        self::assertNotFalse(
             strpos($formResult['html'], 'Last login'),
             'The field lastlogin is not in the HTML'
         );

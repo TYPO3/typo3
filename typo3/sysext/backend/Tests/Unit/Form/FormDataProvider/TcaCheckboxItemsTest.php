@@ -409,7 +409,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
-        $this->assertSame($expectedResult, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expectedResult, (new TcaCheckboxItems)->addData($input));
     }
 
     /**
@@ -508,7 +508,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        $this->assertSame($expected, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems)->addData($input));
     }
 
     /**
@@ -547,7 +547,7 @@ class TcaCheckboxItemsTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        $this->assertSame($expected, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems)->addData($input));
     }
 
     /**
@@ -730,6 +730,6 @@ class TcaCheckboxItemsTest extends UnitTestCase
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
         $expected['processedTca']['columns']['aField']['config']['items'][0]['invertStateDisplay'] = false;
 
-        $this->assertSame($expected, (new TcaCheckboxItems)->addData($input));
+        self::assertSame($expected, (new TcaCheckboxItems)->addData($input));
     }
 }

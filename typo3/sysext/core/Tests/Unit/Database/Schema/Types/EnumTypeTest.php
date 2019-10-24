@@ -44,7 +44,7 @@ class EnumTypeTest extends UnitTestCase
     public function getNameReturnsTypeIdentifier()
     {
         $subject = Type::getType(EnumType::TYPE);
-        $this->assertSame(EnumType::TYPE, $subject->getName());
+        self::assertSame(EnumType::TYPE, $subject->getName());
     }
 
     /**
@@ -64,7 +64,7 @@ class EnumTypeTest extends UnitTestCase
         );
 
         $subject = Type::getType(EnumType::TYPE);
-        $this->assertSame(
+        self::assertSame(
             "ENUM('aValue', 'anotherValue')",
             $subject->getSQLDeclaration($fieldDeclaration, $databaseProphet->reveal())
         );

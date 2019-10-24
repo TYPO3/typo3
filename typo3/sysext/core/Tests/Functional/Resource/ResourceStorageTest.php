@@ -59,13 +59,13 @@ class ResourceStorageTest extends FunctionalTestCase
         $rootProcessingFolder = $subject->getProcessingFolder();
         $processingFolder = $subject->getProcessingFolder($file);
 
-        $this->assertInstanceOf(Folder::class, $processingFolder);
-        $this->assertNotEquals($rootProcessingFolder, $processingFolder);
+        self::assertInstanceOf(Folder::class, $processingFolder);
+        self::assertNotEquals($rootProcessingFolder, $processingFolder);
 
         for ($i = ResourceStorage::PROCESSING_FOLDER_LEVELS; $i>0; $i--) {
             $processingFolder = $processingFolder->getParentFolder();
         }
-        $this->assertEquals($rootProcessingFolder, $processingFolder);
+        self::assertEquals($rootProcessingFolder, $processingFolder);
     }
 
     /**
@@ -96,7 +96,7 @@ class ResourceStorageTest extends FunctionalTestCase
 
         // read_only = true -> no write access for user, so checking for second argument true should assert false
         $subject->addFileMount('/' . $fileMountFolder . '/', ['read_only' => $isFileMountReadOnly]);
-        $this->assertSame($expectedResult, $subject->isWithinFileMountBoundaries($file, $checkWriteAccess));
+        self::assertSame($expectedResult, $subject->isWithinFileMountBoundaries($file, $checkWriteAccess));
     }
 
     /**
@@ -161,7 +161,7 @@ class ResourceStorageTest extends FunctionalTestCase
         $subject = (new StorageRepository())->findByUid(1);
         $processingFolder = $subject->getProcessingFolder();
 
-        $this->assertInstanceOf(Folder::class, $processingFolder);
+        self::assertInstanceOf(Folder::class, $processingFolder);
     }
 
     /**
@@ -178,7 +178,7 @@ class ResourceStorageTest extends FunctionalTestCase
 
         $role = $subject->getRole($folder);
 
-        $this->assertSame(FolderInterface::ROLE_DEFAULT, $role);
+        self::assertSame(FolderInterface::ROLE_DEFAULT, $role);
     }
 
     /**
@@ -231,8 +231,8 @@ class ResourceStorageTest extends FunctionalTestCase
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
-        $this->assertTrue(file_exists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt'));
-        $this->assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
+        self::assertTrue(file_exists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt'));
+        self::assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
     }
 
     /**
@@ -251,7 +251,7 @@ class ResourceStorageTest extends FunctionalTestCase
         $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
-        $this->assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
+        self::assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
     }
 
     public function searchFilesFindsFilesInFolderDataProvider(): array
@@ -410,13 +410,13 @@ class ResourceStorageTest extends FunctionalTestCase
 
             $result = $subject->searchFiles($search, $folder);
             $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
-            $this->assertSame($expectedFiles, iterator_to_array($result));
+            self::assertSame($expectedFiles, iterator_to_array($result));
 
             // Check if search also works for non hierarchical storages/drivers
             $this->inject($subject, 'capabilities', $subject->getCapabilities() & 7);
             $result = $subject->searchFiles($search, $folder);
             $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
-            $this->assertSame($expectedFiles, iterator_to_array($result));
+            self::assertSame($expectedFiles, iterator_to_array($result));
         } finally {
             GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/bar', true);
             GeneralUtility::rmdir(Environment::getPublicPath() . '/fileadmin/baz', true);

@@ -33,7 +33,7 @@ class AbstractRenderableTest extends UnitTestCase
         $expected = ['foo' => 'bar'];
         $abstractRenderableMock->setRenderingOption('foo', 'bar');
 
-        $this->assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
     }
 
     /**
@@ -46,7 +46,7 @@ class AbstractRenderableTest extends UnitTestCase
         $expected = ['foo-1' => ['bar' => 'foo-2']];
         $abstractRenderableMock->setRenderingOption('foo-1', ['bar' => 'foo-2']);
 
-        $this->assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
     }
 
     /**
@@ -61,7 +61,7 @@ class AbstractRenderableTest extends UnitTestCase
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
         $abstractRenderableMock->setRenderingOption('foo-2', null);
 
-        $this->assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
     }
 
     /**
@@ -83,7 +83,7 @@ class AbstractRenderableTest extends UnitTestCase
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3', 'bar-3' => 'foo-4']);
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-3' => null]);
 
-        $this->assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
     }
 
     /**
@@ -106,6 +106,6 @@ class AbstractRenderableTest extends UnitTestCase
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-2' => 'foo-3']);
         $abstractRenderableMock->setRenderingOption('foo-2', ['bar-3' => 'foo-4']);
 
-        $this->assertSame($expected, $abstractRenderableMock->getRenderingOptions());
+        self::assertSame($expected, $abstractRenderableMock->getRenderingOptions());
     }
 }

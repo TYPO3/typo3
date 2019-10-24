@@ -56,7 +56,7 @@ class CorrelationIdTest extends UnitTestCase
     {
         $correlationId = CorrelationId::fromString($string);
         foreach ($expectations as $propertyName => $propertyValue) {
-            static::assertSame(
+            self::assertSame(
                 $propertyValue,
                 $correlationId->{'get' . ucfirst($propertyName)}()
             );
@@ -70,7 +70,7 @@ class CorrelationIdTest extends UnitTestCase
     {
         $correlationId = CorrelationId::forSubject('subject')
             ->withAspects('aspect-a');
-        static::assertSame('0400$subject/aspect-a', (string)$correlationId);
+        self::assertSame('0400$subject/aspect-a', (string)$correlationId);
     }
 
     /**
@@ -81,7 +81,7 @@ class CorrelationIdTest extends UnitTestCase
         $correlationId = CorrelationId::forScope('scope')
             ->withSubject('subject')
             ->withAspects('aspect-a');
-        static::assertSame('0400$scope:subject/aspect-a', (string)$correlationId);
+        self::assertSame('0400$scope:subject/aspect-a', (string)$correlationId);
     }
 
     /**
@@ -90,7 +90,7 @@ class CorrelationIdTest extends UnitTestCase
     public function doesNotVary(): void
     {
         $correlationId = '0400$scope:subject/aspect-a/aspect-b';
-        static::assertSame(
+        self::assertSame(
             $correlationId,
             (string)CorrelationId::fromString($correlationId)
         );

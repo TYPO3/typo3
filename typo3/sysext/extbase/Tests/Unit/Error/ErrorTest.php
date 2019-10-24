@@ -28,7 +28,7 @@ class ErrorTest extends UnitTestCase
     {
         $errorMessage = 'The message';
         $error = new \TYPO3\CMS\Extbase\Error\Error($errorMessage, 0);
-        $this->assertEquals($errorMessage, $error->getMessage());
+        self::assertEquals($errorMessage, $error->getMessage());
     }
 
     /**
@@ -38,6 +38,6 @@ class ErrorTest extends UnitTestCase
     {
         $errorCode = 123456789;
         $error = new \TYPO3\CMS\Extbase\Error\Error('', $errorCode);
-        $this->assertEquals($errorCode, $error->getCode());
+        self::assertEquals($errorCode, $error->getCode());
     }
 }

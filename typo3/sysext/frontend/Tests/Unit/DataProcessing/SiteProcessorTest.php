@@ -36,16 +36,16 @@ class SiteProcessorTest extends UnitTestCase
     {
         $processorConfiguration = ['as' => 'variable'];
         $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
-        $mockedContentObjectRenderer->expects($this->any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
+        $mockedContentObjectRenderer->expects(self::any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
         $site = new Site('site123', 123, []);
 
         $subject = $this->getAccessibleMock(SiteProcessor::class, ['getCurrentSite'], []);
-        $subject->expects($this->any())->method('getCurrentSite')->willReturn($site);
+        $subject->expects(self::any())->method('getCurrentSite')->willReturn($site);
 
         $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
 
-        $this->assertEquals($site, $processedData['variable']);
+        self::assertEquals($site, $processedData['variable']);
     }
 
     /**
@@ -55,17 +55,17 @@ class SiteProcessorTest extends UnitTestCase
     {
         $processorConfiguration = ['as' => 'variable'];
         $mockedContentObjectRenderer = $this->getAccessibleMock(ContentObjectRenderer::class, ['stdWrapValue'], [], '', false);
-        $mockedContentObjectRenderer->expects($this->any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
+        $mockedContentObjectRenderer->expects(self::any())->method('stdWrapValue')->with('as', $processorConfiguration, 'site')->willReturn('variable');
 
         $finderMock = $this->getMockBuilder(SiteFinder::class)->disableOriginalConstructor()->getMock();
-        $finderMock->expects($this->any())->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('message', 1550670118));
+        $finderMock->expects(self::any())->method('getSiteByPageId')->willThrowException(new SiteNotFoundException('message', 1550670118));
 
         $subject = $this->getAccessibleMock(SiteProcessor::class, ['getSiteFinder', 'getCurrentPageId'], []);
-        $subject->expects($this->any())->method('getSiteFinder')->willReturn($finderMock);
-        $subject->expects($this->any())->method('getCurrentPageId')->willReturn(1);
+        $subject->expects(self::any())->method('getSiteFinder')->willReturn($finderMock);
+        $subject->expects(self::any())->method('getCurrentPageId')->willReturn(1);
 
         $processedData = $subject->process($mockedContentObjectRenderer, [], $processorConfiguration, []);
 
-        $this->assertNull($processedData['variable']);
+        self::assertNull($processedData['variable']);
     }
 }

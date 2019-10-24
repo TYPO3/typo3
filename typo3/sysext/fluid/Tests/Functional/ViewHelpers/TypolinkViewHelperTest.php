@@ -96,7 +96,7 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             'addQueryStringMethod' => $addQueryStringMethod,
             'addQueryStringExclude' => $addQueryStringExclude,
         ]);
-        $this->assertEquals($expected, trim(preg_replace('/\s+/', ' ', $view->render())));
+        self::assertEquals($expected, trim(preg_replace('/\s+/', ' ', $view->render())));
     }
 
     /**

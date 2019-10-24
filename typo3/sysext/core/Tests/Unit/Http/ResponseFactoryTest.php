@@ -30,7 +30,7 @@ class ResponseFactoryTest extends UnitTestCase
     public function implementsPsr17FactoryInterface()
     {
         $factory = new ResponseFactory();
-        $this->assertInstanceOf(ResponseFactoryInterface::class, $factory);
+        self::assertInstanceOf(ResponseFactoryInterface::class, $factory);
     }
 
     /**
@@ -40,7 +40,7 @@ class ResponseFactoryTest extends UnitTestCase
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse();
-        $this->assertSame(200, $response->getStatusCode());
+        self::assertSame(200, $response->getStatusCode());
     }
 
     /**
@@ -50,7 +50,7 @@ class ResponseFactoryTest extends UnitTestCase
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse(201);
-        $this->assertSame(201, $response->getStatusCode());
+        self::assertSame(201, $response->getStatusCode());
     }
 
     /**
@@ -60,7 +60,7 @@ class ResponseFactoryTest extends UnitTestCase
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse(301);
-        $this->assertSame('Moved Permanently', $response->getReasonPhrase());
+        self::assertSame('Moved Permanently', $response->getReasonPhrase());
     }
 
     /**
@@ -70,6 +70,6 @@ class ResponseFactoryTest extends UnitTestCase
     {
         $factory = new ResponseFactory();
         $response = $factory->createResponse(201, 'custom message');
-        $this->assertSame('custom message', $response->getReasonPhrase());
+        self::assertSame('custom message', $response->getReasonPhrase());
     }
 }

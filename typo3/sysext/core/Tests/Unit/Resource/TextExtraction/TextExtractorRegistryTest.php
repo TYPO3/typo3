@@ -36,9 +36,9 @@ class TextExtractorRegistryTest extends UnitTestCase
             ->getMock();
 
         if (!empty($createsTextExtractorInstances)) {
-            $textExtractorRegistry->expects($this->any())
+            $textExtractorRegistry->expects(self::any())
                 ->method('createTextExtractorInstance')
-                ->will($this->returnValueMap($createsTextExtractorInstances));
+                ->will(self::returnValueMap($createsTextExtractorInstances));
         }
 
         return $textExtractorRegistry;
@@ -57,7 +57,7 @@ class TextExtractorRegistryTest extends UnitTestCase
         $textExtractorRegistry = $this->getTextExtractorRegistry([[$textExtractorClass, $textExtractorInstance]]);
 
         $textExtractorRegistry->registerTextExtractor($textExtractorClass);
-        $this->assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances());
+        self::assertContains($textExtractorInstance, $textExtractorRegistry->getTextExtractorInstances());
     }
 
     /**

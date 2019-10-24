@@ -92,7 +92,7 @@ class ThumbnailControllerTest extends UnitTestCase
      */
     public function generateThumbnailIsInvoked(array $parameters = null)
     {
-        $this->subject->expects(static::once())
+        $this->subject->expects(self::once())
             ->method('generateThumbnail')
             ->willReturn(new Response());
 
@@ -106,7 +106,7 @@ class ThumbnailControllerTest extends UnitTestCase
 
         $request = (new \TYPO3\CMS\Core\Http\ServerRequest())
             ->withQueryParams($queryParameters);
-        static::assertInstanceOf(
+        self::assertInstanceOf(
             Response::class,
             $this->subject->render($request)
         );

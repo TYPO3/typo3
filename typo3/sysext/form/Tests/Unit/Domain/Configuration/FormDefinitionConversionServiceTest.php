@@ -44,11 +44,11 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
         );
 
         $sessionToken = '123';
-        $formDefinitionConversionService->expects($this->any())->method(
+        $formDefinitionConversionService->expects(self::any())->method(
             'generateSessionToken'
         )->willReturn($sessionToken);
 
-        $formDefinitionConversionService->expects($this->any())->method(
+        $formDefinitionConversionService->expects(self::any())->method(
             'persistSessionToken'
         )->willReturn(null);
 
@@ -120,7 +120,7 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
              ],
         ];
 
-        $this->assertSame($expected, $data);
+        self::assertSame($expected, $data);
     }
 
     /**
@@ -189,6 +189,6 @@ class FormDefinitionConversionServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame($expected, $formDefinitionConversionService->removeHmacData($input));
+        self::assertSame($expected, $formDefinitionConversionService->removeHmacData($input));
     }
 }

@@ -173,7 +173,7 @@ class DocumentationFileTest extends UnitTestCase
     public function findDocumentsRespectsFilesWithSameIssueNumber()
     {
         $result = $this->documentationFileService->findDocumentationFiles(vfsStream::url('root/Changelog/master'));
-        $this->assertCount(2, $result);
+        self::assertCount(2, $result);
     }
 
     /**

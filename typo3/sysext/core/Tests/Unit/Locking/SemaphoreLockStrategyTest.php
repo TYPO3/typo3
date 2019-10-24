@@ -30,7 +30,7 @@ class SemaphoreLockStrategyTest extends UnitTestCase
     public function acquireGetsSemaphore()
     {
         $lock = new SemaphoreLockStrategy('99999');
-        $this->assertTrue($lock->acquire());
+        self::assertTrue($lock->acquire());
         $lock->release();
         $lock->destroy();
     }

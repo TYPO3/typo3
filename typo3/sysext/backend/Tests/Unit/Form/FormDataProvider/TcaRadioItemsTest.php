@@ -93,7 +93,7 @@ class TcaRadioItemsTest extends UnitTestCase
         $languageService->sL(Argument::cetera())->willReturnArgument(0);
 
         $expected = $input;
-        $this->assertSame($expected, (new TcaRadioItems)->addData($input));
+        self::assertSame($expected, (new TcaRadioItems)->addData($input));
     }
 
     /**
@@ -223,7 +223,7 @@ class TcaRadioItemsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'translated';
 
-        $this->assertSame($expected, (new TcaRadioItems)->addData($input));
+        self::assertSame($expected, (new TcaRadioItems)->addData($input));
         (new TcaRadioItems)->addData($input);
     }
 
@@ -263,7 +263,7 @@ class TcaRadioItemsTest extends UnitTestCase
                 'foo' => 'bar',
             ],
         ];
-        $this->assertSame($expected, (new TcaRadioItems)->addData($input));
+        self::assertSame($expected, (new TcaRadioItems)->addData($input));
     }
 
     /**
@@ -439,7 +439,7 @@ class TcaRadioItemsTest extends UnitTestCase
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['items'][0][0] = 'labelOverride';
 
-        $this->assertSame($expected, (new TcaRadioItems)->addData($input));
+        self::assertSame($expected, (new TcaRadioItems)->addData($input));
         (new TcaRadioItems)->addData($input);
     }
 }

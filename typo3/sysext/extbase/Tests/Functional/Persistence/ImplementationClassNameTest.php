@@ -48,7 +48,7 @@ class ImplementationClassNameTest extends \TYPO3\TestingFramework\Core\Functiona
         $a1 = $aRepository->findByUid(1);
         $a2 = $aRepository->findByUid(1);
 
-        $this->assertSame($a1, $a2);
+        self::assertSame($a1, $a2);
     }
 
     /**
@@ -60,6 +60,6 @@ class ImplementationClassNameTest extends \TYPO3\TestingFramework\Core\Functiona
         $b1 = $bRepository->findByUid(1);
         $b2 = $bRepository->findByUid(1);
 
-        $this->assertSame($b1, $b2);
+        self::assertSame($b1, $b2);
     }
 }

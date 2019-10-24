@@ -41,7 +41,7 @@ class StreamTest extends UnitTestCase
      */
     public function canInstantiateWithStreamIdentifier()
     {
-        $this->assertInstanceOf(Stream::class, $this->stream);
+        self::assertInstanceOf(Stream::class, $this->stream);
     }
 
     /**
@@ -51,7 +51,7 @@ class StreamTest extends UnitTestCase
     {
         $resource = fopen('php://memory', 'wb+');
         $stream = new Stream($resource);
-        $this->assertInstanceOf(Stream::class, $stream);
+        self::assertInstanceOf(Stream::class, $stream);
     }
 
     /**
@@ -63,7 +63,7 @@ class StreamTest extends UnitTestCase
         touch($fileName);
         $this->testFilesToDelete[] = $fileName;
         $stream = new Stream($fileName, 'w');
-        $this->assertFalse($stream->isReadable());
+        self::assertFalse($stream->isReadable());
     }
 
     /**
@@ -72,7 +72,7 @@ class StreamTest extends UnitTestCase
     public function isWritableReturnsFalseIfStreamIsNotWritable()
     {
         $stream = new Stream('php://memory', 'r');
-        $this->assertFalse($stream->isWritable());
+        self::assertFalse($stream->isWritable());
     }
 
     /**
@@ -82,7 +82,7 @@ class StreamTest extends UnitTestCase
     {
         $message = 'foo bar';
         $this->stream->write($message);
-        $this->assertEquals($message, (string)$this->stream);
+        self::assertEquals($message, (string)$this->stream);
     }
 
     /**
@@ -92,7 +92,7 @@ class StreamTest extends UnitTestCase
     {
         $resource = fopen('php://memory', 'wb+');
         $stream = new Stream($resource);
-        $this->assertSame($resource, $stream->detach());
+        self::assertSame($resource, $stream->detach());
     }
 
     /**
@@ -115,7 +115,7 @@ class StreamTest extends UnitTestCase
         file_put_contents($fileName, 'FOO BAR');
         $stream = new Stream($fileName, 'w');
 
-        $this->assertEquals('', $stream->__toString());
+        self::assertEquals('', $stream->__toString());
     }
 
     /**
@@ -129,7 +129,7 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->close();
-        $this->assertFalse(is_resource($resource));
+        self::assertFalse(is_resource($resource));
     }
 
     /**
@@ -144,7 +144,7 @@ class StreamTest extends UnitTestCase
         $stream = new Stream($resource);
         $stream->close();
 
-        $this->assertNull($stream->detach());
+        self::assertNull($stream->detach());
     }
 
     /**
@@ -160,8 +160,8 @@ class StreamTest extends UnitTestCase
         $detached = $stream->detach();
 
         $stream->close();
-        $this->assertTrue(is_resource($detached));
-        $this->assertSame($resource, $detached);
+        self::assertTrue(is_resource($detached));
+        self::assertSame($resource, $detached);
     }
 
     /**
@@ -170,7 +170,7 @@ class StreamTest extends UnitTestCase
     public function getSizeReportsNullWhenNoResourcePresent()
     {
         $this->stream->detach();
-        $this->assertNull($this->stream->getSize());
+        self::assertNull($this->stream->getSize());
     }
 
     /**
@@ -186,7 +186,7 @@ class StreamTest extends UnitTestCase
 
         fseek($resource, 2);
 
-        $this->assertEquals(2, $stream->tell());
+        self::assertEquals(2, $stream->tell());
     }
 
     /**
@@ -219,7 +219,7 @@ class StreamTest extends UnitTestCase
         $stream = new Stream($resource);
 
         fseek($resource, 2);
-        $this->assertFalse($stream->eof());
+        self::assertFalse($stream->eof());
     }
 
     /**
@@ -236,7 +236,7 @@ class StreamTest extends UnitTestCase
         while (!feof($resource)) {
             fread($resource, 4096);
         }
-        $this->assertTrue($stream->eof());
+        self::assertTrue($stream->eof());
     }
 
     /**
@@ -252,7 +252,7 @@ class StreamTest extends UnitTestCase
 
         fseek($resource, 2);
         $stream->detach();
-        $this->assertTrue($stream->eof());
+        self::assertTrue($stream->eof());
     }
 
     /**
@@ -265,7 +265,7 @@ class StreamTest extends UnitTestCase
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
-        $this->assertTrue($stream->isSeekable());
+        self::assertTrue($stream->isSeekable());
     }
 
     /**
@@ -279,7 +279,7 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->detach();
-        $this->assertFalse($stream->isSeekable());
+        self::assertFalse($stream->isSeekable());
     }
 
     /**
@@ -293,7 +293,7 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->seek(2);
-        $this->assertEquals(2, $stream->tell());
+        self::assertEquals(2, $stream->tell());
     }
 
     /**
@@ -308,7 +308,7 @@ class StreamTest extends UnitTestCase
         $stream = new Stream($resource);
         $stream->seek(2);
         $stream->rewind();
-        $this->assertEquals(0, $stream->tell());
+        self::assertEquals(0, $stream->tell());
     }
 
     /**
@@ -338,7 +338,7 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->detach();
-        $this->assertFalse($stream->isWritable());
+        self::assertFalse($stream->isWritable());
     }
 
     /**
@@ -368,7 +368,7 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'wb+');
         $stream = new Stream($resource);
         $stream->detach();
-        $this->assertFalse($stream->isReadable());
+        self::assertFalse($stream->isReadable());
     }
 
     /**
@@ -400,7 +400,7 @@ class StreamTest extends UnitTestCase
         while (!feof($resource)) {
             fread($resource, 4096);
         }
-        $this->assertEquals('', $stream->read(4096));
+        self::assertEquals('', $stream->read(4096));
     }
 
     /**
@@ -413,7 +413,7 @@ class StreamTest extends UnitTestCase
         file_put_contents($fileName, 'FOO BAR');
         $resource = fopen($fileName, 'w');
         $stream = new Stream($resource);
-        $this->assertEquals('', $stream->getContents());
+        self::assertEquals('', $stream->getContents());
     }
 
     /**
@@ -470,7 +470,7 @@ class StreamTest extends UnitTestCase
         $r = new \ReflectionProperty($this->stream, 'resource');
         $r->setAccessible(true);
         $test = $r->getValue($this->stream);
-        $this->assertSame($resource, $test);
+        self::assertSame($resource, $test);
     }
 
     /**
@@ -488,7 +488,7 @@ class StreamTest extends UnitTestCase
 
         $this->stream->rewind();
         $test = (string)$this->stream;
-        $this->assertEquals('FooBar', $test);
+        self::assertEquals('FooBar', $test);
     }
 
     /**
@@ -507,7 +507,7 @@ class StreamTest extends UnitTestCase
         // rewind, because current pointer is at end of stream!
         $this->stream->rewind();
         $test = $this->stream->getContents();
-        $this->assertEquals('FooBar', $test);
+        self::assertEquals('FooBar', $test);
     }
 
     /**
@@ -526,7 +526,7 @@ class StreamTest extends UnitTestCase
         // seek to position 3
         $this->stream->seek(3);
         $test = $this->stream->getContents();
-        $this->assertEquals('Bar', $test);
+        self::assertEquals('Bar', $test);
     }
 
     /**
@@ -543,7 +543,7 @@ class StreamTest extends UnitTestCase
         $expected = stream_get_meta_data($resource);
         $test = $this->stream->getMetadata();
 
-        $this->assertEquals($expected, $test);
+        self::assertEquals($expected, $test);
     }
 
     /**
@@ -562,7 +562,7 @@ class StreamTest extends UnitTestCase
 
         $test = $this->stream->getMetadata('uri');
 
-        $this->assertEquals($expected, $test);
+        self::assertEquals($expected, $test);
     }
 
     /**
@@ -576,7 +576,7 @@ class StreamTest extends UnitTestCase
         $resource = fopen($fileName, 'r+');
         $this->stream->attach($resource);
 
-        $this->assertNull($this->stream->getMetadata('TOTALLY_MADE_UP'));
+        self::assertNull($this->stream->getMetadata('TOTALLY_MADE_UP'));
     }
 
     /**
@@ -587,6 +587,6 @@ class StreamTest extends UnitTestCase
         $resource = fopen(__FILE__, 'r');
         $expected = fstat($resource);
         $stream = new Stream($resource);
-        $this->assertEquals($expected['size'], $stream->getSize());
+        self::assertEquals($expected['size'], $stream->getSize());
     }
 }

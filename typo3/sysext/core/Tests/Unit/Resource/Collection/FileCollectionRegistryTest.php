@@ -43,7 +43,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
         $returnedClassName = $this->testSubject->getFileCollectionClass('foobar');
-        $this->assertEquals($className, $returnedClassName);
+        self::assertEquals($className, $returnedClassName);
     }
 
     /**
@@ -113,7 +113,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     {
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
         $this->testSubject->registerFileCollectionClass($className, 'foobar');
-        $this->assertEquals($className, $this->testSubject->getFileCollectionClass('foobar'));
+        self::assertEquals($className, $this->testSubject->getFileCollectionClass('foobar'));
     }
 
     /**
@@ -127,7 +127,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
             $type => $className
         ];
         $this->initializeTestSubject();
-        $this->assertEquals($className, $this->testSubject->getFileCollectionClass($type));
+        self::assertEquals($className, $this->testSubject->getFileCollectionClass($type));
     }
 
     /**
@@ -141,8 +141,8 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
             $type => $className
         ];
         $this->initializeTestSubject();
-        $this->assertTrue($this->testSubject->fileCollectionTypeExists($type));
-        $this->assertFalse($this->testSubject->fileCollectionTypeExists('bar'));
+        self::assertTrue($this->testSubject->fileCollectionTypeExists($type));
+        self::assertFalse($this->testSubject->fileCollectionTypeExists('bar'));
     }
 
     /**
@@ -152,7 +152,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = [];
         $this->initializeTestSubject();
-        $this->assertFalse($this->testSubject->fileCollectionTypeExists($this->getUniqueId()));
+        self::assertFalse($this->testSubject->fileCollectionTypeExists($this->getUniqueId()));
     }
 
     /**
@@ -181,12 +181,12 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
         $this->testSubject->addTypeToTCA($type, $label, 'something');
 
         // check type
-        $this->assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
+        self::assertEquals('sys_language_uid, l10n_parent, l10n_diffsource, title, --palette--;;1, type, something', $GLOBALS['TCA']['sys_file_collection']['types']['my_type']['showitem']);
 
         $indexOfNewType = count($GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items']) - 1;
 
         // check if columns.type.item exist
-        $this->assertEquals($type, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$indexOfNewType][1]);
-        $this->assertEquals($label, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$indexOfNewType][0]);
+        self::assertEquals($type, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$indexOfNewType][1]);
+        self::assertEquals($label, $GLOBALS['TCA']['sys_file_collection']['columns']['type']['config']['items'][$indexOfNewType][0]);
     }
 }

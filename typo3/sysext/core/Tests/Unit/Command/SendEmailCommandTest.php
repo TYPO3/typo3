@@ -43,14 +43,14 @@ class SendEmailCommandTest extends UnitTestCase
             ->getMock();
 
         $mailer
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getTransport')
-            ->will($this->returnValue($delayedTransportProphecy->reveal()));
+            ->will(self::returnValue($delayedTransportProphecy->reveal()));
 
         $mailer
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getRealTransport')
-            ->will($this->returnValue($realTransportProphecy->reveal()));
+            ->will(self::returnValue($realTransportProphecy->reveal()));
 
         /** @var SendEmailCommand|\PHPUnit_Framework_MockObject_MockObject $command */
         $command = $this->getMockBuilder(SendEmailCommand::class)
@@ -59,13 +59,13 @@ class SendEmailCommandTest extends UnitTestCase
             ->getMock();
 
         $command
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getMailer')
-            ->will($this->returnValue($mailer));
+            ->will(self::returnValue($mailer));
 
         $tester = new CommandTester($command);
         $tester->execute([], []);
 
-        $this->assertTrue(strpos($tester->getDisplay(), '5 emails sent') > 0);
+        self::assertTrue(strpos($tester->getDisplay(), '5 emails sent') > 0);
     }
 }

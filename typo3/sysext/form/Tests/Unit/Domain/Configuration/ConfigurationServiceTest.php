@@ -58,7 +58,7 @@ class ConfigurationServiceTest extends UnitTestCase
             'key' => 'value',
         ];
 
-        $this->assertSame($expected, $mockConfigurationService->getPrototypeConfiguration('standard'));
+        self::assertSame($expected, $mockConfigurationService->getPrototypeConfiguration('standard'));
     }
 
     /**
@@ -122,7 +122,7 @@ class ConfigurationServiceTest extends UnitTestCase
             'custom',
         ];
 
-        $this->assertSame($expected, $configurationService->getSelectablePrototypeNamesDefinedInFormEditorSetup());
+        self::assertSame($expected, $configurationService->getSelectablePrototypeNamesDefinedInFormEditorSetup());
     }
 
     /**
@@ -144,11 +144,11 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedReturn,
             $configurationService->isFormElementPropertyDefinedInFormEditorSetup($validationDto)
         );
@@ -173,11 +173,11 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedReturn,
             $configurationService->isPropertyCollectionPropertyDefinedInFormEditorSetup($validationDto)
         );
@@ -202,11 +202,11 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedReturn,
             $configurationService->isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup($validationDto)
         );
@@ -231,11 +231,11 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedReturn,
             $configurationService->isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup(
                 $validationDto
@@ -258,7 +258,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(false);
         $validationDto = new ValidationDto(null, 'Text', null, 'properties.foo.1');
@@ -284,16 +284,16 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(true);
 
         $validationDto = new ValidationDto('standard', 'Text', null, 'properties.foo.1');
 
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $configurationService->getFormElementPredefinedDefaultValueFromFormEditorSetup($validationDto)
         );
@@ -314,7 +314,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(false);
         $validationDto = new ValidationDto(
@@ -347,10 +347,10 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(true);
 
@@ -363,7 +363,7 @@ class ConfigurationServiceTest extends UnitTestCase
             'StringLength'
         );
 
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $configurationService->getPropertyCollectionPredefinedDefaultValueFromFormEditorSetup($validationDto)
         );
@@ -388,11 +388,11 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedReturn,
             $configurationService->isFormElementTypeCreatableByFormEditor($validationDto)
         );
@@ -417,11 +417,11 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method(
+        $configurationService->expects(self::any())->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
-        $this->assertSame(
+        self::assertSame(
             $expectedReturn,
             $configurationService->isPropertyCollectionElementIdentifierCreatableByFormEditor($validationDto)
         );
@@ -445,13 +445,13 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method('getPrototypeConfiguration')->willReturn($configuration);
+        $configurationService->expects(self::any())->method('getPrototypeConfiguration')->willReturn($configuration);
 
         $validationDto = new ValidationDto('standard', 'Text');
-        $this->assertTrue($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
+        self::assertTrue($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
 
         $validationDto = new ValidationDto('standard', 'Foo');
-        $this->assertFalse($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
+        self::assertFalse($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
     }
 
     /**
@@ -498,7 +498,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
+        $configurationService->expects(self::any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
         $validationDto = new ValidationDto('standard', 'Text');
         $input = [$validationDto];
 
@@ -520,7 +520,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
+        $configurationService->expects(self::any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
         $validationDto = new ValidationDto('standard', 'Text', null, null, 'Bar', 'Baz');
         $input = [$validationDto];
 
@@ -539,7 +539,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects($this->any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
+        $configurationService->expects(self::any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
 
         $input = [
             new ValidationDto('standard', 'Text', null, 'options.xxx', 'validators', 'Baz'),
@@ -580,7 +580,7 @@ class ConfigurationServiceTest extends UnitTestCase
             ],
         ];
 
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $configurationService->_call('addAdditionalPropertyPathsFromHook', '', 'standard', $input, [])
         );
@@ -615,17 +615,17 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $translationService->expects($this->any())->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationService->expects(self::any())->method('translateValuesRecursive')->willReturnArgument(0);
 
-        $configurationService->expects($this->any())->method('getCacheEntry')->willReturn(null);
-        $configurationService->expects($this->any())->method('getPrototypeConfiguration')->willReturn($configuration);
-        $configurationService->expects($this->any())->method('getTranslationService')->willReturn($translationService);
-        $configurationService->expects($this->any())
+        $configurationService->expects(self::any())->method('getCacheEntry')->willReturn(null);
+        $configurationService->expects(self::any())->method('getPrototypeConfiguration')->willReturn($configuration);
+        $configurationService->expects(self::any())->method('getTranslationService')->willReturn($translationService);
+        $configurationService->expects(self::any())
             ->method('executeBuildFormDefinitionValidationConfigurationHooks')
             ->willReturnArgument(1);
-        $configurationService->expects($this->any())->method('setCacheEntry');
+        $configurationService->expects(self::any())->method('setCacheEntry');
 
-        $this->assertSame(
+        self::assertSame(
             $expected,
             $configurationService->_call('buildFormDefinitionValidationConfigurationFromFormEditorSetup', 'standard')
         );

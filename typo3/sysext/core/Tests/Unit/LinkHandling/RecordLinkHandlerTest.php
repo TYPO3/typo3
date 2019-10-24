@@ -36,7 +36,7 @@ class RecordLinkHandlerTest extends UnitTestCase
             $parameters['uid']
         );
 
-        $this->assertEquals($url, $subject->asString($parameters));
+        self::assertEquals($url, $subject->asString($parameters));
     }
 
     /**

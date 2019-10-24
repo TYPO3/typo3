@@ -230,7 +230,7 @@ class TypoLinkTest extends AbstractTestCase
             $this->internalRequestContext
         );
 
-        static::assertSame($expectation, (string)$response->getBody());
+        self::assertSame($expectation, (string)$response->getBody());
     }
 
     /**

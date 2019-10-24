@@ -59,7 +59,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var Comment $existingComment */
         $existingComment = $this->persistenceManager->getObjectByIdentifier($uid, Comment::class);
 
-        $this->assertEquals($date->getTimestamp(), $existingComment->getDate()->getTimestamp());
+        self::assertEquals($date->getTimestamp(), $existingComment->getDate()->getTimestamp());
     }
 
     /**
@@ -79,7 +79,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var DateExample $example */
         $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
-        $this->assertEquals($example->getDatetimeInt()->getTimestamp(), $date->getTimestamp());
+        self::assertEquals($example->getDatetimeInt()->getTimestamp(), $date->getTimestamp());
     }
 
     /**
@@ -99,7 +99,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var DateExample $example */
         $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
-        $this->assertEquals($example->getDatetimeText()->getTimestamp(), $date->getTimestamp());
+        self::assertEquals($example->getDatetimeText()->getTimestamp(), $date->getTimestamp());
     }
 
     /**
@@ -119,7 +119,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var DateExample $example */
         $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
-        $this->assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
+        self::assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
     }
 
     /**
@@ -139,7 +139,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var DateTimeImmutableExample $subject */
         $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
 
-        $this->assertEquals($date, $subject->getDatetimeImmutableInt());
+        self::assertEquals($date, $subject->getDatetimeImmutableInt());
     }
 
     /**
@@ -159,7 +159,7 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var DateTimeImmutableExample $subject */
         $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
 
-        $this->assertEquals($date, $subject->getDatetimeImmutableText());
+        self::assertEquals($date, $subject->getDatetimeImmutableText());
     }
 
     /**
@@ -179,6 +179,6 @@ class DataMapperTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalT
         /** @var DateTimeImmutableExample $subject */
         $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
 
-        $this->assertSame($date->getTimestamp(), $subject->getDatetimeImmutableDatetime()->getTimestamp());
+        self::assertSame($date->getTimestamp(), $subject->getDatetimeImmutableDatetime()->getTimestamp());
     }
 }

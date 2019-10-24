@@ -32,7 +32,7 @@ class LoggerTest extends UnitTestCase
     public function getNameGetsLoggerName()
     {
         $logger = new Logger('test.core.log');
-        $this->assertSame('test.core.log', $logger->getName());
+        self::assertSame('test.core.log', $logger->getName());
     }
 
     /**
@@ -45,7 +45,7 @@ class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::ERROR, $writer);
         // warning < error, thus must not be logged
         $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertEmpty($writer->getRecords());
+        self::assertEmpty($writer->getRecords());
     }
 
     /**
@@ -57,7 +57,7 @@ class LoggerTest extends UnitTestCase
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::DEBUG, $writer);
         $returnValue = $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertInstanceOf(Logger::class, $returnValue);
+        self::assertInstanceOf(Logger::class, $returnValue);
     }
 
     /**
@@ -67,7 +67,7 @@ class LoggerTest extends UnitTestCase
     {
         $logger = new Logger('test.core.log');
         $returnValue = $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertInstanceOf(Logger::class, $returnValue);
+        self::assertInstanceOf(Logger::class, $returnValue);
     }
 
     /**
@@ -79,7 +79,7 @@ class LoggerTest extends UnitTestCase
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::EMERGENCY, $writer);
         $returnValue = $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertInstanceOf(Logger::class, $returnValue);
+        self::assertInstanceOf(Logger::class, $returnValue);
     }
 
     /**
@@ -95,7 +95,7 @@ class LoggerTest extends UnitTestCase
         $processor = $this->getMockBuilder(NullProcessor::class)
             ->setMethods(['processLogRecord'])
             ->getMock();
-        $processor->expects($this->once())->method('processLogRecord')->will($this->returnValue(new LogRecord($component, $level, $message)));
+        $processor->expects(self::once())->method('processLogRecord')->will(self::returnValue(new LogRecord($component, $level, $message)));
         $logger->addProcessor($level, $processor);
         // we need a writer, otherwise we will not process log records
         $logger->addWriter($level, new NullWriter());
@@ -112,7 +112,7 @@ class LoggerTest extends UnitTestCase
         $writer = $this->getMockBuilder(NullWriter::class)
             ->setMethods(['writeLog'])
             ->getMock();
-        $writer->expects($this->once())->method('writeLog');
+        $writer->expects(self::once())->method('writeLog');
         $logger->addWriter(LogLevel::DEBUG, $writer);
         $logger->warning('test');
     }
@@ -127,7 +127,7 @@ class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::NOTICE, $writer);
         // notice == notice, thus must be logged
         $logger->log(LogLevel::NOTICE, 'test message');
-        $this->assertNotEmpty($writer->getRecords());
+        self::assertNotEmpty($writer->getRecords());
     }
 
     /**
@@ -158,7 +158,7 @@ class LoggerTest extends UnitTestCase
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::DEBUG, $writer);
         call_user_func([$logger, $shorthandMethod], 'test message');
-        $this->assertNotEmpty($writer->getRecords());
+        self::assertNotEmpty($writer->getRecords());
     }
 
     /**
@@ -171,7 +171,7 @@ class LoggerTest extends UnitTestCase
         $logger->addWriter(LogLevel::NOTICE, $writer);
         // warning > notice, thus must be logged
         $logger->log(LogLevel::WARNING, 'test message');
-        $this->assertNotEmpty($writer->getRecords());
+        self::assertNotEmpty($writer->getRecords());
     }
 
     /**
@@ -183,7 +183,7 @@ class LoggerTest extends UnitTestCase
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::NOTICE, $writer);
         $writers = $logger->getWriters();
-        $this->assertContains($writer, $writers[LogLevel::NOTICE]);
+        self::assertContains($writer, $writers[LogLevel::NOTICE]);
     }
 
     /**
@@ -195,6 +195,6 @@ class LoggerTest extends UnitTestCase
         $writer = new Fixtures\WriterFixture();
         $logger->addWriter(LogLevel::NOTICE, $writer);
         $writers = $logger->getWriters();
-        $this->assertContains($writer, $writers[LogLevel::EMERGENCY]);
+        self::assertContains($writer, $writers[LogLevel::EMERGENCY]);
     }
 }

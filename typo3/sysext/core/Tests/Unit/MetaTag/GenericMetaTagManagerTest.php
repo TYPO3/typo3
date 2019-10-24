@@ -27,7 +27,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
         $manager = new GenericMetaTagManager();
         $handledProperties = $manager->getAllHandledProperties();
 
-        $this->assertEmpty($handledProperties);
+        self::assertEmpty($handledProperties);
     }
 
     /**
@@ -36,9 +36,9 @@ class GenericMetaTagManagerTest extends UnitTestCase
     public function checkIfMethodCanHandlePropertyAlwaysReturnsTrue()
     {
         $manager = new GenericMetaTagManager();
-        $this->assertTrue($manager->canHandleProperty('custom-meta-tag'));
-        $this->assertTrue($manager->canHandleProperty('description'));
-        $this->assertTrue($manager->canHandleProperty('og:title'));
+        self::assertTrue($manager->canHandleProperty('custom-meta-tag'));
+        self::assertTrue($manager->canHandleProperty('description'));
+        self::assertTrue($manager->canHandleProperty('og:title'));
     }
 
     /**
@@ -57,8 +57,8 @@ class GenericMetaTagManagerTest extends UnitTestCase
             $property['type']
         );
 
-        $this->assertEquals($expected, $manager->getProperty($property['property'], $property['type']));
-        $this->assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
+        self::assertEquals($expected, $manager->getProperty($property['property'], $property['type']));
+        self::assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
     }
 
     /**
@@ -122,7 +122,7 @@ class GenericMetaTagManagerTest extends UnitTestCase
             '<meta property="og:image:height" content="200" />' . PHP_EOL .
             '<meta name="twitter:card" content="This is the Twitter card" />';
 
-        $this->assertEquals($expected, $manager->renderAllProperties());
+        self::assertEquals($expected, $manager->renderAllProperties());
     }
 
     /**
@@ -132,20 +132,20 @@ class GenericMetaTagManagerTest extends UnitTestCase
     {
         $manager = new GenericMetaTagManager();
         $manager->addProperty('description', 'Description');
-        $this->assertEquals([['content' => 'Description', 'subProperties' => []]], $manager->getProperty('description'));
+        self::assertEquals([['content' => 'Description', 'subProperties' => []]], $manager->getProperty('description'));
 
         $manager->removeProperty('description');
-        $this->assertEquals([], $manager->getProperty('description'));
+        self::assertEquals([], $manager->getProperty('description'));
 
         $manager->addProperty('description', 'Description 1', [], false, 'property');
         $manager->addProperty('description', 'Description 2', [], false, '');
         $manager->addProperty('description', 'Description 3', []);
 
-        $this->assertEquals([['content' => 'Description 1', 'subProperties' => []]], $manager->getProperty('description', 'property'));
+        self::assertEquals([['content' => 'Description 1', 'subProperties' => []]], $manager->getProperty('description', 'property'));
 
         $manager->removeProperty('description', 'property');
-        $this->assertEquals([], $manager->getProperty('description', 'property'));
-        $this->assertEquals(
+        self::assertEquals([], $manager->getProperty('description', 'property'));
+        self::assertEquals(
             [
                 ['content' => 'Description 2', 'subProperties' => []],
                 ['content' => 'Description 3', 'subProperties' => []]
@@ -159,10 +159,10 @@ class GenericMetaTagManagerTest extends UnitTestCase
 
         $manager->removeAllProperties();
 
-        $this->assertEquals([], $manager->getProperty('description'));
-        $this->assertEquals([], $manager->getProperty('description', 'name'));
-        $this->assertEquals([], $manager->getProperty('description', 'property'));
-        $this->assertEquals([], $manager->getProperty('twitter:card'));
+        self::assertEquals([], $manager->getProperty('description'));
+        self::assertEquals([], $manager->getProperty('description', 'name'));
+        self::assertEquals([], $manager->getProperty('description', 'property'));
+        self::assertEquals([], $manager->getProperty('twitter:card'));
     }
 
     /**

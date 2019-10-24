@@ -58,7 +58,7 @@ class PageResolverTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->markTestSkipped('Has to be adjusted');
+        self::markTestSkipped('Has to be adjusted');
 
         parent::setUp();
         $this->controller = $this->getAccessibleMock(TypoScriptFrontendController::class, ['getSiteScript', 'determineId', 'isBackendUserLoggedIn'], [], '', false);
@@ -116,15 +116,15 @@ class PageResolverTest extends UnitTestCase
         $expectedRouteResult = new PageArguments(13, '0', []);
 
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
-        $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
-        $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
+        $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
+        $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
 
         $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
         $result = $response->getBody()->getContents();
         $result = json_decode($result, true);
-        $this->assertEquals('lotus-flower', $result['site']);
-        $this->assertEquals(13, $result['pageId']);
+        self::assertEquals('lotus-flower', $result['site']);
+        self::assertEquals(13, $result['pageId']);
     }
 
     /**
@@ -158,13 +158,13 @@ class PageResolverTest extends UnitTestCase
 
         $expectedRouteResult = new PageArguments(13, '0', []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
-        $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
-        $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
+        $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
+        $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
 
         $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
-        $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals('https://king.com/lotus-flower/en/mr-magpie/bloom', $response->getHeader('Location')[0]);
+        self::assertEquals(307, $response->getStatusCode());
+        self::assertEquals('https://king.com/lotus-flower/en/mr-magpie/bloom', $response->getHeader('Location')[0]);
     }
 
     /**
@@ -198,12 +198,12 @@ class PageResolverTest extends UnitTestCase
 
         $expectedRouteResult = new PageArguments(13, '0', []);
         $pageRouterMock = $this->getMockBuilder(PageRouter::class)->disableOriginalConstructor()->setMethods(['matchRequest'])->getMock();
-        $pageRouterMock->expects($this->once())->method('matchRequest')->willReturn($expectedRouteResult);
-        $site->expects($this->any())->method('getRouter')->willReturn($pageRouterMock);
+        $pageRouterMock->expects(self::once())->method('matchRequest')->willReturn($expectedRouteResult);
+        $site->expects(self::any())->method('getRouter')->willReturn($pageRouterMock);
 
         $subject = new PageResolver($this->controller);
         $response = $subject->process($request, $this->responseOutputHandler);
-        $this->assertEquals(307, $response->getStatusCode());
-        $this->assertEquals('https://king.com/lotus-flower/en/mr-magpie/bloom/', $response->getHeader('Location')[0]);
+        self::assertEquals(307, $response->getStatusCode());
+        self::assertEquals('https://king.com/lotus-flower/en/mr-magpie/bloom/', $response->getHeader('Location')[0]);
     }
 }

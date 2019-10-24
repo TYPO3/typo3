@@ -46,12 +46,12 @@ class BulkInsertTest extends UnitTestCase
 
         $this->connection = $this->createMock(Connection::class);
 
-        $this->connection->expects($this->any())
+        $this->connection->expects(self::any())
             ->method('quoteIdentifier')
-            ->will($this->returnArgument(0));
-        $this->connection->expects($this->any())
+            ->will(self::returnArgument(0));
+        $this->connection->expects(self::any())
             ->method('getDatabasePlatform')
-            ->will($this->returnValue(new MockPlatform()));
+            ->will(self::returnValue(new MockPlatform()));
     }
 
     /**
@@ -76,9 +76,9 @@ class BulkInsertTest extends UnitTestCase
 
         $query->addValues([]);
 
-        $this->assertSame("INSERT INTO {$this->testTable} VALUES ()", (string)$query);
-        $this->assertSame([], $query->getParameters());
-        $this->assertSame([], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} VALUES ()", (string)$query);
+        self::assertSame([], $query->getParameters());
+        self::assertSame([], $query->getParameterTypes());
     }
 
     public function insertWithoutColumnSpecification()
@@ -87,9 +87,9 @@ class BulkInsertTest extends UnitTestCase
 
         $query->addValues([], [Connection::PARAM_BOOL]);
 
-        $this->assertSame("INSERT INTO {$this->testTable} VALUES ()", (string)$query);
-        $this->assertSame([], $query->getParameters());
-        $this->assertSame([], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} VALUES ()", (string)$query);
+        self::assertSame([], $query->getParameters());
+        self::assertSame([], $query->getParameterTypes());
     }
 
     /**
@@ -101,9 +101,9 @@ class BulkInsertTest extends UnitTestCase
 
         $query->addValues(['bar', 'baz', 'named' => 'bloo']);
 
-        $this->assertSame("INSERT INTO {$this->testTable} VALUES (?, ?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz', 'bloo'], $query->getParameters());
-        $this->assertSame([null, null, null], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} VALUES (?, ?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz', 'bloo'], $query->getParameters());
+        self::assertSame([null, null, null], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -112,9 +112,9 @@ class BulkInsertTest extends UnitTestCase
             ['named' => Connection::PARAM_BOOL, null, Connection::PARAM_INT]
         );
 
-        $this->assertSame("INSERT INTO {$this->testTable} VALUES (?, ?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz', 'bloo'], $query->getParameters());
-        $this->assertSame([null, Connection::PARAM_INT, Connection::PARAM_BOOL], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} VALUES (?, ?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz', 'bloo'], $query->getParameters());
+        self::assertSame([null, Connection::PARAM_INT, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
     /**
@@ -129,9 +129,9 @@ class BulkInsertTest extends UnitTestCase
         $query->addValues(['bar', 'baz', 'bloo']);
         $query->addValues(['bar', 'baz', 'named' => 'bloo']);
 
-        $this->assertSame("INSERT INTO {$this->testTable} VALUES (), (?, ?), (?, ?, ?), (?, ?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz', 'bar', 'baz', 'bloo', 'bar', 'baz', 'bloo'], $query->getParameters());
-        $this->assertSame([null, null, null, null, null, null, null, null], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} VALUES (), (?, ?), (?, ?, ?), (?, ?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz', 'bar', 'baz', 'bloo', 'bar', 'baz', 'bloo'], $query->getParameters());
+        self::assertSame([null, null, null, null, null, null, null, null], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable);
 
@@ -143,9 +143,9 @@ class BulkInsertTest extends UnitTestCase
             ['named' => Connection::PARAM_INT, null, Connection::PARAM_BOOL]
         );
 
-        $this->assertSame("INSERT INTO {$this->testTable} VALUES (), (?, ?), (?, ?, ?), (?, ?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz', 'bar', 'baz', 'bloo', 'bar', 'baz', 'bloo'], $query->getParameters());
-        $this->assertSame(
+        self::assertSame("INSERT INTO {$this->testTable} VALUES (), (?, ?), (?, ?, ?), (?, ?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz', 'bar', 'baz', 'bloo', 'bar', 'baz', 'bloo'], $query->getParameters());
+        self::assertSame(
             [
                 null,
                 Connection::PARAM_BOOL,
@@ -169,17 +169,17 @@ class BulkInsertTest extends UnitTestCase
 
         $query->addValues(['bar', 'baz']);
 
-        $this->assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz'], $query->getParameters());
-        $this->assertSame([null, null], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz'], $query->getParameters());
+        self::assertSame([null, null], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
         $query->addValues(['bar', 'baz'], [1 => Connection::PARAM_BOOL]);
 
-        $this->assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz'], $query->getParameters());
-        $this->assertSame([null, Connection::PARAM_BOOL], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz'], $query->getParameters());
+        self::assertSame([null, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
     /**
@@ -191,17 +191,17 @@ class BulkInsertTest extends UnitTestCase
 
         $query->addValues(['baz' => 'baz', 'bar' => 'bar']);
 
-        $this->assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz'], $query->getParameters());
-        $this->assertSame([null, null], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz'], $query->getParameters());
+        self::assertSame([null, null], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
         $query->addValues(['baz' => 'baz', 'bar' => 'bar'], [null, Connection::PARAM_INT]);
 
-        $this->assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz'], $query->getParameters());
-        $this->assertSame([null, Connection::PARAM_INT], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz'], $query->getParameters());
+        self::assertSame([null, Connection::PARAM_INT], $query->getParameterTypes());
     }
 
     /**
@@ -213,17 +213,17 @@ class BulkInsertTest extends UnitTestCase
 
         $query->addValues([1 => 'baz', 'bar' => 'bar']);
 
-        $this->assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz'], $query->getParameters());
-        $this->assertSame([null, null], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz'], $query->getParameters());
+        self::assertSame([null, null], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
         $query->addValues([1 => 'baz', 'bar' => 'bar'], [Connection::PARAM_INT, Connection::PARAM_BOOL]);
 
-        $this->assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
-        $this->assertSame(['bar', 'baz'], $query->getParameters());
-        $this->assertSame([Connection::PARAM_INT, Connection::PARAM_BOOL], $query->getParameterTypes());
+        self::assertSame("INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?)", (string)$query);
+        self::assertSame(['bar', 'baz'], $query->getParameters());
+        self::assertSame([Connection::PARAM_INT, Connection::PARAM_BOOL], $query->getParameterTypes());
     }
 
     /**
@@ -238,12 +238,12 @@ class BulkInsertTest extends UnitTestCase
         $query->addValues(['bar', 'baz' => 'baz']);
         $query->addValues(['bar' => 'bar', 'baz' => 'baz']);
 
-        $this->assertSame(
+        self::assertSame(
             "INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?), (?, ?), (?, ?), (?, ?)",
             (string)$query
         );
-        $this->assertSame(['bar', 'baz', 'bar', 'baz', 'bar', 'baz', 'bar', 'baz'], $query->getParameters());
-        $this->assertSame([null, null, null, null, null, null, null, null], $query->getParameterTypes());
+        self::assertSame(['bar', 'baz', 'bar', 'baz', 'bar', 'baz', 'bar', 'baz'], $query->getParameters());
+        self::assertSame([null, null, null, null, null, null, null, null], $query->getParameterTypes());
 
         $query = new BulkInsertQuery($this->connection, $this->testTable, ['bar', 'baz']);
 
@@ -255,12 +255,12 @@ class BulkInsertTest extends UnitTestCase
             ['bar' => Connection::PARAM_INT, 'baz' => Connection::PARAM_BOOL]
         );
 
-        $this->assertSame(
+        self::assertSame(
             "INSERT INTO {$this->testTable} (bar, baz) VALUES (?, ?), (?, ?), (?, ?), (?, ?)",
             (string)$query
         );
-        $this->assertSame(['bar', 'baz', 'bar', 'baz', 'bar', 'baz', 'bar', 'baz'], $query->getParameters());
-        $this->assertSame(
+        self::assertSame(['bar', 'baz', 'bar', 'baz', 'bar', 'baz', 'bar', 'baz'], $query->getParameters());
+        self::assertSame(
             [
                 Connection::PARAM_INT,
                 Connection::PARAM_BOOL,
@@ -330,9 +330,9 @@ class BulkInsertTest extends UnitTestCase
             ''
         );
 
-        $subject->expects($this->any())
+        $subject->expects(self::any())
             ->method('getInsertMaxRows')
-            ->will($this->returnValue(10));
+            ->will(self::returnValue(10));
 
         for ($i = 0; $i <= 10; $i++) {
             $subject->addValues([]);

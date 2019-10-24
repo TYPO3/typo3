@@ -66,7 +66,7 @@ class ExtensionStatusTest extends UnitTestCase
     public function extensionStatusImplementsStatusProviderInterface()
     {
         $reportMock = $this->createMock(ExtensionStatus::class);
-        $this->assertInstanceOf(StatusProviderInterface::class, $reportMock);
+        self::assertInstanceOf(StatusProviderInterface::class, $reportMock);
     }
 
     /**
@@ -78,7 +78,7 @@ class ExtensionStatusTest extends UnitTestCase
             ->setMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->assertIsArray($report->getStatus());
+        self::assertIsArray($report->getStatus());
     }
 
     /**
@@ -90,7 +90,7 @@ class ExtensionStatusTest extends UnitTestCase
             ->setMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->assertSame(5, \count($report->getStatus()));
+        self::assertSame(5, \count($report->getStatus()));
     }
 
     /**
@@ -106,11 +106,11 @@ class ExtensionStatusTest extends UnitTestCase
             ->setMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
             ->disableOriginalConstructor()
             ->getMock();
-        $report->expects($this->any())->method('getMainRepositoryStatus')->will($this->returnValue($statusObject));
+        $report->expects(self::any())->method('getMainRepositoryStatus')->will(self::returnValue($statusObject));
         $resultStatuses = $report->getStatus();
         foreach ($resultStatuses as $status) {
             if ($status) {
-                $this->assertInstanceOf(Status::class, $status);
+                self::assertInstanceOf(Status::class, $status);
             }
         }
     }
@@ -123,13 +123,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
         $mockExtensionList = [
             'enetcache' => [
                 'installed' => true,
@@ -139,9 +139,9 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['getMainRepositoryStatus'], [], '', false);
@@ -149,12 +149,12 @@ class ExtensionStatusTest extends UnitTestCase
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
         $mockReport
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getMainRepositoryStatus')
-            ->will($this->returnValue('foo'));
+            ->will(self::returnValue('foo'));
 
         $result = $mockReport->getStatus();
-        $this->assertSame('foo', $result['mainRepositoryStatus']);
+        self::assertSame('foo', $result['mainRepositoryStatus']);
     }
 
     /**
@@ -163,24 +163,24 @@ class ExtensionStatusTest extends UnitTestCase
     public function getMainRepositoryStatusReturnsErrorStatusIfRepositoryIsNotFound()
     {
         $this->mockRepositoryRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findOneTypo3OrgRepository')
-            ->will($this->returnValue(null));
+            ->will(self::returnValue(null));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::ERROR)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::ERROR)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getMainRepositoryStatus');
-        $this->assertSame($statusMock, $result);
+        self::assertSame($statusMock, $result);
     }
 
     /**
@@ -191,30 +191,30 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockRepositoryRepository Repository|\PHPUnit_Framework_MockObject_MockObject */
         $mockRepository = $this->getMockBuilder(Repository::class)->getMock();
         $mockRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getLastUpdate')
-            ->will($this->returnValue(new \DateTime('-8 days')));
+            ->will(self::returnValue(new \DateTime('-8 days')));
 
         $this->mockRepositoryRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findOneTypo3OrgRepository')
-            ->will($this->returnValue($mockRepository));
+            ->will(self::returnValue($mockRepository));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::NOTICE)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::NOTICE)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         /** @var $result Status */
         $result = $mockReport->_call('getMainRepositoryStatus');
-        $this->assertSame($statusMock, $result);
+        self::assertSame($statusMock, $result);
     }
 
     /**
@@ -225,30 +225,30 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockRepositoryRepository Repository|\PHPUnit_Framework_MockObject_MockObject */
         $mockRepository = $this->getMockBuilder(Repository::class)->getMock();
         $mockRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getLastUpdate')
-            ->will($this->returnValue(new \DateTime('-6 days')));
+            ->will(self::returnValue(new \DateTime('-6 days')));
 
         $this->mockRepositoryRepository
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findOneTypo3OrgRepository')
-            ->will($this->returnValue($mockRepository));
+            ->will(self::returnValue($mockRepository));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::OK)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::OK)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('repositoryRepository', $this->mockRepositoryRepository);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         /** @var $result Status */
         $result = $mockReport->_call('getMainRepositoryStatus');
-        $this->assertSame($statusMock, $result);
+        self::assertSame($statusMock, $result);
     }
 
     /**
@@ -259,13 +259,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
         $mockExtensionList = [
             'enetcache' => [
                 'installed' => true,
@@ -275,26 +275,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::OK)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::OK)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->loaded;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -305,13 +305,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(-1));
+            ->will(self::returnValue(-1));
         $mockExtensionList = [
             'enetcache' => [
                 'installed' => true,
@@ -321,26 +321,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(0))
+            ->expects(self::at(0))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::ERROR)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::ERROR)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->loaded;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -351,13 +351,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
         $mockExtensionList = [
             'enetcache' => [
                 'terObject' => $mockTerObject
@@ -366,26 +366,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::OK)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::OK)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->existing;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -396,13 +396,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(-1));
+            ->will(self::returnValue(-1));
         $mockExtensionList = [
             'enetcache' => [
                 'terObject' => $mockTerObject
@@ -411,26 +411,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(1))
+            ->expects(self::at(1))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::WARNING)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::WARNING)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->existing;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -441,13 +441,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
         $mockExtensionList = [
             'enetcache' => [
                 'installed' => true,
@@ -457,26 +457,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(2))
+            ->expects(self::at(2))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::OK)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::OK)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->loadedoutdated;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -487,13 +487,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(-2));
+            ->will(self::returnValue(-2));
         $mockExtensionList = [
             'enetcache' => [
                 'installed' => true,
@@ -503,26 +503,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(2))
+            ->expects(self::at(2))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::WARNING)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::WARNING)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->loadedoutdated;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -533,13 +533,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(0));
+            ->will(self::returnValue(0));
         $mockExtensionList = [
             'enetcache' => [
                 'terObject' => $mockTerObject
@@ -548,26 +548,26 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(3))
+            ->expects(self::at(3))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::OK)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::OK)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->existingoutdated;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 
     /**
@@ -578,13 +578,13 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockTerObject Extension|\PHPUnit_Framework_MockObject_MockObject */
         $mockTerObject = $this->getMockBuilder(Extension::class)->getMock();
         $mockTerObject
-            ->expects($this->any())
+            ->expects(self::any())
             ->method('getVersion')
-            ->will($this->returnValue('1.0.6'));
+            ->will(self::returnValue('1.0.6'));
         $mockTerObject
-            ->expects($this->atLeastOnce())
+            ->expects(self::atLeastOnce())
             ->method('getReviewState')
-            ->will($this->returnValue(-2));
+            ->will(self::returnValue(-2));
         $mockExtensionList = [
             'enetcache' => [
                 'terObject' => $mockTerObject
@@ -593,25 +593,25 @@ class ExtensionStatusTest extends UnitTestCase
         /** @var $mockListUtility ListUtility|\PHPUnit_Framework_MockObject_MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
         $mockListUtility
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')
-            ->will($this->returnValue($mockExtensionList));
+            ->will(self::returnValue($mockExtensionList));
 
         /** @var $mockReport ExtensionStatus|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockReport = $this->getAccessibleMock(ExtensionStatus::class, ['dummy'], [], '', false);
         $mockReport->_set('objectManager', $this->mockObjectManager);
         $statusMock = $this->createMock(Status::class);
         $this->mockObjectManager
-            ->expects($this->at(3))
+            ->expects(self::at(3))
             ->method('get')
-            ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), Status::WARNING)
-            ->will($this->returnValue($statusMock));
+            ->with(self::anything(), self::anything(), self::anything(), self::anything(), Status::WARNING)
+            ->will(self::returnValue($statusMock));
         $mockReport->_set('listUtility', $mockListUtility);
         $mockReport->_set('languageService', $this->mockLanguageService);
 
         $result = $mockReport->_call('getSecurityStatusOfExtensions');
         /** @var $loadedResult Status */
         $loadedResult = $result->existingoutdated;
-        $this->assertSame($statusMock, $loadedResult);
+        self::assertSame($statusMock, $loadedResult);
     }
 }

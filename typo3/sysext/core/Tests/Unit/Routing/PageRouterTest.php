@@ -71,11 +71,11 @@ class PageRouterTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
         $subject = $this->getAccessibleMock(PageRouter::class, ['getSlugCandidateProvider'], [$site, []]);
-        $subject->expects($this->once())->method('getSlugCandidateProvider')->willReturn($pageSlugCandidateProvider->reveal());
+        $subject->expects(self::once())->method('getSlugCandidateProvider')->willReturn($pageSlugCandidateProvider->reveal());
         $routeResult = $subject->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new PageArguments(13, '0', [], [], []);
-        $this->assertEquals($expectedRouteResult, $routeResult);
+        self::assertEquals($expectedRouteResult, $routeResult);
     }
 
     /**
@@ -103,7 +103,7 @@ class PageRouterTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/');
         $subject = $this->getAccessibleMock(PageRouter::class, ['getSlugCandidateProvider'], [$site, []]);
-        $subject->expects($this->once())->method('getSlugCandidateProvider')->willReturn($pageSlugCandidateProvider->reveal());
+        $subject->expects(self::once())->method('getSlugCandidateProvider')->willReturn($pageSlugCandidateProvider->reveal());
         $routeResult = $subject->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new PageArguments((int)$pageRecord['uid'], '0', []);

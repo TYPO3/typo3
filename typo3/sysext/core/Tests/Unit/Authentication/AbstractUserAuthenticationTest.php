@@ -68,7 +68,7 @@ class AbstractUserAuthenticationTest extends UnitTestCase
         $mock->checkPid_value = null;
         $mock->user_table = 'be_users';
         $result = $mock->getAuthInfoArray();
-        $this->assertEquals('', $result['db_user']['checkPidList']);
+        self::assertEquals('', $result['db_user']['checkPidList']);
     }
 
     /**
@@ -81,7 +81,7 @@ class AbstractUserAuthenticationTest extends UnitTestCase
         $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class, [], '', false);
         $subject->_set('loginType', 'BE');
         $result = $subject->_call('getHttpHeaders');
-        $this->assertEquals($result['Pragma'], 'no-cache');
+        self::assertEquals($result['Pragma'], 'no-cache');
     }
 
     /**
@@ -93,6 +93,6 @@ class AbstractUserAuthenticationTest extends UnitTestCase
         $_SERVER['HTTPS'] = 'on';
         $subject = $this->getAccessibleMockForAbstractClass(AbstractUserAuthentication::class, [], '', false);
         $result = $subject->_call('getHttpHeaders');
-        $this->assertEquals($result['Pragma'], 'private');
+        self::assertEquals($result['Pragma'], 'private');
     }
 }

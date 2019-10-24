@@ -40,7 +40,7 @@ class ClientTest extends UnitTestCase
     public function testImplementsPsr18ClientInterface(): void
     {
         $client = new Client($this->prophesize(GuzzleClientInterface::class)->reveal());
-        $this->assertInstanceOf(ClientInterface::class, $client);
+        self::assertInstanceOf(ClientInterface::class, $client);
     }
 
     public function testSendRequest(): void
@@ -62,17 +62,17 @@ class ClientTest extends UnitTestCase
         $request2 = new Request('https://example.com/action', 'POST', 'php://temp');
         $response2 = $client->sendRequest($request2);
 
-        $this->assertCount(2, $transactions);
+        self::assertCount(2, $transactions);
 
-        $this->assertSame('GET', $transactions[0]['request']->getMethod());
-        $this->assertSame('https://example.com', $transactions[0]['request']->getUri()->__toString());
-        $this->assertSame(200, $response1->getStatusCode());
-        $this->assertSame('Bar', $response1->getHeaderLine('X-Foo'));
+        self::assertSame('GET', $transactions[0]['request']->getMethod());
+        self::assertSame('https://example.com', $transactions[0]['request']->getUri()->__toString());
+        self::assertSame(200, $response1->getStatusCode());
+        self::assertSame('Bar', $response1->getHeaderLine('X-Foo'));
 
-        $this->assertSame('POST', $transactions[1]['request']->getMethod());
-        $this->assertSame('https://example.com/action', $transactions[1]['request']->getUri()->__toString());
-        $this->assertSame(202, $response2->getStatusCode());
-        $this->assertSame('Baz', $response2->getHeaderLine('X-Foo'));
+        self::assertSame('POST', $transactions[1]['request']->getMethod());
+        self::assertSame('https://example.com/action', $transactions[1]['request']->getUri()->__toString());
+        self::assertSame(202, $response2->getStatusCode());
+        self::assertSame('Baz', $response2->getHeaderLine('X-Foo'));
     }
 
     public function testRequestException(): void
@@ -140,9 +140,9 @@ class ClientTest extends UnitTestCase
         $request = new Request('https://example.com', 'GET', 'php://temp');
         $response = $client->sendRequest($request);
 
-        $this->assertCount(1, $transactions);
-        $this->assertSame(303, $response->getStatusCode());
-        $this->assertSame('https://example.com', $response->getHeaderLine('Location'));
+        self::assertCount(1, $transactions);
+        self::assertSame(303, $response->getStatusCode());
+        self::assertSame('https://example.com', $response->getHeaderLine('Location'));
     }
 
     public function testErrorResponsesDoNotThrowAnException(): void
@@ -160,7 +160,7 @@ class ClientTest extends UnitTestCase
         $response1 = $client->sendRequest($request);
         $response2 = $client->sendRequest($request);
 
-        $this->assertSame(404, $response1->getStatusCode());
-        $this->assertSame(500, $response2->getStatusCode());
+        self::assertSame(404, $response1->getStatusCode());
+        self::assertSame(500, $response2->getStatusCode());
     }
 }

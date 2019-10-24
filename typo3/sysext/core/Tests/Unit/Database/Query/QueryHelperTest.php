@@ -59,7 +59,7 @@ class QueryHelperTest extends UnitTestCase
      */
     public function stripLogicalOperatorPrefixRemovesConstraintPrefixes(string $input, string $expectedSql): void
     {
-        $this->assertSame($expectedSql, QueryHelper::stripLogicalOperatorPrefix($input));
+        self::assertSame($expectedSql, QueryHelper::stripLogicalOperatorPrefix($input));
     }
 
     /**
@@ -145,7 +145,7 @@ class QueryHelperTest extends UnitTestCase
      */
     public function parseOrderByTest(string $input, array $expectedResult): void
     {
-        $this->assertSame($expectedResult, QueryHelper::parseOrderBy($input));
+        self::assertSame($expectedResult, QueryHelper::parseOrderBy($input));
     }
 
     /**
@@ -221,7 +221,7 @@ class QueryHelperTest extends UnitTestCase
      */
     public function parseTableListTest(string $input, array $expectedResult): void
     {
-        $this->assertSame($expectedResult, QueryHelper::parseTableList($input));
+        self::assertSame($expectedResult, QueryHelper::parseTableList($input));
     }
 
     /**
@@ -271,7 +271,7 @@ class QueryHelperTest extends UnitTestCase
      */
     public function parseGroupByTest(string $input, array $expectedResult): void
     {
-        $this->assertSame($expectedResult, QueryHelper::parseGroupBy($input));
+        self::assertSame($expectedResult, QueryHelper::parseGroupBy($input));
     }
 
     /**
@@ -349,7 +349,7 @@ class QueryHelperTest extends UnitTestCase
      */
     public function parseJoinSplitsStatement(string $input, array $expected): void
     {
-        $this->assertSame($expected, QueryHelper::parseJoin($input));
+        self::assertSame($expected, QueryHelper::parseJoin($input));
     }
 
     /**
@@ -399,6 +399,6 @@ class QueryHelperTest extends UnitTestCase
             return implode('.', $parts);
         });
 
-        $this->assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionProphet->reveal(), $input));
+        self::assertSame($expected, QueryHelper::quoteDatabaseIdentifiers($connectionProphet->reveal(), $input));
     }
 }

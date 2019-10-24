@@ -45,7 +45,7 @@ class EditDocumentControllerTest extends UnitTestCase
         $result = [];
         $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
         $mock->_callRef('parseAdditionalGetParameters', $result, $typoScript);
-        $this->assertSame($expectedParameters, $result);
+        self::assertSame($expectedParameters, $result);
     }
 
     /**
@@ -67,7 +67,7 @@ class EditDocumentControllerTest extends UnitTestCase
         ];
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
 
-        $this->assertEquals($result, $editDocumentControllerMock->_get('columnsOnly'));
+        self::assertEquals($result, $editDocumentControllerMock->_get('columnsOnly'));
     }
 
     public function slugDependendFieldsAreAddedToColumnsOnlyDataProvider(): array

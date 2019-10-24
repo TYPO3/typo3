@@ -160,7 +160,7 @@ class FileMetadataVisibleFieldsTest extends FunctionalTestCase
             );
 
             foreach ($expectedFields as $expectedField) {
-                $this->assertNotFalse(
+                self::assertNotFalse(
                     $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                     'The field ' . $expectedField . ' is not in the form HTML for file type ' . $filetype
                 );

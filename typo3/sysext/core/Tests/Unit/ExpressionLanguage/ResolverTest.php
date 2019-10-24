@@ -80,7 +80,7 @@ class ResolverTest extends UnitTestCase
     {
         $request = new ServerRequest();
         $expressionLanguageResolver = new Resolver('default', [], $request);
-        $this->assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
+        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
     /**
@@ -118,7 +118,7 @@ class ResolverTest extends UnitTestCase
         $request = new ServerRequest();
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
         $expressionLanguageResolver = new Resolver('default', [], $request);
-        $this->assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
+        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 
     /**
@@ -160,6 +160,6 @@ class ResolverTest extends UnitTestCase
         GeneralUtility::addInstance(DefaultProvider::class, $contextProphecy->reveal());
         GeneralUtility::addInstance(DefaultFunctionsProvider::class, $expressionProvider->reveal());
         $expressionLanguageResolver = new Resolver('default', [], $request);
-        $this->assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
+        self::assertSame($expectedResult, $expressionLanguageResolver->evaluate($expression));
     }
 }

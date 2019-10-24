@@ -135,7 +135,7 @@ class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 
     /**
@@ -235,6 +235,6 @@ class TcaFlexPrepareTest extends UnitTestCase
             'meta' => [],
         ];
 
-        $this->assertEquals($expected, $this->subject->addData($input));
+        self::assertEquals($expected, $this->subject->addData($input));
     }
 }

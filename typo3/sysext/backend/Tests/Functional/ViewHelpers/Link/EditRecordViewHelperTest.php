@@ -34,8 +34,8 @@ class EditRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Link/EditRecordViewHelper/WithUidAndTable.html');
         $result = urldecode($view->render());
 
-        $this->assertStringContainsString('route=/record/edit', $result);
-        $this->assertStringContainsString('edit[a_table][42]=edit', $result);
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[a_table][42]=edit', $result);
     }
 
     /**
@@ -47,8 +47,8 @@ class EditRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Link/EditRecordViewHelper/InlineWithUidAndTable.html');
         $result = urldecode($view->render());
 
-        $this->assertStringContainsString('route=/record/edit', $result);
-        $this->assertStringContainsString('edit[b_table][21]=edit', $result);
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[b_table][21]=edit', $result);
     }
 
     /**
@@ -60,9 +60,9 @@ class EditRecordViewHelperTest extends FunctionalTestCase
         $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Link/EditRecordViewHelper/WithUidTableAndReturnUrl.html');
         $result = urldecode($view->render());
 
-        $this->assertStringContainsString('route=/record/edit', $result);
-        $this->assertStringContainsString('edit[c_table][43]=edit', $result);
-        $this->assertStringContainsString('returnUrl=foo/bar', $result);
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][43]=edit', $result);
+        self::assertStringContainsString('returnUrl=foo/bar', $result);
     }
 
     /**

@@ -31,6 +31,6 @@ class FlashMessageRendererResolverTest extends UnitTestCase
     public function flashMessageRendererResolverResolveRendererWithoutContext()
     {
         $rendererClass = GeneralUtility::makeInstance(FlashMessageRendererResolver::class)->resolve();
-        $this->assertInstanceOf(FlashMessageRendererInterface::class, $rendererClass);
+        self::assertInstanceOf(FlashMessageRendererInterface::class, $rendererClass);
     }
 }

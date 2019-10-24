@@ -45,7 +45,7 @@ class RelationHandlerTest extends UnitTestCase
             'sys_category' => [1, 2, 3],
         ];
 
-        $this->assertFalse($this->subject->purgeItemArray(0));
+        self::assertFalse($this->subject->purgeItemArray(0));
     }
 
     /**
@@ -59,11 +59,11 @@ class RelationHandlerTest extends UnitTestCase
             'sys_category' => [1, 2, 3],
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('purgeVersionedIds')
             ->with('sys_category', [1, 2, 3])
-            ->will($this->returnValue([2]));
+            ->will(self::returnValue([2]));
 
-        $this->assertTrue($this->subject->purgeItemArray(0));
+        self::assertTrue($this->subject->purgeItemArray(0));
     }
 }

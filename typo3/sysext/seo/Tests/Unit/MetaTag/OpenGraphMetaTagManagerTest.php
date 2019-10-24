@@ -32,7 +32,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
         $manager = new OpenGraphMetaTagManager();
         $handledProperties = $manager->getAllHandledProperties();
 
-        $this->assertNotEmpty($handledProperties);
+        self::assertNotEmpty($handledProperties);
     }
 
     /**
@@ -49,8 +49,8 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
             (array)$property['subProperties']
         );
 
-        $this->assertEquals($expected, $manager->getProperty($property['property']));
-        $this->assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
+        self::assertEquals($expected, $manager->getProperty($property['property']));
+        self::assertEquals($expectedRenderedTag, $manager->renderProperty($property['property']));
     }
 
     /**
@@ -126,7 +126,7 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
             '<meta property="og:image" content="/path/to/image2" />' . PHP_EOL .
             '<meta property="og:title" content="This is the new title" />';
 
-        $this->assertEquals($expected, $manager->renderAllProperties());
+        self::assertEquals($expected, $manager->renderAllProperties());
     }
 
     /**
@@ -136,18 +136,18 @@ class OpenGraphMetaTagManagerTest extends UnitTestCase
     {
         $manager = new OpenGraphMetaTagManager();
         $manager->addProperty('og:title', 'Title');
-        $this->assertEquals([['content' => 'Title', 'subProperties' => []]], $manager->getProperty('og:title'));
+        self::assertEquals([['content' => 'Title', 'subProperties' => []]], $manager->getProperty('og:title'));
 
         $manager->removeProperty('og:title');
-        $this->assertEquals([], $manager->getProperty('og:title'));
+        self::assertEquals([], $manager->getProperty('og:title'));
 
         $manager->addProperty('og:title', 'Title');
         $manager->addProperty('og:description', 'Description');
 
         $manager->removeAllProperties();
 
-        $this->assertEquals([], $manager->getProperty('og:title'));
-        $this->assertEquals([], $manager->getProperty('og:description'));
+        self::assertEquals([], $manager->getProperty('og:title'));
+        self::assertEquals([], $manager->getProperty('og:description'));
     }
 
     /**

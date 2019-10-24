@@ -47,7 +47,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'd';
         $expected = 'dd';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -57,7 +57,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'D';
         $expected = 'D';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -67,7 +67,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'j';
         $expected = 'o';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -77,7 +77,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'l';
         $expected = 'DD';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -87,7 +87,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'F';
         $expected = 'MM';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -97,7 +97,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'm';
         $expected = 'mm';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -107,7 +107,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'M';
         $expected = 'M';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -117,7 +117,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'n';
         $expected = 'm';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -127,7 +127,7 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'Y';
         $expected = 'yy';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 
     /**
@@ -137,6 +137,6 @@ class DatePickerViewHelperTest extends UnitTestCase
     {
         $input = 'y';
         $expected = 'y';
-        $this->assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
+        self::assertSame($expected, $this->subject->_call('convertDateFormatToDatePickerFormat', $input));
     }
 }

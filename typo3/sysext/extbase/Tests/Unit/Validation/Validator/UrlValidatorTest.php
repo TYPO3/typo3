@@ -124,6 +124,6 @@ class UrlValidatorTest extends UnitTestCase
      */
     public function urlValidatorDetectsUrlsCorrectly($value, $expected)
     {
-        $this->assertSame($expected, !$this->validator->validate($value)->hasErrors());
+        self::assertSame($expected, !$this->validator->validate($value)->hasErrors());
     }
 }

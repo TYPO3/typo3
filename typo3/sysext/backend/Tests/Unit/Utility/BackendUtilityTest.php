@@ -136,7 +136,7 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function calcAgeReturnsExpectedValues($seconds, $expectedLabel)
     {
-        $this->assertSame($expectedLabel, BackendUtility::calcAge($seconds));
+        self::assertSame($expectedLabel, BackendUtility::calcAge($seconds));
     }
 
     ///////////////////////////////////////
@@ -160,7 +160,7 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
         $GLOBALS['LANG'] = [];
-        $this->assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
+        self::assertEquals('0', BackendUtility::getProcessedValue('tt_content', 'header', '0'));
     }
 
     /**
@@ -180,7 +180,7 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
         $GLOBALS['LANG'] = [];
-        $this->assertSame('1, 2', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
+        self::assertSame('1, 2', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
     /**
@@ -205,7 +205,7 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
         $GLOBALS['LANG'] = [];
-        $this->assertSame('Page 1, Page 2', ProcessedValueForGroupWithOneAllowedTableFixture::getProcessedValue('tt_content', 'pages', '1,2'));
+        self::assertSame('Page 1, Page 2', ProcessedValueForGroupWithOneAllowedTableFixture::getProcessedValue('tt_content', 'pages', '1,2'));
     }
 
     /**
@@ -228,7 +228,7 @@ class BackendUtilityTest extends UnitTestCase
             ],
         ];
         $GLOBALS['LANG'] = [];
-        $this->assertSame('Page 1, Configuration 2', ProcessedValueForGroupWithMultipleAllowedTablesFixture::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
+        self::assertSame('Page 1, Configuration 2', ProcessedValueForGroupWithMultipleAllowedTablesFixture::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
     }
 
     /**
@@ -341,7 +341,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         $GLOBALS['LANG'] = [];
 
-        $this->assertSame(
+        self::assertSame(
             'Category 1; Category 2',
             ProcessedValueForSelectWithMMRelationFixture::getProcessedValue(
                 'pages',
@@ -379,7 +379,7 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame('28-08-15 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
+        self::assertSame('28-08-15 (-2 days)', BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
     }
 
     /**
@@ -437,7 +437,7 @@ class BackendUtilityTest extends UnitTestCase
                 ],
             ],
         ];
-        $this->assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
+        self::assertSame($expected, BackendUtility::getProcessedValue('tt_content', 'date', mktime(0, 0, 0, 8, 28, 2015)));
     }
 
     /**
@@ -466,7 +466,7 @@ class BackendUtilityTest extends UnitTestCase
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
-        $this->assertSame('Yes', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
+        self::assertSame('Yes', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
     /**
@@ -496,7 +496,7 @@ class BackendUtilityTest extends UnitTestCase
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:yes')->willReturn('Yes');
         $languageServiceProphecy->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:no')->willReturn('No');
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
-        $this->assertSame('No', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
+        self::assertSame('No', BackendUtility::getProcessedValue('tt_content', 'hide', 1));
     }
 
     /**
@@ -617,7 +617,7 @@ class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['TCA'][$table] = $tca;
         $selectFields = BackendUtility::getCommonSelectFields($table, $prefix, $presetFields);
-        $this->assertEquals($selectFields, $expectedFields);
+        self::assertEquals($selectFields, $expectedFields);
     }
 
     /**
@@ -707,7 +707,7 @@ class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
-        $this->assertEquals($label, $expectedLabel);
+        self::assertEquals($label, $expectedLabel);
     }
 
     /**
@@ -780,7 +780,7 @@ class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['TCA'][$table] = $tca;
 
-        $this->assertEquals($expectedLabel, LabelFromItemListMergedReturnsCorrectFieldsFixture::getLabelFromItemListMerged($pageId, $table, $column, $key));
+        self::assertEquals($expectedLabel, LabelFromItemListMergedReturnsCorrectFieldsFixture::getLabelFromItemListMerged($pageId, $table, $column, $key));
     }
 
     /**
@@ -792,7 +792,7 @@ class BackendUtilityTest extends UnitTestCase
      */
     public function getFuncCheckReturnsInputTagWithValueAttribute()
     {
-        $this->assertStringMatchesFormat('<input %Svalue="1"%S/>', BackendUtility::getFuncCheck('params', 'test', true));
+        self::assertStringMatchesFormat('<input %Svalue="1"%S/>', BackendUtility::getFuncCheck('params', 'test', true));
     }
 
     /*
@@ -864,11 +864,11 @@ class BackendUtilityTest extends UnitTestCase
     {
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
+        $GLOBALS['LANG']->expects(self::any())->method('sL')->will(self::returnArgument(0));
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);
-        $this->assertEquals($expectedLabel, $label);
+        self::assertEquals($expectedLabel, $label);
     }
 
     /**
@@ -893,11 +893,11 @@ class BackendUtilityTest extends UnitTestCase
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
+        $GLOBALS['LANG']->expects(self::any())->method('sL')->will(self::returnArgument(0));
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'foo,invalidKey,bar');
-        $this->assertEquals('aFooLabel, aBarLabel', $label);
+        self::assertEquals('aFooLabel, aBarLabel', $label);
     }
 
     /**
@@ -921,11 +921,11 @@ class BackendUtilityTest extends UnitTestCase
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects($this->any())->method('sL')->will($this->returnArgument(0));
+        $GLOBALS['LANG']->expects(self::any())->method('sL')->will(self::returnArgument(0));
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'invalidKey');
-        $this->assertEquals('invalidKey', $label);
+        self::assertEquals('invalidKey', $label);
     }
 
     /**
@@ -944,7 +944,7 @@ class BackendUtilityTest extends UnitTestCase
         $alternativeUrl = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
         $onclickCode = 'var previewWin = window.open(' . GeneralUtility::quoteJSvalue($alternativeUrl) . ',\'newTYPO3frontendWindow\');' . LF
             . 'if (previewWin.location.href === ' . GeneralUtility::quoteJSvalue($alternativeUrl) . ') { previewWin.location.reload(); };';
-        $this->assertStringMatchesFormat(
+        self::assertStringMatchesFormat(
             $onclickCode,
             BackendUtility::viewOnClick(null, null, null, null, $alternativeUrl, null, false)
         );
@@ -961,8 +961,8 @@ class BackendUtilityTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageServiceProphecy->reveal();
         $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 3, 23, 2016);
 
-        $this->assertSame('24-03-16 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
-        $this->assertSame('24-03-16 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
+        self::assertSame('24-03-16 00:00 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400));
+        self::assertSame('24-03-16 (-1 day)', BackendUtility::dateTimeAge($GLOBALS['EXEC_TIME'] + 86400, 1, 'date'));
     }
 
     /**
@@ -1055,7 +1055,7 @@ class BackendUtilityTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(SignalSlotDispatcher::class, $signalSlotDispatcherProphecy->reveal());
 
         $result = BackendUtility::getPagesTSconfig($pageId);
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     /**
@@ -1066,7 +1066,7 @@ class BackendUtilityTest extends UnitTestCase
         $tableName = 'table_a';
         $fieldName = 'field_a';
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [];
-        $this->assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
     }
 
     /**
@@ -1084,7 +1084,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         $reference = $rr;
         BackendUtility::fixVersioningPid($tableName, $rr);
-        $this->assertSame($reference, $rr);
+        self::assertSame($reference, $rr);
     }
 
     /**
@@ -1096,7 +1096,7 @@ class BackendUtilityTest extends UnitTestCase
         $tableName = 'table_a';
         $fieldName = 'field_a';
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = $config;
-        $this->assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
     }
 
     public function unfitResolveFileReferencesTableConfig(): array
@@ -1148,7 +1148,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         $reference = $row;
         BackendUtility::workspaceOL($tableName, $row);
-        $this->assertSame($reference, $row);
+        self::assertSame($reference, $row);
     }
 
     /**
@@ -1159,7 +1159,7 @@ class BackendUtilityTest extends UnitTestCase
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';
         $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
-        $this->assertSame('', BackendUtility::versioningPlaceholderClause($tableName));
+        self::assertSame('', BackendUtility::versioningPlaceholderClause($tableName));
     }
 
     /**
@@ -1190,7 +1190,7 @@ class BackendUtilityTest extends UnitTestCase
             'uid' => 42,
         ];
 
-        $this->assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
+        self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
     }
 
     /**
@@ -1201,7 +1201,7 @@ class BackendUtilityTest extends UnitTestCase
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';
         $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] = 'not_empty';
-        $this->assertSame('', BackendUtility::getWorkspaceWhereClause($tableName));
+        self::assertSame('', BackendUtility::getWorkspaceWhereClause($tableName));
     }
 
     /**
@@ -1212,7 +1212,7 @@ class BackendUtilityTest extends UnitTestCase
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';
         $uid = 42;
-        $this->assertSame(42, BackendUtility::wsMapId($tableName, $uid));
+        self::assertSame(42, BackendUtility::wsMapId($tableName, $uid));
     }
 
     /**
@@ -1222,6 +1222,6 @@ class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['BE_USER'] = null;
         $tableName = 'table_a';
-        $this->assertFalse(BackendUtility::getMovePlaceholder($tableName, 42));
+        self::assertFalse(BackendUtility::getMovePlaceholder($tableName, 42));
     }
 }

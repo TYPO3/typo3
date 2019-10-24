@@ -33,7 +33,7 @@ class AbstractEntityTest extends UnitTestCase
         };
         $domainObject->_memorizeCleanState();
 
-        $this->assertFalse($domainObject->_isDirty());
+        self::assertFalse($domainObject->_isDirty());
     }
 
     /**
@@ -48,7 +48,7 @@ class AbstractEntityTest extends UnitTestCase
         $domainObject->_memorizeCleanState();
         $domainObject->bar = 'Now it is sunny.';
 
-        $this->assertTrue($domainObject->_isDirty());
+        self::assertTrue($domainObject->_isDirty());
     }
 
     /**
@@ -63,7 +63,7 @@ class AbstractEntityTest extends UnitTestCase
         $domainObject->foo = new \DateTime();
         $domainObject->_memorizeCleanState();
 
-        $this->assertFalse($domainObject->_isDirty());
+        self::assertFalse($domainObject->_isDirty());
     }
 
     /**
@@ -86,6 +86,6 @@ class AbstractEntityTest extends UnitTestCase
         $domainObject->bar = 'It is raining outside';
         $domainObject->_memorizeCleanState();
 
-        $this->assertFalse($domainObject->_isDirty());
+        self::assertFalse($domainObject->_isDirty());
     }
 }

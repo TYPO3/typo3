@@ -35,7 +35,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth);
 
-        static::assertSame($id, $treeList);
+        self::assertSame($id, $treeList);
     }
 
     /**
@@ -49,7 +49,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth);
 
-        static::assertSame($id, $treeList);
+        self::assertSame($id, $treeList);
     }
 
     /**
@@ -63,7 +63,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth);
 
-        static::assertSame(1, $treeList);
+        self::assertSame(1, $treeList);
     }
 
     /**
@@ -78,7 +78,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth, $begin);
 
-        static::assertSame('', $treeList);
+        self::assertSame('', $treeList);
     }
 
     /**
@@ -92,7 +92,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth);
 
-        static::assertSame($id, $treeList);
+        self::assertSame($id, $treeList);
     }
 
     /**
@@ -108,7 +108,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth, 0, 'hidden = 0');
 
-        static::assertSame('1,2,3,4,5', $treeList);
+        self::assertSame('1,2,3,4,5', $treeList);
     }
 
     /**
@@ -125,7 +125,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth);
 
-        static::assertSame($expectation, $treeList);
+        self::assertSame($expectation, $treeList);
     }
 
     /**
@@ -172,7 +172,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth, -1);
 
-        static::assertSame($expectation, $treeList);
+        self::assertSame($expectation, $treeList);
     }
 
     /**
@@ -218,7 +218,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth);
 
-        static::assertSame('1,2,3,4,5', $treeList);
+        self::assertSame('1,2,3,4,5', $treeList);
     }
 
     /**
@@ -235,7 +235,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth, $begin);
 
-        static::assertSame('2,3,4,5', $treeList);
+        self::assertSame('2,3,4,5', $treeList);
     }
 
     /**
@@ -252,7 +252,7 @@ class QueryGeneratorTest extends FunctionalTestCase
         $queryGenerator = new QueryGenerator();
         $treeList = $queryGenerator->getTreeList($id, $depth, $begin);
 
-        static::assertSame('3,5', $treeList);
+        self::assertSame('3,5', $treeList);
     }
 
     public function getQueryWithIdOrDateDataProvider(): array
@@ -324,6 +324,6 @@ class QueryGeneratorTest extends FunctionalTestCase
         ];
 
         $queryGenerator->init('queryConfig', 'aTable');
-        $this->assertSame($expected, trim($queryGenerator->getQuery($inputConf), "\n\r"));
+        self::assertSame($expected, trim($queryGenerator->getQuery($inputConf), "\n\r"));
     }
 }

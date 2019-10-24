@@ -48,11 +48,11 @@ class RepositoryRepositoryTest extends UnitTestCase
     public function findOneTypo3OrgRepositoryReturnsNullIfNoRepositoryWithThisTitleExists()
     {
         $this->subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findAll')
-            ->will($this->returnValue([]));
+            ->will(self::returnValue([]));
 
-        $this->assertNull($this->subject->findOneTypo3OrgRepository());
+        self::assertNull($this->subject->findOneTypo3OrgRepository());
     }
 
     /**
@@ -62,20 +62,20 @@ class RepositoryRepositoryTest extends UnitTestCase
     {
         $mockModelOne = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class)->getMock();
         $mockModelOne
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTitle')
-            ->will($this->returnValue('foo'));
+            ->will(self::returnValue('foo'));
         $mockModelTwo = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class)->getMock();
         $mockModelTwo
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getTitle')
-            ->will($this->returnValue('TYPO3.org Main Repository'));
+            ->will(self::returnValue('TYPO3.org Main Repository'));
 
         $this->subject
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('findAll')
-            ->will($this->returnValue([$mockModelOne, $mockModelTwo]));
+            ->will(self::returnValue([$mockModelOne, $mockModelTwo]));
 
-        $this->assertSame($mockModelTwo, $this->subject->findOneTypo3OrgRepository());
+        self::assertSame($mockModelTwo, $this->subject->findOneTypo3OrgRepository());
     }
 }

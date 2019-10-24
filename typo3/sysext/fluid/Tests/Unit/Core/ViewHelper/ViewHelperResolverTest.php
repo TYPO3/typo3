@@ -37,7 +37,7 @@ class ViewHelperResolverTest extends UnitTestCase
         $objectManager = $this->prophesize(ObjectManager::class);
         $objectManager->get('x')->willReturn(new \stdClass());
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
-        $this->assertInstanceOf(\stdClass::class, (new ViewHelperResolver())->createViewHelperInstanceFromClassName('x'));
+        self::assertInstanceOf(\stdClass::class, (new ViewHelperResolver())->createViewHelperInstanceFromClassName('x'));
     }
 
     /**
@@ -50,7 +50,7 @@ class ViewHelperResolverTest extends UnitTestCase
     public function resolveViewHelperClassNameResolvesExpectedViewHelperClassName($namespace, $method, $expected)
     {
         $viewHelperResolver = new ViewHelperResolver();
-        $this->assertEquals($expected, $viewHelperResolver->resolveViewHelperClassName($namespace, $method));
+        self::assertEquals($expected, $viewHelperResolver->resolveViewHelperClassName($namespace, $method));
     }
 
     /**

@@ -29,11 +29,11 @@ class UserAspectTest extends UnitTestCase
     public function getterReturnsProperDefaultValues()
     {
         $subject = new UserAspect(null, null);
-        $this->assertEquals(0, $subject->get('id'));
-        $this->assertEquals('', $subject->get('username'));
-        $this->assertFalse($subject->get('isLoggedIn'));
-        $this->assertEquals([], $subject->get('groupIds'));
-        $this->assertEquals([], $subject->get('groupNames'));
+        self::assertEquals(0, $subject->get('id'));
+        self::assertEquals('', $subject->get('username'));
+        self::assertFalse($subject->get('isLoggedIn'));
+        self::assertEquals([], $subject->get('groupIds'));
+        self::assertEquals([], $subject->get('groupNames'));
     }
 
     /**
@@ -46,7 +46,7 @@ class UserAspectTest extends UnitTestCase
             'uid' => 13
         ];
         $subject = new UserAspect($user);
-        $this->assertEquals(13, $subject->get('id'));
+        self::assertEquals(13, $subject->get('id'));
     }
 
     /**
@@ -60,7 +60,7 @@ class UserAspectTest extends UnitTestCase
             'username' => 'Teddy'
         ];
         $subject = new UserAspect($user);
-        $this->assertEquals('Teddy', $subject->get('username'));
+        self::assertEquals('Teddy', $subject->get('username'));
     }
 
     /**
@@ -73,7 +73,7 @@ class UserAspectTest extends UnitTestCase
             'uid' => 13
         ];
         $subject = new UserAspect($user);
-        $this->assertFalse($subject->isLoggedIn());
+        self::assertFalse($subject->isLoggedIn());
     }
 
     /**
@@ -87,7 +87,7 @@ class UserAspectTest extends UnitTestCase
         ];
         $user->groupData['uid'] = [1, 5, 7];
         $subject = new UserAspect($user);
-        $this->assertTrue($subject->isLoggedIn());
+        self::assertTrue($subject->isLoggedIn());
     }
 
     /**
@@ -100,7 +100,7 @@ class UserAspectTest extends UnitTestCase
             'uid' => 13
         ];
         $subject = new UserAspect($user);
-        $this->assertTrue($subject->isLoggedIn());
+        self::assertTrue($subject->isLoggedIn());
     }
 
     /**
@@ -114,7 +114,7 @@ class UserAspectTest extends UnitTestCase
         ];
         $user->groupData['uid'] = [23, 54];
         $subject = new UserAspect($user);
-        $this->assertEquals([0, -2, 23, 54], $subject->getGroupIds());
+        self::assertEquals([0, -2, 23, 54], $subject->getGroupIds());
     }
 
     /**
@@ -126,7 +126,7 @@ class UserAspectTest extends UnitTestCase
         // Not used, because overridden with 33
         $user->groupData['uid'] = [23, 54];
         $subject = new UserAspect($user, [33]);
-        $this->assertEquals([33], $subject->getGroupIds());
+        self::assertEquals([33], $subject->getGroupIds());
     }
 
     public function isUserOrGroupSetDataProvider()
@@ -193,7 +193,7 @@ class UserAspectTest extends UnitTestCase
         }
         $user->groupData['uid'] = $userGroups;
         $subject = new UserAspect($user, $overriddenGroups);
-        $this->assertEquals($expectedResult, $subject->isUserOrGroupSet());
+        self::assertEquals($expectedResult, $subject->isUserOrGroupSet());
     }
 
     /**

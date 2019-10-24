@@ -129,13 +129,13 @@ class SiteResolverTest extends UnitTestCase
         $response = $subject->process($request, $this->siteFoundRequestHandler);
 
         if ($response instanceof NullResponse) {
-            $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
+            self::fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
             $result = $response->getBody()->getContents();
             $result = json_decode($result, true);
-            $this->assertEquals($siteIdentifier, $result['site']);
-            $this->assertEquals(0, $result['language-id']);
-            $this->assertEquals('/mysite/', $result['language-base']);
+            self::assertEquals($siteIdentifier, $result['site']);
+            self::assertEquals(0, $result['language-id']);
+            self::assertEquals('/mysite/', $result['language-base']);
         }
     }
 
@@ -181,13 +181,13 @@ class SiteResolverTest extends UnitTestCase
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         if ($response instanceof NullResponse) {
-            $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
+            self::fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
             $result = $response->getBody()->getContents();
             $result = json_decode($result, true);
-            $this->assertEquals('sub-site', $result['site']);
-            $this->assertEquals(0, $result['language-id']);
-            $this->assertEquals('/mysubsite/', $result['language-base']);
+            self::assertEquals('sub-site', $result['site']);
+            self::assertEquals(0, $result['language-id']);
+            self::assertEquals('/mysubsite/', $result['language-base']);
         }
     }
 
@@ -272,13 +272,13 @@ class SiteResolverTest extends UnitTestCase
         $response = $subject->process($request, $this->siteFoundRequestHandler);
 
         if ($response instanceof NullResponse) {
-            $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
+            self::fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
             $result = $response->getBody()->getContents();
             $result = json_decode($result, true);
-            $this->assertEquals($expectedSiteIdentifier, $result['site']);
-            $this->assertEquals($expectedRootPageId, $result['rootpage']);
-            $this->assertEquals($expectedBase, $result['language-base']);
+            self::assertEquals($expectedSiteIdentifier, $result['site']);
+            self::assertEquals($expectedRootPageId, $result['rootpage']);
+            self::assertEquals($expectedBase, $result['language-base']);
         }
     }
 
@@ -382,14 +382,14 @@ class SiteResolverTest extends UnitTestCase
         $response = $subject->process($request, $this->siteFoundRequestHandler);
 
         if ($response instanceof NullResponse) {
-            $this->fail('No site configuration found in URL ' . $incomingUrl . '.');
+            self::fail('No site configuration found in URL ' . $incomingUrl . '.');
         } else {
             $result = $response->getBody()->getContents();
             $result = json_decode($result, true);
-            $this->assertEquals($expectedSiteIdentifier, $result['site']);
-            $this->assertEquals($expectedRootPageId, $result['rootpage']);
-            $this->assertEquals($expectedLanguageId, $result['language-id']);
-            $this->assertEquals($expectedBase, $result['language-base']);
+            self::assertEquals($expectedSiteIdentifier, $result['site']);
+            self::assertEquals($expectedRootPageId, $result['rootpage']);
+            self::assertEquals($expectedLanguageId, $result['language-id']);
+            self::assertEquals($expectedBase, $result['language-base']);
         }
     }
 }

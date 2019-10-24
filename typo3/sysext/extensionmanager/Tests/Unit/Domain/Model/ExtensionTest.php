@@ -85,6 +85,6 @@ class ExtensionTest extends UnitTestCase
     public function getCategoryIndexFromStringOrNumberReturnsIndex($input, $expected)
     {
         $extension = new \TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-        $this->assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
+        self::assertEquals($expected, $extension->getCategoryIndexFromStringOrNumber($input));
     }
 }

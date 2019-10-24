@@ -178,14 +178,14 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
 
         $responseSections = $responseStructure->getSections();
         $visibleHeaders = ['Regular Element #1', 'Regular Element #2', 'Regular Element #3'];
-        $this->assertThat(
+        self::assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
-        $this->assertThat(
+        self::assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
@@ -195,30 +195,30 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
 
         //assert FAL relations
         $visibleFiles = ['T3BOARD'];
-        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':297')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         $visibleFiles = ['Kasper2'];
-        $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFiles));
 
-        $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+        self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':298')->setRecordField('image')
             ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFiles)));
 
         // Assert language settings and page record title
-        $this->assertEquals('Default language Page', $responseStructure->getScopePath('page/title'));
-        $this->assertEquals(0, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
-        $this->assertEquals(0, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
-        $this->assertEquals('strict', $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
-        $this->assertEquals('pageNotFound', $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
-        $this->assertEquals('includeFloating', $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
+        self::assertEquals('Default language Page', $responseStructure->getScopePath('page/title'));
+        self::assertEquals(0, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
+        self::assertEquals(0, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
+        self::assertEquals('strict', $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
+        self::assertEquals('pageNotFound', $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
+        self::assertEquals('includeFloating', $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
     }
 
     /**
@@ -342,14 +342,14 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
             return $element['header'];
         }, $visibleRecords);
 
-        $this->assertThat(
+        self::assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
-        $this->assertThat(
+        self::assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
@@ -360,21 +360,21 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
         foreach ($visibleRecords as $ttContentUid => $properties) {
             $visibleFileTitles = $properties['image'];
             if (!empty($visibleFileTitles)) {
-                $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
             }
-            $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+            self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
                 ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                 ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
         }
 
-        $this->assertEquals('[DK]Page', $responseStructure->getScopePath('page/title'));
-        $this->assertEquals(1, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
-        $this->assertEquals(1, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
-        $this->assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
-        $this->assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
-        $this->assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
+        self::assertEquals('[DK]Page', $responseStructure->getScopePath('page/title'));
+        self::assertEquals(1, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
+        self::assertEquals(1, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
+        self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
+        self::assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
+        self::assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
     }
 
     public function contentOnNonTranslatedPageDataProvider(): array
@@ -684,14 +684,14 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
             $responseStructure = ResponseContent::fromString((string)$response->getBody());
             $responseSections = $responseStructure->getSections();
 
-            $this->assertThat(
+            self::assertThat(
                 $responseSections,
                 $this->getRequestSectionHasRecordConstraint()
                 ->setTable(self::TABLE_Content)
                 ->setField('header')
                 ->setValues(...$visibleHeaders)
             );
-            $this->assertThat(
+            self::assertThat(
                 $responseSections,
                 $this->getRequestSectionDoesNotHaveRecordConstraint()
                 ->setTable(self::TABLE_Content)
@@ -702,23 +702,23 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
             foreach ($visibleRecords as $ttContentUid => $properties) {
                 $visibleFileTitles = $properties['image'];
                 if (!empty($visibleFileTitles)) {
-                    $this->assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
+                    self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
                         ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                         ->setTable('sys_file_reference')->setField('title')->setValues(...$visibleFileTitles));
                 }
-                $this->assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
+                self::assertThat($responseSections, $this->getRequestSectionStructureDoesNotHaveRecordConstraint()
                     ->setRecordIdentifier(self::TABLE_Content . ':' . $ttContentUid)->setRecordField('image')
                     ->setTable('sys_file_reference')->setField('title')->setValues(...$this->getNonVisibleFileTitles($visibleFileTitles)));
             }
 
-            $this->assertEquals($pageTitle, $responseStructure->getScopePath('page/title'));
-            $this->assertEquals($languageId, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
-            $this->assertEquals($contentLanguageId, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
-            $this->assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
-            $this->assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
-            $this->assertEquals($overlayMode, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
+            self::assertEquals($pageTitle, $responseStructure->getScopePath('page/title'));
+            self::assertEquals($languageId, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
+            self::assertEquals($contentLanguageId, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
+            self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
+            self::assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
+            self::assertEquals($overlayMode, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
         }
-        $this->assertEquals($statusCode, $response->getStatusCode());
+        self::assertEquals($statusCode, $response->getStatusCode());
     }
 
     public function contentOnPartiallyTranslatedPageDataProvider(): array
@@ -860,16 +860,16 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
         $responseStructure = ResponseContent::fromString((string)$response->getBody());
         $responseSections = $responseStructure->getSections();
 
-        $this->assertEquals(200, $response->getStatusCode());
+        self::assertEquals(200, $response->getStatusCode());
 
-        $this->assertThat(
+        self::assertThat(
             $responseSections,
             $this->getRequestSectionHasRecordConstraint()
             ->setTable(self::TABLE_Content)
             ->setField('header')
             ->setValues(...$visibleHeaders)
         );
-        $this->assertThat(
+        self::assertThat(
             $responseSections,
             $this->getRequestSectionDoesNotHaveRecordConstraint()
             ->setTable(self::TABLE_Content)
@@ -877,12 +877,12 @@ class LocalizedSiteContentRenderingTest extends \TYPO3\CMS\Core\Tests\Functional
             ->setValues(...$this->getNonVisibleHeaders($visibleHeaders))
         );
 
-        $this->assertEquals('[PL]Page', $responseStructure->getScopePath('page/title'));
-        $this->assertEquals(3, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
-        $this->assertEquals(3, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
-        $this->assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
-        $this->assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
-        $this->assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
+        self::assertEquals('[PL]Page', $responseStructure->getScopePath('page/title'));
+        self::assertEquals(3, $responseStructure->getScopePath('languageInfo/id'), 'languageId does not match');
+        self::assertEquals(3, $responseStructure->getScopePath('languageInfo/contentId'), 'contentId does not match');
+        self::assertEquals($fallbackType, $responseStructure->getScopePath('languageInfo/fallbackType'), 'fallbackType does not match');
+        self::assertEquals($fallbackChain, $responseStructure->getScopePath('languageInfo/fallbackChain'), 'fallbackChain does not match');
+        self::assertEquals($overlayType, $responseStructure->getScopePath('languageInfo/overlayType'), 'language overlayType does not match');
     }
 
     /**

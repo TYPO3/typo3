@@ -80,25 +80,25 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['isPackageActive', 'getPackage', 'getActivePackages'])
             ->disableOriginalConstructor()
             ->getMock();
-        $package->expects($this->any())
+        $package->expects(self::any())
                 ->method('getPackagePath')
-                ->will($this->returnValue($packagePath));
-        $package->expects($this->any())
+                ->will(self::returnValue($packagePath));
+        $package->expects(self::any())
                 ->method('getPackageKey')
-                ->will($this->returnValue($packageKey));
-        $packageManager->expects($this->any())
+                ->will(self::returnValue($packageKey));
+        $packageManager->expects(self::any())
                 ->method('isPackageActive')
-                ->will($this->returnValueMap([
+                ->will(self::returnValueMap([
                     [null, false],
                     [$packageKey, true]
                 ]));
-        $packageManager->expects($this->any())
+        $packageManager->expects(self::any())
                 ->method('getPackage')
-                ->with($this->equalTo($packageKey))
-                ->will($this->returnValue($package));
-        $packageManager->expects($this->any())
+                ->with(self::equalTo($packageKey))
+                ->will(self::returnValue($package));
+        $packageManager->expects(self::any())
                 ->method('getActivePackages')
-                ->will($this->returnValue([$packageKey => $package]));
+                ->will(self::returnValue([$packageKey => $package]));
         return $packageManager;
     }
 
@@ -110,7 +110,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function isLoadedReturnsFalseIfExtensionIsNotLoaded()
     {
-        $this->assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar')));
+        self::assertFalse(ExtensionManagementUtility::isLoaded($this->getUniqueId('foobar')));
     }
 
     ///////////////////////////////
@@ -130,10 +130,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
-        $packageManager->expects($this->once())
+        $packageManager->expects(self::once())
                 ->method('isPackageActive')
-                ->with($this->equalTo($packageName))
-                ->will($this->returnValue(false));
+                ->with(self::equalTo($packageName))
+                ->will(self::returnValue(false));
         ExtensionManagementUtility::setPackageManager($packageManager);
         ExtensionManagementUtility::extPath($packageName);
     }
@@ -152,19 +152,19 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $package->expects($this->once())
+        $package->expects(self::once())
                 ->method('getPackagePath')
-                ->will($this->returnValue(Environment::getPublicPath() . '/foo/'));
-        $packageManager->expects($this->once())
+                ->will(self::returnValue(Environment::getPublicPath() . '/foo/'));
+        $packageManager->expects(self::once())
                 ->method('isPackageActive')
-                ->with($this->equalTo('foo'))
-                ->will($this->returnValue(true));
-        $packageManager->expects($this->once())
+                ->with(self::equalTo('foo'))
+                ->will(self::returnValue(true));
+        $packageManager->expects(self::once())
                 ->method('getPackage')
                 ->with('foo')
-                ->will($this->returnValue($package));
+                ->will(self::returnValue($package));
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->assertSame(Environment::getPublicPath() . '/foo/bar.txt', ExtensionManagementUtility::extPath('foo', 'bar.txt'));
+        self::assertSame(Environment::getPublicPath() . '/foo/bar.txt', ExtensionManagementUtility::extPath('foo', 'bar.txt'));
     }
 
     //////////////////////
@@ -233,7 +233,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
      */
     public function getClassNamePrefixForExtensionKey($extensionName, $expectedPrefix)
     {
-        $this->assertSame($expectedPrefix, ExtensionManagementUtility::getCN($extensionName));
+        self::assertSame($expectedPrefix, ExtensionManagementUtility::getCN($extensionName));
     }
 
     //////////////////////////////////////
@@ -251,9 +251,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'before:fieldD');
         // Checking typeA:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
         // Checking typeB:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
     }
 
     /**
@@ -268,9 +268,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldC');
         // Checking typeA:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
         // Checking typeB:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
     }
 
     /**
@@ -286,7 +286,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'][$table]['types']['typeD'] = ['showitem' => 'fieldY, --palette--;;standard, fieldZ'];
         ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:--palette--;;standard');
         // Checking typeD:
-        $this->assertEquals('fieldY, --palette--;;standard, newA, newB, fieldA, fieldZ', $GLOBALS['TCA'][$table]['types']['typeD']['showitem']);
+        self::assertEquals('fieldY, --palette--;;standard, newA, newB, fieldA, fieldZ', $GLOBALS['TCA'][$table]['types']['typeD']['showitem']);
     }
 
     /**
@@ -301,7 +301,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', '', 'after:fieldX1');
         // Checking typeA:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, newA, newB, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, newA, newB, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
     }
 
     /**
@@ -316,9 +316,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'before:fieldD');
         // Checking typeA:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, newA, newB, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
         // Checking typeB:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
     }
 
     /**
@@ -333,9 +333,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addToAllTCAtypes($table, 'newA, newA, newB, fieldA', 'typeA', 'after:fieldC');
         // Checking typeA:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, newA, newB, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
         // Checking typeB:
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1', $GLOBALS['TCA'][$table]['types']['typeB']['showitem']);
     }
 
     /**
@@ -347,7 +347,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addToAllTCAtypes($table, 'field', 'typeA', 'after:fieldD1');
 
-        $this->assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1, field', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
+        self::assertEquals('fieldA, fieldB, fieldC;labelC, --palette--;;paletteC, fieldC1, fieldD, fieldD1, field', $GLOBALS['TCA'][$table]['types']['typeA']['showitem']);
     }
 
     /**
@@ -362,13 +362,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         $typesBefore = $GLOBALS['TCA'][$table]['types'];
         ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldZ', '', 'replace:fieldX');
-        $this->assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
+        self::assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
         // unchanged because the palette is not used
-        $this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-        $this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
+        self::assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+        self::assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
         // changed
-        $this->assertEquals('fieldZ, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-        $this->assertEquals('fieldZ, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+        self::assertEquals('fieldZ, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
+        self::assertEquals('fieldZ, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
     }
 
     /**
@@ -380,13 +380,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         $typesBefore = $GLOBALS['TCA'][$table]['types'];
         ExtensionManagementUtility::addToAllTCAtypes($table, 'fieldX, --palette--;;foo', '', 'replace:fieldX');
-        $this->assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
+        self::assertEquals($typesBefore, $GLOBALS['TCA'][$table]['types'], 'It\'s wrong that the "types" array changes here - the replaced field is only on palettes');
         // unchanged because the palette is not used
-        $this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
-        $this->assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
+        self::assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+        self::assertEquals('fieldX, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteB']['showitem']);
         // changed
-        $this->assertEquals('fieldX, --palette--;;foo, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
-        $this->assertEquals('fieldX, --palette--;;foo, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
+        self::assertEquals('fieldX, --palette--;;foo, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteC']['showitem']);
+        self::assertEquals('fieldX, --palette--;;foo, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteD']['showitem']);
     }
 
     /**
@@ -400,7 +400,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'before:fieldY');
-        $this->assertEquals('fieldX, fieldX1, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+        self::assertEquals('fieldX, fieldX1, newA, newB, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
     }
 
     /**
@@ -414,7 +414,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:fieldX');
-        $this->assertEquals('fieldX, newA, newB, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+        self::assertEquals('fieldX, newA, newB, fieldX1, fieldY', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
     }
 
     /**
@@ -428,7 +428,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $table = $this->getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'] = $this->generateTCAForTable($table);
         ExtensionManagementUtility::addFieldsToPalette($table, 'paletteA', 'newA, newA, newB, fieldX', 'after:' . $this->getUniqueId('notExisting'));
-        $this->assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
+        self::assertEquals('fieldX, fieldX1, fieldY, newA, newB', $GLOBALS['TCA'][$table]['palettes']['paletteA']['showitem']);
     }
 
     /**
@@ -465,7 +465,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     public function removeDuplicatesForInsertionRemovesDuplicates($insertionList, $list, $expected)
     {
         $result = ExtensionManagementUtilityAccessibleProxy::removeDuplicatesForInsertion($insertionList, $list);
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     ///////////////////////////////////////////////////
@@ -497,7 +497,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'newA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -544,7 +544,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'dupeA, dupeA' // Duplicate
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -591,7 +591,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'existingA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -650,7 +650,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'newA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -697,7 +697,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'newA, newB'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -745,7 +745,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'newA',
             'before:existingB'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -793,7 +793,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'newA, newB',
             'before:notExisting'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -841,7 +841,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'newA',
             'after:existingA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -889,7 +889,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'newA, newB',
             'after:notExistingA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -931,7 +931,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'newA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     /**
@@ -973,7 +973,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             'fieldA',
             'newA'
         );
-        $this->assertEquals($expected, $GLOBALS['TCA']);
+        self::assertEquals($expected, $GLOBALS['TCA']);
     }
 
     ///////////////////////////////////////////////////
@@ -1024,7 +1024,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $extensionManagementUtility = $this->getAccessibleMock(ExtensionManagementUtility::class, ['dummy']);
         $string = $extensionManagementUtility->_call('executePositionedStringInsertion', $string, '');
-        $this->assertEquals($expectedResult, $string);
+        self::assertEquals($expectedResult, $string);
     }
 
     /////////////////////////////////////////
@@ -1184,7 +1184,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ]
         ];
         ExtensionManagementUtility::addTcaSelectItem('testTable', 'testField', ['insertedElement'], $relativeToField, $relativePosition);
-        $this->assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
+        self::assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
     }
 
     /////////////////////////////////////////
@@ -1199,7 +1199,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->never())->method('getCache');
+        $mockCacheManager->expects(self::never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $packageManager = $this->createMockPackageManagerWithMockPackage($this->getUniqueId());
         ExtensionManagementUtility::setPackageManager($packageManager);
@@ -1220,10 +1220,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->any())->method('has')->will($this->returnValue(true));
-        $mockCache->expects($this->once())->method('require');
+        $mockCache->expects(self::any())->method('has')->will(self::returnValue(true));
+        $mockCache->expects(self::once())->method('require');
         ExtensionManagementUtility::loadExtLocalconf(true);
     }
 
@@ -1317,8 +1317,8 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
         ExtensionManagementUtility::addModule($mainModule, $subModule, $position);
 
-        $this->assertTrue(isset($GLOBALS['TBE_MODULES'][$mainModule]));
-        $this->assertEquals($expected, $GLOBALS['TBE_MODULES'][$mainModule]);
+        self::assertTrue(isset($GLOBALS['TBE_MODULES'][$mainModule]));
+        self::assertEquals($expected, $GLOBALS['TBE_MODULES'][$mainModule]);
     }
 
     /////////////////////////////////////////
@@ -1340,7 +1340,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInLocalconf), $this->anything());
+        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInLocalconf), self::anything());
         ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
     }
 
@@ -1357,9 +1357,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockCache->expects($this->once())
+        $mockCache->expects(self::once())
             ->method('set')
-            ->with($this->anything(), $this->logicalNot($this->stringContains($extensionName)), $this->anything());
+            ->with(self::anything(), self::logicalNot(self::stringContains($extensionName)), self::anything());
         ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
     }
 
@@ -1372,7 +1372,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['getIdentifier', 'set', 'get', 'has', 'remove', 'flush', 'flushByTag', 'require'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
+        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
         $packageManager = $this->createMockPackageManagerWithMockPackage($this->getUniqueId());
         ExtensionManagementUtility::setPackageManager($packageManager);
         ExtensionManagementUtilityAccessibleProxy::createExtLocalconfCacheEntry($mockCache);
@@ -1388,9 +1388,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $prefix = 'ext_localconf_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getExtLocalconfCacheIdentifier();
-        $this->assertStringStartsWith($prefix, $identifier);
+        self::assertStringStartsWith($prefix, $identifier);
         $sha1 = str_replace($prefix, '', $identifier);
-        $this->assertEquals(40, strlen($sha1));
+        self::assertEquals(40, strlen($sha1));
     }
 
     /////////////////////////////////////////
@@ -1406,7 +1406,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->never())->method('getCache');
+        $mockCacheManager->expects(self::never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca(false);
     }
@@ -1421,7 +1421,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockCache->expects($this->once())->method('require')->willReturn(['tca' => [], 'categoryRegistry' => \serialize(CategoryRegistry::getInstance())]);
+        $mockCache->expects(self::once())->method('require')->willReturn(['tca' => [], 'categoryRegistry' => \serialize(CategoryRegistry::getInstance())]);
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca(true, $mockCache);
     }
 
@@ -1450,13 +1450,13 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('require')->will($this->returnValue(false));
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInTableConfiguration), $this->anything());
+        $mockCache->expects(self::once())->method('require')->will(self::returnValue(false));
+        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTableConfiguration), self::anything());
 
         $mockSignalSlotDispatcher = $this->createMock(SignalSlotDispatcher::class);
-        $mockSignalSlotDispatcher->expects($this->once())->method('dispatch')->with($this->anything(), $this->anything(), $this->isType('array'))->will($this->returnArgument(2));
+        $mockSignalSlotDispatcher->expects(self::once())->method('dispatch')->with(self::anything(), self::anything(), self::isType('array'))->will(self::returnArgument(2));
         ExtensionManagementUtilityAccessibleProxy::setSignalSlotDispatcher($mockSignalSlotDispatcher);
 
         ExtensionManagementUtility::loadBaseTca(true);
@@ -1476,10 +1476,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('require')->will($this->returnValue(false));
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
+        $mockCache->expects(self::once())->method('require')->will(self::returnValue(false));
+        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
         ExtensionManagementUtilityAccessibleProxy::loadBaseTca();
     }
 
@@ -1494,9 +1494,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $prefix = 'tca_base_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getBaseTcaCacheIdentifier();
-        $this->assertStringStartsWith($prefix, $identifier);
+        self::assertStringStartsWith($prefix, $identifier);
         $sha1 = str_replace($prefix, '', $identifier);
-        $this->assertEquals(40, strlen($sha1));
+        self::assertEquals(40, strlen($sha1));
     }
 
     /////////////////////////////////////////
@@ -1511,7 +1511,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->never())->method('getCache');
+        $mockCacheManager->expects(self::never())->method('getCache');
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
         $packageManager = $this->createMockPackageManagerWithMockPackage($this->getUniqueId());
         ExtensionManagementUtility::setPackageManager($packageManager);
@@ -1532,10 +1532,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->any())->method('has')->will($this->returnValue(true));
-        $mockCache->expects($this->once())->method('require');
+        $mockCache->expects(self::any())->method('has')->will(self::returnValue(true));
+        $mockCache->expects(self::once())->method('require');
         // Reset the internal cache access tracking variable of extMgm
         // This method is only in the ProxyClass!
         ExtensionManagementUtilityAccessibleProxy::resetExtTablesWasReadFromCacheOnceBoolean();
@@ -1566,9 +1566,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($uniqueStringInTables), $this->anything());
+        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTables), self::anything());
         ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
     }
 
@@ -1589,11 +1589,11 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())
+        $mockCache->expects(self::once())
             ->method('set')
-            ->with($this->anything(), $this->logicalNot($this->stringContains($extensionName)), $this->anything());
+            ->with(self::anything(), self::logicalNot(self::stringContains($extensionName)), self::anything());
         ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
     }
 
@@ -1611,9 +1611,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->setMethods(['getCache'])
             ->getMock();
-        $mockCacheManager->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+        $mockCacheManager->expects(self::any())->method('getCache')->will(self::returnValue($mockCache));
         ExtensionManagementUtilityAccessibleProxy::setCacheManager($mockCacheManager);
-        $mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), $this->equalTo([]));
+        $mockCache->expects(self::once())->method('set')->with(self::anything(), self::anything(), self::equalTo([]));
         $packageManager = $this->createMockPackageManagerWithMockPackage($this->getUniqueId());
         ExtensionManagementUtility::setPackageManager($packageManager);
         ExtensionManagementUtilityAccessibleProxy::createExtTablesCacheEntry();
@@ -1629,9 +1629,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $prefix = 'ext_tables_';
         $identifier = ExtensionManagementUtilityAccessibleProxy::getExtTablesCacheIdentifier();
-        $this->assertStringStartsWith($prefix, $identifier);
+        self::assertStringStartsWith($prefix, $identifier);
         $sha1 = str_replace($prefix, '', $identifier);
-        $this->assertEquals(40, strlen($sha1));
+        self::assertEquals(40, strlen($sha1));
     }
 
     /////////////////////////////////////////
@@ -1673,7 +1673,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         $uniqueSuffix = $this->getUniqueId('test');
         $extensionKey = 'unloadedextension' . $uniqueSuffix;
-        $this->assertEquals('', ExtensionManagementUtility::getExtensionVersion($extensionKey));
+        self::assertEquals('', ExtensionManagementUtility::getExtensionVersion($extensionKey));
     }
 
     /**
@@ -1687,15 +1687,15 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['getVersion'])
             ->setConstructorArgs([$extensionKey])
             ->getMock();
-        $packageMetaData->expects($this->any())->method('getVersion')->will($this->returnValue('1.2.3'));
+        $packageMetaData->expects(self::any())->method('getVersion')->will(self::returnValue('1.2.3'));
         $packageManager = $this->createMockPackageManagerWithMockPackage($extensionKey, ['getPackagePath', 'getPackageKey', 'getPackageMetaData']);
         /** @var \PHPUnit_Framework_MockObject_MockObject $package */
         $package = $packageManager->getPackage($extensionKey);
-        $package->expects($this->any())
+        $package->expects(self::any())
                 ->method('getPackageMetaData')
-                ->will($this->returnValue($packageMetaData));
+                ->will(self::returnValue($packageMetaData));
         ExtensionManagementUtility::setPackageManager($packageManager);
-        $this->assertEquals('1.2.3', ExtensionManagementUtility::getExtensionVersion($extensionKey));
+        self::assertEquals('1.2.3', ExtensionManagementUtility::getExtensionVersion($extensionKey));
     }
 
     /////////////////////////////////////////
@@ -1732,10 +1732,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['isPackageActive'])
             ->disableOriginalConstructor()
             ->getMock();
-        $packageManager->expects($this->once())
+        $packageManager->expects(self::once())
             ->method('isPackageActive')
-            ->with($this->equalTo($packageName))
-            ->will($this->returnValue(false));
+            ->with(self::equalTo($packageName))
+            ->will(self::returnValue(false));
         ExtensionManagementUtility::setPackageManager($packageManager);
         ExtensionManagementUtility::unloadExtension($packageName);
     }
@@ -1751,10 +1751,10 @@ class ExtensionManagementUtilityTest extends UnitTestCase
             ->setMethods(['isPackageActive', 'deactivatePackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $packageManager->expects($this->any())
+        $packageManager->expects(self::any())
             ->method('isPackageActive')
-            ->will($this->returnValue(true));
-        $packageManager->expects($this->once())
+            ->will(self::returnValue(true));
+        $packageManager->expects(self::once())
             ->method('deactivatePackage')
             ->with($packageName);
         ExtensionManagementUtility::setPackageManager($packageManager);
@@ -1774,7 +1774,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
         /** @var CategoryRegistry|\PHPUnit_Framework_MockObject_MockObject $registryMock */
         $registryMock = $this->getMockBuilder(CategoryRegistry::class)->getMock();
-        $registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories', []);
+        $registryMock->expects(self::once())->method('add')->with($extensionKey, $tableName, 'categories', []);
         GeneralUtility::setSingletonInstance(CategoryRegistry::class, $registryMock);
         ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
     }
@@ -1790,7 +1790,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
 
         /** @var CategoryRegistry|\PHPUnit_Framework_MockObject_MockObject $registryMock */
         $registryMock = $this->getMockBuilder(CategoryRegistry::class)->getMock();
-        $registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName, []);
+        $registryMock->expects(self::once())->method('add')->with($extensionKey, $tableName, $fieldName, []);
         GeneralUtility::setSingletonInstance(CategoryRegistry::class, $registryMock);
         ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
     }
@@ -1814,7 +1814,7 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         ];
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionManagementUtility::addPlugin(['label', $extKey], 'list_type', $extKey);
-        $this->assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
+        self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items']);
     }
 
     /**

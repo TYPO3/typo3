@@ -354,12 +354,12 @@ class UriPrefixRenderingTest extends FunctionalTestCase
                 );
 
                 if ($shallExist) {
-                    $this->assertRegExp(
+                    self::assertRegExp(
                         '#' . $pattern . '#',
                         $content
                     );
                 } else {
-                    $this->assertNotRegExp(
+                    self::assertNotRegExp(
                         '#' . $pattern . '#',
                         $content
                     );
@@ -381,7 +381,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
 
         $template = $connection->select(['uid', 'constants'], 'sys_template', ['pid' => $pageId, 'root' => 1])->fetch();
         if (empty($template)) {
-            $this->fail('Cannot find root template on page with id: "' . $pageId . '"');
+            self::fail('Cannot find root template on page with id: "' . $pageId . '"');
         }
         $updateFields['constants'] = ($append ? $template['constants'] . LF : '') . $constants;
         $connection->update(

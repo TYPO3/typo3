@@ -32,8 +32,8 @@ class ErrorControllerTest extends UnitTestCase
         $GLOBALS['TYPO3_REQUEST'] = [];
         $subject = new ErrorController();
         $response = $subject->pageNotFoundAction(new ServerRequest(), 'This test page was not found!');
-        static::assertSame(404, $response->getStatusCode());
-        static::assertStringContainsString('This test page was not found!', $response->getBody()->getContents());
+        self::assertSame(404, $response->getStatusCode());
+        self::assertStringContainsString('This test page was not found!', $response->getBody()->getContents());
     }
 
     /**

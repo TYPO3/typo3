@@ -76,14 +76,14 @@ class DataProviderCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
-        $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
+        $backendLayoutMock->expects(self::any())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
+        $dataProviderMock->expects(self::once())->method('getBackendLayout')->will(self::returnValue($backendLayoutMock));
 
         $this->dataProviderCollection->add('default', $dataProviderMock);
         $providedBackendLayout = $this->dataProviderCollection->getBackendLayout($backendLayoutIdentifier, 123);
 
-        $this->assertNotNull($providedBackendLayout);
-        $this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
+        self::assertNotNull($providedBackendLayout);
+        self::assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
     }
 
     /**
@@ -102,13 +102,13 @@ class DataProviderCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects($this->any())->method('getIdentifier')->will($this->returnValue($backendLayoutIdentifier));
-        $dataProviderMock->expects($this->once())->method('getBackendLayout')->will($this->returnValue($backendLayoutMock));
+        $backendLayoutMock->expects(self::any())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
+        $dataProviderMock->expects(self::once())->method('getBackendLayout')->will(self::returnValue($backendLayoutMock));
 
         $this->dataProviderCollection->add($dataProviderIdentifier, $dataProviderMock);
         $providedBackendLayout = $this->dataProviderCollection->getBackendLayout($dataProviderIdentifier . '__' . $backendLayoutIdentifier, 123);
 
-        $this->assertNotNull($providedBackendLayout);
-        $this->assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
+        self::assertNotNull($providedBackendLayout);
+        self::assertEquals($backendLayoutIdentifier, $providedBackendLayout->getIdentifier());
     }
 }

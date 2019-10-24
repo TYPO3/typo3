@@ -170,14 +170,14 @@ class PagesLanguageOverlayVisibleFieldsTest extends FunctionalTestCase
         $formResult = $formEngineTestService->createNewRecordForm('pages', ['doktype' => $doktype]);
 
         foreach ($expectedFields as $expectedField) {
-            $this->assertNotFalse(
+            self::assertNotFalse(
                 $formEngineTestService->formHtmlContainsField($expectedField, $formResult['html']),
                 'The field ' . $expectedField . ' is not in the form HTML'
             );
         }
 
         foreach ($hiddenFields as $hiddenField) {
-            $this->assertFalse(
+            self::assertFalse(
                 $formEngineTestService->formHtmlContainsField($hiddenField, $formResult['html']),
                 'The field ' . $hiddenField . ' is in the form HTML'
             );

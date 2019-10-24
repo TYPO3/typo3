@@ -37,9 +37,9 @@ class BooleanConverterTest extends UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(['boolean', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        $this->assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
-        $this->assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
+        self::assertEquals(['boolean', 'string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        self::assertEquals('boolean', $this->converter->getSupportedTargetType(), 'Target type does not match');
+        self::assertEquals(10, $this->converter->getPriority(), 'Priority does not match');
     }
 
     /**
@@ -48,7 +48,7 @@ class BooleanConverterTest extends UnitTestCase
     public function convertFromDoesNotModifyTheBooleanSource()
     {
         $source = true;
-        $this->assertEquals($source, $this->converter->convertFrom($source, 'boolean'));
+        self::assertEquals($source, $this->converter->convertFrom($source, 'boolean'));
     }
 
     /**
@@ -57,7 +57,7 @@ class BooleanConverterTest extends UnitTestCase
     public function convertFromCastsSourceStringToBoolean()
     {
         $source = 'true';
-        $this->assertTrue($this->converter->convertFrom($source, 'boolean'));
+        self::assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 
     /**
@@ -66,6 +66,6 @@ class BooleanConverterTest extends UnitTestCase
     public function convertFromCastsNumericSourceStringToBoolean()
     {
         $source = '1';
-        $this->assertTrue($this->converter->convertFrom($source, 'boolean'));
+        self::assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 }

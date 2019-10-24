@@ -132,6 +132,6 @@ class InputDateTimeElementTest extends UnitTestCase
         $GLOBALS['LANG'] = $languageService->reveal();
         $subject = new InputDateTimeElement($nodeFactoryProphecy->reveal(), $data);
         $result = $subject->render();
-        $this->assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
+        self::assertStringContainsString('<input type="hidden" name="myItemFormElName" value="' . $expectedOutput . '" />', $result['html']);
     }
 }

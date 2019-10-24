@@ -31,22 +31,22 @@ class LocalPreviewHelperTest extends UnitTestCase
     {
         $file = $this->createMock(File::class);
         // Use size slightly larger than default size to ensure processing
-        $file->expects($this->any())->method('getProperty')->will($this->returnValueMap([
+        $file->expects(self::any())->method('getProperty')->will(self::returnValueMap([
             ['width', 65],
             ['height', 65],
         ]));
 
         $task = $this->createMock(TaskInterface::class);
-        $task->expects($this->once())->method('getSourceFile')->willReturn($file);
-        $task->expects($this->once())->method('getConfiguration')->willReturn([]);
+        $task->expects(self::once())->method('getSourceFile')->willReturn($file);
+        $task->expects(self::once())->method('getConfiguration')->willReturn([]);
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
             ->setMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
             ->getMock();
-        $localPreviewHelper->expects($this->once())->method('getTemporaryFilePath')->willReturn('test/file');
+        $localPreviewHelper->expects(self::once())->method('getTemporaryFilePath')->willReturn('test/file');
         // Assert that by default 64x64 is used as preview size
-        $localPreviewHelper->expects($this->once())->method('generatePreviewFromFile')
+        $localPreviewHelper->expects(self::once())->method('generatePreviewFromFile')
             ->with($file, ['width' => 64, 'height' => 64], 'test/file');
 
         $localPreviewHelper->process($task);
@@ -58,7 +58,7 @@ class LocalPreviewHelperTest extends UnitTestCase
     public function processDoesNotScaleUpImages()
     {
         $file = $this->createMock(File::class);
-        $file->expects($this->any())->method('getProperty')->will($this->returnValueMap([
+        $file->expects(self::any())->method('getProperty')->will(self::returnValueMap([
             ['width', 20],
             ['height', 20],
         ]));
@@ -69,10 +69,10 @@ class LocalPreviewHelperTest extends UnitTestCase
             ->getMock();
 
         $task = $this->createMock(TaskInterface::class);
-        $task->expects($this->once())->method('getSourceFile')->willReturn($file);
-        $task->expects($this->once())->method('getConfiguration')->willReturn(['width' => 30, 'height' => 30]);
+        $task->expects(self::once())->method('getSourceFile')->willReturn($file);
+        $task->expects(self::once())->method('getConfiguration')->willReturn(['width' => 30, 'height' => 30]);
 
-        $this->assertNull($localPreviewHelper->process($task));
+        self::assertNull($localPreviewHelper->process($task));
     }
 
     /**
@@ -81,22 +81,22 @@ class LocalPreviewHelperTest extends UnitTestCase
     public function processGeneratesPreviewEvenIfSourceFileHasNoSize()
     {
         $file = $this->createMock(File::class);
-        $file->expects($this->any())->method('getProperty')->will($this->returnValueMap([
+        $file->expects(self::any())->method('getProperty')->will(self::returnValueMap([
             ['width', 0],
             ['height', 0],
         ]));
 
         $task = $this->createMock(TaskInterface::class);
-        $task->expects($this->once())->method('getSourceFile')->willReturn($file);
-        $task->expects($this->once())->method('getConfiguration')->willReturn([]);
+        $task->expects(self::once())->method('getSourceFile')->willReturn($file);
+        $task->expects(self::once())->method('getConfiguration')->willReturn([]);
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
             ->setMethods(['getTemporaryFilePath', 'generatePreviewFromFile'])
             ->getMock();
         $expectedResult = ['width' => 20, 'height' => 20, 'filePath' => 'test/file'];
-        $localPreviewHelper->expects($this->once())->method('generatePreviewFromFile')->willReturn($expectedResult);
+        $localPreviewHelper->expects(self::once())->method('generatePreviewFromFile')->willReturn($expectedResult);
 
-        $this->assertEquals($expectedResult, $localPreviewHelper->process($task));
+        self::assertEquals($expectedResult, $localPreviewHelper->process($task));
     }
 }

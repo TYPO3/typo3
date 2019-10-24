@@ -36,12 +36,12 @@ class ModuleDataStorageServiceTest extends UnitTestCase
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $moduleDataMock = $this->createMock(\TYPO3\CMS\Beuser\Domain\Model\ModuleData::class);
         $objectManagerMock
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('get')
             ->with(\TYPO3\CMS\Beuser\Domain\Model\ModuleData::class)
-            ->will($this->returnValue($moduleDataMock));
+            ->will(self::returnValue($moduleDataMock));
         $subject->_set('objectManager', $objectManagerMock);
 
-        $this->assertSame($moduleDataMock, $subject->loadModuleData());
+        self::assertSame($moduleDataMock, $subject->loadModuleData());
     }
 }

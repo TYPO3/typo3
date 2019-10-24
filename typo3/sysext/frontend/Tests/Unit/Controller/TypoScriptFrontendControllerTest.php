@@ -66,8 +66,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $GLOBALS['TSFE'] = $this->setupTsfeMockForHeaderFooterReplacementCheck();
         $GLOBALS['TSFE']->INTincScript();
-        $this->assertStringContainsString('headerData', $GLOBALS['TSFE']->content);
-        $this->assertStringContainsString('footerData', $GLOBALS['TSFE']->content);
+        self::assertStringContainsString('headerData', $GLOBALS['TSFE']->content);
+        self::assertStringContainsString('footerData', $GLOBALS['TSFE']->content);
     }
 
     /**
@@ -96,7 +96,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                 'regeneratePageTitle'
             ])->disableOriginalConstructor()
             ->getMock();
-        $tsfe->expects($this->exactly(2))->method('INTincScript_process')->will($this->returnCallback([$this, 'INTincScript_processCallback']));
+        $tsfe->expects(self::exactly(2))->method('INTincScript_process')->will(self::returnCallback([$this, 'INTincScript_processCallback']));
         $tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
         $config = [
             'INTincScript_ext' => [
@@ -123,7 +123,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $string = $this->getUniqueId();
         $this->subject->page = [];
         $this->subject->_call('setOutputLanguage');
-        $this->assertEquals($string, $this->subject->sL($string));
+        self::assertEquals($string, $this->subject->sL($string));
     }
 
     /**
@@ -187,7 +187,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     public function baseUrlWrapHandlesDifferentUrls($baseUrl, $url, $expected)
     {
         $this->subject->baseUrl = $baseUrl;
-        $this->assertSame($expected, $this->subject->baseUrlWrap($url));
+        self::assertSame($expected, $this->subject->baseUrlWrap($url));
     }
 
     /**
@@ -245,7 +245,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
         $request = ServerRequestFactory::fromGlobals();
         $this->subject->preparePageContentGeneration($request);
-        $this->assertEquals($this->subject->sWordRegEx, $expectedRegex);
+        self::assertEquals($this->subject->sWordRegEx, $expectedRegex);
     }
 
     /**
@@ -257,7 +257,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function splitLinkVarsStringSplitsStringByComma($string, $expected)
     {
-        $this->assertEquals($expected, $this->subject->_callRef('splitLinkVarsString', $string));
+        self::assertEquals($expected, $this->subject->_callRef('splitLinkVarsString', $string));
     }
 
     /**
@@ -378,7 +378,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $this->subject->config['config']['linkVars'] = $linkVars;
         $this->subject->calculateLinkVars($getVars);
-        $this->assertEquals($expected, $this->subject->linkVars);
+        self::assertEquals($expected, $this->subject->linkVars);
     }
 
     public function calculateLinkVarsDataProvider(): array
@@ -427,8 +427,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', null);
-        $this->assertEquals('', $subject->sWordRegEx);
-        $this->assertEquals('', $subject->sWordList);
+        self::assertEquals('', $subject->sWordRegEx);
+        self::assertEquals('', $subject->sWordList);
     }
 
     /**
@@ -438,8 +438,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', '');
-        $this->assertEquals('', $subject->sWordRegEx);
-        $this->assertEquals('', $subject->sWordList);
+        self::assertEquals('', $subject->sWordRegEx);
+        self::assertEquals('', $subject->sWordList);
     }
 
     /**
@@ -449,8 +449,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', []);
-        $this->assertEquals('', $subject->sWordRegEx);
-        $this->assertEquals([], $subject->sWordList);
+        self::assertEquals('', $subject->sWordRegEx);
+        self::assertEquals([], $subject->sWordList);
     }
 
     /**
@@ -460,8 +460,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->_call('initializeSearchWordData', ['stop', 'word']);
-        $this->assertEquals('stop|word', $subject->sWordRegEx);
-        $this->assertEquals(['stop', 'word'], $subject->sWordList);
+        self::assertEquals('stop|word', $subject->sWordRegEx);
+        self::assertEquals(['stop', 'word'], $subject->sWordList);
     }
 
     /**
@@ -472,8 +472,8 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(TypoScriptFrontendController::class, ['dummy'], [], '', false);
         $subject->config['config']['sword_standAlone'] = 1;
         $subject->_call('initializeSearchWordData', ['stop', 'word']);
-        $this->assertEquals('[[:space:]]stop[[:space:]]|[[:space:]]word[[:space:]]', $subject->sWordRegEx);
-        $this->assertEquals(['stop', 'word'], $subject->sWordList);
+        self::assertEquals('[[:space:]]stop[[:space:]]|[[:space:]]word[[:space:]]', $subject->sWordRegEx);
+        self::assertEquals(['stop', 'word'], $subject->sWordList);
     }
 
     /**
@@ -494,6 +494,6 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
 
         $this->subject->generatePageTitle();
-        $this->assertSame($pageTitle, $this->subject->indexedDocTitle);
+        self::assertSame($pageTitle, $this->subject->indexedDocTitle);
     }
 }

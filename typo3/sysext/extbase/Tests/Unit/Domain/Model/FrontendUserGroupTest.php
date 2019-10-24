@@ -38,7 +38,7 @@ class FrontendUserGroupTest extends UnitTestCase
     public function getTitleInitiallyReturnsEmptyString()
     {
         $this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup();
-        $this->assertSame('', $this->subject->getTitle());
+        self::assertSame('', $this->subject->getTitle());
     }
 
     /**
@@ -48,7 +48,7 @@ class FrontendUserGroupTest extends UnitTestCase
     {
         $title = 'foo bar';
         $this->subject = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup($title);
-        $this->assertSame($title, $this->subject->getTitle());
+        self::assertSame($title, $this->subject->getTitle());
     }
 
     /**
@@ -58,7 +58,7 @@ class FrontendUserGroupTest extends UnitTestCase
     {
         $title = 'foo bar';
         $this->subject->setTitle($title);
-        $this->assertSame($title, $this->subject->getTitle());
+        self::assertSame($title, $this->subject->getTitle());
     }
 
     /**
@@ -66,7 +66,7 @@ class FrontendUserGroupTest extends UnitTestCase
      */
     public function getLockToDomainInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getLockToDomain());
+        self::assertSame('', $this->subject->getLockToDomain());
     }
 
     /**
@@ -76,7 +76,7 @@ class FrontendUserGroupTest extends UnitTestCase
     {
         $lockToDomain = 'foo.bar';
         $this->subject->setLockToDomain($lockToDomain);
-        $this->assertSame($lockToDomain, $this->subject->getLockToDomain());
+        self::assertSame($lockToDomain, $this->subject->getLockToDomain());
     }
 
     /**
@@ -84,7 +84,7 @@ class FrontendUserGroupTest extends UnitTestCase
      */
     public function getDescriptionInitiallyReturnsEmptyString()
     {
-        $this->assertSame('', $this->subject->getDescription());
+        self::assertSame('', $this->subject->getDescription());
     }
 
     /**
@@ -94,7 +94,7 @@ class FrontendUserGroupTest extends UnitTestCase
     {
         $description = 'foo bar';
         $this->subject->setDescription($description);
-        $this->assertSame($description, $this->subject->getDescription());
+        self::assertSame($description, $this->subject->getDescription());
     }
 
     /**
@@ -103,9 +103,9 @@ class FrontendUserGroupTest extends UnitTestCase
     public function addSubgroupAddsSubgroup()
     {
         $group1 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
-        $this->assertEquals(count($this->subject->getSubgroup()), 0);
+        self::assertEquals(count($this->subject->getSubgroup()), 0);
         $this->subject->addSubgroup($group1);
-        $this->assertEquals(count($this->subject->getSubgroup()), 1);
+        self::assertEquals(count($this->subject->getSubgroup()), 1);
     }
 
     /**
@@ -117,11 +117,11 @@ class FrontendUserGroupTest extends UnitTestCase
         $group2 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('bar');
         $this->subject->addSubgroup($group1);
         $this->subject->addSubgroup($group2);
-        $this->assertEquals(count($this->subject->getSubgroup()), 2);
+        self::assertEquals(count($this->subject->getSubgroup()), 2);
         $this->subject->removeSubgroup($group1);
-        $this->assertEquals(count($this->subject->getSubgroup()), 1);
+        self::assertEquals(count($this->subject->getSubgroup()), 1);
         $this->subject->removeSubgroup($group2);
-        $this->assertEquals(count($this->subject->getSubgroup()), 0);
+        self::assertEquals(count($this->subject->getSubgroup()), 0);
     }
 
     /**
@@ -133,6 +133,6 @@ class FrontendUserGroupTest extends UnitTestCase
         $group = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
         $subgroup->attach($group);
         $this->subject->setSubgroup($subgroup);
-        $this->assertSame($subgroup, $this->subject->getSubgroup());
+        self::assertSame($subgroup, $this->subject->getSubgroup());
     }
 }

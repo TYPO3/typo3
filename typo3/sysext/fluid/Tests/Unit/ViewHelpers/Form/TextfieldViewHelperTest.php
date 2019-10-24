@@ -47,7 +47,7 @@ class TextfieldViewHelperTest extends ViewHelperBaseTestcase
 
         $expectedResult = '<input type="text" name="" />';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -67,7 +67,7 @@ class TextfieldViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new EmptySyntaxTreeNode());
         $expectedResult = '<input type="text" name="NameOfTextfield" value="Current value" />';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -84,7 +84,7 @@ class TextfieldViewHelperTest extends ViewHelperBaseTestcase
         );
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
 
-        $this->viewHelper->expects($this->once())->method('setErrorClassAttribute');
+        $this->viewHelper->expects(self::once())->method('setErrorClassAttribute');
         $this->viewHelper->render();
     }
 
@@ -105,7 +105,7 @@ class TextfieldViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new EmptySyntaxTreeNode());
         $expectedResult = '<input placeholder="SomePlaceholder" type="text" name="NameOfTextfield" />';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -126,6 +126,6 @@ class TextfieldViewHelperTest extends ViewHelperBaseTestcase
         $this->viewHelper->setViewHelperNode(new EmptySyntaxTreeNode());
         $expectedResult = '<input type="text" name="NameOfTextfield" value="Current value" required="required" />';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 }

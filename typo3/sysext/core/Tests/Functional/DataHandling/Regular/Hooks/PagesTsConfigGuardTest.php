@@ -127,6 +127,6 @@ class PagesTsConfigGuardTest extends FunctionalTestCase
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($dataMap, [], $backendUser);
         $dataHandler->process_datamap();
-        static::assertEmpty($dataHandler->errorLog);
+        self::assertEmpty($dataHandler->errorLog);
     }
 }

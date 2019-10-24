@@ -66,7 +66,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -83,7 +83,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -101,7 +101,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         ];
         $expected = $input;
         $expected['recordTypeValue'] = '1';
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -121,7 +121,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $expected = $input;
         $expected['recordTypeValue'] = '0';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -174,7 +174,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $expected = $input;
         $expected['recordTypeValue'] = '3';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -200,7 +200,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $expected = $input;
         $expected['recordTypeValue'] = '0';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -226,7 +226,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $expected = $input;
         $expected['recordTypeValue'] = '0';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -353,7 +353,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             'foreignField' => 3,
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRow')
             ->with('foreignTable', 42, 'foreignField')
             ->willReturn($foreignRecordResult);
@@ -361,7 +361,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $expected = $input;
         $expected['recordTypeValue'] = '3';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 
     /**
@@ -405,7 +405,7 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
             'type' => 2,
         ];
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getDatabaseRow')
             ->with('sys_file', 222, 'type')
             ->willReturn($foreignRecordResult);
@@ -413,6 +413,6 @@ class DatabaseRecordTypeValueTest extends UnitTestCase
         $expected = $input;
         $expected['recordTypeValue'] = '2';
 
-        $this->assertSame($expected, $this->subject->addData($input));
+        self::assertSame($expected, $this->subject->addData($input));
     }
 }

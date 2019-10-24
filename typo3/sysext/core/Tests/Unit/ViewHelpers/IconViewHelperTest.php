@@ -61,7 +61,7 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
             'alternativeMarkupIdentifier' => null
         ]);
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render());
+        self::assertSame('htmlFoo', $this->viewHelper->render());
     }
 
     /**
@@ -84,7 +84,7 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
             'alternativeMarkupIdentifier' => null
         ]);
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render());
+        self::assertSame('htmlFoo', $this->viewHelper->render());
     }
 
     /**
@@ -107,7 +107,7 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
             'alternativeMarkupIdentifier' => null
         ]);
 
-        $this->assertSame('htmlFoo', $this->viewHelper->render());
+        self::assertSame('htmlFoo', $this->viewHelper->render());
     }
 
     /**
@@ -129,6 +129,6 @@ class IconViewHelperTest extends ViewHelperBaseTestcase
             'state' => IconState::cast(IconState::STATE_DEFAULT),
             'alternativeMarkupIdentifier' => null
         ]);
-        $this->assertSame('htmlFoo', $this->viewHelper->render());
+        self::assertSame('htmlFoo', $this->viewHelper->render());
     }
 }

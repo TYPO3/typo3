@@ -48,7 +48,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = '<input type="radio" name="foo" value="" />';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -65,7 +65,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
         );
         $expectedResult = '<input type="radio" name="foo" value="" checked="checked" />';
         $actualResult = $this->viewHelper->initializeArgumentsAndRender();
-        $this->assertEquals($expectedResult, $actualResult);
+        self::assertEquals($expectedResult, $actualResult);
     }
 
     /**
@@ -89,7 +89,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -116,7 +116,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" checked="checked" />',
             $result
         );
@@ -143,7 +143,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -170,7 +170,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -197,7 +197,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );
@@ -234,7 +234,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="2" />',
             $result
         );
@@ -262,7 +262,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" class="error" />',
             $result
         );
@@ -289,7 +289,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" class="f3-form-error" />',
             $result
         );
@@ -317,7 +317,7 @@ class RadioViewHelperTest extends ViewHelperBaseTestcase
 
         $result = $this->viewHelper->initializeArgumentsAndRender();
 
-        $this->assertStringContainsString(
+        self::assertStringContainsString(
             '<input class="css_class f3-form-error" type="radio" name="fieldPrefix[objectName][someProperty]" value="foo" />',
             $result
         );

@@ -55,7 +55,7 @@ class AuthenticationServiceTest extends \TYPO3\TestingFramework\Core\Functional\
             'username_column' => 'username',
         ];
         $result = $this->subject->getUser();
-        $this->assertSame('test1', $result['username']);
-        $this->assertSame(0, (int)$result['deleted']);
+        self::assertSame('test1', $result['username']);
+        self::assertSame(0, (int)$result['deleted']);
     }
 }

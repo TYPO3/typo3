@@ -120,7 +120,7 @@ class RemoteServerTest extends UnitTestCase
             $useThumbnails
         );
 
-        $this->assertSame($expected, $result);
+        self::assertSame($expected, $result);
     }
 
     /**

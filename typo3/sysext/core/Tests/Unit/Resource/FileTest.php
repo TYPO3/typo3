@@ -41,10 +41,10 @@ class FileTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects($this->any())->method('getUid')->will($this->returnValue(5));
+        $this->storageMock->expects(self::any())->method('getUid')->will(self::returnValue(5));
 
         $mockedMetaDataRepository = $this->createMock(MetaDataRepository::class);
-        $mockedMetaDataRepository->expects($this->any())->method('findByFile')->will($this->returnValue(['file' => 1]));
+        $mockedMetaDataRepository->expects(self::any())->method('findByFile')->will(self::returnValue(['file' => 1]));
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $mockedMetaDataRepository);
     }
 
@@ -69,7 +69,7 @@ class FileTest extends UnitTestCase
         ];
         $fixture = new File($properties, $this->storageMock);
         foreach ($properties as $key => $value) {
-            $this->assertEquals($value, call_user_func([$fixture, 'get' . $key]));
+            self::assertEquals($value, call_user_func([$fixture, 'get' . $key]));
         }
     }
 
@@ -81,7 +81,7 @@ class FileTest extends UnitTestCase
     public function fileIndexStatusIsTrueIfUidIsSet(): void
     {
         $fixture = new File(['uid' => 1], $this->storageMock);
-        $this->assertTrue($fixture->isIndexed());
+        self::assertTrue($fixture->isIndexed());
     }
 
     /**
@@ -92,7 +92,7 @@ class FileTest extends UnitTestCase
         $identifier = '/' . $this->getUniqueId();
         $fixture = new File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['identifier' => $identifier]);
-        $this->assertEquals($identifier, $fixture->getIdentifier());
+        self::assertEquals($identifier, $fixture->getIdentifier());
     }
 
     /**
@@ -102,8 +102,8 @@ class FileTest extends UnitTestCase
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'foobar']);
-        $this->assertEquals('/test', $fixture->getIdentifier());
-        $this->assertEquals('/test', $fixture->getProperty('identifier'));
+        self::assertEquals('/test', $fixture->getIdentifier());
+        self::assertEquals('/test', $fixture->getProperty('identifier'));
     }
 
     /**
@@ -113,7 +113,7 @@ class FileTest extends UnitTestCase
     {
         $fixture = new File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['uid' => 3]);
-        $this->assertEquals(1, $fixture->getUid());
+        self::assertEquals(1, $fixture->getUid());
     }
 
     /**
@@ -123,7 +123,7 @@ class FileTest extends UnitTestCase
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'foobar', 'baz' => 'foobaz']);
-        $this->assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
+        self::assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
     }
 
     /**
@@ -133,7 +133,7 @@ class FileTest extends UnitTestCase
     {
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'asdf']);
-        $this->assertEmpty($fixture->getUpdatedProperties());
+        self::assertEmpty($fixture->getUpdatedProperties());
     }
 
     /**
@@ -144,7 +144,7 @@ class FileTest extends UnitTestCase
         $fixture = new File(['uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['foo' => 'foobar', 'baz' => 'foobaz']);
         $fixture->updateProperties(['foo' => 'fdsw', 'baz' => 'asdf']);
-        $this->assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
+        self::assertEquals(['foo', 'baz'], $fixture->getUpdatedProperties());
     }
 
     /**
@@ -163,13 +163,13 @@ class FileTest extends UnitTestCase
         $mockedNewStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $mockedResourceFactory = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceFactory::class);
         $mockedResourceFactory
-            ->expects($this->once())
+            ->expects(self::once())
             ->method('getStorageObject')
-            ->will($this->returnValue($mockedNewStorage));
+            ->will(self::returnValue($mockedNewStorage));
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $mockedResourceFactory);
 
         $subject->updateProperties(['storage' => 'different']);
-        $this->assertSame($mockedNewStorage, $subject->getStorage());
+        self::assertSame($mockedNewStorage, $subject->getStorage());
     }
 
     /**
@@ -179,9 +179,9 @@ class FileTest extends UnitTestCase
     {
         $targetStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $targetFolder = $this->createMock(\TYPO3\CMS\Core\Resource\Folder::class);
-        $targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
+        $targetFolder->expects(self::any())->method('getStorage')->will(self::returnValue($targetStorage));
         $fixture = new File([], $this->storageMock);
-        $targetStorage->expects($this->once())->method('copyFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
+        $targetStorage->expects(self::once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->copyTo($targetFolder);
     }
 
@@ -192,9 +192,9 @@ class FileTest extends UnitTestCase
     {
         $targetStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $targetFolder = $this->createMock(\TYPO3\CMS\Core\Resource\Folder::class);
-        $targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
+        $targetFolder->expects(self::any())->method('getStorage')->will(self::returnValue($targetStorage));
         $fixture = new File([], $this->storageMock);
-        $targetStorage->expects($this->once())->method('moveFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
+        $targetStorage->expects(self::once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->moveTo($targetFolder);
     }
 
@@ -222,7 +222,7 @@ class FileTest extends UnitTestCase
         ],
             $this->storageMock
         );
-        $this->assertSame($expectedBasename, $fixture->getNameWithoutExtension());
+        self::assertSame($expectedBasename, $fixture->getNameWithoutExtension());
     }
 
     /**
@@ -235,7 +235,7 @@ class FileTest extends UnitTestCase
             'name' => $originalFilename,
             'identifier' => '/' . $originalFilename
         ], $this->storageMock);
-        $this->assertSame($expectedExtension, $fixture->getExtension());
+        self::assertSame($expectedExtension, $fixture->getExtension());
     }
 
     /**
@@ -244,7 +244,7 @@ class FileTest extends UnitTestCase
     public function hasPropertyReturnsTrueFilePropertyExists(): void
     {
         $fixture = new File(['testproperty' => 'testvalue'], $this->storageMock);
-        $this->assertTrue($fixture->hasProperty('testproperty'));
+        self::assertTrue($fixture->hasProperty('testproperty'));
     }
 
     /**
@@ -262,10 +262,10 @@ class FileTest extends UnitTestCase
             ->setMethods(['get'])
             ->getMock();
 
-        $metaDataAspectMock->expects($this->any())->method('get')->willReturn(['testproperty' => 'testvalue']);
-        $fixture->expects($this->any())->method('getMetaData')->willReturn($metaDataAspectMock);
+        $metaDataAspectMock->expects(self::any())->method('get')->willReturn(['testproperty' => 'testvalue']);
+        $fixture->expects(self::any())->method('getMetaData')->willReturn($metaDataAspectMock);
 
-        $this->assertTrue($fixture->hasProperty('testproperty'));
-        $this->assertSame('testvalue', $fixture->getProperty('testproperty'));
+        self::assertTrue($fixture->hasProperty('testproperty'));
+        self::assertSame('testvalue', $fixture->getProperty('testproperty'));
     }
 }

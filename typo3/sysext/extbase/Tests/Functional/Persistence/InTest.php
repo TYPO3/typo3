@@ -75,7 +75,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('blog', [$blog1, $blog2])
         );
 
-        $this->assertSame(11, $inQuery->count());
+        self::assertSame(11, $inQuery->count());
     }
 
     /**
@@ -92,7 +92,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('blog', [$blog1, $blog2])
         );
 
-        $this->assertSame(11, $inQuery->count());
+        self::assertSame(11, $inQuery->count());
 
         $newInQuery = $this->postRepository->createQuery();
 
@@ -100,7 +100,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $newInQuery->in('blog', [$blog1])
         );
 
-        $this->assertSame(10, $newInQuery->count());
+        self::assertSame(10, $newInQuery->count());
     }
 
     /**
@@ -121,7 +121,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('blog', $objectStorage)
         );
 
-        $this->assertSame(11, $inQuery->count());
+        self::assertSame(11, $inQuery->count());
     }
 
     /**
@@ -142,7 +142,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('blog', $objectStorage)
         );
 
-        $this->assertSame(11, $inQuery->count());
+        self::assertSame(11, $inQuery->count());
 
         $newObjectStorage = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\ObjectStorage::class);
         $newObjectStorage->attach($blog1);
@@ -153,7 +153,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $newInQuery->in('blog', $newObjectStorage)
         );
 
-        $this->assertSame(10, $newInQuery->count());
+        self::assertSame(10, $newInQuery->count());
     }
 
     /**
@@ -171,7 +171,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('blog', $queryResult)
         );
 
-        $this->assertSame(11, $inQuery->count());
+        self::assertSame(11, $inQuery->count());
     }
 
     /**
@@ -189,7 +189,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('blog', $queryResult)
         );
 
-        $this->assertSame(11, $inQuery->count());
+        self::assertSame(11, $inQuery->count());
 
         $newInQuery = $this->postRepository->createQuery();
 
@@ -197,7 +197,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $newInQuery->in('blog', $queryResult)
         );
 
-        $this->assertSame(11, $newInQuery->count());
+        self::assertSame(11, $newInQuery->count());
     }
 
     /**
@@ -207,7 +207,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
     {
         $blog = $this->blogRepository->findByUid(1);
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
             $blog->getPosts()
         );
@@ -218,7 +218,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('uid', $blog->getPosts())
         );
 
-        $this->assertSame(10, $inQuery->count());
+        self::assertSame(10, $inQuery->count());
     }
 
     /**
@@ -228,7 +228,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
     {
         $blog = $this->blogRepository->findByUid(1);
 
-        $this->assertInstanceOf(
+        self::assertInstanceOf(
             \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::class,
             $blog->getPosts()
         );
@@ -239,7 +239,7 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $inQuery->in('uid', $blog->getPosts())
         );
 
-        $this->assertSame(10, $inQuery->count());
+        self::assertSame(10, $inQuery->count());
 
         $newInQuery = $this->postRepository->createQuery();
 
@@ -247,6 +247,6 @@ class InTest extends \TYPO3\TestingFramework\Core\Functional\FunctionalTestCase
             $newInQuery->in('uid', $blog->getPosts())
         );
 
-        $this->assertSame(10, $newInQuery->count());
+        self::assertSame(10, $newInQuery->count());
     }
 }

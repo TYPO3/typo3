@@ -49,7 +49,7 @@ class SpecialLanguagesTest extends AbstractDataHandlerActionTestCase
             ->orderBy('uid', 'DESC')
             ->setMaxResults(1)
             ->execute();
-        $this->assertEquals($expected, $statement->fetchColumn(0));
+        self::assertEquals($expected, $statement->fetchColumn(0));
     }
 
     /**

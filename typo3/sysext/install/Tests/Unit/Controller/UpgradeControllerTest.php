@@ -85,12 +85,12 @@ class UpgradeControllerTest extends UnitTestCase
             ->setMethods(['getDocumentationFiles', 'initializeStandaloneView'])
             ->getMock();
 
-        $subject->expects($this->any())->method('getDocumentationFiles')->willReturn([
+        $subject->expects(self::any())->method('getDocumentationFiles')->willReturn([
             'normalFiles' => [],
             'readFiles' => [],
             'notAffectedFiles' => [],
         ]);
-        $subject->expects($this->any())
+        $subject->expects(self::any())
             ->method('initializeStandaloneView')
             ->willReturn($this->prophesize(StandaloneView::class)->reveal());
         $subject->upgradeDocsGetChangelogForVersionAction($requestProphecy->reveal());

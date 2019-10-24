@@ -37,7 +37,7 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorReturnsNoErrorForASimpleString()
     {
-        $this->assertFalse($this->validator->validate('a not empty string')->hasErrors());
+        self::assertFalse($this->validator->validate('a not empty string')->hasErrors());
     }
 
     /**
@@ -45,7 +45,7 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorReturnsErrorForAnEmptyString()
     {
-        $this->assertTrue($this->validator->validate('')->hasErrors());
+        self::assertTrue($this->validator->validate('')->hasErrors());
     }
 
     /**
@@ -53,7 +53,7 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorReturnsErrorForANullValue()
     {
-        $this->assertTrue($this->validator->validate(null)->hasErrors());
+        self::assertTrue($this->validator->validate(null)->hasErrors());
     }
 
     /**
@@ -61,7 +61,7 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject()
     {
-        $this->assertEquals(1, count($this->validator->validate('')->getErrors()));
+        self::assertEquals(1, count($this->validator->validate('')->getErrors()));
     }
 
     /**
@@ -69,7 +69,7 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue()
     {
-        $this->assertEquals(1, count($this->validator->validate(null)->getErrors()));
+        self::assertEquals(1, count($this->validator->validate(null)->getErrors()));
     }
 
     /**
@@ -77,8 +77,8 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorWorksForEmptyArrays()
     {
-        $this->assertTrue($this->validator->validate([])->hasErrors());
-        $this->assertFalse($this->validator->validate([1 => 2])->hasErrors());
+        self::assertTrue($this->validator->validate([])->hasErrors());
+        self::assertFalse($this->validator->validate([1 => 2])->hasErrors());
     }
 
     /**
@@ -86,7 +86,7 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
      */
     public function notEmptyValidatorWorksForEmptyCountableObjects()
     {
-        $this->assertTrue($this->validator->validate(new \SplObjectStorage())->hasErrors());
+        self::assertTrue($this->validator->validate(new \SplObjectStorage())->hasErrors());
     }
 
     /**
@@ -96,6 +96,6 @@ class NotEmptyValidatorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCa
     {
         $countableObject = new \SplObjectStorage();
         $countableObject->attach(new \stdClass());
-        $this->assertFalse($this->validator->validate($countableObject)->hasErrors());
+        self::assertFalse($this->validator->validate($countableObject)->hasErrors());
     }
 }

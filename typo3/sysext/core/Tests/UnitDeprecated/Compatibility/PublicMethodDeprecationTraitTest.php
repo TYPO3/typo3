@@ -66,7 +66,7 @@ class PublicMethodDeprecationTraitTest extends UnitTestCase
      */
     public function methodMadeProtectedReturnsValue(): void
     {
-        $this->assertEquals('foo', (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithReturn());
+        self::assertEquals('foo', (new PublicMethodDeprecationTraitTextFixture())->methodMadeProtectedWithReturn());
     }
 
     /**
