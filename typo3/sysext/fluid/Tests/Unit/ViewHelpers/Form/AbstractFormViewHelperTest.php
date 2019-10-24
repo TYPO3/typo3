@@ -30,7 +30,7 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
         $object->_set('uid', 123);
         $expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
-        $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->will(self::returnValue('prefix[theName]'));
+        $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->willReturn('prefix[theName]');
         $actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
         self::assertSame($expectedResult, $actualResult);
     }
@@ -45,7 +45,7 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
         $object = clone $object;
         $expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
-        $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->will(self::returnValue('prefix[theName]'));
+        $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->willReturn('prefix[theName]');
         $actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
         self::assertSame($expectedResult, $actualResult);
     }

@@ -74,7 +74,7 @@ class UploadExtensionFileControllerTest extends UnitTestCase
         $managementServiceMock->expects(self::once())
             ->method('isAvailable')
             ->with($expectedKey)
-            ->will(self::returnValue(false));
+            ->willReturn(false);
 
         /** @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility|MockObject $fileHandlingUtilityMock */
         $fileHandlingUtilityMock = $this->createMock(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility::class);

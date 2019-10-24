@@ -53,15 +53,15 @@ class QueryResultTest extends UnitTestCase
     {
         parent::setUp();
         $this->mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectDataByQuery')->will(self::returnValue(['one', 'two']));
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectCountByQuery')->will(self::returnValue(2));
+        $this->mockPersistenceManager->expects(self::any())->method('getObjectDataByQuery')->willReturn(['one', 'two']);
+        $this->mockPersistenceManager->expects(self::any())->method('getObjectCountByQuery')->willReturn(2);
         $this->mockDataMapper = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
         $this->mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
         $this->queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, ['dummy'], [$this->mockQuery]);
         $this->queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $this->queryResult->_set('dataMapper', $this->mockDataMapper);
         $this->sampleResult = [['foo' => 'Foo1', 'bar' => 'Bar1'], ['foo' => 'Foo2', 'bar' => 'Bar2']];
-        $this->mockDataMapper->expects(self::any())->method('map')->will(self::returnValue($this->sampleResult));
+        $this->mockDataMapper->expects(self::any())->method('map')->willReturn($this->sampleResult);
     }
 
     /**
@@ -154,7 +154,7 @@ class QueryResultTest extends UnitTestCase
      */
     public function countOnlyCallsGetObjectCountByQueryOnPersistenceManagerOnce()
     {
-        $this->mockPersistenceManager->expects(self::once())->method('getObjectCountByQuery')->will(self::returnValue(2));
+        $this->mockPersistenceManager->expects(self::once())->method('getObjectCountByQuery')->willReturn(2);
         $this->queryResult->count();
         self::assertEquals(2, $this->queryResult->count());
     }
@@ -190,7 +190,7 @@ class QueryResultTest extends UnitTestCase
         $queryResult = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class, ['dummy'], [$this->mockQuery]);
         $queryResult->_set('persistenceManager', $this->mockPersistenceManager);
         $queryResult->_set('dataMapper', $this->mockDataMapper);
-        $this->mockPersistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->mockQuery)->will(self::returnValue(['FAKERESULT']));
+        $this->mockPersistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->mockQuery)->willReturn(['FAKERESULT']);
         $queryResult->_call('initialize');
     }
 

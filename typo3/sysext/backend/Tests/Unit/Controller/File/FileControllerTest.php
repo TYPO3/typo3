@@ -72,9 +72,9 @@ class FileControllerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->fileResourceMock->expects(self::any())->method('toArray')->will(self::returnValue(['id' => 'foo']));
-        $this->fileResourceMock->expects(self::any())->method('getModificationTime')->will(self::returnValue(123456789));
-        $this->fileResourceMock->expects(self::any())->method('getExtension')->will(self::returnValue('html'));
+        $this->fileResourceMock->expects(self::any())->method('toArray')->willReturn(['id' => 'foo']);
+        $this->fileResourceMock->expects(self::any())->method('getModificationTime')->willReturn(123456789);
+        $this->fileResourceMock->expects(self::any())->method('getExtension')->willReturn('html');
 
         $serverRequest = $this->prophesize(ServerRequestInterface::class);
         $GLOBALS['TYPO3_REQUEST'] = $serverRequest->reveal();
@@ -174,7 +174,7 @@ class FileControllerTest extends UnitTestCase
     public function processAjaxRequestReturnsStatus500IfErrorOccurs()
     {
         $subject = $this->getAccessibleMock(FileController::class, ['init', 'main']);
-        $this->mockFileProcessor->expects(self::any())->method('getErrorMessages')->will(self::returnValue(['error occured']));
+        $this->mockFileProcessor->expects(self::any())->method('getErrorMessages')->willReturn(['error occured']);
         $subject->_set('fileProcessor', $this->mockFileProcessor);
         $result = $subject->processAjaxRequest($this->request, $this->response);
         self::assertEquals(500, $result->getStatusCode());

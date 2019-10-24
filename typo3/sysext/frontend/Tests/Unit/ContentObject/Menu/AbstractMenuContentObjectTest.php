@@ -102,7 +102,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue(null));
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(null);
         $this->subject->_set('sys_page', $pageRepository);
         $result = $this->subject->_call('sectionIndex', 'field');
         self::assertEquals($result, []);
@@ -115,7 +115,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     {
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue(null))->with(10);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(null)->with(10);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
         $result = $this->subject->_call('sectionIndex', 'field');
@@ -131,12 +131,12 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->expectExceptionCode(1337334849);
         $this->prepareSectionIndexTest();
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue([]));
+        $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('id', 10);
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
-        $cObject->expects(self::once())->method('exec_getQuery')->will(self::returnValue(0));
+        $cObject->expects(self::once())->method('exec_getQuery')->willReturn(0);
         $this->subject->_set('parent_cObj', $cObject);
 
         $this->subject->_call('sectionIndex', 'field');
@@ -160,8 +160,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $context->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->setConstructorArgs([$context])->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
-        $pageRepository->expects(self::once())->method('getRecordOverlay')->will(self::returnValue(['uid' => 0, 'header' => 'OVERLAID']));
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(['_PAGES_OVERLAY_LANGUAGE' => 1]);
+        $pageRepository->expects(self::once())->method('getRecordOverlay')->willReturn(['uid' => 0, 'header' => 'OVERLAID']);
         $this->subject->_set('sys_page', $pageRepository);
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
@@ -232,8 +232,8 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         ]);
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue(['_PAGES_OVERLAY_LANGUAGE' => 1]));
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue([]));
+        $pageRepository->expects(self::once())->method('getPage')->willReturn(['_PAGES_OVERLAY_LANGUAGE' => 1]);
+        $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject->_set('sys_page', $pageRepository);
 
         $cObject = $this->getMockBuilder(ContentObjectRenderer::class)->getMock();
@@ -288,7 +288,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->subject->_set('mconf', ['sectionIndex.' => $configuration]);
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getPage')->will(self::returnValue([]));
+        $pageRepository->expects(self::once())->method('getPage')->willReturn([]);
         $this->subject->_set('sys_page', $pageRepository);
 
         $queryConfiguration = [
@@ -366,7 +366,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $this->prepareSectionIndexTest();
 
         $pageRepository = $this->getMockBuilder(PageRepository::class)->getMock();
-        $pageRepository->expects(self::once())->method('getMenu')->will(self::returnValue($menu));
+        $pageRepository->expects(self::once())->method('getMenu')->willReturn($menu);
         $this->subject->_set('sys_page', $pageRepository);
         $this->subject->_set('menuArr', [
             0 => ['uid' => 1]

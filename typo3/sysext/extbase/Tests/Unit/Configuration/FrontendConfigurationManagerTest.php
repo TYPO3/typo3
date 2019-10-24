@@ -111,7 +111,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -142,7 +142,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -200,8 +200,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testPluginSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will(self::returnValue($testExtensionSettingsConverted));
-        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will(self::returnValue($testPluginSettingsConverted));
+        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->willReturn($testExtensionSettingsConverted);
+        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->willReturn($testPluginSettingsConverted);
         $GLOBALS['TSFE']->tmpl->setup = $testSetup;
         $expectedResult = [
             'settings' => [
@@ -396,9 +396,9 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $frontendConfigurationManager->expects(self::at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->will(self::returnValue(['overridden' => 'storagePid']));
-        $frontendConfigurationManager->expects(self::at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->will(self::returnValue(['overridden' => 'pluginConfiguration']));
-        $frontendConfigurationManager->expects(self::at(2))->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->will(self::returnValue(['overridden' => 'flexFormConfiguration']));
+        $frontendConfigurationManager->expects(self::at(0))->method('overrideStoragePidIfStartingPointIsSet')->with($frameworkConfiguration)->willReturn(['overridden' => 'storagePid']);
+        $frontendConfigurationManager->expects(self::at(1))->method('overrideConfigurationFromPlugin')->with(['overridden' => 'storagePid'])->willReturn(['overridden' => 'pluginConfiguration']);
+        $frontendConfigurationManager->expects(self::at(2))->method('overrideConfigurationFromFlexForm')->with(['overridden' => 'pluginConfiguration'])->willReturn(['overridden' => 'flexFormConfiguration']);
         $expectedResult = ['overridden' => 'flexFormConfiguration'];
         $actualResult = $frontendConfigurationManager->_call(
             'getContextSpecificFrameworkConfiguration',
@@ -564,7 +564,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetOverridesCorrectly(): void
     {
-        $this->mockContentObject->expects(self::any())->method('getTreeList')->will(self::returnValue('1,2,3'));
+        $this->mockContentObject->expects(self::any())->method('getTreeList')->willReturn('1,2,3');
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
@@ -582,7 +582,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
      */
     public function overrideStoragePidIfStartingPointIsSetCorrectlyHandlesEmptyValuesFromGetTreeList(): void
     {
-        $this->mockContentObject->expects(self::any())->method('getTreeList')->will(self::returnValue(''));
+        $this->mockContentObject->expects(self::any())->method('getTreeList')->willReturn('');
         $this->mockContentObject->data = ['pages' => '0', 'recursive' => 1];
 
         $frameworkConfiguration = ['persistence' => ['storagePid' => '98']];
@@ -604,11 +604,11 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $flexFormService = $this->getMockBuilder(FlexFormService::class)
             ->setMethods(['convertFlexFormContentToArray'])
             ->getMock();
-        $flexFormService->expects(self::once())->method('convertFlexFormContentToArray')->will(self::returnValue([
+        $flexFormService->expects(self::once())->method('convertFlexFormContentToArray')->willReturn([
             'persistence' => [
                 'storagePid' => '0,1,2,3'
             ]
-        ]));
+        ]);
 
         $this->frontendConfigurationManager->_set('flexFormService', $flexFormService);
         $this->mockContentObject->data = ['pi_flexform' => '<XML_ARRAY>'];
@@ -699,7 +699,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
         $frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
 
-        $this->mockTypoScriptService->expects(self::once())->method('convertTypoScriptArrayToPlainArray')->will(self::returnValue([
+        $this->mockTypoScriptService->expects(self::once())->method('convertTypoScriptArrayToPlainArray')->willReturn([
             'persistence' => [
                 'storagePid' => '0,1,2,3'
             ],
@@ -709,8 +709,8 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             'view' => [
                 'foo' => 'bar'
             ],
-        ]));
-        $frontendConfigurationManager->expects(self::any())->method('getTypoScriptSetup')->will(self::returnValue([
+        ]);
+        $frontendConfigurationManager->expects(self::any())->method('getTypoScriptSetup')->willReturn([
             'plugin.' => [
                 'tx_ext_pi1.' => [
                     'persistence.' => [
@@ -724,7 +724,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
                     ],
                 ]
             ]
-        ]));
+        ]);
 
         $frameworkConfiguration = [
             'extensionName' => 'ext',

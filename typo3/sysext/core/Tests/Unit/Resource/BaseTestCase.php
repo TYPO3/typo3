@@ -120,8 +120,8 @@ abstract class BaseTestCase extends UnitTestCase
             ->setMethods($mockedMethods)
             ->disableOriginalConstructor()
             ->getMock();
-        $mock->expects(self::any())->method('getIdentifier')->will(self::returnValue($identifier));
-        $mock->expects(self::any())->method('getName')->will(self::returnValue(basename($identifier)));
+        $mock->expects(self::any())->method('getIdentifier')->willReturn($identifier);
+        $mock->expects(self::any())->method('getName')->willReturn(basename($identifier));
         return $mock;
     }
 
@@ -161,8 +161,8 @@ abstract class BaseTestCase extends UnitTestCase
     protected function getFolderMock($identifier, $mockedMethods = [], $subfolders = [], $files = [])
     {
         $folder = $this->_createFileFolderMock(\TYPO3\CMS\Core\Resource\Folder::class, $identifier, array_merge($mockedMethods, ['getFiles', 'getSubfolders']));
-        $folder->expects(self::any())->method('getSubfolders')->will(self::returnValue($subfolders));
-        $folder->expects(self::any())->method('getFiles')->will(self::returnValue($files));
+        $folder->expects(self::any())->method('getSubfolders')->willReturn($subfolders);
+        $folder->expects(self::any())->method('getFiles')->willReturn($files);
         return $folder;
     }
 }

@@ -45,8 +45,8 @@ class AbstractFileTest extends UnitTestCase
             ->setMethods(['getFolderIdentifierFromFileIdentifier', 'getFolder'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockedStorage->expects(self::once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->will(self::returnValue($parentIdentifier));
-        $mockedStorage->expects(self::once())->method('getFolder')->with($parentIdentifier)->will(self::returnValue($parentFolderFixture));
+        $mockedStorage->expects(self::once())->method('getFolderIdentifierFromFileIdentifier')->with($currentIdentifier)->willReturn($parentIdentifier);
+        $mockedStorage->expects(self::once())->method('getFolder')->with($parentIdentifier)->willReturn($parentFolderFixture);
 
         /** @var AbstractFile $currentFolderFixture */
         $currentFolderFixture = $this->getMockForAbstractClass(AbstractFile::class);

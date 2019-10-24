@@ -160,7 +160,7 @@ class PaginateControllerTest extends UnitTestCase
     {
         $mockQueryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
         $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
-        $mockQueryResult->expects(self::any())->method('getQuery')->will(self::returnValue($mockQuery));
+        $mockQueryResult->expects(self::any())->method('getQuery')->willReturn($mockQuery);
         $this->controller->_set('objects', $mockQueryResult);
         $this->controller->indexAction();
         self::assertSame($mockQueryResult, $this->controller->_get('objects'));

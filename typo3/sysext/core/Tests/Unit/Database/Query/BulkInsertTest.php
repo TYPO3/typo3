@@ -48,10 +48,10 @@ class BulkInsertTest extends UnitTestCase
 
         $this->connection->expects(self::any())
             ->method('quoteIdentifier')
-            ->will(self::returnArgument(0));
+            ->willReturnArgument(0);
         $this->connection->expects(self::any())
             ->method('getDatabasePlatform')
-            ->will(self::returnValue(new MockPlatform()));
+            ->willReturn(new MockPlatform());
     }
 
     /**
@@ -332,7 +332,7 @@ class BulkInsertTest extends UnitTestCase
 
         $subject->expects(self::any())
             ->method('getInsertMaxRows')
-            ->will(self::returnValue(10));
+            ->willReturn(10);
 
         for ($i = 0; $i <= 10; $i++) {
             $subject->addValues([]);

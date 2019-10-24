@@ -218,11 +218,11 @@ class PdoBackendTest extends UnitTestCase
     public function flushRemovesOnlyOwnEntries()
     {
         $thisCache = $this->createMock(FrontendInterface::class);
-        $thisCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thisCache'));
+        $thisCache->expects(self::any())->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = $this->setUpBackend();
         $thisBackend->setCache($thisCache);
         $thatCache = $this->createMock(FrontendInterface::class);
-        $thatCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thatCache'));
+        $thatCache->expects(self::any())->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = $this->setUpBackend();
         $thatBackend->setCache($thatCache);
         $thisBackend->set('thisEntry', 'Hello');
@@ -279,7 +279,7 @@ class PdoBackendTest extends UnitTestCase
     protected function setUpBackend()
     {
         $mockCache = $this->createMock(FrontendInterface::class);
-        $mockCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('TestCache'));
+        $mockCache->expects(self::any())->method('getIdentifier')->willReturn('TestCache');
         $backend = GeneralUtility::makeInstance(PdoBackend::class, 'Testing');
         $backend->setCache($mockCache);
         $backend->setDataSourceName('sqlite::memory:');

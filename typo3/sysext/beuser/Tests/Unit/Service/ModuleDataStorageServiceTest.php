@@ -39,7 +39,7 @@ class ModuleDataStorageServiceTest extends UnitTestCase
             ->expects(self::once())
             ->method('get')
             ->with(\TYPO3\CMS\Beuser\Domain\Model\ModuleData::class)
-            ->will(self::returnValue($moduleDataMock));
+            ->willReturn($moduleDataMock);
         $subject->_set('objectManager', $objectManagerMock);
 
         self::assertSame($moduleDataMock, $subject->loadModuleData());

@@ -864,7 +864,7 @@ class BackendUtilityTest extends UnitTestCase
     {
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects(self::any())->method('sL')->will(self::returnArgument(0));
+        $GLOBALS['LANG']->expects(self::any())->method('sL')->willReturnArgument(0);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getLabelsFromItemsList($table, $col, $keyList, $pageTsConfig);
@@ -893,7 +893,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects(self::any())->method('sL')->will(self::returnArgument(0));
+        $GLOBALS['LANG']->expects(self::any())->method('sL')->willReturnArgument(0);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'foo,invalidKey,bar');
@@ -921,7 +921,7 @@ class BackendUtilityTest extends UnitTestCase
         ];
         // Stub LanguageService and let sL() return the same value that came in again
         $GLOBALS['LANG'] = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG']->expects(self::any())->method('sL')->will(self::returnArgument(0));
+        $GLOBALS['LANG']->expects(self::any())->method('sL')->willReturnArgument(0);
 
         $GLOBALS['TCA'][$table] = $tca;
         $label = BackendUtility::getProcessedValue($table, $col, 'invalidKey');

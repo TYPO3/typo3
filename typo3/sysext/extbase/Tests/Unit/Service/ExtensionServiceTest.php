@@ -144,7 +144,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getPluginNamespaceTests($extensionName, $pluginName, $expectedResult)
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(self::returnValue([]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn([]);
         $actualResult = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
         self::assertEquals($expectedResult, $actualResult, 'Failing for extension: "' . $extensionName . '", plugin: "' . $pluginName . '"');
     }
@@ -154,7 +154,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function pluginNamespaceCanBeOverridden()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'SomeExtension', 'SomePlugin')->will(self::returnValue(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'SomeExtension', 'SomePlugin')->willReturn(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]);
         $expectedResult = 'overridden_plugin_namespace';
         $actualResult = $this->extensionService->getPluginNamespace('SomeExtension', 'SomePlugin');
         self::assertEquals($expectedResult, $actualResult);
@@ -187,7 +187,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult)
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will(self::returnValue(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]);
         $actualResult = $this->extensionService->getPluginNameByAction($extensionName, $controllerName, $actionName);
         self::assertEquals($expectedResult, $actualResult, 'Failing for $extensionName: "' . $extensionName . '", $controllerName: "' . $controllerName . '", $actionName: "' . $actionName . '" - ');
     }
@@ -199,7 +199,7 @@ class ExtensionServiceTest extends UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1280825466);
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will(self::returnValue(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn(['view' => ['pluginNamespace' => 'overridden_plugin_namespace']]);
         $this->extensionService->getPluginNameByAction('ExtensionName', 'ControllerName', 'otherAction');
     }
 
@@ -208,7 +208,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getPluginNameByActionReturnsCurrentIfItCanHandleTheActionEvenIfMoreThanOnePluginMatches()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will(self::returnValue(['extensionName' => 'CurrentExtension', 'pluginName' => 'CurrentPlugin', 'controllerConfiguration' => ['ControllerName' => ['actions' => ['otherAction']]]]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->willReturn(['extensionName' => 'CurrentExtension', 'pluginName' => 'CurrentPlugin', 'controllerConfiguration' => ['ControllerName' => ['actions' => ['otherAction']]]]);
         $actualResult = $this->extensionService->getPluginNameByAction('CurrentExtension', 'ControllerName', 'otherAction');
         $expectedResult = 'CurrentPlugin';
         self::assertEquals($expectedResult, $actualResult);
@@ -220,7 +220,7 @@ class ExtensionServiceTest extends UnitTestCase
     public function isActionCacheableReturnsTrueByDefault()
     {
         $mockConfiguration = [];
-        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($mockConfiguration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($mockConfiguration);
         $actualResult = $this->extensionService->isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
         self::assertTrue($actualResult);
     }
@@ -237,7 +237,7 @@ class ExtensionServiceTest extends UnitTestCase
                 ]
             ]
         ];
-        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($mockConfiguration));
+        $this->mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($mockConfiguration);
         $actualResult = $this->extensionService->isActionCacheable('SomeExtension', 'SomePlugin', 'SomeController', 'someAction');
         self::assertFalse($actualResult);
     }
@@ -247,7 +247,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPidByPluginSignatureReturnsNullIfConfigurationManagerIsNotInitialized()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(self::returnValue([]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn([]);
         self::assertNull($this->extensionService->getTargetPidByPlugin('ExtensionName', 'PluginName'));
     }
 
@@ -256,7 +256,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPidByPluginSignatureReturnsNullIfDefaultPidIsZero()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(self::returnValue(['view' => ['defaultPid' => 0]]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 0]]);
         self::assertNull($this->extensionService->getTargetPidByPlugin('ExtensionName', 'PluginName'));
     }
 
@@ -265,7 +265,7 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPidByPluginSignatureReturnsTheConfiguredDefaultPid()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(self::returnValue(['view' => ['defaultPid' => 123]]));
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(['view' => ['defaultPid' => 123]]);
         $expectedResult = 123;
         $actualResult = $this->extensionService->getTargetPidByPlugin('ExtensionName', 'SomePlugin');
         self::assertEquals($expectedResult, $actualResult);
@@ -277,8 +277,8 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPidByPluginSignatureDeterminesTheTargetPidIfDefaultPidIsAuto()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(
-            self::returnValue(['view' => ['defaultPid' => 'auto']])
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(
+            ['view' => ['defaultPid' => 'auto']]
         );
         $expectedResult = 321;
 
@@ -302,8 +302,8 @@ class ExtensionServiceTest extends UnitTestCase
      */
     public function getTargetPidByPluginSignatureReturnsNullIfTargetPidCouldNotBeDetermined()
     {
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(
-            self::returnValue(['view' => ['defaultPid' => 'auto']])
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(
+            ['view' => ['defaultPid' => 'auto']]
         );
 
         $statement = $this->prophesize(Statement::class);
@@ -328,8 +328,8 @@ class ExtensionServiceTest extends UnitTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1280773643);
 
-        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->will(
-            self::returnValue(['view' => ['defaultPid' => 'auto']])
+        $this->mockConfigurationManager->expects(self::once())->method('getConfiguration')->willReturn(
+            ['view' => ['defaultPid' => 'auto']]
         );
 
         $statement = $this->prophesize(Statement::class);

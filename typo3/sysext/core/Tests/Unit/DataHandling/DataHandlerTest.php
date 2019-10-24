@@ -463,19 +463,19 @@ class DataHandlerTest extends UnitTestCase
         $cacheManagerMock->expects(self::once())->method('flushCachesInGroupByTags')->with('pages', []);
 
         $subject->expects(self::once())->method('getCacheManager')->willReturn($cacheManagerMock);
-        $subject->expects(self::once())->method('recordInfo')->will(self::returnValue(null));
-        $subject->expects(self::once())->method('checkModifyAccessList')->with('pages')->will(self::returnValue(true));
-        $subject->expects(self::once())->method('tableReadOnly')->with('pages')->will(self::returnValue(false));
-        $subject->expects(self::once())->method('checkRecordUpdateAccess')->will(self::returnValue(true));
+        $subject->expects(self::once())->method('recordInfo')->willReturn(null);
+        $subject->expects(self::once())->method('checkModifyAccessList')->with('pages')->willReturn(true);
+        $subject->expects(self::once())->method('tableReadOnly')->with('pages')->willReturn(false);
+        $subject->expects(self::once())->method('checkRecordUpdateAccess')->willReturn(true);
         $subject->expects(self::once())->method('unsetElementsToBeDeleted')->willReturnArgument(0);
 
         /** @var BackendUserAuthentication|\PHPUnit_Framework_MockObject_MockObject $backEndUser */
         $backEndUser = $this->createMock(BackendUserAuthentication::class);
         $backEndUser->workspace = 1;
         $backEndUser->workspaceRec = ['freeze' => false];
-        $backEndUser->expects(self::once())->method('workspaceAllowAutoCreation')->will(self::returnValue(true));
-        $backEndUser->expects(self::once())->method('workspaceCannotEditRecord')->will(self::returnValue(true));
-        $backEndUser->expects(self::once())->method('recordEditAccessInternals')->with('pages', 1)->will(self::returnValue(true));
+        $backEndUser->expects(self::once())->method('workspaceAllowAutoCreation')->willReturn(true);
+        $backEndUser->expects(self::once())->method('workspaceCannotEditRecord')->willReturn(true);
+        $backEndUser->expects(self::once())->method('recordEditAccessInternals')->with('pages', 1)->willReturn(true);
         $subject->BE_USER = $backEndUser;
         $createdDataHandler = $this->createMock(DataHandler::class);
         $createdDataHandler->expects(self::once())->method('start')->with([], [
@@ -873,8 +873,8 @@ class DataHandlerTest extends UnitTestCase
 
         /** @var DataHandler|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface $mockDataHandler */
         $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getInlineFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
-        $mockDataHandler->expects(self::once())->method('getInlineFieldType')->will(self::returnValue('field'));
-        $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->will(self::returnValue($mockRelationHandler));
+        $mockDataHandler->expects(self::once())->method('getInlineFieldType')->willReturn('field');
+        $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);
         $mockDataHandler->expects(self::never())->method('deleteAction');
         $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'foo', 'bar', $conf);
     }

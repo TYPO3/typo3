@@ -227,7 +227,7 @@ class AbstractPluginTest extends UnitTestCase
         $resultBrowserHook->expects(self::atLeastOnce())
             ->method('pi_list_browseresults')
             ->with(1, '', [], 'pointer', true, false, $this->abstractPlugin)
-            ->will(self::returnValue($returnValue));
+            ->willReturn($returnValue);
 
         $actualReturnValue = $this->abstractPlugin->pi_list_browseresults();
 

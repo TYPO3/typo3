@@ -59,15 +59,15 @@ class ContainerTest extends UnitTestCase
         $psrContainer = $this->getMockBuilder(\Psr\Container\ContainerInterface::class)
             ->setMethods(['has', 'get'])
             ->getMock();
-        $psrContainer->expects(self::any())->method('has')->will(self::returnValue(false));
+        $psrContainer->expects(self::any())->method('has')->willReturn(false);
         $psrContainer->expects(self::any())->method('get')->will(self::throwException($notFoundException));
 
         $this->subject = $this->getMockBuilder(Container::class)
             ->setConstructorArgs([$psrContainer])
             ->setMethods(['getLogger', 'getReflectionService'])
             ->getMock();
-        $this->subject->expects(self::any())->method('getLogger')->will(self::returnValue($this->logger));
-        $this->subject->expects(self::any())->method('getReflectionService')->will(self::returnValue($reflectionService));
+        $this->subject->expects(self::any())->method('getLogger')->willReturn($this->logger);
+        $this->subject->expects(self::any())->method('getReflectionService')->willReturn($reflectionService);
     }
 
     /**

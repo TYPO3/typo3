@@ -53,13 +53,13 @@ class UpdateExtensionListTaskTest extends UnitTestCase
                 ->expects(self::at(0))
                 ->method('get')
                 ->with(Helper::class)
-                ->will(self::returnValue($repositoryHelper));
+                ->willReturn($repositoryHelper);
 
         $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $objectManagerMock
                 ->expects(self::at(1))
                 ->method('get')
-                ->will(self::returnValue($persistenceManagerMock));
+                ->willReturn($persistenceManagerMock);
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 
@@ -81,7 +81,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
             ->expects(self::at(0))
             ->method('get')
             ->with(Helper::class)
-            ->will(self::returnValue($repositoryHelper));
+            ->willReturn($repositoryHelper);
 
         $persistenceManagerMock = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class)->disableOriginalConstructor()->getMock();
         $persistenceManagerMock
@@ -91,7 +91,7 @@ class UpdateExtensionListTaskTest extends UnitTestCase
         $objectManagerMock
                 ->expects(self::at(1))
                 ->method('get')
-                ->will(self::returnValue($persistenceManagerMock));
+                ->willReturn($persistenceManagerMock);
 
         \TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class, $objectManagerMock);
 

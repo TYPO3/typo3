@@ -68,7 +68,7 @@ class ActionControllerTest extends UnitTestCase
     public function resolveActionMethodNameReturnsTheCurrentActionMethodNameFromTheRequest()
     {
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->expects(self::once())->method('getControllerActionName')->will(self::returnValue('fooBar'));
+        $mockRequest->expects(self::once())->method('getControllerActionName')->willReturn('fooBar');
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooBarAction'], [], '', false);
         $mockController->_set('request', $mockRequest);
@@ -83,7 +83,7 @@ class ActionControllerTest extends UnitTestCase
         $this->expectException(NoSuchActionException::class);
         $this->expectExceptionCode(1186669086);
         $mockRequest = $this->createMock(Request::class);
-        $mockRequest->expects(self::once())->method('getControllerActionName')->will(self::returnValue('fooBar'));
+        $mockRequest->expects(self::once())->method('getControllerActionName')->willReturn('fooBar');
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ActionController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $mockController = $this->getAccessibleMock(ActionController::class, ['otherBarAction'], [], '', false);
         $mockController->_set('request', $mockRequest);
@@ -290,7 +290,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
         /** @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
@@ -368,7 +368,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
         /** @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)
@@ -446,7 +446,7 @@ class ActionControllerTest extends UnitTestCase
         $mockController = $this->getAccessibleMock(ActionController::class, ['dummy'], [], '', false);
         /** @var ConfigurationManagerInterface|\PHPUnit_Framework_MockObject_MockObject $mockConfigurationManager */
         $mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue($configuration));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn($configuration);
         $mockController->injectConfigurationManager($mockConfigurationManager);
         $mockController->_set('request', $this->createMock(Request::class), ['getControllerExtensionKey']);
         $view = $this->getMockBuilder(ViewInterface::class)

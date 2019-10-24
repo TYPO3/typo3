@@ -51,10 +51,10 @@ class PackageManagerTest extends UnitTestCase
             ->setMethods(['has', 'set', 'getBackend', 'getCacheDirectory'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockCache->expects(self::any())->method('has')->will(self::returnValue(false));
-        $mockCache->expects(self::any())->method('set')->will(self::returnValue(true));
-        $mockCache->expects(self::any())->method('getBackend')->will(self::returnValue($mockCacheBackend));
-        $mockCacheBackend->expects(self::any())->method('getCacheDirectory')->will(self::returnValue('vfs://Test/Cache'));
+        $mockCache->expects(self::any())->method('has')->willReturn(false);
+        $mockCache->expects(self::any())->method('set')->willReturn(true);
+        $mockCache->expects(self::any())->method('getBackend')->willReturn($mockCacheBackend);
+        $mockCacheBackend->expects(self::any())->method('getCacheDirectory')->willReturn('vfs://Test/Cache');
         $this->packageManager = $this->getAccessibleMock(
             PackageManager::class,
             ['sortAndSavePackageStates', 'sortActivePackagesByDependencies', 'registerTransientClassLoadingInformationForPackage'],
@@ -277,7 +277,7 @@ class PackageManagerTest extends UnitTestCase
 
         $this->createPackage($packageKey);
 
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
 
         $this->packageManager->deactivatePackage($packageKey);
         self::assertFalse($this->packageManager->isPackageActive($packageKey));
@@ -300,7 +300,7 @@ class PackageManagerTest extends UnitTestCase
 
         $package = $this->createPackage('Acme.YetAnotherTestPackage');
         $package->setProtected(true);
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
         $this->packageManager->deactivatePackage('Acme.YetAnotherTestPackage');
     }
 
@@ -315,7 +315,7 @@ class PackageManagerTest extends UnitTestCase
         $this->expectException(UnknownPackageException::class);
         $this->expectExceptionCode(1166543253);
 
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
         $this->packageManager->deletePackage('PrettyUnlikelyThatThisPackageExists');
     }
 
@@ -347,7 +347,7 @@ class PackageManagerTest extends UnitTestCase
     {
         $this->createPackage('Acme.YetAnotherTestPackage');
 
-        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->will(self::returnValue([]));
+        $this->packageManager->expects(self::any())->method('sortActivePackagesByDependencies')->willReturn([]);
 
         self::assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
         self::assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));

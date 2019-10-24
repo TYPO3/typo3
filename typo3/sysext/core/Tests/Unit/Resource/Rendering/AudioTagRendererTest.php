@@ -42,11 +42,11 @@ class AudioTagRendererTest extends UnitTestCase
         $audioTagRenderer = new AudioTagRenderer();
 
         $fileResourceMock1 = $this->createMock(File::class);
-        $fileResourceMock1->expects(self::any())->method('getMimeType')->will(self::returnValue('audio/mpeg'));
+        $fileResourceMock1->expects(self::any())->method('getMimeType')->willReturn('audio/mpeg');
         $fileResourceMock2 = $this->createMock(File::class);
-        $fileResourceMock2->expects(self::any())->method('getMimeType')->will(self::returnValue('audio/wav'));
+        $fileResourceMock2->expects(self::any())->method('getMimeType')->willReturn('audio/wav');
         $fileResourceMock3 = $this->createMock(File::class);
-        $fileResourceMock3->expects(self::any())->method('getMimeType')->will(self::returnValue('audio/ogg'));
+        $fileResourceMock3->expects(self::any())->method('getMimeType')->willReturn('audio/ogg');
 
         self::assertTrue($audioTagRenderer->canRender($fileResourceMock1));
         self::assertTrue($audioTagRenderer->canRender($fileResourceMock2));
@@ -61,7 +61,7 @@ class AudioTagRendererTest extends UnitTestCase
         $audioTagRenderer = new AudioTagRenderer();
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->will(self::returnValue('video/mp4'));
+        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/mp4');
 
         self::assertFalse($audioTagRenderer->canRender($fileResourceMock));
     }
@@ -128,8 +128,8 @@ class AudioTagRendererTest extends UnitTestCase
         $audioTagRenderer = new AudioTagRenderer();
 
         $fileResourceMock = $this->createMock(File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->will(self::returnValue('audio/mpeg'));
-        $fileResourceMock->expects(self::any())->method('getPublicUrl')->will(self::returnValue($url));
+        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('audio/mpeg');
+        $fileResourceMock->expects(self::any())->method('getPublicUrl')->willReturn($url);
 
         self::assertSame(
             $expected,

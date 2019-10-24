@@ -3907,15 +3907,15 @@ class GeneralUtilityTest extends UnitTestCase
             ->getMock();
         $package->expects(self::any())
             ->method('getPackagePath')
-            ->will(self::returnValue(Environment::getPublicPath() . '/typo3/sysext/foo/'));
+            ->willReturn(Environment::getPublicPath() . '/typo3/sysext/foo/');
         $packageManager->expects(self::any())
             ->method('isPackageActive')
             ->with(self::equalTo('foo'))
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $packageManager->expects(self::any())
             ->method('getPackage')
             ->with('foo')
-            ->will(self::returnValue($package));
+            ->willReturn($package);
         ExtensionManagementUtility::setPackageManager($packageManager);
 
         $result = GeneralUtility::getFileAbsFileName($path);

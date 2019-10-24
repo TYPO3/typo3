@@ -127,7 +127,7 @@ class FormManagerControllerTest extends UnitTestCase
         $mockControllerContext
             ->expects(self::any())
             ->method('getUriBuilder')
-            ->will(self::returnValue($mockUriBuilder));
+            ->willReturn($mockUriBuilder);
 
         $mockController->_set('controllerContext', $mockControllerContext);
 

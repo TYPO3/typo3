@@ -85,11 +85,11 @@ class CollectionValidatorTest extends UnitTestCase
         $this->mockValidatorResolver->expects(self::exactly(4))
             ->method('createValidator')
             ->with('EmailAddress')
-            ->will(self::returnValue(
+            ->willReturn(
                 $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\EmailAddressValidator::class)
                     ->setMethods(['translateErrorMessage'])
                     ->getMock()
-            ));
+            );
         $this->validator->_set('validatorResolver', $this->mockValidatorResolver);
         $arrayOfEmailAddresses = [
             'foo@bar.de',
@@ -140,10 +140,10 @@ class CollectionValidatorTest extends UnitTestCase
         $this->mockValidatorResolver->expects(self::any())
             ->method('createValidator')
             ->with('Integer')
-            ->will(self::returnValue($integerValidator));
+            ->willReturn($integerValidator);
         $this->mockValidatorResolver->expects(self::any())
             ->method('buildBaseValidatorConjunction')
-            ->will(self::returnValue($aValidator));
+            ->willReturn($aValidator);
 
         // Add validators to properties
         $aValidator->addPropertyValidator('b', $this->validator);
@@ -191,7 +191,7 @@ class CollectionValidatorTest extends UnitTestCase
         $this->mockValidatorResolver->expects(self::once())
             ->method('getBaseValidatorConjunction')
             ->with($elementType)
-            ->will(self::returnValue($aValidator));
+            ->willReturn($aValidator);
 
         $this->validator->_set('options', ['elementType' => $elementType]);
 

@@ -50,7 +50,7 @@ class RepositoryRepositoryTest extends UnitTestCase
         $this->subject
             ->expects(self::once())
             ->method('findAll')
-            ->will(self::returnValue([]));
+            ->willReturn([]);
 
         self::assertNull($this->subject->findOneTypo3OrgRepository());
     }
@@ -64,17 +64,17 @@ class RepositoryRepositoryTest extends UnitTestCase
         $mockModelOne
             ->expects(self::once())
             ->method('getTitle')
-            ->will(self::returnValue('foo'));
+            ->willReturn('foo');
         $mockModelTwo = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Repository::class)->getMock();
         $mockModelTwo
             ->expects(self::once())
             ->method('getTitle')
-            ->will(self::returnValue('TYPO3.org Main Repository'));
+            ->willReturn('TYPO3.org Main Repository');
 
         $this->subject
             ->expects(self::once())
             ->method('findAll')
-            ->will(self::returnValue([$mockModelOne, $mockModelTwo]));
+            ->willReturn([$mockModelOne, $mockModelTwo]);
 
         self::assertSame($mockModelTwo, $this->subject->findOneTypo3OrgRepository());
     }

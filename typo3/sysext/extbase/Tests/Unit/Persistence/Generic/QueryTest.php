@@ -65,7 +65,7 @@ class QueryTest extends UnitTestCase
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $this->query->_set('objectManager', $objectManager);
         $queryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryResult::class);
-        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class, $this->query)->will(self::returnValue($queryResult));
+        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class, $this->query)->willReturn($queryResult);
         $actualResult = $this->query->execute();
         self::assertSame($queryResult, $actualResult);
     }
@@ -75,7 +75,7 @@ class QueryTest extends UnitTestCase
      */
     public function executeReturnsRawObjectDataIfReturnRawQueryResultIsSet()
     {
-        $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->will(self::returnValue('rawQueryResult'));
+        $this->persistenceManager->expects(self::once())->method('getObjectDataByQuery')->with($this->query)->willReturn('rawQueryResult');
         $expectedResult = 'rawQueryResult';
         $actualResult = $this->query->execute(true);
         self::assertEquals($expectedResult, $actualResult);
@@ -149,12 +149,12 @@ class QueryTest extends UnitTestCase
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $dynamicOperand */
         $dynamicOperand = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\PropertyValueInterface::class);
-        $objectManager->expects(self::any())->method('get')->will(self::returnValue($dynamicOperand));
+        $objectManager->expects(self::any())->method('get')->willReturn($dynamicOperand);
         /** @var $qomFactory \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory */
         $qomFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::class, ['comparison']);
         $qomFactory->_set('objectManager', $objectManager);
         $qomFactory->expects(self::once())->method('comparison')->with(self::anything(), self::anything(), $expectedOperand);
-        $this->query->expects(self::any())->method('getSelectorName')->will(self::returnValue('someSelector'));
+        $this->query->expects(self::any())->method('getSelectorName')->willReturn('someSelector');
         $this->query->_set('qomFactory', $qomFactory);
         $this->query->equals($propertyName, $operand, false);
     }

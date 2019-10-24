@@ -214,13 +214,13 @@ class ApcuBackendTest extends UnitTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $thisCache */
         $thisCache = $this->createMock(FrontendInterface::class);
-        $thisCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thisCache'));
+        $thisCache->expects(self::any())->method('getIdentifier')->willReturn('thisCache');
         $thisBackend = new ApcuBackend('Testing');
         $thisBackend->setCache($thisCache);
 
         /** @var \PHPUnit_Framework_MockObject_MockObject|FrontendInterface $thatCache */
         $thatCache = $this->createMock(FrontendInterface::class);
-        $thatCache->expects(self::any())->method('getIdentifier')->will(self::returnValue('thatCache'));
+        $thatCache->expects(self::any())->method('getIdentifier')->willReturn('thatCache');
         $thatBackend = new ApcuBackend('Testing');
         $thatBackend->setCache($thatCache);
         $thisBackend->set('thisEntry', 'Hello');

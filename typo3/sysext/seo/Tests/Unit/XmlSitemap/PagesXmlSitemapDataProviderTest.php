@@ -91,12 +91,10 @@ class PagesXmlSitemapDataProviderTest extends UnitTestCase
         $subject->_set('items', $this->items);
         $subject->_set('numberOfItemsPerPage', $numberOfItemsPerPage);
 
-        $subject->expects(self::any())->method('defineUrl')->will(
-            self::returnCallback(
-                function ($input) {
-                    return $input;
-                }
-            )
+        $subject->expects(self::any())->method('defineUrl')->willReturnCallback(
+            function ($input) {
+                return $input;
+            }
         );
 
         $returnedItems = $subject->getItems();

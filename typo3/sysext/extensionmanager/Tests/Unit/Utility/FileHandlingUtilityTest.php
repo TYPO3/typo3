@@ -228,8 +228,8 @@ class FileHandlingUtilityTest extends UnitTestCase
             'writeExtensionFiles',
             'reloadPackageInformation',
         ]);
-        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->will(self::returnValue([]));
-        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->will(self::returnValue([]));
+        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->willReturn([]);
+        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn([]);
         $fileHandlerMock->expects(self::once())->method('makeAndClearExtensionDir')->with($extensionData['extKey']);
         $fileHandlerMock->_call('unpackExtensionFromExtensionDataArray', $extensionData);
     }
@@ -295,8 +295,8 @@ class FileHandlingUtilityTest extends UnitTestCase
             'writeExtensionFiles',
             'reloadPackageInformation',
         ]);
-        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->will(self::returnValue($files));
-        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->will(self::returnValue($directories));
+        $fileHandlerMock->expects(self::once())->method('extractFilesArrayFromExtensionData')->willReturn($files);
+        $fileHandlerMock->expects(self::once())->method('extractDirectoriesFromExtensionData')->willReturn($directories);
         $fileHandlerMock->expects(self::once())->method('createDirectoriesForExtensionFiles')->with($directories);
         $fileHandlerMock->expects(self::once())->method('writeExtensionFiles')->with($cleanedFiles);
         $fileHandlerMock->expects(self::once())->method('reloadPackageInformation')->with('test');
@@ -433,7 +433,7 @@ class FileHandlingUtilityTest extends UnitTestCase
         ];
         $rootPath = $this->fakedExtensions[$extKey]['siteAbsPath'];
         $emConfUtilityMock = $this->getAccessibleMock(EmConfUtility::class, ['constructEmConf']);
-        $emConfUtilityMock->expects(self::once())->method('constructEmConf')->with($extensionData)->will(self::returnValue(var_export($extensionData['EM_CONF'], true)));
+        $emConfUtilityMock->expects(self::once())->method('constructEmConf')->with($extensionData)->willReturn(var_export($extensionData['EM_CONF'], true));
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['makeAndClearExtensionDir']);
         $fileHandlerMock->_set('emConfUtility', $emConfUtilityMock);
         $fileHandlerMock->_call('writeEmConfToFile', $extensionData, $rootPath);
@@ -451,7 +451,7 @@ class FileHandlingUtilityTest extends UnitTestCase
             ->getMock();
         $fileHandlerMock->expects(self::any())
             ->method('getAbsolutePath')
-            ->will(self::returnArgument(0));
+            ->willReturnArgument(0);
         return $fileHandlerMock;
     }
 
@@ -476,10 +476,10 @@ class FileHandlingUtilityTest extends UnitTestCase
         );
         $fileHandlerMock->expects(self::any())
             ->method('getAbsoluteExtensionPath')
-            ->will(self::returnValue($extensionRoot));
+            ->willReturn($extensionRoot);
         $fileHandlerMock->expects(self::any())
             ->method('getExtensionVersion')
-            ->will(self::returnValue('0.0.0'));
+            ->willReturn('0.0.0');
 
         // Add files and directories to extension:
         touch($extensionRoot . 'emptyFile.txt');

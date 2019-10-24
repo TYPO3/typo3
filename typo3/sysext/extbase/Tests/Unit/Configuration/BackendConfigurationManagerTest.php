@@ -78,7 +78,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
      */
     public function getPluginConfigurationReturnsEmptyArrayIfNoPluginConfigurationWasFound()
     {
-        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue(['foo' => 'bar']));
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn(['foo' => 'bar']);
         $expectedResult = [];
         $actualResult = $this->backendConfigurationManager->_call('getPluginConfiguration', 'SomeExtensionName', 'SomePluginName');
         self::assertEquals($expectedResult, $actualResult);
@@ -104,8 +104,8 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
-        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue($testSetup));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar'
@@ -135,8 +135,8 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->will(self::returnValue($testSettingsConverted));
-        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue($testSetup));
+        $this->mockTypoScriptService->expects(self::any())->method('convertTypoScriptArrayToPlainArray')->with($testSettings)->willReturn($testSettingsConverted);
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar'
@@ -189,9 +189,9 @@ class BackendConfigurationManagerTest extends UnitTestCase
                 'tx_someextensionname_somepluginname.' => $testPluginSettings
             ]
         ];
-        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->will(self::returnValue($testExtensionSettingsConverted));
-        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->will(self::returnValue($testPluginSettingsConverted));
-        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->will(self::returnValue($testSetup));
+        $this->mockTypoScriptService->expects(self::at(0))->method('convertTypoScriptArrayToPlainArray')->with($testExtensionSettings)->willReturn($testExtensionSettingsConverted);
+        $this->mockTypoScriptService->expects(self::at(1))->method('convertTypoScriptArrayToPlainArray')->with($testPluginSettings)->willReturn($testPluginSettingsConverted);
+        $this->backendConfigurationManager->expects(self::once())->method('getTypoScriptSetup')->willReturn($testSetup);
         $expectedResult = [
             'settings' => [
                 'foo' => 'bar',

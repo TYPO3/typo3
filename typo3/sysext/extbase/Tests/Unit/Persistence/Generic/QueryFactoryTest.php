@@ -61,7 +61,7 @@ class QueryFactoryTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->setMethods(['buildDataMap', 'convertClassNameToTableName'])
             ->getMock();
-        $this->dataMapFactory->expects(self::any())->method('buildDataMap')->will(self::returnValue($this->dataMap));
+        $this->dataMapFactory->expects(self::any())->method('buildDataMap')->willReturn($this->dataMap);
 
         $this->queryFactory = new \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactory(
             $this->objectManager,
@@ -90,18 +90,18 @@ class QueryFactoryTest extends UnitTestCase
      */
     public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue($static, $rootLevel, $expectedResult)
     {
-        $this->dataMap->expects(self::any())->method('getIsStatic')->will(self::returnValue($static));
-        $this->dataMap->expects(self::any())->method('getRootLevel')->will(self::returnValue($rootLevel));
+        $this->dataMap->expects(self::any())->method('getIsStatic')->willReturn($static);
+        $this->dataMap->expects(self::any())->method('getRootLevel')->willReturn($rootLevel);
 
         $query = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
         $this->objectManager->expects(self::at(0))->method('get')
             ->with(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class)
-            ->will(self::returnValue($query));
+            ->willReturn($query);
 
         $querySettings = new \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings();
         $this->objectManager->expects(self::at(1))->method('get')
             ->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)
-            ->will(self::returnValue($querySettings));
+            ->willReturn($querySettings);
         $query->expects(self::once())->method('setQuerySettings')->with($querySettings);
         $this->queryFactory->create($this->className);
 

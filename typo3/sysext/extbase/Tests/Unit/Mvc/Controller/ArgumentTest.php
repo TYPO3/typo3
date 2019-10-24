@@ -187,8 +187,8 @@ class ArgumentTest extends UnitTestCase
      */
     protected function setupPropertyMapperAndSetValue()
     {
-        $this->mockPropertyMapper->expects(self::once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->will(self::returnValue('convertedValue'));
-        $this->mockPropertyMapper->expects(self::once())->method('getMessages')->will(self::returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
+        $this->mockPropertyMapper->expects(self::once())->method('convert')->with('someRawValue', 'string', $this->mockConfiguration)->willReturn('convertedValue');
+        $this->mockPropertyMapper->expects(self::once())->method('getMessages')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
         return $this->simpleValueArgument->setValue('someRawValue');
     }
 
@@ -221,7 +221,7 @@ class ArgumentTest extends UnitTestCase
             ->getMock();
         $validationMessages = new \TYPO3\CMS\Extbase\Error\Result();
         $validationMessages->addError($error);
-        $mockValidator->expects(self::once())->method('validate')->with('convertedValue')->will(self::returnValue($validationMessages));
+        $mockValidator->expects(self::once())->method('validate')->with('convertedValue')->willReturn($validationMessages);
         $this->simpleValueArgument->setValidator($mockValidator);
         $this->setupPropertyMapperAndSetValue();
         self::assertFalse($this->simpleValueArgument->isValid());

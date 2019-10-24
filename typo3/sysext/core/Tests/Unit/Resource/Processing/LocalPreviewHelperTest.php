@@ -31,10 +31,10 @@ class LocalPreviewHelperTest extends UnitTestCase
     {
         $file = $this->createMock(File::class);
         // Use size slightly larger than default size to ensure processing
-        $file->expects(self::any())->method('getProperty')->will(self::returnValueMap([
+        $file->expects(self::any())->method('getProperty')->willReturnMap([
             ['width', 65],
             ['height', 65],
-        ]));
+        ]);
 
         $task = $this->createMock(TaskInterface::class);
         $task->expects(self::once())->method('getSourceFile')->willReturn($file);
@@ -58,10 +58,10 @@ class LocalPreviewHelperTest extends UnitTestCase
     public function processDoesNotScaleUpImages()
     {
         $file = $this->createMock(File::class);
-        $file->expects(self::any())->method('getProperty')->will(self::returnValueMap([
+        $file->expects(self::any())->method('getProperty')->willReturnMap([
             ['width', 20],
             ['height', 20],
-        ]));
+        ]);
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
             ->disableOriginalConstructor()
@@ -81,10 +81,10 @@ class LocalPreviewHelperTest extends UnitTestCase
     public function processGeneratesPreviewEvenIfSourceFileHasNoSize()
     {
         $file = $this->createMock(File::class);
-        $file->expects(self::any())->method('getProperty')->will(self::returnValueMap([
+        $file->expects(self::any())->method('getProperty')->willReturnMap([
             ['width', 0],
             ['height', 0],
-        ]));
+        ]);
 
         $task = $this->createMock(TaskInterface::class);
         $task->expects(self::once())->method('getSourceFile')->willReturn($file);

@@ -43,7 +43,7 @@ class TypoScriptServiceTest extends UnitTestCase
             ->expects(self::any())
             ->method('cObjGetSingle')
             ->with('TEXT', ['value' => 'rambo'])
-            ->will(self::returnValue('rambo'));
+            ->willReturn('rambo');
 
         $mockTypoScriptService
             ->expects(self::any())

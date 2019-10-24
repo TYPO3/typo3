@@ -245,11 +245,11 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $this->subject->expects(self::at(0))
             ->method('getTreeList')
             ->with(-16, 15)
-            ->will(self::returnValue('15,16'));
+            ->willReturn('15,16');
         $this->subject->expects(self::at(1))
             ->method('getTreeList')
             ->with(-35, 15)
-            ->will(self::returnValue('15,35'));
+            ->willReturn('15,35');
 
         $this->subject->getQuery('tt_content', $conf, true);
     }
@@ -272,7 +272,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
         $this->subject->expects(self::once())
             ->method('getTreeList')
             ->with(-27)
-            ->will(self::returnValue('27'));
+            ->willReturn('27');
 
         $this->subject->getQuery('tt_content', $conf, true);
     }

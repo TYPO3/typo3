@@ -29,7 +29,7 @@ class LogEntryRepositoryTest extends UnitTestCase
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
         $querySettings = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->getMock();
         $objectManager = $this->getMockBuilder(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class)->getMock();
-        $objectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->will(self::returnValue($querySettings));
+        $objectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class)->willReturn($querySettings);
         $querySettings->expects(self::atLeastOnce())->method('setRespectStoragePage')->with(false);
         /** @var \TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository|\PHPUnit_Framework_MockObject_MockObject $subject */
         $subject = $this->getMockBuilder(\TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository::class)

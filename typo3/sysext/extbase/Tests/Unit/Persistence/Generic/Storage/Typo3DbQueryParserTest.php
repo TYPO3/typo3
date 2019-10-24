@@ -332,10 +332,10 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->setConstructorArgs([$connectionProphet->reveal()])
             ->getMock();
         $connectionProphet->createQueryBuilder()->willReturn($queryBuilderForSubselectMock);
-        $queryBuilderForSubselectMock->expects(self::any())->method('expr')->will(self::returnValue($expr));
-        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->will(self::returnCallback(function ($identifier) {
+        $queryBuilderForSubselectMock->expects(self::any())->method('expr')->willReturn($expr);
+        $queryBuilderForSubselectMock->expects(self::any())->method('unquoteSingleIdentifier')->willReturnCallback(function ($identifier) {
             return $identifier;
-        }));
+        });
         return $queryBuilderProphet;
     }
 
@@ -513,13 +513,13 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->setMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockSource->expects(self::any())->method('getNodeTypeName')->will(self::returnValue('foo'));
+        $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('foo');
         $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
             ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockDataMapper->expects(self::once())->method('convertClassNameToTableName')->with('foo')->will(self::returnValue('tx_myext_tablename'));
-        $mockDataMapper->expects(self::once())->method('convertPropertyNameToColumnName')->with('fooProperty', 'foo')->will(self::returnValue('converted_fieldname'));
+        $mockDataMapper->expects(self::once())->method('convertClassNameToTableName')->with('foo')->willReturn('tx_myext_tablename');
+        $mockDataMapper->expects(self::once())->method('convertPropertyNameToColumnName')->with('fooProperty', 'foo')->willReturn('converted_fieldname');
         $queryBuilderProphet = $this->prophesize(QueryBuilder::class);
         $queryBuilderProphet->addOrderBy('tx_myext_tablename.converted_fieldname', 'ASC')->shouldBeCalledTimes(1);
 
@@ -564,13 +564,13 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->setMethods(['getNodeTypeName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockSource->expects(self::any())->method('getNodeTypeName')->will(self::returnValue('Tx_MyExt_ClassName'));
+        $mockSource->expects(self::any())->method('getNodeTypeName')->willReturn('Tx_MyExt_ClassName');
         $mockDataMapper = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class)
             ->setMethods(['convertPropertyNameToColumnName', 'convertClassNameToTableName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockDataMapper->expects(self::any())->method('convertClassNameToTableName')->with('Tx_MyExt_ClassName')->will(self::returnValue('tx_myext_tablename'));
-        $mockDataMapper->expects(self::any())->method('convertPropertyNameToColumnName')->will(self::returnValue('converted_fieldname'));
+        $mockDataMapper->expects(self::any())->method('convertClassNameToTableName')->with('Tx_MyExt_ClassName')->willReturn('tx_myext_tablename');
+        $mockDataMapper->expects(self::any())->method('convertPropertyNameToColumnName')->willReturn('converted_fieldname');
         $orderings = [
             'fooProperty' => QueryInterface::ORDER_ASCENDING,
             'barProperty' => QueryInterface::ORDER_DESCENDING
@@ -641,15 +641,15 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->setMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockQuerySettings->expects(self::once())->method('getIgnoreEnableFields')->will(self::returnValue($ignoreEnableFields));
-        $mockQuerySettings->expects(self::once())->method('getEnableFieldsToBeIgnored')->will(self::returnValue($enableFieldsToBeIgnored));
-        $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->will(self::returnValue($deletedValue));
+        $mockQuerySettings->expects(self::once())->method('getIgnoreEnableFields')->willReturn($ignoreEnableFields);
+        $mockQuerySettings->expects(self::once())->method('getEnableFieldsToBeIgnored')->willReturn($enableFieldsToBeIgnored);
+        $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->willReturn($deletedValue);
 
         /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit_Framework_MockObject_MockObject */
         $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
-        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->will(self::returnValue($mode === 'FE'));
+        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn($mode === 'FE');
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
@@ -713,7 +713,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
-        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->will(self::returnValue($mode === 'FE'));
+        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn($mode === 'FE');
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
@@ -740,15 +740,15 @@ class Typo3DbQueryParserTest extends UnitTestCase
             ->setMethods(['getIgnoreEnableFields', 'getEnableFieldsToBeIgnored', 'getIncludeDeleted'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockQuerySettings->expects(self::once())->method('getIgnoreEnableFields')->will(self::returnValue(false));
-        $mockQuerySettings->expects(self::once())->method('getEnableFieldsToBeIgnored')->will(self::returnValue([]));
-        $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->will(self::returnValue(true));
+        $mockQuerySettings->expects(self::once())->method('getIgnoreEnableFields')->willReturn(false);
+        $mockQuerySettings->expects(self::once())->method('getEnableFieldsToBeIgnored')->willReturn([]);
+        $mockQuerySettings->expects(self::once())->method('getIncludeDeleted')->willReturn(true);
 
         /** @var $mockEnvironmentService \TYPO3\CMS\Extbase\Service\EnvironmentService | \PHPUnit_Framework_MockObject_MockObject */
         $mockEnvironmentService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Service\EnvironmentService::class)
             ->setMethods(['isEnvironmentInFrontendMode'])
             ->getMock();
-        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->will(self::returnValue(true));
+        $mockEnvironmentService->expects(self::any())->method('isEnvironmentInFrontendMode')->willReturn(true);
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);

@@ -71,7 +71,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
 
         $mockObject = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ClassWithTwoGetters('testing', 1476108385);
 
-        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->will(self::returnValue(true));
+        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->willReturn(true);
         $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObject')
             ->willReturn($mockObject);
         $this->viewHelperVariableContainer->exists(
@@ -100,7 +100,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
 
-        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->will(self::returnValue(true));
+        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->willReturn(true);
         $this->viewHelperVariableContainer->get(
             FormViewHelper::class,
             'formObjectName'
@@ -133,7 +133,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
 
-        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->will(self::returnValue(true));
+        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->willReturn(true);
         $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName')
             ->willReturn('myObjectName');
         $this->viewHelperVariableContainer->exists(
@@ -164,7 +164,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
 
-        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->will(self::returnValue(true));
+        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->willReturn(true);
         $this->viewHelperVariableContainer->get(FormViewHelper::class, 'formObjectName')
             ->willReturn(null);
         $this->viewHelperVariableContainer->exists(
@@ -195,7 +195,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
 
-        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->will(self::returnValue(false));
+        $formViewHelper->expects(self::any())->method('isObjectAccessorMode')->willReturn(false);
         $this->viewHelperVariableContainer->exists(
             FormViewHelper::class,
             'fieldNamePrefix'
@@ -276,8 +276,8 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->injectDependenciesIntoViewHelper($formFieldViewHelper);
         $arguments = ['property' => $property];
         $formFieldViewHelper->_set('arguments', $arguments);
-        $formFieldViewHelper->expects(self::atLeastOnce())->method('isObjectAccessorMode')->will(
-            self::returnValue(true)
+        $formFieldViewHelper->expects(self::atLeastOnce())->method('isObjectAccessorMode')->willReturn(
+            true
         );
         $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formObject')
             ->willReturn(true);
@@ -324,8 +324,8 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
         $this->injectDependenciesIntoViewHelper($formFieldViewHelper);
         $arguments = ['property' => $property];
         $formFieldViewHelper->_set('arguments', $arguments);
-        $formFieldViewHelper->expects(self::atLeastOnce())->method('isObjectAccessorMode')->will(
-            self::returnValue(true)
+        $formFieldViewHelper->expects(self::atLeastOnce())->method('isObjectAccessorMode')->willReturn(
+            true
         );
         $this->viewHelperVariableContainer->exists(FormViewHelper::class, 'formObject')
             ->willReturn(true);
@@ -373,7 +373,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
             false
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
-        $formViewHelper->expects(self::any())->method('getName')->will(self::returnValue('SomeFieldName'));
+        $formViewHelper->expects(self::any())->method('getName')->willReturn('SomeFieldName');
         $this->viewHelperVariableContainer->exists(
             FormViewHelper::class,
             'renderedHiddenFields'
@@ -405,7 +405,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
             false
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
-        $formViewHelper->expects(self::any())->method('getName')->will(self::returnValue('NewFieldName'));
+        $formViewHelper->expects(self::any())->method('getName')->willReturn('NewFieldName');
         $this->viewHelperVariableContainer->exists(
             FormViewHelper::class,
             'renderedHiddenFields'
@@ -435,7 +435,7 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
             false
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
-        $formViewHelper->expects(self::any())->method('getName')->will(self::returnValue('SomeFieldName'));
+        $formViewHelper->expects(self::any())->method('getName')->willReturn('SomeFieldName');
         $this->viewHelperVariableContainer->exists(
             FormViewHelper::class,
             'renderedHiddenFields'
@@ -462,8 +462,8 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
             false
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
-        $formViewHelper->expects(self::any())->method('getName')->will(
-            self::returnValue('SomeFieldName[WithBrackets][]')
+        $formViewHelper->expects(self::any())->method('getName')->willReturn(
+            'SomeFieldName[WithBrackets][]'
         );
         $this->viewHelperVariableContainer->exists(
             FormViewHelper::class,
@@ -496,8 +496,8 @@ class AbstractFormFieldViewHelperTest extends FormFieldViewHelperBaseTestcase
             false
         );
         $this->injectDependenciesIntoViewHelper($formViewHelper);
-        $formViewHelper->expects(self::any())->method('getName')->will(
-            self::returnValue('SomeFieldName[WithBrackets][foo]')
+        $formViewHelper->expects(self::any())->method('getName')->willReturn(
+            'SomeFieldName[WithBrackets][foo]'
         );
         $this->viewHelperVariableContainer->exists(
             FormViewHelper::class,

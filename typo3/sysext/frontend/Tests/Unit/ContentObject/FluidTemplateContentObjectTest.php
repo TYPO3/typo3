@@ -89,7 +89,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->standaloneView
             ->expects(self::any())
             ->method('getRequest')
-            ->will(self::returnValue($this->request));
+            ->willReturn($this->request);
         $this->subject->_set('view', $this->standaloneView);
     }
 
@@ -181,7 +181,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ->expects(self::any())
             ->method('cObjGetSingle')
             ->with('FILE', ['file' => Environment::getPublicPath() . '/foo/bar.html'])
-            ->will(self::returnValue('baz'));
+            ->willReturn('baz');
 
         $this->standaloneView
             ->expects(self::any())
@@ -206,7 +206,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->standaloneView
             ->expects(self::any())
             ->method('getFormat')
-            ->will(self::returnValue('html'));
+            ->willReturn('html');
         $this->standaloneView
             ->expects(self::once())
             ->method('setTemplate')
@@ -234,11 +234,11 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ->expects(self::once())
             ->method('stdWrap')
             ->with('TEXT', ['value' => 'bar'])
-            ->will(self::returnValue('bar'));
+            ->willReturn('bar');
         $this->standaloneView
             ->expects(self::any())
             ->method('getFormat')
-            ->will(self::returnValue('html'));
+            ->willReturn('html');
         $this->standaloneView
             ->expects(self::once())
             ->method('setTemplate')
@@ -631,7 +631,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
             ->expects(self::once())
             ->method('convertTypoScriptArrayToPlainArray')
             ->with($configuration['settings.'])
-            ->will(self::returnValue($expectedSettingsToBeSet));
+            ->willReturn($expectedSettingsToBeSet);
         GeneralUtility::addInstance(TypoScriptService::class, $typoScriptServiceMock);
 
         $this->standaloneView
@@ -718,7 +718,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->contentObjectRenderer
             ->expects(self::once())
             ->method('cObjGetSingle')
-            ->will(self::returnValue('foo'));
+            ->willReturn('foo');
         $this->standaloneView
             ->expects(self::once())
             ->method('assignMultiple')
@@ -781,7 +781,7 @@ class FluidTemplateContentObjectTest extends UnitTestCase
         $this->standaloneView
             ->expects(self::any())
             ->method('render')
-            ->will(self::returnValue('baz'));
+            ->willReturn('baz');
         $this->contentObjectRenderer
             ->expects(self::once())
             ->method('stdWrap')

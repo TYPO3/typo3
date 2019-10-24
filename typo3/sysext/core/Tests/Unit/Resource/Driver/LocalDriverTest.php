@@ -133,8 +133,8 @@ class LocalDriverTest extends BaseTestCase
         );
         $driver->expects(self::any())
             ->method('isPathValid')
-            ->will(
-                self::returnValue(true)
+            ->willReturn(
+                true
             );
 
         $driver->setStorageUid(5);
@@ -189,8 +189,8 @@ class LocalDriverTest extends BaseTestCase
         $driver = $this->createDriver([], ['sanitizeFilename']);
         $driver->expects(self::exactly(2))
             ->method('sanitizeFileName')
-            ->will(
-                self::returnValue('sanitized')
+            ->willReturn(
+                'sanitized'
             );
         $driver->createFolder('newFolder/andSubfolder', '/', true);
         self::assertFileExists($this->getUrlInMount('/sanitized/sanitized/'));
@@ -212,8 +212,8 @@ class LocalDriverTest extends BaseTestCase
         $driver->expects(self::once())
             ->method('hasCapability')
             ->with(ResourceStorage::CAPABILITY_PUBLIC)
-            ->will(
-                self::returnValue(true)
+            ->willReturn(
+                true
             );
         $driver->_set('absoluteBasePath', Environment::getPublicPath() . '/un encö/ded %path/');
         $driver->_call('determineBaseUrl');

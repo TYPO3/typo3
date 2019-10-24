@@ -52,17 +52,17 @@ class AbstractWidgetControllerTest extends UnitTestCase
     public function processRequestSetsWidgetConfiguration()
     {
         $widgetContext = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class);
-        $widgetContext->expects(self::once())->method('getWidgetConfiguration')->will(self::returnValue('myConfiguration'));
+        $widgetContext->expects(self::once())->method('getWidgetConfiguration')->willReturn('myConfiguration');
         /** @var WidgetRequest|\PHPUnit_Framework_MockObject_MockObject $request */
         $request = $this->createMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class);
-        $request->expects(self::once())->method('getWidgetContext')->will(self::returnValue($widgetContext));
+        $request->expects(self::once())->method('getWidgetContext')->willReturn($widgetContext);
         /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject $response */
         $response = $this->createMock(\TYPO3\CMS\Extbase\Mvc\ResponseInterface::class);
         /** @var AbstractWidgetController|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $abstractWidgetController */
         $abstractWidgetController = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class, ['resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'initializeAction', 'checkRequestHash', 'mapRequestArgumentsToControllerArguments', 'buildControllerContext', 'resolveView', 'callActionMethod'], [], '', false);
         $mockUriBuilder = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class);
         $objectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
-        $objectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class)->will(self::returnValue($mockUriBuilder));
+        $objectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder::class)->willReturn($mockUriBuilder);
 
         $configurationService = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $abstractWidgetController->_set('mvcPropertyMappingConfigurationService', $configurationService);

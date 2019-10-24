@@ -51,8 +51,8 @@ class HiddenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
         $tagBuilder->setTagName('input')->shouldBeCalled();
         $this->viewHelper->expects(self::once())->method('registerFieldNameForFormTokenGeneration')->with('foo');
 
-        $this->viewHelper->expects(self::once())->method('getName')->will(self::returnValue('foo'));
-        $this->viewHelper->expects(self::once())->method('getValueAttribute')->will(self::returnValue('bar'));
+        $this->viewHelper->expects(self::once())->method('getName')->willReturn('foo');
+        $this->viewHelper->expects(self::once())->method('getValueAttribute')->willReturn('bar');
         $this->viewHelper->setTagBuilder($tagBuilder->reveal());
 
         $this->viewHelper->initializeArgumentsAndRender();

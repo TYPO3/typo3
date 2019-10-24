@@ -113,7 +113,7 @@ class ResourceCompressorTest extends BaseTestCase
         $this->subject->expects(self::once())
             ->method('compressCssFile')
             ->with($fileName)
-            ->will(self::returnValue($compressedFileName));
+            ->willReturn($compressedFileName);
 
         $result = $this->subject->compressCssFiles($testFileFixture);
 
@@ -138,7 +138,7 @@ class ResourceCompressorTest extends BaseTestCase
         $this->subject->expects(self::once())
             ->method('compressJsFile')
             ->with($fileName)
-            ->will(self::returnValue($compressedFileName));
+            ->willReturn($compressedFileName);
 
         $result = $this->subject->compressJsFiles($testFileFixture);
 
@@ -163,7 +163,7 @@ class ResourceCompressorTest extends BaseTestCase
         ];
         $this->subject->expects(self::once())
             ->method('createMergedCssFile')
-            ->will(self::returnValue($concatenatedFileName));
+            ->willReturn($concatenatedFileName);
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
 
@@ -279,7 +279,7 @@ class ResourceCompressorTest extends BaseTestCase
         $this->subject->expects(self::once())
             ->method('createMergedCssFile')
             ->with(self::equalTo([$screen1FileName, $screen3FileName]))
-            ->will(self::returnValue('merged_screen'));
+            ->willReturn('merged_screen');
 
         $result = $this->subject->concatenateCssFiles($testFileFixture);
         self::assertEquals([
@@ -306,7 +306,7 @@ class ResourceCompressorTest extends BaseTestCase
         ];
         $this->subject->expects(self::once())
             ->method('createMergedJsFile')
-            ->will(self::returnValue($concatenatedFileName));
+            ->willReturn($concatenatedFileName);
 
         $result = $this->subject->concatenateJsFiles($testFileFixture);
 
@@ -435,7 +435,7 @@ class ResourceCompressorTest extends BaseTestCase
         $concatenatedFileName = 'merged_foo.js';
         $this->subject->expects(self::once())
             ->method('createMergedJsFile')
-            ->will(self::returnValue($concatenatedFileName));
+            ->willReturn($concatenatedFileName);
 
         $result = $this->subject->concatenateJsFiles($input);
 

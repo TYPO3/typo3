@@ -55,7 +55,7 @@ class JsonViewTest extends UnitTestCase
             ->getMock();
         $this->controllerContext = $this->createMock(ControllerContext::class);
         $this->response = $this->createMock(Response::class);
-        $this->controllerContext->expects(self::any())->method('getResponse')->will(self::returnValue($this->response));
+        $this->controllerContext->expects(self::any())->method('getResponse')->willReturn($this->response);
         $this->view->setControllerContext($this->controllerContext);
     }
 
@@ -244,7 +244,7 @@ class JsonViewTest extends UnitTestCase
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);
 
-        $persistenceManagerMock->expects(self::once())->method('getIdentifierByObject')->with($object->value1)->will(self::returnValue($dummyIdentifier));
+        $persistenceManagerMock->expects(self::once())->method('getIdentifierByObject')->with($object->value1)->willReturn($dummyIdentifier);
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
 
@@ -311,9 +311,9 @@ class JsonViewTest extends UnitTestCase
         $reflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
             ->setMethods([ 'getClassNameByObject' ])
             ->getMock();
-        $reflectionService->expects(self::any())->method('getClassNameByObject')->will(self::returnCallback(function ($object) {
+        $reflectionService->expects(self::any())->method('getClassNameByObject')->willReturnCallback(function ($object) {
             return get_class($object);
-        }));
+        });
 
         $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, ['dummy'], [], '', false);
         $this->inject($jsonView, 'reflectionService', $reflectionService);

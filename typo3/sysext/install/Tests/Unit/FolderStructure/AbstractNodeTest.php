@@ -84,7 +84,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $parentPath = '/foo/bar';
-        $parent->expects(self::once())->method('getAbsolutePath')->will(self::returnValue($parentPath));
+        $parent->expects(self::once())->method('getAbsolutePath')->willReturn($parentPath);
         $name = $this->getUniqueId('test_');
         $node->_set('parent', $parent);
         $node->_set('name', $name);
@@ -112,7 +112,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['dummy'], [], '', false);
         $parentMock = $this->createMock(\TYPO3\CMS\Install\FolderStructure\NodeInterface::class);
-        $parentMock->expects(self::once())->method('isWritable')->will(self::returnValue(true));
+        $parentMock->expects(self::once())->method('isWritable')->willReturn(true);
         $node->_set('parent', $parentMock);
         self::assertTrue($node->isWritable());
     }
@@ -125,7 +125,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('exists'));
     }
 
@@ -143,7 +143,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         symlink($target, $path);
         unlink($target);
         $this->testFilesToDelete[] = $path;
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('exists'));
     }
 
@@ -155,7 +155,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->_call('exists'));
     }
 
@@ -174,8 +174,8 @@ class AbstractNodeTest extends FolderStructureTestCase
         );
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1366744035);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue(''));
-        $node->expects(self::once())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn('');
+        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
         $node->_call('fixPermission');
     }
 
@@ -195,13 +195,13 @@ class AbstractNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue(''));
-        $node->expects(self::once())->method('isPermissionCorrect')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn('');
+        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
         $path = $this->getVirtualTestDir('root_');
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02000);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($subPath));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($subPath);
         $node->_set('targetPermission', '2770');
         self::assertEquals(FlashMessage::NOTICE, $node->_call('fixPermission')->getSeverity());
         chmod($path, 02770);
@@ -223,13 +223,13 @@ class AbstractNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue(''));
-        $node->expects(self::once())->method('isPermissionCorrect')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn('');
+        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
         $path = $this->getVirtualTestDir('root_');
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02000);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($subPath));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($subPath);
         $node->_set('targetPermission', '2770');
         self::assertEquals(FlashMessage::NOTICE, $node->_call('fixPermission')->getSeverity());
         chmod($path, 02770);
@@ -248,14 +248,14 @@ class AbstractNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue(''));
-        $node->expects(self::once())->method('isPermissionCorrect')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn('');
+        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(false);
         $path = $this->getVirtualTestDir('root_');
         $subPath = $path . '/' . $this->getUniqueId('dir_');
         mkdir($subPath);
         chmod($path, 02770);
         $node->_set('targetPermission', '2770');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($subPath));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($subPath);
         self::assertEquals(FlashMessage::OK, $node->_call('fixPermission')->getSeverity());
         $resultDirectoryPermissions = substr(decoct(fileperms($subPath)), 1);
         self::assertSame('2770', $resultDirectoryPermissions);
@@ -268,7 +268,7 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs'], [], '', false);
-        $node->expects(self::once())->method('isWindowsOs')->will(self::returnValue(true));
+        $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
         self::assertTrue($node->_call('isPermissionCorrect'));
     }
 
@@ -279,8 +279,8 @@ class AbstractNodeTest extends FolderStructureTestCase
     {
         /** @var $node AbstractNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(AbstractNode::class, ['isWindowsOs', 'getCurrentPermission'], [], '', false);
-        $node->expects(self::any())->method('isWindowsOs')->will(self::returnValue(false));
-        $node->expects(self::any())->method('getCurrentPermission')->will(self::returnValue('foo'));
+        $node->expects(self::any())->method('isWindowsOs')->willReturn(false);
+        $node->expects(self::any())->method('getCurrentPermission')->willReturn('foo');
         $node->_set('targetPermission', 'bar');
         self::assertFalse($node->_call('isPermissionCorrect'));
     }
@@ -295,7 +295,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         $path = $this->getVirtualTestDir('dir_');
         chmod($path, 02775);
         clearstatcache();
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertSame('2775', $node->_call('getCurrentPermission'));
     }
 
@@ -310,7 +310,7 @@ class AbstractNodeTest extends FolderStructureTestCase
         touch($file);
         chmod($file, 0770);
         clearstatcache();
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($file));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($file);
         self::assertSame('0770', $node->_call('getCurrentPermission'));
     }
 
@@ -339,7 +339,7 @@ class AbstractNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::once())->method('getAbsolutePath')->will(self::returnValue(Environment::getPublicPath()));
+        $node->expects(self::once())->method('getAbsolutePath')->willReturn(Environment::getPublicPath());
         $node->_call('getRelativePathBelowSiteRoot', null);
     }
 

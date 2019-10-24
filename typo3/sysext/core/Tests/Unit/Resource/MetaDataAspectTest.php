@@ -45,7 +45,7 @@ class MetaDataAspectTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects(self::any())->method('getUid')->will(self::returnValue(12));
+        $this->storageMock->expects(self::any())->method('getUid')->willReturn(12);
     }
 
     /**

@@ -33,7 +33,7 @@ class VariableFrontendTest extends UnitTestCase
             ->setMethods(['isValidEntryIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $cache->expects(self::once())->method('isValidEntryIdentifier')->with('foo')->will(self::returnValue(false));
+        $cache->expects(self::once())->method('isValidEntryIdentifier')->with('foo')->willReturn(false);
         $cache->set('foo', 'bar');
     }
 
@@ -95,7 +95,7 @@ class VariableFrontendTest extends UnitTestCase
             ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects(self::once())->method('get')->will(self::returnValue(serialize('Just some value')));
+        $backend->expects(self::once())->method('get')->willReturn(serialize('Just some value'));
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         self::assertEquals('Just some value', $cache->get('VariableCacheTest'), 'The returned value was not the expected string.');
@@ -111,7 +111,7 @@ class VariableFrontendTest extends UnitTestCase
             ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects(self::once())->method('get')->will(self::returnValue(serialize($theArray)));
+        $backend->expects(self::once())->method('get')->willReturn(serialize($theArray));
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         self::assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
@@ -126,7 +126,7 @@ class VariableFrontendTest extends UnitTestCase
             ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects(self::once())->method('get')->will(self::returnValue(serialize(false)));
+        $backend->expects(self::once())->method('get')->willReturn(serialize(false));
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         self::assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
@@ -141,7 +141,7 @@ class VariableFrontendTest extends UnitTestCase
             ->setMethods(['get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backend->expects(self::once())->method('has')->with(self::equalTo('VariableCacheTest'))->will(self::returnValue(true));
+        $backend->expects(self::once())->method('has')->with(self::equalTo('VariableCacheTest'))->willReturn(true);
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         self::assertTrue($cache->has('VariableCacheTest'), 'has() did not return TRUE.');
@@ -158,7 +158,7 @@ class VariableFrontendTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $backend->expects(self::once())->method('remove')->with(self::equalTo($cacheIdentifier))->will(self::returnValue(true));
+        $backend->expects(self::once())->method('remove')->with(self::equalTo($cacheIdentifier))->willReturn(true);
 
         $cache = new \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
         self::assertTrue($cache->remove($cacheIdentifier), 'remove() did not return TRUE');

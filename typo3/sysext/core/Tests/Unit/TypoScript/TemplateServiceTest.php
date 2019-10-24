@@ -114,15 +114,15 @@ class TemplateServiceTest extends UnitTestCase
             ->setMethods(['getPackagePath', 'getPackageKey'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockPackage->expects(self::any())->method('getPackagePath')->will(self::returnValue(__DIR__ . '/Fixtures/'));
-        $mockPackage->expects(self::any())->method('getPackageKey')->will(self::returnValue('core'));
+        $mockPackage->expects(self::any())->method('getPackagePath')->willReturn(__DIR__ . '/Fixtures/');
+        $mockPackage->expects(self::any())->method('getPackageKey')->willReturn('core');
 
         $mockPackageManager = $this->getMockBuilder(PackageManager::class)
             ->setMethods(['isPackageActive', 'getPackage'])
             ->disableOriginalConstructor()
             ->getMock();
-        $mockPackageManager->expects(self::any())->method('isPackageActive')->will(self::returnValue(true));
-        $mockPackageManager->expects(self::any())->method('getPackage')->will(self::returnValue($mockPackage));
+        $mockPackageManager->expects(self::any())->method('isPackageActive')->willReturn(true);
+        $mockPackageManager->expects(self::any())->method('getPackage')->willReturn($mockPackage);
         ExtensionManagementUtility::setPackageManager($mockPackageManager);
         $this->packageManagerProphecy->getActivePackages()->willReturn(['core' => $mockPackage]);
 

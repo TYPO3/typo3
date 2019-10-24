@@ -64,7 +64,7 @@ class VimeoHelperTest extends UnitTestCase
 
         $this->subject->expects(self::any())->method('transformMediaIdToFile')
             ->with($videoId, $mockedFolder, $this->extension)
-            ->will(self::returnValue($expectedResult));
+            ->willReturn($expectedResult);
 
         $result = $this->subject->transformUrlToFile($url . $videoId, $mockedFolder);
 

@@ -67,23 +67,23 @@ class BackendTest extends UnitTestCase
         $columnMap
             ->expects(self::once())
             ->method('getRelationTableName')
-            ->will(self::returnValue('myTable'));
+            ->willReturn('myTable');
         $columnMap
             ->expects(self::once())
             ->method('getRelationTableMatchFields')
-            ->will(self::returnValue($mmMatchFields));
+            ->willReturn($mmMatchFields);
         $columnMap
             ->expects(self::any())
             ->method('getChildSortByFieldName')
-            ->will(self::returnValue(''));
+            ->willReturn('');
         $dataMap
             ->expects(self::any())
             ->method('getColumnMap')
-            ->will(self::returnValue($columnMap));
+            ->willReturn($columnMap);
         $dataMapFactory
             ->expects(self::any())
             ->method('buildDataMap')
-            ->will(self::returnValue($dataMap));
+            ->willReturn($dataMap);
         $storageBackend
             ->expects(self::once())
             ->method('addRow')
@@ -110,7 +110,7 @@ class BackendTest extends UnitTestCase
         $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
         GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
 
-        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue($fakeUuid));
+        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
         /** @var Backend $backend */
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);
@@ -141,8 +141,8 @@ class BackendTest extends UnitTestCase
         $referenceIndexProphecy = $this->prophesize(ReferenceIndex::class);
         GeneralUtility::addInstance(ReferenceIndex::class, $referenceIndexProphecy->reveal());
 
-        $proxy->expects(self::once())->method('_loadRealInstance')->will(self::returnValue($object));
-        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue($fakeUuid));
+        $proxy->expects(self::once())->method('_loadRealInstance')->willReturn($object);
+        $session->expects(self::once())->method('getIdentifierByObject')->with($object)->willReturn($fakeUuid);
 
         /** @var Backend $backend */
         $backend = $this->getAccessibleMock(Backend::class, ['dummy'], [$configurationManager], '', false);

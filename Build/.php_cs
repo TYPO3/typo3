@@ -82,6 +82,7 @@ return PhpCsFixer\Config::create()
         'no_useless_else' => true,
         'no_whitespace_in_blank_line' => true,
         'ordered_imports' => true,
+        'php_unit_mock_short_will_return' => true,
         'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
         'phpdoc_no_access' => true,
         'phpdoc_no_empty_return' => true,

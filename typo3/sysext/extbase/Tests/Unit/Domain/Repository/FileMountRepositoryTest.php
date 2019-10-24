@@ -31,7 +31,7 @@ class FileMountRepositoryTest extends UnitTestCase
         $fixture = new \TYPO3\CMS\Extbase\Domain\Repository\FileMountRepository($objectManager);
         $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
         $querySettings->expects(self::once())->method('setRespectStoragePage')->with(false);
-        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will(self::returnValue($querySettings));
+        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->willReturn($querySettings);
         $fixture->initializeObject();
     }
 }

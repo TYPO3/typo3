@@ -38,8 +38,8 @@ class ExtensionManagementServiceTest extends UnitTestCase
             ExtensionManagementService::class,
             ['downloadDependencies', 'uninstallDependenciesToBeUpdated', 'setInExtensionRepository', 'downloadMainExtension', 'isAutomaticInstallationEnabled']
         );
-        $managementMock->expects(self::any())->method('downloadMainExtension')->will(self::returnValue([]));
-        $managementMock->expects(self::any())->method('isAutomaticInstallationEnabled')->will(self::returnValue([false]));
+        $managementMock->expects(self::any())->method('downloadMainExtension')->willReturn([]);
+        $managementMock->expects(self::any())->method('isAutomaticInstallationEnabled')->willReturn([false]);
         $extensionModelMock = $this->getAccessibleMock(Extension::class);
         $extensionModelMock->_set('extensionKey', 'foobar');
         $extensionModelMock->_set('version', '1.0.0');
@@ -51,13 +51,13 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $downloadQueueMock->expects(self::at(1))->method('isQueueEmpty')->with('download')->willReturn(false);
         $downloadQueueMock->expects(self::at(4))->method('isQueueEmpty')->with('download')->willReturn(true);
         $downloadQueueMock->expects(self::at(5))->method('isQueueEmpty')->with('update')->willReturn(true);
-        $downloadQueueMock->expects(self::atLeastOnce())->method('resetExtensionQueue')->will(self::returnValue([
+        $downloadQueueMock->expects(self::atLeastOnce())->method('resetExtensionQueue')->willReturn([
             'download' => [
                 'foo' => $extensionModelMock
             ]
-        ]));
+        ]);
         $managementMock->_set('downloadQueue', $downloadQueueMock);
-        $managementMock->expects(self::once())->method('downloadDependencies')->with(['foo' => $extensionModelMock])->will(self::returnValue([]));
+        $managementMock->expects(self::once())->method('downloadDependencies')->with(['foo' => $extensionModelMock])->willReturn([]);
         $managementMock->_call('installExtension', $extensionModelMock);
     }
 
@@ -70,8 +70,8 @@ class ExtensionManagementServiceTest extends UnitTestCase
             ExtensionManagementService::class,
             ['downloadDependencies', 'uninstallDependenciesToBeUpdated', 'setInExtensionRepository', 'downloadMainExtension', 'isAutomaticInstallationEnabled']
         );
-        $managementMock->expects(self::any())->method('downloadMainExtension')->will(self::returnValue([]));
-        $managementMock->expects(self::any())->method('isAutomaticInstallationEnabled')->will(self::returnValue(true));
+        $managementMock->expects(self::any())->method('downloadMainExtension')->willReturn([]);
+        $managementMock->expects(self::any())->method('isAutomaticInstallationEnabled')->willReturn(true);
         $extensionModelMock = $this->getAccessibleMock(Extension::class);
         $extensionModelMock->_set('extensionKey', 'foobar');
         $extensionModelMock->_set('version', '1.0.0');
@@ -83,14 +83,14 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $downloadQueueMock->expects(self::at(1))->method('isQueueEmpty')->with('download')->willReturn(false);
         $downloadQueueMock->expects(self::at(4))->method('isQueueEmpty')->with('download')->willReturn(true);
         $downloadQueueMock->expects(self::at(5))->method('isQueueEmpty')->with('update')->willReturn(true);
-        $downloadQueueMock->expects(self::atLeastOnce())->method('resetExtensionQueue')->will(self::returnValue([
+        $downloadQueueMock->expects(self::atLeastOnce())->method('resetExtensionQueue')->willReturn([
             'update' => [
                 'foo' => $extensionModelMock
             ]
-        ]));
+        ]);
         $managementMock->_set('downloadQueue', $downloadQueueMock);
-        $managementMock->expects(self::once())->method('downloadDependencies')->with(['foo' => $extensionModelMock])->will(self::returnValue([]));
-        $managementMock->expects(self::once())->method('uninstallDependenciesToBeUpdated')->with(['foo' => $extensionModelMock])->will(self::returnValue([]));
+        $managementMock->expects(self::once())->method('downloadDependencies')->with(['foo' => $extensionModelMock])->willReturn([]);
+        $managementMock->expects(self::once())->method('uninstallDependenciesToBeUpdated')->with(['foo' => $extensionModelMock])->willReturn([]);
         $managementMock->_call('installExtension', $extensionModelMock);
     }
 
@@ -110,9 +110,9 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $dependencyUtilityMock = $this->getAccessibleMock(DependencyUtility::class);
         $dependencyUtilityMock->expects(self::atLeastOnce())->method('checkDependencies');
         $installUtilityMock = $this->getMockBuilder(InstallUtility::class)->getMock();
-        $installUtilityMock->expects(self::any())->method('enrichExtensionWithDetails')->will(self::returnValue([]));
+        $installUtilityMock->expects(self::any())->method('enrichExtensionWithDetails')->willReturn([]);
         $extensionModelUtilityMock = $this->getMockBuilder(ExtensionModelUtility::class)->getMock();
-        $extensionModelUtilityMock->expects(self::any())->method('mapExtensionArrayToModel')->will(self::returnValue($extensionModelMock));
+        $extensionModelUtilityMock->expects(self::any())->method('mapExtensionArrayToModel')->willReturn($extensionModelMock);
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
         $managementMock->_set('installUtility', $installUtilityMock);
         $managementMock->_set('extensionModelUtility', $extensionModelUtilityMock);
@@ -150,9 +150,9 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $dependencyUtilityMock = $this->getAccessibleMock(DependencyUtility::class);
         $dependencyUtilityMock->expects(self::atLeastOnce())->method('checkDependencies');
         $installUtilityMock = $this->getMockBuilder(InstallUtility::class)->getMock();
-        $installUtilityMock->expects(self::any())->method('enrichExtensionWithDetails')->will(self::returnValue([]));
+        $installUtilityMock->expects(self::any())->method('enrichExtensionWithDetails')->willReturn([]);
         $extensionModelUtilityMock = $this->getMockBuilder(ExtensionModelUtility::class)->getMock();
-        $extensionModelUtilityMock->expects(self::any())->method('mapExtensionArrayToModel')->will(self::returnValue($extensionModelMock));
+        $extensionModelUtilityMock->expects(self::any())->method('mapExtensionArrayToModel')->willReturn($extensionModelMock);
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
         $managementMock->_set('installUtility', $installUtilityMock);
         $managementMock->_set('extensionModelUtility', $extensionModelUtilityMock);
@@ -184,16 +184,16 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $dependencyUtilityMock = $this->getAccessibleMock(DependencyUtility::class);
         $dependencyUtilityMock->expects(self::atLeastOnce())->method('checkDependencies');
         $installUtilityMock = $this->getMockBuilder(InstallUtility::class)->getMock();
-        $installUtilityMock->expects(self::any())->method('enrichExtensionWithDetails')->will(self::returnValue([]));
+        $installUtilityMock->expects(self::any())->method('enrichExtensionWithDetails')->willReturn([]);
         $extensionModelUtilityMock = $this->getMockBuilder(ExtensionModelUtility::class)->getMock();
-        $extensionModelUtilityMock->expects(self::any())->method('mapExtensionArrayToModel')->will(self::returnValue($extensionModelMock));
+        $extensionModelUtilityMock->expects(self::any())->method('mapExtensionArrayToModel')->willReturn($extensionModelMock);
         $managementMock->_set('dependencyUtility', $dependencyUtilityMock);
         $managementMock->_set('installUtility', $installUtilityMock);
         $managementMock->_set('extensionModelUtility', $extensionModelUtilityMock);
 
         $downloadQueueMock = $this->getAccessibleMock(DownloadQueue::class, ['removeExtensionFromQueue', 'addExtensionToInstallQueue']);
         $downloadUtilityMock = $this->getAccessibleMock(DownloadUtility::class, ['download']);
-        $extensionModelMock->expects(self::atLeastOnce())->method('getExtensionKey')->will(self::returnValue('foobar'));
+        $extensionModelMock->expects(self::atLeastOnce())->method('getExtensionKey')->willReturn('foobar');
         $managementMock->_set('downloadUtility', $downloadUtilityMock);
         $managementMock->_set('downloadQueue', $downloadQueueMock);
         $resolvedDependencies = $managementMock->_call('downloadDependencies', $downloadQueue);
@@ -211,7 +211,7 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extensionModelMock = $this->getAccessibleMock(Extension::class, ['getExtensionKey']);
         $extensionModelMock->_set('extensionKey', 'foobar');
         $extensionModelMock->_set('version', '1.0.0');
-        $extensionModelMock->expects(self::atLeastOnce())->method('getExtensionKey')->will(self::returnValue('foobar'));
+        $extensionModelMock->expects(self::atLeastOnce())->method('getExtensionKey')->willReturn('foobar');
         $downloadQueue = [
             $extensionModelMock
         ];
@@ -232,7 +232,7 @@ class ExtensionManagementServiceTest extends UnitTestCase
         $extensionModelMock = $this->getAccessibleMock(Extension::class, ['getExtensionKey']);
         $extensionModelMock->_set('extensionKey', 'foobar');
         $extensionModelMock->_set('version', '1.0.0');
-        $extensionModelMock->expects(self::atLeastOnce())->method('getExtensionKey')->will(self::returnValue('foobar'));
+        $extensionModelMock->expects(self::atLeastOnce())->method('getExtensionKey')->willReturn('foobar');
         $downloadQueue = [
             $extensionModelMock
         ];

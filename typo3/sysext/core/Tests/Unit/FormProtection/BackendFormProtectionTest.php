@@ -66,7 +66,7 @@ class BackendFormProtectionTest extends UnitTestCase
             ->expects(self::once())
             ->method('getSessionData')
             ->with('formProtectionSessionToken')
-            ->will(self::returnValue([]));
+            ->willReturn([]);
         $this->subject->generateToken('foo');
     }
 
@@ -88,7 +88,7 @@ class BackendFormProtectionTest extends UnitTestCase
             ->expects(self::atLeastOnce())
             ->method('getSessionData')
             ->with('formProtectionSessionToken')
-            ->will(self::returnValue($sessionToken));
+            ->willReturn($sessionToken);
 
         self::assertTrue(
             $this->subject->validateToken($tokenId, $formName, $action, $formInstanceName)

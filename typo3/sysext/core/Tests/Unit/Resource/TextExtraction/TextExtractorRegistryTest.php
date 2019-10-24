@@ -38,7 +38,7 @@ class TextExtractorRegistryTest extends UnitTestCase
         if (!empty($createsTextExtractorInstances)) {
             $textExtractorRegistry->expects(self::any())
                 ->method('createTextExtractorInstance')
-                ->will(self::returnValueMap($createsTextExtractorInstances));
+                ->willReturnMap($createsTextExtractorInstances);
         }
 
         return $textExtractorRegistry;

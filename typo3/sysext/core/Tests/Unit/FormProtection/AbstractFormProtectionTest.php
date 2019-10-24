@@ -45,7 +45,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['retrieveSessionToken'])
             ->getMock();
-        $subject->expects(self::once())->method('retrieveSessionToken')->will(self::returnValue('token'));
+        $subject->expects(self::once())->method('retrieveSessionToken')->willReturn('token');
         $subject->generateToken('foo');
         $subject->generateToken('foo');
     }
@@ -58,7 +58,7 @@ class AbstractFormProtectionTest extends UnitTestCase
         $subject = $this->getMockBuilder(FormProtectionTesting::class)
             ->setMethods(['retrieveSessionToken'])
             ->getMock();
-        $subject->expects(self::once())->method('retrieveSessionToken')->will(self::returnValue('token'));
+        $subject->expects(self::once())->method('retrieveSessionToken')->willReturn('token');
         $subject->validateToken('foo', 'bar');
         $subject->validateToken('foo', 'bar');
     }

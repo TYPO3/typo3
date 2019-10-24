@@ -101,7 +101,7 @@ class DateTimeConverterTest extends UnitTestCase
                 ->expects(self::atLeastOnce())
                 ->method('getConfigurationValue')
                 ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-                ->will(self::returnValue(null));
+                ->willReturn(null);
 
         $date = $this->converter->convertFrom($expectedResult, 'DateTime', [], $mockMappingConfiguration);
         $actualResult = $date->format(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::DEFAULT_DATE_FORMAT);
@@ -150,7 +150,7 @@ class DateTimeConverterTest extends UnitTestCase
                     ->expects(self::atLeastOnce())
                     ->method('getConfigurationValue')
                     ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-                    ->will(self::returnValue($dateFormat));
+                    ->willReturn($dateFormat);
         } else {
             $mockMappingConfiguration = null;
         }
@@ -394,7 +394,7 @@ class DateTimeConverterTest extends UnitTestCase
                     ->expects(self::atLeastOnce())
                     ->method('getConfigurationValue')
                     ->with(\TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::class, \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-                    ->will(self::returnValue($dateFormat));
+                    ->willReturn($dateFormat);
         } else {
             $mockMappingConfiguration = null;
         }

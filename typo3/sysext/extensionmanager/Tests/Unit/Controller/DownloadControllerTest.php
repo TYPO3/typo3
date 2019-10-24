@@ -32,7 +32,7 @@ class DownloadControllerTest extends UnitTestCase
 
         $dummyExtensionName = 'dummy_extension';
         $dummyExtension = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)->getMock();
-        $dummyExtension->expects(self::any())->method('getExtensionKey')->will(self::returnValue($dummyExtensionName));
+        $dummyExtension->expects(self::any())->method('getExtensionKey')->willReturn($dummyExtensionName);
 
         /** @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility|MockObject $downloadUtilityMock */
         $downloadUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class)->getMock();

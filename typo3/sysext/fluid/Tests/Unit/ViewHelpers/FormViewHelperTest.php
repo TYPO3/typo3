@@ -90,7 +90,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $hashService = $this->getMockBuilder(HashService::class)
             ->setMethods(['appendHmac'])
             ->getMock();
-        $hashService->expects(self::any())->method('appendHmac')->will(self::returnValue(''));
+        $hashService->expects(self::any())->method('appendHmac')->willReturn('');
         $this->mvcPropertyMapperConfigurationService->_set('hashService', $hashService);
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         $viewHelper->_set('hashService', $hashService);
@@ -164,7 +164,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderRequestHashField', 'renderHiddenReferrerFields', 'renderHiddenIdentityField', 'getFormObjectName', 'renderTrustedPropertiesField'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['object' => $object]);
-        $viewHelper->expects(self::atLeastOnce())->method('getFormObjectName')->will(self::returnValue('MyName'));
+        $viewHelper->expects(self::atLeastOnce())->method('getFormObjectName')->willReturn('MyName');
         $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->with($object, 'MyName');
         $viewHelper->_set('tag', $this->tagBuilder);
         $viewHelper->render();
@@ -191,10 +191,10 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $this->mvcPropertyMapperConfigurationService->_set('hashService', new HashService());
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         parent::injectDependenciesIntoViewHelper($viewHelper);
-        $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->will(self::returnValue('hiddenIdentityField'));
-        $viewHelper->expects(self::once())->method('renderAdditionalIdentityFields')->will(self::returnValue('additionalIdentityFields'));
-        $viewHelper->expects(self::once())->method('renderHiddenReferrerFields')->will(self::returnValue('hiddenReferrerFields'));
-        $viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('formContent'));
+        $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->willReturn('hiddenIdentityField');
+        $viewHelper->expects(self::once())->method('renderAdditionalIdentityFields')->willReturn('additionalIdentityFields');
+        $viewHelper->expects(self::once())->method('renderHiddenReferrerFields')->willReturn('hiddenReferrerFields');
+        $viewHelper->expects(self::once())->method('renderChildren')->willReturn('formContent');
         $expectedResult =  \chr(10) . '<div>hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . \chr(10) . '</div>' . \chr(10) . 'formContent';
         $this->tagBuilder->expects(self::once())->method('setContent')->with($expectedResult);
         $viewHelper->_set('tag', $this->tagBuilder);
@@ -213,10 +213,10 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $this->mvcPropertyMapperConfigurationService->_set('hashService', new HashService());
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         parent::injectDependenciesIntoViewHelper($viewHelper);
-        $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->will(self::returnValue('hiddenIdentityField'));
-        $viewHelper->expects(self::once())->method('renderAdditionalIdentityFields')->will(self::returnValue('additionalIdentityFields'));
-        $viewHelper->expects(self::once())->method('renderHiddenReferrerFields')->will(self::returnValue('hiddenReferrerFields'));
-        $viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('formContent'));
+        $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->willReturn('hiddenIdentityField');
+        $viewHelper->expects(self::once())->method('renderAdditionalIdentityFields')->willReturn('additionalIdentityFields');
+        $viewHelper->expects(self::once())->method('renderHiddenReferrerFields')->willReturn('hiddenReferrerFields');
+        $viewHelper->expects(self::once())->method('renderChildren')->willReturn('formContent');
         $expectedResult =  \chr(10) . '<div class="hidden">hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFields' . \chr(10) . '</div>' . \chr(10) . 'formContent';
         $this->tagBuilder->expects(self::once())->method('setContent')->with($expectedResult);
         $viewHelper->setArguments(['hiddenFieldClassName' => 'hidden']);
@@ -285,7 +285,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     {
         $expectedPrefix = 'tx_someextension_someplugin';
         $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderRequestHashField', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->with('SomeExtension', 'SomePlugin')->will(self::returnValue('tx_someextension_someplugin'));
+        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->with('SomeExtension', 'SomePlugin')->willReturn('tx_someextension_someplugin');
         $viewHelper->_set('extensionService', $this->mockExtensionService);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['extensionName' => 'SomeExtension', 'pluginName' => 'SomePlugin']);

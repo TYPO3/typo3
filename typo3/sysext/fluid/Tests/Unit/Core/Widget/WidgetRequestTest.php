@@ -29,7 +29,7 @@ class WidgetRequestTest extends UnitTestCase
         $widgetContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class)
             ->setMethods(['getControllerObjectName'])
             ->getMock();
-        $widgetContext->expects(self::once())->method('getControllerObjectName')->will(self::returnValue('Tx_Fluid_ControllerObjectName'));
+        $widgetContext->expects(self::once())->method('getControllerObjectName')->willReturn('Tx_Fluid_ControllerObjectName');
         $widgetRequest = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class)
             ->setMethods(['setControllerObjectName'])
             ->getMock();
@@ -45,8 +45,8 @@ class WidgetRequestTest extends UnitTestCase
         $widgetContext = $this->getMockBuilder(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext::class)
             ->setMethods(['getParentPluginNamespace', 'getWidgetIdentifier'])
             ->getMock();
-        $widgetContext->expects(self::once())->method('getParentPluginNamespace')->will(self::returnValue('foo'));
-        $widgetContext->expects(self::once())->method('getWidgetIdentifier')->will(self::returnValue('bar'));
+        $widgetContext->expects(self::once())->method('getParentPluginNamespace')->willReturn('foo');
+        $widgetContext->expects(self::once())->method('getWidgetIdentifier')->willReturn('bar');
         $widgetRequest = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Core\Widget\WidgetRequest::class, ['dummy']);
         $widgetRequest->_set('widgetContext', $widgetContext);
         self::assertEquals('foo[bar]', $widgetRequest->getArgumentPrefix());

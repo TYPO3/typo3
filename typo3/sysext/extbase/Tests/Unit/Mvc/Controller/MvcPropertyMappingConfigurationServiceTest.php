@@ -159,7 +159,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $hashService = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class))
             ->setMethods(['appendHmac'])
             ->getMock();
-        $hashService->expects(self::once())->method('appendHmac')->with(json_encode($formFieldArray))->will(self::returnValue(json_encode($formFieldArray) . $mockHash));
+        $hashService->expects(self::once())->method('appendHmac')->with(json_encode($formFieldArray))->willReturn(json_encode($formFieldArray) . $mockHash);
 
         $requestHashService = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class))
             ->setMethods(['dummy'])
@@ -177,7 +177,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet()
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->will(self::returnValue(null));
+        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn(null);
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 
         $requestHashService = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
@@ -297,12 +297,12 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     protected function initializePropertyMappingConfiguration(array $trustedProperties)
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->will(self::returnValue('fooTrustedProperties'));
+        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('fooTrustedProperties');
 
         $mockHashService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Security\Cryptography\HashService::class)
             ->setMethods(['validateAndStripHmac'])
             ->getMock();
-        $mockHashService->expects(self::once())->method('validateAndStripHmac')->with('fooTrustedProperties')->will(self::returnValue(json_encode($trustedProperties)));
+        $mockHashService->expects(self::once())->method('validateAndStripHmac')->with('fooTrustedProperties')->willReturn(json_encode($trustedProperties));
 
         $requestHashService = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService::class, ['dummy']);
         $requestHashService->_set('hashService', $mockHashService);
@@ -313,8 +313,8 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfiguration();
 
         $mockArgument->_set('propertyMappingConfiguration', $propertyMappingConfiguration);
-        $mockArgument->expects(self::any())->method('getName')->will(self::returnValue('foo'));
-        $mockObjectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)->will(self::returnValue($mockArgument));
+        $mockArgument->expects(self::any())->method('getName')->willReturn('foo');
+        $mockObjectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Mvc\Controller\Argument::class)->willReturn($mockArgument);
 
         $arguments = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Controller\Arguments::class, ['dummy']);
         $arguments->_set('objectManager', $mockObjectManager);

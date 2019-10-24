@@ -111,10 +111,10 @@ class PropertyMapperTest extends UnitTestCase
     {
         $mockTypeConverter = $this->createMock(\TYPO3\CMS\Extbase\Property\TypeConverterInterface::class);
         $mockTypeConverter->_name = $name;
-        $mockTypeConverter->expects(self::any())->method('canConvertFrom')->will(self::returnValue($canConvertFrom));
-        $mockTypeConverter->expects(self::any())->method('convertFrom')->will(self::returnValue($name));
-        $mockTypeConverter->expects(self::any())->method('getSourceChildPropertiesToBeConverted')->will(self::returnValue($properties));
-        $mockTypeConverter->expects(self::any())->method('getTypeOfChildProperty')->will(self::returnValue($typeOfSubObject));
+        $mockTypeConverter->expects(self::any())->method('canConvertFrom')->willReturn($canConvertFrom);
+        $mockTypeConverter->expects(self::any())->method('convertFrom')->willReturn($name);
+        $mockTypeConverter->expects(self::any())->method('getSourceChildPropertiesToBeConverted')->willReturn($properties);
+        $mockTypeConverter->expects(self::any())->method('getTypeOfChildProperty')->willReturn($typeOfSubObject);
         return $mockTypeConverter;
     }
 
@@ -124,7 +124,7 @@ class PropertyMapperTest extends UnitTestCase
     public function findTypeConverterShouldReturnTypeConverterFromConfigurationIfItIsSet()
     {
         $mockTypeConverter = $this->getMockTypeConverter();
-        $this->mockConfiguration->expects(self::any())->method('getTypeConverter')->will(self::returnValue($mockTypeConverter));
+        $this->mockConfiguration->expects(self::any())->method('getTypeConverter')->willReturn($mockTypeConverter);
         /** @var \TYPO3\CMS\Extbase\Property\PropertyMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface */
         $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         self::assertSame($mockTypeConverter, $propertyMapper->_call('findTypeConverter', 'someSource', 'someTargetType', $this->mockConfiguration));
@@ -341,7 +341,7 @@ class PropertyMapperTest extends UnitTestCase
         $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
         $this->inject($propertyMapper, 'configurationBuilder', $this->mockConfigurationBuilder);
 
-        $this->mockConfigurationBuilder->expects(self::once())->method('build')->will(self::returnValue($this->mockConfiguration));
+        $this->mockConfigurationBuilder->expects(self::once())->method('build')->willReturn($this->mockConfiguration);
 
         $converter = $this->getMockTypeConverter('string2string');
         $typeConverters = [

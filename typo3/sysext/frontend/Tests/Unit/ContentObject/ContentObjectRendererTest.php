@@ -218,7 +218,7 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject->expects(self::any())->method('getResourceFactory')->will(self::returnValue($resourceFactory));
+        $this->subject->expects(self::any())->method('getResourceFactory')->willReturn($resourceFactory);
 
         $className = $this->getUniqueId('tx_coretest');
         $getImgResourceHookMock = $this->getMockBuilder(ContentObjectGetImageResourceHookInterface::class)
@@ -228,7 +228,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $getImgResourceHookMock
             ->expects(self::once())
             ->method('getImgResourcePostProcess')
-            ->will(self::returnCallback([$this, 'isGetImgResourceHookCalledCallback']));
+            ->willReturnCallback([$this, 'isGetImgResourceHookCalledCallback']);
         $getImgResourceHookObjects = [$getImgResourceHookMock];
         $this->subject->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
         $this->subject->getImgResource('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', []);
@@ -386,8 +386,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsExcludesParameters(): void
     {
-        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->will(
-            self::returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
+        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->willReturn(
+            'key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322'
         );
         $getQueryArgumentsConfiguration = [];
         $getQueryArgumentsConfiguration['exclude'] = [];
@@ -433,8 +433,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsOverrulesSingleParameter(): void
     {
-        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->will(
-            self::returnValue('key1=value1')
+        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->willReturn(
+            'key1=value1'
         );
         $getQueryArgumentsConfiguration = [];
         $overruleArguments = [
@@ -495,8 +495,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters(): void
     {
-        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->will(
-            self::returnValue('key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322')
+        $this->subject->expects(self::any())->method('getEnvironmentVariable')->with(self::equalTo('QUERY_STRING'))->willReturn(
+            'key1=value1&key2=value2&key3[key31]=value31&key3[key32][key321]=value321&key3[key32][key322]=value322'
         );
         $_GET = [
             'key1' => 'value1',
@@ -1364,7 +1364,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function getDataWithTypeGetindpenv(): void
     {
         $this->subject->expects(self::once())->method('getEnvironmentVariable')
-            ->with(self::equalTo('SCRIPT_FILENAME'))->will(self::returnValue('dummyPath'));
+            ->with(self::equalTo('SCRIPT_FILENAME'))->willReturn('dummyPath');
         self::assertEquals('dummyPath', $this->subject->getData('getindpenv:SCRIPT_FILENAME'));
     }
 
@@ -1406,7 +1406,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $uid = $this->getUniqueId();
         $file = $this->createMock(File::class);
-        $file->expects(self::once())->method('getUid')->will(self::returnValue($uid));
+        $file->expects(self::once())->method('getUid')->willReturn($uid);
         $this->subject->setCurrentFile($file);
         self::assertEquals($uid, $this->subject->getData('file:current:uid'));
     }
@@ -1634,7 +1634,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $GLOBALS['TSFE']->sys_page->expects(self::atLeastOnce())->method('getRawRecord')->with(
             'tt_content',
             '106'
-        )->will(self::returnValue($dummyRecord));
+        )->willReturn($dummyRecord);
         self::assertEquals($dummyRecord['title'], $this->subject->getData('db:tt_content:106:title'));
     }
 
@@ -1647,7 +1647,7 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $key = $this->getUniqueId('someKey');
         $value = $this->getUniqueId('someValue');
-        $GLOBALS['TSFE']->expects(self::once())->method('sL')->with('LLL:' . $key)->will(self::returnValue($value));
+        $GLOBALS['TSFE']->expects(self::once())->method('sL')->with('LLL:' . $key)->willReturn($value);
         self::assertEquals($value, $this->subject->getData('lll:' . $key));
     }
 
@@ -2027,14 +2027,14 @@ class ContentObjectRendererTest extends UnitTestCase
         $cObj
             ->expects(self::any())
             ->method('stdWrap')
-            ->will(self::returnArgument(0));
+            ->willReturnArgument(0);
 
         // Avoid calling of imgResource
         $cObj
             ->expects(self::exactly(1))
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
-            ->will(self::returnValue([100, 100, null, 'bar']));
+            ->willReturn([100, 100, null, 'bar']);
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
@@ -2105,7 +2105,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $cObj
             ->expects(self::any())
             ->method('stdWrap')
-            ->will(self::returnArgument(0));
+            ->willReturnArgument(0);
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
@@ -2231,14 +2231,14 @@ class ContentObjectRendererTest extends UnitTestCase
         $cObj
             ->expects(self::any())
             ->method('stdWrap')
-            ->will(self::returnArgument(0));
+            ->willReturnArgument(0);
 
         // Avoid calling of imgResource
         $cObj
             ->expects(self::exactly(2))
             ->method('getImgResource')
             ->with(self::equalTo('testImageName'))
-            ->will(self::returnValue([100, 100, null, 'bar-file.jpg']));
+            ->willReturn([100, 100, null, 'bar-file.jpg']);
 
         $result = $cObj->getImageSourceCollection($layoutKey, $configuration, $file);
 
@@ -2261,14 +2261,14 @@ class ContentObjectRendererTest extends UnitTestCase
         // Avoid calling stdwrap and getImgResource
         $this->subject->expects(self::any())
             ->method('stdWrap')
-            ->will(self::returnArgument(0));
+            ->willReturnArgument(0);
 
         $this->subject->expects(self::any())
             ->method('getImgResource')
-            ->will(self::returnValue([100, 100, null, 'bar-file.jpg']));
+            ->willReturn([100, 100, null, 'bar-file.jpg']);
 
         $resourceFactory = $this->createMock(ResourceFactory::class);
-        $this->subject->expects(self::any())->method('getResourceFactory')->will(self::returnValue($resourceFactory));
+        $this->subject->expects(self::any())->method('getResourceFactory')->willReturn($resourceFactory);
 
         $className = $this->getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
         $getImageSourceCollectionHookMock = $this->getMockBuilder(
@@ -2283,7 +2283,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $getImageSourceCollectionHookMock
             ->expects(self::exactly(1))
             ->method('getOneSourceCollection')
-            ->will(self::returnCallback([$this, 'isGetOneSourceCollectionCalledCallback']));
+            ->willReturnCallback([$this, 'isGetOneSourceCollectionCalledCallback']);
 
         $configuration = [
             'layoutKey' => 'data',

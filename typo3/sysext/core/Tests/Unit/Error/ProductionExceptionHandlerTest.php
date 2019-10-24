@@ -36,7 +36,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
             ->setMethods(['discloseExceptionInformation', 'sendStatusHeaders', 'writeLogEntries'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->subject->expects(self::any())->method('discloseExceptionInformation')->will(self::returnValue(true));
+        $this->subject->expects(self::any())->method('discloseExceptionInformation')->willReturn(true);
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductionExceptionHandlerTest extends UnitTestCase
             ->setMethods(['getTitle'])
             ->setConstructorArgs(['some message'])
             ->getMock();
-        $exception->expects(self::any())->method('getTitle')->will(self::returnValue($title));
+        $exception->expects(self::any())->method('getTitle')->willReturn($title);
         ob_start();
         $this->subject->echoExceptionWeb($exception);
         $output = ob_get_contents();

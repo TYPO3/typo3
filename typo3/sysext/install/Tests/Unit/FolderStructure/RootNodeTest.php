@@ -69,7 +69,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $structure = [
             'name' => '/bar'
         ];
@@ -88,7 +88,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $structure = [
             'name' => 'C:/bar'
         ];
@@ -105,7 +105,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $structure = [
             'name' => '/bar'
         ];
@@ -123,7 +123,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $childName = $this->getUniqueId('test_');
         $structure = [
             'name' => '/foo',
@@ -152,7 +152,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $targetPermission = '2550';
         $structure = [
             'name' => '/foo',
@@ -172,7 +172,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $name = '/' . $this->getUniqueId('test_');
         $node->__construct(['name' => $name], null);
         self::assertSame($name, $node->getName());
@@ -195,11 +195,11 @@ class RootNodeTest extends UnitTestCase
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::once())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::once())->method('exists')->willReturn(true);
+        $node->expects(self::once())->method('isDirectory')->willReturn(true);
+        $node->expects(self::once())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::once())->method('isWritable')->willReturn(true);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
     }
@@ -221,13 +221,13 @@ class RootNodeTest extends UnitTestCase
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         $childStatus = new FlashMessage('foo', '', FlashMessage::ERROR);
-        $node->expects(self::once())->method('getChildrenStatus')->will(self::returnValue([$childStatus]));
+        $node->expects(self::once())->method('getChildrenStatus')->willReturn([$childStatus]);
         $statusArray = $node->getStatus();
         $statusSelf = $statusArray[0];
         $statusOfChild = $statusArray[1];
@@ -245,7 +245,7 @@ class RootNodeTest extends UnitTestCase
         $node
             ->expects(self::any())
             ->method('isWindowsOs')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
         $path = '/foo/bar';
         $structure = [
             'name' => $path,

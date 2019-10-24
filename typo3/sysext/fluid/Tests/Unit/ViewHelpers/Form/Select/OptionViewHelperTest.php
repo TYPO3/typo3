@@ -59,7 +59,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
      */
     public function childrenContentIsUsedAsValueAndLabelByDefault(): void
     {
-        $this->viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('Option Label'));
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
         $expected = '<option value="Option Label">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
     }
@@ -71,7 +71,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->arguments['value'] = 'value';
         $this->viewHelper->setArguments($this->arguments);
-        $this->viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('Option Label'));
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
         $expected = '<option value="value">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
     }
@@ -84,8 +84,8 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['selected'] = null;
         $this->viewHelper->setArguments($this->arguments);
 
-        $this->viewHelper->expects(self::once())->method('isValueSelected')->will(self::returnValue(true));
-        $this->viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('Option Label'));
+        $this->viewHelper->expects(self::once())->method('isValueSelected')->willReturn(true);
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
 
         $expected = '<option selected="selected" value="Option Label">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
@@ -99,8 +99,8 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
         $this->arguments['selected'] = null;
         $this->viewHelper->setArguments($this->arguments);
 
-        $this->viewHelper->expects(self::once())->method('isValueSelected')->will(self::returnValue(false));
-        $this->viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('Option Label'));
+        $this->viewHelper->expects(self::once())->method('isValueSelected')->willReturn(false);
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
 
         $expected = '<option value="Option Label">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
@@ -113,7 +113,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->arguments['selected'] = false;
         $this->viewHelper->setArguments($this->arguments);
-        $this->viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('Option Label'));
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
 
         $expected = '<option value="Option Label">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());
@@ -126,7 +126,7 @@ class OptionViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->arguments['selected'] = true;
         $this->viewHelper->setArguments($this->arguments);
-        $this->viewHelper->expects(self::once())->method('renderChildren')->will(self::returnValue('Option Label'));
+        $this->viewHelper->expects(self::once())->method('renderChildren')->willReturn('Option Label');
 
         $expected = '<option selected="selected" value="Option Label">Option Label</option>';
         self::assertEquals($expected, $this->viewHelper->initializeArgumentsAndRender());

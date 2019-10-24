@@ -446,10 +446,10 @@ class GalleryProcessorTest extends UnitTestCase
             $fileReference = $this->createMock(FileReference::class);
             $fileReference->expects(self::any())
                 ->method('getProperty')
-                ->will(self::returnValueMap([
+                ->willReturnMap([
                     ['width', $fileConfig[0]],
                     ['height', $fileConfig[1]]
-                ]));
+                ]);
             $files[] = $fileReference;
         }
 

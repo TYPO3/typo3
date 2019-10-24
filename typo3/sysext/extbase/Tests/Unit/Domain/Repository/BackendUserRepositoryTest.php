@@ -30,7 +30,7 @@ class BackendUserRepositoryTest extends UnitTestCase
         $fixture = new \TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository($objectManager);
         $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
         $querySettings->expects(self::once())->method('setRespectStoragePage')->with(false);
-        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will(self::returnValue($querySettings));
+        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->willReturn($querySettings);
         $fixture->initializeObject();
     }
 
@@ -46,7 +46,7 @@ class BackendUserRepositoryTest extends UnitTestCase
             ->setConstructorArgs([$objectManager])
             ->getMock();
         $querySettings = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->will(self::returnValue($querySettings));
+        $objectManager->expects(self::once())->method('get')->with(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class)->willReturn($querySettings);
         $fixture->expects(self::once())->method('setDefaultQuerySettings')->with($querySettings);
         $fixture->initializeObject();
     }

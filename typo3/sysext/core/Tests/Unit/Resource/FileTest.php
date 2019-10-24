@@ -41,10 +41,10 @@ class FileTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects(self::any())->method('getUid')->will(self::returnValue(5));
+        $this->storageMock->expects(self::any())->method('getUid')->willReturn(5);
 
         $mockedMetaDataRepository = $this->createMock(MetaDataRepository::class);
-        $mockedMetaDataRepository->expects(self::any())->method('findByFile')->will(self::returnValue(['file' => 1]));
+        $mockedMetaDataRepository->expects(self::any())->method('findByFile')->willReturn(['file' => 1]);
         GeneralUtility::setSingletonInstance(MetaDataRepository::class, $mockedMetaDataRepository);
     }
 
@@ -165,7 +165,7 @@ class FileTest extends UnitTestCase
         $mockedResourceFactory
             ->expects(self::once())
             ->method('getStorageObject')
-            ->will(self::returnValue($mockedNewStorage));
+            ->willReturn($mockedNewStorage);
         GeneralUtility::setSingletonInstance(\TYPO3\CMS\Core\Resource\ResourceFactory::class, $mockedResourceFactory);
 
         $subject->updateProperties(['storage' => 'different']);
@@ -179,7 +179,7 @@ class FileTest extends UnitTestCase
     {
         $targetStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $targetFolder = $this->createMock(\TYPO3\CMS\Core\Resource\Folder::class);
-        $targetFolder->expects(self::any())->method('getStorage')->will(self::returnValue($targetStorage));
+        $targetFolder->expects(self::any())->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
         $targetStorage->expects(self::once())->method('copyFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->copyTo($targetFolder);
@@ -192,7 +192,7 @@ class FileTest extends UnitTestCase
     {
         $targetStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $targetFolder = $this->createMock(\TYPO3\CMS\Core\Resource\Folder::class);
-        $targetFolder->expects(self::any())->method('getStorage')->will(self::returnValue($targetStorage));
+        $targetFolder->expects(self::any())->method('getStorage')->willReturn($targetStorage);
         $fixture = new File([], $this->storageMock);
         $targetStorage->expects(self::once())->method('moveFile')->with(self::equalTo($fixture), self::equalTo($targetFolder));
         $fixture->moveTo($targetFolder);

@@ -146,11 +146,11 @@ class DispatcherTest extends UnitTestCase
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects(self::once())
             ->method('slot')
-            ->will(self::returnCallback(
+            ->willReturnCallback(
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
-            ));
+            );
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
         $secondMockSlot->expects(self::once())
@@ -171,11 +171,11 @@ class DispatcherTest extends UnitTestCase
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects(self::once())
             ->method('slot')
-            ->will(self::returnCallback(
+            ->willReturnCallback(
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
-            ));
+            );
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
         $secondMockSlot->expects(self::once())
@@ -196,11 +196,11 @@ class DispatcherTest extends UnitTestCase
         $firstMockSlot = $this->createMock(SlotFixture::class);
         $firstMockSlot->expects(self::once())
             ->method('slot')
-            ->will(self::returnCallback(
+            ->willReturnCallback(
                 function ($foo, $baz) {
                     return ['modified_' . $foo, 'modified_' . $baz];
                 }
-            ));
+            );
 
         $secondMockSlot = $this->createMock(SlotFixture::class);
         $secondMockSlot->expects(self::once())
@@ -229,11 +229,11 @@ class DispatcherTest extends UnitTestCase
         $mockSlot = $this->createMock(SlotFixture::class);
         $mockSlot->expects(self::once())
             ->method('slot')
-            ->will(self::returnCallback(
+            ->willReturnCallback(
                 function () {
                     return 'string';
                 }
-            ));
+            );
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
@@ -250,11 +250,11 @@ class DispatcherTest extends UnitTestCase
         $mockSlot = $this->createMock(SlotFixture::class);
         $mockSlot->expects(self::once())
             ->method('slot')
-            ->will(self::returnCallback(
+            ->willReturnCallback(
                 function () {
                     return [1, 2, 3];
                 }
-            ));
+            );
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);

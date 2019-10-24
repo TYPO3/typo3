@@ -39,7 +39,7 @@ class RendererRegistryTest extends UnitTestCase
         if (!empty($createsRendererInstances)) {
             $rendererRegistry->expects(self::any())
                 ->method('createRendererInstance')
-                ->will(self::returnValueMap($createsRendererInstances));
+                ->willReturnMap($createsRendererInstances);
         }
 
         return $rendererRegistry;
@@ -95,19 +95,19 @@ class RendererRegistryTest extends UnitTestCase
         $rendererObject1 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class)
             ->setMockClassName($rendererClass1)
             ->getMock();
-        $rendererObject1->expects(self::any())->method('getPriority')->will(self::returnValue(1));
+        $rendererObject1->expects(self::any())->method('getPriority')->willReturn(1);
 
         $rendererClass2 = $this->getUniqueId('myRenderer2');
         $rendererObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class)
             ->setMockClassName($rendererClass2)
             ->getMock();
-        $rendererObject2->expects(self::any())->method('getPriority')->will(self::returnValue(10));
+        $rendererObject2->expects(self::any())->method('getPriority')->willReturn(10);
 
         $rendererClass3 = $this->getUniqueId('myRenderer3');
         $rendererObject3 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class)
             ->setMockClassName($rendererClass3)
             ->getMock();
-        $rendererObject3->expects(self::any())->method('getPriority')->will(self::returnValue(2));
+        $rendererObject3->expects(self::any())->method('getPriority')->willReturn(2);
 
         $createdRendererInstances = [
             [$rendererClass1, $rendererObject1],
@@ -135,13 +135,13 @@ class RendererRegistryTest extends UnitTestCase
         $rendererObject1 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class)
             ->setMockClassName($rendererClass1)
             ->getMock();
-        $rendererObject1->expects(self::any())->method('getPriority')->will(self::returnValue(1));
+        $rendererObject1->expects(self::any())->method('getPriority')->willReturn(1);
 
         $rendererClass2 = $this->getUniqueId('myRenderer2');
         $rendererObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class)
             ->setMockClassName($rendererClass2)
             ->getMock();
-        $rendererObject2->expects(self::any())->method('getPriority')->will(self::returnValue(1));
+        $rendererObject2->expects(self::any())->method('getPriority')->willReturn(1);
 
         $createdRendererInstances = [
             [$rendererClass1, $rendererObject1],
@@ -167,16 +167,16 @@ class RendererRegistryTest extends UnitTestCase
             ->setMethods(['getPriority', 'canRender', 'render'])
             ->setMockClassName($rendererClass1)
             ->getMock();
-        $rendererObject1->expects(self::any())->method('getPriority')->will(self::returnValue(1));
-        $rendererObject1->expects(self::once())->method('canRender')->will(self::returnValue(true));
+        $rendererObject1->expects(self::any())->method('getPriority')->willReturn(1);
+        $rendererObject1->expects(self::once())->method('canRender')->willReturn(true);
 
         $rendererClass2 = $this->getUniqueId('myAudioRenderer');
         $rendererObject2 = $this->getMockBuilder(\TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface::class)
             ->setMethods(['getPriority', 'canRender', 'render'])
             ->setMockClassName($rendererClass2)
             ->getMock();
-        $rendererObject2->expects(self::any())->method('getPriority')->will(self::returnValue(10));
-        $rendererObject2->expects(self::once())->method('canRender')->will(self::returnValue(false));
+        $rendererObject2->expects(self::any())->method('getPriority')->willReturn(10);
+        $rendererObject2->expects(self::once())->method('canRender')->willReturn(false);
 
         $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
 
@@ -207,7 +207,7 @@ class RendererRegistryTest extends UnitTestCase
         $rendererRegistry->registerRendererClass(VideoTagRenderer::class);
 
         $fileResourceMock = $this->createMock(\TYPO3\CMS\Core\Resource\File::class);
-        $fileResourceMock->expects(self::any())->method('getMimeType')->will(self::returnValue('video/mp4'));
+        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('video/mp4');
 
         $rendererRegistry->getRendererInstances();
 

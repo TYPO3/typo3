@@ -44,11 +44,11 @@ class ListUtilityTest extends UnitTestCase
         $packageManagerMock
                 ->expects(self::any())
                 ->method('getActivePackages')
-                ->will(self::returnValue([
+                ->willReturn([
                     'lang' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'saltedpasswords' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
-                ]));
+                ]);
         $this->inject($this->subject, 'packageManager', $packageManagerMock);
     }
 
@@ -161,7 +161,7 @@ class ListUtilityTest extends UnitTestCase
     {
         $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
         $emConfUtilityMock = $this->getMockBuilder(EmConfUtility::class)->getMock();
-        $emConfUtilityMock->expects(self::any())->method('includeEmConf')->will(self::returnValue($emConf));
+        $emConfUtilityMock->expects(self::any())->method('includeEmConf')->willReturn($emConf);
         $this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
         self::assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
     }

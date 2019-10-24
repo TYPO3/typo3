@@ -41,7 +41,7 @@ class CleanerFieldProviderTest extends UnitTestCase
             ->setMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $languageServiceMock->expects(self::any())->method('sL')->will(self::returnValue('titleTest'));
+        $languageServiceMock->expects(self::any())->method('sL')->willReturn('titleTest');
         $this->subject = $this->getMockBuilder(CleanerFieldProvider::class)
             ->setMethods(['getLanguageService', 'addMessage'])
             ->getMock();
@@ -58,7 +58,7 @@ class CleanerFieldProviderTest extends UnitTestCase
             ->setMethods(['sL'])
             ->disableOriginalConstructor()
             ->getMock();
-        $languageServiceMock->expects(self::any())->method('sL')->will(self::returnValue('titleTest'));
+        $languageServiceMock->expects(self::any())->method('sL')->willReturn('titleTest');
 
         $mockedMethods = array_merge(['getLanguageService'], $mockedMethods);
         $scheduleModuleMock = $this->getMockBuilder(SchedulerModuleController::class)

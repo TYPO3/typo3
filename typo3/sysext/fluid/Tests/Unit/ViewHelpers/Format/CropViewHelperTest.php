@@ -52,7 +52,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperCallsCropHtmlByDefault()
     {
-        $this->mockContentObject->expects(self::once())->method('cropHTML')->with('Some Content', '123|&hellip;|1')->will(self::returnValue('Cropped Content'));
+        $this->mockContentObject->expects(self::once())->method('cropHTML')->with('Some Content', '123|&hellip;|1')->willReturn('Cropped Content');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -69,7 +69,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
      */
     public function viewHelperCallsCropHtmlByDefault2()
     {
-        $this->mockContentObject->expects(self::once())->method('cropHTML')->with('Some Content', '-321|custom suffix|1')->will(self::returnValue('Cropped Content'));
+        $this->mockContentObject->expects(self::once())->method('cropHTML')->with('Some Content', '-321|custom suffix|1')->willReturn('Cropped Content');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -87,7 +87,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
      */
     public function respectWordBoundariesCanBeDisabled()
     {
-        $this->mockContentObject->expects(self::once())->method('cropHTML')->with('Some Content', '123|...|')->will(self::returnValue('Cropped Content'));
+        $this->mockContentObject->expects(self::once())->method('cropHTML')->with('Some Content', '123|...|')->willReturn('Cropped Content');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -106,7 +106,7 @@ class CropViewHelperTest extends ViewHelperBaseTestcase
      */
     public function respectHtmlCanBeDisabled()
     {
-        $this->mockContentObject->expects(self::once())->method('crop')->with('Some Content', '123|...|1')->will(self::returnValue('Cropped Content'));
+        $this->mockContentObject->expects(self::once())->method('crop')->with('Some Content', '123|...|1')->willReturn('Cropped Content');
         GeneralUtility::addInstance(ContentObjectRenderer::class, $this->mockContentObject);
         $this->setArgumentsUnderTest(
             $this->viewHelper,

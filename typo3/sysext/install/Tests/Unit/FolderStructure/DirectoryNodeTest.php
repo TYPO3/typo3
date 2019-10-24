@@ -141,12 +141,12 @@ class DirectoryNodeTest extends FolderStructureTestCase
             false
         );
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         self::assertIsArray($node->getStatus());
     }
 
@@ -164,12 +164,12 @@ class DirectoryNodeTest extends FolderStructureTestCase
             false
         );
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(false));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(false));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(false));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(false);
+        $node->expects(self::any())->method('isDirectory')->willReturn(false);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(false);
+        $node->expects(self::any())->method('isWritable')->willReturn(false);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
     }
@@ -189,12 +189,12 @@ class DirectoryNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(false));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(false);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
@@ -214,12 +214,12 @@ class DirectoryNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(false);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
@@ -239,12 +239,12 @@ class DirectoryNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(false));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(false);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::NOTICE, $statusArray[0]->getSeverity());
     }
@@ -264,12 +264,12 @@ class DirectoryNodeTest extends FolderStructureTestCase
         );
         $path = $this->getVirtualTestFilePath('dir_');
         touch($path);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
     }
@@ -287,14 +287,14 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         $childMock1 = $this->createMock(NodeInterface::class);
-        $childMock1->expects(self::once())->method('getStatus')->will(self::returnValue([]));
+        $childMock1->expects(self::once())->method('getStatus')->willReturn([]);
         $childMock2 = $this->createMock(NodeInterface::class);
-        $childMock2->expects(self::once())->method('getStatus')->will(self::returnValue([]));
+        $childMock2->expects(self::once())->method('getStatus')->willReturn([]);
         $node->_set('children', [$childMock1, $childMock2]);
         $node->getStatus();
     }
@@ -312,13 +312,13 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(true);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
         $childMock = $this->createMock(NodeInterface::class);
         $childMessage = new FlashMessage('foo');
-        $childMock->expects(self::once())->method('getStatus')->will(self::returnValue([$childMessage]));
+        $childMock->expects(self::once())->method('getStatus')->willReturn([$childMessage]);
         $node->_set('children', [$childMock]);
         $status = $node->getStatus();
         $statusOfDirectory = $status[0];
@@ -341,7 +341,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             false
         );
         $uniqueReturn = [$this->getUniqueId('foo_')];
-        $node->expects(self::once())->method('fixSelf')->will(self::returnValue($uniqueReturn));
+        $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
 
@@ -353,15 +353,15 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
         $uniqueReturnSelf = $this->getUniqueId('foo_');
-        $node->expects(self::once())->method('fixSelf')->will(self::returnValue([$uniqueReturnSelf]));
+        $node->expects(self::once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
 
         $childMock1 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild1 = $this->getUniqueId('foo_');
-        $childMock1->expects(self::once())->method('fix')->will(self::returnValue([$uniqueReturnChild1]));
+        $childMock1->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild1]);
 
         $childMock2 = $this->createMock(NodeInterface::class);
         $uniqueReturnChild2 = $this->getUniqueId('foo_');
-        $childMock2->expects(self::once())->method('fix')->will(self::returnValue([$uniqueReturnChild2]));
+        $childMock2->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild2]);
 
         $node->_set('children', [$childMock1, $childMock2]);
 
@@ -381,10 +381,10 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
-        $node->expects(self::any())->method('isPermissionCorrect')->will(self::returnValue(true));
+        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects(self::any())->method('isPermissionCorrect')->willReturn(true);
         $uniqueReturn = new FlashMessage('foo');
-        $node->expects(self::once())->method('createDirectory')->will(self::returnValue($uniqueReturn));
+        $node->expects(self::once())->method('createDirectory')->willReturn($uniqueReturn);
         self::assertSame([$uniqueReturn], $node->_call('fixSelf'));
     }
 
@@ -401,11 +401,11 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isDirectory')->will(self::returnValue(false));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue(''));
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue(''));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(true);
+        $node->expects(self::any())->method('isDirectory')->willReturn(false);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn('');
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn('');
         $result = $node->_call('fixSelf');
         self::assertSame(FlashMessage::ERROR, $result[0]->getSeverity());
     }
@@ -423,10 +423,10 @@ class DirectoryNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isWritable')->will(self::returnValue(false));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isWritable')->willReturn(false);
         $message = new FlashMessage('foo');
-        $node->expects(self::once())->method('fixPermission')->will(self::returnValue($message));
+        $node->expects(self::once())->method('fixPermission')->willReturn($message);
         self::assertSame([$message], $node->_call('fixSelf'));
     }
 
@@ -439,8 +439,8 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $this->expectExceptionCode(1366740091);
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $node->expects(self::once())->method('getAbsolutePath')->will(self::returnValue(''));
-        $node->expects(self::once())->method('exists')->will(self::returnValue(true));
+        $node->expects(self::once())->method('getAbsolutePath')->willReturn('');
+        $node->expects(self::once())->method('exists')->willReturn(true);
         $node->_call('createDirectory');
     }
 
@@ -452,9 +452,9 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
         $node->_call('createDirectory');
         self::assertTrue(is_dir($path));
     }
@@ -467,9 +467,9 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($path));
+        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($path);
         self::assertSame(FlashMessage::OK, $node->_call('createDirectory')->getSeverity());
     }
 
@@ -483,9 +483,9 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
         $subPath = $path . '/' . $this->getUniqueId('dir_');
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($subPath));
-        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->will(self::returnValue($subPath));
+        $node->expects(self::once())->method('exists')->willReturn(false);
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($subPath);
+        $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($subPath);
         self::assertSame(FlashMessage::ERROR, $node->_call('createDirectory')->getSeverity());
     }
 
@@ -580,7 +580,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->isWritable());
     }
 
@@ -592,7 +592,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->isWritable());
     }
 
@@ -608,7 +608,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->isWritable());
     }
 
@@ -620,7 +620,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestDir('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('isDirectory'));
     }
 
@@ -639,7 +639,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $dir = $this->getUniqueId('dir_');
         mkdir($path . '/' . $dir);
         symlink($path . '/' . $dir, $path . '/' . $link);
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path . '/' . $link));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path . '/' . $link);
         self::assertFalse($node->_call('isDirectory'));
     }
 }

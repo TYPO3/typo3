@@ -54,10 +54,10 @@ class BackendLayoutViewTest extends UnitTestCase
 
         $this->backendLayoutView->expects(self::once())
             ->method('getPage')->with(self::equalTo($pageId))
-            ->will(self::returnValue($page));
+            ->willReturn($page);
         $this->backendLayoutView->expects(self::any())
             ->method('getRootLine')->with(self::equalTo($pageId))
-            ->will(self::returnValue($rootLine));
+            ->willReturn($rootLine);
 
         $selectedCombinedIdentifier = $this->backendLayoutView->_call('getSelectedCombinedIdentifier', $pageId);
         self::assertEquals($expected, $selectedCombinedIdentifier);

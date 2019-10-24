@@ -31,13 +31,13 @@ class DisjunctionValidatorTest extends UnitTestCase
         $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->will(self::returnValue(new \TYPO3\CMS\Extbase\Error\Result()));
+        $validatorObject->expects(self::any())->method('validate')->willReturn(new \TYPO3\CMS\Extbase\Error\Result());
         $errors = new \TYPO3\CMS\Extbase\Error\Result();
         $errors->addError(new \TYPO3\CMS\Extbase\Error\Error('Error', 123));
         $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $secondValidatorObject->expects(self::any())->method('validate')->will(self::returnValue($errors));
+        $secondValidatorObject->expects(self::any())->method('validate')->willReturn($errors);
         $validatorDisjunction->addValidator($validatorObject);
         $validatorDisjunction->addValidator($secondValidatorObject);
         self::assertFalse($validatorDisjunction->validate('some subject')->hasErrors());
@@ -56,13 +56,13 @@ class DisjunctionValidatorTest extends UnitTestCase
         $validatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $validatorObject->expects(self::any())->method('validate')->will(self::returnValue($errors1));
+        $validatorObject->expects(self::any())->method('validate')->willReturn($errors1);
         $errors2 = new \TYPO3\CMS\Extbase\Error\Result();
         $errors2->addError($error2);
         $secondValidatorObject = $this->getMockBuilder(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface::class)
             ->setMethods(['validate', 'getOptions'])
             ->getMock();
-        $secondValidatorObject->expects(self::any())->method('validate')->will(self::returnValue($errors2));
+        $secondValidatorObject->expects(self::any())->method('validate')->willReturn($errors2);
         $validatorDisjunction->addValidator($validatorObject);
         $validatorDisjunction->addValidator($secondValidatorObject);
         self::assertEquals([$error1, $error2], $validatorDisjunction->validate('some subject')->getErrors());

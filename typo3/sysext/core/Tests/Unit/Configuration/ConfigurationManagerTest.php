@@ -69,7 +69,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->subject
             ->expects(self::once())
             ->method('getDefaultConfigurationFileLocation')
-            ->will(self::returnValue($defaultConfigurationFile));
+            ->willReturn($defaultConfigurationFile);
         $this->subject->getDefaultConfiguration();
     }
 
@@ -90,7 +90,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->subject
             ->expects(self::once())
             ->method('getLocalConfigurationFileLocation')
-            ->will(self::returnValue($configurationFile));
+            ->willReturn($configurationFile);
         $this->subject->getLocalConfiguration();
     }
 
@@ -121,7 +121,7 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue($currentLocalConfiguration));
+            ->willReturn($currentLocalConfiguration);
         $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
@@ -141,11 +141,11 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getDefaultConfiguration')
-            ->will(self::returnValue(
+            ->willReturn(
                 [
                     'path' => 'value',
                 ]
-            ));
+            );
 
         self::assertSame('value', $this->subject->getDefaultConfigurationValueByPath('path'));
     }
@@ -162,11 +162,11 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue(
+            ->willReturn(
                 [
                     'path' => 'value',
                 ]
-            ));
+            );
 
         self::assertSame('value', $this->subject->getLocalConfigurationValueByPath('path'));
     }
@@ -184,18 +184,18 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getDefaultConfiguration')
-            ->will(self::returnValue(
+            ->willReturn(
                 [
                     'path' => 'value',
                 ]
-            ));
+            );
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue(
+            ->willReturn(
                 [
                     'path' => 'valueOverride',
                 ]
-            ));
+            );
 
         self::assertSame('valueOverride', $this->subject->getConfigurationValueByPath('path'));
     }
@@ -210,7 +210,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ]);
         $this->subject->expects(self::once())
             ->method('isValidLocalConfigurationPath')
-            ->will(self::returnValue(false));
+            ->willReturn(false);
 
         self::assertFalse($this->subject->setLocalConfigurationValueByPath('path', 'value'));
     }
@@ -238,10 +238,10 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('isValidLocalConfigurationPath')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue($currentLocalConfiguration));
+            ->willReturn($currentLocalConfiguration);
         $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
@@ -273,10 +273,10 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::any())
             ->method('isValidLocalConfigurationPath')
-            ->will(self::returnValue(true));
+            ->willReturn(true);
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue($currentLocalConfiguration));
+            ->willReturn($currentLocalConfiguration);
         $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
@@ -310,7 +310,7 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue($currentLocalConfiguration));
+            ->willReturn($currentLocalConfiguration);
         $this->subject->expects(self::once())
             ->method('writeLocalConfiguration')
             ->with($expectedConfiguration);
@@ -338,7 +338,7 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue($currentLocalConfiguration));
+            ->willReturn($currentLocalConfiguration);
         $this->subject->expects(self::never())
             ->method('writeLocalConfiguration');
 
@@ -362,7 +362,7 @@ class ConfigurationManagerTest extends UnitTestCase
         );
         $this->subject->expects(self::once())
             ->method('getLocalConfiguration')
-            ->will(self::returnValue($currentLocalConfiguration));
+            ->willReturn($currentLocalConfiguration);
         $this->subject->expects(self::never())
             ->method('writeLocalConfiguration');
 
@@ -448,7 +448,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $this->subject
             ->expects(self::any())
             ->method('getLocalConfigurationFileLocation')
-            ->will(self::returnValue($configurationFile));
+            ->willReturn($configurationFile);
 
         $pairs = [
             'foo' => 42,

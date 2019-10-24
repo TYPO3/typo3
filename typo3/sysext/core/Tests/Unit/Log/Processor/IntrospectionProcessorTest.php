@@ -73,7 +73,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorAddsLastBacktraceItemToLogRecord()
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
 
@@ -104,7 +104,7 @@ class IntrospectionProcessorTest extends UnitTestCase
                 'function' => 'function888'
             ]
         );
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($dummyBacktrace);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
         $logRecord = $this->processor->processLogRecord($logRecord);
@@ -133,7 +133,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorShiftsGivenNumberOfEntriesFromBacktrace($number)
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel($number);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
@@ -150,7 +150,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function introspectionProcessorLeavesOneEntryIfGivenNumberOfEntriesFromBacktraceIsGreaterOrEqualNumberOfBacktraceLevels()
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
         $this->processor->setShiftBackTraceLevel(4);
 
         $logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
@@ -167,7 +167,7 @@ class IntrospectionProcessorTest extends UnitTestCase
      */
     public function appendFullBacktraceAddsTheFullBacktraceAsStringToTheLog()
     {
-        $this->processor->expects(self::any())->method('getDebugBacktrace')->will(self::returnValue($this->dummyBacktrace));
+        $this->processor->expects(self::any())->method('getDebugBacktrace')->willReturn($this->dummyBacktrace);
 
         $this->processor->setAppendFullBackTrace(true);
 

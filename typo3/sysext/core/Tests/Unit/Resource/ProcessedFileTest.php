@@ -53,7 +53,7 @@ class ProcessedFileTest extends UnitTestCase
     {
         parent::setUp();
         $this->storageMock = $this->createMock(ResourceStorage::class);
-        $this->storageMock->expects(self::any())->method('getUid')->will(self::returnValue(5));
+        $this->storageMock->expects(self::any())->method('getUid')->willReturn(5);
 
         $this->folderMock = $this->createMock(Folder::class);
         $this->folderMock->expects(self::any())->method('getStorage')->willReturn($this->storageMock);

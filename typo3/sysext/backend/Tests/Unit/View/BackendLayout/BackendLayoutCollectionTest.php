@@ -57,7 +57,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
+        $backendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
 
         $backendLayoutCollection->add($backendLayoutMock);
     }
@@ -76,12 +76,12 @@ class BackendLayoutCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $firstBackendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
+        $firstBackendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
         $secondBackendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $secondBackendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
+        $secondBackendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
 
         $backendLayoutCollection->add($firstBackendLayoutMock);
         $backendLayoutCollection->add($secondBackendLayoutMock);
@@ -99,7 +99,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
-        $backendLayoutMock->expects(self::once())->method('getIdentifier')->will(self::returnValue($backendLayoutIdentifier));
+        $backendLayoutMock->expects(self::once())->method('getIdentifier')->willReturn($backendLayoutIdentifier);
 
         $backendLayoutCollection->add($backendLayoutMock);
 

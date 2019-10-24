@@ -114,7 +114,7 @@ class LinkNodeTest extends UnitTestCase
         );
         // do not use var path here, as link nodes get checked for public path as first part
         $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertIsArray($node->getStatus());
     }
 
@@ -133,8 +133,8 @@ class LinkNodeTest extends UnitTestCase
         );
         // do not use var path here, as link nodes get checked for public path as first part
         $path = Environment::getPublicPath() . '/tests/' . $this->getUniqueId('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::once())->method('isWindowsOs')->will(self::returnValue(true));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::INFO, $statusArray[0]->getSeverity());
     }
@@ -154,9 +154,9 @@ class LinkNodeTest extends UnitTestCase
         );
         // do not use var path here, as link nodes get checked for public path as first part
         $path = Environment::getPublicPath() . '/tests/' . $this->getUniqueId('dir_');
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
-        $node->expects(self::any())->method('isWindowsOs')->will(self::returnValue(false));
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
+        $node->expects(self::any())->method('isWindowsOs')->willReturn(false);
+        $node->expects(self::once())->method('exists')->willReturn(false);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
@@ -174,9 +174,9 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue(''));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isLink')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn('');
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::once())->method('isLink')->willReturn(false);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::WARNING, $statusArray[0]->getSeverity());
     }
@@ -194,11 +194,11 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue(''));
-        $node->expects(self::any())->method('getCurrentTarget')->will(self::returnValue(''));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isLink')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isLink')->will(self::returnValue(false));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn('');
+        $node->expects(self::any())->method('getCurrentTarget')->willReturn('');
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isLink')->willReturn(true);
+        $node->expects(self::once())->method('isLink')->willReturn(false);
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::ERROR, $statusArray[0]->getSeverity());
     }
@@ -216,11 +216,11 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue(''));
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isLink')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isTargetCorrect')->will(self::returnValue(true));
-        $node->expects(self::once())->method('getRelativePathBelowSiteRoot')->will(self::returnValue(''));
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn('');
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::once())->method('isLink')->willReturn(true);
+        $node->expects(self::once())->method('isTargetCorrect')->willReturn(true);
+        $node->expects(self::once())->method('getRelativePathBelowSiteRoot')->willReturn('');
         $statusArray = $node->getStatus();
         self::assertSame(FlashMessage::OK, $statusArray[0]->getSeverity());
     }
@@ -251,7 +251,7 @@ class LinkNodeTest extends UnitTestCase
         $this->expectExceptionCode(1380556246);
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists'], [], '', false);
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::once())->method('exists')->willReturn(false);
         self::assertFalse($node->_call('isLink'));
     }
 
@@ -268,8 +268,8 @@ class LinkNodeTest extends UnitTestCase
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
         $this->testFilesToDelete[] = $target;
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('isLink'));
     }
 
@@ -283,8 +283,8 @@ class LinkNodeTest extends UnitTestCase
         $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
         touch($path);
         $this->testFilesToDelete[] = $path;
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->_call('isLink'));
     }
 
@@ -297,7 +297,7 @@ class LinkNodeTest extends UnitTestCase
         $this->expectExceptionCode(1380556245);
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists'], [], '', false);
-        $node->expects(self::once())->method('exists')->will(self::returnValue(false));
+        $node->expects(self::once())->method('exists')->willReturn(false);
         self::assertFalse($node->_call('isTargetCorrect'));
     }
 
@@ -310,8 +310,8 @@ class LinkNodeTest extends UnitTestCase
         $this->expectExceptionCode(1380556247);
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::once())->method('isLink')->will(self::returnValue(false));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::once())->method('isLink')->willReturn(false);
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
@@ -322,9 +322,9 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getTarget'], [], '', false);
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isLink')->will(self::returnValue(true));
-        $node->expects(self::once())->method('getTarget')->will(self::returnValue(''));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isLink')->willReturn(true);
+        $node->expects(self::once())->method('getTarget')->willReturn('');
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
@@ -335,10 +335,10 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit_Framework_MockObject_MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'isLink', 'getCurrentTarget', 'getTarget'], [], '', false);
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isLink')->will(self::returnValue(true));
-        $node->expects(self::once())->method('getCurrentTarget')->will(self::returnValue('someLinkTarget/'));
-        $node->expects(self::once())->method('getTarget')->will(self::returnValue('someLinkTarget'));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isLink')->willReturn(true);
+        $node->expects(self::once())->method('getCurrentTarget')->willReturn('someLinkTarget/');
+        $node->expects(self::once())->method('getTarget')->willReturn('someLinkTarget');
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
@@ -362,10 +362,10 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isLink')->will(self::returnValue(true));
-        $node->expects(self::once())->method('getTarget')->will(self::returnValue(str_replace('/', DIRECTORY_SEPARATOR, $target)));
-        $node->expects(self::once())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isLink')->willReturn(true);
+        $node->expects(self::once())->method('getTarget')->willReturn(str_replace('/', DIRECTORY_SEPARATOR, $target));
+        $node->expects(self::once())->method('getAbsolutePath')->willReturn($path);
         self::assertTrue($node->_call('isTargetCorrect'));
     }
 
@@ -389,10 +389,10 @@ class LinkNodeTest extends UnitTestCase
             '',
             false
         );
-        $node->expects(self::any())->method('exists')->will(self::returnValue(true));
-        $node->expects(self::any())->method('isLink')->will(self::returnValue(true));
-        $node->expects(self::once())->method('getTarget')->will(self::returnValue('foo'));
-        $node->expects(self::once())->method('getAbsolutePath')->will(self::returnValue($path));
+        $node->expects(self::any())->method('exists')->willReturn(true);
+        $node->expects(self::any())->method('isLink')->willReturn(true);
+        $node->expects(self::once())->method('getTarget')->willReturn('foo');
+        $node->expects(self::once())->method('getAbsolutePath')->willReturn($path);
         self::assertFalse($node->_call('isTargetCorrect'));
     }
 }

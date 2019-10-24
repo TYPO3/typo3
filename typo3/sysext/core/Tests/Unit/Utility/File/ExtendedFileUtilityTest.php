@@ -50,7 +50,7 @@ class ExtendedFileUtilityTest extends UnitTestCase
             ->setMethods(['getUid'])
             ->disableOriginalConstructor()
             ->getMock();
-        $file->expects(self::once())->method('getUid')->will(self::returnValue($fileUid));
+        $file->expects(self::once())->method('getUid')->willReturn($fileUid);
 
         $folder = $this->getMockBuilder(Folder::class)
             ->setMethods(['getFiles'])
@@ -58,8 +58,8 @@ class ExtendedFileUtilityTest extends UnitTestCase
             ->getMock();
         $folder->expects(self::once())
             ->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)
-            ->will(
-                self::returnValue([$file])
+            ->willReturn(
+                [$file]
             );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */
@@ -88,10 +88,10 @@ class ExtendedFileUtilityTest extends UnitTestCase
 
         $GLOBALS['LANG']->expects(self::at(0))->method('sL')
             ->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.description.folderNotDeletedHasFilesWithReferences')
-            ->will(self::returnValue('folderNotDeletedHasFilesWithReferences'));
+            ->willReturn('folderNotDeletedHasFilesWithReferences');
         $GLOBALS['LANG']->expects(self::at(1))->method('sL')
             ->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:message.header.folderNotDeletedHasFilesWithReferences')
-            ->will(self::returnValue('folderNotDeletedHasFilesWithReferences'));
+            ->willReturn('folderNotDeletedHasFilesWithReferences');
 
         $result = $subject->folderHasFilesInUse($folder);
         self::assertTrue($result);
@@ -106,8 +106,8 @@ class ExtendedFileUtilityTest extends UnitTestCase
             ->setMethods(['getFiles'])
             ->disableOriginalConstructor()
             ->getMock();
-        $folder->expects(self::once())->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)->will(
-            self::returnValue([])
+        $folder->expects(self::once())->method('getFiles')->with(0, 0, Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, true)->willReturn(
+            []
         );
 
         /** @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility $subject */

@@ -47,7 +47,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->willReturn('some content');
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -71,7 +71,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->willReturn('some content');
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -95,7 +95,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->willReturn('some content');
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,
@@ -120,7 +120,7 @@ class ExternalViewHelperTest extends ViewHelperBaseTestcase
         $mockTagBuilder->expects(self::once())->method('setContent')->with('some content');
         $this->viewHelper->setTagBuilder($mockTagBuilder);
 
-        $this->viewHelper->expects(self::any())->method('renderChildren')->will(self::returnValue('some content'));
+        $this->viewHelper->expects(self::any())->method('renderChildren')->willReturn('some content');
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,

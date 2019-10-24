@@ -93,11 +93,11 @@ class InstallUtilityTest extends UnitTestCase
         $this->installMock->expects(self::any())
             ->method('getExtensionArray')
             ->with($this->extensionKey)
-            ->will(self::returnCallback([$this, 'getExtensionData']));
+            ->willReturnCallback([$this, 'getExtensionData']);
         $this->installMock->expects(self::any())
             ->method('enrichExtensionWithDetails')
             ->with($this->extensionKey)
-            ->will(self::returnCallback([$this, 'getExtensionData']));
+            ->willReturnCallback([$this, 'getExtensionData']);
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));
@@ -271,12 +271,12 @@ class InstallUtilityTest extends UnitTestCase
         $registryMock
             ->expects(self::any())
             ->method('get')
-            ->will(self::returnValueMap(
+            ->willReturnMap(
                 [
                     ['extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsFalse, null, false],
                     ['extensionDataImport', $this->fakedExtensions[$extKey]['siteRelPath'] . 'Initialisation/' . $registryNameReturnsTrue, null, true],
                 ]
-            ));
+            );
         $installMock = $this->getAccessibleMock(
             InstallUtility::class,
             ['getRegistry', 'getImportExportUtility'],

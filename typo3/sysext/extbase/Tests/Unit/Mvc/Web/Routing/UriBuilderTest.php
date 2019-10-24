@@ -133,7 +133,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForPrefixesArgumentsWithExtensionAndPluginNameAndSetsControllerArgument()
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->will(self::returnValue('tx_someextension_someplugin'));
+        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
         $expectedArguments = ['tx_someextension_someplugin' => ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController']];
         $GLOBALS['TSFE'] = null;
         $this->uriBuilder->uriFor(null, ['foo' => 'bar', 'baz' => ['extbase' => 'fluid']], 'SomeController', 'SomeExtension', 'SomePlugin');
@@ -145,7 +145,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForRecursivelyMergesAndOverrulesControllerArgumentsWithArguments()
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->will(self::returnValue('tx_someextension_someplugin'));
+        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
         $arguments = ['tx_someextension_someplugin' => ['foo' => 'bar'], 'additionalParam' => 'additionalValue'];
         $controllerArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid']];
         $expectedArguments = ['tx_someextension_someplugin' => ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController'], 'additionalParam' => 'additionalValue'];
@@ -159,7 +159,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForOnlySetsActionArgumentIfSpecified()
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->will(self::returnValue('tx_someextension_someplugin'));
+        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
         $expectedArguments = ['tx_someextension_someplugin' => ['controller' => 'SomeController']];
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -170,8 +170,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsControllerFromRequestIfControllerIsNotSet()
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->will(self::returnValue('tx_someextension_someplugin'));
-        $this->mockRequest->expects(self::once())->method('getControllerName')->will(self::returnValue('SomeControllerFromRequest'));
+        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_someplugin');
+        $this->mockRequest->expects(self::once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
         $expectedArguments = ['tx_someextension_someplugin' => ['controller' => 'SomeControllerFromRequest']];
         $this->uriBuilder->uriFor(null, [], null, 'SomeExtension', 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -182,8 +182,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsExtensionNameFromRequestIfExtensionNameIsNotSet()
     {
-        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->will(self::returnValue('tx_someextensionnamefromrequest_someplugin'));
-        $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->will(self::returnValue('SomeExtensionNameFromRequest'));
+        $this->mockExtensionService->expects(self::any())->method('getPluginNamespace')->willReturn('tx_someextensionnamefromrequest_someplugin');
+        $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
         $expectedArguments = ['tx_someextensionnamefromrequest_someplugin' => ['controller' => 'SomeController']];
         $this->uriBuilder->uriFor(null, [], 'SomeController', null, 'SomePlugin');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -194,8 +194,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function uriForSetsPluginNameFromRequestIfPluginNameIsNotSet()
     {
-        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->will(self::returnValue('tx_someextension_somepluginnamefromrequest'));
-        $this->mockRequest->expects(self::once())->method('getPluginName')->will(self::returnValue('SomePluginNameFromRequest'));
+        $this->mockExtensionService->expects(self::once())->method('getPluginNamespace')->willReturn('tx_someextension_somepluginnamefromrequest');
+        $this->mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
         $expectedArguments = ['tx_someextension_somepluginnamefromrequest' => ['controller' => 'SomeController']];
         $this->uriBuilder->uriFor(null, [], 'SomeController', 'SomeExtension');
         self::assertEquals($expectedArguments, $this->uriBuilder->getArguments());
@@ -372,7 +372,7 @@ class UriBuilderTest extends UnitTestCase
         $_SERVER['SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['ORIG_SCRIPT_NAME'] = '/typo3/index.php';
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-        $this->mockRequest->expects(self::any())->method('getBaseUri')->will(self::returnValue('http://baseuri'));
+        $this->mockRequest->expects(self::any())->method('getBaseUri')->willReturn('http://baseuri');
         $this->uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/' . TYPO3_mainDir . 'index.php?route=%2Ftest%2FPath&token=dummyToken';
         $actualResult = $this->uriBuilder->buildBackendUri();
@@ -441,7 +441,7 @@ class UriBuilderTest extends UnitTestCase
         /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
-        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->will(self::returnValue(['someTypoLinkConfiguration']));
+        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['someTypoLinkConfiguration']);
         $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['someTypoLinkConfiguration']);
         $uriBuilder->buildFrontendUri();
     }
@@ -451,7 +451,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriCreatesRelativeUrisByDefault()
     {
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->will(self::returnValue('relative/uri'));
+        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->willReturn('relative/uri');
         $expectedResult = 'relative/uri';
         $actualResult = $this->uriBuilder->buildFrontendUri();
         self::assertSame($expectedResult, $actualResult);
@@ -462,7 +462,7 @@ class UriBuilderTest extends UnitTestCase
      */
     public function buildFrontendUriDoesNotStripLeadingSlashesFromRelativeUris()
     {
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->will(self::returnValue('/relative/uri'));
+        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->willReturn('/relative/uri');
         $expectedResult = '/relative/uri';
         $actualResult = $this->uriBuilder->buildFrontendUri();
         self::assertSame($expectedResult, $actualResult);
@@ -476,8 +476,8 @@ class UriBuilderTest extends UnitTestCase
         /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
-        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->will(self::returnValue(['foo' => 'bar']));
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true])->will(self::returnValue('http://baseuri/relative/uri'));
+        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
+        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true])->willReturn('http://baseuri/relative/uri');
         $uriBuilder->setCreateAbsoluteUri(true);
         $expectedResult = 'http://baseuri/relative/uri';
         $actualResult = $uriBuilder->buildFrontendUri();
@@ -492,8 +492,8 @@ class UriBuilderTest extends UnitTestCase
         /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
-        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->will(self::returnValue(['foo' => 'bar']));
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true, 'forceAbsoluteUrl.' => ['scheme' => 'someScheme']])->will(self::returnValue('http://baseuri/relative/uri'));
+        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
+        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar', 'forceAbsoluteUrl' => true, 'forceAbsoluteUrl.' => ['scheme' => 'someScheme']])->willReturn('http://baseuri/relative/uri');
         $uriBuilder->setCreateAbsoluteUri(true);
         $uriBuilder->setAbsoluteUriScheme('someScheme');
         $expectedResult = 'http://baseuri/relative/uri';
@@ -509,8 +509,8 @@ class UriBuilderTest extends UnitTestCase
         /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $uriBuilder */
         $uriBuilder = $this->getAccessibleMock(UriBuilder::class, ['buildTypolinkConfiguration']);
         $uriBuilder->_set('contentObject', $this->mockContentObject);
-        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->will(self::returnValue(['foo' => 'bar']));
-        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar'])->will(self::returnValue('http://baseuri/relative/uri'));
+        $uriBuilder->expects(self::once())->method('buildTypolinkConfiguration')->willReturn(['foo' => 'bar']);
+        $this->mockContentObject->expects(self::once())->method('typoLink_URL')->with(['foo' => 'bar'])->willReturn('http://baseuri/relative/uri');
         $uriBuilder->setCreateAbsoluteUri(false);
         $uriBuilder->setAbsoluteUriScheme('someScheme');
         $expectedResult = 'http://baseuri/relative/uri';
@@ -639,16 +639,16 @@ class UriBuilderTest extends UnitTestCase
     {
         $this->uriBuilder->setTargetPageUid(123);
         $this->uriBuilder->setFormat('txt');
-        $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->will(self::returnValue('SomeExtensionNameFromRequest'));
+        $this->mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects(self::any())->method('getConfiguration')
-            ->will(self::returnValue(['formatToPageTypeMapping' => ['txt' => 2]]));
+            ->willReturn(['formatToPageTypeMapping' => ['txt' => 2]]);
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
             ->with('SomeExtensionNameFromRequest', 'txt')
-            ->will(self::returnValue(2));
+            ->willReturn(2);
 
         $expectedConfiguration = ['parameter' => '123,2'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
@@ -664,12 +664,12 @@ class UriBuilderTest extends UnitTestCase
         $this->uriBuilder->setFormat('txt');
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->will(self::returnValue([]));
+        $mockConfigurationManager->expects(self::any())->method('getConfiguration')->willReturn([]);
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
             ->with(null, 'txt')
-            ->will(self::returnValue(0));
+            ->willReturn(0);
 
         $expectedConfiguration = ['parameter' => '123,0'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
@@ -687,12 +687,12 @@ class UriBuilderTest extends UnitTestCase
 
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $mockConfigurationManager->expects(self::any())->method('getConfiguration')
-            ->will(self::returnValue(['formatToPageTypeMapping' => ['pdf' => 2]]));
+            ->willReturn(['formatToPageTypeMapping' => ['pdf' => 2]]);
         $this->uriBuilder->_set('configurationManager', $mockConfigurationManager);
 
         $this->mockExtensionService->expects(self::any())->method('getTargetPageTypeByFormat')
             ->with(null, 'txt')
-            ->will(self::returnValue(0));
+            ->willReturn(0);
 
         $expectedConfiguration = ['parameter' => '123,0'];
         $actualConfiguration = $this->uriBuilder->_call('buildTypolinkConfiguration');
@@ -773,7 +773,7 @@ class UriBuilderTest extends UnitTestCase
         $mockValueObject->name = 'foo';
         /** @var UriBuilder|\PHPUnit_Framework_MockObject_MockObject|object $mockUriBuilder */
         $mockUriBuilder = $this->getAccessibleMock(UriBuilder::class, ['convertTransientObjectToArray']);
-        $mockUriBuilder->expects(self::once())->method('convertTransientObjectToArray')->will(self::returnValue(['foo' => 'bar']));
+        $mockUriBuilder->expects(self::once())->method('convertTransientObjectToArray')->willReturn(['foo' => 'bar']);
         $actualResult = $mockUriBuilder->_call('convertDomainObjectsToIdentityArrays', ['object' => $mockValueObject]);
         $expectedResult = ['object' => ['foo' => 'bar']];
         self::assertEquals($expectedResult, $actualResult);
@@ -869,8 +869,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function removeDefaultControllerAndActionDoesNotModifyArgumentsifSpecifiedControlerAndActionIsNotEqualToDefaults()
     {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will(self::returnValue('DefaultController'));
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->will(self::returnValue('defaultAction'));
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->willReturn('defaultAction');
         $arguments = ['controller' => 'SomeController', 'action' => 'someAction', 'foo' => 'bar'];
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
@@ -884,8 +884,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function removeDefaultControllerAndActionRemovesControllerIfItIsEqualToTheDefault()
     {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will(self::returnValue('DefaultController'));
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->will(self::returnValue('defaultAction'));
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->willReturn('defaultAction');
         $arguments = ['controller' => 'DefaultController', 'action' => 'someAction', 'foo' => 'bar'];
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
@@ -899,8 +899,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function removeDefaultControllerAndActionRemovesActionIfItIsEqualToTheDefault()
     {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will(self::returnValue('DefaultController'));
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->will(self::returnValue('defaultAction'));
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'SomeController')->willReturn('defaultAction');
         $arguments = ['controller' => 'SomeController', 'action' => 'defaultAction', 'foo' => 'bar'];
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
@@ -914,8 +914,8 @@ class UriBuilderTest extends UnitTestCase
      */
     public function removeDefaultControllerAndActionRemovesControllerAndActionIfBothAreEqualToTheDefault()
     {
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->will(self::returnValue('DefaultController'));
-        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->will(self::returnValue('defaultAction'));
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultControllerNameByPlugin')->with('ExtensionName', 'PluginName')->willReturn('DefaultController');
+        $this->mockExtensionService->expects(self::atLeastOnce())->method('getDefaultActionNameByPluginAndController')->with('ExtensionName', 'PluginName', 'DefaultController')->willReturn('defaultAction');
         $arguments = ['controller' => 'DefaultController', 'action' => 'defaultAction', 'foo' => 'bar'];
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';

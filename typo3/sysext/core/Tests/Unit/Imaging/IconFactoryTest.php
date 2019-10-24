@@ -579,8 +579,8 @@ class IconFactoryTest extends UnitTestCase
         $mockedFile = $this->getMockBuilder(File::class)
             ->setConstructorArgs([['identifier' => '', 'name' => ''], $mockedStorage])
             ->getMock();
-        $mockedFile->expects(self::atMost(1))->method('getExtension')->will(self::returnValue($extension));
-        $mockedFile->expects(self::atLeastOnce())->method('getMimeType')->will(self::returnValue($mimeType));
+        $mockedFile->expects(self::atMost(1))->method('getExtension')->willReturn($extension);
+        $mockedFile->expects(self::atLeastOnce())->method('getMimeType')->willReturn($mimeType);
         return $mockedFile;
     }
 
@@ -593,11 +593,11 @@ class IconFactoryTest extends UnitTestCase
     protected function getTestSubjectFolderObject($identifier)
     {
         $mockedStorage = $this->createMock(ResourceStorage::class);
-        $mockedStorage->expects(self::any())->method('getRootLevelFolder')->will(self::returnValue(
+        $mockedStorage->expects(self::any())->method('getRootLevelFolder')->willReturn(
             new Folder($mockedStorage, '/', '/')
-        ));
-        $mockedStorage->expects(self::any())->method('checkFolderActionPermission')->will(self::returnValue(true));
-        $mockedStorage->expects(self::any())->method('isBrowsable')->will(self::returnValue(true));
+        );
+        $mockedStorage->expects(self::any())->method('checkFolderActionPermission')->willReturn(true);
+        $mockedStorage->expects(self::any())->method('isBrowsable')->willReturn(true);
         return new Folder($mockedStorage, $identifier, $identifier);
     }
 }

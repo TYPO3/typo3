@@ -149,12 +149,12 @@ class ExtractorServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             ->setMethods(['createExtractorInstance'])
             ->getMock();
 
-        $extractorRegistryMock->expects(self::any())->method('createExtractorInstance')->will(self::returnValueMap(
+        $extractorRegistryMock->expects(self::any())->method('createExtractorInstance')->willReturnMap(
             [
                 [$extractorClass1, $extractorObject1],
                 [$extractorClass2, $extractorObject2]
             ]
-        ));
+        );
         $extractorRegistryMock->registerExtractionService($extractorClass1);
         $extractorRegistryMock->registerExtractionService($extractorClass2);
 

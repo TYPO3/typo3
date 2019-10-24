@@ -122,7 +122,7 @@ class ObjectConverterTest extends UnitTestCase
             ->with('TheTargetType')
             ->willReturn($classSchemaMock);
 
-        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue('TheTargetType'));
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->willReturn('TheTargetType');
 
         $configuration = new PropertyMappingConfiguration();
         $configuration->setTypeConverterOptions(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, []);

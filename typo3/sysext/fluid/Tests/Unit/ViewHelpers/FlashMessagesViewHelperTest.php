@@ -41,7 +41,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
     {
         parent::setUp();
         $this->flashMessageQueue = $this->prophesize(FlashMessageQueue::class);
-        $this->controllerContext->expects(self::any())->method('getFlashMessageQueue')->will(self::returnValue($this->flashMessageQueue->reveal()));
+        $this->controllerContext->expects(self::any())->method('getFlashMessageQueue')->willReturn($this->flashMessageQueue->reveal());
 
         $this->viewHelper = new FlashMessagesViewHelper();
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
@@ -70,7 +70,7 @@ class FlashMessagesViewHelperTest extends ViewHelperBaseTestcase
         $queueIdentifier = 'myQueue';
 
         $this->flashMessageQueue->getAllMessagesAndFlush()->willReturn();
-        $this->controllerContext->expects(self::once())->method('getFlashMessageQueue')->with($queueIdentifier)->will(self::returnValue($this->flashMessageQueue->reveal()));
+        $this->controllerContext->expects(self::once())->method('getFlashMessageQueue')->with($queueIdentifier)->willReturn($this->flashMessageQueue->reveal());
 
         $this->setArgumentsUnderTest(
             $this->viewHelper,

@@ -90,11 +90,11 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $this->viewHelper->injectAjaxWidgetContextHolder($this->ajaxWidgetContextHolder);
         $this->widgetContext = $this->createMock(WidgetContext::class);
         $this->objectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->objectManager->expects(self::at(0))->method('get')->with(WidgetContext::class)->will(self::returnValue($this->widgetContext));
+        $this->objectManager->expects(self::at(0))->method('get')->with(WidgetContext::class)->willReturn($this->widgetContext);
         $this->viewHelper->injectObjectManager($this->objectManager);
         $this->request = $this->createMock(Request::class);
         $this->controllerContext = $this->createMock(ControllerContext::class);
-        $this->controllerContext->expects(self::any())->method('getRequest')->will(self::returnValue($this->request));
+        $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request);
         $this->renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
             ->setMethods(['getControllerContext'])
             ->getMock();
@@ -140,10 +140,10 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $mockViewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
         $mockViewHelperVariableContainer->expects(self::any())->method('get')->willReturnArgument(2);
         $mockRenderingContext = $this->createMock(RenderingContextFixture::class);
-        $mockRenderingContext->expects(self::atLeastOnce())->method('getViewHelperVariableContainer')->will(self::returnValue($mockViewHelperVariableContainer));
+        $mockRenderingContext->expects(self::atLeastOnce())->method('getViewHelperVariableContainer')->willReturn($mockViewHelperVariableContainer);
         $mockRenderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
         $this->viewHelper->setRenderingContext($mockRenderingContext);
-        $this->viewHelper->expects(self::once())->method('getWidgetConfiguration')->will(self::returnValue('Some Widget Configuration'));
+        $this->viewHelper->expects(self::once())->method('getWidgetConfiguration')->willReturn('Some Widget Configuration');
         $this->widgetContext->expects(self::once())->method('setWidgetConfiguration')->with('Some Widget Configuration');
         $this->widgetContext->expects(self::once())->method('setWidgetIdentifier')->with('@widget_0');
         $this->viewHelper->_set('controller', new \stdClass());
@@ -151,7 +151,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $this->widgetContext->expects(self::once())->method('setControllerObjectName')->with('stdClass');
         $this->viewHelper->expects(self::once())->method('validateArguments');
         $this->viewHelper->expects(self::once())->method('initialize');
-        $this->viewHelper->expects(self::once())->method('callRenderMethod')->will(self::returnValue('renderedResult'));
+        $this->viewHelper->expects(self::once())->method('callRenderMethod')->willReturn('renderedResult');
         $output = $this->viewHelper->initializeArgumentsAndRender();
         self::assertEquals('renderedResult', $output);
     }
@@ -168,7 +168,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $rootNode->expects(self::at(0))->method('addChildNode')->with($node1);
         $rootNode->expects(self::at(1))->method('addChildNode')->with($node2);
         $rootNode->expects(self::at(2))->method('addChildNode')->with($node3);
-        $this->objectManager->expects(self::once())->method('get')->with(RootNode::class)->will(self::returnValue($rootNode));
+        $this->objectManager->expects(self::once())->method('get')->with(RootNode::class)->willReturn($rootNode);
         $renderingContext = $this->createMock(RenderingContextInterface::class);
         $this->viewHelper->_set('renderingContext', $renderingContext);
         $this->widgetContext->expects(self::once())->method('setViewHelperChildNodes')->with($rootNode, $renderingContext);
@@ -199,22 +199,22 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         // Initial Setup
         $widgetRequest = $this->createMock(WidgetRequest::class);
         $response = $this->createMock(Response::class);
-        $this->objectManager->expects(self::at(0))->method('get')->with(WidgetRequest::class)->will(self::returnValue($widgetRequest));
-        $this->objectManager->expects(self::at(1))->method('get')->with(Response::class)->will(self::returnValue($response));
+        $this->objectManager->expects(self::at(0))->method('get')->with(WidgetRequest::class)->willReturn($widgetRequest);
+        $this->objectManager->expects(self::at(1))->method('get')->with(Response::class)->willReturn($response);
         // Widget Context is set
         $widgetRequest->expects(self::once())->method('setWidgetContext')->with($this->widgetContext);
         // The namespaced arguments are passed to the sub-request
         // and the action name is extracted from the namespace.
-        $this->controllerContext->expects(self::once())->method('getRequest')->will(self::returnValue($this->request));
-        $this->widgetContext->expects(self::once())->method('getWidgetIdentifier')->will(self::returnValue('widget-1'));
-        $this->request->expects(self::once())->method('getArguments')->will(self::returnValue([
+        $this->controllerContext->expects(self::once())->method('getRequest')->willReturn($this->request);
+        $this->widgetContext->expects(self::once())->method('getWidgetIdentifier')->willReturn('widget-1');
+        $this->request->expects(self::once())->method('getArguments')->willReturn([
             'k1' => 'k2',
             'widget-1' => [
                 'arg1' => 'val1',
                 'arg2' => 'val2',
                 'action' => 'myAction'
             ]
-        ]));
+        ]);
         $widgetRequest->expects(self::once())->method('setArguments')->with([
             'arg1' => 'val1',
             'arg2' => 'val2'

@@ -219,7 +219,7 @@ class RequestTest extends UnitTestCase
             ->setMethods(['getControllerObjectName'])
             ->disableOriginalConstructor()
             ->getMock();
-        $request->expects(self::once())->method('getControllerObjectName')->will(self::returnValue(''));
+        $request->expects(self::once())->method('getControllerObjectName')->willReturn('');
         $request->setControllerActionName('theAction');
         self::assertEquals('theAction', $request->getControllerActionName());
     }

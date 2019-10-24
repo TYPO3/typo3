@@ -326,7 +326,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectOnDomainObjectsCreatesExpectedOptions()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue(2));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn(2);
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName[__identity]');
@@ -393,11 +393,11 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     {
         /** @var $mockPersistenceManager \PHPUnit_Framework_MockObject_MockObject|PersistenceManagerInterface */
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnCallback(
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturnCallback(
             function ($object) {
                 return $object->getId();
             }
-        ));
+        );
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->tagBuilder = new TagBuilder();
@@ -431,7 +431,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesUuidForValueAndLabel()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue('fakeUID'));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn('fakeUID');
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
@@ -456,7 +456,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectWithoutFurtherConfigurationOnDomainObjectsUsesToStringForLabelIfAvailable()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue('fakeUID'));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn('fakeUID');
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->tagBuilder->expects(self::once())->method('addAttribute')->with('name', 'myName');
@@ -468,7 +468,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['__toString'])
             ->setConstructorArgs([1, 'Ingmar', 'Schlecht'])
             ->getMock();
-        $user->expects(self::atLeastOnce())->method('__toString')->will(self::returnValue('toStringResult'));
+        $user->expects(self::atLeastOnce())->method('__toString')->willReturn('toStringResult');
 
         $this->arguments['options'] = [
             $user
@@ -485,7 +485,7 @@ class SelectViewHelperTest extends ViewHelperBaseTestcase
     public function selectOnDomainObjectsThrowsExceptionIfNoValueCanBeFound()
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->will(self::returnValue(null));
+        $mockPersistenceManager->expects(self::any())->method('getIdentifierByObject')->willReturn(null);
         $this->viewHelper->_set('persistenceManager', $mockPersistenceManager);
 
         $this->expectException(\TYPO3Fluid\Fluid\Core\ViewHelper\Exception::class);

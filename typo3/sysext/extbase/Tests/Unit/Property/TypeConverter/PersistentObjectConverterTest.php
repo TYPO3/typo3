@@ -73,13 +73,13 @@ class PersistentObjectConverterTest extends UnitTestCase
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockObjectManager->expects(self::any())
             ->method('get')
-            ->will(self::returnCallback(function ($className, ...$arguments) {
+            ->willReturnCallback(function ($className, ...$arguments) {
                 $reflectionClass = new \ReflectionClass($className);
                 if (empty($arguments)) {
                     return $reflectionClass->newInstance();
                 }
                 return $reflectionClass->newInstanceArgs($arguments);
-            }));
+            });
         $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
 
         $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
@@ -150,18 +150,18 @@ class PersistentObjectConverterTest extends UnitTestCase
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
     {
         $mockSchema = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class)->disableOriginalConstructor()->getMock();
-        $this->mockReflectionService->expects(self::any())->method('getClassSchema')->with('TheTargetType')->will(self::returnValue($mockSchema));
+        $this->mockReflectionService->expects(self::any())->method('getClassSchema')->with('TheTargetType')->willReturn($mockSchema);
 
-        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue('TheTargetType'));
-        $mockSchema->expects(self::any())->method('hasProperty')->with('thePropertyName')->will(self::returnValue(true));
-        $mockSchema->expects(self::any())->method('getProperty')->with('thePropertyName')->will(self::returnValue(new ClassSchema\Property(
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->willReturn('TheTargetType');
+        $mockSchema->expects(self::any())->method('hasProperty')->with('thePropertyName')->willReturn(true);
+        $mockSchema->expects(self::any())->method('getProperty')->with('thePropertyName')->willReturn(new ClassSchema\Property(
             'thePropertyName',
             [
                 'propertyCharacteristicsBit' => 0,
                 't' => 'TheTypeOfSubObject',
                 'e' => null,
             ]
-        )));
+        ));
         $configuration = $this->buildConfiguration([]);
         self::assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
     }
@@ -172,7 +172,7 @@ class PersistentObjectConverterTest extends UnitTestCase
     public function getTypeOfChildPropertyShouldUseConfiguredTypeIfItWasSet()
     {
         $this->mockReflectionService->expects(self::never())->method('getClassSchema');
-        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue('foo'));
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->willReturn('foo');
 
         $configuration = $this->buildConfiguration([]);
         $configuration->forProperty('thePropertyName')->setTypeConverterOption(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, 'Foo\Bar');
@@ -187,7 +187,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         $identifier = '17';
         $object = new \stdClass();
 
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->will(self::returnValue($object));
+        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->willReturn($object);
         self::assertSame($object, $this->converter->convertFrom($identifier, 'MySpecialType'));
     }
 
@@ -199,7 +199,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         $identifier = '17';
         $object = new \stdClass();
 
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->will(self::returnValue($object));
+        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->willReturn($object);
         self::assertSame($object, $this->converter->convertFrom($identifier, 'MySpecialType'));
     }
 
@@ -214,7 +214,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         $source = [
             '__identity' => $identifier
         ];
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->will(self::returnValue($object));
+        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->willReturn($object);
         self::assertSame($object, $this->converter->convertFrom($source, 'MySpecialType'));
     }
 
@@ -233,7 +233,7 @@ class PersistentObjectConverterTest extends UnitTestCase
             '__identity' => $identifier,
             'foo' => 'bar'
         ];
-        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->will(self::returnValue($object));
+        $this->mockPersistenceManager->expects(self::any())->method('getObjectByIdentifier')->with($identifier)->willReturn($object);
         $this->converter->convertFrom($source, 'MySpecialType');
     }
 
@@ -258,20 +258,20 @@ class PersistentObjectConverterTest extends UnitTestCase
         $mockClassSchema = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ClassSchema::class)
             ->setConstructorArgs([\TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter\Fixtures\Query::class])
             ->getMock();
-        $this->mockReflectionService->expects(self::any())->method('getClassSchema')->with('SomeType')->will(self::returnValue($mockClassSchema));
+        $this->mockReflectionService->expects(self::any())->method('getClassSchema')->with('SomeType')->willReturn($mockClassSchema);
 
         $mockConstraint = $this->getMockBuilder(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\Comparison::class)->disableOriginalConstructor()->getMock();
 
         $mockObject = new \stdClass();
         $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
         $mockQueryResult = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryResultInterface::class);
-        $mockQueryResult->expects(self::any())->method('count')->will(self::returnValue($numberOfResults));
-        $mockQueryResult->expects($howOftenIsGetFirstCalled)->method('getFirst')->will(self::returnValue($mockObject));
-        $mockQuery->expects(self::any())->method('equals')->with('key1', 'value1')->will(self::returnValue($mockConstraint));
-        $mockQuery->expects(self::any())->method('matching')->with($mockConstraint)->will(self::returnValue($mockQuery));
-        $mockQuery->expects(self::any())->method('execute')->will(self::returnValue($mockQueryResult));
+        $mockQueryResult->expects(self::any())->method('count')->willReturn($numberOfResults);
+        $mockQueryResult->expects($howOftenIsGetFirstCalled)->method('getFirst')->willReturn($mockObject);
+        $mockQuery->expects(self::any())->method('equals')->with('key1', 'value1')->willReturn($mockConstraint);
+        $mockQuery->expects(self::any())->method('matching')->with($mockConstraint)->willReturn($mockQuery);
+        $mockQuery->expects(self::any())->method('execute')->willReturn($mockQueryResult);
 
-        $this->mockPersistenceManager->expects(self::any())->method('createQueryForType')->with('SomeType')->will(self::returnValue($mockQuery));
+        $this->mockPersistenceManager->expects(self::any())->method('createQueryForType')->with('SomeType')->willReturn($mockQuery);
 
         return $mockObject;
     }
@@ -359,7 +359,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         $convertedChildProperties = [
             'propertyNotExisting' => 'bar'
         ];
-        $this->mockObjectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class)->will(self::returnValue($object));
+        $this->mockObjectManager->expects(self::any())->method('get')->with(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class)->willReturn($object);
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters::class, $convertedChildProperties, $configuration);
         self::assertSame($object, $result);
@@ -408,7 +408,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         $expectedObject = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('param1');
         $expectedObject->setProperty2('bar');
 
-        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class));
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->willReturn(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class);
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, $convertedChildProperties, $configuration);
         self::assertEquals($expectedObject, $result);
@@ -453,7 +453,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         ];
         $expectedObject = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('thisIsTheDefaultValue');
 
-        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class));
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->willReturn(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class);
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, [], $configuration);
         self::assertEquals($expectedObject, $result);
@@ -502,7 +502,7 @@ class PersistentObjectConverterTest extends UnitTestCase
             'property2' => 'bar'
         ];
 
-        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->will(self::returnValue(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class));
+        $this->mockContainer->expects(self::any())->method('getImplementationClassName')->willReturn(\TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class);
         $configuration = $this->buildConfiguration([PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => true]);
         $result = $this->converter->convertFrom($source, \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor::class, $convertedChildProperties, $configuration);
         self::assertSame($object, $result);

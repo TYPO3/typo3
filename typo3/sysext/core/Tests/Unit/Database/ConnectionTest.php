@@ -69,14 +69,14 @@ class ConnectionTest extends UnitTestCase
 
         $this->connection->expects(self::any())
             ->method('getExpressionBuilder')
-            ->will(self::returnValue(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection)));
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
 
         $this->connection->expects(self::any())
             ->method('connect');
 
         $this->connection->expects(self::any())
             ->method('getDatabasePlatform')
-            ->will(self::returnValue(new MockPlatform()));
+            ->willReturn(new MockPlatform());
     }
 
     /**
@@ -216,7 +216,7 @@ class ConnectionTest extends UnitTestCase
         $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->will(self::returnValue(1));
+            ->willReturn(1);
 
         $this->connection->insert(...$args);
     }
@@ -229,7 +229,7 @@ class ConnectionTest extends UnitTestCase
         $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with('INSERT INTO "aTestTable" ("aField") VALUES (?), (?)', ['aValue', 'anotherValue'])
-            ->will(self::returnValue(2));
+            ->willReturn(2);
 
         $this->connection->bulkInsert('aTestTable', [['aField' => 'aValue'], ['aField' => 'anotherValue']], ['aField']);
     }
@@ -280,7 +280,7 @@ class ConnectionTest extends UnitTestCase
         $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->will(self::returnValue(1));
+            ->willReturn(1);
 
         $this->connection->update(...$args);
     }
@@ -331,7 +331,7 @@ class ConnectionTest extends UnitTestCase
         $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
-            ->will(self::returnValue(1));
+            ->willReturn(1);
 
         $this->connection->delete(...$args);
     }
@@ -415,7 +415,7 @@ class ConnectionTest extends UnitTestCase
         $this->connection->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
-            ->will(self::returnValue($resultStatement));
+            ->willReturn($resultStatement);
 
         $this->connection->select(...$args);
     }
@@ -465,12 +465,12 @@ class ConnectionTest extends UnitTestCase
         $resultStatement->expects(self::once())
             ->method('fetchColumn')
             ->with(0)
-            ->will(self::returnValue(0));
+            ->willReturn(0);
 
         $this->connection->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
-            ->will(self::returnValue($resultStatement));
+            ->willReturn($resultStatement);
 
         $this->connection->count(...$args);
     }
@@ -483,7 +483,7 @@ class ConnectionTest extends UnitTestCase
         $this->connection->expects(self::once())
             ->method('executeUpdate')
             ->with('TRUNCATE "aTestTable"')
-            ->will(self::returnValue(0));
+            ->willReturn(0);
 
         $this->connection->truncate('aTestTable', false);
     }
