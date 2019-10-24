@@ -42,30 +42,35 @@ class SiteFinder
     protected $mappingRootPageIdToIdentifier = [];
 
     /**
+     * @var SiteConfiguration
+     */
+    protected $siteConfiguration;
+
+    /**
      * Fetches all existing configurations as Site objects
      *
      * @param SiteConfiguration $siteConfiguration
      */
     public function __construct(SiteConfiguration $siteConfiguration = null)
     {
-        $siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(
+        $this->siteConfiguration = $siteConfiguration ?? GeneralUtility::makeInstance(
             SiteConfiguration::class,
             Environment::getConfigPath() . '/sites'
         );
-        $sites = $siteConfiguration->getAllExistingSites();
-        foreach ($sites as $identifier => $site) {
-            $this->sites[$identifier] = $site;
-            $this->mappingRootPageIdToIdentifier[$site->getRootPageId()] = $identifier;
-        }
+        $this->fetchAllSites();
     }
 
     /**
      * Return a list of all configured sites
      *
+     * @param bool $useCache
      * @return Site[]
      */
-    public function getAllSites(): array
+    public function getAllSites(bool $useCache = true): array
     {
+        if ($useCache === false) {
+            $this->fetchAllSites($useCache);
+        }
         return $this->sites;
     }
 
@@ -131,5 +136,16 @@ class SiteFinder
             }
         }
         throw new SiteNotFoundException('No site found in root line of page ' . $pageId, 1521716622);
+    }
+
+    /**
+     * @param bool $useCache
+     */
+    protected function fetchAllSites(bool $useCache = true): void
+    {
+        $this->sites = $this->siteConfiguration->getAllExistingSites($useCache);
+        foreach ($this->sites as $identifier => $site) {
+            $this->mappingRootPageIdToIdentifier[$site->getRootPageId()] = $identifier;
+        }
     }
 }

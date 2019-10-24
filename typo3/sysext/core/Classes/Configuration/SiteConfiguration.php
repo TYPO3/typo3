@@ -76,11 +76,15 @@ class SiteConfiguration implements SingletonInterface
     /**
      * Return all site objects which have been found in the filesystem.
      *
+     * @param bool $useCache
      * @return Site[]
      */
-    public function getAllExistingSites(): array
+    public function getAllExistingSites(bool $useCache = true): array
     {
-        return $this->firstLevelCache ?? $this->resolveAllExistingSites();
+        if ($useCache && $this->firstLevelCache !== null) {
+            return $this->firstLevelCache;
+        }
+        return $this->resolveAllExistingSites($useCache);
     }
 
     /**
