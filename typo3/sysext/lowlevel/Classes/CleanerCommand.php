@@ -438,7 +438,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
                 }
 
                 if (!$this->genTree_traverseDeleted) {
-                    $queryBuilder->getRestrictions()->add(DeletedRestriction::class);
+                    $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 }
 
                 $result = $queryBuilder->execute();
@@ -551,7 +551,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 
             $queryBuilder->getRestrictions()->removeAll();
             if (!$this->genTree_traverseDeleted) {
-                $queryBuilder->getRestrictions()->add(DeletedRestriction::class);
+                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             }
 
             $queryBuilder
