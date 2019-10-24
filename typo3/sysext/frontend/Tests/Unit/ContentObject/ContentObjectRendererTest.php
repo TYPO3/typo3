@@ -1676,8 +1676,8 @@ class ContentObjectRendererTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(Context::class, $context);
         self::assertEquals(3, $this->subject->getData('context:workspace:id'));
         self::assertEquals('0,-1', $this->subject->getData('context:frontend.user:groupIds'));
-        self::assertEquals(false, $this->subject->getData('context:frontend.user:isLoggedIn'));
-        self::assertEquals(false, $this->subject->getData('context:frontend.user:foozball'));
+        self::assertFalse($this->subject->getData('context:frontend.user:isLoggedIn'));
+        self::assertSame('', $this->subject->getData('context:frontend.user:foozball'));
     }
 
     /**

@@ -70,7 +70,7 @@ class ExternalLinktypeTest extends UnitTestCase
 
         $result = $subject->checkLink($url, null, null);
 
-        self::assertSame(false, $result);
+        self::assertFalse($result);
     }
 
     /**

@@ -152,9 +152,9 @@ class SiteTest extends UnitTestCase
         $fluidProphecy = $this->prophesize(FluidPageErrorHandler::class);
         GeneralUtility::addInstance(FluidPageErrorHandler::class, $fluidProphecy->reveal());
 
-        self::assertEquals(true, $subject->getErrorHandler(123) instanceof PageErrorHandlerInterface);
-        self::assertEquals(true, $subject->getErrorHandler(124) instanceof PageErrorHandlerInterface);
-        self::assertEquals(true, $subject->getErrorHandler(125) instanceof PageErrorHandlerInterface);
+        self::assertTrue($subject->getErrorHandler(123) instanceof PageErrorHandlerInterface);
+        self::assertTrue($subject->getErrorHandler(124) instanceof PageErrorHandlerInterface);
+        self::assertTrue($subject->getErrorHandler(125) instanceof PageErrorHandlerInterface);
     }
 
     /**

@@ -177,7 +177,7 @@ class RootlineUtilityTest extends UnitTestCase
             ['uid' => 99, 'doktype' => PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1]
         );
         self::assertTrue(isset($result['_MOUNT_OL']));
-        self::assertSame(true, $result['_MOUNT_OL']);
+        self::assertTrue($result['_MOUNT_OL']);
     }
 
     /**

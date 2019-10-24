@@ -239,7 +239,7 @@ class RedirectServiceTest extends UnitTestCase
 
         $result = $this->redirectService->matchRedirect('example.com', 'index.php', 'id=123&a=a');
 
-        self::assertSame(null, $result);
+        self::assertNull($result);
     }
 
     /**

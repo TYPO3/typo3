@@ -116,16 +116,16 @@ class UriBuilderTest extends UnitTestCase
         self::assertEquals(['test' => 'arguments'], $this->uriBuilder->getArguments());
         self::assertEquals('testSection', $this->uriBuilder->getSection());
         self::assertEquals('testFormat', $this->uriBuilder->getFormat());
-        self::assertEquals(true, $this->uriBuilder->getCreateAbsoluteUri());
+        self::assertTrue($this->uriBuilder->getCreateAbsoluteUri());
         self::assertEquals('https', $this->uriBuilder->getAbsoluteUriScheme());
-        self::assertEquals(true, $this->uriBuilder->getAddQueryString());
+        self::assertTrue($this->uriBuilder->getAddQueryString());
         self::assertEquals(['test' => 'addQueryStringExcludeArguments'], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
         self::assertEquals('GET', $this->uriBuilder->getAddQueryStringMethod());
         self::assertEquals('testArgumentPrefix', $this->uriBuilder->getArgumentPrefix());
-        self::assertEquals(true, $this->uriBuilder->getLinkAccessRestrictedPages());
+        self::assertTrue($this->uriBuilder->getLinkAccessRestrictedPages());
         self::assertEquals(123, $this->uriBuilder->getTargetPageUid());
         self::assertEquals(321, $this->uriBuilder->getTargetPageType());
-        self::assertEquals(true, $this->uriBuilder->getNoCache());
+        self::assertTrue($this->uriBuilder->getNoCache());
     }
 
     /**
@@ -543,17 +543,17 @@ class UriBuilderTest extends UnitTestCase
         self::assertEquals([], $this->uriBuilder->getArguments());
         self::assertEquals('', $this->uriBuilder->getSection());
         self::assertEquals('', $this->uriBuilder->getFormat());
-        self::assertEquals(false, $this->uriBuilder->getCreateAbsoluteUri());
-        self::assertEquals(false, $this->uriBuilder->getAddQueryString());
+        self::assertFalse($this->uriBuilder->getCreateAbsoluteUri());
+        self::assertFalse($this->uriBuilder->getAddQueryString());
         self::assertEquals([], $this->uriBuilder->getArgumentsToBeExcludedFromQueryString());
         self::assertEquals('', $this->uriBuilder->getAddQueryStringMethod());
         self::assertEquals('', $this->uriBuilder->getArgumentPrefix());
-        self::assertEquals(false, $this->uriBuilder->getLinkAccessRestrictedPages());
-        self::assertEquals(null, $this->uriBuilder->getTargetPageUid());
+        self::assertFalse($this->uriBuilder->getLinkAccessRestrictedPages());
+        self::assertNull($this->uriBuilder->getTargetPageUid());
         self::assertEquals(0, $this->uriBuilder->getTargetPageType());
-        self::assertEquals(false, $this->uriBuilder->getNoCache());
-        self::assertEquals(false, $this->uriBuilder->getNoCache());
-        self::assertEquals(null, $this->uriBuilder->getAbsoluteUriScheme());
+        self::assertFalse($this->uriBuilder->getNoCache());
+        self::assertFalse($this->uriBuilder->getNoCache());
+        self::assertNull($this->uriBuilder->getAbsoluteUriScheme());
     }
 
     /**

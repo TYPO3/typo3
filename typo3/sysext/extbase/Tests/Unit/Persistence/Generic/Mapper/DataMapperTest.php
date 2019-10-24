@@ -116,7 +116,8 @@ class DataMapperTest extends UnitTestCase
             'pid' => new ColumnMap('pid', 'pid'),
             'firstProperty' => new ColumnMap('firstProperty', 'firstProperty'),
             'secondProperty' => new ColumnMap('secondProperty', 'secondProperty'),
-            'thirdProperty' => new ColumnMap('thirdProperty', 'thirdProperty')
+            'thirdProperty' => new ColumnMap('thirdProperty', 'thirdProperty'),
+            'fourthProperty' => new ColumnMap('fourthProperty', 'fourthProperty')
         ];
         $dataMap = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap::class, ['dummy'], [$className, $className]);
         $dataMap->_set('columnMaps', $columnMaps);
@@ -149,7 +150,7 @@ class DataMapperTest extends UnitTestCase
         self::assertEquals('firstValue', $object->firstProperty);
         self::assertEquals(1234, $object->secondProperty);
         self::assertEquals(1.234, $object->thirdProperty);
-        self::assertEquals(false, $object->fourthProperty);
+        self::assertFalse($object->fourthProperty);
     }
 
     /**
@@ -172,7 +173,7 @@ class DataMapperTest extends UnitTestCase
         $dataMapper = $this->getAccessibleMock(DataMapper::class, ['getDataMap'], [], '', false);
         $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);
         $result = $dataMapper->_call('fetchRelatedEager', $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class), 'SomeName', '');
-        self::assertEquals(null, $result);
+        self::assertNull($result);
     }
 
     /**
@@ -220,7 +221,7 @@ class DataMapperTest extends UnitTestCase
         $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);
         $dataMapper->expects(self::never())->method('fetchRelated');
         $result = $dataMapper->_call('mapObjectToClassProperty', $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class), 'SomeName', '');
-        self::assertEquals(null, $result);
+        self::assertNull($result);
     }
 
     /**

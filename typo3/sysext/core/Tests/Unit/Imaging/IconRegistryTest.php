@@ -224,6 +224,6 @@ class IconRegistryTest extends UnitTestCase
     public function getIconIdentifierForMimeTypeWithUnknowMimeTypeReturnNull()
     {
         $result = (new IconRegistry)->getIconIdentifierForMimeType('bar/foo');
-        self::assertEquals(null, $result);
+        self::assertNull($result);
     }
 }
