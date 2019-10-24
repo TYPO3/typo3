@@ -60,11 +60,11 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
 **Table of Contents**
 
 .. toctree::
-   :maxdepth: 5
-   :titlesonly:
+   :maxdepth: 3
 
    Introduction/Index
    Editor/Index
    Installation/Index
    Configuration/Index
    Developer/Index
+   GeneralRecommendations/Index

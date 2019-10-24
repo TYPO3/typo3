@@ -106,6 +106,53 @@ Working links
 =============
 
 Links in your website are quite important. You can use third party applications to check all your links, but you can
-also use the the core extension linkvalidator to ensure, all the links in your site are working as expected.
+also use the core extension linkvalidator to ensure, all the links in your site are working as expected.
 
 Please check the documentation of :ref:`linkvalidator:start` .
+
+TypoScript examples
+===================
+
+This section will provide you examples on how to configure several behaviours in the frontend.
+
+Setting fallbacks for og:image and twitter:image
+------------------------------------------------
+
+If you want to have a fallback og:image or twitter:image, you can use this little snippet.
+
+.. code-block:: typoscript
+
+   page {
+     meta {
+       og:image.stdWrap.cObject = IMG_RESOURCE
+       og:image.stdWrap.cObject {
+         file = EXT:your_extension/Resources/Public/Backend/OgImage.svg
+       }
+       twitter:image.stdWrap.cObject = IMG_RESOURCE
+       twitter:image.stdWrap.cObject {
+         file = EXT:your_extension/Resources/Public/Backend/TwitterCardImage.svg
+       }
+     }
+   }
+
+More information about the Meta Tag Api can be found on:
+
+* PHP :ref:`t3coreapi:metatagapi`
+* TypoScript :ref:`t3tsref:meta`
+
+Setting defaults for the author on meta tags
+--------------------------------------------
+
+This example shows how to set a default author based on the TypoScript constant :ts:`{$my.default.author}`:
+
+.. code-block:: typoscript
+
+   page {
+     meta {
+       author = {$my.default.author}
+     }
+   }
+
+.. seealso::
+
+   :ref:`recommendations_field_description`
