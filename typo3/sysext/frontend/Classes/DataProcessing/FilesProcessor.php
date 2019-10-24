@@ -58,16 +58,25 @@ class FilesProcessor implements DataProcessorInterface
         $fileCollector = GeneralUtility::makeInstance(FileCollector::class);
 
         // references / relations
-        if (!empty($processorConfiguration['references.'])) {
-            $referenceConfiguration = $processorConfiguration['references.'];
-            $relationField = $cObj->stdWrapValue('fieldName', $referenceConfiguration);
+        if (
+            (isset($processorConfiguration['references']) && $processorConfiguration['references'])
+            || (isset($processorConfiguration['references.']) && $processorConfiguration['references.'])
+        ) {
+            $referencesUidList = $cObj->stdWrapValue('references', $processorConfiguration);
+            $referencesUids = GeneralUtility::intExplode(',', $referencesUidList, true);
+            $fileCollector->addFileReferences($referencesUids);
 
-            // If no reference fieldName is set, there's nothing to do
-            if (!empty($relationField)) {
-                // Fetch the references of the default element
-                $relationTable = $cObj->stdWrapValue('table', $referenceConfiguration, $cObj->getCurrentTable());
-                if (!empty($relationTable)) {
-                    $fileCollector->addFilesFromRelation($relationTable, $relationField, $cObj->data);
+            if (!empty($processorConfiguration['references.'])) {
+                $referenceConfiguration = $processorConfiguration['references.'];
+                $relationField = $cObj->stdWrapValue('fieldName', $referenceConfiguration);
+
+                // If no reference fieldName is set, there's nothing to do
+                if (!empty($relationField)) {
+                    // Fetch the references of the default element
+                    $relationTable = $cObj->stdWrapValue('table', $referenceConfiguration, $cObj->getCurrentTable());
+                    if (!empty($relationTable)) {
+                        $fileCollector->addFilesFromRelation($relationTable, $relationField, $cObj->data);
+                    }
                 }
             }
         }
