@@ -379,7 +379,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     /**
      * @return array
      */
-    public function menuTypoLinkCreatesExpectedTypoLinkConfiurationDataProvider()
+    public function menuTypoLinkCreatesExpectedTypoLinkConfigurationDataProvider()
     {
         return [
             'standard parameter without access protected setting' => [
