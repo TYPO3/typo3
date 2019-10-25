@@ -1962,7 +1962,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $this->getPageAndRootline();
         // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's from other domains are not possible.
-        if ($domainStartPage && is_array($this->rootLine)) {
+        if ($domainStartPage && is_array($this->rootLine) && $this->rootLine !== []) {
             $idFound = false;
             foreach ($this->rootLine as $key => $val) {
                 if ($val['uid'] == $domainStartPage) {
