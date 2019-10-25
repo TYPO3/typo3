@@ -273,10 +273,10 @@ class JsonView extends AbstractView
                 if (isset($configuration['_descendAll']) && is_array($configuration['_descendAll'])) {
                     $array[$key] = $this->transformValue($element, $configuration['_descendAll']);
                 } else {
-                    if (isset($configuration['_only']) && is_array($configuration['_only']) && !in_array($key, $configuration['_only'])) {
+                    if (isset($configuration['_only']) && is_array($configuration['_only']) && !in_array($key, $configuration['_only'], true)) {
                         continue;
                     }
-                    if (isset($configuration['_exclude']) && is_array($configuration['_exclude']) && in_array($key, $configuration['_exclude'])) {
+                    if (isset($configuration['_exclude']) && is_array($configuration['_exclude']) && in_array($key, $configuration['_exclude'], true)) {
                         continue;
                     }
                     $array[$key] = $this->transformValue($element, $configuration[$key] ?? []);
@@ -307,10 +307,10 @@ class JsonView extends AbstractView
 
         $propertiesToRender = [];
         foreach ($propertyNames as $propertyName) {
-            if (isset($configuration['_only']) && is_array($configuration['_only']) && !in_array($propertyName, $configuration['_only'])) {
+            if (isset($configuration['_only']) && is_array($configuration['_only']) && !in_array($propertyName, $configuration['_only'], true)) {
                 continue;
             }
-            if (isset($configuration['_exclude']) && is_array($configuration['_exclude']) && in_array($propertyName, $configuration['_exclude'])) {
+            if (isset($configuration['_exclude']) && is_array($configuration['_exclude']) && in_array($propertyName, $configuration['_exclude'], true)) {
                 continue;
             }
 
