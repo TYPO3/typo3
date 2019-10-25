@@ -47,7 +47,6 @@ a GNU/GPL CMS/Framework available from http://typo3.org
 
 .. toctree::
    :maxdepth: 5
-   :titlesonly:
    :glob:
 
    Introduction/Index
