@@ -17,7 +17,7 @@ links, used in FormEngine and RTE, have been moved into separate APIs.
 Each type of element, which can be selected in FormEngine, has its own element browser class.
 You may add your own special type by registering your own element browser in your `ext_tables.php` as follows:
 
-.. code:: php
+.. code-block:: php
 
 	if (TYPO3_MODE === 'BE') {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ElementBrowsers'][<identifier>] = \Vendor\Ext\TheClass::class;

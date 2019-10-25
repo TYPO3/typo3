@@ -24,7 +24,7 @@ Tab registration
 
 Link browser tabs are registered in page TSconfig like this:
 
-.. code:: typoscript
+.. code-block:: typoscript
 
 	TCEMAIN.linkHandler.<tabIdentifier> {
 		handler = TYPO3\CMS\Recordlist\LinkHandler\FileLinkHandler
@@ -55,7 +55,7 @@ Additionally, each link handler should also provide a Javascript module (require
 to the link browser.
 A minimal implementation of such a module looks like this:
 
-.. code:: javascript
+.. code-block:: javascript
 
 	define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser'], function($, LinkBrowser) {
 
@@ -91,7 +91,7 @@ For this purpose you can register hooks.
 
 The registration of a link browser hook generally happens in your `ext_tables.php` and looks like:
 
-.. code:: php
+.. code-block:: php
 
 	if (TYPO3_MODE === 'BE') {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['LinkBrowser']['hooks'][1444048118] = [

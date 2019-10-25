@@ -30,7 +30,7 @@ After that, a compiled list of items is returned to the :php:`ContextMenuControl
 
 Example of the JSON response:
 
-.. code:: javascript
+.. code-block:: javascript
 
     {
        "view":{
