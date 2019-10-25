@@ -1,0 +1,13 @@
+plugin.tx_seo {
+  config {
+    xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile1.xsl
+
+    xmlSitemap {
+      sitemaps {
+        records {
+          config.xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile3.xsl
+        }
+      }
+    }
+  }
+}

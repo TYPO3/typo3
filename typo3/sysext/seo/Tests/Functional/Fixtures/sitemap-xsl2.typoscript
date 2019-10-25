@@ -1,0 +1,6 @@
+plugin.tx_seo {
+  config {
+    xmlSitemap.sitemaps.xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile2.xsl
+  }
+}
+

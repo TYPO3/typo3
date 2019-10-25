@@ -1,0 +1,5 @@
+plugin.tx_seo {
+  config {
+    xslFile = EXT:seo/Tests/Functional/Fixtures/XslFile1.xsl
+  }
+}

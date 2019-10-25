@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Seo\XmlSitemap;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -50,12 +49,6 @@ class XmlSitemapRenderer
     {
         $this->configuration = $this->getConfiguration();
         $this->view = $this->getStandaloneView();
-        $this->view->assign(
-            'xslFile',
-            PathUtility::stripPathSitePrefix(
-                ExtensionManagementUtility::extPath('seo', 'Resources/Public/CSS/Sitemap.xsl')
-            )
-        );
     }
 
     /**
@@ -70,6 +63,7 @@ class XmlSitemapRenderer
         $request = $GLOBALS['TYPO3_REQUEST'];
         $this->view->assign('type', $GLOBALS['TSFE']->type);
         $sitemapType = $typoScriptConfiguration['sitemapType'] ?? 'xmlSitemap';
+        $this->view->assign('xslFile', $this->getXslFilePath($sitemapType));
         if (!empty($sitemap = $request->getQueryParams()['sitemap'])) {
             return $this->renderSitemap($request, $sitemap, $sitemapType);
         }
@@ -139,6 +133,7 @@ class XmlSitemapRenderer
 
                 $template = $sitemapConfig['config']['template'] ?: 'Sitemap';
                 $this->view->setTemplate($template);
+                $this->view->assign('xslFile', $this->getXslFilePath($sitemapType, $sitemap));
                 $this->view->assign('items', $items);
                 $this->view->assign('sitemapType', $sitemapType);
 
@@ -162,6 +157,19 @@ class XmlSitemapRenderer
         $view->setFormat('xml');
 
         return $view;
+    }
+
+    /**
+     * @param string|null $sitemapType
+     * @param string|null $sitemap
+     * @return string
+     */
+    protected function getXslFilePath(string $sitemapType = null, string $sitemap = null): string
+    {
+        $path = $this->configuration['config']['xslFile'] ?? 'EXT:seo/Resources/Public/CSS/Sitemap.xsl';
+        $path = ($sitemapType !== null) ? ($this->configuration['config'][$sitemapType]['sitemaps']['xslFile'] ?? $path) : $path;
+        $path = ($sitemapType !== null && $sitemap !== null) ? ($this->configuration['config'][$sitemapType]['sitemaps'][$sitemap]['config']['xslFile'] ?? $path) : $path;
+        return PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($path));
     }
 
     /**

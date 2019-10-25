@@ -36,11 +36,17 @@ plugin.tx_seo {
   }
 
   config {
+    # Here you can override the xslFile for all sitemaps
+    # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
     xmlSitemap {
       sitemaps {
+        # Here you can override the xslFile for all sitemaps of a certain sitemapType
+        # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
         pages {
           provider = TYPO3\CMS\Seo\XmlSitemap\PagesXmlSitemapDataProvider
           config {
+            # Here you can override the xslFile for a single sitemap
+            # xslFile = EXT:seo/Resources/Public/CSS/Sitemap.xsl
             excludedDoktypes = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.excludedDoktypes}
             additionalWhere = {$plugin.tx_seo.settings.xmlSitemap.sitemaps.pages.additionalWhere}
           }
