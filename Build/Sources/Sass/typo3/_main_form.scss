@@ -294,6 +294,11 @@ select {
 .form-section-headline {
     margin-top: 0;
     margin-bottom: 10px;
+
+    & + .form-section-description {
+        margin-top: -5px;
+        margin-bottom: 10px;
+    }
 }
 
 //

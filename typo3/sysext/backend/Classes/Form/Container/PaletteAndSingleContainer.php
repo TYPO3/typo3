@@ -75,6 +75,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                         'fieldHtml' => 'element2',
                     ),
                 ),
+                'paletteDescription' => 'palette1Description',
             ),
             1 => array(
                 'type' => 'single',
@@ -85,7 +86,7 @@ class PaletteAndSingleContainer extends AbstractContainer
             2 => array(
                 'type' => 'palette2',
                 'fieldName' => 'palette2',
-                'fieldLabel' => '', // Palettes may not have a label
+                'fieldLabel' => '', // Palette label is optional
                 'elements' => array(
                     0 => array(
                         'type' => 'single',
@@ -103,6 +104,7 @@ class PaletteAndSingleContainer extends AbstractContainer
                         'fieldHtml' => 'element5',
                     ),
                 ),
+                'paletteDescription' => '', // Palette description is optional
             ),
         );
          */
@@ -119,19 +121,23 @@ class PaletteAndSingleContainer extends AbstractContainer
                 $paletteElementArray = $this->createPaletteContentArray($fieldConfiguration['paletteName']);
                 if (!empty($paletteElementArray)) {
                     $mainStructureCounter++;
+
+                    // If there is no label in ['types']['aType']['showitem'] for this palette: "--palette--;;aPalette",
+                    // then use ['palettes']['aPalette']['label'] if given.
                     $paletteLabel = $fieldConfiguration['fieldLabel'];
-                    if ($paletteLabel === null
-                        && !empty($this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'])
-                    ) {
-                        // If there is no label in ['types']['aType']['showitem'] for this palette: "--palette--;;aPalette" but
-                        // not "--palette--;LLL:aLabelReference;aPalette", then use ['palettes']['aPalette']['label'] if given.
+                    if ($paletteLabel === null && !empty($this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'])) {
                         $paletteLabel = $this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['label'];
                     }
+
+                    // Get description of palette.
+                    $paletteDescription = $this->data['processedTca']['palettes'][$fieldConfiguration['paletteName']]['description'] ?? '';
+
                     $targetStructure[$mainStructureCounter] = [
                         'type' => 'palette',
                         'fieldName' => $fieldConfiguration['paletteName'],
                         'fieldLabel' => $languageService->sL($paletteLabel),
                         'elements' => $paletteElementArray,
+                        'paletteDescription' => $languageService->sL($paletteDescription),
                     ];
                 }
             } else {
@@ -174,7 +180,12 @@ class PaletteAndSingleContainer extends AbstractContainer
 
                 $paletteElementsHtml = '<div class="row">' . $paletteElementsHtml . '</div>';
 
-                $content[] = $this->fieldSetWrap($paletteElementsHtml, $isHiddenPalette, $element['fieldLabel']);
+                $content[] = $this->fieldSetWrap(
+                    $paletteElementsHtml,
+                    $isHiddenPalette,
+                    $element['fieldLabel'],
+                    $element['paletteDescription']
+                );
             } else {
                 // Return raw HTML only in case of user element with no wrapping requested
                 if ($this->isUserNoTableWrappingField($element)) {
@@ -336,9 +347,10 @@ class PaletteAndSingleContainer extends AbstractContainer
      * @param string $content Incoming content
      * @param bool $paletteHidden TRUE if the palette is hidden
      * @param string $label Given label
+     * @param string $description Given decription
      * @return string Wrapped content
      */
-    protected function fieldSetWrap($content, $paletteHidden = false, $label = '')
+    protected function fieldSetWrap($content, $paletteHidden = false, $label = '', $description = '')
     {
         $fieldSetClass = 'form-section';
         if ($paletteHidden) {
@@ -350,6 +362,10 @@ class PaletteAndSingleContainer extends AbstractContainer
 
         if (!empty($label)) {
             $result[] = '<h4 class="form-section-headline">' . htmlspecialchars($label) . '</h4>';
+        }
+
+        if (!empty($description)) {
+            $result[] = '<p class="form-section-description text-muted">' . htmlspecialchars($description) . '</p>';
         }
 
         $result[] = $content;

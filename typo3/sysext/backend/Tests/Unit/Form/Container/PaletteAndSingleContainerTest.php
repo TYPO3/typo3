@@ -73,8 +73,9 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn('');
 
-        // Expect translation call to the label reference
+        // Expect translation call to the label reference and empty description
         $languageService->sL($labelReference)->willReturnArgument(0);
+        $languageService->sL('')->willReturnArgument(0);
 
         $expectedChildDataArray = $input;
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
@@ -89,7 +90,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
     /**
      * @test
      */
-    public function renderUsesPaletteLabelFromPaletteArray()
+    public function renderUsesPaletteValuesFromPaletteArray()
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
@@ -105,6 +106,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $singleFieldContainerProphecy->render(Argument::cetera())->shouldBeCalled()->willReturn($singleFieldContainerReturn);
 
         $labelReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
+        $descriptionReference = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aDescription';
         $input = [
             'tableName' => 'aTable',
             'recordTypeValue' => 'aType',
@@ -115,6 +117,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
                 'palettes' => [
                     'aPalette' => [
                         'label' => $labelReference,
+                        'description' => $descriptionReference,
                         'showitem' => 'aField',
                     ],
                 ],
@@ -130,8 +133,9 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn('');
 
-        // Expect translation call to the label reference
+        // Expect translation call to the label and description references
         $languageService->sL($labelReference)->willReturnArgument(0);
+        $languageService->sL($descriptionReference)->willReturnArgument(0);
 
         $expectedChildDataArray = $input;
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
@@ -139,14 +143,15 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $nodeFactoryProphecy->create($expectedChildDataArray)->willReturn($singleFieldContainerProphecy->reveal());
         $containerResult = (new PaletteAndSingleContainer($nodeFactoryProphecy->reveal(), $input))->render();
-        // Expect label is in answer HTML
+        // Expect label and description are in answer HTML
         self::assertStringContainsString($labelReference, $containerResult['html']);
+        self::assertStringContainsString($descriptionReference, $containerResult['html']);
     }
 
     /**
      * @test
      */
-    public function renderPrefersFieldArrayPaletteLabelOverPaletteLabel()
+    public function renderPrefersFieldArrayPaletteValuesOverPaletteValues()
     {
         $nodeFactoryProphecy = $this->prophesize(NodeFactory::class);
         $singleFieldContainerProphecy = $this->prophesize(SingleFieldContainer::class);
@@ -162,7 +167,8 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $singleFieldContainerProphecy->render(Argument::cetera())->shouldBeCalled()->willReturn($singleFieldContainerReturn);
 
         $labelReferenceFieldArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
-        $labelReferencePaletteArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabel';
+        $labelReferencePaletteArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aLabelPalette';
+        $descriptionReferencePaletteArray = 'LLL:EXT:Resources/Private/Language/locallang.xlf:aDescriptionPalette';
         $input = [
             'tableName' => 'aTable',
             'recordTypeValue' => 'aType',
@@ -173,6 +179,7 @@ class PaletteAndSingleContainerTest extends UnitTestCase
                 'palettes' => [
                     'aPalette' => [
                         'label' => $labelReferencePaletteArray,
+                        'description' => $descriptionReferencePaletteArray,
                         'showitem' => 'aField',
                     ],
                 ],
@@ -188,8 +195,9 @@ class PaletteAndSingleContainerTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserAuthentication->reveal();
         $languageService->loadSingleTableDescription(Argument::cetera())->willReturn('');
 
-        // Expect translation call to the label reference
+        // Expect translation call to the label and description references
         $languageService->sL($labelReferenceFieldArray)->willReturnArgument(0);
+        $languageService->sL($descriptionReferencePaletteArray)->willReturnArgument(0);
 
         $expectedChildDataArray = $input;
         $expectedChildDataArray['renderType'] = 'singleFieldContainer';
@@ -197,7 +205,8 @@ class PaletteAndSingleContainerTest extends UnitTestCase
 
         $nodeFactoryProphecy->create($expectedChildDataArray)->willReturn($singleFieldContainerProphecy->reveal());
         $containerResult = (new PaletteAndSingleContainer($nodeFactoryProphecy->reveal(), $input))->render();
-        // Expect label is in answer HTML
+        // Expect label and description are in answer HTML
         self::assertStringContainsString($labelReferenceFieldArray, $containerResult['html']);
+        self::assertStringContainsString($descriptionReferencePaletteArray, $containerResult['html']);
     }
 }
