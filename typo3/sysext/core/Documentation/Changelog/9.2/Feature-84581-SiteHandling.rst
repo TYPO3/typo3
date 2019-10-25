@@ -31,89 +31,89 @@ In the future this folder can (and should) be used for more files like Fluid tem
 config.yaml
 -----------
 
-.. code::
+.. code-block:: yaml
 
-  # the rootPage Id (see below)
-  rootPageId: 12
-  # my base domain to run this site on. It either accepts a fully qualified URL or "/" to react to any domain name
-  base: 'https://www.example.com/'
-  # The language array
-  languages:
-    -
-      # the TYPO3 sys_language_uid as you know it since... ever
-      languageId: '0'
-      # The internal name for this language. Unused for now, but in the future this will affect display in the backend
-      title: English
-      # optional navigation title which is used in HMENU.special = language
-      navigationTitle: ''
-      # Language base. Accepts either a fully qualified URL or a path segment like "/en/".
-      base: /
-      # sets the locale during frontend rendering
-      locale: en_US.UTF-8
-      # two-letter code for the language according to ISO-639 nomenclature (see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-      iso-639-1: en
-      # FE href language
-      hreflang: en-US
-      # FE text direction
-      direction: ltr
-      # Language Identifier to use in localLang XLIFF files
-      typo3Language: default
-      # Flag Identifier
-      flag: gb
-    -
-      languageId: '1'
-      title: 'danish'
-      navigationTitle: Dansk
-      base: /da/
-      locale: dk_DK.UTF-8
-      iso-639-1: da
-      hreflang: dk-DK
-      direction: ltr
-      typo3Language: default
-      flag: dk
-      fallbackType: strict
-    -
-      languageId: '2'
-      title: Deutsch
-      navigationTitle: ''
-      base: 'https://www.beispiel.de'
-      locale: de_DE.UTF-8
-      iso-639-1: de
-      hreflang: de-DE
-      direction: ltr
-      typo3Language: de
-      flag: de
-      # Enable content fallback
-      fallbackType: fallback
-      # Content fallback mode (order is important)
-      fallbacks: '2,1,0'
-  # Error Handling Array (order is important here)
-  # Error Handlers will check the given status code, but the special value "0" will react to any error not configured
-  # elsewhere in this configuration.
-  errorHandling:
-    -
-      # HTTP Status Code to react to
-      errorCode: '404'
-      # The used ErrorHandler. In this case, it's "Display content from Page". See examples below for available options.
-      errorHandler: Page
-      # href to the content source to display (accepts both fully qualified URLs as well as TYPO3 internal link syntax
-      errorContentSource: 't3://page?uid=8'
-    -
-      errorCode: '403'
-      errorHandler: Fluid
-      # Path to the Template File to show
-      errorFluidTemplate: 'EXT:my_extension/Resources/Private/Templates/ErrorPages/403.html'
-      # Optional Templates root path
-      errorFluidTemplatesRootPath: 'EXT:my_extension/Resources/Private/Templates/ErrorPages'
-      # Optional Layouts root path
-      errorFluidLayoutsRootPath: 'EXT:my_extension/Resources/Private/Layouts/ErrorPages'
-      # Optional Partials root path
-      errorFluidPartialsRootPath: 'EXT:my_extension/Resources/Private/Partials/ErrorPages'
-    -
-      errorCode: '0'
-      errorHandler: PHP
-      # Fully qualified class name to a class that implements PageErrorHandlerInterface
-      errorPhpClassFQCN: Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler
+   # the rootPage Id (see below)
+   rootPageId: 12
+   # my base domain to run this site on. It either accepts a fully qualified URL or "/" to react to any domain name
+   base: 'https://www.example.com/'
+   # The language array
+   languages:
+     -
+       # the TYPO3 sys_language_uid as you know it since... ever
+       languageId: '0'
+       # The internal name for this language. Unused for now, but in the future this will affect display in the backend
+       title: English
+       # optional navigation title which is used in HMENU.special = language
+       navigationTitle: ''
+       # Language base. Accepts either a fully qualified URL or a path segment like "/en/".
+       base: /
+       # sets the locale during frontend rendering
+       locale: en_US.UTF-8
+       # two-letter code for the language according to ISO-639 nomenclature (see https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+       iso-639-1: en
+       # FE href language
+       hreflang: en-US
+       # FE text direction
+       direction: ltr
+       # Language Identifier to use in localLang XLIFF files
+       typo3Language: default
+       # Flag Identifier
+       flag: gb
+     -
+       languageId: '1'
+       title: 'danish'
+       navigationTitle: Dansk
+       base: /da/
+       locale: dk_DK.UTF-8
+       iso-639-1: da
+       hreflang: dk-DK
+       direction: ltr
+       typo3Language: default
+       flag: dk
+       fallbackType: strict
+     -
+       languageId: '2'
+       title: Deutsch
+       navigationTitle: ''
+       base: 'https://www.beispiel.de'
+       locale: de_DE.UTF-8
+       iso-639-1: de
+       hreflang: de-DE
+       direction: ltr
+       typo3Language: de
+       flag: de
+       # Enable content fallback
+       fallbackType: fallback
+       # Content fallback mode (order is important)
+       fallbacks: '2,1,0'
+   # Error Handling Array (order is important here)
+   # Error Handlers will check the given status code, but the special value "0" will react to any error not configured
+   # elsewhere in this configuration.
+   errorHandling:
+     -
+       # HTTP Status Code to react to
+       errorCode: '404'
+       # The used ErrorHandler. In this case, it's "Display content from Page". See examples below for available options.
+       errorHandler: Page
+       # href to the content source to display (accepts both fully qualified URLs as well as TYPO3 internal link syntax
+       errorContentSource: 't3://page?uid=8'
+     -
+       errorCode: '403'
+       errorHandler: Fluid
+       # Path to the Template File to show
+       errorFluidTemplate: 'EXT:my_extension/Resources/Private/Templates/ErrorPages/403.html'
+       # Optional Templates root path
+       errorFluidTemplatesRootPath: 'EXT:my_extension/Resources/Private/Templates/ErrorPages'
+       # Optional Layouts root path
+       errorFluidLayoutsRootPath: 'EXT:my_extension/Resources/Private/Layouts/ErrorPages'
+       # Optional Partials root path
+       errorFluidPartialsRootPath: 'EXT:my_extension/Resources/Private/Partials/ErrorPages'
+     -
+       errorCode: '0'
+       errorHandler: PHP
+       # Fully qualified class name to a class that implements PageErrorHandlerInterface
+       errorPhpClassFQCN: Vendor\ExtensionName\ErrorHandlers\GenericErrorhandler
 
 
 All settings can also be edited via the backend module `Site Management > Configuration`.
