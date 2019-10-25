@@ -25,7 +25,7 @@ return [
         'searchFields' => 'title,description,alternative'
     ],
     'interface' => [
-        'showRecordFieldList' => 'file, title, description, alternative'
+        'showRecordFieldList' => 'file, alternative, description, title'
     ],
     'columns' => [
         'crdate' => [
@@ -113,6 +113,7 @@ return [
         ],
         'alternative' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative.description',
             'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
@@ -149,7 +150,7 @@ return [
     'types' => [
         '1' => ['showitem' => '
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                fileinfo, title, description, alternative, --palette--;;language,
+                fileinfo, alternative, description, title, --palette--;;language,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
                 categories,
             --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,

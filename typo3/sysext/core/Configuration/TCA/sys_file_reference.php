@@ -189,6 +189,7 @@ return [
             'l10n_mode' => 'prefixLangTitle',
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.alternative',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.alternative.description',
             'config' => [
                 'type' => 'input',
                 'size' => 20,
@@ -265,8 +266,8 @@ return [
         'imageoverlayPalette' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette',
             'showitem' => '
-				title,alternative,--linebreak--,
-				link,description,--linebreak--,crop
+				alternative,description,--linebreak--,
+				link,title,--linebreak--,crop
 				',
         ],
         // Used for everything that is a video

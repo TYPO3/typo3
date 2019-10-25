@@ -510,6 +510,9 @@
 			<trans-unit id="sys_file.alternative" resname="sys_file.alternative">
 				<source>Alternative Text</source>
 			</trans-unit>
+			<trans-unit id="sys_file.alternative.description" resname="sys_file.alternative.description">
+				<source>Images must have text alternatives that describe the information or function represented by them. This should only be empty for purely decorative images.</source>
+			</trans-unit>
 			<trans-unit id="sys_file.missing" resname="sys_file.missing">
 				<source>Marked as missing</source>
 			</trans-unit>
