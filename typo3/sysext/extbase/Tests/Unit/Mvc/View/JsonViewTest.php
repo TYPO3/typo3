@@ -512,6 +512,33 @@ class JsonViewTest extends UnitTestCase
     /**
      * @test
      */
+    public function renderCanRenderPlainArrayWithNumericKeys(): void
+    {
+        $array = [
+            'items' => [
+                ['name' => 'Foo'],
+                ['name' => 'Bar']
+            ],
+        ];
+
+        $this->view->assign('value', $array);
+        $this->view->setConfiguration([
+            'value' => [
+                'items' => [
+                    // note: this exclude is just here, and should have no effect as the items have numeric keys
+                    '_exclude' => ['secret']
+                ]
+            ],
+        ]);
+
+        $expectedResult = '{"items":[{"name":"Foo"},{"name":"Bar"}]}';
+        $actualResult = $this->view->render();
+        self::assertSame($expectedResult, $actualResult);
+    }
+
+    /**
+     * @test
+     */
     public function descendAllKeepsArrayIndexes(): void
     {
         $array = [['name' => 'Foo', 'secret' => true], ['name' => 'Bar', 'secret' => true]];
