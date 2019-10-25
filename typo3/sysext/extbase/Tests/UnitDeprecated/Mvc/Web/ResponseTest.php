@@ -40,6 +40,6 @@ class ResponseTest extends UnitTestCase
      */
     public function privateEnvironmentServiceCanBeAccessedViaMagicGetMethod(): void
     {
-        static::assertInstanceOf(EnvironmentService::class, $this->response->environmentService);
+        self::assertInstanceOf(EnvironmentService::class, $this->response->environmentService);
     }
 }
