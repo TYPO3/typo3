@@ -71,7 +71,7 @@ class RteLinkBrowser {
   public finalizeFunction(link: string): void {
     const linkElement = this.CKEditor.document.createElement('a');
     const attributes = LinkBrowser.getLinkAttributeValues();
-    const params = attributes.params ? attributes.params : '';
+    let params = attributes.params ? attributes.params : '';
 
     if (attributes.target) {
       linkElement.setAttribute('target', attributes.target);
@@ -91,7 +91,24 @@ class RteLinkBrowser {
       linkElement.setAttribute(attrName, attrValue);
     });
 
-    linkElement.setAttribute('href', link + params);
+    // Make sure, parameters and anchor are in correct order
+    const linkMatch = link.match(/^([a-z0-9]+:\/\/[^:\/?#]+(?:\/?[^?#]*)?)(\??[^#]*)(#?.*)$/)
+    if (linkMatch && linkMatch.length > 0) {
+      link = linkMatch[1] + linkMatch[2];
+      const paramsPrefix = linkMatch[2].length > 0 ? '&' : '?';
+      if (params.length > 0) {
+        if (params[0] === '&') {
+          params = params.substr(1)
+        }
+        // If params is set, append it
+        if (params.length > 0) {
+          link += paramsPrefix + params;
+        }
+      }
+      link += linkMatch[3];
+    }
+
+    linkElement.setAttribute('href', link);
 
     const selection = this.CKEditor.getSelection();
     if (selection && selection.getSelectedText() === '') {
