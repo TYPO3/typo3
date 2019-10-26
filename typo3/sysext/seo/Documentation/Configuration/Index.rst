@@ -101,6 +101,38 @@ External Resources:
 * See `Tutorial of redirect module in TYPO3 <https://www.toujou.de/en/service/tutorials/redirects/>`__ by toujou
 * An `Overview which redirect to use in your situation <https://yoast.com/which-redirect/>`__ by Yoast
 
+.. _config-tags:
+
+Tags
+====
+
+.. _config-hreflang-tags:
+
+Hreflang Tags
+-------------
+
+The generation of the :html:`<link rel="alternate" hreflang="" href="" />`
+tags is done automatically if the page is available in other languages.
+This feature should work correctly in almost all cases.
+If you have a specific edge case, and you don't want TYPO3 to render those tags, you can disable rendering of the those tags completely.
+You just have to put this line in the :file:`ext_localconf.php` of an extension and make sure your extension is loaded after EXT:seo.
+
+.. code-block:: php
+
+   unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['hreflang']);
+
+.. _config-canonical-tag:
+
+Canonical Tag
+-------------
+
+Just like the hreflang tags, the :html:`<link rel="canonical" href="" />` tag is also generated automatically.
+If you have a specific edge case, and you don't want TYPO3 to render the tag, you can disable rendering completely.
+You just have to put this line in the :file:`ext_localconf.php` of an extension and make sure your extension is loaded after EXT:seo.
+
+.. code-block:: php
+
+   unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Frontend\Page\PageGenerator']['generateMetaTags']['canonical']);
 
 Working links
 =============
