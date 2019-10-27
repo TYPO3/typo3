@@ -5059,9 +5059,11 @@ class ContentObjectRenderer implements LoggerAwareInterface
             return $linkText;
         }
 
+        // We need to backup the URL because ATagParams might call typolink again and change the last URL.
+        $url = $this->lastTypoLinkUrl;
         $finalTagParts = [
             'aTagParams' => $this->getATagParams($conf) . $this->extLinkATagParams($this->lastTypoLinkUrl, $linkDetails['type']),
-            'url'        => $this->lastTypoLinkUrl,
+            'url'        => $url,
             'TYPE'       => $linkDetails['type']
         ];
 
