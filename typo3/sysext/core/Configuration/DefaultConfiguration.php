@@ -76,6 +76,7 @@ return [
             'unifiedPageTranslationHandling' => false,
             'security.frontend.keepSessionDataOnLogout' => false,
             'rearrangedRedirectMiddlewares' => false,
+            'betaTranslationServer' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
