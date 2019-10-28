@@ -79,6 +79,7 @@ class RedirectService implements LoggerAwareInterface
     public function matchRedirect(string $domain, string $path, string $query = '')
     {
         $allRedirects = $this->fetchRedirects();
+        $path = rawurldecode($path);
         // Check if the domain matches, or if there is a
         // redirect fitting for any domain
         foreach ([$domain, '*'] as $domainName) {
