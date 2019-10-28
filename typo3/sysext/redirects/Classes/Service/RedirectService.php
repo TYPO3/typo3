@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
 use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
@@ -284,6 +285,11 @@ class RedirectService implements LoggerAwareInterface
             list($url) = $linkBuilder->build($linkDetails, '', '', $configuration);
             return new Uri($url);
         } catch (UnableToLinkException $e) {
+            // This exception is also thrown by the DatabaseRecordTypolinkBuilder
+            $url = $controller->cObj->lastTypoLinkUrl;
+            if (!empty($url)) {
+                return new Uri($url);
+            }
             return null;
         }
     }
@@ -322,6 +328,12 @@ class RedirectService implements LoggerAwareInterface
         $controller->getConfigArray();
         $controller->settingLanguage();
         $controller->newCObj();
+        if (!$GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            $GLOBALS['TSFE'] = $controller;
+        }
+        if (!$GLOBALS['TSFE']->sys_page instanceof PageRepository) {
+            $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
+        }
         return $controller;
     }
 }
