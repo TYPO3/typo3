@@ -169,7 +169,7 @@ return [
                 'fieldControl' => [
                     'linkPopup' => [
                         'options' => [
-                            'blindLinkOptions' => 'mail',
+                            'blindLinkOptions' => 'mail,folder,telephone',
                             'blindLinkFields' => 'class, target'
                         ],
                     ],
