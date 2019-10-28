@@ -73,8 +73,10 @@ class RedirectServiceTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider matchRedirectReturnsRedirectOnFlatMatchDataProvider
+     * @param string $path
      */
-    public function matchRedirectReturnsRedirectOnFlatMatch()
+    public function matchRedirectReturnsRedirectOnFlatMatch(string $path = '')
     {
         $row = [
             'target' => 'https://example.com',
@@ -89,7 +91,7 @@ class RedirectServiceTest extends UnitTestCase
             [
                 'example.com' => [
                     'flat' => [
-                        'foo/' => [
+                        $path . '/' => [
                             1 => $row,
                         ],
                     ],
@@ -98,9 +100,33 @@ class RedirectServiceTest extends UnitTestCase
         );
         GeneralUtility::addInstance(RedirectCacheService::class, $this->redirectCacheServiceProphecy->reveal());
 
-        $result = $this->redirectService->matchRedirect('example.com', 'foo');
+        $result = $this->redirectService->matchRedirect('example.com', rawurlencode($path));
 
         self::assertSame($row, $result);
+    }
+
+    /**
+     * @return array
+     */
+    public function matchRedirectReturnsRedirectOnFlatMatchDataProvider(): array
+    {
+        return [
+            'default case' => [
+                'foo'
+            ],
+            'umlauts' => [
+                'äöü'
+            ],
+            'various special chars' => [
+                'special-chars-«-∑-€-®-†-Ω-¨-ø-π-å-‚-∂-ƒ-©-ª-º-∆-@-¥-≈-ç-√-∫-~-µ-∞-…-–'
+            ],
+            'chinese' => [
+                '应用'
+            ],
+            'hindi' => [
+                'कंपनी'
+            ],
+        ];
     }
 
     /**
