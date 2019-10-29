@@ -268,7 +268,6 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::once())->method('setTypeOfRelation')->with(self::equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
         $mockColumnMap->expects(self::once())->method('setRelationTableName')->with(self::equalTo('tx_myextension_mm'));
         $mockColumnMap->expects(self::once())->method('setChildTableName')->with(self::equalTo('tx_myextension_righttable'));
-        $mockColumnMap->expects(self::once())->method('setChildTableWhereStatement')->with(self::equalTo('WHERE 1=1'));
         $mockColumnMap->expects(self::once())->method('setChildSortByFieldName')->with(self::equalTo('sorting'));
         $mockColumnMap->expects(self::once())->method('setParentKeyFieldName')->with(self::equalTo('uid_local'));
         $mockColumnMap->expects(self::never())->method('setParentTableFieldName');
@@ -296,7 +295,6 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::once())->method('setTypeOfRelation')->with(self::equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
         $mockColumnMap->expects(self::once())->method('setRelationTableName')->with(self::equalTo('tx_myextension_mm'));
         $mockColumnMap->expects(self::once())->method('setChildTableName')->with(self::equalTo('tx_myextension_lefttable'));
-        $mockColumnMap->expects(self::once())->method('setChildTableWhereStatement')->with(null);
         $mockColumnMap->expects(self::once())->method('setChildSortByFieldName')->with(self::equalTo('sorting_foreign'));
         $mockColumnMap->expects(self::once())->method('setParentKeyFieldName')->with(self::equalTo('uid_foreign'));
         $mockColumnMap->expects(self::never())->method('setParentTableFieldName');
@@ -323,7 +321,6 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::once())->method('setTypeOfRelation')->with(self::equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));
         $mockColumnMap->expects(self::once())->method('setRelationTableName')->with(self::equalTo('tx_myextension_mm'));
         $mockColumnMap->expects(self::once())->method('setChildTableName')->with(self::equalTo('tx_myextension_righttable'));
-        $mockColumnMap->expects(self::once())->method('setChildTableWhereStatement');
         $mockColumnMap->expects(self::once())->method('setChildSortByFieldName')->with(self::equalTo('sorting'));
         $mockColumnMap->expects(self::once())->method('setParentKeyFieldName')->with(self::equalTo('uid_local'));
         $mockColumnMap->expects(self::never())->method('setParentTableFieldName');
