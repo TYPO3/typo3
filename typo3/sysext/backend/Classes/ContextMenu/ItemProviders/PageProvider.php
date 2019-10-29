@@ -481,7 +481,7 @@ class PageProvider extends RecordProvider
      */
     protected function getPreviewPid(): int
     {
-        return $this->record['sys_language_uid'] === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
+        return (int)$this->record['sys_language_uid'] === 0 ? (int)$this->record['uid'] : (int)$this->record['l10n_parent'];
     }
 
     /**
