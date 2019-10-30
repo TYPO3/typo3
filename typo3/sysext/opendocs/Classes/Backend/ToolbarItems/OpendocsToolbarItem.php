@@ -175,7 +175,7 @@ class OpendocsToolbarItem implements ToolbarItemInterface
         $result = [];
         $result['table'] = $table;
         $result['record'] = $record;
-        $result['label'] = htmlspecialchars(strip_tags(htmlspecialchars_decode($document[0])));
+        $result['label'] = strip_tags(htmlspecialchars_decode($document[0]));
         /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit') . '&' . $document[2];
