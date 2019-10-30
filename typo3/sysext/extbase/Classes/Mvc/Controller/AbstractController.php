@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -22,54 +23,74 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 
 /**
  * An abstract base class for Controllers
+ * @deprecated since TYPO3 10.2, will be removed in version 11.0
  */
 abstract class AbstractController implements ControllerInterface
 {
+    use PublicPropertyDeprecationTrait;
+
+    /**
+     * @var array
+     */
+    private $deprecatedPublicProperties = [
+        'signalSlotDispatcher' => 'Property ' . self::class . '::$signalSlotDispatcher is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'objectManager' => 'Property ' . self::class . '::$objectManager is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'uriBuilder' => 'Property ' . self::class . '::$uriBuilder is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'settings' => 'Property ' . self::class . '::$settings is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'request' => 'Property ' . self::class . '::$request is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'response' => 'Property ' . self::class . '::$response is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'arguments' => 'Property ' . self::class . '::$arguments is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'validatorResolver' => 'Property ' . self::class . '::$validatorResolver is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'supportedRequestTypes' => 'Property ' . self::class . '::$supportedRequestTypes is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'controllerContext' => 'Property ' . self::class . '::$controllerContext is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+        'configurationManager' => 'Property ' . self::class . '::$configurationManager is deprecated since TYPO3 10.2 and will be removed in TYPO3 11.0',
+    ];
+
     /**
      * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      */
-    protected $signalSlotDispatcher;
+    private $signalSlotDispatcher;
 
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
-    protected $objectManager;
+    private $objectManager;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder
      */
-    protected $uriBuilder;
+    private $uriBuilder;
 
     /**
      * Contains the settings of the current extension
      *
      * @var array
      */
-    protected $settings;
+    private $settings;
 
     /**
      * The current request.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\RequestInterface
      */
-    protected $request;
+    private $request;
 
     /**
      * The response which will be returned by this action controller
      *
      * @var \TYPO3\CMS\Extbase\Mvc\ResponseInterface
      */
-    protected $response;
+    private $response;
 
     /**
      * @var \TYPO3\CMS\Extbase\Validation\ValidatorResolver
      */
-    protected $validatorResolver;
+    private $validatorResolver;
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\Arguments Arguments passed to the controller
      */
-    protected $arguments;
+    private $arguments;
 
     /**
      * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
@@ -94,25 +115,30 @@ abstract class AbstractController implements ControllerInterface
      *
      * @var array
      */
-    protected $supportedRequestTypes = [\TYPO3\CMS\Extbase\Mvc\Request::class];
+    private $supportedRequestTypes = [\TYPO3\CMS\Extbase\Mvc\Request::class];
 
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
      */
-    protected $controllerContext;
+    private $controllerContext;
 
     /**
      * @return ControllerContext
      */
     public function getControllerContext()
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         return $this->controllerContext;
     }
 
     /**
      * @var ConfigurationManagerInterface
      */
-    protected $configurationManager;
+    private $configurationManager;
 
     /**
      * @param ConfigurationManagerInterface $configurationManager
@@ -143,9 +169,15 @@ abstract class AbstractController implements ControllerInterface
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
      * @throws \InvalidArgumentException if the message body is no string
      * @see \TYPO3\CMS\Core\Messaging\FlashMessage
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     public function addFlashMessage($messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, $storeInSession = true)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         if (!is_string($messageBody)) {
             throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1243258395);
         }
@@ -169,9 +201,15 @@ abstract class AbstractController implements ControllerInterface
      *
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The current request
      * @return bool TRUE if this request type is supported, otherwise FALSE
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     public function canProcessRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         foreach ($this->supportedRequestTypes as $supportedRequestType) {
             if ($request instanceof $supportedRequestType) {
                 return true;
@@ -186,9 +224,15 @@ abstract class AbstractController implements ControllerInterface
      * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
      * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
      * @throws UnsupportedRequestTypeException if the controller doesn't support the current request type
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         if (!$this->canProcessRequest($request)) {
             throw new UnsupportedRequestTypeException(static::class . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701132);
         }
@@ -209,9 +253,15 @@ abstract class AbstractController implements ControllerInterface
      * Initialize the controller context
      *
      * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext ControllerContext to be passed to the view
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     protected function buildControllerContext()
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext */
         $controllerContext = $this->objectManager->get(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
         $controllerContext->setRequest($this->request);
@@ -236,9 +286,15 @@ abstract class AbstractController implements ControllerInterface
      * @param array|null $arguments Arguments to pass to the target action
      * @throws StopActionException
      * @see redirect()
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     public function forward($actionName, $controllerName = null, $extensionName = null, array $arguments = null)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         $this->request->setDispatched(false);
         if ($this->request instanceof WebRequest) {
             $this->request->setControllerActionName($actionName);
@@ -273,9 +329,15 @@ abstract class AbstractController implements ControllerInterface
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
      * @see forward()
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     protected function redirect($actionName, $controllerName = null, $extensionName = null, array $arguments = null, $pageUid = null, $delay = 0, $statusCode = 303)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         if (!$this->request instanceof WebRequest) {
             throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539734);
         }
@@ -303,9 +365,15 @@ abstract class AbstractController implements ControllerInterface
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     protected function redirectToUri($uri, $delay = 0, $statusCode = 303)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         if (!$this->request instanceof WebRequest) {
             throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1220539735);
         }
@@ -335,9 +403,15 @@ abstract class AbstractController implements ControllerInterface
      *
      * @param string $uri The URI
      * @return string
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     protected function addBaseUriIfNecessary($uri)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl((string)$uri);
     }
 
@@ -351,9 +425,15 @@ abstract class AbstractController implements ControllerInterface
      * @param string $content Body content which further explains the status
      * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     public function throwStatus($statusCode, $statusMessage = null, $content = null)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         if (!$this->request instanceof WebRequest) {
             throw new UnsupportedRequestTypeException('throwStatus() only supports web requests.', 1220539739);
         }
@@ -370,9 +450,15 @@ abstract class AbstractController implements ControllerInterface
     /**
      * Collects the base validators which were defined for the data type of each
      * controller argument and adds them to the argument's validator chain.
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     public function initializeControllerArgumentsBaseValidators()
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
             $validator = $this->validatorResolver->getBaseValidatorConjunction($argument->getDataType());
@@ -386,9 +472,15 @@ abstract class AbstractController implements ControllerInterface
      * Maps arguments delivered by the request object to the local controller arguments.
      *
      * @throws Exception\RequiredArgumentMissingException
+     * @deprecated since TYPO3 10.2 and will be removed in version 11.0
      */
     protected function mapRequestArgumentsToControllerArguments()
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated since TYPO3 10.2 and will be removed in version 11.0',
+            E_USER_DEPRECATED
+        );
+
         /** @var \TYPO3\CMS\Extbase\Mvc\Controller\Argument $argument */
         foreach ($this->arguments as $argument) {
             $argumentName = $argument->getName();

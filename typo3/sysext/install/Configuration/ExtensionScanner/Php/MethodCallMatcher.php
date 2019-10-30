@@ -4287,4 +4287,88 @@ return [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->getControllerContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->addFlashMessage' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->canProcessRequest' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->processRequest' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->buildControllerContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->forward' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->redirect' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 7,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->redirectToUri' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->addBaseUriIfNecessary' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->throwStatus' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->initializeControllerArgumentsBaseValidators' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController->mapRequestArgumentsToControllerArguments' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ],
 ];

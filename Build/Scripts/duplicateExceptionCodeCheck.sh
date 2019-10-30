@@ -21,6 +21,10 @@ ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOStatement.php"
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOConnection.php"
 
+# both ActionController and AbstractController throw the same exceptions
+# until AbstractController is removed
+ignoreFiles+="sysext/extbase/Classes/Mvc/Controller/AbstractController.php"
+
 foundNewFile=0
 oldFilename=""
 firstLineOfMatch=""

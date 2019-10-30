@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Controller;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -91,7 +91,7 @@ class AbstractControllerTest extends UnitTestCase
             ->getMock();
         $controllerContext->expects(self::once())->method('getFlashMessageQueue')->willReturn($flashMessageQueue);
 
-        $controller = $this->getMockForAbstractClass(
+        $controller = $this->getAccessibleMockForAbstractClass(
             \TYPO3\CMS\Extbase\Mvc\Controller\AbstractController::class,
             [],
             '',
@@ -100,7 +100,7 @@ class AbstractControllerTest extends UnitTestCase
             true,
             ['dummy']
         );
-        $this->inject($controller, 'controllerContext', $controllerContext);
+        $controller->_set('controllerContext', $controllerContext);
 
         $controller->addFlashMessage($messageBody, $messageTitle, $severity, $storeInSession);
     }

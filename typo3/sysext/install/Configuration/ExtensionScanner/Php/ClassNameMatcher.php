@@ -1332,4 +1332,9 @@ return [
             'Deprecation-89037-DeprecatedLocallangXmlParser.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\AbstractController' => [
+        'restFiles' => [
+            'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
+        ],
+    ]
 ];
