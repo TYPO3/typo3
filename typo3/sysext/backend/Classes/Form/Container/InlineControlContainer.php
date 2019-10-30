@@ -497,6 +497,8 @@ class InlineControlContainer extends AbstractContainer
                 $elementBrowserEnabled = (bool)$inlineConfiguration['appearance']['elementBrowserEnabled'];
             }
         }
+        // Remove any white-spaces from the allowed extension lists
+        $allowed = implode(',', GeneralUtility::trimExplode(',', $allowed, true));
         $browserParams = '|||' . $allowed . '|' . $objectPrefix . '|inline.checkUniqueElement||inline.importElement';
         $onClick = 'setFormValueOpenBrowser(' . GeneralUtility::quoteJSvalue($mode) . ', ' . GeneralUtility::quoteJSvalue($browserParams) . '); return false;';
 
