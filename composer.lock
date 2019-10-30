@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1c95233bb0a9da081b3e1a570783950",
+    "content-hash": "c02b5f30a3c4ebd8ea047964668ede74",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2334,16 +2334,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.6.4",
+            "version": "2.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80"
+                "reference": "e87f24a7ae005c911a78b9c1445c09d2bdfb8b54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80",
-                "reference": "75a3a58c2ee1edf1c3b5c0d5bc815e9252afba80",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/e87f24a7ae005c911a78b9c1445c09d2bdfb8b54",
+                "reference": "e87f24a7ae005c911a78b9c1445c09d2bdfb8b54",
                 "shasum": ""
             },
             "require": {
@@ -2369,7 +2369,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2019-09-13T09:38:15+00:00"
+            "time": "2019-10-30T11:25:42+00:00"
         }
     ],
     "packages-dev": [
