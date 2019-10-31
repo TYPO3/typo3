@@ -335,6 +335,8 @@ class ModuleTemplate
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();
         $this->pageRenderer->enableCompressJavascript();
+        $languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
+        $this->pageRenderer->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) {
             $this->pageRenderer->enableDebugMode();
         }

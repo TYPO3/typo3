@@ -415,7 +415,7 @@ function jumpToUrl(URL) {
         $this->pageRenderer->setRenderXhtml(false);
 
         $languageCode = $this->pageRenderer->getLanguage() === 'default' ? 'en' : $this->pageRenderer->getLanguage();
-        $this->pageRenderer->setHtmlTag('<html lang="' . $languageCode . '">');
+        $this->pageRenderer->setHtmlTag('<html lang="' . htmlspecialchars($languageCode) . '">');
 
         $headerStart = '<!DOCTYPE html>';
         $this->pageRenderer->setXmlPrologAndDocType($headerStart);
