@@ -166,11 +166,16 @@ class InputSlugElement extends AbstractFormElement
 
         [$commonElementPrefix] = GeneralUtility::revExplode('[', $parameterArray['itemFormElName'], 2);
         $validInputNamesToListenTo = [];
+        $includeUidInValues = false;
         foreach ($config['generatorOptions']['fields'] ?? [] as $fieldNameParts) {
             if (is_string($fieldNameParts)) {
                 $fieldNameParts = GeneralUtility::trimExplode(',', $fieldNameParts);
             }
             foreach ($fieldNameParts as $listenerFieldName) {
+                if ($listenerFieldName === 'uid') {
+                    $includeUidInValues = true;
+                    continue;
+                }
                 $validInputNamesToListenTo[$listenerFieldName] = $commonElementPrefix . '[' . htmlspecialchars($listenerFieldName) . ']';
             }
         }
@@ -202,6 +207,7 @@ class InputSlugElement extends AbstractFormElement
             'signature' => $signature,
             'command' => $this->data['command'],
             'parentPageId' => $parentPageId,
+            'includeUidInValues' => $includeUidInValues,
         ];
         $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/SlugElement' => '
             function(SlugElement) {

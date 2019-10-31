@@ -25,6 +25,7 @@ interface FieldOptions {
   signature: string;
   command: string;
   parentPageId: number;
+  includeUidInValues: boolean;
 }
 
 interface Response {
@@ -151,6 +152,9 @@ class SlugElement {
       $.each(this.getAvailableFieldsForProposalGeneration(), (fieldName: string, field: string): void => {
         input[fieldName] = $('[data-formengine-input-name="' + field + '"]').val();
       });
+      if (this.options.includeUidInValues === true) {
+        input.uid = this.options.recordId.toString();
+      }
     } else {
       input.manual = this.$inputField.val();
     }
