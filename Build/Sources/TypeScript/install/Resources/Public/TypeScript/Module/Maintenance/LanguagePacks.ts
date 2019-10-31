@@ -396,7 +396,7 @@ class LanguagePacks extends AbstractInteractableModule {
                   $('<span>').append(activateIcon),
                   ' Add language',
                 ),
-                $('<button>', {'class': 'btn btn-default t3js-languagePacks-update', 'type': 'button'}).append(
+                $('<button>', {'class': 'btn btn-default disabled update-all t3js-languagePacks-update', 'type': 'button', 'disabled': 'disabled'}).append(
                   $('<span>').append(updateIcon),
                   ' Update all',
                 ),
@@ -410,6 +410,10 @@ class LanguagePacks extends AbstractInteractableModule {
         $tbody,
       ),
     );
+
+    if (Array.isArray(this.activeLanguages) && this.activeLanguages.length) {
+      $markupContainer.find('.update-all').removeClass('disabled').removeAttr('disabled');
+    }
     return $markupContainer.html();
   }
 
