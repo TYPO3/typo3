@@ -20,6 +20,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Mime\NamedAddress;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -6063,12 +6064,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'tstamp' => $GLOBALS['EXEC_TIME'],
             ];
 
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
-            try {
-                $connection->transactional(function ($connection) use ($cacheEntry) {
-                    $connection->insert('cache_treelist', $cacheEntry);
-                });
-            } catch (\Throwable $e) {
+            // Only add to cache if not logged into TYPO3 Backend
+            if (!$this->getFrontendBackendUser() instanceof AbstractUserAuthentication) {
+                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('cache_treelist');
+                try {
+                    $connection->transactional(function ($connection) use ($cacheEntry) {
+                        $connection->insert('cache_treelist', $cacheEntry);
+                    });
+                } catch (\Throwable $e) {
+                }
             }
         }
 
