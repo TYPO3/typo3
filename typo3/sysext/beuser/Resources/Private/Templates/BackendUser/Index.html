@@ -35,7 +35,7 @@
                                 {compareUser.userName}
                             </td>
                             <td>
-                                <f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right btn btn-default">
+                                <f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="pull-right btn btn-default" title="{f:translate(key: 'remove')}">
                                     <core:icon identifier="actions-remove" />
                                 </f:link.action>
                             </td>
@@ -45,7 +45,7 @@
             </table>
         </div>
         <f:form action="compare">
-            <f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default" />
+            <f:form.submit value="{f:translate(key: 'compareUserList', default: 'Compare user list')}" title="{f:translate(key: 'compareUserList', default: 'Compare user list')}" class="btn btn-default" />
         </f:form>
         <hr>
     </f:if>

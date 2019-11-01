@@ -103,6 +103,9 @@
 			<trans-unit id="visit_destination" resname="visit_destination">
 				<source>Go to</source>
 			</trans-unit>
+			<trans-unit id="view_redirect" resname="view_redirect">
+				<source>View redirect</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

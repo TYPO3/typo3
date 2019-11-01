@@ -248,6 +248,18 @@
             <trans-unit id="formEditor.new_page_button" resname="formEditor.new_page_button" xml:space="preserve">
                 <source>Create new step</source>
             </trans-unit>
+			<trans-unit id="formEditor.previous_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
+                <source>Previous step</source>
+            </trans-unit>
+			<trans-unit id="formEditor.next_step_button" resname="formEditor.edit_mode_button" xml:space="preserve">
+                <source>Next step</source>
+            </trans-unit>
+			<trans-unit id="formEditor.preview_mode_button" resname="formEditor.preview_mode_button" xml:space="preserve">
+                <source>Preview mode</source>
+            </trans-unit>
+			<trans-unit id="formEditor.edit_mode_button" resname="formEditor.edit_mode_button" xml:space="preserve">
+                <source>Edit mode</source>
+            </trans-unit>
             <trans-unit id="formEditor.structure" resname="formEditor.structure" xml:space="preserve">
                 <source>Structure</source>
             </trans-unit>

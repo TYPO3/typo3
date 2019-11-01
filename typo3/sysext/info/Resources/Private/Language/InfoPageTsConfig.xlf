@@ -33,9 +33,6 @@
 			<trans-unit id="tsconf_configFields" resname="tsconf_configFields">
 				<source>View TSconfig fields content</source>
 			</trans-unit>
-			<trans-unit id="editThisColumn" resname="editThisColumn">
-				<source>Edit the field '%s' for all listed pages</source>
-			</trans-unit>
 			<trans-unit id="editTSconfig" resname="editTSconfig">
 				<source>Edit TSconfig for this page</source>
 			</trans-unit>

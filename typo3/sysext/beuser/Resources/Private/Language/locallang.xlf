@@ -42,8 +42,14 @@
 			<trans-unit id="never" resname="never">
 				<source>Never</source>
 			</trans-unit>
+			<trans-unit id="edit" resname="edit">
+				<source>Edit</source>
+			</trans-unit>
 			<trans-unit id="delete" resname="delete">
 				<source>Delete backend user (!)</source>
+			</trans-unit>
+			<trans-unit id="info" resname="delete">
+				<source>Display information</source>
 			</trans-unit>
 			<trans-unit id="disable" resname="disable">
 				<source>Disable</source>
@@ -150,6 +156,9 @@
 			<trans-unit id="compare" resname="compare">
 				<source>Compare</source>
 			</trans-unit>
+			<trans-unit id="remove" resname="remove">
+				<source>Remove</source>
+			</trans-unit>
 			<trans-unit id="terminateSessionSuccess" resname="terminateSessionSuccess">
 				<source>Session successfully terminated.</source>
 			</trans-unit>
@@ -160,10 +169,10 @@
 				<source>online</source>
 			</trans-unit>
 			<trans-unit id="visibility.hide" resname="visibility.hide">
-				<source>hide</source>
+				<source>Hide</source>
 			</trans-unit>
 			<trans-unit id="visibility.unhide" resname="visibility.unhide">
-				<source>unhide</source>
+				<source>Un-hide</source>
 			</trans-unit>
 		</body>
 	</file>

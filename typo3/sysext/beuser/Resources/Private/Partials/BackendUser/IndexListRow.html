@@ -36,7 +36,7 @@
     </td>
     <td class="col-control">
         <div class="btn-group" role="group">
-            <be:link.editRecord class="btn btn-default" table="be_users" uid="{backendUser.uid}" title="edit" >
+            <be:link.editRecord class="btn btn-default" table="be_users" uid="{backendUser.uid}" title="{f:translate(key:'edit')}">
                 <core:icon identifier="actions-open" />
             </be:link.editRecord>
             <f:if condition="{backendUser.currentlyLoggedIn} == 1">
@@ -60,7 +60,7 @@
                 </f:then>
                 <f:else>
                     <a class="btn btn-default t3js-modal-trigger" href="{be:moduleLink(route:'tce_db', query:'cmd[be_users][{backendUser.uid}][delete]=1', currentUrlParameterName:'redirect')}"
-                        title="{f:translate(key:'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:delete')}"
+                        title="{f:translate(key:'delete')}"
                         data-severity="warning"
                         data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title')}"
                         data-content="{f:translate(key:'confirm',arguments:'{0:backendUser.userName}')}"
@@ -71,18 +71,20 @@
             </f:if>
         </div>
         <div class="btn-group" role="group">
-            <a class="btn btn-default" href="#" onclick="top.TYPO3.InfoWindow.showItem('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
+            <a class="btn btn-default" href="#" title="{f:translate(key:'info')}" onclick="top.TYPO3.InfoWindow.showItem('be_users', '{backendUser.uid}'); return false;"><core:icon identifier="actions-document-info" /></a>
         </div>
         <div class="btn-group" role="group">
             <f:if condition="{compareUserUidList.{backendUser.uid}}">
                 <f:then>
-                    <f:link.action action="removeFromCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default">
+                    <f:link.action action="removeFromCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
                         <core:icon identifier="actions-remove" size="small"/>
                         <f:translate key="compare" />
                     </f:link.action>
                 </f:then>
                 <f:else>
-                    <f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default"><core:icon identifier="actions-add" size="small"/> <f:translate key="compare" /></f:link.action>
+                    <f:link.action action="addToCompareList" arguments="{uid: backendUser.uid}" class="btn btn-default" title="{f:translate(key: 'compare')}">
+                        <core:icon identifier="actions-add" size="small"/> <f:translate key="compare" />
+                    </f:link.action>
                 </f:else>
             </f:if>
             <bu:SwitchUser backendUser="{backendUser}" />

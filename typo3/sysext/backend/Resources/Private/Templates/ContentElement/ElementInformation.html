@@ -24,7 +24,7 @@
         </f:if>
         <f:if condition="{url}">
             <p>
-                <a class="btn btn-default" href="{url}" target="_blank">
+                <a class="btn btn-default" href="{url}" target="_blank" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show')}">
                     <core:icon identifier="actions-document-view" size="small" alternativeMarkupIdentifier="inline" />
                     <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.show" />
                 </a>
@@ -41,7 +41,7 @@
             </table>
         </div>
         <f:if condition="{returnUrl}">
-            <a class="btn btn-primary" href="{returnUrl}">
+            <a class="btn btn-primary" href="{returnUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back')}">
                 <core:icon identifier="actions-view-go-back" size="small" />
                 <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:back" />
             </a>
@@ -200,12 +200,12 @@
                 <core:icon identifier="actions-document-view" size="small" />
             </a>
         </f:if>
-        <a class="btn btn-default btn-sm" href="{line.recordEditUrl}">
+        <a class="btn btn-default btn-sm" href="{line.recordEditUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.edit')}">
             <core:icon identifier="actions-open" size="small" />
         </a>
     </div>
     <div class="btn-group" role="group">
-        <a class="btn btn-default btn-sm" href="{line.recordHistoryUrl}">
+        <a class="btn btn-default btn-sm" href="{line.recordHistoryUrl}" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.history')}">
             <core:icon identifier="actions-document-history-open" size="small" />
         </a>
     </div>

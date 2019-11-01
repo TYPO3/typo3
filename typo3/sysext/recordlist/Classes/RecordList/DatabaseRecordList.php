@@ -1535,8 +1535,10 @@ class DatabaseRecordList
                                         'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
                                     ]
                                 );
+                                $title = htmlspecialchars($lang->getLL('new'));
                                 $icon = '<a href="' . htmlspecialchars($url) . '" '
-                                    . 'data-title="' . htmlspecialchars($lang->getLL('new')) . '"'
+                                    . 'title="' . $title . '"'
+                                    . 'data-title="' . $title . '"'
                                     . 'class="btn btn-default t3js-toggle-new-content-element-wizard">'
                                     . $spriteIcon->render()
                                     . '</a>';

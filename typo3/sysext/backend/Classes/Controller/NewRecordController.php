@@ -559,9 +559,10 @@ class NewRecordController
                             /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
                             $normalizedParams = $request->getAttribute('normalizedParams');
                             $url = (string)$uriBuilder->buildUriFromRoute($moduleName, ['id' => $this->id, 'returnUrl' => $normalizedParams->getRequestUri()]);
+                            $title = htmlspecialchars($this->getLanguageService()->getLL('newContentElement'));
                             $rowContent .= '<li>' . $newLink . ' ' . BackendUtility::wrapInHelp($table, '') . '</li>'
                                 . '<li>'
-                                . '<a href="' . htmlspecialchars($url) . '" data-title="' . htmlspecialchars($this->getLanguageService()->getLL('newContentElement')) . '" class="t3js-toggle-new-content-element-wizard">'
+                                . '<a href="' . htmlspecialchars($url) . '" title="' . $title . '" data-title="' . $title . '" class="t3js-toggle-new-content-element-wizard">'
                                 . $newContentIcon . htmlspecialchars($lang->getLL('clickForWizard'))
                                 . '</a>'
                                 . '</li>'

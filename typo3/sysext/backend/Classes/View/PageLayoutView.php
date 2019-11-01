@@ -760,7 +760,7 @@ class PageLayoutView implements LoggerAwareInterface
                     && !$this->pages_noEditColumns
                 ) {
                     $iTitle = sprintf(
-                        $lang->getLL('editThisColumn'),
+                        $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
                         rtrim(trim($lang->sL(BackendUtility::getItemLabel('pages', $field))), ':')
                     );
                     $urlParameters = [
@@ -1781,12 +1781,12 @@ class PageLayoutView implements LoggerAwareInterface
 
                         $eI =
                             '<a href="#" onclick="' . htmlspecialchars($onClick) . '" class="btn btn-default" title="' .
-                            $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_webinfo.xlf:lang_renderl10n_viewPage') . '">' .
+                            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
                             $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
                             '</a>';
                         $eI .=
                             '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
-                            htmlspecialchars($this->getLanguageService()->getLL('editThisPage')) . '">' .
+                            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">' .
                             $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() .
                             '</a>';
                     } else {
