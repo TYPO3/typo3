@@ -51,6 +51,10 @@ class LanguagePacks extends AbstractInteractableModule {
 
   private notifications: Array<any> = [];
 
+  private static pluralize(count: number, word: string = 'pack', suffix: string = 's', additionalCount: number = 0): string {
+    return count !== 1 && additionalCount !== 1 ? word + suffix : word;
+  }
+
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
 
@@ -217,7 +221,11 @@ class LanguagePacks extends AbstractInteractableModule {
           'aria-valuemax': 100,
           'style': 'width: 0;',
         }).append(
-          $('<span>', {'class': 'text-nowrap'}).text('0 of ' + this.packsUpdateDetails.toHandle + ' language packs updated'),
+          $(
+            '<span>',
+            {'class': 'text-nowrap'}).text('0 of ' + this.packsUpdateDetails.toHandle + ' language ' +
+            LanguagePacks.pluralize(this.packsUpdateDetails.toHandle) + ' updated'
+          ),
         ),
       ));
     $contentContainer.empty();
@@ -275,9 +283,9 @@ class LanguagePacks extends AbstractInteractableModule {
       const message = InfoBox.render(
         Severity.ok,
         'Language packs updated',
-        this.packsUpdateDetails.new + ' new language packs downloaded, ' +
-        this.packsUpdateDetails.updated + ' language packs updated, ' +
-        this.packsUpdateDetails.failed + ' language packs not available',
+        this.packsUpdateDetails.new + ' new language ' + LanguagePacks.pluralize(this.packsUpdateDetails.new) + ' downloaded, ' +
+        this.packsUpdateDetails.updated + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.updated) + ' updated, ' +
+        this.packsUpdateDetails.failed + ' language ' + LanguagePacks.pluralize(this.packsUpdateDetails.failed) + ' not available',
       );
       this.addNotification(message);
       if (updateIsoTimes === true) {
@@ -315,7 +323,10 @@ class LanguagePacks extends AbstractInteractableModule {
         .css('width', percent + '%')
         .attr('aria-valuenow', percent)
         .find('span')
-        .text(this.packsUpdateDetails.handled + ' of ' + this.packsUpdateDetails.toHandle + ' language packs updated');
+        .text(
+          this.packsUpdateDetails.handled + ' of ' + this.packsUpdateDetails.toHandle + ' language ' +
+          LanguagePacks.pluralize(this.packsUpdateDetails.handled, 'pack', 's', this.packsUpdateDetails.toHandle) + ' updated'
+        );
     }
   }
 
