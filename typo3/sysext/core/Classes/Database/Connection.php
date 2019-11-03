@@ -207,8 +207,8 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      * Table expression and columns are not escaped and are not safe for user-input.
      *
      * @param string $tableName The name of the table to insert data into.
-     * @param array $data An array containing associative arrays of column-value pairs.
-     * @param array $columns An array containing associative arrays of column-value pairs.
+     * @param array $data An array containing associative arrays of column-value pairs or just the values to be inserted.
+     * @param array $columns An array containing the column names of the data which should be inserted.
      * @param array $types Types of the inserted data.
      *
      * @return int The number of affected rows.
