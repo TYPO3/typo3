@@ -164,7 +164,7 @@ Now you can register the rendering of your custom content element using a Fluid 
        }
    }
 
-In this example a :ref:`cobj-fluidtemplate` content object is created using a copy from :typoscript:`lib.contentElement`
+In this example a :ref:`cobj-fluidtemplate` content object is created using a reference from :typoscript:`lib.contentElement`
 with a template identified by the :ref:`t3tsref:cobj-fluidtemplate-properties-templatename` `NewContentElement`.
 This will load a :file:`NewContentElement.html` template file from the :typoscript:`templateRootPaths`.
 
