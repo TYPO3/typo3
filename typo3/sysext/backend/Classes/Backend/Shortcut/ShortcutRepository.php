@@ -197,7 +197,7 @@ class ShortcutRepository
 
         $queryParts = parse_url($url);
         $queryParameters = [];
-        parse_str($queryParts['query'], $queryParameters);
+        parse_str($queryParts['query'] ?? '', $queryParameters);
 
         if (!empty($queryParameters['scheme'])) {
             throw new \RuntimeException('Shortcut URLs must be relative', 1518785877);
@@ -489,7 +489,7 @@ class ShortcutRepository
             $queryParts = parse_url($row['url']);
             // Explode GET vars recursively
             $queryParameters = [];
-            parse_str($queryParts['query'], $queryParameters);
+            parse_str($queryParts['query'] ?? '', $queryParameters);
 
             if ($row['module_name'] === 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
                 $shortcut['table'] = key($queryParameters['edit']);
@@ -731,16 +731,16 @@ class ShortcutRepository
     {
         $parsedUrl = parse_url($url);
         $parameters = [];
-        parse_str($parsedUrl['query'], $parameters);
+        parse_str($parsedUrl['query'] ?? '', $parameters);
 
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         // parse the returnUrl and replace the module token of it
         if (!empty($parameters['returnUrl'])) {
             $parsedReturnUrl = parse_url($parameters['returnUrl']);
             $returnUrlParameters = [];
-            parse_str($parsedReturnUrl['query'], $returnUrlParameters);
+            parse_str($parsedReturnUrl['query'] ?? '', $returnUrlParameters);
 
-            if (strpos($parsedReturnUrl['path'], 'index.php') !== false && !empty($returnUrlParameters['route'])) {
+            if (strpos($parsedReturnUrl['path'] ?? '', 'index.php') !== false && !empty($returnUrlParameters['route'])) {
                 $module = $returnUrlParameters['route'];
                 $parameters['returnUrl'] = (string)$uriBuilder->buildUriFromRoutePath($module, $returnUrlParameters);
                 $url = $parsedUrl['path'] . '?' . http_build_query($parameters, '', '&', PHP_QUERY_RFC3986);
