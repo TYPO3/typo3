@@ -158,7 +158,7 @@ Now you can register the rendering of your custom content element using a Fluid 
 .. code-block:: typoscript
 
    tt_content {
-       yourextensionkey_newcontentelement =< lib.contentElement
+       yourextensionkey_newcontentelement < lib.contentElement
        yourextensionkey_newcontentelement {
            templateName = NewContentElement
        }
