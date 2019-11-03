@@ -135,7 +135,7 @@ found in `sys_templates` for static TypoScript in :file:`Configuration/TCA/Overr
        'Your description'
    );
 
-As defined in :file:`Configuration/TCA/Overrides/tt_content.php`, the file :file:`setup.typoscript` is in the directory
+As defined in :file:`Configuration/TCA/Overrides/sys_template.php`, the file :file:`setup.typoscript` is in the directory
 :file:`Configuration/TypoScript/` of your own extension.
 
 To ensure your custom content element templates can be found you need to extend the global
