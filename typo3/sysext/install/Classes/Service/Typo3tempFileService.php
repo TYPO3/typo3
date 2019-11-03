@@ -114,7 +114,7 @@ class Typo3tempFileService
     }
 
     /**
-     * Clear files in a typo3temp/assets/ folder (not _processed_!)
+     * Clears files and folders in a typo3temp/assets/ folder (not _processed_!)
      *
      * @param string $folderName
      * @return bool TRUE if all went well
@@ -139,9 +139,14 @@ class Typo3tempFileService
             );
         }
 
-        $finder = new Finder();
-        $files = $finder->files()->in($basePath)->depth(0)->sortByName();
-        foreach ($files as $file) {
+        // first remove directories
+        foreach ((new Finder())->directories()->in($basePath)->depth(0) as $directory) {
+            /** @var SplFileInfo $directory */
+            GeneralUtility::rmdir($directory->getPathname(), true);
+        }
+
+        // then remove files directly in the main dir
+        foreach ((new Finder())->files()->in($basePath)->depth(0) as $file) {
             /** @var SplFileInfo $file */
             $path = $file->getPathname();
             @unlink($path);
