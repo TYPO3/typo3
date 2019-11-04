@@ -19,9 +19,14 @@ use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
+use TYPO3\CMS\Core\Routing\PageArguments;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -495,5 +500,56 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
 
         $this->subject->generatePageTitle();
         self::assertSame($pageTitle, $this->subject->indexedDocTitle);
+    }
+
+    /**
+     * @test
+     */
+    public function pageRendererLanguageIsSetToSiteLanguageTypo3LanguageInConstructor(): void
+    {
+        $nullCacheBackend = new NullBackend('');
+        $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
+        $site = new Site('test', 13, ['base' => 'https://www.example.com/']);
+        $language = new SiteLanguage(0, 'fr', new Uri('/'), ['typo3Language' => 'fr-test']);
+        // Constructor calling initPageRenderer()
+        new TypoScriptFrontendController(
+            new Context(),
+            $site,
+            $language,
+            new PageArguments(13, '0', [])
+        );
+        // since PageRenderer is a singleton, this can be queried via the makeInstance call
+        self::assertEquals('fr-test', GeneralUtility::makeInstance(PageRenderer::class)->getLanguage());
+    }
+
+    /**
+     * @test
+     */
+    public function languageServiceIsSetUpWithSiteLanguageTypo3LanguageInConstructor(): void
+    {
+        $nullCacheBackend = new NullBackend('');
+        $cacheManager = $this->prophesize(CacheManager::class);
+        $cacheManager->getCache('pages')->willReturn($nullCacheBackend);
+        GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManager->reveal());
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com/');
+        $site = new Site('test', 13, ['base' => 'https://www.example.com/']);
+        $language = new SiteLanguage(0, 'fr', new Uri('/'), ['typo3Language' => 'fr']);
+        // Constructor calling setOutputLanguage()
+        $subject = $this->getAccessibleMock(
+            TypoScriptFrontendController::class,
+            ['dummy'],
+            [
+                new Context(),
+                $site,
+                $language,
+                new PageArguments(13, '0', [])
+            ]
+        );
+        $languageService = $subject->_get('languageService');
+        // since PageRenderer is a singleton, this can be queried via the makeInstance call
+        self::assertEquals('fr', $languageService->lang);
     }
 }

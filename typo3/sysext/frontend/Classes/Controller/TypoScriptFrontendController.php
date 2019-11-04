@@ -701,6 +701,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->uniqueString = md5(microtime());
         $this->initPageRenderer();
         $this->initCaches();
+        // Initialize LLL behaviour
+        $this->setOutputLanguage($this->language->getTypo3Language());
     }
 
     /**
@@ -863,6 +865,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $this->pageRenderer->setTemplateFile('EXT:frontend/Resources/Private/Templates/MainPage.html');
+        // As initPageRenderer could be called in constructor and for USER_INTs, this information is only set
+        // once - in order to not override any previous settings of PageRenderer.
+        if ($this->language instanceof SiteLanguage) {
+            $this->pageRenderer->setLanguage($this->language->getTypo3Language());
+        }
     }
 
     /**
@@ -2128,9 +2135,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['settingLanguage_preProcess'] ?? [] as $_funcRef) {
             GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
-
-        // Initialize charset settings etc.
-        $this->setOutputLanguage($this->language->getTypo3Language());
 
         // Rendering charset of HTML page.
         if (isset($this->config['config']['metaCharset']) && $this->config['config']['metaCharset'] !== 'utf-8') {
@@ -3565,7 +3569,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function setOutputLanguage($language = 'default')
     {
-        $this->pageRenderer->setLanguage($language);
         $this->languageService = GeneralUtility::makeInstance(LanguageService::class);
         // Always disable debugging for TSFE
         $this->languageService->debugKey = false;
