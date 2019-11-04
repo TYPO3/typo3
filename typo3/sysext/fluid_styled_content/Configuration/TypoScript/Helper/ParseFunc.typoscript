@@ -18,8 +18,12 @@ lib.parseFunc {
                 parameter.data = parameters:href
                 title.data = parameters:title
                 ATagParams.data = parameters:allParams
-                target.data = parameters:target
-                extTarget = {$styles.content.links.extTarget}
+                # the target attribute takes precedence over config.intTarget
+                target.ifEmpty.data = parameters:target
+                # the target attribute takes precedence over the constant (styles.content.links.extTarget)
+                # which takes precedence over config.extTarget
+                extTarget.ifEmpty =< config.extTarget
+                extTarget.ifEmpty.override = {$styles.content.links.extTarget}
                 extTarget.override.data = parameters:target
             }
         }
