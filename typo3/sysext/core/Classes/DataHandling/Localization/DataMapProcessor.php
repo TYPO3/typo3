@@ -355,14 +355,18 @@ class DataMapProcessor
         if (empty($fieldNames)) {
             return;
         }
-        $fieldNameList = 'uid,' . implode(',', $fieldNames);
+        $selectFields = ['uid', ...$fieldNames];
+        $schema = $this->getSchema($item->getTableName());
+        if ($schema?->isLanguageAware()) {
+            $selectFields[] = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        }
         $fromRecord = ['uid' => $fromId];
         if (MathUtility::canBeInterpretedAsInteger($fromId)) {
-            $fromRecord = BackendUtility::getRecordWSOL($item->getTableName(), (int)$fromId, $fieldNameList);
+            $fromRecord = BackendUtility::getRecordWSOL($item->getTableName(), (int)$fromId, $selectFields);
         }
         $forRecord = [];
         if (!$item->isNew()) {
-            $forRecord = BackendUtility::getRecordWSOL($item->getTableName(), $item->getId(), $fieldNameList);
+            $forRecord = BackendUtility::getRecordWSOL($item->getTableName(), $item->getId(), $selectFields);
         }
         if (is_array($fromRecord) && is_array($forRecord)) {
             foreach ($fieldNames as $fieldName) {
@@ -713,10 +717,51 @@ class DataMapProcessor
                 $item->getTableName(),
                 $configuration
             );
-            $suggestedAncestorIds = $this->mapRelationItemId($relationHandler->itemArray);
+            $suggestedAncestorIds = $this->removeRelationIdsTranslatedToOtherLanguages(
+                $item->getTableName(),
+                $foreignTableName,
+                $this->mapRelationItemId($relationHandler->itemArray),
+                $fromRecord
+            );
         }
 
         return array_filter($suggestedAncestorIds);
+    }
+
+    /**
+     * Removes children that are translated into a language other than the one of
+     * their parent record. A localization still running, in the same process or in
+     * a concurrent request, has not yet remapped such children to the translated
+     * parent - they must not be localized once more.
+     *
+     * @param int[] $ids
+     * @return int[]
+     */
+    private function removeRelationIdsTranslatedToOtherLanguages(string $tableName, string $foreignTableName, array $ids, array $fromRecord): array
+    {
+        $schema = $this->getSchema($tableName);
+        $foreignSchema = $this->getSchema($foreignTableName);
+        if ($ids === [] || !$schema?->isLanguageAware() || !$foreignSchema?->isLanguageAware()) {
+            return $ids;
+        }
+        $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        if (!isset($fromRecord[$languageFieldName])) {
+            return $ids;
+        }
+        $foreignLanguageFieldName = $foreignSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($foreignTableName);
+        $queryBuilder->getRestrictions()->removeAll();
+        $translatedIds = $queryBuilder
+            ->select('uid')
+            ->from($foreignTableName)
+            ->where(
+                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($ids, Connection::PARAM_INT_ARRAY)),
+                $queryBuilder->expr()->gt($foreignLanguageFieldName, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                $queryBuilder->expr()->neq($foreignLanguageFieldName, $queryBuilder->createNamedParameter((int)$fromRecord[$languageFieldName], Connection::PARAM_INT))
+            )
+            ->executeQuery()
+            ->fetchFirstColumn();
+        return array_values(array_diff($ids, $translatedIds));
     }
 
     /**

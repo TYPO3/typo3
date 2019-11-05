@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\FAL;
 
+use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -331,6 +332,30 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, self::VALUE_LanguageId);
         $this->recordIds['localizedPageId'] = $localizedTableIds[self::TABLE_Page][self::VALUE_PageIdWithMedia];
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, self::VALUE_PageIdTarget);
+    }
+
+    /**
+     * Page translations in two languages synchronize their media from the default
+     * language page within the same DataHandler run.
+     */
+    public function modifyPageWithMediaAndSynchronizeMultipleTranslations(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithMedia.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithMediaTranslations.csv');
+        $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, ['title' => 'Testing #1']);
+    }
+
+    /**
+     * File reference 131 is a translation in language 1 that still points to the
+     * default language page - the state a concurrent localization request leaves
+     * until its child relations have been remapped to the translated parent.
+     */
+    public function modifyPageWithMediaAndUnassignedTranslatedReference(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithMedia.csv');
+        $this->importCSVDataSet(__DIR__ . '/DataSet/ImportPageWithMediaUnassignedTranslatedReference.csv');
+        $this->get(ReferenceIndex::class)->updateIndex(false);
+        $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageIdWithMedia, ['title' => 'Testing #1']);
     }
 
     protected function createContentWithFileReferenceAndDeleteFileReference(): void

@@ -377,4 +377,18 @@ final class ActionTest extends AbstractActionTestCase
         parent::changeLanguageOfContentWithFileReferenceAndLocalize();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeLanguageOfContentWFileReferenceNLocalize.csv');
     }
+
+    #[Test]
+    public function modifyPageWithMediaAndSynchronizeMultipleTranslations(): void
+    {
+        parent::modifyPageWithMediaAndSynchronizeMultipleTranslations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPageWMediaNSyncMultipleTranslations.csv');
+    }
+
+    #[Test]
+    public function modifyPageWithMediaAndUnassignedTranslatedReference(): void
+    {
+        parent::modifyPageWithMediaAndUnassignedTranslatedReference();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPageWMediaNUnassignedTranslatedRef.csv');
+    }
 }
