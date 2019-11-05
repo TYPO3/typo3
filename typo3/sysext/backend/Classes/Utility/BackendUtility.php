@@ -266,7 +266,7 @@ class BackendUtility
      * @param int $uid The uid of the record
      * @param int $language The uid of the language record in sys_language
      * @param string $andWhereClause Optional additional WHERE clause (default: '')
-     * @return mixed Multidimensional array with selected records; if none exist, FALSE is returned
+     * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
      */
     public static function getRecordLocalization($table, $uid, $language, $andWhereClause = '')
     {
