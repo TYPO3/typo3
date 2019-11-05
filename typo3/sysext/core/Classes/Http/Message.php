@@ -205,7 +205,7 @@ class Message implements MessageInterface
         }
 
         if (!is_array($value) || !$this->arrayContainsOnlyStrings($value)) {
-            throw new \InvalidArgumentException('Invalid header value for header "' . $name . '"". The value must be a string or an array of strings.', 1436717266);
+            throw new \InvalidArgumentException('Invalid header value for header "' . $name . '". The value must be a string or an array of strings.', 1436717266);
         }
 
         $this->validateHeaderName($name);

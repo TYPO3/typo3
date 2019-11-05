@@ -427,7 +427,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                 break;
             default:
                 throw new \RuntimeException(
-                    'Unknown condition rule type "' . $namedConditionArray['type'] . '" with display condition "' . $conditionString . '"".',
+                    'Unknown condition rule type "' . $namedConditionArray['type'] . '" with display condition "' . $conditionString . '".',
                     1481381950
                 );
         }
