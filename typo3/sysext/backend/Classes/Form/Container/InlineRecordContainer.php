@@ -188,6 +188,11 @@ class InlineRecordContainer extends AbstractContainer
             }
             $class .= ($isNewRecord ? ' inlineIsNewRecord' : '');
 
+            $originalUniqueValue = '';
+            if (isset($data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']])) {
+                $uniqueValueValues = $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']];
+                $originalUniqueValue = $uniqueValueValues['table'] . '_' . $uniqueValueValues['uid'];
+            }
             $containerAttributes = [
                 'id' => $objectId . '_div',
                 'class' => 'form-irre-object panel panel-default panel-condensed ' . trim($class),
@@ -196,7 +201,7 @@ class InlineRecordContainer extends AbstractContainer
                 'data-field-name' => $appendFormFieldNames,
                 'data-topmost-parent-table' => $data['inlineTopMostParentTableName'],
                 'data-topmost-parent-uid' => $data['inlineTopMostParentUid'],
-                'data-table-unique-original-value' => $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']] ?? '',
+                'data-table-unique-original-value' => $originalUniqueValue,
             ];
 
             $html = '
