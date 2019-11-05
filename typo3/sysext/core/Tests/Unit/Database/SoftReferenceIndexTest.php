@@ -15,12 +15,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -30,9 +29,361 @@ class SoftReferenceIndexTest extends UnitTestCase
 {
     protected $resetSingletonInstances = true;
 
+    public function findRefReturnsParsedElementsDataProvider(): array
+    {
+        return [
+            'link to page' => [
+                [
+                    'typolink' => [
+                        'content' => 't3://page?uid=42',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 't3://page?uid=42',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a href="t3://page?uid=42">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a href="t3://page?uid=42">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'pages:42',
+                        'tokenValue' => 42,
+                    ],
+                ],
+            ],
+            'link to page with properties' => [
+                [
+                    'typolink_tag' => [
+                        'content' => '<p><a class="link-page" href="t3://page?uid=42" target="_top" title="Foo">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a class="link-page" href="t3://page?uid=42" target="_top" title="Foo">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'pages:42',
+                        'tokenValue' => '42',
+                    ],
+                ],
+            ],
+            'link to page with just a number' => [
+                [
+                    'typolink' => [
+                        'content' => '42',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => '42',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'pages:42',
+                        'tokenValue' => '42',
+                    ],
+                ],
+            ],
+            'link to page with just a number and type comma-separated' => [
+                [
+                    'typolink' => [
+                        'content' => '42,100',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => '42,100',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'pages:42',
+                        'tokenValue' => '42',
+                    ],
+                ],
+            ],
+            'link to external URL without scheme' => [
+                [
+                    'typolink' => [
+                        'content' => 'www.example.com',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 'www.example.com',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a class="link-page" href="www.example.com" target="_top" title="Foo">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a class="link-page" href="www.example.com" target="_top" title="Foo">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'external',
+                        'tokenValue' => 'http://www.example.com',
+                    ],
+                ],
+            ],
+            'link to external URL with scheme' => [
+                [
+                    'typolink' => [
+                        'content' => 'https://www.example.com',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 'https://www.example.com',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a class="link-page" href="https://www.example.com" target="_top" title="Foo">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a class="link-page" href="https://www.example.com" target="_top" title="Foo">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'external',
+                        'tokenValue' => 'https://www.example.com',
+                    ],
+                ],
+            ],
+            'link to email' => [
+                [
+                    'typolink' => [
+                        'content' => 'mailto:test@example.com',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 'mailto:test@example.com',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a href="mailto:test@example.com">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a href="mailto:test@example.com">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'string',
+                        'tokenValue' => 'test@example.com',
+                    ],
+                ],
+            ],
+            'link to email without schema' => [
+                [
+                    'typolink' => [
+                        'content' => 'test@example.com',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 'test@example.com',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a href="test@example.com">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a href="test@example.com">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'string',
+                        'tokenValue' => 'test@example.com',
+                    ],
+                ],
+            ],
+        ];
+    }
+
     /**
-     * @return array
+     * @test
+     * @dataProvider findRefReturnsParsedElementsDataProvider
+     * @param array $softrefConfiguration
+     * @param array $expectedElement
      */
+    public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement)
+    {
+        foreach ($softrefConfiguration as $softrefKey => $configuration) {
+            $subject = new SoftReferenceIndex();
+            $result = $subject->findRef(
+                'tt_content',
+                'bodytext',
+                1,
+                $configuration['content'],
+                $softrefKey,
+                []
+            );
+
+            self::assertArrayHasKey('elements', $result);
+            self::assertArrayHasKey($configuration['elementKey'], $result['elements']);
+
+            // Remove tokenID as this one depends on the softrefKey and doesn't need to be verified
+            unset($result['elements'][$configuration['elementKey']]['subst']['tokenID']);
+
+            $expectedElement['matchString'] = $configuration['matchString'];
+            self::assertEquals($expectedElement, $result['elements'][$configuration['elementKey']]);
+        }
+    }
+
+    public function findRefReturnsParsedElementsWithFileDataProvider(): array
+    {
+        return [
+            'link to file' => [
+                [
+                    'typolink' => [
+                        'content' => 't3://file?uid=42',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 't3://file?uid=42',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a href="t3://file?uid=42">Click here</a></p>',
+                        'elementKey' => 1,
+                        'matchString' => '<a href="t3://file?uid=42">',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'sys_file:42',
+                        'tokenValue' => 'file:42',
+                    ],
+                ],
+            ],
+            'file with t3 mixed syntax' => [
+                [
+                    'typolink' => [
+                        'content' => 't3://file?identifier=42',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 't3://file?identifier=42',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'sys_file:42',
+                        'tokenValue' => 'file:42',
+                    ],
+                ],
+            ],
+            'link to file with old FAL object syntax' => [
+                [
+                    'typolink' => [
+                        'content' => 'file:42',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 'file:42',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'sys_file:42',
+                        'tokenValue' => 'file:42',
+                    ],
+                ],
+            ],
+            'link to file with simple file path' => [
+                [
+                    'typolink' => [
+                        'content' => 'fileadmin/download.jpg',
+                        'elementKey' => '8695f308356bcca1acac2749152a44a9:0',
+                        'matchString' => 'fileadmin/download.jpg',
+                    ],
+                ],
+                [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'sys_file:42',
+                        'tokenValue' => 'file:42',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider findRefReturnsParsedElementsWithFileDataProvider
+     * @param array $softrefConfiguration
+     * @param array $expectedElement
+     */
+    public function findRefReturnsParsedElementsWithFile(array $softrefConfiguration, array $expectedElement)
+    {
+        $fileObject = $this->prophesize(File::class);
+        $fileObject->getUid()->willReturn(42)->shouldBeCalledTimes(count($softrefConfiguration));
+
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        $resourceFactory->getFileObject('42')->willReturn($fileObject->reveal());
+        // For `t3://file?identifier=42` handling
+        $resourceFactory->getFileObjectFromCombinedIdentifier('42')->willReturn($fileObject->reveal());
+        // For `file:23` handling
+        $resourceFactory->retrieveFileOrFolderObject('42')->willReturn($fileObject->reveal());
+        // For `fileadmin/download.jpg` handling
+        $resourceFactory->retrieveFileOrFolderObject('fileadmin/download.jpg')->willReturn($fileObject->reveal());
+
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+
+        foreach ($softrefConfiguration as $softrefKey => $configuration) {
+            $subject = new SoftReferenceIndex();
+            $result = $subject->findRef(
+                'tt_content',
+                'bodytext',
+                1,
+                $configuration['content'],
+                $softrefKey,
+                []
+            );
+
+            self::assertArrayHasKey('elements', $result);
+            self::assertArrayHasKey($configuration['elementKey'], $result['elements']);
+
+            // Remove tokenID as this one depends on the softrefKey and doesn't need to be verified
+            unset($result['elements'][$configuration['elementKey']]['subst']['tokenID']);
+
+            $expectedElement['matchString'] = $configuration['matchString'];
+            self::assertEquals($expectedElement, $result['elements'][$configuration['elementKey']]);
+        }
+    }
+
+    public function findRefReturnsNullWithFolderDataProvider(): array
+    {
+        return [
+            'link to folder' => [
+                [
+                    'typolink' => [
+                        'content' => 't3://folder?storage=1&amp;identifier=%2Ffoo%2Fbar%2Fbaz',
+                    ],
+                    'typolink_tag' => [
+                        'content' => '<p><a href="t3://folder?storage=1&amp;identifier=%2Ffoo%2Fbar%2Fbaz">Click here</a></p>',
+                    ],
+                ],
+            ],
+            'link to folder with properties' => [
+                [
+                    'typolink_tag' => [
+                        'content' => '<p><a class="link-page" href="t3://folder?storage=1&amp;identifier=%2Ffoo%2Fbar%2Fbaz" target="_top" title="Foo">Click here</a></p>',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider findRefReturnsNullWithFolderDataProvider
+     * @param array $softrefConfiguration
+     */
+    public function findRefReturnsNullWithFolder(array $softrefConfiguration)
+    {
+        $folderObject = $this->prophesize(Folder::class);
+
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        $resourceFactory->getFolderObjectFromCombinedIdentifier('1:/foo/bar/baz')->willReturn($folderObject->reveal())->shouldBeCalledTimes(count($softrefConfiguration));
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
+
+        foreach ($softrefConfiguration as $softrefKey => $configuration) {
+            $subject = new SoftReferenceIndex();
+            $result = $subject->findRef(
+                'tt_content',
+                'bodytext',
+                1,
+                $configuration['content'],
+                $softrefKey,
+                []
+            );
+
+            self::assertNull($result);
+        }
+    }
+
     public function getTypoLinkPartsThrowExceptionWithPharReferencesDataProvider(): array
     {
         return [
@@ -60,177 +411,5 @@ class SoftReferenceIndexTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030672);
         (new SoftReferenceIndex())->getTypoLinkParts($pharUrl);
-    }
-
-    public function referencesDataProvider(): array
-    {
-        return [
-            'email without schema' => [
-                'test@example.com',
-                [
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                    'type' => 'email',
-                    'email' => 'test@example.com'
-                ]
-            ],
-            'email with schema' => [
-                'mailto:test@example.com',
-                [
-                    'type' => 'email',
-                    'email' => 'test@example.com',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'link to external URL without scheme' => [
-                'www.example.com',
-                [
-                    'type' => 'url',
-                    'url' => 'http://www.example.com',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'link to external URL with scheme' => [
-                'https://www.example.com',
-                [
-                    'type' => 'url',
-                    'url' => 'https://www.example.com',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'link to page with just a number' => [
-                '42',
-                [
-                    'type' => 'page',
-                    'pageuid' => 42,
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'link to page with just a number and type comma-separated' => [
-                '42,100',
-                [
-                    'type' => 'page',
-                    'pageuid' => 42,
-                    'pagetype' => 100,
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'link to page with t3 syntax' => [
-                't3://page?uid=42',
-                [
-                    'type' => 'page',
-                    'pageuid' => 42,
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider referencesDataProvider
-     */
-    public function getTypoLinkPartsFindsSupportedSchemes(string $input, array $expected)
-    {
-        $signalSlotDispatcher = $this->prophesize(Dispatcher::class);
-        $signalSlotDispatcher->dispatch(Argument::cetera());
-        GeneralUtility::setSingletonInstance(Dispatcher::class, $signalSlotDispatcher->reveal());
-
-        $subject = new SoftReferenceIndex();
-        $result = $subject->getTypoLinkParts($input, []);
-        self::assertEquals($expected, $result);
-    }
-
-    public function fileDataProvider(): array
-    {
-        return [
-            'link to file with simple file path' => [
-                'fileadmin/download.jpg',
-                [
-                    'type' => 'file',
-                    'file' => '23',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'file with old FAL object syntax' => [
-                'file:23',
-                [
-                    'type' => 'file',
-                    'file' => '23',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'file with t3 mixed syntax' => [
-                't3://file?identifier=23',
-                [
-                    'type' => 'file',
-                    'file' => '23',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-            'file with t3 syntax' => [
-                't3://file?uid=23',
-                [
-                    'type' => 'file',
-                    'file' => '23',
-                    'target' => '',
-                    'class' => '',
-                    'title' => '',
-                    'additionalParams' => '',
-                ]
-            ],
-
-        ];
-    }
-    /**
-     * @test
-     * @dataProvider fileDataProvider
-     */
-    public function getTypoLinkPartsResolvesFalResources(string $input, array $expected)
-    {
-        $signalSlotDispatcher = $this->prophesize(Dispatcher::class);
-        $signalSlotDispatcher->dispatch(Argument::cetera());
-        GeneralUtility::setSingletonInstance(Dispatcher::class, $signalSlotDispatcher->reveal());
-
-        $fileObject = $this->prophesize(File::class);
-        $fileObject->getUid()->willReturn(23);
-        $resourceFactory = $this->prophesize(ResourceFactory::class);
-        $resourceFactory->getFileObject(Argument::cetera())->willReturn($fileObject->reveal());
-        $resourceFactory->getFileObjectFromCombinedIdentifier(Argument::cetera())->willReturn($fileObject->reveal());
-        $resourceFactory->retrieveFileOrFolderObject(Argument::cetera())->willReturn($fileObject->reveal());
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
-
-        $subject = new SoftReferenceIndex();
-        $result = $subject->getTypoLinkParts($input, []);
-        self::assertEquals($expected, $result);
     }
 }

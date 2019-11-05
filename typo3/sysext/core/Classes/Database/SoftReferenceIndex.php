@@ -322,15 +322,19 @@ class SoftReferenceIndex
                                 'tokenID' => $token,
                                 'tokenValue' => $linkDetails['url']
                             ];
+                        } elseif ($linkDetails['type'] === LinkService::TYPE_EMAIL) {
+                            $token = $this->makeTokenID($key);
+                            $elements[$key]['matchString'] = $linkTags[$key];
+                            $linkTags[$key] = str_replace($matches[1], '{softref:' . $token . '}', $linkTags[$key]);
+                            $elements[$key]['subst'] = [
+                                'type' => 'string',
+                                'tokenID' => $token,
+                                'tokenValue' => $linkDetails['email']
+                            ];
                         }
                     } catch (\Exception $e) {
                         // skip invalid links
                     }
-                } else {
-                    // keep the legacy code for now
-                    $typolinkValue = preg_replace('/<LINK[[:space:]]+/i', '', substr($foundValue, 0, -1));
-                    $tLP = $this->getTypoLinkParts($typolinkValue);
-                    $linkTags[$key] = '<LINK ' . $this->setTypoLinkPartsElement($tLP, $elements, $typolinkValue, $key) . '>';
                 }
             }
         }
@@ -550,7 +554,7 @@ class SoftReferenceIndex
             case LinkService::TYPE_URL:
                 // URLs can be substituted manually
                 $elements[$tokenID . ':' . $idx]['subst'] = [
-                    'type' => 'string',
+                    'type' => 'external',
                     'tokenID' => $tokenID,
                     'tokenValue' => $tLP['url']
                 ];
@@ -559,6 +563,7 @@ class SoftReferenceIndex
                 break;
             case LinkService::TYPE_FOLDER:
                 // This is a link to a folder...
+                unset($elements[$tokenID . ':' . $idx]);
                 return $content;
             case LinkService::TYPE_FILE:
                 // Process files referenced by their FAL uid
@@ -603,15 +608,15 @@ class SoftReferenceIndex
                         'type' => 'db',
                         'recordRef' => 'pages:' . $tLP['pageuid'],
                         'tokenID' => $tokenID,
-                        'tokenValue' => $tLP['pagealias'] ? $tLP['pagealias'] : $tLP['pageuid']
+                        'tokenValue' => !empty($tLP['pagealias']) ? $tLP['pagealias'] : $tLP['pageuid']
                     ];
                 }
                 // Add type if applicable
-                if ((string)$tLP['pagetype'] !== '') {
+                if ((string)($tLP['pagetype'] ?? '') !== '') {
                     $content .= ',' . $tLP['pagetype'];
                 }
                 // Add anchor if applicable
-                if ((string)$tLP['anchor'] !== '') {
+                if ((string)($tLP['anchor'] ?? '') !== '') {
                     // Anchor is assumed to point to a content elements:
                     if (MathUtility::canBeInterpretedAsInteger($tLP['anchor'])) {
                         // Initialize a new entry because we have a new relation:
