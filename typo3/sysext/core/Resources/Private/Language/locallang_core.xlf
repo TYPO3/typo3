@@ -994,6 +994,15 @@ Do you want to refresh it now?</source>
 			<trans-unit id="buttons.recreateSlugExplanation" resname="buttons.recreateSlugExplanation">
 				<source>Recalculate URL segment from page title</source>
 			</trans-unit>
+			<trans-unit id="slugCreation.success.page" resname="slugCreation.success.page">
+				<source>This page will be reachable via %s</source>
+			</trans-unit>
+			<trans-unit id="slugCreation.success.record" resname="slugCreation.success.record">
+				<source>The URL part of this record will be %s</source>
+			</trans-unit>
+			<trans-unit id="slugCreation.error" resname="slugCreation.error">
+				<source>The requested URL is already in use, but %s will be used instead</source>
+			</trans-unit>
 			<trans-unit id="cm.copy" resname="cm.copy">
 				<source>Copy</source>
 			</trans-unit>

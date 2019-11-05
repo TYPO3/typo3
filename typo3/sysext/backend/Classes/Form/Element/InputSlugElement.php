@@ -105,6 +105,9 @@ class InputSlugElement extends AbstractFormElement
         $toggleButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.toggleSlugExplanation');
         $recreateButtonTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.recreateSlugExplanation');
 
+        $successMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:slugCreation.success.' . ($table === 'pages' ? 'page' : 'record')), $baseUrl);
+        $errorMessage = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:slugCreation.error'), $baseUrl);
+
         $thisSlugId = 't3js-form-field-slug-id' . StringUtility::getUniqueId();
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="formengine-field-item t3js-formengine-field-item">';
@@ -154,8 +157,8 @@ class InputSlugElement extends AbstractFormElement
             $mainFieldHtml[] =      '</div>';
         }
         $mainFieldHtml[] =          '<div class="form-wizards-items-bottom">';
-        $mainFieldHtml[] =              '<span class="t3js-form-proposal-accepted hidden label label-success">Congrats, this page will look like ' . htmlspecialchars($baseUrl) . '<span>/abc/</span></span>';
-        $mainFieldHtml[] =              '<span class="t3js-form-proposal-different hidden label label-warning">Hmm, that is taken, how about ' . htmlspecialchars($baseUrl) . '<span>/abc/</span></span>';
+        $mainFieldHtml[] =              '<span class="t3js-form-proposal-accepted hidden label label-success">' . htmlspecialchars($successMessage) . '<span>/abc/</span></span>';
+        $mainFieldHtml[] =              '<span class="t3js-form-proposal-different hidden label label-warning">' . htmlspecialchars($errorMessage) . '<span>/abc/</span></span>';
         $mainFieldHtml[] =              $fieldWizardHtml;
         $mainFieldHtml[] =          '</div>';
         $mainFieldHtml[] =      '</div>';
