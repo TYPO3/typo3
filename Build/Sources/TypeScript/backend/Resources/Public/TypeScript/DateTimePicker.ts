@@ -42,9 +42,9 @@ class DateTimePicker {
     return date.format();
   }
 
-  constructor() {
+  constructor(selector?: string) {
     $((): void => {
-      this.initialize();
+      this.initialize(selector);
     });
   }
 
@@ -53,9 +53,9 @@ class DateTimePicker {
    * note: this function can be called multiple times (e.g. after AJAX requests) because it only
    * applies to fields which haven't been used yet.
    */
-  private initialize(): void {
+  public initialize(selector?: string): void {
     // fetch the date time fields that haven't been initialized yet
-    const $dateTimeFields = $(this.fieldSelector).filter((index: number, element: HTMLElement): boolean => {
+    const $dateTimeFields = $(selector || this.fieldSelector).filter((index: number, element: HTMLElement): boolean => {
       return typeof $(element).data('DateTimePicker') === 'undefined';
     });
 

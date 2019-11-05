@@ -124,9 +124,10 @@ class InputDateTimeElement extends AbstractFormElement
             return $resultArray;
         }
 
+        $fieldId = StringUtility::getUniqueId('formengine-input-');
         $attributes = [
             'value' => '',
-            'id' => StringUtility::getUniqueId('formengine-input-'),
+            'id' => $fieldId,
             'class' => implode(' ', [
                 't3js-datetimepicker',
                 'form-control',
@@ -270,7 +271,11 @@ class InputDateTimeElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Backend/FormEngine/Element/InputDateTimeElement';
+        $resultArray['requireJsModules'][] = ['TYPO3/CMS/Backend/FormEngine/Element/InputDateTimeElement' => '
+            function(InputDateTimeElement) {
+                new InputDateTimeElement(' . GeneralUtility::quoteJSvalue($fieldId) . ');
+            }'
+        ];
         $resultArray['html'] = '<div class="formengine-field-item t3js-formengine-field-item">' . $fieldInformationHtml . $fullElement . '</div>';
         return $resultArray;
     }
