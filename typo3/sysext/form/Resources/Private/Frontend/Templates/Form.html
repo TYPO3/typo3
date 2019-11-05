@@ -10,6 +10,7 @@
                 addQueryString="{form.renderingOptions.addQueryString}"
                 argumentsToBeExcludedFromQueryString="{form.renderingOptions.argumentsToBeExcludedFromQueryString}"
                 additionalParams="{form.renderingOptions.additionalParams}"
+                additionalAttributes="{formvh:translateElementProperty(element: form, property: 'fluidAdditionalAttributes')}"
         >
             <f:render partial="{form.currentPage.templateName}" arguments="{page: form.currentPage}" />
             <div class="actions">
