@@ -38,10 +38,15 @@ Migration
 
 Use Context API / Aspects instead to read from this information:
 
-- :php:`$context->getPropertyFromAspect('visibility', 'includeHiddenPages')` instead of :php:`$TSFE->showHiddenPage`
-- :php:`$context->getPropertyFromAspect('visibility', 'includeHiddenContent')` instead of :php:`$TSFE->showHiddenRecords`
-- :php:`$context->getPropertyFromAspect('frontend.user', 'isLoggedIn')` instead of :php:`$TSFE->loginUser`
-- :php:`$context->getPropertyFromAspect('backend.user', 'isLoggedIn')` instead of :php:`$TSFE->beUserLogin`
-- :php:`$context->getPropertyFromAspect('frontend.user', 'groupIds')` instead of :php:`$TSFE->gr_list`
+.. code-block:: php
+
+   $context = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class);
+   $context->getPropertyFromAspect('visibility', 'includeHiddenPages')` instead of :php:`$TSFE->showHiddenPage
+   $context->getPropertyFromAspect('visibility', 'includeHiddenContent')` instead of :php:`$TSFE->showHiddenRecords
+   $context->getPropertyFromAspect('frontend.user', 'isLoggedIn')` instead of :php:`$TSFE->loginUser
+   $context->getPropertyFromAspect('backend.user', 'isLoggedIn')` instead of :php:`$TSFE->beUserLogin
+   $context->getPropertyFromAspect('frontend.user', 'groupIds')` instead of :php:`$TSFE->gr_list
+
+For more information see :ref:`Context API chapter<t3coreapi:context-api>` in TYPO3 Explained.
 
 .. index:: Frontend, PHP-API, FullyScanned
