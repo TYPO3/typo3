@@ -58,7 +58,7 @@
 				<source>General Record Storage Page</source>
 			</trans-unit>
 			<trans-unit id="pages.palettes.config" resname="pages.palettes.config">
-				<source>TypoScript Configuration</source>
+				<source>Page TSconfig</source>
 			</trans-unit>
 			<trans-unit id="pages.doktype_formlabel" resname="pages.doktype_formlabel">
 				<source>Type</source>
@@ -418,7 +418,7 @@
 				<source>Default</source>
 			</trans-unit>
 			<trans-unit id="pages.tsconfig_includes" resname="pages.tsconfig_includes">
-				<source>Include Page TSconfig (from extensions)</source>
+				<source>Include static Page TSconfig (from extensions)</source>
 			</trans-unit>
 			<trans-unit id="tt_content" resname="tt_content">
 				<source>Page Content</source>
