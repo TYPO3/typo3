@@ -711,7 +711,6 @@ class GifBuilder extends GraphicalFunctions
      */
     public function fileName($pre)
     {
-        /** @var \TYPO3\CMS\Core\Utility\File\BasicFileUtility $basicFileFunctions */
         $basicFileFunctions = GeneralUtility::makeInstance(BasicFileUtility::class);
         $filePrefix = implode('_', array_merge($this->combinedTextStrings, $this->combinedFileNames));
         $filePrefix = $basicFileFunctions->cleanFileName(ltrim($filePrefix, '.'));
@@ -719,7 +718,21 @@ class GifBuilder extends GraphicalFunctions
         // shorten prefix to avoid overly long file names
         $filePrefix = substr($filePrefix, 0, 100);
 
-        return 'typo3temp/' . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
+        // Only take relevant parameters to ease the pain for json_encode and make the final string short
+        // so shortMD5 is not as slow. see https://forge.typo3.org/issues/64158
+        $hashInputForFileName = [
+            array_keys($this->setup),
+            $filePrefix,
+            $this->im,
+            $this->w,
+            $this->h,
+            $this->map,
+            $this->workArea,
+            $this->combinedTextStrings,
+            $this->combinedFileNames,
+            $this->data
+        ];
+        return 'typo3temp/' . $pre . $filePrefix . '_' . GeneralUtility::shortMD5(json_encode($hashInputForFileName)) . '.' . $this->extension();
     }
 
     /**
