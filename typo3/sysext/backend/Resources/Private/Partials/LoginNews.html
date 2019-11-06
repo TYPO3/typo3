@@ -1,6 +1,6 @@
 <f:if condition="{loginNewsItems}">
     <div class="panel-carousel carousel slide t3js-login-news-carousel" id="loginNews" data-interval="0" data-ride="carousel">
-        <div class="carousel-inner" role="listbox">
+        <div class="carousel-inner">
             <f:for each="{loginNewsItems}" as="item" iteration="loginNewsIterator">
                 <div class="item{f:if(condition: loginNewsIterator.isFirst,then: ' active')}">
                     <h3 class="typo3-login-news-heading">{item.header}</h3>
