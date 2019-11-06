@@ -62,7 +62,7 @@ class SysLanguageViewHelper extends AbstractViewHelper
 
         $content = '';
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_filemounts');
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_language');
         $queryBuilder->getRestrictions()->removeAll();
 
         $res = $queryBuilder
