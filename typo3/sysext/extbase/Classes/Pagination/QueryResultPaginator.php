@@ -1,0 +1,72 @@
+<?php
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\Extbase\Pagination;
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+use TYPO3\CMS\Core\Pagination\AbstractPaginator;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+
+final class QueryResultPaginator extends AbstractPaginator
+{
+    /**
+     * @var QueryResultInterface
+     */
+    protected $queryResult;
+
+    /**
+     * @var QueryResultInterface
+     */
+    protected $paginatedQueryResult;
+
+    public function __construct(
+        QueryResultInterface $queryResult,
+        int $itemsPerPage = 10,
+        int $currentPageNumber = 1
+    ) {
+        $this->queryResult = $queryResult;
+        $this->setItemsPerPage($itemsPerPage);
+        $this->setCurrentPageNumber($currentPageNumber);
+
+        $this->updateInternalState();
+    }
+
+    /**
+     * @return iterable|QueryResultInterface
+     */
+    public function getPaginatedItems(): iterable
+    {
+        return $this->paginatedQueryResult;
+    }
+
+    protected function updatePaginatedItems(int $limit, int $offset): void
+    {
+        $this->paginatedQueryResult = $this->queryResult
+            ->getQuery()
+            ->setLimit($limit)
+            ->setOffset($offset)
+            ->execute();
+    }
+
+    protected function getTotalAmountOfItems(): int
+    {
+        return count($this->queryResult);
+    }
+
+    protected function getAmountOfItemsOnCurrentPage(): int
+    {
+        return count($this->paginatedQueryResult);
+    }
+}
