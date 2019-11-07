@@ -252,10 +252,11 @@ class AbstractConditionMatcherTest extends UnitTestCase
         /** @var ApplicationContext $applicationContext */
         $applicationContext = new ApplicationContext('Production/Staging/Server2');
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
+        $this->initConditionMatcher();
 
         // Test expression language
         self::assertTrue(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($matchingContextCondition, '/') . '")'])
+            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like(applicationContext, "' . preg_quote($matchingContextCondition, '/') . '")'])
         );
     }
 
@@ -285,10 +286,11 @@ class AbstractConditionMatcherTest extends UnitTestCase
         /** @var ApplicationContext $applicationContext */
         $applicationContext = new ApplicationContext('Production/Staging/Server2');
         Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
+        $this->initConditionMatcher();
 
         // Test expression language
         self::assertFalse(
-            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like("' . $applicationContext . '", "' . preg_quote($notMatchingApplicationContextCondition, '/') . '")'])
+            $this->evaluateExpressionMethod->invokeArgs($this->conditionMatcher, ['like(applicationContext, "' . preg_quote($notMatchingApplicationContextCondition, '/') . '")'])
         );
     }
 
