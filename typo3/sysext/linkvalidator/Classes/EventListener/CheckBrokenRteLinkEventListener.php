@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Linkvalidator\EventListener;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Html\Event\BrokenLinkAnalysisEvent;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 
 /**
@@ -66,5 +67,30 @@ final class CheckBrokenRteLinkEventListener
             }
         }
         $event->markAsCheckedLink();
+    }
+
+    public function checkFileLink(BrokenLinkAnalysisEvent $event): void
+    {
+        if ($event->getLinkType() !== LinkService::TYPE_FILE) {
+            return;
+        }
+        $event->markAsCheckedLink();
+
+        $hrefInformation = $event->getLinkData();
+        $file = $hrefInformation['file'] ?? null;
+        if (!$file instanceof FileInterface) {
+            $event->markAsBrokenLink('File link is broken');
+            return;
+        }
+
+        if (!$file->hasProperty('uid') || (int)$file->getProperty('uid') === 0) {
+            $event->markAsBrokenLink('File link is broken');
+            return;
+        }
+
+        $count = $this->brokenLinkRepository->getNumberOfBrokenLinks('file:' . $file->getProperty('uid'));
+        if ($count) {
+            $event->markAsBrokenLink('File with ID ' . $file->getProperty('uid') . ' not found');
+        }
     }
 }
