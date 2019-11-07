@@ -45,13 +45,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
 
             $fieldConfig['config']['items'] = $this->sanitizeItemArray($fieldConfig['config']['items'] ?? [], $table, $fieldName);
 
-            // Resolve "itemsProcFunc"
-            if (!empty($fieldConfig['config']['itemsProcFunc'])) {
-                $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
-                // itemsProcFunc must not be used anymore
-                unset($fieldConfig['config']['itemsProcFunc']);
-            }
-
             $fieldConfig['config']['maxitems'] = MathUtility::forceIntegerInRange($fieldConfig['config']['maxitems'] ?? 0, 0, 99999);
             if ($fieldConfig['config']['maxitems'] === 0) {
                 $fieldConfig['config']['maxitems'] = 99999;
@@ -62,6 +55,14 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
             $staticItems = $fieldConfig['config']['items'];
 
             $fieldConfig['config']['items'] = $this->addItemsFromForeignTable($result, $fieldName, $fieldConfig['config']['items']);
+
+            // Resolve "itemsProcFunc"
+            if (!empty($fieldConfig['config']['itemsProcFunc'])) {
+                $fieldConfig['config']['items'] = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfig['config']['items']);
+                // itemsProcFunc must not be used anymore
+                unset($fieldConfig['config']['itemsProcFunc']);
+            }
+
             // removing items before $dynamicItems and $removedItems have been built results in having them
             // not populated to the dynamic database row and displayed as "invalid value" in the forms view
             $fieldConfig['config']['items'] = $this->removeItemsByUserStorageRestriction($result, $fieldName, $fieldConfig['config']['items']);
