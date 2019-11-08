@@ -192,6 +192,23 @@ class ActionTest extends \TYPO3\CMS\Workspaces\Tests\Functional\DataHandling\Reg
 
     /**
      * @test
+     * See DataSet/localizeContentRecord.csv
+     */
+    public function localizeContentWithHideAtCopy()
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeContentWithHideAtCopy();
+        $this->assertAssertionDataSet('localizeContentWHideAtCopy');
+
+        $responseSections = $this->getFrontendResponse(self::VALUE_PageId, self::VALUE_LanguageId, self::VALUE_BackendUserId, self::VALUE_WorkspaceId)->getResponseSections();
+        // @todo Localized element should be retrieved
+        self::assertThat($responseSections, $this->getRequestSectionHasRecordConstraint()
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1' /* , '[Translate to Dansk:] Regular Element #2'*/));
+    }
+
+    /**
+     * @test
      * See DataSet/localizeContentFromNonDefaultLanguage.csv
      */
     public function localizeContentFromNonDefaultLanguage()
