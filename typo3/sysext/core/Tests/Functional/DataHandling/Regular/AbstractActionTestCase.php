@@ -171,6 +171,16 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * See DataSet/localizeContentWHideAtCopy.csv
+     */
+    public function localizeContentWithHideAtCopy()
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['ctrl']['hideAtCopy'] = true;
+        self::localizeContent();
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], ['hidden' => 0]);
+    }
+
+    /**
      * @see DataSet/localizeContentRecord.csv
      * @see \TYPO3\CMS\Core\Migrations\TcaMigration::sanitizeControlSectionIntegrity()
      */
