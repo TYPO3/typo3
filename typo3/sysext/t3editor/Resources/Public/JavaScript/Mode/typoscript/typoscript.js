@@ -70,7 +70,6 @@
         'allWrap': kw('allWrap'),
         'alt_print': A,
         'alternativeSortingField': kw('alternativeSortingField'),
-        'alternativeTempPath': kw('alternativeTempPath'),
         'altIcons': kw('altIcons'),
         'altImgResource': kw('altImgResource'),
         'altLabels': kw('altLabels'),
