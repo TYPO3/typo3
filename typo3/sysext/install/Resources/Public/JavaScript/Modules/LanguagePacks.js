@@ -228,9 +228,10 @@ define([
             'aria-valuemax': 100,
             'style': 'width: 0;'
           }).append(
-            $('<span>', {'class': 'text-nowrap'}).text('0 of ' + this.packsUpdateDetails.toHandle + ' language packs updated')
+            $('<span>', {'class': 'text-nowrap'}).text('0 of ' + this.packsUpdateDetails.toHandle + ' language ' +
+              this.pluralize(this.packsUpdateDetails.toHandle) + ' updated')
           )
-      ));
+        ));
       $contentContainer.empty();
 
       isos.forEach(function(iso) {
@@ -278,6 +279,13 @@ define([
       });
     },
 
+    pluralize: function(count, word, suffix, additionalCount) {
+      word = word || 'pack';
+      suffix = suffix || 's';
+      additionalCount = additionalCount || 0;
+      return count !== 1 && additionalCount !== 1 ? word + suffix : word;
+    },
+
     packUpdateDone: function(updateIsoTimes, isos) {
       var self = this;
       var modalContent = this.currentModal.find(this.selectorModalBody);
@@ -287,9 +295,9 @@ define([
         var message = InfoBox.render(
           Severity.ok,
           'Language packs updated',
-          this.packsUpdateDetails.new + ' new language packs downloaded, ' +
-          this.packsUpdateDetails.updated + ' language packs updated, ' +
-          this.packsUpdateDetails.failed + ' language packs not available'
+          this.packsUpdateDetails.new + ' new language ' + this.pluralize(this.packsUpdateDetails.new) + ' downloaded, ' +
+          this.packsUpdateDetails.updated + ' language ' + this.pluralize(this.packsUpdateDetails.updated) + ' updated, ' +
+          this.packsUpdateDetails.failed + ' language ' + this.pluralize(this.packsUpdateDetails.failed) + ' not available'
         );
         this.addNotification(message);
         if (updateIsoTimes === true) {
@@ -327,7 +335,8 @@ define([
           .css('width', percent + '%')
           .attr('aria-valuenow', percent)
           .find('span')
-          .text(this.packsUpdateDetails.handled + ' of ' + this.packsUpdateDetails.toHandle + ' language packs updated');
+          .text(this.packsUpdateDetails.handled + ' of ' + this.packsUpdateDetails.toHandle + ' language ' +
+            this.pluralize(this.packsUpdateDetails.handled, 'pack', 's', this.packsUpdateDetails.toHandle) + ' updated');
       }
     },
 
