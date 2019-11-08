@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Core\Integrity;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -480,7 +480,7 @@ class DatabaseIntegrityCheck
                         $fieldType = $column->getType()->getName();
                         if (in_array(
                             $fieldType,
-                            [Type::BIGINT, Type::INTEGER, Type::SMALLINT, Type::DECIMAL, Type::FLOAT],
+                            [Types::BIGINT, Types::INTEGER, Types::SMALLINT, Types::DECIMAL, Types::FLOAT],
                             true
                         )) {
                             $whereClause[] = $queryBuilder->expr()->andX(
@@ -490,7 +490,7 @@ class DatabaseIntegrityCheck
                                     $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)
                                 )
                             );
-                        } elseif (in_array($fieldType, [Type::STRING, Type::TEXT], true)) {
+                        } elseif (in_array($fieldType, [Types::STRING, Types::TEXT], true)) {
                             $whereClause[] = $queryBuilder->expr()->andX(
                                 $queryBuilder->expr()->isNotNull($fieldName),
                                 $queryBuilder->expr()->neq(
@@ -498,7 +498,7 @@ class DatabaseIntegrityCheck
                                     $queryBuilder->createNamedParameter('', \PDO::PARAM_STR)
                                 )
                             );
-                        } elseif ($fieldType === Type::BLOB) {
+                        } elseif ($fieldType === Types::BLOB) {
                             $whereClause[] = $queryBuilder->expr()->andX(
                                 $queryBuilder->expr()->isNotNull($fieldName),
                                 $queryBuilder->expr()
