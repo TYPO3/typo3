@@ -9,8 +9,9 @@ seo_sitemap {
     removeDefaultJS = 1
     removeDefaultCss = 1
     removePageCss = 1
-    additionalHeaders.10 {
-      header = Content-Type:application/xml;charset=utf-8
+    additionalHeaders {
+      10.header = Content-Type:application/xml;charset=utf-8
+      20.header = X-Robots-Tag:noindex
     }
   }
 

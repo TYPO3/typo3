@@ -67,6 +67,10 @@ class XmlSitemapIndexTest extends AbstractTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('Content-Length', $response->getHeaders());
         $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        $this->assertArrayHasKey('Content-Type', $response->getHeaders());
+        $this->assertEquals('application/xml;charset=utf-8', $response->getHeader('Content-Type')[0]);
+        $this->assertArrayHasKey('X-Robots-Tag', $response->getHeaders());
+        $this->assertEquals('noindex', $response->getHeader('X-Robots-Tag')[0]);
         $this->assertRegExp('/<loc>http:\/\/localhost\/\?sitemap=pages&amp;type=1533906435&amp;cHash=[^<]+<\/loc>/', (string)$response->getBody());
     }
 }
