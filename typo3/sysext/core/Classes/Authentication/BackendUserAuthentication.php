@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Authentication;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -464,7 +465,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ((int)$GLOBALS['BE_USER']->user['ses_backuserid'] !== 0) {
             return false;
         }
-        if (GeneralUtility::getApplicationContext()->isDevelopment() && $this->isAdmin()) {
+        if (Environment::getContext()->isDevelopment() && $this->isAdmin()) {
             return true;
         }
         $systemMaintainers = $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? [];

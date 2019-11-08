@@ -20,7 +20,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\ApplicationContext;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -84,6 +83,7 @@ class GeneralUtility
      * The application context
      *
      * @var \TYPO3\CMS\Core\Core\ApplicationContext
+     * @deprecated will be removed in TYPO3 v11.
      */
     protected static $applicationContext;
 
@@ -3783,7 +3783,7 @@ class GeneralUtility
      *
      * @param \TYPO3\CMS\Core\Core\ApplicationContext $applicationContext
      * @throws \RuntimeException if applicationContext is overridden
-     * @internal This is not a public API method, do not use in own extensions
+     * @internal This is not a public API method, do not use in own extensions, will probably be removed in TYPO3 v11.
      */
     public static function presetApplicationContext(ApplicationContext $applicationContext)
     {
@@ -3800,7 +3800,7 @@ class GeneralUtility
      * variable in between multiple tests before it is re-initialized using presetApplicationContext()
      * which otherwise throws an exception if the internal variable is already set.
      *
-     * @internal May be changed or removed any time
+     * @internal May be changed or removed any time, will probably be removed in TYPO3 v11.
      */
     public static function resetApplicationContext(): void
     {
@@ -3811,9 +3811,11 @@ class GeneralUtility
      * Get the ApplicationContext
      *
      * @return \TYPO3\CMS\Core\Core\ApplicationContext
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11, use Environment::getContext() instead.
      */
     public static function getApplicationContext()
     {
+        trigger_error('GeneralUtility::getApplicationContext() has been superseded by Environment API. This method will be removed in TYPO3 v11. Use Environment::getContext() instead.', E_USER_DEPRECATED);
         return static::$applicationContext;
     }
 

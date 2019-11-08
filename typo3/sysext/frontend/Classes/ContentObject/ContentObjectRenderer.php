@@ -874,7 +874,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $exceptionHandlerClassName = null;
         $tsfe = $this->getTypoScriptFrontendController();
         if (!isset($tsfe->config['config']['contentObjectExceptionHandler'])) {
-            if (GeneralUtility::getApplicationContext()->isProduction()) {
+            if (Environment::getContext()->isProduction()) {
                 $exceptionHandlerClassName = '1';
             }
         } else {

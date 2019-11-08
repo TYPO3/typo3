@@ -214,7 +214,7 @@ class ClassLoadingInformation
      */
     protected static function isTestingContext()
     {
-        return GeneralUtility::getApplicationContext()->isTesting();
+        return Environment::getContext()->isTesting();
     }
 
     /**

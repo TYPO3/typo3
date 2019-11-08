@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -134,7 +135,7 @@ class SettingsController extends AbstractController
         $formProtection = FormProtectionFactory::get(InstallToolFormProtection::class);
         $view->assignMultiple([
             'systemMaintainerWriteToken' => $formProtection->generateToken('installTool', 'systemMaintainerWrite'),
-            'systemMaintainerIsDevelopmentContext' => GeneralUtility::getApplicationContext()->isDevelopment(),
+            'systemMaintainerIsDevelopmentContext' => Environment::getContext()->isDevelopment(),
         ]);
 
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);

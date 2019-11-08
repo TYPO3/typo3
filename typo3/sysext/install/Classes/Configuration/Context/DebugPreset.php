@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Configuration\Context;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Install\Configuration;
 
 /**
@@ -63,9 +64,8 @@ class DebugPreset extends Configuration\AbstractPreset
      */
     public function getPriority()
     {
-        $context = \TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext();
         $priority = $this->priority;
-        if ($context->isDevelopment()) {
+        if (Environment::getContext()->isDevelopment()) {
             $priority = $priority + 20;
         }
         return $priority;

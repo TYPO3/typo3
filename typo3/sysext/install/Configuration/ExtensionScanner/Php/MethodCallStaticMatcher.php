@@ -938,4 +938,11 @@ return [
             'Deprecation-88995-CallingRegisterPluginWithVendorName.rst'
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::getApplicationContext' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89631-UseEnvironmentAPIToFetchApplicationContext.rst'
+        ],
+    ],
 ];

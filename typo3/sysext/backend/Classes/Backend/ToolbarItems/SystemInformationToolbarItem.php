@@ -295,7 +295,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getApplicationContext()
     {
-        $applicationContext = GeneralUtility::getApplicationContext();
+        $applicationContext = Environment::getContext();
         $this->systemInformation[] = [
             'title'  => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
             'value'  => (string)$applicationContext,

@@ -1291,7 +1291,7 @@ class PageRenderer implements SingletonInterface
         }
 
         $packages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();
-        $isDevelopment = GeneralUtility::getApplicationContext()->isDevelopment();
+        $isDevelopment = Environment::getContext()->isDevelopment();
         $cacheIdentifier = 'requireJS_' . md5(implode(',', array_keys($packages)) . ($isDevelopment ? ':dev' : '') . GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
         /** @var FrontendInterface $cache */
         $cache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');

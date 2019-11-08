@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -52,7 +53,7 @@ class CommandApplication implements ApplicationInterface
         $this->application = new Application('TYPO3 CMS', sprintf(
             '%s (Application Context: <comment>%s</comment>)',
             TYPO3_version,
-            GeneralUtility::getApplicationContext()
+            Environment::getContext()
         ));
         $this->application->setAutoExit(false);
     }

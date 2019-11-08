@@ -22,6 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -46,7 +47,7 @@ class CommandRequestHandler implements RequestHandlerInterface
         $this->application = new Application('TYPO3 CMS', sprintf(
             '%s (Application Context: <comment>%s</comment>)',
             TYPO3_version,
-            GeneralUtility::getApplicationContext()
+            Environment::getContext()
         ));
     }
 

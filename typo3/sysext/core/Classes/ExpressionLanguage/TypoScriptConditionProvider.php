@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\ExpressionLanguage\FunctionsProvider\Typo3ConditionFunctionsProvider;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -34,7 +35,7 @@ class TypoScriptConditionProvider extends AbstractProvider
         $typo3->devIpMask = trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']);
         $this->expressionLanguageVariables = [
             'request' => GeneralUtility::makeInstance(RequestWrapper::class, $GLOBALS['TYPO3_REQUEST'] ?? null),
-            'applicationContext' => (string)GeneralUtility::getApplicationContext(),
+            'applicationContext' => (string)Environment::getContext(),
             'typo3' => $typo3,
         ];
         $this->expressionLanguageProviders = [

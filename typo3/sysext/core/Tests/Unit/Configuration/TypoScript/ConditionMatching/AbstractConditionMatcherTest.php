@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionM
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -35,10 +36,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class AbstractConditionMatcherTest extends UnitTestCase
 {
-    /**
-     * @var ApplicationContext
-     */
-    protected $backupApplicationContext;
+    protected $backupEnvironment = true;
 
     /**
      * @var AbstractConditionMatcher|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
@@ -78,7 +76,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(PackageManager::class, $packageManagerProphecy->reveal());
 
         $this->initConditionMatcher();
-        $this->backupApplicationContext = GeneralUtility::getApplicationContext();
     }
 
     protected function initConditionMatcher()
@@ -88,15 +85,6 @@ class AbstractConditionMatcherTest extends UnitTestCase
         $this->evaluateExpressionMethod->setAccessible(true);
         $this->conditionMatcher = new ConditionMatcher();
         $this->conditionMatcher->setLogger(new NullLogger());
-    }
-
-    /**
-     * Tear down
-     */
-    protected function tearDown(): void
-    {
-        Fixtures\GeneralUtilityFixture::setApplicationContext($this->backupApplicationContext);
-        parent::tearDown();
     }
 
     /**
@@ -249,9 +237,18 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function evaluateConditionCommonReturnsTrueForMatchingContexts($matchingContextCondition): void
     {
-        /** @var ApplicationContext $applicationContext */
-        $applicationContext = new ApplicationContext('Production/Staging/Server2');
-        Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
+        Environment::initialize(
+            new ApplicationContext('Production/Staging/Server2'),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+
         $this->initConditionMatcher();
 
         // Test expression language
@@ -283,9 +280,17 @@ class AbstractConditionMatcherTest extends UnitTestCase
      */
     public function evaluateConditionCommonReturnsNullForNotMatchingApplicationContexts($notMatchingApplicationContextCondition): void
     {
-        /** @var ApplicationContext $applicationContext */
-        $applicationContext = new ApplicationContext('Production/Staging/Server2');
-        Fixtures\GeneralUtilityFixture::setApplicationContext($applicationContext);
+        Environment::initialize(
+            new ApplicationContext('Production/Staging/Server2'),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $this->initConditionMatcher();
 
         // Test expression language

@@ -44,7 +44,7 @@ class LayoutController extends AbstractController
     public function initAction(ServerRequestInterface $request): ResponseInterface
     {
         $bust = $GLOBALS['EXEC_TIME'];
-        if (!GeneralUtility::getApplicationContext()->isDevelopment()) {
+        if (!Environment::getContext()->isDevelopment()) {
             $bust = GeneralUtility::hmac(TYPO3_version . Environment::getProjectPath());
         }
         $view = $this->initializeStandaloneView($request, 'Layout/Init.html');

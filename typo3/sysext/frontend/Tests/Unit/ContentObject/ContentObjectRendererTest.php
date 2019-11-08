@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationContext;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
@@ -130,6 +131,8 @@ class ContentObjectRendererTest extends UnitTestCase
      * @var \Prophecy\Prophecy\ObjectProphecy|CacheManager
      */
     protected $cacheManager;
+
+    protected $backupEnvironment = true;
 
     /**
      * Set up
@@ -2346,13 +2349,19 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function exceptionHandlerIsEnabledByDefaultInProductionContext(): void
     {
-        $backupApplicationContext = GeneralUtility::getApplicationContext();
-        Fixtures\GeneralUtilityFixture::setApplicationContext(new ApplicationContext('Production'));
-
+        Environment::initialize(
+            new ApplicationContext('Production'),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getBackendPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
         $contentObjectFixture = $this->createContentObjectThrowingExceptionFixture();
         $this->subject->render($contentObjectFixture, []);
-
-        Fixtures\GeneralUtilityFixture::setApplicationContext($backupApplicationContext);
     }
 
     /**

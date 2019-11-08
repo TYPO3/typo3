@@ -70,7 +70,7 @@ class InstallerController
     public function initAction(): ResponseInterface
     {
         $bust = $GLOBALS['EXEC_TIME'];
-        if (!GeneralUtility::getApplicationContext()->isDevelopment()) {
+        if (!Environment::getContext()->isDevelopment()) {
             $bust = GeneralUtility::hmac(TYPO3_version . Environment::getProjectPath());
         }
         $view = $this->initializeStandaloneView('Installer/Init.html');
