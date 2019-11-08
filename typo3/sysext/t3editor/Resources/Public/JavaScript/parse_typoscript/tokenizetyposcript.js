@@ -61,7 +61,6 @@ var typoscriptWords = {
   'allWrap': 'reserved',
   'alt_print': 'keyword2',
   'alternativeSortingField': 'reserved',
-  'alternativeTempPath': 'reserved',
   'altIcons': 'reserved',
   'altImgResource': 'reserved',
   'altLabels': 'reserved',

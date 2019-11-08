@@ -5822,11 +5822,6 @@ instead.]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
-		<property name="alternativeTempPath" type="string">
-			<description><![CDATA[Enter an alternative path to use for temp images.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="bodyTag" type="string">
 			<description><![CDATA[Body tag of the new window]]></description>
 			<default><![CDATA[
@@ -5906,11 +5901,6 @@ If you add "m" to either the width or height, the image will be held in proporti
 		</property>
 	</type>
 	<type id="imgResource">
-		<property name="alternativeTempPath" type="string">
-			<description><![CDATA[Enter an alternative path to use for temp images.]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="ext" type="stdWrap">
 			<description><![CDATA[
 ]]></description>
