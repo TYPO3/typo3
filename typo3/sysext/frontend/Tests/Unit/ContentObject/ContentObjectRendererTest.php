@@ -2658,6 +2658,7 @@ class ContentObjectRendererTest extends UnitTestCase
                             'constants' => '1',
                         ],
                         'typolink.' => [
+                            'directImageLink' => false,
                             'extTarget.' => [
                                 'override' => '',
                             ],
@@ -2739,6 +2740,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to url' => [
                 'TYPO3',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'http://typo3.org',
                 ],
                 '<a href="http://typo3.org">TYPO3</a>',
@@ -2746,6 +2748,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to url without schema' => [
                 'TYPO3',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'typo3.org',
                 ],
                 '<a href="http://typo3.org">TYPO3</a>',
@@ -2753,6 +2756,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to url without link text' => [
                 '',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'http://typo3.org',
                 ],
                 '<a href="http://typo3.org">http://typo3.org</a>',
@@ -2794,6 +2798,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to url with script tag' => [
                 '',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'http://typo3.org<script>alert(123)</script>',
                 ],
                 '<a href="http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;">http://typo3.org&lt;script&gt;alert(123)&lt;/script&gt;</a>',
@@ -3006,6 +3011,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to file' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'fileadmin/foo.bar',
                 ],
                 '<a href="fileadmin/foo.bar">My file</a>',
@@ -3013,6 +3019,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to file without link text' => [
                 '',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'fileadmin/foo.bar',
                 ],
                 '<a href="fileadmin/foo.bar">fileadmin/foo.bar</a>',
@@ -3087,6 +3094,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to file with script tag in name' => [
                 '',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'fileadmin/<script>alert(123)</script>',
                 ],
                 '<a href="fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;">fileadmin/&lt;script&gt;alert(123)&lt;/script&gt;</a>',
@@ -3139,6 +3147,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to file' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'fileadmin/foo.bar',
                 ],
                 '/',
@@ -3147,6 +3156,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to file with longer absRefPrefix' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'fileadmin/foo.bar',
                 ],
                 '/sub/',
@@ -3155,6 +3165,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to absolute file' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => '/images/foo.bar',
                 ],
                 '/',
@@ -3163,6 +3174,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to absolute file with longer absRefPrefix' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => '/images/foo.bar',
                 ],
                 '/sub/',
@@ -3171,6 +3183,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to absolute file with identical longer absRefPrefix' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => '/sub/fileadmin/foo.bar',
                 ],
                 '/sub/',
@@ -3179,6 +3192,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to file with empty absRefPrefix' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => 'fileadmin/foo.bar',
                 ],
                 '',
@@ -3187,6 +3201,7 @@ class ContentObjectRendererTest extends UnitTestCase
             'Link to absolute file with empty absRefPrefix' => [
                 'My file',
                 [
+                    'directImageLink' => false,
                     'parameter' => '/fileadmin/foo.bar',
                 ],
                 '',

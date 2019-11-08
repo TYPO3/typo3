@@ -1374,6 +1374,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $a2 = '</a>';
                 $this->getTypoScriptFrontendController()->setJS('openPic');
             } else {
+                $conf['linkParams.']['directImageLink'] = (bool)$conf['directImageLink'];
                 $conf['linkParams.']['parameter'] = $url;
                 $string = $this->typoLink($string, $conf['linkParams.']);
             }

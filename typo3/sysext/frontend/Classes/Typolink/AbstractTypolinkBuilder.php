@@ -183,7 +183,7 @@ abstract class AbstractTypolinkBuilder
         $target = '';
         if (isset($conf[$name])) {
             $target = $conf[$name];
-        } elseif ($targetAttributeAllowed) {
+        } elseif ($targetAttributeAllowed && !$conf['directImageLink']) {
             $target = $fallbackTarget;
         }
         if (isset($conf[$name . '.']) && $conf[$name . '.']) {

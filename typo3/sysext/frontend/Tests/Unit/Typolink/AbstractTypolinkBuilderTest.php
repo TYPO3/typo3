@@ -252,7 +252,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             'Else from fallback, if not $respectFrameSetOption ...' =>
                 [
                     $fallback,
-                    [],
+                    ['directImageLink' => false],
                     $targetName,
                     false, // $respectFrameSetOption false
                     $fallback,
@@ -261,7 +261,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             ' ... or no doctype ... ' =>
                 [
                     $fallback,
-                    [],
+                    ['directImageLink' => false],
                     $targetName,
                     true,
                     $fallback,
@@ -270,7 +270,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             ' ... or doctype xhtml_trans... ' =>
                 [
                     $fallback,
-                    [],
+                    ['directImageLink' => false],
                     $targetName,
                     true,
                     $fallback,
@@ -279,7 +279,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             ' ... or doctype xhtml_basic... ' =>
                 [
                     $fallback,
-                    [],
+                    ['directImageLink' => false],
                     $targetName,
                     true,
                     $fallback,
@@ -288,7 +288,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
             ' ... or doctype html5... ' =>
                 [
                     $fallback,
-                    [],
+                    ['directImageLink' => false],
                     $targetName,
                     true,
                     $fallback,
