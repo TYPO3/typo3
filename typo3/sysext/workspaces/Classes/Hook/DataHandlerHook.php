@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\PlaceholderShadowColumnsResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -1586,18 +1587,15 @@ class DataHandlerHook
             // represents the position to where the record is eventually moved to.
             $newVersion_placeholderFieldArray = [];
 
-            // Use property for move placeholders if set (since TYPO3 CMS 6.2)
-            if (isset($GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForMovePlaceholders'])) {
-                $shadowColumnsForMovePlaceholder = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForMovePlaceholders'];
-            } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'])) {
-                // Fallback to property for new placeholder (existed long time before TYPO3 CMS 6.2)
-                $shadowColumnsForMovePlaceholder = $GLOBALS['TCA'][$table]['ctrl']['shadowColumnsForNewPlaceholders'];
-            }
-
+            $factory = GeneralUtility::makeInstance(
+                PlaceholderShadowColumnsResolver::class,
+                $table,
+                $GLOBALS['TCA'][$table] ?? []
+            );
+            $shadowColumns = $factory->forMovePlaceholder();
             // Set values from the versioned record to the move placeholder
-            if (!empty($shadowColumnsForMovePlaceholder)) {
+            if (!empty($shadowColumns)) {
                 $versionedRecord = BackendUtility::getRecord($table, $wsUid);
-                $shadowColumns = GeneralUtility::trimExplode(',', $shadowColumnsForMovePlaceholder, true);
                 foreach ($shadowColumns as $shadowColumn) {
                     if (isset($versionedRecord[$shadowColumn])) {
                         $newVersion_placeholderFieldArray[$shadowColumn] = $versionedRecord[$shadowColumn];
