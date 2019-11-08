@@ -80,6 +80,10 @@ class XmlSitemapRecordsTest extends AbstractTestCase
         );
 
         self::assertEquals(200, $response->getStatusCode());
+        self::assertArrayHasKey('Content-Type', $response->getHeaders());
+        self::assertEquals('application/xml;charset=utf-8', $response->getHeader('Content-Type')[0]);
+        self::assertArrayHasKey('X-Robots-Tag', $response->getHeaders());
+        self::assertEquals('noindex', $response->getHeader('X-Robots-Tag')[0]);
         self::assertArrayHasKey('Content-Length', $response->getHeaders());
         $stream = $response->getBody();
         $stream->rewind();

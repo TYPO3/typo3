@@ -81,6 +81,10 @@ class XmlSitemapPagesTest extends AbstractTestCase
         self::assertEquals(200, $this->response->getStatusCode());
         self::assertArrayHasKey('Content-Length', $this->response->getHeaders());
         self::assertGreaterThan(0, $this->response->getHeader('Content-Length')[0]);
+        self::assertArrayHasKey('Content-Type', $this->response->getHeaders());
+        self::assertEquals('application/xml;charset=utf-8', $this->response->getHeader('Content-Type')[0]);
+        self::assertArrayHasKey('X-Robots-Tag', $this->response->getHeaders());
+        self::assertEquals('noindex', $this->response->getHeader('X-Robots-Tag')[0]);
 
         self::assertRegExp($urlPattern, (string)$this->response->getBody());
     }
