@@ -44,7 +44,7 @@ return [
             '7-hideinmenu' => 'apps-pagetree-page-mountpoint-hideinmenu',
             '7-root' => 'apps-pagetree-page-mountpoint-root',
             '199' => 'apps-pagetree-spacer',
-            '199-hideinmenu' => 'apps-pagetree-spacer',
+            '199-hideinmenu' => 'apps-pagetree-spacer-hideinmenu',
             '199-root' => 'apps-pagetree-page-domain',
             '254' => 'apps-pagetree-folder-default',
             '254-hideinmenu' => 'apps-pagetree-folder-default',
