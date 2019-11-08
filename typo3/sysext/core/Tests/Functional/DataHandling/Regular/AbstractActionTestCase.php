@@ -87,6 +87,14 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     }
 
     /**
+     * See DataSet/hideContent.csv
+     */
+    public function hideContent()
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['hidden' => '1']);
+    }
+
+    /**
      * See DataSet/deleteContentRecord.csv
      */
     public function deleteContent()
@@ -303,6 +311,14 @@ abstract class AbstractActionTestCase extends \TYPO3\CMS\Core\Tests\Functional\D
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget);
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+    }
+
+    /**
+     * See DataSet/moveContentRecordToDifferentPageAndHide.csv
+     */
+    public function moveContentToDifferentPageAndHide()
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageIdTarget, ['hidden' => '1']);
     }
 
     /**

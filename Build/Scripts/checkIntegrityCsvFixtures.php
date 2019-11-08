@@ -94,6 +94,10 @@ class checkIntegrityCsvFixtures
                 $columnCount = count($columns);
             } else {
                 if (count($columns) !== $columnCount) {
+                    // Skip CSV lines with starting with comments
+                    if (count($columns) === 1 && strpos($columns[0], '#') === 0) {
+                        continue;
+                    }
                     return 'Line ' . ($index + 1) . '; Expected column count: ' . $columnCount . '; Actual: ' . count($columns);
                 }
             }
