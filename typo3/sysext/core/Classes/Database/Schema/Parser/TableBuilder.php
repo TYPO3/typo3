@@ -22,6 +22,7 @@ use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateColumnDefinitionItem;
 use TYPO3\CMS\Core\Database\Schema\Parser\AST\CreateForeignKeyDefinitionItem;
@@ -301,57 +302,57 @@ class TableBuilder
             case DataType\TinyIntDataType::class:
                 // TINYINT is MySQL specific and mapped to a standard SMALLINT
             case DataType\SmallIntDataType::class:
-                $doctrineType = Type::SMALLINT;
+                $doctrineType = Types::SMALLINT;
                 break;
             case DataType\MediumIntDataType::class:
                 // MEDIUMINT is MySQL specific and mapped to a standard INT
             case DataType\IntegerDataType::class:
-                $doctrineType = Type::INTEGER;
+                $doctrineType = Types::INTEGER;
                 break;
             case DataType\BigIntDataType::class:
-                $doctrineType = Type::BIGINT;
+                $doctrineType = Types::BIGINT;
                 break;
             case DataType\BinaryDataType::class:
             case DataType\VarBinaryDataType::class:
                 // CHAR/VARCHAR is determined by "fixed" column property
-                $doctrineType = Type::BINARY;
+                $doctrineType = Types::BINARY;
                 break;
             case DataType\TinyBlobDataType::class:
             case DataType\MediumBlobDataType::class:
             case DataType\BlobDataType::class:
             case DataType\LongBlobDataType::class:
                 // Actual field type is determined by field length
-                $doctrineType = Type::BLOB;
+                $doctrineType = Types::BLOB;
                 break;
             case DataType\DateDataType::class:
-                $doctrineType = Type::DATE;
+                $doctrineType = Types::DATE_MUTABLE;
                 break;
             case DataType\TimestampDataType::class:
             case DataType\DateTimeDataType::class:
                 // TIMESTAMP or DATETIME are determined by "version" column property
-                $doctrineType = Type::DATETIME;
+                $doctrineType = Types::DATETIME_MUTABLE;
                 break;
             case DataType\NumericDataType::class:
             case DataType\DecimalDataType::class:
-                $doctrineType = Type::DECIMAL;
+                $doctrineType = Types::DECIMAL;
                 break;
             case DataType\RealDataType::class:
             case DataType\FloatDataType::class:
             case DataType\DoubleDataType::class:
-                $doctrineType = Type::FLOAT;
+                $doctrineType = Types::FLOAT;
                 break;
             case DataType\TimeDataType::class:
-                $doctrineType = Type::TIME;
+                $doctrineType = Types::TIME_MUTABLE;
                 break;
             case DataType\TinyTextDataType::class:
             case DataType\MediumTextDataType::class:
             case DataType\TextDataType::class:
             case DataType\LongTextDataType::class:
-                $doctrineType = Type::TEXT;
+                $doctrineType = Types::TEXT;
                 break;
             case DataType\CharDataType::class:
             case DataType\VarCharDataType::class:
-                $doctrineType = Type::STRING;
+                $doctrineType = Types::STRING;
                 break;
             case DataType\EnumDataType::class:
                 $doctrineType = EnumType::TYPE;
@@ -361,7 +362,7 @@ class TableBuilder
                 break;
             case DataType\JsonDataType::class:
                 // JSON is not supported in Doctrine 2.5, mapping to the more generic TEXT type
-                $doctrineType = SetType::TEXT;
+                $doctrineType = Types::TEXT;
                 break;
             case DataType\YearDataType::class:
                 // The YEAR data type is MySQL specific and offers little to no benefit.
@@ -370,7 +371,7 @@ class TableBuilder
                 // application and for all other accounts it's an integer with a valid
                 // range of 1901 to 2155.
                 // Using a SMALLINT covers the value range and ensures database compatibility.
-                $doctrineType = SetType::SMALLINT;
+                $doctrineType = Types::SMALLINT;
                 break;
             default:
                 throw new \RuntimeException(
