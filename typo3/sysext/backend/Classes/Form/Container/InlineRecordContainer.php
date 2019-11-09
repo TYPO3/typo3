@@ -190,7 +190,8 @@ class InlineRecordContainer extends AbstractContainer
             $tableUniqueOriginalValue = '';
             if (isset($data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']])) {
                 $uniqueValueValues = $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']];
-                $tableUniqueOriginalValue = $uniqueValueValues['table'] . '_' . $uniqueValueValues['uid'];
+                // in case of site_language we don't have the full form engine options, so fallbacks need to be taken into account
+                $tableUniqueOriginalValue = ($uniqueValueValues['table'] ?? $foreignTable) . '_' . ($uniqueValueValues['uid'] ?? $uniqueValueValues);
             }
             $html = '
 				<div class="panel panel-default panel-condensed ' . trim($class) . '" id="' . htmlspecialchars($objectId) . '_div" data-table-unique-original-value="' . htmlspecialchars($tableUniqueOriginalValue) . '">
