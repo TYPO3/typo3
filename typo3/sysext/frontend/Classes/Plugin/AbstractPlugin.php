@@ -184,23 +184,6 @@ class AbstractPlugin
     public $pi_autoCacheEn = false;
 
     /**
-     * If set, then links are
-     * 1) not using cHash and
-     * 2) not allowing pages to be cached. (Set this for all USER_INT plugins!)
-     *
-     * @var bool
-     */
-    public $pi_USER_INT_obj = false;
-
-    /**
-     * If set, then caching is disabled if piVars are incoming while
-     * no cHash was set (Set this for all USER plugins!)
-     *
-     * @var bool
-     */
-    public $pi_checkCHash = false;
-
-    /**
      * Should normally be set in the main function with the TypoScript content passed to the method.
      *
      * $conf[LOCAL_LANG][_key_] is reserved for Local Language overrides.
@@ -249,18 +232,6 @@ class AbstractPlugin
         // Setting piVars:
         if ($this->prefixId) {
             $this->piVars = GeneralUtility::_GPmerged($this->prefixId);
-            // cHash mode check
-            // IMPORTANT FOR CACHED PLUGINS (USER cObject): As soon as you generate cached plugin output which
-            // depends on parameters (eg. seeing the details of a news item) you MUST check if a cHash value is set.
-            // Background: The function call will check if a cHash parameter was sent with the URL because only if
-            // it was the page may be cached. If no cHash was found the function will simply disable caching to
-            // avoid unpredictable caching behaviour. In any case your plugin can generate the expected output and
-            // the only risk is that the content may not be cached. A missing cHash value is considered a mistake
-            // in the URL resulting from either URL manipulation, "realurl" "grayzones" etc. The problem is rare
-            // (more frequent with "realurl") but when it occurs it is very puzzling!
-            if ($this->pi_checkCHash && !empty($this->piVars)) {
-                $this->frontendController->reqCHash();
-            }
         }
         $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
 
@@ -401,8 +372,10 @@ class AbstractPlugin
     public function pi_linkTP($str, $urlParameters = [], $cache = false, $altPageId = 0)
     {
         $conf = [];
-        $conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
-        $conf['parameter'] = $altPageId ?: ($this->pi_tmpPageId ?: $this->frontendController->id);
+        if (!$cache) {
+            $conf['no_cache'] = true;
+        }
+        $conf['parameter'] = $altPageId ?: ($this->pi_tmpPageId ?: 'current');
         $conf['additionalParams'] = $this->conf['parent.']['addParams'] . HttpUtility::buildQueryString($urlParameters, '&', true) . $this->pi_moreParams;
         return $this->cObj->typoLink($str, $conf);
     }

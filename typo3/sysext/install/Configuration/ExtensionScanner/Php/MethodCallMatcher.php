@@ -4371,4 +4371,11 @@ return [
             'Deprecation-89554-DeprecateTYPO3CMSExtbaseMvcControllerAbstractController.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->reqCHash' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89868-RemoveReqCHashFunctionalityForPlugins.rst',
+        ],
+    ],
 ];

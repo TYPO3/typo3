@@ -1729,10 +1729,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Will disable caching if the cHash value was not set when having dynamic arguments in GET query parameters.
      * This function should be called to check the _existence_ of "&cHash" whenever a plugin generating cacheable output is using extra GET variables. If there _is_ a cHash value the validation of it automatically takes place in makeCacheHash() (see above)
      *
-     * @see \TYPO3\CMS\Frontend\Plugin\AbstractPlugin::pi_cHashCheck()
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11. The PSR-15 middleware PageArgumentValidator is already taking care of this.
      */
     public function reqCHash()
     {
+        trigger_error('TypoScriptFrontendController->reqCHash() is not needed anymore, as all functionality is handled via the PSR-15 PageArgumentValidator middleware already.', E_USER_DEPRECATED);
         if (!empty($this->pageArguments->getArguments()['cHash']) || empty($this->pageArguments->getDynamicArguments())) {
             return;
         }

@@ -53,16 +53,6 @@ class FrontendLoginController extends AbstractPlugin
     public $extKey = 'felogin';
 
     /**
-     * @var bool
-     */
-    public $pi_checkCHash = false;
-
-    /**
-     * @var bool
-     */
-    public $pi_USER_INT_obj = true;
-
-    /**
      * Is user logged in?
      *
      * @var bool

@@ -636,4 +636,14 @@ return [
             'Deprecation-89722-GMENU_LAYERSRelatedPropertyTSFE-divSection.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_USER_INT_obj' => [
+        'restFiles' => [
+            'Deprecation-89868-RemoveReqCHashFunctionalityForPlugins.rst',
+        ],
+    ],
+    'TYPO3\CMS\Frontend\Plugin\AbstractPlugin->pi_checkCHash' => [
+        'restFiles' => [
+            'Deprecation-89868-RemoveReqCHashFunctionalityForPlugins.rst',
+        ],
+    ],
 ];

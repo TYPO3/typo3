@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
@@ -148,7 +147,6 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
      * Calculates a hash string based on additional parameters in the url.
      * This is used to cache pages with more parameters than just id and type.
      *
-     * @see TypoScriptFrontendController::reqCHash()
      * @param string $cHash the chash to check
      * @param array $relevantParameters GET parameters necessary for cHash calculation
      * @param bool $pageNotFoundOnCacheHashError see $GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFoundOnCHashError']
