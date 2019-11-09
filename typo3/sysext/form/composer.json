@@ -13,7 +13,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"psr/http-message": "~1.0",
+		"psr/http-message": "^1.0",
 		"symfony/expression-language": "^4.1",
 		"typo3/cms-core": "10.2.*@dev"
 	},
