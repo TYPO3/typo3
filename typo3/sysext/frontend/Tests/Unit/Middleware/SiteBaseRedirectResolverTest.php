@@ -109,6 +109,13 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 null,
                 ''
             ],
+            'redirect to first language adding the slash' => [
+                'https://twenty.one/en',
+                'https://twenty.one/en/',
+                $site1,
+                null,
+                ''
+            ],
             'redirect to second language removing a slash' => [
                 'https://twenty.one/fr/',
                 'https://twenty.one/fr',
@@ -122,6 +129,20 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
                 $site2,
                 null,
                 ''
+            ],
+            'redirect to first language and remove nested arguments' => [
+                'https://twenty.one/?foo[bar]=foobar&bar=foo',
+                'https://twenty.one/en/',
+                $site1,
+                null,
+                ''
+            ],
+            'redirect to second language removing a slash but keeping the nested arguments' => [
+                'https://twenty.one/fr/?foo[bar]=foobar&bar=foo',
+                'https://twenty.one/fr?foo%5Bbar%5D=foobar&bar=foo',
+                $site1,
+                $site1->getLanguageById(1),
+                '/'
             ],
         ];
     }
@@ -210,5 +231,72 @@ class SiteBaseRedirectResolverTest extends UnitTestCase
         $subject = new SiteBaseRedirectResolver();
         $response = $subject->process($request, $this->siteFoundRequestHandler);
         $this->assertEquals($expectedStatusCode, $response->getStatusCode());
+    }
+
+    /**
+     * @return array
+     */
+    public function doNotRedirectOnBaseWithoutQueryDataProvider(): array
+    {
+        $site1 = new Site('outside-site', 13, [
+            'base' => 'https://twenty.one/',
+            'languages' => [
+                0 => [
+                    'languageId' => 0,
+                    'locale' => 'en_US.UTF-8',
+                    'base' => '/en/'
+                ],
+                1 => [
+                    'languageId' => 1,
+                    'locale' => 'fr_CA.UTF-8',
+                    'base' => '/fr'
+                ]
+            ]
+        ]);
+        return [
+            'no redirect for base' => [
+                'https://twenty.one/en/',
+                $site1,
+                $site1->getLanguageById(0),
+                ''
+            ],
+            'no redirect for base when ID is given' => [
+                'https://twenty.one/index.php?id=2',
+                $site1,
+                $site1->getLanguageById(0),
+                ''
+            ],
+            'no redirect for base and nested arguments' => [
+                'https://twenty.one/en/?foo[bar]=foobar&bar=foo',
+                $site1,
+                $site1->getLanguageById(0),
+                ''
+            ],
+        ];
+    }
+
+    /**
+     * @param string $incomingUrl
+     * @param Site $site
+     * @param SiteLanguage|null $language
+     * @param string $tail
+     * @dataProvider doNotRedirectOnBaseWithoutQueryDataProvider
+     * @test
+     */
+    public function doNotRedirectOnBaseWithoutQuery(
+        string $incomingUrl,
+        Site $site,
+        ?SiteLanguage $language,
+        string $tail
+    ): void {
+        $routeResult = new SiteRouteResult(new Uri($incomingUrl), $site, $language, $tail);
+        $request = new ServerRequest($incomingUrl, 'GET');
+        $request = $request->withAttribute('site', $site);
+        $request = $request->withAttribute('language', $language);
+        $request = $request->withAttribute('routing', $routeResult);
+
+        $subject = new SiteBaseRedirectResolver();
+        $response = $subject->process($request, $this->siteFoundRequestHandler);
+        self::assertEquals(200, $response->getStatusCode());
     }
 }
