@@ -22,7 +22,40 @@ use TYPO3\CMS\Fluid\ViewHelpers\ImageViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Class ThumbnailViewHelper
+ * ViewHelper for the backend which generates a :html:`<img>` tag with the special URI to render thumbnails deffered.
+ *
+ * Examples
+ * ========
+ *
+ * Default
+ * -------
+ *
+ * ::
+ *
+ *    <be:thumbnail image="{file.resource}" maxWidth="{thumbnail.width}" maxHeight="{thumbnail.height}" />
+ *
+ * Output::
+ *
+ *    <img src="/typo3/index.php?route=/thumbnails&token=&parameters={"fileId":1,"configuration":{"_context":"Image.Preview","maxWidth":64,"maxHeight":64}}&hmac="
+ *         width="64"
+ *         height="64"
+ *         alt="alt set in image record"
+ *         title="title set in image record"/>
+ *
+ * Inline notation
+ * ---------------
+ *
+ * ::
+ *
+ *    {be:thumbnail(image: file.resource, maxWidth: thumbnail.width, maxHeight: thumbnail.height)}
+ *
+ * Output::
+ *
+ *    <img src="/typo3/index.php?route=/thumbnails&token=&parameters={"fileId":1,"configuration":{"_context":"Image.Preview","maxWidth":64,"maxHeight":64}}&hmac="
+ *         width="64"
+ *         height="64"
+ *         alt="alt set in image record"
+ *         title="title set in image record"/>
  */
 class ThumbnailViewHelper extends ImageViewHelper
 {
