@@ -191,7 +191,8 @@ class InlineRecordContainer extends AbstractContainer
             $originalUniqueValue = '';
             if (isset($data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']])) {
                 $uniqueValueValues = $data['inlineData']['unique'][$domObjectId . '-' . $foreignTable]['used'][$record['uid']];
-                $originalUniqueValue = $uniqueValueValues['table'] . '_' . $uniqueValueValues['uid'];
+                // in case of site_language we don't have the full form engine options, so fallbacks need to be taken into account
+                $originalUniqueValue = ($uniqueValueValues['table'] ?? $foreignTable) . '_' . ($uniqueValueValues['uid'] ?? $uniqueValueValues);
             }
             $containerAttributes = [
                 'id' => $objectId . '_div',
