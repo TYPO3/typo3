@@ -1073,7 +1073,8 @@ define(['jquery',
   FormEngine.initializeInputLinkToggle = function() {
     var toggleClass = '.t3js-form-field-inputlink-explanation-toggle',
       inputFieldClass = '.t3js-form-field-inputlink-input',
-      explanationClass = '.t3js-form-field-inputlink-explanation';
+      explanationClass = '.t3js-form-field-inputlink-explanation',
+      iconClass = '.t3js-form-field-inputlink-icon';
 
     // if empty, show input field
     $(explanationClass).filter(function() {
@@ -1098,7 +1099,7 @@ define(['jquery',
       explanationShown = !$explanationField.hasClass('hidden');
       $explanationField.toggleClass('hidden', explanationShown);
       $inputField.toggleClass('hidden', !explanationShown);
-      $group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
+      $group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown);
     });
 
     $(inputFieldClass).on('change', function() {
@@ -1114,6 +1115,9 @@ define(['jquery',
         $inputField.toggleClass('hidden', !explanationShown);
         $group.find('.form-control-clearable button.close').toggleClass('hidden', !explanationShown)
       }
+
+      $group.find(toggleClass).addClass('disabled').attr('disabled', 'disabled');
+      $group.find(iconClass).empty();
     });
   };
 
