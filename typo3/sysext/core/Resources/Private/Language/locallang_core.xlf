@@ -824,6 +824,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="flushAllCachesDescription2" resname="flushAllCachesDescription2">
 				<source>Clear all system-related caches, including localization, extension configuration, file caches and opcode caches. Rebuilding this cache may take some time.</source>
 			</trans-unit>
+			<trans-unit id="flushCaches.error" resname="flushCaches.error">
+				<source>An error occurred</source>
+			</trans-unit>
+			<trans-unit id="flushCaches.error.description" resname="flushCaches.error.description">
+				<source>An error occurred while clearing the cache. It is likely not all caches were cleared as expected.</source>
+			</trans-unit>
 			<trans-unit id="rm.adminFunctions" resname="rm.adminFunctions">
 				<source>Admin functions</source>
 			</trans-unit>

@@ -75,10 +75,7 @@ class ClearCacheMenu {
         }
       },
       error: (): void => {
-        Notification.error(
-          'An error occurred',
-          'An error occurred while clearing the cache. It is likely not all caches were cleared as expected.',
-        );
+        Notification.error(TYPO3.lang['flushCaches.error'], TYPO3.lang['flushCaches.error.description']);
       },
       complete: (): void => {
         $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
