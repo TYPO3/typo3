@@ -477,7 +477,7 @@ class AbstractFinisherTest extends UnitTestCase
             $elementIdentifier2 => $elementValue2
         ]);
 
-        $this->assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+        self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
     }
 
     /**
