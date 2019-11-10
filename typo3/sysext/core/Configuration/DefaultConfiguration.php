@@ -567,6 +567,12 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRadioItems::class
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSlug::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\TcaTypesShowitem::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\TcaGroup::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordOverrideValues::class,

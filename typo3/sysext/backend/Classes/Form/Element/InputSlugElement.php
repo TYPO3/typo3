@@ -18,13 +18,12 @@ namespace TYPO3\CMS\Backend\Form\Element;
 use TYPO3\CMS\Backend\Controller\FormSlugAjaxController;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
- * General type=input element with some additional value.
+ * General type=input element for TCA Type=Slug with some additional value.
  */
 class InputSlugElement extends AbstractFormElement
 {
@@ -80,13 +79,13 @@ class InputSlugElement extends AbstractFormElement
             $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
             $languageId = (int)((is_array($row[$languageField]) ? $row[$languageField][0] : $row[$languageField]) ?? 0);
         }
-        $baseUrl = $this->getPrefix($this->data['site'], $languageId);
 
         $itemValue = $parameterArray['itemFormElValue'];
         $config = $parameterArray['fieldConf']['config'];
         $evalList = GeneralUtility::trimExplode(',', $config['eval'], true);
         $size = MathUtility::forceIntegerInRange($config['size'] ?? $this->defaultInputWidth, $this->minimumInputWidth, $this->maxInputWidth);
         $width = (int)$this->formMaxWidth($size);
+        $baseUrl = $this->data['customData'][$this->data['fieldName']]['slugPrefix'] ?? '';
 
         // Convert UTF-8 characters back (that is important, see Slug class when sanitizing)
         $itemValue = rawurldecode($itemValue);
@@ -218,30 +217,6 @@ class InputSlugElement extends AbstractFormElement
             }'
         ];
         return $resultArray;
-    }
-
-    /**
-     * Render the prefix for the input field.
-     *
-     * @param SiteInterface $site
-     * @param int $requestLanguageId
-     * @return string
-     */
-    protected function getPrefix(SiteInterface $site, int $requestLanguageId = 0): string
-    {
-        try {
-            $language = ($requestLanguageId < 0) ? $site->getDefaultLanguage() : $site->getLanguageById($requestLanguageId);
-            $base = $language->getBase();
-            $baseUrl = (string)$base;
-            $baseUrl = rtrim($baseUrl, '/');
-            if (!empty($baseUrl) && empty($base->getScheme()) && $base->getHost() !== '') {
-                $baseUrl = 'http:' . $baseUrl;
-            }
-        } catch (\InvalidArgumentException $e) {
-            // No site found
-            $baseUrl = '';
-        }
-        return $baseUrl;
     }
 
     /**
