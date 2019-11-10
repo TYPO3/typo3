@@ -40,10 +40,12 @@ available by moving the mouse over the field labels):
   bottom of the form.
 
 - The frequency needs be entered only for recurring tasks. It can be
-  either a number of seconds or a cron-like command. Since TYPO3 4.5 the
-  Scheduler supports the full cron syntax, including ranges, steps and
-  keywords like :code:`@weekly` . For more information on cron syntax,
-  see http://en.wikipedia.org/wiki/CRON\_expression.
+  either an integer number of seconds or a cron-like schedule expression. 
+  Scheduler supports ranges, steps and keywords like :code:`@weekly` .  
+  See https://en.wikipedia.org/wiki/Cron#CRON_expression for more 
+  information. See TYPO3\\CMS\\Scheduler\\CronCommand\\CronCommand and 
+  TYPO3\\CMS\\Scheduler\\CronCommand\\NormalizeCommand class references 
+  in the TYPO3 CMS source code for definitive rules.
 
 - Parallel executions are denied by default (see "Tasks execution"
   above). They must be allowed explicitly.
