@@ -90,6 +90,16 @@
                                 <core:icon identifier="actions-system-extension-download" />
                             </f:link.action>
                             <em:reloadSqlData class="btn btn-default" extension="{extension}" />
+                            <f:if condition="{extension.terObject.documentationLink}">
+                                <f:then>
+                                    <a href="{extension.terObject.documentationLink}" target="_blank" rel="noopener noreferrer" class="btn btn-default">
+                                        <core:icon identifier="actions-system-extension-documentation" size="small" />
+                                    </a>
+                                </f:then>
+                                <f:else>
+                                    <span class="btn btn-default disabled"><core:icon identifier="empty-empty" size="small" /></span>
+                                </f:else>
+                            </f:if>
                         </em:processAvailableActions>
                     </div>
                 </td>
