@@ -11,7 +11,7 @@ Description
 
 Distributions or site packages are designed to deliver a full blown TYPO3 instance with all necessary data and assets
 to have a functional installation after the package has been activated.
-Ihe import of a distribution can now ship the config file (or many, if this is required).
+The import of a distribution can now ship the config file (or many, if this is required).
 
 Similar to assets, that are moved to :file:`fileadmin` ready for use, site configurations are moved into the config folder.
 
@@ -27,7 +27,7 @@ Into the distribution package :file:`Initialisation/Site` folder, put a folder w
 :file:`config.yaml`.
 Each folder will be moved into the target position upon extension activation.
 
-If a folder with the same name already exists, the file will *not* be overridden, in this case no change is made to the existing configuration.
+If a folder with the same name already exists, the file will *not* be overridden. In this case no change is made to the existing configuration.
 
 
 .. index:: PHP-API, ext:core
