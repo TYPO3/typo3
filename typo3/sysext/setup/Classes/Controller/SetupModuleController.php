@@ -920,9 +920,28 @@ class SetupModuleController
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->moduleTemplate->addJavaScriptCode('avatar-button', '
             var browserWin="";
+            
+            require([\'TYPO3/CMS/Backend/Utility/MessageUtility\'], function(MessageUtility) {
+                window.addEventListener(\'message\', function (e) {
+                    MessageUtility.MessageUtility.verifyOrigin
+                    if (!MessageUtility.MessageUtility.verifyOrigin(e.origin)) {
+                        throw \'Denied message sent by \' + e.origin;
+                    }
+                    if (e.data.actionName === \'typo3:elementBrowser:elementInserted\') {
+                        if (typeof e.data.objectGroup === \'undefined\') {
+                            throw \'No object group defined for message\';
+                        }
+                        if (e.data.objectGroup !== \'dummy\') {
+                            // Received message isn\'t provisioned for current InlineControlContainer instance
+                            return;
+                        }
+                        setFileUid(\'avatar\', e.data.uid);
+                    }
+                });
+            });
 
             function openFileBrowser() {
-                var url = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy|setFileUid'])) . ';
+                var url = ' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('wizard_element_browser', ['mode' => 'file', 'bparams' => '||||dummy'])) . ';
                 browserWin = window.open(url,"Typo3WinBrowser","height=650,width=800,status=0,menubar=0,resizable=1,scrollbars=1");
                 browserWin.focus();
             }
@@ -933,7 +952,7 @@ class SetupModuleController
                 $(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(\'delete\');
             }
 
-            function setFileUid(field, value, fileUid) {
+            function setFileUid(field, fileUid) {
                 clearExistingImage();
                 $(' . GeneralUtility::quoteJSvalue('#field_' . htmlspecialchars($fieldName)) . ').val(fileUid);
                 $(' . GeneralUtility::quoteJSvalue('#add_button_' . htmlspecialchars($fieldName)) . ').removeClass(\'btn-default\').addClass(\'btn-info\');
