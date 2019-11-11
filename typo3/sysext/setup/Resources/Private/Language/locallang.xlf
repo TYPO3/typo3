@@ -366,6 +366,12 @@
 			<trans-unit id="startModule.firstInMenu" resname="startModule.firstInMenu">
 				<source>- First module in menu -</source>
 			</trans-unit>
+			<trans-unit id="avatar.clear" resname="avatar.clear">
+				<source>Remove selected avatar image</source>
+			</trans-unit>
+			<trans-unit id="avatar.openFileBrowser" resname="avatar.openFileBrowser">
+				<source>Open file browser to select avatar image</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

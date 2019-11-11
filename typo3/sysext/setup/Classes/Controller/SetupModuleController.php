@@ -165,6 +165,7 @@ class SetupModuleController
     protected function initialize()
     {
         $this->getLanguageService()->includeLLFile('EXT:setup/Resources/Private/Language/locallang.xlf');
+        $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('UserSettings'));
         // Getting the 'override' values as set might be set in User TSconfig
         $this->overrideConf = $this->getBackendUser()->getTSConfig()['setup.']['override.'] ?? null;
         // Getting the disabled fields might be set in User TSconfig (eg setup.fields.password.disabled=1)
@@ -446,7 +447,7 @@ class SetupModuleController
                 continue;
             }
             $label = $this->getLabel($config['label'], $fieldName);
-            $label = $this->getCSH($config['csh'] ?: $fieldName, $label);
+            $label = $this->getCSH($config['csh'] ?: $fieldName, $label, $fieldName);
             $type = $config['type'];
             $class = $config['class'];
             if ($type !== 'check') {
@@ -489,7 +490,7 @@ class SetupModuleController
                         $noAutocomplete = 'autocomplete="new-password" ';
                         $more .= ' data-rsa-encryption=""';
                     }
-                    $html = '<input id="field_' . htmlspecialchars($fieldName) . '"
+                    $html = '<input aria-labelledby="label_' . htmlspecialchars($fieldName) . '" id="field_' . htmlspecialchars($fieldName) . '"
                         type="' . htmlspecialchars($type) . '"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']" ' .
                         $noAutocomplete .
@@ -500,6 +501,7 @@ class SetupModuleController
                 case 'check':
                     $html = $label . '<div class="checkbox"><label><input id="field_' . htmlspecialchars($fieldName) . '"
                         type="checkbox"
+                        aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
                         name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                         ($value ? ' checked="checked"' : '') .
                         $more .
@@ -511,6 +513,7 @@ class SetupModuleController
                         $html = GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this);
                     } else {
                         $html = '<select id="field_' . htmlspecialchars($fieldName) . '"
+                            aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
                             name="data' . $dataAdd . '[' . htmlspecialchars($fieldName) . ']"' .
                             $more . '>' . LF;
                         foreach ($config['items'] as $key => $optionLabel) {
@@ -532,6 +535,7 @@ class SetupModuleController
                             $onClick = vsprintf($onClick, $config['onClickLabels']);
                         }
                         $html = '<br><input class="btn btn-default" type="button"
+                            aria-labelledby="label_' . htmlspecialchars($fieldName) . '"
                             value="' . $this->getLabel($config['buttonlabel'], '', false) . '"
                             onclick="' . $onClick . '" />';
                     }
@@ -555,7 +559,7 @@ class SetupModuleController
                         $avatarImage = $defaultAvatarProvider->getImage($backendUser->user, 32);
                         if ($avatarImage) {
                             $icon = '<span class="avatar"><span class="avatar-image">' .
-                                '<img src="' . htmlspecialchars($avatarImage->getUrl(true)) . '"' .
+                                '<img alt="" src="' . htmlspecialchars($avatarImage->getUrl(true)) . '"' .
                                 ' width="' . (int)$avatarImage->getWidth() . '" ' .
                                 'height="' . (int)$avatarImage->getHeight() . '" />' .
                                 '</span></span>';
@@ -570,13 +574,14 @@ class SetupModuleController
                     $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     if ($avatarFileUid) {
                         $html .=
-                            '<a id="clear_button_' . htmlspecialchars($fieldName) . '" '
+                            '<a id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.clear')) . '" '
                                 . 'onclick="clearExistingImage(); return false;" class="btn btn-default">'
                                 . $iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
                             . '</a>';
                     }
                     $html .=
                         '<a id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
+                            . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
                             . ' onclick="openFileBrowser();return false;">'
                             . $iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
                             . '</a></div>';
@@ -636,7 +641,7 @@ class SetupModuleController
         }
         ksort($languageOptions);
         $languageCode = '
-            <select id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
+            <select aria-labelledby="label_lang" id="field_lang" name="data[lang]" class="form-control">' . implode('', $languageOptions) . '
             </select>';
         if ($backendUser->uc['lang'] && !@is_dir(Environment::getLabelsPath() . '/' . $backendUser->uc['lang'])) {
             // TODO: The text constants have to be moved into language files
@@ -672,7 +677,7 @@ class SetupModuleController
                 $startModuleSelect .= '<optgroup label="' . htmlspecialchars($groupLabel) . '">' . $modules . '</optgroup>';
             }
         }
-        return '<select id="field_startModule" name="data[startModule]" class="form-control">' . $startModuleSelect . '</select>';
+        return '<select id="field_startModule" aria-labelledby="label_startModule" name="data[startModule]" class="form-control">' . $startModuleSelect . '</select>';
     }
 
     /**
@@ -728,9 +733,10 @@ class SetupModuleController
      *
      * @param string $str Locallang key
      * @param string $label The label to be used, that should be wrapped in help
+     * @param string $fieldName field name
      * @return string HTML output.
      */
-    protected function getCSH($str, $label)
+    protected function getCSH($str, $label, $fieldName)
     {
         $context = '_MOD_user_setup';
         $field = $str;
@@ -742,7 +748,7 @@ class SetupModuleController
         } elseif ($str !== 'language' && $str !== 'reset') {
             $field = 'option_' . $str;
         }
-        return BackendUtility::wrapInHelp($context, $field, $label);
+        return '<span id="label_' . htmlspecialchars($fieldName) . '">' . BackendUtility::wrapInHelp($context, $field, $label) . '</span>';
     }
 
     /**
@@ -920,7 +926,7 @@ class SetupModuleController
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->moduleTemplate->addJavaScriptCode('avatar-button', '
             var browserWin="";
-            
+
             require([\'TYPO3/CMS/Backend/Utility/MessageUtility\'], function(MessageUtility) {
                 window.addEventListener(\'message\', function (e) {
                     MessageUtility.MessageUtility.verifyOrigin
