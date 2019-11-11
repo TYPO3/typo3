@@ -28,8 +28,8 @@ We recommend to create your own extension for adding content elements.
 The following example uses the extension key `your_extension_key`.
 If you have plans to publish your extension, do not forget to check
 for the availability of your desired key
-and register it at the `"extension keys" page <https://typo3.org/extensions/extension-keys/>`_
-(login for `typo3.org <https://typo3.org/>`_ is required).
+and register it at the `"extension keys" page <https://extensions.typo3.org/my-extensions/>`_
+(prior login at `typo3.org <https://typo3.org/>`_ is required).
 
 Since this part is written for developers, it will not explain in full detail how an extension works.
 
