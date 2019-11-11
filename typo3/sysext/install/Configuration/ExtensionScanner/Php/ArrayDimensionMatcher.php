@@ -321,4 +321,14 @@ return [
             'Breaking-88660-GLOBALST3_VARRemoved.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'systemLog\']' => [
+        'restFiles' => [
+            'Important-89645-RemovedSystemLogOptions.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'systemLogLevel\']' => [
+        'restFiles' => [
+            'Important-89645-RemovedSystemLogOptions.rst',
+        ],
+    ],
 ];

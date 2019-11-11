@@ -96,8 +96,6 @@ return [
         'binSetup' => '',
         'setMemoryLimit' => 0,
         'phpTimeZone' => '',
-        'systemLog' => false,
-        'systemLogLevel' => 0,
         'UTF8filesystem' => false,
         'systemLocale' => '',
         'systemMaintainers' => null,    // @todo: This will be set up as an empty array once the installer can define a system maintainers

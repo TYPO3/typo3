@@ -41,7 +41,6 @@ class DebugPreset extends Configuration\AbstractPreset
         'FE/debug' => true,
         'SYS/devIPmask' => '*',
         'SYS/displayErrors' => 1,
-        'SYS/systemLogLevel' => 0,
         // E_WARNING | E_RECOVERABLE_ERROR | E_DEPRECATED
         'SYS/exceptionalErrors' => 12290,
     ];

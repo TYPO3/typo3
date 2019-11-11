@@ -130,18 +130,6 @@ SYS:
         phpTimeZone:
             type: text
             description: 'timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="http://php.net/manual/en/timezones.php" target="_blank" rel="noopener noreferrer">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini''s <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank" rel="noopener noreferrer">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.'
-        systemLog:
-            type: bool
-            description: 'Enables the deprecated system log functionality. Log data is written to the Logging API.'
-        systemLogLevel:
-            type: int
-            allowedValues:
-              '0': 'Severity: Info'
-              '1': 'Severity: Notice'
-              '2': 'Severity: Warning'
-              '3': 'Severity: Error'
-              '4': 'Severity: Fatal Error'
-            description: 'Enable the severity of log messages to be logged (see systemLog option) - Only messages with same or higher severity are logged.'
         UTF8filesystem:
             type: bool
             description: |

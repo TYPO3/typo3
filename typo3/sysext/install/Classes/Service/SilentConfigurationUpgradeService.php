@@ -150,6 +150,9 @@ class SilentConfigurationUpgradeService
         'FE/get_url_id_token',
         // #88500
         'BE/RTE_imageStorageDir',
+        // #89645
+        'SYS/systemLog',
+        'SYS/systemLogLevel',
     ];
 
     public function __construct(ConfigurationManager $configurationManager = null)

@@ -41,7 +41,6 @@ class LivePreset extends Configuration\AbstractPreset
         'FE/debug' => false,
         'SYS/devIPmask' => '',
         'SYS/displayErrors' => 0,
-        'SYS/systemLogLevel' => 2,
         // E_RECOVERABLE_ERROR
         'SYS/exceptionalErrors' => 4096,
     ];
