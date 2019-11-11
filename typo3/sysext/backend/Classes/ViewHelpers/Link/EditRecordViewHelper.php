@@ -42,6 +42,18 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Link to edit page uid=3 and then return back to the BE module "web_MyextensionList"::
  *
  *    <be.link.editRecord uid="3" table="pages" returnUrl="{f:be.uri(route: 'web_MyextensionList')}">
+ *
+ * Link to edit only the fields title and subtitle of page uid=42 and return to foo/bar::
+ *
+ *    <be:link.editRecord uid="42" table="pages" fields="title,subtitle" returnUrl="foo/bar">
+ *        Edit record
+ *    </be:link.editRecord>
+ *
+ * Output::
+ *
+ *    <a href="/typo3/index.php?route=/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">
+ *        Edit record
+ *    </a>
  */
 class EditRecordViewHelper extends AbstractTagBasedViewHelper
 {
@@ -56,6 +68,7 @@ class EditRecordViewHelper extends AbstractTagBasedViewHelper
         $this->registerUniversalTagAttributes();
         $this->registerArgument('uid', 'int', 'uid of record to be edited', true);
         $this->registerArgument('table', 'string', 'target database table', true);
+        $this->registerArgument('fields', 'string', 'Edit only these fields (comma separated list)', false);
         $this->registerArgument('returnUrl', 'string', 'return to this URL after closing the edit dialog', false, '');
     }
 
@@ -76,6 +89,9 @@ class EditRecordViewHelper extends AbstractTagBasedViewHelper
             'edit' => [$this->arguments['table'] => [$this->arguments['uid'] => 'edit']],
             'returnUrl' => $this->arguments['returnUrl']
         ];
+        if ($this->arguments['fields'] ?? false) {
+            $params['columnsOnly'] = $this->arguments['fields'];
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
         $this->tag->addAttribute('href', $uri);

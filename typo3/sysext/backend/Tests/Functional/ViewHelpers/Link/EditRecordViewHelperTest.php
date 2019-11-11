@@ -68,6 +68,34 @@ class EditRecordViewHelperTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function renderReturnsValidLinkWithField()
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Link/EditRecordViewHelper/WithUidTableAndField.html');
+        $result = urldecode($view->render());
+
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][43]=edit', $result);
+        self::assertStringContainsString('columnsOnly=canonical_url', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function renderReturnsValidLinkWithFields()
+    {
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename('EXT:backend/Tests/Functional/ViewHelpers/Fixtures/Link/EditRecordViewHelper/WithUidTableAndFields.html');
+        $result = urldecode($view->render());
+
+        self::assertStringContainsString('route=/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][43]=edit', $result);
+        self::assertStringContainsString('columnsOnly=canonical_url,title', $result);
+    }
+
+    /**
+     * @test
+     */
     public function renderThrowsExceptionForInvalidUidArgument()
     {
         $this->expectException(\InvalidArgumentException::class);

@@ -37,6 +37,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  *    <be:uri.editRecord uid="42" table="a_table" returnUrl="foo/bar" />
  *
  * ``/typo3/index.php?route=/record/edit&edit[a_table][42]=edit&returnUrl=foo/bar``
+ *
+ * URI to the edit record action: edit only the fields title and subtitle of
+ * page uid=42 and return to foo/bar::
+ *
+ *    <be:uri.editRecord uid="42" table="pages" fields="title,subtitle" returnUrl="foo/bar" />
+ *
+ * ``<a href="/typo3/index.php?route=/record/edit&edit[pages][42]=edit&returnUrl=foo/bar&columnsOnly=title,subtitle">``
  */
 class EditRecordViewHelper extends AbstractViewHelper
 {
@@ -46,6 +53,7 @@ class EditRecordViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('uid', 'int', 'uid of record to be edited, 0 for creation', true);
         $this->registerArgument('table', 'string', 'target database table', true);
+        $this->registerArgument('fields', 'string', 'Edit only these fields (comma separated list)', false);
         $this->registerArgument('returnUrl', 'string', '', false, '');
     }
 
@@ -70,6 +78,9 @@ class EditRecordViewHelper extends AbstractViewHelper
             'edit' => [$arguments['table'] => [$arguments['uid'] => 'edit']],
             'returnUrl' => $arguments['returnUrl']
         ];
+        if ($arguments['fields'] ?? false) {
+            $params['columnsOnly'] = $arguments['fields'];
+        }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         return (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
     }
