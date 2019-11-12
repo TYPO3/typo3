@@ -52,7 +52,7 @@ class SvgIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithRelativeSourceReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'fileadmin/foo.svg']);
-        self::assertEquals('<img src="fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="fileadmin/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 
     /**
@@ -61,7 +61,7 @@ class SvgIconProviderTest extends UnitTestCase
     public function prepareIconMarkupWithAbsoluteSourceReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => '/fileadmin/foo.svg']);
-        self::assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="/fileadmin/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 
     /**
@@ -70,7 +70,7 @@ class SvgIconProviderTest extends UnitTestCase
     public function getIconWithEXTSourceReferenceReturnsInstanceOfIconWithCorrectMarkup()
     {
         $this->subject->prepareIconMarkup($this->icon, ['source' => 'EXT:core/Resources/Public/Images/foo.svg']);
-        self::assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.svg" width="16" height="16" />', $this->icon->getMarkup());
+        self::assertEquals('<img src="typo3/sysext/core/Resources/Public/Images/foo.svg" width="16" height="16" alt="" />', $this->icon->getMarkup());
     }
 
     /**

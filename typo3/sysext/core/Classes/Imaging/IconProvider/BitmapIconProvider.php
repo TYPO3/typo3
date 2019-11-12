@@ -55,7 +55,7 @@ class BitmapIconProvider implements IconProviderInterface
         }
         $source = PathUtility::getAbsoluteWebPath($source);
 
-        return '<img src="' . htmlspecialchars($source) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" />';
+        return '<img src="' . htmlspecialchars($source) . '" width="' . $icon->getDimension()->getWidth() . '" height="' . $icon->getDimension()->getHeight() . '" alt="" />';
     }
 
     /**
