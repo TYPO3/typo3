@@ -1799,11 +1799,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             return;
         }
 
-        if (!($this->tmpl instanceof TemplateService)) {
-            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context);
+        if (!$this->tmpl instanceof TemplateService) {
+            $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 
-        $pageSectionCacheContent = $this->tmpl->getCurrentPageData();
+        $pageSectionCacheContent = $this->tmpl->getCurrentPageData((int)$this->id, (string)$this->MP);
         if (!is_array($pageSectionCacheContent)) {
             // Nothing in the cache, we acquire an "exclusive lock" for the key now.
             // We use the Registry to store this lock centrally,
@@ -1815,7 +1815,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             //
 
             // query the cache again to see if the page data are there meanwhile
-            $pageSectionCacheContent = $this->tmpl->getCurrentPageData();
+            $pageSectionCacheContent = $this->tmpl->getCurrentPageData((int)$this->id, (string)$this->MP);
             if (is_array($pageSectionCacheContent)) {
                 // we have the content, nice that some other process did the work for us already
                 $this->releaseLock('pagesection');
@@ -1832,73 +1832,40 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             ksort($pageSectionCacheContent);
             $this->all = $pageSectionCacheContent;
         }
-        unset($pageSectionCacheContent);
 
         // Look for page in cache only if a shift-reload is not sent to the server.
         $lockHash = $this->getLockHash();
-        if (!$this->headerNoCache()) {
-            if ($this->all) {
-                // we got page section information
-                $this->newHash = $this->getHash();
-                $this->getTimeTracker()->push('Cache Row');
+        if (!$this->headerNoCache() && $this->all) {
+            // we got page section information (TypoScript), so lets see if there is also a cached version
+            // of this page in the pages cache.
+            $this->newHash = $this->getHash();
+            $this->getTimeTracker()->push('Cache Row');
+            $row = $this->getFromCache_queryRow();
+            if (!is_array($row)) {
+                // nothing in the cache, we acquire an exclusive lock now
+                $this->acquireLock('pages', $lockHash);
+                //
+                // from this point on we're the only one working on that page ($lockHash)
+                //
+
+                // query the cache again to see if the data are there meanwhile
                 $row = $this->getFromCache_queryRow();
-                if (!is_array($row)) {
-                    // nothing in the cache, we acquire an exclusive lock now
-
-                    $this->acquireLock('pages', $lockHash);
-                    //
-                    // from this point on we're the only one working on that page ($lockHash)
-                    //
-
-                    // query the cache again to see if the data are there meanwhile
-                    $row = $this->getFromCache_queryRow();
-                    if (is_array($row)) {
-                        // we have the content, nice that some other process did the work for us
-                        $this->releaseLock('pages');
-                    }
-                    // We keep the lock set, because we are the ones generating the page now and filling the cache.
-                    // This indicates that we have to release the lock later in releaseLocks()
-                }
                 if (is_array($row)) {
-                    // we have data from cache
-
-                    // Call hook when a page is retrieved from cache:
-                    $_params = ['pObj' => &$this, 'cache_pages_row' => &$row];
-                    foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] ?? [] as $_funcRef) {
-                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
-                    }
-                    // Fetches the lowlevel config stored with the cached data
-                    $this->config = $row['cache_data'];
-                    // Getting the content
-                    $this->content = $row['content'];
-                    // Setting flag, so we know, that some cached content has been loaded
-                    $this->cacheContentFlag = true;
-                    $this->cacheExpires = $row['expires'];
-
-                    // Restore page title information, this is needed to generate the page title for
-                    // partially cached pages.
-                    $this->page['title'] = $row['pageTitleInfo']['title'];
-                    $this->indexedDocTitle = $row['pageTitleInfo']['indexedDocTitle'];
-
-                    if (isset($this->config['config']['debug'])) {
-                        $debugCacheTime = (bool)$this->config['config']['debug'];
-                    } else {
-                        $debugCacheTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
-                    }
-                    if ($debugCacheTime) {
-                        $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
-                        $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
-                        $this->content .= LF . '<!-- Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $row['tstamp']) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $row['expires']) . ' -->';
-                    }
+                    // we have the content, nice that some other process did the work for us
+                    $this->releaseLock('pages');
                 }
-                $this->getTimeTracker()->pull();
-
-                return;
+                // We keep the lock set, because we are the ones generating the page now and filling the cache.
+                // This indicates that we have to release the lock later in releaseLocks()
             }
+            if (is_array($row)) {
+                $this->populatePageDataFromCache($row);
+            }
+            $this->getTimeTracker()->pull();
+        } else {
+            // the user forced rebuilding the page cache or there was no pagesection information
+            // get a lock for the page content so other processes will not interrupt the regeneration
+            $this->acquireLock('pages', $lockHash);
         }
-        // the user forced rebuilding the page cache or there was no pagesection information
-        // get a lock for the page content so other processes will not interrupt the regeneration
-        $this->acquireLock('pages', $lockHash);
     }
 
     /**
@@ -1912,6 +1879,48 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $row = $this->pageCache->get($this->newHash);
         $this->getTimeTracker()->pull();
         return $row;
+    }
+
+    /**
+     * This method properly sets the values given from the pages cache into the corresponding
+     * TSFE variables. The counterpart is setPageCacheContent() where all relevant information is fetched.
+     * This also contains all data that could be cached, even for pages that are partially cached, as they
+     * have non-cacheable content still to be rendered.
+     *
+     * @see getFromCache()
+     * @see setPageCacheContent()
+     * @param array $cachedData
+     */
+    protected function populatePageDataFromCache(array $cachedData): void
+    {
+        // Call hook when a page is retrieved from cache
+        $_params = ['pObj' => &$this, 'cache_pages_row' => &$cachedData];
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageLoadedFromCache'] ?? [] as $_funcRef) {
+            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+        }
+        // Fetches the lowlevel config stored with the cached data
+        $this->config = $cachedData['cache_data'];
+        // Getting the content
+        $this->content = $cachedData['content'];
+        // Setting flag, so we know, that some cached content has been loaded
+        $this->cacheContentFlag = true;
+        $this->cacheExpires = $cachedData['expires'];
+
+        // Restore page title information, this is needed to generate the page title for
+        // partially cached pages.
+        $this->page['title'] = $cachedData['pageTitleInfo']['title'];
+        $this->indexedDocTitle = $cachedData['pageTitleInfo']['indexedDocTitle'];
+
+        if (isset($this->config['config']['debug'])) {
+            $debugCacheTime = (bool)$this->config['config']['debug'];
+        } else {
+            $debugCacheTime = !empty($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']);
+        }
+        if ($debugCacheTime) {
+            $dateFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];
+            $timeFormat = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+            $this->content .= LF . '<!-- Cached page generated ' . date($dateFormat . ' ' . $timeFormat, $cachedData['tstamp']) . '. Expires ' . date($dateFormat . ' ' . $timeFormat, $cachedData['expires']) . ' -->';
+        }
     }
 
     /**
@@ -2016,7 +2025,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function getConfigArray()
     {
-        if (!($this->tmpl instanceof TemplateService)) {
+        if (!$this->tmpl instanceof TemplateService) {
             $this->tmpl = GeneralUtility::makeInstance(TemplateService::class, $this->context, null, $this);
         }
 

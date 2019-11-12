@@ -367,12 +367,15 @@ class TemplateService
      * is regenerated - at least the this->start function must be called,
      * because this will make a new portion of data in currentPageData string.
      *
+     * @param int $pageId
+     * @param string $mountPointValue
      * @return array Returns the unmatched array $currentPageData if found cached in "cache_pagesection". Otherwise FALSE is returned which means that the array must be generated and stored in the cache
+     * @throws \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException
      * @internal
      */
-    public function getCurrentPageData()
+    public function getCurrentPageData(int $pageId, string $mountPointValue)
     {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection')->get((int)$this->getTypoScriptFrontendController()->id . '_' . GeneralUtility::md5int($this->getTypoScriptFrontendController()->MP));
+        return GeneralUtility::makeInstance(CacheManager::class)->getCache('pagesection')->get($pageId . '_' . GeneralUtility::md5int($mountPointValue));
     }
 
     /**
