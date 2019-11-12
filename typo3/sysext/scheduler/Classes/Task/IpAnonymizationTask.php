@@ -118,7 +118,7 @@ class IpAnonymizationTask extends AbstractTask
                 $connection->update(
                     $table,
                     [
-                        $configuration['ipField'] => IpAnonymizationUtility::anonymizeIp($ip, $this->mask)
+                        $configuration['ipField'] => IpAnonymizationUtility::anonymizeIp($ip, (int)$this->mask)
                     ],
                     [
                         'uid' => $row['uid']
