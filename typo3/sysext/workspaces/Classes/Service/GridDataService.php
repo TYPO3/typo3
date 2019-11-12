@@ -80,11 +80,6 @@ class GridDataService implements LoggerAwareInterface
     protected $workspacesCache;
 
     /**
-     * @var array
-     */
-    protected $systemLanguages;
-
-    /**
      * @var IntegrityService
      */
     protected $integrityService;
@@ -598,7 +593,7 @@ class GridDataService implements LoggerAwareInterface
     protected function getSystemLanguageValue($id, $pageId, $key)
     {
         $value = null;
-        $systemLanguages = $this->getSystemLanguages($pageId);
+        $systemLanguages = $this->getSystemLanguages((int)$pageId);
         if (!empty($systemLanguages[$id][$key])) {
             $value = $systemLanguages[$id][$key];
         }
@@ -613,11 +608,7 @@ class GridDataService implements LoggerAwareInterface
      */
     public function getSystemLanguages(int $pageId)
     {
-        if (!isset($this->systemLanguages)) {
-            $translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-            $this->systemLanguages = $translateTools->getSystemLanguages($pageId);
-        }
-        return $this->systemLanguages;
+        return GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId);
     }
 
     /**
