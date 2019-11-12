@@ -70,6 +70,7 @@ use TYPO3\CMS\Frontend\ContentObject\Exception\ProductionExceptionHandler;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Http\UrlProcessorInterface;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
+use TYPO3\CMS\Frontend\Page\PageLayoutResolver;
 use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
@@ -4599,39 +4600,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $retVal = $tsfe->page[$key];
                         break;
                     case 'pagelayout':
-                        // Check if the current page has a value in the DB field "backend_layout"
-                        // if empty, check the root line for "backend_layout_next_level"
-                        // same as
-                        //   field = backend_layout
-                        //   ifEmpty.data = levelfield:-2, backend_layout_next_level, slide
-                        //   ifEmpty.ifEmpty = default
-                        $retVal = $tsfe->page['backend_layout'];
-
-                        // If it is set to "none" - don't use any
-                        if ($retVal === '-1') {
-                            $retVal = 'none';
-                        } elseif ($retVal === '' || $retVal === '0') {
-                            // If it not set check the root-line for a layout on next level and use this
-                            // Remove first element, which is the current page
-                            // See also \TYPO3\CMS\Backend\View\BackendLayoutView::getSelectedCombinedIdentifier()
-                            $rootLine = $tsfe->rootLine;
-                            array_shift($rootLine);
-                            foreach ($rootLine as $rootLinePage) {
-                                $retVal = (string)$rootLinePage['backend_layout_next_level'];
-                                // If layout for "next level" is set to "none" - don't use any and stop searching
-                                if ($retVal === '-1') {
-                                    $retVal = 'none';
-                                    break;
-                                }
-                                if ($retVal !== '' && $retVal !== '0') {
-                                    // Stop searching if a layout for "next level" is set
-                                    break;
-                                }
-                            }
-                        }
-                        if ($retVal === '0' || $retVal === '') {
-                            $retVal = 'default';
-                        }
+                        $retVal = GeneralUtility::makeInstance(PageLayoutResolver::class)
+                            ->getLayoutForPage($tsfe->page, $tsfe->rootLine);
                         break;
                     case 'current':
                         $retVal = $this->data[$this->currentValKey] ?? null;
