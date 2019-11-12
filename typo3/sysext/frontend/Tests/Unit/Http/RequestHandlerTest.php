@@ -233,6 +233,7 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
+        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->page = [
@@ -268,6 +269,7 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
+        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->config = [
@@ -306,6 +308,7 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
+        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->config = [
@@ -399,6 +402,7 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
+        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->config = [

@@ -860,7 +860,7 @@ class RequestHandler implements RequestHandlerInterface
         }
         // Page content
         $pageRenderer->addBodyContent(LF . $pageContent);
-        if (!empty($controller->config['INTincScript']) && is_array($controller->config['INTincScript'])) {
+        if ($controller->isINTincScript()) {
             // Store the serialized pageRenderer in configuration
             $controller->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
             // Render complete page, keep placeholders for JavaScript and CSS

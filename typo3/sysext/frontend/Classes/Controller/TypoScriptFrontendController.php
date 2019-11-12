@@ -2021,7 +2021,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         }
 
         // If config is not set by the cache (which would be a major mistake somewhere) OR if INTincScripts-include-scripts have been registered, then we must parse the template in order to get it
-        if (empty($this->config) || is_array($this->config['INTincScript']) || $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing')) {
+        if (empty($this->config) || $this->isINTincScript() || $this->context->getPropertyFromAspect('typoscript', 'forcedTemplateParsing')) {
             $timeTracker = $this->getTimeTracker();
             $timeTracker->push('Parse template');
             // Start parsing the TS template. Might return cached version.
@@ -3105,11 +3105,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Determines if there are any INTincScripts to include.
      *
-     * @return bool Returns TRUE if scripts are found and no URL handler is active.
+     * @return bool Returns TRUE if scripts are found
      */
     public function isINTincScript()
     {
-        return is_array($this->config['INTincScript']);
+        return !empty($this->config['INTincScript']) && is_array($this->config['INTincScript']);
     }
 
     /********************************************
