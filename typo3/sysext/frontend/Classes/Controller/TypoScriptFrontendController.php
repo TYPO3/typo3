@@ -3044,21 +3044,43 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Loads the JavaScript code for INTincScript
+     * Loads the JavaScript/CSS code for INTincScript, if there are non-cacheable content objects
+     * it prepares the placeholders, otherwise populates options directly.
+     *
+     * @internal this method should be renamed as it does not only handle JS, but all additional header data
      */
     public function INTincScript_loadJSCode()
     {
-        // Add javascript
-        $jsCode = trim($this->JSCode);
-        $additionalJavaScript = is_array($this->additionalJavaScript)
-            ? implode(LF, $this->additionalJavaScript)
-            : $this->additionalJavaScript;
-        $additionalJavaScript = trim($additionalJavaScript);
-        if ($jsCode !== '' || $additionalJavaScript !== '') {
-            $doctype = $controller->config['config']['doctype'] ?? 'html5';
-            $scriptAttribute = $doctype === 'html5' ? '' : ' type="text/javascript"';
+        // Prepare code and placeholders for additional header and footer files (and make sure that this isn't called twice)
+        if ($this->isINTincScript() && !isset($this->config['INTincScript_ext'])) {
+            // Storing the JSCode vars...
+            $this->additionalHeaderData['JSCode'] = $this->JSCode;
+            $this->config['INTincScript_ext']['divKey'] = $this->uniqueHash();
+            // Storing the header-data array
+            $this->config['INTincScript_ext']['additionalHeaderData'] = $this->additionalHeaderData;
+            // Storing the footer-data array
+            $this->config['INTincScript_ext']['additionalFooterData'] = $this->additionalFooterData;
+            // Storing the JS-data array
+            $this->config['INTincScript_ext']['additionalJavaScript'] = $this->additionalJavaScript;
+            // Storing the Style-data array
+            $this->config['INTincScript_ext']['additionalCSS'] = $this->additionalCSS;
+            // Clearing the array
+            $this->additionalHeaderData = ['<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
+            // Clearing the array
+            $this->additionalFooterData = ['<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
+            $this->divSection .= '<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->';
+        } else {
+            // Add javascript
+            $jsCode = trim($this->JSCode);
+            $additionalJavaScript = is_array($this->additionalJavaScript)
+                ? implode(LF, $this->additionalJavaScript)
+                : $this->additionalJavaScript;
+            $additionalJavaScript = trim($additionalJavaScript);
+            if ($jsCode !== '' || $additionalJavaScript !== '') {
+                $doctype = $this->config['config']['doctype'] ?? 'html5';
+                $scriptAttribute = $doctype === 'html5' ? '' : ' type="text/javascript"';
 
-            $this->additionalHeaderData['JSCode'] = '
+                $this->additionalHeaderData['JSCode'] = '
 <script' . $scriptAttribute . '>
 	/*<![CDATA[*/
 <!--
@@ -3067,15 +3089,16 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 // -->
 	/*]]>*/
 </script>';
-        }
-        // Add CSS
-        $additionalCss = is_array($this->additionalCSS) ? implode(LF, $this->additionalCSS) : $this->additionalCSS;
-        $additionalCss = trim($additionalCss);
-        if ($additionalCss !== '') {
-            $this->additionalHeaderData['_CSS'] = '
+            }
+            // Add CSS
+            $additionalCss = is_array($this->additionalCSS) ? implode(LF, $this->additionalCSS) : $this->additionalCSS;
+            $additionalCss = trim($additionalCss);
+            if ($additionalCss !== '') {
+                $this->additionalHeaderData['_CSS'] = '
 <style type="text/css">
 ' . $additionalCss . '
 </style>';
+            }
         }
     }
 

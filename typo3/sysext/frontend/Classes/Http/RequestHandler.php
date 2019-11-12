@@ -673,26 +673,8 @@ class RequestHandler implements RequestHandlerInterface
         );
 
         unset($controller->additionalHeaderData['JSCode']);
-        if (isset($controller->config['INTincScript']) && is_array($controller->config['INTincScript'])) {
-            $controller->additionalHeaderData['JSCode'] = $controller->JSCode;
-            // Storing the JSCode vars...
-            $controller->config['INTincScript_ext']['divKey'] = $controller->uniqueHash();
-            $controller->config['INTincScript_ext']['additionalHeaderData'] = $controller->additionalHeaderData;
-            // Storing the header-data array
-            $controller->config['INTincScript_ext']['additionalFooterData'] = $controller->additionalFooterData;
-            // Storing the footer-data array
-            $controller->config['INTincScript_ext']['additionalJavaScript'] = $controller->additionalJavaScript;
-            // Storing the JS-data array
-            $controller->config['INTincScript_ext']['additionalCSS'] = $controller->additionalCSS;
-            // Storing the Style-data array
-            $controller->additionalHeaderData = ['<!--HD_' . $controller->config['INTincScript_ext']['divKey'] . '-->'];
-            // Clearing the array
-            $controller->additionalFooterData = ['<!--FD_' . $controller->config['INTincScript_ext']['divKey'] . '-->'];
-            // Clearing the array
-            $controller->divSection .= '<!--TDS_' . $controller->config['INTincScript_ext']['divKey'] . '-->';
-        } else {
-            $controller->INTincScript_loadJSCode();
-        }
+        $controller->INTincScript_loadJSCode();
+
         $scriptJsCode = '';
 
         if ($controller->spamProtectEmailAddresses && $controller->spamProtectEmailAddresses !== 'ascii') {
