@@ -102,7 +102,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
                 'regeneratePageTitle'
             ])->disableOriginalConstructor()
             ->getMock();
-        $tsfe->expects(self::exactly(2))->method('INTincScript_process')->willReturnCallback([$this, 'INTincScript_processCallback']);
+        $tsfe->expects(self::exactly(2))->method('processNonCacheableContentPartsAndSubstituteContentMarkers')->willReturnCallback([$this, 'INTincScript_processCallback']);
         $tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
         $config = [
             'INTincScript_ext' => [

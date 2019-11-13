@@ -2944,10 +2944,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     public function INTincScript()
     {
-        $this->additionalHeaderData = (isset($this->config['INTincScript_ext']['additionalHeaderData']) && is_array($this->config['INTincScript_ext']['additionalHeaderData']))
+        $this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData'] ?? false)
             ? $this->config['INTincScript_ext']['additionalHeaderData']
             : [];
-        $this->additionalFooterData = (isset($this->config['INTincScript_ext']['additionalFooterData']) && is_array($this->config['INTincScript_ext']['additionalFooterData']))
+        $this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData'] ?? false)
             ? $this->config['INTincScript_ext']['additionalFooterData']
             : [];
         $this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'] ?? null;
@@ -2994,60 +2994,65 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function recursivelyReplaceIntPlaceholdersInContent()
     {
         do {
-            $INTiS_config = $this->config['INTincScript'];
-            $this->INTincScript_process($INTiS_config);
+            $nonCacheableData = $this->config['INTincScript'];
+            $this->processNonCacheableContentPartsAndSubstituteContentMarkers($nonCacheableData);
             // Check if there were new items added to INTincScript during the previous execution:
             // array_diff_assoc throws notices if values are arrays but not strings. We suppress this here.
-            $INTiS_config = @array_diff_assoc($this->config['INTincScript'], $INTiS_config);
-            $reprocess = count($INTiS_config) > 0;
+            $nonCacheableData = @array_diff_assoc($this->config['INTincScript'], $nonCacheableData);
+            $reprocess = count($nonCacheableData) > 0;
         } while ($reprocess);
     }
 
     /**
-     * Processes the INTinclude-scripts and substitue in content.
+     * Processes the INTinclude-scripts and substitute in content.
      *
-     * @param array $INTiS_config $GLOBALS['TSFE']->config['INTincScript'] or part of it
+     * Takes $this->content, and splits the content by <!--INT_SCRIPT.12345 --> and then puts the content
+     * back together.
+     *
+     * @param array $nonCacheableData $GLOBALS['TSFE']->config['INTincScript'] or part of it
      * @see INTincScript()
      */
-    protected function INTincScript_process($INTiS_config)
+    protected function processNonCacheableContentPartsAndSubstituteContentMarkers(array $nonCacheableData)
     {
         $timeTracker = $this->getTimeTracker();
         $timeTracker->push('Split content');
         // Splits content with the key.
-        $INTiS_splitC = explode('<!--INT_SCRIPT.', $this->content);
+        $contentSplitByUncacheableMarkers = explode('<!--INT_SCRIPT.', $this->content);
         $this->content = '';
-        $timeTracker->setTSlogMessage('Parts: ' . count($INTiS_splitC));
+        $timeTracker->setTSlogMessage('Parts: ' . count($contentSplitByUncacheableMarkers));
         $timeTracker->pull();
-        foreach ($INTiS_splitC as $INTiS_c => $INTiS_cPart) {
+        foreach ($contentSplitByUncacheableMarkers as $counter => $contentPart) {
             // If the split had a comment-end after 32 characters it's probably a split-string
-            if (substr($INTiS_cPart, 32, 3) === '-->') {
-                $INTiS_key = 'INT_SCRIPT.' . substr($INTiS_cPart, 0, 32);
-                if (is_array($INTiS_config[$INTiS_key])) {
-                    $label = 'Include ' . $INTiS_config[$INTiS_key]['type'];
-                    $label = $label . isset($INTiS_config[$INTiS_key]['file']) ? ' ' . $INTiS_config[$INTiS_key]['file'] : '';
+            if (substr($contentPart, 32, 3) === '-->') {
+                $nonCacheableKey = 'INT_SCRIPT.' . substr($contentPart, 0, 32);
+                if (is_array($nonCacheableData[$nonCacheableKey])) {
+                    $label = 'Include ' . $nonCacheableData[$nonCacheableKey]['type'];
                     $timeTracker->push($label);
-                    $incContent = '';
-                    $INTiS_cObj = unserialize($INTiS_config[$INTiS_key]['cObj']);
-                    /* @var ContentObjectRenderer $INTiS_cObj */
-                    switch ($INTiS_config[$INTiS_key]['type']) {
+                    $nonCacheableContent = '';
+                    $contentObjectRendererForNonCacheable = unserialize($nonCacheableData[$nonCacheableKey]['cObj']);
+                    /* @var ContentObjectRenderer $contentObjectRendererForNonCacheable */
+                    switch ($nonCacheableData[$nonCacheableKey]['type']) {
                         case 'COA':
-                            $incContent = $INTiS_cObj->cObjGetSingle('COA', $INTiS_config[$INTiS_key]['conf']);
+                            $nonCacheableContent = $contentObjectRendererForNonCacheable->cObjGetSingle('COA', $nonCacheableData[$nonCacheableKey]['conf']);
                             break;
                         case 'FUNC':
-                            $incContent = $INTiS_cObj->cObjGetSingle('USER', $INTiS_config[$INTiS_key]['conf']);
+                            $nonCacheableContent = $contentObjectRendererForNonCacheable->cObjGetSingle('USER', $nonCacheableData[$nonCacheableKey]['conf']);
                             break;
                         case 'POSTUSERFUNC':
-                            $incContent = $INTiS_cObj->callUserFunction($INTiS_config[$INTiS_key]['postUserFunc'], $INTiS_config[$INTiS_key]['conf'], $INTiS_config[$INTiS_key]['content']);
+                            $nonCacheableContent = $contentObjectRendererForNonCacheable->callUserFunction($nonCacheableData[$nonCacheableKey]['postUserFunc'], $nonCacheableData[$nonCacheableKey]['conf'], $nonCacheableData[$nonCacheableKey]['content']);
                             break;
                     }
-                    $this->content .= $this->convOutputCharset($incContent);
-                    $this->content .= substr($INTiS_cPart, 35);
-                    $timeTracker->pull($incContent);
+                    $this->content .= $this->convOutputCharset($nonCacheableContent);
+                    $this->content .= substr($contentPart, 35);
+                    $timeTracker->pull($nonCacheableContent);
                 } else {
-                    $this->content .= substr($INTiS_cPart, 35);
+                    $this->content .= substr($contentPart, 35);
                 }
+            } elseif ($counter) {
+                // If it's not the first entry (which would be "0" of the array keys), then re-add the INT_SCRIPT part
+                $this->content .= '<!--INT_SCRIPT.' . $contentPart;
             } else {
-                $this->content .= ($INTiS_c ? '<!--INT_SCRIPT.' : '') . $INTiS_cPart;
+                $this->content .= $contentPart;
             }
         }
     }
@@ -3079,7 +3084,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->additionalFooterData = ['<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
             $this->divSection .= '<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->';
         } else {
-            // Add javascript
+            // Add javascript in a "regular" fashion
             $jsCode = trim($this->JSCode);
             $additionalJavaScript = is_array($this->additionalJavaScript)
                 ? implode(LF, $this->additionalJavaScript)
@@ -3112,7 +3117,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Determines if there are any INTincScripts to include.
+     * Determines if there are any INTincScripts to include = "non-cacheable" parts
      *
      * @return bool Returns TRUE if scripts are found
      */
