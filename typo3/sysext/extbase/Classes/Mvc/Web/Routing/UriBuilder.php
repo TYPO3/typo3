@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Extbase\Mvc\Web\Request as WebRequest;
 
 /**
  * An URI Builder
@@ -685,14 +684,14 @@ class UriBuilder
         unset($arguments['route'], $arguments['token']);
         $backendUriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         try {
-            if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
+            if ($this->createAbsoluteUri) {
                 $uri = (string)$backendUriBuilder->buildUriFromRoutePath($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
             } else {
                 $uri = (string)$backendUriBuilder->buildUriFromRoutePath($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_PATH);
             }
         } catch (ResourceNotFoundException $e) {
             try {
-                if ($this->request instanceof WebRequest && $this->createAbsoluteUri) {
+                if ($this->createAbsoluteUri) {
                     $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_URL);
                 } else {
                     $uri = (string)$backendUriBuilder->buildUriFromRoute($routeName, $arguments, \TYPO3\CMS\Backend\Routing\UriBuilder::ABSOLUTE_PATH);

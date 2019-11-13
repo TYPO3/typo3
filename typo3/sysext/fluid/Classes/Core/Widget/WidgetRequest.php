@@ -18,8 +18,13 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * Represents a widget request.
  * @internal It is a purely internal class which should not be used outside of Fluid.
  */
-class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Web\Request
+class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Request
 {
+    /**
+     * @var string The requested representation format
+     */
+    protected $format = 'html';
+
     /**
      * @var \TYPO3\CMS\Fluid\Core\Widget\WidgetContext
      */

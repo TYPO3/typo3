@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Extbase\Mvc\Web\Response as WebResponse;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -212,24 +211,22 @@ class JsonView extends AbstractView
     public function render(): string
     {
         $response = $this->controllerContext->getResponse();
-        if ($response instanceof WebResponse) {
-            // @todo Ticket: #63643 This should be solved differently once request/response model is available for TSFE.
-            if (!empty($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-                /** @var TypoScriptFrontendController $typoScriptFrontendController */
-                $typoScriptFrontendController = $GLOBALS['TSFE'];
-                if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
-                    // If the charset header is *not* disabled in configuration,
-                    // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
-                    $typoScriptFrontendController->setContentType('application/json');
-                } else {
-                    // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
-                    // Content-Type headers optionally carry charset information at the same time.
-                    // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
-                    $response->setHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
-                }
+        // @todo Ticket: #63643 This should be solved differently once request/response model is available for TSFE.
+        if (!empty($GLOBALS['TSFE']) && $GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+            /** @var TypoScriptFrontendController $typoScriptFrontendController */
+            $typoScriptFrontendController = $GLOBALS['TSFE'];
+            if (empty($typoScriptFrontendController->config['config']['disableCharsetHeader'])) {
+                // If the charset header is *not* disabled in configuration,
+                // TypoScriptFrontendController will send the header later with the Content-Type which we set here.
+                $typoScriptFrontendController->setContentType('application/json');
             } else {
-                $response->setHeader('Content-Type', 'application/json');
+                // Although the charset header is disabled in configuration, we *must* send a Content-Type header here.
+                // Content-Type headers optionally carry charset information at the same time.
+                // Since we have the information about the charset, there is no reason to not include the charset information although disabled in TypoScript.
+                $response->setHeader('Content-Type', 'application/json; charset=' . trim($typoScriptFrontendController->metaCharset));
             }
+        } else {
+            $response->setHeader('Content-Type', 'application/json');
         }
         $propertiesToRender = $this->renderArray();
         return json_encode($propertiesToRender, JSON_UNESCAPED_UNICODE);

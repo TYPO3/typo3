@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -88,15 +86,10 @@ class RedirectFinisher extends AbstractFinisher
      * @param string $additionalParameters
      * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @throws UnsupportedRequestTypeException If the request is not a web request
      * @see forward()
      */
     protected function redirect(int $pageUid = 1, string $additionalParameters = '', int $delay = 0, int $statusCode = 303)
     {
-        if (!$this->request instanceof Request) {
-            throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1471776457);
-        }
-
         $typolinkConfiguration = [
             'parameter' => $pageUid,
             'additionalParams' => $additionalParameters,
@@ -113,23 +106,16 @@ class RedirectFinisher extends AbstractFinisher
      * @param string $uri A string representation of a URI
      * @param int $delay (optional) The delay in seconds. Default is no delay.
      * @param int $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other
-     * @throws UnsupportedRequestTypeException If the request is not a web request
      * @throws StopActionException
      */
     protected function redirectToUri(string $uri, int $delay = 0, int $statusCode = 303)
     {
-        if (!$this->request instanceof Request) {
-            throw new UnsupportedRequestTypeException('redirect() only supports web requests.', 1471776458);
-        }
-
         $uri = $this->addBaseUriIfNecessary($uri);
         $escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
 
         $this->response->setContent('<html><head><meta http-equiv="refresh" content="' . (int)$delay . ';url=' . $escapedUri . '"/></head></html>');
-        if ($this->response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
-            $this->response->setStatus($statusCode);
-            $this->response->setHeader('Location', (string)$uri);
-        }
+        $this->response->setStatus($statusCode);
+        $this->response->setHeader('Location', (string)$uri);
         throw new StopActionException('redirectToUri', 1477070964);
     }
 
