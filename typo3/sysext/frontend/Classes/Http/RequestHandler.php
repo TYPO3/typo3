@@ -113,12 +113,7 @@ class RequestHandler implements RequestHandlerInterface
             $this->timeTracker->incStackPointer();
             $this->timeTracker->push($controller->sPre, 'PAGE');
 
-            // If 'disableAllHeaderCode' is set, all the header-code is discarded
-            if ($controller->config['config']['disableAllHeaderCode'] ?? false) {
-                $controller->content = $this->generatePageContent($controller);
-            } else {
-                $controller->content = $this->generatePageContentWithHeader($controller, $request->getAttribute('language', null));
-            }
+            $controller->content = $this->generatePageContent($controller);
 
             $this->timeTracker->pull($this->timeTracker->LR ? $controller->content : '');
             $this->timeTracker->decStackPointer();
@@ -165,12 +160,45 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Generates the main content part within <body> tags (except JS files/CSS files).
+     * Generates the main body part for the page, and if "config.disableAllHeaderCode" is not active, triggers
+     * pageRenderer to evaluate includeCSS, headTag etc. TypoScript processing to populate the pageRenderer.
      *
      * @param TypoScriptFrontendController $controller
      * @return string
      */
     protected function generatePageContent(TypoScriptFrontendController $controller): string
+    {
+        // Generate the main content between the <body> tags
+        // This has to be done first, as some additional TSFE-related code could have been written
+        $pageContent = $this->generatePageBodyContent($controller);
+        // If 'disableAllHeaderCode' is set, all the pageRenderer settings are not evaluated
+        if ($controller->config['config']['disableAllHeaderCode'] ?? false) {
+            return $pageContent;
+        }
+        // Now, populate pageRenderer with all additional data
+        $this->processHtmlBasedRenderingSettings($controller, $controller->getLanguage());
+        $pageRenderer = $this->getPageRenderer();
+        // Add previously generated page content within the <body> tag afterwards
+        $pageRenderer->addBodyContent(LF . $pageContent);
+        if ($controller->isINTincScript()) {
+            // Store the serialized pageRenderer in configuration
+            $controller->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
+            // Render complete page, keep placeholders for JavaScript and CSS
+            return $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey']);
+        }
+        // Render complete page
+        return $pageRenderer->render();
+    }
+
+    /**
+     * Generates the main content part within <body> tags (except JS files/CSS files), this means:
+     * render everything that can be cached, otherwise put placeholders for COA_INT/USER_INT objects
+     * in the content that is processed later-on.
+     *
+     * @param TypoScriptFrontendController $controller
+     * @return string
+     */
+    protected function generatePageBodyContent(TypoScriptFrontendController $controller): string
     {
         $pageContent = $controller->cObj->cObjGet($controller->pSetup) ?: '';
         if ($controller->pSetup['wrap'] ?? false) {
@@ -183,18 +211,19 @@ class RequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * Rendering normal HTML-page with header by wrapping the generated content ($pageContent) in body-tags and setting the header accordingly.
-     * Render HTML page with header parts (<head> tag content and wrap around <body> tag) - this is done
-     * after the "main" page Content, since some JS may be inserted at that point.
+     * At this point, the cacheable content has just been generated (thus, all content is available but hasn't been added
+     * to PageRenderer yet). The method is called after the "main" page content, since some JS may be inserted at that point
+     * that has been registered by cacheable plugins.
+     *
+     * PageRenderer is now populated with all <head> data and additional JavaScript/CSS/FooterData/HeaderData that can be cached.
+     *
+     * Once finished, the content is added to the >addBodyContent() functionality.
      *
      * @param TypoScriptFrontendController $controller
-     * @param SiteLanguage|null $siteLanguage
-     * @return string
+     * @param SiteLanguage $siteLanguage
      */
-    protected function generatePageContentWithHeader(TypoScriptFrontendController $controller, ?SiteLanguage $siteLanguage): string
+    protected function processHtmlBasedRenderingSettings(TypoScriptFrontendController $controller, SiteLanguage $siteLanguage): void
     {
-        // Generate the page content, this has to be first, as some additional TSFE-related code could have been written
-        $pageContent = $this->generatePageContent($controller);
         $pageRenderer = $this->getPageRenderer();
         if ($controller->config['config']['moveJsFromHeaderToFooter'] ?? false) {
             $pageRenderer->enableMoveJsFromHeaderToFooter();
@@ -213,12 +242,10 @@ class RequestHandler implements RequestHandlerInterface
         }
         // Setting charset:
         $theCharset = $controller->metaCharset;
-        // Reset the content variables:
-        $controller->content = '';
         $htmlTagAttributes = [];
-        $htmlLang = $siteLanguage && $siteLanguage->getHreflang() ? $siteLanguage->getHreflang() : '';
+        $htmlLang = $siteLanguage->getHreflang() ?: '';
 
-        if ($siteLanguage && $siteLanguage->getDirection()) {
+        if ($siteLanguage->getDirection()) {
             $htmlTagAttributes['dir'] = htmlspecialchars($siteLanguage->getDirection());
         }
         // Setting document type:
@@ -360,7 +387,7 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
         // Including CSS files
-        if (isset($controller->tmpl->setup['plugin.']) && is_array($controller->tmpl->setup['plugin.'])) {
+        if (is_array($controller->tmpl->setup['plugin.'] ?? null)) {
             $stylesFromPlugins = '';
             foreach ($controller->tmpl->setup['plugin.'] as $key => $iCSScode) {
                 if (is_array($iCSScode)) {
@@ -389,7 +416,7 @@ class RequestHandler implements RequestHandlerInterface
         /**********************************************************************/
         /* config.includeCSS / config.includeCSSLibs
         /**********************************************************************/
-        if (isset($controller->pSetup['includeCSS.']) && is_array($controller->pSetup['includeCSS.'])) {
+        if (is_array($controller->pSetup['includeCSS.'] ?? null)) {
             foreach ($controller->pSetup['includeCSS.'] as $key => $CSSfile) {
                 if (!is_array($CSSfile)) {
                     $cssFileConfig = &$controller->pSetup['includeCSS.'][$key . '.'];
@@ -432,7 +459,7 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
         }
-        if (isset($controller->pSetup['includeCSSLibs.']) && is_array($controller->pSetup['includeCSSLibs.'])) {
+        if (is_array($controller->pSetup['includeCSSLibs.'] ?? null)) {
             foreach ($controller->pSetup['includeCSSLibs.'] as $key => $CSSfile) {
                 if (!is_array($CSSfile)) {
                     $cssFileConfig = &$controller->pSetup['includeCSSLibs.'][$key . '.'];
@@ -483,7 +510,7 @@ class RequestHandler implements RequestHandlerInterface
             $this->addCssToPageRenderer($controller, $style, true, 'additionalTSFEInlineStyle');
         }
         // JavaScript library files
-        if (isset($controller->pSetup['includeJSLibs.']) && is_array($controller->pSetup['includeJSLibs.'])) {
+        if (is_array($controller->pSetup['includeJSLibs.'] ?? null)) {
             foreach ($controller->pSetup['includeJSLibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($controller->pSetup['includeJSLibs.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSLibs.'][$key . '.']['if.'])) {
@@ -525,7 +552,7 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
         }
-        if (isset($controller->pSetup['includeJSFooterlibs.']) && is_array($controller->pSetup['includeJSFooterlibs.'])) {
+        if (is_array($controller->pSetup['includeJSFooterlibs.'] ?? null)) {
             foreach ($controller->pSetup['includeJSFooterlibs.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($controller->pSetup['includeJSFooterlibs.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSFooterlibs.'][$key . '.']['if.'])) {
@@ -568,7 +595,7 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
         // JavaScript files
-        if (isset($controller->pSetup['includeJS.']) && is_array($controller->pSetup['includeJS.'])) {
+        if (is_array($controller->pSetup['includeJS.'] ?? null)) {
             foreach ($controller->pSetup['includeJS.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($controller->pSetup['includeJS.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJS.'][$key . '.']['if.'])) {
@@ -609,7 +636,7 @@ class RequestHandler implements RequestHandlerInterface
                 }
             }
         }
-        if (isset($controller->pSetup['includeJSFooter.']) && is_array($controller->pSetup['includeJSFooter.'])) {
+        if (is_array($controller->pSetup['includeJSFooter.'] ?? null)) {
             foreach ($controller->pSetup['includeJSFooter.'] as $key => $JSfile) {
                 if (!is_array($JSfile)) {
                     if (isset($controller->pSetup['includeJSFooter.'][$key . '.']['if.']) && !$controller->cObj->checkIf($controller->pSetup['includeJSFooter.'][$key . '.']['if.'])) {
@@ -651,11 +678,11 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
         // Headerdata
-        if (isset($controller->pSetup['headerData.']) && is_array($controller->pSetup['headerData.'])) {
+        if (is_array($controller->pSetup['headerData.'] ?? null)) {
             $pageRenderer->addHeaderData($controller->cObj->cObjGet($controller->pSetup['headerData.'], 'headerData.'));
         }
         // Footerdata
-        if (isset($controller->pSetup['footerData.']) && is_array($controller->pSetup['footerData.'])) {
+        if (is_array($controller->pSetup['footerData.'] ?? null)) {
             $pageRenderer->addFooterData($controller->cObj->cObjGet($controller->pSetup['footerData.'], 'footerData.'));
         }
         $controller->generatePageTitle();
@@ -672,9 +699,7 @@ class RequestHandler implements RequestHandlerInterface
             $controller->cObj
         );
 
-        unset($controller->additionalHeaderData['JSCode']);
         $controller->INTincScript_loadJSCode();
-
         $scriptJsCode = '';
 
         if ($controller->spamProtectEmailAddresses && $controller->spamProtectEmailAddresses !== 'ascii') {
@@ -838,8 +863,7 @@ class RequestHandler implements RequestHandlerInterface
         if ($controller->additionalFooterData) {
             $pageRenderer->addFooterData(implode(LF, $controller->additionalFooterData));
         }
-        // Header complete, now add content
-        // Bodytag:
+        // Header complete, now the body tag is added so the regular content can be applied later-on
         if ($controller->config['config']['disableBodyTag'] ?? false) {
             $bodyTag = '';
         } else {
@@ -854,22 +878,6 @@ class RequestHandler implements RequestHandlerInterface
             }
         }
         $pageRenderer->addBodyContent(LF . $bodyTag);
-        // Div-sections
-        if ($controller->divSection) {
-            $pageRenderer->addBodyContent(LF . $controller->divSection);
-        }
-        // Page content
-        $pageRenderer->addBodyContent(LF . $pageContent);
-        if ($controller->isINTincScript()) {
-            // Store the serialized pageRenderer in configuration
-            $controller->config['INTincScript_ext']['pageRenderer'] = serialize($pageRenderer);
-            // Render complete page, keep placeholders for JavaScript and CSS
-            $pageContent = $pageRenderer->renderPageWithUncachedObjects($controller->config['INTincScript_ext']['divKey']);
-        } else {
-            // Render complete page
-            $pageContent = $pageRenderer->render();
-        }
-        return $pageContent ?: '';
     }
 
     /*************************

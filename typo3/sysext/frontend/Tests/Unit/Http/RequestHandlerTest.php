@@ -17,7 +17,9 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Http;
 
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -226,6 +228,7 @@ class RequestHandlerTest extends UnitTestCase
             'content' => '10'
         ];
 
+        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -233,7 +236,6 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->page = [
@@ -246,9 +248,7 @@ class RequestHandlerTest extends UnitTestCase
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
         $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
-        $subject->_set('timeTracker', new TimeTracker(false));
-        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
-
+        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage);
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'])->willThrow(\InvalidArgumentException::class);
     }
 
@@ -262,6 +262,7 @@ class RequestHandlerTest extends UnitTestCase
      */
     public function generateMetaTagHtmlGeneratesCorrectTags(array $typoScript, string $stdWrapResult, array $expectedTags)
     {
+        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -269,7 +270,6 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->config = [
@@ -284,8 +284,7 @@ class RequestHandlerTest extends UnitTestCase
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
         $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
-        $subject->_set('timeTracker', new TimeTracker(false));
-        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
+        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage);
 
         $pageRendererProphecy->setMetaTag($expectedTags['type'], $expectedTags['name'], $expectedTags['content'], [], false)->shouldHaveBeenCalled();
     }
@@ -301,6 +300,7 @@ class RequestHandlerTest extends UnitTestCase
             'custom:key' => '',
         ];
 
+        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -308,7 +308,6 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->config = [
@@ -325,7 +324,7 @@ class RequestHandlerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
         $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
-        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
+        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage);
 
         $pageRendererProphecy->setMetaTag(null, null, null)->shouldNotBeCalled();
     }
@@ -395,6 +394,7 @@ class RequestHandlerTest extends UnitTestCase
      */
     public function generateMultipleMetaTags(array $typoScript, string $stdWrapResult, array $expectedTags)
     {
+        $siteLanguage = new SiteLanguage(3, 'fr_FR', new Uri(), []);
         $cObj = $this->prophesize(ContentObjectRenderer::class);
         $cObj->cObjGet(Argument::cetera())->shouldBeCalled();
         $cObj->stdWrap(Argument::cetera())->willReturn($stdWrapResult);
@@ -402,7 +402,6 @@ class RequestHandlerTest extends UnitTestCase
         $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->generatePageTitle()->willReturn('');
         $tsfe->INTincScript_loadJSCode()->shouldBeCalled();
-        $tsfe->isINTincScript()->shouldBeCalled();
         $tsfe->cObj = $cObj->reveal();
         $tsfe->tmpl = $tmpl->reveal();
         $tsfe->config = [
@@ -418,7 +417,7 @@ class RequestHandlerTest extends UnitTestCase
         $subject = $this->getAccessibleMock(RequestHandler::class, ['getPageRenderer'], [], '', false);
         $subject->expects(self::any())->method('getPageRenderer')->willReturn($pageRendererProphecy->reveal());
         $subject->_set('timeTracker', new TimeTracker(false));
-        $subject->_call('generatePageContentWithHeader', $tsfe->reveal(), null);
+        $subject->_call('processHtmlBasedRenderingSettings', $tsfe->reveal(), $siteLanguage);
 
         $pageRendererProphecy->setMetaTag($expectedTags[0]['type'], $expectedTags[0]['name'], $expectedTags[0]['content'], [], false)->shouldHaveBeenCalled();
         $pageRendererProphecy->setMetaTag($expectedTags[1]['type'], $expectedTags[1]['name'], $expectedTags[1]['content'], [], false)->shouldHaveBeenCalled();
