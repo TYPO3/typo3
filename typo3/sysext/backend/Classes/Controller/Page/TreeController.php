@@ -282,32 +282,59 @@ class TreeController
         }
 
         $items = [];
-        $items[] = [
+        $item = [
             // Used to track if the tree item is collapsed or not
             'stateIdentifier' => $identifier,
             'identifier' => $pageId,
             'depth' => $depth,
             'tip' => htmlspecialchars($tooltip),
-            'hasChildren' => !empty($page['_children']),
             'icon' => $icon->getIdentifier(),
             'name' => $visibleText,
             'nameSourceField' => $nameSourceField,
             'alias' => htmlspecialchars($page['alias'] ?? ''),
-            'prefix' => htmlspecialchars($prefix),
-            'suffix' => htmlspecialchars($suffix),
-            'locked' => is_array($lockInfo),
-            'overlayIcon' => $icon->getOverlayIcon() ? $icon->getOverlayIcon()->getIdentifier() : '',
             'selectable' => true,
-            'expanded' => (bool)$expanded,
             'checked' => false,
-            'backgroundColor' => htmlspecialchars($backgroundColor),
-            'stopPageTree' => $stopPageTree,
-            'class' => $this->resolvePageCssClassNames($page),
-            'readableRootline' => $depth === 0 && $this->showMountPathAboveMounts ? $this->getMountPointPath($pageId) : '',
-            'isMountPoint' => $depth === 0,
             'mountPoint' => $entryPoint,
             'workspaceId' => !empty($page['t3ver_oid']) ? $page['t3ver_oid'] : $pageId,
         ];
+
+        if (!empty($page['_children'])) {
+            $item['hasChildren'] = true;
+        }
+        if (!empty($page['prefix'])) {
+            $item['prefix'] = htmlspecialchars($prefix);
+        }
+        if (!empty($page['suffix'])) {
+            $item['suffix'] = htmlspecialchars($suffix);
+        }
+        if (is_array($lockInfo)) {
+            $item['locked'] = true;
+        }
+        if ($icon->getOverlayIcon()) {
+            $item['overlayIcon'] = $icon->getOverlayIcon()->getIdentifier();
+        }
+        if ($expanded) {
+            $item['expanded'] = $expanded;
+        }
+        if ($backgroundColor) {
+            $item['backgroundColor'] = htmlspecialchars($backgroundColor);
+        }
+        if ($stopPageTree) {
+            $item['stopPageTree'] = $stopPageTree;
+        }
+        $class = $this->resolvePageCssClassNames($page);
+        if (!empty($class)) {
+            $item['class'] = $class;
+        }
+        $readableRootline = $depth === 0 && $this->showMountPathAboveMounts ? $this->getMountPointPath($pageId) : '';
+        if (!empty($readableRootline)) {
+            $item['readableRootline'] = $readableRootline;
+        }
+        if ($depth === 0) {
+            $item['isMountPoint'] = true;
+        }
+
+        $items[] = $item;
         if (!$stopPageTree) {
             foreach ($page['_children'] as $child) {
                 $items = array_merge($items, $this->pagesToFlatArray($child, $entryPoint, $depth + 1, ['backgroundColor' => $backgroundColor]));

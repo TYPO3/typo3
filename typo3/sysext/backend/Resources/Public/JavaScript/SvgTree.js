@@ -47,6 +47,7 @@ define(
         validation: {
           maxItems: Number.MAX_VALUE
         },
+        defaultProperties: {},
         unselectableElements: [],
         expandUpToLevel: null,
         readOnlyMode: false,
@@ -330,6 +331,7 @@ define(
 
         nodes = nodes || this.nodes;
         nodes = nodes.map(function(node, index) {
+          node = $.extend({}, _this.settings.defaultProperties, node);
           node.expanded = (_this.settings.expandUpToLevel !== null) ? node.depth < _this.settings.expandUpToLevel : Boolean(node.expanded);
           node.parents = [];
           node.parentsStateIdentifier = [];

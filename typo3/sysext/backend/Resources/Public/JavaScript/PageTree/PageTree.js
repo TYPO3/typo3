@@ -32,6 +32,22 @@ define(['jquery',
      */
     var PageTree = function() {
       SvgTree.call(this);
+      this.settings.defaultProperties = {
+        hasChildren: false,
+        nameSourceField: 'title',
+        prefix: '',
+        suffix: '',
+        locked: false,
+        overlayIcon: '',
+        selectable: true,
+        expanded: false,
+        checked: false,
+        backgroundColor: '',
+        stopPageTree: false,
+        class: '',
+        readableRootline: '',
+        isMountPoint: false,
+      };
     };
 
     PageTree.prototype = Object.create(SvgTree.prototype);
