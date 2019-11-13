@@ -351,8 +351,8 @@ options.databaseColumnMappings.<databaseColumnName>.value
       You can also use the :ref:`FormRuntime accessor feature<concepts-finishers-customfinisherimplementations-accessingoptions-formruntimeaccessor>` to access every getable property from the ``FormRuntime``
       In short: use something like ``{<formElementIdentifier>}`` to get the value from the submitted form element with the identifier ``<formElementIdentifier>``.
 
-      If you use the FormRuntime accessor feature within ``options.databaseColumnMappings``, than the functionality is nearly equal
-      to the the ``options.elements`` configuration variant.
+      If you use the FormRuntime accessor feature within ``options.databaseColumnMappings`` the functionality is nearly equal
+      to the ``options.elements`` configuration variant.
 
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.finishersdefinition.savetodatabase.options.databasecolumnmappings.<databasecolumnname>.skipifvalueisempty:

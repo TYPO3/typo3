@@ -60,7 +60,7 @@ module.
 .. hint::
 
    We recommend using a `site package <https://de.slideshare.net/benjaminkott/typo3-the-anatomy-of-sitepackages>`_.
-   This will make your life easier if you want to customise EXT:form
+   This will make your life easier if you want to customize EXT:form
    heavily in order to suit the customer's needs.
 
 

@@ -80,7 +80,7 @@ isSortable
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      If set to 'false' then the rows are not sortable.
+      If set to 'false' the rows are not sortable.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.enableaddrow-propertygrideditor:
@@ -104,7 +104,7 @@ enableAddRow
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      If set to 'false' the the "add new row" button is disabled.
+      If set to 'false' the "add new row" button is disabled.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.enabledeleterow-propertygrideditor:
@@ -128,7 +128,7 @@ enableDeleteRow
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      If set to 'false' the the "delete row" button is disabled.
+      If set to 'false' the "delete row" button is disabled.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.multiselection-propertygrideditor:
@@ -152,7 +152,7 @@ multiSelection
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      If set to 'false' then only one row can be marked as preselected.
+      If set to 'false' only one row can be marked as preselected.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.removelastavailablerowflashmessagetitle-propertygrideditor:
@@ -177,8 +177,8 @@ removeLastAvailableRowFlashMessageTitle
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed then a flash message is shown.
-      This property define the title for the flash message.
+      There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed a flash message is shown.
+      This property defines the title for the flash message.
 
 
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.removelastavailablerowflashmessagemessage-propertygrideditor:
@@ -203,8 +203,8 @@ removeLastAvailableRowFlashMessageMessage
       - :ref:`"Translate form editor settings"<concepts-formeditor-translation-formeditor>`
 
 :aspect:`Description`
-      There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed then a flash message is shown.
-      This property define the text for the flash message.
+      There must be at least one existing row within this ``inspector editor``. If the last existing row is tried to be removed a flash message is shown.
+      This property defines the text for the flash message.
 
 
 
@@ -229,4 +229,4 @@ shouldShowPreselectedValueColumn
       - :ref:`"Inspector"<concepts-formeditor-inspector>`
 
 :aspect:`Description`
-      If set to 'false' then the column which is used to mark a row as preselected will be disabled.
+      If set to 'false' the column which is used to mark a row as preselected will be disabled.
