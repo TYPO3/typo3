@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
  *
  * ::
  *
- *    <f:submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:submit>
+ *    <f:form.submit name="mySubmit" value="Send Mail"><button>dummy button</button></f:form.submit>
  *
  * Output::
  *
