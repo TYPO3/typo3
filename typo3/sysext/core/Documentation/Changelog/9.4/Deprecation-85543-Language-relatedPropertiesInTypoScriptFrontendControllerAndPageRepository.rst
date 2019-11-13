@@ -42,6 +42,8 @@ Use the new :php:`LanguageAspect` with various superior properties to access the
 
 .. code-block:: php
 
+   use TYPO3\CMS\Core\Context\Context;
+
 	$languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language')
 	// (previously known as TSFE->sys_language_uid)
 	$languageAspect->getId();
