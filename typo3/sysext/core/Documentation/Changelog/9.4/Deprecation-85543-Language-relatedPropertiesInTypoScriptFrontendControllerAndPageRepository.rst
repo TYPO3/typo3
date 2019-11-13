@@ -42,7 +42,7 @@ Use the new :php:`LanguageAspect` with various superior properties to access the
 
 .. code-block:: php
 
-	$languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language')
+	$languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
 	// (previously known as TSFE->sys_language_uid)
 	$languageAspect->getId();
 	// (previously known as TSFE->sys_language_content)
