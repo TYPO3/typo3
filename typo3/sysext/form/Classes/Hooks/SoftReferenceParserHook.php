@@ -47,12 +47,17 @@ class SoftReferenceParserHook extends SoftReferenceIndex
         $tokenId = $this->makeTokenID($content);
 
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+
         try {
             $file = $resourceFactory->retrieveFileOrFolderObject($content);
         } catch (\Exception $e) {
             // Top level catch to ensure useful following exception handling, because FAL throws top level exceptions.
             // TYPO3\CMS\Core\Database\ReferenceIndex::getRelations() will check the return value of this hook with is_array()
             // so we return false to tell getRelations() to do nothing.
+            return false;
+        }
+
+        if ($file === null) {
             return false;
         }
 
