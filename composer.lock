@@ -2222,21 +2222,21 @@
         },
         {
             "name": "typo3/cms-composer-installers",
-            "version": "v2.2.1",
+            "version": "v2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/CmsComposerInstallers.git",
-                "reference": "c2f6634171d5936a791925a161f7076ce4665ddf"
+                "reference": "7ecc2253e2d97a52824fcdd4e2f632bae9936810"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/c2f6634171d5936a791925a161f7076ce4665ddf",
-                "reference": "c2f6634171d5936a791925a161f7076ce4665ddf",
+                "url": "https://api.github.com/repos/TYPO3/CmsComposerInstallers/zipball/7ecc2253e2d97a52824fcdd4e2f632bae9936810",
+                "reference": "7ecc2253e2d97a52824fcdd4e2f632bae9936810",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": ">=7.0.0 <7.4"
+                "php": ">=7.0.0 <=7.4"
             },
             "conflict": {
                 "composer/installers": "<1.0.24 || >1.0.24"
@@ -2266,14 +2266,14 @@
             ],
             "authors": [
                 {
-                    "name": "The TYPO3 Community",
-                    "homepage": "https://typo3.org/community/",
-                    "role": "Contributor"
-                },
-                {
                     "name": "TYPO3 CMS Core Team",
                     "homepage": "https://forge.typo3.org/projects/typo3cms-core",
                     "role": "Developer"
+                },
+                {
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 }
             ],
             "description": "TYPO3 CMS Installers",
@@ -2285,7 +2285,7 @@
                 "installer",
                 "typo3"
             ],
-            "time": "2018-10-27T19:55:20+00:00"
+            "time": "2019-09-24T22:09:42+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
