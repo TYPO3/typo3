@@ -204,10 +204,10 @@ class FrontendLoginController extends AbstractPlugin
             }
         }
         // Adds hook for processing of extra item markers / special
-        $_params = [
-            'content' => $content
-        ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] ?? [] as $_funcRef) {
+            $_params = [
+                'content' => $content
+            ];
             $content = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
         }
         return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;
