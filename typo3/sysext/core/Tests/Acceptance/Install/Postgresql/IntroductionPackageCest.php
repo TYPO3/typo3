@@ -16,12 +16,13 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Postgresql;
  */
 
 use Codeception\Scenario;
+use TYPO3\CMS\Core\Tests\Acceptance\Install\AbstractIntroductionPackage;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 
 /**
  * Click through installer, go to backend, install introduction package
  */
-class IntroductionPackageCest
+class IntroductionPackageCest extends AbstractIntroductionPackage
 {
     /**
      * @param InstallTester $I
@@ -30,8 +31,6 @@ class IntroductionPackageCest
      */
     public function installTypo3OnPgSql(InstallTester $I, Scenario $scenario)
     {
-        $scenario->skip('Disabled until ext:introduction and ext:bootstrap_package are relased as v10 compatible.');
-
         // Calling frontend redirects to installer
         $I->amOnPage('/');
 
@@ -76,6 +75,8 @@ class IntroductionPackageCest
         $I->waitForText('Get preconfigured distribution', 30);
         $I->click('.t3-button-action-installdistribution');
         $I->waitForText('You successfully installed the distribution \'introduction\'', 240);
+
+        $this->manipulateSiteConfigurationOnlyForTesting($I);
 
         // Verify default frontend is rendered
         $I->amOnPage('/');

@@ -16,12 +16,13 @@ namespace TYPO3\CMS\Core\Tests\Acceptance\Install\Mysql;
  */
 
 use Codeception\Scenario;
+use TYPO3\CMS\Core\Tests\Acceptance\Install\AbstractIntroductionPackage;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\InstallTester;
 
 /**
  * Click through installer, go to backend, check blank site in FE works
  */
-class IntroductionPackageCest
+class IntroductionPackageCest extends AbstractIntroductionPackage
 {
     /**
      * @env mysql
@@ -29,8 +30,6 @@ class IntroductionPackageCest
      */
     public function installTypo3OnMysql(InstallTester $I, Scenario $scenario)
     {
-        $scenario->skip('Disabled until ext:introduction and ext:bootstrap_package are relased as v10 compatible.');
-
         // Calling frontend redirects to installer
         $I->amOnPage('/');
 
@@ -79,6 +78,8 @@ class IntroductionPackageCest
         $I->waitForText('Get preconfigured distribution', 30);
         $I->click('.t3-button-action-installdistribution');
         $I->waitForText('You successfully installed the distribution \'introduction\'', 240);
+
+        $this->manipulateSiteConfigurationOnlyForTesting($I);
 
         // Verify default frontend is rendered
         $I->amOnPage('/');
