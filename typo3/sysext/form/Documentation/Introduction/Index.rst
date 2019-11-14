@@ -55,7 +55,7 @@ Features List
 The following list names some features of the form framework:
 
 * form editor
-   * fully customisable editor for building complex forms
+   * fully customizable editor for building complex forms
    * replaceable and extendible form editor components
    * JS API to extend form editor
 * PHP API

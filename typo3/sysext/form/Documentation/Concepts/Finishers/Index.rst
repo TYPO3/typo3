@@ -207,7 +207,7 @@ submitted form values (assuming you are using the ``parseOption()`` method).
 You can access values of the ``FormRuntime`` and thus values of each single
 form element by encapsulating the option values with ``{}``. If there is a
 form element with the ``identifier`` 'subject', you can access its value
-within the the finisher configuration. Check out the following example to
+within the finisher configuration. Check out the following example to
 get the whole idea.
 
 .. code-block:: yaml
