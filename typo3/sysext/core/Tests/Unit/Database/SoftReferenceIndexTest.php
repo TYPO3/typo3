@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -212,8 +213,9 @@ class SoftReferenceIndexTest extends UnitTestCase
      */
     public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement)
     {
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
-            $subject = new SoftReferenceIndex();
+            $subject = new SoftReferenceIndex($eventDispatcher->reveal());
             $result = $subject->findRef(
                 'tt_content',
                 'bodytext',
@@ -331,8 +333,9 @@ class SoftReferenceIndexTest extends UnitTestCase
 
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
 
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
-            $subject = new SoftReferenceIndex();
+            $subject = new SoftReferenceIndex($eventDispatcher->reveal());
             $result = $subject->findRef(
                 'tt_content',
                 'bodytext',
@@ -389,8 +392,9 @@ class SoftReferenceIndexTest extends UnitTestCase
         $resourceFactory->getFolderObjectFromCombinedIdentifier('1:/foo/bar/baz')->willReturn($folderObject->reveal())->shouldBeCalledTimes(count($softrefConfiguration));
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactory->reveal());
 
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         foreach ($softrefConfiguration as $softrefKey => $configuration) {
-            $subject = new SoftReferenceIndex();
+            $subject = new SoftReferenceIndex($eventDispatcher->reveal());
             $result = $subject->findRef(
                 'tt_content',
                 'bodytext',
@@ -428,8 +432,9 @@ class SoftReferenceIndexTest extends UnitTestCase
      */
     public function getTypoLinkPartsThrowExceptionWithPharReferences(string $pharUrl)
     {
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030672);
-        (new SoftReferenceIndex())->getTypoLinkParts($pharUrl);
+        (new SoftReferenceIndex($eventDispatcher->reveal()))->getTypoLinkParts($pharUrl);
     }
 }

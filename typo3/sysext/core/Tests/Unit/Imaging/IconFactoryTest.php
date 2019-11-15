@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Imaging;
  */
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
@@ -23,8 +24,6 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -90,11 +89,10 @@ class IconFactoryTest extends UnitTestCase
     {
         parent::setUp();
         $this->iconRegistryMock = $this->prophesize(IconRegistry::class);
-        $signalSlotDispatcherMock = $this->prophesize(SignalSlotDispatcher::class);
-        $signalSlotDispatcherMock->dispatch(Argument::any(), Argument::any(), Argument::type('array'))->willReturnArgument(2);
-        GeneralUtility::setSingletonInstance(SignalSlotDispatcher::class, $signalSlotDispatcherMock->reveal());
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::any())->willReturnArgument(0);
 
-        $this->subject = new IconFactory($this->iconRegistryMock->reveal());
+        $this->subject = new IconFactory($eventDispatcher->reveal(), $this->iconRegistryMock->reveal());
 
         $this->iconRegistryMock->isRegistered('tcarecords--default')->willReturn(false);
         $this->iconRegistryMock->isRegistered(Argument::any())->willReturn(true);

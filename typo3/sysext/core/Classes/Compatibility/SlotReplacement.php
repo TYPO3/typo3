@@ -17,6 +17,16 @@ namespace TYPO3\CMS\Core\Compatibility;
  */
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Database\Schema\Exception\UnexpectedSignalReturnValueTypeException;
+use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Database\SoftReferenceIndex;
+use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
+use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
+use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
@@ -62,6 +72,9 @@ use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
+use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
+use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 
@@ -115,7 +128,11 @@ class SlotReplacement
 
     public function onFileIndexRepositoryRecordUpdated(AfterFileUpdatedInIndexEvent $event): void
     {
-        $this->signalSlotDispatcher->dispatch(FileIndexRepository::class, 'recordUpdated', [$event->getRelevantProperties()]);
+        $this->signalSlotDispatcher->dispatch(
+            FileIndexRepository::class,
+            'recordUpdated',
+            [$event->getRelevantProperties()]
+        );
     }
 
     public function onFileIndexRepositoryRecordCreated(AfterFileAddedToIndexEvent $event): void
@@ -125,7 +142,11 @@ class SlotReplacement
 
     public function onFileIndexRepositoryRecordMarkedAsMissing(AfterFileMarkedAsMissingEvent $event): void
     {
-        $this->signalSlotDispatcher->dispatch(FileIndexRepository::class, 'recordMarkedAsMissing', [$event->getFileUid()]);
+        $this->signalSlotDispatcher->dispatch(
+            FileIndexRepository::class,
+            'recordMarkedAsMissing',
+            [$event->getFileUid()]
+        );
     }
 
     public function onFileIndexRepositoryRecordDeleted(AfterFileRemovedFromIndexEvent $event): void
@@ -166,7 +187,12 @@ class SlotReplacement
             ResourceStorage::class,
             FileProcessingService::SIGNAL_PreFileProcess,
             [
-                $service, $event->getDriver(), $event->getProcessedFile(), $event->getFile(), $event->getTaskType(), $event->getConfiguration()
+                $service,
+                $event->getDriver(),
+                $event->getProcessedFile(),
+                $event->getFile(),
+                $event->getTaskType(),
+                $event->getConfiguration()
             ]
         );
     }
@@ -182,7 +208,14 @@ class SlotReplacement
         $this->signalSlotDispatcher->dispatch(
             ResourceStorage::class,
             FileProcessingService::SIGNAL_PostFileProcess,
-            [$service, $event->getDriver(), $event->getProcessedFile(), $event->getFile(), $event->getTaskType(), $event->getConfiguration()]
+            [
+                $service,
+                $event->getDriver(),
+                $event->getProcessedFile(),
+                $event->getFile(),
+                $event->getTaskType(),
+                $event->getConfiguration()
+            ]
         );
     }
 
@@ -536,5 +569,116 @@ class SlotReplacement
             ]
         );
         $event->setPublicUrl($urlData['publicUrl']);
+    }
+
+    /**
+     * ReferenceIndex and SoftReferenceIndex
+     */
+    public function onReferenceIndexShouldExcludeTableFromReferenceIndexSignal(
+        IsTableExcludedFromReferenceIndexEvent $event
+    ): void {
+        $excludeTable = $event->isTableExcluded();
+        $this->signalSlotDispatcher->dispatch(
+            ReferenceIndex::class,
+            'shouldExcludeTableFromReferenceIndex',
+            [
+                $event->getTable(),
+                &$excludeTable
+            ]
+        );
+        if ($excludeTable) {
+            $event->markAsExcluded();
+        }
+    }
+
+    public function onSoftReferenceIndexSetTypoLinkPartsElementSignal(AppendLinkHandlerElementsEvent $event): void
+    {
+        $linkHandlerFound = false;
+        $result = $this->signalSlotDispatcher->dispatch(
+            SoftReferenceIndex::class,
+            'setTypoLinkPartsElement',
+            [
+                $linkHandlerFound,
+                $event->getLinkParts(),
+                $event->getContent(),
+                $event->getElements(),
+                $event->getIdx(),
+                $event->getTokenId()
+            ]
+        );
+        if ($result[0]) {
+            $event->setLinkParts($result[1]);
+            $event->setContent($result[2]);
+            $event->addElements($result[3]);
+        }
+    }
+
+    /**
+     * Imaging-related
+     */
+    public function onIconFactoryEmitBuildIconForResourceSignal(ModifyIconForResourcePropertiesEvent $event): void
+    {
+        $result = $this->signalSlotDispatcher->dispatch(
+            IconFactory::class,
+            'buildIconForResourceSignal',
+            [
+                $event->getResource(),
+                $event->getSize(),
+                $event->getOptions(),
+                $event->getIconIdentifier(),
+                $event->getOverlayIdentifier()
+            ]
+        );
+        $event->setIconIdentifier($result[3]);
+        $event->setOverlayIdentifier($result[4]);
+    }
+
+    public function onExtensionManagementUtilityTcaIsBeingBuilt(AfterTcaCompilationEvent $event): void
+    {
+        list($tca) = $this->signalSlotDispatcher->dispatch(
+            ExtensionManagementUtility::class,
+            'tcaIsBeingBuilt',
+            [
+                $event->getTca()
+            ]
+        );
+        $event->setTca($tca);
+    }
+
+    public function onSqlReaderEmitTablesDefinitionIsBeingBuiltSignal(AlterTableDefinitionStatementsEvent $event): void
+    {
+        // Using the old class name from the install tool here to keep backwards compatibility.
+        $signalReturn = $this->signalSlotDispatcher->dispatch(
+            'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
+            'tablesDefinitionIsBeingBuilt',
+            [$event->getSqlData()]
+        );
+
+        // This is important to support old associated returns
+        $signalReturn = array_values($signalReturn);
+        $sqlString = $signalReturn[0];
+        if (!is_array($sqlString)) {
+            throw new UnexpectedSignalReturnValueTypeException(
+                sprintf(
+                    'The signal %s of class %s returned a value of type %s, but array was expected.',
+                    'tablesDefinitionIsBeingBuilt',
+                    SqlReader::class,
+                    gettype($sqlString)
+                ),
+                1382351456
+            );
+        }
+        $event->setSqlData($sqlString);
+    }
+
+    public function onDatabaseTreeDataProviderEmitPostProcessTreeDataSignal(ModifyTreeDataEvent $event): void
+    {
+        if ($event->getProvider() instanceof DatabaseTreeDataProvider) {
+            $this->signalSlotDispatcher->dispatch(
+                DatabaseTreeDataProvider::class,
+                'PostProcessTreeData',
+                [$event->getProvider(), $event->getTreeData()]
+            );
+        }
     }
 }

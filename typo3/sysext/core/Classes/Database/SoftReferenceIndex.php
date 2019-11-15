@@ -14,13 +14,14 @@ namespace TYPO3\CMS\Core\Database;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Frontend\Service\TypoLinkCodecService;
@@ -79,6 +80,16 @@ class SoftReferenceIndex implements SingletonInterface
      * @var string
      */
     public $tokenID_basePrefix = '';
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Main function through which all processing happens
@@ -596,12 +607,14 @@ class SoftReferenceIndex implements SingletonInterface
                 $content = '{softref:' . $tokenID . '}';
                 break;
             default:
-                $linkHandlerFound = false;
-                list($linkHandlerFound, $tLP, $content, $newElements) = $this->emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID);
-                // We need to merge the array, otherwise we would loose the reference.
-                ArrayUtility::mergeRecursiveWithOverrule($elements, $newElements);
+                $event = new AppendLinkHandlerElementsEvent($tLP, $content, $elements, $idx, $tokenID);
+                $this->eventDispatcher->dispatch($event);
 
-                if (!$linkHandlerFound) {
+                $elements = $event->getElements();
+                $tLP = $event->getLinkParts();
+                $content = $event->getContent();
+
+                if (!$event->isResolved()) {
                     $elements[$tokenID . ':' . $idx]['error'] = 'Couldn\'t decide typolink mode.';
                     return $content;
                 }
@@ -623,27 +636,5 @@ class SoftReferenceIndex implements SingletonInterface
     public function makeTokenID($index = '')
     {
         return md5($this->tokenID_basePrefix . ':' . $index);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    }
-
-    /**
-     * @param bool $linkHandlerFound
-     * @param array $tLP
-     * @param string $content
-     * @param array $elements
-     * @param int $idx
-     * @param string $tokenID
-     * @return array
-     */
-    protected function emitSetTypoLinkPartsElement($linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID)
-    {
-        return $this->getSignalSlotDispatcher()->dispatch(static::class, 'setTypoLinkPartsElement', [$linkHandlerFound, $tLP, $content, $elements, $idx, $tokenID, $this]);
     }
 }

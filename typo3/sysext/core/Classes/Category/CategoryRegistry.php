@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Category;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -436,18 +437,16 @@ class CategoryRegistry implements SingletonInterface
     }
 
     /**
-     * A slot method to inject the required category database fields to the
+     * A event listener to inject the required category database fields to the
      * tables definition string
      *
-     * @param array $sqlString
-     * @return array
+     * @param AlterTableDefinitionStatementsEvent $event
      * @internal
      */
-    public function addCategoryDatabaseSchemaToTablesDefinition(array $sqlString)
+    public function addCategoryDatabaseSchema(AlterTableDefinitionStatementsEvent $event): void
     {
         $this->registerDefaultCategorizedTables();
-        $sqlString[] = $this->getDatabaseTableDefinitions();
-        return ['sqlString' => $sqlString];
+        $event->addSqlData($this->getDatabaseTableDefinitions());
     }
 
     /**

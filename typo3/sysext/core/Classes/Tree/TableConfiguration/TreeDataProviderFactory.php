@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tree\TableConfiguration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Builds a \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
  * object based on some TCA configuration
@@ -32,21 +34,21 @@ class TreeDataProviderFactory
      */
     public static function getDataProvider(array $tcaConfiguration, $table, $field, $currentValue)
     {
-        /** @var \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider $dataProvider */
+        /** @var DatabaseTreeDataProvider $dataProvider */
         $dataProvider = null;
         if (!isset($tcaConfiguration['treeConfig']) || !is_array($tcaConfiguration['treeConfig'])) {
             throw new \InvalidArgumentException('TCA Tree configuration is invalid: "treeConfig" array is missing', 1288215890);
         }
 
         if (!empty($tcaConfiguration['treeConfig']['dataProvider'])) {
-            $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($tcaConfiguration['treeConfig']['dataProvider'], $tcaConfiguration, $table, $field, $currentValue);
+            $dataProvider = GeneralUtility::makeInstance($tcaConfiguration['treeConfig']['dataProvider'], $tcaConfiguration, $table, $field, $currentValue);
         }
         if (!isset($tcaConfiguration['internal_type'])) {
             $tcaConfiguration['internal_type'] = 'db';
         }
         if ($tcaConfiguration['internal_type'] === 'db') {
             if ($dataProvider === null) {
-                $dataProvider = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::class);
+                $dataProvider = GeneralUtility::makeInstance(DatabaseTreeDataProvider::class);
             }
             if (isset($tcaConfiguration['foreign_table'])) {
                 $tableName = $tcaConfiguration['foreign_table'];

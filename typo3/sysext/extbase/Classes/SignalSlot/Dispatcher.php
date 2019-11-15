@@ -17,6 +17,14 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Database\SoftReferenceIndex;
+use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
+use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
+use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
@@ -64,6 +72,9 @@ use TYPO3\CMS\Core\Resource\ResourceFactoryInterface;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\ResourceStorageInterface;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
+use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
+use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
@@ -142,6 +153,24 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         FileProcessingService::class => [
             FileProcessingService::SIGNAL_PreFileProcess => BeforeFileProcessingEvent::class,
             FileProcessingService::SIGNAL_PostFileProcess => AfterFileProcessingEvent::class,
+        ],
+        IconFactory::class => [
+            'buildIconForResourceSignal' => ModifyIconForResourcePropertiesEvent::class,
+        ],
+        SoftReferenceIndex::class => [
+            'setTypoLinkPartsElement' => AppendLinkHandlerElementsEvent::class,
+        ],
+        ReferenceIndex::class => [
+            'shouldExcludeTableFromReferenceIndex' => IsTableExcludedFromReferenceIndexEvent::class,
+        ],
+        ExtensionManagementUtility::class => [
+            'tcaIsBeingBuilt' => AfterTcaCompilationEvent::class,
+        ],
+        'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService' => [
+            'tablesDefinitionIsBeingBuilt' => AlterTableDefinitionStatementsEvent::class,
+        ],
+        DatabaseTreeDataProvider::class => [
+            'PostProcessTreeData' => ModifyTreeDataEvent::class,
         ],
     ];
 

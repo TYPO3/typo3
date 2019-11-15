@@ -15,9 +15,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
+use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Tree\TableConfiguration\TreeDataProviderFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,15 +28,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class TreeDataProviderFactoryTest extends UnitTestCase
 {
-    /**
-     * @var TreeDataProviderFactory
-     */
-    protected $subject;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new TreeDataProviderFactory();
         $GLOBALS['TCA'] = [];
         $GLOBALS['TCA']['foo'] = [];
         $GLOBALS['TCA']['foo']['ctrl'] = [];
@@ -96,10 +93,15 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
+        $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
+        GeneralUtility::setContainer(new FailsafeContainer([], [
+            DatabaseTreeDataProvider::class => $treeDataProvider->reveal()
+        ]));
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
 
-        $this->subject::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
+        TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
     }
 
     /**
@@ -113,7 +115,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
             'treeConfig' => ['dataProvider' => $dataProviderMockClassName],
             'internal_type' => 'foo'
         ];
-        $dataProvider = $this->subject::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
+        $dataProvider = TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
 
         self::assertInstanceOf($dataProviderMockClassName, $dataProvider);
     }
@@ -133,6 +135,6 @@ class TreeDataProviderFactoryTest extends UnitTestCase
         ];
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1438875249);
-        $this->subject::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
+        TreeDataProviderFactory::getDataProvider($tcaConfiguration, 'foo', 'bar', ['uid' => 1]);
     }
 }

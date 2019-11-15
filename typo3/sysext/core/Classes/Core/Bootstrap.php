@@ -18,6 +18,7 @@ use Composer\Autoload\ClassLoader;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
@@ -143,6 +144,7 @@ class Bootstrap
 
         IconRegistry::setCache($assetsCache);
         PageRenderer::setCache($assetsCache);
+        ExtensionManagementUtility::setEventDispatcher($container->get(EventDispatcherInterface::class));
         static::loadTypo3LoadedExtAndExtLocalconf(true, $coreCache);
         static::unsetReservedGlobalVariables();
         $bootState->done = true;

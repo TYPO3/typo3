@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
@@ -24,7 +26,6 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Tests\Unit\Utility\AccessibleProxies\ExtensionManagementUtilityAccessibleProxy;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -58,7 +59,6 @@ class ExtensionManagementUtilityTest extends UnitTestCase
     {
         ExtensionManagementUtilityAccessibleProxy::setPackageManager($this->backUpPackageManager);
         ExtensionManagementUtilityAccessibleProxy::setCacheManager(null);
-        ExtensionManagementUtilityAccessibleProxy::setSignalSlotDispatcher(null);
         parent::tearDown();
     }
 
@@ -1455,9 +1455,9 @@ class ExtensionManagementUtilityTest extends UnitTestCase
         $mockCache->expects(self::once())->method('require')->willReturn(false);
         $mockCache->expects(self::once())->method('set')->with(self::anything(), self::stringContains($uniqueStringInTableConfiguration), self::anything());
 
-        $mockSignalSlotDispatcher = $this->createMock(SignalSlotDispatcher::class);
-        $mockSignalSlotDispatcher->expects(self::once())->method('dispatch')->with(self::anything(), self::anything(), self::isType('array'))->willReturnArgument(2);
-        ExtensionManagementUtilityAccessibleProxy::setSignalSlotDispatcher($mockSignalSlotDispatcher);
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcher->dispatch(Argument::any())->shouldBeCalled()->willReturnArgument(0);
+        ExtensionManagementUtility::setEventDispatcher($eventDispatcher->reveal());
 
         ExtensionManagementUtility::loadBaseTca(true);
     }

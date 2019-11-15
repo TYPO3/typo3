@@ -13,34 +13,34 @@ namespace TYPO3\CMS\IndexedSearch\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This service provides the mysql specific changes of the schema definition
  * @internal this is a TYPO3-internal hook implementation and not part of TYPO3's Core API.
  */
-class DatabaseSchemaService
+final class DatabaseSchemaService
 {
     /**
-     * A slot method to inject the required mysql fulltext definition
-     * to schema migration
+     * A event listener to inject the required mysql fulltext definition
+     * to schema migration.
      *
-     * @param array $sqlString
-     * @return array
+     * @param AlterTableDefinitionStatementsEvent $event
      */
-    public function addMysqlFulltextIndex(array $sqlString)
+    public function addMysqlFulltextIndex(AlterTableDefinitionStatementsEvent $event): void
     {
         $useMysqlFulltext = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search', 'useMysqlFulltext');
         if ($useMysqlFulltext) {
             // @todo: With MySQL 5.7 fulltext index on InnoDB is possible, check for that and keep inno if so.
-            $sqlString[] = 'CREATE TABLE index_fulltext ('
+            $event->addSqlData('CREATE TABLE index_fulltext ('
                 . LF . 'fulltextdata mediumtext,'
                 . LF . 'metaphonedata mediumtext,'
                 . LF . 'FULLTEXT fulltextdata (fulltextdata),'
                 . LF . 'FULLTEXT metaphonedata (metaphonedata)'
-                . LF . ') ENGINE=MyISAM;';
+                . LF . ') ENGINE=MyISAM;');
         }
-        return [$sqlString];
     }
 }

@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Imaging;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\InaccessibleFolder;
@@ -21,7 +23,6 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Type\Icon\IconState;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * The main factory class, which acts as the entrypoint for generating an Icon object which
@@ -58,11 +59,18 @@ class IconFactory
     protected static $iconCache = [];
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
      * @param IconRegistry $iconRegistry
      */
-    public function __construct(IconRegistry $iconRegistry = null)
+    public function __construct(EventDispatcherInterface $eventDispatcher = null, IconRegistry $iconRegistry = null)
     {
-        $this->iconRegistry = $iconRegistry ? $iconRegistry : GeneralUtility::makeInstance(IconRegistry::class);
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $this->iconRegistry = $iconRegistry ?? GeneralUtility::makeInstance(IconRegistry::class);
         $this->recordStatusMapping = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['recordStatusMapping'];
         $this->overlayPriorities = $GLOBALS['TYPO3_CONF_VARS']['SYS']['IconFactory']['overlayPriorities'];
     }
@@ -423,11 +431,16 @@ class IconFactory
             }
         }
 
-        unset($options['mount-root']);
-        unset($options['folder-open']);
-        list($iconIdentifier, $overlayIdentifier) =
-            $this->emitBuildIconForResourceSignal($resource, $size, $options, $iconIdentifier, $overlayIdentifier);
-        return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
+        $event = $this->eventDispatcher->dispatch(
+            new ModifyIconForResourcePropertiesEvent(
+                $resource,
+                $size,
+                $options,
+                $iconIdentifier,
+                $overlayIdentifier
+            )
+        );
+        return $this->getIcon($event->getIconIdentifier(), $size, $event->getOverlayIdentifier());
     }
 
     /**
@@ -453,45 +466,6 @@ class IconFactory
         }
 
         return $icon;
-    }
-
-    /**
-     * Emits a signal right after the identifiers are built.
-     *
-     * @param ResourceInterface $resource
-     * @param string $size
-     * @param array $options
-     * @param string $iconIdentifier
-     * @param string $overlayIdentifier
-     * @return mixed
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     */
-    protected function emitBuildIconForResourceSignal(
-        ResourceInterface $resource,
-        $size,
-        array $options,
-        $iconIdentifier,
-        $overlayIdentifier
-    ) {
-        $result = $this->getSignalSlotDispatcher()->dispatch(
-            self::class,
-            'buildIconForResourceSignal',
-            [$resource, $size, $options, $iconIdentifier, $overlayIdentifier]
-        );
-        $iconIdentifier = $result[3];
-        $overlayIdentifier = $result[4];
-        return [$iconIdentifier, $overlayIdentifier];
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        return GeneralUtility::makeInstance(Dispatcher::class);
     }
 
     /**

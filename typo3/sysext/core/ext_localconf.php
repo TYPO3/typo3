@@ -38,19 +38,6 @@ if (!\TYPO3\CMS\Core\Core\Environment::isComposerMode()) {
     );
 }
 
-$signalSlotDispatcher->connect(
-    'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
-    'tablesDefinitionIsBeingBuilt',
-    \TYPO3\CMS\Core\Cache\DatabaseSchemaService::class,
-    'addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService'
-);
-$signalSlotDispatcher->connect(
-    'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
-    'tablesDefinitionIsBeingBuilt',
-    \TYPO3\CMS\Core\Category\CategoryRegistry::class,
-    'addCategoryDatabaseSchemaToTablesDefinition'
-);
-
 unset($signalSlotDispatcher);
 
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = \TYPO3\CMS\Core\Controller\FileDumpController::class . '::dumpAction';

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core;
  */
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 
 /**
@@ -41,6 +42,13 @@ class ServiceProvider extends AbstractServiceProvider
             Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
         ];
+    }
+
+    public function getExtensions(): array
+    {
+        return [
+            EventDispatcherInterface::class => [ static::class, 'provideFallbackEventDispatcher' ],
+        ] + parent::getExtensions();
     }
 
     public static function getCacheManager(ContainerInterface $container): Cache\CacheManager
@@ -109,5 +117,15 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getMiddlewares(ContainerInterface $container): array
     {
         return [];
+    }
+
+    public static function provideFallbackEventDispatcher(
+        ContainerInterface $container,
+        EventDispatcherInterface $eventDispatcher = null
+    ): EventDispatcherInterface {
+        // Provide a dummy / empty event dispatcher for the install tool when $eventDispatcher is null (that means when we run without symfony DI)
+        return $eventDispatcher ?? new EventDispatcher\EventDispatcher(
+            new EventDispatcher\ListenerProvider($container)
+        );
     }
 }

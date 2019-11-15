@@ -14,11 +14,24 @@ namespace TYPO3\CMS\Core\Cache;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
+
 /**
  * This service provides the sql schema for the caching framework
  */
-class DatabaseSchemaService
+final class DatabaseSchemaService
 {
+
+    /**
+     * An event listener to inject the required caching framework database tables to the
+     * tables definitions string
+     * @param AlterTableDefinitionStatementsEvent $event
+     */
+    public function addCachingFrameworkDatabaseSchema(AlterTableDefinitionStatementsEvent $event): void
+    {
+        $event->addSqlData($this->getCachingFrameworkRequiredDatabaseSchema());
+    }
+
     /**
      * Get schema SQL of required cache framework tables.
      *
@@ -26,7 +39,7 @@ class DatabaseSchemaService
      *
      * @return string Cache framework SQL
      */
-    public function getCachingFrameworkRequiredDatabaseSchema()
+    private function getCachingFrameworkRequiredDatabaseSchema()
     {
         // Use new to circumvent the singleton pattern of CacheManager
         $cacheManager = new CacheManager();
@@ -41,18 +54,5 @@ class DatabaseSchemaService
         }
 
         return $tableDefinitions;
-    }
-
-    /**
-     * A slot method to inject the required caching framework database tables to the
-     * tables definitions string
-     *
-     * @param array $sqlString
-     * @return array
-     */
-    public function addCachingFrameworkRequiredDatabaseSchemaForSqlExpectedSchemaService(array $sqlString)
-    {
-        $sqlString[] = $this->getCachingFrameworkRequiredDatabaseSchema();
-        return [$sqlString];
     }
 }

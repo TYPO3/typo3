@@ -351,5 +351,11 @@ return [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
         ],
+    ],
+    'TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::SIGNAL_PostProcessTreeData' => [
+        'restFiles' => [
+            'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
+            'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
+        ],
     ]
 ];

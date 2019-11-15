@@ -60,15 +60,6 @@ if (isset($extConf['useMysqlFulltext']) && (bool)$extConf['useMysqlFulltext']) {
     // Use all index_* tables except "index_rel" and "index_words"
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
         'index_phash,index_fulltext,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';
-    // Register schema analyzer slot to hook in required fulltext index definition
-    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    $signalSlotDispatcher->connect(
-        'TYPO3\\CMS\\Install\\Service\\SqlExpectedSchemaService',
-        'tablesDefinitionIsBeingBuilt',
-        \TYPO3\CMS\IndexedSearch\Service\DatabaseSchemaService::class,
-        'addMysqlFulltextIndex'
-    );
-    unset($signalSlotDispatcher);
 } else {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['use_tables'] =
         'index_phash,index_fulltext,index_rel,index_words,index_section,index_grlist,index_stat_search,index_stat_word,index_debug,index_config';

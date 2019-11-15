@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -68,6 +69,11 @@ class TcaSelectItemsTest extends UnitTestCase
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
+
+        $iconRegistryProphecy = $this->prophesize(IconRegistry::class);
+        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconRegistryProphecy->reveal());
+        $iconFactoryProphecy = $this->prophesize(IconFactory::class);
+        GeneralUtility::addInstance(IconFactory::class, $iconFactoryProphecy->reveal());
     }
 
     /**
@@ -328,9 +334,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
-
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1439298496);
 
@@ -373,9 +376,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
         $GLOBALS['TCA_DESCR']['aTable']['columns']['']['description'] = 'aDescription';
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -442,9 +442,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -608,9 +605,6 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
         $GLOBALS['TCA'] = $tca;
 
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
-
         $result = (new TcaSelectItems)->addData($input);
 
         self::assertSame($expectedItems, $result['processedTca']['columns']['aField']['config']['items']);
@@ -674,9 +668,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         $expectedItems = [
             0 => [
@@ -742,9 +733,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -816,9 +804,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -905,9 +890,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
@@ -1001,9 +983,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ],
         ];
 
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
-
         /** @var LanguageService|ObjectProphecy $languageService */
         $languageService = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $languageService->reveal();
@@ -1056,9 +1035,6 @@ class TcaSelectItemsTest extends UnitTestCase
                 ],
             ],
         ];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         $siteFinder = $this->prophesize(SiteFinder::class);
         $siteFinder->getAllSites()->willReturn([
@@ -1128,9 +1104,6 @@ class TcaSelectItemsTest extends UnitTestCase
             ]
         ];
 
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
-
         $expectedItems = [
             0 => [
                 0 => 'aHeader',
@@ -1179,9 +1152,6 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $GLOBALS['TBE_MODULES'] = [];
-
-        $iconFactoryProphecy = $this->prophesize(IconRegistry::class);
-        GeneralUtility::setSingletonInstance(IconRegistry::class, $iconFactoryProphecy->reveal());
 
         /** @var ModuleLoader|ObjectProphecy $moduleLoaderProphecy */
         $moduleLoaderProphecy = $this->prophesize(ModuleLoader::class);

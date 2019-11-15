@@ -6,3 +6,10 @@ services:
 
   TYPO3\CMS\IndexedSearch\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\IndexedSearch\Service\DatabaseSchemaService:
+    tags:
+      - name: event.listener
+        identifier: 'indexed-search'
+        method: 'addMysqlFulltextIndex'
+        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent

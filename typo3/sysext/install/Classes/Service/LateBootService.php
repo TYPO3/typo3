@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
@@ -125,6 +126,8 @@ class LateBootService
         $assetsCache = $container->get('cache.assets');
         IconRegistry::setCache($assetsCache);
         PageRenderer::setCache($assetsCache);
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
+        ExtensionManagementUtility::setEventDispatcher($eventDispatcher);
         Bootstrap::loadTypo3LoadedExtAndExtLocalconf(false);
         Bootstrap::unsetReservedGlobalVariables();
         $container->get('boot.state')->done = true;

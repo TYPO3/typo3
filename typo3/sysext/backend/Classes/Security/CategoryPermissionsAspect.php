@@ -18,29 +18,28 @@ use TYPO3\CMS\Backend\Tree\TreeNode;
 use TYPO3\CMS\Backend\Tree\TreeNodeCollection;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
+use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with tree data security is a slot which reacts on a signal
- * on data data object initialization.
+ * This event listener deals with tree data security which reacts on a PSR-14 event
+ * on data object initialization.
  *
- * The aspect define category mount points according to BE User permissions.
+ * The aspect defines category mount points according to BE User permissions.
  *
  * @internal This class is TYPO3-internal hook and is not considered part of the Public TYPO3 API.
  */
-class CategoryPermissionsAspect
+final class CategoryPermissionsAspect
 {
     /**
      * @var string
      */
-    protected $categoryTableName = 'sys_category';
+    private $categoryTableName = 'sys_category';
 
     /**
      * @var BackendUserAuthentication
      */
-    protected $backendUserAuthentication;
+    private $backendUserAuthentication;
 
     /**
      * @param BackendUserAuthentication|null $backendUserAuthentication
@@ -51,17 +50,19 @@ class CategoryPermissionsAspect
     }
 
     /**
-     * The slot for the signal in DatabaseTreeDataProvider, which only affects the TYPO3 Backend
+     * The listener for the event in DatabaseTreeDataProvider, which only affects the TYPO3 Backend
      *
-     * @param DatabaseTreeDataProvider $dataProvider
-     * @param TreeNode $treeData
+     * @param ModifyTreeDataEvent $event
      */
-    public function addUserPermissionsToCategoryTreeData(DatabaseTreeDataProvider $dataProvider, $treeData)
+    public function addUserPermissionsToCategoryTreeData(ModifyTreeDataEvent $event): void
     {
         // Only evaluate this in the backend
         if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE)) {
             return;
         }
+
+        $dataProvider = $event->getProvider();
+        $treeData = $event->getTreeData();
 
         if (!$this->backendUserAuthentication->isAdmin() && $dataProvider->getTableName() === $this->categoryTableName) {
 
@@ -91,7 +92,7 @@ class CategoryPermissionsAspect
 
                 // Create an empty tree node collection to receive the secured nodes.
                 /** @var TreeNodeCollection $securedTreeNodeCollection */
-                $securedTreeNodeCollection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Tree\TreeNodeCollection::class);
+                $securedTreeNodeCollection = GeneralUtility::makeInstance(TreeNodeCollection::class);
 
                 foreach ($categoryMountPoints as $categoryMountPoint) {
                     $treeNode = $this->lookUpCategoryMountPointInTreeNodes((int)$categoryMountPoint, $treeNodeCollection);
@@ -113,14 +114,14 @@ class CategoryPermissionsAspect
      * @param TreeNodeCollection $treeNodeCollection
      * @return TreeNode|null
      */
-    protected function lookUpCategoryMountPointInTreeNodes($categoryMountPoint, TreeNodeCollection $treeNodeCollection)
+    private function lookUpCategoryMountPointInTreeNodes($categoryMountPoint, TreeNodeCollection $treeNodeCollection)
     {
         $result = null;
 
         // If any User permission, recursively traverse the tree and set tree part as mount point
         foreach ($treeNodeCollection as $treeNode) {
 
-            /** @var \TYPO3\CMS\Backend\Tree\TreeNode $treeNode */
+            /** @var TreeNode $treeNode */
             if ((int)$treeNode->getId() === $categoryMountPoint) {
                 $result = $treeNode;
                 break;
@@ -145,10 +146,10 @@ class CategoryPermissionsAspect
      * @param int $uid
      * @return array
      */
-    protected function findUidsInRootline($uid)
+    private function findUidsInRootline($uid)
     {
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->categoryTableName);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->categoryTableName);
         $row = $queryBuilder
             ->select('parent')
             ->from($this->categoryTableName)

@@ -32,6 +32,10 @@ services:
   TYPO3\CMS\Core\Html\RteHtmlParser:
     public: true
 
+  TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider:
+    shared: false
+    public: true
+
   # EventListeners
   TYPO3\CMS\Core\Compatibility\Slot\PostInitializeMailer:
     tags:
@@ -201,6 +205,30 @@ services:
         identifier: 'legacy-slot'
         method: 'onResourceStorageEmitSanitizeFileNameSignal'
         event: TYPO3\CMS\Core\Resource\Event\SanitizeFileNameEvent
+      - name: event.listener,
+        identifier: 'legacy-slot'
+        method: 'onReferenceIndexShouldExcludeTableFromReferenceIndexSignal'
+        event: TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onSoftReferenceIndexSetTypoLinkPartsElementSignal'
+        event: TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onIconFactoryEmitBuildIconForResourceSignal'
+        event: TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onExtensionManagementUtilityTcaIsBeingBuilt'
+        event: TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onSqlReaderEmitTablesDefinitionIsBeingBuiltSignal'
+        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onDatabaseTreeDataProviderEmitPostProcessTreeDataSignal'
+        event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent
 
   # FAL security checks for backend users
   TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:
@@ -216,6 +244,20 @@ services:
         identifier: 'processing'
         method: 'processFile'
         event: TYPO3\CMS\Core\Resource\Event\BeforeFileProcessingEvent
+
+  TYPO3\CMS\Core\Cache\DatabaseSchemaService:
+    tags:
+      - name: event.listener
+        identifier: 'caching-framework'
+        method: 'addCachingFrameworkDatabaseSchema'
+        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
+
+  TYPO3\CMS\Core\Category\CategoryRegistry:
+    tags:
+      - name: event.listener
+        identifier: 'category-registry'
+        method: 'addCategoryDatabaseSchema'
+        event: TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent
 
   # clean up files
   TYPO3\CMS\Core\Resource\Processing\FileDeletionAspect:

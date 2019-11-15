@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Database;
  */
 
 use Doctrine\DBAL\DBALException;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -22,11 +23,11 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Reference index processing and relation extraction
@@ -156,10 +157,16 @@ class ReferenceIndex implements LoggerAwareInterface
     protected $useRuntimeCache = false;
 
     /**
-     * Constructor
+     * @var EventDispatcherInterface
      */
-    public function __construct()
+    protected $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         $this->runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
     }
 
@@ -1330,13 +1337,11 @@ class ReferenceIndex implements LoggerAwareInterface
             return static::$excludedTables[$tableName];
         }
 
-        // Only exclude tables from ReferenceIndex which do not contain any relations and never did since existing references won't be deleted!
-        // There is no need to add tables without a definition in $GLOBALS['TCA] since ReferenceIndex only handles those.
-        $excludeTable = false;
-        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $signalSlotDispatcher->dispatch(__CLASS__, 'shouldExcludeTableFromReferenceIndex', [$tableName, &$excludeTable]);
-
-        static::$excludedTables[$tableName] = $excludeTable;
+        // Only exclude tables from ReferenceIndex which do not contain any relations and never
+        // did since existing references won't be deleted!
+        $event = new IsTableExcludedFromReferenceIndexEvent($tableName);
+        $event = $this->eventDispatcher->dispatch($event);
+        static::$excludedTables[$tableName] = $event->isTableExcluded();
 
         return static::$excludedTables[$tableName];
     }

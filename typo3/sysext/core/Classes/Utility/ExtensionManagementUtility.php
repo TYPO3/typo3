@@ -14,11 +14,14 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\Router;
+use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Category\CategoryRegistry;
+use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -64,39 +67,37 @@ class ExtensionManagementUtility
     }
 
     /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
+     * @var EventDispatcherInterface
+     */
+    protected static $eventDispatcher;
+
+    /**
+     * Sets the event dispatcher to be available.
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     * @internal only used for tests and the internal TYPO3 Bootstrap process
+     */
+    public static function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        static::$eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @var CacheManager
      */
     protected static $cacheManager;
 
     /**
      * Getter for the cache manager
      *
-     * @return \TYPO3\CMS\Core\Cache\CacheManager
+     * @return CacheManager
      */
     protected static function getCacheManager()
     {
         if (static::$cacheManager === null) {
-            static::$cacheManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class);
+            static::$cacheManager = GeneralUtility::makeInstance(CacheManager::class);
         }
         return static::$cacheManager;
-    }
-
-    /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected static $signalSlotDispatcher;
-
-    /**
-     * Getter for the signal slot dispatcher
-     *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected static function getSignalSlotDispatcher()
-    {
-        if (static::$signalSlotDispatcher === null) {
-            static::$signalSlotDispatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-        }
-        return static::$signalSlotDispatcher;
     }
 
     /**************************************
@@ -1609,23 +1610,17 @@ tt_content.' . $key . $suffix . ' {
         $tcaPreparation = GeneralUtility::makeInstance(TcaPreparation::class);
         $GLOBALS['TCA'] = $tcaPreparation->prepare($GLOBALS['TCA']);
 
-        static::emitTcaIsBeingBuiltSignal($GLOBALS['TCA']);
+        static::dispatchTcaIsBeingBuiltEvent($GLOBALS['TCA']);
     }
 
     /**
-     * Emits the signal and uses the result of slots for the final TCA
-     * This means, that *all* slots *must* return the complete TCA to
-     * be effective. If a slot calls methods that manipulate the global array,
-     * it needs to return the global array in the end. To be future proof,
-     * a slot should manipulate the signal argument only and return it
-     * after manipulation.
+     * Triggers an event for manipulating the final TCA
      *
      * @param array $tca
      */
-    protected static function emitTcaIsBeingBuiltSignal(array $tca)
+    protected static function dispatchTcaIsBeingBuiltEvent(array $tca)
     {
-        list($tca) = static::getSignalSlotDispatcher()->dispatch(__CLASS__, 'tcaIsBeingBuilt', [$tca]);
-        $GLOBALS['TCA'] = $tca;
+        $GLOBALS['TCA'] = static::$eventDispatcher->dispatch(new AfterTcaCompilationEvent($tca))->getTca();
     }
 
     /**
