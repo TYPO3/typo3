@@ -215,6 +215,7 @@ return [
                     ['mf', 'mf', 'flags-mf'],
                     ['mg', 'mg', 'flags-mg'],
                     ['mh', 'mh', 'flags-mh'],
+                    ['mi', 'mi', 'flags-mi'],
                     ['mk', 'mk', 'flags-mk'],
                     ['ml', 'ml', 'flags-ml'],
                     ['mm', 'mm', 'flags-mm'],
