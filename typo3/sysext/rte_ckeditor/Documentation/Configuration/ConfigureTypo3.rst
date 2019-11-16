@@ -29,15 +29,12 @@ Page TSconfig can be used to change:
 
       RTE.default.preset = full
 
-#. Override for one table (:ts:`RTE.config.table.column.preset`)::
+#. Override for one field (:ts:`RTE.config.[tableName].[fieldName].preset`)::
 
-      RTE.config.tx_news_domain_model_news.preset = minimal
+      RTE.config.tt_content.bodytext.preset = myCustomPreset
+      RTE.config.tx_news_domain_model_news.bodytext.preset = minimal
 
-#. Override for one field (:ts:`RTE.config.table.column.name.preset`)::
-
-      RTE.config.tt_content.bodytext.preset = normal
-
-#. Override for one field, if type matches (:ts:`RTE.config.table.column.types.name.preset`)::
+#. Override for one field, if type matches (:ts:`RTE.config.[tableName].[fieldName].types.[type].preset`)::
 
       RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
 
