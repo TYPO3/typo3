@@ -313,7 +313,7 @@
 				<source>Maltese</source>
 			</trans-unit>
 			<trans-unit id="sys_language.language_isocode.mi" resname="sys_language.language_isocode.mi">
-				<source>Māori</source>
+				<source>Maori (Te Reo Māori)</source>
 			</trans-unit>
 			<trans-unit id="sys_language.language_isocode.mr" resname="sys_language.language_isocode.mr">
 				<source>Marathi (Marāṭhī)</source>
