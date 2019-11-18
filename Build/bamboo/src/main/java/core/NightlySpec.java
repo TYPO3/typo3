@@ -245,7 +245,7 @@ public class NightlySpec extends AbstractCoreSpec {
                 new ScheduledTrigger()
                     .name("Scheduled")
                     .description("once a day")
-                    .cronExpression("0 3 0 ? * *")
+                    .cronExpression("0 0 3 ? * *")
             )
             .variables(
                 new Variable("changeUrl", ""),
