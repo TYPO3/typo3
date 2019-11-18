@@ -2947,7 +2947,9 @@ class GeneralUtility
             // Note that this is only secure if name base virtual host are configured correctly in the webserver
             $defaultPort = self::getIndpEnv('TYPO3_SSL') ? '443' : '80';
             $parsedHostValue = parse_url('http://' . $hostHeaderValue);
-            if (isset($parsedHostValue['port'])) {
+            if (self::getIndpEnv('TYPO3_REV_PROXY') && isset($parsedHostValue['port'])) {
+                $hostMatch = (strtolower($parsedHostValue['host']) === strtolower($_SERVER['SERVER_NAME']) && (string)$parsedHostValue['port'] === $defaultPort);
+            } elseif (isset($parsedHostValue['port'])) {
                 $hostMatch = (strtolower($parsedHostValue['host']) === strtolower($_SERVER['SERVER_NAME']) && (string)$parsedHostValue['port'] === $_SERVER['SERVER_PORT']);
             } else {
                 $hostMatch = (strtolower($hostHeaderValue) === strtolower($_SERVER['SERVER_NAME']) && $defaultPort === $_SERVER['SERVER_PORT']);
