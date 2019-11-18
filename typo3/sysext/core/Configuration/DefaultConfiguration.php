@@ -1325,6 +1325,10 @@ return [
                     label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_2
                     fields = title,uid,lastUpdated,newUntil,cache_timeout,php_tree_stop,TSconfig,is_siteroot,fe_login_mode
                 }
+                3 {
+                    label = LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:pages_layouts
+                    fields = title,uid,actual_backend_layout,backend_layout,backend_layout_next_level,layout
+                }
             }
         ',
         // String (exclude).Enter lines of default Page TSconfig.

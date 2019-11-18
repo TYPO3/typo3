@@ -95,10 +95,16 @@ class BackendLayoutView implements SingletonInterface
      * Gets backend layout items to be shown in the forms engine.
      * This method is called as "itemsProcFunc" with the accordant context
      * for pages.backend_layout and pages.backend_layout_next_level.
+     * Also used in the info module, since we need those items with
+     * the appropriate labels and backend layout identifiers there, too.
      *
      * @param array $parameters
+     * @todo This method should return the items array instead of
+     *       using the whole parameters array as reference. This
+     *       has to be adjusted, as soon as the itemsProcFunc
+     *       functionality is changed in this regard.
      */
-    public function addBackendLayoutItems(array $parameters)
+    public function addBackendLayoutItems(array &$parameters)
     {
         $pageId = $this->determinePageId($parameters['table'], $parameters['row']) ?: 0;
         $pageTsConfig = (array)BackendUtility::getPagesTSconfig($pageId);

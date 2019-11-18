@@ -19,6 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -53,6 +54,7 @@ class PageInformationController
 
     protected IconFactory $iconFactory;
     protected UriBuilder $uriBuilder;
+    protected ?BackendLayoutView $backendLayoutView = null;
 
     /**
      * @var array
@@ -282,6 +284,9 @@ class PageInformationController
                     case 'uid':
                         $headerCells[$field] = '';
                         break;
+                    case 'actual_backend_layout':
+                        $headerCells[$field] = htmlspecialchars($lang->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:actual_backend_layout'));
+                        break;
                     default:
                         if (strpos($field, 'table_') === 0) {
                             $f2 = substr($field, 6);
@@ -386,6 +391,9 @@ class PageInformationController
      */
     protected function pages_drawItem($row, $fieldArr, ServerRequestInterface $request)
     {
+        $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
+        $backendLayouts = $this->getBackendLayouts($row, 'backend_layout');
+        $backendLayoutsNextLevel = $this->getBackendLayouts($row, 'backend_layout_next_level');
         $userTsConfig = $this->getBackendUser()->getTSConfig();
         $theIcon = $this->getIcon($row);
         // Preparing and getting the data-array
@@ -401,6 +409,20 @@ class PageInformationController
                     // Intended fall through
                 case 'TSconfig':
                     $theData[$field] = $row[$field] ? '<strong>x</strong>' : '&nbsp;';
+                    break;
+                case 'actual_backend_layout':
+                    $backendLayout = $this->backendLayoutView->getBackendLayoutForPage($row['uid']);
+                    $theData[$field] = $backendLayout !== null
+                        ? htmlspecialchars($this->getLanguageService()->sL($backendLayout->getTitle()))
+                        : '';
+                    break;
+                case 'backend_layout':
+                    $layout = $backendLayouts[$row[$field]] ?? null;
+                    $theData[$field] = $layout ? htmlspecialchars($layout) : $this->getPagesTableFieldValue($field, $row);
+                    break;
+                case 'backend_layout_next_level':
+                    $layout = $backendLayoutsNextLevel[$row[$field]] ?? null;
+                    $theData[$field] = $layout ? htmlspecialchars($layout) : $this->getPagesTableFieldValue($field, $row);
                     break;
                 case 'uid':
                     $uid = 0;
@@ -590,5 +612,23 @@ class PageInformationController
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;
+    }
+
+    protected function getBackendLayouts(array $row, string $field): array
+    {
+        if ($this->backendLayoutView === null) {
+            $this->backendLayoutView = GeneralUtility::makeInstance(BackendLayoutView::class);
+        }
+        $configuration = ['row' => $row, 'table' => 'pages', 'field' => $field, 'items' => []];
+        // Below we call the itemsProcFunc to retrieve properly resolved backend layout items,
+        // including the translated labels and the correct field values (backend layout identifiers).
+        $this->backendLayoutView->addBackendLayoutItems($configuration);
+        $backendLayouts = [];
+        foreach ($configuration['items'] ?? [] as $backendLayout) {
+            if (($backendLayout[0] ?? false) && ($backendLayout[1] ?? false)) {
+                $backendLayouts[$backendLayout[1]] = $backendLayout[0];
+            }
+        }
+        return $backendLayouts;
     }
 }

@@ -114,9 +114,6 @@
 			<trans-unit id="pages.hidden_checkbox_1_formlabel" resname="pages.hidden_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.layout_formlabel" resname="pages.layout_formlabel">
-				<source>Frontend Layout</source>
-			</trans-unit>
 			<trans-unit id="pages.layout.I.1" resname="pages.layout.I.1">
 				<source>Layout 1</source>
 			</trans-unit>

@@ -21,6 +21,12 @@
 			<trans-unit id="pages_1" resname="pages_1">
 				<source>Record overview</source>
 			</trans-unit>
+			<trans-unit id="pages_layouts" resname="pages_layouts">
+				<source>Layouts</source>
+			</trans-unit>
+			<trans-unit id="actual_backend_layout" resname="actual_backend_layout">
+				<source>Actual backend layout</source>
+			</trans-unit>
 			<trans-unit id="stat_type_0" resname="stat_type_0">
 				<source>Page hits</source>
 			</trans-unit>

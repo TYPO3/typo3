@@ -43,7 +43,7 @@
 				<source>(copy %s)</source>
 			</trans-unit>
 			<trans-unit id="LGL.layout" resname="LGL.layout">
-				<source>Layout</source>
+				<source>Frontend Layout</source>
 			</trans-unit>
 			<trans-unit id="LGL.default_value" resname="LGL.default_value">
 				<source>Default</source>
