@@ -658,6 +658,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ((string)$value === '') {
             return true;
         }
+        // Allow dividers:
+        if ($value === '--div--') {
+            return true;
+        }
         // Certain characters are not allowed in the value
         if (preg_match('/[:|,]/', $value)) {
             return false;
