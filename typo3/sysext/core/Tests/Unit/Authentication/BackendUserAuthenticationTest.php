@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\NullLogger;
@@ -773,5 +774,79 @@ class BackendUserAuthenticationTest extends UnitTestCase
         $subject->groupList = $groups;
 
         $this->assertEquals($expected, $subject->getPagePermsClause($perms));
+    }
+
+    /**
+     * @test
+     * @dataProvider checkAuthModeReturnsExpectedValueDataProvider
+     * @param string $theValue
+     * @param string $authMode
+     * @param bool $expectedResult
+     */
+    public function checkAuthModeReturnsExpectedValue(string $theValue, string $authMode, bool $expectedResult)
+    {
+        /** @var BackendUserAuthentication|MockObject $subject */
+        $subject = $this->getMockBuilder(BackendUserAuthentication::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['isAdmin'])
+            ->getMock();
+
+        $subject
+            ->expects(self::any())
+            ->method('isAdmin')
+            ->willReturn(false);
+
+        $subject->groupData['explicit_allowdeny'] =
+            'dummytable:dummyfield:explicitly_allowed_value:ALLOW,'
+            . 'dummytable:dummyfield:explicitly_denied_value:DENY';
+
+        $result = $subject->checkAuthMode('dummytable', 'dummyfield', $theValue, $authMode);
+        self::assertEquals($expectedResult, $result);
+    }
+
+    public function checkAuthModeReturnsExpectedValueDataProvider(): array
+    {
+        return [
+            'explicit allow, not allowed value' => [
+                'non_allowed_field',
+                'explicitAllow',
+                false,
+            ],
+            'explicit allow, allowed value' => [
+                'explicitly_allowed_value',
+                'explicitAllow',
+                true,
+            ],
+            'explicit deny, not denied value' => [
+                'non_denied_field',
+                'explicitDeny',
+                true,
+            ],
+            'explicit deny, denied value' => [
+                'explicitly_denied_value',
+                'explicitDeny',
+                false,
+            ],
+            'invalid value colon' => [
+                'containing:invalid:chars',
+                'does not matter',
+                false,
+            ],
+            'invalid value comma' => [
+                'containing,invalid,chars',
+                'does not matter',
+                false,
+            ],
+            'blank value' => [
+                '',
+                'does not matter',
+                true,
+            ],
+            'divider' => [
+                '--div--',
+                'explicitAllow',
+                true,
+            ],
+        ];
     }
 }
