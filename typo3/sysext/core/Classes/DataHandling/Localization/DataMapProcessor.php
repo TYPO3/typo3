@@ -849,6 +849,10 @@ class DataMapProcessor
      */
     protected function fetchTranslationValues(string $tableName, array $fieldNames, array $ids)
     {
+        if (empty($ids)) {
+            return [];
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
@@ -892,7 +896,7 @@ class DataMapProcessor
      */
     protected function fetchDependencies(string $tableName, array $ids)
     {
-        if (!BackendUtility::isTableLocalizable($tableName)) {
+        if (empty($ids) || !BackendUtility::isTableLocalizable($tableName)) {
             return [];
         }
 
@@ -969,6 +973,10 @@ class DataMapProcessor
      */
     protected function fetchDependentIdMap(string $tableName, array $ids, int $desiredLanguage)
     {
+        if (empty($ids)) {
+            return [];
+        }
+
         $ids = $this->filterNumericIds($ids);
         $isTranslatable = BackendUtility::isTableLocalizable($tableName);
         $originFieldName = ($GLOBALS['TCA'][$tableName]['ctrl']['origUid'] ?? null);
@@ -1049,6 +1057,10 @@ class DataMapProcessor
      */
     protected function fetchDependentElements(string $tableName, array $ids, array $fieldNames)
     {
+        if (empty($ids)) {
+            return [];
+        }
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($tableName);
         $queryBuilder->getRestrictions()
