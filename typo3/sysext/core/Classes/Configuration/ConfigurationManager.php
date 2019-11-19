@@ -372,10 +372,10 @@ class ConfigurationManager
         $configuration = ArrayUtility::sortByKeyRecursive($configuration);
         $result = GeneralUtility::writeFile(
             $localConfigurationFile,
-            '<?php' . LF .
+            "<?php\n" .
                 'return ' .
                     ArrayUtility::arrayExport($configuration) .
-                ';' . LF,
+                ";\n",
             true
         );
 
@@ -396,8 +396,7 @@ class ConfigurationManager
     {
         return GeneralUtility::writeFile(
             $this->getAdditionalConfigurationFileLocation(),
-            '<?php' . LF .
-                implode(LF, $additionalConfigurationLines) . LF
+            "<?php\n" . implode("\n", $additionalConfigurationLines) . "\n"
         );
     }
 
