@@ -230,12 +230,12 @@ EOF;
         ksort($classMap);
         ksort($psr4);
         foreach ($classMap as $class => $relativePath) {
-            $classMapFile .= sprintf('    %s => %s,', var_export($class, true), $this->getPathCode($relativePath)) . LF;
+            $classMapFile .= sprintf('    %s => %s,', var_export($class, true), $this->getPathCode($relativePath)) . "\n";
         }
         $classMapFile .= ");\n";
 
         foreach ($psr4 as $prefix => $relativePaths) {
-            $psr4File .= sprintf('    %s => array(%s),', var_export($prefix, true), implode(',', array_map([$this, 'getPathCode'], $relativePaths))) . LF;
+            $psr4File .= sprintf('    %s => array(%s),', var_export($prefix, true), implode(',', array_map([$this, 'getPathCode'], $relativePaths))) . "\n";
         }
         $psr4File .= ");\n";
 
@@ -299,7 +299,7 @@ EOF;
             'aliasToClassNameMapping' => $aliasToClassNameMapping,
             'classNameToAliasMapping' => $classNameToAliasMapping
         ];
-        $fileContent = '<?php' . chr(10) . 'return ';
+        $fileContent = "<?php\nreturn ";
         $fileContent .= var_export($exportArray, true);
         $fileContent .= ";\n";
         return $fileContent;

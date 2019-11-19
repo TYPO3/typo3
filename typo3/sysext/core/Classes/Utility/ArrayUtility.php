@@ -396,7 +396,7 @@ class ArrayUtility
      */
     public static function arrayExport(array $array = [], $level = 0)
     {
-        $lines = '[' . LF;
+        $lines = "[\n";
         $level++;
         $writeKeyIndex = false;
         $expectedKeyIndex = 0;
@@ -420,25 +420,25 @@ class ArrayUtility
                 if (!empty($value)) {
                     $lines .= self::arrayExport($value, $level);
                 } else {
-                    $lines .= '[],' . LF;
+                    $lines .= "[],\n";
                 }
             } elseif (is_int($value) || is_float($value)) {
-                $lines .= $value . ',' . LF;
+                $lines .= $value . ",\n";
             } elseif ($value === null) {
-                $lines .= 'null,' . LF;
+                $lines .= "null,\n";
             } elseif (is_bool($value)) {
                 $lines .= $value ? 'true' : 'false';
-                $lines .= ',' . LF;
+                $lines .= ",\n";
             } elseif (is_string($value)) {
                 // Quote \ to \\
                 // Quote ' to \'
                 $stringContent = str_replace(['\\', '\''], ['\\\\', '\\\''], $value);
-                $lines .= '\'' . $stringContent . '\',' . LF;
+                $lines .= '\'' . $stringContent . "',\n";
             } else {
                 throw new \RuntimeException('Objects are not supported', 1342294987);
             }
         }
-        $lines .= str_repeat('    ', $level - 1) . ']' . ($level - 1 == 0 ? '' : ',' . LF);
+        $lines .= str_repeat('    ', $level - 1) . ']' . ($level - 1 == 0 ? '' : ",\n");
         return $lines;
     }
 
@@ -473,6 +473,7 @@ class ArrayUtility
      *
      * @param array $array The (relative) array to be converted
      * @param string $prefix The (relative) prefix to be used (e.g. 'section.')
+     * @param bool $keepDots
      * @return array
      */
     public static function flatten(array $array, $prefix = '', bool $keepDots = false)
