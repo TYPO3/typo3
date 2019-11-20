@@ -945,4 +945,11 @@ return [
             'Deprecation-89631-UseEnvironmentAPIToFetchApplicationContext.rst'
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getRawPagesTSconfig' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
+        ],
+    ],
 ];

@@ -20,7 +20,6 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 use TYPO3\CMS\Core\Configuration\TypoScript\Exception\InvalidTypoScriptConditionException;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Used with the TypoScript parser.
  * Matches IP numbers etc. for use with templates
  */
-abstract class AbstractConditionMatcher implements LoggerAwareInterface
+abstract class AbstractConditionMatcher implements LoggerAwareInterface, ConditionMatcherInterface
 {
     use LoggerAwareTrait;
 
@@ -195,7 +194,7 @@ abstract class AbstractConditionMatcher implements LoggerAwareInterface
             }
         } catch (SyntaxError $exception) {
             $message = 'Expression could not be parsed.';
-            $this->logger->log(LogLevel::ERROR, $message, ['expression' => $expression]);
+            $this->logger->error($message, ['expression' => $expression]);
         } catch (\Throwable $exception) {
             // The following error handling is required to mitigate a missing type check
             // in the Symfony Expression Language handling. In case a condition

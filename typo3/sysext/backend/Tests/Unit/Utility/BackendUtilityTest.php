@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
-use TYPO3\CMS\Backend\Configuration\TsConfigParser;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithOneAllowedTableFixture;
@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMR
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -32,7 +33,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -1035,24 +1035,23 @@ class BackendUtilityTest extends UnitTestCase
     {
         $expected = ['called.' => ['config']];
         $pageId = 13;
-        $parserProphecy = $this->prophesize(TsConfigParser::class);
-        $parserProphecy->parseTSconfig(Argument::cetera())->willReturn(['hash' => $pageId, 'TSconfig' => $expected]);
-        GeneralUtility::addInstance(TsConfigParser::class, $parserProphecy->reveal());
+        $parserProphecy = $this->prophesize(PageTsConfigParser::class);
+        $parserProphecy->parse(Argument::cetera())->willReturn($expected);
+        GeneralUtility::addInstance(PageTsConfigParser::class, $parserProphecy->reveal());
+
+        $matcherProphecy = $this->prophesize(ConditionMatcher::class);
+        GeneralUtility::addInstance(ConditionMatcher::class, $matcherProphecy->reveal());
 
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheProphecy = $this->prophesize(FrontendInterface::class);
         $cacheManagerProphecy->getCache('runtime')->willReturn($cacheProphecy->reveal());
         $cacheHashProphecy = $this->prophesize(FrontendInterface::class);
-        $cacheManagerProphecy->hasCache('extbase')->willReturn(false);
         $cacheManagerProphecy->getCache('hash')->willReturn($cacheHashProphecy->reveal());
         $cacheProphecy->has(Argument::cetera())->willReturn(false);
         $cacheProphecy->get(Argument::cetera())->willReturn(false);
         $cacheProphecy->set(Argument::cetera())->willReturn(false);
         $cacheProphecy->get('backendUtilityBeGetRootLine')->willReturn(['13--1' => []]);
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());
-        $signalSlotDispatcherProphecy = $this->prophesize(SignalSlotDispatcher::class);
-        $signalSlotDispatcherProphecy->dispatch(Argument::any(), Argument::any(), Argument::type('array'))->willReturnArgument(2);
-        GeneralUtility::setSingletonInstance(SignalSlotDispatcher::class, $signalSlotDispatcherProphecy->reveal());
 
         $result = BackendUtility::getPagesTSconfig($pageId);
         self::assertEquals($expected, $result);

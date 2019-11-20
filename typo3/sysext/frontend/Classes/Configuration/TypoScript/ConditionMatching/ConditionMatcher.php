@@ -34,11 +34,14 @@ class ConditionMatcher extends AbstractConditionMatcher
 
     /**
      * @param Context $context optional context to fetch data from
+     * @param int|null $pageId
+     * @param array|null $rootLine
      */
-    public function __construct(Context $context = null)
+    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->rootline = (array)$GLOBALS['TSFE']->tmpl->rootLine;
+        $this->pageId = $pageId;
+        $this->rootline = $rootLine ?? (array)$GLOBALS['TSFE']->tmpl->rootLine;
         $this->initializeExpressionLanguageResolver();
     }
 

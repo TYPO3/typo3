@@ -32,11 +32,11 @@ class ConditionMatcher extends AbstractConditionMatcher
      */
     protected $context;
 
-    public function __construct(Context $context = null)
+    public function __construct(Context $context = null, int $pageId = null, array $rootLine = null)
     {
-        $pageId = $this->pageId ?? $this->determinePageId();
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $this->rootline = BackendUtility::BEgetRootLine($pageId, '', true);
+        $this->pageId = $pageId ?? $this->determinePageId();
+        $this->rootline = $rootLine ?? BackendUtility::BEgetRootLine($pageId, '', true);
         $this->initializeExpressionLanguageResolver();
     }
 

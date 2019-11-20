@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A TS-Config parsing class which performs condition evaluation
+ *
+ * @deprecated Should not be used anymore. See the PageTsConfigParser class, which has a more straightforward API. This class will be removed in TYPO3 v11.0.
  */
 class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
 {
@@ -38,6 +40,11 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser
      * @var string
      */
     public $type;
+
+    public function __construct()
+    {
+        trigger_error(__CLASS__ . ' has been superseded by PageTsConfigParser. This class will be removed in TYPO3 v11.0', E_USER_DEPRECATED);
+    }
 
     /**
      * Parses the passed TS-Config using conditions and caching

@@ -1341,5 +1341,10 @@ return [
         'restFiles' => [
             'Deprecation-89577-FALSignalSlotHandlingMigratedToPSR-14Events.rst',
         ],
+    ],
+    'TYPO3\CMS\Core\Configuration\TsConfigParser' => [
+        'restFiles' => [
+            'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
+        ],
     ]
 ];

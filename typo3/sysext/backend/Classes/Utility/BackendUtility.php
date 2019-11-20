@@ -15,11 +15,13 @@ namespace TYPO3\CMS\Backend\Utility;
  */
 
 use Psr\Log\LoggerInterface;
-use TYPO3\CMS\Backend\Configuration\TsConfigParser;
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
+use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -674,18 +676,22 @@ class BackendUtility
             return $cache->get('pagesTsConfigHashToContent' . $cache->get('pagesTsConfigIdToHash' . $id));
         }
 
-        $tsConfig = [];
         $rootLine = self::BEgetRootLine($id, '', true);
-        $TSdataArray = static::getRawPagesTSconfig($id, $rootLine);
+        // Order correctly
+        ksort($rootLine);
 
-        // Parsing the page TS-Config
-        $pageTs = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-        $parseObj = GeneralUtility::makeInstance(TsConfigParser::class);
-        $res = $parseObj->parseTSconfig($pageTs, 'PAGES', $id, $rootLine);
-        if ($res) {
-            $tsConfig = $res['TSconfig'];
-        }
-        $cacheHash = $res['hash'];
+        // Load PageTS from all pages of the rootLine
+        $pageTs = GeneralUtility::makeInstance(PageTsConfigLoader::class)->load($rootLine);
+
+        // Parse the PageTS into an array, also applying conditions
+        $parser = GeneralUtility::makeInstance(
+            PageTsConfigParser::class,
+            GeneralUtility::makeInstance(TypoScriptParser::class),
+            GeneralUtility::makeInstance(CacheManager::class)->getCache('hash')
+        );
+        $matcher = GeneralUtility::makeInstance(ConditionMatcher::class, null, $id, $rootLine);
+        $tsConfig = $parser->parse($pageTs, $matcher);
+        $cacheHash = md5(json_encode($tsConfig));
 
         // Get User TSconfig overlay, if no backend user is logged-in, this needs to be checked as well
         if (static::getBackendUserAuthentication()) {
@@ -718,6 +724,7 @@ class BackendUtility
      */
     public static function getRawPagesTSconfig($id, array $rootLine = null)
     {
+        trigger_error('BackendUtility::getRawPagesTSconfig will be removed in TYPO3 v11.0. Use PageTsConfigLoader instead.', E_USER_DEPRECATED);
         if (!is_array($rootLine)) {
             $rootLine = self::BEgetRootLine($id, '', true);
         }

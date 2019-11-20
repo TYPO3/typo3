@@ -139,8 +139,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function treeLevelConditionMatchesSingleValue(): void
     {
-        $this->subject->setPageId(2);
-        $this->subject->__construct();
+        $this->subject->__construct(null, 2);
         self::assertTrue($this->subject->match('[tree.level == 2]'));
     }
 
@@ -151,8 +150,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function treeLevelConditionMatchesMultipleValues(): void
     {
-        $this->subject->setPageId(2);
-        $this->subject->__construct();
+        $this->subject->__construct(null, 2);
         self::assertTrue($this->subject->match('[tree.level in [999,998,2]]'));
     }
 
@@ -173,8 +171,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function PIDupinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
-        $this->subject->setPageId(3);
-        $this->subject->__construct();
+        $this->subject->__construct(null, 3);
         self::assertTrue($this->subject->match('[2 in tree.rootLineIds]'));
         self::assertTrue($this->subject->match('["2" in tree.rootLineIds]'));
         self::assertTrue($this->subject->match('[\'2\' in tree.rootLineIds]'));
@@ -198,8 +195,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function PIDinRootlineConditionMatchesSinglePageIdInRootline(): void
     {
-        $this->subject->setPageId(3);
-        $this->subject->__construct();
+        $this->subject->__construct(null, 3);
         self::assertTrue($this->subject->match('[2 in tree.rootLineIds]'));
     }
 
@@ -210,8 +206,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function PIDinRootlineConditionMatchesLastPageIdInRootline(): void
     {
-        $this->subject->setPageId(3);
-        $this->subject->__construct();
+        $this->subject->__construct(null, 3);
         self::assertTrue($this->subject->match('[3 in tree.rootLineIds]'));
     }
 

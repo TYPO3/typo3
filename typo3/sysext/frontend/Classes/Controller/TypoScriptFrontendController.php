@@ -22,6 +22,8 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
+use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -60,7 +62,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -68,6 +69,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
+use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
@@ -3424,52 +3426,18 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPagesTSconfig()
     {
         if (!is_array($this->pagesTSconfig)) {
-            $TSdataArray = [];
-            foreach ($this->rootLine as $k => $v) {
-                // add TSconfig first, as $TSdataArray is reversed below and it shall be included last
-                $TSdataArray[] = $v['TSconfig'];
-                if (trim($v['tsconfig_includes'])) {
-                    $includeTsConfigFileList = GeneralUtility::trimExplode(',', $v['tsconfig_includes'], true);
-                    // reverse the includes first to make sure their order is preserved when $TSdataArray is reversed
-                    $includeTsConfigFileList = array_reverse($includeTsConfigFileList);
-                    // Traversing list
-                    foreach ($includeTsConfigFileList as $includeTsConfigFile) {
-                        if (strpos($includeTsConfigFile, 'EXT:') === 0) {
-                            list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
-                                '/',
-                                substr($includeTsConfigFile, 4),
-                                2
-                            );
-                            if ((string)$includeTsConfigFileExtensionKey !== ''
-                                && (string)$includeTsConfigFilename !== ''
-                                && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
-                            ) {
-                                $extensionPath = ExtensionManagementUtility::extPath($includeTsConfigFileExtensionKey);
-                                $includeTsConfigFileAndPath = PathUtility::getCanonicalPath($extensionPath . $includeTsConfigFilename);
-                                if (strpos($includeTsConfigFileAndPath, $extensionPath) === 0 && file_exists($includeTsConfigFileAndPath)) {
-                                    $TSdataArray[] = file_get_contents($includeTsConfigFileAndPath);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            // Adding the default configuration:
-            $TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'];
-            // Bring everything in the right order. Default first, then the Rootline down to the current page
-            $TSdataArray = array_reverse($TSdataArray);
-            // Parsing the user TS (or getting from cache)
-            $TSdataArray = TypoScriptParser::checkIncludeLines_array($TSdataArray);
-            $userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
-            $identifier = md5('pageTS:' . $userTS);
             $contentHashCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-            $this->pagesTSconfig = $contentHashCache->get($identifier);
-            if (!is_array($this->pagesTSconfig)) {
-                $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-                $parseObj->parse($userTS);
-                $this->pagesTSconfig = $parseObj->setup;
-                $contentHashCache->set($identifier, $this->pagesTSconfig, ['PAGES_TSconfig'], 0);
-            }
+            $loader = GeneralUtility::makeInstance(PageTsConfigLoader::class);
+            $tsConfigString = $loader->load(array_reverse($this->rootLine));
+            $parser = GeneralUtility::makeInstance(
+                PageTsConfigParser::class,
+                GeneralUtility::makeInstance(TypoScriptParser::class),
+                $contentHashCache
+            );
+            $this->pagesTSconfig = $parser->parse(
+                $tsConfigString,
+                GeneralUtility::makeInstance(ConditionMatcher::class, $this->context, $this->id, $this->rootLine)
+            );
         }
         return $this->pagesTSconfig;
     }
