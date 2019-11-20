@@ -79,7 +79,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     /**
      * This is the callback that mimics a USER_INT extension
      */
-    public function INTincScript_processCallback()
+    public function processNonCacheableContentPartsAndSubstituteContentMarkers()
     {
         $GLOBALS['TSFE']->additionalHeaderData[] = 'headerData';
         $GLOBALS['TSFE']->additionalFooterData[] = 'footerData';
@@ -96,13 +96,13 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|TypoScriptFrontendController $tsfe */
         $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)
             ->setMethods([
-                'INTincScript_process',
+                'processNonCacheableContentPartsAndSubstituteContentMarkers',
                 'INTincScript_loadJSCode',
                 'setAbsRefPrefix',
                 'regeneratePageTitle'
             ])->disableOriginalConstructor()
             ->getMock();
-        $tsfe->expects(self::exactly(2))->method('processNonCacheableContentPartsAndSubstituteContentMarkers')->willReturnCallback([$this, 'INTincScript_processCallback']);
+        $tsfe->expects(self::exactly(2))->method('processNonCacheableContentPartsAndSubstituteContentMarkers')->willReturnCallback([$this, 'processNonCacheableContentPartsAndSubstituteContentMarkers']);
         $tsfe->content = file_get_contents(__DIR__ . '/Fixtures/renderedPage.html');
         $config = [
             'INTincScript_ext' => [

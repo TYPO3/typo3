@@ -398,6 +398,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Used to accumulate DHTML-layers.
      * @var string
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11, use custom USER_INT objects instead.
      */
     public $divSection = '';
 
@@ -2952,7 +2953,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             : [];
         $this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'] ?? null;
         $this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'] ?? null;
-        $this->divSection = '';
         if (empty($this->config['INTincScript_ext']['pageRenderer'])) {
             $this->initPageRenderer();
         } else {
@@ -2971,12 +2971,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             [
                 '<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
                 '<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->',
-                '<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->'
             ],
             [
                 $this->convOutputCharset(implode(LF, $this->additionalHeaderData)),
                 $this->convOutputCharset(implode(LF, $this->additionalFooterData)),
-                $this->convOutputCharset($this->divSection),
             ],
             $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey'])
         );
@@ -3082,7 +3080,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $this->additionalHeaderData = ['<!--HD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
             // Clearing the array
             $this->additionalFooterData = ['<!--FD_' . $this->config['INTincScript_ext']['divKey'] . '-->'];
-            $this->divSection .= '<!--TDS_' . $this->config['INTincScript_ext']['divKey'] . '-->';
         } else {
             // Add javascript in a "regular" fashion
             $jsCode = trim($this->JSCode);
@@ -4024,6 +4021,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return isset($this->$propertyName);
+            case 'divSection':
+                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                return isset($this->$propertyName);
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 return $this->context->hasAspect('frontend.preview');
@@ -4059,6 +4059,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 return $this->sys_language_isocode ?? $this->language->getTwoLetterIsoCode();
+            case 'divSection':
+                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                break;
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 if ($this->context->hasAspect('frontend.preview')) {
@@ -4101,6 +4104,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 break;
+            case 'divSection':
+                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                break;
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);
                 $this->context->setAspect('frontend.preview', GeneralUtility::makeInstance(PreviewAspect::class, (bool)$propertyValue));
@@ -4132,6 +4138,9 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 break;
             case 'sys_language_isocode':
                 trigger_error('Property $TSFE->sys_language_isocode is not in use anymore as this information is now stored within the SiteLanguage object. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
+                break;
+            case 'divSection':
+                trigger_error('Property $TSFE->divSection is not in use anymore. Will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
                 break;
             case 'fePreview':
                 trigger_error('Property $TSFE->fePreview is not in use anymore as this information is now stored within the FrontendPreview aspect.', E_USER_DEPRECATED);

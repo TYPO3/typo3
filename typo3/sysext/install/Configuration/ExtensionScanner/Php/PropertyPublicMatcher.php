@@ -631,4 +631,9 @@ return [
             'Deprecation-89127-CleanupRecordHistoryHandling.rst',
         ],
     ],
+    'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->divSection' => [
+        'restFiles' => [
+            'Deprecation-89722-GMENU_LAYERSRelatedPropertyTSFE-divSection.rst',
+        ],
+    ],
 ];
