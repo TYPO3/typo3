@@ -7,3 +7,30 @@ services:
   TYPO3\CMS\Form\:
     resource: '../Classes/*'
     exclude: '../Classes/{Domain/Model}'
+
+  TYPO3\CMS\Form\Slot\FilePersistenceSlot:
+    tags:
+      - name: event.listener
+        identifier: 'form-framework/creation'
+        method: 'onPreFileCreate'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileCreatedEvent
+      - name: event.listener
+        identifier: 'form-framework/add'
+        method: 'onPreFileAdd'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent
+      - name: event.listener
+        identifier: 'form-framework/rename'
+        method: 'onPreFileRename'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent
+      - name: event.listener
+        identifier: 'form-framework/replace'
+        method: 'onPreFileReplace'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent
+      - name: event.listener
+        identifier: 'form-framework/move'
+        method: 'onPreFileMove'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileMovedEvent
+      - name: event.listener
+        identifier: 'form-framework/update-content'
+        method: 'onPreFileSetContents'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent

@@ -15,7 +15,12 @@ namespace TYPO3\CMS\Form\Slot;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Resource\FileInterface;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileAddedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileContentsSetEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileCreatedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileMovedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileRenamedEvent;
+use TYPO3\CMS\Core\Resource\Event\BeforeFileReplacedEvent;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -23,9 +28,11 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManager;
 
 /**
- * @internal
+ * A PSR-14 event listener for various FAL related functionality.
+ *
+ * @internal will be renamed at some point.
  */
-class FilePersistenceSlot implements SingletonInterface
+final class FilePersistenceSlot implements SingletonInterface
 {
     const COMMAND_FILE_ADD = 'fileAdd';
     const COMMAND_FILE_CREATE = 'fileCreate';
@@ -106,15 +113,11 @@ class FilePersistenceSlot implements SingletonInterface
         return true;
     }
 
-    /**
-     * @param string $fileName
-     * @param FolderInterface $targetFolder
-     */
-    public function onPreFileCreate(string $fileName, FolderInterface $targetFolder): void
+    public function onPreFileCreate(BeforeFileCreatedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $targetFolder,
-            $fileName
+            $event->getFolder(),
+            $event->getFileName()
         );
 
         $this->assertFileName(
@@ -123,19 +126,11 @@ class FilePersistenceSlot implements SingletonInterface
         );
     }
 
-    /**
-     * @param string $targetFileName
-     * @param FolderInterface $targetFolder
-     * @param string $sourceFilePath
-     */
-    public function onPreFileAdd(
-        string $targetFileName,
-        FolderInterface $targetFolder,
-        string $sourceFilePath
-    ): void {
+    public function onPreFileAdd(BeforeFileAddedEvent $event): void
+    {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $targetFolder,
-            $targetFileName
+            $event->getTargetFolder(),
+            $event->getFileName()
         );
         // while assertFileName below also checks if it's a form definition
         // we want an early return here to get rid of the file_get_contents
@@ -146,19 +141,15 @@ class FilePersistenceSlot implements SingletonInterface
         $this->assertFileName(
             self::COMMAND_FILE_ADD,
             $combinedFileIdentifier,
-            file_get_contents($sourceFilePath)
+            file_get_contents($event->getSourceFilePath())
         );
     }
 
-    /**
-     * @param FileInterface $file
-     * @param string $targetFileName
-     */
-    public function onPreFileRename(FileInterface $file, string $targetFileName): void
+    public function onPreFileRename(BeforeFileRenamedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $file->getParentFolder(),
-            $targetFileName
+            $event->getFile()->getParentFolder(),
+            $event->getTargetFileName()
         );
 
         $this->assertFileName(
@@ -167,15 +158,11 @@ class FilePersistenceSlot implements SingletonInterface
         );
     }
 
-    /**
-     * @param FileInterface $file
-     * @param string $localFilePath
-     */
-    public function onPreFileReplace(FileInterface $file, string $localFilePath): void
+    public function onPreFileReplace(BeforeFileReplacedEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $file->getParentFolder(),
-            $file->getName()
+            $event->getFile()->getParentFolder(),
+            $event->getFile()->getName()
         );
 
         $this->assertFileName(
@@ -184,26 +171,21 @@ class FilePersistenceSlot implements SingletonInterface
         );
     }
 
-    /**
-     * @param FileInterface $file
-     * @param FolderInterface $targetFolder
-     * @param string $targetFileName
-     */
-    public function onPreFileMove(FileInterface $file, FolderInterface $targetFolder, string $targetFileName): void
+    public function onPreFileMove(BeforeFileMovedEvent $event): void
     {
         // Skip check, in case file extension would not change during this
         // command. In case e.g. "file.txt" shall be renamed to "file.form.yaml"
         // the invocation still has to be granted.
         // Any file moved to a recycle folder is accepted as well.
-        if ($this->isFormDefinition($file->getIdentifier())
-            && $this->isFormDefinition($targetFileName)
-            || $this->isRecycleFolder($targetFolder)) {
+        if ($this->isFormDefinition($event->getFile()->getIdentifier())
+            && $this->isFormDefinition($event->getTargetFileName())
+            || $this->isRecycleFolder($event->getFolder())) {
             return;
         }
 
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $targetFolder,
-            $targetFileName
+            $event->getFolder(),
+            $event->getTargetFileName()
         );
 
         $this->assertFileName(
@@ -212,21 +194,17 @@ class FilePersistenceSlot implements SingletonInterface
         );
     }
 
-    /**
-     * @param FileInterface $file
-     * @param mixed $content
-     */
-    public function onPreFileSetContents(FileInterface $file, $content = null): void
+    public function onPreFileSetContents(BeforeFileContentsSetEvent $event): void
     {
         $combinedFileIdentifier = $this->buildCombinedIdentifier(
-            $file->getParentFolder(),
-            $file->getName()
+            $event->getFile()->getParentFolder(),
+            $event->getFile()->getName()
         );
 
         $this->assertFileName(
             self::COMMAND_FILE_SET_CONTENTS,
             $combinedFileIdentifier,
-            $content
+            $event->getContent()
         );
     }
 
