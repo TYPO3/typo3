@@ -102,7 +102,7 @@ class BackendUserConfigurationUpdate implements UpgradeWizardInterface
                 }
             });
 
-            $this->updateBackendUser($backendUser['uid'], $userConfig);
+            $this->updateBackendUser((int)$backendUser['uid'], $userConfig);
         }
 
         return true;
