@@ -1,8 +1,8 @@
 .. include:: ../../Includes.txt
 
-===============================================================================================
-Breaking: #80412 - New shared content element TypoScript libary object for Fluid Styled Content
-===============================================================================================
+================================================================================================
+Breaking: #80412 - New shared content element TypoScript library object for Fluid Styled Content
+================================================================================================
 
 See :issue:`80412`
 
@@ -18,7 +18,7 @@ The generated code relied on the existence of the removed :typoscript:`lib.stdhe
 ignored layouts, frames, spacebefore, spaceafter in context of Fluid Styled Content.
 
 For content element registration the TypoScript :typoscript:`lib.contentElement` is now used for `CSC` and `FSC`
-and replaces the usage of :typoscript:`lib.contentElement`. The generated code was slightly
+and replaces the usage of :typoscript:`lib.fluidContent`. The generated code was slightly
 adjusted to match the requirements of all content rendering definitions and can be
 adapted to the specific needs of a content element rendering definition anytime
 since a reference is used now instead of a hard definition.
@@ -101,7 +101,7 @@ and overriding options known from FSC.
    </f:section>
    </html>
 
-The TypoScript Object :typoscript:`lib.fluidContent` will be kept as copy of :typoscript:`lib.contentElement`
+The TypoScript object :typoscript:`lib.fluidContent` will be kept as copy of :typoscript:`lib.contentElement`
 for compatibility for the duration of TYPO3 v8 LTS and will be removed in TYPO3 v9.
 
 
