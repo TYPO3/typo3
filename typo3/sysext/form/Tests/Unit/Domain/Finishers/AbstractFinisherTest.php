@@ -21,6 +21,8 @@ use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherVariableProvider;
+use TYPO3\CMS\Form\Domain\Model\FormDefinition;
+use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -478,6 +480,74 @@ class AbstractFinisherTest extends UnitTestCase
         ]);
 
         self::assertSame($expected, $mockAbstractFinisher->_call('substituteRuntimeReferences', $input, $formRuntimeProphecy->reveal()));
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesConvertsObjectsToString(): void
+    {
+        $date = new \DateTime('@1574415600');
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            'date-1' => $date,
+        ]);
+
+        $stringableElement = new class implements StringableFormElementInterface {
+            /**
+             * @param \DateTimeInterface $value
+             */
+            public function valueToString($value): string
+            {
+                return $value->format('Y-m-d');
+            }
+        };
+        $formDefinitionProphecy = $this->prophesize(FormDefinition::class);
+        $formDefinitionProphecy->getElementByIdentifier('date-1')->willReturn($stringableElement);
+        $formRuntimeProphecy->getFormDefinition()->willReturn($formDefinitionProphecy->reveal());
+
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+        $result = $mockAbstractFinisher->_call(
+            'substituteRuntimeReferences',
+            'When: {date-1}',
+            $formRuntimeProphecy->reveal()
+        );
+
+        self::assertSame('When: 2019-11-22', $result);
+    }
+
+    /**
+     * @test
+     */
+    public function substituteRuntimeReferencesThrowsExceptionOnObjectWithoutStringableElement(): void
+    {
+        $formRuntimeProphecy = $this->createFormRuntimeProphecy([
+            'date-1' => new \DateTime(),
+        ]);
+
+        $formDefinitionProphecy = $this->prophesize(FormDefinition::class);
+        $formDefinitionProphecy->getElementByIdentifier('date-1')->willReturn($this->prophesize(FormElementInterface::class)->reveal());
+        $formRuntimeProphecy->getFormDefinition()->willReturn($formDefinitionProphecy->reveal());
+
+        $mockAbstractFinisher = $this->getAccessibleMockForAbstractClass(
+            AbstractFinisher::class,
+            [],
+            '',
+            false
+        );
+
+        $this->expectException(FinisherException::class);
+        $this->expectExceptionCode(1574362327);
+
+        $mockAbstractFinisher->_call(
+            'substituteRuntimeReferences',
+            'When: {date-1}',
+            $formRuntimeProphecy->reveal()
+        );
     }
 
     /**

@@ -80,20 +80,4 @@ class FormElementHooks
             }
         }
     }
-
-    /**
-     * This hook is invoked whenever a form element is created.
-     * Note that this hook will be called **after** all properties from the
-     * prototype configuration are set in the form element but **before**
-     * the properties from the form definition are set in the form element.
-     *
-     * @param RenderableInterface $renderable
-     */
-    public function initializeFormElement(RenderableInterface $renderable)
-    {
-        if ($renderable->getType() === 'Date' || $renderable->getType() === 'DatePicker') {
-            // Set the property mapping type for the `Date` and `DatePicker` element.
-            $renderable->setDataType('DateTime');
-        }
-    }
 }

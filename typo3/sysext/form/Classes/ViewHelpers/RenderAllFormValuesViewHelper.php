@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\ViewHelpers;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FormElementInterface;
+use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\CompositeRenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RootRenderableInterface;
@@ -184,26 +185,13 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
     public static function processObject(FormElementInterface $element, $object): string
     {
         $properties = $element->getProperties();
-        if ($object instanceof \DateTime) {
-            if (
-                $element->getType() === 'DatePicker'
-                && isset($properties['dateFormat'])
-            ) {
-                $dateFormat = $properties['dateFormat'];
-                if (isset($properties['displayTimeSelector']) && $properties['displayTimeSelector'] === true) {
-                    $dateFormat .= ' H:i';
-                }
-            } elseif ($element->getType() === 'Date') {
-                if (isset($properties['displayFormat'])) {
-                    $dateFormat = $properties['displayFormat'];
-                } else {
-                    $dateFormat = 'Y-m-d';
-                }
-            } else {
-                $dateFormat = \DateTime::W3C;
-            }
 
-            return $object->format($dateFormat);
+        if ($element instanceof StringableFormElementInterface) {
+            return $element->valueToString($object);
+        }
+
+        if ($object instanceof \DateTime) {
+            return $object->format(\DateTime::W3C);
         }
 
         if ($object instanceof File || $object instanceof FileReference) {

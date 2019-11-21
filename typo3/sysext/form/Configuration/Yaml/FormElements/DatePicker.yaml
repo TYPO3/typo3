@@ -123,7 +123,7 @@ TYPO3:
                         9999:
                           identifier: removeButton
                           templateName: Inspector-RemoveElementEditor
-              implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+              implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker
               properties:
                 containerClassAttribute: input
                 elementClassAttribute: 'small form-control'

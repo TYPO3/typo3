@@ -18,11 +18,11 @@ namespace TYPO3\CMS\Form\Domain\Model\FormElements;
  */
 
 /**
- * A date picker form element
+ * A date form element
  *
  * Scope: frontend
  */
-class DatePicker extends AbstractFormElement implements StringableFormElementInterface
+class Date extends AbstractFormElement implements StringableFormElementInterface
 {
 
     /**
@@ -40,15 +40,7 @@ class DatePicker extends AbstractFormElement implements StringableFormElementInt
      */
     public function valueToString($value): string
     {
-        $dateFormat = \DateTime::W3C;
-
-        if (isset($this->properties['dateFormat'])) {
-            $dateFormat = $this->properties['dateFormat'];
-
-            if ($this->properties['displayTimeSelector'] ?? false) {
-                $dateFormat .= ' H:i';
-            }
-        }
+        $dateFormat = $this->properties['displayFormat'] ?? 'Y-m-d';
 
         return $value->format($dateFormat);
     }

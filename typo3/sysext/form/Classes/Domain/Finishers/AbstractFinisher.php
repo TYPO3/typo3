@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
+use TYPO3\CMS\Form\Domain\Model\FormElements\StringableFormElementInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -342,8 +343,23 @@ abstract class AbstractFinisher implements FinisherInterface
         if ($property === '__currentTimestamp') {
             return time();
         }
+
         // try to resolve the path '{...}' within the FormRuntime
         $value = ObjectAccess::getPropertyPath($formRuntime, $property);
+
+        if (is_object($value)) {
+            $element = $formRuntime->getFormDefinition()->getElementByIdentifier($property);
+
+            if (!$element instanceof StringableFormElementInterface) {
+                throw new FinisherException(
+                    sprintf('Cannot convert object value of "%s" to string', $property),
+                    1574362327
+                );
+            }
+
+            $value = $element->valueToString($value);
+        }
+
         if ($value === null) {
             // try to resolve the path '{...}' within the FinisherVariableProvider
             $value = ObjectAccess::getPropertyPath(
@@ -351,9 +367,11 @@ abstract class AbstractFinisher implements FinisherInterface
                 $property
             );
         }
+
         if ($value !== null) {
             return $value;
         }
+
         // in case no value could be resolved
         return '{' . $property . '}';
     }
