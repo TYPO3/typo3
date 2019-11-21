@@ -555,20 +555,6 @@ test.TYPO3Forever.TypoScript = 1
                 '
 bennilove = before
 
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/badfilename.php\' begin ###
-
-###
-### ERROR: File "EXT:core/Tests/Unit/TypoScript/Fixtures/badfilename.php" was not included since it is not allowed due to fileDenyPattern.
-###
-
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/badfilename.php\' end ###
-
-
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' begin ###
-test.Core.TypoScript = 1
-### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt\' end ###
-
-
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/recursive_includes_setup.typoscript\' begin ###
 
 ### @import \'EXT:core/Tests/Unit/TypoScript/Fixtures/setup.typoscript\' begin ###

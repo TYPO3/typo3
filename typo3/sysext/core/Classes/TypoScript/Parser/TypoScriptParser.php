@@ -1003,7 +1003,9 @@ class TypoScriptParser
 
         // Search all files in the folder
         if (is_dir($absoluteFileName)) {
-            $finder->in($absoluteFileName);
+            $finder
+                ->in($absoluteFileName)
+                ->name('*.typoscript');
             // Used for the TypoScript comments
             $readableFilePrefix = $filename;
         } else {
