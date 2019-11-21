@@ -15,11 +15,11 @@ services:
 
   TYPO3\CMS\Redirects\EventListener\RecordHistoryRollbackEventsListener:
     tags:
-      - { name: event.listener,
-          identifier: 'redirects-disable-hook',
-          event: TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent,
-          method: 'beforeHistoryRollbackStartEvent' }
-      - { name: event.listener,
-          identifier: 'redirects-enable-hook',
-          event: TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent,
-          method: 'afterHistoryRollbackFinishedEvent' }
+      - name: event.listener
+        identifier: 'redirects-disable-hook'
+        event: TYPO3\CMS\Backend\History\Event\BeforeHistoryRollbackStartEvent
+        method: 'beforeHistoryRollbackStartEvent'
+      - name: event.listener
+        identifier: 'redirects-enable-hook'
+        event: TYPO3\CMS\Backend\History\Event\AfterHistoryRollbackFinishedEvent
+        method: 'afterHistoryRollbackFinishedEvent'

@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -247,7 +247,7 @@ class EnvironmentController extends AbstractController
                 $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
                 $mailMessage
                     ->to($recipient)
-                    ->from(new NamedAddress($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+                    ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
                     ->subject($this->getEmailSubject())
                     ->html('<html><body>html test content</body></html>')
                     ->text('plain test content')

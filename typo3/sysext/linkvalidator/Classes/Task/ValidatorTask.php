@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
@@ -460,7 +460,7 @@ class ValidatorTask extends AbstractTask
             $modTsConfig['mail.']['fromname'] = MailUtility::getSystemFromName();
         }
         if (GeneralUtility::validEmail($modTsConfig['mail.']['fromemail'])) {
-            $mail->from(new NamedAddress($modTsConfig['mail.']['fromemail'], $modTsConfig['mail.']['fromname']));
+            $mail->from(new Address($modTsConfig['mail.']['fromemail'], $modTsConfig['mail.']['fromname']));
         } else {
             throw new \Exception(
                 $lang->sL($this->languageFile . ':tasks.error.invalidFromEmail'),
@@ -468,7 +468,7 @@ class ValidatorTask extends AbstractTask
             );
         }
         if (GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
-            $mail->replyTo(new NamedAddress($modTsConfig['mail.']['replytoemail'], $modTsConfig['mail.']['replytoname']));
+            $mail->replyTo(new Address($modTsConfig['mail.']['replytoemail'], $modTsConfig['mail.']['replytoname']));
         }
         if (!empty($modTsConfig['mail.']['subject'])) {
             $mail->subject($modTsConfig['mail.']['subject']);

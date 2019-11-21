@@ -34,7 +34,7 @@ To send a mail, use the :php:`\TYPO3\CMS\Core\Mail\MailMessage`-API
 .. code-block:: php
 
     $email = GeneralUtility::makeInstance(MailMessage::class)
-         ->to(new Address('john@domain.tld'), new NamedAddress('john@domain.tld', 'John Doe'))
+         ->to(new Address('katy@domain.tld'), new Address('john@domain.tld', 'John Doe'))
          ->subject('This is an example email')
          ->text('This is the plain-text variant')
          ->html('<h4>Hello John.</h4><p>Enjoy a HTML-readable email. <marquee>We love TYPO3</marquee>.</p>');

@@ -19,7 +19,7 @@ use Doctrine\DBAL\Driver\Statement;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
@@ -5756,10 +5756,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         $senderName = trim($senderName);
         $senderAddress = trim($senderAddress);
-        if ($senderName !== '' && $senderAddress !== '') {
-            $mail->from(new NamedAddress($senderAddress, $senderName));
-        } elseif ($senderAddress !== '') {
-            $mail->from($senderAddress);
+        if ($senderAddress !== '') {
+            $mail->from(new Address($senderAddress, $senderName));
         }
         $parsedReplyTo = MailUtility::parseAddresses($replyTo);
         if (!empty($parsedReplyTo)) {

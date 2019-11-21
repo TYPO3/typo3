@@ -19,10 +19,10 @@ namespace TYPO3\CMS\Core\Mail;
 use DirectoryIterator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Mailer\DelayedSmtpEnvelope;
+use Symfony\Component\Mailer\DelayedEnvelope;
+use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mailer\SentMessage;
-use Symfony\Component\Mailer\SmtpEnvelope;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
@@ -156,8 +156,8 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
                         RawMessage::class,
                         Message::class,
                         Email::class,
-                        DelayedSmtpEnvelope::class,
-                        SmtpEnvelope::class,
+                        DelayedEnvelope::class,
+                        Envelope::class,
                     ],
                 ]);
 
@@ -239,5 +239,21 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
     public function getTimeLimit(): int
     {
         return $this->timeLimit;
+    }
+
+    public function __toString(): string
+    {
+        $result = '';
+        $directoryIterator = new DirectoryIterator($this->path);
+        foreach ($directoryIterator as $file) {
+            $file = $file->getRealPath();
+
+            if (substr($file, -8) != '.message') {
+                continue;
+            }
+
+            $result .= file_get_contents($file) . "\n";
+        }
+        return $result;
     }
 }

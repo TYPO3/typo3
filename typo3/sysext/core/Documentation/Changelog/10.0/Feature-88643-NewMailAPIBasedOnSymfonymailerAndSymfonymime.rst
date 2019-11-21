@@ -32,7 +32,7 @@ and more flexibility, but is also stricter in validation.
 
 Especially custom extensions using the MailMessage API need to be evaluated,
 as it is not possible anymore to add multiple email addresses as a simple associative
-array but rather a NamedAddress object or a simple Address object from "symfony/mime" is required.
+array but rather an Address object from "symfony/mime" is required.
 
 All existing Swiftmailer-based transports which TYPO3 supports natively have been
 replaced by Symfony-based transport APIs.
@@ -56,7 +56,7 @@ An example implementation within a third-party extension:
 .. code-block:: php
 
     $email = GeneralUtility::makeInstance(MailMessage::class)
-         ->to(new Address('benni@typo3.org'), new NamedAddress('benni@typo3.org', 'Benni Mack'))
+         ->to(new Address('kasperYYYY@typo3.org'), new Address('benni@typo3.org', 'Benni Mack'))
          ->subject('This is an example email')
          ->text('This is the plain-text variant')
          ->html('<h4>Hello Benni.</h4><p>Enjoy a HTML-readable email. <marquee>We love TYPO3</marquee>.</p>');
@@ -71,7 +71,7 @@ settings via a custom Transport for special cases.
     $mailer = GeneralUtility::makeInstance(Mailer::class)
 
     $email = GeneralUtility::makeInstance(MailMessage::class)
-         ->to(new Address('benni@typo3.org'), new NamedAddress('benni@typo3.org', 'Benni Mack'))
+         ->to(new Address('kasperYYYY@typo3.org'), new Address('benni@typo3.org', 'Benni Mack'))
          ->subject('This is an example email')
          ->text('This is the plain-text variant')
          ->html('<h4>Hello Benni.</h4><p>Enjoy a HTML-readable email. <marquee>We love TYPO3</marquee>.</p>');

@@ -15,13 +15,12 @@ namespace TYPO3\CMS\Core\Mail;
  */
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mailer\SentMessage;
-use Symfony\Component\Mailer\SmtpEnvelope;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\NamedAddress;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Exception as CoreException;
@@ -83,7 +82,7 @@ class Mailer implements MailerInterface
     /**
      * @inheritdoc
      */
-    public function send(RawMessage $message, SmtpEnvelope $envelope = null): void
+    public function send(RawMessage $message, Envelope $envelope = null): void
     {
         if ($message instanceof Email) {
             // Ensure to always have a From: header set
@@ -92,7 +91,7 @@ class Mailer implements MailerInterface
                 if ($address) {
                     $name = MailUtility::getSystemFromName();
                     if ($name) {
-                        $from = new NamedAddress($address, $name);
+                        $from = new Address($address, $name);
                     } else {
                         $from = new Address($address);
                     }
@@ -106,7 +105,7 @@ class Mailer implements MailerInterface
                     if ($address === 0) {
                         $replyTo = new Address($replyTo[$address]);
                     } else {
-                        $replyTo = new NamedAddress(reset($replyTo), $address);
+                        $replyTo = new Address(reset($replyTo), $address);
                     }
                     $message->replyTo($replyTo);
                 }

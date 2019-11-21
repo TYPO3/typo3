@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Mail;
 
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Core\Exception\InvalidArgumentException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -78,7 +77,7 @@ class MailMessage extends Email
      * compatibility methods to allow for associative arrays as [name => email address]
      * as it was possible in TYPO3 v9 / SwiftMailer.
      *
-     * Also, ensure to switch to NamedAddress objects and the ->subject()/->from() methods directly
+     * Also, ensure to switch to Address objects and the ->subject()/->from() methods directly
      * to directly use the new API.
      */
 
@@ -240,7 +239,7 @@ class MailMessage extends Email
     }
 
     /**
-     * Converts Addresses into Address/NamedAddress objects.
+     * Converts address from [email, name] into Address objects.
      *
      * @param string|array $args
      * @return Address[]
@@ -248,7 +247,7 @@ class MailMessage extends Email
     protected function convertNamedAddress(...$args): array
     {
         if (isset($args[1])) {
-            return [new NamedAddress($args[0], $args[1])];
+            return [new Address($args[0], $args[1])];
         }
         if (is_string($args[0]) || is_array($args[0])) {
             return $this->convertAddresses($args[0]);
@@ -272,7 +271,7 @@ class MailMessage extends Email
             if (is_numeric($email) || ctype_digit($email)) {
                 $newAddresses[] = Address::create($name);
             } else {
-                $newAddresses[] = new NamedAddress($email, $name);
+                $newAddresses[] = new Address($email, $name);
             }
         }
 

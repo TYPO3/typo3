@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Install\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -77,7 +77,7 @@ class AuthenticationService
             $mailMessage
                 ->to($warningEmailAddress)
                 ->subject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->from(new NamedAddress($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+                ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
                 ->text('There has been an Install Tool login at TYPO3 site'
                     . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
                     . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
@@ -98,7 +98,7 @@ class AuthenticationService
             $mailMessage
                 ->to($warningEmailAddress)
                 ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->from(new NamedAddress($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+                ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
                 ->text('There has been an Install Tool login attempt at TYPO3 site'
                     . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
                     . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'

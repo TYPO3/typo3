@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Scheduler\Example;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -62,7 +62,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             // Prepare mailer and send the mail
             try {
                 $mailer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
-                $mailer->from(new NamedAddress($this->email, 'SCHEDULER TEST-TASK'));
+                $mailer->from(new Address($this->email, 'SCHEDULER TEST-TASK'));
                 $mailer->setSubject('SCHEDULER TEST-TASK');
                 $mailer->text($mailBody);
                 $mailer->setTo($this->email);

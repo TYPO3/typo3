@@ -71,10 +71,10 @@ Example:
    services:
      MyCompany\MyPackage\EventListener\NullMailer:
        tags:
-         - { name: event.listener,
-             identifier: 'myListener',
-             event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent,
-             before: 'redirects, anotherIdentifier' }
+         - name: event.listener
+           identifier: 'myListener'
+           event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent
+           before: 'redirects, anotherIdentifier'
 
 
 The tag name `event.listener` identifies that a listener should be registered.

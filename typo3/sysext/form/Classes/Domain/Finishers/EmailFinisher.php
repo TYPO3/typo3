@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Form\Domain\Finishers;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
@@ -105,7 +105,7 @@ class EmailFinisher extends AbstractFinisher
 
         $mail = $this->objectManager->get(MailMessage::class);
 
-        $mail->from(new NamedAddress($senderAddress, $senderName))
+        $mail->from(new Address($senderAddress, $senderName))
             ->to(...$recipients)
             ->subject($subject);
 
@@ -282,7 +282,7 @@ class EmailFinisher extends AbstractFinisher
             if (empty($address)) {
                 continue;
             }
-            $addresses[] = new NamedAddress($address, $name);
+            $addresses[] = new Address($address, $name);
         }
         return $addresses;
     }

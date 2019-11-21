@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Workspaces\Hook;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\NamedAddress;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
@@ -650,11 +649,7 @@ class DataHandlerHook
                 $emailMessage = $templateService->substituteMarkerArray($emailMessage, $markers, '', true, true);
                 // Send an email to the recipient
                 $mail = GeneralUtility::makeInstance(MailMessage::class);
-                if (!empty($recipientData['realName'])) {
-                    $recipient = new NamedAddress($recipientData['email'], $recipientData['realName']);
-                } else {
-                    $recipient = new Address($recipientData['email']);
-                }
+                $recipient = new Address($recipientData['email'], $recipientData['realName']);
                 $mail->to($recipient)
                     ->subject($emailSubject)
                     ->html($emailMessage);

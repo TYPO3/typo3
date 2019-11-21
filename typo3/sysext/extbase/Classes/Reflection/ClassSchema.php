@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 use Doctrine\Common\Annotations\AnnotationReader;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlockFactory;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
@@ -41,7 +42,6 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\PropertyCharacteristics;
 use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_;
-use TYPO3\CMS\Extbase\Reflection\PropertyInfo\Extractor\PhpDocPropertyTypeExtractor;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
@@ -148,7 +148,10 @@ class ClassSchema
         }
 
         if (self::$propertyInfoExtractor === null) {
-            $phpDocExtractor = new PhpDocPropertyTypeExtractor();
+            $docBlockFactory = DocBlockFactory::createInstance();
+            $docBlockFactory->registerTagHandler('var', DocBlock\Tags\Var_::class);
+            $phpDocExtractor = new PhpDocExtractor($docBlockFactory);
+
             $reflectionExtractor = new ReflectionExtractor();
 
             self::$propertyInfoExtractor = new PropertyInfoExtractor(

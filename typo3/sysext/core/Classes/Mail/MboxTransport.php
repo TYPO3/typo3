@@ -66,4 +66,9 @@ class MboxTransport extends AbstractTransport
         GeneralUtility::fixPermissions($this->mboxFile);
         $lockObject->release();
     }
+
+    public function __toString(): string
+    {
+        return $this->mboxFile;
+    }
 }

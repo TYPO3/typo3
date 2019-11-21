@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Felogin\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Authentication\LoginType;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
@@ -1058,10 +1058,8 @@ class FrontendLoginController extends AbstractPlugin
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         $senderName = trim($senderName);
         $senderAddress = trim($senderAddress);
-        if ($senderName !== '' && $senderAddress !== '') {
-            $mail->from(new NamedAddress($senderAddress, $senderName));
-        } elseif ($senderAddress !== '') {
-            $mail->from($senderAddress);
+        if ($senderAddress !== '') {
+            $mail->from(new Address($senderAddress, $senderName));
         }
         $parsedReplyTo = MailUtility::parseAddresses($replyTo);
         if (!empty($parsedReplyTo)) {
