@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-// register extbase plugin
+// register plugin
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'IndexedSearch',
     'Pi2',

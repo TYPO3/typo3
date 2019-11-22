@@ -12,7 +12,7 @@
 Fluid Templating
 ^^^^^^^^^^^^^^^^
 
-The plugin "Indexed Search (Extbase & Fluid based)" can be extended with custom templates:
+The plugin "Indexed Search" can be extended with custom templates:
 
 .. code-block:: typoscript
 
