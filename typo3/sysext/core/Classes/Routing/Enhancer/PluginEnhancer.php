@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *       user_id: '[a-z]+'
  *       hash: '[a-z]{0-6}'
  */
-class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterface, ResultingInterface
+class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterface, InflatableEnhancerInterface, ResultingInterface
 {
     /**
      * @var array
@@ -81,9 +81,6 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
             ->inflateNamespaceParameters($dynamicCandidates, $this->namespace);
         // static arguments, that don't appear in dynamic arguments
         $staticArguments = ArrayUtility::arrayDiffAssocRecursive($routeArguments, $dynamicArguments);
-        // inflate remaining query arguments that could not be applied to the route
-        $remainingQueryParameters = $variableProcessor
-            ->inflateNamespaceParameters($remainingQueryParameters, $this->namespace);
 
         $page = $route->getOption('_page');
         $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
@@ -182,7 +179,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
      * @param array $internals Internal instructions (_route, _controller, ...)
      * @return array
      */
-    protected function inflateParameters(array $parameters, array $internals = []): array
+    public function inflateParameters(array $parameters, array $internals = []): array
     {
         return $this->getVariableProcessor()
             ->inflateNamespaceParameters($parameters, $this->namespace);
