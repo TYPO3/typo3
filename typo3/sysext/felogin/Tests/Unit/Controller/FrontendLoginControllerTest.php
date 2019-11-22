@@ -15,8 +15,8 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\LoginType;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Felogin\Controller\FrontendLoginController;
@@ -31,10 +31,14 @@ class FrontendLoginControllerTest extends UnitTestCase
 {
     protected $resetSingletonInstances = true;
 
+    /**
+     * @var SiteLanguage
+     */
+    protected $language;
+
     public function setUp(): void
     {
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('language', new SiteLanguage(0, 'en_US', new Uri('/'), ['typo3Language' => 'en']));
-        $GLOBALS['TSFE'] = new \stdClass();
+        $this->language = new SiteLanguage(0, 'en_US', new Uri('/'), ['typo3Language' => 'en']);
         parent::setUp();
     }
 
@@ -258,13 +262,13 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function processUserFieldsRespectsDefaultConfigurationForStdWrap($userRecord, $fieldConf, $expectedMarkers)
     {
-        $tsfe = new \stdClass();
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
         $tsfe->fe_user = new \stdClass();
         $tsfe->fe_user->user = $userRecord;
+        $tsfe->getLanguage(Argument::any())->willReturn($this->language);
         $conf = ['userfields.' => $fieldConf];
-        $subject = $this->getAccessibleMock(FrontendLoginController::class, ['dummy']);
+        $subject = $this->getAccessibleMock(FrontendLoginController::class, ['dummy'], [null, $tsfe->reveal()]);
         $subject->cObj = new ContentObjectRenderer();
-        $subject->_set('frontendController', $tsfe);
         $subject->_set('conf', $conf);
         self::assertEquals($expectedMarkers, $subject->_call('getUserFieldMarkers'));
     }
@@ -274,11 +278,13 @@ class FrontendLoginControllerTest extends UnitTestCase
      */
     public function processRedirectReferrerDomainsMatchesDomains()
     {
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->getLanguage(Argument::any())->willReturn($this->language);
         $conf = [
             'redirectMode' => 'refererDomains',
             'domains' => 'example.com'
         ];
-        $subject = $this->getAccessibleMock(FrontendLoginController::class, ['dummy']);
+        $subject = $this->getAccessibleMock(FrontendLoginController::class, ['dummy'], [null, $tsfe->reveal()]);
         $subject->_set('conf', $conf);
         $subject->_set('logintype', LoginType::LOGIN);
         $subject->_set('referer', 'http://www.example.com/snafu');

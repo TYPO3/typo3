@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Frontend\Plugin;
  */
 
 use Doctrine\DBAL\Driver\Statement;
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
@@ -23,7 +22,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -264,7 +262,7 @@ class AbstractPlugin
                 $this->frontendController->reqCHash();
             }
         }
-        $this->LLkey = $this->getCurrentSiteLanguage()->getTypo3Language();
+        $this->LLkey = $this->frontendController->getLanguage()->getTypo3Language();
 
         /** @var Locales $locales */
         $locales = GeneralUtility::makeInstance(Locales::class);
@@ -404,7 +402,7 @@ class AbstractPlugin
     {
         $conf = [];
         $conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
-        $conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $this->frontendController->id);
+        $conf['parameter'] = $altPageId ?: ($this->pi_tmpPageId ?: $this->frontendController->id);
         $conf['additionalParams'] = $this->conf['parent.']['addParams'] . HttpUtility::buildQueryString($urlParameters, '&', true) . $this->pi_moreParams;
         return $this->cObj->typoLink($str, $conf);
     }
@@ -1349,10 +1347,7 @@ class AbstractPlugin
      */
     public function pi_RTEcssText($str)
     {
-        $parseFunc = $this->frontendController->tmpl->setup['lib.']['parseFunc_RTE.'];
-        if (is_array($parseFunc)) {
-            $str = $this->cObj->parseFunc($str, $parseFunc);
-        }
+        $str = $this->cObj->parseFunc($str, [], '< lib.parseFunc_RTE');
         return $str;
     }
 
@@ -1426,20 +1421,5 @@ class AbstractPlugin
             }
         }
         return $tempArr[$value];
-    }
-
-    /**
-     * Returns the currently configured "site language" if a site is configured (= resolved) in the current request.
-     *
-     * @internal
-     */
-    protected function getCurrentSiteLanguage(): ?SiteLanguage
-    {
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        return $request
-               && $request instanceof ServerRequestInterface
-               && $request->getAttribute('language') instanceof SiteLanguage
-            ? $request->getAttribute('language')
-            : null;
     }
 }

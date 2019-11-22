@@ -15,12 +15,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Plugin;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Http\ServerRequest;
+use Prophecy\Argument;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use TYPO3\CMS\Frontend\Tests\Unit\Fixtures\ResultBrowserPluginHook;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -47,13 +48,12 @@ class AbstractPluginTest extends UnitTestCase
     {
         parent::setUp();
 
-        // Allow objects until 100 levels deep when executing the stdWrap
-        $GLOBALS['TSFE'] = new \stdClass();
-        $GLOBALS['TSFE']->cObjectDepthCounter = 100;
-        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('language', new SiteLanguage(0, 'en_US', new Uri('/'), ['typo3Language' => 'en']));
+        $tsfe = $this->prophesize(TypoScriptFrontendController::class);
+        $tsfe->cObjectDepthCounter = 100;
+        $tsfe->getLanguage(Argument::cetera())->willReturn(new SiteLanguage(0, 'en_US', new Uri('/'), ['typo3Language' => 'en']));
 
-        $this->abstractPlugin = new AbstractPlugin();
-        $contentObjectRenderer = new ContentObjectRenderer();
+        $this->abstractPlugin = new AbstractPlugin(null, $tsfe->reveal());
+        $contentObjectRenderer = new ContentObjectRenderer($tsfe->reveal());
         $contentObjectRenderer->setContentObjectClassMap([
             'TEXT' => TextContentObject::class,
         ]);

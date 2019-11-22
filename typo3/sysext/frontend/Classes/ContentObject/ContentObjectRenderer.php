@@ -51,7 +51,6 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
@@ -1763,14 +1762,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function stdWrap_lang($content = '', $conf = [])
     {
-        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-        $siteLanguage = $request ? $request->getAttribute('language') : null;
-        if ($siteLanguage instanceof SiteLanguage) {
-            $currentLanguageCode = $siteLanguage->getTypo3Language();
-        } else {
-            $tsfe = $this->getTypoScriptFrontendController();
-            $currentLanguageCode = $tsfe->config['config']['language'] ?? null;
-        }
+        $currentLanguageCode = $this->getTypoScriptFrontendController()->getLanguage()->getTypo3Language();
         if ($currentLanguageCode && isset($conf['lang.'][$currentLanguageCode])) {
             $content = $conf['lang.'][$currentLanguageCode];
         }
@@ -4693,30 +4685,24 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         }
                         break;
                     case 'site':
-                        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-                        $site = $request ? $request->getAttribute('site') : null;
-                        if ($site instanceof Site) {
-                            if ($key === 'identifier') {
-                                $retVal = $site->getIdentifier();
-                            } elseif ($key === 'base') {
-                                $retVal = $site->getBase();
-                            } else {
-                                try {
-                                    $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
-                                } catch (MissingArrayPathException $exception) {
-                                    $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
-                                }
+                        $site = $this->getTypoScriptFrontendController()->getSite();
+                        if ($key === 'identifier') {
+                            $retVal = $site->getIdentifier();
+                        } elseif ($key === 'base') {
+                            $retVal = $site->getBase();
+                        } else {
+                            try {
+                                $retVal = ArrayUtility::getValueByPath($site->getConfiguration(), $key, '.');
+                            } catch (MissingArrayPathException $exception) {
+                                $this->logger->warning(sprintf('getData() with "%s" failed', $key), ['exception' => $exception]);
                             }
                         }
                         break;
                     case 'sitelanguage':
-                        $request = $GLOBALS['TYPO3_REQUEST'] ?? null;
-                        $siteLanguage = $request ? $request->getAttribute('language') : null;
-                        if ($siteLanguage instanceof SiteLanguage) {
-                            $config = $siteLanguage->toArray();
-                            if (isset($config[$key])) {
-                                $retVal = $config[$key];
-                            }
+                        $siteLanguage = $this->getTypoScriptFrontendController()->getLanguage();
+                        $config = $siteLanguage->toArray();
+                        if (isset($config[$key])) {
+                            $retVal = $config[$key];
                         }
                         break;
                 }
