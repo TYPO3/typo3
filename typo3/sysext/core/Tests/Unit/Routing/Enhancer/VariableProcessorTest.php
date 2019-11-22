@@ -220,6 +220,14 @@ class VariableProcessorTest extends UnitTestCase
 
     public function keysDataProvider(): array
     {
+        return array_merge(
+            $this->regularKeysDataProvider(),
+            $this->specialKeysDataProvider()
+        );
+    }
+
+    public function regularKeysDataProvider(): array
+    {
         return [
             'no arguments, no namespace' => [
                 null,
@@ -230,11 +238,6 @@ class VariableProcessorTest extends UnitTestCase
                 null,
                 ['a' => 'newA'],
                 ['newA' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
-            ],
-            'a -> @any/nested, no namespace' => [
-                null,
-                ['a' => '@any/nested'],
-                ['qbeced67e6b340abc67a397f6e90bb0e' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
             ],
             'no arguments, first' => [
                 'first',
@@ -251,15 +254,31 @@ class VariableProcessorTest extends UnitTestCase
                 ['a' => 'any/nested'],
                 ['first__any__nested' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']]
             ],
-            'a -> @any/nested, first' => [
-                'first',
-                ['a' => '@any/nested'],
-                ['ab0ce8f9f822228b4f324ec38b9c0388' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']]
-            ],
             'd -> newD, first' => [
                 'first',
                 ['d' => 'newD'], // not substituted, which is expected
                 ['first__a' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']]
+            ],
+        ];
+    }
+
+    public function specialKeysDataProvider(): array
+    {
+        return [
+            'a -> @any/nested, no namespace' => [
+                null,
+                ['a' => '@any/nested'],
+                ['qbeced67e6b340abc67a397f6e90bb0e' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
+            ],
+            'a -> newA, namespace_being_longer_than_32_characters' => [
+                'namespace_being_longer_than_32_characters',
+                ['a' => 'newA'],
+                ['qaea1f31c57b9c3e78c8205838d4563c' => 'a', 'ub5e2989b61a4964ba4e06fc6de85276' => 'b', 'oabf16f448f7b02c6ecb13d155e5a4b5' => ['d' => 'd', 'e' => 'e']]
+            ],
+            'a -> @any/nested, first' => [
+                'first',
+                ['a' => '@any/nested'],
+                ['ab0ce8f9f822228b4f324ec38b9c0388' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']]
             ],
         ];
     }
@@ -283,5 +302,20 @@ class VariableProcessorTest extends UnitTestCase
             $inflatedKeys,
             $this->subject->inflateKeys($deflatedKeys, $namespace, $arguments)
         );
+    }
+
+    /**
+     * @param string|null $namespace
+     * @param array $arguments
+     * @param array $deflatedKeys
+     *
+     * @test
+     * @dataProvider specialKeysDataProvider
+     */
+    public function specialKeysAreNotInflatedWithoutBeingDeflated(?string $namespace, array $arguments, array $deflatedKeys)
+    {
+        $this->expectException(\OutOfRangeException::class);
+        $this->expectExceptionCode(1537633463);
+        $this->subject->inflateKeys($deflatedKeys, $namespace, $arguments);
     }
 }
