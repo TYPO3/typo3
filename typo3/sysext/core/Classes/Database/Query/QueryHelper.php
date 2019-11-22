@@ -141,7 +141,8 @@ class QueryHelper
         // Catch the edge case that the table name is unquoted and the
         // table alias is actually quoted. This will not work in the case
         // that the quoted table alias contains whitespace.
-        if ($tableAlias[0] === '`' || $tableAlias[0] === '"') {
+        $firstCharacterOfTableAlias = $tableAlias[0] ?? null;
+        if ($firstCharacterOfTableAlias === '`' || $firstCharacterOfTableAlias === '"') {
             $tableAlias = substr($tableAlias, 1, -1);
         }
 

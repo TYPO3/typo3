@@ -655,10 +655,10 @@ class DataHandler implements LoggerAwareInterface
     {
         // Initializing BE_USER
         $this->BE_USER = is_object($altUserObject) ? $altUserObject : $GLOBALS['BE_USER'];
-        $this->userid = $this->BE_USER->user['uid'];
-        $this->username = $this->BE_USER->user['username'];
-        $this->admin = $this->BE_USER->user['admin'];
-        if ($this->BE_USER->uc['recursiveDelete']) {
+        $this->userid = $this->BE_USER->user['uid'] ?? 0;
+        $this->username = $this->BE_USER->user['username'] ?? '';
+        $this->admin = $this->BE_USER->user['admin'] ?? false;
+        if ($this->BE_USER->uc['recursiveDelete'] ?? false) {
             $this->deleteTree = 1;
         }
 
@@ -987,7 +987,7 @@ class DataHandler implements LoggerAwareInterface
                     } else {
                         // Here we fetch the PID of the record that we point to...
                         $tempdata = $this->recordInfo($table, $id, 'pid' . (BackendUtility::isTableWorkspaceEnabled($table) ? ',t3ver_oid,t3ver_wsid,t3ver_stage' : ''));
-                        $theRealPid = $tempdata['pid'];
+                        $theRealPid = $tempdata['pid'] ?? null;
                         // Use the new id of the versionized record we're trying to write to:
                         // (This record is a child record of a parent and has already been versionized.)
                         if (!empty($this->autoVersionIdMap[$table][$id])) {
@@ -2194,7 +2194,7 @@ class DataHandler implements LoggerAwareInterface
             // Action commands (sorting order and removals of elements) for flexform sections,
             // see FormEngine for the use of this GP parameter
             $actionCMDs = GeneralUtility::_GP('_ACTION_FLEX_FORMdata');
-            if (is_array($actionCMDs[$table][$id][$field]['data'])) {
+            if (is_array($actionCMDs[$table][$id][$field]['data'] ?? null)) {
                 $arrValue = GeneralUtility::xml2array($xmlValue);
                 $this->_ACTION_FLEX_FORMdata($arrValue['data'], $actionCMDs[$table][$id][$field]['data']);
                 $xmlValue = $this->checkValue_flexArray2Xml($arrValue, true);

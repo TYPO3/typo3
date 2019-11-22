@@ -220,7 +220,11 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
      */
     private function getReturnType(\ReflectionFunctionAbstract $reflection, string $serviceName): string
     {
-        return (string)($reflection->getReturnType() ?: $serviceName);
+        if ($reflection->getReturnType() instanceof \ReflectionNamedType) {
+            return $reflection->getReturnType()->getName();
+        }
+
+        return $serviceName;
     }
 
     /**

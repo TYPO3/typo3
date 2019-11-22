@@ -99,7 +99,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
      */
     protected function getControllerConfiguration(string $extensionName, string $pluginName): array
     {
-        $controllerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'];
+        $controllerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['controllers'] ?? [];
         if (!is_array($controllerConfiguration)) {
             $controllerConfiguration = [];
         }

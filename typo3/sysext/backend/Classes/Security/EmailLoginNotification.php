@@ -78,7 +78,7 @@ class EmailLoginNotification
             }
         }
         // Trigger an email to the current BE user, if this has been enabled in the user configuration
-        if ($currentUser->uc['emailMeAtLogin'] && GeneralUtility::validEmail($user['email'])) {
+        if (($currentUser->uc['emailMeAtLogin'] ?? null) && GeneralUtility::validEmail($user['email'])) {
             $this->sendEmail($user['email'], $subject, $emailBody);
         }
     }

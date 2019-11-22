@@ -2517,7 +2517,7 @@ class ResourceStorage implements ResourceStorageInterface
     public function getFolder($identifier, $returnInaccessibleFolderObject = false)
     {
         $data = $this->driver->getFolderInfoByIdentifier($identifier);
-        $folder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
+        $folder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'] ?? null, $data['name'] ?? null);
 
         try {
             $this->assureFolderReadPermission($folder);

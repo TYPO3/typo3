@@ -32,7 +32,7 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
     public function addData(array $result)
     {
         if (empty($result['inlineExpandCollapseStateArray'])) {
-            $fullInlineState = json_decode($this->getBackendUser()->uc['inlineView'], true);
+            $fullInlineState = json_decode($this->getBackendUser()->uc['inlineView'] ?? null, true);
             if (!is_array($fullInlineState)) {
                 $fullInlineState = [];
             }
