@@ -916,9 +916,10 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsBlockingDatabaseAddsAction(): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $upgradeWizardsService = new UpgradeWizardsService();
         $adds = $upgradeWizardsService->getBlockingDatabaseAdds();
+        $this->resetGlobalContainer();
         $needsUpdate = false;
         if (!empty($adds)) {
             $needsUpdate = true;
@@ -938,9 +939,10 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsBlockingDatabaseExecuteAction(): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $upgradeWizardsService = new UpgradeWizardsService();
         $upgradeWizardsService->addMissingTablesAndFields();
+        $this->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
         $messages->enqueue(new FlashMessage(
             '',
@@ -994,10 +996,11 @@ class UpgradeController extends AbstractController
      */
     public function upgradeWizardsDoneUpgradesAction(): ResponseInterface
     {
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $upgradeWizardsService = new UpgradeWizardsService();
         $wizardsDone = $upgradeWizardsService->listOfWizardsDone();
         $rowUpdatersDone = $upgradeWizardsService->listOfRowUpdatersDone();
+        $this->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
         if (empty($wizardsDone) && empty($rowUpdatersDone)) {
             $messages->enqueue(new FlashMessage(
@@ -1022,10 +1025,11 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsExecuteAction(ServerRequestInterface $request): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $upgradeWizardsService = new UpgradeWizardsService();
         $identifier = $request->getParsedBody()['install']['identifier'];
         $messages = $upgradeWizardsService->executeWizard($identifier);
+        $this->resetGlobalContainer();
         return new JsonResponse([
             'success' => true,
             'status' => $messages,
@@ -1041,10 +1045,11 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsInputAction(ServerRequestInterface $request): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $upgradeWizardsService = new UpgradeWizardsService();
         $identifier = $request->getParsedBody()['install']['identifier'];
         $result = $upgradeWizardsService->getWizardUserInput($identifier);
+        $this->resetGlobalContainer();
         return new JsonResponse([
             'success' => true,
             'status' => [],
@@ -1060,9 +1065,10 @@ class UpgradeController extends AbstractController
     public function upgradeWizardsListAction(): ResponseInterface
     {
         // ext_localconf, db and ext_tables must be loaded for the updates :(
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $upgradeWizardsService = new UpgradeWizardsService();
         $wizards = $upgradeWizardsService->getUpgradeWizardsList();
+        $this->resetGlobalContainer();
         return new JsonResponse([
             'success' => true,
             'status' => [],
@@ -1078,10 +1084,11 @@ class UpgradeController extends AbstractController
      */
     public function upgradeWizardsMarkUndoneAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->loadExtLocalconfDatabaseAndExtTables();
+        $this->loadExtLocalconfDatabaseAndExtTables(false);
         $wizardToBeMarkedAsUndoneIdentifier = $request->getParsedBody()['install']['identifier'];
         $upgradeWizardsService = new UpgradeWizardsService();
         $result = $upgradeWizardsService->markWizardUndone($wizardToBeMarkedAsUndoneIdentifier);
+        $this->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
         if ($result) {
             $messages->enqueue(new FlashMessage(

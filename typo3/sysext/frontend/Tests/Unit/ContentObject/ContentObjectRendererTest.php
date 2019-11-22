@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -1710,6 +1711,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeSiteWithBaseVariants(): void
     {
+        $packageManager = new PackageManager(new DependencyOrderingService);
+        GeneralUtility::setSingletonInstance(PackageManager::class, $packageManager);
         $cacheManagerProphecy = $this->prophesize(CacheManager::class);
         $cacheManagerProphecy->getCache('core')->willReturn(new NullFrontend('core'));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerProphecy->reveal());

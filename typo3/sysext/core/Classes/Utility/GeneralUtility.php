@@ -3459,8 +3459,8 @@ class GeneralUtility
 
         // Create new instance and call constructor with parameters
         $instance = new $finalClassName(...$constructorArguments);
-        // Register new singleton instance
-        if ($instance instanceof SingletonInterface) {
+        // Register new singleton instance, but only if it is not a known PSR-11 container service
+        if ($instance instanceof SingletonInterface && !(self::$container !== null && self::$container->has($className))) {
             self::$singletonInstances[$finalClassName] = $instance;
         }
         if ($instance instanceof LoggerAwareInterface) {

@@ -132,6 +132,11 @@ class Bootstrap
         // makeInstance() method creates classes using the container from now on.
         GeneralUtility::setContainer($container);
 
+        // Reset singleton instances in order for GeneralUtility::makeInstance() to use
+        // ContainerInterface->get() for early services from now on.
+        GeneralUtility::removeSingletonInstance(LogManager::class, $logManager);
+        GeneralUtility::removeSingletonInstance(PackageManager::class, $packageManager);
+
         if ($failsafe) {
             $bootState->done = true;
             return $container;

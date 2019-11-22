@@ -114,9 +114,10 @@ class LateBootService
     /**
      * Bootstrap a non-failsafe container and load ext_localconf
      *
+     * @param bool $resetContainer
      * @return ContainerInterface
      */
-    public function loadExtLocalconfDatabaseAndExtTables(): ContainerInterface
+    public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = true): ContainerInterface
     {
         $container = $this->getContainer();
 
@@ -134,7 +135,9 @@ class LateBootService
         Bootstrap::loadBaseTca(false);
         Bootstrap::loadExtTables(false);
 
-        $this->makeCurrent(null, $backup);
+        if ($resetContainer) {
+            $this->makeCurrent(null, $backup);
+        }
 
         return $container;
     }

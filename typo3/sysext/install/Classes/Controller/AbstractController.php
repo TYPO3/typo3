@@ -59,10 +59,16 @@ class AbstractController
      * Those actions can potentially fatal if some old extension is loaded that triggers
      * a fatal in ext_localconf or ext_tables code! Use only if really needed.
      *
+     * @param bool $resetContainer
      * @return ContainerInterface
      */
-    protected function loadExtLocalconfDatabaseAndExtTables(): ContainerInterface
+    public function loadExtLocalconfDatabaseAndExtTables(bool $resetContainer = true): ContainerInterface
     {
-        return GeneralUtility::makeInstance(LateBootService::class)->loadExtLocalconfDatabaseAndExtTables();
+        return GeneralUtility::makeInstance(LateBootService::class)->loadExtLocalconfDatabaseAndExtTables($resetContainer);
+    }
+
+    public function resetGlobalContainer(): void
+    {
+        GeneralUtility::makeInstance(LateBootService::class)->makeCurrent(null, []);
     }
 }

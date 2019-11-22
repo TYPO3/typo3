@@ -5,7 +5,6 @@ namespace TYPO3\CMS\Core\ExpressionLanguage;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -22,10 +21,7 @@ class ProviderConfigurationLoader
      */
     public function getExpressionLanguageProviders(): array
     {
-        $packageManager = GeneralUtility::makeInstance(
-            PackageManager::class,
-            GeneralUtility::makeInstance(DependencyOrderingService::class)
-        );
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
 
         if ($cache->has($this->cacheIdentifier)) {
