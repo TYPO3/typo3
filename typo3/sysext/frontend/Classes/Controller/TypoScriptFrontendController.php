@@ -2621,13 +2621,13 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     $message = 'The page is not configured! [type=' . $this->type . '][' . $this->sPre . '].';
                     $this->logger->alert($message);
                     try {
-                        $response = GeneralUtility::makeInstance(ErrorController::class)->unavailableAction(
+                        $response = GeneralUtility::makeInstance(ErrorController::class)->pageNotFoundAction(
                             $GLOBALS['TYPO3_REQUEST'],
                             $message,
                             ['code' => PageAccessFailureReasons::RENDERING_INSTRUCTIONS_NOT_CONFIGURED]
                         );
                         throw new ImmediateResponseException($response, 1533931374);
-                    } catch (ServiceUnavailableException $e) {
+                    } catch (PageNotFoundException $e) {
                         $explanation = 'This means that there is no TypoScript object of type PAGE with typeNum=' . $this->type . ' configured.';
                         throw new ServiceUnavailableException($message . ' ' . $explanation, 1294587217);
                     }
