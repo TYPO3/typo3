@@ -100,7 +100,7 @@ plugin.tx_indexedsearch {
 			freeIndexUid = -1
 			mediaType = -1
 			sortOrder = rank_flag
-			languageUid = -1
+			languageUid = current
 			sortDesc = 1
 			searchType = 1
 			extResume = 1

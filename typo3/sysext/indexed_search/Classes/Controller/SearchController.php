@@ -201,6 +201,11 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         if (is_array($this->settings['defaultOptions'])) {
             $searchData = array_merge($this->settings['defaultOptions'], $searchData);
         }
+        // if "languageUid" was set to "current", take the current site language
+        if ($searchData['languageUid'] ?? '' === 'current') {
+            $searchData['languageUid'] = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('language', 'id', 0);
+        }
+
         // Indexer configuration from Extension Manager interface:
         $this->indexerConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('indexed_search');
         $this->enableMetaphoneSearch = (bool)$this->indexerConfig['enableMetaphoneSearch'];
