@@ -63,6 +63,10 @@ class BackendUserConfigurationUpdate implements UpgradeWizardInterface
         foreach ($this->getAffectedBackendUsers() as $backendUser) {
             $userConfig = $this->unserializeUserConfig($backendUser['uc']);
 
+            if (!is_array($userConfig)) {
+                continue;
+            }
+
             array_walk_recursive($userConfig, function (&$item) use (&$needsExecution) {
                 if ($item instanceof \stdClass) {
                     $needsExecution = true;
@@ -96,6 +100,11 @@ class BackendUserConfigurationUpdate implements UpgradeWizardInterface
     {
         foreach ($this->getAffectedBackendUsers() as $backendUser) {
             $userConfig = $this->unserializeUserConfig($backendUser['uc']);
+
+            if (!is_array($userConfig)) {
+                continue;
+            }
+
             array_walk_recursive($userConfig, function (&$item) {
                 if ($item instanceof \stdClass) {
                     $item = json_decode(json_encode($item), true);
