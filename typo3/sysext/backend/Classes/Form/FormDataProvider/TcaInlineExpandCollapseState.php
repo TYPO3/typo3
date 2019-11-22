@@ -34,8 +34,12 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
         if (empty($result['inlineExpandCollapseStateArray'])) {
             if (!empty($result['inlineTopMostParentUid']) && !empty($result['inlineTopMostParentTableName'])) {
                 // Happens in inline ajax context, top parent uid and top parent table are set
-                $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
-                if (!is_array($fullInlineState)) {
+                if (isset($this->getBackendUser()->uc['inlineView'])) {
+                    $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
+                    if (!is_array($fullInlineState)) {
+                        $fullInlineState = [];
+                    }
+                } else {
                     $fullInlineState = [];
                 }
                 $inlineStateForTable = [];

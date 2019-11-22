@@ -182,7 +182,7 @@ class NormalizeCommand
                     $fieldArray[] = self::convertRangeToListOfValues($listElement);
                 } elseif (MathUtility::canBeInterpretedAsInteger($listElement)) {
                     $fieldArray[] = $listElement;
-                } elseif (strlen($listElement) === 2 && $listElement{0} === '0') {
+                } elseif (strlen($listElement) === 2 && $listElement[0] === '0') {
                     $fieldArray[] = (int)$listElement;
                 } else {
                     throw new \InvalidArgumentException('Unable to normalize integer field.', 1291429389);

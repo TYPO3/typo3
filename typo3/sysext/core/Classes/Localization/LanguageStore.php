@@ -106,7 +106,7 @@ class LanguageStore implements SingletonInterface
      */
     public function getDataByLanguage($fileReference, $languageKey)
     {
-        return $this->data[$fileReference][$languageKey];
+        return $this->data[$fileReference][$languageKey] ?? [];
     }
 
     /**

@@ -88,11 +88,11 @@ class ConfigurationService implements SingletonInterface
         $beUser = $this->getBackendUser();
         $this->triggerOnSubmitActors($modules, $request, $configurationToSave);
 
+        $existingConfiguration = $beUser->uc['AdminPanel'] ?? [];
+        $existingConfiguration = is_array($existingConfiguration) ? $existingConfiguration : [];
+
         // Settings
-        $beUser->uc['AdminPanel'] = array_merge(
-            !is_array($beUser->uc['AdminPanel']) ? [] : $beUser->uc['AdminPanel'],
-            $configurationToSave
-        );
+        $beUser->uc['AdminPanel'] = array_merge($existingConfiguration, $configurationToSave);
         unset($beUser->uc['AdminPanel']['action']);
         // Saving
         $beUser->writeUC();

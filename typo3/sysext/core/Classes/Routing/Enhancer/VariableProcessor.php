@@ -46,11 +46,11 @@ class VariableProcessor
         }
         $hash = md5($value);
         // Symfony Route Compiler requires first literal to be non-integer
-        if ($hash{0} === (string)(int)$hash{0}) {
-            $hash{0} = str_replace(
+        if ($hash[0] === (string)(int)$hash[0]) {
+            $hash[0] = str_replace(
                 range('0', '9'),
                 range('o', 'x'),
-                $hash{0}
+                $hash[0]
             );
         }
         $this->hashes[$hash] = $value;

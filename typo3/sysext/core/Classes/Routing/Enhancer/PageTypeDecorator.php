@@ -146,8 +146,8 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
         $value = $this->resolveValue($type);
 
         $considerIndex = $value !== ''
-            && in_array($value{0}, static::ROUTE_PATH_DELIMITERS);
-        if ($value !== '' && !in_array($value{0}, static::ROUTE_PATH_DELIMITERS)) {
+            && in_array($value[0], static::ROUTE_PATH_DELIMITERS);
+        if ($value !== '' && !in_array($value[0], static::ROUTE_PATH_DELIMITERS)) {
             $value = '/' . $value;
         }
 
@@ -242,7 +242,7 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
     protected function needsSlashPrefix(string $value): bool
     {
         return !in_array(
-            $value{0} ?? '',
+            $value[0] ?? '',
             static::ROUTE_PATH_DELIMITERS,
             true
         );

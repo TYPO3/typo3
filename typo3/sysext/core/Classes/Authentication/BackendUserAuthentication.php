@@ -2718,7 +2718,7 @@ This is a dump of the failures:
             }
         }
         // Trigger an email to the current BE user, if this has been enabled in the user configuration
-        if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
+        if (($this->uc['emailMeAtLogin'] ?? false) && strstr($this->user['email'] ?? '', '@')) {
             /** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
             $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
             $mail->setTo($this->user['email'])->setSubject($subject)->setBody($msg);

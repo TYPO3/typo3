@@ -291,7 +291,7 @@ class Site implements SiteInterface
     public function getErrorHandler(int $statusCode): PageErrorHandlerInterface
     {
         $errorHandlerConfiguration = $this->errorHandlers[$statusCode] ?? null;
-        switch ($errorHandlerConfiguration['errorHandler']) {
+        switch ($errorHandlerConfiguration['errorHandler'] ?? null) {
             case self::ERRORHANDLER_TYPE_FLUID:
                 return GeneralUtility::makeInstance(FluidPageErrorHandler::class, $statusCode, $errorHandlerConfiguration);
             case self::ERRORHANDLER_TYPE_PAGE:
@@ -346,7 +346,7 @@ class Site implements SiteInterface
     {
         // no protocol ("//") and the first part is no "/" (path), means that this is a domain like
         // "www.domain.com/blabla", and we want to ensure that this one then gets a "no-scheme agnostic" part
-        if (!empty($base) && strpos($base, '//') === false && $base{0} !== '/') {
+        if (!empty($base) && strpos($base, '//') === false && $base[0] !== '/') {
             // either a scheme is added, or no scheme but with domain, or a path which is not absolute
             // make the base prefixed with a slash, so it is recognized as path, not as domain
             // treat as path

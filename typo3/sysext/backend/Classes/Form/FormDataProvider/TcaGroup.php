@@ -148,7 +148,7 @@ class TcaGroup implements FormDataProviderInterface
                     $title = BackendUtility::getRecordTitle($tableName, $record, false, false);
                     $items[] = [
                         'table' => $tableName,
-                        'uid' => $record['uid'],
+                        'uid' => $record['uid'] ?? null,
                         'title' => $title,
                         'row' => $record,
                     ];

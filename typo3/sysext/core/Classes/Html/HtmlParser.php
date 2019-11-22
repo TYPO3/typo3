@@ -419,7 +419,7 @@ class HtmlParser
                 $tok = substr($tok, $eocPos + 10);
                 $skipTag = true;
             }
-            $firstChar = $tok[0];
+            $firstChar = $tok[0] ?? null;
             // It is a tag... (first char is a-z0-9 or /) (fixed 19/01 2004). This also avoids triggering on <?xml..> and <!DOCTYPE..>
             if (!$skipTag && preg_match('/[[:alnum:]\\/]/', $firstChar) === 1) {
                 $tagEnd = strpos($tok, '>');

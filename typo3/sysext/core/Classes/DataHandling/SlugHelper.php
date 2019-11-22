@@ -127,7 +127,7 @@ class SlugHelper
         // Remove trailing and beginning slashes, except if the trailing slash was added, then we'll re-add it
         $appendTrailingSlash = $extractedSlug !== '' && substr($slug, -1) === '/';
         $slug = $extractedSlug . ($appendTrailingSlash ? '/' : '');
-        if ($this->prependSlashInSlug && ($slug{0} ?? '') !== '/') {
+        if ($this->prependSlashInSlug && ($slug[0] ?? '') !== '/') {
             $slug = '/' . $slug;
         }
         return $slug;
@@ -205,7 +205,7 @@ class SlugHelper
         if ($slug === '' || $slug === '/') {
             $slug = 'default-' . GeneralUtility::shortMD5(json_encode($recordData));
         }
-        if ($this->prependSlashInSlug && ($slug{0} ?? '') !== '/') {
+        if ($this->prependSlashInSlug && ($slug[0] ?? '') !== '/') {
             $slug = '/' . $slug;
         }
         if (!empty($prefix)) {

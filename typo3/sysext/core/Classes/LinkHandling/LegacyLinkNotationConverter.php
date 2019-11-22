@@ -170,7 +170,7 @@ class LegacyLinkNotationConverter
         }
         if (empty($data)) {
             $result['pageuid'] = 'current';
-        } elseif ($data{0} === '#') {
+        } elseif ($data[0] === '#') {
             $result['pageuid'] = 'current';
             $result['fragment'] = substr($data, 1);
         } elseif (strpos($data, ',') !== false) {
