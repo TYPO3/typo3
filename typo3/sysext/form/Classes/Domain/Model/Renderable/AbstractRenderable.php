@@ -168,7 +168,11 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
             }
 
             foreach ($options['validators'] as $validatorConfiguration) {
-                $configurationHash = md5($this->getIdentifier() . json_encode($validatorConfiguration));
+                $configurationHash = md5(
+                    $this->getRootForm()->getIdentifier() .
+                    $this->getIdentifier() .
+                    json_encode($validatorConfiguration)
+                );
                 if (in_array($configurationHash, $configurationHashes)) {
                     continue;
                 }
