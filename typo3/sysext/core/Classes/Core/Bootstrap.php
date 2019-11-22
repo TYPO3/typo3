@@ -111,18 +111,13 @@ class Bootstrap
 
         $bootState = new \stdClass;
         $bootState->done = false;
+        $bootState->cacheDisabled = $disableCaching;
 
         $builder = new ContainerBuilder([
-            'env.is_unix' => Environment::isUnix(),
-            'env.is_windows' => Environment::isWindows(),
-            'env.is_cli' => Environment::isCli(),
-            'env.is_composer_mode' => Environment::isComposerMode(),
-
             ClassLoader::class => $classLoader,
             ApplicationContext::class => Environment::getContext(),
             ConfigurationManager::class => $configurationManager,
             LogManager::class => $logManager,
-            'cache.disabled' => $disableCaching,
             'cache.core' => $coreCache,
             'cache.assets' => $assetsCache,
             PackageManager::class => $packageManager,

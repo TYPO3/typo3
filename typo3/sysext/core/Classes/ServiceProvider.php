@@ -58,7 +58,7 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
-        $disableCaching = $container->get('cache.disabled');
+        $disableCaching = $container->get('boot.state')->cacheDisabled;
         $defaultCaches = [
             $container->get('cache.core'),
             $container->get('cache.assets'),
