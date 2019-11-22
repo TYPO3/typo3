@@ -2368,11 +2368,6 @@ define(['jquery',
         'Invalid configuration "propertyPath"',
         1477300590
       );
-      assert(
-        'tt_content' === editorConfiguration['browsableType'] || 'pages' === editorConfiguration['browsableType'],
-        'Invalid configuration "browsableType"',
-        1477319859
-      );
 
       getHelper()
         .getTemplatePropertyDomElement('label', editorHtml)
