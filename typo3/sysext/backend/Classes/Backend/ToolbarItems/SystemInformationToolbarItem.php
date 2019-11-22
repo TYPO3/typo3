@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Backend\ToolbarItems;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -27,8 +29,6 @@ use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -68,20 +68,18 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected $systemMessages = [];
 
     /**
-     * @var Dispatcher
+     * @var EventDispatcherInterface
      */
-    protected $signalSlotDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @var int
      */
     protected $maximumCountInBadge = 99;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar/SystemInformationMenu');
         $this->highestSeverity = InformationStatus::cast(InformationStatus::STATUS_INFO);
     }
@@ -231,8 +229,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
         $this->getGitRevision();
         $this->getOperatingSystem();
 
-        $this->emitGetSystemInformation();
-        $this->emitLoadMessages();
+        $this->eventDispatcher->dispatch(new SystemInformationToolbarCollectorEvent($this));
 
         $this->severityBadgeClass = !$this->highestSeverity->equals(InformationStatus::STATUS_NOTICE) ? 'badge-' . (string)$this->highestSeverity : '';
     }
@@ -372,22 +369,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     }
 
     /**
-     * Emits the "getSystemInformation" signal
-     */
-    protected function emitGetSystemInformation()
-    {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'getSystemInformation', [$this]);
-    }
-
-    /**
-     * Emits the "loadMessages" signal
-     */
-    protected function emitLoadMessages()
-    {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'loadMessages', [$this]);
-    }
-
-    /**
      * Returns a new standalone view, shorthand function
      *
      * @param string $filename Which templateFile should be used.
@@ -432,18 +413,5 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
     protected function getPageRenderer()
     {
         return GeneralUtility::makeInstance(PageRenderer::class);
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class);
-        }
-        return $this->signalSlotDispatcher;
     }
 }

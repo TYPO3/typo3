@@ -1,15 +1,10 @@
 services:
-  _defaults:
+  TYPO3\CMS\Install\SystemInformation\Typo3VersionMessage:
     autowire: true
     autoconfigure: true
     public: false
-
-  TYPO3\CMS\Belog\:
-    resource: '../Classes/*'
-
-  TYPO3\CMS\Belog\Controller\SystemInformationController:
     tags:
       - name: event.listener
-        identifier: 'belog/show-latest-errors'
+        identifier: 'install/show-latest-errors'
         method: 'appendMessage'
         event: TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent

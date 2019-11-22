@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Belog\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
+use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Database\Connection;
@@ -24,10 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
- * Count newest exceptions for the system information menu
+ * Count latest exceptions for the system information menu.
+ *
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class SystemInformationController
+final class SystemInformationController
 {
     /**
      * @var array
@@ -40,12 +41,13 @@ class SystemInformationController
     }
 
     /**
-     * Modifies the SystemInformation array
-     *
-     * @param SystemInformationToolbarItem $systemInformationToolbarItem
+     * Modifies the SystemInformation toolbar to inject a new message
+     * @param SystemInformationToolbarCollectorEvent $event
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    public function appendMessage(SystemInformationToolbarItem $systemInformationToolbarItem)
+    public function appendMessage(SystemInformationToolbarCollectorEvent $event): void
     {
+        $systemInformationToolbarItem = $event->getToolbarItem();
         // we can't use the extbase repository here as the required TypoScript may not be parsed yet
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
         $count = $queryBuilder->count('error')
@@ -82,7 +84,7 @@ class SystemInformationController
         }
     }
 
-    protected function fetchLastAccessTimestamp(): int
+    private function fetchLastAccessTimestamp(): int
     {
         if (!isset($this->backendUserConfiguration['systeminformation'])) {
             return 0;

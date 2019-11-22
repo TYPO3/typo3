@@ -19,6 +19,7 @@ The following new PSR-14 events have been introduced:
 - :php:`TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent`
 - :php:`TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent`
 - :php:`TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent`
+- :php:`TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent`
 
 They replace the existing Extbase-based Signal Slots
 
@@ -28,6 +29,8 @@ They replace the existing Extbase-based Signal Slots
 - :php:`TYPO3\CMS\Core\Utility\ExtensionManagementUtility::tcaIsBeingBuilt`
 - :php:`TYPO3\CMS\Install\Service\SqlExpectedSchemaService::tablesDefinitionIsBeingBuilt`
 - :php:`TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider::PostProcessTreeData`
+- :php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::getSystemInformation`
+- :php:`TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem::loadMessages`
 
 
 Impact

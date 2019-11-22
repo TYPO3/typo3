@@ -15,7 +15,7 @@ namespace TYPO3\CMS\Scheduler\SystemInformation;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
+use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -25,9 +25,9 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Add information about the scheduler configuration to the system information toolbar
+ * Event listener to display information about last automated run, as stored in the system registry.
  */
-class ToolbarItemProvider
+final class ToolbarItemProvider
 {
     /**
      * Scheduler last run registry information
@@ -44,13 +44,9 @@ class ToolbarItemProvider
         $this->lastRunInformation = GeneralUtility::makeInstance(Registry::class)->get('tx_scheduler', 'lastRun', []);
     }
 
-    /**
-     * Display information about last automated run, as stored in the system registry
-     *
-     * @param SystemInformationToolbarItem $systemInformationToolbarItem
-     */
-    public function getItem(SystemInformationToolbarItem $systemInformationToolbarItem): void
+    public function getItem(SystemInformationToolbarCollectorEvent $event): void
     {
+        $systemInformationToolbarItem = $event->getToolbarItem();
         // No tasks configured, so nothing is shown at all
         if (!$this->hasConfiguredTasks()) {
             return;
@@ -119,7 +115,7 @@ class ToolbarItemProvider
      *
      * @return bool
      */
-    protected function schedulerWasExecuted(): bool
+    private function schedulerWasExecuted(): bool
     {
         return !empty($this->lastRunInformation);
     }
@@ -129,7 +125,7 @@ class ToolbarItemProvider
      *
      * @return bool
      */
-    protected function lastRunInfoExists(): bool
+    private function lastRunInfoExists(): bool
     {
         return !empty($this->lastRunInformation['end'])
             || !empty($this->lastRunInformation['start'])
@@ -141,7 +137,7 @@ class ToolbarItemProvider
      *
      * @return bool
      */
-    protected function hasConfiguredTasks(): bool
+    private function hasConfiguredTasks(): bool
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tx_scheduler_task');
         $queryBuilder->getRestrictions()->removeAll();
@@ -157,7 +153,7 @@ class ToolbarItemProvider
     /**
      * @return LanguageService
      */
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }

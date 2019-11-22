@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
+use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
@@ -172,6 +174,10 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         DatabaseTreeDataProvider::class => [
             'PostProcessTreeData' => ModifyTreeDataEvent::class,
         ],
+        SystemInformationToolbarItem::class => [
+            'getSystemInformation' => SystemInformationToolbarCollectorEvent::class,
+            'loadMessages' => SystemInformationToolbarCollectorEvent::class
+        ]
     ];
 
     /**

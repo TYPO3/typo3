@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Install\SystemInformation;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
+use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -24,26 +24,19 @@ use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\CMS\Install\Service\Exception\RemoteFetchException;
 
 /**
- * Count newest exceptions for the system information menu
+ * Modifies the SystemInformation information to add a new message if you are running the latest TYPO3 Version
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class Typo3VersionMessage
+final class Typo3VersionMessage
 {
-    /**
-     * Modifies the SystemInformation array
-     *
-     * @param SystemInformationToolbarItem $systemInformationToolbarItem
-     */
-    public function appendMessage(SystemInformationToolbarItem $systemInformationToolbarItem): void
+    public function appendMessage(SystemInformationToolbarCollectorEvent $event): void
     {
+        $systemInformationToolbarItem = $event->getToolbarItem();
         $coreVersionService = GeneralUtility::makeInstance(CoreVersionService::class);
-
         try {
             if ($coreVersionService->isVersionActivelyMaintained()) {
-                $isYoungerPatchReleaseAvailable = $coreVersionService->isYoungerPatchReleaseAvailable();
-
-                if (true === $isYoungerPatchReleaseAvailable) {
+                if ($coreVersionService->isYoungerPatchReleaseAvailable()) {
                     $release = $coreVersionService->getYoungestPatchRelease();
 
                     if ($coreVersionService->isUpdateSecurityRelevant()) {
