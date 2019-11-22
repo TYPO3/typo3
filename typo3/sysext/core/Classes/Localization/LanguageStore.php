@@ -105,7 +105,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function getDataByLanguage($fileReference, $languageKey)
     {
-        return $this->data[$fileReference][$languageKey];
+        return $this->data[$fileReference][$languageKey] ?? [];
     }
 
     /**

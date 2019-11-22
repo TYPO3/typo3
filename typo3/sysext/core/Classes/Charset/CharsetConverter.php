@@ -959,6 +959,9 @@ class CharsetConverter implements SingletonInterface
             if ($fh) {
                 while (!feof($fh)) {
                     $line = fgets($fh, 4096);
+                    if ($line === false) {
+                        continue;
+                    }
                     if ($line[0] !== '#' && trim($line) !== '') {
                         list($char, $translit) = GeneralUtility::trimExplode(';', $line);
                         if (!$translit) {
@@ -1003,11 +1006,11 @@ class CharsetConverter implements SingletonInterface
                 // Skip decompositions containing non-ASCII chars
                 $code_decomp[] = chr($ord);
             }
-            $ascii[$this->UnumberToChar(hexdec($from))] = implode('', $code_decomp);
+            $ascii[$this->UnumberToChar(hexdec(substr($from, 2)))] = implode('', $code_decomp);
         }
         // Add numeric decompositions
         foreach ($number as $from => $to) {
-            $utf8_char = $this->UnumberToChar(hexdec($from));
+            $utf8_char = $this->UnumberToChar(hexdec(substr($from, 2)));
             if (!isset($ascii[$utf8_char])) {
                 $ascii[$utf8_char] = $to;
             }

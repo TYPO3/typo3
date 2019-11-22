@@ -36,8 +36,8 @@ class FormSelectTreeAjaxController
      */
     public function fetchDataAction(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $tableName = $request->getQueryParams()['tableName'];
-        $fieldName = $request->getQueryParams()['fieldName'];
+        $tableName = $request->getQueryParams()['tableName'] ?? '';
+        $fieldName = $request->getQueryParams()['fieldName'] ?? '';
 
         // Prepare processedTca: Remove all column definitions except the one that contains
         // our tree definition. This way only this field is calculated, everything else is ignored.

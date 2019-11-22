@@ -20,6 +20,7 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\SchemaDiff;
 use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Type;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Database\Connection;
@@ -88,7 +89,9 @@ class ConnectionMigratorTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
      */
     public function columnNamesStickToTheMaximumCharactersWhenPrefixedForRemoval()
     {
-        $originalSchemaDiff = GeneralUtility::makeInstance(SchemaDiff::class, null, null, [$this->getTable()]);
+        $table = $this->getTable();
+        $tableDiff = new TableDiff($table->getName());
+        $originalSchemaDiff = new SchemaDiff(null, [$tableDiff]);
         $originalSchemaDiff->changedTables[0]->removedColumns[] = $this->getColumn();
         $renamedSchemaDiff = $this->subject->_call('migrateUnprefixedRemovedFieldsToRenames', $originalSchemaDiff);
 

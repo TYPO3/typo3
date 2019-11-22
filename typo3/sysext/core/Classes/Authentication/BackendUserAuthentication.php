@@ -2623,7 +2623,7 @@ This is a dump of the failures:
                 }
             }
             // If An email should be sent to the current user, do that:
-            if ($this->uc['emailMeAtLogin'] && strstr($this->user['email'], '@')) {
+            if (($this->uc['emailMeAtLogin'] ?? false) && strstr($this->user['email'] ?? '', '@')) {
                 /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
                 $mail = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Mail\MailMessage::class);
                 $mail->setTo($this->user['email'])->setSubject($subject)->setBody($msg);

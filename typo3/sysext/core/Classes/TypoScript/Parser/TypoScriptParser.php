@@ -330,7 +330,7 @@ class TypoScriptParser
                         }
                         // Disable multiline
                         $this->multiLineEnabled = 0;
-                        $theValue = implode($this->multiLineValue, LF);
+                        $theValue = implode(LF, $this->multiLineValue);
                         if (strpos($this->multiLineObject, '.') !== false) {
                             // Set the value deeper.
                             $this->setVal($this->multiLineObject, $setup, [$theValue]);

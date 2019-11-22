@@ -160,6 +160,7 @@ class PaginateControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $mockQuery = $this->createMock(\TYPO3\CMS\Extbase\Persistence\QueryInterface::class);
         $mockQueryResult->expects($this->any())->method('getQuery')->will($this->returnValue($mockQuery));
         $this->controller->_set('objects', $mockQueryResult);
+        $this->controller->_set('widgetConfiguration', ['as' => 'paginatedObjects']);
         $this->controller->indexAction();
         $this->assertSame($mockQueryResult, $this->controller->_get('objects'));
     }
@@ -171,6 +172,7 @@ class PaginateControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     {
         $objects = [];
         $this->controller->_set('objects', $objects);
+        $this->controller->_set('widgetConfiguration', ['as' => 'paginatedObjects']);
         $this->controller->indexAction();
         $this->assertSame($objects, $this->controller->_get('objects'));
     }
@@ -182,6 +184,7 @@ class PaginateControllerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
     {
         $objects = new ObjectStorage();
         $this->controller->_set('objects', $objects);
+        $this->controller->_set('widgetConfiguration', ['as' => 'paginatedObjects']);
         $this->controller->indexAction();
         $this->assertSame($objects, $this->controller->_get('objects'));
     }

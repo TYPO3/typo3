@@ -302,7 +302,7 @@ class LegacyLinkNotationConverterTest extends \TYPO3\TestingFramework\Core\Unit\
                 $parameters['folder'] = substr($parameters['folder'], 5);
             }
             // fake "0" storage
-            if (!MathUtility::canBeInterpretedAsInteger($parameters['folder']{0})) {
+            if (!MathUtility::canBeInterpretedAsInteger($parameters['folder'][0])) {
                 $parameters['folder'] = '0:' . $parameters['folder'];
             }
             $folderObject = $this->getMockBuilder(Folder::class)
