@@ -269,6 +269,7 @@ class SlugSiteRequestTest extends AbstractTestCase
             (string)$response->getBody()
         );
     }
+
     /**
      * @test
      */
@@ -295,6 +296,36 @@ class SlugSiteRequestTest extends AbstractTestCase
         );
         self::assertStringContainsString(
             'message: The requested page does not exist',
+            (string)$response->getBody()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function unconfiguredTypeNumResultsIn404Error()
+    {
+        $this->writeSiteConfiguration(
+            'website-local',
+            $this->buildSiteConfiguration(1000, 'https://website.local/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/en-en/')
+            ],
+            $this->buildErrorHandlingConfiguration('Fluid', [404])
+        );
+
+        $uri = 'https://website.local/en-en/?type=13';
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($uri),
+            $this->internalRequestContext
+        );
+
+        self::assertSame(
+            404,
+            $response->getStatusCode()
+        );
+        self::assertStringContainsString(
+            'message: The page is not configured',
             (string)$response->getBody()
         );
     }
