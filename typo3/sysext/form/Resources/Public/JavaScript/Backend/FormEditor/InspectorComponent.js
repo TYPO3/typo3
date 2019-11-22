@@ -67,8 +67,6 @@ define(['jquery',
         formElementSelectorSplitButtonContainer: 'inspectorEditorFormElementSelectorSplitButtonContainer',
         formElementSelectorSplitButtonListContainer: 'inspectorEditorFormElementSelectorSplitButtonListContainer',
         iconNotAvailable: 'actions-close',
-        iconPage: 'apps-pagetree-page-default',
-        iconTtContent: 'mimetypes-x-content-text',
         inspector: 'inspector',
         'Inspector-CheckboxEditor': 'Inspector-CheckboxEditor',
         'Inspector-CollectionElementHeaderEditor': 'Inspector-CollectionElementHeaderEditor',
@@ -2344,7 +2342,7 @@ define(['jquery',
      * @throws 1477319859
      */
     function renderTypo3WinBrowserEditor(editorConfiguration, editorHtml, collectionElementIdentifier, collectionName) {
-      var iconType, propertyPath, propertyData;
+      var propertyPath, propertyData;
       assert(
         'object' === $.type(editorConfiguration),
         'Invalid parameter "editorConfiguration"',
@@ -2395,10 +2393,7 @@ define(['jquery',
 
       $('form', $(editorHtml)).prop('name', editorConfiguration['propertyPath']);
 
-      iconType = ('tt_content' === editorConfiguration['browsableType'])
-        ? getHelper().getDomElementDataAttributeValue('iconTtContent')
-        : getHelper().getDomElementDataAttributeValue('iconPage');
-      Icons.getIcon(iconType, Icons.sizes.small).done(function(icon) {
+      Icons.getIcon(editorConfiguration['iconIdentifier'], Icons.sizes.small).done(function(icon) {
         getHelper().getTemplatePropertyDomElement('image', editorHtml).append($(icon));
       });
 

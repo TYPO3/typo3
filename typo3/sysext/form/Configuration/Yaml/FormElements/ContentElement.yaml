@@ -16,6 +16,7 @@ TYPO3:
                     label: formEditor.elements.ContentElement.editor.contentElement.label
                     buttonLabel: formEditor.elements.ContentElement.editor.contentElement.buttonLabel
                     browsableType: tt_content
+                    iconIdentifier: mimetypes-x-content-text
                     propertyPath: properties.contentElementUid
                     propertyValidatorsMode: OR
                     propertyValidators:

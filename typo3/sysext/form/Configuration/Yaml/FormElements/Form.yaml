@@ -327,6 +327,7 @@ TYPO3:
                           label: formEditor.elements.Form.finisher.Redirect.editor.pageUid.label
                           buttonLabel: formEditor.elements.Form.finisher.Redirect.editor.pageUid.buttonLabel
                           browsableType: pages
+                          iconIdentifier: apps-pagetree-page-default
                           propertyPath: options.pageUid
                           propertyValidatorsMode: OR
                           propertyValidators:
@@ -363,6 +364,7 @@ TYPO3:
                           label: formEditor.elements.Form.finisher.Confirmation.editor.contentElement.label
                           buttonLabel: formEditor.elements.Form.finisher.Confirmation.editor.contentElement.buttonLabel
                           browsableType: tt_content
+                          iconIdentifier: mimetypes-x-content-text
                           propertyPath: options.contentElementUid
                           propertyValidatorsMode: OR
                           propertyValidators:

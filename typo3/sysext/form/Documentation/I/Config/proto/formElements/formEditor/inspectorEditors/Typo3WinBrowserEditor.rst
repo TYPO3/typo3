@@ -109,6 +109,30 @@ browsableType
       The allowed selectable record types e.g 'pages' or 'tt_content'.
 
 
+.. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.iconidentifier-typo3winbrowsereditor:
+
+iconIdentifier
+-------------
+
+:aspect:`Data type`
+      string
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Yes
+
+.. :aspect:`Related options`
+      @ToDo
+
+:aspect:`Good to know`
+      - :ref:`"Inspector"<concepts-formeditor-inspector>`
+
+:aspect:`Description`
+      The icon to use for the button which triggers the record browser.
+
+
 .. _typo3.cms.form.prototypes.<prototypeidentifier>.formelementsdefinition.<formelementtypeidentifier>.formeditor.editors.*.propertyvalidators-typo3winbrowsereditor:
 
 propertyValidators
