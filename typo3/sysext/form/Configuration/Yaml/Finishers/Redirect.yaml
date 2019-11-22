@@ -1,0 +1,34 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          finishersDefinition:
+            Redirect:
+              implementationClassName: TYPO3\CMS\Form\Domain\Finishers\RedirectFinisher
+              formEditor:
+                iconIdentifier: form-finisher
+                label: formEditor.elements.Form.finisher.Redirect.editor.header.label
+                predefinedDefaults:
+                  options:
+                    pageUid: ''
+                    additionalParameters: ''
+              FormEngine:
+                label: tt_content.finishersDefinition.Redirect.label
+                elements:
+                  pageUid:
+                    label: tt_content.finishersDefinition.Redirect.pageUid.label
+                    config:
+                      type: group
+                      internal_type: db
+                      allowed: pages
+                      size: 1
+                      minitems: 1
+                      maxitems: 1
+                      fieldWizard:
+                        recordsOverview:
+                          disabled: 1
+                  additionalParameters:
+                    label: tt_content.finishersDefinition.Redirect.additionalParameters.label
+                    config:
+                      type: input

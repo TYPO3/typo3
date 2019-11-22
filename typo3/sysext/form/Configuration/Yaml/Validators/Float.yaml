@@ -1,0 +1,11 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            Float:
+              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\FloatValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.TextMixin.editor.validators.Float.label

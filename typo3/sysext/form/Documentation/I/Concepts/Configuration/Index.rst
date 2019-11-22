@@ -77,8 +77,7 @@ frontend.
    plugin.tx_form {
        settings {
            yamlConfigurations {
-               10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
-               20 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+               10 = EXT:form/Configuration/Yaml/FormSetup.yaml
            }
        }
    }
@@ -109,9 +108,7 @@ the backend.
    module.tx_form {
        settings {
            yamlConfigurations {
-               10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
-               20 = EXT:form/Configuration/Yaml/FormEditorSetup.yaml
-               30 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+               10 = EXT:form/Configuration/Yaml/FormSetup.yaml
            }
        }
    }
@@ -283,7 +280,7 @@ register an additional configuration file via
                      20: 'EXT:my_site_package/Resources/Private/Layouts/Form/Frontend/'
 
 The values of your own configuration file will overrule the corresponding
-values of the basic configuration file (:file:`EXT:form/Configuration/Yaml/BaseSetup.yaml`).
+values of the basic configuration file (:file:`EXT:form/Configuration/Yaml/FormSetup.yaml`).
 
 
 .. _concepts-configuration-inheritances-operator:

@@ -44,9 +44,7 @@ call_user_func(function () {
         'module.tx_form {
     settings {
         yamlConfigurations {
-            10 = EXT:form/Configuration/Yaml/BaseSetup.yaml
-            20 = EXT:form/Configuration/Yaml/FormEditorSetup.yaml
-            30 = EXT:form/Configuration/Yaml/FormEngineSetup.yaml
+            10 = EXT:form/Configuration/Yaml/FormSetup.yaml
         }
     }
     view {

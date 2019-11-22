@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Form\Tests\Unit\Mvc\Configuration;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Form\Mvc\Configuration\Exception\NoSuchFileException;
 use TYPO3\CMS\Form\Mvc\Configuration\Exception\ParseErrorException;
 use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,8 +30,8 @@ class YamlSourceTest extends UnitTestCase
      */
     public function loadThrowsExceptionIfFileToLoadNotExists()
     {
-        $this->expectException(NoSuchFileException::class);
-        $this->expectExceptionCode(1471473378);
+        $this->expectException(ParseErrorException::class);
+        $this->expectExceptionCode(1480195405);
 
         $mockYamlSource = $this->getAccessibleMock(YamlSource::class, [
             'dummy',

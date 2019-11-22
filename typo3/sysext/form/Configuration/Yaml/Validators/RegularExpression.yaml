@@ -1,0 +1,14 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            RegularExpression:
+              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+                predefinedDefaults:
+                  options:
+                    regularExpression: ''

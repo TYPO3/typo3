@@ -1,0 +1,317 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          formElementsDefinition:
+            Honeypot:
+              formEditor:
+                editors:
+                  100:
+                    identifier: header
+                    templateName: Inspector-FormElementHeaderEditor
+                  200:
+                    identifier: label
+                    templateName: Inspector-TextEditor
+                    label: formEditor.elements.FormElement.editor.label.label
+                    propertyPath: label
+                  230:
+                    identifier: elementDescription
+                    templateName: Inspector-TextEditor
+                    label: formEditor.elements.FormElement.editor.elementDescription.label
+                    propertyPath: properties.elementDescription
+                  400:
+                    identifier: placeholder
+                    templateName: Inspector-TextEditor
+                    label: formEditor.elements.TextMixin.editor.placeholder.label
+                    propertyPath: properties.fluidAdditionalAttributes.placeholder
+                    doNotSetIfPropertyValueIsEmpty: true
+                  500:
+                    identifier: defaultValue
+                    templateName: Inspector-TextEditor
+                    label: formEditor.elements.TextMixin.editor.defaultValue.label
+                    propertyPath: defaultValue
+                  700:
+                    identifier: gridColumnViewPortConfiguration
+                    templateName: Inspector-GridColumnViewPortConfigurationEditor
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                    configurationOptions:
+                      viewPorts:
+                        10:
+                          viewPortIdentifier: xs
+                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                        20:
+                          viewPortIdentifier: sm
+                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                        30:
+                          viewPortIdentifier: md
+                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                        40:
+                          viewPortIdentifier: lg
+                          label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                      numbersOfColumnsToUse:
+                        label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                        propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                        fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
+                  800:
+                    identifier: requiredValidator
+                    templateName: Inspector-RequiredValidatorEditor
+                    label: formEditor.elements.FormElement.editor.requiredValidator.label
+                    validatorIdentifier: NotEmpty
+                    propertyPath: properties.fluidAdditionalAttributes.required
+                    propertyValue: required
+                    configurationOptions:
+                      validationErrorMessage:
+                        label: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.label
+                        propertyPath: properties.validationErrorMessages
+                        fieldExplanationText: formEditor.elements.FormElement.editor.requiredValidator.validationErrorMessage.fieldExplanationText
+                        errorCodes:
+                          10: 1221560910
+                          20: 1221560718
+                          30: 1347992400
+                          40: 1347992453
+                  900:
+                    identifier: validators
+                    templateName: Inspector-ValidatorsEditor
+                    label: formEditor.elements.TextMixin.editor.validators.label
+                    selectOptions:
+                      10:
+                        value: ''
+                        label: formEditor.elements.TextMixin.editor.validators.EmptyValue.label
+                      20:
+                        value: Alphanumeric
+                        label: formEditor.elements.TextMixin.editor.validators.Alphanumeric.label
+                      30:
+                        value: Text
+                        label: formEditor.elements.TextMixin.editor.validators.Text.label
+                      40:
+                        value: StringLength
+                        label: formEditor.elements.TextMixin.editor.validators.StringLength.label
+                      50:
+                        value: EmailAddress
+                        label: formEditor.elements.TextMixin.editor.validators.EmailAddress.label
+                      60:
+                        value: Integer
+                        label: formEditor.elements.TextMixin.editor.validators.Integer.label
+                      70:
+                        value: Float
+                        label: formEditor.elements.TextMixin.editor.validators.Float.label
+                      80:
+                        value: NumberRange
+                        label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                      90:
+                        value: RegularExpression
+                        label: formEditor.elements.TextMixin.editor.validators.RegularExpression.label
+                  9999:
+                    identifier: removeButton
+                    templateName: Inspector-RemoveElementEditor
+                predefinedDefaults:
+                  defaultValue: ''
+                propertyCollections:
+                  validators:
+                    10:
+                      identifier: Alphanumeric
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
+                        200:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221551320
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    20:
+                      identifier: Text
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.Text.editor.header.label
+                        200:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.Text.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221565786
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    30:
+                      identifier: StringLength
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.StringLength.editor.header.label
+                        200:
+                          identifier: minimum
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                          propertyPath: options.minimum
+                          propertyValidators:
+                            10: Integer
+                          additionalElementPropertyPaths:
+                            10: properties.fluidAdditionalAttributes.minlength
+                        300:
+                          identifier: maximum
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                          propertyPath: options.maximum
+                          propertyValidators:
+                            10: Integer
+                          additionalElementPropertyPaths:
+                            10: properties.fluidAdditionalAttributes.maxlength
+                        400:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.StringLength.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1238110957
+                            20: 1269883975
+                            30: 1428504122
+                            40: 1238108068
+                            50: 1238108069
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    40:
+                      identifier: EmailAddress
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.EmailAddress.editor.header.label
+                        200:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.EmailAddress.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221559976
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    50:
+                      identifier: Integer
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.Integer.editor.header.label
+                        200:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.Integer.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221560494
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    60:
+                      identifier: Float
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.Float.editor.header.label
+                        200:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.Float.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221560288
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    70:
+                      identifier: NumberRange
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                        200:
+                          identifier: minimum
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                          propertyPath: options.minimum
+                          propertyValidators:
+                            10: Integer
+                          additionalElementPropertyPaths:
+                            10: properties.fluidAdditionalAttributes.min
+                        300:
+                          identifier: maximum
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                          propertyPath: options.maximum
+                          propertyValidators:
+                            10: Integer
+                          additionalElementPropertyPaths:
+                            10: properties.fluidAdditionalAttributes.max
+                        400:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221563685
+                            20: 1221561046
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+                    80:
+                      identifier: RegularExpression
+                      editors:
+                        100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
+                          label: formEditor.elements.TextMixin.validators.RegularExpression.editor.header.label
+                        200:
+                          identifier: regex
+                          templateName: Inspector-TextEditor
+                          label: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.regex.fieldExplanationText
+                          propertyPath: options.regularExpression
+                          propertyValidators:
+                            10: NotEmpty
+                        300:
+                          identifier: validationErrorMessage
+                          templateName: Inspector-ValidationErrorMessageEditor
+                          label: formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.label
+                          fieldExplanationText: formEditor.elements.TextMixin.validators.RegularExpression.editor.validationErrorMessage.fieldExplanationText
+                          errorCodes:
+                            10: 1221565130
+                          propertyPath: properties.validationErrorMessages
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
+              implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
+              properties:
+                containerClassAttribute: input
+                elementClassAttribute: ''
+                elementErrorClassAttribute: error
+                renderAsHiddenField: false
+                styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
+              variants:
+                -
+                  identifier: hide-1
+                  renderingOptions:
+                    enabled: false
+                  condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'

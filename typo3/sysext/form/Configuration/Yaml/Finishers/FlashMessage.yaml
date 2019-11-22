@@ -1,0 +1,18 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          finishersDefinition:
+            FlashMessage:
+              implementationClassName: TYPO3\CMS\Form\Domain\Finishers\FlashMessageFinisher
+              formEditor:
+                iconIdentifier: form-finisher
+                label: formEditor.elements.Form.finisher.FlashMessage.editor.header.label
+                predefinedDefaults:
+                  options:
+                    messageBody: ''
+                    messageTitle: ''
+                    messageArguments: ''
+                    messageCode: 0
+                    severity: 0

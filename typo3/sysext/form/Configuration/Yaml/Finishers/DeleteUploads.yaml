@@ -1,0 +1,11 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          finishersDefinition:
+            DeleteUploads:
+              implementationClassName: TYPO3\CMS\Form\Domain\Finishers\DeleteUploadsFinisher
+              formEditor:
+                iconIdentifier: form-finisher
+                label: formEditor.elements.Form.finisher.DeleteUploads.editor.header.label

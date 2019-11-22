@@ -1,0 +1,14 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          finishersDefinition:
+            Closure:
+              implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ClosureFinisher
+              formEditor:
+                iconIdentifier: form-finisher
+                label: formEditor.elements.Form.finisher.Closure.editor.header.label
+                predefinedDefaults:
+                  options:
+                    closure: ''

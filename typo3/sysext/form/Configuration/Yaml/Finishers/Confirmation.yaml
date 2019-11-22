@@ -1,0 +1,37 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          finishersDefinition:
+            Confirmation:
+              implementationClassName: TYPO3\CMS\Form\Domain\Finishers\ConfirmationFinisher
+              options:
+                templateName: Confirmation
+                templateRootPaths:
+                  10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Confirmation/'
+              formEditor:
+                iconIdentifier: form-finisher
+                label: formEditor.elements.Form.finisher.Confirmation.editor.header.label
+                predefinedDefaults:
+                  options:
+                    message: ''
+                    contentElementUid: ''
+              FormEngine:
+                label: tt_content.finishersDefinition.Confirmation.label
+                elements:
+                  contentElementUid:
+                    label: tt_content.finishersDefinition.Confirmation.contentElementUid.label
+                    config:
+                      type: group
+                      internal_type: db
+                      allowed: tt_content
+                      size: 1
+                      maxitems: 1
+                      fieldWizard:
+                        recordsOverview:
+                          disabled: 1
+                  message:
+                    label: tt_content.finishersDefinition.Confirmation.message.label
+                    config:
+                      type: text

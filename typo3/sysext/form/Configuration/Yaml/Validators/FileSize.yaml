@@ -1,0 +1,15 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            FileSize:
+              implementationClassName: TYPO3\CMS\Form\Mvc\Validation\FileSizeValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.FileUploadMixin.validators.FileSize.editor.header.label
+                predefinedDefaults:
+                  options:
+                    minimum: 0B
+                    maximum: 10M

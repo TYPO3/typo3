@@ -1,0 +1,17 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            DateRange:
+              implementationClassName: TYPO3\CMS\Form\Mvc\Validation\DateRangeValidator
+              options:
+                format: Y-m-d
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.FormElement.validators.DateRange.editor.header.label
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''

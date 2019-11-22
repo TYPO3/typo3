@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Mvc\Configuration;
 
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FolderInterface;
@@ -54,53 +55,26 @@ class YamlSource
      * Loads the specified configuration files and returns its merged content
      * as an array.
      *
-     * @param array $filesToLoad
-     * @return array
-     * @throws ParseErrorException
-     * @throws NoSuchFileException
      * @internal
      */
     public function load(array $filesToLoad): array
     {
         $configuration = [];
+
         foreach ($filesToLoad as $fileToLoad) {
             if ($fileToLoad instanceof File) {
-                $fileIdentifier = $fileToLoad->getIdentifier();
-                $rawYamlContent = $fileToLoad->getContents();
-                if ($rawYamlContent === false) {
-                    throw new NoSuchFileException(
-                        'The file "' . $fileIdentifier . '" does not exist.',
-                        1498802253
-                    );
-                }
+                $loadedConfiguration = $this->loadFromFile($fileToLoad);
             } else {
-                $fileIdentifier = $fileToLoad;
-                $fileToLoad = GeneralUtility::getFileAbsFileName($fileToLoad);
-                if (is_file($fileToLoad)) {
-                    $rawYamlContent = file_get_contents($fileToLoad);
-                } else {
-                    throw new NoSuchFileException(
-                        'The file "' . $fileToLoad . '" does not exist.',
-                        1471473378
-                    );
-                }
+                $loadedConfiguration = $this->loadFromFilePath($fileToLoad);
             }
 
-            try {
-                $loadedConfiguration = Yaml::parse($rawYamlContent);
-
-                if (is_array($loadedConfiguration)) {
-                    $configuration = array_replace_recursive($configuration, $loadedConfiguration);
-                }
-            } catch (ParseException $exception) {
-                throw new ParseErrorException(
-                    'An error occurred while parsing file "' . $fileIdentifier . '": ' . $exception->getMessage(),
-                    1480195405
-                );
+            if (is_array($loadedConfiguration)) {
+                $configuration = array_replace_recursive($configuration, $loadedConfiguration);
             }
         }
 
         $configuration = ArrayUtility::convertBooleanStringsToBooleanRecursive($configuration);
+
         return $configuration;
     }
 
@@ -149,6 +123,59 @@ class YamlSource
         }
 
         return $return;
+    }
+
+    /**
+     * Load YAML configuration from a local file path
+     *
+     * @throws ParseErrorException
+     */
+    protected function loadFromFilePath(string $filePath): array
+    {
+        $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
+
+        try {
+            $loadedConfiguration = $loader->load($filePath);
+        } catch (\RuntimeException $e) {
+            throw new ParseErrorException(
+                sprintf('An error occurred while parsing file "%s": %s', $filePath, $e->getMessage()),
+                1480195405,
+                $e
+            );
+        }
+
+        return $loadedConfiguration;
+    }
+
+    /**
+     * Load YAML configuration from a FAL file
+     *
+     * @throws ParseErrorException
+     * @throws NoSuchFileException
+     */
+    protected function loadFromFile(File $file): array
+    {
+        $fileIdentifier = $file->getIdentifier();
+        $rawYamlContent = $file->getContents();
+
+        if ($rawYamlContent === false) {
+            throw new NoSuchFileException(
+                sprintf('The file "%s" does not exist', $fileIdentifier),
+                1498802253
+            );
+        }
+
+        try {
+            $loadedConfiguration = Yaml::parse($rawYamlContent);
+        } catch (ParseException $e) {
+            throw new ParseErrorException(
+                sprintf('An error occurred while parsing file "%s": %s', $fileIdentifier, $e->getMessage()),
+                1574422322,
+                $e
+            );
+        }
+
+        return $loadedConfiguration;
     }
 
     /**

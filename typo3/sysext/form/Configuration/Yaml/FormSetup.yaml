@@ -1,0 +1,170 @@
+imports:
+    - { resource: "./Validators/NotEmpty.yaml" }
+    - { resource: "./Validators/DateTime.yaml" }
+    - { resource: "./Validators/Alphanumeric.yaml" }
+    - { resource: "./Validators/Text.yaml" }
+    - { resource: "./Validators/StringLength.yaml" }
+    - { resource: "./Validators/EmailAddress.yaml" }
+    - { resource: "./Validators/Integer.yaml" }
+    - { resource: "./Validators/Float.yaml" }
+    - { resource: "./Validators/Number.yaml" }
+    - { resource: "./Validators/NumberRange.yaml" }
+    - { resource: "./Validators/RegularExpression.yaml" }
+    - { resource: "./Validators/Count.yaml" }
+    - { resource: "./Validators/FileSize.yaml" }
+    - { resource: "./Validators/DateRange.yaml" }
+
+    - { resource: "./FormElements/Form.yaml" }
+    - { resource: "./FormElements/Page.yaml" }
+    - { resource: "./FormElements/SummaryPage.yaml" }
+    - { resource: "./FormElements/Fieldset.yaml" }
+    - { resource: "./FormElements/GridRow.yaml" }
+    - { resource: "./FormElements/Text.yaml" }
+    - { resource: "./FormElements/Password.yaml" }
+    - { resource: "./FormElements/AdvancedPassword.yaml" }
+    - { resource: "./FormElements/Textarea.yaml" }
+    - { resource: "./FormElements/Honeypot.yaml" }
+    - { resource: "./FormElements/Hidden.yaml" }
+    - { resource: "./FormElements/Email.yaml" }
+    - { resource: "./FormElements/Telephone.yaml" }
+    - { resource: "./FormElements/Url.yaml" }
+    - { resource: "./FormElements/Number.yaml" }
+    - { resource: "./FormElements/Date.yaml" }
+    - { resource: "./FormElements/Checkbox.yaml" }
+    - { resource: "./FormElements/MultiCheckbox.yaml" }
+    - { resource: "./FormElements/MultiSelect.yaml" }
+    - { resource: "./FormElements/RadioButton.yaml" }
+    - { resource: "./FormElements/SingleSelect.yaml" }
+    - { resource: "./FormElements/DatePicker.yaml" }
+    - { resource: "./FormElements/StaticText.yaml" }
+    - { resource: "./FormElements/ContentElement.yaml" }
+    - { resource: "./FormElements/FileUpload.yaml" }
+    - { resource: "./FormElements/ImageUpload.yaml" }
+
+    - { resource: "./Finishers/Closure.yaml" }
+    - { resource: "./Finishers/Confirmation.yaml" }
+    - { resource: "./Finishers/EmailToSender.yaml" }
+    - { resource: "./Finishers/EmailToReceiver.yaml" }
+    - { resource: "./Finishers/DeleteUploads.yaml" }
+    - { resource: "./Finishers/FlashMessage.yaml" }
+    - { resource: "./Finishers/Redirect.yaml" }
+    - { resource: "./Finishers/SaveToDatabase.yaml" }
+
+    - { resource: "./Legacy/mixins.yaml" }
+
+TYPO3:
+  CMS:
+    Form:
+      persistenceManager:
+        allowedFileMounts:
+          10: '1:/form_definitions/'
+        allowSaveToExtensionPaths: false
+        allowDeleteFromExtensionPaths: false
+        sortByKeys:
+          - name
+          - fileUid
+        sortAscending: true
+
+      prototypes:
+        standard:
+          formEditor:
+            translationFiles:
+              10: 'EXT:form/Resources/Private/Language/Database.xlf'
+            dynamicRequireJsModules:
+              app: TYPO3/CMS/Form/Backend/FormEditor
+              mediator: TYPO3/CMS/Form/Backend/FormEditor/Mediator
+              viewModel: TYPO3/CMS/Form/Backend/FormEditor/ViewModel
+            addInlineSettings: {  }
+            maximumUndoSteps: 10
+            stylesheets:
+              200: 'EXT:form/Resources/Public/Css/form.css'
+            formEditorFluidConfiguration:
+              templatePathAndFilename: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/InlineTemplates.html'
+              partialRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Partials/FormEditor/'
+              layoutRootPaths:
+                10: 'EXT:form/Resources/Private/Backend/Layouts/FormEditor/'
+
+            formEditorPartials:
+              FormElement-_ElementToolbar: Stage/_ElementToolbar
+              FormElement-_UnknownElement: Stage/_UnknownElement
+              Modal-InsertElements: Modals/InsertElements
+              Modal-InsertPages: Modals/InsertPages
+              Modal-ValidationErrors: Modals/ValidationErrors
+              Inspector-FormElementHeaderEditor: Inspector/FormElementHeaderEditor
+              Inspector-CollectionElementHeaderEditor: Inspector/CollectionElementHeaderEditor
+              Inspector-TextEditor: Inspector/TextEditor
+              Inspector-PropertyGridEditor: Inspector/PropertyGridEditor
+              Inspector-SingleSelectEditor: Inspector/SingleSelectEditor
+              Inspector-MultiSelectEditor: Inspector/MultiSelectEditor
+              Inspector-GridColumnViewPortConfigurationEditor: Inspector/GridColumnViewPortConfigurationEditor
+              Inspector-TextareaEditor: Inspector/TextareaEditor
+              Inspector-RemoveElementEditor: Inspector/RemoveElementEditor
+              Inspector-FinishersEditor: Inspector/FinishersEditor
+              Inspector-ValidatorsEditor: Inspector/ValidatorsEditor
+              Inspector-RequiredValidatorEditor: Inspector/RequiredValidatorEditor
+              Inspector-CheckboxEditor: Inspector/CheckboxEditor
+              Inspector-ValidationErrorMessageEditor: Inspector/ValidationErrorMessageEditor
+              Inspector-Typo3WinBrowserEditor: Inspector/Typo3WinBrowserEditor
+              Inspector-MaximumFileSizeEditor: Inspector/MaximumFileSizeEditor
+
+            formElementPropertyValidatorsDefinition:
+              NotEmpty:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.NotEmpty.label
+              Integer:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.Integer.label
+              NaiveEmail:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label
+              NaiveEmailOrEmpty:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.NaiveEmail.label
+              FormElementIdentifierWithinCurlyBracesInclusive:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label
+              FormElementIdentifierWithinCurlyBracesExclusive:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FormElementIdentifierWithinCurlyBraces.label
+              FileSize:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.FileSize.label
+              RFC3339FullDate:
+                errorMessage: formEditor.formElementPropertyValidatorsDefinition.RFC3339FullDate.label
+
+            formElementGroups:
+              input:
+                label: formEditor.formElementGroups.input.label
+              html5:
+                label: formEditor.formElementGroups.html5.label
+              select:
+                label: formEditor.formElementGroups.select.label
+              custom:
+                label: formEditor.formElementGroups.custom.label
+              container:
+                label: formEditor.formElementGroups.container.label
+              page:
+                label: formEditor.formElementGroups.page.label
+
+          formEngine:
+            translationFiles:
+              10: 'EXT:form/Resources/Private/Language/Database.xlf'
+
+      formManager:
+        dynamicRequireJsModules:
+          app: TYPO3/CMS/Form/Backend/FormManager
+          viewModel: TYPO3/CMS/Form/Backend/FormManager/ViewModel
+        stylesheets:
+          100: 'EXT:form/Resources/Public/Css/form.css'
+        translationFiles:
+          10: 'EXT:form/Resources/Private/Language/Database.xlf'
+        javaScriptTranslationFile: 'EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf'
+        selectablePrototypesConfiguration:
+          100:
+            identifier: standard
+            label: formManager.selectablePrototypesConfiguration.standard.label
+            newFormTemplates:
+              100:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml'
+                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.blankForm.label
+              200:
+                templatePath: 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/SimpleContactForm.yaml'
+                label: formManager.selectablePrototypesConfiguration.standard.newFormTemplates.simpleContactForm.label
+        controller:
+          deleteAction:
+            errorTitle: formManagerController.deleteAction.error.title
+            errorMessage: formManagerController.deleteAction.error.body

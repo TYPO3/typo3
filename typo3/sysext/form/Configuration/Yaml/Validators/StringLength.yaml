@@ -1,0 +1,15 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            StringLength:
+              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.TextMixin.editor.validators.StringLength.label
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''

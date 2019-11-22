@@ -1,0 +1,11 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            NotEmpty:
+              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.FormElement.editor.requiredValidator.label

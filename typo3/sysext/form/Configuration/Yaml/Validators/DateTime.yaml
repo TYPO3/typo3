@@ -1,0 +1,11 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            DateTime:
+              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\DateTimeValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.DatePicker.validators.DateTime.editor.header.label

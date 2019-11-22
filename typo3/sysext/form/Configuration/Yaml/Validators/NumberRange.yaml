@@ -1,0 +1,15 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            NumberRange:
+              implementationClassName: TYPO3\CMS\Extbase\Validation\Validator\NumberRangeValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.TextMixin.editor.validators.NumberRange.label
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''

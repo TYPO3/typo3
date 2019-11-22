@@ -1,0 +1,151 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          finishersDefinition:
+            EmailToReceiver:
+              implementationClassName: TYPO3\CMS\Form\Domain\Finishers\EmailFinisher
+              options:
+                templateName: '{@format}.html'
+                templateRootPaths:
+                  10: 'EXT:form/Resources/Private/Frontend/Templates/Finishers/Email/'
+              formEditor:
+                iconIdentifier: form-finisher
+                label: formEditor.elements.Form.finisher.EmailToReceiver.editor.header.label
+                predefinedDefaults:
+                  options:
+                    subject: ''
+                    recipients: {  }
+                    senderAddress: ''
+                    senderName: ''
+                    replyToRecipients: {  }
+                    carbonCopyRecipients: {  }
+                    blindCarbonCopyRecipients: {  }
+                    addHtmlPart: true
+                    attachUploads: true
+                    translation:
+                      language: ''
+              FormEngine:
+                label: tt_content.finishersDefinition.EmailToReceiver.label
+                elements:
+                  subject:
+                    label: tt_content.finishersDefinition.EmailToReceiver.subject.label
+                    config:
+                      type: input
+                      eval: required
+                  recipients:
+                    title: tt_content.finishersDefinition.EmailToReceiver.recipients.label
+                    type: array
+                    section: true
+                    sectionItemKey: email
+                    sectionItemValue: name
+                    el:
+                      _arrayContainer:
+                        type: array
+                        title: tt_content.finishersDefinition.EmailToSender.recipients.item.label
+                        el:
+                          email:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                              config:
+                                type: input
+                                eval: 'required,email'
+                          name:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                              config:
+                                type: input
+                  senderAddress:
+                    label: tt_content.finishersDefinition.EmailToReceiver.senderAddress.label
+                    config:
+                      type: input
+                      eval: required
+                  senderName:
+                    label: tt_content.finishersDefinition.EmailToReceiver.senderName.label
+                    config:
+                      type: input
+                  replyToRecipients:
+                    title: tt_content.finishersDefinition.EmailToReceiver.replyToRecipients.label
+                    type: array
+                    section: true
+                    sectionItemKey: email
+                    sectionItemValue: name
+                    el:
+                      _arrayContainer:
+                        type: array
+                        title: tt_content.finishersDefinition.EmailToSender.replyToRecipients.item.label
+                        el:
+                          email:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                              config:
+                                type: input
+                                eval: 'required,email'
+                          name:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                              config:
+                                type: input
+                  carbonCopyRecipients:
+                    title: tt_content.finishersDefinition.EmailToReceiver.carbonCopyRecipients.label
+                    type: array
+                    section: true
+                    sectionItemKey: email
+                    sectionItemValue: name
+                    el:
+                      _arrayContainer:
+                        type: array
+                        title: tt_content.finishersDefinition.EmailToSender.carbonCopyRecipients.item.label
+                        el:
+                          email:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                              config:
+                                type: input
+                                eval: 'required,email'
+                          name:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                              config:
+                                type: input
+                  blindCarbonCopyRecipients:
+                    title: tt_content.finishersDefinition.EmailToReceiver.blindCarbonCopyRecipients.label
+                    type: array
+                    section: true
+                    sectionItemKey: email
+                    sectionItemValue: name
+                    el:
+                      _arrayContainer:
+                        type: array
+                        title: tt_content.finishersDefinition.EmailToSender.blindCarbonCopyRecipients.item.label
+                        el:
+                          email:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.email.label
+                              config:
+                                type: input
+                                eval: 'required,email'
+                          name:
+                            TCEforms:
+                              label: tt_content.finishersDefinition.EmailToSender.recipients.name.label
+                              config:
+                                type: input
+                  addHtmlPart:
+                    label: tt_content.finishersDefinition.EmailToReceiver.addHtmlPart.label
+                    config:
+                      type: check
+                      default: 1
+                  translation:
+                    language:
+                      label: tt_content.finishersDefinition.EmailToReceiver.language.label
+                      config:
+                        type: select
+                        renderType: selectSingle
+                        minitems: 1
+                        maxitems: 1
+                        size: 1
+                        items:
+                          10:
+                            - tt_content.finishersDefinition.EmailToReceiver.language.1
+                            - default

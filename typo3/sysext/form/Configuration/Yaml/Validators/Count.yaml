@@ -1,0 +1,15 @@
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          validatorsDefinition:
+            Count:
+              implementationClassName: TYPO3\CMS\Form\Mvc\Validation\CountValidator
+              formEditor:
+                iconIdentifier: form-validator
+                label: formEditor.elements.MultiSelectionMixin.validators.Count.editor.header.label
+                predefinedDefaults:
+                  options:
+                    minimum: ''
+                    maximum: ''
