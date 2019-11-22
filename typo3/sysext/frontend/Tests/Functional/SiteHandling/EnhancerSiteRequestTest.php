@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -622,6 +623,180 @@ class EnhancerSiteRequestTest extends AbstractTestCase
 
         $pageArguments = json_decode((string)$response->getBody(), true);
         self::assertEquals($expectation, $pageArguments);
+    }
+
+    public function routeIdentifiersAreResolvedDataProvider(): array
+    {
+        return [
+            // namespace[value]
+            'namespace[value] ? test' => [
+                'namespace',
+                'value',
+                'test',
+            ],
+            'namespace[value] ? x^31' => [
+                'namespace',
+                'value',
+                str_repeat('x', 31),
+            ],
+            'namespace[value] ? x^32' => [
+                'namespace',
+                'value',
+                str_repeat('x', 32),
+            ],
+            'namespace[value] ? x^33' => [
+                'namespace',
+                'value',
+                str_repeat('x', 33),
+            ],
+            'namespace[value] ? 1^32 (type-cast)' => [
+                'namespace',
+                'value',
+                str_repeat('1', 32),
+            ],
+            // md5('namespace__@otne3') is 60360798585102000952995164024754 (numeric)
+            // md5('ximaz') is 61529519452809720693702583126814 (numeric)
+            'namespace[@otne3] ? numeric-md5 (type-cast)' => [
+                'namespace',
+                '@otne3',
+                md5('ximaz'),
+            ],
+            'namespace[value] ? namespace__value' => [
+                'namespace',
+                'value',
+                'namespace__value',
+            ],
+            'namespace[value] ? namespace/value' => [
+                'namespace',
+                'value',
+                'namespace/value',
+                'The requested URL is not distinct',
+            ],
+            'namespace[value] ? namespace__other' => [
+                'namespace',
+                'value',
+                'namespace__other',
+            ],
+            'namespace[value] ? namespace/other' => [
+                'namespace',
+                'value',
+                'namespace/other',
+            ],
+            // namespace[any/value]
+            'namespace[any/value] ? x^31' => [
+                'namespace',
+                'any/value',
+                str_repeat('x', 31),
+            ],
+            'namespace[any/value] ? x^32' => [
+                'namespace',
+                'any/value',
+                str_repeat('x', 32),
+            ],
+            'namespace[any/value] ? namespace__any__value' => [
+                'namespace',
+                'any/value',
+                'namespace__any__value',
+            ],
+            'namespace[any/value] ? namespace/any/value' => [
+                'namespace',
+                'any/value',
+                'namespace/any/value',
+                'The requested URL is not distinct',
+            ],
+            'namespace[any/value] ? namespace__any__other' => [
+                'namespace',
+                'any/value',
+                'namespace__any__other',
+            ],
+            'namespace[any/value] ? namespace/any/other' => [
+                'namespace',
+                'any/value',
+                'namespace/any/other',
+            ],
+            // namespace[@any/value]
+            'namespace[@any/value] ? x^31' => [
+                'namespace',
+                '@any/value',
+                str_repeat('x', 31),
+            ],
+            'namespace[@any/value] ? x^32' => [
+                'namespace',
+                '@any/value',
+                str_repeat('x', 32),
+            ],
+            'namespace[@any/value] ? md5(namespace__@any__value)' => [
+                'namespace',
+                '@any/value',
+                md5('namespace__@any__value'),
+            ],
+            'namespace[@any/value] ? namespace/@any/value' => [
+                'namespace',
+                '@any/value',
+                'namespace/@any/value',
+                'The requested URL is not distinct',
+            ],
+            'namespace[@any/value] ? md5(namespace__@any__other)' => [
+                'namespace',
+                '@any/value',
+                md5('namespace__@any__other'),
+            ],
+            'namespace[@any/value] ? namespace/@any/other' => [
+                'namespace',
+                '@any/value',
+                'namespace/@any/other',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $namespace
+     * @param string $argumentName
+     * @param string $queryPath
+     * @param string|null $failureReason
+     *
+     * @test
+     * @dataProvider routeIdentifiersAreResolvedDataProvider
+     */
+    public function routeIdentifiersAreResolved(string $namespace, string $argumentName, string $queryPath, string $failureReason = null)
+    {
+        $query = [];
+        $routeValue = 'route-value';
+        $queryValue = 'parameter-value';
+        $query = ArrayUtility::setValueByPath($query, $queryPath, $queryValue);
+        $queryParameters = http_build_query($query, '', '&', PHP_QUERY_RFC3986);
+        $targetUri = sprintf('https://acme.us/welcome/%s?%s', $routeValue, $queryParameters);
+
+        $this->mergeSiteConfiguration('acme-com', [
+            'routeEnhancers' => ['Enhancer' => [
+                'type' => 'Plugin',
+                'routePath' => '/{name}',
+                '_arguments' => [
+                    'name' => $argumentName,
+                ],
+                'namespace' => $namespace,
+            ]]
+        ]);
+
+        $response = $this->executeFrontendRequest(
+            new InternalRequest($targetUri),
+            $this->internalRequestContext,
+            true
+        );
+
+        $body = (string)$response->getBody();
+        if ($failureReason === null) {
+            $pageArguments = json_decode($body, true);
+            var_dump($pageArguments);
+            self::assertNotNull($pageArguments, 'PageArguments could not be resolved');
+
+            $expected = [];
+            $expected = ArrayUtility::setValueByPath($expected, $namespace . '/' . $argumentName, $routeValue);
+            $expected = ArrayUtility::setValueByPath($expected, $queryPath, $queryValue);
+            self::assertEquals($expected, $pageArguments['requestQueryParams']);
+        } else {
+            self::assertStringContainsString($failureReason, $body);
+        }
     }
 
     /**

@@ -154,7 +154,7 @@ class ExtbasePluginEnhancer extends PluginEnhancer
      * @param array $internals Internal instructions (_route, _controller, ...)
      * @return array
      */
-    protected function inflateParameters(array $parameters, array $internals = []): array
+    public function inflateParameters(array $parameters, array $internals = []): array
     {
         $parameters = $this->getVariableProcessor()
             ->inflateNamespaceParameters($parameters, $this->namespace);

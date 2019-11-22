@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Routing\Aspect\StaticMappableAspectInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\DecoratingEnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\EnhancerFactory;
 use TYPO3\CMS\Core\Routing\Enhancer\EnhancerInterface;
+use TYPO3\CMS\Core\Routing\Enhancer\InflatableEnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -289,6 +290,10 @@ class PageRouter implements RouterInterface
                 /** @var Route $matchedRoute */
                 $matchedRoute = $collection->get($routeName);
                 parse_str($uri->getQuery() ?? '', $remainingQueryParameters);
+                $enhancer = $route->getEnhancer();
+                if ($enhancer instanceof InflatableEnhancerInterface) {
+                    $remainingQueryParameters = $enhancer->inflateParameters($remainingQueryParameters);
+                }
                 $pageRouteResult = $this->buildPageArguments($route, $parameters, $remainingQueryParameters);
                 break;
             } catch (MissingMandatoryParametersException $e) {
