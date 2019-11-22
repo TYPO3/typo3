@@ -76,10 +76,12 @@ class CreateSiteConfiguration
                 SiteConfiguration::class,
                 Environment::getConfigPath() . '/sites'
             );
+            $normalizedParams = $this->getNormalizedParams();
+            $basePrefix = Environment::isCli() ? $normalizedParams->getSitePath() : $normalizedParams->getSiteUrl();
             $siteConfiguration->createNewBasicSite(
                 $siteIdentifier,
                 $pageId,
-                $this->getNormalizedParams()->getSiteUrl() . $entryPoint
+                $basePrefix . $entryPoint
             );
             $this->updateSlugForPage($pageId);
         }
@@ -88,7 +90,7 @@ class CreateSiteConfiguration
     protected function getNormalizedParams(): NormalizedParams
     {
         $normalizedParams = null;
-        $serverParams = $_SERVER;
+        $serverParams = Environment::isCli() ? ['HTTP_HOST' => 'localhost'] : $_SERVER;
         if (isset($GLOBALS['TYPO3_REQUEST'])) {
             $normalizedParams = $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams');
             $serverParams = $GLOBALS['TYPO3_REQUEST']->getServerParams();
