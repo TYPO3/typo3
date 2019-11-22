@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace TYPO3\CMS\Frontend\Aspect;
 
 /*
@@ -15,42 +16,39 @@ namespace TYPO3\CMS\Frontend\Aspect;
  */
 
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class FileMetadataTranslationAspect
+ * This class deals with metadata translation as a event listener which reacts on an event MetadataRepository.
  *
- * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with metadata translation is a slot which reacts on a signal
- * in the Index\MetadataRepository.
- *
- * The aspect injects user permissions and mount points into the storage
+ * The listener injects user permissions and mount points into the storage
  * based on user or group configuration.
  *
- * @internal this is a concrete TYPO3 hook implementation and solely used for EXT:frontend and not part of TYPO3's Core API.
+ * @internal this is a concrete TYPO3 Event Listener and solely used for EXT:frontend and not part of TYPO3's Core API.
  */
-class FileMetadataOverlayAspect
+final class FileMetadataOverlayAspect
 {
     /**
      * Do translation and workspace overlay
-     *
-     * @param \ArrayObject $data
+     * @param EnrichFileMetaDataEvent $event
      */
-    public function languageAndWorkspaceOverlay(\ArrayObject $data)
+    public function languageAndWorkspaceOverlay(EnrichFileMetaDataEvent $event): void
     {
         // Should only be in Frontend, but not in eID context
         if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_FE) || isset($_REQUEST['eID'])) {
             return;
         }
-        $overlaidMetaData = $data->getArrayCopy();
+        $overlaidMetaData = $event->getRecord();
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $pageRepository->versionOL('sys_file_metadata', $overlaidMetaData);
-        $overlaidMetaData = $pageRepository->getLanguageOverlay(
-            'sys_file_metadata',
-            $overlaidMetaData
-        );
+        $overlaidMetaData = $pageRepository
+            ->getLanguageOverlay(
+                'sys_file_metadata',
+                $overlaidMetaData
+            );
         if ($overlaidMetaData !== null) {
-            $data->exchangeArray($overlaidMetaData);
+            $event->setRecord($overlaidMetaData);
         }
     }
 }

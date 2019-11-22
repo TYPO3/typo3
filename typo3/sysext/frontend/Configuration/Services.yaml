@@ -16,3 +16,10 @@ services:
   TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer:
     public: true
     shared: false
+
+  TYPO3\CMS\Frontend\Aspect\FileMetadataOverlayAspect:
+    tags:
+      - name: event.listener
+        identifier: 'typo3-frontend/overlay'
+        method: 'languageAndWorkspaceOverlay'
+        event: TYPO3\CMS\Core\Resource\Event\EnrichFileMetaDataEvent
