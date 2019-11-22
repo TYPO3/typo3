@@ -2138,6 +2138,8 @@ templatePathAndFilename
 :aspect:`Description`
       Template path and filename for the mail body.
       The placeholder {\@format} will be replaced with the value from option ``format``
+      The template gets the current :php:`FormRuntime` assigned as :code:`form` and
+      the :php:`FinisherVariableProvider` assigned as :code:`finisherVariableProvider`.
 
 
 .. _apireference-finisheroptions-emailfinisher-options-layoutrootpaths:
@@ -2174,6 +2176,26 @@ partialRootPaths
 
 :aspect:`Description`
       Fluid partial paths
+
+
+.. _apireference-finisheroptions-emailfinisher-options-templaterootpaths:
+
+templateRootPaths
+++++++++++++++++
+
+:aspect:`Data type`
+      array
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for 'EmailToReceiver' and 'EmailToSender' declarations)`
+      undefined
+
+:aspect:`Description`
+      Fluid template paths; all templates get the current :php:`FormRuntime`
+      assigned as :code:`form` and the :php:`FinisherVariableProvider` assigned
+      as :code:`finisherVariableProvider`.
 
 
 .. _apireference-finisheroptions-emailfinisher-options-variables:
