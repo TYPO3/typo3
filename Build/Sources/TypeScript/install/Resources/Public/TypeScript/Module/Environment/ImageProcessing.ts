@@ -11,14 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
-import Router = require('../../Router');
-import InfoBox = require('../../Renderable/InfoBox');
-import Severity = require('../../Renderable/Severity');
+import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import InfoBox = require('../../Renderable/InfoBox');
+import Severity = require('../../Renderable/Severity');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ImageProcessing
@@ -43,22 +46,23 @@ class ImageProcessing extends AbstractInteractableModule {
 
   private getData(): void {
     const modalContent = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('imageProcessingGetData'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          modalContent.empty().append(data.html);
-          Modal.setButtons(data.buttons);
-          this.runTests();
-        } else {
-          Notification.error('Something went wrong');
+    (new AjaxRequest(Router.getUrl('imageProcessingGetData')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            Modal.setButtons(data.buttons);
+            this.runTests();
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private runTests(): void {
@@ -67,52 +71,54 @@ class ImageProcessing extends AbstractInteractableModule {
     $triggerButton.addClass('disabled').prop('disabled', true);
 
     const $twinImageTemplate = this.findInModal(this.selectorTwinImageTemplate);
-    const promises: Array<JQueryXHR> = [];
+    const promises: Array<Promise<any>> = [];
     modalContent.find(this.selectorTestContainer).each((index: number, element: any): void => {
       const $container: JQuery = $(element);
       const testType: string = $container.data('test');
       const message: any = InfoBox.render(Severity.loading, 'Loading...', '');
       $container.empty().html(message);
-      promises.push($.ajax({
-        url: Router.getUrl(testType),
-        cache: false,
-        success: (data: any): void => {
-          if (data.success === true) {
-            $container.empty();
-            if (Array.isArray(data.status)) {
-              data.status.forEach((): void => {
-                const aMessage = InfoBox.render(element.severity, element.title, element.message);
-                $container.append(aMessage);
-              });
+      const request = (new AjaxRequest(Router.getUrl(testType)))
+        .get({cache: 'no-cache'})
+        .then(
+          async (response: AjaxResponse): Promise<any> => {
+            const data = await response.resolve();
+            if (data.success === true) {
+              $container.empty();
+              if (Array.isArray(data.status)) {
+                data.status.forEach((): void => {
+                  const aMessage = InfoBox.render(element.severity, element.title, element.message);
+                  $container.append(aMessage);
+                });
+              }
+              const $aTwin = $twinImageTemplate.clone();
+              $aTwin.removeClass('t3js-imageProcessing-twinImage-template');
+              if (data.fileExists === true) {
+                $aTwin.find('img.reference').attr('src', data.referenceFile);
+                $aTwin.find('img.result').attr('src', data.outputFile);
+                $aTwin.find(this.selectorTwinImages).show();
+              }
+              if (Array.isArray(data.command) && data.command.length > 0) {
+                $aTwin.find(this.selectorCommandContainer).show();
+                const commandText: Array<string> = [];
+                data.command.forEach((aElement: any): void => {
+                  commandText.push('<strong>Command:</strong>\n' + aElement[1]);
+                  if (aElement.length === 3) {
+                    commandText.push('<strong>Result:</strong>\n' + aElement[2]);
+                  }
+                });
+                $aTwin.find(this.selectorCommandText).html(commandText.join('\n'));
+              }
+              $container.append($aTwin);
             }
-            const $aTwin = $twinImageTemplate.clone();
-            $aTwin.removeClass('t3js-imageProcessing-twinImage-template');
-            if (data.fileExists === true) {
-              $aTwin.find('img.reference').attr('src', data.referenceFile);
-              $aTwin.find('img.result').attr('src', data.outputFile);
-              $aTwin.find(this.selectorTwinImages).show();
-            }
-            if (Array.isArray(data.command) && data.command.length > 0) {
-              $aTwin.find(this.selectorCommandContainer).show();
-              const commandText: Array<string> = [];
-              data.command.forEach((aElement: any): void => {
-                commandText.push('<strong>Command:</strong>\n' + aElement[1]);
-                if (aElement.length === 3) {
-                  commandText.push('<strong>Result:</strong>\n' + aElement[2]);
-                }
-              });
-              $aTwin.find(this.selectorCommandText).html(commandText.join('\n'));
-            }
-            $container.append($aTwin);
+          },
+          (error: ResponseError): void => {
+            Router.handleAjaxError(error, modalContent);
           }
-        },
-        error: (xhr: XMLHttpRequest): void => {
-          Router.handleAjaxError(xhr, modalContent);
-        },
-      }));
+        );
+      promises.push(request);
     });
 
-    $.when.apply($, promises).done((): void => {
+    Promise.all(promises).then((): void => {
       $triggerButton.removeClass('disabled').prop('disabled', false);
     });
   }

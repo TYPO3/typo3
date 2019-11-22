@@ -11,42 +11,43 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {InlineModuleInterface} from './../InlineModuleInterface';
-import * as $ from 'jquery';
-import Router = require('../../Router');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ResetBackendUserUc
  */
 class ResetBackendUserUc implements InlineModuleInterface {
   public initialize($trigger: JQuery): void {
-    $.ajax({
-      url: Router.getUrl('resetBackendUserUc'),
-      cache: false,
-      beforeSend: (): void => {
-        $trigger.addClass('disabled').prop('disabled', true);
-      },
-      success: (data: any): void => {
-        if (data.success === true && Array.isArray(data.status)) {
-          if (data.status.length > 0) {
-            data.status.forEach((element: any): void => {
-              Notification.success(element.message);
-            });
+    $trigger.addClass('disabled').prop('disabled', true);
+
+    (new AjaxRequest(Router.getUrl('resetBackendUserUc')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && Array.isArray(data.status)) {
+            if (data.status.length > 0) {
+              data.status.forEach((element: any): void => {
+                Notification.success(element.message);
+              });
+            }
+          } else {
+            Notification.error('Something went wrong ...');
           }
-        } else {
-          Notification.error('Something went wrong ...');
+        },
+        (): void => {
+          // In case the dump action fails (typically 500 from server), do not kill the entire
+          // install tool, instead show a notification that something went wrong.
+          Notification.error('Dumping autoload files went wrong on the server side. Check the system for broken extensions and try again');
         }
-      },
-      error: (): void => {
-        // If reset fails on server side (typically a 500), do not crash entire install tool
-        // but render an error notification instead.
-        Notification.error('Resetting backend user uc failed. Please check the system for missing database fields and try again.');
-      },
-      complete: (): void => {
+      )
+      .finally((): void => {
         $trigger.removeClass('disabled').prop('disabled', false);
-      },
-    });
+      });
   }
 }
 

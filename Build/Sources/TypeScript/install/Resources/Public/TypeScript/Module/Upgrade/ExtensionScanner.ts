@@ -11,13 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
-import AjaxQueue = require('../../Ajax/AjaxQueue');
-import Router = require('../../Router');
+import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxQueue = require('../../Ajax/AjaxQueue');
+import Router = require('../../Router');
 
 interface FileData {
   success: boolean;
@@ -83,8 +85,8 @@ class ExtensionScanner extends AbstractInteractableModule {
     const modalContent = this.getModalBody();
     AjaxQueue.add({
       url: Router.getUrl('extensionScannerGetData'),
-      cache: false,
-      success: (data: any): void => {
+      onfulfilled: async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           modalContent.empty().append(data.html);
           Modal.setButtons(data.buttons);
@@ -92,8 +94,8 @@ class ExtensionScanner extends AbstractInteractableModule {
           Notification.error('Something went wrong');
         }
       },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
+      onrejected: (error: ResponseError): void => {
+        Router.handleAjaxError(error, modalContent);
       },
     });
   }
@@ -159,20 +161,20 @@ class ExtensionScanner extends AbstractInteractableModule {
         url: Router.getUrl(),
         method: 'POST',
         data: {
-          'install': {
-            'action': 'extensionScannerMarkFullyScannedRestFiles',
-            'token': this.getModuleContent().data('extension-scanner-mark-fully-scanned-rest-files-token'),
-            'hashes': this.uniqueArray(this.listOfAffectedRestFileHashes),
+          install: {
+            action: 'extensionScannerMarkFullyScannedRestFiles',
+            token: this.getModuleContent().data('extension-scanner-mark-fully-scanned-rest-files-token'),
+            hashes: this.uniqueArray(this.listOfAffectedRestFileHashes),
           },
         },
-        cache: false,
-        success: (data: any): void => {
+        onfulfilled: async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
           if (data.success === true) {
             Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
           }
         },
-        error: (xhr: XMLHttpRequest): void => {
-          Router.handleAjaxError(xhr, modalContent);
+        onrejected: (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         },
       });
     }
@@ -208,14 +210,14 @@ class ExtensionScanner extends AbstractInteractableModule {
       url: Router.getUrl(),
       method: 'POST',
       data: {
-        'install': {
-          'action': 'extensionScannerFiles',
-          'token': executeToken,
-          'extension': extension,
+        install: {
+          action: 'extensionScannerFiles',
+          token: executeToken,
+          extension: extension,
         },
       },
-      cache: false,
-      success: (data: any): void => {
+      onfulfilled: async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true && Array.isArray(data.files)) {
           const numberOfFiles = data.files.length;
           if (numberOfFiles > 0) {
@@ -226,16 +228,16 @@ class ExtensionScanner extends AbstractInteractableModule {
               AjaxQueue.add({
                 method: 'POST',
                 data: {
-                  'install': {
-                    'action': 'extensionScannerScanFile',
-                    'token': this.getModuleContent().data('extension-scanner-scan-file-token'),
-                    'extension': extension,
-                    'file': file,
+                  install: {
+                    action: 'extensionScannerScanFile',
+                    token: this.getModuleContent().data('extension-scanner-scan-file-token'),
+                    extension: extension,
+                    file: file,
                   },
                 },
                 url: Router.getUrl(),
-                cache: false,
-                success: (fileData: FileData): void => {
+                onfulfilled: async (response: AjaxResponse): Promise<any> => {
+                  const fileData: FileData = await response.resolve();
                   doneFiles++;
                   this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
                   this.setProgressForScan(extension, doneFiles, numberOfFiles);
@@ -315,13 +317,13 @@ class ExtensionScanner extends AbstractInteractableModule {
                     $extensionContainer.find('.t3js-extensionScanner-scan-single').text('Rescan').attr('disabled', null);
                   }
                 },
-                error: (xhr: XMLHttpRequest): void => {
+                onrejected: (reason: string): void => {
                   doneFiles = doneFiles + 1;
                   this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
                   this.setProgressForScan(extension, doneFiles, numberOfFiles);
                   this.setProgressForAll();
                   Notification.error('Oops, an error occurred', 'Please look at the console output for details');
-                  console.error(xhr);
+                  console.error(reason);
                 },
               });
             });
@@ -333,11 +335,10 @@ class ExtensionScanner extends AbstractInteractableModule {
           console.error(data);
         }
       },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
+      onrejected: (error: ResponseError): void => {
+        Router.handleAjaxError(error, modalContent);
       },
-    },
-    );
+    });
   }
 }
 

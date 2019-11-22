@@ -11,13 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
+import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import '../../Renderable/Clearable';
-import Router = require('../../Router');
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/LocalConfiguration
@@ -89,24 +92,25 @@ class LocalConfiguration extends AbstractInteractableModule {
 
   private getContent(): void {
     const modalContent = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('localConfigurationGetContent'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              Notification.success(element.title, element.message);
-            });
+    (new AjaxRequest(Router.getUrl('localConfigurationGetContent')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            if (Array.isArray(data.status)) {
+              data.status.forEach((element: any): void => {
+                Notification.success(element.title, element.message);
+              });
+            }
+            modalContent.html(data.html);
+            Modal.setButtons(data.buttons);
           }
-          modalContent.html(data.html);
-          Modal.setButtons(data.buttons);
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private write(): void {
@@ -125,30 +129,29 @@ class LocalConfiguration extends AbstractInteractableModule {
         configurationValues[$element.data('path')] = $element.val();
       }
     });
-    $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      data: {
-        'install': {
-          'action': 'localConfigurationWrite',
-          'token': executeToken,
-          'configurationValues': configurationValues,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          action: 'localConfigurationWrite',
+          token: executeToken,
+          configurationValues: configurationValues,
         },
-      },
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
-            Notification.showMessage(element.title, element.message, element.severity);
-          });
-        } else {
-          Notification.error('Something went wrong');
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && Array.isArray(data.status)) {
+            data.status.forEach((element: any): void => {
+              Notification.showMessage(element.title, element.message, element.severity);
+            });
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 

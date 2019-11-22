@@ -11,11 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
-import Router = require('../../Router');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ClearTables
@@ -49,64 +52,63 @@ class ClearTables extends AbstractInteractableModule {
 
   private getStats(): void {
     const modalContent: JQuery = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('clearTablesStats'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          modalContent.empty().append(data.html);
-          Modal.setButtons(data.buttons);
-          if (Array.isArray(data.stats) && data.stats.length > 0) {
-            data.stats.forEach((element: any): void => {
-              if (element.rowCount > 0) {
-                const aStat = modalContent.find(this.selectorStatTemplate).clone();
-                aStat.find(this.selectorStatDescription).text(element.description);
-                aStat.find(this.selectorStatName).text(element.name);
-                aStat.find(this.selectorStatRows).text(element.rowCount);
-                aStat.find(this.selectorClearTrigger).attr('data-table', element.name);
-                modalContent.find(this.selectorStatContainer).append(aStat.html());
-              }
-            });
+    (new AjaxRequest(Router.getUrl('clearTablesStats')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            Modal.setButtons(data.buttons);
+            if (Array.isArray(data.stats) && data.stats.length > 0) {
+              data.stats.forEach((element: any): void => {
+                if (element.rowCount > 0) {
+                  const aStat = modalContent.find(this.selectorStatTemplate).clone();
+                  aStat.find(this.selectorStatDescription).text(element.description);
+                  aStat.find(this.selectorStatName).text(element.name);
+                  aStat.find(this.selectorStatRows).text(element.rowCount);
+                  aStat.find(this.selectorClearTrigger).attr('data-table', element.name);
+                  modalContent.find(this.selectorStatContainer).append(aStat.html());
+                }
+              });
+            }
+          } else {
+            Notification.error('Something went wrong');
           }
-        } else {
-          Notification.error('Something went wrong');
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private clear(table: string): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('clear-tables-clear-token');
-    $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      context: this,
-      data: {
-        'install': {
-          'action': 'clearTablesClear',
-          'token': executeToken,
-          'table': table,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          action: 'clearTablesClear',
+          token: executeToken,
+          table: table,
         },
-      },
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
-            Notification.success(element.message);
-          });
-        } else {
-          Notification.error('Something went wrong');
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && Array.isArray(data.status)) {
+            data.status.forEach((element: any): void => {
+              Notification.success(element.message);
+            });
+          } else {
+            Notification.error('Something went wrong');
+          }
+          this.getStats();
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-        this.getStats();
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 

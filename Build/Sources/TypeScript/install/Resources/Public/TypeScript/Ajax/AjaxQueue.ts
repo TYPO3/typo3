@@ -11,7 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import * as $ from 'jquery';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+
+interface Payload {
+  url: string;
+  method?: string;
+  data?: { [key: string]: any},
+  onfulfilled: Function;
+  onrejected: Function;
+  finally?: Function;
+}
 
 /**
  * Module: TYPO3/CMS/Install/Module/AjaxQueue
@@ -19,30 +28,40 @@ import * as $ from 'jquery';
 class AjaxQueue {
   private requestCount: number = 0;
   private threshold: number = 10;
-  private queue: Array<any> = [];
+  private queue: Array<Payload> = [];
 
-  public add(payload: JQueryAjaxSettings): void {
-    const oldComplete = payload.complete;
-    payload.complete = (jqXHR: JQueryXHR, textStatus: string): void => {
-      if (this.queue.length > 0 && this.requestCount <= this.threshold) {
-        $.ajax(this.queue.shift()).always((): void => {
-          this.decrementRequestCount();
-        });
-      } else {
+  public async add(payload: Payload): Promise<any> {
+    const oldFinally = payload.finally;
+    if (this.queue.length > 0 && this.requestCount <= this.threshold) {
+      this.sendRequest(this.queue.shift()).finally((): void => {
         this.decrementRequestCount();
-      }
+      });
+    } else {
+      this.decrementRequestCount();
+    }
 
-      if (oldComplete) {
-        oldComplete(jqXHR, textStatus);
-      }
-    };
+    if (oldFinally) {
+      oldFinally(...arguments);
+    }
 
     if (this.requestCount >= this.threshold) {
       this.queue.push(payload);
     } else {
       this.incrementRequestCount();
-      $.ajax(payload);
+      this.sendRequest(payload);
     }
+  }
+
+  private async sendRequest(payload: Payload): Promise<any> {
+    const request = new AjaxRequest(payload.url);
+    let response: any;
+    if (typeof payload.method !== 'undefined' && payload.method.toUpperCase() === 'POST') {
+      response = request.post(payload.data);
+    } else {
+      response = request.withQueryArguments(payload.data || {}).get();
+    }
+
+    return response.then(payload.onfulfilled, payload.onrejected);
   }
 
   private incrementRequestCount(): void {

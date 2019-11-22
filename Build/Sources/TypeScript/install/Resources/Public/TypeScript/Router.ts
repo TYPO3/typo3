@@ -11,14 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {InlineModuleInterface} from './Module/InlineModuleInterface';
-import {AbstractInteractableModule} from './Module/AbstractInteractableModule';
 import * as $ from 'jquery';
-import InfoBox = require('./Renderable/InfoBox');
-import Severity = require('./Renderable/Severity');
-import ProgressBar = require('./Renderable/ProgressBar');
-import Modal = require('TYPO3/CMS/Backend/Modal');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from './Module/AbstractInteractableModule';
+import {InlineModuleInterface} from './Module/InlineModuleInterface';
 import Icons = require('TYPO3/CMS/Backend/Icons');
+import Modal = require('TYPO3/CMS/Backend/Modal');
+import InfoBox = require('./Renderable/InfoBox');
+import ProgressBar = require('./Renderable/ProgressBar');
+import Severity = require('./Renderable/Severity');
 
 class Router {
   private selectorBody: string = '.t3js-body';
@@ -57,7 +60,7 @@ class Router {
         const modalTitle = $me.closest('.card').find('.card-title').html();
         const modalSize = $me.data('modalSize') || Modal.sizes.large;
 
-        Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done((icon: any): void => {
+        Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: any): void => {
           const configuration = {
             type: Modal.types.default,
             title: modalTitle,
@@ -113,20 +116,21 @@ class Router {
 
   public executeSilentConfigurationUpdate(): void {
     this.updateLoadingInfo('Checking session and executing silent configuration update');
-    $.ajax({
-      url: this.getUrl('executeSilentConfigurationUpdate', 'layout'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          this.executeSilentExtensionConfigurationSynchronization();
-        } else {
-          this.executeSilentConfigurationUpdate();
+    (new AjaxRequest(this.getUrl('executeSilentConfigurationUpdate', 'layout')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.executeSilentExtensionConfigurationSynchronization();
+          } else {
+            this.executeSilentConfigurationUpdate();
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   /**
@@ -136,52 +140,54 @@ class Router {
   public executeSilentExtensionConfigurationSynchronization(): void {
     const $outputContainer = $(this.selectorBody);
     this.updateLoadingInfo('Executing silent extension configuration synchronization');
-    $.ajax({
-      url: this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          this.loadMainLayout();
-        } else {
-          const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-          $outputContainer.empty().append(message);
+    (new AjaxRequest(this.getUrl('executeSilentExtensionConfigurationSynchronization', 'layout')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.loadMainLayout();
+          } else {
+            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
+            $outputContainer.empty().append(message);
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public loadMainLayout(): void {
     const $outputContainer = $(this.selectorBody);
     this.updateLoadingInfo('Loading main layout');
-    $.ajax({
-      url: this.getUrl('mainLayout', 'layout'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-          $outputContainer.empty().append(data.html);
-          // Mark main module as active in standalone
-          if ($(this.selectorBody).data('context') !== 'backend') {
-            const controller = $outputContainer.data('controller');
-            $outputContainer.find('.t3js-mainmodule[data-controller="' + controller + '"]').addClass('active');
+    (new AjaxRequest(this.getUrl('mainLayout', 'layout')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+            $outputContainer.empty().append(data.html);
+            // Mark main module as active in standalone
+            if ($(this.selectorBody).data('context') !== 'backend') {
+              const controller = $outputContainer.data('controller');
+              $outputContainer.find('.t3js-mainmodule[data-controller="' + controller + '"]').addClass('active');
+            }
+            this.loadCards();
+          } else {
+            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
+            $outputContainer.empty().append(message);
           }
-          this.loadCards();
-        } else {
-          const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-          $outputContainer.empty().append(message);
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
-  public handleAjaxError(xhr: XMLHttpRequest, $outputContainer?: JQuery): void {
+  public async handleAjaxError(error: ResponseError, $outputContainer?: JQuery): Promise<any> {
     let $message: any;
-    if (xhr.status === 403) {
+    if (error.response.status === 403) {
       // Install tool session expired - depending on context render error message or login
       const $context = $(this.selectorBody).data('context');
       if ($context === 'backend') {
@@ -195,36 +201,36 @@ class Router {
       const url = this.getUrl(undefined, 'upgrade');
       $message = $(
         '<div class="t3js-infobox callout callout-sm callout-danger">'
-          + '<div class="callout-body">'
-            + '<p>Something went wrong. Please use <b><a href="' + url + '">Check for broken'
-            + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
-            + ' and unload it.</p>'
-            + '<p>The box below may additionally reveal further details on what went wrong depending on your debug settings.'
-            + ' It may help to temporarily switch to debug mode using <b>Settings > Configuration Presets > Debug settings.</b></p>'
-            + '<p>If this error happens at an early state and no full exception back trace is shown, it may also help'
-            + ' to manually increase debugging output in <code>typo3conf/LocalConfiguration.php</code>:'
-            + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, '
-            + '<code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
-            + '<code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
-          + '</div>'
+        + '<div class="callout-body">'
+        + '<p>Something went wrong. Please use <b><a href="' + url + '">Check for broken'
+        + ' extensions</a></b> to see if a loaded extension breaks this part of the install tool'
+        + ' and unload it.</p>'
+        + '<p>The box below may additionally reveal further details on what went wrong depending on your debug settings.'
+        + ' It may help to temporarily switch to debug mode using <b>Settings > Configuration Presets > Debug settings.</b></p>'
+        + '<p>If this error happens at an early state and no full exception back trace is shown, it may also help'
+        + ' to manually increase debugging output in <code>typo3conf/LocalConfiguration.php</code>:'
+        + '<code>[\'BE\'][\'debug\'] => true</code>, <code>[\'SYS\'][\'devIPmask\'] => \'*\'</code>, '
+        + '<code>[\'SYS\'][\'displayErrors\'] => 1</code>,'
+        + '<code>[\'SYS\'][\'systemLogLevel\'] => 0</code>, <code>[\'SYS\'][\'exceptionalErrors\'] => 12290</code></p>'
+        + '</div>'
         + '</div>'
         + '<div class="panel-group" role="tablist" aria-multiselectable="true">'
-          + '<div class="panel panel-default panel-flat searchhit">'
-            + '<div class="panel-heading" role="tab" id="heading-error">'
-              + '<h3 class="panel-title">'
-                + '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-error" aria-expanded="true" '
-                    + 'aria-controls="collapse-error" class="collapsed">'
-                  + '<span class="caret"></span>'
-                  + '<strong>Ajax error</strong>'
-                + '</a>'
-              + '</h3>'
-            + '</div>'
-            + '<div id="collapse-error" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-error">'
-              + '<div class="panel-body">'
-                + xhr.responseText
-              + '</div>'
-            + '</div>'
-          + '</div>'
+        + '<div class="panel panel-default panel-flat searchhit">'
+        + '<div class="panel-heading" role="tab" id="heading-error">'
+        + '<h3 class="panel-title">'
+        + '<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-error" aria-expanded="true" '
+        + 'aria-controls="collapse-error" class="collapsed">'
+        + '<span class="caret"></span>'
+        + '<strong>Ajax error</strong>'
+        + '</a>'
+        + '</h3>'
+        + '</div>'
+        + '<div id="collapse-error" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-error">'
+        + '<div class="panel-body">'
+        + (await error.response.text())
+        + '</div>'
+        + '</div>'
+        + '</div>'
         + '</div>',
       );
 
@@ -239,132 +245,137 @@ class Router {
   }
 
   public checkEnableInstallToolFile(): void {
-    $.ajax({
-      url: this.getUrl('checkEnableInstallToolFile'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          this.checkLogin();
-        } else {
-          this.showEnableInstallTool();
+    (new AjaxRequest(this.getUrl('checkEnableInstallToolFile')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.checkLogin();
+          } else {
+            this.showEnableInstallTool();
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public showEnableInstallTool(): void {
-    $.ajax({
-      url: this.getUrl('showEnableInstallToolFile'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          $(this.selectorBody).empty().append(data.html);
+    (new AjaxRequest(this.getUrl('showEnableInstallToolFile')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            $(this.selectorBody).empty().append(data.html);
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public checkLogin(): void {
-    $.ajax({
-      url: this.getUrl('checkLogin'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          this.loadMainLayout();
-        } else {
-          this.showLogin();
+    (new AjaxRequest(this.getUrl('checkLogin')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.loadMainLayout();
+          } else {
+            this.showLogin();
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public showLogin(): void {
-    $.ajax({
-      url: this.getUrl('showLogin'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          $(this.selectorBody).empty().append(data.html);
+    (new AjaxRequest(this.getUrl('showLogin')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            $(this.selectorBody).empty().append(data.html);
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public login(): void {
     const $outputContainer: JQuery = $('.t3js-login-output');
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
-    $.ajax({
-      url: this.getUrl(),
-      cache: false,
-      method: 'POST',
-      data: {
-        'install': {
-          'action': 'login',
-          'token': $('[data-login-token]').data('login-token'),
-          'password': $('.t3-install-form-input-text').val(),
+    (new AjaxRequest(this.getUrl()))
+      .post({
+        install: {
+          action: 'login',
+          token: $('[data-login-token]').data('login-token'),
+          password: $('.t3-install-form-input-text').val(),
         },
-      },
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          this.executeSilentConfigurationUpdate();
-        } else {
-          data.status.forEach((element: any): void => {
-            const m: any = InfoBox.render(element.severity, element.title, element.message);
-            $outputContainer.empty().html(m);
-          });
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.executeSilentConfigurationUpdate();
+          } else {
+            data.status.forEach((element: any): void => {
+              const m: any = InfoBox.render(element.severity, element.title, element.message);
+              $outputContainer.empty().html(m);
+            });
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public logout(): void {
-    $.ajax({
-      url: this.getUrl('logout'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true) {
-          this.showEnableInstallTool();
+    (new AjaxRequest(this.getUrl('logout')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            this.showEnableInstallTool();
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public loadCards(): void {
     const outputContainer = $(this.selectorMainContent);
-    $.ajax({
-      url: this.getUrl('cards'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-          outputContainer.empty().append(data.html);
-        } else {
-          const message = InfoBox.render(Severity.error, 'Something went wrong', '');
-          outputContainer.empty().append(message);
+    (new AjaxRequest(this.getUrl('cards')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+            outputContainer.empty().append(data.html);
+          } else {
+            const message = InfoBox.render(Severity.error, 'Something went wrong', '');
+            outputContainer.empty().append(message);
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 
   public updateLoadingInfo(info: string): void {
@@ -374,22 +385,23 @@ class Router {
 
   private preAccessCheck(): void {
     this.updateLoadingInfo('Execute pre access check');
-    $.ajax({
-      url: this.getUrl('preAccessCheck', 'layout'),
-      cache: false,
-      success: (data: { [key: string]: any }): void => {
-        if (data.installToolLocked) {
-          this.checkEnableInstallToolFile();
-        } else if (!data.isAuthorized) {
-          this.showLogin();
-        } else {
-          this.executeSilentConfigurationUpdate();
+    (new AjaxRequest(this.getUrl('preAccessCheck', 'layout')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.installToolLocked) {
+            this.checkEnableInstallToolFile();
+          } else if (!data.isAuthorized) {
+            this.showLogin();
+          } else {
+            this.executeSilentConfigurationUpdate();
+          }
+        },
+        (error: ResponseError): void => {
+          this.handleAjaxError(error)
         }
-      },
-      error: (xhr: JQueryXHR): void => {
-        this.handleAjaxError(xhr);
-      },
-    });
+      );
   }
 }
 

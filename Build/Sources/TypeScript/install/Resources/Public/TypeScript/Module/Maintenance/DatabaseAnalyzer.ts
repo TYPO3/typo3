@@ -11,14 +11,17 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
-import Router = require('../../Router');
-import ProgressBar = require('../../Renderable/ProgressBar');
-import InfoBox = require('../../Renderable/InfoBox');
-import Severity = require('../../Renderable/Severity');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import InfoBox = require('../../Renderable/InfoBox');
+import ProgressBar = require('../../Renderable/ProgressBar');
+import Severity = require('../../Renderable/Severity');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/DatabaseAnalyzer
@@ -52,22 +55,23 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
 
   private getData(): void {
     const modalContent = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('databaseAnalyzer'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          modalContent.empty().append(data.html);
-          Modal.setButtons(data.buttons);
-          this.analyze();
-        } else {
-          Notification.error('Something went wrong');
+    (new AjaxRequest(Router.getUrl('databaseAnalyzer')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            Modal.setButtons(data.buttons);
+            this.analyze();
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private analyze(): void {
@@ -87,67 +91,68 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
       executeTrigger.prop('disabled', !hasCheckedCheckboxes);
     });
 
-    $.ajax({
-      url: Router.getUrl('databaseAnalyzerAnalyze'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          if (Array.isArray(data.status)) {
-            outputContainer.find('.alert-loading').remove();
-            data.status.forEach((element: any): void => {
-              const message = InfoBox.render(element.severity, element.title, element.message);
-              outputContainer.append(message);
-            });
-          }
-          if (Array.isArray(data.suggestions)) {
-            data.suggestions.forEach((element: any): void => {
-              const aBlock = modalContent.find(this.selectorSuggestionBlock).clone();
-              aBlock.removeClass(this.selectorSuggestionBlock.substr(1));
-              const key = element.key;
-              aBlock.find('.t3js-databaseAnalyzer-suggestion-block-legend').text(element.label);
-              aBlock.find('.t3js-databaseAnalyzer-suggestion-block-checkbox').attr('id', 't3-install-' + key + '-checkbox');
-              if (element.enabled) {
-                aBlock.find('.t3js-databaseAnalyzer-suggestion-block-checkbox').attr('checked', 'checked');
-              }
-              aBlock.find('.t3js-databaseAnalyzer-suggestion-block-label').attr('for', 't3-install-' + key + '-checkbox');
-              element.children.forEach((line: any): void => {
-                const aLine = modalContent.find(this.selectorSuggestionLineTemplate).children().clone();
-                const hash = line.hash;
-                const $checkbox = aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox');
-                $checkbox.attr('id', 't3-install-db-' + hash).attr('data-hash', hash);
-                if (element.enabled) {
-                  $checkbox.attr('checked', 'checked');
-                }
-                aLine.find('.t3js-databaseAnalyzer-suggestion-line-label').attr('for', 't3-install-db-' + hash);
-                aLine.find('.t3js-databaseAnalyzer-suggestion-line-statement').text(line.statement);
-                if (typeof line.current !== 'undefined') {
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-current-value').text(line.current);
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-current').show();
-                }
-                if (typeof line.rowCount !== 'undefined') {
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-count-value').text(line.rowCount);
-                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-count').show();
-                }
-                aBlock.find(this.selectorSuggestionList).append(aLine);
+    (new AjaxRequest(Router.getUrl('databaseAnalyzerAnalyze')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            if (Array.isArray(data.status)) {
+              outputContainer.find('.alert-loading').remove();
+              data.status.forEach((element: any): void => {
+                const message = InfoBox.render(element.severity, element.title, element.message);
+                outputContainer.append(message);
               });
-              outputContainer.append(aBlock.html());
-            });
+            }
+            if (Array.isArray(data.suggestions)) {
+              data.suggestions.forEach((element: any): void => {
+                const aBlock = modalContent.find(this.selectorSuggestionBlock).clone();
+                aBlock.removeClass(this.selectorSuggestionBlock.substr(1));
+                const key = element.key;
+                aBlock.find('.t3js-databaseAnalyzer-suggestion-block-legend').text(element.label);
+                aBlock.find('.t3js-databaseAnalyzer-suggestion-block-checkbox').attr('id', 't3-install-' + key + '-checkbox');
+                if (element.enabled) {
+                  aBlock.find('.t3js-databaseAnalyzer-suggestion-block-checkbox').attr('checked', 'checked');
+                }
+                aBlock.find('.t3js-databaseAnalyzer-suggestion-block-label').attr('for', 't3-install-' + key + '-checkbox');
+                element.children.forEach((line: any): void => {
+                  const aLine = modalContent.find(this.selectorSuggestionLineTemplate).children().clone();
+                  const hash = line.hash;
+                  const $checkbox = aLine.find('.t3js-databaseAnalyzer-suggestion-line-checkbox');
+                  $checkbox.attr('id', 't3-install-db-' + hash).attr('data-hash', hash);
+                  if (element.enabled) {
+                    $checkbox.attr('checked', 'checked');
+                  }
+                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-label').attr('for', 't3-install-db-' + hash);
+                  aLine.find('.t3js-databaseAnalyzer-suggestion-line-statement').text(line.statement);
+                  if (typeof line.current !== 'undefined') {
+                    aLine.find('.t3js-databaseAnalyzer-suggestion-line-current-value').text(line.current);
+                    aLine.find('.t3js-databaseAnalyzer-suggestion-line-current').show();
+                  }
+                  if (typeof line.rowCount !== 'undefined') {
+                    aLine.find('.t3js-databaseAnalyzer-suggestion-line-count-value').text(line.rowCount);
+                    aLine.find('.t3js-databaseAnalyzer-suggestion-line-count').show();
+                  }
+                  aBlock.find(this.selectorSuggestionList).append(aLine);
+                });
+                outputContainer.append(aBlock.html());
+              });
 
-            const isInitiallyDisabled = outputContainer.find(':checked').length === 0;
-            analyzeTrigger.prop('disabled', false);
-            executeTrigger.prop('disabled', isInitiallyDisabled);
+              const isInitiallyDisabled = outputContainer.find(':checked').length === 0;
+              analyzeTrigger.prop('disabled', false);
+              executeTrigger.prop('disabled', isInitiallyDisabled);
+            }
+            if (data.suggestions.length === 0 && data.status.length === 0) {
+              outputContainer.append(InfoBox.render(Severity.ok, 'Database schema is up to date. Good job!', ''));
+            }
+          } else {
+            Notification.error('Something went wrong');
           }
-          if (data.suggestions.length === 0 && data.status.length === 0) {
-            outputContainer.append(InfoBox.render(Severity.ok, 'Database schema is up to date. Good job!', ''));
-          }
-        } else {
-          Notification.error('Something went wrong');
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private execute(): void {
@@ -163,31 +168,30 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
     modalContent.find(this.selectorExecuteTrigger).prop('disabled', true);
     modalContent.find(this.selectorAnalyzeTrigger).prop('disabled', true);
 
-    $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      data: {
-        'install': {
-          'action': 'databaseAnalyzerExecute',
-          'token': executeToken,
-          'hashes': selectedHashes,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          action: 'databaseAnalyzerExecute',
+          token: executeToken,
+          hashes: selectedHashes,
         },
-      },
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              Notification.showMessage(element.title, element.message, element.severity);
-            });
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            if (Array.isArray(data.status)) {
+              data.status.forEach((element: any): void => {
+                Notification.showMessage(element.title, element.message, element.severity);
+              });
+            }
           }
+          this.analyze();
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-        this.analyze();
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 

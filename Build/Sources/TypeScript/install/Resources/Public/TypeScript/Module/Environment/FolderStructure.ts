@@ -11,15 +11,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
-import Router = require('../../Router');
-import ProgressBar = require('../../Renderable/ProgressBar');
-import InfoBox = require('../../Renderable/InfoBox');
-import Severity = require('../../Renderable/Severity');
+import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import InfoBox = require('../../Renderable/InfoBox');
+import ProgressBar = require('../../Renderable/ProgressBar');
+import Severity = require('../../Renderable/Severity');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/FolderStructure
@@ -58,52 +61,53 @@ class FolderStructure extends AbstractInteractableModule {
     modalContent.find(this.selectorOutputContainer).empty().append(
       ProgressBar.render(Severity.loading, 'Loading...', ''),
     );
-    $.ajax({
-      url: Router.getUrl('folderStructureGetStatus'),
-      cache: false,
-      success: (data: any): void => {
-        modalContent.empty().append(data.html);
-        Modal.setButtons(data.buttons);
-        if (data.success === true && Array.isArray(data.errorStatus)) {
-          let errorCount = 0;
-          if (data.errorStatus.length > 0) {
-            modalContent.find(this.selectorErrorContainer).show();
-            modalContent.find(this.selectorErrorList).empty();
-            data.errorStatus.forEach(((aElement: any): void => {
-              errorCount++;
-              $errorBadge.text(errorCount).show();
-              const aMessage = InfoBox.render(aElement.severity, aElement.title, aElement.message);
-              modalContent.find(this.selectorErrorList).append(aMessage);
-            }));
-          } else {
-            modalContent.find(this.selectorErrorContainer).hide();
+    (new AjaxRequest(Router.getUrl('folderStructureGetStatus')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
+          if (data.success === true && Array.isArray(data.errorStatus)) {
+            let errorCount = 0;
+            if (data.errorStatus.length > 0) {
+              modalContent.find(this.selectorErrorContainer).show();
+              modalContent.find(this.selectorErrorList).empty();
+              data.errorStatus.forEach(((aElement: any): void => {
+                errorCount++;
+                $errorBadge.text(errorCount).show();
+                const aMessage = InfoBox.render(aElement.severity, aElement.title, aElement.message);
+                modalContent.find(this.selectorErrorList).append(aMessage);
+              }));
+            } else {
+              modalContent.find(this.selectorErrorContainer).hide();
+            }
           }
-        }
-        if (data.success === true && Array.isArray(data.okStatus)) {
-          if (data.okStatus.length > 0) {
-            modalContent.find(this.selectorOkContainer).show();
-            modalContent.find(this.selectorOkList).empty();
-            data.okStatus.forEach(((aElement: any): void => {
-              const aMessage = InfoBox.render(aElement.severity, aElement.title, aElement.message);
-              modalContent.find(this.selectorOkList).append(aMessage);
-            }));
-          } else {
-            modalContent.find(this.selectorOkContainer).hide();
+          if (data.success === true && Array.isArray(data.okStatus)) {
+            if (data.okStatus.length > 0) {
+              modalContent.find(this.selectorOkContainer).show();
+              modalContent.find(this.selectorOkList).empty();
+              data.okStatus.forEach(((aElement: any): void => {
+                const aMessage = InfoBox.render(aElement.severity, aElement.title, aElement.message);
+                modalContent.find(this.selectorOkList).append(aMessage);
+              }));
+            } else {
+              modalContent.find(this.selectorOkContainer).hide();
+            }
           }
+          let element = data.folderStructureFilePermissionStatus;
+          modalContent.find(this.selectorPermissionContainer).empty().append(
+            InfoBox.render(element.severity, element.title, element.message),
+          );
+          element = data.folderStructureDirectoryPermissionStatus;
+          modalContent.find(this.selectorPermissionContainer).append(
+            InfoBox.render(element.severity, element.title, element.message),
+          );
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-        let element = data.folderStructureFilePermissionStatus;
-        modalContent.find(this.selectorPermissionContainer).empty().append(
-          InfoBox.render(element.severity, element.title, element.message),
-        );
-        element = data.folderStructureDirectoryPermissionStatus;
-        modalContent.find(this.selectorPermissionContainer).append(
-          InfoBox.render(element.severity, element.title, element.message),
-        );
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private fix(): void {
@@ -111,32 +115,33 @@ class FolderStructure extends AbstractInteractableModule {
     const $outputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
     const message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
-    $.ajax({
-      url: Router.getUrl('folderStructureFix'),
-      cache: false,
-      success: (data: any): void => {
-        FolderStructure.removeLoadingMessage($outputContainer);
-        if (data.success === true && Array.isArray(data.fixedStatus)) {
-          if (data.fixedStatus.length > 0) {
-            data.fixedStatus.forEach((element: any): void => {
+    (new AjaxRequest(Router.getUrl('folderStructureFix')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          FolderStructure.removeLoadingMessage($outputContainer);
+          if (data.success === true && Array.isArray(data.fixedStatus)) {
+            if (data.fixedStatus.length > 0) {
+              data.fixedStatus.forEach((element: any): void => {
+                $outputContainer.append(
+                  InfoBox.render(element.severity, element.title, element.message),
+                );
+              });
+            } else {
               $outputContainer.append(
-                InfoBox.render(element.severity, element.title, element.message),
+                InfoBox.render(Severity.warning, 'Nothing fixed', ''),
               );
-            });
+            }
+            this.getStatus();
           } else {
-            $outputContainer.append(
-              InfoBox.render(Severity.warning, 'Nothing fixed', ''),
-            );
+            Notification.error('Something went wrong');
           }
-          this.getStatus();
-        } else {
-          Notification.error('Something went wrong');
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 

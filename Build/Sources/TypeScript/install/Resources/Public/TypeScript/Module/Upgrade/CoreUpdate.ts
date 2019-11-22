@@ -11,13 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
-import Router = require('../../Router');
-import FlashMessage = require('../../Renderable/FlashMessage');
-import Severity = require('../../Renderable/Severity');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import FlashMessage = require('../../Renderable/FlashMessage');
+import Severity = require('../../Renderable/Severity');
+import Router = require('../../Router');
 
 interface ActionItem {
   loadingMessage: string;
@@ -81,7 +84,7 @@ class CoreUpdate extends AbstractInteractableModule {
    */
   public initialize(currentModal: JQuery): void {
     this.currentModal = currentModal;
-    this.getData().done((): void => {
+    this.getData().then((): void => {
       this.buttonTemplate = this.findInModal(this.updateButton).clone();
     });
 
@@ -108,23 +111,24 @@ class CoreUpdate extends AbstractInteractableModule {
     });
   }
 
-  private getData(): JQueryXHR {
+  private getData(): Promise<any> {
     const modalContent = this.getModalBody();
-    return $.ajax({
-      url: Router.getUrl('coreUpdateGetData'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          modalContent.empty().append(data.html);
-          Modal.setButtons(data.buttons);
-        } else {
-          Notification.error('Something went wrong');
+    return (new AjaxRequest(Router.getUrl('coreUpdateGetData')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            Modal.setButtons(data.buttons);
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   /**
@@ -155,20 +159,21 @@ class CoreUpdate extends AbstractInteractableModule {
       data.install.type = type;
     }
     this.addLoadingMessage(this.actionQueue[actionName].loadingMessage);
-    $.ajax({
-      url: Router.getUrl(),
-      data: data,
-      cache: false,
-      success: (result: any): void => {
-        const canContinue = this.handleResult(result, this.actionQueue[actionName].finishMessage);
-        if (canContinue === true && (this.actionQueue[actionName].nextActionName !== undefined)) {
-          this.callAction(this.actionQueue[actionName].nextActionName, type);
+    (new AjaxRequest(Router.getUrl()))
+      .withQueryArguments(data)
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const result = await response.resolve();
+          const canContinue = this.handleResult(result, this.actionQueue[actionName].finishMessage);
+          if (canContinue === true && (this.actionQueue[actionName].nextActionName !== undefined)) {
+            this.callAction(this.actionQueue[actionName].nextActionName, type);
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, this.getModalBody());
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, this.getModalBody());
-      },
-    });
+      );
   }
 
   /**
@@ -178,10 +183,10 @@ class CoreUpdate extends AbstractInteractableModule {
     const canContinue: boolean = data.success;
     this.removeLoadingMessage();
 
-    if (data.status && typeof(data.status) === 'object') {
+    if (data.status && typeof (data.status) === 'object') {
       this.showStatusMessages(data.status);
     }
-    if (data.action && typeof(data.action) === 'object') {
+    if (data.action && typeof (data.action) === 'object') {
       this.showActionButton(data.action);
     }
     if (successMessage) {

@@ -11,11 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
-import Router = require('../../Router');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ClearTypo3tempFiles
@@ -48,65 +51,64 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
 
   private getStats(): void {
     const modalContent = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('clearTypo3tempFilesStats'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          modalContent.empty().append(data.html);
-          Modal.setButtons(data.buttons);
-          if (Array.isArray(data.stats) && data.stats.length > 0) {
-            data.stats.forEach((element: any): void => {
-              if (element.numberOfFiles > 0) {
-                const aStat = modalContent.find(this.selectorStatTemplate).clone();
-                aStat.find(this.selectorStatNumberOfFiles).text(element.numberOfFiles);
-                aStat.find(this.selectorStatDirectory).text(element.directory);
-                aStat.find(this.selectorDeleteTrigger).attr('data-folder', element.directory);
-                aStat.find(this.selectorDeleteTrigger).attr('data-storage-uid', element.storageUid);
-                modalContent.find(this.selectorStatContainer).append(aStat.html());
-              }
-            });
+    (new AjaxRequest(Router.getUrl('clearTypo3tempFilesStats')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            modalContent.empty().append(data.html);
+            Modal.setButtons(data.buttons);
+            if (Array.isArray(data.stats) && data.stats.length > 0) {
+              data.stats.forEach((element: any): void => {
+                if (element.numberOfFiles > 0) {
+                  const aStat = modalContent.find(this.selectorStatTemplate).clone();
+                  aStat.find(this.selectorStatNumberOfFiles).text(element.numberOfFiles);
+                  aStat.find(this.selectorStatDirectory).text(element.directory);
+                  aStat.find(this.selectorDeleteTrigger).attr('data-folder', element.directory);
+                  aStat.find(this.selectorDeleteTrigger).attr('data-storage-uid', element.storageUid);
+                  modalContent.find(this.selectorStatContainer).append(aStat.html());
+                }
+              });
+            }
+          } else {
+            Notification.error('Something went wrong');
           }
-        } else {
-          Notification.error('Something went wrong');
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private delete(folder: string, storageUid: number): void {
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().data('clear-typo3temp-delete-token');
-    $.ajax({
-      method: 'POST',
-      url: Router.getUrl(),
-      context: this,
-      data: {
-        'install': {
-          'action': 'clearTypo3tempFiles',
-          'token': executeToken,
-          'folder': folder,
-          'storageUid': storageUid,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          action: 'clearTypo3tempFiles',
+          token: executeToken,
+          folder: folder,
+          storageUid: storageUid,
         },
-      },
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
-            Notification.success(element.message);
-          });
-          this.getStats();
-        } else {
-          Notification.error('Something went wrong');
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && Array.isArray(data.status)) {
+            data.status.forEach((element: any): void => {
+              Notification.success(element.message);
+            });
+            this.getStats();
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 

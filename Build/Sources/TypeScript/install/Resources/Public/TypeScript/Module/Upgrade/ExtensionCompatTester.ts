@@ -13,9 +13,12 @@
 
 import 'bootstrap';
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import InfoBox = require('../../Renderable/InfoBox');
 import ProgressBar = require('../../Renderable/ProgressBar');
 import Severity = require('../../Renderable/Severity');
@@ -56,45 +59,46 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.append(message);
 
-    $.ajax({
-      url: Router.getUrl('extensionCompatTesterLoadedExtensionList'),
-      cache: false,
-      success: (data: any): void => {
-        modalContent.empty().append(data.html);
-        Modal.setButtons(data.buttons);
-        const $innerOutputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
-        const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
-        $innerOutputContainer.append(progressBar);
+    (new AjaxRequest(Router.getUrl('extensionCompatTesterLoadedExtensionList')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          modalContent.empty().append(data.html);
+          Modal.setButtons(data.buttons);
+          const $innerOutputContainer: JQuery = this.findInModal(this.selectorOutputContainer);
+          const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
+          $innerOutputContainer.append(progressBar);
 
-        if (data.success === true) {
-          this.loadExtLocalconf().done((): void => {
-            $innerOutputContainer.append(
-              InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', ''),
-            );
-            this.loadExtTables().done((): void => {
+          if (data.success === true) {
+            this.loadExtLocalconf().then((): void => {
               $innerOutputContainer.append(
-                InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', ''),
+                InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', ''),
               );
-            }).fail((xhr: JQueryXHR): void => {
-              this.renderFailureMessages('ext_tables.php', xhr.responseJSON.brokenExtensions, $innerOutputContainer);
-            }).always((): void => {
+              this.loadExtTables().then((): void => {
+                $innerOutputContainer.append(
+                  InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', ''),
+                );
+              }, async (error: ResponseError): Promise<void> => {
+                this.renderFailureMessages('ext_tables.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
+              }).finally((): void => {
+                this.unlockModal();
+              })
+            }, async (error: ResponseError): Promise<void> => {
+              this.renderFailureMessages('ext_localconf.php', (await error.response.json()).brokenExtensions, $innerOutputContainer);
+              $innerOutputContainer.append(
+                InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', ''),
+              );
               this.unlockModal();
-            })
-          }).fail((xhr: JQueryXHR): void => {
-            this.renderFailureMessages('ext_localconf.php', xhr.responseJSON.brokenExtensions, $innerOutputContainer);
-            $innerOutputContainer.append(
-              InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', ''),
-            );
-            this.unlockModal();
-          })
-        } else {
-          Notification.error('Something went wrong');
+            });
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private unlockModal(): void {
@@ -123,32 +127,22 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     this.unlockModal();
   }
 
-  private loadExtLocalconf(): JQueryPromise<JQueryXHR> {
+  private loadExtLocalconf(): Promise<AjaxResponse> {
     const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_localconf-token');
-    return $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      cache: false,
-      data: {
-        'install': {
-          'action': 'extensionCompatTesterLoadExtLocalconf',
-          'token': executeToken,
-        },
+    return new AjaxRequest(Router.getUrl()).post({
+      'install': {
+        'action': 'extensionCompatTesterLoadExtLocalconf',
+        'token': executeToken,
       },
     });
   }
 
-  private loadExtTables(): JQueryPromise<JQueryXHR> {
+  private loadExtTables(): Promise<AjaxResponse> {
     const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_tables-token');
-    return $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      cache: false,
-      data: {
-        'install': {
-          'action': 'extensionCompatTesterLoadExtTables',
-          'token': executeToken,
-        },
+    return new AjaxRequest(Router.getUrl()).post({
+      'install': {
+        'action': 'extensionCompatTesterLoadExtTables',
+        'token': executeToken,
       },
     });
   }
@@ -164,35 +158,34 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     const $outputContainer = $(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.append(message);
-    $.ajax({
-      url: Router.getUrl(),
-      cache: false,
-      method: 'POST',
-      data: {
-        'install': {
-          'action': 'extensionCompatTesterUninstallExtension',
-          'token': executeToken,
-          'extension': extension,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          action: 'extensionCompatTesterUninstallExtension',
+          token: executeToken,
+          extension: extension,
         },
-      },
-      success: (data: any): void => {
-        if (data.success) {
-          if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              const aMessage = InfoBox.render(element.severity, element.title, element.message);
-              modalContent.find(this.selectorOutputContainer).empty().append(aMessage);
-            });
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success) {
+            if (Array.isArray(data.status)) {
+              data.status.forEach((element: any): void => {
+                const aMessage = InfoBox.render(element.severity, element.title, element.message);
+                modalContent.find(this.selectorOutputContainer).empty().append(aMessage);
+              });
+            }
+            this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
+            this.getLoadedExtensionList();
+          } else {
+            Notification.error('Something went wrong');
           }
-          this.findInModal(this.selectorUninstallTrigger).addClass('hidden');
-          this.getLoadedExtensionList();
-        } else {
-          Notification.error('Something went wrong');
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 

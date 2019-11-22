@@ -12,10 +12,12 @@
  */
 
 import * as $ from 'jquery';
-import InfoBox = require('./Renderable/InfoBox');
-import Severity = require('./Renderable/Severity');
-import ProgressBar = require('./Renderable/ProgressBar');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import PasswordStrength = require('./Module/PasswordStrength');
+import InfoBox = require('./Renderable/InfoBox');
+import ProgressBar = require('./Renderable/ProgressBar');
+import Severity = require('./Renderable/Severity');
 
 /**
  * Walk through the installation process of TYPO3
@@ -103,62 +105,58 @@ class Installer {
   }
 
   private getMainLayout(): void {
-    $.ajax({
-      url: this.getUrl('mainLayout'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('mainLayout')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         $(this.selectorBody).empty().append(data.html);
         this.checkInstallerAvailable();
-      },
-    });
+      });
   }
 
   private checkInstallerAvailable(): void {
-    $.ajax({
-      url: this.getUrl('checkInstallerAvailable'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('checkInstallerAvailable')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         data.success
           ? this.checkEnvironmentAndFolders()
           : this.showInstallerNotAvailable();
-      },
-    });
+      });
   }
 
   private showInstallerNotAvailable(): void {
     let $outputContainer: JQuery = $(this.selectorMainContent);
-    $.ajax({
-      url: this.getUrl('showInstallerNotAvailable'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('showInstallerNotAvailable')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().append(data.html);
         }
-      },
-    });
+      });
   }
 
   private checkEnvironmentAndFolders(): void {
     this.setProgress(1);
-    $.ajax({
-      url: this.getUrl('checkEnvironmentAndFolders'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('checkEnvironmentAndFolders')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkTrustedHostsPattern();
         } else {
           this.showEnvironmentAndFolders();
         }
-      },
-    });
+      });
   }
 
   private showEnvironmentAndFolders(): void {
     let $outputContainer: JQuery = $(this.selectorMainContent);
-    $.ajax({
-      url: this.getUrl('showEnvironmentAndFolders'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('showEnvironmentAndFolders')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
           let $detailContainer: JQuery = $('.t3js-installer-environment-details');
@@ -191,89 +189,81 @@ class Installer {
             $('.t3js-installer-environmentFolders-good').show();
           }
         }
-      },
-    });
+      });
   }
 
   private executeEnvironmentAndFolders(): void {
-    $.ajax({
-      url: this.getUrl('executeEnvironmentAndFolders'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('executeEnvironmentAndFolders')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkTrustedHostsPattern();
         } else {
           // @todo message output handling
         }
-      },
-    });
+      });
   }
 
   private checkTrustedHostsPattern(): void {
-    $.ajax({
-      url: this.getUrl('checkTrustedHostsPattern'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('checkTrustedHostsPattern')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.executeSilentConfigurationUpdate();
         } else {
           this.executeAdjustTrustedHostsPattern();
         }
-      },
-    });
+      });
   }
 
   private executeAdjustTrustedHostsPattern(): void {
-    $.ajax({
-      url: this.getUrl('executeAdjustTrustedHostsPattern'),
-      cache: false,
-      success: (): void => {
+    (new AjaxRequest(this.getUrl('executeAdjustTrustedHostsPattern')))
+      .get({cache: 'no-cache'})
+      .then((): void => {
         this.executeSilentConfigurationUpdate();
-      },
-    });
+      });
   }
 
   private executeSilentConfigurationUpdate(): void {
-    $.ajax({
-      url: this.getUrl('executeSilentConfigurationUpdate'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('executeSilentConfigurationUpdate')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseConnect();
         } else {
           this.executeSilentConfigurationUpdate();
         }
-      },
-    });
+      });
   }
 
   private checkDatabaseConnect(): void {
     this.setProgress(2);
-    $.ajax({
-      url: this.getUrl('checkDatabaseConnect'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('checkDatabaseConnect')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseSelect();
         } else {
           this.showDatabaseConnect();
         }
-      },
-    });
+      });
   }
 
   private showDatabaseConnect(): void {
     let $outputContainer: JQuery = $(this.selectorMainContent);
-    $.ajax({
-      url: this.getUrl('showDatabaseConnect'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('showDatabaseConnect')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
           $('#t3js-connect-database-driver').trigger('change');
         }
-      },
-    });
+      });
   }
 
   private executeDatabaseConnect(): void {
@@ -285,12 +275,10 @@ class Installer {
     $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
       postData[element.name] = element.value;
     });
-    $.ajax({
-      url: this.getUrl(),
-      cache: false,
-      method: 'POST',
-      data: postData,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl()))
+      .post(postData)
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseSelect();
         } else {
@@ -301,36 +289,33 @@ class Installer {
             });
           }
         }
-      },
-    });
+      });
   }
 
   private checkDatabaseSelect(): void {
     this.setProgress(3);
-    $.ajax({
-      url: this.getUrl('checkDatabaseSelect'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('checkDatabaseSelect')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseData();
         } else {
           this.showDatabaseSelect();
         }
-      },
-    });
+      });
   }
 
   private showDatabaseSelect(): void {
     let $outputContainer: JQuery = $(this.selectorMainContent);
-    $.ajax({
-      url: this.getUrl('showDatabaseSelect'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('showDatabaseSelect')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
         }
-      },
-    });
+      });
   }
 
   private executeDatabaseSelect(): void {
@@ -342,12 +327,10 @@ class Installer {
     $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
       postData[element.name] = element.value;
     });
-    $.ajax({
-      url: this.getUrl(),
-      cache: false,
-      method: 'POST',
-      data: postData,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl()))
+      .post(postData)
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.checkDatabaseData();
         } else {
@@ -358,36 +341,33 @@ class Installer {
             });
           }
         }
-      },
-    });
+      });
   }
 
   private checkDatabaseData(): void {
     this.setProgress(4);
-    $.ajax({
-      url: this.getUrl('checkDatabaseData'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('checkDatabaseData')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.showDefaultConfiguration();
         } else {
           this.showDatabaseData();
         }
-      },
-    });
+      });
   }
 
   private showDatabaseData(): void {
     let $outputContainer: JQuery = $(this.selectorMainContent);
-    $.ajax({
-      url: this.getUrl('showDatabaseData'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('showDatabaseData')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
         }
-      },
-    });
+      });
   }
 
   private executeDatabaseData(): void {
@@ -401,12 +381,10 @@ class Installer {
     });
     let message: any = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.empty().html(message);
-    $.ajax({
-      url: this.getUrl(),
-      cache: false,
-      method: 'POST',
-      data: postData,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl()))
+      .post(postData)
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           this.showDefaultConfiguration();
         } else {
@@ -417,22 +395,20 @@ class Installer {
             });
           }
         }
-      },
-    });
+      });
   }
 
   private showDefaultConfiguration(): void {
     let $outputContainer: JQuery = $(this.selectorMainContent);
     this.setProgress(5);
-    $.ajax({
-      url: this.getUrl('showDefaultConfiguration'),
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl('showDefaultConfiguration')))
+      .get({cache: 'no-cache'})
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           $outputContainer.empty().html(data.html);
         }
-      },
-    });
+      });
   }
 
   private executeDefaultConfiguration(): void {
@@ -443,15 +419,12 @@ class Installer {
     $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
       postData[element.name] = element.value;
     });
-    $.ajax({
-      url: this.getUrl(),
-      cache: false,
-      method: 'POST',
-      data: postData,
-      success: (data: any): void => {
+    (new AjaxRequest(this.getUrl()))
+      .post(postData)
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         top.location.href = data.redirect;
-      },
-    });
+      });
   }
 }
 

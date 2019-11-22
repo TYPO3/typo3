@@ -11,13 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
+import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import '../../Renderable/Clearable';
-import Router = require('../../Router');
-import Notification = require('TYPO3/CMS/Backend/Notification');
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import ModuleMenu = require('TYPO3/CMS/Backend/ModuleMenu');
+import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/ExtensionConfiguration
@@ -73,24 +76,25 @@ class ExtensionConfiguration extends AbstractInteractableModule {
 
   private getContent(): void {
     const modalContent = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('extensionConfigurationGetContent'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true) {
-          if (Array.isArray(data.status)) {
-            data.status.forEach((element: any): void => {
-              Notification.success(element.title, element.message);
-            });
+    (new AjaxRequest(Router.getUrl('extensionConfigurationGetContent')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true) {
+            if (Array.isArray(data.status)) {
+              data.status.forEach((element: any): void => {
+                Notification.success(element.title, element.message);
+              });
+            }
+            modalContent.html(data.html);
+            this.initializeWrap();
           }
-          modalContent.html(data.html);
-          this.initializeWrap();
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   /**
@@ -106,35 +110,33 @@ class ExtensionConfiguration extends AbstractInteractableModule {
       extensionConfiguration[element.name] = element.value;
     });
 
-    $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      data: {
-        'install': {
-          'token': executeToken,
-          'action': 'extensionConfigurationWrite',
-          'extensionKey': $form.attr('data-extensionKey'),
-          'extensionConfiguration': extensionConfiguration,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          token: executeToken,
+          action: 'extensionConfigurationWrite',
+          extensionKey: $form.attr('data-extensionKey'),
+          extensionConfiguration: extensionConfiguration,
         },
-      },
-      success: (data: any): void => {
-        if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
-            Notification.showMessage(element.title, element.message, element.severity);
-          });
-          if ($('body').data('context') === 'backend') {
-            ModuleMenu.App.refreshMenu();
+      })
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && Array.isArray(data.status)) {
+            data.status.forEach((element: any): void => {
+              Notification.showMessage(element.title, element.message, element.severity);
+            });
+            if ($('body').data('context') === 'backend') {
+              ModuleMenu.App.refreshMenu();
+            }
+          } else {
+            Notification.error('Something went wrong');
           }
-        } else {
-          Notification.error('Something went wrong');
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    }).always((): void => {
-      // empty method? why? I guess there is a reason, so let's keep it for the time being.
-    });
+      );
   }
 
   /**

@@ -11,12 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
+import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import '../../Renderable/Clearable';
-import Router = require('../../Router');
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/UpgradeDocs
@@ -59,10 +62,10 @@ class UpgradeDocs extends AbstractInteractableModule {
     }
 
     // Mark a file as read
-    currentModal.on('click',  '.t3js-upgradeDocs-markRead', (e: JQueryEventObject): void => {
+    currentModal.on('click', '.t3js-upgradeDocs-markRead', (e: JQueryEventObject): void => {
       this.markRead(e.target);
     });
-    currentModal.on('click',  '.t3js-upgradeDocs-unmarkRead', (e: JQueryEventObject): void => {
+    currentModal.on('click', '.t3js-upgradeDocs-unmarkRead', (e: JQueryEventObject): void => {
       this.unmarkRead(e.target);
     });
 
@@ -83,59 +86,60 @@ class UpgradeDocs extends AbstractInteractableModule {
     modalContent.on('show.bs.collapse', this.selectorUpgradeDoc, (e: JQueryEventObject): void => {
       this.renderTags($(e.currentTarget));
     });
+    (new AjaxRequest(Router.getUrl('upgradeDocsGetContent')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+            modalContent.empty().append(data.html);
 
-    $.ajax({
-      url: Router.getUrl('upgradeDocsGetContent'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-          modalContent.empty().append(data.html);
-
-          this.initializeFullTextSearch();
-          this.initializeChosenSelector();
-          this.loadChangelogs();
+            this.initializeFullTextSearch();
+            this.initializeChosenSelector();
+            this.loadChangelogs();
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private loadChangelogs(): void {
-    const promises: Array<any> = [];
+    const promises: Array<Promise<any>> = [];
     const modalContent = this.getModalBody();
     this.findInModal(this.selectorChangeLogsForVersionContainer).each((index: number, el: any): void => {
-      const $request = $.ajax({
-        url: Router.getUrl('upgradeDocsGetChangelogForVersion'),
-        cache: false,
-        data: {
+      const request = (new AjaxRequest(Router.getUrl('upgradeDocsGetChangelogForVersion')))
+        .withQueryArguments({
           install: {
             version: el.dataset.version,
           },
-        },
-        success: (data: any): void => {
-          if (data.success === true) {
-            const $panelGroup = $(el);
-            const $container = $panelGroup.find(this.selectorChangeLogsForVersion);
-            $container.html(data.html);
-            this.moveNotRelevantDocuments($container);
+        })
+        .get({cache: 'no-cache'})
+        .then(
+          async (response: AjaxResponse): Promise<any> => {
+            const data = await response.resolve();
+            if (data.success === true) {
+              const $panelGroup = $(el);
+              const $container = $panelGroup.find(this.selectorChangeLogsForVersion);
+              $container.html(data.html);
+              this.moveNotRelevantDocuments($container);
 
-            // Remove loading spinner form panel
-            $panelGroup.find('.t3js-panel-loading').remove();
-          } else {
-            Notification.error('Something went wrong');
+              // Remove loading spinner form panel
+              $panelGroup.find('.t3js-panel-loading').remove();
+            } else {
+              Notification.error('Something went wrong');
+            }
+          },
+          (error: ResponseError): void => {
+            Router.handleAjaxError(error, modalContent);
           }
-        },
-        error: (xhr: XMLHttpRequest): void => {
-          Router.handleAjaxError(xhr, modalContent);
-        },
-      });
+        );
 
-      promises.push($request);
+      promises.push(request);
     });
 
-    $.when.apply($, promises).done((): void => {
+    Promise.all(promises).then((): void => {
       this.fulltextSearchField.prop('disabled', false);
       this.appendItemsToChosenSelector();
     });
@@ -284,20 +288,17 @@ class UpgradeDocs extends AbstractInteractableModule {
     $button.toggleClass('t3js-upgradeDocs-unmarkRead t3js-upgradeDocs-markRead');
     $button.find('i').toggleClass('fa-check fa-ban');
     $button.closest('.panel').appendTo(this.findInModal('.panel-body-read'));
-    $.ajax({
-      method: 'POST',
-      url: Router.getUrl(),
-      data: {
-        'install': {
-          'ignoreFile': $button.data('filepath'),
-          'token': executeToken,
-          'action': 'upgradeDocsMarkRead',
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          ignoreFile: $button.data('filepath'),
+          token: executeToken,
+          action: 'upgradeDocsMarkRead',
         },
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      })
+      .catch((error: ResponseError): void => {
+        Router.handleAjaxError(error, modalContent);
+      });
   }
 
   private unmarkRead(element: any): void {
@@ -308,20 +309,17 @@ class UpgradeDocs extends AbstractInteractableModule {
     $button.toggleClass('t3js-upgradeDocs-markRead t3js-upgradeDocs-unmarkRead');
     $button.find('i').toggleClass('fa-check fa-ban');
     $button.closest('.panel').appendTo(this.findInModal('*[data-group-version="' + version + '"] .panel-body'));
-    $.ajax({
-      method: 'POST',
-      url: Router.getUrl(),
-      data: {
-        'install': {
-          'ignoreFile': $button.data('filepath'),
-          'token': executeToken,
+    (new AjaxRequest(Router.getUrl()))
+      .post({
+        install: {
+          ignoreFile: $button.data('filepath'),
+          token: executeToken,
           action: 'upgradeDocsUnmarkRead',
         },
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      })
+      .catch((error: ResponseError): void => {
+        Router.handleAjaxError(error, modalContent);
+      });
   }
 }
 

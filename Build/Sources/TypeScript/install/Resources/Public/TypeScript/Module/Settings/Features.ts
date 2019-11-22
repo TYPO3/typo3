@@ -11,11 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import * as $ from 'jquery';
-import Router = require('../../Router');
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import Router = require('../../Router');
 
 /**
  * Module: TYPO3/CMS/Install/Module/Features
@@ -35,21 +38,22 @@ class Features extends AbstractInteractableModule {
 
   private getContent(): void {
     const modalContent = this.getModalBody();
-    $.ajax({
-      url: Router.getUrl('featuresGetContent'),
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
-          modalContent.empty().append(data.html);
-          Modal.setButtons(data.buttons);
-        } else {
-          Notification.error('Something went wrong');
+    (new AjaxRequest(Router.getUrl('featuresGetContent')))
+      .get({cache: 'no-cache'})
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && data.html !== 'undefined' && data.html.length > 0) {
+            modalContent.empty().append(data.html);
+            Modal.setButtons(data.buttons);
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 
   private save(): void {
@@ -61,24 +65,23 @@ class Features extends AbstractInteractableModule {
     });
     postData['install[action]'] = 'featuresSave';
     postData['install[token]'] = executeToken;
-    $.ajax({
-      url: Router.getUrl(),
-      method: 'POST',
-      data: postData,
-      cache: false,
-      success: (data: any): void => {
-        if (data.success === true && Array.isArray(data.status)) {
-          data.status.forEach((element: any): void => {
-            Notification.showMessage(element.title, element.message, element.severity);
-          });
-        } else {
-          Notification.error('Something went wrong');
+    (new AjaxRequest(Router.getUrl()))
+      .post(postData)
+      .then(
+        async (response: AjaxResponse): Promise<any> => {
+          const data = await response.resolve();
+          if (data.success === true && Array.isArray(data.status)) {
+            data.status.forEach((element: any): void => {
+              Notification.showMessage(element.title, element.message, element.severity);
+            });
+          } else {
+            Notification.error('Something went wrong');
+          }
+        },
+        (error: ResponseError): void => {
+          Router.handleAjaxError(error, modalContent);
         }
-      },
-      error: (xhr: XMLHttpRequest): void => {
-        Router.handleAjaxError(xhr, modalContent);
-      },
-    });
+      );
   }
 }
 
