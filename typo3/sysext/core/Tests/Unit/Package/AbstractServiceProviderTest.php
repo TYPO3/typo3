@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -37,7 +38,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
 
-        $middlewares = [];
+        $middlewares = new ArrayObject();
         $middlewares = Mocks\Package1ServiceProviderMock::configureMiddlewares(
             $containerProphecy->reveal(),
             $middlewares
@@ -47,7 +48,7 @@ class AbstractServiceProviderTest extends UnitTestCase
             $middlewares
         );
 
-        $expected = [
+        $expected = new ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'aClassName',
@@ -56,7 +57,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                     'target' => 'anotherClassName',
                 ],
             ],
-        ];
+        ]);
         self::assertEquals($expected, $middlewares);
     }
 
@@ -72,7 +73,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $package2->getPackagePath()->willReturn(__DIR__ . '/../Http/Fixtures/Package2/');
         $package2ServiceProvider = new PseudoServiceProvider($package2->reveal());
 
-        $middlewares = [];
+        $middlewares = new ArrayObject();
         $middlewares = Mocks\Package1ServiceProviderMock::configureMiddlewares(
             $containerProphecy->reveal(),
             $middlewares
@@ -82,7 +83,7 @@ class AbstractServiceProviderTest extends UnitTestCase
             $middlewares
         );
 
-        $expected = [
+        $expected = new ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'aClassName',
@@ -91,7 +92,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                     'target' => 'anotherClassName',
                 ],
             ],
-        ];
+        ]);
         self::assertEquals($expected, $middlewares);
     }
 
@@ -107,7 +108,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $package2->getPackagePath()->willReturn(__DIR__ . '/../Http/Fixtures/Package2Disables1/');
         $package2ServiceProvider = new PseudoServiceProvider($package2->reveal());
 
-        $middlewares = [];
+        $middlewares = new ArrayObject();
         $middlewares = Mocks\Package1ServiceProviderMock::configureMiddlewares(
             $containerProphecy->reveal(),
             $middlewares
@@ -117,7 +118,7 @@ class AbstractServiceProviderTest extends UnitTestCase
             $middlewares
         );
 
-        $expected = [
+        $expected = new ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'aClassName',
@@ -127,7 +128,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                     'target' => 'anotherClassName',
                 ],
             ],
-        ];
+        ]);
         self::assertEquals($expected, $middlewares);
     }
 
@@ -143,7 +144,7 @@ class AbstractServiceProviderTest extends UnitTestCase
         $package2->getPackagePath()->willReturn(__DIR__ . '/../Http/Fixtures/Package2Replaces1/');
         $package2ServiceProvider = new PseudoServiceProvider($package2->reveal());
 
-        $middlewares = [];
+        $middlewares = new ArrayObject();
         $middlewares = Mocks\Package1ServiceProviderMock::configureMiddlewares(
             $containerProphecy->reveal(),
             $middlewares
@@ -153,7 +154,7 @@ class AbstractServiceProviderTest extends UnitTestCase
             $middlewares
         );
 
-        $expected = [
+        $expected = new ArrayObject([
             'testStack' => [
                 'firstMiddleware' => [
                     'target' => 'replacedClassName',
@@ -162,7 +163,7 @@ class AbstractServiceProviderTest extends UnitTestCase
                     'target' => 'anotherClassName',
                 ],
             ],
-        ];
+        ]);
         self::assertEquals($expected, $middlewares);
     }
 

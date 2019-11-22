@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
 use TYPO3\CMS\Core\Core\Environment;
@@ -87,9 +88,9 @@ class MiddlewareStackResolver
     /**
      * Lazy load configuration from the container
      *
-     * @return array
+     * @return ArrayObject
      */
-    protected function loadConfiguration(): array
+    protected function loadConfiguration(): ArrayObject
     {
         return $this->container->get('middlewares');
     }
@@ -97,10 +98,10 @@ class MiddlewareStackResolver
     /**
      * Order each stack and sanitize to a plain array
      *
-     * @param array
+     * @param ArrayObject
      * @return array
      */
-    protected function sanitizeMiddlewares(array $allMiddlewares): array
+    protected function sanitizeMiddlewares(ArrayObject $allMiddlewares): array
     {
         $middlewares = [];
 

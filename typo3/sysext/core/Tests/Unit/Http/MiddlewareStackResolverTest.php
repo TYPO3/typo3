@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Http;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ArrayObject;
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
@@ -32,11 +33,11 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsMiddlewareStack()
     {
-        $middlewares =  array_replace_recursive(
+        $middlewares = new ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2/Configuration/RequestMiddlewares.php'
-        );
+        ));
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
         $containerProphecy->get('middlewares')->willReturn($middlewares);
@@ -63,7 +64,7 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveReturnsEmptyMiddlewareStackForZeroPackages()
     {
-        $middlewares = [];
+        $middlewares = new ArrayObject;
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
         $containerProphecy->get('middlewares')->willReturn($middlewares);
@@ -88,11 +89,11 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsDisablingAMiddleware()
     {
-        $middlewares =  array_replace_recursive(
+        $middlewares =  new ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2Disables1/Configuration/RequestMiddlewares.php'
-        );
+        ));
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
         $containerProphecy->get('middlewares')->willReturn($middlewares);
@@ -119,11 +120,11 @@ class MiddlewareStackResolverTest extends UnitTestCase
      */
     public function resolveAllowsReplacingAMiddleware()
     {
-        $middlewares =  array_replace_recursive(
+        $middlewares = new ArrayObject(array_replace_recursive(
             [],
             require __DIR__ . '/Fixtures/Package1/Configuration/RequestMiddlewares.php',
             require __DIR__ . '/Fixtures/Package2Replaces1/Configuration/RequestMiddlewares.php'
-        );
+        ));
         $containerProphecy = $this->prophesize();
         $containerProphecy->willImplement(ContainerInterface::class);
         $containerProphecy->get('middlewares')->willReturn($middlewares);

@@ -45,12 +45,12 @@ class MiddlewareDispatcher implements RequestHandlerInterface
 
     /**
      * @param RequestHandlerInterface $kernel
-     * @param array $middlewares
+     * @param iterable $middlewares
      * @param ContainerInterface $container
      */
     public function __construct(
         RequestHandlerInterface $kernel,
-        array $middlewares = [],
+        iterable $middlewares = [],
         ContainerInterface $container = null
     ) {
         $this->container = $container;

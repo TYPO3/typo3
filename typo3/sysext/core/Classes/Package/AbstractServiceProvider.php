@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Package;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ArrayObject;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Core\DependencyInjection\ServiceProviderInterface;
@@ -52,17 +53,17 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
 
     /**
      * @param ContainerInterface $container
-     * @param array $middlewares
+     * @param ArrayObject $middlewares
      * @param string $path supplied when invoked internally through PseudoServiceProvider
-     * @return array
+     * @return ArrayObject
      */
-    public static function configureMiddlewares(ContainerInterface $container, array $middlewares, string $path = null): array
+    public static function configureMiddlewares(ContainerInterface $container, ArrayObject $middlewares, string $path = null): ArrayObject
     {
         $packageConfiguration = ($path ?? static::getPackagePath()) . 'Configuration/RequestMiddlewares.php';
         if (file_exists($packageConfiguration)) {
             $middlewaresInPackage = require $packageConfiguration;
             if (is_array($middlewaresInPackage)) {
-                $middlewares = array_replace_recursive($middlewares, $middlewaresInPackage);
+                $middlewares->exchangeArray(array_replace_recursive($middlewares->getArrayCopy(), $middlewaresInPackage));
             }
         }
 

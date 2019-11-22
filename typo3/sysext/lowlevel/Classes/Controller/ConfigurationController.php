@@ -235,7 +235,7 @@ class ConfigurationController
             $renderArray = [];
             foreach (['frontend', 'backend'] as $stackName) {
                 // reversing the array allows the admin to read the stack from top to bottom
-                $renderArray[$stackName] = array_reverse($this->container->get($stackName . '.middlewares'));
+                $renderArray[$stackName] = array_reverse((array)$this->container->get($stackName . '.middlewares'));
             }
             $renderArray['raw'] = $this->container->get('middlewares');
         } elseif ($selectedTreeDetails['type'] === 'siteConfiguration') {

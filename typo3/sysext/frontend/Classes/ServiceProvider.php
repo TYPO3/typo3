@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Frontend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
@@ -64,12 +65,12 @@ class ServiceProvider extends AbstractServiceProvider
 
     /**
      * @param ContainerInterface $container
-     * @return array
+     * @return ArrayObject
      * @throws InvalidDataException
      * @throws CoreException
      */
-    public static function getFrontendMiddlewares(ContainerInterface $container): array
+    public static function getFrontendMiddlewares(ContainerInterface $container): ArrayObject
     {
-        return $container->get(MiddlewareStackResolver::class)->resolve('frontend');
+        return new ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('frontend'));
     }
 }
