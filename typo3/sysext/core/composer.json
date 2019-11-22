@@ -69,6 +69,7 @@
 		"ext-zlib": "TYPO3 uses zlib for amongst others output compression and un/packing t3x extension files"
 	},
 	"conflict": {
+		"hoa/core": "*",
 		"typo3/cms": "*"
 	},
 	"replace": {
