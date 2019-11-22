@@ -2,13 +2,12 @@
 <formvh:renderAllFormValues renderable="{form.formDefinition}" as="formValue"><f:spaceless>
     <f:if condition="{formValue.isMultiValue}">
         <f:then>
-<formvh:translateElementProperty element="{formValue.element}" property="label" />:
-    <f:for each="{formValue.processedValue}" as="singleValue">- {singleValue}
-    </f:for>
+            <f:if condition="{formValue.isSection}"><f:then>*** <formvh:translateElementProperty element="{formValue.element}" property="label" /> ***</f:then><f:else><formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:for each="{formValue.processedValue}" as="singleValue">- {singleValue}
+            </f:for></f:else></f:if>
         </f:then>
         <f:else>
-<formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:if condition="{formValue.processedValue}"><f:then>{formValue.processedValue -> f:format.raw()}</f:then><f:else>-</f:else></f:if>
-</f:else>
+            <f:if condition="{formValue.isSection}"><f:then>*** <formvh:translateElementProperty element="{formValue.element}" property="label" /> ***</f:then><f:else><formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:if condition="{formValue.processedValue}"><f:then>{formValue.processedValue -> f:format.raw()}</f:then><f:else>-</f:else></f:if></f:else></f:if>
+        </f:else>
     </f:if>
 </f:spaceless>
 </formvh:renderAllFormValues>

@@ -84,24 +84,28 @@ class RenderAllFormValuesViewHelper extends AbstractViewHelper
         foreach ($elements as $element) {
             $renderingOptions = $element->getRenderingOptions();
 
-            if (
-                !$element instanceof FormElementInterface
-                || (isset($renderingOptions['_isCompositeFormElement']) && (bool)$renderingOptions['_isCompositeFormElement'] === true)
-                || !$element->isEnabled()
-                || self::hasDisabledParent($element)
-            ) {
+            if (!$element instanceof FormElementInterface || !$element->isEnabled() || self::hasDisabledParent($element)) {
                 continue;
             }
 
-            $value = $formRuntime[$element->getIdentifier()];
+            if ($renderingOptions['_isSection'] ?? false) {
+                $data = [
+                    'element' => $element,
+                    'isSection' => true,
+                ];
+            } elseif ($renderingOptions['_isCompositeFormElement'] ?? false) {
+                continue;
+            } else {
+                $value = $formRuntime[$element->getIdentifier()];
+                $data = [
+                    'element' => $element,
+                    'value' => $value,
+                    'processedValue' => self::processElementValue($element, $value, $renderChildrenClosure, $renderingContext),
+                    'isMultiValue' => is_array($value) || $value instanceof \Iterator
+                ];
+            }
 
-            $formValue = [
-                'element' => $element,
-                'value' => $value,
-                'processedValue' => self::processElementValue($element, $value, $renderChildrenClosure, $renderingContext),
-                'isMultiValue' => is_array($value) || $value instanceof \Iterator
-            ];
-            $renderingContext->getVariableProvider()->add($as, $formValue);
+            $renderingContext->getVariableProvider()->add($as, $data);
             $output .= $renderChildrenClosure();
             $renderingContext->getVariableProvider()->remove($as);
         }

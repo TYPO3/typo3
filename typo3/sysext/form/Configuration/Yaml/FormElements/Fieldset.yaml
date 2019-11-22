@@ -53,6 +53,7 @@ TYPO3:
                 elementErrorClassAttribute: error
               renderingOptions:
                 _isCompositeFormElement: true
+                _isSection: true
           formEditor:
             formEditorPartials:
               FormElement-Fieldset: Stage/Fieldset

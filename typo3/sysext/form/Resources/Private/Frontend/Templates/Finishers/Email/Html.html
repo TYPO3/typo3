@@ -10,34 +10,41 @@
     <table width="600" cellpadding="0" cellspacing="0" border="0">
         <formvh:renderAllFormValues renderable="{form.formDefinition}" as="formValue">
             <tr>
-                <td width="600" valign="top" align="left">{formvh:translateElementProperty(element: formValue.element, property: 'label')}</td>
-                <td width="600" valign="top" align="left">
-                    <f:if condition="{formValue.value}">
-                        <f:then>
-                            <f:if condition="{formValue.isMultiValue}">
+                <f:if condition="{formValue.isSection}">
+                    <f:then>
+                        <td colspan="2"><b>{formvh:translateElementProperty(element: formValue.element, property: 'label')}</b></td>
+                    </f:then>
+                    <f:else>
+                        <td width="600" valign="top" align="left">{formvh:translateElementProperty(element: formValue.element, property: 'label')}</td>
+                        <td width="600" valign="top" align="left">
+                            <f:if condition="{formValue.value}">
                                 <f:then>
-                                    <table cellspacing="0" border="0">
-                                        <f:for each="{formValue.processedValue}" as="value">
-                                            <tr>
-                                                <td>{value}</td>
-                                            </tr>
-                                        </f:for>
-                                    </table>
+                                    <f:if condition="{formValue.isMultiValue}">
+                                        <f:then>
+                                            <table cellspacing="0" border="0">
+                                                <f:for each="{formValue.processedValue}" as="value">
+                                                    <tr>
+                                                        <td>{value}</td>
+                                                    </tr>
+                                                </f:for>
+                                            </table>
+                                        </f:then>
+                                        <f:else>
+                                            <table cellspacing="0" border="0">
+                                                <tr>
+                                                    <td><f:format.nl2br>{formValue.processedValue}</f:format.nl2br></td>
+                                                </tr>
+                                            </table>
+                                        </f:else>
+                                    </f:if>
                                 </f:then>
                                 <f:else>
-                                    <table cellspacing="0" border="0">
-                                        <tr>
-                                            <td><f:format.nl2br>{formValue.processedValue}</f:format.nl2br></td>
-                                        </tr>
-                                    </table>
+                                    -
                                 </f:else>
                             </f:if>
-                        </f:then>
-                        <f:else>
-                            -
-                        </f:else>
-                    </f:if>
-                </td>
+                        </td>
+                    </f:else>
+                </f:if>
             </tr>
         </formvh:renderAllFormValues>
     </table>
