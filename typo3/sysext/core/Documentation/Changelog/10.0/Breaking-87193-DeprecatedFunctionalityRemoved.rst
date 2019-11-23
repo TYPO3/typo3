@@ -1048,7 +1048,7 @@ The following class properties have changed visibility:
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->TSdataArray` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS` changed from public to protected
 * :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTSUpdated` changed from public to protected
-* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_text` changed from public to protected
+* :php:`TYPO3\CMS\Core\Authentication\BackendUserAuthentication->userTS_text` has been removed
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->eucBasedSets` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->noCharByteVal` changed from public to protected
 * :php:`TYPO3\CMS\Core\Charset\CharsetConverter->parsedCharsets` changed from public to protected

@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\Bitmask\JsConfirmation;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\SessionService;
@@ -130,16 +131,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @var array
      */
     public $includeGroupArray = [];
-
-    /**
-     * @var array Accumulated, unparsed TSconfig data array of the user
-     */
-    protected $TSdataArray = [];
-
-    /**
-     * @var string Accumulated, unparsed TSconfig data string of the user
-     */
-    protected $userTS_text = '';
 
     /**
      * @var array Parsed user TSconfig
@@ -1327,19 +1318,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->dataLists['filemount_list'] = $this->user['file_mountpoints'];
             // Fileoperation permissions
             $this->dataLists['file_permissions'] = $this->user['file_permissions'];
-            // Setting default User TSconfig:
-            $this->TSdataArray[] = $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
-            // Default TSconfig for admin-users
-            if ($this->isAdmin()) {
-                $this->TSdataArray[] = 'admPanel.enable.all = 1';
-                if (ExtensionManagementUtility::isLoaded('sys_note')) {
-                    $this->TSdataArray[] = '
-							// Setting defaults for sys_note author / email...
-						TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
-						TCAdefaults.sys_note.email = ' . $this->user['email'] . '
-					';
-                }
-            }
+
             // BE_GROUPS:
             // Get the groups...
             if (!empty($this->user[$this->usergroup_column])) {
@@ -1356,21 +1335,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupList = implode(',', $this->userGroupsUID);
             $this->setCachedList($this->groupList);
 
-            // Add the TSconfig for this specific user:
-            $this->TSdataArray[] = $this->user['TSconfig'];
-            // Check include lines.
-            $this->TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
-            // Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
-            $this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
-            // Parsing the user TSconfig (or getting from cache)
-            $hash = md5('userTS:' . $this->userTS_text);
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
-            $parseObj = GeneralUtility::makeInstance(\TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::class);
-            $parseObj->parse($this->userTS_text);
-            $this->userTS = $parseObj->setup;
-            $cache->set($hash, $this->userTS, ['ident_BE_USER_TSconfig'], 0);
-            // Update UC:
-            $this->userTSUpdated = true;
+            $this->prepareUserTsConfig();
+
             // Processing webmounts
             // Admin's always have the root mounted
             if ($this->isAdmin() && !($this->getTSConfig()['options.']['dontMountAdminMounts'] ?? false)) {
@@ -1425,6 +1391,47 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
             // Setting up workspace situation (after webmounts are processed!):
             $this->workspaceInit();
+        }
+    }
+
+    /**
+     * This method parses the UserTSconfig from the current user and all their groups.
+     * If the contents are the same, parsing is skipped. No matching is applied here currently.
+     */
+    protected function prepareUserTsConfig(): void
+    {
+        $collectedUserTSconfig = [
+            'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']
+        ];
+        // Default TSconfig for admin-users
+        if ($this->isAdmin()) {
+            $collectedUserTSconfig[] = 'admPanel.enable.all = 1';
+        }
+        // Setting defaults for sys_note author / email
+        $collectedUserTSconfig[] = '
+TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
+TCAdefaults.sys_note.email = ' . $this->user['email'];
+
+        // Loop through all groups and add their 'TSconfig' fields
+        foreach ($this->includeGroupArray as $groupId) {
+            $collectedUserTSconfig['group_' . $groupId] = $this->userGroups[$groupId]['TSconfig'] ?? '';
+        }
+
+        $collectedUserTSconfig[] = $this->user['TSconfig'];
+        // Check external files
+        $collectedUserTSconfig = TypoScriptParser::checkIncludeLines_array($collectedUserTSconfig);
+        // Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
+        $userTS_text = implode("\n[GLOBAL]\n", $collectedUserTSconfig);
+        // Parsing the user TSconfig (or getting from cache)
+        $hash = md5('userTS:' . $userTS_text);
+        $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
+        if (!($this->userTS = $cache->get($hash))) {
+            $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
+            $parseObj->parse($userTS_text);
+            $this->userTS = $parseObj->setup;
+            $cache->set($hash, $this->userTS, ['UserTSconfig'], 0);
+            // Ensure to update UC later
+            $this->userTSUpdated = true;
         }
     }
 
@@ -1490,9 +1497,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                     // Call recursively, pass along list of already processed groups so they are not recursed again.
                     $this->fetchGroups($theList, $idList . ',' . $uid);
                 }
-                // Add the group uid, current list, TSconfig to the internal arrays.
+                // Add the group uid, current list to the internal arrays.
                 $this->includeGroupArray[] = $uid;
-                $this->TSdataArray[] = $row['TSconfig'];
                 // Mount group database-mounts
                 if (($this->user['options'] & Permission::PAGE_SHOW) == 1) {
                     $this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];

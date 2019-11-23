@@ -72,4 +72,22 @@ class BackendUserAuthenticationTest extends FunctionalTestCase
         $result = $this->subject->isInWebMount(2);
         self::assertNotNull($result);
     }
+
+    /**
+     * @test
+     */
+    public function userTsConfigIsResolvedProperlyWithPrioritization(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = "custom.generic = installation-wide-configuration\ncustom.property = from configuration";
+        $this->subject->user['realName'] = 'Test user';
+        $this->subject->user['TSconfig'] = 'custom.property = from user';
+        $this->subject->includeGroupArray[] = 13;
+        $this->subject->userGroups[13]['TSconfig'] = "custom.property = from group\ncustom.groupProperty = 13";
+        $this->subject->fetchGroupData();
+        $result = $this->subject->getTSConfig();
+        self::assertEquals($this->subject->user['realName'], $result['TCAdefaults.']['sys_note.']['author']);
+        self::assertEquals('from user', $result['custom.']['property']);
+        self::assertEquals('13', $result['custom.']['groupProperty']);
+        self::assertEquals('installation-wide-configuration', $result['custom.']['generic']);
+    }
 }
