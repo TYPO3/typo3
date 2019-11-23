@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
@@ -24,8 +25,11 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
+use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
+use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
+use TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent;
+use TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
 
 /**
@@ -35,9 +39,21 @@ class GridDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    /**
+     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
+     */
     const SIGNAL_GenerateDataArray_BeforeCaching = 'generateDataArray.beforeCaching';
+    /**
+     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
+     */
     const SIGNAL_GenerateDataArray_PostProcesss = 'generateDataArray.postProcess';
+    /**
+     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
+     */
     const SIGNAL_GetDataArray_PostProcesss = 'getDataArray.postProcess';
+    /**
+     * @deprecated will be removed in TYPO3 v11 in favor of PSR-14 events
+     */
     const SIGNAL_SortDataArray_PostProcesss = 'sortDataArray.postProcess';
 
     const GridColumn_Collection = 'Workspaces_Collection';
@@ -83,6 +99,16 @@ class GridDataService implements LoggerAwareInterface
      * @var IntegrityService
      */
     protected $integrityService;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * Generates grid list array from given versions.
@@ -214,9 +240,12 @@ class GridDataService implements LoggerAwareInterface
                     }
                 }
             }
-            // Suggested slot method:
-            // methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, array $versions)
-            list($this->dataArray, $versions) = $this->emitSignal(self::SIGNAL_GenerateDataArray_BeforeCaching, $this->dataArray, $versions);
+
+            // Trigger a PSR-14 event
+            $event = new AfterCompiledCacheableDataForWorkspaceEvent($this, $this->dataArray, $versions);
+            $this->eventDispatcher->dispatch($event);
+            $this->dataArray = $event->getData();
+            $versions = $event->getVersions();
             // Enrich elements after everything has been processed:
             foreach ($this->dataArray as &$element) {
                 $identifier = $element['table'] . ':' . $element['t3ver_oid'];
@@ -227,9 +256,11 @@ class GridDataService implements LoggerAwareInterface
             }
             $this->setDataArrayIntoCache($versions, $filterTxt);
         }
-        // Suggested slot method:
-        // methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, array $versions)
-        list($this->dataArray) = $this->emitSignal(self::SIGNAL_GenerateDataArray_PostProcesss, $this->dataArray, $versions);
+
+        // Trigger a PSR-14 event
+        $event = new AfterDataGeneratedForWorkspaceEvent($this, $this->dataArray, $versions);
+        $this->eventDispatcher->dispatch($event);
+        $this->dataArray = $event->getData();
         $this->sortDataArray();
         $this->resolveDataArrayDependencies();
     }
@@ -277,9 +308,11 @@ class GridDataService implements LoggerAwareInterface
             }
         }
 
-        // Suggested slot method:
-        // methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, $start, $limit, array $dataArrayPart)
-        list($this->dataArray, $start, $limit, $dataArrayPart) = $this->emitSignal(self::SIGNAL_GetDataArray_PostProcesss, $this->dataArray, $start, $limit, $dataArrayPart);
+        // Trigger a PSR-14 event
+        $event = new GetVersionedDataEvent($this, $this->dataArray, $start, $limit, $dataArrayPart);
+        $this->eventDispatcher->dispatch($event);
+        $this->dataArray = $event->getData();
+        return $event->getDataArrayPart();
         return $dataArrayPart;
     }
 
@@ -375,9 +408,12 @@ class GridDataService implements LoggerAwareInterface
         } else {
             $this->logger->critical('Try to sort "' . $this->sort . '" in "\\TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the bug #26422 which could not be reproduced yet.');
         }
-        // Suggested slot method:
-        // methodName(\TYPO3\CMS\Workspaces\Service\GridDataService $gridData, array $dataArray, $sortColumn, $sortDirection)
-        list($this->dataArray, $this->sort, $this->sortDir) = $this->emitSignal(self::SIGNAL_SortDataArray_PostProcesss, $this->dataArray, $this->sort, $this->sortDir);
+        // Trigger an event for extensibility
+        $event = new SortVersionedDataEvent($this, $this->dataArray, $this->sort, $this->sortDir);
+        $this->eventDispatcher->dispatch($event);
+        $this->dataArray = $event->getData();
+        $this->sort = $event->getSortColumn();
+        $this->sortDir = $event->getSortDirection();
     }
 
     /**
@@ -624,22 +660,6 @@ class GridDataService implements LoggerAwareInterface
     }
 
     /**
-     * Emits a signal to be handled by any registered slots.
-     *
-     * @param string $signalName Name of the signal
-     * @param array|mixed[] $arguments
-     * @return array
-     */
-    protected function emitSignal($signalName, ...$arguments)
-    {
-        // Arguments are always ($this, [method argument], [method argument], ...)
-        $signalArguments = $arguments;
-        array_unshift($signalArguments, $this);
-        $slotReturn = $this->getSignalSlotDispatcher()->dispatch(GridDataService::class, $signalName, $signalArguments);
-        return array_slice($slotReturn, 1);
-    }
-
-    /**
      * @return Dependency\CollectionService
      */
     protected function getDependencyCollectionService()
@@ -653,14 +673,6 @@ class GridDataService implements LoggerAwareInterface
     protected function getAdditionalColumnService()
     {
         return $this->getObjectManager()->get(AdditionalColumnService::class);
-    }
-
-    /**
-     * @return Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        return $this->getObjectManager()->get(Dispatcher::class);
     }
 
     /**

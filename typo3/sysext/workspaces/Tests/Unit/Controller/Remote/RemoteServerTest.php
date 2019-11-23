@@ -112,7 +112,7 @@ class RemoteServerTest extends UnitTestCase
         $liveFileReferences = $this->getFileReferenceProphecies($fileFileReferenceList);
         $versionFileReferences = $this->getFileReferenceProphecies($versionFileReferenceList);
 
-        $subject = $this->getAccessibleMock(RemoteServer::class, ['__none']);
+        $subject = $this->getAccessibleMock(RemoteServer::class, ['__none'], [], '', false);
         $result = $subject->_call(
             'prepareFileReferenceDifferences',
             $liveFileReferences,

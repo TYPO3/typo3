@@ -14,12 +14,14 @@ namespace TYPO3\CMS\Backend\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Core\Environment;
@@ -762,10 +764,9 @@ class BackendUtility
             $tsDataArray['uid_' . $v['uid']] = $v['TSconfig'];
         }
 
-        $tsDataArray = static::emitGetPagesTSconfigPreIncludeSignal($tsDataArray, $id, $rootLine);
-        $tsDataArray = TypoScriptParser::checkIncludeLines_array($tsDataArray);
-
-        return $tsDataArray;
+        $eventDispatcher = GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
+        $event = $eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent($tsDataArray, $rootLine));
+        return TypoScriptParser::checkIncludeLines_array($event->getTsConfig());
     }
 
     /*******************************************
@@ -3940,37 +3941,6 @@ class BackendUtility
     public static function isRootLevelRestrictionIgnored($table)
     {
         return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected static function getSignalSlotDispatcher()
-    {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    }
-
-    /**
-     * Emits signal to modify the page TSconfig before include
-     *
-     * @param array $TSdataArray Current TSconfig data array - Can be modified by slots!
-     * @param int $id Page ID we are handling
-     * @param array $rootLine Rootline array of page
-     * @return array Modified Data array
-     */
-    protected static function emitGetPagesTSconfigPreIncludeSignal(
-        array $TSdataArray,
-        $id,
-        array $rootLine
-    ) {
-        $signalArguments = static::getSignalSlotDispatcher()->dispatch(
-            __CLASS__,
-            'getPagesTSconfigPreInclude',
-            [$TSdataArray, $id, $rootLine, false]
-        );
-        return $signalArguments[0];
     }
 
     /**

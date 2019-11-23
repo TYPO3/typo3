@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Configuration\Loader;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -33,6 +35,16 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class PageTsConfigLoader
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Main method to get all PageTSconfig from the rootline including the defaultTSconfig settings.
      * @param array $rootLine
@@ -87,7 +99,10 @@ class PageTsConfigLoader
             }
             $tsData['page_' . $page['uid']] = $page['TSconfig'] ?? '';
         }
+
+        $event = $this->eventDispatcher->dispatch(new ModifyLoadedPageTsConfigEvent($tsData, $rootLine));
+
         // Apply includes
-        return TypoScriptParser::checkIncludeLines_array($tsData);
+        return TypoScriptParser::checkIncludeLines_array($event->getTsConfig());
     }
 }

@@ -17,8 +17,6 @@ namespace TYPO3\CMS\Backend\LoginProvider;
 use TYPO3\CMS\Backend\Controller\LoginController;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -27,8 +25,6 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class UsernamePasswordLoginProvider implements LoginProviderInterface
 {
-    const SIGNAL_getPageRenderer = 'getPageRenderer';
-
     /**
      * @param StandaloneView $view
      * @param PageRenderer $pageRenderer
@@ -37,8 +33,6 @@ class UsernamePasswordLoginProvider implements LoginProviderInterface
      */
     public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController)
     {
-        GeneralUtility::makeInstance(ObjectManager::class)->get(Dispatcher::class)->dispatch(__CLASS__, self::SIGNAL_getPageRenderer, [$pageRenderer]);
-
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/UserPassLogin');
 
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/UserPassLoginForm.html'));

@@ -17,9 +17,18 @@ namespace TYPO3\CMS\Extbase\SignalSlot;
  */
 
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem;
+use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
+use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
+use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
+use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Beuser\Controller\BackendUserController;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Database\SoftReferenceIndex;
@@ -78,6 +87,18 @@ use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Impexp\Event\BeforeImportEvent;
+use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
+use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
+use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
+use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
+use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
+use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
+use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
+use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
+use TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent;
+use TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent;
+use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
@@ -174,9 +195,40 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         DatabaseTreeDataProvider::class => [
             'PostProcessTreeData' => ModifyTreeDataEvent::class,
         ],
+        BackendUserController::class => [
+            'switchUser' => SwitchUserEvent::class
+        ],
+        BackendUtility::class => [
+            'getPagesTSconfigPreInclude' => ModifyLoadedPageTsConfigEvent::class
+        ],
+        EditDocumentController::class => [
+            'preInitAfter' => BeforeFormEnginePageInitializedEvent::class,
+            'initAfter' => AfterFormEnginePageInitializedEvent::class,
+        ],
         SystemInformationToolbarItem::class => [
             'getSystemInformation' => SystemInformationToolbarCollectorEvent::class,
             'loadMessages' => SystemInformationToolbarCollectorEvent::class
+        ],
+        UsernamePasswordLoginProvider::class => [
+            'getPageRenderer' => ModifyPageLayoutOnLoginProviderSelectionEvent::class
+        ],
+        'TYPO3\\CMS\\Lang\\Service\\TranslationService' => [
+            'postProcessMirrorUrl' => ModifyLanguagePackRemoteBaseUrlEvent::class
+        ],
+        LinkAnalyzer::class => [
+            'beforeAnalyzeRecord' => BeforeRecordIsAnalyzedEvent::class
+        ],
+        ImportExportUtility::class => [
+            'afterImportExportInitialisation' => BeforeImportEvent::class
+        ],
+        CanonicalGenerator::class => [
+            'beforeGeneratingCanonical' => ModifyUrlForCanonicalTagEvent::class
+        ],
+        GridDataService::class => [
+            GridDataService::SIGNAL_GenerateDataArray_BeforeCaching => AfterCompiledCacheableDataForWorkspaceEvent::class,
+            GridDataService::SIGNAL_GenerateDataArray_PostProcesss => AfterDataGeneratedForWorkspaceEvent::class,
+            GridDataService::SIGNAL_GetDataArray_PostProcesss => GetVersionedDataEvent::class,
+            GridDataService::SIGNAL_SortDataArray_PostProcesss => SortVersionedDataEvent::class,
         ]
     ];
 

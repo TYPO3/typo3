@@ -15,16 +15,17 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Service class handling language pack details
@@ -44,11 +45,17 @@ class LanguagePackService
      */
     protected $registry;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
     private const DEFAULT_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
     private const BETA_LANGUAGE_PACK_URL = 'https://beta-translation.typo3.org/fileadmin/ter/';
 
-    public function __construct()
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         $this->locales = GeneralUtility::makeInstance(Locales::class);
         $this->registry = GeneralUtility::makeInstance(Registry::class);
     }
@@ -232,17 +239,9 @@ class LanguagePackService
             $languagePackBaseUrl = self::BETA_LANGUAGE_PACK_URL;
         }
 
-        // Allow to modify the base url on the fly by calling a signal
-        $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        $signalSlotDispatcher->dispatch(
-            'TYPO3\\CMS\\Lang\\Service\\TranslationService',
-            'postProcessMirrorUrl',
-            [
-                'extensionKey' => $key,
-                'mirrorUrl' => &$languagePackBaseUrl,
-            ]
-        );
-
+        // Allow to modify the base url on the fly
+        $event = $this->eventDispatcher->dispatch(new Event\ModifyLanguagePackRemoteBaseUrlEvent(new Uri($languagePackBaseUrl), $key));
+        $languagePackBaseUrl = $event->getBaseUrl();
         $path = ExtensionManagementUtility::extPath($key);
         $majorVersion = explode('.', TYPO3_branch)[0];
         if (strpos($path, '/sysext/') !== false) {

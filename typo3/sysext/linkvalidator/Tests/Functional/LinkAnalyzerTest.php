@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Linkvalidator\Tests\Functional;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -34,7 +35,6 @@ class LinkAnalyzerTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         Bootstrap::initializeLanguageObject();
     }
 
@@ -110,7 +110,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer();
+        $linkAnalyzer = new LinkAnalyzer($this->prophesize(EventDispatcherInterface::class)->reveal());
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($config);
 
@@ -172,7 +172,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer();
+        $linkAnalyzer = new LinkAnalyzer($this->prophesize(EventDispatcherInterface::class)->reveal());
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($config);
 
@@ -234,7 +234,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer();
+        $linkAnalyzer = new LinkAnalyzer($this->prophesize(EventDispatcherInterface::class)->reveal());
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($config);
 
@@ -295,7 +295,7 @@ class LinkAnalyzerTest extends FunctionalTestCase
 
         $this->importDataSet($inputFile);
 
-        $linkAnalyzer = new LinkAnalyzer();
+        $linkAnalyzer = new LinkAnalyzer($this->prophesize(EventDispatcherInterface::class)->reveal());
         $linkAnalyzer->init($searchFields, $pidList, $tsConfig);
         $linkAnalyzer->getLinkStatistics($config);
 

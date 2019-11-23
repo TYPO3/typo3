@@ -14,9 +14,10 @@ namespace TYPO3\CMS\Impexp\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Impexp\Event\BeforeImportEvent;
 use TYPO3\CMS\Impexp\Import;
 
 /**
@@ -30,6 +31,16 @@ class ImportExportUtility
      * @var Import|null
      */
     protected $import;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @return Import|null
@@ -59,7 +70,7 @@ class ImportExportUtility
         $this->import = GeneralUtility::makeInstance(Import::class);
         $this->import->init();
 
-        $this->emitAfterImportExportInitialisationSignal($this->import);
+        $this->eventDispatcher->dispatch(new BeforeImportEvent($this->import));
 
         $importResponse = 0;
         if ($file && @is_file($file)) {
@@ -83,27 +94,5 @@ class ImportExportUtility
             }
         }
         return $importResponse;
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        return GeneralUtility::makeInstance(Dispatcher::class);
-    }
-
-    /**
-     * Emits a signal after initialization
-     *
-     * @param Import $import
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     */
-    protected function emitAfterImportExportInitialisationSignal(Import $import)
-    {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'afterImportExportInitialisation', [$import]);
     }
 }

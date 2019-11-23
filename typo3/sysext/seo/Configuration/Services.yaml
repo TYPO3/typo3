@@ -6,3 +6,10 @@ services:
 
   TYPO3\CMS\Seo\:
     resource: '../Classes/*'
+
+  TYPO3\CMS\Seo\Compatibility\SlotReplacement:
+    tags:
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'beforeGeneratingCanonical'
+        event: TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Linkvalidator;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -94,10 +95,13 @@ class LinkAnalyzer
     protected $tsConfig = [];
 
     /**
-     * Fill hookObjectsArr with different link types and possible XClasses.
+     * @var EventDispatcherInterface
      */
-    public function __construct()
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher;
         $this->getLanguageService()->includeLLFile('EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf');
     }
 
@@ -268,7 +272,10 @@ class LinkAnalyzer
      */
     public function analyzeRecord(array &$results, $table, array $fields, array $record)
     {
-        list($results, $record) = $this->emitBeforeAnalyzeRecordSignal($results, $record, $table, $fields);
+        $event = new Event\BeforeRecordIsAnalyzedEvent($table, $record, $fields, $this, $results);
+        $this->eventDispatcher->dispatch($event);
+        $results = $event->getResults();
+        $record = $event->getRecord();
 
         // Put together content of all relevant fields
         $haystack = '';
@@ -570,40 +577,6 @@ class LinkAnalyzer
             return $this->getRootLineIsHidden($row);
         }
         return false;
-    }
-
-    /**
-     * Emits a signal before the record is analyzed
-     *
-     * @param array $results Array of broken links
-     * @param array $record Record to analyze
-     * @param string $table Table name of the record
-     * @param array $fields Array of fields to analyze
-     * @return array
-     */
-    protected function emitBeforeAnalyzeRecordSignal($results, $record, $table, $fields)
-    {
-        return $this->getSignalSlotDispatcher()->dispatch(
-            self::class,
-            'beforeAnalyzeRecord',
-            [$results, $record, $table, $fields, $this]
-        );
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        return $this->getObjectManager()->get(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-    }
-
-    /**
-     * @return \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
     }
 
     /**

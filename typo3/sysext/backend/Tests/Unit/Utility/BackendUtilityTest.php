@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForGroupWithMultipleAllowedTablesFixture;
@@ -24,6 +25,8 @@ use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\ProcessedValueForSelectWithMMR
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
+use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -283,7 +286,7 @@ class BackendUtilityTest extends UnitTestCase
         $relationHandlerInstance = $relationHandlerProphet->reveal();
         $relationHandlerInstance->tableArray['sys_category'] = [1, 2];
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection('sys_category');
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('sys_category');
         $statementProphet = $this->prophesize(\Doctrine\DBAL\Driver\Statement::class);
         $statementProphet->fetch()->shouldBeCalled()->willReturn(
             [
@@ -1035,6 +1038,10 @@ class BackendUtilityTest extends UnitTestCase
     {
         $expected = ['called.' => ['config']];
         $pageId = 13;
+        $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
+        $eventDispatcherProphecy->dispatch(Argument::any())->willReturn(new ModifyLoadedPageTsConfigEvent([], []));
+        $loader = new PageTsConfigLoader($eventDispatcherProphecy->reveal());
+        GeneralUtility::addInstance(PageTsConfigLoader::class, $loader);
         $parserProphecy = $this->prophesize(PageTsConfigParser::class);
         $parserProphecy->parse(Argument::cetera())->willReturn($expected);
         GeneralUtility::addInstance(PageTsConfigParser::class, $parserProphecy->reveal());

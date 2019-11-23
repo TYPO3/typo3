@@ -357,5 +357,29 @@ return [
             'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
             'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
         ],
+    ],
+    'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_BeforeCaching' => [
+        'restFiles' => [
+            'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
+            'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GenerateDataArray_PostProcesss' => [
+        'restFiles' => [
+            'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
+            'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_GetDataArray_PostProcesss' => [
+        'restFiles' => [
+            'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
+            'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
+        ],
+    ],
+    'TYPO3\CMS\Workspaces\Service\GridDataService::SIGNAL_SortDataArray_PostProcesss' => [
+        'restFiles' => [
+            'Feature-89733-NewPSR-14EventsForExistingSignalSlotsInCoreExtension.rst',
+            'Deprecation-89733-SignalSlotsInCoreExtensionMigratedToPSR-14Events.rst',
+        ],
     ]
 ];

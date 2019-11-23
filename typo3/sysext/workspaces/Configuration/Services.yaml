@@ -11,3 +11,25 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['workspaces_cache']
+
+  TYPO3\CMS\Workspaces\Service\GridDataService:
+    public: true
+
+  TYPO3\CMS\Workspaces\Compatibility\SlotReplacement:
+    tags:
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onGenerateDataArrayBeforeCaching'
+        event: TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onGenerateDataArrayPostProcessing'
+        event: TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onGetDataPostProcessing'
+        event: TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onSortDataPostProcessing'
+        event: TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent

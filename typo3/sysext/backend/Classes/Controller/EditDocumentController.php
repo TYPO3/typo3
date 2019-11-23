@@ -15,8 +15,11 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
+use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
@@ -51,7 +54,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 
 /**
  * Main backend controller almost always used if some database record is edited in the backend.
@@ -348,11 +350,6 @@ class EditDocumentController
     protected $dontStoreDocumentRef = 0;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected $signalSlotDispatcher;
-
-    /**
      * Stores information needed to preview the currently saved record
      *
      * @var array
@@ -381,10 +378,13 @@ class EditDocumentController
     protected $isPageInFreeTranslationMode = false;
 
     /**
-     * Constructor
+     * @var EventDispatcherInterface
      */
-    public function __construct()
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher;
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->moduleTemplate->setUiBlock(true);
         // @todo Used by TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching
@@ -489,8 +489,8 @@ class EditDocumentController
             $this->getBackendUser()->setTemporaryWorkspace($this->workspace);
         }
 
-        $this->emitFunctionAfterSignal('preInit', $request);
-
+        $event = new BeforeFormEnginePageInitializedEvent($this, $request);
+        $this->eventDispatcher->dispatch($event);
         return null;
     }
 
@@ -779,7 +779,8 @@ class EditDocumentController
         // Set context sensitive menu
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
-        $this->emitFunctionAfterSignal('init', $request);
+        $event = new AfterFormEnginePageInitializedEvent($this, $request);
+        $this->eventDispatcher->dispatch($event);
     }
 
     /**
@@ -2450,30 +2451,6 @@ class EditDocumentController
             }
         }
         return new RedirectResponse($retUrl, 303);
-    }
-
-    /**
-     * Emits a signal after a function was executed
-     *
-     * @param string $signalName
-     * @param ServerRequestInterface $request
-     */
-    protected function emitFunctionAfterSignal($signalName, ServerRequestInterface $request): void
-    {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, $signalName . 'After', [$this, 'request' => $request]);
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
-        }
-        return $this->signalSlotDispatcher;
     }
 
     /**

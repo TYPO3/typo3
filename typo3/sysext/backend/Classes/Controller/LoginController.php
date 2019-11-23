@@ -15,11 +15,13 @@ namespace TYPO3\CMS\Backend\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Exception;
+use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
@@ -99,13 +101,17 @@ class LoginController implements LoggerAwareInterface
      * @var DocumentTemplate
      */
     protected $documentTemplate;
+
+    protected $eventDispatcher;
+
     /**
-     * @var \TYPO3\CMS\Core\Information\Typo3Copyright
+     * @var Typo3Copyright
      */
     private $copyright;
 
-    public function __construct(Typo3Copyright $copyright)
+    public function __construct(Typo3Copyright $copyright, EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher;
         $this->copyright = $copyright;
     }
 
@@ -302,6 +308,15 @@ class LoginController implements LoggerAwareInterface
 
         /** @var LoginProviderInterface $loginProvider */
         $loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
+
+        $this->eventDispatcher->dispatch(
+            new ModifyPageLayoutOnLoginProviderSelectionEvent(
+                $this,
+                $this->view,
+                $pageRenderer
+            )
+        );
+
         $loginProvider->render($this->view, $pageRenderer, $this);
 
         $content = $this->documentTemplate->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);

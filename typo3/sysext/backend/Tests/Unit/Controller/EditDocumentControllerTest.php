@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  */
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -52,10 +53,11 @@ class EditDocumentControllerTest extends UnitTestCase
         $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
         GeneralUtility::addInstance(ModuleTemplate::class, $moduleTemplate->reveal());
 
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $mock = \Closure::bind(static function (EditDocumentController $editDocumentController) use (&$result, $typoScript) {
             return $editDocumentController->parseAdditionalGetParameters($result, $typoScript);
         }, null, EditDocumentController::class);
-        $mock(new EditDocumentController());
+        $mock(new EditDocumentController($eventDispatcher->reveal()));
 
         self::assertSame($expectedParameters, $result);
     }

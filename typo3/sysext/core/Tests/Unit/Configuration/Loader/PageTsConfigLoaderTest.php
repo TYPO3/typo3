@@ -15,6 +15,9 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,7 +32,10 @@ class PageTsConfigLoaderTest extends UnitTestCase
             'default' => $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig']
         ];
         $expectedString = implode('"\n[GLOBAL]\n"', $expected);
-        $subject = new PageTsConfigLoader();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $subject = new PageTsConfigLoader($eventDispatcher->reveal());
+        $event = new ModifyLoadedPageTsConfigEvent($expected, []);
+        $eventDispatcher->dispatch(Argument::type(ModifyLoadedPageTsConfigEvent::class))->willReturn($event);
         $result = $subject->collect([]);
         self::assertSame($expected, $result);
 
@@ -48,7 +54,10 @@ class PageTsConfigLoaderTest extends UnitTestCase
             'page_27' => '',
         ];
         $rootLine = [['uid' => 0, 'pid' => 0], ['uid' => 13, 'TSconfig' => 'waiting for = love'], ['uid' => 27, 'TSconfig' => '']];
-        $subject = new PageTsConfigLoader();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $event = new ModifyLoadedPageTsConfigEvent($expected, $rootLine);
+        $eventDispatcher->dispatch(Argument::type(ModifyLoadedPageTsConfigEvent::class))->willReturn($event);
+        $subject = new PageTsConfigLoader($eventDispatcher->reveal());
         $result = $subject->collect($rootLine);
         self::assertSame($expected, $result);
     }
@@ -66,7 +75,10 @@ class PageTsConfigLoaderTest extends UnitTestCase
             'page_27' => '',
         ];
         $rootLine = [['uid' => 13, 'TSconfig' => 'waiting for = love', 'tsconfig_includes' => 'EXT:core/Tests/Unit/Configuration/Loader/Fixtures/included.typoscript'], ['uid' => 27, 'TSconfig' => '']];
-        $subject = new PageTsConfigLoader();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $event = new ModifyLoadedPageTsConfigEvent($expected, $rootLine);
+        $eventDispatcher->dispatch(Argument::type(ModifyLoadedPageTsConfigEvent::class))->willReturn($event);
+        $subject = new PageTsConfigLoader($eventDispatcher->reveal());
         $result = $subject->collect($rootLine);
         self::assertSame($expected, $result);
     }
@@ -83,7 +95,10 @@ class PageTsConfigLoaderTest extends UnitTestCase
         ];
         $expectedString = implode("\n[GLOBAL]\n", $expected);
         $rootLine = [['uid' => 13, 'TSconfig' => 'waiting for = love', 'tsconfig_includes' => 'EXT:core/Tests/Unit/Configuration/Loader/Fixtures/me_does_not_exist.typoscript'], ['uid' => 27, 'TSconfig' => '']];
-        $subject = new PageTsConfigLoader();
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        $event = new ModifyLoadedPageTsConfigEvent($expected, $rootLine);
+        $eventDispatcher->dispatch(Argument::type(ModifyLoadedPageTsConfigEvent::class))->willReturn($event);
+        $subject = new PageTsConfigLoader($eventDispatcher->reveal());
         $result = $subject->collect($rootLine);
         self::assertSame($expected, $result);
 

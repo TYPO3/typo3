@@ -8,3 +8,12 @@ services:
         identifier: 'install/show-latest-errors'
         method: 'appendMessage'
         event: TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent
+  TYPO3\CMS\Install\Compatibility\SlotReplacement:
+    autowire: true
+    autoconfigure: true
+    public: false
+    tags:
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onLanguagePackProcessMirrorUrl'
+        event: TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent

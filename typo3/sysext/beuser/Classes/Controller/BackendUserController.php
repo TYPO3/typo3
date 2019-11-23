@@ -14,10 +14,13 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -59,6 +62,11 @@ class BackendUserController extends ActionController
     protected $backendUserSessionRepository;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService
      */
     public function injectModuleDataStorageService(\TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService)
@@ -88,6 +96,11 @@ class BackendUserController extends ActionController
     public function injectBackendUserSessionRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository $backendUserSessionRepository)
     {
         $this->backendUserSessionRepository = $backendUserSessionRepository;
+    }
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -279,10 +292,15 @@ class BackendUserController extends ActionController
                 ]
             );
 
-            $this->emitSwitchUserSignal($targetUser);
+            $event = new SwitchUserEvent(
+                $this->getBackendUserAuthentication()->getSessionId(),
+                $targetUser,
+                $this->getBackendUserAuthentication()->user
+            );
+            $this->eventDispatcher->dispatch($event);
 
             $redirectUrl = 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
-            \TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
+            HttpUtility::redirect($redirectUrl);
         }
     }
 
@@ -311,16 +329,6 @@ class BackendUserController extends ActionController
         $latestUserUids = array_slice($latestUserUids, 0, static::RECENT_USERS_LIMIT);
 
         return $latestUserUids;
-    }
-
-    /**
-     * Emit a signal when using the "switch to user" functionality
-     *
-     * @param array $targetUser
-     */
-    protected function emitSwitchUserSignal(array $targetUser)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'switchUser', [$targetUser]);
     }
 
     /**

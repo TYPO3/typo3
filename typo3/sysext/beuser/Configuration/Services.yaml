@@ -6,3 +6,11 @@ services:
 
   TYPO3\CMS\Beuser\:
     resource: '../Classes/*'
+
+  # Listener for old Signal Slots
+  TYPO3\CMS\Beuser\Compatibility\SlotReplacement:
+    tags:
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'onSwitchUser'
+        event: TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent
