@@ -1,12 +1,6 @@
 <?php
 namespace TYPO3\CMS\Extensionmanager\Utility;
 
-use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,47 +14,55 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Utility for dealing with files and folders
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface
+class FileHandlingUtility implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
+     * @var EmConfUtility
      */
     protected $emConfUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+     * @var InstallUtility
      */
     protected $installUtility;
 
     /**
-     * @var \TYPO3\CMS\Core\Localization\LanguageService
+     * @var LanguageService
      */
     protected $languageService;
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
+     * @param EmConfUtility $emConfUtility
      */
-    public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility)
+    public function injectEmConfUtility(EmConfUtility $emConfUtility)
     {
         $this->emConfUtility = $emConfUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+     * @param InstallUtility $installUtility
      */
-    public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility)
+    public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Localization\LanguageService $languageService
+     * @param LanguageService $languageService
      */
-    public function injectLanguageService(\TYPO3\CMS\Core\Localization\LanguageService $languageService)
+    public function injectLanguageService(LanguageService $languageService)
     {
         $this->languageService = $languageService;
     }

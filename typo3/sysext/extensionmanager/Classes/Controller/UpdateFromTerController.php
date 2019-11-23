@@ -13,8 +13,13 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
 
 /**
  * Controller for actions relating to update of full extension list from TER
@@ -23,22 +28,22 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 class UpdateFromTerController extends AbstractController
 {
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
+     * @var Helper
      */
     protected $repositoryHelper;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+     * @var RepositoryRepository
      */
     protected $repositoryRepository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+     * @var ListUtility
      */
     protected $listUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+     * @var ExtensionRepository
      */
     protected $extensionRepository;
 
@@ -48,33 +53,33 @@ class UpdateFromTerController extends AbstractController
     protected $defaultViewObjectName = JsonView::class;
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper
+     * @param Helper $repositoryHelper
      */
-    public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper)
+    public function injectRepositoryHelper(Helper $repositoryHelper)
     {
         $this->repositoryHelper = $repositoryHelper;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository
+     * @param RepositoryRepository $repositoryRepository
      */
-    public function injectRepositoryRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository $repositoryRepository)
+    public function injectRepositoryRepository(RepositoryRepository $repositoryRepository)
     {
         $this->repositoryRepository = $repositoryRepository;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+     * @param ListUtility $listUtility
      */
-    public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility)
+    public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
+     * @param ExtensionRepository $extensionRepository
      */
-    public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository)
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
@@ -96,7 +101,6 @@ class UpdateFromTerController extends AbstractController
                 $errorMessage = $e->getMessage();
             }
         }
-        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Repository $repository */
         $repository = $this->repositoryRepository->findOneTypo3OrgRepository();
 
         $timeFormat = $this->getLanguageService()->sL('LLL:EXT:extensionmanager/Resources/Private/Language/locallang.xlf:extensionList.updateFromTer.lastUpdate.fullTimeFormat');

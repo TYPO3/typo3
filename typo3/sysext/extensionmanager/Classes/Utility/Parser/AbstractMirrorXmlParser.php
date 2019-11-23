@@ -42,27 +42,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     protected $path;
 
     /**
-     * Keeps sponsor link of currently processed mirror.
-     *
-     * @var string
-     */
-    protected $sponsorlink;
-
-    /**
-     * Keeps sponsor logo location of currently processed mirror.
-     *
-     * @var string
-     */
-    protected $sponsorlogo;
-
-    /**
-     * Keeps sponsor name of currently processed mirror.
-     *
-     * @var string
-     */
-    protected $sponsorname;
-
-    /**
      * Keeps title of currently processed mirror.
      *
      * @var string
@@ -73,7 +52,7 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      * Returns an associative array of all mirror properties.
      *
      * Valid array keys of returned array are:
-     * country, host, path, sponsorlink, sponsorlogo, sponsorname, title
+     * country, host, path, title
      *
      * @return array associative array of a mirror's properties
      */
@@ -84,9 +63,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
         $mirrorProperties['host'] = $this->host;
         $mirrorProperties['path'] = $this->path;
         $mirrorProperties['country'] = $this->country;
-        $mirrorProperties['sponsorname'] = $this->sponsorname;
-        $mirrorProperties['sponsorlink'] = $this->sponsorlink;
-        $mirrorProperties['sponsorlogo'] = $this->sponsorlogo;
         return $mirrorProperties;
     }
 
@@ -124,39 +100,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
     }
 
     /**
-     * Returns sponsor link of currently processed mirror.
-     *
-     * @return string URL of a sponsor's website
-     * @see getAll()
-     */
-    public function getSponsorlink()
-    {
-        return $this->sponsorlink;
-    }
-
-    /**
-     * Returns sponsor logo location of currently processed mirror.
-     *
-     * @return string a sponsor's logo location
-     * @see getAll()
-     */
-    public function getSponsorlogo()
-    {
-        return $this->sponsorlogo;
-    }
-
-    /**
-     * Returns sponsor name of currently processed mirror.
-     *
-     * @return string name of sponsor
-     * @see getAll()
-     */
-    public function getSponsorname()
-    {
-        return $this->sponsorname;
-    }
-
-    /**
      * Returns title of currently processed mirror.
      *
      * @return string title of mirror
@@ -172,7 +115,6 @@ abstract class AbstractMirrorXmlParser extends AbstractXmlParser
      */
     protected function resetProperties()
     {
-        $this->title = $this->host = $this->path = $this->country
-            = $this->sponsorname = $this->sponsorlink = $this->sponsorlogo = null;
+        $this->title = $this->host = $this->path = $this->country = null;
     }
 }

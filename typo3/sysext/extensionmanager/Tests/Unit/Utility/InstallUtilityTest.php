@@ -16,15 +16,12 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  */
 
 use Prophecy\Argument;
-use Psr\Log\NullLogger;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
@@ -144,9 +141,7 @@ class InstallUtilityTest extends UnitTestCase
      */
     public function installCallsUpdateDatabase()
     {
-        $this->installMock->expects(self::once())
-            ->method('updateDatabase')
-            ->with([$this->extensionKey]);
+        $this->installMock->expects(self::once())->method('updateDatabase');
 
         $cacheManagerMock = $this->getMockBuilder(CacheManager::class)->getMock();
         $cacheManagerMock->expects(self::once())->method('flushCachesInGroup');
@@ -307,11 +302,6 @@ class InstallUtilityTest extends UnitTestCase
         $subject = new InstallUtility();
         $listUtility = $this->prophesize(ListUtility::class);
         $subject->injectListUtility($listUtility->reveal());
-        $logManagerProphecy = $this->prophesize(LogManager::class);
-        $logManagerProphecy->getLogger(InstallUtility::class)->willReturn(new NullLogger());
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        $objectManagerProphecy->get(LogManager::class)->willReturn($logManagerProphecy->reveal());
-        $subject->injectObjectManager($objectManagerProphecy->reveal());
 
         $availableExtensions = [
             $extKey => [
@@ -376,11 +366,6 @@ class InstallUtilityTest extends UnitTestCase
         $subject = new InstallUtility();
         $listUtility = $this->prophesize(ListUtility::class);
         $subject->injectListUtility($listUtility->reveal());
-        $logManagerProphecy = $this->prophesize(LogManager::class);
-        $logManagerProphecy->getLogger(InstallUtility::class)->willReturn(new NullLogger());
-        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
-        $objectManagerProphecy->get(LogManager::class)->willReturn($logManagerProphecy->reveal());
-        $subject->injectObjectManager($objectManagerProphecy->reveal());
 
         $availableExtensions = [
             $extKey => [

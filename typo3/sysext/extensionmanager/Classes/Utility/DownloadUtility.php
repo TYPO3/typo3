@@ -14,19 +14,25 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+use TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility;
+use TYPO3\CMS\Extensionmanager\Utility\Repository\Helper;
+
 /**
  * Utility for Downloading Extensions
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
+class DownloadUtility implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility
+     * @var TerUtility
      */
     protected $terUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper
+     * @var Helper
      */
     protected $repositoryHelper;
 
@@ -36,30 +42,30 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected $downloadPath = 'Local';
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
+     * @var FileHandlingUtility
      */
     protected $fileHandlingUtility;
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility $terUtility
+     * @param TerUtility $terUtility
      */
-    public function injectTerUtility(\TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility $terUtility)
+    public function injectTerUtility(TerUtility $terUtility)
     {
         $this->terUtility = $terUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper
+     * @param Helper $repositoryHelper
      */
-    public function injectRepositoryHelper(\TYPO3\CMS\Extensionmanager\Utility\Repository\Helper $repositoryHelper)
+    public function injectRepositoryHelper(Helper $repositoryHelper)
     {
         $this->repositoryHelper = $repositoryHelper;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
+     * @param FileHandlingUtility $fileHandlingUtility
      */
-    public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility)
+    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
     {
         $this->fileHandlingUtility = $fileHandlingUtility;
     }
@@ -67,9 +73,9 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Download an extension
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+     * @param Extension $extension
      */
-    public function download(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension)
+    public function download(Extension $extension)
     {
         $mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
         $fetchedExtension = $this->terUtility->fetchExtension($extension->getExtensionKey(), $extension->getVersion(), $extension->getMd5hash(), $mirrorUrl);
@@ -82,12 +88,12 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Set the download path
      *
      * @param string $downloadPath
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+     * @throws ExtensionManagerException
      */
     public function setDownloadPath($downloadPath)
     {
-        if (!in_array($downloadPath, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallTypes())) {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($downloadPath . ' not in allowed download paths', 1344766387);
+        if (!in_array($downloadPath, Extension::returnAllowedInstallTypes())) {
+            throw new ExtensionManagerException($downloadPath . ' not in allowed download paths', 1344766387);
         }
         $this->downloadPath = $downloadPath;
     }

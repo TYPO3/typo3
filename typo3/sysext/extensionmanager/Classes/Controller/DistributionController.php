@@ -13,10 +13,13 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * Controller for distribution related actions
@@ -25,14 +28,14 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 class DistributionController extends AbstractModuleController
 {
     /**
-     * @var \TYPO3\CMS\Core\Package\PackageManager
+     * @var PackageManager
      */
     protected $packageManager;
 
     /**
-     * @param \TYPO3\CMS\Core\Package\PackageManager $packageManager
+     * @param PackageManager $packageManager
      */
-    public function injectPackageManager(\TYPO3\CMS\Core\Package\PackageManager $packageManager)
+    public function injectPackageManager(PackageManager $packageManager)
     {
         $this->packageManager = $packageManager;
     }
@@ -55,9 +58,9 @@ class DistributionController extends AbstractModuleController
     /**
      * Shows information about the distribution
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
+     * @param Extension $extension
      */
-    public function showAction(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension)
+    public function showAction(Extension $extension)
     {
         $extensionKey = $extension->getExtensionKey();
         // Check if extension/package is installed

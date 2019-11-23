@@ -15,12 +15,15 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 
 /**
  * Main extension model
  * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
-class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Extension extends AbstractEntity
 {
     /**
      * Category index for distributions
@@ -63,7 +66,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     ];
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
 
@@ -164,9 +167,9 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     protected $position = 0;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * @param ObjectManager $objectManager
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
+    public function injectObjectManager(ObjectManager $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -526,17 +529,16 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getDependencies()
     {
         if (!is_object($this->dependencies)) {
-            /** @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility */
-            $extensionModelUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility::class);
+            $extensionModelUtility = $this->objectManager->get(ExtensionModelUtility::class);
             $this->setDependencies($extensionModelUtility->convertDependenciesToObjects($this->getSerializedDependencies()));
         }
         return $this->dependencies;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency
+     * @param Dependency $dependency
      */
-    public function addDependency(\TYPO3\CMS\Extensionmanager\Domain\Model\Dependency $dependency)
+    public function addDependency(Dependency $dependency)
     {
         $this->dependencies->attach($dependency);
     }

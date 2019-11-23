@@ -14,38 +14,44 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
+use TYPO3\CMS\Extensionmanager\Utility\DownloadUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Service class for managing multiple step processes (dependencies for example)
  */
-class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
+class ExtensionManagementService implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+     * @var DownloadQueue
      */
     protected $downloadQueue;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility
+     * @var DependencyUtility
      */
     protected $dependencyUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+     * @var InstallUtility
      */
     protected $installUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility
+     * @var ExtensionModelUtility
      */
     protected $extensionModelUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
+     * @var DownloadUtility
      */
     protected $downloadUtility;
 
@@ -60,41 +66,41 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface
     protected $skipDependencyCheck = false;
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue $downloadQueue
+     * @param DownloadQueue $downloadQueue
      */
-    public function injectDownloadQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue $downloadQueue)
+    public function injectDownloadQueue(DownloadQueue $downloadQueue)
     {
         $this->downloadQueue = $downloadQueue;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
+     * @param DependencyUtility $dependencyUtility
      */
-    public function injectDependencyUtility(\TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility)
+    public function injectDependencyUtility(DependencyUtility $dependencyUtility)
     {
         $this->dependencyUtility = $dependencyUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+     * @param InstallUtility $installUtility
      */
-    public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility)
+    public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility
+     * @param ExtensionModelUtility $extensionModelUtility
      */
-    public function injectExtensionModelUtility(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility)
+    public function injectExtensionModelUtility(ExtensionModelUtility $extensionModelUtility)
     {
         $this->extensionModelUtility = $extensionModelUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility
+     * @param DownloadUtility $downloadUtility
      */
-    public function injectDownloadUtility(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility)
+    public function injectDownloadUtility(DownloadUtility $downloadUtility)
     {
         $this->downloadUtility = $downloadUtility;
     }

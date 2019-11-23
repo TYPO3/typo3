@@ -15,7 +15,12 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  */
 
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
+use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
+use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 /**
  * Controller for handling extension related actions like
@@ -25,53 +30,53 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ActionController extends AbstractController
 {
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
+     * @var InstallUtility
      */
     protected $installUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
+     * @var FileHandlingUtility
      */
     protected $fileHandlingUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility
+     * @var ExtensionModelUtility
      */
     protected $extensionModelUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
+     * @var ExtensionManagementService
      */
     protected $managementService;
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
+     * @param InstallUtility $installUtility
      */
-    public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility)
+    public function injectInstallUtility(InstallUtility $installUtility)
     {
         $this->installUtility = $installUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
+     * @param FileHandlingUtility $fileHandlingUtility
      */
-    public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility)
+    public function injectFileHandlingUtility(FileHandlingUtility $fileHandlingUtility)
     {
         $this->fileHandlingUtility = $fileHandlingUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility
+     * @param ExtensionModelUtility $extensionModelUtility
      */
-    public function injectExtensionModelUtility(\TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility $extensionModelUtility)
+    public function injectExtensionModelUtility(ExtensionModelUtility $extensionModelUtility)
     {
         $this->extensionModelUtility = $extensionModelUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
+     * @param ExtensionManagementService $managementService
      */
-    public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService)
+    public function injectManagementService(ExtensionManagementService $managementService)
     {
         $this->managementService = $managementService;
     }
@@ -83,7 +88,7 @@ class ActionController extends AbstractController
      */
     protected function toggleExtensionInstallationStateAction($extensionKey)
     {
-        $installedExtensions = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getLoadedExtensionListArray();
+        $installedExtensions = ExtensionManagementUtility::getLoadedExtensionListArray();
         try {
             if (in_array($extensionKey, $installedExtensions)) {
                 // uninstall

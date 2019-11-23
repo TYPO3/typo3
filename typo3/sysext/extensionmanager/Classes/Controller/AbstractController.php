@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * Abstract action controller.
  * @internal This class is a specific controller implementation and is not considered part of the Public TYPO3 API.
@@ -21,7 +23,6 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     const TRIGGER_RefreshModuleMenu = 'refreshModuleMenu';
-
     const TRIGGER_RefreshTopbar = 'refreshTopbar';
 
     /**
@@ -41,7 +42,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
      */
     protected function translate($key, $arguments = null)
     {
-        return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
+        return LocalizationUtility::translate($key, 'extensionmanager', $arguments);
     }
 
     /**
@@ -52,13 +53,11 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
     protected function handleTriggerArguments()
     {
         $triggers = [];
-
         foreach ($this->triggerArguments as $triggerArgument) {
             if ($this->request->hasArgument($triggerArgument)) {
                 $triggers[$triggerArgument] = $this->request->getArgument($triggerArgument);
             }
         }
-
         $this->view->assign('triggers', $triggers);
     }
 }

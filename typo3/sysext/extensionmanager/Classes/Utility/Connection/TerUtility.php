@@ -28,11 +28,6 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 class TerUtility
 {
     /**
-     * @var string
-     */
-    public $wsdlUrl;
-
-    /**
      * Fetches an extension from the given mirror
      *
      * @param string $extensionKey Extension Key
@@ -64,43 +59,6 @@ class TerUtility
             throw new ExtensionManagerException('Error: MD5 hash of downloaded file not as expected: ' . $md5 . ' != ' . $expectedMd5, 1334426098);
         }
         return $extensionData;
-    }
-
-    /**
-     * Decode server data
-     * This is information like the extension list, extension
-     * information etc., return data after uploads (new em_conf)
-     * On success, returns an array with data array and stats
-     * array as key 0 and 1.
-     *
-     * @param string $externalData Data stream from remove server
-     * @throws ExtensionManagerException
-     * @return array $externalData
-     * @see fetchServerData()
-     * @see processRepositoryReturnData()
-     */
-    public function decodeServerData($externalData)
-    {
-        $parts = explode(':', $externalData, 4);
-        $dat = base64_decode($parts[2]);
-        gzuncompress($dat);
-        // compare hashes ignoring any leading whitespace. See bug #0000365.
-        if (ltrim($parts[0]) == md5($dat)) {
-            if ($parts[1] === 'gzcompress') {
-                if (function_exists('gzuncompress')) {
-                    $dat = gzuncompress($dat);
-                } else {
-                    throw new ExtensionManagerException('Decoding Error: No decompressor available for compressed content. gzuncompress() function is not available!', 1342859463);
-                }
-            }
-            $listArr = unserialize($dat, ['allowed_classes' => false]);
-            if (!is_array($listArr)) {
-                throw new ExtensionManagerException('Error: Unserialized information was not an array - strange!', 1342859489);
-            }
-        } else {
-            throw new ExtensionManagerException('Error: MD5 hashes in T3X data did not match!', 1342859505);
-        }
-        return $listArr;
     }
 
     /**

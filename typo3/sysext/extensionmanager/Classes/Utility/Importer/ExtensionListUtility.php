@@ -91,13 +91,6 @@ class ExtensionListUtility implements \SplObserver
     protected $maxRowsPerChunk = 50;
 
     /**
-     * Keeps indexes of fields that should not be quoted.
-     *
-     * @var array
-     */
-    protected static $fieldIndicesNoQuote = [2, 3, 5, 11, 13, 14, 15, 16];
-
-    /**
      * Keeps repository UID.
      *
      * The UID is necessary for inserting records.

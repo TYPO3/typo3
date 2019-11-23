@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * Utility for dealing with ext_emconf
@@ -48,11 +49,11 @@ class EmConfUtility implements SingletonInterface
      * Sets dependencies from TER data if any
      *
      * @param array $extensionData
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension Extension object from TER data
+     * @param Extension $extension Extension object from TER data
      * @return string
      * @internal
      */
-    public function constructEmConf(array $extensionData, \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension = null)
+    public function constructEmConf(array $extensionData, Extension $extension = null)
     {
         if (is_object($extension) && empty($extensionData['EM_CONF']['constraints'])) {
             $extensionData['EM_CONF']['constraints'] = unserialize($extension->getSerializedDependencies(), ['allowed_classes' => false]);

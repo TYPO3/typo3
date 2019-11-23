@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Repository;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Repository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
@@ -30,7 +32,7 @@ use TYPO3\CMS\Extensionmanager\Utility\Importer\MirrorListUtility;
  * Central utility class for repository handling.
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class Helper implements \TYPO3\CMS\Core\SingletonInterface
+class Helper implements SingletonInterface
 {
     /**
      * ##########################################
@@ -64,11 +66,6 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * @var Repository
      */
     protected $repository;
-
-    /**
-     * @var RepositoryRepository
-     */
-    protected $repositoryRepository;
 
     /**
      * @var ExtensionRepository
@@ -226,7 +223,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface
      * server.
      *
      * @param bool $forcedUpdateFromRemote if boolean TRUE, mirror configuration will always retrieved from remote server
-     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors instance of repository mirrors class
+     * @return Mirrors instance of repository mirrors class
      * @throws ExtensionManagerException
      */
     public function getMirrors($forcedUpdateFromRemote = true)

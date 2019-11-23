@@ -14,11 +14,19 @@ namespace TYPO3\CMS\Extensionmanager\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
+use TYPO3\CMS\Reports\Status;
+use TYPO3\CMS\Reports\StatusProviderInterface;
+
 /**
  * Extension status reports
  * @internal This class is a specific EXT:reports implementation and is not part of the Public TYPO3 API.
  */
-class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
+class ExtensionStatus implements StatusProviderInterface
 {
     /**
      * @var string
@@ -36,22 +44,22 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     protected $error = '';
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository
+     * @var RepositoryRepository
      */
     protected $repositoryRepository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+     * @var ListUtility
      */
     protected $listUtility;
 
     /**
-     * @var \TYPO3\CMS\Core\Localization\LanguageService
+     * @var LanguageService
      */
     protected $languageService;
 
@@ -60,10 +68,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     public function __construct()
     {
-        $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        $this->repositoryRepository = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Domain\Repository\RepositoryRepository::class);
-        $this->listUtility = $this->objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class);
-        $this->languageService = $this->objectManager->get(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->repositoryRepository = $this->objectManager->get(RepositoryRepository::class);
+        $this->listUtility = $this->objectManager->get(ListUtility::class);
+        $this->languageService = $this->objectManager->get(LanguageService::class);
         $this->languageService->includeLLFile('EXT:extensionmanager/Resources/Private/Language/locallang.xlf');
     }
 
@@ -89,7 +97,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
     /**
      * Check main repository status: existence, has extensions, last update younger than 7 days
      *
-     * @return \TYPO3\CMS\Reports\Status
+     * @return Status
      */
     protected function getMainRepositoryStatus()
     {
@@ -99,20 +107,20 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         if ($mainRepository === null) {
             $value = $this->languageService->getLL('report.status.mainRepository.notFound.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notFound.message');
-            $severity = \TYPO3\CMS\Reports\Status::ERROR;
+            $severity = Status::ERROR;
         } elseif ($mainRepository->getLastUpdate()->getTimestamp() < $GLOBALS['EXEC_TIME'] - 24 * 60 * 60 * 7) {
             $value = $this->languageService->getLL('report.status.mainRepository.notUpToDate.value');
             $message = $this->languageService->getLL('report.status.mainRepository.notUpToDate.message');
-            $severity = \TYPO3\CMS\Reports\Status::NOTICE;
+            $severity = Status::NOTICE;
         } else {
             $value = $this->languageService->getLL('report.status.mainRepository.upToDate.value');
             $message = '';
-            $severity = \TYPO3\CMS\Reports\Status::OK;
+            $severity = Status::OK;
         }
 
-        /** @var \TYPO3\CMS\Reports\Status $status */
+        /** @var Status $status */
         $status = $this->objectManager->get(
-            \TYPO3\CMS\Reports\Status::class,
+            Status::class,
             $this->languageService->getLL('report.status.mainRepository.title'),
             $value,
             $message,
@@ -181,7 +189,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (empty($loadedInsecure)) {
             $value = $this->languageService->getLL('report.status.loadedExtensions.noInsecureExtensionLoaded.value');
             $message = '';
-            $severity = \TYPO3\CMS\Reports\Status::OK;
+            $severity = Status::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.value'),
@@ -199,10 +207,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.loadedExtensions.insecureExtensionLoaded.message'),
                 implode('', $extensionList)
             );
-            $severity = \TYPO3\CMS\Reports\Status::ERROR;
+            $severity = Status::ERROR;
         }
         $result->loaded = $this->objectManager->get(
-            \TYPO3\CMS\Reports\Status::class,
+            Status::class,
             $this->languageService->getLL('report.status.loadedExtensions.title'),
             $value,
             $message,
@@ -212,7 +220,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (empty($existingInsecure)) {
             $value = $this->languageService->getLL('report.status.existingExtensions.noInsecureExtensionExists.value');
             $message = '';
-            $severity = \TYPO3\CMS\Reports\Status::OK;
+            $severity = Status::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.value'),
@@ -230,10 +238,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.existingExtensions.insecureExtensionExists.message'),
                 implode('', $extensionList)
             );
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
+            $severity = Status::WARNING;
         }
         $result->existing = $this->objectManager->get(
-            \TYPO3\CMS\Reports\Status::class,
+            Status::class,
             $this->languageService->getLL('report.status.existingExtensions.title'),
             $value,
             $message,
@@ -243,7 +251,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (empty($loadedOutdated)) {
             $value = $this->languageService->getLL('report.status.loadedOutdatedExtensions.noOutdatedExtensionLoaded.value');
             $message = '';
-            $severity = \TYPO3\CMS\Reports\Status::OK;
+            $severity = Status::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.value'),
@@ -261,10 +269,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.loadedOutdatedExtensions.outdatedExtensionLoaded.message'),
                 implode('', $extensionList)
             );
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
+            $severity = Status::WARNING;
         }
         $result->loadedoutdated = $this->objectManager->get(
-            \TYPO3\CMS\Reports\Status::class,
+            Status::class,
             $this->languageService->getLL('report.status.loadedOutdatedExtensions.title'),
             $value,
             $message,
@@ -274,7 +282,7 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
         if (empty($existingOutdated)) {
             $value = $this->languageService->getLL('report.status.existingOutdatedExtensions.noOutdatedExtensionExists.value');
             $message = '';
-            $severity = \TYPO3\CMS\Reports\Status::OK;
+            $severity = Status::OK;
         } else {
             $value = sprintf(
                 $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.value'),
@@ -292,10 +300,10 @@ class ExtensionStatus implements \TYPO3\CMS\Reports\StatusProviderInterface
                 $this->languageService->getLL('report.status.existingOutdatedExtensions.outdatedExtensionExists.message'),
                 implode('', $extensionList)
             );
-            $severity = \TYPO3\CMS\Reports\Status::WARNING;
+            $severity = Status::WARNING;
         }
         $result->existingoutdated = $this->objectManager->get(
-            \TYPO3\CMS\Reports\Status::class,
+            Status::class,
             $this->languageService->getLL('report.status.existingOutdatedExtensions.title'),
             $value,
             $message,

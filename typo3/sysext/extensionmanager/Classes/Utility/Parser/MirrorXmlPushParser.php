@@ -142,15 +142,6 @@ class MirrorXmlPushParser extends AbstractMirrorXmlParser
                 case 'country':
                     $this->country = $data;
                     break;
-                case 'name':
-                    $this->sponsorname = $data;
-                    break;
-                case 'link':
-                    $this->sponsorlink = $data;
-                    break;
-                case 'logo':
-                    $this->sponsorlogo = $data;
-                    break;
                 default:
                     // Do nothing
             }

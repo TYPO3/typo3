@@ -14,19 +14,21 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * A repository for extension repositories
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
-class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class RepositoryRepository extends Repository
 {
     /**
      * Do not include pid in queries
      */
     public function initializeObject()
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }

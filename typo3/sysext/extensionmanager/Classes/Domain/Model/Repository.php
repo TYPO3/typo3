@@ -14,11 +14,14 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * Repository object for extension manager.
  * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
-class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Repository extends AbstractEntity
 {
     /**
      * Keeps repository title.
@@ -44,7 +47,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Keeps repository mirrors object.
      *
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors
+     * @var Mirrors
      */
     protected $mirrors;
 
@@ -137,7 +140,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function setMirrorListUrl($url)
     {
-        if (empty($url) || !empty($url) && \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url)) {
+        if (empty($url) || GeneralUtility::isValidUrl($url)) {
             $this->mirrorListUrl = $url;
         }
     }
@@ -161,7 +164,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function setWsdlUrl($url)
     {
-        if (!empty($url) && \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url)) {
+        if (!empty($url) && GeneralUtility::isValidUrl($url)) {
             $this->wsdlUrl = $url;
         }
     }
@@ -211,12 +214,12 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * Repository mirrors object is passed by reference.
      *
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors mirror list
+     * @param Mirrors $mirrors mirror list
      * @see getMirrors()
      * @see hasMirrors()
      * @see removeMirrors()
      */
-    public function addMirrors(\TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors)
+    public function addMirrors(Mirrors $mirrors)
     {
         $this->mirrors = $mirrors;
     }
@@ -242,7 +245,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Method returns a repository mirrors object.
      *
-     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors mirrors for repository
+     * @return Mirrors mirrors for repository
      * @see addMirrors()
      * @see hasMirrors()
      * @see removeMirrors()

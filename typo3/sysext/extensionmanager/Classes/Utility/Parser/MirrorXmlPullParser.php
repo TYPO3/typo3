@@ -86,15 +86,6 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
             case 'country':
                 $this->country = $this->getElementValue($elementName);
                 break;
-            case 'name':
-                $this->sponsorname = $this->getElementValue($elementName);
-                break;
-            case 'link':
-                $this->sponsorlink = $this->getElementValue($elementName);
-                break;
-            case 'logo':
-                $this->sponsorlogo = $this->getElementValue($elementName);
-                break;
             default:
                 // Do nothing
         }

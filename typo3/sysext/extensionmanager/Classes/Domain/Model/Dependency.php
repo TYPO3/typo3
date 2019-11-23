@@ -14,11 +14,14 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
+
 /**
  * Main extension model
  * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
-class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Dependency extends AbstractEntity
 {
     /**
      * @var string
@@ -107,14 +110,14 @@ class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param string $type
-     * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException if no valid dependency type was given
+     * @throws ExtensionManagerException if no valid dependency type was given
      */
     public function setType($type)
     {
         if (in_array($type, self::$dependencyTypes)) {
             $this->type = $type;
         } else {
-            throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($type . ' was not a valid dependency type.', 1476122402);
+            throw new ExtensionManagerException($type . ' was not a valid dependency type.', 1476122402);
         }
     }
 

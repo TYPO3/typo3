@@ -18,12 +18,18 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\Query;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 
 /**
  * A repository for extensions
  * @internal This class is a specific domain repository implementation and is not part of the Public TYPO3 API.
  */
-class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class ExtensionRepository extends Repository
 {
     /**
      * @var string
@@ -35,8 +41,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function initializeObject()
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
@@ -56,7 +61,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds all extensions
      *
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findAll()
     {
@@ -64,7 +69,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $query = $this->addDefaultConstraints($query);
         $query->setOrderings(
             [
-                'lastUpdated' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+                'lastUpdated' => QueryInterface::ORDER_DESCENDING
             ]
         );
         return $query->execute();
@@ -74,13 +79,18 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Find an extension by extension key ordered by version
      *
      * @param string $extensionKey
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface
      */
     public function findByExtensionKeyOrderedByVersion($extensionKey)
     {
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->greaterThanOrEqual('reviewState', 0)));
-        $query->setOrderings(['integerVersion' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING]);
+        $query->matching(
+            $query->logicalAnd(
+                $query->equals('extensionKey', $extensionKey),
+                $query->greaterThanOrEqual('reviewState', 0)
+            )
+        );
+        $query->setOrderings(['integerVersion' => QueryInterface::ORDER_DESCENDING]);
         return $query->execute();
     }
 
@@ -88,7 +98,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Find the current version by extension key
      *
      * @param string $extensionKey
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findOneByCurrentVersionByExtensionKey($extensionKey)
     {
@@ -109,7 +119,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      *
      * @param string $extensionKey
      * @param string $version (example: 4.3.10)
-     * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return array|QueryResultInterface
      */
     public function findOneByExtensionKeyAndVersion($extensionKey, $version)
     {
@@ -184,7 +194,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             ->fetchAll();
 
         $dataMapper = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::class);
-        return $dataMapper->map(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, $result);
+        return $dataMapper->map(Extension::class, $result);
     }
 
     /**
@@ -194,7 +204,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param int $lowestVersion
      * @param int $highestVersion
      * @param bool $includeCurrentVersion
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface
      */
     public function findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $lowestVersion = 0, $highestVersion = 0, $includeCurrentVersion = true)
     {
@@ -225,7 +235,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             $query->matching($query->logicalAnd($constraint, $query->greaterThanOrEqual('reviewState', 0)));
         }
         $query->setOrderings([
-            'integerVersion' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+            'integerVersion' => QueryInterface::ORDER_DESCENDING
         ]);
         return $query->execute();
     }
@@ -233,20 +243,20 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds all extensions with category "distribution" not published by the TYPO3 CMS Team
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface
      */
     public function findAllCommunityDistributions()
     {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
-                $query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
+                $query->equals('category', Extension::DISTRIBUTION_CATEGORY),
                 $query->logicalNot($query->equals('ownerusername', 'typo3v4'))
             )
         );
 
         $query->setOrderings([
-            'alldownloadcounter' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING
         ]);
 
         return $query->execute();
@@ -255,20 +265,20 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds all extensions with category "distribution" that are published by the TYPO3 CMS Team
      *
-     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     * @return QueryResultInterface
      */
     public function findAllOfficialDistributions()
     {
         $query = $this->createQuery();
         $query->matching(
             $query->logicalAnd(
-                $query->equals('category', \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::DISTRIBUTION_CATEGORY),
+                $query->equals('category', Extension::DISTRIBUTION_CATEGORY),
                 $query->equals('ownerusername', 'typo3v4')
             )
         );
 
         $query->setOrderings([
-            'alldownloadcounter' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+            'alldownloadcounter' => QueryInterface::ORDER_DESCENDING
         ]);
 
         return $query->execute();
@@ -291,14 +301,14 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Find highest version available of an extension
      *
      * @param string $extensionKey
-     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+     * @return Extension
      */
     public function findHighestAvailableVersion($extensionKey)
     {
         $query = $this->createQuery();
         $query->matching($query->logicalAnd($query->equals('extensionKey', $extensionKey), $query->greaterThanOrEqual('reviewState', 0)));
         $query->setOrderings([
-            'integerVersion' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING
+            'integerVersion' => QueryInterface::ORDER_DESCENDING
         ]);
         return $query->setLimit(1)->execute()->getFirst();
     }
@@ -417,10 +427,10 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Adds default constraints to the query - in this case it
      * enables us to always just search for the latest version of an extension
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Query $query the query to adjust
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Query
+     * @param Query $query the query to adjust
+     * @return Query
      */
-    protected function addDefaultConstraints(\TYPO3\CMS\Extbase\Persistence\Generic\Query $query)
+    protected function addDefaultConstraints(Query $query): Query
     {
         if ($query->getConstraint()) {
             $query->matching($query->logicalAnd(

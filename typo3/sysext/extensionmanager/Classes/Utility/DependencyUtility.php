@@ -14,40 +14,39 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception;
+use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 
 /**
  * Utility for dealing with dependencies
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
+class DependencyUtility implements SingletonInterface
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
+     * @var ExtensionRepository
      */
     protected $extensionRepository;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
+     * @var ListUtility
      */
     protected $listUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility
+     * @var EmConfUtility
      */
     protected $emConfUtility;
 
     /**
-     * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
+     * @var ExtensionManagementService
      */
     protected $managementService;
 
@@ -72,41 +71,33 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected $skipDependencyCheck = false;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager
+     * @param ExtensionRepository $extensionRepository
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
-     */
-    public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository)
+    public function injectExtensionRepository(ExtensionRepository $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
+     * @param ListUtility $listUtility
      */
-    public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility)
+    public function injectListUtility(ListUtility $listUtility)
     {
         $this->listUtility = $listUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility
+     * @param EmConfUtility $emConfUtility
      */
-    public function injectEmConfUtility(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility $emConfUtility)
+    public function injectEmConfUtility(EmConfUtility $emConfUtility)
     {
         $this->emConfUtility = $emConfUtility;
     }
 
     /**
-     * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
+     * @param ExtensionManagementService $managementService
      */
-    public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService)
+    public function injectManagementService(ExtensionManagementService $managementService)
     {
         $this->managementService = $managementService;
     }
@@ -370,7 +361,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected function getExtensionFromInExtensionRepository($extensionKey)
     {
         if ($this->localExtensionStorage !== '' && is_dir($this->localExtensionStorage)) {
-            $extList = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($this->localExtensionStorage);
+            $extList = GeneralUtility::get_dirs($this->localExtensionStorage);
             if (in_array($extensionKey, $extList)) {
                 $this->managementService->markExtensionForCopy($extensionKey, $this->localExtensionStorage);
                 return true;
@@ -613,7 +604,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface
      * @param Extension[] $extensions
      * @param bool $showUnsuitable
      *
-     * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Extension[]
+     * @return Extension[]
      */
     public function filterYoungestVersionOfExtensionList(array $extensions, $showUnsuitable)
     {
