@@ -43,9 +43,18 @@ Migration
 Migrate to use `renderStatic` methods (see examples in TYPO3 Core, EXT:fluid) to not use
 render method arguments.
 
-
 ViewHelpers which access :php:`$this->controllerContext` can instead access
 :php:`$this->renderingContext->getControllerContext()`.
+
+Instead of using the (now removed) abstract classes from ext:fluid, use the classes
+supplied in :file:`vendor/typo3fluid/fluid`:
+
+* :php:`TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper`
+* :php:`TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper`
+* :php:`TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper`
+* :php:`TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition`
+
+and change your code accordingly.
 
 Migrating this can be done with search-and-replace for all common use cases.
 
