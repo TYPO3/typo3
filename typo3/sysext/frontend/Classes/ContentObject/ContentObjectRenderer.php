@@ -5147,7 +5147,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
     protected function addSecurityRelValues(array $tagAttributes, ?string $target, string $url): array
     {
-        $relAttribute = 'noopener noreferrer';
+        $relAttribute = 'noreferrer';
         if ($target !== '_blank' || $this->isInternalUrl($url)) {
             return $tagAttributes;
         }

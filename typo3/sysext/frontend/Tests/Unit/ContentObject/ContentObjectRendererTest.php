@@ -2761,14 +2761,14 @@ class ContentObjectRendererTest extends UnitTestCase
                     'extTarget' => '_blank',
                     'title' => 'Open new window',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noopener noreferrer">TYPO3</a>',
+                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noreferrer">TYPO3</a>',
             ],
             'Link to url with attributes in parameter' => [
                 'TYPO3',
                 [
                     'parameter' => 'http://typo3.org _blank url-class "Open new window"',
                 ],
-                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noopener noreferrer">TYPO3</a>',
+                '<a href="http://typo3.org" title="Open new window" target="_blank" class="url-class" rel="noreferrer">TYPO3</a>',
             ],
             'Link to url with script tag' => [
                 '',

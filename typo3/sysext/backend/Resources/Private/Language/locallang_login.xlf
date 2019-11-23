@@ -43,7 +43,7 @@
 				<source>You are using an unsupported browser version.</source>
 			</trans-unit>
 			<trans-unit id="warning.incompatibleBrowserInternetExplorer" resname="warning.incompatibleBrowserInternetExplorer">
-				<source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noopener noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
+				<source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
 			</trans-unit>
 			<trans-unit id="newsheadline" resname="newsheadline">
 				<source>Important Messages</source>

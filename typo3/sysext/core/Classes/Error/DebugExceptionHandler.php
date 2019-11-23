@@ -107,7 +107,7 @@ HTML;
                             Once you have found a solution to the problem, help others by contributing to the wiki page.
                         </p>
                         <p>
-                            <a href="$wikiLink" target="_blank" rel="noopener noreferrer">Find a solution for this exception in the TYPO3 wiki.</a>
+                            <a href="$wikiLink" target="_blank" rel="noreferrer">Find a solution for this exception in the TYPO3 wiki.</a>
                         </p>
                     </div>
                 </div>

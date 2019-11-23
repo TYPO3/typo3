@@ -52,7 +52,7 @@ GFX:
             description: 'If set, the processor_stripColorProfileCommand is used with all processor image operations by default. See tsRef for setting this parameter explicitly for IMAGE generation.'
         processor_stripColorProfileCommand:
             type: text
-            description: 'String: Specify the command to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank" rel="noopener noreferrer">imagemagick.org</a> for details'
+            description: 'String: Specify the command to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank" rel="noreferrer">imagemagick.org</a> for details'
         processor_colorspace:
             type: text
             description: 'String: Specify the colorspace to use. Some ImageMagick versions (like 6.7.0 and above) use the sRGB colorspace, so all images are darker then the original. <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV'
@@ -99,10 +99,10 @@ SYS:
             description: 'Defines a list of IP addresses which will allow development-output to display. The debug() function will use this as a filter. See the function <code>\TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP()</code> for details on syntax. Setting this to blank value will deny all. Setting to "*" will allow all.'
         ddmmyy:
             type: text
-            description: 'Format of Day-Month-Year - see PHP-function <a href="http://php.net/date" target="_blank" rel="noopener noreferrer">date()</a>'
+            description: 'Format of Day-Month-Year - see PHP-function <a href="http://php.net/date" target="_blank" rel="noreferrer">date()</a>'
         hhmm:
             type: text
-            description: 'Format of Hours-Minutes - see PHP-function <a href="http://php.net/date" target="_blank" rel="noopener noreferrer">date()</a>'
+            description: 'Format of Hours-Minutes - see PHP-function <a href="http://php.net/date" target="_blank" rel="noreferrer">date()</a>'
         USdateFormat:
             type: bool
             description: 'If TRUE, dates entered in the TCEforms of the backend will be formatted mm-dd-yyyy'
@@ -129,18 +129,18 @@ SYS:
             description: 'Integer: memory_limit in MB: If more than 16, TYPO3 will try to use ini_set() to set the memory limit of PHP to the value. This works only if the function ini_set() is not disabled by your sysadmin.'
         phpTimeZone:
             type: text
-            description: 'timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="http://php.net/manual/en/timezones.php" target="_blank" rel="noopener noreferrer">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini''s <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank" rel="noopener noreferrer">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.'
+            description: 'timezone to force for all date() and mktime() functions. A list of supported values can be found at <a href="http://php.net/manual/en/timezones.php" target="_blank" rel="noreferrer">php.net</a>. If this is not set, a valid fallback will be searched for by PHP (php.ini''s <a href="http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone" target="_blank" rel="noreferrer">date.timezone</a> setting, server defaults, etc); and if no fallback is found, the value of "UTC" is used instead.'
         UTF8filesystem:
             type: bool
             description: |
               <p>
                 If TRUE then TYPO3 uses utf-8 to store file names. This allows for accented Latin letters as well as any other non-latin characters like Cyrillic and Chinese.
                 <strong>IMPORTANT:</strong> This requires a UTF-8 compatible locale in order to work. Otherwise problems with filenames containing special characters will occur.
-                See [SYS][systemLocale] and <a href="http://php.net/manual/en/function.setlocale.php" target="_blank" rel="noopener noreferrer">setlocale()</a>.
+                See [SYS][systemLocale] and <a href="http://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>.
               </p>
         systemLocale:
             type: text
-            description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="http://php.net/manual/en/function.setlocale.php" target="_blank" rel="noopener noreferrer">setlocale()</a>.'
+            description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="http://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>.'
         reverseProxyIP:
             type: list
             description: 'List of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here.'
@@ -181,13 +181,13 @@ SYS:
             description: 'Classname to handle PHP errors. E.g.: TYPO3\CMS\Core\Error\ErrorHandler. This class displays and logs all errors that are registered as [SYS][errorHandlerErrors]. Leave empty to disable error handling. Errors will be logged and can be sent to the optionally installed developer log or to the "syslog" database table. If an error is registered in [SYS][exceptionalErrors] it will be turned into an exception to be handled by the configured exceptionHandler.'
         errorHandlerErrors:
             type: errors
-            description: 'The E_* constant that will be handled by the [SYS][errorHandler]. Not all PHP error types can be handled! Default is 30466 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank" rel="noopener noreferrer">PHP documentation</a>).'
+            description: 'The E_* constant that will be handled by the [SYS][errorHandler]. Not all PHP error types can be handled! Default is 30466 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank" rel="noreferrer">PHP documentation</a>).'
         exceptionalErrors:
             type: errors
-            description: 'The E_* constant that will be converted into an exception by the default [SYS][errorHandler]. Default is 4096 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank rel="noopener noreferrer"">PHP documentation</a>). E_USER_DEPRECATED is always excluded to avoid exceptions to be thrown for deprecation messages.'
+            description: 'The E_* constant that will be converted into an exception by the default [SYS][errorHandler]. Default is 4096 = <code>E_ALL & ~(E_STRICT | E_NOTICE | E_COMPILE_WARNING | E_COMPILE_ERROR | E_CORE_WARNING | E_CORE_ERROR | E_PARSE | E_ERROR | E_DEPRECATED | E_USER_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank rel="noreferrer"">PHP documentation</a>). E_USER_DEPRECATED is always excluded to avoid exceptions to be thrown for deprecation messages.'
         belogErrorReporting:
             type: errors
-            description: 'Configures which PHP errors should be logged to the "syslog" database table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank" rel="noopener noreferrer">PHP documentation</a>).'
+            description: 'Configures which PHP errors should be logged to the "syslog" database table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank" rel="noreferrer">PHP documentation</a>).'
         generateApacheHtaccess:
             type: bool
             description: 'TYPO3 can create <em>.htaccess</em> files which are used by Apache Webserver. They are useful for access protection or performance improvements. Currently <em>.htaccess</em> files in the following directories are created, if they do not exist: <ul><li>typo3temp/compressor/</li></ul>You want to disable this feature, if you are not running Apache or want to use own rulesets.'
@@ -529,7 +529,7 @@ MAIL:
             description: '<em>only with transport=smtp</em>: &lt;server:port> of mailserver to connect to. &lt;port> defaults to "25".'
         transport_smtp_encrypt:
             type: text
-            description: '<em>only with transport=smtp</em>: Connect to the server using the specified transport protocol. Requires openssl library. Usually available: <em>ssl, sslv2, sslv3, tls</em>. Check <a href="http://www.php.net/stream_get_transports" target="_blank rel="noopener noreferrer"">stream_get_transports()</a>.'
+            description: '<em>only with transport=smtp</em>: Connect to the server using the specified transport protocol. Requires openssl library. Usually available: <em>ssl, sslv2, sslv3, tls</em>. Check <a href="http://www.php.net/stream_get_transports" target="_blank rel="noreferrer"">stream_get_transports()</a>.'
         transport_smtp_username:
             type: text
             description: '<em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your username here.'
@@ -574,8 +574,8 @@ HTTP:
             type: mixed
             description: |
               <p>Default single proxy server as &quot;proxy.example.org&quot;.</p>
-              <p>Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noopener noreferrer">the documentation</a> for details.</p>
-              <p>The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noopener noreferrer">the documentation</a> for details.</p>
+              <p>Multiple proxies for different protocols can be added separately as array as well as authentication and port; see <a href="http://docs.guzzlephp.org/en/latest/request-options.html#proxy" target="_blank" rel="noreferrer">the documentation</a> for details.</p>
+              <p>The configuration with an array must be made in the <code>AdditionalConfiguration.php</code>; see <a href="https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/GlobalValues/Typo3ConfVars/Index.html#file-additionalconfiguration-php" target="_blank" rel="noreferrer">the documentation</a> for details.</p>
         ssl_key:
             type: mixed
             description: 'Mixed: Local certificate and an optional passphrase, see http://docs.guzzlephp.org/en/latest/request-options.html#ssl-key'
