@@ -555,6 +555,16 @@ class FormDefinition extends AbstractCompositeRenderable implements VariableRend
     }
 
     /**
+     * Get all form elements with their identifiers as keys
+     *
+     * @return FormElementInterface[]
+     */
+    public function getElements(): array
+    {
+        return $this->elementsByIdentifier;
+    }
+
+    /**
      * Get a Form Element by its identifier
      *
      * If identifier does not exist, returns NULL.
