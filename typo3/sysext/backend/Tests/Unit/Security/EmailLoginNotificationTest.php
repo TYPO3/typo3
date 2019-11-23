@@ -19,7 +19,8 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Security;
 use Prophecy\Argument;
 use TYPO3\CMS\Backend\Security\EmailLoginNotification;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -43,11 +44,12 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
+        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
+        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
-
-        $mailMessage->send()->shouldHaveBeenCalled();
     }
 
     /**
@@ -118,13 +120,15 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
+        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
+        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
 
-        $mailMessage->send()->shouldHaveBeenCalledOnce();
         $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
-        $mailMessage->subject('[AdminLoginWarning] At "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
+        $mailMessage->subject('[AdminLoginWarning] New TYPO3 Login at "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
     }
 
     /**
@@ -147,13 +151,15 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
+        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
+        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
 
-        $mailMessage->subject('[AdminLoginWarning] At "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
+        $mailMessage->subject('[AdminLoginWarning] New TYPO3 Login at "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
         $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
-        $mailMessage->send()->shouldHaveBeenCalled();
     }
 
     /**
@@ -176,13 +182,15 @@ class EmailLoginNotificationTest extends UnitTestCase
         ];
 
         $mailMessage = $this->setUpMailMessageProphecy();
+        $mailerProphecy = $this->prophesize(Mailer::class);
+        $mailerProphecy->send($mailMessage)->shouldBeCalledOnce();
+        GeneralUtility::addInstance(Mailer::class, $mailerProphecy->reveal());
 
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
 
         $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
-        $mailMessage->subject('[LoginWarning] At "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
-        $mailMessage->send()->shouldHaveBeenCalled();
+        $mailMessage->subject('[LoginWarning] New TYPO3 Login at "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
     }
 
     /**
@@ -211,17 +219,18 @@ class EmailLoginNotificationTest extends UnitTestCase
     }
 
     /**
-     * @return \Prophecy\Prophecy\ObjectProphecy|\TYPO3\CMS\Core\Mail\MailMessage
+     * @return \Prophecy\Prophecy\ObjectProphecy|FluidEmail
      */
     protected function setUpMailMessageProphecy()
     {
-        $mailMessage = $this->prophesize(MailMessage::class);
+        $mailMessage = $this->prophesize(FluidEmail::class);
         $mailMessage->subject(Argument::any())->willReturn($mailMessage->reveal());
         $mailMessage->to(Argument::any())->willReturn($mailMessage->reveal());
+        $mailMessage->setTemplate(Argument::any())->willReturn($mailMessage->reveal());
         $mailMessage->from(Argument::any())->willReturn($mailMessage->reveal());
-        $mailMessage->text(Argument::any())->willReturn($mailMessage->reveal());
-        $mailMessage->send()->willReturn(true);
-        GeneralUtility::addInstance(MailMessage::class, $mailMessage->reveal());
+        $mailMessage->setRequest(Argument::any())->willReturn($mailMessage->reveal());
+        $mailMessage->assignMultiple(Argument::cetera())->willReturn($mailMessage->reveal());
+        GeneralUtility::addInstance(FluidEmail::class, $mailMessage->reveal());
         return $mailMessage;
     }
 }

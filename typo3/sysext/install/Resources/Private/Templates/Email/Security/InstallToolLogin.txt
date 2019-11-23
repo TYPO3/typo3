@@ -1,0 +1,5 @@
+<f:layout name="SystemEmail" />
+<f:section name="Title">{headline}</f:section>
+<f:section name="Main">{introduction}
+There has been a successful Install Tool login at TYPO3 site "{typo3.sitename}" from the IP address "{normalizedParams.remoteAddress}".
+</f:section>

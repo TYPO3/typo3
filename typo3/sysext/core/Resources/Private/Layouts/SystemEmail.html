@@ -1,0 +1,432 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true" >
+<head>
+    <!--[if gte mso 15]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style type="text/css">
+        p {
+            margin:10px 0;
+            padding:0;
+        }
+        table {
+            border-collapse:collapse;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            display:block;
+            margin:0;
+            padding:0;
+        }
+        img,
+        a img {
+            border:0;
+            height:auto;
+            outline:none;
+            text-decoration:none;
+        }
+        body,
+        #bodyTable,
+        #bodyCell {
+            height:100%;
+            margin:0;
+            padding:0;
+            width:100%;
+        }
+        #outlook a {
+            padding:0;
+        }
+        img {
+            -ms-interpolation-mode:bicubic;
+        }
+        table {
+            mso-table-lspace:0pt;
+            mso-table-rspace:0pt;
+        }
+        .ReadMsgBody {
+            width:100%;
+        }
+        .ExternalClass {
+            width:100%;
+        }
+        p,
+        a,
+        td {
+            mso-line-height-rule:exactly;
+        }
+        a[href^=tel],
+        a[href^=sms] {
+            color:inherit;
+            cursor:default;
+            text-decoration:none;
+        }
+        p,
+        a,
+        td,
+        body,
+        table,
+        blockquote {
+            -ms-text-size-adjust:100%;
+            -webkit-text-size-adjust:100%;
+        }
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass td,
+        .ExternalClass div,
+        .ExternalClass span,
+        .ExternalClass font {
+            line-height:100%;
+        }
+        a[x-apple-data-detectors]{
+            color:inherit !important;
+            text-decoration:none !important;
+            font-size:inherit !important;
+            font-family:inherit !important;
+            font-weight:inherit !important;
+            line-height:inherit !important;
+        }
+
+        .templateContainer {
+            max-width:600px !important;
+        }
+        a.button {
+            display:block;
+        }
+        .image,.retinaImage {
+            vertical-align:bottom;
+        }
+        .textContent {
+            word-break:break-word;
+        }
+        .textContent img {
+            height:auto !important;
+        }
+        .dividerBlock {
+            table-layout:fixed !important;
+        }
+        h1 {
+            color:#222222;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:40px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:150%;
+            letter-spacing:normal;
+            text-align:center;
+        }
+        h2 {
+            color:#222222;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:34px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:150%;
+            letter-spacing:normal;
+            text-align:left;
+        }
+        h3 {
+            color:#444444;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:22px;
+            font-style:normal;
+            font-weight:bold;
+            line-height:150%;
+            letter-spacing:normal;
+            text-align:left;
+        }
+        h4 {
+            color:#999999;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:20px;
+            font-style:italic;
+            font-weight:normal;
+            line-height:125%;
+            letter-spacing:normal;
+            text-align:left;
+        }
+        #templateHeader {
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:36px;
+            padding-bottom:0;
+        }
+        .headerContainer {
+            background-color:#ffffff;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:1px none ;
+            border-bottom:0;
+            padding-top:36px;
+            padding-bottom:36px;
+        }
+        .headerContainer .textContent,
+        .headerContainer .textContent p {
+            color:#808080;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:16px;
+            line-height:150%;
+            text-align:left;
+        }
+        .headerContainer .textContent a,
+        .headerContainer .textContent p a {
+            color:#538bb3;
+            font-weight:normal;
+            text-decoration:underline;
+        }
+        #templateBody {
+            background-color:#f2f2f2;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:0;
+            padding-bottom:0;
+        }
+        .bodyContainer {
+            background-color:#ffffff;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:0;
+            padding-bottom:18px;
+        }
+        .bodyContainer .textContent,
+        .bodyContainer .textContent p {
+            color:#808080;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:16px;
+            line-height:150%;
+            text-align:left;
+        }
+        .bodyContainer .textContent a,
+        .bodyContainer .textContent p a {
+            color:#538bb3;
+            font-weight:normal;
+            text-decoration:underline;
+        }
+        #templateFooter{
+            background-color:#f2f2f2;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:1px none ;
+            border-bottom:0;
+            padding-top:0;
+            padding-bottom:36px;
+        }
+        .footerContainer{
+            background-color:#313131;
+            background-image:none;
+            background-repeat:no-repeat;
+            background-position:center;
+            background-size:cover;
+            border-top:0;
+            border-bottom:0;
+            padding-top:45px;
+            padding-bottom:45px;
+        }
+        .footerContainer .textContent,
+        .footerContainer .textContent p {
+            color:#FFFFFF;
+            font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
+            font-size:12px;
+            line-height:150%;
+            text-align:center;
+        }
+        .footerContainer .textContent a,
+        .footerContainer .textContent p a {
+            color:#FFFFFF;
+            font-weight:normal;
+            text-decoration:underline;
+        }
+        @media only screen and (min-width:768px){
+            .templateContainer {
+                width:600px !important;
+            }
+        }
+        @media only screen and (max-width: 480px){
+            body,
+            table,
+            td,
+            p,
+            a {
+                -webkit-text-size-adjust:none !important;
+            }
+            body {
+                width:100% !important;
+                min-width:100% !important;
+            }
+            h1 {
+                font-size:30px !important;
+                line-height:125% !important;
+            }
+            h2 {
+                font-size:26px !important;
+                line-height:125% !important;
+            }
+            h3 {
+                font-size:20px !important;
+                line-height:150% !important;
+            }
+            h4 {
+                font-size:18px !important;
+                line-height:150% !important;
+            }
+            .headerContainer .textContent,
+            .headerContainer .textContent p {
+                font-size:16px !important;
+                line-height:150% !important;
+            }
+            .bodyContainer .textContent,
+            .bodyContainer .textContent p {
+                font-size:16px !important;
+                line-height:150% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<center>
+    <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable"><tr><td align="center" valign="top" id="bodyCell">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+
+            <f:if condition="{typo3.systemConfiguration.backend.loginHighlightColor}">
+                <f:then>
+                    <f:variable name="backgroundColor" value="{typo3.systemConfiguration.backend.loginHighlightColor}" />
+                </f:then>
+                <f:else>
+                    <f:variable name="backgroundColor" value="#ff8700" />
+                </f:else>
+            </f:if>
+
+            <!-- HEADER START -->
+            <tr><td align="center" valign="top" id="templateHeader" style="background-color: {backgroundColor}">
+
+                <!--[if (gte mso 9)|(IE)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;"><tr><td align="center" valign="top" width="600" style="width:600px;"><![endif]-->
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer"><tr><td valign="top" class="headerContainer">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="textBlock" style="min-width:100%;"><tbody class="textBlockOuter"><tr><td valign="top" class="textBlockInner" style="padding-top:9px;">
+
+                        <!--[if mso]><table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;"><tr><td valign="top" width="600" style="width:600px;"><![endif]-->
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="textContentContainer">
+                            <tbody>
+                            <tr>
+                                <td valign="top" class="image" align="center" style="padding: 0px 36px; padding-bottom: 20px; color: #222222;text-align: center;">
+                                    <f:if condition="{typo3.systemConfiguration.backend.loginLogo}">
+                                        <f:then>
+                                            <f:image src="{typo3.systemConfiguration.backend.loginLogo}" absolute="1" alt="TYPO3 Logo" height="41" width="150" />
+                                        </f:then>
+                                        <f:else if="{typo3.systemConfiguration.backend.loginHighlightColor}">
+                                            <f:image src="EXT:backend/Resources/Public/Images/typo3_black.svg" absolute="1" alt="TYPO3 Logo" height="41" width="150" />
+                                        </f:else>
+                                        <f:else>
+                                            <img src="{normalizedParams.siteUrl}{f:uri.resource(extensionName: 'backend', path: 'Images/typo3_orange.svg')}" alt="TYPO3 Logo" height="41" width="150" />
+                                        </f:else>
+                                    </f:if>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" class="textContent" style="padding: 0px 36px;color: #222222;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 24px;text-align: center;">
+                                    <strong><f:render section="Title" optional="true" /></strong>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--[if mso]></td></tr></table><![endif]-->
+
+                    </td></tr></tbody></table>
+                </td></tr></table>
+                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+            </td></tr>
+            <!-- HEADER END -->
+
+
+            <!-- BODY START -->
+            <tr><td align="center" valign="top" id="templateBody">
+
+                <!--[if (gte mso 9)|(IE)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;"><tr><td align="center" valign="top" width="600" style="width:600px;"><![endif]-->
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer"><tr><td valign="top" class="bodyContainer">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="textBlock" style="min-width:100%;"><tbody class="textBlockOuter"><tr><td valign="top" class="textBlockInner" style="padding: 36px 0px;">
+
+                        <!--[if mso]><table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;"><tr><td valign="top" width="600" style="width:600px;"><![endif]-->
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="textContentContainer">
+                            <tbody>
+                            <tr>
+                                <td valign="top" class="textContent" style="padding: 0px 36px;">
+
+                                    <f:render section="Main" />
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--[if mso]></td></tr></table><![endif]-->
+
+                    </td></tr></tbody></table>
+                </td></tr></table>
+                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+            </td></tr>
+            <!-- BODY END -->
+
+            <!-- FOOTER START -->
+            <tr><td align="center" valign="top" id="templateFooter">
+
+                <!--[if (gte mso 9)|(IE)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;"><tr><td align="center" valign="top" width="600" style="width:600px;"><![endif]-->
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer"><tr><td valign="top" class="footerContainer">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="textBlock" style="min-width:100%;"><tbody class="textBlockOuter"><tr><td valign="top" class="textBlockInner">
+
+                        <!--[if mso]><table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;"><tr><td valign="top" width="600" style="width:600px;"><![endif]-->
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="textContentContainer"><tbody><tr><td valign="top" class="textContent" style="padding:0 36px;">
+
+                            <p style="margin-top: 0;">
+                                This email was sent by <strong>{typo3.sitename}</strong> from URL: <a href="{normalizedParams.siteUrl}" target="_blank" rel="noopener">{normalizedParams.siteUrl}</a> - Please contact your site administrator if you feel you received this email by accident.
+                            </p>
+                            <p style="margin-top: 0;">
+                                {typo3.information.copyrightNotice -> f:format.raw()}
+                            </p>
+
+                        </td></tr></tbody></table>
+                        <!--[if mso]></td></tr></table><![endif]-->
+
+                    </td></tr></tbody></table>
+                </td></tr></table>
+                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+
+
+            </td></tr>
+            <!-- FOOTER END -->
+
+        </table>
+    </td></tr></table>
+</center>
+
+</body>
+</html>

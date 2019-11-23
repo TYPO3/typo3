@@ -24,7 +24,8 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
-use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -236,7 +237,6 @@ class EnvironmentController extends AbstractController
     {
         $messages = new FlashMessageQueue('install');
         $recipient = $request->getParsedBody()['install']['email'];
-        $delivered = false;
         if (empty($recipient) || !GeneralUtility::validEmail($recipient)) {
             $messages->enqueue(new FlashMessage(
                 'Given address is not a valid email address.',
@@ -245,19 +245,24 @@ class EnvironmentController extends AbstractController
             ));
         } else {
             try {
-                $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
+                $variables = [
+                    'headline' => 'TYPO3 Test Mail',
+                    'introduction' => 'Hey TYPO3 Administrator',
+                    'content' => 'Seems like your favorite TYPO3 installation can send out emails!'
+                ];
+                $mailMessage = GeneralUtility::makeInstance(FluidEmail::class);
                 $mailMessage
                     ->to($recipient)
                     ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
                     ->subject($this->getEmailSubject())
-                    ->html('<html><body>html test content</body></html>')
-                    ->text('plain test content')
-                    ->send();
+                    ->setRequest($request)
+                    ->assignMultiple($variables);
+
+                GeneralUtility::makeInstance(Mailer::class)->send($mailMessage);
                 $messages->enqueue(new FlashMessage(
                     'Recipient: ' . $recipient,
                     'Test mail sent'
                 ));
-                $delivered = true;
             } catch (\Symfony\Component\Mime\Exception\RfcComplianceException $exception) {
                 $messages->enqueue(new FlashMessage(
                     'Please verify $GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'defaultMailFromAddress\'] is a valid mail address.'

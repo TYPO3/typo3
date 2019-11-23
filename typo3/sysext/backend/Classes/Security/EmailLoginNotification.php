@@ -16,14 +16,18 @@ namespace TYPO3\CMS\Backend\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Http\ServerRequestFactory;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Sends out an email if a backend user has just been logged in.
  *
- * Interesting settings:
+ * Relevant settings:
  * $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode']
  * $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr']
  * $BE_USER->uc['emailMeAtLogin']
@@ -42,6 +46,11 @@ class EmailLoginNotification
      */
     private $warningEmailRecipient;
 
+    /**
+     * @var ServerRequestInterface
+     */
+    private $request;
+
     public function __construct()
     {
         $this->warningMode = (int)($GLOBALS['TYPO3_CONF_VARS']['BE']['warning_mode'] ?? 0);
@@ -57,28 +66,21 @@ class EmailLoginNotification
     public function emailAtLogin(array $parameters, BackendUserAuthentication $currentUser): void
     {
         $user = $parameters['user'];
-
-        $subject = 'At "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR');
-        $emailBody = $this->compileEmailBody(
-            $user,
-            GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-            GeneralUtility::getIndpEnv('HTTP_HOST'),
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
-        );
+        $this->request = $parameters['request'] ?? $GLOBALS['TYPO3_REQUEST'] ?? ServerRequestFactory::fromGlobals();
 
         if ($this->warningMode > 0 && !empty($this->warningEmailRecipient)) {
             $prefix = $currentUser->isAdmin() ? '[AdminLoginWarning]' : '[LoginWarning]';
             if ($this->warningMode & 1) {
                 // First bit: Send warning email on any login
-                $this->sendEmail($this->warningEmailRecipient, $prefix . ' ' . $subject, $emailBody);
+                $this->sendEmail($this->warningEmailRecipient, $currentUser, $prefix);
             } elseif ($currentUser->isAdmin() && $this->warningMode & 2) {
                 // Second bit: Only send warning email when an admin logs in
-                $this->sendEmail($this->warningEmailRecipient, $prefix . ' ' . $subject, $emailBody);
+                $this->sendEmail($this->warningEmailRecipient, $currentUser, $prefix);
             }
         }
         // Trigger an email to the current BE user, if this has been enabled in the user configuration
         if (($currentUser->uc['emailMeAtLogin'] ?? null) && GeneralUtility::validEmail($user['email'])) {
-            $this->sendEmail($user['email'], $subject, $emailBody);
+            $this->sendEmail($user['email'], $currentUser);
         }
     }
 
@@ -86,27 +88,20 @@ class EmailLoginNotification
      * Sends an email.
      *
      * @param string $recipient
-     * @param string $subject
-     * @param string $body
+     * @param AbstractUserAuthentication $user
+     * @param string|null $subjectPrefix
      */
-    protected function sendEmail(string $recipient, string $subject, string $body): void
+    protected function sendEmail(string $recipient, AbstractUserAuthentication $user, string $subjectPrefix = null): void
     {
+        $subject = $subjectPrefix . ' New TYPO3 Login at "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR');
+        $headline = 'TYPO3 Backend Login notification';
         $recipients = explode(',', $recipient);
-        GeneralUtility::makeInstance(MailMessage::class)
+        $email = GeneralUtility::makeInstance(FluidEmail::class)
             ->to(...$recipients)
             ->subject($subject)
-            ->text($body)
-            ->send();
-    }
-
-    protected function compileEmailBody(array $user, string $ipAddress, string $httpHost, string $siteName): string
-    {
-        return sprintf(
-            'User "%s" logged in from %s at "%s" (%s)',
-            $user['username'] ?? 'unknown',
-            $ipAddress,
-            $siteName,
-            $httpHost
-        );
+            ->setRequest($this->request)
+            ->setTemplate('Security/LoginNotification')
+            ->assignMultiple(['user' => $user->user, 'headline' => $headline]);
+        GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 }

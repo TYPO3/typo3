@@ -17,8 +17,10 @@ namespace TYPO3\CMS\Install\Authentication;
 
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
-use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Mail\FluidEmail;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MailUtility;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -72,18 +74,16 @@ class AuthenticationService
     protected function sendLoginSuccessfulMail()
     {
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        if ($warningEmailAddress) {
-            $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
-            $mailMessage
-                ->to($warningEmailAddress)
-                ->subject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
-                ->text('There has been an Install Tool login at TYPO3 site'
-                    . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
-                    . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
-                    . ' from remote address \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\'')
-                ->send();
+        if (!$warningEmailAddress) {
+            return;
         }
+        $email = GeneralUtility::makeInstance(FluidEmail::class);
+        $email
+            ->to($warningEmailAddress)
+            ->subject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
+            ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+            ->setTemplate('Security/InstallToolLogin');
+        GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 
     /**
@@ -91,21 +91,19 @@ class AuthenticationService
      */
     protected function sendLoginFailedMail()
     {
-        $formValues = GeneralUtility::_GP('install');
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
-        if ($warningEmailAddress) {
-            $mailMessage = GeneralUtility::makeInstance(MailMessage::class);
-            $mailMessage
-                ->to($warningEmailAddress)
-                ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
-                ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
-                ->text('There has been an Install Tool login attempt at TYPO3 site'
-                    . ' \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\''
-                    . ' (' . GeneralUtility::getIndpEnv('HTTP_HOST') . ')'
-                    . ' The last 5 characters of the MD5 hash of the password tried was \'' . substr(md5($formValues['password']), -5) . '\''
-                    . ' remote address was \'' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\'')
-                ->send();
+        if (!$warningEmailAddress) {
+            return;
         }
+        $formValues = GeneralUtility::_GP('install');
+        $email = GeneralUtility::makeInstance(FluidEmail::class);
+        $email
+            ->to($warningEmailAddress)
+            ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
+            ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
+            ->setTemplate('Security/InstallToolLoginAttempt')
+            ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5));
+        GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 
     /**
@@ -117,9 +115,7 @@ class AuthenticationService
      */
     protected function getSenderEmailAddress()
     {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']
-            : 'no-reply@example.com';
+        return MailUtility::getSystemFromAddress();
     }
 
     /**
@@ -131,8 +127,6 @@ class AuthenticationService
      */
     protected function getSenderEmailName()
     {
-        return !empty($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'])
-            ? $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']
-            : 'TYPO3 CMS install tool';
+        return MailUtility::getSystemFromName() ?: 'TYPO3 CMS install tool';
     }
 }

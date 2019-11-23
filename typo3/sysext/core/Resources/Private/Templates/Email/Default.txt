@@ -1,0 +1,5 @@
+<f:layout name="SystemEmail" />
+<f:section name="Title">{headline}</f:section>
+<f:section name="Main">{introduction}
+
+{content}</f:section>
