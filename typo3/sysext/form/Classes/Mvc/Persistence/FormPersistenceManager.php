@@ -405,6 +405,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
     public function getAccessibleFormStorageFolders(): array
     {
         $storageFolders = [];
+
         if (
             !isset($this->formSettings['persistenceManager']['allowedFileMounts'])
             || !is_array($this->formSettings['persistenceManager']['allowedFileMounts'])
@@ -414,8 +415,9 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
         }
 
         foreach ($this->formSettings['persistenceManager']['allowedFileMounts'] as $allowedFileMount) {
-            list($storageUid, $fileMountIdentifier) = explode(':', $allowedFileMount, 2);
-            $fileMountIdentifier = rtrim($fileMountIdentifier, '/') . '/';
+            [$storageUid, $fileMountPath] = explode(':', $allowedFileMount, 2);
+            // like "/form_definitions/" or "/group_homes/1/form_definitions/"
+            $fileMountPath = rtrim($fileMountPath, '/') . '/';
 
             try {
                 $storage = $this->getStorageByUid((int)$storageUid);
@@ -423,15 +425,41 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                 continue;
             }
 
+            $isStorageFileMount = false;
+            $parentFolder = $storage->getRootLevelFolder(false);
+
+            foreach ($storage->getFileMounts() as $storageFileMount) {
+                /** @var \TYPO3\CMS\Core\Resource\Folder */
+                $storageFileMountFolder = $storageFileMount['folder'];
+
+                // Normally should use ResourceStorage::isWithinFolder() to check if the configured file mount path is within a storage file mount but this requires a valid Folder object and thus a directory which already exists. And the folder could simply not exist yet.
+                if (StringUtility::beginsWith($fileMountPath, $storageFileMountFolder->getIdentifier())) {
+                    $isStorageFileMount = true;
+                    $parentFolder = $storageFileMountFolder;
+                }
+            }
+
+            // Get storage folder object, create it if missing
             try {
-                $folder = $storage->getFolder($fileMountIdentifier);
-            } catch (FolderDoesNotExistException $e) {
-                $storage->createFolder($fileMountIdentifier);
-                continue;
+                $fileMountFolder = $storage->getFolder($fileMountPath);
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 continue;
+            } catch (FolderDoesNotExistException $e) {
+                if ($isStorageFileMount) {
+                    $fileMountPath = substr(
+                        $fileMountPath,
+                        strlen($parentFolder->getIdentifier())
+                    );
+                }
+
+                try {
+                    $fileMountFolder = $storage->createFolder($fileMountPath, $parentFolder);
+                } catch (InsufficientFolderAccessPermissionsException $e) {
+                    continue;
+                }
             }
-            $storageFolders[$allowedFileMount] = $folder;
+
+            $storageFolders[$allowedFileMount] = $fileMountFolder;
         }
         return $storageFolders;
     }
