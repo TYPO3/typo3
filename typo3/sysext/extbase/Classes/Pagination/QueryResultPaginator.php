@@ -24,21 +24,21 @@ final class QueryResultPaginator extends AbstractPaginator
     /**
      * @var QueryResultInterface
      */
-    protected $queryResult;
+    private $queryResult;
 
     /**
      * @var QueryResultInterface
      */
-    protected $paginatedQueryResult;
+    private $paginatedQueryResult;
 
     public function __construct(
         QueryResultInterface $queryResult,
-        int $itemsPerPage = 10,
-        int $currentPageNumber = 1
+        int $currentPageNumber = 1,
+        int $itemsPerPage = 10
     ) {
         $this->queryResult = $queryResult;
-        $this->setItemsPerPage($itemsPerPage);
         $this->setCurrentPageNumber($currentPageNumber);
+        $this->setItemsPerPage($itemsPerPage);
 
         $this->updateInternalState();
     }

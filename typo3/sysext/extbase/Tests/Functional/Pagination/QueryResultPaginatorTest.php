@@ -80,8 +80,8 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
-            3,
-            1
+            1,
+            3
         );
 
         self::assertSame(5, $paginator->getNumberOfPages());
@@ -114,8 +114,8 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
-            3,
-            5
+            5,
+            3
         );
 
         self::assertSame(5, $paginator->getNumberOfPages());
@@ -133,6 +133,7 @@ class QueryResultPaginatorTest extends FunctionalTestCase
 
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
+            1,
             3
         );
         $paginator->withCurrentPageNumber(0);
@@ -145,8 +146,8 @@ class QueryResultPaginatorTest extends FunctionalTestCase
     {
         $paginator = new QueryResultPaginator(
             $this->postRepository->findAll(),
-            50,
-            1
+            1,
+            50
         );
 
         self::assertSame(1, $paginator->getNumberOfPages());

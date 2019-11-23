@@ -21,21 +21,21 @@ final class ArrayPaginator extends AbstractPaginator
     /**
      * @var array
      */
-    protected $items;
+    private $items;
 
     /**
      * @var array
      */
-    protected $paginatedItems = [];
+    private $paginatedItems = [];
 
     public function __construct(
         array $items,
-        int $itemsPerPage = 10,
-        int $currentPageNumber = 1
+        int $currentPageNumber = 1,
+        int $itemsPerPage = 10
     ) {
         $this->items = $items;
-        $this->setItemsPerPage($itemsPerPage);
         $this->setCurrentPageNumber($currentPageNumber);
+        $this->setItemsPerPage($itemsPerPage);
 
         $this->updateInternalState();
     }

@@ -41,7 +41,7 @@ Code-Example for the :php:`ArrayPaginator`:
    $itemsPerPage = 2;
    $currentPageNumber = 3;
 
-   $paginator = new ArrayPaginator($itemsToBePaginated, $itemsPerPage, $currentPageNumber);
+   $paginator = new ArrayPaginator($itemsToBePaginated, $currentPageNumber, $itemsPerPage);
    $paginator->getNumberOfPages(); // returns 3
    $paginator->getCurrentPageNumber(); // returns 3, basically just returns the input value
    $paginator->getKeyOfFirstPaginatedItem(); // returns 5
