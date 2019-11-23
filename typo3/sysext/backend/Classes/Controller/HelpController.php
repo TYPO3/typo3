@@ -20,11 +20,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Domain\Repository\TableManualRepository;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Information\Typo3Copyright;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -56,14 +56,21 @@ class HelpController
 
     /** @var ViewInterface */
     protected $view;
+    /**
+     * @var Typo3Copyright
+     */
+    private $copyright;
 
     /**
      * Instantiate the report controller
+     *
+     * @param Typo3Copyright $copyright
      */
-    public function __construct()
+    public function __construct(Typo3Copyright $copyright)
     {
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->tableManualRepository = GeneralUtility::makeInstance(TableManualRepository::class);
+        $this->copyright = $copyright;
     }
 
     /**
@@ -110,7 +117,7 @@ class HelpController
         $this->view->setPartialRootPaths(['EXT:backend/Resources/Private/Partials']);
         $this->view->setLayoutRootPaths(['EXT:backend/Resources/Private/Layouts']);
         $this->view->getRequest()->setControllerExtensionName('Backend');
-        $this->view->assign('copyright', BackendUtility::TYPO3_copyRightNotice());
+        $this->view->assign('copyright', $this->copyright->getCopyrightNotice());
     }
 
     /**

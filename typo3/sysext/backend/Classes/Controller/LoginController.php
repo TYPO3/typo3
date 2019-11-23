@@ -23,13 +23,13 @@ use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Information\Typo3Copyright;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -99,6 +99,15 @@ class LoginController implements LoggerAwareInterface
      * @var DocumentTemplate
      */
     protected $documentTemplate;
+    /**
+     * @var \TYPO3\CMS\Core\Information\Typo3Copyright
+     */
+    private $copyright;
+
+    public function __construct(Typo3Copyright $copyright)
+    {
+        $this->copyright = $copyright;
+    }
 
     /**
      * Injects the request and response objects for the current request or subrequest
@@ -280,7 +289,7 @@ class LoginController implements LoggerAwareInterface
                 'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
                 'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
             ],
-            'copyright' => BackendUtility::TYPO3_copyRightNotice(),
+            'copyright' => $this->copyright->getCopyrightNotice(),
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
             'loginNewsItems' => $this->getSystemNews(),

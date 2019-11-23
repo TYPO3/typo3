@@ -952,4 +952,11 @@ return [
             'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89756-BackendUtilityTYPO3_copyRightNotice.rst',
+        ],
+    ],
 ];

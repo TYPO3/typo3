@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Information\Typo3Copyright;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -3817,46 +3818,13 @@ class BackendUtility
      * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
      *
      * @return string Text/Image (HTML) for copyright notice.
+     * @deprecated since TYPO3 v10.2, will be removed in TYPO3 v11.0
      */
     public static function TYPO3_copyRightNotice()
     {
-        // Copyright Notice
-        $loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
-        $loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
-
-        $lang = static::getLanguageService();
-
-        if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
-            $warrantyNote = sprintf(
-                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:warranty.by'),
-                htmlspecialchars($loginCopyrightWarrantyProvider),
-                '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank" rel="noreferrer">',
-                '</a>'
-            );
-        } else {
-            $warrantyNote = sprintf(
-                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:no.warranty'),
-                '<a href="' . TYPO3_URL_LICENSE . '" target="_blank" rel="noreferrer">',
-                '</a>'
-            );
-        }
-        $cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank" rel="noreferrer">' .
-            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. ' .
-            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
-            . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
-            $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
-            sprintf(
-                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:details.link'),
-                '<a href="' . TYPO3_URL_GENERAL . '" target="_blank" rel="noreferrer">' . TYPO3_URL_GENERAL . '</a>'
-            ) . ' ' .
-            strip_tags($warrantyNote, '<a>') . ' ' .
-            sprintf(
-                $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:free.software'),
-                '<a href="' . TYPO3_URL_LICENSE . '" target="_blank" rel="noreferrer">',
-                '</a> '
-            )
-            . $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:keep.notice');
-        return $cNotice;
+        trigger_error('BackendUtility::TYPO3_copyRightNotice() will be removed in TYPO3 v11.0, use the Typo3Copyright PHP class instead.', E_USER_DEPRECATED);
+        $copyrightGenerator = GeneralUtility::makeInstance(Typo3Copyright::class, static::getLanguageService());
+        return $copyrightGenerator->getCopyrightNotice();
     }
 
     /**
