@@ -34,4 +34,3 @@ formEditor.propertyCollections.validators.30.editors.300
                          10: Integer
                        additionalElementPropertyPaths:
                          10: properties.fluidAdditionalAttributes.maxlength
-

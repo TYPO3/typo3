@@ -1,0 +1,65 @@
+formEditor.propertyCollections.validators.10
+--------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.10
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 5-
+
+         Date:
+           formEditor:
+             propertyCollections:
+               validators:
+                 10:
+                   identifier: DateRange
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.DatePicker.validators.DateRange.editor.header.label
+                     200
+                       identifier: validationErrorMessage
+                       templateName: Inspector-ValidationErrorMessageEditor
+                       label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.label
+                       fieldExplanationText: formEditor.elements.TextMixin.validators.Alphanumeric.editor.validationErrorMessage.fieldExplanationText
+                       errorCodes:
+                         10: 1521293685
+                         20: 1521293686
+                         30: 1521293687
+                       propertyPath: properties.validationErrorMessages
+                     250:
+                       identifier: minimum
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.DatePicker.validators.DateRange.editor.minimum
+                       placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder
+                       propertyPath: options.minimum
+                       propertyValidators:
+                         10: RFC3339FullDateOrEmpty
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.min
+                     300:
+                       identifier: maximum
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.DatePicker.validators.DateRange.editor.maximum
+                       placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.maximum.placeholder
+                       propertyPath: options.maximum
+                       propertyValidators:
+                         10: RFC3339FullDateOrEmpty
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.max
+                     9999:
+                       identifier: removeButton
+                       templateName: Inspector-RemoveElementEditor
+

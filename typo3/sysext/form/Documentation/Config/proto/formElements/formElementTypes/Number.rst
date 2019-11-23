@@ -72,22 +72,22 @@ Properties
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.60.editors.100:
 .. include:: Number/formEditor/propertyCollections/validators/60/editors/100.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.text.formeditor.propertycollections.validators.70:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70:
 .. include:: Number/formEditor/propertyCollections/validators/70.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.text.formeditor.propertycollections.validators.70.identifier:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.identifier:
 .. include:: Number/formEditor/propertyCollections/validators/70/identifier.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.text.formeditor.propertycollections.validators.70.editors.100:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.100:
 .. include:: Number/formEditor/propertyCollections/validators/70/editors/100.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.text.formeditor.propertycollections.validators.70.editors.200:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.200:
 .. include:: Number/formEditor/propertyCollections/validators/70/editors/200.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.text.formeditor.propertycollections.validators.70.editors.300:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.300:
 .. include:: Number/formEditor/propertyCollections/validators/70/editors/300.rst
 
-.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.text.formeditor.propertycollections.validators.70.editors.9999:
+.. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.propertycollections.validators.70.editors.9999:
 .. include:: Number/formEditor/propertyCollections/validators/70/editors/9999.rst
 
 .. _typo3.cms.form.prototypes.<prototypeIdentifier>.formelementsdefinition.number.formeditor.label:

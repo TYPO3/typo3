@@ -31,4 +31,3 @@ formEditor.editors.800
                  validatorIdentifier: NotEmpty
                  propertyPath: properties.fluidAdditionalAttributes.required
                  propertyValue: required
-

@@ -29,4 +29,3 @@ formEditor.propertyCollections.validators.10.editors.100
                        identifier: header
                        templateName: Inspector-CollectionElementHeaderEditor
                        label: formEditor.elements.TextMixin.validators.Alphanumeric.editor.header.label
-

@@ -24,7 +24,7 @@ formEditor.editors.500
          Textarea:
            formEditor:
              editors:
-               400:
+               500:
                  identifier: defaultValue
                  templateName: Inspector-TextEditor
                  label: formEditor.elements.TextMixin.editor.defaultValue.label

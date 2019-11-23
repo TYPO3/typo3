@@ -93,6 +93,16 @@ Properties
                [...]
              Hidden:
                [...]
+             Email:
+               [...]
+             Telephone:
+               [...]
+             Url:
+               [...]
+             Number:
+               [...]
+             Date:
+               [...]
              Checkbox:
                [...]
              MultiCheckbox:
@@ -798,6 +808,7 @@ Concrete configurations
 
     formElementTypes/AdvancedPassword
     formElementTypes/Checkbox
+    formElementTypes/Date
     formElementTypes/ContentElement
     formElementTypes/DatePicker
     formElementTypes/Email

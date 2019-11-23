@@ -81,9 +81,14 @@ providing a minimum and/ or maximum date. The validator has 2 options:
 - Minimum date: The minimum date.
 - Maximum date: The maximum date.
 
-The date string for the above mentioned fields is expected to be formatted
-according to the `W3C standard <http://www.w3.org/TR/NOTE-datetime.html>`_
-which is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00".
+The properties ``minimum`` and ``maximum`` must have the format 'Y-m-d' which
+represents the RFC 3339 'full-date' format.
+
+Read more: https://www.w3.org/TR/2011/WD-html-markup-20110405/input.date.html
+
+The input must be a DateTime object. This input can be tested against a minimum
+date and a maximum date. The minimum date and the maximum date are strings. The minimum
+date and the maximum date can be configured through the validator options.
 
 
 .. _concepts-validators-email:

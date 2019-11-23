@@ -1,0 +1,61 @@
+formEditor.propertyCollections.validators.70
+--------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.70
+
+:aspect:`Data type`
+      array
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      No
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 5-
+
+         Date:
+           formEditor:
+             propertyCollections:
+               validators:
+                 70:
+                   identifier: NumberRange
+                   editors:
+                     100:
+                       identifier: header
+                       templateName: Inspector-CollectionElementHeaderEditor
+                       label: formEditor.elements.TextMixin.validators.NumberRange.editor.header.label
+                     200:
+                       identifier: minimum
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.MinimumMaximumEditorsMixin.editor.minimum.label
+                       propertyPath: options.minimum
+                       propertyValidators:
+                         10: Integer
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.min
+                     300:
+                       identifier: maximum
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.MinimumMaximumEditorsMixin.editor.maximum.label
+                       propertyPath: options.maximum
+                       propertyValidators:
+                         10: Integer
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.max
+                     400:
+                       identifier: validationErrorMessage
+                       templateName: Inspector-ValidationErrorMessageEditor
+                       label: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.label
+                       fieldExplanationText: formEditor.elements.TextMixin.validators.NumberRange.editor.validationErrorMessage.fieldExplanationText
+                       errorCodes:
+                         10: 1221563685
+                         20: 1221561046
+                       propertyPath: properties.validationErrorMessages
+                     9999:
+                       identifier: removeButton
+                       templateName: Inspector-RemoveElementEditor

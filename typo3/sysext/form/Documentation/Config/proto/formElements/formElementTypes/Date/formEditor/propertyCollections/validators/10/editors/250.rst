@@ -1,0 +1,37 @@
+formEditor.propertyCollections.validators.10.editors.250
+--------------------------------------------------------
+
+:aspect:`Option path`
+      TYPO3.CMS.Form.prototypes.<prototypeIdentifier>.formElementsDefinition.Date.formEditor.propertyCollections.validators.10.editors.250
+
+:aspect:`Data type`
+      array/ :ref:`[TextEditor] <typo3.cms.form.prototypes.\<prototypeidentifier>.formelementsdefinition.\<formelementtypeidentifier>.formeditor.editors.*.texteditor>`
+
+:aspect:`Needed by`
+      Backend (form editor)
+
+:aspect:`Mandatory`
+      Recommended
+
+:aspect:`Default value (for prototype 'standard')`
+      .. code-block:: yaml
+         :linenos:
+         :emphasize-lines: 8-
+
+         Date:
+           formEditor:
+             propertyCollections:
+               validators:
+                 10:
+                   identifier: DateRange
+                   editors:
+                     250:
+                       identifier: minimum
+                       templateName: Inspector-TextEditor
+                       label: formEditor.elements.DatePicker.validators.DateRange.editor.minimum
+                       placeholder: formEditor.elements.DatePicker.validators.DateRange.editor.minimum.placeholder
+                       propertyPath: options.minimum
+                       propertyValidators:
+                         10: RFC3339FullDateOrEmpty
+                       additionalElementPropertyPaths:
+                         10: properties.fluidAdditionalAttributes.min
