@@ -113,7 +113,7 @@ class TypoScriptFrontendInitialization implements MiddlewareInterface
      *
      * @param BackendUserAuthentication|null $user
      */
-    protected function setBackendUserAspect(BackendUserAuthentication $user): void
+    protected function setBackendUserAspect(?BackendUserAuthentication $user): void
     {
         $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
         $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user ? $user->workspace : 0));
