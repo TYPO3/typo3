@@ -9,8 +9,11 @@ See :issue:`78488`
 Description
 ===========
 
-All links processed by :ts:`typolink` with external links or using :html:`_blank`
-have been extended to contain :html:`rel="noreferrer"`.
+All links processed by :ts:`typolink` with external links opening in a new window have been extended to contain
+:html:`rel="noreferrer"`.
+
+Links opening in a new window are defined as those having an attribute :html:`target` which is either not empty,
+:html:`_self`, :html:`_top` or :html:`_parent`.
 
 
 Impact
