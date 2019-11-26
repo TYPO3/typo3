@@ -1130,7 +1130,8 @@ class AbstractDatabaseRecordList extends AbstractRecordList
                     $localCalcPerms = $this->getBackendUserAuthentication()->calcPerms(BackendUtility::getRecord('pages', $row['uid']));
                     $permsEdit = $localCalcPerms & Permission::PAGE_EDIT;
                 } else {
-                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT;
+                    $backendUser = $this->getBackendUserAuthentication();
+                    $permsEdit = $this->calcPerms & Permission::CONTENT_EDIT && $backendUser->recordEditAccessInternals($table, $row);
                 }
                 // "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
                 if ($permsEdit) {
