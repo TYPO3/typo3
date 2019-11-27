@@ -21,7 +21,6 @@ use PhpParser\Node;
 use PhpParser\NodeTraverser;
 use PhpParser\ParserFactory;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Var_;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -76,7 +75,6 @@ class NodeVisitor implements \PhpParser\NodeVisitor
     public function beforeTraverse(array $nodes)
     {
         $this->docBlockFactory = DocBlockFactory::createInstance();
-        $this->docBlockFactory->registerTagHandler('var', Var_::class);
         return null;
     }
 

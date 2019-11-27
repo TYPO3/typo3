@@ -42,7 +42,6 @@ use TYPO3\CMS\Extbase\Reflection\ClassSchema\Method;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Property;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\PropertyCharacteristics;
 use TYPO3\CMS\Extbase\Reflection\DocBlock\Tags\Null_;
-use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidTypeHintException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException;
 use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
@@ -149,7 +148,6 @@ class ClassSchema
 
         if (self::$propertyInfoExtractor === null) {
             $docBlockFactory = DocBlockFactory::createInstance();
-            $docBlockFactory->registerTagHandler('var', DocBlock\Tags\Var_::class);
             $phpDocExtractor = new PhpDocExtractor($docBlockFactory);
 
             $reflectionExtractor = new ReflectionExtractor();
@@ -253,34 +251,33 @@ class ClassSchema
                 $classHasInjectProperties = true;
             }
 
+            $this->properties[$propertyName]['propertyCharacteristicsBit'] = $propertyCharacteristicsBit;
+
             /** @var Type[] $types */
             $types = (array)self::$propertyInfoExtractor->getTypes($this->className, $propertyName, ['reflectionProperty' => $reflectionProperty]);
             $typesCount = count($types);
 
-            if ($typesCount > 0
-                && ($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade
-            ) {
+            if ($typesCount !== 1) {
+                continue;
+            }
+
+            if (($annotation = $annotationReader->getPropertyAnnotation($reflectionProperty, Cascade::class)) instanceof Cascade) {
                 /** @var Cascade $annotation */
                 $this->properties[$propertyName]['c'] = $annotation->value;
             }
 
-            if ($typesCount === 1) {
-                $this->properties[$propertyName]['t'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
-            } elseif ($typesCount === 2) {
-                [$type, $elementType] = $types;
-                $actualType = $type->getClassName() ?? $type->getBuiltinType();
+            /** @var Type $type */
+            $type = current($types);
 
-                if (TypeHandlingUtility::isCollectionType($actualType)
-                    && $elementType->getBuiltinType() === 'array'
-                    && $elementType->getCollectionValueType() instanceof Type
-                    && $elementType->getCollectionValueType()->getClassName() !== null
-                ) {
-                    $this->properties[$propertyName]['t'] = ltrim($actualType, '\\');
-                    $this->properties[$propertyName]['e'] = ltrim($elementType->getCollectionValueType()->getClassName(), '\\');
+            if ($type->isCollection()) {
+                $this->properties[$propertyName]['t'] = ltrim($type->getClassName() ?? $type->getBuiltinType(), '\\');
+
+                if (($collectionValueType = $type->getCollectionValueType()) instanceof Type) {
+                    $this->properties[$propertyName]['e'] = ltrim($collectionValueType->getClassName() ?? $type->getBuiltinType(), '\\');
                 }
+            } else {
+                $this->properties[$propertyName]['t'] = $types[0]->getClassName() ?? $types[0]->getBuiltinType();
             }
-
-            $this->properties[$propertyName]['propertyCharacteristicsBit'] = $propertyCharacteristicsBit;
         }
 
         if ($classHasInjectProperties) {

@@ -68,7 +68,7 @@ class GeneralUtility
     /**
      * Instances returned by makeInstance, using the class names as array keys
      *
-     * @var array<array><object>
+     * @var array<object>
      */
     protected static $nonSingletonInstances = [];
 

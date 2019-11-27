@@ -44,7 +44,8 @@
 		"doctrine/lexer": "^1.0",
 		"guzzlehttp/guzzle": "^6.3.0",
 		"nikic/php-parser": "^4.3",
-		"phpdocumentor/reflection-docblock": "^4.3",
+		"phpdocumentor/reflection-docblock": "^4.3.2",
+		"phpdocumentor/type-resolver": "~0.5",
 		"psr/container": "^1.0",
 		"psr/event-dispatcher": "^1.0",
 		"psr/http-client": "^1.0",
@@ -93,8 +94,7 @@
 	},
 	"conflict": {
 		"hoa/core": "*",
-		"guzzlehttp/guzzle": ">= 6.5.0",
-		"phpdocumentor/reflection-docblock": ">= 4.3.2"
+		"guzzlehttp/guzzle": ">= 6.5.0"
 	},
 	"provide": {
 		"psr/http-client-implementation": "1.0",
