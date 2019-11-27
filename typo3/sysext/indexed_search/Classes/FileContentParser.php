@@ -612,7 +612,7 @@ class FileContentParser
                     $metaContent = GeneralUtility::xml2tree($meta_xml);
                     $metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
                     if (is_array($metaContent)) {
-                        $contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
+                        $contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ?: $contentArr['title'];
                         $contentArr['description'] = $metaContent['dc:subject'][0]['values'][0] . ' ' . $metaContent['dc:description'][0]['values'][0];
                         // Keywords collected:
                         if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword'])) {

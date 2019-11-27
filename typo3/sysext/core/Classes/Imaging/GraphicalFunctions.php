@@ -1055,8 +1055,8 @@ class GraphicalFunctions
                                     if ($c + 1 < count($explodedParts)) {
                                         $newResult[] = [
                                             'str' => $cfg['value'],
-                                            'fontSize' => $cfg['fontSize'] ? $cfg['fontSize'] : $part['fontSize'],
-                                            'fontFile' => $cfg['fontFile'] ? $cfg['fontFile'] : $part['fontFile'],
+                                            'fontSize' => $cfg['fontSize'] ?: $part['fontSize'],
+                                            'fontFile' => $cfg['fontFile'] ?: $part['fontFile'],
                                             'color' => $cfg['color'],
                                             'xSpaceBefore' => $cfg['xSpaceBefore'],
                                             'xSpaceAfter' => $cfg['xSpaceAfter'],

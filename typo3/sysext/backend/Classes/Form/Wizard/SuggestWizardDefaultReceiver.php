@@ -194,7 +194,7 @@ class SuggestWizardDefaultReceiver
                 $entry = [
                     'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
-                    'table' => $this->mmForeignTable ? $this->mmForeignTable : $this->table,
+                    'table' => $this->mmForeignTable ?: $this->table,
                     'label' => strip_tags($label),
                     'path' => $path,
                     'uid' => $uid,
@@ -384,7 +384,7 @@ class SuggestWizardDefaultReceiver
     {
         // Check for workspace-versions
         if ($GLOBALS['BE_USER']->workspace != 0 && BackendUtility::isTableWorkspaceEnabled($this->table)) {
-            BackendUtility::workspaceOL($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row);
+            BackendUtility::workspaceOL($this->mmForeignTable ?: $this->table, $row);
         }
     }
 
@@ -401,7 +401,7 @@ class SuggestWizardDefaultReceiver
     protected function getRecordPath(&$row, $uid)
     {
         $titleLimit = max($this->config['maxPathTitleLength'], 0);
-        if (($this->mmForeignTable ? $this->mmForeignTable : $this->table) === 'pages') {
+        if (($this->mmForeignTable ?: $this->table) === 'pages') {
             $path = BackendUtility::getRecordPath($uid, '', $titleLimit);
             // For pages we only want the first (n-1) parts of the path,
             // because the n-th part is the page itself
@@ -420,7 +420,7 @@ class SuggestWizardDefaultReceiver
      */
     protected function getLabel($row)
     {
-        return BackendUtility::getRecordTitle($this->mmForeignTable ? $this->mmForeignTable : $this->table, $row, true);
+        return BackendUtility::getRecordTitle($this->mmForeignTable ?: $this->table, $row, true);
     }
 
     /**

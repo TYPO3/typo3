@@ -355,7 +355,7 @@ function jumpToUrl(URL) {
      */
     public function redirectUrls($thisLocation = '')
     {
-        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript([
+        $thisLocation = $thisLocation ?: GeneralUtility::linkThisScript([
             'CB' => '',
             'SET' => '',
             'cmd' => '',

@@ -1054,7 +1054,7 @@ class DataHandler implements LoggerAwareInterface
                 }
 
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-                list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ? $old_pid_value : $fieldArray['pid']);
+                list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: $fieldArray['pid']);
                 if ($status === 'new' && $table === 'pages') {
                     $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
                     if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
@@ -5886,7 +5886,7 @@ class DataHandler implements LoggerAwareInterface
                     $origValueArray = is_array($value) ? $value : explode(',', $value);
                     // Update the uids of the copied records, but also take care about new records:
                     foreach ($origValueArray as $childId) {
-                        $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ? $this->autoVersionIdMap[$foreignTable][$childId] : $childId;
+                        $newValueArray[] = $this->autoVersionIdMap[$foreignTable][$childId] ?: $childId;
                     }
                     // Set the changed value to the $incomingFieldArray
                     $incomingFieldArray[$field] = implode(',', $newValueArray);

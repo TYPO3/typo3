@@ -643,7 +643,7 @@ class ModuleTemplate
      */
     public function redirectUrls($thisLocation = '')
     {
-        $thisLocation = $thisLocation ? $thisLocation : GeneralUtility::linkThisScript([
+        $thisLocation = $thisLocation ?: GeneralUtility::linkThisScript([
             'CB' => '',
             'SET' => '',
             'cmd' => '',

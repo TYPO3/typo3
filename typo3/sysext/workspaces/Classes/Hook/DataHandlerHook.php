@@ -627,7 +627,7 @@ class DataHandlerHook
                 // check if the email needs to be localized
                 // in the users' language
                 if (GeneralUtility::isFirstPartOfStr($emailSubject, 'LLL:') || GeneralUtility::isFirstPartOfStr($emailMessage, 'LLL:')) {
-                    $recipientLanguage = $recipientData['lang'] ? $recipientData['lang'] : 'default';
+                    $recipientLanguage = $recipientData['lang'] ?: 'default';
                     if (!isset($languageObjects[$recipientLanguage])) {
                         // a LANG object in this language hasn't been
                         // instantiated yet, so this is done here

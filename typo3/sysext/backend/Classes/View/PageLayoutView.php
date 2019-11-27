@@ -1221,7 +1221,7 @@ class PageLayoutView implements LoggerAwareInterface
         if (!empty($elFromTable) && $this->isPageEditable()) {
             $pasteItem = substr(key($elFromTable), 11);
             $pasteRecord = BackendUtility::getRecord('tt_content', (int)$pasteItem);
-            $pasteTitle = $pasteRecord['header'] ? $pasteRecord['header'] : $pasteItem;
+            $pasteTitle = $pasteRecord['header'] ?: $pasteItem;
             $copyMode = $this->clipboard->clipData['normal']['mode'] ? '-' . $this->clipboard->clipData['normal']['mode'] : '';
             $addExtOnReadyCode = '
                      top.pasteIntoLinkTemplate = '
@@ -1621,7 +1621,7 @@ class PageLayoutView implements LoggerAwareInterface
     {
         foreach ($fieldArr as $fieldName) {
             $ll = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']));
-            $out[$fieldName] = $ll ? $ll : '&nbsp;';
+            $out[$fieldName] = $ll ?: '&nbsp;';
         }
         return $out;
     }
@@ -1805,7 +1805,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $f2 = substr($field, 6);
                         if ($GLOBALS['TCA'][$f2]) {
                             $c = $this->numberOfRecords($f2, $row['uid']);
-                            $theData[$field] = ($c ? $c : '');
+                            $theData[$field] = ($c ?: '');
                         }
                     } else {
                         $theData[$field] = $this->getPagesTableFieldValue($field, $row);
@@ -1981,7 +1981,7 @@ class PageLayoutView implements LoggerAwareInterface
                         $value = 1;
                         $label = 'hide';
                     }
-                    $params = '&data[tt_content][' . ($row['_ORIG_uid'] ? $row['_ORIG_uid'] : $row['uid'])
+                    $params = '&data[tt_content][' . ($row['_ORIG_uid'] ?: $row['uid'])
                         . '][' . $hiddenField . ']=' . $value;
                     $out .= '<a class="btn btn-default" href="' . htmlspecialchars(BackendUtility::getLinkToDataHandlerAction($params))
                         . '#element-tt_content-' . $row['uid'] . '" title="' . htmlspecialchars($this->getLanguageService()->getLL($label)) . '">'
@@ -3194,7 +3194,7 @@ class PageLayoutView implements LoggerAwareInterface
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
         ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-            ($this->showLimit ? $this->showLimit : '')
+            ($this->showLimit ?: '')
         ) . '" />
                                 </div>
                                 <div class="form-group col-xs-12">

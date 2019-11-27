@@ -123,7 +123,7 @@ class MoveElementController
         $this->table = $parsedBody['table'] ?? $queryParams['table'] ?? null;
         $this->R_URI = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         $this->input_moveUid = $parsedBody['moveUid'] ?? $queryParams['moveUid'] ?? null;
-        $this->moveUid = $this->input_moveUid ? $this->input_moveUid : $this->page_id;
+        $this->moveUid = $this->input_moveUid ?: $this->page_id;
         $this->makeCopy = $parsedBody['makeCopy'] ?? $queryParams['makeCopy'] ?? 0;
         // Select-pages where clause for read-access:
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);

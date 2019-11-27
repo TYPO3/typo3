@@ -5,6 +5,7 @@
 /.travis.yml export-ignore
 /Build/ export-ignore
 /dynamicReturnTypeMeta.json export-ignore
+/rector.yml export-ignore
 /typo3/sysext/*/Resources/Private/TypeScript/ export-ignore
 /typo3/sysext/*/Tests/ export-ignore
 /components/testing_framework/ export-ignore

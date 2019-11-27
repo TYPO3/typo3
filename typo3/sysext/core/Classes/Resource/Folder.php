@@ -307,7 +307,7 @@ class Folder implements FolderInterface
      */
     public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
-        $fileName = $fileName ? $fileName : PathUtility::basename($localFilePath);
+        $fileName = $fileName ?: PathUtility::basename($localFilePath);
         return $this->storage->addFile($localFilePath, $this, $fileName, $conflictMode);
     }
 

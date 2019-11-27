@@ -858,7 +858,7 @@ class Clipboard
      */
     public function elFromTable($matchTable = '', $pad = '')
     {
-        $pad = $pad ? $pad : $this->current;
+        $pad = $pad ?: $this->current;
         $list = [];
         if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {

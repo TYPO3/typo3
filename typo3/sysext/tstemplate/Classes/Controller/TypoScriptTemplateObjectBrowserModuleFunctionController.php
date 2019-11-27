@@ -339,7 +339,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController
             if (!$theKey || !str_replace('-', '', $theKey)) {
                 $theKey = '';
             }
-            list($theSetup, $theSetupValue) = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ? $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] : '');
+            list($theSetup, $theSetupValue) = $this->templateService->ext_getSetup($theSetup, $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType] ?: '');
             $tree = $this->templateService->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
             $tree = $this->templateService->substituteCMarkers($tree);
             $urlParameters = [

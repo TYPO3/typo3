@@ -285,7 +285,7 @@ class QueryGenerator
         if (is_array($GLOBALS['TCA'][$table])) {
             $this->name = $name;
             $this->table = $table;
-            $this->fieldList = $fieldList ? $fieldList : $this->makeFieldList();
+            $this->fieldList = $fieldList ?: $this->makeFieldList();
             $fieldArr = GeneralUtility::trimExplode(',', $this->fieldList, true);
             foreach ($fieldArr as $fieldName) {
                 $fC = $GLOBALS['TCA'][$this->table]['columns'][$fieldName];

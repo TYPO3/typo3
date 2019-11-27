@@ -90,7 +90,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['emailOnBrokenLinkOnly'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['emailOnBrokenLinkOnly'] = $taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] ? $taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] : 1;
+                $taskInfo['emailOnBrokenLinkOnly'] = $taskInfo['linkvalidator']['emailOnBrokenLinkOnly'] ?: 1;
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['emailOnBrokenLinkOnly'] = $task->getEmailOnBrokenLinkOnly();
             } else {
@@ -99,7 +99,7 @@ class ValidatorTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         }
         if (empty($taskInfo['emailTemplateFile'])) {
             if ($currentSchedulerModuleAction->equals(Action::ADD)) {
-                $taskInfo['emailTemplateFile'] = $taskInfo['linkvalidator']['emailTemplateFile'] ? $taskInfo['linkvalidator']['emailTemplateFile'] : 'EXT:linkvalidator/Resources/Private/Templates/mailtemplate.html';
+                $taskInfo['emailTemplateFile'] = $taskInfo['linkvalidator']['emailTemplateFile'] ?: 'EXT:linkvalidator/Resources/Private/Templates/mailtemplate.html';
             } elseif ($currentSchedulerModuleAction->equals(Action::EDIT)) {
                 $taskInfo['emailTemplateFile'] = $task->getEmailTemplateFile();
             } else {

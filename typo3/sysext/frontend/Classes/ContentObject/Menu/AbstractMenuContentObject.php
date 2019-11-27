@@ -382,7 +382,7 @@ abstract class AbstractMenuContentObject
         $c_b = 0;
         $minItems = (int)($this->mconf['minItems'] ?: $this->conf['minItems']);
         $maxItems = (int)($this->mconf['maxItems'] ?: $this->conf['maxItems']);
-        $begin = $this->parent_cObj->calc($this->mconf['begin'] ? $this->mconf['begin'] : $this->conf['begin']);
+        $begin = $this->parent_cObj->calc($this->mconf['begin'] ?: $this->conf['begin']);
         $minItemsConf = $this->mconf['minItems.'] ?? $this->conf['minItems.'] ?? null;
         $minItems = is_array($minItemsConf) ? $this->parent_cObj->stdWrap($minItems, $minItemsConf) : $minItems;
         $maxItemsConf = $this->mconf['maxItems.'] ?? $this->conf['maxItems.'] ?? null;
@@ -668,7 +668,7 @@ abstract class AbstractMenuContentObject
                 if ($mount_info['overlay']) {
                     // Overlays should already have their full MPvars calculated:
                     $MP = $pageLinkBuilder->getMountPointParameterFromRootPointMaps((int)$mount_info['mount_pid']);
-                    $MP = $MP ? $MP : $mount_info['MPvar'];
+                    $MP = $MP ?: $mount_info['MPvar'];
                 } else {
                     $MP = ($MP ? $MP . ',' : '') . $mount_info['MPvar'];
                 }
@@ -876,7 +876,7 @@ abstract class AbstractMenuContentObject
         } else {
             // The page record of the 'value'.
             $value_rec = $this->sys_page->getPage($specialValue);
-            $kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ? $this->conf['special.']['keywordsField.']['sourceField'] : 'keywords';
+            $kfieldSrc = $this->conf['special.']['keywordsField.']['sourceField'] ?: 'keywords';
             // keywords.
             $kw = trim($this->parent_cObj->keywords($value_rec[$kfieldSrc]));
         }

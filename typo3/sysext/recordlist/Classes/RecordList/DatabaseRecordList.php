@@ -3030,7 +3030,7 @@ class DatabaseRecordList
 									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
         ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-            ($this->showLimit ? $this->showLimit : '')
+            ($this->showLimit ?: '')
         ) . '" />
                                 </div>
                                 <div class="col-xs-12">

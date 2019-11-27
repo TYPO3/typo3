@@ -615,7 +615,7 @@ class FrontendLoginController extends AbstractPlugin
         $extraHiddenAr = [];
         // Check for referer redirect method. if present, save referer in form field
         if (GeneralUtility::inList($this->conf['redirectMode'], 'referer') || GeneralUtility::inList($this->conf['redirectMode'], 'refererDomains')) {
-            $referer = $this->referer ? $this->referer : GeneralUtility::getIndpEnv('HTTP_REFERER');
+            $referer = $this->referer ?: GeneralUtility::getIndpEnv('HTTP_REFERER');
             if ($referer) {
                 $extraHiddenAr[] = '<input type="hidden" name="referer" value="' . htmlspecialchars($referer) . '" />';
                 if ($this->piVars['redirectReferrer'] === 'off') {

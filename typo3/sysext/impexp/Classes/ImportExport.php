@@ -1065,7 +1065,7 @@ abstract class ImportExport
      */
     public function doesRecordExist($table, $uid, $fields = '')
     {
-        return BackendUtility::getRecord($table, $uid, $fields ? $fields : 'uid,pid');
+        return BackendUtility::getRecord($table, $uid, $fields ?: 'uid,pid');
     }
 
     /**

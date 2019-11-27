@@ -1154,8 +1154,7 @@ class QueryView
             ) {
                 if ($this->settings['search_result_labels']) {
                     $title = $this->languageService->sL($conf['columns'][$fieldName]['label']
-                        ? $conf['columns'][$fieldName]['label']
-                        : $fieldName);
+                        ?: $fieldName);
                 } else {
                     $title = $this->languageService->sL($fieldName);
                 }
@@ -1190,8 +1189,7 @@ class QueryView
                     $out .= htmlspecialchars(
                         $this->languageService->sL(
                             $conf['columns'][$fieldName]['label']
-                            ? $conf['columns'][$fieldName]['label']
-                            : $fieldName
+                            ?: $fieldName
                         )
                     );
                 } else {

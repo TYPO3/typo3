@@ -1,0 +1,7 @@
+parameters:
+  php_version_features: '7.2'
+  auto_import_names: false
+  paths:
+    - 'typo3/sysext/*/Classes/'
+  sets:
+    - 'php53'
