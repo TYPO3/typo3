@@ -871,7 +871,7 @@ class SchedulerModuleController
                 /** @var \TYPO3\CMS\Scheduler\Task\AbstractTask|ProgressProviderInterface $task */
                 $task = unserialize($schedulerRecord['serialized_task_object']);
                 $class = get_class($task);
-                if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
+                if ($class === \__PHP_Incomplete_Class::class && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
                     $class = $matches['classname'];
                 }
                 $tasks[$taskIndex]['tasks'][$recordIndex]['class'] = $class;

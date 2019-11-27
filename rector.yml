@@ -1,3 +1,11 @@
+services:
+  # php55
+  Rector\Php55\Rector\String_\StringClassNameToClassConstantRector:
+    $classesToSkip:
+      - Error
+      - Locale
+      - mysqli
+
 parameters:
   php_version_features: '7.2'
   auto_import_names: false
@@ -5,3 +13,5 @@ parameters:
     - 'typo3/sysext/*/Classes/'
   sets:
     - 'php53'
+    - 'php54'
+#    - 'php55' # disabled and configured manually via services.

@@ -408,7 +408,7 @@ class DebuggerUtility
                     $dump .= '<span class="extbase-debug-closure">}</span>';
                 }
             } else {
-                if (get_class($object) === 'stdClass') {
+                if (get_class($object) === \stdClass::class) {
                     $objReflection = new \ReflectionObject($object);
                     $properties = $objReflection->getProperties();
                 } else {

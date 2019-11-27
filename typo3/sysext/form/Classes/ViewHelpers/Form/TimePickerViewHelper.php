@@ -105,7 +105,7 @@ class TimePickerViewHelper extends AbstractFormFieldViewHelper
             return $date;
         }
         if ($date !== null) {
-            $date = $this->propertyMapper->convert($date, 'DateTime');
+            $date = $this->propertyMapper->convert($date, \DateTime::class);
             if (!$date instanceof \DateTime) {
                 return null;
             }

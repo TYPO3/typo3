@@ -32,7 +32,7 @@ class TypeHandlingUtility
     /**
      * @var array
      */
-    protected static $collectionTypes = ['array', 'ArrayObject', 'SplObjectStorage', \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class];
+    protected static $collectionTypes = ['array', \ArrayObject::class, \SplObjectStorage::class, \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class];
 
     /**
      * Returns an array with type information, including element type for

@@ -3173,9 +3173,9 @@ class GeneralUtility
      */
     public static function upload_copy_move($source, $destination)
     {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] ?? null)) {
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] ?? null)) {
             $params = ['source' => $source, 'destination' => $destination, 'method' => 'upload_copy_move'];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] as $hookMethod) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] as $hookMethod) {
                 $fakeThis = false;
                 self::callUserFunction($hookMethod, $params, $fakeThis);
             }
@@ -3210,9 +3210,9 @@ class GeneralUtility
     {
         if (is_uploaded_file($uploadedFileName)) {
             $tempFile = self::tempnam('upload_temp_');
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] ?? null)) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] ?? null)) {
                 $params = ['source' => $uploadedFileName, 'destination' => $tempFile, 'method' => 'upload_to_tempfile'];
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Core\Utility\GeneralUtility']['moveUploadedFile'] as $hookMethod) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Utility\GeneralUtility::class]['moveUploadedFile'] as $hookMethod) {
                     $fakeThis = false;
                     self::callUserFunction($hookMethod, $params, $fakeThis);
                 }
@@ -3346,7 +3346,7 @@ class GeneralUtility
     public static function callUserFunction($funcName, &$params, &$ref)
     {
         // Check if we're using a closure and invoke it directly.
-        if (is_object($funcName) && is_a($funcName, 'Closure')) {
+        if (is_object($funcName) && is_a($funcName, \Closure::class)) {
             return call_user_func_array($funcName, [&$params, &$ref]);
         }
         $funcName = trim($funcName);

@@ -258,7 +258,7 @@ class DataMapper
                     case 'array':
                         // $propertyValue = $this->mapArray($row[$columnName]); // Not supported, yet!
                         break;
-                    case 'SplObjectStorage':
+                    case \SplObjectStorage::class:
                     case Persistence\ObjectStorage::class:
                         $propertyValue = $this->mapResultToPropertyValue(
                             $object,
@@ -560,12 +560,12 @@ class DataMapper
             $propertyValue = $result;
         } else {
             $property = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-            if (in_array($property->getType(), ['array', 'ArrayObject', 'SplObjectStorage', Persistence\ObjectStorage::class], true)) {
+            if (in_array($property->getType(), ['array', \ArrayObject::class, \SplObjectStorage::class, Persistence\ObjectStorage::class], true)) {
                 $objects = [];
                 foreach ($result as $value) {
                     $objects[] = $value;
                 }
-                if ($property->getType() === 'ArrayObject') {
+                if ($property->getType() === \ArrayObject::class) {
                     $propertyValue = new \ArrayObject($objects);
                 } elseif ($property->getType() === Persistence\ObjectStorage::class) {
                     $propertyValue = new Persistence\ObjectStorage();

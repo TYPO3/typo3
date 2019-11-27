@@ -182,7 +182,7 @@ abstract class AbstractWidgetViewHelper extends AbstractViewHelper
         if (!isset($this->controller) || !$this->controller instanceof \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController) {
             throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException(
                 'initiateSubRequest() can not be called if there is no valid controller extending ' .
-                'TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController' .
+                \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController::class .
                 ' Got "' . ($this->controller ? get_class($this->controller) : gettype($this->controller)) .
                 '" in class "' . static::class . '".',
                 1289422564

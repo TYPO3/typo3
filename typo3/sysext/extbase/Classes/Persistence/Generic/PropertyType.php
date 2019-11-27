@@ -185,7 +185,7 @@ class PropertyType
     /**
      * String constant for type name as used in serialization.
      */
-    const TYPENAME_WEAKREFERENCE = 'WeakReference';
+    const TYPENAME_WEAKREFERENCE = \WeakReference::class;
 
     /**
      * String constant for type name as used in serialization.

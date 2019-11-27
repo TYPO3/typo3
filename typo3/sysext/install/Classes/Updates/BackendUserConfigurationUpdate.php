@@ -119,7 +119,7 @@ class BackendUserConfigurationUpdate implements UpgradeWizardInterface
 
     private function unserializeUserConfig(string $userConfig)
     {
-        return unserialize($userConfig, ['allowed_classes' => ['stdClass']]);
+        return unserialize($userConfig, ['allowed_classes' => [\stdClass::class]]);
     }
 
     private function getAffectedBackendUsers(): iterable

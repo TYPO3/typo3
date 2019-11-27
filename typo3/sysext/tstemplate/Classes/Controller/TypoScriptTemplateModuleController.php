@@ -395,7 +395,7 @@ class TypoScriptTemplateModuleController
         } else {
             $urlParameters['e'] = ['constants' => 1];
         }
-        $urlParameters['SET'] = ['function' => 'TYPO3\\CMS\\Tstemplate\\Controller\\TypoScriptTemplateInformationModuleFunctionController'];
+        $urlParameters['SET'] = ['function' => \TYPO3\CMS\Tstemplate\Controller\TypoScriptTemplateInformationModuleFunctionController::class];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $url = (string)$uriBuilder->buildUriFromRoute('web_ts', $urlParameters);
         return '<a href="' . htmlspecialchars($url) . '">' . htmlspecialchars($title) . '</a>';

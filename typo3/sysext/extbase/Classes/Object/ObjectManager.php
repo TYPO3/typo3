@@ -108,7 +108,7 @@ class ObjectManager implements ObjectManagerInterface
      */
     public function get(string $objectName, ...$constructorArguments): object
     {
-        if ($objectName === 'DateTime') {
+        if ($objectName === \DateTime::class) {
             return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($objectName, ...$constructorArguments);
         }
 

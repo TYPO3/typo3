@@ -183,7 +183,7 @@ class LocallangXmlParser extends AbstractXmlParser
             $xmlContent = file_get_contents($targetPath);
             // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
             $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-            $rootXmlNode = simplexml_load_string($xmlContent, 'SimpleXMLElement', LIBXML_NOWARNING);
+            $rootXmlNode = simplexml_load_string($xmlContent, \SimpleXMLElement::class, LIBXML_NOWARNING);
             libxml_disable_entity_loader($previousValueOfEntityLoader);
         }
         if (!isset($rootXmlNode) || $rootXmlNode === false) {

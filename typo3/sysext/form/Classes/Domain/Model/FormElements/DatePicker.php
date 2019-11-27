@@ -31,7 +31,7 @@ class DatePicker extends AbstractFormElement implements StringableFormElementInt
      */
     public function initializeFormElement()
     {
-        $this->setDataType('DateTime');
+        $this->setDataType(\DateTime::class);
         parent::initializeFormElement();
     }
 

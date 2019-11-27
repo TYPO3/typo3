@@ -74,7 +74,7 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         $xmlContent = file_get_contents($this->sourcePath);
         // Disables the functionality to allow external entities to be loaded when parsing the XML, must be kept
         $previousValueOfEntityLoader = libxml_disable_entity_loader(true);
-        $rootXmlNode = simplexml_load_string($xmlContent, 'SimpleXMLElement', LIBXML_NOWARNING);
+        $rootXmlNode = simplexml_load_string($xmlContent, \SimpleXMLElement::class, LIBXML_NOWARNING);
         libxml_disable_entity_loader($previousValueOfEntityLoader);
         if (!isset($rootXmlNode) || $rootXmlNode === false) {
             $xmlError = libxml_get_last_error();

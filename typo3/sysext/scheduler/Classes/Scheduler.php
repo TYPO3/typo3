@@ -450,7 +450,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
      */
     public function isValidTaskObject($task)
     {
-        return $task instanceof Task\AbstractTask && get_class($task->getExecution()) !== '__PHP_Incomplete_Class';
+        return $task instanceof Task\AbstractTask && get_class($task->getExecution()) !== \__PHP_Incomplete_Class::class;
     }
 
     /**

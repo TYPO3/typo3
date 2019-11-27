@@ -29,7 +29,7 @@ class FileUpload extends AbstractFormElement
      */
     public function initializeFormElement()
     {
-        $this->setDataType('TYPO3\CMS\Extbase\Domain\Model\FileReference');
+        $this->setDataType(\TYPO3\CMS\Extbase\Domain\Model\FileReference::class);
         parent::initializeFormElement();
     }
 }
