@@ -1,6 +1,7 @@
 <?php
+declare(strict_types = 1);
 
-namespace TYPO3\CMS\Install\SystemEnvironment\DatabasePlatform;
+namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +21,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 
 /**
  * Check database configuration status for MySQL server
@@ -33,13 +33,8 @@ use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class MySqlCheck implements CheckInterface
+class MySql extends AbstractPlatform
 {
-    /**
-     * @var FlashMessageQueue
-     */
-    protected $messageQueue;
-
     /**
      * Minimum supported MySQL version
      *
@@ -57,6 +52,24 @@ class MySqlCheck implements CheckInterface
     ];
 
     /**
+     * Charset of the database that should be fulfilled
+     * @var array
+     */
+    protected $databaseCharsetToCheck = [
+        'utf8',
+        'utf8mb4',
+    ];
+
+    /**
+     * Charset of the database server that should be fulfilled
+     * @var array
+     */
+    protected $databaseServerCharsetToCheck = [
+        'utf8',
+        'utf8mb4',
+    ];
+
+    /**
      * Get all status information as array with status objects
      *
      * @return FlashMessageQueue
@@ -65,7 +78,6 @@ class MySqlCheck implements CheckInterface
      */
     public function getStatus(): FlashMessageQueue
     {
-        $this->messageQueue = new FlashMessageQueue('install');
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         if (strpos($defaultConnection->getServerVersion(), 'MySQL') !== 0) {
@@ -73,7 +85,9 @@ class MySqlCheck implements CheckInterface
         }
         $this->checkMysqlVersion($defaultConnection);
         $this->checkInvalidSqlModes($defaultConnection);
-        $this->checkMysqlDatabaseUtf8Status($defaultConnection);
+        $this->checkDefaultDatabaseCharset($defaultConnection);
+        $this->checkDefaultDatabaseServerCharset($defaultConnection);
+        $this->checkDatabaseName($defaultConnection);
         return $this->messageQueue;
     }
 
@@ -132,7 +146,7 @@ class MySqlCheck implements CheckInterface
      *
      * @param Connection $connection to the database to be checked
      */
-    protected function checkMysqlDatabaseUtf8Status(Connection $connection)
+    public function checkDefaultDatabaseCharset(Connection $connection): void
     {
         $queryBuilder = $connection->createQueryBuilder();
         $defaultDatabaseCharset = (string)$queryBuilder->select('DEFAULT_CHARACTER_SET_NAME')
@@ -146,18 +160,21 @@ class MySqlCheck implements CheckInterface
             ->setMaxResults(1)
             ->execute()
             ->fetchColumn();
-        // also allow utf8mb4
-        if (strpos($defaultDatabaseCharset, 'utf8') !== 0) {
+
+        if (!in_array($defaultDatabaseCharset, $this->databaseCharsetToCheck, true)) {
             $this->messageQueue->enqueue(new FlashMessage(
-                'Checking database character set failed, got key "'
-                    . $defaultDatabaseCharset . '" instead of "utf8" or "utf8mb4"',
+                sprintf(
+                    'Checking database character set failed, got key "%s" instead of "%s"',
+                    $defaultDatabaseCharset,
+                    implode(' or ', $this->databaseCharsetToCheck)
+                ),
                 'MySQL database character set check failed',
                 FlashMessage::ERROR
             ));
         } else {
             $this->messageQueue->enqueue(new FlashMessage(
                 '',
-                'Your database uses utf-8. All good.'
+                sprintf('MySQL database uses %s. All good.', implode(' or ', $this->databaseCharsetToCheck))
             ));
         }
     }
@@ -173,5 +190,32 @@ class MySqlCheck implements CheckInterface
         $sqlModes = explode(',', $connection->executeQuery('SELECT @@SESSION.sql_mode;')
             ->fetch(0)['@@SESSION.sql_mode']);
         return array_intersect($this->incompatibleSqlModes, $sqlModes);
+    }
+
+    /**
+     * Checks the character set of the database server and reports an info if it is not utf-8.
+     *
+     * @param Connection $connection to the database to be checked
+     */
+    public function checkDefaultDatabaseServerCharset(Connection $connection): void
+    {
+        $defaultServerCharset = $connection->executeQuery('SHOW VARIABLES LIKE \'character_set_server\'')->fetch();
+
+        if (!in_array($defaultServerCharset['Value'], $this->databaseServerCharsetToCheck, true)) {
+            $this->messageQueue->enqueue(new FlashMessage(
+                sprintf(
+                    'Checking server character set failed, got key "%s" instead of "%s"',
+                    $defaultServerCharset['Value'],
+                    implode(' or ', $this->databaseServerCharsetToCheck)
+                ),
+                'MySQL database server character set check failed',
+                FlashMessage::INFO
+            ));
+        } else {
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                sprintf('MySQL server default uses %s. All good.', implode(' or ', $this->databaseCharsetToCheck))
+            ));
+        }
     }
 }

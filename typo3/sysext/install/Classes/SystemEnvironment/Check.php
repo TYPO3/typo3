@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace TYPO3\CMS\Install\SystemEnvironment;
 
 /*
@@ -63,7 +65,6 @@ class Check implements CheckInterface
         'gd',
         'hash',
         'json',
-        'mysqli',
         'session',
         'SPL',
         'standard',
@@ -81,6 +82,16 @@ class Check implements CheckInterface
         'openssl' => 'This extension is used for sending SMTP mails over an encrypted channel endpoint, and for extensions such as "rsaauth".'
     ];
 
+    public function __construct()
+    {
+        $this->messageQueue = new FlashMessageQueue('install');
+    }
+
+    public function getMessageQueue(): FlashMessageQueue
+    {
+        return $this->messageQueue;
+    }
+
     /**
      * Get all status information as array with status objects
      *
@@ -88,7 +99,6 @@ class Check implements CheckInterface
      */
     public function getStatus(): FlashMessageQueue
     {
-        $this->messageQueue = new FlashMessageQueue('install');
         $this->checkCurrentDirectoryIsInIncludePath();
         $this->checkFileUploadEnabled();
         $this->checkPostUploadSizeIsHigherOrEqualMaximumFileUploadSize();
@@ -96,7 +106,6 @@ class Check implements CheckInterface
         $this->checkPhpVersion();
         $this->checkMaxExecutionTime();
         $this->checkDisableFunctions();
-        $this->checkMysqliReconnectSetting();
         $this->checkDocRoot();
         $this->checkOpenBaseDir();
         $this->checkXdebugMaxNestingLevel();
@@ -401,29 +410,6 @@ class Check implements CheckInterface
     }
 
     /**
-     * Verify that mysqli.reconnect is set to 0 in order to avoid improper reconnects
-     */
-    protected function checkMysqliReconnectSetting()
-    {
-        $currentMysqliReconnectSetting = ini_get('mysqli.reconnect');
-        if ($currentMysqliReconnectSetting === '1') {
-            $this->messageQueue->enqueue(new FlashMessage(
-                'mysqli.reconnect=1' . LF
-                    . 'PHP is configured to automatically reconnect the database connection on disconnection.' . LF
-                    . ' Warning: If (e.g. during a long-running task) the connection is dropped and automatically reconnected, '
-                    . ' it may not be reinitialized properly (e.g. charset) and write mangled data to the database!',
-                'PHP mysqli.reconnect is enabled',
-                FlashMessage::ERROR
-            ));
-        } else {
-            $this->messageQueue->enqueue(new FlashMessage(
-                '',
-                'PHP mysqli.reconnect is fine'
-            ));
-        }
-    }
-
-    /**
      * Check for doc_root ini setting
      */
     protected function checkDocRoot()
@@ -623,7 +609,7 @@ class Check implements CheckInterface
      * @param bool $required
      * @param string $purpose
      */
-    protected function checkPhpExtension(string $extension, bool $required = true, string $purpose = '')
+    public function checkPhpExtension(string $extension, bool $required = true, string $purpose = '')
     {
         if (!extension_loaded($extension)) {
             $this->messageQueue->enqueue(new FlashMessage(

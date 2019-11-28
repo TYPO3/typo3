@@ -22,7 +22,7 @@
                                                 value="mysqliManualConfiguration"
                                                 {f:if(condition:'{activeAvailableOption} == mysqliManualConfiguration', then: 'selected="selected"')}
                                             >
-                                            Manually configured MySQL TCP/IP connection
+                                            [MySQLi] Manually configured MySQL TCP/IP connection
                                             </option>
                                         </f:if>
                                         <f:if condition="{hasMysqliSocketManualConfiguration}">
@@ -30,7 +30,23 @@
                                                 value="mysqliSocketManualConfiguration"
                                                 {f:if(condition:'{activeAvailableOption} == mysqliSocketManualConfiguration', then: 'selected="selected"')}
                                             >
-                                            Manually configured MySQL socket connection
+                                            [MySQLi] Manually configured MySQL socket connection
+                                            </option>
+                                        </f:if>
+                                        <f:if condition="{hasPdoMysqlManualConfiguration}">
+                                            <option
+                                                value="pdoMysqlManualConfiguration"
+                                                {f:if(condition:'{activeAvailableOption} == pdoMysqlManualConfiguration', then: 'selected="selected"')}
+                                            >
+                                            [PDO] Manually configured MySQL TCP/IP connection
+                                            </option>
+                                        </f:if>
+                                        <f:if condition="{hasPdoMysqlSocketManualConfiguration}">
+                                            <option
+                                                value="pdoMysqlSocketManualConfiguration"
+                                                {f:if(condition:'{activeAvailableOption} == pdoMysqlSocketManualConfiguration', then: 'selected="selected"')}
+                                            >
+                                            [PDO] Manually configured MySQL socket connection
                                             </option>
                                         </f:if>
                                         <f:if condition="{hasPostgresManualConfiguration}">
@@ -169,6 +185,122 @@
                                                 class="t3-install-form-input-text form-control"
                                                 type="text"
                                                 value="{mysqliSocketManualConfigurationOptions.socket}"
+                                                name="install[values][socket]"
+                                                placeholder="Default socket or enter name"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:if>
+
+                            <f:if condition="{hasPdoMysqlManualConfiguration}">
+                                <div id="pdoMysqlManualConfiguration" class="t3-install-driver-data">
+                                    <input type="hidden" value="pdo_mysql" name="install[values][driver]"/>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlManualConfiguration-username" class="control-label col-md-2">
+                                            Username
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlManualConfiguration-username"
+                                                class="form-control"
+                                                type="text"
+                                                value="{mysqliManualConfigurationOptions.username}"
+                                                name="install[values][username]"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlManualConfiguration-password" class="control-label col-md-2">
+                                            Password
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlManualConfiguration-password"
+                                                class="form-control"
+                                                type="password"
+                                                value="{pdoMysqlManualConfigurationOptions.password}"
+                                                name="install[values][password]"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlManualConfiguration-host" class="control-label col-md-2">
+                                            Host
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlManualConfiguration-host"
+                                                class="t3-install-form-input-text form-control"
+                                                type="text"
+                                                value="{pdoMysqlManualConfigurationOptions.host}"
+                                                name="install[values][host]"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlManualConfiguration-port" class="control-label col-md-2">
+                                            Port
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlManualConfiguration-port"
+                                                class="t3-install-form-input-text form-control"
+                                                type="text"
+                                                value="{pdoMysqlManualConfigurationOptions.port}"
+                                                name="install[values][port]"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </f:if>
+
+                            <f:if condition="{hasPdoMysqlSocketManualConfiguration}">
+                                <div id="pdoMysqlSocketManualConfiguration" class="t3-install-driver-data">
+                                    <input type="hidden" value="pdo_mysql" name="install[values][driver]"/>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlSocketManualConfiguration-username" class="control-label col-md-2">
+                                            Username
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlSocketManualConfiguration-username"
+                                                class="form-control"
+                                                type="text"
+                                                value="{pdoMysqlSocketManualConfigurationOptions.username}"
+                                                name="install[values][username]"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlSocketManualConfiguration-password" class="control-label col-md-2">
+                                            Password
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlSocketManualConfiguration-password"
+                                                class="form-control"
+                                                type="password"
+                                                value="{pdoMysqlSocketManualConfigurationOptions.password}"
+                                                name="install[values][password]"
+                                                autocomplete="off"
+                                            />
+                                        </div>
+                                    </div>
+                                    <input type="hidden" value="localhost" name="install[values][host]"/>
+                                    <div class="form-group">
+                                        <label for="t3-install-step-pdoMysqlSocketManualConfiguration-socket" class="control-label col-md-2">
+                                            Socket
+                                        </label>
+                                        <div class="col-md-10">
+                                            <input
+                                                id="t3-install-step-pdoMysqlSocketManualConfiguration-socket"
+                                                class="t3-install-form-input-text form-control"
+                                                type="text"
+                                                value="{pdoMysqlSocketManualConfigurationOptions.socket}"
                                                 name="install[values][socket]"
                                                 placeholder="Default socket or enter name"
                                             />

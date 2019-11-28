@@ -1,6 +1,7 @@
 <?php
+declare(strict_types = 1);
 
-namespace TYPO3\CMS\Install\SystemEnvironment\DatabasePlatform;
+namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -20,7 +21,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
 
 /**
  * Check database configuration status for PostgreSQL
@@ -33,13 +33,8 @@ use TYPO3\CMS\Install\SystemEnvironment\CheckInterface;
  *
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-class PostgreSqlCheck implements CheckInterface
+class PostgreSql extends AbstractPlatform
 {
-    /**
-     * @var FlashMessageQueue
-     */
-    protected $messageQueue;
-
     /**
      * Minimum supported PostgreSQL Server version
      *
@@ -54,6 +49,22 @@ class PostgreSqlCheck implements CheckInterface
     protected $minimumLibPQVersion = '9.0';
 
     /**
+     * Charset of the database that should be fulfilled
+     * @var array
+     */
+    protected $databaseCharsetToCheck = [
+        'utf8',
+    ];
+
+    /**
+     * Charset of the database server that should be fulfilled
+     * @var array
+     */
+    protected $databaseServerCharsetToCheck = [
+        'utf8',
+    ];
+
+    /**
      * Get all status information as array with status objects
      *
      * @return FlashMessageQueue
@@ -62,7 +73,6 @@ class PostgreSqlCheck implements CheckInterface
      */
     public function getStatus(): FlashMessageQueue
     {
-        $this->messageQueue = new FlashMessageQueue('install');
         $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         if (strpos($defaultConnection->getServerVersion(), 'PostgreSQL') !== 0) {
@@ -71,6 +81,9 @@ class PostgreSqlCheck implements CheckInterface
 
         $this->checkPostgreSqlVersion($defaultConnection);
         $this->checkLibpqVersion();
+        $this->checkDefaultDatabaseCharset($defaultConnection);
+        $this->checkDefaultDatabaseServerCharset($defaultConnection);
+        $this->checkDatabaseName($defaultConnection);
         return $this->messageQueue;
     }
 
@@ -86,7 +99,7 @@ class PostgreSqlCheck implements CheckInterface
         if (version_compare($currentPostgreSqlVersion, $this->minimumPostgreSQLVerion, '<')) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'Your PostgreSQL version ' . $currentPostgreSqlVersion . ' is not supported. TYPO3 CMS does not run'
-                    . ' with this version. The minimum supported PostgreSQL version is ' . $this->minimumPostgreSQLVerion,
+                . ' with this version. The minimum supported PostgreSQL version is ' . $this->minimumPostgreSQLVerion,
                 'PostgreSQL Server version is unsupported',
                 FlashMessage::ERROR
             ));
@@ -106,10 +119,10 @@ class PostgreSqlCheck implements CheckInterface
         if (!defined('PGSQL_LIBPQ_VERSION_STR')) {
             $this->messageQueue->enqueue(new FlashMessage(
                 'It is not possible to retrieve your PostgreSQL libpq version. Please check the version'
-                    . ' in the "phpinfo" area of the "System environment" module in the install tool manually.'
-                    . ' This should be found in section "pdo_pgsql".'
-                    . ' You should have at least the following version of  PostgreSQL libpq installed: '
-                    . $this->minimumLibPQVersion,
+                . ' in the "phpinfo" area of the "System environment" module in the install tool manually.'
+                . ' This should be found in section "pdo_pgsql".'
+                . ' You should have at least the following version of  PostgreSQL libpq installed: '
+                . $this->minimumLibPQVersion,
                 'PostgreSQL libpq version cannot be determined',
                 FlashMessage::WARNING
             ));
@@ -120,8 +133,8 @@ class PostgreSqlCheck implements CheckInterface
             if (version_compare($currentPostgreSqlLibpqVersion, $this->minimumLibPQVersion, '<')) {
                 $this->messageQueue->enqueue(new FlashMessage(
                     'Your PostgreSQL libpq version "' . $currentPostgreSqlLibpqVersion . '" is unsupported.'
-                        . ' TYPO3 CMS does not run with this version. The minimum supported libpq version is '
-                        . $this->minimumLibPQVersion,
+                    . ' TYPO3 CMS does not run with this version. The minimum supported libpq version is '
+                    . $this->minimumLibPQVersion,
                     'PostgreSQL libpq version is unsupported',
                     FlashMessage::ERROR
                 ));
@@ -131,6 +144,65 @@ class PostgreSqlCheck implements CheckInterface
                     'PostgreSQL libpq version is supported'
                 ));
             }
+        }
+    }
+
+    /**
+     * Checks the character set of the database and reports an error if it is not utf-8.
+     *
+     * @param Connection $connection to the database to be checked
+     */
+    public function checkDefaultDatabaseCharset(Connection $connection): void
+    {
+        $defaultDatabaseCharset = $connection->executeQuery(
+            'SELECT pg_catalog.pg_encoding_to_char(pg_database.encoding) from pg_database where datname = ?',
+            [$connection->getDatabase()],
+            [\PDO::PARAM_STR]
+        )
+            ->fetch();
+
+        if (!in_array(strtolower($defaultDatabaseCharset['pg_encoding_to_char']), $this->databaseCharsetToCheck, true)) {
+            $this->messageQueue->enqueue(new FlashMessage(
+                sprintf(
+                    'Checking database character set failed, got key "%s" instead of "%s"',
+                    $defaultDatabaseCharset,
+                    implode(' or ', $this->databaseCharsetToCheck)
+                ),
+                'PostgreSQL database character set check failed',
+                FlashMessage::ERROR
+            ));
+        } else {
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                sprintf('PostgreSQL database uses %s. All good.', implode(' or ', $this->databaseCharsetToCheck))
+            ));
+        }
+    }
+
+    /**
+     * Checks the character set of the database server and reports an info if it is not utf-8.
+     *
+     * @param Connection $connection to the database to be checked
+     */
+    public function checkDefaultDatabaseServerCharset(Connection $connection): void
+    {
+        $defaultServerCharset = $connection->executeQuery('SHOW SERVER_ENCODING')->fetch();
+
+        if (!in_array(strtolower($defaultServerCharset['server_encoding']), $this->databaseCharsetToCheck, true)) {
+            $this->messageQueue->enqueue(new FlashMessage(
+                sprintf(
+                    'Checking server character set failed, got key "%s" instead of "%s"',
+                    $defaultServerCharset,
+                    implode(' or ', $this->databaseServerCharsetToCheck)
+                ),
+                'PostgreSQL database character set check failed',
+                FlashMessage::INFO
+            ));
+        } else {
+            $this->messageQueue->enqueue(new FlashMessage(
+                '',
+                sprintf('PostgreSQL server default uses %s. All good.', implode(' or ', $this->databaseCharsetToCheck))
+            ));
         }
     }
 }

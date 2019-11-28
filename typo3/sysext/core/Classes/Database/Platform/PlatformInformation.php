@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Database\Platform;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
@@ -48,6 +49,54 @@ class PlatformInformation
         'sqlserver' => 2100,
         'sqlite' => 999,
     ];
+
+    protected static $charSetMap = [
+        'mysql' => 'utf8mb4',
+        'postgresql' => 'UTF8',
+        'sqlserver' => 'UTF-8',
+        'sqlite' => 'utf8',
+    ];
+
+    protected static $databaseCreateWithCharsetMap = [
+        'mysql' => 'CHARACTER SET %s',
+        'postgresql' => "ENCODING '%s'",
+        'sqlserver' => '',
+    ];
+
+    /**
+     * Return the encoding of the given platform
+     *
+     * @param AbstractPlatform $platform
+     * @return string
+     */
+    public static function getCharset(AbstractPlatform $platform): string
+    {
+        $platformName = static::getPlatformIdentifier($platform);
+
+        return static::$charSetMap[$platformName];
+    }
+
+    /**
+     * Return the statement to create a database with the desired encoding for the given platform
+     *
+     * @param AbstractPlatform $platform
+     * @param string $databaseName
+     * @return string
+     */
+    public static function getDatabaseCreateStatementWithCharset(AbstractPlatform $platform, string $databaseName): string
+    {
+        try {
+            $createStatement = $platform->getCreateDatabaseSQL($databaseName);
+        } catch (DBALException $exception) {
+            // just silently ignore that error as the selected database does not support any creation of a database
+            return '';
+        }
+
+        $platformName = static::getPlatformIdentifier($platform);
+        $charset = static::getCharset($platform);
+
+        return $createStatement . ' ' . sprintf(static::$databaseCreateWithCharsetMap[$platformName], $charset);
+    }
 
     /**
      * Return information about the maximum supported length for a SQL identifier.

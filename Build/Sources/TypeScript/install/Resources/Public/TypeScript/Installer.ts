@@ -283,9 +283,10 @@ class Installer {
           this.checkDatabaseSelect();
         } else {
           if (Array.isArray(data.status)) {
+            $outputContainer.empty();
             data.status.forEach((element: any): void => {
               let message: any = InfoBox.render(element.severity, element.title, element.message);
-              $outputContainer.empty().append(message);
+              $outputContainer.append(message);
             });
           }
         }
@@ -332,12 +333,41 @@ class Installer {
       .then(async (response: AjaxResponse): Promise<any> => {
         const data = await response.resolve();
         if (data.success === true) {
-          this.checkDatabaseData();
+          this.checkDatabaseRequirements();
         } else {
           if (Array.isArray(data.status)) {
             data.status.forEach((element: any): void => {
               let message: any = InfoBox.render(element.severity, element.title, element.message);
               $outputContainer.empty().append(message);
+            });
+          }
+        }
+      });
+  }
+
+  private checkDatabaseRequirements(): void {
+    let $outputContainer: JQuery = $(this.selectorDatabaseSelectOutput);
+    let postData: any = {
+      'install[action]': 'checkDatabaseRequirements',
+      'install[token]': $(this.selectorModuleContent).data('installer-database-check-requirements-execute-token'),
+    };
+
+    $($(this.selectorBody + ' form').serializeArray()).each((index: number, element: any): void => {
+      postData[element.name] = element.value;
+    });
+
+    (new AjaxRequest(this.getUrl()))
+      .post(postData)
+      .then(async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
+        if (data.success === true) {
+          this.checkDatabaseData();
+        } else {
+          if (Array.isArray(data.status)) {
+            $outputContainer.empty();
+            data.status.forEach((element: any): void => {
+              let message: any = InfoBox.render(element.severity, element.title, element.message);
+              $outputContainer.append(message);
             });
           }
         }
