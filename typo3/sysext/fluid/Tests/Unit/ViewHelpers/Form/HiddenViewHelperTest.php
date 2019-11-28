@@ -41,10 +41,7 @@ class HiddenViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
     {
         $tagBuilder = $this->prophesize(TagBuilder::class);
         $tagBuilder->render()->shouldBeCalled();
-        // @todo remove condition once typo3fluid/fluid version 2.6.0 will be the minimum version
-        if (class_exists(\TYPO3Fluid\Fluid\ViewHelpers\InlineViewHelper::class)) {
-            $tagBuilder->reset()->shouldBeCalled();
-        }
+        $tagBuilder->reset()->shouldBeCalled();
         $tagBuilder->addAttribute('type', 'hidden')->shouldBeCalled();
         $tagBuilder->addAttribute('name', 'foo')->shouldBeCalled();
         $tagBuilder->addAttribute('value', 'bar')->shouldBeCalled();

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Uri;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\ViewHelpers\Uri\PageViewHelper;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
@@ -33,6 +34,8 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp(): void
     {
         parent::setUp();
+        $uriBuilder = $this->createMock(UriBuilder::class);
+        $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($uriBuilder);
         $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }

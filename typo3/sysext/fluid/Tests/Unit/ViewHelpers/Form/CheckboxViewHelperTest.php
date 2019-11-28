@@ -16,12 +16,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper;
-use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
  * Test for the "Checkbox" Form view helper
  */
-class CheckboxViewHelperTest extends ViewHelperBaseTestcase
+class CheckboxViewHelperTest extends FormFieldViewHelperBaseTestcase
 {
 
     /**

@@ -15,7 +15,9 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
+use TYPO3\TestingFramework\Fluid\Unit\Core\Rendering\RenderingContextFixture;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -30,11 +32,41 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
     protected $viewHelper;
 
     /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
      * setUp function
      */
     protected function setUp(): void
     {
         parent::setUp();
+        $this->uriBuilder = $this->createMock(UriBuilder::class);
+        $this->uriBuilder->expects(self::any())->method('reset')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setArguments')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setSection')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setFormat')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setCreateAbsoluteUri')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setAddQueryString')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setArgumentsToBeExcludedFromQueryString')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setLinkAccessRestrictedPages')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setTargetPageUid')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setTargetPageType')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setNoCache')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setAddQueryStringMethod')->willReturn($this->uriBuilder);
+
+        // reset parent controller context and uri builder @todo: remove once fluid-cleanup is merged in testing framework
+        $this->controllerContext = $this->createMock(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class);
+        $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($this->uriBuilder);
+        $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request->reveal());
+        $this->arguments = [];
+        $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['getControllerContext']);
+        $this->renderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
+        // until here
+
+        $this->renderingContext->setControllerContext($this->controllerContext);
+
         $this->viewHelper = $this->getAccessibleMock(PageViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
         $this->viewHelper->initializeArguments();

@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
-use TYPO3\TestingFramework\Fluid\Unit\Core\Rendering\RenderingContextFixture;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
@@ -39,7 +38,7 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     {
         $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
         /** @var RenderingContext $renderingContext */
-        $renderingContext = $this->createMock(RenderingContextFixture::class);
+        $renderingContext = $this->getMockBuilder(RenderingContext::class)->disableOriginalConstructor()->getMock();
         $this->subject->setRenderingContext($renderingContext);
     }
 

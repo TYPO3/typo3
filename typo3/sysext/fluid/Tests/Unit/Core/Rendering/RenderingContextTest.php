@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Rendering;
 
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
-use TYPO3\TestingFramework\Fluid\Unit\Core\Rendering\RenderingContextFixture;
 use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\ViewHelperVariableContainer;
 
@@ -29,14 +29,17 @@ class RenderingContextTest extends UnitTestCase
     /**
      * Parsing state
      *
-     * @var \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface
+     * @var RenderingContext
      */
     protected $renderingContext;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['dummy']);
+        $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->addMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -44,8 +47,9 @@ class RenderingContextTest extends UnitTestCase
      */
     public function setControllerContextWithSubpackageKeySetsExpectedControllerContext()
     {
-        $renderingContext = $this->getMockBuilder(RenderingContextFixture::class)
-            ->setMethods(['setControllerAction', 'setControllerName'])
+        $renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->onlyMethods(['setControllerAction', 'setControllerName'])
+            ->disableOriginalConstructor()
             ->getMock();
         $request = $this->getMockBuilder(Request::class)
             ->setMethods(['getControllerActionName', 'getControllerSubpackageKey', 'getControllerName'])
@@ -76,7 +80,6 @@ class RenderingContextTest extends UnitTestCase
     public function controllerContextCanBeReadCorrectly()
     {
         $controllerContext = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext::class)
-            ->setMethods(['getRequest'])
             ->disableOriginalConstructor()
             ->getMock();
         $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($this->createMock(Request::class));
@@ -90,7 +93,7 @@ class RenderingContextTest extends UnitTestCase
     public function viewHelperVariableContainerCanBeReadCorrectly()
     {
         $viewHelperVariableContainer = $this->createMock(ViewHelperVariableContainer::class);
-        $this->renderingContext->_set('viewHelperVariableContainer', $viewHelperVariableContainer);
+        $this->renderingContext->setViewHelperVariableContainer($viewHelperVariableContainer);
         self::assertSame($viewHelperVariableContainer, $this->renderingContext->getViewHelperVariableContainer());
     }
 
@@ -102,7 +105,10 @@ class RenderingContextTest extends UnitTestCase
      */
     public function setControllerActionProcessesInputCorrectly($input, $expected)
     {
-        $subject = new RenderingContextFixture();
+        $subject = $this->getMockBuilder(RenderingContext::class)
+            ->addMethods(['dummy'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $request = $this->getMockBuilder(Request::class)->setMethods(['setControllerActionName'])->getMock();
         $request->expects(self::at(0))->method('setControllerActionName')->with('index');
         $request->expects(self::at(1))->method('setControllerActionName')->with(lcfirst($expected));

@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
  */
 
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper;
@@ -38,12 +40,39 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     protected $mockConfigurationManager;
 
+    /**
+     * @var MvcPropertyMappingConfigurationService
+     */
+    protected $mvcPropertyMapperConfigurationService;
+
+    /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->uriBuilder = $this->createMock(UriBuilder::class);
+        $this->uriBuilder->expects(self::any())->method('reset')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setArguments')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setSection')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setFormat')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setCreateAbsoluteUri')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setAddQueryString')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setArgumentsToBeExcludedFromQueryString')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setLinkAccessRestrictedPages')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setTargetPageUid')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setTargetPageType')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setNoCache')->willReturn($this->uriBuilder);
+        $this->uriBuilder->expects(self::any())->method('setAddQueryStringMethod')->willReturn($this->uriBuilder);
+        $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($this->uriBuilder);
+        $this->renderingContext->setControllerContext($this->controllerContext);
+
         $this->mockExtensionService = $this->createMock(ExtensionService::class);
         $this->mockConfigurationManager = $this->createMock(ConfigurationManagerInterface::class);
         $this->tagBuilder = $this->createMock(TagBuilder::class);
+        $this->mvcPropertyMapperConfigurationService = $this->getAccessibleMock(MvcPropertyMappingConfigurationService::class, ['dummy']);
     }
 
     /**
@@ -91,7 +120,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['appendHmac'])
             ->getMock();
         $hashService->expects(self::any())->method('appendHmac')->willReturn('');
-        $this->mvcPropertyMapperConfigurationService->_set('hashService', $hashService);
+        $this->mvcPropertyMapperConfigurationService->injectHashService($hashService);
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         $viewHelper->_set('hashService', $hashService);
     }
@@ -188,7 +217,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithRewrittenPropertyMapper()
     {
         $viewHelper = $this->getAccessibleMock($this->buildAccessibleProxy(FormViewHelper::class), ['renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderTrustedPropertiesField'], [], '', false);
-        $this->mvcPropertyMapperConfigurationService->_set('hashService', new HashService());
+        $this->mvcPropertyMapperConfigurationService->injectHashService(new HashService());
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         parent::injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->willReturn('hiddenIdentityField');
@@ -210,7 +239,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
             ->setMethods(['renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderTrustedPropertiesField'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mvcPropertyMapperConfigurationService->_set('hashService', new HashService());
+        $this->mvcPropertyMapperConfigurationService->injectHashService(new HashService());
         $viewHelper->_set('mvcPropertyMapperConfigurationService', $this->mvcPropertyMapperConfigurationService);
         parent::injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->expects(self::once())->method('renderHiddenIdentityField')->willReturn('hiddenIdentityField');
