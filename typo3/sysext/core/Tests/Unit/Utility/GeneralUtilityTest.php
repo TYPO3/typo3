@@ -37,7 +37,6 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\FileStreamWrapper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -2897,13 +2896,9 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirDeepCreatesDirectoryWithDoubleSlashes($directoryToCreate)
     {
-        vfsStream::setup();
-        // Load fixture files and folders from disk
-        FileStreamWrapper::init(Environment::getPublicPath());
-        FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', true);
-        GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/' . $directoryToCreate);
-        self::assertTrue(is_dir(Environment::getPublicPath() . '/' . $directoryToCreate));
-        FileStreamWrapper::destroy();
+        vfsStream::setup(Environment::getProjectPath(), null, [Environment::getPublicPath() => []]);
+        GeneralUtility::mkdir_deep('vfs://' . Environment::getPublicPath() . '/' . $directoryToCreate);
+        self::assertTrue(is_dir('vfs://' . Environment::getPublicPath() . '/' . $directoryToCreate));
     }
 
     /**
