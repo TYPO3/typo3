@@ -1,6 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:if condition="{missingClasses}">
-        <f:be.infobox title="{f:translate(key:'msg.invalidTaskClass.infobox.title', arguments: {0: '{missingClasses ->f:count()}'})}" state="2">
+        <f:be.infobox title="{f:translate(key:'msg.invalidTaskClass.infobox.title', arguments: '{0: \'{missingClasses ->f:count()}\'}')}" state="2">
             <f:format.raw><f:translate key="msg.invalidTaskClass.infobox.message" /></f:format.raw>
         </f:be.infobox>
     </f:if>

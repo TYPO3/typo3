@@ -21,7 +21,7 @@
                     <f:render section="filter" arguments="{_all}" />
                     <f:be.infobox state="-2" title="{f:translate(key: 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.title')}">
                         <p><f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_not_found_with_filter.message"/></p>
-                        <a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview'})}">
+                        <a class="btn btn-default" href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}">
                             <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:redirect_no_filter"/>
                         </a>
                         <be:link.newRecord class="btn btn-primary" table="sys_redirect">
@@ -150,7 +150,7 @@
 </f:section>
 
 <f:section name="filter">
-    <form action="{f:be.uri(route:'site_redirects', parameters: {action: 'overview'})}"
+    <form action="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\'}')}"
         method="post"
         enctype="multipart/form-data"
         name="demand"

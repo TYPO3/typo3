@@ -33,12 +33,12 @@
             <f:if condition="{pagination.hasLessPages}">
                 <f:then>
                     <li>
-                        <a href="{f:widget.uri(arguments:{currentPage: 1})}" title="{f:translate(key:'widget.pagination.first')}">
+                        <a href="{f:widget.uri(arguments:'{currentPage: 1}')}" title="{f:translate(key:'widget.pagination.first')}">
                             <core:icon identifier="actions-view-paging-first" />
                         </a>
                     </li>
                     <li>
-                        <a href="{f:widget.uri(arguments:{currentPage: pagination.previousPage})}" title="{f:translate(key:'widget.pagination.previous')}">
+                        <a href="{f:widget.uri(arguments:'{currentPage: pagination.previousPage}')}" title="{f:translate(key:'widget.pagination.previous')}">
                             <core:icon identifier="actions-view-paging-previous" />
                         </a>
                     </li>
@@ -74,7 +74,7 @@
                     <f:translate key="widget.pagination.page" />
 
                     <form onsubmit="return goToPage(this);" style="display:inline;">
-                        <f:form.textfield additionalAttributes="{min: '1', data-number-of-pages: '{pagination.numberOfPages}', data-url: '{f:widget.uri(arguments:{currentPage: 987654321})}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" type="number" />
+                        <f:form.textfield additionalAttributes="{min: '1', data-number-of-pages: '{pagination.numberOfPages}', data-url: '{f:widget.uri(arguments:\'{currentPage: 987654321}\')}'}" name="paginator-target-page" class="form-control input-sm paginator-input" size="5" value="{pagination.current}" type="number" />
                     </form>
 
                     / {pagination.numberOfPages}
@@ -83,12 +83,12 @@
             <f:if condition="{pagination.hasMorePages}">
                 <f:then>
                     <li>
-                        <a href="{f:widget.uri(arguments:{currentPage: pagination.nextPage})}" title="{f:translate(key:'widget.pagination.next')}">
+                        <a href="{f:widget.uri(arguments:'{currentPage: pagination.nextPage}')}" title="{f:translate(key:'widget.pagination.next')}">
                             <core:icon identifier="actions-view-paging-next" />
                         </a>
                     </li>
                     <li>
-                        <a href="{f:widget.uri(arguments:{currentPage: pagination.numberOfPages})}" title="{f:translate(key:'widget.pagination.last')}">
+                        <a href="{f:widget.uri(arguments:'{currentPage: pagination.numberOfPages}')}" title="{f:translate(key:'widget.pagination.last')}">
                             <core:icon identifier="actions-view-paging-last" />
                         </a>
                     </li>
@@ -107,7 +107,7 @@
                 </f:else>
             </f:if>
             <li>
-                <a href="{f:widget.uri(arguments:{currentPage: pagination.current})}" title="{f:translate(key:'widget.pagination.refresh')}">
+                <a href="{f:widget.uri(arguments:'{currentPage: pagination.current}')}" title="{f:translate(key:'widget.pagination.refresh')}">
                     <core:icon identifier="actions-refresh" />
                 </a>
             </li>

@@ -30,7 +30,7 @@
                 <f:then>
                     <f:if condition="{page._templates}">
                         <f:then>
-                            <a href="{f:be.uri(route:'web_ts', parameters:{id: page.uid})}"
+                            <a href="{f:be.uri(route:'web_ts', parameters:'{id: page.uid}')}"
                                 title="ID: {page.uid}">
                                 <core:IconForRecord table="pages" row="{page}" />
                                 {page.title -> f:format.crop(maxCharacters: maxCharacters)}
