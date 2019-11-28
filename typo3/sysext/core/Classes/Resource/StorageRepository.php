@@ -240,6 +240,9 @@ class StorageRepository extends AbstractRepository
             ->getConnectionForTable($this->table);
         $dbConnection->insert($this->table, $field_values);
 
+        // Flush local resourceStorage cache so the storage can be accessed during the same request right away
+        static::$storageRowCache = null;
+
         return (int)$dbConnection->lastInsertId($this->table);
     }
 
