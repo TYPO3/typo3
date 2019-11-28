@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\FileStreamWrapper;
 
 /**
  * Test case
@@ -384,24 +383,22 @@ class LocalDriverTest extends BaseTestCase
      */
     public function getSpecificFileInformationReturnsRequestedFileInformation($expectedValue, string $property): void
     {
-        $root = vfsStream::setup();
+        $root = vfsStream::setup('root');
+
         $subFolder = vfsStream::newDirectory('fileadmin');
         $root->addChild($subFolder);
+
         // Load fixture files and folders from disk
         $directory = vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024 * 1024);
         if (in_array($property, ['mtime', 'ctime', 'atime'])) {
             $expectedValue = $directory->getChild('Dummy.html')->filemtime();
         }
-        FileStreamWrapper::init(Environment::getPublicPath() . '/');
-        FileStreamWrapper::registerOverlayPath('fileadmin', 'vfs://root/fileadmin', false);
 
-        $subject = $this->createDriver(['basePath' => Environment::getPublicPath() . '/fileadmin']);
+        $subject = $this->createDriver(['basePath' => 'vfs://root/fileadmin']);
         self::assertSame(
             $expectedValue,
-            $subject->getSpecificFileInformation(Environment::getPublicPath() . '/fileadmin/Dummy.html', '/', $property)
+            $subject->getSpecificFileInformation('vfs://root/fileadmin/Dummy.html', '/', $property)
         );
-
-        FileStreamWrapper::destroy();
     }
 
     /**
@@ -676,22 +673,18 @@ class LocalDriverTest extends BaseTestCase
      */
     public function getFileReturnsCorrectIdentifier(): void
     {
-        $root = vfsStream::setup();
+        $root = vfsStream::setup('root');
         $subFolder = vfsStream::newDirectory('fileadmin');
         $root->addChild($subFolder);
         // Load fixture files and folders from disk
         vfsStream::copyFromFileSystem(__DIR__ . '/Fixtures/', $subFolder, 1024 * 1024);
-        FileStreamWrapper::init(Environment::getPublicPath() . '/');
-        FileStreamWrapper::registerOverlayPath('fileadmin/', 'vfs://root/fileadmin/', false);
 
-        $subject = $this->createDriver(['basePath' => Environment::getPublicPath() . '/fileadmin']);
+        $subject = $this->createDriver(['basePath' => 'vfs://root/fileadmin']);
 
         $subdirFileInfo = $subject->getFileInfoByIdentifier('Dummy.html');
         self::assertEquals('/Dummy.html', $subdirFileInfo['identifier']);
         $rootFileInfo = $subject->getFileInfoByIdentifier('LocalDriverFilenameFilter.php');
         self::assertEquals('/LocalDriverFilenameFilter.php', $rootFileInfo['identifier']);
-
-        FileStreamWrapper::destroy();
     }
 
     /**
