@@ -52,7 +52,7 @@
 										additionalAttributes="{data-action:'update-extension'}"
 										format="json" controller="Download"
 										arguments="{extension:extension.key, integerVersionStart: extension.terObject.integerVersion, integerVersionStop: extension.updateToVersion.integerVersion}"
-										title="{f:translate(key:'extensionList.updateToVersion', arguments:{0:extension.updateToVersion.version})}"
+										title="{f:translate(key:'extensionList.updateToVersion', arguments:'{0:extension.updateToVersion.version}')}"
 									>
 										<core:icon identifier="actions-system-extension-update" />
 									</f:link.action>

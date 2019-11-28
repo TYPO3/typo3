@@ -37,7 +37,7 @@
 								<td align="left" class="nowrap">
 									<f:link.action
 										action="edit"
-										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth, returnUrl: '{f:uri.action(action: \'index\', arguments: {id: currentId, depth: depth})}'}"
+										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth, returnUrl: '{f:uri.action(action: \'index\', arguments: \'{id: currentId, depth: depth}\')}'}"
 										title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
 									>
 										<f:format.raw>{data.depthData}{data.HTML}</f:format.raw>
@@ -51,7 +51,7 @@
 									</f:comment>
 									<f:link.action
 										action="edit"
-										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth, returnUrl: '{f:uri.action(action: \'index\', arguments: {id: currentId, depth: depth})}'}"
+										arguments="{id: '{f:if(condition: data.row._ORIG_uid, then: data.row._ORIG_uid, else: data.row.uid)}', depth: depth, returnUrl: '{f:uri.action(action: \'index\', arguments: \'{id: currentId, depth: depth}\')}'}"
 										class="btn btn-default"
 										title="{f:translate(key: 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:ch_permissions')}"
 									>

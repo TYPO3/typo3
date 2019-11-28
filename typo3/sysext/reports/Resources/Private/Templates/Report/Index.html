@@ -14,7 +14,7 @@
 		<f:for each="{reports}" as="reportOverview" key="extensionKey">
 			<f:for each="{reportOverview}" key="reportName" as="report">
 				<dt>
-					<a href="{be:moduleLink(route:'system_reports',arguments:{action:'detail', extension:extensionKey, report:reportName})}">
+					<a href="{be:moduleLink(route:'system_reports',arguments:'{action:\'detail\', extension:extensionKey, report:reportName}')}">
 						<r:icon icon="{report.icon}" title="{f:translate(key:report.title)}" />
 						<f:translate key="{report.title}" />
 					</a>

@@ -23,12 +23,12 @@
 		<f:if condition="{pagination.hasLessPages}">
 			<f:then>
 				<li>
-					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: 1})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
+					<a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
 						<core:icon identifier="actions-view-paging-first" />
 					</a>
 				</li>
 				<li>
-					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: pagination.previousPage})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}">
+					<a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.previousPage}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}">
 						<core:icon identifier="actions-view-paging-previous" />
 					</a>
 				</li>
@@ -73,12 +73,12 @@
 		<f:if condition="{pagination.hasMorePages}">
 			<f:then>
 				<li>
-					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: pagination.nextPage})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}">
+					<a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.nextPage}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}">
 						<core:icon identifier="actions-view-paging-next" />
 					</a>
 				</li>
 				<li>
-					<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: pagination.numberOfPages})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}">
+					<a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: pagination.numberOfPages}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}">
 						<core:icon identifier="actions-view-paging-last" />
 					</a>
 				</li>
@@ -97,7 +97,7 @@
 			</f:else>
 		</f:if>
 		<li>
-			<a href="{f:be.uri(route:'site_redirects', parameters: {action: 'overview', demand: demand.parameters, page: demand.page})}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.refresh')}">
+			<a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, page: demand.page}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.refresh')}">
 				<core:icon identifier="actions-refresh" />
 			</a>
 		</li>

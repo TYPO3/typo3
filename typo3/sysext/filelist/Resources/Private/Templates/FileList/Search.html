@@ -44,7 +44,7 @@
 								<f:then>
 									<a href="#" class="filelist-file-title"
 										title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata' )}"
-										data-url="{be:uri.editRecord( uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+										data-url="{be:uri.editRecord( uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
 									>
 										{file.name}
 									</a>
@@ -64,7 +64,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-edit"
 											title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent' )}"
-											data-url="{fl:uri.editFileContent( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+											data-url="{fl:uri.editFileContent( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-page-open" />
 										</a>
@@ -78,7 +78,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-edit"
 										   title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editMetadata' )}"
-										   data-url="{be:uri.editRecord(uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+										   data-url="{be:uri.editRecord(uid:file.metadataUid, table:'sys_file_metadata', returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-open" />
 										</a>
@@ -106,7 +106,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-replace"
 											title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.replace' )}"
-											data-url="{fl:uri.replaceFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+											data-url="{fl:uri.replaceFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-edit-replace" />
 										</a>
@@ -120,7 +120,7 @@
 									<f:then>
 										<a href="#" class="btn btn-default filelist-file-rename"
 											title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.rename' )}"
-											data-url="{fl:uri.renameFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:{ searchWord:\'{searchWord->f:format.htmlentities()}\' } ) -> f:format.raw()}' )}"
+											data-url="{fl:uri.renameFile( file:file.resource, returnUrl:'{f:uri.action( action:\'search\', arguments:\'{ searchWord:\\'{searchWord->f:format.htmlentities()}\\' }\' ) -> f:format.raw()}' )}"
 										>
 											<core:icon identifier="actions-edit-rename" />
 										</a>
@@ -149,7 +149,7 @@
 										<a href="#" class="btn btn-default filelist-file-copy"
 										   title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.copy' )}"
 										   data-url="{fl:uri.copyCutFile( file:file.resource, copyOrCut: 'copy' )}"
-										   data-redirect-url="{f:uri.action( action:'search', arguments:{ searchWord:'{searchWord->f:format.htmlentities()}' } )}"
+										   data-redirect-url="{f:uri.action( action:'search', arguments:'{ searchWord:\'{searchWord->f:format.htmlentities()}\' }' )}"
 										>
 											<f:if condition="{file.selected} == 'copy'">
 												<f:then><core:icon identifier="actions-edit-copy-release" /></f:then>
@@ -185,11 +185,11 @@
 											title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete' )}"
 											data-identifier="{file.identifier}"
 											data-title="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete' )}"
-											data-content="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete', arguments: {0:file.name} )}"
+											data-content="{f:translate( key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.delete', arguments: '{0:file.name}' )}"
 											data-check="{f:if(condition:settings.jsConfirmationDelete, then:'1', else:'0')}"
 											data-delete-url="{deleteUrl}"
 											data-delete-type="delete_file"
-											data-redirect-url="{f:uri.action( action:'search', arguments:{ searchWord:'{searchWord->f:format.htmlentities()}' } )}"
+											data-redirect-url="{f:uri.action( action:'search', arguments:'{ searchWord:\'{searchWord->f:format.htmlentities()}\' }' )}"
 										>
 											<core:icon identifier="actions-edit-delete" />
 										</a>
