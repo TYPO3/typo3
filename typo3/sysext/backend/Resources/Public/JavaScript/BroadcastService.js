@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","TYPO3/CMS/Backend/BroadcastMessage","TYPO3/CMS/Backend/Utility/MessageUtility","broadcastchannel"],function(e,t,s,n){"use strict";return new class{constructor(){this.channel=new BroadcastChannel("typo3")}listen(){this.channel.onmessage=(e=>{if(!n.MessageUtility.verifyOrigin(e.origin))throw"Denied message sent by "+e.origin;const t=s.BroadcastMessage.fromData(e.data);document.dispatchEvent(t.createCustomEvent("typo3"))})}post(e){this.channel.postMessage(e)}}});
+define(["require","exports","TYPO3/CMS/Backend/BroadcastMessage","TYPO3/CMS/Backend/Utility/MessageUtility","broadcastchannel"],(function(e,t,s,n){"use strict";return new class{constructor(){this.channel=new BroadcastChannel("typo3")}listen(){this.channel.onmessage=e=>{if(!n.MessageUtility.verifyOrigin(e.origin))throw"Denied message sent by "+e.origin;const t=s.BroadcastMessage.fromData(e.data);document.dispatchEvent(t.createCustomEvent("typo3"))}}post(e){this.channel.postMessage(e)}}}));

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","../AbstractInteractableModule","jquery","../../Router","TYPO3/CMS/Backend/Notification"],function(e,t,r,a,n,s){"use strict";return new class extends r.AbstractInteractableModule{initialize(e){this.currentModal=e,this.getData()}getData(){const e=this.getModalBody();a.ajax({url:n.getUrl("phpInfoGetData"),cache:!1,success:t=>{!0===t.success?e.empty().append(t.html):s.error("Something went wrong")},error:t=>{n.handleAjaxError(t,e)}})}}});
+define(["require","exports","../AbstractInteractableModule","jquery","../../Router","TYPO3/CMS/Backend/Notification"],(function(e,t,r,a,n,s){"use strict";class c extends r.AbstractInteractableModule{initialize(e){this.currentModal=e,this.getData()}getData(){const e=this.getModalBody();a.ajax({url:n.getUrl("phpInfoGetData"),cache:!1,success:t=>{!0===t.success?e.empty().append(t.html):s.error("Something went wrong")},error:t=>{n.handleAjaxError(t,e)}})}}return new c}));

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./DocumentSaveActions"],function(e,n,t){"use strict";return new class{constructor(){console.warn("TYPO3/CMS/Backend/SplitButtons has been marked as deprecated, consider using TYPO3/CMS/Backend/DocumentSaveActions instead")}addPreSubmitCallback(e){t.getInstance().addPreSubmitCallback(e)}}});
+define(["require","exports","./DocumentSaveActions"],(function(e,n,t){"use strict";return new class{constructor(){console.warn("TYPO3/CMS/Backend/SplitButtons has been marked as deprecated, consider using TYPO3/CMS/Backend/DocumentSaveActions instead")}addPreSubmitCallback(e){t.getInstance().addPreSubmitCallback(e)}}}));

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./InteractionRequest"],function(e,t,n){"use strict";return class extends n{constructor(e,t=null){super(e),this.clientEvent=t}}});
+define(["require","exports","./InteractionRequest"],(function(e,t,n){"use strict";return class extends n{constructor(e,t=null){super(e),this.clientEvent=t}}}));

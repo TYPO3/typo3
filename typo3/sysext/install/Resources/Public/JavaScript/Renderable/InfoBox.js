@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Severity"],function(t,e,l,s){"use strict";return new class{constructor(){this.template=l('<div class="t3js-infobox callout callout-sm"><h4 class="callout-title"></h4><div class="callout-body"></div></div>')}render(t,e,l){let o=this.template.clone();return o.addClass("callout-"+s.getCssClass(t)),e&&o.find("h4").text(e),l?o.find(".callout-body").text(l):o.find(".callout-body").remove(),o}}});
+define(["require","exports","jquery","./Severity"],(function(t,e,l,s){"use strict";return new class{constructor(){this.template=l('<div class="t3js-infobox callout callout-sm"><h4 class="callout-title"></h4><div class="callout-body"></div></div>')}render(t,e,l){let o=this.template.clone();return o.addClass("callout-"+s.getCssClass(t)),e&&o.find("h4").text(e),l?o.find(".callout-body").text(l):o.find(".callout-body").remove(),o}}}));

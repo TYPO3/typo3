@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery"],function(e,r,t,i){"use strict";return class{registerEvent(e){i(e),i(t.ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}});
+define(["require","exports","../Enum/Viewport/ScaffoldIdentifier","jquery"],(function(e,r,t,i){"use strict";return class{registerEvent(e){i(e),i(t.ScaffoldIdentifierEnum.header).on("t3-topbar-update",e)}}}));

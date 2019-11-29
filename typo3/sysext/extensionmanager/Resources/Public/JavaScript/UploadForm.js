@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","datatables"],function(s,e,a){"use strict";return class{constructor(){this.expandedUploadFormClass="transformed"}initializeEvents(){a(document).on("click",".t3js-upload",s=>{const e=a(s.currentTarget),t=a(".uploadForm");s.preventDefault(),e.hasClass(this.expandedUploadFormClass)?(t.stop().slideUp(),e.removeClass(this.expandedUploadFormClass)):(e.addClass(this.expandedUploadFormClass),t.stop().slideDown(),a.ajax({url:e.attr("href"),dataType:"html",success:s=>{t.html(s)}}))})}}});
+define(["require","exports","jquery","datatables"],(function(s,e,a){"use strict";return class{constructor(){this.expandedUploadFormClass="transformed"}initializeEvents(){a(document).on("click",".t3js-upload",s=>{const e=a(s.currentTarget),t=a(".uploadForm");s.preventDefault(),e.hasClass(this.expandedUploadFormClass)?(t.stop().slideUp(),e.removeClass(this.expandedUploadFormClass)):(e.addClass(this.expandedUploadFormClass),t.stop().slideDown(),a.ajax({url:e.attr("href"),dataType:"html",success:s=>{t.html(s)}}))})}}}));

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","TYPO3/CMS/Backend/FormEngine"],function(e,i,r,n){"use strict";return class{constructor(i){r(()=>{this.registerEventHandler(),e(["../../DateTimePicker"],e=>{e.initialize("#"+i)})})}registerEventHandler(){r(document).on("formengine.dp.change",(e,i)=>{n.Validation.validate(),n.Validation.markFieldAsChanged(i),r(".module-docheader-bar .btn").removeClass("disabled").prop("disabled",!1)})}}});
+define(["require","exports","jquery","TYPO3/CMS/Backend/FormEngine"],(function(e,i,r,n){"use strict";return class{constructor(i){r(()=>{this.registerEventHandler(),e(["../../DateTimePicker"],e=>{e.initialize("#"+i)})})}registerEventHandler(){r(document).on("formengine.dp.change",(e,i)=>{n.Validation.validate(),n.Validation.markFieldAsChanged(i),r(".module-docheader-bar .btn").removeClass("disabled").prop("disabled",!1)})}}}));

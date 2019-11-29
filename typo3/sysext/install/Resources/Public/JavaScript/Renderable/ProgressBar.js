@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Severity"],function(r,s,e,a){"use strict";return new class{constructor(){this.template=e('<div class="progress"><div class="t3js-progressbar progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span></span></div></div>')}render(r,s,e){let t=this.template.clone();return t.addClass("progress-bar-"+a.getCssClass(r)),e&&(t.css("width",e+"%"),t.attr("aria-valuenow",e)),s&&t.find("span").text(s),t}}});
+define(["require","exports","jquery","./Severity"],(function(r,s,e,a){"use strict";return new class{constructor(){this.template=e('<div class="progress"><div class="t3js-progressbar progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"> <span></span></div></div>')}render(r,s,e){let t=this.template.clone();return t.addClass("progress-bar-"+a.getCssClass(r)),e&&(t.css("width",e+"%"),t.attr("aria-valuenow",e)),s&&t.find("span").text(s),t}}}));

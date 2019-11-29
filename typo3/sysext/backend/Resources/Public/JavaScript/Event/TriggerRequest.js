@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","./InteractionRequest"],function(e,t,r){"use strict";return class extends r{constructor(e,t=null){super(e,t)}concerns(e){if(this===e)return!0;let t=this;for(;t.parentRequest instanceof r;)if((t=t.parentRequest)===e)return!0;return!1}concernsTypes(e){if(e.includes(this.type))return!0;let t=this;for(;t.parentRequest instanceof r;)if(t=t.parentRequest,e.includes(t.type))return!0;return!1}}});
+define(["require","exports","./InteractionRequest"],(function(e,t,r){"use strict";return class extends r{constructor(e,t=null){super(e,t)}concerns(e){if(this===e)return!0;let t=this;for(;t.parentRequest instanceof r;)if((t=t.parentRequest)===e)return!0;return!1}concernsTypes(e){if(e.includes(this.type))return!0;let t=this;for(;t.parentRequest instanceof r;)if(t=t.parentRequest,e.includes(t.type))return!0;return!1}}}));

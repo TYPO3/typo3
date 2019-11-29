@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});class n{constructor(e,t,n){if(!e||!t)throw new Error("Properties componentName and eventName have to be defined");this.componentName=e,this.eventName=t,this.payload=n||{}}static fromData(e){let t=Object.assign({},e);return delete t.componentName,delete t.eventName,new n(e.componentName,e.eventName,t)}createCustomEvent(e="typo3"){return new CustomEvent([e,this.componentName,this.eventName].join(":"),{detail:this.payload})}}t.BroadcastMessage=n});
+define(["require","exports"],(function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});class n{constructor(e,t,n){if(!e||!t)throw new Error("Properties componentName and eventName have to be defined");this.componentName=e,this.eventName=t,this.payload=n||{}}static fromData(e){let t=Object.assign({},e);return delete t.componentName,delete t.eventName,new n(e.componentName,e.eventName,t)}createCustomEvent(e="typo3"){return new CustomEvent([e,this.componentName,this.eventName].join(":"),{detail:this.payload})}}t.BroadcastMessage=n}));

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,s){"use strict";class t{constructor(e,s=null){this.processed=!1,this.processedData=null,this.type=e,this.parentRequest=s}get outerMostRequest(){let e=this;for(;e.parentRequest instanceof t;)e=e.parentRequest;return e}isProcessed(){return this.processed}getProcessedData(){return this.processedData}setProcessedData(e=null){this.processed=!0,this.processedData=e}}return t});
+define(["require","exports"],(function(e,s){"use strict";class t{constructor(e,s=null){this.processed=!1,this.processedData=null,this.type=e,this.parentRequest=s}get outerMostRequest(){let e=this;for(;e.parentRequest instanceof t;)e=e.parentRequest;return e}isProcessed(){return this.processed}getProcessedData(){return this.processedData}setProcessedData(e=null){this.processed=!0,this.processedData=e}}return t}));

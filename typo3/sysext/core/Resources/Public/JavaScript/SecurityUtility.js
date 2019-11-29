@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,n){"use strict";return class{constructor(e=document){this.documentRef=e}encodeHtml(e,n=!0){let t=this.createAnvil();return n||(e=e.replace(/&[#A-Za-z0-9]+;/g,e=>(t.innerHTML=e,t.innerText))),t.innerText=e,t.innerHTML}debug(e){e!==this.encodeHtml(e)&&console.warn("XSS?!",e)}createAnvil(){return this.documentRef.createElement("span")}}});
+define(["require","exports"],(function(e,n){"use strict";return class{constructor(e=document){this.documentRef=e}encodeHtml(e,n=!0){let t=this.createAnvil();return n||(e=e.replace(/&[#A-Za-z0-9]+;/g,e=>(t.innerHTML=e,t.innerText))),t.innerText=e,t.innerHTML}debug(e){e!==this.encodeHtml(e)&&console.warn("XSS?!",e)}createAnvil(){return this.documentRef.createElement("span")}}}));

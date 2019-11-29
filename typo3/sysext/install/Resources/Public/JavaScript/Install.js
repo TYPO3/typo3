@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports","jquery","./Router"],function(e,r,t,i){"use strict";return new class{constructor(){t(()=>{i.initialize()})}}});
+define(["require","exports","jquery","./Router"],(function(e,r,t,i){"use strict";return new class{constructor(){t(()=>{i.initialize()})}}}));

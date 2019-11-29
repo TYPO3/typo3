@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-define(["require","exports"],function(e,t){"use strict";return new class{constructor(){this.openPermissionsModule=((e,t)=>{"pages"===e&&top.TYPO3.Backend.ContentContainer.setUrl(top.TYPO3.settings.AccessPermissions.moduleUrl+"&id="+t+"&tx_beuser_system_beusertxpermission[action]=edit&tx_beuser_system_beusertxpermission[controller]=Permission&returnUrl="+this.getReturnUrl())}),this.getReturnUrl=(()=>encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search))}}});
+define(["require","exports"],(function(e,t){"use strict";return new class{constructor(){this.openPermissionsModule=(e,t)=>{"pages"===e&&top.TYPO3.Backend.ContentContainer.setUrl(top.TYPO3.settings.AccessPermissions.moduleUrl+"&id="+t+"&tx_beuser_system_beusertxpermission[action]=edit&tx_beuser_system_beusertxpermission[controller]=Permission&returnUrl="+this.getReturnUrl())},this.getReturnUrl=()=>encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search)}}}));
