@@ -76,7 +76,7 @@ final class PasswordChangeEvent implements StoppableEventInterface
         return $this->rawPassword;
     }
 
-    public function setAsInvalid(string $message)
+    public function setAsInvalid(string $message): void
     {
         $this->invalid = true;
         $this->errorMessage = $message;

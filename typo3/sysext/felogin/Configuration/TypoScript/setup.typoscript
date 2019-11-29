@@ -13,6 +13,7 @@ plugin.tx_felogin_login {
     replyTo = {$styles.content.loginform.replyToEmail}
 
     # Security
+    exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
     forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime}
     newPasswordMinLength = {$styles.content.loginform.newPasswordMinLength}
     passwordValidators {

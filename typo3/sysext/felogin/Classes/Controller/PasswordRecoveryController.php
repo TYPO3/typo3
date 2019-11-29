@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -86,7 +87,15 @@ class PasswordRecoveryController extends AbstractLoginFormController
             $this->recoveryService->sendRecoveryEmail($email);
         }
 
-        $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));
+        if ($this->exposeNoneExistentUser($email)) {
+            $this->addFlashMessage(
+                $this->getTranslation('forgot_reset_message_error'),
+                '',
+                AbstractMessage::ERROR
+            );
+        } else {
+            $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));
+        }
 
         $this->redirect('login', 'Login', 'felogin');
     }
@@ -95,7 +104,7 @@ class PasswordRecoveryController extends AbstractLoginFormController
      * Validate hash and make sure it's not expired. If it is not in the correct format or not set at all, a redirect
      * to recoveryAction() is made, without further information.
      */
-    protected function validateIfHashHasExpired()
+    protected function validateIfHashHasExpired(): void
     {
         $hash = $this->request->hasArgument('hash') ? $this->request->getArgument('hash') : '';
 
@@ -301,5 +310,20 @@ class PasswordRecoveryController extends AbstractLoginFormController
             );
         }
         return $hashedPassword;
+    }
+
+    /**
+     * @param string|null $email
+     * @return bool
+     */
+    protected function exposeNoneExistentUser(?string $email): bool
+    {
+        $acceptedValues = ['1', 1, 'true'];
+
+        return !$email && in_array(
+            $this->settings['exposeNonexistentUserInForgotPasswordDialog'] ?? null,
+            $acceptedValues,
+            true
+        );
     }
 }
