@@ -65,13 +65,13 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, numberOfFunctionalPgsqlJobs, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
         jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, numberOfFunctionalSqliteJobs, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
-        jobsMainStage.add(this.getJobUnitJavaScript("JS", this.getTaskComposerInstall(phpVersions[0]), isSecurity));
+        jobsMainStage.add(this.getJobUnitJavaScript(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
         for (String phpVersion : phpVersions) {
             jobsMainStage.add(this.getJobLintPhp(phpVersion, isSecurity));
         }
 
-        jobsMainStage.add(this.getJobLintScssTs("JS", isSecurity));
+        jobsMainStage.add(this.getJobLintScssTs(phpVersions[0], isSecurity));
 
         for (String phpVersion : phpVersions) {
             jobsMainStage.add(this.getJobUnitPhp(0, phpVersion, this.getTaskComposerInstall(phpVersion), isSecurity));
