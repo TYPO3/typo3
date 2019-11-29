@@ -688,6 +688,7 @@ class NewContentElementController
     /**
      * @param string $filename
      * @return StandaloneView
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
     protected function getFluidTemplateObject(string $filename = 'Main.html'): StandaloneView
     {
@@ -696,5 +697,45 @@ class NewContentElementController
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/NewContentElement/' . $filename));
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;
+    }
+
+    /**
+     * Provide information about the current page making use of the wizard
+     *
+     * @return array
+     */
+    public function getPageInfo(): array
+    {
+        return $this->pageInfo;
+    }
+
+    /**
+     * Provide information about the column position of the button that triggered the wizard
+     *
+     * @return int|null
+     */
+    public function getColPos(): ?int
+    {
+        return $this->colPos;
+    }
+
+    /**
+     * Provide information about the language used while triggering the wizard
+     *
+     * @return int
+     */
+    public function getSysLanguage(): int
+    {
+        return $this->sys_language;
+    }
+
+    /**
+     * Provide information about the element to position the new element after (uid) or into (pid)
+     *
+     * @return int
+     */
+    public function getUidPid(): int
+    {
+        return $this->uid_pid;
     }
 }
