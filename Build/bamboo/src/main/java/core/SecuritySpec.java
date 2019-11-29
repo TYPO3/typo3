@@ -18,103 +18,46 @@ import com.atlassian.bamboo.specs.api.builders.AtlassianModule;
 import com.atlassian.bamboo.specs.api.builders.Variable;
 import com.atlassian.bamboo.specs.api.builders.notification.AnyNotificationRecipient;
 import com.atlassian.bamboo.specs.api.builders.notification.Notification;
-import com.atlassian.bamboo.specs.api.builders.plan.Job;
 import com.atlassian.bamboo.specs.api.builders.plan.Plan;
 import com.atlassian.bamboo.specs.api.builders.plan.Stage;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.BranchCleanup;
 import com.atlassian.bamboo.specs.api.builders.plan.branches.PlanBranchManagement;
-import com.atlassian.bamboo.specs.api.builders.project.Project;
 import com.atlassian.bamboo.specs.builders.notification.PlanCompletedNotification;
-import com.atlassian.bamboo.specs.builders.trigger.RemoteTrigger;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
-import java.util.ArrayList;
+import static core.AbstractCoreSpec.bambooServerName;
 
 /**
  * Core 9.5 security test plan.
  */
 @BambooSpec
-public class SecuritySpec extends AbstractCoreSpec {
+public class SecuritySpec extends AbstractPreMergeSpec {
 
     private static String planName = "Core 9.5 security";
     private static String planKey = "GTS95";
-
-    private static int numberOfAcceptanceTestJobs = 10;
-    private static int numberOfFunctionalMysqlJobs = 10;
-    private static int numberOfFunctionalMssqlJobs = 10;
-    private static int numberOfFunctionalPgsqlJobs = 10;
-    private static int numberOfFunctionalSqliteJobs = 10;
-    private static int numberOfUnitRandomOrderJobs = 1;
 
     /**
      * Run main to publish plan on Bamboo
      */
     public static void main(final String[] args) throws Exception {
+
         // By default credentials are read from the '.credentials' file.
         BambooServer bambooServer = new BambooServer(bambooServerName);
         bambooServer.publish(new SecuritySpec().createPlan());
         bambooServer.publish(new SecuritySpec().getSecurityPlanPermissions(projectKey, planKey));
     }
 
-    /**
-     * Core 9.5 pre-merge plan is in "TYPO3 core" project of bamboo
-     */
-    private Project project() {
-        return new Project().name(projectName).key(projectKey);
-    }
 
     /**
      * Returns full Plan definition
      */
     Plan createPlan() {
-        // PREPARATION stage
-        ArrayList<Job> jobsPreparationStage = new ArrayList<Job>();
-        jobsPreparationStage.add(this.getJobBuildLabels());
-        Stage stagePreparation = new Stage("Preparation")
-            .jobs(jobsPreparationStage.toArray(new Job[jobsPreparationStage.size()]));
+        this.isSecurity = true;
+        Stage stagePreparation = getPreparationStage();
 
-        // EARLY stage
-        ArrayList<Job> jobsEarlyStage = new ArrayList<Job>();
-        jobsEarlyStage.add(this.getJobCglCheckGitCommit("PHP72", true));
-        jobsEarlyStage.add(this.getJobComposerValidate("PHP72", true));
-        Stage stageEarly = new Stage("Early")
-            .jobs(jobsEarlyStage.toArray(new Job[jobsEarlyStage.size()]));
+        Stage stageEarly = getEarlyStage();
 
-        // MAIN stage
-        ArrayList<Job> jobsMainStage = new ArrayList<Job>();
-
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-        jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-
-        jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(0, numberOfAcceptanceTestJobs, "PHP73", this.getTaskComposerInstall("PHP73"), true));
-
-        jobsMainStage.add(this.getJobIntegrationAnnotations("PHP72", this.getTaskComposerInstall("PHP72"), true));
-
-        jobsMainStage.add(this.getJobIntegrationVarious("PHP72", this.getTaskComposerInstall("PHP72"), true));
-
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, numberOfFunctionalMysqlJobs, "PHP73", this.getTaskComposerInstall("PHP73"), true));
-        // mssql functionals are not executed as pre-merge
-        // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, numberOfFunctionalPgsqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsSqlite(0, numberOfFunctionalSqliteJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-
-        jobsMainStage.add(this.getJobUnitJavaScript( "PHP72", this.getTaskComposerInstall("PHP72"), true));
-
-        jobsMainStage.add(this.getJobLintPhp("PHP72", true));
-        jobsMainStage.add(this.getJobLintPhp("PHP73", true));
-
-        jobsMainStage.add(this.getJobLintScssTs("PHP72", true));
-
-        jobsMainStage.add(this.getJobUnitPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-        jobsMainStage.add(this.getJobUnitPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
-        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-        jobsMainStage.add(this.getJobUnitDeprecatedPhp(0, "PHP73", this.getTaskComposerInstall("PHP73"), true));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, numberOfUnitRandomOrderJobs, "PHP72", this.getTaskComposerInstall("PHP72"), true));
-        jobsMainStage.addAll(this.getJobUnitPhpRandom(0, numberOfUnitRandomOrderJobs, "PHP73", this.getTaskComposerInstall("PHP73"), true));
-
-        Stage stageMainStage = new Stage("Main stage")
-            .jobs(jobsMainStage.toArray(new Job[jobsMainStage.size()]));
+        Stage stageMainStage = getMainStage();
 
         // Compile plan
         return new Plan(project(), planName, planKey)
@@ -127,10 +70,7 @@ public class SecuritySpec extends AbstractCoreSpec {
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS 9.5")
             .triggers(
-                new RemoteTrigger()
-                    .name("Remote trigger for security builds")
-                    .description("Gerrit")
-                    .triggerIPAddresses("5.10.165.218,91.184.35.13"))
+                getGerritTrigger())
             .variables(
                 new Variable("changeUrl", ""),
                 new Variable("patchset", "")
