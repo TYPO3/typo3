@@ -107,12 +107,20 @@ CKEDITOR.plugins.add('autolinking', {
           editor.undoManger && editor.undoManger.save();
           a.appendChild(range.extractContents());
           a.href = a.innerHTML = a.innerHTML.replace(/<[^>]+>/g, '');
+          let endChar = '';
+          if ([',', '.', '!', ';', '?', ':', ')'].includes(a.innerHTML.charAt(a.innerHTML.length - 1))) {
+            endChar = a.innerHTML.charAt(a.innerHTML.length - 1);
+            a.innerHTML = a.innerHTML.substr(0, (a.innerHTML.length - 1));
+            a.href = a.innerHTML;
+          }
           href = a.getAttribute('href').replace(new RegExp(fillChar, 'g'), '');
           href = /^(?:https?:\/\/)/ig.test(href) ? href : 'http://' + href;
           a.href = html(href);
 
+          let textNode = document.createTextNode(endChar);
+          range.insertNode(textNode);
           range.insertNode(a);
-          range.setStart(a.nextSibling, 0);
+          range.setStart(textNode.nextSibling, 0);
           range.collapse(true);
           sel.removeAllRanges();
           sel.addRange(range);
