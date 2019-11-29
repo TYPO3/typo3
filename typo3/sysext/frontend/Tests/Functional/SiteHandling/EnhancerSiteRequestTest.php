@@ -787,7 +787,6 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $body = (string)$response->getBody();
         if ($failureReason === null) {
             $pageArguments = json_decode($body, true);
-            var_dump($pageArguments);
             self::assertNotNull($pageArguments, 'PageArguments could not be resolved');
 
             $expected = [];
