@@ -233,7 +233,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ->method('getImgResourcePostProcess')
             ->willReturnCallback([$this, 'isGetImgResourceHookCalledCallback']);
         $getImgResourceHookObjects = [$getImgResourceHookMock];
-        $this->subject->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
+        $this->subject->_set('getImgResourceHookObjects', $getImgResourceHookObjects);
         $this->subject->getImgResource('typo3/sysext/core/Tests/Unit/Utility/Fixtures/clear.gif', []);
     }
 
