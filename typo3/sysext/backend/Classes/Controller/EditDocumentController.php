@@ -636,7 +636,7 @@ class EditDocumentController
             // Setting a blank editconf array for a new record:
             $this->editconf = [];
             // Determine related page ID for regular live context
-            if ($nRec['t3ver_oid'] > 0) {
+            if ((int)$nRec['t3ver_oid'] === 0) {
                 if ($insertRecordOnTop) {
                     $relatedPageId = $nRec['pid'];
                 } else {
