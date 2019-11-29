@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 
 /**
@@ -40,15 +39,7 @@ class NormalizedParamsAttribute implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $request->withAttribute(
-            'normalizedParams',
-            new NormalizedParams(
-                $request->getServerParams(),
-                $GLOBALS['TYPO3_CONF_VARS']['SYS'],
-                Environment::getCurrentScript(),
-                Environment::getPublicPath()
-            )
-        );
+        $request = $request->withAttribute('normalizedParams', NormalizedParams::createFromRequest($request));
         return $handler->handle($request);
     }
 }

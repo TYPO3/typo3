@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
+use TYPO3\CMS\Core\Middleware\NormalizedParamsAttribute as NormalizedParamsMiddleware;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 
@@ -55,6 +56,7 @@ class ServiceProvider extends AbstractServiceProvider
         // Stack of middlewares, executed LIFO
         $dispatcher->lazy(Middleware\Installer::class);
         $dispatcher->add($container->get(Middleware\Maintenance::class));
+        $dispatcher->lazy(NormalizedParamsMiddleware::class);
 
         return new Http\Application($dispatcher, $container->get(Context::class));
     }

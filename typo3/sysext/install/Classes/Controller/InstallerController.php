@@ -1222,12 +1222,7 @@ For each website you need a TypoScript template on the main page of your website
     {
         $normalizedParams = $request->getAttribute('normalizedParams', null);
         if (!($normalizedParams instanceof NormalizedParams)) {
-            $normalizedParams = new NormalizedParams(
-                $request->getServerParams(),
-                $GLOBALS['TYPO3_CONF_VARS']['SYS'],
-                Environment::getCurrentScript(),
-                Environment::getPublicPath()
-            );
+            $normalizedParams = NormalizedParams::createFromRequest($request);
         }
 
         // Create a default site configuration called "main" as best practice

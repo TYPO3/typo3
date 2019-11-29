@@ -96,13 +96,8 @@ class CreateSiteConfiguration
             $serverParams = $GLOBALS['TYPO3_REQUEST']->getServerParams();
         }
 
-        if (!($normalizedParams instanceof NormalizedParams)) {
-            $normalizedParams = new NormalizedParams(
-                $serverParams,
-                $GLOBALS['TYPO3_CONF_VARS']['SYS'],
-                Environment::getCurrentScript(),
-                Environment::getPublicPath()
-            );
+        if (!$normalizedParams instanceof NormalizedParams) {
+            $normalizedParams = NormalizedParams::createFromServerParams($serverParams);
         }
 
         return $normalizedParams;
