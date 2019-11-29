@@ -263,7 +263,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function splitLinkVarsStringSplitsStringByComma($string, $expected)
     {
-        self::assertEquals($expected, $this->subject->_callRef('splitLinkVarsString', $string));
+        self::assertEquals($expected, $this->subject->_call('splitLinkVarsString', $string));
     }
 
     /**

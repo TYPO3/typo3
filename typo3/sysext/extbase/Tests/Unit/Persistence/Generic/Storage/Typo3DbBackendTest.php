@@ -128,7 +128,7 @@ class Typo3DbBackendTest extends UnitTestCase
         $mockTypo3DbBackend->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbBackend->_set('connectionPool', $connectionPoolProphet->reveal());
         $mockTypo3DbBackend->_set('environmentService', $environmentServiceProphet->reveal());
-        $result = $mockTypo3DbBackend->_callRef('getUidOfAlreadyPersistedValueObject', $mockValueObject);
+        $result = $mockTypo3DbBackend->getUidOfAlreadyPersistedValueObject($mockValueObject);
         self::assertSame($expectedUid, $result);
     }
 }

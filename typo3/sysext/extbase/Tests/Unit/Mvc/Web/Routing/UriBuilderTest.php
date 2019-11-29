@@ -875,7 +875,7 @@ class UriBuilderTest extends UnitTestCase
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
         $expectedResult = ['controller' => 'SomeController', 'action' => 'someAction', 'foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -890,7 +890,7 @@ class UriBuilderTest extends UnitTestCase
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
         $expectedResult = ['action' => 'someAction', 'foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -905,7 +905,7 @@ class UriBuilderTest extends UnitTestCase
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
         $expectedResult = ['controller' => 'SomeController', 'foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
         self::assertEquals($expectedResult, $actualResult);
     }
 
@@ -920,7 +920,7 @@ class UriBuilderTest extends UnitTestCase
         $extensionName = 'ExtensionName';
         $pluginName = 'PluginName';
         $expectedResult = ['foo' => 'bar'];
-        $actualResult = $this->uriBuilder->_callRef('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
+        $actualResult = $this->uriBuilder->_call('removeDefaultControllerAndAction', $arguments, $extensionName, $pluginName);
         self::assertEquals($expectedResult, $actualResult);
     }
 

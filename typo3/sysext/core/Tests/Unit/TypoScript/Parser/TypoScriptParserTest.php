@@ -1135,7 +1135,15 @@ test.TYPO3Forever.TypoScript = 1
         $string = '';
         $setup = [];
         $value = [];
-        $this->typoScriptParser->_callRef('setVal', $string, $setup, $value);
+        $typoScriptParser = new TypoScriptParser();
+        $mock = \Closure::bind(
+            static function (TypoScriptParser $typoScriptParser) use ($string, &$setup, $value) {
+                return $typoScriptParser->setVal($string, $setup, $value);
+            },
+            null,
+            TypoScriptParser::class
+        );
+        $mock($typoScriptParser);
     }
 
     /**
@@ -1146,7 +1154,15 @@ test.TYPO3Forever.TypoScript = 1
         $string = '';
         $setup = [];
         $value = '';
-        $this->typoScriptParser->_callRef('setVal', $string, $setup, $value);
+        $typoScriptParser = new TypoScriptParser();
+        $mock = \Closure::bind(
+            static function (TypoScriptParser $typoScriptParser) use ($string, &$setup, $value) {
+                return $typoScriptParser->setVal($string, $setup, $value);
+            },
+            null,
+            TypoScriptParser::class
+        );
+        $mock($typoScriptParser);
     }
 
     /**

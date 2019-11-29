@@ -367,9 +367,12 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function postProcessUriArgumentsForRequestHashWorks($arguments, $expectedResults)
     {
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['dummy'], [], '', false);
+        $formViewHelper = new FormViewHelper();
         $results = [];
-        $viewHelper->_callRef('postProcessUriArgumentsForRequestHash', $arguments, $results);
+        $mock = \Closure::bind(static function (FormViewHelper $formViewHelper) use ($arguments, &$results) {
+            return $formViewHelper->postProcessUriArgumentsForRequestHash($arguments, $results);
+        }, null, FormViewHelper::class);
+        $mock($formViewHelper);
         self::assertEquals($expectedResults, $results);
     }
 }

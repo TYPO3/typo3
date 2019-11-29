@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -166,8 +167,12 @@ class ResourceFactoryTest extends UnitTestCase
      */
     public function findBestMatchingStorageByLocalPathReturnsDefaultStorageIfNoMatchIsFound(array $storageConfiguration, $path, $expectedStorageId)
     {
-        $this->subject->_set('localDriverStorageCache', $storageConfiguration);
-        self::assertSame($expectedStorageId, $this->subject->_callRef('findBestMatchingStorageByLocalPath', $path));
+        $resourceFactory = new ResourceFactory($this->prophesize(EventDispatcherInterface::class)->reveal());
+        $mock = \Closure::bind(static function (ResourceFactory $resourceFactory) use (&$path, $storageConfiguration) {
+            $resourceFactory->localDriverStorageCache = $storageConfiguration;
+            return $resourceFactory->findBestMatchingStorageByLocalPath($path);
+        }, null, ResourceFactory::class);
+        self::assertSame($expectedStorageId, $mock($resourceFactory));
     }
 
     /**

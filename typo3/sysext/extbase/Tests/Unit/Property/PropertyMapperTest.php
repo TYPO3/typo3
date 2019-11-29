@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException;
+use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderOneInterface;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThree;
 use TYPO3\CMS\Extbase\Tests\Unit\Property\Fixtures\DataProviderThreeInterface;
@@ -369,11 +371,16 @@ class PropertyMapperTest extends UnitTestCase
      */
     public function doMappingReturnsSourceUnchangedIfAlreadyConverted()
     {
-        $source = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class;
+        $source = new ObjectStorage();
+        $targetType = ObjectStorage::class;
         $propertyPath = '';
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
-        self::assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
+        $propertyMapper = new PropertyMapper();
+        $mockConf = $this->mockConfiguration;
+        $mock = \Closure::bind(static function (PropertyMapper $propertyMapper) use ($source, $targetType, $mockConf, &$propertyPath) {
+            return $propertyMapper->doMapping($source, $targetType, $mockConf, $propertyPath);
+        }, null, PropertyMapper::class);
+
+        self::assertSame($source, $mock($propertyMapper));
     }
 
     /**
@@ -381,11 +388,16 @@ class PropertyMapperTest extends UnitTestCase
      */
     public function doMappingReturnsSourceUnchangedIfAlreadyConvertedToCompositeType()
     {
-        $source = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-        $targetType = \TYPO3\CMS\Extbase\Persistence\ObjectStorage::class . '<SomeEntity>';
+        $source = new ObjectStorage();
+        $targetType = ObjectStorage::class . '<SomeEntity>';
         $propertyPath = '';
-        $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
-        self::assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
+        $propertyMapper = new PropertyMapper();
+        $mockConf = $this->mockConfiguration;
+        $mock = \Closure::bind(static function (PropertyMapper $propertyMapper) use ($source, $targetType, $mockConf, &$propertyPath) {
+            return $propertyMapper->doMapping($source, $targetType, $mockConf, $propertyPath);
+        }, null, PropertyMapper::class);
+
+        self::assertSame($source, $mock($propertyMapper));
     }
 
     /**

@@ -15,7 +15,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Prophecy\Argument;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -43,8 +47,16 @@ class EditDocumentControllerTest extends UnitTestCase
             'magic' => 'yes'
         ];
         $result = [];
-        $mock = $this->getAccessibleMock(EditDocumentController::class, ['dummy'], [], '', false);
-        $mock->_callRef('parseAdditionalGetParameters', $result, $typoScript);
+        $moduleTemplate = $this->prophesize(ModuleTemplate::class);
+        $moduleTemplate->setUiBlock(Argument::any())->willReturn($moduleTemplate->reveal());
+        $GLOBALS['LANG'] = $this->prophesize(LanguageService::class)->reveal();
+        GeneralUtility::addInstance(ModuleTemplate::class, $moduleTemplate->reveal());
+
+        $mock = \Closure::bind(static function (EditDocumentController $editDocumentController) use (&$result, $typoScript) {
+            return $editDocumentController->parseAdditionalGetParameters($result, $typoScript);
+        }, null, EditDocumentController::class);
+        $mock(new EditDocumentController());
+
         self::assertSame($expectedParameters, $result);
     }
 

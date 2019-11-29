@@ -353,7 +353,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (0, -1)';
         self::assertSame($expectedSql, $sql);
     }
@@ -375,7 +375,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $result = $table . '.sys_language_uid IN (1, -1)';
         self::assertSame($result, $sql);
     }
@@ -393,7 +393,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (0, -1)';
         self::assertSame($expectedSql, $sql);
     }
@@ -413,7 +413,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (0, -1)';
         self::assertSame($expectedSql, $sql);
     }
@@ -432,7 +432,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $sql = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = $table . '.sys_language_uid IN (2, -1)';
         self::assertSame($expectedSql, $sql);
     }
@@ -455,7 +455,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
 
-        $compositeExpression = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $compositeExpression = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2))))';
         self::assertSame($expectedSql, $compositeExpression->__toString());
     }
@@ -476,7 +476,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $compositeExpression= $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $compositeExpression= $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND ((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))';
         self::assertSame($expectedSql, $compositeExpression->__toString());
     }
@@ -499,7 +499,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilderProphet = $this->getQueryBuilderProphetWithQueryBuilderForSubselect();
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $compositeExpression = $mockTypo3DbQueryParser->_callRef('getLanguageStatement', $table, $table, $querySettings);
+        $compositeExpression = $mockTypo3DbQueryParser->_call('getLanguageStatement', $table, $table, $querySettings);
         $expectedSql = '(' . $table . '.sys_language_uid = -1) OR ((' . $table . '.sys_language_uid = 2) AND (' . $table . '.l10n_parent IN (SELECT ' . $table . '_dl.uid FROM ' . $table . ' ' . $table . '_dl WHERE (' . $table . '_dl.l10n_parent = 0) AND (' . $table . '_dl.sys_language_uid = 0) AND (' . $table . '_dl.deleted = 0)))) OR ((' . $table . '.sys_language_uid = 0) AND (' . $table . '.uid NOT IN (SELECT ' . $table . '_to.l10n_parent FROM ' . $table . ' ' . $table . '_dl, ' . $table . ' ' . $table . '_to WHERE (' . $table . '_to.l10n_parent > 0) AND (' . $table . '_to.sys_language_uid = 2) AND ((' . $table . '_dl.deleted = 0) AND (' . $table . '_to.deleted = 0)))))';
         self::assertSame($expectedSql, $compositeExpression->__toString());
     }
@@ -527,7 +527,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $mockTypo3DbQueryParser->_callRef('parseOrderings', $orderings, $mockSource);
+        $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);
     }
 
     /**
@@ -552,7 +552,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('dataMapper', $mockDataMapper);
 
-        $mockTypo3DbQueryParser->_callRef('parseOrderings', $orderings, $mockSource);
+        $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);
     }
 
     /**
@@ -586,7 +586,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $queryBuilder->expects(self::at(1))->method('addOrderBy')->with('tx_myext_tablename.converted_fieldname', 'DESC');
 
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilder);
-        $mockTypo3DbQueryParser->_callRef('parseOrderings', $orderings, $mockSource);
+        $mockTypo3DbQueryParser->_call('parseOrderings', $orderings, $mockSource);
     }
 
     public function providerForVisibilityConstraintStatement()
@@ -653,7 +653,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
-        $resultSql = $mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
+        $resultSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         self::assertSame($expectedSql, $resultSql);
         unset($GLOBALS['TCA'][$tableName]);
     }
@@ -717,7 +717,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
-        $actualSql = $mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
+        $actualSql = $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         self::assertSame($expectedSql, $actualSql);
         unset($GLOBALS['TCA'][$tableName]);
     }
@@ -752,7 +752,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
 
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $mockTypo3DbQueryParser->_set('environmentService', $mockEnvironmentService);
-        $mockTypo3DbQueryParser->_callRef('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
+        $mockTypo3DbQueryParser->_call('getVisibilityConstraintStatement', $mockQuerySettings, $tableName, $tableName);
         unset($GLOBALS['TCA'][$tableName]);
     }
 
@@ -804,7 +804,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
         $mockTypo3DbQueryParser = $this->getAccessibleMock(Typo3DbQueryParser::class, ['dummy'], [], '', false);
         $queryBuilderProphet = $this->getQueryBuilderWithExpressionBuilderProphet();
         $mockTypo3DbQueryParser->_set('queryBuilder', $queryBuilderProphet->reveal());
-        $sql = $mockTypo3DbQueryParser->_callRef('getPageIdStatement', $table, $table, $storagePageIds);
+        $sql = $mockTypo3DbQueryParser->_call('getPageIdStatement', $table, $table, $storagePageIds);
 
         self::assertSame($expectedSql, $sql);
     }

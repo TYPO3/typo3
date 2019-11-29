@@ -320,7 +320,7 @@ class DataMapperTest extends UnitTestCase
         $accessibleDataMapFactory = $this->getAccessibleMock(DataMapper::class, ['dummy'], [], '', false);
 
         /** @var $dateTime NULL|\DateTime */
-        $dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $value, $storageFormat);
+        $dateTime = $accessibleDataMapFactory->_call('mapDateTime', $value, $storageFormat);
 
         if ($expectedValue === null) {
             self::assertNull($dateTime);
@@ -341,7 +341,7 @@ class DataMapperTest extends UnitTestCase
         $storageFormat = 'datetime';
 
         /** @var $dateTime NULL|\DateTime */
-        $dateTime = $accessibleDataMapFactory->_callRef('mapDateTime', $date, $storageFormat, $targetType);
+        $dateTime = $accessibleDataMapFactory->_call('mapDateTime', $date, $storageFormat, $targetType);
 
         self::assertInstanceOf($targetType, $dateTime);
     }

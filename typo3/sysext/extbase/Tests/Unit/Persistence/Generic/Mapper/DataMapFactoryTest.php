@@ -55,7 +55,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::once())->method('setOneToOneRelation')->willReturn($mockColumnMap);
         $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
         $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
+        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
     }
 
     /**
@@ -121,7 +121,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
         $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
         $mockDataMapFactory->expects(self::once())->method('setManyToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
+        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
     }
 
     /**
@@ -142,7 +142,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
         $mockDataMapFactory->expects(self::once())->method('setOneToManyRelation')->willReturn($mockColumnMap);
         $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
+        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
     }
 
     /**
@@ -166,7 +166,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
         $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
         $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $actualColumnMap = $mockDataMapFactory->_callRef('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
+        $actualColumnMap = $mockDataMapFactory->_call('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
         self::assertSame($columnMap::RELATION_NONE, $actualColumnMap->getTypeOfRelation());
     }
 
@@ -206,7 +206,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
         $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
         $mockDataMapFactory->expects(self::never())->method('setManyToManyRelation');
-        $actualColumnMap = $mockDataMapFactory->_callRef('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
+        $actualColumnMap = $mockDataMapFactory->_call('setRelations', $columnMap, $columnConfiguration, $type, $elementType);
         self::assertSame($relation, $actualColumnMap->getTypeOfRelation());
     }
 
@@ -227,7 +227,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
         $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
         $mockDataMapFactory->expects(self::once())->method('setManyToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
+        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
     }
 
     /**
@@ -247,7 +247,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockDataMapFactory->expects(self::never())->method('setOneToOneRelation');
         $mockDataMapFactory->expects(self::never())->method('setOneToManyRelation');
         $mockDataMapFactory->expects(self::once())->method('setManyToManyRelation')->willReturn($mockColumnMap);
-        $mockDataMapFactory->_callRef('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
+        $mockDataMapFactory->_call('setRelations', $mockColumnMap, $columnConfiguration, $type, $elementType);
     }
 
     /**
@@ -274,7 +274,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::never())->method('setRelationTableMatchFields');
         $mockColumnMap->expects(self::never())->method('setRelationTableInsertFields');
         $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy'], [], '', false);
-        $mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
+        $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
     }
 
     /**
@@ -301,7 +301,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::never())->method('setRelationTableMatchFields');
         $mockColumnMap->expects(self::never())->method('setRelationTableInsertFields');
         $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['dummy'], [], '', false);
-        $mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $rightColumnsDefinition['lefts']);
+        $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $rightColumnsDefinition['lefts']);
     }
 
     /**
@@ -328,7 +328,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::never())->method('setRelationTableInsertFields');
         $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['getColumnsDefinition'], [], '', false);
         $mockDataMapFactory->expects(self::never())->method('getColumnsDefinition');
-        $mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
+        $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
     }
 
     /**
@@ -350,7 +350,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::never())->method('setrelationTablePageIdColumnName');
         $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['getControlSection'], [], '', false);
         $mockDataMapFactory->expects(self::once())->method('getControlSection')->with(self::equalTo('tx_myextension_mm'))->willReturn(null);
-        $mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
+        $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
     }
 
     /**
@@ -372,7 +372,7 @@ class DataMapFactoryTest extends UnitTestCase
         $mockColumnMap->expects(self::once())->method('setrelationTablePageIdColumnName')->with(self::equalTo('pid'));
         $mockDataMapFactory = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class, ['getControlSection'], [], '', false);
         $mockDataMapFactory->expects(self::once())->method('getControlSection')->with(self::equalTo('tx_myextension_mm'))->willReturn(['ctrl' => ['foo' => 'bar']]);
-        $mockDataMapFactory->_callRef('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
+        $mockDataMapFactory->_call('setManyToManyRelation', $mockColumnMap, $leftColumnsDefinition['rights']);
     }
 
     /**
@@ -420,7 +420,7 @@ class DataMapFactoryTest extends UnitTestCase
             '',
             false
         );
-        $accessibleDataMapFactory->_callRef('setFieldEvaluations', $mockColumnMap, $columnDefinition);
+        $accessibleDataMapFactory->_call('setFieldEvaluations', $mockColumnMap, $columnDefinition);
     }
 
     /**

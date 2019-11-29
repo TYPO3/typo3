@@ -226,6 +226,6 @@ class DatabaseRecordListTest extends UnitTestCase
      */
     public function getVisibleColumns(array $tableTCA, string $type, string $expected)
     {
-        self::assertSame($expected, $this->subject->_callRef('getVisibleColumns', $tableTCA, $type));
+        self::assertSame($expected, $this->subject->_call('getVisibleColumns', $tableTCA, $type));
     }
 }

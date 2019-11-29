@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  */
 
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\PageViewHelper;
-use TYPO3\TestingFramework\Fluid\Unit\Core\Rendering\RenderingContextFixture;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
@@ -61,7 +61,10 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         $this->controllerContext->expects(self::any())->method('getUriBuilder')->willReturn($this->uriBuilder);
         $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request->reveal());
         $this->arguments = [];
-        $this->renderingContext = $this->getAccessibleMock(RenderingContextFixture::class, ['getControllerContext']);
+        $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
+            ->onlyMethods(['getControllerContext'])
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->renderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
         // until here
 
