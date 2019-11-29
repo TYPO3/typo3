@@ -96,7 +96,24 @@ define(['jquery', 'TYPO3/CMS/Recordlist/LinkBrowser', 'TYPO3/CMS/Backend/Modal']
       linkElement.setAttribute(attrName, attrValue);
     });
 
-    linkElement.setAttribute('href', link + params);
+    // Make sure, parameters and anchor are in correct order
+    var linkMatch = link.match(/^([a-z0-9]+:\/\/[^:\/?#]+(?:\/?[^?#]*)?)(\??[^#]*)(#?.*)$/)
+    if (linkMatch && linkMatch.length > 0) {
+      link = linkMatch[1] + linkMatch[2];
+      var paramsPrefix = linkMatch[2].length > 0 ? '&' : '?';
+      if (params.length > 0) {
+        if (params[0] === '&') {
+          params = params.substr(1)
+        }
+        // If params is set, append it
+        if (params.length > 0) {
+          link = link + paramsPrefix + params;
+        }
+      }
+      link = link + linkMatch[3];
+    }
+
+    linkElement.setAttribute('href', link);
 
     var selection = RteLinkBrowser.CKEditor.getSelection();
     if (selection && selection.getSelectedText() === '') {
