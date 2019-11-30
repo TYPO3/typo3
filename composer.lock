@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "264be898d834ad68f4bdc3345451701c",
+    "content-hash": "ad3295bdf8c8700d9be0f2e05563697e",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -6161,8 +6161,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Utility class for timing",
@@ -7012,8 +7012,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -7934,21 +7934,21 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "5.0.16",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "b13774ce13da2fc23b601bd00963db4c64636b3a"
+                "reference": "c74a87a2037fca3eaaebeaa886a874cc97fce997"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/b13774ce13da2fc23b601bd00963db4c64636b3a",
-                "reference": "b13774ce13da2fc23b601bd00963db4c64636b3a",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/c74a87a2037fca3eaaebeaa886a874cc97fce997",
+                "reference": "c74a87a2037fca3eaaebeaa886a874cc97fce997",
                 "shasum": ""
             },
             "require": {
                 "mikey179/vfsstream": "~1.6.8",
-                "phpunit/phpunit": "^8.2.3",
+                "phpunit/phpunit": "^8.3",
                 "typo3/cms-backend": "10.*.*@dev",
                 "typo3/cms-core": "10.*.*@dev",
                 "typo3/cms-extbase": "10.*.*@dev",
@@ -7990,7 +7990,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-11-21T15:21:42+00:00"
+            "time": "2019-12-02T16:43:08+00:00"
         }
     ],
     "aliases": [],
