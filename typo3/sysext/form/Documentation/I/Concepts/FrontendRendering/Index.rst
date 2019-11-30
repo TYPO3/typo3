@@ -505,7 +505,7 @@ Additional translation files can be defined as follows:
                Form:
                  renderingOptions:
                    translation:
-                     translationFiles:
+                     translationFile:
                        # custom translation file
                        20: 'EXT:my_site_package/Resources/Private/Language/Form/locallang.xlf'
 
@@ -765,7 +765,7 @@ Pure YAML is sufficient to add simple, static values:
        label: This is a %s feature
        renderingOptions:
          translation:
-           translationFiles:
+           translationFile:
              10: path/to/locallang.xlf
            arguments:
              label:
@@ -796,7 +796,7 @@ should be enough:
        label: I agree to the <a href="%s">terms and conditions</a>
        renderingOptions:
          translation:
-           translationFiles:
+           translationFile:
              10: path/to/locallang.xlf
 
 The following TypoScript setup uses the named key :yaml:`fieldWithTranslationArguments` to refer
@@ -867,7 +867,7 @@ The same mechanism (YAML, YAML + TypoScript) works for finisher options:
          recipientAddress: foo@example.org
          senderAddress: bar@example.org
          translation:
-           translationFiles:
+           translationFile:
              10: path/to/locallang.xlf
            arguments:
              subject:
