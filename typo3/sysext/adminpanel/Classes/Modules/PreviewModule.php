@@ -217,6 +217,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
      */
     protected function parseDate(string $simulateDate): ?int
     {
+        $simTime = null;
         $date = false;
         try {
             $date = new \DateTime($simulateDate);

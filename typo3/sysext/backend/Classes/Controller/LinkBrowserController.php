@@ -132,6 +132,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
      */
     protected function getBodyTagAttributes()
     {
+        $formEngineParameters = [];
         $parameters = parent::getBodyTagAttributes();
 
         $formEngineParameters['fieldChangeFunc'] = $this->parameters['fieldChangeFunc'];

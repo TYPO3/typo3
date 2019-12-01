@@ -328,6 +328,7 @@ class NewRecordController
      */
     protected function getButtons(): void
     {
+        $buttons = [];
         $lang = $this->getLanguageService();
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
         // Regular new element:

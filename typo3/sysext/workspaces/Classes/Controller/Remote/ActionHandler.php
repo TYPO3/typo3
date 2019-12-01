@@ -88,6 +88,7 @@ class ActionHandler
         $versionRecord = BackendUtility::getRecord($table, $orig_uid);
         $currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
 
+        $cmd = [];
         $cmd[$table][$t3ver_oid]['version'] = [
             'action' => 'swap',
             'swapWith' => $orig_uid,
@@ -110,6 +111,7 @@ class ActionHandler
         $versionRecord = BackendUtility::getRecord($table, $uid);
         $currentWorkspace = $this->setTemporaryWorkspace($versionRecord['t3ver_wsid']);
 
+        $cmd = [];
         $cmd[$table][$uid]['version'] = [
             'action' => 'clearWSID'
         ];

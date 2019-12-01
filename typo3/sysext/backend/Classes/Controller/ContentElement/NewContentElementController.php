@@ -467,6 +467,8 @@ class NewContentElementController
      */
     protected function removeInvalidWizardItems(array &$wizardItems): void
     {
+        $removeItems = [];
+        $keepItems = [];
         // Get TCEFORM from TSconfig of current page
         $row = ['pid' => $this->id];
         $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', $row);

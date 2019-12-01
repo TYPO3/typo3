@@ -35,6 +35,7 @@ class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
         $GLOBALS['SIM_ACCESS_TIME'] = 123;
         $subject = new DefaultRestrictionContainer();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
+        $more = [];
         $more[] = $expression;
         $expression = $this->expressionBuilder->andX($expression);
 

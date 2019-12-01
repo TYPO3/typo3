@@ -220,6 +220,7 @@ class ElementHistoryController
      */
     protected function prepareDisplaySettings(ServerRequestInterface $request)
     {
+        $selector = [];
         // Get current selection from UC, merge data, write it back to UC
         $currentSelection = is_array($this->getBackendUser()->uc['moduleData']['history'])
             ? $this->getBackendUser()->uc['moduleData']['history']

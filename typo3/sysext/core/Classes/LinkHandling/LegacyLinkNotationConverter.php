@@ -56,6 +56,7 @@ class LegacyLinkNotationConverter
      */
     public function resolve(string $linkParameter): array
     {
+        $a = [];
         if (stripos(rawurldecode(trim($linkParameter)), 'phar://') === 0) {
             throw new \RuntimeException(
                 'phar scheme not allowed as soft reference target',

@@ -1489,6 +1489,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID, $incomingFieldArray = [])
     {
+        $curValueRec = null;
         // Result array
         $res = [];
 
@@ -4188,6 +4189,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $field, $value, $conf)
     {
+        $dbAnalysis = null;
         if ($conf['type'] === 'inline') {
             $foreign_table = $conf['foreign_table'];
             $moveChildrenWithParent = !isset($conf['behaviour']['disableMovingChildrenWithParent']) || !$conf['behaviour']['disableMovingChildrenWithParent'];
@@ -5226,6 +5228,7 @@ class DataHandler implements LoggerAwareInterface
             $overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
         }
         // Checking if the record already has a version in the current workspace of the backend user
+        $versionRecord = ['uid' => null];
         if ($this->BE_USER->workspace !== 0) {
             // Look for version already in workspace:
             $versionRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');

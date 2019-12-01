@@ -282,6 +282,7 @@ class SlugService implements LoggerAwareInterface
     protected function persistNewSlug(int $uid, string $newSlug): void
     {
         $this->disableHook();
+        $data = [];
         $data['pages'][$uid]['slug'] = $newSlug;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start($data, []);

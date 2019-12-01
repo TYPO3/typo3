@@ -290,6 +290,7 @@ class DataMapFactoryTest extends UnitTestCase
                 'MM_opposite_field' => 'rights'
             ]
         ];
+        $leftColumnsDefinition = [];
         $leftColumnsDefinition['rights']['MM_opposite_field'] = 'opposite_field';
         $mockColumnMap = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::class);
         $mockColumnMap->expects(self::once())->method('setTypeOfRelation')->with(self::equalTo(ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY));

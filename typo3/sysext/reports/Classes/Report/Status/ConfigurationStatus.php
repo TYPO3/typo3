@@ -222,6 +222,8 @@ class ConfigurationStatus implements StatusProviderInterface
      */
     protected function getMysqlDatabaseUtf8Status()
     {
+        $collationConstraint = null;
+        $charset = '';
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         /** @var QueryBuilder $queryBuilder */

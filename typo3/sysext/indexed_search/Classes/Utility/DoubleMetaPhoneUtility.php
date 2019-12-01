@@ -799,6 +799,7 @@ class DoubleMetaPhoneUtility
         // end while
         $this->primary = substr($this->primary, 0, 4);
         $this->secondary = substr($this->secondary, 0, 4);
+        $result = [];
         $result['primary'] = $this->primary;
         $result['secondary'] = $this->secondary;
         return $result;

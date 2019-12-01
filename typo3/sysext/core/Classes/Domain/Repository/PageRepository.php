@@ -625,16 +625,16 @@ class PageRepository implements LoggerAwareInterface
                     } elseif ($OLmode === 'hideNonTranslated' && (int)$row[$tableControl['languageField']] === 0) {
                         // Unset, if non-translated records should be hidden. ONLY done if the source
                         // record really is default language and not [All] in which case it is allowed.
-                        unset($row);
+                        $row = null;
                     }
                 } elseif ($sys_language_content != $row[$tableControl['languageField']]) {
-                    unset($row);
+                    $row = null;
                 }
             } else {
                 // When default language is displayed, we never want to return a record carrying
                 // another language!
                 if ($row[$tableControl['languageField']] > 0) {
-                    unset($row);
+                    $row = null;
                 }
             }
         }

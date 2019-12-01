@@ -65,6 +65,9 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
      */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
+        $data = [
+            'cacheEnabled' => true
+        ];
         if ($this->isNoCacheEnabled()) {
             $data = [
                 'orderedProviders' => [],
@@ -85,8 +88,6 @@ class PageTitle extends AbstractSubModule implements DataProviderInterface
                     }
                 }
             }
-        } else {
-            $data['cacheEnabled'] = true;
         }
         return new ModuleData($data);
     }

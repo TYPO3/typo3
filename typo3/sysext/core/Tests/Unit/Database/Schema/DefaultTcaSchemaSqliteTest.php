@@ -60,11 +60,13 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
         $table = new Table('aTable');
         $table->addColumn('uid', 'integer');
         $table->addColumn('pid', 'integer');
+        $input = [];
         $input[] = $table;
 
         $table = new Table('aTable');
         $table->addColumn('uid', 'integer');
         $table->addColumn('pid', 'integer');
+        $expected = [];
         $expected[] = $table;
 
         self::assertEquals($expected, $this->subject->enrich($input));
@@ -79,6 +81,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
 
         $table = new Table('aTable');
         $table->addColumn('foo', 'integer');
+        $input = [];
         $input[] = $table;
         $table = new Table('aTable');
         $table->addColumn('uid', 'integer');
@@ -87,6 +90,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
 
         $table = new Table('aTable');
         $table->addColumn('foo', 'integer');
+        $expected = [];
         $expected[] = $table;
         $table = new Table('aTable');
         $table->addColumn('uid', 'integer');
@@ -105,6 +109,7 @@ class DefaultTcaSchemaSqliteTest extends UnitTestCase
 
         $table = new Table('aTable');
         $table->addColumn('foo', 'integer');
+        $input = [];
         $input[] = $table;
         $table = new Table('aTable');
         $table->addColumn('bar', 'integer');

@@ -354,12 +354,13 @@ class ActionController implements ControllerInterface
      */
     protected function resolveView()
     {
+        $view = null;
         if ($this->defaultViewObjectName != '') {
             /** @var ViewInterface $view */
             $view = $this->objectManager->get($this->defaultViewObjectName);
             $this->setViewConfiguration($view);
             if ($view->canRender($this->controllerContext) === false) {
-                unset($view);
+                $view = null;
             }
         }
         if (!isset($view)) {

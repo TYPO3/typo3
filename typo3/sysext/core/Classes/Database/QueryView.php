@@ -315,6 +315,7 @@ class QueryView
      */
     public function procesStoreControl()
     {
+        $flashMessage = null;
         $storeArray = $this->initStoreArray();
         $storeQueryConfigs = unserialize($this->settings['storeQueryConfigs'], ['allowed_classes' => false]);
         $storeControl = GeneralUtility::_GP('storeControl');
@@ -933,6 +934,7 @@ class QueryView
      */
     public function makeValueList($fieldName, $fieldValue, $conf, $table, $splitString)
     {
+        $from_table_Arr = [];
         $fieldSetup = $conf;
         $out = '';
         if ($fieldSetup['type'] === 'multiple') {

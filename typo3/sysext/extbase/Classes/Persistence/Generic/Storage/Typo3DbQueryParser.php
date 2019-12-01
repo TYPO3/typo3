@@ -581,6 +581,7 @@ class Typo3DbQueryParser
      */
     protected function parseOperand(Qom\DynamicOperandInterface $operand, Qom\SourceInterface $source)
     {
+        $tableName = null;
         if ($operand instanceof Qom\LowerCaseInterface) {
             $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
         } elseif ($operand instanceof Qom\UpperCaseInterface) {

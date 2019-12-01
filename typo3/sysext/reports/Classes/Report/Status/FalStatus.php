@@ -67,6 +67,7 @@ class FalStatus implements StatusProviderInterface
             }
         }
 
+        $queryBuilder = null;
         if (!empty($storages)) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file');
 

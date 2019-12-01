@@ -766,6 +766,7 @@ class FlexFormTools
      */
     public function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value)
     {
+        $PA = [];
         if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
             return 'TCA table/field was not defined.';
         }

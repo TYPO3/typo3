@@ -111,6 +111,7 @@ class PreviewController
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+        $liveUrl = false;
         $this->initializeView('Index');
 
         // Get all the GET parameters to pass them on to the frames

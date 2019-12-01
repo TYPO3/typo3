@@ -37,6 +37,7 @@ class AjaxController
      */
     public function switchWorkspaceAction(ServerRequestInterface $request): ResponseInterface
     {
+        $page = [];
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $workspaceId = (int)($parsedBody['workspaceId'] ?? $queryParams['workspaceId']);

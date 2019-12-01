@@ -74,6 +74,7 @@ class EmailFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
+        $languageBackup = null;
         // Flexform overrides write strings instead of integers so
         // we need to cast the string '0' to false.
         if (

@@ -100,14 +100,14 @@ class BytesViewHelperTest extends ViewHelperBaseTestcase
                 'expected' => '1.024.0 MB'
             ],
             [
-                'value' => pow(1024, 5),
+                'value' => 1024 ** 5,
                 'decimals' => 1,
                 'decimalSeparator' => null,
                 'thousandsSeparator' => null,
                 'expected' => '1.0 PB'
             ],
             [
-                'value' => pow(1024, 8),
+                'value' => 1024 ** 8,
                 'decimals' => 1,
                 'decimalSeparator' => null,
                 'thousandsSeparator' => null,

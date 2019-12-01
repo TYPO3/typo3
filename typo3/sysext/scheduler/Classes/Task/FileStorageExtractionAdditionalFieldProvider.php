@@ -42,6 +42,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         if ($task !== null && !$task instanceof FileStorageExtractionTask) {
             throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275695);
         }
+        $additionalFields = [];
         $additionalFields['scheduler_fileStorageIndexing_storage'] = $this->getAllStoragesField($task);
         $additionalFields['scheduler_fileStorageIndexing_fileCount'] = $this->getFileCountField($task);
         $additionalFields['scheduler_fileStorageIndexing_registeredExtractors'] = $this->getRegisteredExtractorsField($task);

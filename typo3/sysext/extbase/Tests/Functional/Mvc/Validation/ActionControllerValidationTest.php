@@ -77,6 +77,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
         $request->setArgument('blogPost', $blogPostArgument);
         $request->setArgument('__trustedProperties', $this->generateTrustedPropertiesToken($trustedProperties));
 
+        $referrerRequest = [];
         $referrerRequest['@action'] = 'testForm';
         $request->setArgument(
             '__referrer',
@@ -140,6 +141,7 @@ class ActionControllerValidationTest extends FunctionalTestCase
             )
         );
 
+        $referrerRequest = [];
         $referrerRequest['@action'] = 'testForm';
         $request->setArgument(
             '__referrer',

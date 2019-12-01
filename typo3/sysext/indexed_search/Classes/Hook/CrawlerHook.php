@@ -71,6 +71,7 @@ class CrawlerHook
      */
     public function crawler_init(&$pObj)
     {
+        $message = null;
         // Select all indexing configuration which are waiting to be activated:
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_config');
         $queryBuilder = $connection->createQueryBuilder();

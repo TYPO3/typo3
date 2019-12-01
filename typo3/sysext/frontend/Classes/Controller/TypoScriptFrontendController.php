@@ -1322,6 +1322,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      */
     protected function getPageAndRootline()
     {
+        $requestedPageRowWithoutGroupCheck = [];
         $this->resolveTranslatedPageId();
         if (empty($this->page)) {
             // If no page, we try to find the page before in the rootLine.

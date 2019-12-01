@@ -110,7 +110,7 @@ class BytesViewHelper extends AbstractViewHelper
         $bytes = max($value, 0);
         $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
         $pow = min($pow, count($units) - 1);
-        $bytes /= pow(2, 10 * $pow);
+        $bytes /= 2 ** (10 * $pow);
 
         return sprintf(
             '%s %s',

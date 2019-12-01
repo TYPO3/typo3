@@ -43,6 +43,8 @@ class SiteListCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $locales = [];
+        $status = [];
         $io = new SymfonyStyle($input, $output);
         $siteFinder = new SiteFinder();
         $sites = $siteFinder->getAllSites();

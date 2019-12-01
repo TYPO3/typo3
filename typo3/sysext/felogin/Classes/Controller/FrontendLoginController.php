@@ -218,6 +218,7 @@ class FrontendLoginController extends AbstractPlugin
      */
     protected function showForgot()
     {
+        $markerArray = [];
         $subpart = $this->templateService->getSubpart($this->template, '###TEMPLATE_FORGOT###');
         $subpartArray = ($linkpartArray = []);
         $postData = GeneralUtility::_POST($this->prefixId);
@@ -306,6 +307,7 @@ class FrontendLoginController extends AbstractPlugin
      */
     protected function changePassword()
     {
+        $markerArray = [];
         $subpartArray = ($linkpartArray = []);
         $done = false;
         $minLength = (int)$this->conf['newPasswordMinLength'] ?: 6;
@@ -525,6 +527,7 @@ class FrontendLoginController extends AbstractPlugin
      */
     protected function showLogout()
     {
+        $markerArray = [];
         $subpart = $this->templateService->getSubpart($this->template, '###TEMPLATE_LOGOUT###');
         $subpartArray = ($linkpartArray = []);
         $markerArray['###STATUS_HEADER###'] = $this->getDisplayText('status_header', $this->conf['logoutHeader_stdWrap.']);

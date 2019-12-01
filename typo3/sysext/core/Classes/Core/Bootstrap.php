@@ -363,6 +363,8 @@ class Bootstrap
      */
     protected static function initializeErrorHandling()
     {
+        $displayErrors = 0;
+        $exceptionHandlerClassName = null;
         $productionExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
         $debugExceptionHandlerClassName = $GLOBALS['TYPO3_CONF_VARS']['SYS']['debugExceptionHandler'];
 

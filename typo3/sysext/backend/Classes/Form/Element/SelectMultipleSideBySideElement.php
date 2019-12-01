@@ -91,6 +91,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
      */
     public function render()
     {
+        $filterTextfield = [];
         $languageService = $this->getLanguageService();
         $resultArray = $this->initializeResultArray();
 

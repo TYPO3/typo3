@@ -45,6 +45,7 @@ class PropertyPathsExtractor extends AbstractExtractor
      */
     protected function getPropertyPaths(string $value, array $matches): array
     {
+        $paths = [];
         [, $formElementType, $formEditorIndex] = $matches;
 
         $paths[$formElementType]['propertyPaths'] = [];

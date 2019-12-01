@@ -44,6 +44,7 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     public function listAction()
     {
         $blogs = $this->blogRepository->findAll();
+        $value = [];
         $value[$this->getRuntimeIdentifier()] = $this->getStructure($blogs);
 
         $this->view->assign('value', $value);

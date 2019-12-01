@@ -1121,6 +1121,7 @@ class SchedulerModuleController
      */
     protected function preprocessData()
     {
+        $cronErrorCode = 0;
         $result = true;
         // Validate id
         $this->submittedData['uid'] = empty($this->submittedData['uid']) ? 0 : (int)$this->submittedData['uid'];
@@ -1173,7 +1174,6 @@ class SchedulerModuleController
                 $this->addMessage($this->getLanguageService()->getLL('msg.noFrequency'), FlashMessage::ERROR);
                 $result = false;
             } else {
-                $cronErrorCode = 0;
                 $cronErrorMessage = '';
                 // Try interpreting the cron command
                 try {
@@ -1187,11 +1187,11 @@ class SchedulerModuleController
                     // If yes, assume it is a frequency in seconds, and unset cron error code
                     if (is_numeric($frequency)) {
                         $this->submittedData['interval'] = (int)$frequency;
-                        unset($cronErrorCode);
+                        $cronErrorCode = 0;
                     }
                 }
                 // If there's a cron error code, issue validation error message
-                if (!empty($cronErrorCode)) {
+                if ($cronErrorCode > 0) {
                     $this->addMessage(sprintf($this->getLanguageService()->getLL('msg.frequencyError'), $cronErrorMessage, $cronErrorCode), FlashMessage::ERROR);
                     $result = false;
                 }

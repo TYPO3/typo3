@@ -1026,6 +1026,7 @@ class PageLayoutController
      */
     protected function getNumberOfHiddenElements(array $contentConfig = []): int
     {
+        $andWhere = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
             ->removeAll()

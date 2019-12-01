@@ -308,6 +308,7 @@ class SoftReferenceIndex implements SingletonInterface
      */
     public function findRef_email($content, $spParams)
     {
+        $elements = [];
         // Email:
         $parts = preg_split('/([^[:alnum:]]+)([A-Za-z0-9\\._-]+[@][A-Za-z0-9\\._-]+[\\.].[A-Za-z0-9]+)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
@@ -344,6 +345,7 @@ class SoftReferenceIndex implements SingletonInterface
      */
     public function findRef_url($content, $spParams)
     {
+        $elements = [];
         // URLs
         $parts = preg_split('/([^[:alnum:]"\']+)((https?|ftp):\\/\\/[^[:space:]"\'<>]*)([[:space:]])/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {
@@ -382,6 +384,7 @@ class SoftReferenceIndex implements SingletonInterface
      */
     public function findRef_extension_fileref($content)
     {
+        $elements = [];
         // Files starting with EXT:
         $parts = preg_split('/([^[:alnum:]"\']+)(EXT:[[:alnum:]_]+\\/[^[:space:]"\',]*)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $idx => $value) {

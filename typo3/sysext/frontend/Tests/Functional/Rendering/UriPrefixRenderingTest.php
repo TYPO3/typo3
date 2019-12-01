@@ -383,6 +383,7 @@ class UriPrefixRenderingTest extends FunctionalTestCase
         if (empty($template)) {
             self::fail('Cannot find root template on page with id: "' . $pageId . '"');
         }
+        $updateFields = [];
         $updateFields['constants'] = ($append ? $template['constants'] . LF : '') . $constants;
         $connection->update(
             'sys_template',

@@ -192,6 +192,7 @@ class FormFrontendController extends ActionController
         array $flexForm,
         string $sheetIdentifier
     ): array {
+        $sheetData = [];
         $sheetData['data'] = array_filter(
             $flexForm['data'] ?? [],
             function ($key) use ($sheetIdentifier) {

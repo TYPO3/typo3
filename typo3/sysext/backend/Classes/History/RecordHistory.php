@@ -493,6 +493,7 @@ class RecordHistory
      */
     protected function hasPageAccess($table, $uid): bool
     {
+        $pageRecord = null;
         $uid = (int)$uid;
 
         if ($table === 'pages') {

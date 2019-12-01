@@ -566,6 +566,7 @@ class RedirectServiceTest extends UnitTestCase
         ];
         $this->linkServiceProphecy->resolve($pageRecord)->willReturn($linkDetails);
 
+        $queryParams = [];
         $queryParams['foo'] = 'bar';
         $uri = new Uri('/page?foo=bar');
 

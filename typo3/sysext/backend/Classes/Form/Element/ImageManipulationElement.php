@@ -328,6 +328,7 @@ class ImageManipulationElement extends AbstractFormElement
      */
     protected function getWizardPayload(array $cropVariants, File $image): array
     {
+        $uriArguments = [];
         $arguments = [
             'cropVariants' => $cropVariants,
             'image' => $image->getUid(),

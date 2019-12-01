@@ -310,6 +310,7 @@ class ValidatorTask extends AbstractTask
      */
     protected function checkPageLinks($page)
     {
+        $pageRow = null;
         $page = (int)$page;
         $pageSections = '';
         $pageIds = '';
@@ -391,6 +392,7 @@ class ValidatorTask extends AbstractTask
      */
     protected function getSearchField(array $modTS)
     {
+        $searchFields = [];
         // Get the searchFields from TypoScript
         foreach ($modTS['searchFields.'] as $table => $fieldList) {
             $fields = GeneralUtility::trimExplode(',', $fieldList);
@@ -398,7 +400,7 @@ class ValidatorTask extends AbstractTask
                 $searchFields[$table][] = $field;
             }
         }
-        return $searchFields ?? [];
+        return $searchFields;
     }
 
     /**

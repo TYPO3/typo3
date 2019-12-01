@@ -126,6 +126,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     public function render()
     {
+        $_MCONF = [];
         $backendUser = $this->getBackendUser();
 
         // The key number 3 of the bparams contains the "allowed" string. Disallowed is not passed to
@@ -405,6 +406,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
      */
     protected function getBulkSelector($filesCount)
     {
+        $_MCONF = [];
         if (!$filesCount) {
             return '';
         }

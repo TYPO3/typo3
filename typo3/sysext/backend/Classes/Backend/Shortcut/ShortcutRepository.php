@@ -601,6 +601,7 @@ class ShortcutRepository
      */
     protected function getShortcutIcon(array $row, array $shortcut): string
     {
+        $selectFields = [];
         switch ($row['module_name']) {
             case 'xMOD_alt_doc.php':
                 $table = $shortcut['table'];

@@ -340,6 +340,7 @@ class UpgradeWizardsService
      */
     public function executeWizard(string $identifier): FlashMessageQueue
     {
+        $performResult = false;
         $this->assertIdentifierIsValid($identifier);
 
         $class = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][$identifier];

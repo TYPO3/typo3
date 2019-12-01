@@ -132,6 +132,7 @@ class PreviewUriBuilder
      */
     public function buildUriForElement(string $table, int $uid, array $liveRecord = null, array $versionRecord = null): string
     {
+        $movePlaceholder = [];
         if ($table === 'pages') {
             return BackendUtility::viewOnClick(BackendUtility::getLiveVersionIdOfRecord('pages', $uid));
         }

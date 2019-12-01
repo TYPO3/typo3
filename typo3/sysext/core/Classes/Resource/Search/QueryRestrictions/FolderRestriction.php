@@ -68,6 +68,7 @@ class FolderRestriction extends AbstractRestrictionContainer
 
     private function createFolderRestriction(): QueryRestrictionInterface
     {
+        $hashedFolderIdentifiers = [];
         $hashedFolderIdentifiers[] = $this->folder->getHashedIdentifier();
         if ($this->recursive) {
             foreach ($this->folder->getSubfolders(0, 0, Folder::FILTER_MODE_NO_FILTERS, true) as $subFolder) {

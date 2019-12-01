@@ -65,6 +65,7 @@ class InputColorPickerElement extends AbstractFormElement
      */
     public function render()
     {
+        $evalData = '';
         $languageService = $this->getLanguageService();
 
         $table = $this->data['tableName'];
@@ -115,6 +116,7 @@ class InputColorPickerElement extends AbstractFormElement
                         $itemValue = $evalObj->deevaluateFieldValue($_params);
                     }
                     if (method_exists($evalObj, 'returnFieldJS')) {
+                        // @todo: variable $evalData must be replaced with $func
                         $resultArray['additionalJavaScriptPost'][] = 'TBE_EDITOR.customEvalFunctions[' . GeneralUtility::quoteJSvalue($evalData) . '] = function(value) {' . $evalObj->returnFieldJS() . '};';
                     }
                 }

@@ -4445,6 +4445,7 @@ class ContentObjectRendererTest extends UnitTestCase
         int $times
     ): void {
         $content = $this->getUniqueId('content');
+        $conf = [];
         $conf['cache.'] = $confCache;
         $tags = [$this->getUniqueId('tags')];
         $lifetime = $this->getUniqueId('lifetime');
@@ -6936,8 +6937,10 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $content = $this->getUniqueId('content');
         $will = $this->getUniqueId('will');
+        $conf = [];
         $conf['prefixComment'] = $this->getUniqueId('prefixComment');
         $emptyConf1 = [];
+        $emptyConf2 = [];
         $emptyConf2['prefixComment'] = '';
         return [
             'standard case' => [$will, $content, $conf, false, 1, $will],

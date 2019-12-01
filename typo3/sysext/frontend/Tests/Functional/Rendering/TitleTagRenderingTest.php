@@ -228,6 +228,7 @@ class TitleTagRenderingTest extends FunctionalTestCase
         if (empty($template)) {
             self::fail('Cannot find root template on page with id: "' . $pageId . '"');
         }
+        $updateFields = [];
         $updateFields['sitetitle'] = $siteTitle;
         $connection->update(
             'sys_template',

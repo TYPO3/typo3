@@ -625,7 +625,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
                     // (3 MSB bit, 224 is highest value of order_val1 currently)
                     $base = $row['order_val1'] * 256;
                     // 15-3 MSB = 12
-                    $freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
+                    $freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * 2 ** 12;
                     $total = MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
                     return ceil(log($total) / log(32767) * 100) . '%';
                 }
@@ -731,9 +731,10 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
      */
     protected function makeDescription($row, $noMarkup = false, $length = 180)
     {
+        $markedSW = '';
+        $outputStr = '';
         if ($row['show_resume']) {
             if (!$noMarkup) {
-                $markedSW = '';
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('index_fulltext');
                 $ftdrow = $queryBuilder
                     ->select('*')

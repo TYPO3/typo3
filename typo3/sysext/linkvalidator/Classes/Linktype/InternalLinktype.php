@@ -66,6 +66,7 @@ class InternalLinktype extends AbstractLinktype
      */
     public function checkLink($url, $softRefEntry, $reference)
     {
+        $page = null;
         $anchor = '';
         $this->responseContent = true;
         // Might already contain values - empty it
@@ -227,6 +228,8 @@ class InternalLinktype extends AbstractLinktype
      */
     public function getErrorMessage($errorParams)
     {
+        $errorPage = null;
+        $errorContent = null;
         $lang = $this->getLanguageService();
         $errorType = $errorParams['errorType'];
         if (is_array($errorParams['page'])) {

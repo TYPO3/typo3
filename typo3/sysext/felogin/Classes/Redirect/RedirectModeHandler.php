@@ -133,11 +133,12 @@ class RedirectModeHandler
      */
     public function redirectModeLogin(int $redirectPageLogin): string
     {
+        $redirectUrl = '';
         if ($redirectPageLogin !== 0) {
             $redirectUrl = $this->buildUriForPageUid($redirectPageLogin);
         }
 
-        return $redirectUrl ?? '';
+        return $redirectUrl;
     }
 
     /**
@@ -148,6 +149,7 @@ class RedirectModeHandler
      */
     public function redirectModeReferrer(string $redirectReferrer): string
     {
+        $redirectUrl = '';
         if ($redirectReferrer !== 'off') {
             // Avoid forced logout, when trying to login immediately after a logout
             $redirectUrl = preg_replace('/[&?]logintype=[a-z]+/', '', $this->getRefererRequestParam());
@@ -165,6 +167,7 @@ class RedirectModeHandler
      */
     public function redirectModeRefererDomains(string $domains, string $redirectReferrer): string
     {
+        $redirectUrl = '';
         if ($redirectReferrer !== '') {
             return '';
         }
@@ -208,11 +211,12 @@ class RedirectModeHandler
      */
     public function redirectModeLoginError(int $redirectPageLoginError = 0): string
     {
+        $redirectUrl = '';
         if ($redirectPageLoginError > 0) {
             $redirectUrl = $this->buildUriForPageUid($redirectPageLoginError);
         }
 
-        return $redirectUrl ?? '';
+        return $redirectUrl;
     }
 
     /**
@@ -223,11 +227,12 @@ class RedirectModeHandler
      */
     public function redirectModeLogout(int $redirectPageLogout): string
     {
+        $redirectUrl = '';
         if ($redirectPageLogout > 0) {
             $redirectUrl = $this->buildUriForPageUid($redirectPageLogout);
         }
 
-        return $redirectUrl ?? '';
+        return $redirectUrl;
     }
 
     protected function buildUriForPageUid(int $pageUid): string
@@ -240,11 +245,12 @@ class RedirectModeHandler
 
     protected function getRefererRequestParam(): string
     {
+        $referer = '';
         $requestReferer = (string)$this->serverRequestHandler->getPropertyFromGetAndPost('referer');
         if ($this->redirectUrlValidator->isValid($requestReferer)) {
             $referer = $requestReferer;
         }
 
-        return $referer ?? '';
+        return $referer;
     }
 }

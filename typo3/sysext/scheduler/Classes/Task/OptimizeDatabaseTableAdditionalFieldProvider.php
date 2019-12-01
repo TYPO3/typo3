@@ -65,6 +65,7 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
             . '" class="from-control" size="10" multiple="multiple">'
             . $fieldOptions
             . '</select>';
+        $additionalFields = [];
         $additionalFields[$fieldId] = [
             'code' => $fieldHtml,
             'label' => $this->languageFile . ':label.optimizeDatabaseTables.selectTables',

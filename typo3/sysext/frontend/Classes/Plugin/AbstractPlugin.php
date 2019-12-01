@@ -511,6 +511,8 @@ class AbstractPlugin
      */
     public function pi_list_browseresults($showResultCount = 1, $tableParams = '', $wrapArr = [], $pointerName = 'pointer', $hscText = true, $forceOutput = false)
     {
+        $wrapper = [];
+        $markerArray = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][self::class]['pi_list_browseresults'] ?? [] as $classRef) {
             $hookObj = GeneralUtility::makeInstance($classRef);
             if (method_exists($hookObj, 'pi_list_browseresults')) {

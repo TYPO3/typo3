@@ -297,6 +297,7 @@ class UpgradeController extends AbstractController
      */
     public function coreUpdateIsUpdateAvailableAction(): ResponseInterface
     {
+        $action = null;
         $this->coreUpdateInitialize();
         $messageQueue = new FlashMessageQueue('install');
         if ($this->coreVersionService->isInstalledVersionAReleasedVersion()) {

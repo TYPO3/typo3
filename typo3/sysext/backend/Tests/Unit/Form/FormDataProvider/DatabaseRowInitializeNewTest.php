@@ -626,6 +626,7 @@ class DatabaseRowInitializeNewTest extends UnitTestCase
             'inlineChildChildUid' => null,
             'isInlineChild' => false,
         ];
+        $expected = [];
         $expected['pid'] = 23;
         $result = (new DatabaseRowInitializeNew)->addData($input);
         self::assertSame($expected, $result['databaseRow']);

@@ -123,6 +123,7 @@ class DocumentationFile
      */
     public function getListEntry(string $file): array
     {
+        $entry = [];
         if (strcasecmp($file, $this->changelogPath) < 0 || strpos($file, $this->changelogPath) === false) {
             throw new \InvalidArgumentException('the given file does not belong to the changelog dir. Aborting', 1485425531);
         }

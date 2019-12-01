@@ -3951,7 +3951,6 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             unset($contentAccum[$contentAccumP - 1]);
                             $contentAccumP -= 2;
                         }
-                        unset($currentTag);
                         $treated = true;
                     }
                     // other tags
@@ -4119,6 +4118,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function http_makelinks($data, $conf)
     {
+        $parts = [];
         $aTagParams = $this->getATagParams($conf);
         $textstr = '';
         foreach (['http://', 'https://'] as $scheme) {
@@ -4195,6 +4195,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function mailto_makelinks($data, $conf)
     {
+        $parts = [];
         // http-split
         $aTagParams = $this->getATagParams($conf);
         $textpieces = explode('mailto:', $data);
@@ -4255,6 +4256,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getImgResource($file, $fileArray)
     {
+        $importedFile = null;
         if (empty($file) && empty($fileArray)) {
             return null;
         }
@@ -5478,6 +5480,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function getQueryArguments($conf, $overruleQueryArguments = [], $forceOverruleArguments = false)
     {
+        $exclude = [];
         $method = (string)($conf['method'] ?? '');
         if ($method === 'POST') {
             trigger_error('Assigning typolink.addQueryString.method = POST is not supported anymore since TYPO3 v10.0.', E_USER_WARNING);

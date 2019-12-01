@@ -83,7 +83,6 @@ class YamlSource
      *
      * @param File|string $fileToSave The file to write to.
      * @param array $configuration The configuration to save
-     * @return mixed
      * @throws FileWriteException if the file could not be written
      * @internal
      */
@@ -121,8 +120,6 @@ class YamlSource
                 throw new FileWriteException($error['message'], 1512582929);
             }
         }
-
-        return $return;
     }
 
     /**

@@ -832,6 +832,7 @@ class GraphicalFunctions
      */
     public function calcTextCordsForMap($cords, $offset, $conf)
     {
+        $newCords = [];
         $pars = GeneralUtility::intExplode(',', $conf['explode'] . ',');
         $newCords[0] = $cords[0] + $offset[0] - $pars[0];
         $newCords[1] = $cords[1] + $offset[1] + $pars[1];
@@ -2306,6 +2307,7 @@ class GraphicalFunctions
      */
     public function getImageScale($info, $w, $h, $options)
     {
+        $out = [];
         $max = strpos($w . $h, 'm') !== false ? 1 : 0;
         if (strpos($w . $h, 'c') !== false) {
             $out['cropH'] = (int)substr(strstr($w, 'c'), 1);

@@ -714,6 +714,7 @@ class GeneralUtility
      */
     public static function split_fileref($fileNameWithPath)
     {
+        $info = [];
         $reg = [];
         if (preg_match('/(.*\\/)(.*)$/', $fileNameWithPath, $reg)) {
             $info['path'] = $reg[1];
@@ -811,12 +812,12 @@ class GeneralUtility
         }
         $sizeInBytes = max($sizeInBytes, 0);
         $multiplier = floor(($sizeInBytes ? log($sizeInBytes) : 0) / log($base));
-        $sizeInUnits = $sizeInBytes / pow($base, $multiplier);
+        $sizeInUnits = $sizeInBytes / $base ** $multiplier;
         if ($sizeInUnits > ($base * .9)) {
             $multiplier++;
         }
         $multiplier = min($multiplier, count($labelArr) - 1);
-        $sizeInUnits = $sizeInBytes / pow($base, $multiplier);
+        $sizeInUnits = $sizeInBytes / $base ** $multiplier;
         return number_format($sizeInUnits, (($multiplier > 0) && ($sizeInUnits < 20)) ? 2 : 0, $localeInfo['decimal_point'], '') . $labelArr[$multiplier];
     }
 
@@ -1899,6 +1900,7 @@ class GeneralUtility
      */
     public static function fixPermissions($path, $recursive = false)
     {
+        $targetPermissions = null;
         if (Environment::isWindows()) {
             return true;
         }

@@ -36,6 +36,7 @@ class BackendLogModuleBootstrap
      */
     public function main()
     {
+        $options = [];
         $_GET['tx_belog_system_beloglog']['pageId'] = GeneralUtility::_GP('id');
         $_GET['tx_belog_system_beloglog']['layout'] = 'Plain';
         $serverRequest = $GLOBALS['TYPO3_REQUEST'] ?? null;

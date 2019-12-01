@@ -440,6 +440,7 @@ class DataMapProcessor
      */
     protected function synchronizeDirectRelations(DataMapItem $item, string $fieldName, array $fromRecord)
     {
+        $specialTableName = null;
         $configuration = $GLOBALS['TCA'][$item->getTableName()]['columns'][$fieldName];
         $isSpecialLanguageField = ($configuration['config']['special'] ?? null) === 'languages';
 
@@ -973,6 +974,7 @@ class DataMapProcessor
      */
     protected function fetchDependentIdMap(string $tableName, array $ids, int $desiredLanguage)
     {
+        $ancestorIdMap = [];
         if (empty($ids)) {
             return [];
         }
@@ -1322,6 +1324,7 @@ class DataMapProcessor
      */
     protected function prefixLanguageTitle(string $tableName, $fromId, int $language, array $data): array
     {
+        $prefix = '';
         $prefixFieldNames = array_intersect(
             array_keys($data),
             $this->getPrefixLanguageTitleFieldNames($tableName)

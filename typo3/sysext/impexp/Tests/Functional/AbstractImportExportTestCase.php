@@ -91,6 +91,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
             $tree->getTree($pidToStart, $depth, '');
         }
 
+        $idH = [];
         $idH[$pidToStart]['uid'] = $pidToStart;
         if (!empty($tree->buffer_idH)) {
             $idH[$pidToStart]['subrow'] = $tree->buffer_idH;

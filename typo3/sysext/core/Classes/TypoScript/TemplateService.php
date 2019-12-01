@@ -411,6 +411,7 @@ class TemplateService
      */
     public function start($theRootLine)
     {
+        $cc = [];
         // @deprecated - can be removed with TYPO3 v11.0
         if ((bool)$this->forceTemplateParsing) {
             $this->context->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, true));
@@ -429,7 +430,7 @@ class TemplateService
                 $cc = $this->getTypoScriptFrontendController()->all;
                 // The two rowSums must NOT be different from each other - which they will be if start/endtime or hidden has changed!
                 if (serialize($this->rowSum) !== serialize($cc['rowSum'])) {
-                    unset($cc);
+                    $cc = [];
                 } else {
                     // If $TSFE->all contains valid data, we don't need to update cache_pagesection (because this data was fetched from there already)
                     if (serialize($this->rootLine) === serialize($cc['rootLine'])) {
@@ -441,7 +442,7 @@ class TemplateService
             }
             // This is about getting the hash string which is used to fetch the cached TypoScript template.
             // If there was some cached currentPageData ($cc) then that's good (it gives us the hash).
-            if (isset($cc) && is_array($cc)) {
+            if (!empty($cc)) {
                 // If currentPageData was actually there, we match the result (if this wasn't done already in $TSFE->getFromCache()...)
                 if (!$cc['match']) {
                     // @todo check if this can ever be the case - otherwise remove
@@ -454,7 +455,6 @@ class TemplateService
                 $rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
                 $result = $this->getCacheEntry($rowSumHash);
                 if (is_array($result)) {
-                    $cc = [];
                     $cc['all'] = $result;
                     $cc['rowSum'] = $this->rowSum;
                     $cc = $this->matching($cc);

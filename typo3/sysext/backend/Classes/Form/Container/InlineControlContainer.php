@@ -596,6 +596,7 @@ class InlineControlContainer extends AbstractContainer
      */
     protected function renderPossibleRecordsSelectorTypeSelect(array $config, array $uniqueIds)
     {
+        $onChange = '';
         $possibleRecords = $config['selectorOrUniquePossibleRecords'];
         $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
         // Create option tags:

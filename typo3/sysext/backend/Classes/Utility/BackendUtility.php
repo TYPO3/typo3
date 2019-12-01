@@ -1506,6 +1506,7 @@ class BackendUtility
      */
     public static function getRecordTitle($table, $row, $prep = false, $forceResult = true)
     {
+        $params = [];
         $recordTitle = '';
         if (isset($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table])) {
             // If configured, call userFunc
@@ -1931,7 +1932,7 @@ class BackendUtility
                 } else {
                     $lA = [];
                     foreach ($theColConf['items'] as $key => $val) {
-                        if ($value & pow(2, $key)) {
+                        if ($value & 2 ** $key) {
                             $lA[] = $lang->sL($val[0]);
                         }
                     }

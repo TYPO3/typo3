@@ -2403,6 +2403,7 @@ class EditDocumentController
      */
     protected function closeDocument($mode, ServerRequestInterface $request): ?ResponseInterface
     {
+        $setupArr = [];
         $mode = (int)$mode;
         // If current document is found in docHandler,
         // then unset it, possibly unset it ALL and finally, write it to the session data

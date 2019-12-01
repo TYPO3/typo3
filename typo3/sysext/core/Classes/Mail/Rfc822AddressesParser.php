@@ -207,6 +207,8 @@ class Rfc822AddressesParser
      */
     protected function _splitAddresses($address)
     {
+        $split_char = '';
+        $is_group = false;
         if (!empty($this->limit) && count($this->addresses) == $this->limit) {
             return '';
         }
@@ -395,6 +397,7 @@ class Rfc822AddressesParser
      */
     protected function _validateAddress($address)
     {
+        $structure = [];
         $is_group = false;
         $addresses = [];
         if ($address['group']) {
@@ -546,6 +549,8 @@ class Rfc822AddressesParser
      */
     protected function validateMailbox(&$mailbox)
     {
+        $route_addr = null;
+        $addr_spec = [];
         // A couple of defaults.
         $phrase = '';
         $comments = [];
@@ -620,6 +625,8 @@ class Rfc822AddressesParser
      */
     protected function _validateRouteAddr($route_addr)
     {
+        $route = '';
+        $return = [];
         // Check for colon.
         if (strpos($route_addr, ':') !== false) {
             $parts = explode(':', $route_addr);
@@ -630,7 +637,7 @@ class Rfc822AddressesParser
         // If $route is same as $route_addr then the colon was in
         // quotes or brackets or, of course, non existent.
         if ($route === $route_addr) {
-            unset($route);
+            $route = '';
             $addr_spec = $route_addr;
             if (($addr_spec = $this->_validateAddrSpec($addr_spec)) === false) {
                 return false;
@@ -646,11 +653,7 @@ class Rfc822AddressesParser
                 return false;
             }
         }
-        if (isset($route)) {
-            $return['adl'] = $route;
-        } else {
-            $return['adl'] = '';
-        }
+        $return['adl'] = $route;
         $return = array_merge($return, $addr_spec);
         return $return;
     }
@@ -661,7 +664,7 @@ class Rfc822AddressesParser
      *
      * @internal
      * @param string $route The string to check.
-     * @return mixed False on failure, or the validated $route on success.
+     * @return string|bool False on failure, or the validated $route on success.
      */
     protected function _validateRoute($route)
     {
@@ -688,6 +691,7 @@ class Rfc822AddressesParser
      */
     protected function _validateDomain($domain)
     {
+        $sub_domains = [];
         // Note the different use of $subdomains and $sub_domains
         $subdomains = explode('.', $domain);
         while (!empty($subdomains)) {

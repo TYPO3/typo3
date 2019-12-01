@@ -411,6 +411,7 @@ class TypoScriptTemplateModuleController
     {
         $this->templateService = GeneralUtility::makeInstance(ExtendedTemplateService::class);
 
+        $moduleContent = [];
         $moduleContent['state'] = InfoboxViewHelper::STATE_INFO;
 
         // New standard?

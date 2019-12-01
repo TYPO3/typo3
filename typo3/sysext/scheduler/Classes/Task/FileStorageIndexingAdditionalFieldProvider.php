@@ -34,6 +34,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
         if ($task !== null && !$task instanceof FileStorageIndexingTask) {
             throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275696);
         }
+        $additionalFields = [];
         $additionalFields['scheduler_fileStorageIndexing_storage'] = $this->getAllStoragesField($task, $taskInfo);
         return $additionalFields;
     }

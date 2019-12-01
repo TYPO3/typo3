@@ -190,8 +190,8 @@ class TcaTypesShowitem implements FormDataProviderInterface
             $bitKey = (int)$bitKey;
             $isNegative = (bool)($bitKey < 0);
             $bit = abs($bitKey);
-            if (!$isNegative && ($bitmaskValue & pow(2, $bit))
-                || $isNegative && !($bitmaskValue & pow(2, $bit))
+            if (!$isNegative && ($bitmaskValue & 2 ** $bit)
+                || $isNegative && !($bitmaskValue & 2 ** $bit)
             ) {
                 $removeListArray = array_merge($removeListArray, GeneralUtility::trimExplode(',', $excludeList, true));
             }

@@ -196,6 +196,7 @@ class SaveToDatabaseFinisher extends AbstractFinisher
      */
     protected function executeInternal()
     {
+        $options = [];
         if (isset($this->options['table'])) {
             $options[] = $this->options;
         } else {

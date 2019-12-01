@@ -145,6 +145,7 @@ class SiteConfiguration implements SingletonInterface
      */
     protected function getAllSiteConfigurationFromFiles(bool $useCache = true): array
     {
+        $siteConfiguration = null;
         // Check if the data is already cached
         if ($useCache && $siteConfiguration = $this->getCache()->get($this->cacheIdentifier)) {
             // Due to the nature of PhpFrontend, the `<?php` and `#` wraps have to be removed

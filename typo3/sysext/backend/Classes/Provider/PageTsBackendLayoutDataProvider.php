@@ -170,6 +170,7 @@ class PageTsBackendLayoutDataProvider implements DataProviderInterface
      */
     protected function generateBackendLayoutFromTsConfig($identifier, $data)
     {
+        $backendLayout = [];
         if (!empty($data['config.']['backend_layout.']) && is_array($data['config.']['backend_layout.'])) {
             $backendLayout['uid'] = substr($identifier, 0, -1);
             $backendLayout['title'] = $data['title'] ?: $backendLayout['uid'];

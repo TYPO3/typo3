@@ -113,6 +113,8 @@ class RecordStateFactory
      */
     protected function resolveLanguageLink(array $aspectFieldNames): ?EntityPointerLink
     {
+        $languageSourceLink = null;
+        $languageParentLink = null;
         if (!empty($aspectFieldNames['languageSource'])) {
             $languageSourceLink = GeneralUtility::makeInstance(
                 EntityPointerLink::class,

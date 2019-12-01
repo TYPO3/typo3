@@ -288,7 +288,7 @@ class TcaRecordTitle implements FormDataProviderInterface
         } else {
             $labelParts = [];
             foreach ($fieldConfig['items'] as $key => $val) {
-                if ($value & pow(2, $key)) {
+                if ($value & 2 ** $key) {
                     $labelParts[] = $val[0];
                 }
             }

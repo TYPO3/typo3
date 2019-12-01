@@ -817,6 +817,7 @@ class ExtensionManagementUtility
         if (!empty($moduleConfiguration['path'])) {
             $path = $moduleConfiguration['path'];
             $path = '/' . ltrim($path, '/');
+            $legacyPath = '';
         } else {
             $path = str_replace('_', '/', $fullModuleSignature);
             $path = trim($path, '/');

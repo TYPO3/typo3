@@ -86,6 +86,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
     }
@@ -108,6 +109,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 23;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -131,6 +133,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['minitems'] = 0;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -154,6 +157,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 23;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -177,6 +181,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['maxitems'] = 1;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -205,6 +210,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'both';
         $expected['processedTca']['columns']['aField']['config']['appearance']['enabledControls']['dragdrop'] = false;
@@ -236,6 +242,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'type' => 'select',
             'foreign_table' => 'anotherForeignTableName',
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
         $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
@@ -278,6 +285,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'type' => 'select',
             'foreign_table' => 'anotherForeignTableName',
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';
         $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
@@ -315,6 +323,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = true;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -340,6 +349,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showPossibleLocalizationRecords'] = false;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -365,6 +375,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = true;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -390,6 +401,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
                 ],
             ],
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['showRemovedLocalizationRecords'] = false;
         self::assertEquals($expected, (new TcaInlineConfiguration)->addData($input));
@@ -600,6 +612,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'type' => 'select',
             'foreign_table' => 'anotherForeignTableName',
         ];
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['foreign_unique'] = 'aField';
         $expected['processedTca']['columns']['aField']['config']['selectorOrUniqueConfiguration'] = [
@@ -655,6 +668,7 @@ class TcaInlineConfigurationTest extends UnitTestCase
             'aGivenSetting' => 'aGivenValue',
         ];
 
+        $expected = [];
         $expected['processedTca']['columns']['aField']['config'] = $this->defaultConfig;
         $expected['processedTca']['columns']['aField']['config']['appearance']['levelLinksPosition'] = 'none';
         $expected['processedTca']['columns']['aField']['config']['foreign_selector'] = 'aField';

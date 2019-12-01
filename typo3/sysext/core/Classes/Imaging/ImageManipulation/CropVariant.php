@@ -119,6 +119,7 @@ class CropVariant
      */
     public function asArray(): array
     {
+        $coverAreasAsArray = null;
         $allowedAspectRatiosAsArray = [];
         foreach ($this->allowedAspectRatios as $id => $allowedAspectRatio) {
             $allowedAspectRatiosAsArray[$id] = $allowedAspectRatio->asArray();

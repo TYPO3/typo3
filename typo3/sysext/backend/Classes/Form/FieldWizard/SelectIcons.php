@@ -31,6 +31,7 @@ class SelectIcons extends AbstractNode
      */
     public function render(): array
     {
+        $selectIcons = [];
         $result = $this->initializeResultArray();
 
         $parameterArray = $this->data['parameterArray'];

@@ -152,7 +152,7 @@ class MathUtility
                     $buffer *= $v;
                 }
                 if ($sign === '^') {
-                    $buffer = pow($buffer, $v);
+                    $buffer = $buffer ** $v;
                 }
             }
         }

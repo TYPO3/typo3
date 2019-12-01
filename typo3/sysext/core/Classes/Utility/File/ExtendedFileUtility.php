@@ -900,6 +900,7 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     public function func_newfolder($cmds)
     {
+        $resultObject = false;
         $targetFolderObject = $this->getFileObject($cmds['target']);
         if (!$targetFolderObject instanceof Folder) {
             $this->writeLog(SystemLogFileAction::NEW_FOLDER, SystemLogErrorClassification::SYSTEM_ERROR, 104, 'Destination "%s" was not a directory', [$cmds['target']]);
@@ -1144,6 +1145,7 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function replaceFile(array $cmdArr)
     {
+        $fileObjectToReplace = null;
         $uploadPosition = $cmdArr['data'];
         $fileInfo = $_FILES['replace_' . $uploadPosition];
         if (empty($fileInfo['name'])) {

@@ -9,8 +9,7 @@ parameters:
       - 'typo3/sysext/*/Configuration/'
       - 'typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/Fixtures/ConditionMatcherUserFuncs.php'
       - 'typo3/sysext/*/Tests/Unit/Acceptance'
-      - 'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/ClassNameMatcherFixture.php'
-      - 'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/PropertyExistsStaticMatcherFixture.php'
+      - 'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/'
       - 'ClassAliasMap.php'
       - 'class.ext_update.php'
   exclude_rectors:
@@ -19,3 +18,4 @@ parameters:
     - 'php53'
     - 'php54'
     - 'php55'
+    - 'php56'

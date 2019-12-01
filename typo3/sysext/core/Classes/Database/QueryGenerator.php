@@ -768,6 +768,7 @@ class QueryGenerator
      */
     public function makeOptionList($fieldName, $conf, $table)
     {
+        $from_table_Arr = [];
         $out = [];
         $fieldSetup = $this->fields[$fieldName];
         $languageService = $this->getLanguageService();
@@ -802,10 +803,10 @@ class QueryGenerator
                 } else {
                     $value = $val[0];
                 }
-                if (GeneralUtility::inList($conf['inputValue'], pow(2, $key))) {
-                    $out[] = '<option value="' . pow(2, $key) . '" selected>' . htmlspecialchars($value) . '</option>';
+                if (GeneralUtility::inList($conf['inputValue'], 2 ** $key)) {
+                    $out[] = '<option value="' . 2 ** $key . '" selected>' . htmlspecialchars($value) . '</option>';
                 } else {
-                    $out[] = '<option value="' . pow(2, $key) . '">' . htmlspecialchars($value) . '</option>';
+                    $out[] = '<option value="' . 2 ** $key . '">' . htmlspecialchars($value) . '</option>';
                 }
             }
         }

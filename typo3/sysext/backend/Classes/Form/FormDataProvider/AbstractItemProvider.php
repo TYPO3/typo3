@@ -466,6 +466,8 @@ abstract class AbstractItemProvider
      */
     protected function addItemsFromForeignTable(array $result, $fieldName, array $items)
     {
+        $databaseError = null;
+        $queryResult = null;
         // Guard
         if (empty($result['processedTca']['columns'][$fieldName]['config']['foreign_table'])
             || !is_string($result['processedTca']['columns'][$fieldName]['config']['foreign_table'])
@@ -1303,9 +1305,6 @@ abstract class AbstractItemProvider
         $languageService = $this->getLanguageService();
 
         foreach ($itemArray as $key => $item) {
-            if (!isset($dynamicItems[$key])) {
-                $staticValues[$item[1]] = $item;
-            }
             if (isset($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
                 && !empty($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['altLabels.'][$item[1]])
             ) {

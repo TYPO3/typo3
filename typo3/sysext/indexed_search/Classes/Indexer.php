@@ -729,6 +729,7 @@ class Indexer
      */
     public function extractLinks($content)
     {
+        $crawler = null;
         // Get links:
         $list = $this->extractHyperLinks($content);
         if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
@@ -1257,6 +1258,7 @@ class Indexer
      */
     public function bodyDescription($contentArr)
     {
+        $bodyDescription = '';
         // Setting description
         $maxL = MathUtility::forceIntegerInRange($this->conf['index_descrLgd'], 0, 255, 200);
         if ($maxL) {
@@ -1308,7 +1310,7 @@ class Indexer
                 $this->metaphoneContent .= ' ' . $retArr[$val]['metaphone'];
             }
             // Priority used for flagBitMask feature (see extension configuration)
-            $retArr[$val]['cmp'] = $retArr[$val]['cmp'] | pow(2, $offset);
+            $retArr[$val]['cmp'] = $retArr[$val]['cmp'] | 2 ** $offset;
             // Increase number of occurrences
             $retArr[$val]['count']++;
             $this->wordcount++;
