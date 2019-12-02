@@ -331,7 +331,9 @@ define(
 
         nodes = nodes || this.nodes;
         nodes = nodes.map(function(node, index) {
-          node = $.extend({}, _this.settings.defaultProperties, node);
+          if (typeof node.command === 'undefined') {
+            node = $.extend({}, _this.settings.defaultProperties, node);
+          }
           node.expanded = (_this.settings.expandUpToLevel !== null) ? node.depth < _this.settings.expandUpToLevel : Boolean(node.expanded);
           node.parents = [];
           node.parentsStateIdentifier = [];
