@@ -38,6 +38,8 @@ class DummyClassWithAllTypesOfProperties extends AbstractEntity
 
     public $publicPropertyWithDefaultValue = 'foo';
 
+    public static $publicStaticPropertyWithDefaultValue = 'foo';
+
     /**
      * @license
      * @copyright

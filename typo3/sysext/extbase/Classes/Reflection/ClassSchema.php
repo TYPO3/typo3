@@ -199,6 +199,10 @@ class ClassSchema
 
         foreach ($reflectionClass->getProperties() as $reflectionProperty) {
             $propertyName = $reflectionProperty->getName();
+            // according to https://www.php.net/manual/en/reflectionclass.getdefaultproperties.php
+            // > This method only works for static properties when used on internal classes. The default
+            // > value of a static class property can not be tracked when using this method on user defined classes.
+            $defaultPropertyValue = $reflectionProperty->isStatic() ? null : $defaultProperties[$propertyName] ?? null;
 
             $propertyCharacteristicsBit = 0;
             $propertyCharacteristicsBit += $reflectionProperty->isPrivate() ? PropertyCharacteristics::VISIBILITY_PRIVATE : 0;
@@ -208,7 +212,7 @@ class ClassSchema
 
             $this->properties[$propertyName] = [
                 'c' => null, // cascade
-                'd' => $defaultProperties[$propertyName] ?? null, // defaultValue
+                'd' => $defaultPropertyValue, // defaultValue
                 'e' => null, // elementType
                 't' => null, // type
                 'v' => [] // validators

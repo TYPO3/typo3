@@ -59,6 +59,7 @@ class ClassSchemaTest extends UnitTestCase
                 'protectedStaticProperty',
                 'privateStaticProperty',
                 'publicPropertyWithDefaultValue',
+                'publicStaticPropertyWithDefaultValue',
                 'propertyWithIgnoredTags',
                 'propertyWithInjectAnnotation',
                 'propertyWithTransientAnnotation',
@@ -143,6 +144,17 @@ class ClassSchemaTest extends UnitTestCase
 
         $propertyDefinition = $classSchema->getProperty('publicPropertyWithDefaultValue');
         self::assertSame('foo', $propertyDefinition->getDefaultValue());
+    }
+
+    /**
+     * @test
+     */
+    public function classSchemaSkipsDetectionOfDefaultValuesOfStaticClassProperties()
+    {
+        $classSchema = new ClassSchema(Fixture\DummyClassWithAllTypesOfProperties::class);
+
+        $propertyDefinition = $classSchema->getProperty('publicStaticPropertyWithDefaultValue');
+        self::assertNull($propertyDefinition->getDefaultValue());
     }
 
     /**
