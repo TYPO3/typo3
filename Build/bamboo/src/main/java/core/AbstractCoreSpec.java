@@ -481,7 +481,7 @@ abstract public class AbstractCoreSpec {
                                                     "        -e typo3DatabaseHost=localhost \\\n" +
                                                     "        -e typo3DatabasePort=1433 \\\n" +
                                                     "        -e typo3DatabaseCharset=utf-8 \\\n" +
-                                                    "        -e typo3DatabaseHost=mssql2017cu9 \\\n" +
+                                                    "        -e typo3DatabaseHost=mssql2017cu17 \\\n" +
                                                     "        -e typo3TestingRedisHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_redis4_1 \\\n" +
                                                     "        -e typo3TestingMemcachedHost=${BAMBOO_COMPOSE_PROJECT_NAME}sib_memcached1-5_1 \\\n" +
                                                     "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
