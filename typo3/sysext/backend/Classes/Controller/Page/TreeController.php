@@ -301,10 +301,10 @@ class TreeController
         if (!empty($page['_children'])) {
             $item['hasChildren'] = true;
         }
-        if (!empty($page['prefix'])) {
+        if (!empty($prefix)) {
             $item['prefix'] = htmlspecialchars($prefix);
         }
-        if (!empty($page['suffix'])) {
+        if (!empty($suffix)) {
             $item['suffix'] = htmlspecialchars($suffix);
         }
         if (is_array($lockInfo)) {
@@ -326,12 +326,12 @@ class TreeController
         if (!empty($class)) {
             $item['class'] = $class;
         }
-        $readableRootline = $depth === 0 && $this->showMountPathAboveMounts ? $this->getMountPointPath($pageId) : '';
-        if (!empty($readableRootline)) {
-            $item['readableRootline'] = $readableRootline;
-        }
         if ($depth === 0) {
             $item['isMountPoint'] = true;
+
+            if ($this->showMountPathAboveMounts) {
+                $item['readableRootline'] = $this->getMountPointPath($pageId);
+            }
         }
 
         $items[] = $item;
