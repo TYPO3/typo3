@@ -56,9 +56,9 @@ class ObjectConverterTest extends UnitTestCase
         $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
 
         $this->converter = new ObjectConverter();
-        $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
-        $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
-        $this->inject($this->converter, 'objectContainer', $this->mockContainer);
+        $this->converter->injectReflectionService($this->mockReflectionService);
+        $this->converter->injectObjectManager($this->mockObjectManager);
+        $this->converter->injectObjectContainer($this->mockContainer);
     }
 
     /**

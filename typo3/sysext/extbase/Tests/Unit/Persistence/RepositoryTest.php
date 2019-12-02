@@ -81,7 +81,7 @@ class RepositoryTest extends UnitTestCase
         $this->mockSession = $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Session::class);
         $this->mockConfigurationManager = $this->createMock(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
         $this->mockBackend = $this->getAccessibleMock(Backend::class, ['dummy'], [$this->mockConfigurationManager], '', false);
-        $this->inject($this->mockBackend, 'session', $this->mockSession);
+        $this->mockBackend->_set('session', $this->mockSession);
         $this->mockPersistenceManager = $this->getAccessibleMock(
             \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class,
             ['createQueryForType'],
@@ -91,11 +91,11 @@ class RepositoryTest extends UnitTestCase
                 $this->mockSession
             ]
         );
-        $this->inject($this->mockBackend, 'persistenceManager', $this->mockPersistenceManager);
+        $this->mockBackend->setPersistenceManager($this->mockPersistenceManager);
         $this->mockPersistenceManager->expects(self::any())->method('createQueryForType')->willReturn($this->mockQuery);
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->repository = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Persistence\Repository::class, ['dummy'], [$this->mockObjectManager]);
-        $this->repository->_set('persistenceManager', $this->mockPersistenceManager);
+        $this->repository->injectPersistenceManager($this->mockPersistenceManager);
     }
 
     /**
@@ -115,7 +115,7 @@ class RepositoryTest extends UnitTestCase
         $mockPersistenceManager->expects(self::once())->method('createQueryForType')->with('ExpectedType');
 
         $this->repository->_set('objectType', 'ExpectedType');
-        $this->inject($this->repository, 'persistenceManager', $mockPersistenceManager);
+        $this->repository->injectPersistenceManager($mockPersistenceManager);
 
         $this->repository->createQuery();
     }
@@ -132,7 +132,7 @@ class RepositoryTest extends UnitTestCase
         $mockPersistenceManager->expects(self::exactly(2))->method('createQueryForType')->with('ExpectedType')->willReturn($mockQuery);
 
         $this->repository->_set('objectType', 'ExpectedType');
-        $this->inject($this->repository, 'persistenceManager', $mockPersistenceManager);
+        $this->repository->injectPersistenceManager($mockPersistenceManager);
         $this->repository->setDefaultOrderings($orderings);
         $this->repository->createQuery();
 
@@ -187,7 +187,7 @@ class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::once())->method('add')->with($object);
-        $this->inject($this->repository, 'persistenceManager', $mockPersistenceManager);
+        $this->repository->injectPersistenceManager($mockPersistenceManager);
         $this->repository->_set('objectType', get_class($object));
         $this->repository->add($object);
     }
@@ -200,7 +200,7 @@ class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::once())->method('remove')->with($object);
-        $this->inject($this->repository, 'persistenceManager', $mockPersistenceManager);
+        $this->repository->injectPersistenceManager($mockPersistenceManager);
         $this->repository->_set('objectType', get_class($object));
         $this->repository->remove($object);
     }
@@ -213,7 +213,7 @@ class RepositoryTest extends UnitTestCase
         $object = new \stdClass();
         $mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
         $mockPersistenceManager->expects(self::once())->method('update')->with($object);
-        $this->inject($this->repository, 'persistenceManager', $mockPersistenceManager);
+        $this->repository->injectPersistenceManager($mockPersistenceManager);
         $this->repository->_set('objectType', get_class($object));
         $this->repository->update($object);
     }

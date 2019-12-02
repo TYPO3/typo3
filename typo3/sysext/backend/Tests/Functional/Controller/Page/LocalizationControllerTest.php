@@ -59,9 +59,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
         $this->setUpFrontendRootPage(1);
         $this->setUpFrontendSite(1, $this->siteLanguageConfiguration);
 
-        $this->subject = $this->getMockBuilder(LocalizationController::class)
-            ->setMethods(['getPageColumns'])
-            ->getMock();
+        $this->subject = $this->getAccessibleMock(LocalizationController::class, ['getPageColumns']);
     }
 
     /**
@@ -77,7 +75,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [1, 2, 3],
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
-        $this->callInaccessibleMethod($this->subject, 'process', $params);
+        $this->subject->_call('process', $params);
         $this->assertAssertionDataSet('TranslatedFromDefault');
     }
 
@@ -95,7 +93,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [4, 5, 6], // uids of tt_content-danish-language
             'action' => LocalizationController::ACTION_LOCALIZE,
         ];
-        $this->callInaccessibleMethod($this->subject, 'process', $params);
+        $this->subject->_call('process', $params);
         $this->assertAssertionDataSet('TranslatedFromTranslation');
     }
 
@@ -111,7 +109,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [1, 2, 3],
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->callInaccessibleMethod($this->subject, 'process', $params);
+        $this->subject->_call('process', $params);
         $this->assertAssertionDataSet('CopiedFromDefault');
     }
 
@@ -129,7 +127,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [4, 5, 6], // uids of tt_content-danish-language
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->callInaccessibleMethod($this->subject, 'process', $params);
+        $this->subject->_call('process', $params);
         $this->assertAssertionDataSet('CopiedFromTranslation');
     }
 
@@ -154,7 +152,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [1, 2, 3],
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->callInaccessibleMethod($this->subject, 'process', $params);
+        $this->subject->_call('process', $params);
 
         // Create another content element in default language
         $data = [
@@ -181,7 +179,7 @@ class LocalizationControllerTest extends AbstractDataHandlerActionTestCase
             'uidList' => [$newContentElementUid],
             'action' => LocalizationController::ACTION_COPY,
         ];
-        $this->callInaccessibleMethod($this->subject, 'process', $params);
+        $this->subject->_call('process', $params);
         $this->assertAssertionDataSet('CreatedElementOrdering');
     }
 

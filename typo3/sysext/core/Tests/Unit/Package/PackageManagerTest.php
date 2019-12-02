@@ -70,7 +70,7 @@ class PackageManagerTest extends UnitTestCase
         ];
 
         $this->packageManager->injectCoreCache($mockCache);
-        $this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
+        $this->packageManager->_set('composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
         $this->packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $this->packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
     }

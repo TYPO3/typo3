@@ -316,7 +316,7 @@ class JsonViewTest extends UnitTestCase
         });
 
         $jsonView = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\View\JsonView::class, ['dummy'], [], '', false);
-        $this->inject($jsonView, 'reflectionService', $reflectionService);
+        $jsonView->injectReflectionService($reflectionService);
         $actual = $jsonView->_call('transformValue', $object, $configuration);
         self::assertSame($expected, $actual);
     }

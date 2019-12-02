@@ -481,24 +481,23 @@ class ResourceStorageTest extends BaseTestCase
     public function metaDataEditIsAllowedWhenWhenInFileMount(): void
     {
         $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
-        $this->prepareSubject([], false, $driverMock, null, [], ['isWithinProcessingFolder']);
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        $this->prepareSubject([], false, $driverMock, $resourceFactory->reveal(), [], ['isWithinProcessingFolder']);
 
-        $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
         $folderStub = new Folder($this->subject, '/foo/', 'foo');
+        $resourceFactory->createFolderObject(Argument::cetera())->willReturn($folderStub);
+        $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
         $driverMock->expects(self::once())
             ->method('isWithin')
             ->with($folderStub->getIdentifier(), $fileStub->getIdentifier())
             ->willReturn(true);
 
         $this->subject->setEvaluatePermissions(true);
-        $fileMounts = [
-            '/foo/' => [
-                'path' => '/foo/',
-                'title' => 'Foo',
-                'folder' => $folderStub,
-            ]
-        ];
-        $this->inject($this->subject, 'fileMounts', $fileMounts);
+        $this->subject->addFileMount('/foo/', [
+            'path' => '/foo/',
+            'title' => 'Foo',
+            'folder' => $folderStub,
+        ]);
         self::assertTrue($this->subject->checkFileActionPermission('editMeta', $fileStub));
     }
 
@@ -508,25 +507,24 @@ class ResourceStorageTest extends BaseTestCase
     public function metaDataEditIsNotAllowedWhenWhenInReadOnlyFileMount(): void
     {
         $driverMock = $this->getMockForAbstractClass(AbstractDriver::class, [], '', false);
-        $this->prepareSubject([], false, $driverMock, null, [], ['isWithinProcessingFolder']);
+        $resourceFactory = $this->prophesize(ResourceFactory::class);
+        $this->prepareSubject([], false, $driverMock, $resourceFactory->reveal(), [], ['isWithinProcessingFolder']);
 
         $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
         $folderStub = new Folder($this->subject, '/foo/', 'foo');
+        $resourceFactory->createFolderObject(Argument::cetera())->willReturn($folderStub);
         $driverMock->expects(self::once())
             ->method('isWithin')
             ->with($folderStub->getIdentifier(), $fileStub->getIdentifier())
             ->willReturn(true);
 
         $this->subject->setEvaluatePermissions(true);
-        $fileMounts = [
-            '/foo/' => [
-                'path' => '/foo/',
-                'title' => 'Foo',
-                'folder' => $folderStub,
-                'read_only' => true,
-            ]
-        ];
-        $this->inject($this->subject, 'fileMounts', $fileMounts);
+        $this->subject->addFileMount('/foo/', [
+            'path' => '/foo/',
+            'title' => 'Foo',
+            'folder' => $folderStub,
+            'read_only' => true,
+        ]);
         self::assertFalse($this->subject->checkFileActionPermission('editMeta', $fileStub));
     }
 

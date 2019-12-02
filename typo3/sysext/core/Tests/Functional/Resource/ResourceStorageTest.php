@@ -413,7 +413,11 @@ class ResourceStorageTest extends FunctionalTestCase
             self::assertSame($expectedFiles, iterator_to_array($result));
 
             // Check if search also works for non hierarchical storages/drivers
-            $this->inject($subject, 'capabilities', $subject->getCapabilities() & 7);
+            // This is a hack, as capabilities is not settable from the outside
+            $objectReflection = new \ReflectionObject($subject);
+            $property = $objectReflection->getProperty('capabilities');
+            $property->setAccessible(true);
+            $property->setValue('capabilities', $subject->getCapabilities() & 7);
             $result = $subject->searchFiles($search, $folder);
             $expectedFiles = array_map([$subject, 'getFile'], $expectedIdentifiers);
             self::assertSame($expectedFiles, iterator_to_array($result));

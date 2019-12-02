@@ -232,11 +232,9 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
      */
     public function getWidgetConfigurationReturnsArgumentsProperty()
     {
-        $viewHelper = $this->getMockBuilder(AbstractWidgetViewHelper::class)
-            ->setMethods(['dummy'])
-            ->getMock();
+        $viewHelper = $this->getAccessibleMock(AbstractWidgetViewHelper::class, ['dummy'], [], '', false);
         $viewHelper->setArguments(['foo' => 'bar']);
-        self::assertEquals(['foo' => 'bar'], $this->callInaccessibleMethod($viewHelper, 'getWidgetConfiguration'));
+        self::assertEquals(['foo' => 'bar'], $viewHelper->_call('getWidgetConfiguration'));
     }
 
     /**

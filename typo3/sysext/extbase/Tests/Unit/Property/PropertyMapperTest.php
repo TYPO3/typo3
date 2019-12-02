@@ -341,7 +341,7 @@ class PropertyMapperTest extends UnitTestCase
     public function convertShouldAskConfigurationBuilderForDefaultConfiguration()
     {
         $propertyMapper = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Property\PropertyMapper::class, ['dummy']);
-        $this->inject($propertyMapper, 'configurationBuilder', $this->mockConfigurationBuilder);
+        $propertyMapper->injectConfigurationBuilder($this->mockConfigurationBuilder);
 
         $this->mockConfigurationBuilder->expects(self::once())->method('build')->willReturn($this->mockConfiguration);
 

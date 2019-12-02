@@ -57,7 +57,7 @@ class LinkViewHelperTest extends ViewHelperBaseTestcase
             'render'
         ])->getMock();
 
-        $this->inject($this->viewHelper, 'tag', $this->tagBuilder);
+        $this->viewHelper->setTagBuilder($this->tagBuilder);
     }
 
     /**

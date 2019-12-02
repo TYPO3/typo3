@@ -583,14 +583,9 @@ class DataHandlerTest extends UnitTestCase
      */
     public function equalSubmittedAndStoredValuesAreDetermined($expected, $submittedValue, $storedValue, $storedType, $allowNull)
     {
-        $result = $this->callInaccessibleMethod(
-            $this->subject,
-            'isSubmittedValueEqualToStoredValue',
-            $submittedValue,
-            $storedValue,
-            $storedType,
-            $allowNull
-        );
+        $result = \Closure::bind(function () use ($submittedValue, $storedValue, $storedType, $allowNull) {
+            return $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull);
+        }, $this->subject, DataHandler::class)();
         self::assertEquals($expected, $result);
     }
 

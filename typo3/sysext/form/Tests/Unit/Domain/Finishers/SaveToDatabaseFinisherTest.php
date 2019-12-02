@@ -78,7 +78,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
             ->setMethods(['process'])
             ->getMock();
-        $this->inject($saveToDatabaseFinisher, 'options', [
+        $saveToDatabaseFinisher->setOptions([
             'table' => 'tx_foo',
             'databaseColumnMappings' => [
                 'foo' => 1,
@@ -156,7 +156,7 @@ class SaveToDatabaseFinisherTest extends UnitTestCase
         $saveToDatabaseFinisher = $this->getMockBuilder(SaveToDatabaseFinisher::class)
             ->setMethods(['process'])
             ->getMock();
-        $this->inject($saveToDatabaseFinisher, 'options', [
+        $saveToDatabaseFinisher->setOptions([
             [
                 'table' => 'tx_foo',
                 'databaseColumnMappings' => [

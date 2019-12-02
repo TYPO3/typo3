@@ -65,10 +65,10 @@ class PersistentObjectConverterTest extends UnitTestCase
         parent::setUp();
         $this->converter = new PersistentObjectConverter();
         $this->mockReflectionService = $this->createMock(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class);
-        $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
+        $this->converter->injectReflectionService($this->mockReflectionService);
 
         $this->mockPersistenceManager = $this->createMock(\TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface::class);
-        $this->inject($this->converter, 'persistenceManager', $this->mockPersistenceManager);
+        $this->converter->injectPersistenceManager($this->mockPersistenceManager);
 
         $this->mockObjectManager = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class);
         $this->mockObjectManager->expects(self::any())
@@ -80,10 +80,10 @@ class PersistentObjectConverterTest extends UnitTestCase
                 }
                 return $reflectionClass->newInstanceArgs($arguments);
             });
-        $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
+        $this->converter->injectObjectManager($this->mockObjectManager);
 
         $this->mockContainer = $this->createMock(\TYPO3\CMS\Extbase\Object\Container\Container::class);
-        $this->inject($this->converter, 'objectContainer', $this->mockContainer);
+        $this->converter->injectObjectContainer($this->mockContainer);
     }
 
     /**

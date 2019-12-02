@@ -706,8 +706,10 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
         $this->expectException(ConfigurationChangedException::class);
 
         $silentConfigurationUpgradeService = new SilentConfigurationUpgradeService($configurationManager->reveal());
-
-        $this->callInaccessibleMethod($silentConfigurationUpgradeService, 'setImageMagickDetailSettings');
+        // Call protected method
+        \Closure::bind(function () {
+            return $this->setImageMagickDetailSettings();
+        }, $silentConfigurationUpgradeService, SilentConfigurationUpgradeService::class)();
     }
 
     /**

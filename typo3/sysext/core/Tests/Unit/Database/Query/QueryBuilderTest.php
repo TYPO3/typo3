@@ -1138,7 +1138,11 @@ class QueryBuilderTest extends UnitTestCase
                     ]
                 ]
             ]);
-        $result = $this->callInaccessibleMethod($this->subject, 'getQueriedTables');
+
+        // Call a protected method
+        $result = \Closure::bind(function () {
+            return $this->getQueriedTables();
+        }, $this->subject, QueryBuilder::class)();
 
         $expected = [
             'aTable' => 'aTable',
@@ -1194,8 +1198,8 @@ class QueryBuilderTest extends UnitTestCase
         $databasePlatformProphecy = $this->prophesize($platform);
         $databasePlatformProphecy->getIdentifierQuoteCharacter()->willReturn($quoteChar);
         $connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphecy);
-        $subject = GeneralUtility::makeInstance(QueryBuilder::class, $connectionProphecy->reveal());
-        $result = $this->callInaccessibleMethod($subject, 'unquoteSingleIdentifier', $input);
+        $subject = $this->getAccessibleMock(QueryBuilder::class, ['dummy'], [$connectionProphecy->reveal()]);
+        $result = $subject->_call('unquoteSingleIdentifier', $input);
         self::assertEquals($expected, $result);
     }
 

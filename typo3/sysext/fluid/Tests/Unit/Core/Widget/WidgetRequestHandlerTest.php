@@ -90,8 +90,8 @@ class WidgetRequestHandlerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $requestDispatcher->expects(self::once())->method('dispatch')->with($request);
-        $this->inject($handler, 'widgetRequestBuilder', $requestBuilder);
-        $this->inject($handler, 'dispatcher', $requestDispatcher);
+        $handler->injectWidgetRequestBuilder($requestBuilder);
+        $handler->injectDispatcher($requestDispatcher);
         $handler->handleRequest();
     }
 }

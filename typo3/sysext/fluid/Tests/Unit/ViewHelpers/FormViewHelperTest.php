@@ -106,7 +106,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
         $tagBuilder->expects(self::once())->method('addAttribute')->with('action', 'foobar');
         $viewHelper->_set('tag', $tagBuilder);
         $viewHelper->setArguments(['actionUri' => 'foobar']);
-        $this->callInaccessibleMethod($viewHelper, 'setFormActionUri');
+        $viewHelper->_call('setFormActionUri');
     }
 
     /**

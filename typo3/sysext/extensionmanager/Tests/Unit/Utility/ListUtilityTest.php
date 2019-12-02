@@ -49,7 +49,7 @@ class ListUtilityTest extends UnitTestCase
                     'news' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                     'saltedpasswords' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock(),
                 ]);
-        $this->inject($this->subject, 'packageManager', $packageManagerMock);
+        $this->subject->injectPackageManager($packageManagerMock);
     }
 
     /**
@@ -159,10 +159,10 @@ class ListUtilityTest extends UnitTestCase
      */
     public function enrichExtensionsWithEmConfInformation($extensions, $emConf, $expectedResult)
     {
-        $this->inject($this->subject, 'extensionRepository', $this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
+        $this->subject->injectExtensionRepository($this->getAccessibleMock(ExtensionRepository::class, ['findOneByExtensionKeyAndVersion', 'findHighestAvailableVersion'], [], '', false));
         $emConfUtilityMock = $this->getMockBuilder(EmConfUtility::class)->getMock();
         $emConfUtilityMock->expects(self::any())->method('includeEmConf')->willReturn($emConf);
-        $this->inject($this->subject, 'emConfUtility', $emConfUtilityMock);
+        $this->subject->injectEmConfUtility($emConfUtilityMock);
         self::assertEquals($expectedResult, $this->subject->enrichExtensionsWithEmConfAndTerInformation($extensions));
     }
 }

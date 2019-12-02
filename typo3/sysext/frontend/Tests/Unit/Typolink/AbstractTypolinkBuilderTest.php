@@ -340,12 +340,8 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         $this->frontendControllerMock->config =
             ['config' => [ 'doctype' => $doctype]];
         $renderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-        $subject = $this->getMockBuilder(AbstractTypolinkBuilder::class)
-            ->setConstructorArgs([$renderer, $this->frontendControllerMock])
-            ->setMethods(['build'])
-            ->getMock();
-        $actual = $this->callInaccessibleMethod(
-            $subject,
+        $subject = $this->getAccessibleMockForAbstractClass(AbstractTypolinkBuilder::class, [$renderer, $this->frontendControllerMock]);
+        $actual = $subject->_call(
             'resolveTargetAttribute',
             $conf,
             $name,
