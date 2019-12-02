@@ -23,8 +23,8 @@ services:
       - /var/lib/postgresql/data:rw,noexec,nosuid
     networks:
       - test
-  mssql2017cu9:
-    image: mcr.microsoft.com/mssql/server:2017-CU9-ubuntu
+  mssql2017cu17:
+    image: mcr.microsoft.com/mssql/server:2017-CU17-ubuntu
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: Test1234!
@@ -156,7 +156,7 @@ services:
   start_dependencies_functional_mssql:
     image: alpine:3.8
     links:
-      - mssql2017cu9
+      - mssql2017cu17
       - redis4
       - memcached1-5
     networks:
@@ -165,7 +165,7 @@ services:
       /bin/sh -c "
         echo Waiting for database start
         COUNT=0
-        while ! nc -z mssql2017cu9 1433; do
+        while ! nc -z mssql2017cu17 1433; do
           if [ "$${COUNT}" -ge "60" ]; then
             echo Database did not come up
             exit 1

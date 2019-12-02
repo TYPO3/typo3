@@ -405,8 +405,8 @@ case ${TEST_SUITE} in
                 ;;
             mssql)
                 [[ ! -z "$DATABASE_DRIVER" ]] && echo "Using driver: ${DATABASE_DRIVER}"
-                docker-compose run prepare_functional_mssql2017cu9
-                docker-compose run functional_mssql2017cu9
+                docker-compose run prepare_functional_mssql2017cu17
+                docker-compose run functional_mssql2017cu17
                 SUITE_EXIT_CODE=$?
                 ;;
             mssql2017latest)
