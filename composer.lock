@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47e25e6a40297cc898cbd14aa8d5c93f",
+    "content-hash": "264be898d834ad68f4bdc3345451701c",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -3262,16 +3262,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.6.7",
+            "version": "2.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "f16399308a0d161e9544d03f3e67875dca18e83c"
+                "reference": "854c3b682aa4d2899f4246276cc60ad52cd8e34e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/f16399308a0d161e9544d03f3e67875dca18e83c",
-                "reference": "f16399308a0d161e9544d03f3e67875dca18e83c",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/854c3b682aa4d2899f4246276cc60ad52cd8e34e",
+                "reference": "854c3b682aa4d2899f4246276cc60ad52cd8e34e",
                 "shasum": ""
             },
             "require": {
@@ -3297,7 +3297,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2019-11-05T13:59:42+00:00"
+            "time": "2019-12-02T06:33:10+00:00"
         },
         {
             "name": "webmozart/assert",
