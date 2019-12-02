@@ -17,8 +17,8 @@ services:
     tmpfs:
       - /var/lib/mysql/:rw,noexec,nosuid
 
-  mssql2017cu9:
-    image: mcr.microsoft.com/mssql/server:2017-CU9-ubuntu
+  mssql2017cu17:
+    image: mcr.microsoft.com/mssql/server:2017-CU17-ubuntu
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: "Test1234!"
@@ -598,10 +598,10 @@ services:
         fi
       "
 
-  prepare_functional_mssql2017cu9:
+  prepare_functional_mssql2017cu17:
     image: alpine:3.8
     links:
-      - mssql2017cu9
+      - mssql2017cu17
       - redis4
       - memcached1-5
     command: >
@@ -610,12 +610,12 @@ services:
           set -x
         fi
         echo Waiting for database start...;
-        while ! nc -z mssql2017cu9 1433; do
+        while ! nc -z mssql2017cu17 1433; do
           sleep 1;
         done;
         echo Database is up;
       "
-  functional_mssql2017cu9:
+  functional_mssql2017cu17:
     image: typo3gmbh/${DOCKER_PHP_IMAGE}:latest
     user: ${HOST_UID}
     volumes:
@@ -630,7 +630,7 @@ services:
       typo3DatabaseUsername: SA
       typo3DatabasePort: 1433
       typo3DatabaseCharset: utf-8
-      typo3DatabaseHost: mssql2017cu9
+      typo3DatabaseHost: mssql2017cu17
       typo3TestingRedisHost: redis4
       typo3TestingMemcachedHost: memcached1-5
     working_dir: ${CORE_ROOT}

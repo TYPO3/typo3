@@ -112,10 +112,10 @@ public class NightlySpec extends AbstractCoreSpec {
                 stageCodeceptionPgSqlStage,
                 stageFunctionalMySqlStage,
                 stageFunctionalMySqlPdoStage,
-                stageFunctionalMsSqlStage,
-                stageFunctionalMsSqlPdoStage,
                 stageFunctionalPgSqlStage,
-                stageFunctionalSqLiteStage
+                stageFunctionalSqLiteStage,
+                stageFunctionalMsSqlStage,
+                stageFunctionalMsSqlPdoStage
             )
             .linkedRepositories("github TYPO3 TYPO3.CMS 9.5")
             .triggers(
