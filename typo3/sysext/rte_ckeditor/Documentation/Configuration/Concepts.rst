@@ -180,6 +180,14 @@ Page TSconfig as well.
 
 .. todo: real world example usages
 
+The loading order for configuration is:
+
+#. preset defined for a specific field via PageTS
+#. richtextConfiguration defined for a specific field via TCA
+#. general preset defined via PageTS
+#. default
+
+
 For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
 
 

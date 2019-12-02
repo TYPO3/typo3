@@ -43,6 +43,8 @@ use TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper;
  *       a <f:for> loop.
  *    </f:widget.paginate>
  *
+ * The storeSession attribute can be used in any widget and will prevent cookie creation / session storage for the widget.
+ *
  * Performance characteristics
  * ===========================
  *

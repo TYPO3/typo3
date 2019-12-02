@@ -34,13 +34,15 @@ use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
  * Render lib object::
  *
  *    <input type="text" id="name" />
- *    <f:widget.autocomplete for="name" objects="{posts}" searchProperty="author">
+ *    <f:widget.autocomplete for="name" objects="{posts}" searchProperty="author" storeSession="false">
  *
  * Output::
  *
  *    <input type="text" id="name" />
  *
  * The input field and the required JavaScript for the Ajax communication.
+ * The storeSession attribute can be used in any widget
+ * and will prevent cookie creation / session storage for the widget.
  * See Resources/Private/Templates/ViewHelpers/Widget/Autocomplete/Index.html
  */
 class AutocompleteViewHelper extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetViewHelper
