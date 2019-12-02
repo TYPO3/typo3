@@ -53,7 +53,7 @@ class LanguagePackService
     private const DEFAULT_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
     private const BETA_LANGUAGE_PACK_URL = 'https://beta-translation.typo3.org/fileadmin/ter/';
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventDispatcherInterface $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::getContainer()->get(EventDispatcherInterface::class);
         $this->locales = GeneralUtility::makeInstance(Locales::class);
