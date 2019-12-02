@@ -14,7 +14,9 @@ options have been kept in TYPO3 v9 for backwards-compatibility of existing exten
 anymore.
 
 The affected options are:
+
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog']`
+
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel']`
 
 Impact

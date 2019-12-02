@@ -26,7 +26,7 @@ Affected Installations
 ======================
 
 All installations that implement subclasses of :php:`\TYPO3\CMS\Extbase\Mvc\Web\Response` and expect an instance of the
-:php:`EnvironmentService`to be injected into :php:`\TYPO3\CMS\Extbase\Mvc\Web\Response::$environmentService`.
+:php:`EnvironmentService` to be injected into :php:`\TYPO3\CMS\Extbase\Mvc\Web\Response::$environmentService`.
 
 
 Migration
