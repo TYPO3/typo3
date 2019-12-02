@@ -18,12 +18,13 @@ namespace TYPO3\CMS\FrontendLogin\Controller;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Authentication\LoginType;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 use TYPO3\CMS\FrontendLogin\Event\LoginConfirmedEvent;
 use TYPO3\CMS\FrontendLogin\Event\ModifyLoginFormViewEvent;
-use TYPO3\CMS\FrontendLogin\Helper\TreeUidListProvider;
 use TYPO3\CMS\FrontendLogin\Redirect\RedirectHandler;
 use TYPO3\CMS\FrontendLogin\Redirect\ServerRequestHandler;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
@@ -31,7 +32,7 @@ use TYPO3\CMS\FrontendLogin\Service\UserService;
 /**
  * Used for plugin login
  */
-class LoginController extends ActionController
+class LoginController extends AbstractLoginFormController
 {
     /**
      * @var string
@@ -59,11 +60,6 @@ class LoginController extends ActionController
     protected $loginType = '';
 
     /**
-     * @var TreeUidListProvider
-     */
-    protected $treeUidListProvider;
-
-    /**
      * @var ServerRequestHandler
      */
     protected $requestHandler;
@@ -83,18 +79,27 @@ class LoginController extends ActionController
      */
     protected $eventDispatcher;
 
+    /**
+     * @var UserAspect
+     */
+    protected $userAspect;
+
+    /**
+     * @var bool
+     */
+    protected $showCookieWarning = false;
+
     public function __construct(
         RedirectHandler $redirectHandler,
-        TreeUidListProvider $treeUidListProvider,
         ServerRequestHandler $requestHandler,
         UserService $userService,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->redirectHandler = $redirectHandler;
-        $this->treeUidListProvider = $treeUidListProvider;
         $this->requestHandler = $requestHandler;
         $this->userService = $userService;
         $this->eventDispatcher = $eventDispatcher;
+        $this->userAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
     }
 
     /**
@@ -103,19 +108,11 @@ class LoginController extends ActionController
     public function initializeAction(): void
     {
         $this->loginType = (string)$this->requestHandler->getPropertyFromGetAndPost('logintype');
-
-        $this->configuration = new RedirectConfiguration(
-            (string)($this->settings['redirectMode'] ?? ''),
-            (string)($this->settings['redirectFirstMethod'] ?? ''),
-            (int)($this->settings['redirectPageLogin'] ?? 0),
-            (string)($this->settings['domains'] ?? ''),
-            (int)($this->settings['redirectPageLoginError'] ?? 0),
-            (int)($this->settings['redirectPageLogout'] ?? 0)
-        );
+        $this->configuration = RedirectConfiguration::fromSettings($this->settings);
 
         if ($this->isLoginOrLogoutInProgress() && !$this->isRedirectDisabled()) {
-            if ($this->userService->cookieWarningRequired()) {
-                $this->view->assign('cookieWarning', true);
+            if (!$this->userAspect->isLoggedIn() && $this->userService->cookieWarningRequired()) {
+                $this->showCookieWarning = true;
                 return;
             }
 
@@ -141,10 +138,11 @@ class LoginController extends ActionController
 
         $this->view->assignMultiple(
             [
+                'cookieWarning' => $this->showCookieWarning,
                 'messageKey' => $this->getStatusMessageKey(),
-                'storagePid' => $this->getStoragePid(),
+                'storagePid' => implode(',', $this->getStorageFolders()),
                 'permaloginStatus' => $this->getPermaloginStatus(),
-                'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration->getModes(), $this->configuration->getPageOnLogin(), $this->isRedirectDisabled()),
+                'redirectURL' => $this->redirectHandler->getLoginFormRedirectUrl($this->configuration, $this->isRedirectDisabled()),
                 'redirectReferrer' => $this->request->hasArgument('redirectReferrer') ? (string)$this->request->getArgument('redirectReferrer'): '',
                 'referer' => $this->requestHandler->getPropertyFromGetAndPost('referer'),
                 'noRedirect' => $this->isRedirectDisabled(),
@@ -160,7 +158,7 @@ class LoginController extends ActionController
      */
     public function overviewAction(bool $showLoginMessage = false): void
     {
-        if (!$this->userService->isUserLoggedIn()) {
+        if (!$this->userAspect->isLoggedIn()) {
             $this->forward('login');
         }
 
@@ -168,6 +166,7 @@ class LoginController extends ActionController
 
         $this->view->assignMultiple(
             [
+                'cookieWarning' => $this->showCookieWarning,
                 'user' => $this->userService->getFeUserData(),
                 'showLoginMessage' => $showLoginMessage,
             ]
@@ -176,29 +175,18 @@ class LoginController extends ActionController
 
     /**
      * Show logout form
+     * @param int $redirectPageLogout
      */
     public function logoutAction(int $redirectPageLogout = 0): void
     {
         $this->view->assignMultiple(
             [
+                'cookieWarning' => $this->showCookieWarning,
                 'user' => $this->userService->getFeUserData(),
-                'storagePid' => $this->getStoragePid(),
+                'storagePid' => implode(',', $this->getStorageFolders()),
                 'noRedirect' => $this->isRedirectDisabled(),
-                'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl($this->configuration->getModes(), $redirectPageLogout, $this->isRedirectDisabled()),
+                'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl($this->configuration, $redirectPageLogout, $this->isRedirectDisabled()),
             ]
-        );
-    }
-
-    /**
-     * Returns the parsed storagePid list including recursions
-     *
-     * @return string
-     */
-    protected function getStoragePid(): string
-    {
-        return $this->treeUidListProvider->getListForIdList(
-            (string)$this->settings['pages'],
-            (int)$this->settings['recursive']
         );
     }
 
@@ -211,7 +199,7 @@ class LoginController extends ActionController
             $this->forward('overview', null, null, ['showLoginMessage' => true]);
         }
 
-        if ($this->userService->isUserLoggedIn()) {
+        if ($this->userAspect->isLoggedIn()) {
             $this->forward('logout');
         }
     }
@@ -243,7 +231,7 @@ class LoginController extends ActionController
      */
     protected function shouldRedirectToOverview(): bool
     {
-        return $this->userService->isUserLoggedIn()
+        return $this->userAspect->isLoggedIn()
                && ($this->loginType === LoginType::LOGIN)
                && !($this->settings['showLogoutFormAfterLogin'] ?? 0);
     }
@@ -256,7 +244,7 @@ class LoginController extends ActionController
     protected function getStatusMessageKey(): string
     {
         $messageKey = self::MESSAGEKEY_DEFAULT;
-        if ($this->loginType === LoginType::LOGIN && !$this->userService->isUserLoggedIn()) {
+        if ($this->loginType === LoginType::LOGIN && !$this->userAspect->isLoggedIn()) {
             $messageKey = self::MESSAGEKEY_ERROR;
         } elseif ($this->loginType === LoginType::LOGOUT) {
             $messageKey = self::MESSAGEKEY_LOGOUT;

@@ -37,52 +37,52 @@ class RecoveryConfiguration implements LoggerAwareInterface
     /**
      * @var Context
      */
-    private $context;
+    protected $context;
 
     /**
      * @var string
      */
-    private $forgotHash;
+    protected $forgotHash;
 
     /**
      * @var string
      */
-    private $htmlMailTemplatePath;
+    protected $htmlMailTemplatePath;
 
     /**
      * @var string
      */
-    private $plainMailTemplatePath;
+    protected $plainMailTemplatePath;
 
     /**
      * @var Address|null
      */
-    private $replyTo;
+    protected $replyTo;
 
     /**
      * @var Address
      */
-    private $sender;
+    protected $sender;
 
     /**
      * @var array
      */
-    private $settings;
+    protected $settings;
 
     /**
      * @var StandaloneView
      */
-    private $plainMailTemplate;
+    protected $plainMailTemplate;
 
     /**
      * @var StandaloneView
      */
-    private $htmlMailTemplate;
+    protected $htmlMailTemplate;
 
     /**
      * @var int
      */
-    private $timestamp;
+    protected $timestamp;
 
     /**
      * @param Context $context

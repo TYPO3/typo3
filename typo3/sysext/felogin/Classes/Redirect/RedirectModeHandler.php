@@ -18,7 +18,6 @@ namespace TYPO3\CMS\FrontendLogin\Redirect;
 
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
@@ -129,6 +128,7 @@ class RedirectModeHandler
     /**
      * Handle redirect mode login
      *
+     * @param int $redirectPageLogin
      * @return string
      */
     public function redirectModeLogin(int $redirectPageLogin): string
@@ -143,8 +143,8 @@ class RedirectModeHandler
     /**
      * Handle redirect mode referrer
      *
+     * @param string $redirectReferrer
      * @return string
-     * @throws NoSuchArgumentException
      */
     public function redirectModeReferrer(string $redirectReferrer): string
     {
@@ -159,8 +159,9 @@ class RedirectModeHandler
     /**
      * Handle redirect mode refererDomains
      *
+     * @param string $domains
+     * @param string $redirectReferrer
      * @return string
-     * @throws NoSuchArgumentException
      */
     public function redirectModeRefererDomains(string $domains, string $redirectReferrer): string
     {
@@ -202,6 +203,7 @@ class RedirectModeHandler
     /**
      * Handle redirect mode loginError after login-error
      *
+     * @param int $redirectPageLoginError
      * @return string
      */
     public function redirectModeLoginError(int $redirectPageLoginError = 0): string

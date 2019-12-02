@@ -16,7 +16,6 @@ namespace TYPO3\CMS\FrontendLogin\Event;
  */
 
 use Psr\EventDispatcher\StoppableEventInterface;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 
 /**
  * Event that contains information about the password which was set, and is about to be stored in the database.
@@ -36,7 +35,7 @@ final class PasswordChangeEvent implements StoppableEventInterface
     private $errorMessage;
 
     /**
-     * @var FrontendUser
+     * @var array
      */
     private $user;
 
@@ -50,14 +49,14 @@ final class PasswordChangeEvent implements StoppableEventInterface
      */
     private $rawPassword;
 
-    public function __construct(FrontendUser $user, string $newPasswordHash, string $rawNewPassword)
+    public function __construct(array $user, string $newPasswordHash, string $rawNewPassword)
     {
         $this->user = $user;
         $this->passwordHash = $newPasswordHash;
         $this->rawPassword = $rawNewPassword;
     }
 
-    public function getUser(): FrontendUser
+    public function getUser(): array
     {
         return $this->user;
     }

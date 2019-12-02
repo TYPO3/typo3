@@ -80,12 +80,6 @@ class RedirectHandlerTest extends UnitTestCase
         );
     }
 
-    protected function tearDown(): void
-    {
-        unset($GLOBALS['TSFE'], $GLOBALS['TYPO3_REQUEST']);
-        parent::tearDown();
-    }
-
     /**
      * @test
      * @dataProvider loginTypeLogoutDataProvider
@@ -125,7 +119,8 @@ class RedirectHandlerTest extends UnitTestCase
             ->getRedirectUrlRequestParam()
             ->willReturn($body['return_url'] ?? '');
 
-        self::assertEquals($expected, $this->subject->getLogoutRedirectUrl($redirectModes));
+        $configuration = RedirectConfiguration::fromSettings(['redirectMode' => $redirectModes]);
+        self::assertEquals($expected, $this->subject->getLogoutFormRedirectUrl($configuration, 13, false));
     }
 
     public function getLogoutRedirectUrlDataProvider(): Generator
@@ -166,7 +161,8 @@ class RedirectHandlerTest extends UnitTestCase
             ->redirectModeLogout(3)
             ->willReturn('https://logout.url');
 
-        self::assertEquals('https://logout.url', $this->subject->getLogoutRedirectUrl(['logout'], 3));
+        $configuration = RedirectConfiguration::fromSettings(['redirectMode' => ['logout']]);
+        self::assertEquals('https://logout.url', $this->subject->getLogoutFormRedirectUrl($configuration, 3, false));
     }
 
     protected function setUserLoggedIn(bool $userLoggedIn): void

@@ -16,7 +16,6 @@ namespace TYPO3\CMS\FrontendLogin\Tests\Functional\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserGroupRepository;
@@ -39,7 +38,6 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $context = new Context();
         $GLOBALS['TSFE'] = static::getMockBuilder(TypoScriptFrontendController::class)
             ->disableOriginalConstructor()
             ->getMock()
@@ -48,8 +46,7 @@ class FrontendUserGroupRepositoryTest extends FunctionalTestCase
         $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
 
         $this->repository = new FrontendUserGroupRepository(
-            new UserService($context),
-            $this->getConnectionPool()
+            new UserService()
         );
 
         $this->importDataSet(__DIR__ . '/../../Fixtures/fe_groups.xml');

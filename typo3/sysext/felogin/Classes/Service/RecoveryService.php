@@ -20,13 +20,13 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Configuration\IncompleteConfigurationException;
 use TYPO3\CMS\FrontendLogin\Configuration\RecoveryConfiguration;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
@@ -68,18 +68,12 @@ class RecoveryService implements RecoveryServiceInterface
     protected $userRepository;
 
     /**
-     * @var LanguageService
-     */
-    protected $languageService;
-
-    /**
      * @param Mailer $mailer
      * @param EventDispatcherInterface $eventDispatcher
      * @param ConfigurationManager $configurationManager
      * @param RecoveryConfiguration $recoveryConfiguration
      * @param UriBuilder $uriBuilder
      * @param FrontendUserRepository $userRepository
-     * @param LanguageService $languageService
      * @throws InvalidConfigurationTypeException
      */
     public function __construct(
@@ -88,8 +82,7 @@ class RecoveryService implements RecoveryServiceInterface
         ConfigurationManager $configurationManager,
         RecoveryConfiguration $recoveryConfiguration,
         UriBuilder $uriBuilder,
-        FrontendUserRepository $userRepository,
-        LanguageService $languageService
+        FrontendUserRepository $userRepository
     ) {
         $this->mailer = $mailer;
         $this->eventDispatcher = $eventDispatcher;
@@ -97,7 +90,6 @@ class RecoveryService implements RecoveryServiceInterface
         $this->recoveryConfiguration = $recoveryConfiguration;
         $this->uriBuilder = $uriBuilder;
         $this->userRepository = $userRepository;
-        $this->languageService = $languageService;
     }
 
     /**
@@ -112,7 +104,7 @@ class RecoveryService implements RecoveryServiceInterface
     public function sendRecoveryEmail(string $emailAddress): void
     {
         $hash = $this->recoveryConfiguration->getForgotHash();
-        $this->userRepository->updateForgotHashForUserByEmail($emailAddress, $hash);
+        $this->userRepository->updateForgotHashForUserByEmail($emailAddress, GeneralUtility::hmac($hash));
         $userInformation = $this->userRepository->fetchUserInformationByEmail($emailAddress);
         $receiver = new Address($emailAddress, $this->getReceiverName($userInformation));
         $email = $this->prepareMail($receiver, $hash);
@@ -171,7 +163,7 @@ class RecoveryService implements RecoveryServiceInterface
         $plainMailTemplate = $this->recoveryConfiguration->getPlainMailTemplate();
         $plainMailTemplate->assignMultiple($variables);
 
-        $subject = $this->languageService->sL('LLL:EXT:felogin/Resources/Private/Language/locallang.xlf:password_recovery_mail_header');
+        $subject = $this->getEmailSubject();
         $mail = GeneralUtility::makeInstance(MailMessage::class);
         $mail
             ->subject($subject)
@@ -191,5 +183,10 @@ class RecoveryService implements RecoveryServiceInterface
         }
 
         return $mail;
+    }
+
+    protected function getEmailSubject(): string
+    {
+        return LocalizationUtility::translate('password_recovery_mail_header', 'felogin');
     }
 }

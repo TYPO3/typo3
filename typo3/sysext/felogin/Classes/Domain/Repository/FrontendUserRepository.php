@@ -20,6 +20,7 @@ use Doctrine\DBAL\FetchMode;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 
 /**
@@ -30,29 +31,24 @@ class FrontendUserRepository
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var Context
      */
-    private $context;
+    protected $context;
 
     /**
      * @var UserService
      */
-    private $userService;
+    protected $userService;
 
-    /**
-     * @param ConnectionPool $connectionPool
-     * @param Context $context
-     */
     public function __construct(
         UserService $userService,
-        ConnectionPool $connectionPool,
         Context $context
     ) {
         $this->userService = $userService;
-        $this->connection = $connectionPool->getConnectionForTable($this->getTable());
+        $this->connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTable());
         $this->context = $context;
     }
 
@@ -65,17 +61,17 @@ class FrontendUserRepository
      * Change the password for a user based on forgot password hash.
      *
      * @param string $forgotPasswordHash The hash of the feUser that should be resolved.
-     * @param string $password The new password.
+     * @param string $hashedPassword The new password.
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    public function updatePasswordAndInvalidateHash(string $forgotPasswordHash, string $password): void
+    public function updatePasswordAndInvalidateHash(string $forgotPasswordHash, string $hashedPassword): void
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
         $currentTimestamp = $this->context->getPropertyFromAspect('date', 'timestamp');
         $query = $queryBuilder
             ->update($this->getTable())
-            ->set('password', $password)
+            ->set('password', $hashedPassword)
             ->set('felogin_forgotHash', $this->connection->quote(''), false)
             ->set('tstamp', $currentTimestamp)
             ->where(

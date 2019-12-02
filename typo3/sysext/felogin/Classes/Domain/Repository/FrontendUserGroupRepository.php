@@ -18,6 +18,7 @@ namespace TYPO3\CMS\FrontendLogin\Domain\Repository;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\FrontendLogin\Service\UserService;
 
 /**
@@ -28,21 +29,17 @@ class FrontendUserGroupRepository
     /**
      * @var Connection
      */
-    private $connection;
+    protected $connection;
 
     /**
      * @var string
      */
-    private $table;
+    protected $table;
 
-    /**
-     * @param UserService $userService
-     * @param ConnectionPool $connectionPool
-     */
-    public function __construct(UserService $userService, ConnectionPool $connectionPool)
+    public function __construct(UserService $userService)
     {
         $this->table = $userService->getFeUserGroupTable();
-        $this->connection = $connectionPool->getConnectionForTable($this->getTable());
+        $this->connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->getTable());
     }
 
     public function getTable(): string

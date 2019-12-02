@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  *
  * @internal this is a TYPO3 hook implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-final class CmsLayout implements PageLayoutViewDrawItemHookInterface
+class CmsLayout implements PageLayoutViewDrawItemHookInterface
 {
     /**
      * Preprocesses the preview rendering of a content element.

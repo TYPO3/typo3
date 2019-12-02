@@ -21,16 +21,17 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Felogin\Updates\MigrateFeloginPlugins;
 use TYPO3\CMS\Install\Updates\RepeatableInterface;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableInterface
+class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableInterface
 {
-    private const CTYPE_PIBASE = 'login';
-    private const CTYPE_EXTBASE = 'felogin_login';
+    protected const CTYPE_PIBASE = 'login';
+    protected const CTYPE_EXTBASE = 'felogin_login';
 
     /**
      * Return the identifier for this wizard
@@ -146,7 +147,7 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
      *
      * @return string
      */
-    private function getOldCType(): string
+    protected function getOldCType(): string
     {
         return $this->isExtbaseFeatureEnabled() ? self::CTYPE_PIBASE : self::CTYPE_EXTBASE;
     }
@@ -156,7 +157,7 @@ final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, Repeat
      *
      * @return string
      */
-    private function getNewCType(): string
+    protected function getNewCType(): string
     {
         return $this->isExtbaseFeatureEnabled() ? self::CTYPE_EXTBASE : self::CTYPE_PIBASE;
     }

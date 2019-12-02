@@ -23,41 +23,41 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-final class RedirectConfiguration
+class RedirectConfiguration
 {
     /**
      * @var array
      */
-    private $modes;
+    protected $modes;
 
     /**
      * @var string
      */
-    private $firstMode;
+    protected $firstMode;
 
     /**
      * @var int
      */
-    private $pageOnLogin;
+    protected $pageOnLogin;
 
     /**
      * @var string
      */
-    private $domains;
+    protected $domains;
 
     /**
      * @var int
      */
-    private $pageOnLoginError;
+    protected $pageOnLoginError;
 
     /**
      * @var int
      */
-    private $pageOnLogout;
+    protected $pageOnLogout;
 
-    public function __construct(string $mode, string $firstMode, int $pageOnLogin, string $domains, int $pageOnLoginError, int $pageOnLogout)
+    public function __construct($mode, string $firstMode, int $pageOnLogin, string $domains, int $pageOnLoginError, int $pageOnLogout)
     {
-        $this->modes = GeneralUtility::trimExplode(',', $mode ?? '', true);
+        $this->modes = is_array($mode) ? $mode : GeneralUtility::trimExplode(',', $mode ?? '', true);
         $this->firstMode = $firstMode;
         $this->pageOnLogin = $pageOnLogin;
         $this->domains = $domains;
@@ -65,51 +65,51 @@ final class RedirectConfiguration
         $this->pageOnLogout = $pageOnLogout;
     }
 
-    /**
-     * @return array
-     */
     public function getModes(): array
     {
         return $this->modes;
     }
 
-    /**
-     * @return string
-     */
     public function getFirstMode(): string
     {
         return $this->firstMode;
     }
 
-    /**
-     * @return int
-     */
     public function getPageOnLogin(): int
     {
         return $this->pageOnLogin;
     }
 
-    /**
-     * @return string
-     */
     public function getDomains(): string
     {
         return $this->domains;
     }
 
-    /**
-     * @return int
-     */
     public function getPageOnLoginError(): int
     {
         return $this->pageOnLoginError;
     }
 
-    /**
-     * @return int
-     */
     public function getPageOnLogout(): int
     {
         return $this->pageOnLogout;
+    }
+
+    /**
+     * Factory when creating a configuration out of Extbase / plugin settings.
+     *
+     * @param array $settings
+     * @return static
+     */
+    public static function fromSettings(array $settings): self
+    {
+        return new RedirectConfiguration(
+            ($settings['redirectMode'] ?? ''),
+            (string)($settings['redirectFirstMethod'] ?? ''),
+            (int)($settings['redirectPageLogin'] ?? 0),
+            (string)($settings['domains'] ?? ''),
+            (int)($settings['redirectPageLoginError'] ?? 0),
+            (int)($settings['redirectPageLogout'] ?? 0)
+        );
     }
 }

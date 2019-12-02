@@ -22,26 +22,21 @@ use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Model\FrontendUser;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\FrontendLogin\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\FrontendLogin\Event\PasswordChangeEvent;
-use TYPO3\CMS\FrontendLogin\Helper\TreeUidListProvider;
 use TYPO3\CMS\FrontendLogin\Service\RecoveryServiceInterface;
 use TYPO3\CMS\FrontendLogin\Service\ValidatorResolverService;
 
 /**
- * Class PasswordRecoveryController
- *
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class PasswordRecoveryController extends ActionController
+class PasswordRecoveryController extends AbstractLoginFormController
 {
     /**
      * @var RecoveryServiceInterface
@@ -82,15 +77,9 @@ class PasswordRecoveryController extends ActionController
             return;
         }
 
-        $storageProvider = $this->getTreeListUidProvider();
-        $storageList = $storageProvider->getListForIdList(
-            (string)$this->settings['pages'],
-            (int)$this->settings['recursive']
-        );
-
         $email = $this->userRepository->findEmailByUsernameOrEmailOnPages(
             $userIdentifier,
-            GeneralUtility::intExplode(',', $storageList, true)
+            $this->getStorageFolders()
         );
 
         if ($email) {
@@ -105,13 +94,8 @@ class PasswordRecoveryController extends ActionController
     /**
      * Validate hash and make sure it's not expired. If it is not in the correct format or not set at all, a redirect
      * to recoveryAction() is made, without further information.
-     *
-     * @throws AspectNotFoundException
-     * @throws NoSuchArgumentException
-     * @throws StopActionException
-     * @throws UnsupportedRequestTypeException
      */
-    public function initializeShowChangePasswordAction(): void
+    protected function validateIfHashHasExpired()
     {
         $hash = $this->request->hasArgument('hash') ? $this->request->getArgument('hash') : '';
 
@@ -123,12 +107,25 @@ class PasswordRecoveryController extends ActionController
         $currentTimestamp = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('date', 'timestamp');
 
         // timestamp is expired or hash can not be assigned to a user
-        if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash($hash)) {
+        if ($currentTimestamp > $timestamp || !$this->userRepository->existsUserWithHash(GeneralUtility::hmac($hash))) {
             $result = $this->request->getOriginalRequestMappingResults();
             $result->addError(new Error($this->getTranslation('change_password_notvalid_message'), 1554994253));
             $this->request->setOriginalRequestMappingResults($result);
             $this->forward('recovery', 'PasswordRecovery', 'felogin');
         }
+    }
+
+    /**
+     * Validate hash and make sure it's not expired. If it is not in the correct format or not set at all, a redirect
+     * to recoveryAction() is made, without further information.
+     *
+     * @throws AspectNotFoundException
+     * @throws StopActionException
+     * @throws UnsupportedRequestTypeException
+     */
+    public function initializeShowChangePasswordAction(): void
+    {
+        $this->validateIfHashHasExpired();
     }
 
     /**
@@ -152,6 +149,9 @@ class PasswordRecoveryController extends ActionController
      */
     public function initializeChangePasswordAction(): void
     {
+        // Re-validate the lifetime of the hash again (just as showChangePassword action)
+        $this->validateIfHashHasExpired();
+
         // Exit early if newPass or newPassRepeat is not set.
         $originalResult = $this->request->getOriginalRequestMappingResults();
         $argumentsExist = $this->request->hasArgument('newPass') && $this->request->hasArgument('newPassRepeat');
@@ -198,12 +198,12 @@ class PasswordRecoveryController extends ActionController
      */
     public function changePasswordAction(string $newPass, string $hash): void
     {
-        $passwordHash = GeneralUtility::makeInstance(PasswordHashFactory::class)
+        $hashedPassword = GeneralUtility::makeInstance(PasswordHashFactory::class)
             ->getDefaultHashInstance('FE')
             ->getHashedPassword($newPass);
 
-        $passwordHash = $this->notifyPasswordChange($newPass, $passwordHash, $hash);
-        $this->userRepository->updatePasswordAndInvalidateHash($hash, $passwordHash);
+        $hashedPassword = $this->notifyPasswordChange($newPass, $hashedPassword, $hash);
+        $this->userRepository->updatePasswordAndInvalidateHash(GeneralUtility::hmac($hash), $hashedPassword);
 
         $this->addFlashMessage($this->getTranslation('change_password_done_message'));
 
@@ -262,14 +262,6 @@ class PasswordRecoveryController extends ActionController
         return !empty($hash) && is_string($hash) && strpos($hash, '|') === 10;
     }
 
-    protected function getTreeListUidProvider(): TreeUidListProvider
-    {
-        return GeneralUtility::makeInstance(
-            TreeUidListProvider::class,
-            $this->configurationManager->getContentObject()
-        );
-    }
-
     /**
      * @param string $newPassword Unencrypted new password
      * @param string $hashedPassword New password hash passed as reference
@@ -279,14 +271,28 @@ class PasswordRecoveryController extends ActionController
      */
     protected function notifyPasswordChange(string $newPassword, string $hashedPassword, string $hash): string
     {
-        /** @var FrontendUser $user */
-        $user = $this->userRepository->findOneByForgotPasswordHash($hash);
-        $event = new PasswordChangeEvent($user, $hashedPassword, $newPassword);
-        if ($event->isPropagationStopped()) {
-            $requestResult = $this->request->getOriginalRequestMappingResults();
-            $requestResult->addError(new Error($event->getErrorMessage(), 1562846833));
-            $this->request->setOriginalRequestMappingResults($requestResult);
+        $user = $this->userRepository->findOneByForgotPasswordHash(GeneralUtility::hmac($hash));
+        if (is_array($user)) {
+            $event = new PasswordChangeEvent($user, $hashedPassword, $newPassword);
+            $this->eventDispatcher->dispatch($event);
+            $hashedPassword = $event->getHashedPassword();
+            if ($event->isPropagationStopped()) {
+                $requestResult = $this->request->getOriginalRequestMappingResults();
+                $requestResult->addError(new Error($event->getErrorMessage(), 1562846833));
+                $this->request->setOriginalRequestMappingResults($requestResult);
 
+                $this->forward(
+                    'showChangePassword',
+                    'PasswordRecovery',
+                    'felogin',
+                    ['hash' => $hash]
+                );
+            }
+        } else {
+            // No user found
+            $requestResult = $this->request->getOriginalRequestMappingResults();
+            $requestResult->addError(new Error('Invalid hash', 1562846832));
+            $this->request->setOriginalRequestMappingResults($requestResult);
             $this->forward(
                 'showChangePassword',
                 'PasswordRecovery',

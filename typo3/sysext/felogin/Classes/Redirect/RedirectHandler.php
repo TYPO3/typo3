@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration;
 
 /**
- * Do felogin related redirects
+ * Resolve felogin related redirects based on the current login type and the selected configuration (redirect mode)
  *
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
@@ -42,11 +42,6 @@ class RedirectHandler
      */
     protected $redirectModeHandler;
 
-    /**
-     * @var Context
-     */
-    protected $context;
-
     public function __construct(
         ServerRequestHandler $requestHandler,
         RedirectModeHandler $redirectModeHandler,
@@ -54,20 +49,19 @@ class RedirectHandler
     ) {
         $this->requestHandler = $requestHandler;
         $this->redirectModeHandler = $redirectModeHandler;
-        $this->context = $context;
-        $this->userIsLoggedIn = (bool)$this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+        $this->userIsLoggedIn = (bool)$context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 
     /**
      * Process redirect modes. The function searches for a redirect url using all configured modes.
      *
-     * @param $loginType
-     * @param \TYPO3\CMS\FrontendLogin\Configuration\RedirectConfiguration $configuration
+     * @param string $loginType
+     * @param RedirectConfiguration $configuration
      * @param string $redirectModeReferrer
      * @return string Redirect URL
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
-    public function processRedirect($loginType, RedirectConfiguration $configuration, string $redirectModeReferrer = ''): string
+    public function processRedirect(string $loginType, RedirectConfiguration $configuration, string $redirectModeReferrer): string
     {
         if ($this->isUserLoginFailedAndLoginErrorActive($configuration->getModes(), $loginType)) {
             return $this->redirectModeHandler->redirectModeLoginError($configuration->getPageOnLoginError());
@@ -98,15 +92,12 @@ class RedirectHandler
      * @param int $redirectPageLogout
      * @return string
      */
-    public function getLogoutRedirectUrl(array $redirectModes, int $redirectPageLogout = 0): string
+    protected function getLogoutRedirectUrl(array $redirectModes, int $redirectPageLogout = 0): string
     {
         if ($this->userIsLoggedIn && $this->isRedirectModeActive($redirectModes, RedirectMode::LOGOUT)) {
-            $redirectUrl = $this->redirectModeHandler->redirectModeLogout($redirectPageLogout);
-        } else {
-            $redirectUrl = $this->getGetpostRedirectUrl($redirectModes);
+            return $this->redirectModeHandler->redirectModeLogout($redirectPageLogout);
         }
-
-        return $redirectUrl;
+        return $this->getGetpostRedirectUrl($redirectModes);
     }
 
     /**
@@ -119,12 +110,9 @@ class RedirectHandler
     protected function getLoginRedirectUrl(array $redirectModes, int $redirectPageLogin): string
     {
         if ($this->isRedirectModeActive($redirectModes, RedirectMode::LOGIN)) {
-            $redirectUrl = $this->redirectModeHandler->redirectModeLogin($redirectPageLogin);
-        } else {
-            $redirectUrl = $this->getGetpostRedirectUrl($redirectModes);
+            return $this->redirectModeHandler->redirectModeLogin($redirectPageLogin);
         }
-
-        return $redirectUrl;
+        return $this->getGetpostRedirectUrl($redirectModes);
     }
 
     /**
@@ -149,12 +137,10 @@ class RedirectHandler
      */
     protected function handleSuccessfulLogout(string $redirectMode, int $redirectPageLogout): string
     {
-        $redirectUrl = '';
         if ($redirectMode === RedirectMode::LOGOUT) {
-            $redirectUrl = $this->redirectModeHandler->redirectModeLogout($redirectPageLogout);
+            return $this->redirectModeHandler->redirectModeLogout($redirectPageLogout);
         }
-
-        return $redirectUrl;
+        return '';
     }
 
     /**
@@ -224,7 +210,7 @@ class RedirectHandler
     protected function isUserLoginFailedAndLoginErrorActive(array $redirectModes, string $loginType): bool
     {
         return $loginType === LoginType::LOGIN
-            && $this->userIsLoggedIn === false
+            && !$this->userIsLoggedIn
             && $this->isRedirectModeActive($redirectModes, RedirectMode::LOGIN_ERROR);
     }
 
@@ -235,7 +221,7 @@ class RedirectHandler
      * @param array $redirectModes
      * @return bool
      */
-    public function isRedirectModeActive(array $redirectModes, string $mode): bool
+    protected function isRedirectModeActive(array $redirectModes, string $mode): bool
     {
         return in_array($mode, $redirectModes, true);
     }
@@ -243,38 +229,31 @@ class RedirectHandler
     /**
      * Returns the redirect Url that should be used in login form
      *
+     * @param RedirectConfiguration $configuration
      * @param bool $redirectDisabled
-     * @param array $redirectModes
-     * @param int $redirectPageLogin
      * @return string
      */
-    public function getLoginFormRedirectUrl(array $redirectModes, int $redirectPageLogin, bool $redirectDisabled = false): string
+    public function getLoginFormRedirectUrl(RedirectConfiguration $configuration, bool $redirectDisabled): string
     {
         if (!$redirectDisabled) {
-            $redirectUrl = $this->getLoginRedirectUrl($redirectModes, $redirectPageLogin);
-        } else {
-            $redirectUrl = $this->requestHandler->getRedirectUrlRequestParam();
+            return $this->getLoginRedirectUrl($configuration->getModes(), $configuration->getPageOnLogin());
         }
-
-        return $redirectUrl;
+        return $this->requestHandler->getRedirectUrlRequestParam();
     }
 
     /**
      * Returns the redirect Url that should be used in logout form
      *
-     * @param array $redirectModes
+     * @param RedirectConfiguration $configuration
      * @param int $redirectPageLogout
      * @param bool $redirectDisabled
      * @return string
      */
-    public function getLogoutFormRedirectUrl(array $redirectModes, int $redirectPageLogout = 0, bool $redirectDisabled = false): string
+    public function getLogoutFormRedirectUrl(RedirectConfiguration $configuration, int $redirectPageLogout, bool $redirectDisabled): string
     {
         if (!$redirectDisabled) {
-            $redirectUrl = $this->getLogoutRedirectUrl($redirectModes, $redirectPageLogout);
-        } else {
-            $redirectUrl = $this->requestHandler->getRedirectUrlRequestParam();
+            return $this->getLogoutRedirectUrl($configuration->getModes(), $redirectPageLogout);
         }
-
-        return $redirectUrl;
+        return $this->requestHandler->getRedirectUrlRequestParam();
     }
 }

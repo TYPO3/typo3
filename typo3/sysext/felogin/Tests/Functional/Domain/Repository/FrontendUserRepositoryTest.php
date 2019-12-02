@@ -48,8 +48,7 @@ class FrontendUserRepositoryTest extends FunctionalTestCase
         $GLOBALS['TSFE']->fe_user = new FrontendUserAuthentication();
 
         $this->repository = new FrontendUserRepository(
-            new UserService($context),
-            $this->getConnectionPool(),
+            new UserService(),
             $context
         );
 

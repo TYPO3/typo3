@@ -16,7 +16,6 @@ namespace TYPO3\CMS\FrontendLogin\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
@@ -25,29 +24,13 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 class UserService
 {
     /**
-     * @var bool
-     */
-    protected $userLoggedIn = false;
-
-    /**
      * @var FrontendUserAuthentication
      */
     protected $feUser;
 
-    public function __construct(Context $context)
+    public function __construct()
     {
-        $this->userLoggedIn = $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
         $this->feUser = $GLOBALS['TSFE']->fe_user;
-    }
-
-    /**
-     * Check if the user is logged in
-     *
-     * @return bool
-     */
-    public function isUserLoggedIn(): bool
-    {
-        return $this->userLoggedIn;
     }
 
     /**
@@ -67,7 +50,7 @@ class UserService
      */
     public function cookieWarningRequired(): bool
     {
-        return $this->userLoggedIn && !$this->feUser->isCookieSet();
+        return !$this->feUser->isCookieSet();
     }
 
     public function getFeUserGroupData(): array

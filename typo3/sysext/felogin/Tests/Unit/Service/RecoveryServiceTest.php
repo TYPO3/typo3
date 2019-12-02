@@ -119,23 +119,25 @@ class RecoveryServiceTest extends UnitTestCase
         )->willReturn('some uri');
 
         $mailer = $this->prophesize(Mailer::class);
+        $mailer->send($expectedMail)->shouldBeCalledOnce();
 
         GeneralUtility::addInstance(MailMessage::class, new MailMessage());
 
         $eventDispatcherProphecy = $this->prophesize(EventDispatcherInterface::class);
-        $subject = new RecoveryService(
-            $mailer->reveal(),
-            $eventDispatcherProphecy->reveal(),
-            $configurationManager->reveal(),
-            $this->recoveryConfiguration->reveal(),
-            $uriBuilder->reveal(),
-            $this->userRepository->reveal(),
-            $languageService->reveal()
-        );
-
+        $subject = $this->getMockBuilder(RecoveryService::class)
+            ->onlyMethods(['getEmailSubject'])
+            ->setConstructorArgs(
+                [
+                $mailer->reveal(),
+                $eventDispatcherProphecy->reveal(),
+                $configurationManager->reveal(),
+                $this->recoveryConfiguration->reveal(),
+                $uriBuilder->reveal(),
+                $this->userRepository->reveal()
+            ]
+            )->getMock();
+        $subject->method('getEmailSubject')->willReturn('translation');
         $subject->sendRecoveryEmail($emailAddress);
-
-        $mailer->send($expectedMail)->shouldHaveBeenCalledOnce();
     }
 
     public function configurationDataProvider(): Generator
@@ -233,7 +235,7 @@ class RecoveryServiceTest extends UnitTestCase
         $this->recoveryConfiguration->hasHtmlMailTemplate()->willReturn($recoveryConfiguration['hasHtmlMailTemplate']);
         $this->recoveryConfiguration->getReplyTo()->willReturn($recoveryConfiguration['replyTo']);
 
-        $this->userRepository->updateForgotHashForUserByEmail($emailAddress, $recoveryConfiguration['forgotHash'])
+        $this->userRepository->updateForgotHashForUserByEmail($emailAddress, GeneralUtility::hmac($recoveryConfiguration['forgotHash']))
             ->shouldBeCalledOnce();
         $this->userRepository->fetchUserInformationByEmail($emailAddress)
             ->willReturn($userInformation);
