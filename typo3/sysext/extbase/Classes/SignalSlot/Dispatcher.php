@@ -26,7 +26,6 @@ use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\UsernamePasswordLoginProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Beuser\Controller\BackendUserController;
 use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent;
 use TYPO3\CMS\Core\Database\Event\AlterTableDefinitionStatementsEvent;
@@ -87,18 +86,6 @@ use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Impexp\Event\BeforeImportEvent;
-use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
-use TYPO3\CMS\Install\Service\Event\ModifyLanguagePackRemoteBaseUrlEvent;
-use TYPO3\CMS\Linkvalidator\Event\BeforeRecordIsAnalyzedEvent;
-use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
-use TYPO3\CMS\Seo\Canonical\CanonicalGenerator;
-use TYPO3\CMS\Seo\Event\ModifyUrlForCanonicalTagEvent;
-use TYPO3\CMS\Workspaces\Event\AfterCompiledCacheableDataForWorkspaceEvent;
-use TYPO3\CMS\Workspaces\Event\AfterDataGeneratedForWorkspaceEvent;
-use TYPO3\CMS\Workspaces\Event\GetVersionedDataEvent;
-use TYPO3\CMS\Workspaces\Event\SortVersionedDataEvent;
-use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
@@ -195,9 +182,6 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         DatabaseTreeDataProvider::class => [
             'PostProcessTreeData' => ModifyTreeDataEvent::class,
         ],
-        BackendUserController::class => [
-            'switchUser' => SwitchUserEvent::class
-        ],
         BackendUtility::class => [
             'getPagesTSconfigPreInclude' => ModifyLoadedPageTsConfigEvent::class
         ],
@@ -212,23 +196,29 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         UsernamePasswordLoginProvider::class => [
             'getPageRenderer' => ModifyPageLayoutOnLoginProviderSelectionEvent::class
         ],
+        // Strings are used here on purpose for all non-required system extensions. Do not change to
+        // Fqn::class *unless* you also declare each and every extension whose classes are listed
+        // here as explicit and mandatory dependencies of EXT:extbase.
+        'TYPO3\\CMS\\Beuser\\Controller\\BackendUserController' => [
+            'switchUser' => SwitchUserEvent::class
+        ],
         'TYPO3\\CMS\\Lang\\Service\\TranslationService' => [
-            'postProcessMirrorUrl' => ModifyLanguagePackRemoteBaseUrlEvent::class
+            'postProcessMirrorUrl' => 'TYPO3\\CMS\\Install\\Service\\Event\\ModifyLanguagePackRemoteBaseUrlEvent'
         ],
-        LinkAnalyzer::class => [
-            'beforeAnalyzeRecord' => BeforeRecordIsAnalyzedEvent::class
+        'TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer' => [
+            'beforeAnalyzeRecord' => 'TYPO3\\CMS\\Linkvalidator\\Event\\BeforeRecordIsAnalyzedEvent'
         ],
-        ImportExportUtility::class => [
-            'afterImportExportInitialisation' => BeforeImportEvent::class
+        'TYPO3\\CMS\\Impexp\\Utility\\ImportExportUtility' => [
+            'afterImportExportInitialisation' => 'TYPO3\\CMS\\Impexp\\Event\\BeforeImportEvent'
         ],
-        CanonicalGenerator::class => [
-            'beforeGeneratingCanonical' => ModifyUrlForCanonicalTagEvent::class
+        'TYPO3\\CMS\\Seo\\Canonical\\CanonicalGenerator' => [
+            'beforeGeneratingCanonical' => 'TYPO3\\CMS\\Seo\\Event\\ModifyUrlForCanonicalTagEvent'
         ],
-        GridDataService::class => [
-            GridDataService::SIGNAL_GenerateDataArray_BeforeCaching => AfterCompiledCacheableDataForWorkspaceEvent::class,
-            GridDataService::SIGNAL_GenerateDataArray_PostProcesss => AfterDataGeneratedForWorkspaceEvent::class,
-            GridDataService::SIGNAL_GetDataArray_PostProcesss => GetVersionedDataEvent::class,
-            GridDataService::SIGNAL_SortDataArray_PostProcesss => SortVersionedDataEvent::class,
+        'TYPO3\\CMS\\Workspaces\\Service\\GridDataService' => [
+            'generateDataArray.beforeCaching' => 'TYPO3\\CMS\\Workspaces\\Event\\AfterCompiledCacheableDataForWorkspaceEvent',
+            'generateDataArray.postProcess' => 'TYPO3\\CMS\\Workspaces\\Event\\AfterDataGeneratedForWorkspaceEvent',
+            'getDataArray.postProcess' => 'TYPO3\\CMS\\Workspaces\\Event\\GetVersionedDataEvent',
+            'sortDataArray.postProcess' => 'TYPO3\\CMS\\Workspaces\\Event\\SortVersionedDataEvent',
         ]
     ];
 
