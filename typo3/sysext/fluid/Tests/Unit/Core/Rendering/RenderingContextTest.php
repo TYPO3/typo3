@@ -37,7 +37,7 @@ class RenderingContextTest extends UnitTestCase
     {
         parent::setUp();
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -48,7 +48,7 @@ class RenderingContextTest extends UnitTestCase
     public function setControllerContextWithSubpackageKeySetsExpectedControllerContext()
     {
         $renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['setControllerAction', 'setControllerName'])
+            ->onlyMethods(['setControllerAction', 'setControllerName'])
             ->disableOriginalConstructor()
             ->getMock();
         $request = $this->getMockBuilder(Request::class)
@@ -106,7 +106,7 @@ class RenderingContextTest extends UnitTestCase
     public function setControllerActionProcessesInputCorrectly($input, $expected)
     {
         $subject = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['dummy'])
+            ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
         $request = $this->getMockBuilder(Request::class)->setMethods(['setControllerActionName'])->getMock();

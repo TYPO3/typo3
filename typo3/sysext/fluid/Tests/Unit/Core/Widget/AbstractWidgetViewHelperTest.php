@@ -95,7 +95,7 @@ class AbstractWidgetViewHelperTest extends UnitTestCase
         $this->controllerContext = $this->createMock(ControllerContext::class);
         $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request);
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['getControllerContext'])
+            ->onlyMethods(['getControllerContext'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);

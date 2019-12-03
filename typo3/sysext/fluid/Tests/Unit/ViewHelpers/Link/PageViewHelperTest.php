@@ -62,7 +62,7 @@ class PageViewHelperTest extends ViewHelperBaseTestcase
         $this->controllerContext->expects(self::any())->method('getRequest')->willReturn($this->request->reveal());
         $this->arguments = [];
         $this->renderingContext = $this->getMockBuilder(RenderingContext::class)
-            ->setMethods(['getControllerContext'])
+            ->onlyMethods(['getControllerContext'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->renderingContext->expects(self::any())->method('getControllerContext')->willReturn($this->controllerContext);
