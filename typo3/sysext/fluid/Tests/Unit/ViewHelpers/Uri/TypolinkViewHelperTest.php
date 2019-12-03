@@ -68,6 +68,31 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
                 '&a=b',
                 '42 - - - &a=b',
             ],
+            't3:// with class' => [
+                't3://url?url=https://example.org?param=1&other=dude - css-class',
+                '',
+                't3://url?url=https://example.org?param=1&other=dude - css-class',
+            ],
+            't3:// with title' => [
+                't3://url?url=https://example.org?param=1&other=dude - - "a link title"',
+                '',
+                't3://url?url=https://example.org?param=1&other=dude - - "a link title"',
+            ],
+            't3:// with title and parameters' => [
+                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y',
+                '',
+                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y',
+            ],
+            't3:// with title and extended parameters' => [
+                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y',
+                '&a=b',
+                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y&a=b',
+            ],
+            't3:// and overwrite' => [
+                't3://url?url=https://example.org?param=1&other=dude',
+                '&a=b',
+                't3://url?url=https://example.org?param=1&other=dude - - - &a=b',
+            ],
         ];
     }
 
