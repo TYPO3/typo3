@@ -49,7 +49,7 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
     Stage getMainStage() {
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
-        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(0, phpVersions[2], this.getTaskComposerInstall(phpVersions[2]), isSecurity));
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(0, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
         jobsMainStage.add(this.getJobAcceptanceTestInstallSqlite(0, phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
@@ -60,7 +60,7 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
 
         jobsMainStage.add(this.getJobIntegrationVarious(phpVersions[0], this.getTaskComposerInstall(phpVersions[0]), isSecurity));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, numberOfFunctionalMysqlJobs, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysqlWithDriverMySqli(0, numberOfFunctionalMysqlJobs, phpVersions[2], this.getTaskComposerInstall(phpVersions[2]), isSecurity));
         // mssql functionals are not executed as pre-merge
         // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(0, this.numberOfFunctionalMssqlJobs, "PHP72", this.getTaskComposerInstall("PHP72"), false));
         jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(0, numberOfFunctionalPgsqlJobs, phpVersions[1], this.getTaskComposerInstall(phpVersions[1]), isSecurity));
