@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
+use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
 use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
@@ -60,9 +62,9 @@ class DataMapper
     protected $objectManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var EventDispatcherInterface
      */
-    protected $signalSlotDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @var ?QueryInterface
@@ -77,7 +79,7 @@ class DataMapper
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param QueryInterface|null $query
      */
     public function __construct(
@@ -87,7 +89,7 @@ class DataMapper
         \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory,
         \TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface $queryFactory,
         \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         ?QueryInterface $query = null
     ) {
         $this->query = $query;
@@ -97,7 +99,7 @@ class DataMapper
         $this->dataMapFactory = $dataMapFactory;
         $this->queryFactory = $queryFactory;
         $this->objectManager = $objectManager;
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
 
         if ($query !== null) {
             trigger_error(
@@ -170,7 +172,8 @@ class DataMapper
             $object = $this->createEmptyObject($className);
             $this->persistenceSession->registerObject($object, $row['uid']);
             $this->thawProperties($object, $row);
-            $this->emitAfterMappingSingleRow($object);
+            $event = new AfterObjectThawedEvent($object, $row);
+            $this->eventDispatcher->dispatch($event);
             $object->_memorizeCleanState();
             $this->persistenceSession->registerReconstitutedEntity($object);
         }
@@ -178,21 +181,11 @@ class DataMapper
     }
 
     /**
-     * Emits a signal after mapping a single row.
-     *
-     * @param DomainObjectInterface $object The mapped object
-     */
-    protected function emitAfterMappingSingleRow(DomainObjectInterface $object)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterMappingSingleRow', [$object]);
-    }
-
-    /**
      * Creates a skeleton of the specified object
      *
      * @param string $className Name of the class to create a skeleton for
      * @throws CannotReconstituteObjectException
-     * @return object The object skeleton
+     * @return DomainObjectInterface The object skeleton
      */
     protected function createEmptyObject($className)
     {

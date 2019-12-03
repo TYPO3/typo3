@@ -14,11 +14,13 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\ReferringRequest;
@@ -82,6 +84,11 @@ class ActionController implements ControllerInterface
     protected $mvcPropertyMappingConfigurationService;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * The current request.
      *
      * @var \TYPO3\CMS\Extbase\Mvc\Request
@@ -125,6 +132,11 @@ class ActionController implements ControllerInterface
     public function injectMvcPropertyMappingConfigurationService(\TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService $mvcPropertyMappingConfigurationService)
     {
         $this->mvcPropertyMappingConfigurationService = $mvcPropertyMappingConfigurationService;
+    }
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -321,7 +333,7 @@ class ActionController implements ControllerInterface
         }
         $validationResult = $this->arguments->validate();
         if (!$validationResult->hasErrors()) {
-            $this->emitBeforeCallActionMethodSignal($preparedArguments);
+            $this->eventDispatcher->dispatch(new BeforeActionCallEvent(static::class, $this->actionMethodName, $preparedArguments));
             $actionResult = $this->{$this->actionMethodName}(...$preparedArguments);
         } else {
             $actionResult = $this->{$this->errorMethodName}();
@@ -343,6 +355,10 @@ class ActionController implements ControllerInterface
      */
     protected function emitBeforeCallActionMethodSignal(array $preparedArguments)
     {
+        trigger_error(
+            __METHOD__ . ' is deprecated and will be removed in version 11.0 - use PSR-14 events instead.',
+            E_USER_DEPRECATED
+        );
         $this->signalSlotDispatcher->dispatch(__CLASS__, 'beforeCallActionMethod', [static::class, $this->actionMethodName, $preparedArguments]);
     }
 

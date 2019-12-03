@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
@@ -50,7 +51,7 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class),
-                $this->createMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class),
+                $this->createMock(EventDispatcherInterface::class),
             ])
             ->setMethods(['mapSingleRow', 'getTargetType'])
             ->getMock();
@@ -86,7 +87,7 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class),
-                $this->createMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class),
+                $this->createMock(EventDispatcherInterface::class),
             ]
         );
 
@@ -142,7 +143,7 @@ class DataMapperTest extends UnitTestCase
                 $dataMapFactory,
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class),
-                $this->createMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class),
+                $this->createMock(EventDispatcherInterface::class),
             ]
         );
         $dataMapper->_call('thawProperties', $object, $row);
@@ -278,7 +279,7 @@ class DataMapperTest extends UnitTestCase
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Persistence\Generic\QueryFactoryInterface::class),
                 $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface::class),
-                $this->createMock(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class),
+                $this->createMock(EventDispatcherInterface::class),
             ]
         );
         $dataMapper->expects(self::any())->method('getDataMap')->willReturn($dataMap);

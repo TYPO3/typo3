@@ -39,3 +39,47 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['extbase']
+
+  # Listener for old Signal Slots
+  TYPO3\CMS\Extbase\Compatibility\SlotReplacement:
+    tags:
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'afterRequestDispatched'
+        event: TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'beforeCallActionMethod'
+        event: TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'afterDataMappedForObject'
+        event: TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitBeforeGettingObjectDataSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterGettingObjectDataSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitEndInsertObjectSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityFinalizedAfterPersistenceEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterInsertObjectSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityAddedToPersistenceEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterUpdateObjectSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterRemoveObjectSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterPersistObjectSignal'
+        event: TYPO3\CMS\Extbase\Event\Persistence\EntityPersistedEvent

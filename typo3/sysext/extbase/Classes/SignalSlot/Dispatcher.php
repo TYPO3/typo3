@@ -85,7 +85,20 @@ use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
 use TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
+use TYPO3\CMS\Extbase\Event\Mvc\BeforeActionCallEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\AfterObjectThawedEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\EntityAddedToPersistenceEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\EntityFinalizedAfterPersistenceEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\EntityPersistedEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
@@ -195,6 +208,24 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         ],
         UsernamePasswordLoginProvider::class => [
             'getPageRenderer' => ModifyPageLayoutOnLoginProviderSelectionEvent::class
+        ],
+        \TYPO3\CMS\Extbase\Mvc\Dispatcher::class => [
+          'afterRequestDispatch' => AfterRequestDispatchedEvent::class
+        ],
+        ActionController::class => [
+            'beforeCallActionMethod' => BeforeActionCallEvent::class
+        ],
+        DataMapper::class => [
+            'afterMappingSingleRow' => AfterObjectThawedEvent::class
+        ],
+        Backend::class => [
+            'beforeGettingObjectData' => ModifyQueryBeforeFetchingObjectDataEvent::class,
+            'afterGettingObjectData' => ModifyResultAfterFetchingObjectDataEvent::class,
+            'endInsertObject' => EntityFinalizedAfterPersistenceEvent::class,
+            'afterInsertObject' => EntityAddedToPersistenceEvent::class,
+            'afterUpdateObject' => EntityUpdatedInPersistenceEvent::class,
+            'afterPersistObject' => EntityPersistedEvent::class,
+            'afterRemoveObject' => EntityRemovedFromPersistenceEvent::class
         ],
         // Strings are used here on purpose for all non-required system extensions. Do not change to
         // Fqn::class *unless* you also declare each and every extension whose classes are listed

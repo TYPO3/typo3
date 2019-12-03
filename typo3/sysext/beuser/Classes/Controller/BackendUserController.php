@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Beuser\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -62,11 +61,6 @@ class BackendUserController extends ActionController
     protected $backendUserSessionRepository;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
      * @param \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService
      */
     public function injectModuleDataStorageService(\TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService)
@@ -96,11 +90,6 @@ class BackendUserController extends ActionController
     public function injectBackendUserSessionRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository $backendUserSessionRepository)
     {
         $this->backendUserSessionRepository = $backendUserSessionRepository;
-    }
-
-    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

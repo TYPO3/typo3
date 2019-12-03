@@ -4399,4 +4399,11 @@ return [
             'Important-90020-LegacyBasicFileUtilityAndExtendedFileUtilityClassesMarkedAsInternal.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Mvc\Controller\ActionController->emitBeforeCallActionMethodSignal' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-89870-NewPSR-14EventsForExtbase-relatedSignals.rst',
+        ],
+    ]
 ];

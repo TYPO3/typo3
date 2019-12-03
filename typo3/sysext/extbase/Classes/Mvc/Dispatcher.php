@@ -1,10 +1,6 @@
 <?php
 namespace TYPO3\CMS\Extbase\Mvc;
 
-use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
-
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,12 +14,18 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher as SignalSlotDispatcher;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Event\Mvc\AfterRequestDispatchedEvent;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+
 /**
  * Dispatches requests to the controller which was specified by the request and
  * returns the response the controller generated.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
+class Dispatcher implements SingletonInterface
 {
     /**
      * @var ObjectManagerInterface A reference to the object manager
@@ -36,9 +38,9 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
     private $container;
 
     /**
-     * @var SignalSlotDispatcher
+     * @var EventDispatcherInterface
      */
-    protected $signalSlotDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @var array
@@ -50,61 +52,51 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param ObjectManagerInterface $objectManager A reference to the object manager
      * @param ContainerInterface $container
-     * @param SignalSlotDispatcher $signalSlotDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
         ContainerInterface $container,
-        SignalSlotDispatcher $signalSlotDispatcher
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;
         $this->container = $container;
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * Dispatches a request to a controller and initializes the security framework.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
-     * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, to be modified by the controller
+     * @param RequestInterface $request The request to dispatch
+     * @param ResponseInterface $response The response, to be modified by the controller
      * @throws Exception\InfiniteLoopException
      */
-    public function dispatch(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
+    public function dispatch(RequestInterface $request, ResponseInterface $response)
     {
         $dispatchLoopCount = 0;
         while (!$request->isDispatched()) {
             if ($dispatchLoopCount++ > 99) {
-                throw new \TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @' . \TYPO3\CMS\Extbase\Annotation\IgnoreValidation::class . ' annotation is missing on re-displaying a form with validation errors.', 1217839467);
+                throw new Exception\InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @' . \TYPO3\CMS\Extbase\Annotation\IgnoreValidation::class . ' annotation is missing on re-displaying a form with validation errors.', 1217839467);
             }
             $controller = $this->resolveController($request);
             try {
                 $controller->processRequest($request, $response);
-            } catch (\TYPO3\CMS\Extbase\Mvc\Exception\StopActionException $ignoredException) {
+            } catch (Exception\StopActionException $ignoredException) {
             }
         }
-        $this->emitAfterRequestDispatchSignal($request, $response);
-    }
 
-    /**
-     * Emits a signal after a request was dispatched
-     *
-     * @param RequestInterface $request
-     * @param ResponseInterface $response
-     */
-    protected function emitAfterRequestDispatchSignal(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRequestDispatch', [$request, $response]);
+        $this->eventDispatcher->dispatch(new AfterRequestDispatchedEvent($request, $response));
     }
 
     /**
      * Finds and instantiates a controller that matches the current request.
      * If no controller can be found, an instance of NotFoundControllerInterface is returned.
      *
-     * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
+     * @param RequestInterface $request The request to dispatch
+     * @return Controller\ControllerInterface
      * @throws Exception\InvalidControllerException
-     * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
      */
-    protected function resolveController(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request)
+    protected function resolveController(RequestInterface $request)
     {
         $controllerObjectName = $request->getControllerObjectName();
         if ($this->container->has($controllerObjectName)) {
@@ -112,8 +104,8 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
         } else {
             $controller = $this->objectManager->get($controllerObjectName);
         }
-        if (!$controller instanceof \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface) {
-            throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException(
+        if (!$controller instanceof Controller\ControllerInterface) {
+            throw new Exception\InvalidControllerException(
                 'Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.',
                 1476109646
             );
