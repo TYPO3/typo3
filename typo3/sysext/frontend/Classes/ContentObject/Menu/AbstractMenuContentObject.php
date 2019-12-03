@@ -675,8 +675,8 @@ abstract class AbstractMenuContentObject
                 $id = $mount_info['mount_pid'];
             }
             // Get sub-pages:
-            $statement = $this->parent_cObj->exec_getQuery('pages', ['pidInList' => $id, 'orderBy' => $sortingField]);
-            while ($row = $statement->fetch()) {
+            $rows = $this->sys_page->getMenu($id, '*', $sortingField);
+            foreach ($rows as $row) {
                 $tsfe->sys_page->versionOL('pages', $row, true);
                 if (!empty($row)) {
                     // Keep mount point?
