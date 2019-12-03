@@ -32,7 +32,7 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
     private static int numberOfFunctionalSqliteJobs = 10;
     private static int numberOfUnitRandomOrderJobs = 1;
 
-    private String[] phpVersions = {"PHP72", "PHP73"};
+    private String[] phpVersions = {"PHP72", "PHP73", "PHP74"};
 
     /**
      * override in concrete class in function createPlan. If not security repo related, set to false
