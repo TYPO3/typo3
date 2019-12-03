@@ -48,6 +48,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     {
         return [
             'middlewares' => [ static::class, 'configureMiddlewares' ],
+            'backend.routes' => [ static::class, 'configureBackendRoutes' ],
         ];
     }
 
@@ -68,6 +69,38 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         }
 
         return $middlewares;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param ArrayObject $middlewares
+     * @param string $path supplied when invoked internally through PseudoServiceProvider
+     * @return ArrayObject
+     */
+    public static function configureBackendRoutes(ContainerInterface $container, ArrayObject $routes, string $path = null): ArrayObject
+    {
+        $path = $path ?? static::getPackagePath();
+        $routesFileNameForPackage = $path . 'Configuration/Backend/Routes.php';
+        if (file_exists($routesFileNameForPackage)) {
+            $definedRoutesInPackage = require $routesFileNameForPackage;
+            if (is_array($definedRoutesInPackage)) {
+                $routes->exchangeArray(array_merge($routes->getArrayCopy(), $definedRoutesInPackage));
+            }
+        }
+        $routesFileNameForPackage = $path . 'Configuration/Backend/AjaxRoutes.php';
+        if (file_exists($routesFileNameForPackage)) {
+            $definedRoutesInPackage = require $routesFileNameForPackage;
+            if (is_array($definedRoutesInPackage)) {
+                foreach ($definedRoutesInPackage as $routeIdentifier => $routeOptions) {
+                    // prefix the route with "ajax_" as "namespace"
+                    $routeOptions['path'] = '/ajax' . $routeOptions['path'];
+                    $routes['ajax_' . $routeIdentifier] = $routeOptions;
+                    $routes['ajax_' . $routeIdentifier]['ajax'] = true;
+                }
+            }
+        }
+
+        return $routes;
     }
 
     /**

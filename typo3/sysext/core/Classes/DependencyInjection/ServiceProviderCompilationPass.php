@@ -128,7 +128,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
             }
         }
 
-        $className = $this->getReturnType($this->getReflection($callable), $serviceName);
+        $className = $this->getReturnType($this->getReflection($callable), $serviceName) ?? 'object';
         $factoryDefinition->setClass($className);
         $factoryDefinition->setPublic(true);
 
@@ -160,7 +160,8 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
         $innerName = null;
 
         $reflection = $this->getReflection($callable);
-        $className = $this->getReturnType($reflection, $serviceName);
+        $previousClass = $container->has($serviceName) ? $container->findDefinition($serviceName)->getClass() : null;
+        $className = $this->getReturnType($reflection, $serviceName) ?? $previousClass ?? 'object';
 
         $factoryDefinition = new Definition($className);
         $factoryDefinition->setClass($className);
@@ -216,15 +217,19 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
     /**
      * @param \ReflectionFunctionAbstract $reflection
      * @param string $serviceName
-     * @return string
+     * @return string|null
      */
-    private function getReturnType(\ReflectionFunctionAbstract $reflection, string $serviceName): string
+    private function getReturnType(\ReflectionFunctionAbstract $reflection, string $serviceName): ?string
     {
         if ($reflection->getReturnType() instanceof \ReflectionNamedType) {
             return $reflection->getReturnType()->getName();
         }
 
-        return $serviceName;
+        if (class_exists($serviceName, true) || interface_exists($serviceName, true)) {
+            return $serviceName;
+        }
+
+        return null;
     }
 
     /**

@@ -72,7 +72,6 @@ class CommandApplication implements ApplicationInterface
         $input = new ArgvInput();
         $output = new ConsoleOutput();
 
-        Bootstrap::initializeBackendRouter();
         Bootstrap::loadExtTables();
         // create the BE_USER object (not logged in yet)
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);

@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
@@ -538,55 +537,12 @@ class Bootstrap
      * Loads all routes registered inside all packages and stores them inside the Router
      *
      * @internal This is not a public API method, do not use in own extensions
+     * @deprecated this does not do anything anymore, as TYPO3's dependency injection already loads the routes on demand.
      */
     public static function initializeBackendRouter()
     {
-        // See if the Routes.php from all active packages have been built together already
-        $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutesFromPackages');
-
-        /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
-        $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('core');
-        $routesFromPackages = [];
-        if ($codeCache->has($cacheIdentifier)) {
-            // substr is necessary, because the php frontend wraps php code around the cache value
-            $routesFromPackages = unserialize(substr($codeCache->get($cacheIdentifier), 6, -2));
-        } else {
-            // Loop over all packages and check for a Configuration/Backend/Routes.php file
-            $packageManager = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Package\PackageManager::class);
-            $packages = $packageManager->getActivePackages();
-            foreach ($packages as $package) {
-                $routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/Routes.php';
-                if (file_exists($routesFileNameForPackage)) {
-                    $definedRoutesInPackage = require $routesFileNameForPackage;
-                    if (is_array($definedRoutesInPackage)) {
-                        $routesFromPackages = array_merge($routesFromPackages, $definedRoutesInPackage);
-                    }
-                }
-                $routesFileNameForPackage = $package->getPackagePath() . 'Configuration/Backend/AjaxRoutes.php';
-                if (file_exists($routesFileNameForPackage)) {
-                    $definedRoutesInPackage = require $routesFileNameForPackage;
-                    if (is_array($definedRoutesInPackage)) {
-                        foreach ($definedRoutesInPackage as $routeIdentifier => $routeOptions) {
-                            // prefix the route with "ajax_" as "namespace"
-                            $routeOptions['path'] = '/ajax' . $routeOptions['path'];
-                            $routesFromPackages['ajax_' . $routeIdentifier] = $routeOptions;
-                            $routesFromPackages['ajax_' . $routeIdentifier]['ajax'] = true;
-                        }
-                    }
-                }
-            }
-            // Store the data from all packages in the cache
-            $codeCache->set($cacheIdentifier, serialize($routesFromPackages));
-        }
-
-        // Build Route objects from the data
-        $router = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Router::class);
-        foreach ($routesFromPackages as $name => $options) {
-            $path = $options['path'];
-            unset($options['path']);
-            $route = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\Route::class, $path, $options);
-            $router->addRoute($name, $route);
-        }
+        // TODO: Once typo3/testing-framework is adapted, this code can be dropped / deprecated. As DI is already
+        // loading all routes on demand, this method is not needed anymore.
     }
 
     /**

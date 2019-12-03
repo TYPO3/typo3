@@ -22,8 +22,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 
 /**
- * Initializes the Backend Router and also loads ext_tables.php from all extensions, as this is the place
- * where all modules register their routes to the router afterwards.
+ * Loads ext_tables.php from all extensions, as this is the place
+ * where all modules register their routes to the router
+ * (additionally to those routes which are loaded in dependency
+ * inejction factories from Configuration/Backend/{,Ajax}Routes.php).
  *
  * The route path is added to the request as attribute "routePath".
  *
@@ -43,7 +45,8 @@ class BackendRouteInitialization implements MiddlewareInterface
         // Allow the login page to be displayed if routing is not used and on index.php
         $pathToRoute = $request->getQueryParams()['route'] ?? $request->getParsedBody()['route'] ?? '/login';
 
-        Bootstrap::initializeBackendRouter();
+        // Backend Routes from Configuration/Backend/{,Ajax}Routes.php will be implicitly loaded thanks to DI.
+        // Load ext_tables.php files to add routes from ExtensionManagementUtility::addModule() calls.
         Bootstrap::loadExtTables();
 
         // Add the route path to the request

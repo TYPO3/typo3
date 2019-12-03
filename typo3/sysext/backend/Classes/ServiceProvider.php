@@ -20,9 +20,11 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 
 /**
@@ -42,7 +44,15 @@ class ServiceProvider extends AbstractServiceProvider
             Http\RequestHandler::class => [ static::class, 'getRequestHandler' ],
             Http\RouteDispatcher::class => [ static::class, 'getRouteDispatcher' ],
             'backend.middlewares' => [ static::class, 'getBackendMiddlewares' ],
+            'backend.routes' => [ static::class, 'getBackendRoutes' ],
         ];
+    }
+
+    public function getExtensions(): array
+    {
+        return [
+            Routing\Router::class => [ static::class, 'configureBackendRouter' ],
+        ] + parent::getExtensions();
     }
 
     public static function getApplication(ContainerInterface $container): Http\Application
@@ -78,5 +88,33 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getBackendMiddlewares(ContainerInterface $container): ArrayObject
     {
         return new ArrayObject($container->get(MiddlewareStackResolver::class)->resolve('backend'));
+    }
+
+    public static function configureBackendRouter(ContainerInterface $container, Routing\Router $router = null): Routing\Router
+    {
+        $router = $router ?? self::new($container, Routing\Router::class);
+        $cache = $container->get('cache.core');
+
+        $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');
+        if ($cache->has($cacheIdentifier)) {
+            $routesFromPackages = $cache->require($cacheIdentifier);
+        } else {
+            $routesFromPackages = $container->get('backend.routes')->getArrayCopy();
+            $cache->set($cacheIdentifier, 'return ' . var_export($routesFromPackages, true) . ';');
+        }
+
+        foreach ($routesFromPackages as $name => $options) {
+            $path = $options['path'];
+            unset($options['path']);
+            $route = new Routing\Route($path, $options);
+            $router->addRoute($name, $route);
+        }
+
+        return $router;
+    }
+
+    public static function getBackendRoutes(ContainerInterface $container): ArrayObject
+    {
+        return new ArrayObject();
     }
 }

@@ -61,7 +61,6 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
             $GLOBALS['BE_USER']->setWorkspace($GLOBALS['BE_USER']->user['workspace_id']);
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
             $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
-            Bootstrap::initializeBackendRouter();
             Bootstrap::loadExtTables();
         }
 
