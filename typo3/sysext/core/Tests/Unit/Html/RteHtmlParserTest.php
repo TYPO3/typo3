@@ -659,8 +659,7 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function anchorCorrectlyTransformedOnWayToDatabase($content, $expectedResult)
     {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
     }
@@ -698,8 +697,7 @@ class RteHtmlParserTest extends UnitTestCase
      */
     public function anchorCorrectlyTransformedOnWayToDatabaseAndBackToRTE($content, $expectedResult)
     {
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $subject = new RteHtmlParser($eventDispatcher);
+        $subject = new RteHtmlParser();
         $thisConfig = ['proc.' => $this->procOptions];
         self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
     }

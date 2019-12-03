@@ -53,7 +53,7 @@ class TcaInlineExpandCollapseState implements FormDataProviderInterface
                 $result['inlineExpandCollapseStateArray'] = $inlineStateForTable;
             } else {
                 // Default case for a single record
-                $fullInlineState = unserialize($this->getBackendUser()->uc['inlineView']);
+                $fullInlineState = !empty($this->getBackendUser()->uc['inlineView']) ? unserialize($this->getBackendUser()->uc['inlineView']) : [];
                 if (!is_array($fullInlineState)) {
                     $fullInlineState = [];
                 }

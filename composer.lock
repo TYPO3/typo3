@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4afa869b949b1ca9d0b9bb7bcfad65ca",
+    "content-hash": "cc9ced94e88e28ca2f3348680eb2b75a",
     "packages": [
         {
             "name": "algo26-matthias/idna-convert",
@@ -2357,16 +2357,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.6.6",
+            "version": "2.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "e87f24a7ae005c911a78b9c1445c09d2bdfb8b54"
+                "reference": "854c3b682aa4d2899f4246276cc60ad52cd8e34e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/e87f24a7ae005c911a78b9c1445c09d2bdfb8b54",
-                "reference": "e87f24a7ae005c911a78b9c1445c09d2bdfb8b54",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/854c3b682aa4d2899f4246276cc60ad52cd8e34e",
+                "reference": "854c3b682aa4d2899f4246276cc60ad52cd8e34e",
                 "shasum": ""
             },
             "require": {
@@ -2392,7 +2392,7 @@
                 "LGPL-3.0-or-later"
             ],
             "description": "The TYPO3 Fluid template rendering engine",
-            "time": "2019-10-30T11:25:42+00:00"
+            "time": "2019-12-02T06:33:10+00:00"
         }
     ],
     "packages-dev": [
@@ -3247,23 +3247,23 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.5",
+            "version": "v1.6.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
+                "reference": "231c73783ebb7dd9ec77916c10037eff5a2b6efe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
-                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/231c73783ebb7dd9ec77916c10037eff5a2b6efe",
+                "reference": "231c73783ebb7dd9ec77916c10037eff5a2b6efe",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.5"
+                "phpunit/phpunit": "^4.5|^5.0"
             },
             "type": "library",
             "extra": {
@@ -3289,7 +3289,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2017-08-01T08:02:14+00:00"
+            "time": "2019-10-30T15:31:00+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5323,20 +5323,20 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "4.12.0",
+            "version": "4.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "ff84f2b78ee28be3d7b3cd2f63a87de059c5abeb"
+                "reference": "3284898ad044772384f3de71d7abc995e0f5356c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/ff84f2b78ee28be3d7b3cd2f63a87de059c5abeb",
-                "reference": "ff84f2b78ee28be3d7b3cd2f63a87de059c5abeb",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/3284898ad044772384f3de71d7abc995e0f5356c",
+                "reference": "3284898ad044772384f3de71d7abc995e0f5356c",
                 "shasum": ""
             },
             "require": {
-                "mikey179/vfsstream": "~1.6.0",
+                "mikey179/vfsstream": "~1.6.8",
                 "phpunit/phpunit": "^7.5.6",
                 "typo3/cms-backend": "^9.3",
                 "typo3/cms-core": "^9.3",
@@ -5362,14 +5362,14 @@
             ],
             "authors": [
                 {
-                    "name": "The TYPO3 Community",
-                    "homepage": "https://typo3.org/community/",
-                    "role": "Contributor"
-                },
-                {
                     "name": "TYPO3 CMS Core Team",
                     "homepage": "https://forge.typo3.org/projects/typo3cms-core",
                     "role": "Developer"
+                },
+                {
+                    "name": "The TYPO3 Community",
+                    "homepage": "https://typo3.org/community/",
+                    "role": "Contributor"
                 }
             ],
             "description": "The TYPO3 testing framework provides base classes for unit, functional and acceptance testing.",
@@ -5379,7 +5379,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-03-01T16:58:17+00:00"
+            "time": "2019-12-04T21:38:02+00:00"
         },
         {
             "name": "webmozart/assert",
