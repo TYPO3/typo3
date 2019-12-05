@@ -51,13 +51,10 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
     {
         parent::setUp();
         $this->createMockedLoggerAndLogManager();
-        $this->frontendControllerMock = $this->getAccessibleMock(
-            TypoScriptFrontendController::class,
-            ['dummy'],
-            [],
-            '',
-            false
-        );
+        $this->frontendControllerMock = $this
+            ->getMockBuilder(TypoScriptFrontendController::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     //////////////////////

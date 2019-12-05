@@ -26,20 +26,20 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class AddonRegistryTest extends UnitTestCase
 {
     /**
-     * @var AddonRegistry|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var AddonRegistry
      */
     protected $subject;
 
     protected function setUp(): void
     {
-        $this->subject = $this->getAccessibleMock(AddonRegistry::class, ['dummy'], [], '', false);
+        $this->subject = new AddonRegistry();
         $this->registerAddons();
     }
 
     /**
      * Register addons for tests
      */
-    protected function registerAddons()
+    protected function registerAddons(): void
     {
         $this->subject
             ->register(GeneralUtility::makeInstance(Addon::class, 'addon/global'))
@@ -72,7 +72,7 @@ class AddonRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function globalAddonsGetReturned()
+    public function globalAddonsGetReturned(): void
     {
         $expected = [
             'addon/global',
@@ -92,7 +92,7 @@ class AddonRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function globalAndModeAddonsGetReturned()
+    public function globalAndModeAddonsGetReturned(): void
     {
         $expected = [
             'addon/global',
@@ -113,7 +113,7 @@ class AddonRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function settingsAreProperlyCompiled()
+    public function settingsAreProperlyCompiled(): void
     {
         $expected = [
             'foobar' => false,

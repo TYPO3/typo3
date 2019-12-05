@@ -13,6 +13,9 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -22,33 +25,31 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class DownloadQueueTest extends UnitTestCase
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
+     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue
      */
-    protected $downloadQueueMock;
+    protected $downloadQueue;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Extensionmanager\Domain\Model\Extension
+     * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension
      */
-    protected $extensionMock;
+    protected $extension;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->downloadQueueMock = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue::class, ['dummy']);
-        $this->extensionMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-        $this->extensionMock->setExtensionKey('foobar');
-        $this->extensionMock->setVersion('1.0.0');
+        $this->downloadQueue = new DownloadQueue();
+        $this->extension = new Extension();
+        $this->extension->setExtensionKey('foobar');
+        $this->extension->setVersion('1.0.0');
     }
 
     /**
      * @test
      */
-    public function addExtensionToQueueAddsExtensionToDownloadStorageArray()
+    public function addExtensionToQueueAddsExtensionToDownloadStorageArray(): void
     {
-        $this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
-        $extensionStorage = $this->downloadQueueMock->_get('extensionStorage');
+        $this->downloadQueue->addExtensionToQueue($this->extension);
+        $extensionStorage = $this->downloadQueue->getExtensionQueue();
 
         self::assertArrayHasKey('foobar', $extensionStorage['download']);
     }
@@ -56,10 +57,10 @@ class DownloadQueueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addExtensionToQueueAddsExtensionToUpdateStorageArray()
+    public function addExtensionToQueueAddsExtensionToUpdateStorageArray(): void
     {
-        $this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'update');
-        $extensionStorage = $this->downloadQueueMock->_get('extensionStorage');
+        $this->downloadQueue->addExtensionToQueue($this->extension, 'update');
+        $extensionStorage = $this->downloadQueue->getExtensionQueue();
 
         self::assertArrayHasKey('foobar', $extensionStorage['update']);
     }
@@ -67,51 +68,44 @@ class DownloadQueueTest extends UnitTestCase
     /**
      * @test
      */
-    public function addExtensionToQueueThrowsExceptionIfUnknownStackIsGiven()
+    public function addExtensionToQueueThrowsExceptionIfUnknownStackIsGiven(): void
     {
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1342432103);
-        $this->downloadQueueMock->addExtensionToQueue($this->extensionMock, 'unknownStack');
+        $this->downloadQueue->addExtensionToQueue($this->extension, 'unknownStack');
     }
 
     /**
      * @test
      */
-    public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists()
+    public function addExtensionToQueueThrowsExceptionIfExtensionWithSameKeyAndDifferentValuesAlreadyExists(): void
     {
-        /** @var \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extensionMock2 */
-        $extensionMock2 = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-        $extensionMock2->setExtensionKey('foobar');
-        $extensionMock2->setVersion('1.0.3');
+        $extension = new Extension();
+        $extension->setExtensionKey('foobar');
+        $extension->setVersion('1.0.3');
 
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1342432101);
-        $this->downloadQueueMock->addExtensionToQueue($extensionMock2);
-        $this->downloadQueueMock->addExtensionToQueue($this->extensionMock);
+        $this->downloadQueue->addExtensionToQueue($extension);
+        $this->downloadQueue->addExtensionToQueue($this->extension);
     }
 
     /**
      * @test
      */
-    public function removeExtensionFromQueueRemovesExtension()
+    public function removeExtensionFromQueueRemovesExtension(): void
     {
-        $extensionMock2 = $this->getAccessibleMock(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class, ['dummy']);
-        $extensionMock2->_set('extensionKey', 'foobarbaz');
-        $extensionMock2->_set('version', '1.0.3');
-        $this->downloadQueueMock->_set('extensionStorage', [
-            'download' => [
-                'foobar' => $this->extensionMock,
-                'foobarbaz' => $extensionMock2
-            ]
-        ]);
-        $extensionStorageBefore = $this->downloadQueueMock->_get('extensionStorage');
+        $extension = new Extension();
+        $extension->setExtensionKey('foobarbaz');
+        $extension->setVersion('1.0.3');
+        $this->downloadQueue->addExtensionToQueue($this->extension);
+        $this->downloadQueue->addExtensionToQueue($extension);
+        $extensionStorageBefore = $this->downloadQueue->getExtensionQueue();
 
         self::assertTrue(array_key_exists('foobar', $extensionStorageBefore['download']));
 
-        $this->downloadQueueMock->removeExtensionFromQueue($this->extensionMock);
-        $extensionStorageAfter = $this->downloadQueueMock->_get('extensionStorage');
+        $this->downloadQueue->removeExtensionFromQueue($this->extension);
+        $extensionStorageAfter = $this->downloadQueue->getExtensionQueue();
 
         self::assertFalse(array_key_exists('foobar', $extensionStorageAfter['download']));
     }

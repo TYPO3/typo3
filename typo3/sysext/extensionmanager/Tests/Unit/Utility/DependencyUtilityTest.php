@@ -43,302 +43,268 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooLow()
+    public function checkTypo3DependencyErrorsIfVersionNumberIsTooLow(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('15.0.0');
-        $dependencyMock->setIdentifier('typo3');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setIdentifier('typo3');
+        $dependency->setLowestVersion('15.0.0');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        $this->expectException(ExtensionManagerException::class);
-        $this->expectExceptionCode(1399144499);
-        $dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertSame(1399144499, $errors['foo'][0]['code']);
     }
 
     /**
      * @test
      */
-    public function checkTypo3DependencyThrowsExceptionIfVersionNumberIsTooHigh()
+    public function checkTypo3DependencyErrorsIfVersionNumberIsTooHigh(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('3.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $dependencyMock->setIdentifier('typo3');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setHighestVersion('3.0.0');
+        $dependency->setLowestVersion('1.0.0');
+        $dependency->setIdentifier('typo3');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        $this->expectException(ExtensionManagerException::class);
-        $this->expectExceptionCode(1399144521);
-        $dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertSame(1399144521, $errors['foo'][0]['code']);
     }
 
     /**
      * @test
+     * @todo this can never happen with current code paths
      */
-    public function checkTypo3DependencyThrowsExceptionIfIdentifierIsNotTypo3()
+    public function checkTypo3DependencyThrowsExceptionIfIdentifierIsNotTypo3(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->setIdentifier('123');
+        $dependency = new Dependency();
+        $dependency->setIdentifier('123');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1399144551);
-        $dependencyUtility->_call('checkTypo3Dependency', $dependencyMock);
+        $dependencyUtility->_call('checkTypo3Dependency', $dependency);
     }
 
     /**
      * @test
      */
-    public function checkTypo3DependencyReturnsTrueIfVersionNumberIsInRange()
+    public function checkTypo3DependencyReturnsTrueIfVersionNumberIsInRange(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('15.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $dependencyMock->setIdentifier('typo3');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setHighestVersion('15.0.0');
+        $dependency->setLowestVersion('1.0.0');
+        $dependency->setIdentifier('typo3');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        self::assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        $dependency->setIdentifier('typo3');
+        self::assertCount(0, $errors);
     }
 
     /**
      * @test
      */
-    public function checkTypo3DependencyCanHandleEmptyVersionHighestVersion()
+    public function checkTypo3DependencyCanHandleEmptyVersionHighestVersion(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $dependencyMock->setIdentifier('typo3');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setHighestVersion('');
+        $dependency->setLowestVersion('1.0.0');
+        $dependency->setIdentifier('typo3');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        self::assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        $dependency->setIdentifier('typo3');
+        self::assertCount(0, $errors);
     }
 
     /**
      * @test
      */
-    public function checkTypo3DependencyCanHandleEmptyVersionLowestVersion()
+    public function checkTypo3DependencyCanHandleEmptyVersionLowestVersion(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('15.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('');
-        $dependencyMock->setIdentifier('typo3');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setHighestVersion('15.0.0');
+        $dependency->setLowestVersion('');
+        $dependency->setIdentifier('typo3');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        self::assertTrue($dependencyUtility->_call('checkTypo3Dependency', $dependencyMock));
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        $dependency->setIdentifier('typo3');
+        self::assertCount(0, $errors);
     }
 
     /**
      * @test
      */
-    public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooLow()
+    public function checkPhpDependencyErrorsIfVersionNumberIsTooLow(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('15.0.0');
-        $dependencyMock->setIdentifier('php');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setIdentifier('php');
+        $dependency->setLowestVersion('15.0.0');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        $this->expectException(ExtensionManagerException::class);
-        $this->expectExceptionCode(1377977857);
-        $dependencyUtility->_call('checkPhpDependency', $dependencyMock);
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertSame(1377977857, $errors['foo'][0]['code']);
     }
 
     /**
      * @test
      */
-    public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooHigh()
+    public function checkPhpDependencyThrowsExceptionIfVersionNumberIsTooHigh(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('3.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $dependencyMock->setIdentifier('php');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setIdentifier('php');
+        $dependency->setHighestVersion('3.0.0');
+        $dependency->setLowestVersion('1.0.0');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        $this->expectException(ExtensionManagerException::class);
-        $this->expectExceptionCode(1377977856);
-        $dependencyUtility->_call('checkPhpDependency', $dependencyMock);
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertSame(1377977856, $errors['foo'][0]['code']);
     }
 
     /**
      * @test
+     * @todo there is no way for this to happen currently
      */
-    public function checkPhpDependencyThrowsExceptionIfIdentifierIsNotTypo3()
+    public function checkPhpDependencyThrowsExceptionIfIdentifierIsNotPhp(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->setIdentifier('123');
+        $dependency = new Dependency();
+        $dependency->setIdentifier('123');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
 
         $this->expectException(ExtensionManagerException::class);
         $this->expectExceptionCode(1377977858);
-        $dependencyUtility->_call('checkPhpDependency', $dependencyMock);
+        $dependencyUtility->_call('checkPhpDependency', $dependency);
     }
 
     /**
      * @test
      */
-    public function checkPhpDependencyReturnsTrueIfVersionNumberIsInRange()
+    public function checkPhpDependencyReturnsTrueIfVersionNumberIsInRange(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('15.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $dependencyMock->setIdentifier('php');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setIdentifier('php');
+        $dependency->setHighestVersion('15.0.0');
+        $dependency->setLowestVersion('1.0.0');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        self::assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertCount(0, $errors);
     }
 
     /**
      * @test
      */
-    public function checkPhpDependencyCanHandleEmptyVersionHighestVersion()
+    public function checkPhpDependencyCanHandleEmptyVersionHighestVersion(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $dependencyMock->setIdentifier('php');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setIdentifier('php');
+        $dependency->setHighestVersion('');
+        $dependency->setLowestVersion('1.0.0');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        self::assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertCount(0, $errors);
     }
 
     /**
      * @test
      */
-    public function checkPhpDependencyCanHandleEmptyVersionLowestVersion()
+    public function checkPhpDependencyCanHandleEmptyVersionLowestVersion(): void
     {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('15.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('');
-        $dependencyMock->setIdentifier('php');
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
+        $dependency = new Dependency();
+        $dependency->setIdentifier('php');
+        $dependency->setHighestVersion('15.0.0');
+        $dependency->setLowestVersion('');
+        $dependencies = new \SplObjectStorage();
+        $dependencies->attach($dependency);
 
-        self::assertTrue($dependencyUtility->_call('checkPhpDependency', $dependencyMock));
+        $extension = new Extension();
+        $extension->setExtensionKey('foo');
+        $extension->setDependencies($dependencies);
+        $dependencyUtility = new DependencyUtility();
+
+        $dependencyUtility->checkDependencies($extension);
+        $errors = $dependencyUtility->getDependencyErrors();
+
+        self::assertCount(0, $errors);
     }
 
     /**
      * @test
      */
-    public function checkDependenciesCallsMethodToCheckPhpDependencies()
-    {
-        /** @var Extension $extensionMock */
-        $extensionMock = $this->getMockBuilder(Extension::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-        /** @var Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->setIdentifier('php');
-        $dependencyStorage = new \SplObjectStorage();
-        $dependencyStorage->attach($dependencyMock);
-        $extensionMock->setDependencies($dependencyStorage);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|DependencyUtility $dependencyUtility */
-        $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)
-            ->setMethods(['checkPhpDependency', 'checkTypo3Dependency'])
-            ->getMock();
-        $dependencyUtility->expects(self::atLeastOnce())->method('checkPhpDependency');
-        $dependencyUtility->checkDependencies($extensionMock);
-    }
-
-    /**
-     * @test
-     */
-    public function checkDependenciesCallsMethodToCheckTypo3Dependencies()
-    {
-        /** @var Extension $extensionMock */
-        $extensionMock = $this->getMockBuilder(Extension::class)
-            ->setMethods(['dummy'])
-            ->getMock();
-        /** @var Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->setIdentifier('typo3');
-        $dependencyStorage = new \SplObjectStorage();
-        $dependencyStorage->attach($dependencyMock);
-        $extensionMock->setDependencies($dependencyStorage);
-        /** @var \PHPUnit\Framework\MockObject\MockObject|DependencyUtility $dependencyUtility */
-        $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)
-            ->setMethods(['checkPhpDependency', 'checkTypo3Dependency'])
-            ->getMock();
-
-        $dependencyUtility->expects(self::atLeastOnce())->method('checkTypo3Dependency');
-        $dependencyUtility->checkDependencies($extensionMock);
-    }
-
-    /**
-     * @test
-     */
-    public function isVersionCompatibleReturnsTrueForCompatibleVersion()
-    {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('15.0.0');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $version = '3.3.3';
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
-
-        self::assertTrue($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
-    }
-
-    /**
-     * @test
-     */
-    public function isVersionCompatibleReturnsFalseForIncompatibleVersion()
-    {
-        /** @var \PHPUnit\Framework\MockObject\MockObject|Dependency $dependencyMock */
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::atLeastOnce())->method('getHighestVersion')->willReturn('1.0.1');
-        $dependencyMock->expects(self::atLeastOnce())->method('getLowestVersion')->willReturn('1.0.0');
-        $version = '3.3.3';
-        $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
-
-        self::assertFalse($dependencyUtility->_call('isVersionCompatible', $version, $dependencyMock));
-    }
-
-    /**
-     * @test
-     */
-    public function isDependentExtensionAvailableReturnsTrueIfExtensionIsAvailable()
+    public function isDependentExtensionAvailableReturnsTrueIfExtensionIsAvailable(): void
     {
         $availableExtensions = [
             'dummy' => [],
@@ -358,7 +324,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isDependentExtensionAvailableReturnsFalseIfExtensionIsNotAvailable()
+    public function isDependentExtensionAvailableReturnsFalseIfExtensionIsNotAvailable(): void
     {
         $availableExtensions = [
             'dummy' => [],
@@ -378,7 +344,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion()
+    public function isAvailableVersionCompatibleCallsIsVersionCompatibleWithExtensionVersion(): void
     {
         $emConfUtility = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\EmConfUtility::class)
             ->setMethods(['includeEmConf'])
@@ -388,10 +354,8 @@ class DependencyUtilityTest extends UnitTestCase
             'version' => '1.0.0'
         ]);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['setAvailableExtensions', 'isVersionCompatible']);
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getIdentifier'])
-            ->getMock();
-        $dependencyMock->expects(self::once())->method('getIdentifier')->willReturn('dummy');
+        $dependency = new Dependency();
+        $dependency->setIdentifier('dummy');
         $dependencyUtility->_set('emConfUtility', $emConfUtility);
         $dependencyUtility->_set('availableExtensions', [
             'dummy' => [
@@ -400,13 +364,13 @@ class DependencyUtilityTest extends UnitTestCase
         ]);
         $dependencyUtility->expects(self::once())->method('setAvailableExtensions');
         $dependencyUtility->expects(self::once())->method('isVersionCompatible')->with('1.0.0', self::anything());
-        $dependencyUtility->_call('isAvailableVersionCompatible', $dependencyMock);
+        $dependencyUtility->_call('isAvailableVersionCompatible', $dependency);
     }
 
     /**
      * @test
      */
-    public function isExtensionDownloadableFromTerReturnsTrueIfOneVersionExists()
+    public function isExtensionDownloadableFromTerReturnsTrueIfOneVersionExists(): void
     {
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->setMethods(['countByExtensionKey'])
@@ -442,12 +406,10 @@ class DependencyUtilityTest extends UnitTestCase
      */
     public function isDownloadableVersionCompatibleReturnsTrueIfCompatibleVersionExists()
     {
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getIdentifier', 'getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::once())->method('getIdentifier')->willReturn('dummy');
-        $dependencyMock->expects(self::once())->method('getHighestVersion')->willReturn('10.0.0');
-        $dependencyMock->expects(self::once())->method('getLowestVersion')->willReturn('1.0.0');
+        $dependency = new Dependency();
+        $dependency->setIdentifier('dummy');
+        $dependency->setHighestVersion('10.0.0');
+        $dependency->setLowestVersion('1.0.0');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->setMethods(['countByVersionRangeAndExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
@@ -455,7 +417,7 @@ class DependencyUtilityTest extends UnitTestCase
         $extensionRepositoryMock->expects(self::once())->method('countByVersionRangeAndExtensionKey')->with('dummy', 1000000, 10000000)->willReturn(2);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
-        $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyMock);
+        $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependency);
 
         self::assertTrue($count);
     }
@@ -463,12 +425,10 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function isDownloadableVersionCompatibleReturnsFalseIfIncompatibleVersionExists()
+    public function isDownloadableVersionCompatibleReturnsFalseIfIncompatibleVersionExists(): void
     {
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getIdentifier'])
-            ->getMock();
-        $dependencyMock->expects(self::once())->method('getIdentifier')->willReturn('dummy');
+        $dependency = new Dependency();
+        $dependency->setIdentifier('dummy');
         $extensionRepositoryMock = $this->getMockBuilder(ExtensionRepository::class)
             ->setMethods(['countByVersionRangeAndExtensionKey'])
             ->setConstructorArgs([$this->objectManagerMock])
@@ -480,7 +440,7 @@ class DependencyUtilityTest extends UnitTestCase
             'lowestIntegerVersion' => 1000000,
             'highestIntegerVersion' => 2000000
         ]);
-        $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependencyMock);
+        $count = $dependencyUtility->_call('isDownloadableVersionCompatible', $dependency);
 
         self::assertFalse($count);
     }
@@ -488,20 +448,18 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLowestAndHighestIntegerVersionsReturnsArrayWithVersions()
+    public function getLowestAndHighestIntegerVersionsReturnsArrayWithVersions(): void
     {
         $expectedVersions = [
             'lowestIntegerVersion' => 1000000,
             'highestIntegerVersion' => 2000000
         ];
 
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getHighestVersion', 'getLowestVersion'])
-            ->getMock();
-        $dependencyMock->expects(self::once())->method('getHighestVersion')->willReturn('2.0.0');
-        $dependencyMock->expects(self::once())->method('getLowestVersion')->willReturn('1.0.0');
+        $dependency = new Dependency();
+        $dependency->setHighestVersion('2.0.0');
+        $dependency->setLowestVersion('1.0.0');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
-        $versions = $dependencyUtility->_call('getLowestAndHighestIntegerVersions', $dependencyMock);
+        $versions = $dependencyUtility->_call('getLowestAndHighestIntegerVersions', $dependency);
 
         self::assertSame($expectedVersions, $versions);
     }
@@ -509,7 +467,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function getLatestCompatibleExtensionByIntegerVersionDependencyWillReturnExtensionModelOfLatestExtension()
+    public function getLatestCompatibleExtensionByIntegerVersionDependencyWillReturnExtensionModelOfLatestExtension(): void
     {
         $extension1 = new Extension();
         $extension1->setExtensionKey('foo');
@@ -521,10 +479,8 @@ class DependencyUtilityTest extends UnitTestCase
         $myStorage = new \TYPO3\CMS\Extensionmanager\Tests\Unit\Fixtures\LatestCompatibleExtensionObjectStorageFixture();
         $myStorage->extensions[] = $extension1;
         $myStorage->extensions[] = $extension2;
-        $dependencyMock = $this->getMockBuilder(Dependency::class)
-            ->setMethods(['getIdentifier'])
-            ->getMock();
-        $dependencyMock->expects(self::once())->method('getIdentifier')->willReturn('foobar');
+        $dependency = new Dependency();
+        $dependency->setIdentifier('foobar');
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['getLowestAndHighestIntegerVersions']);
         $dependencyUtility->expects(self::once())->method('getLowestAndHighestIntegerVersions')->willReturn([
             'lowestIntegerVersion' => 1000000,
@@ -536,7 +492,7 @@ class DependencyUtilityTest extends UnitTestCase
             ->getMock();
         $extensionRepositoryMock->expects(self::once())->method('findByVersionRangeAndExtensionKeyOrderedByVersion')->with('foobar', 1000000, 2000000)->willReturn($myStorage);
         $dependencyUtility->_set('extensionRepository', $extensionRepositoryMock);
-        $extension = $dependencyUtility->_call('getLatestCompatibleExtensionByIntegerVersionDependency', $dependencyMock);
+        $extension = $dependencyUtility->_call('getLatestCompatibleExtensionByIntegerVersionDependency', $dependency);
 
         self::assertInstanceOf(Extension::class, $extension);
         self::assertSame('foo', $extension->getExtensionKey());
@@ -545,7 +501,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function filterYoungestVersionOfExtensionListFiltersAListToLatestVersion()
+    public function filterYoungestVersionOfExtensionListFiltersAListToLatestVersion(): void
     {
         // foo2 should be kept
         $foo1 = new Extension();
@@ -573,7 +529,7 @@ class DependencyUtilityTest extends UnitTestCase
     /**
      * @test
      */
-    public function filterYoungestVersionOfExtensionListFiltersAListToLatestVersionWithOnlyCompatibleExtensions()
+    public function filterYoungestVersionOfExtensionListFiltersAListToLatestVersionWithOnlyCompatibleExtensions(): void
     {
         $suitableDependency = new Dependency();
         $suitableDependency->setIdentifier('typo3');

@@ -22,11 +22,18 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class LegacyLinkNotationConverterTest extends UnitTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->resetSingletonInstances = true;
+    }
+
     /**
      * Data to resolve strings to arrays and vice versa, external, mail, page
      *
@@ -148,7 +155,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
      * @dataProvider resolveParametersForNonFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifier($input, $parameters, $expected): void
+    public function splitParametersToUnifiedIdentifier(string $input, array $parameters, string $expected): void
     {
         $subject = new LinkService();
         self::assertEquals($expected, $subject->asString($parameters));
@@ -237,11 +244,11 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
         // fake methods to return proper objects
         if ($expected['type'] === LinkService::TYPE_FILE) {
             $fileObject = new File(['identifier' => $expected['file']], $storage);
-            $factory->expects(self::any())->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])
+            $factory->method('getFileObjectFromCombinedIdentifier')->with($expected['file'])
                 ->willReturn($fileObject);
-            $factory->expects(self::any())->method('retrieveFileOrFolderObject')->with($expected['file'])
+            $factory->method('retrieveFileOrFolderObject')->with($expected['file'])
                 ->willReturn($fileObject);
-            $factory->expects(self::any())->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
+            $factory->method('getFileObject')->with($expected['file'])->willReturn($fileObject);
             $expected['file'] = $fileObject;
         }
         // fake methods to return proper objects
@@ -250,16 +257,16 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 $expected['folder'] = substr($expected['folder'], 5);
             }
             $folderObject = new Folder($storage, $expected['folder'], $expected['folder']);
-            $factory->expects(self::any())->method('retrieveFileOrFolderObject')->with($expected['folder'])
+            $factory->method('retrieveFileOrFolderObject')->with($expected['folder'])
                 ->willReturn($folderObject);
-            $factory->expects(self::any())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
+            $factory->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
                 ->willReturn($folderObject);
             $expected['folder'] = $folderObject;
         }
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $factory);
 
-        /** @var LegacyLinkNotationConverter|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(LegacyLinkNotationConverter::class, ['dummy']);
-        $subject->_set('resourceFactory', $factory);
+        $subject = new LegacyLinkNotationConverter();
+
         self::assertEquals($expected, $subject->resolve($input));
     }
 
@@ -275,12 +282,12 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      * @throws \TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifierForFiles($input, $parameters, $expected): void
+    public function splitParametersToUnifiedIdentifierForFiles(string $input, array $parameters, string $expected): void
     {
         // fake methods to return proper objects
         if ($parameters['type'] === LinkService::TYPE_FILE) {
             $fileObject = $this->getMockBuilder(File::class)
-                ->setMethods(['getUid', 'getIdentifier'])
+                ->onlyMethods(['getUid', 'getIdentifier'])
                 ->disableOriginalConstructor()
                 ->getMock();
             $uid = 0;
@@ -301,19 +308,19 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
                 $parameters['folder'] = '0:' . $parameters['folder'];
             }
             $folderObject = $this->getMockBuilder(Folder::class)
-                ->setMethods(['getCombinedIdentifier', 'getStorage', 'getIdentifier'])
+                ->onlyMethods(['getCombinedIdentifier', 'getStorage', 'getIdentifier'])
                 ->disableOriginalConstructor()
                 ->getMock();
             $folderObject->expects(self::any())->method('getCombinedIdentifier')->willReturn($parameters['folder']);
             $folderData = explode(':', $parameters['folder']);
             /** @var ResourceStorage|\PHPUnit\Framework\MockObject\MockObject $storageMock */
             $storage = $this->getMockBuilder(ResourceStorage::class)
-                ->setMethods(['getUid'])
+                ->onlyMethods(['getUid'])
                 ->disableOriginalConstructor()
                 ->getMock();
             $storage->method('getUid')->willReturn($folderData[0]);
-            $folderObject->expects(self::any())->method('getStorage')->willReturn($storage);
-            $folderObject->expects(self::any())->method('getIdentifier')->willReturn($folderData[1]);
+            $folderObject->method('getStorage')->willReturn($storage);
+            $folderObject->method('getIdentifier')->willReturn($folderData[1]);
             $parameters['folder'] = $folderObject;
         }
 
@@ -349,7 +356,7 @@ class LegacyLinkNotationConverterTest extends UnitTestCase
      *
      * @dataProvider resolveThrowExceptionWithPharReferencesDataProvider
      */
-    public function resolveThrowExceptionWithPharReferences(string $pharUrl)
+    public function resolveThrowExceptionWithPharReferences(string $pharUrl): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1530030673);

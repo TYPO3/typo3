@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ExtendsAbstractEntity;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 /**
@@ -26,12 +27,12 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID()
     {
-        $object = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ExtendsAbstractEntity::class, ['dummy']);
-        $object->_set('uid', 123);
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
         $expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
         $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->willReturn('prefix[theName]');
-        $actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
+        $actualResult = $viewHelper->_call('renderHiddenIdentityField', $extendsAbstractEntity, 'theName');
         self::assertSame($expectedResult, $actualResult);
     }
 
@@ -40,13 +41,13 @@ class AbstractFormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderHiddenIdentityFieldReturnsAHiddenInputFieldIfObjectIsNewButAClone()
     {
-        $object = $this->getAccessibleMock(\TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\ExtendsAbstractEntity::class, ['dummy']);
-        $object->_set('uid', 123);
-        $object = clone $object;
+        $extendsAbstractEntity = new ExtendsAbstractEntity();
+        $extendsAbstractEntity->_setProperty('uid', 123);
+        $object = clone $extendsAbstractEntity;
         $expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
         $viewHelper = $this->getAccessibleMock(\TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper::class, ['prefixFieldName', 'registerFieldNameForFormTokenGeneration'], [], '', false);
         $viewHelper->expects(self::any())->method('prefixFieldName')->with('theName')->willReturn('prefix[theName]');
-        $actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
+        $actualResult = $viewHelper->_call('renderHiddenIdentityField', $extendsAbstractEntity, 'theName');
         self::assertSame($expectedResult, $actualResult);
     }
 

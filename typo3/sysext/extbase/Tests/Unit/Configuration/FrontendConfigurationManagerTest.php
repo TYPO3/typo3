@@ -52,7 +52,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->tmpl = new \stdClass();
         $this->mockContentObject = $this->getMockBuilder(ContentObjectRenderer::class)
-            ->setMethods(['getTreeList'])
+            ->onlyMethods(['getTreeList'])
             ->getMock();
         $this->frontendConfigurationManager = $this->getAccessibleMock(
             FrontendConfigurationManager::class,
@@ -62,7 +62,7 @@ class FrontendConfigurationManagerTest extends UnitTestCase
             false
         );
         $this->frontendConfigurationManager->_set('contentObject', $this->mockContentObject);
-        $this->mockTypoScriptService = $this->getAccessibleMock(TypoScriptService::class);
+        $this->mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $this->frontendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 

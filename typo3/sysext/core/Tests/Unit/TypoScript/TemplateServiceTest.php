@@ -65,11 +65,6 @@ class TemplateServiceTest extends UnitTestCase
         $GLOBALS['ACCESS_TIME'] = time();
         $this->packageManagerProphecy = $this->prophesize(PackageManager::class);
         $this->templateService = new TemplateService(new Context(), $this->packageManagerProphecy->reveal());
-        $this->templateServiceMock = $this->getAccessibleMock(
-            TemplateService::class,
-            ['dummy'],
-            [new Context(), $this->packageManagerProphecy->reveal()]
-        );
         $this->backupPackageManager = ExtensionManagementUtilityAccessibleProxy::getPackageManager();
     }
 
@@ -95,8 +90,9 @@ class TemplateServiceTest extends UnitTestCase
         $this->packageManagerProphecy->getActivePackages()->shouldNotBeCalled();
 
         $this->templateService->runThroughTemplates([], 0);
-        self::assertFalse(
-            in_array('test.Core.TypoScript = 1', $this->templateService->config, true)
+        self::assertNotContains(
+            'test.Core.TypoScript = 1',
+            $this->templateService->config
         );
     }
 
@@ -129,8 +125,9 @@ class TemplateServiceTest extends UnitTestCase
         $this->templateService->setProcessExtensionStatics(true);
         $this->templateService->runThroughTemplates([], 0);
 
-        self::assertTrue(
-            in_array('test.Core.TypoScript = 1', $this->templateService->config, true)
+        self::assertContains(
+            'test.Core.TypoScript = 1',
+            $this->templateService->config
         );
     }
 
@@ -155,9 +152,9 @@ class TemplateServiceTest extends UnitTestCase
             1 => ['uid' => 3, 'title' => 'newTitle3'],
         ];
 
-        $this->templateServiceMock->_set('rootLine', $originalRootline);
-        $this->templateServiceMock->updateRootlineData($updatedRootline);
-        self::assertEquals($expectedRootline, $this->templateServiceMock->_get('rootLine'));
+        $this->templateService->rootLine = $originalRootline;
+        $this->templateService->updateRootlineData($updatedRootline);
+        self::assertEquals($expectedRootline, $this->templateService->rootLine);
     }
 
     /**
@@ -178,7 +175,7 @@ class TemplateServiceTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1370419654);
 
-        $this->templateServiceMock->_set('rootLine', $originalRootline);
-        $this->templateServiceMock->updateRootlineData($newInvalidRootline);
+        $this->templateService->rootLine = $originalRootline;
+        $this->templateService->updateRootlineData($newInvalidRootline);
     }
 }

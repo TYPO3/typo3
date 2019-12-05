@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Beuser\Tests\Unit\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Beuser\Service\ModuleDataStorageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,8 +32,7 @@ class ModuleDataStorageServiceTest extends UnitTestCase
         $GLOBALS['BE_USER']->uc = [];
         $GLOBALS['BE_USER']->uc['moduleData'] = [];
 
-        /** @var \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $subject */
-        $subject = $this->getAccessibleMock(\TYPO3\CMS\Beuser\Service\ModuleDataStorageService::class, ['dummy'], [], '', false);
+        $subject = new ModuleDataStorageService();
         $objectManagerMock = $this->createMock(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         $moduleDataMock = $this->createMock(\TYPO3\CMS\Beuser\Domain\Model\ModuleData::class);
         $objectManagerMock
@@ -40,7 +40,7 @@ class ModuleDataStorageServiceTest extends UnitTestCase
             ->method('get')
             ->with(\TYPO3\CMS\Beuser\Domain\Model\ModuleData::class)
             ->willReturn($moduleDataMock);
-        $subject->_set('objectManager', $objectManagerMock);
+        $subject->injectObjectManager($objectManagerMock);
 
         self::assertSame($moduleDataMock, $subject->loadModuleData());
     }

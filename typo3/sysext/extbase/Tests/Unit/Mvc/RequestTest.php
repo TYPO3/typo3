@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
+use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -24,7 +25,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function aSingleArgumentCanBeSetWithSetArgumentAndRetrievedWithGetArgument()
+    public function aSingleArgumentCanBeSetWithSetArgumentAndRetrievedWithGetArgument(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('someArgumentName', 'theValue');
@@ -34,7 +35,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsNoString()
+    public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsNoString(): void
     {
         $this->expectException(InvalidArgumentNameException::class);
         $this->expectExceptionCode(1210858767);
@@ -45,7 +46,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsAnEmptyString()
+    public function setArgumentThrowsExceptionIfTheGivenArgumentNameIsAnEmptyString(): void
     {
         $this->expectException(InvalidArgumentNameException::class);
         $this->expectExceptionCode(1210858767);
@@ -56,7 +57,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentsOverridesAllExistingArguments()
+    public function setArgumentsOverridesAllExistingArguments(): void
     {
         $arguments = ['key1' => 'value1', 'key2' => 'value2'];
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
@@ -69,10 +70,10 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentsCallsSetArgumentForEveryArrayEntry()
+    public function setArgumentsCallsSetArgumentForEveryArrayEntry(): void
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setArgument'])
+            ->onlyMethods(['setArgument'])
             ->getMock();
         $request->expects(self::at(0))->method('setArgument')->with('key1', 'value1');
         $request->expects(self::at(1))->method('setArgument')->with('key2', 'value2');
@@ -82,12 +83,12 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentShouldSetControllerExtensionNameIfPackageKeyIsGiven()
+    public function setArgumentShouldSetControllerExtensionNameIfPackageKeyIsGiven(): void
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setControllerExtensionName'])
+            ->onlyMethods(['setControllerExtensionName'])
             ->getMock();
-        $request->expects(self::any())->method('setControllerExtensionName')->with('MyExtension');
+        $request->method('setControllerExtensionName')->with('MyExtension');
         $request->setArgument('@extension', 'MyExtension');
         self::assertFalse($request->hasArgument('@extension'));
     }
@@ -95,12 +96,12 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentShouldSetControllerSubpackageKeyIfSubpackageKeyIsGiven()
+    public function setArgumentShouldSetControllerSubpackageKeyIfSubpackageKeyIsGiven(): void
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setControllerSubpackageKey'])
+            ->onlyMethods(['setControllerSubpackageKey'])
             ->getMock();
-        $request->expects(self::any())->method('setControllerSubpackageKey')->with('MySubPackage');
+        $request->method('setControllerSubpackageKey')->with('MySubPackage');
         $request->setArgument('@subpackage', 'MySubPackage');
         self::assertFalse($request->hasArgument('@subpackage'));
     }
@@ -108,12 +109,12 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentShouldSetControllerNameIfControllerIsGiven()
+    public function setArgumentShouldSetControllerNameIfControllerIsGiven(): void
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setControllerName'])
+            ->onlyMethods(['setControllerName'])
             ->getMock();
-        $request->expects(self::any())->method('setControllerName')->with('MyController');
+        $request->method('setControllerName')->with('MyController');
         $request->setArgument('@controller', 'MyController');
         self::assertFalse($request->hasArgument('@controller'));
     }
@@ -121,12 +122,12 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentShouldSetControllerActionNameIfActionIsGiven()
+    public function setArgumentShouldSetControllerActionNameIfActionIsGiven(): void
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setControllerActionName'])
+            ->onlyMethods(['setControllerActionName'])
             ->getMock();
-        $request->expects(self::any())->method('setControllerActionName')->with('foo');
+        $request->method('setControllerActionName')->with('foo');
         $request->setArgument('@action', 'foo');
         self::assertFalse($request->hasArgument('@action'));
     }
@@ -134,12 +135,12 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentShouldSetFormatIfFormatIsGiven()
+    public function setArgumentShouldSetFormatIfFormatIsGiven(): void
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['setFormat'])
+            ->onlyMethods(['setFormat'])
             ->getMock();
-        $request->expects(self::any())->method('setFormat')->with('txt');
+        $request->method('setFormat')->with('txt');
         $request->setArgument('@format', 'txt');
         self::assertFalse($request->hasArgument('@format'));
     }
@@ -147,7 +148,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function internalArgumentsShouldNotBeReturnedAsNormalArgument()
+    public function internalArgumentsShouldNotBeReturnedAsNormalArgument(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('__referrer', 'foo');
@@ -157,7 +158,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function internalArgumentsShouldBeStoredAsInternalArguments()
+    public function internalArgumentsShouldBeStoredAsInternalArguments(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('__referrer', 'foo');
@@ -167,7 +168,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasInternalArgumentShouldReturnNullIfArgumentNotFound()
+    public function hasInternalArgumentShouldReturnNullIfArgumentNotFound(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         self::assertNull($request->getInternalArgument('__nonExistingInternalArgument'));
@@ -176,7 +177,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function setArgumentAcceptsObjectIfArgumentIsInternal()
+    public function setArgumentAcceptsObjectIfArgumentIsInternal(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $object = new \stdClass();
@@ -187,7 +188,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function multipleArgumentsCanBeSetWithSetArgumentsAndRetrievedWithGetArguments()
+    public function multipleArgumentsCanBeSetWithSetArgumentsAndRetrievedWithGetArguments(): void
     {
         $arguments = [
             'firstArgument' => 'firstValue',
@@ -202,7 +203,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasArgumentTellsIfAnArgumentExists()
+    public function hasArgumentTellsIfAnArgumentExists(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setArgument('existingArgument', 'theValue');
@@ -216,7 +217,7 @@ class RequestTest extends UnitTestCase
     public function theActionNameCanBeSetAndRetrieved()
     {
         $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)
-            ->setMethods(['getControllerObjectName'])
+            ->onlyMethods(['getControllerObjectName'])
             ->disableOriginalConstructor()
             ->getMock();
         $request->expects(self::once())->method('getControllerObjectName')->willReturn('');
@@ -227,7 +228,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function theRepresentationFormatCanBeSetAndRetrieved()
+    public function theRepresentationFormatCanBeSetAndRetrieved(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         $request->setFormat('html');
@@ -237,7 +238,7 @@ class RequestTest extends UnitTestCase
     /**
      * @test
      */
-    public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain()
+    public function aFlagCanBeSetIfTheRequestNeedsToBeDispatchedAgain(): void
     {
         $request = new \TYPO3\CMS\Extbase\Mvc\Request();
         self::assertFalse($request->isDispatched());
@@ -250,7 +251,7 @@ class RequestTest extends UnitTestCase
      *
      * @return array
      */
-    public function controllerArgumentsAndExpectedObjectName()
+    public function controllerArgumentsAndExpectedObjectName(): array
     {
         return [
             'Vendor TYPO3\CMS, extension, controller given' => [
@@ -295,16 +296,16 @@ class RequestTest extends UnitTestCase
      * @param string $controllerObjectName
      * @test
      */
-    public function setControllerObjectNameResolvesControllerObjectNameArgumentsCorrectly($controllerArguments, $controllerObjectName)
+    public function setControllerObjectNameResolvesControllerObjectNameArgumentsCorrectly($controllerArguments, $controllerObjectName): void
     {
         /** @var $request \TYPO3\CMS\Extbase\Mvc\Request */
-        $request = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Request::class, ['dummy'], [], '', false);
+        $request = new Request();
         $request->setControllerObjectName($controllerObjectName);
 
         $actualControllerArguments = [
-            'extensionName' => $request->_get('controllerExtensionName'),
-            'subpackageKey' => $request->_get('controllerSubpackageKey'),
-            'controllerName' => $request->_get('controllerName'),
+            'extensionName' => $request->getControllerExtensionName(),
+            'subpackageKey' => $request->getControllerSubpackageKey(),
+            'controllerName' => $request->getControllerName(),
         ];
 
         self::assertSame($controllerArguments, $actualControllerArguments);

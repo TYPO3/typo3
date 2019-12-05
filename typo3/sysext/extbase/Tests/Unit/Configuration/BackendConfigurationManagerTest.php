@@ -46,7 +46,7 @@ class BackendConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $this->mockTypoScriptService = $this->getAccessibleMock(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class);
+        $this->mockTypoScriptService = $this->getMockBuilder(\TYPO3\CMS\Core\TypoScript\TypoScriptService::class)->getMock();
         $this->backendConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 

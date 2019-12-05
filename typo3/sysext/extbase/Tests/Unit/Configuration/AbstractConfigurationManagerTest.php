@@ -121,7 +121,7 @@ class AbstractConfigurationManagerTest extends UnitTestCase
             '',
             false
         );
-        $this->mockTypoScriptService = $this->getAccessibleMock(TypoScriptService::class);
+        $this->mockTypoScriptService = $this->getMockBuilder(TypoScriptService::class)->getMock();
         $this->abstractConfigurationManager->_set('typoScriptService', $this->mockTypoScriptService);
     }
 

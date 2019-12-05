@@ -15,10 +15,13 @@ namespace TYPO3\CMS\Form\Tests\Unit\Domain\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PrototypeNotFoundException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinition\Validators\ValidationDto;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Form\Service\TranslationService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -27,80 +30,71 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ConfigurationServiceTest extends UnitTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->resetSingletonInstances = true;
+    }
 
     /**
      * @test
      */
-    public function getPrototypeConfigurationReturnsPrototypeConfiguration()
+    public function getPrototypeConfigurationReturnsPrototypeConfiguration(): void
     {
-        $mockConfigurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            [
-                'dummy',
-            ],
-            [],
-            '',
-            false
-        );
-
-        $mockConfigurationService->_set(
-            'formSettings',
-            [
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
+        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+            ->willReturn([
                 'prototypes' => [
                     'standard' => [
                         'key' => 'value',
                     ],
                 ],
-            ]
-        );
+            ]);
+        $objectManagerProphecy->get(ConfigurationManagerInterface::class)->willReturn($configurationManager->reveal());
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
+        $configurationService = new ConfigurationService();
+        $configurationService->initializeObject();
 
         $expected = [
             'key' => 'value',
         ];
 
-        self::assertSame($expected, $mockConfigurationService->getPrototypeConfiguration('standard'));
+        self::assertSame($expected, $configurationService->getPrototypeConfiguration('standard'));
     }
 
     /**
      * @test
      */
-    public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound()
+    public function getPrototypeConfigurationThrowsExceptionIfNoPrototypeFound(): void
     {
-        $mockConfigurationService = $this->getAccessibleMock(
-            ConfigurationService::class,
-            [
-                'dummy',
-            ],
-            [],
-            '',
-            false
-        );
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
+        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+            ->willReturn([
+                'prototypes' => [
+                    'noStandard' => [],
+                ],
+            ]);
+        $objectManagerProphecy->get(ConfigurationManagerInterface::class)->willReturn($configurationManager->reveal());
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
+        $configurationService = new ConfigurationService();
 
         $this->expectException(PrototypeNotFoundException::class);
         $this->expectExceptionCode(1475924277);
 
-        $mockConfigurationService->_set(
-            'formSettings',
-            [
-                'prototypes' => [
-                    'noStandard' => [],
-                ],
-            ]
-        );
-
-        $mockConfigurationService->getPrototypeConfiguration('standard');
+        $configurationService->getPrototypeConfiguration('standard');
     }
 
     /**
      * @test
      */
-    public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes()
+    public function getSelectablePrototypeNamesDefinedInFormEditorSetupReturnsPrototypes(): void
     {
-        $configurationService = $this->getAccessibleMock(ConfigurationService::class, ['dummy'], [], '', false);
-
-        $configurationService->_set(
-            'formSettings',
-            [
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        $configurationManager = $this->prophesize(ConfigurationManagerInterface::class);
+        $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form')
+            ->willReturn([
                 'formManager' => [
                     'selectablePrototypesConfiguration' => [
                         0 => [
@@ -114,8 +108,11 @@ class ConfigurationServiceTest extends UnitTestCase
                         ],
                     ],
                 ],
-            ]
-        );
+            ]);
+        $objectManagerProphecy->get(ConfigurationManagerInterface::class)->willReturn($configurationManager->reveal());
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
+        $configurationService = new ConfigurationService();
+        $configurationService->initializeObject();
 
         $expected = [
             'standard',
@@ -136,7 +133,7 @@ class ConfigurationServiceTest extends UnitTestCase
         array $configuration,
         ValidationDto $validationDto,
         bool $expectedReturn
-    ) {
+    ): void {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
             ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
@@ -165,7 +162,7 @@ class ConfigurationServiceTest extends UnitTestCase
         array $configuration,
         ValidationDto $validationDto,
         bool $expectedReturn
-    ) {
+    ): void {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
             ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
@@ -194,7 +191,7 @@ class ConfigurationServiceTest extends UnitTestCase
         array $configuration,
         ValidationDto $validationDto,
         bool $expectedReturn
-    ) {
+    ): void {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
             ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
@@ -223,7 +220,7 @@ class ConfigurationServiceTest extends UnitTestCase
         array $configuration,
         ValidationDto $validationDto,
         bool $expectedReturn
-    ) {
+    ): void {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
             ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
@@ -247,7 +244,7 @@ class ConfigurationServiceTest extends UnitTestCase
      * @test
      */
     public function getFormElementPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(
-    ) {
+    ): void {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528578401);
 
@@ -258,7 +255,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'isFormElementPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(false);
         $validationDto = new ValidationDto(null, 'Text', null, 'properties.foo.1');
@@ -269,7 +266,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getFormElementPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue()
+    public function getFormElementPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
     {
         $expected = 'foo';
         $configuration = ['formElements' => ['Text' => ['predefinedDefaults' => ['properties.foo.1' => $expected]]]];
@@ -284,7 +281,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
         $configurationService->expects(self::any())->method(
@@ -303,7 +300,7 @@ class ConfigurationServiceTest extends UnitTestCase
      * @test
      */
     public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupThrowsExceptionIfNoPredefinedDefaultIsAvailable(
-    ) {
+    ): void {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528578402);
 
@@ -314,7 +311,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(false);
         $validationDto = new ValidationDto(
@@ -332,7 +329,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue()
+    public function getPropertyCollectionPredefinedDefaultValueFromFormEditorSetupReturnsDefaultValue(): void
     {
         $expected = 'foo';
         $configuration = ['collections' => ['validators' => ['StringLength' => ['predefinedDefaults' => ['properties.foo.1' => $expected]]]]];
@@ -347,10 +344,10 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'isPropertyCollectionPropertyDefinedInPredefinedDefaultsInFormEditorSetup'
         )->willReturn(true);
 
@@ -380,7 +377,7 @@ class ConfigurationServiceTest extends UnitTestCase
         array $configuration,
         ValidationDto $validationDto,
         bool $expectedReturn
-    ) {
+    ): void {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
             ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
@@ -388,7 +385,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -409,7 +406,7 @@ class ConfigurationServiceTest extends UnitTestCase
         array $configuration,
         ValidationDto $validationDto,
         bool $expectedReturn
-    ) {
+    ): void {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
             ['buildFormDefinitionValidationConfigurationFromFormEditorSetup'],
@@ -417,7 +414,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method(
+        $configurationService->method(
             'buildFormDefinitionValidationConfigurationFromFormEditorSetup'
         )->willReturn($configuration);
 
@@ -430,7 +427,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function isFormElementTypeDefinedInFormSetup()
+    public function isFormElementTypeDefinedInFormSetup(): void
     {
         $configuration = [
             'formElementsDefinition' => [
@@ -445,7 +442,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method('getPrototypeConfiguration')->willReturn($configuration);
+        $configurationService->method('getPrototypeConfiguration')->willReturn($configuration);
 
         $validationDto = new ValidationDto('standard', 'Text');
         self::assertTrue($configurationService->isFormElementTypeDefinedInFormSetup($validationDto));
@@ -457,7 +454,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfHookResultIsNoFormDefinitionValidation()
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfHookResultIsNoFormDefinitionValidation(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528633966);
@@ -471,7 +468,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPrototypeDoesNotMatch()
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPrototypeDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528634966);
@@ -486,7 +483,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfFormElementTypeDoesNotMatch()
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfFormElementTypeDoesNotMatch(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528633967);
@@ -498,7 +495,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
+        $configurationService->method('isFormElementTypeDefinedInFormSetup')->willReturn(false);
         $validationDto = new ValidationDto('standard', 'Text');
         $input = [$validationDto];
 
@@ -508,7 +505,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPropertyCollectionNameIsInvalid()
+    public function addAdditionalPropertyPathsFromHookThrowsExceptionIfPropertyCollectionNameIsInvalid(): void
     {
         $this->expectException(PropertyException::class);
         $this->expectExceptionCode(1528636941);
@@ -520,7 +517,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
+        $configurationService->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
         $validationDto = new ValidationDto('standard', 'Text', null, null, 'Bar', 'Baz');
         $input = [$validationDto];
 
@@ -530,7 +527,7 @@ class ConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function addAdditionalPropertyPathsFromHookAddPaths()
+    public function addAdditionalPropertyPathsFromHookAddPaths(): void
     {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
@@ -539,7 +536,7 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $configurationService->expects(self::any())->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
+        $configurationService->method('isFormElementTypeDefinedInFormSetup')->willReturn(true);
 
         $input = [
             new ValidationDto('standard', 'Text', null, 'options.xxx', 'validators', 'Baz'),
@@ -592,7 +589,7 @@ class ConfigurationServiceTest extends UnitTestCase
      * @param array $configuration
      * @param array $expected
      */
-    public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected)
+    public function buildFormDefinitionValidationConfigurationFromFormEditorSetup(array $configuration, array $expected): void
     {
         $configurationService = $this->getAccessibleMock(
             ConfigurationService::class,
@@ -615,15 +612,15 @@ class ConfigurationServiceTest extends UnitTestCase
             '',
             false
         );
-        $translationService->expects(self::any())->method('translateValuesRecursive')->willReturnArgument(0);
+        $translationService->method('translateValuesRecursive')->willReturnArgument(0);
 
-        $configurationService->expects(self::any())->method('getCacheEntry')->willReturn(null);
-        $configurationService->expects(self::any())->method('getPrototypeConfiguration')->willReturn($configuration);
-        $configurationService->expects(self::any())->method('getTranslationService')->willReturn($translationService);
-        $configurationService->expects(self::any())
+        $configurationService->method('getCacheEntry')->willReturn(null);
+        $configurationService->method('getPrototypeConfiguration')->willReturn($configuration);
+        $configurationService->method('getTranslationService')->willReturn($translationService);
+        $configurationService
             ->method('executeBuildFormDefinitionValidationConfigurationHooks')
             ->willReturnArgument(1);
-        $configurationService->expects(self::any())->method('setCacheEntry');
+        $configurationService->method('setCacheEntry');
 
         self::assertSame(
             $expected,

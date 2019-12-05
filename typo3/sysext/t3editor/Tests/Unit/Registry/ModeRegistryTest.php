@@ -26,19 +26,19 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class ModeRegistryTest extends UnitTestCase
 {
     /**
-     * @var ModeRegistry|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var ModeRegistry
      */
     protected $subject;
 
     protected function setUp(): void
     {
-        $this->subject = $this->getAccessibleMock(ModeRegistry::class, ['dummy'], [], '', false);
+        $this->subject = new ModeRegistry();
     }
 
     /**
      * @test
      */
-    public function identifierIsReturned()
+    public function identifierIsReturned(): void
     {
         $expected = GeneralUtility::makeInstance(Mode::class, 'test/mode/default/default');
         $this->subject->register($expected);
@@ -50,7 +50,7 @@ class ModeRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function latestDefaultModeIsReturned()
+    public function latestDefaultModeIsReturned(): void
     {
         $firstDefaultMode = GeneralUtility::makeInstance(Mode::class, 'test/another/foo/bar')->setAsDefault();
         $expected = GeneralUtility::makeInstance(Mode::class, 'test/another/defaultmode/defaultmode')->setAsDefault();
@@ -63,7 +63,7 @@ class ModeRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function formatCodeReturnsCorrectMode()
+    public function formatCodeReturnsCorrectMode(): void
     {
         $expected = GeneralUtility::makeInstance(Mode::class, 'test/mode/format/code')->setFormatCode('code');
         $this->subject->register($expected);
@@ -75,7 +75,7 @@ class ModeRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function modeIsFetchedByFileExtension()
+    public function modeIsFetchedByFileExtension(): void
     {
         $expected = GeneralUtility::makeInstance(Mode::class, 'test/mode/extension/extension')->bindToFileExtensions(['ext', 'fext']);
         $this->subject->register($expected);

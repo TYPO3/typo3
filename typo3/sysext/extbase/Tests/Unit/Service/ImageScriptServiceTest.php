@@ -60,11 +60,10 @@ class ImageScriptServiceTest extends UnitTestCase
      */
     public function fileIsUnwrappedFromReferenceForProcessing(): void
     {
-        $reference = $this->getAccessibleMock(FileReference::class, [], [], '', false);
+        $reference = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
         $file = $this->createMock(File::class);
         $file->expects(self::once())->method('process')->willReturn($this->createMock(ProcessedFile::class));
         $reference->expects(self::once())->method('getOriginalFile')->willReturn($file);
-        $reference->_set('file', $file);
 
         $this->subject->applyProcessingInstructions($reference, []);
     }

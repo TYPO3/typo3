@@ -28,36 +28,19 @@ class ProcessorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessorWhenOnlyOneIsRegistered()
+    public function getProcessorWhenOnlyOneIsRegistered(): void
     {
-        $subject = $this->getAccessibleMockForAbstractClass(
-            ProcessorRegistry::class,
-            [],
-            '',
-            false
-        );
-        $subject->_set('registeredProcessors', [
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [
             [
                 'className' => LocalImageProcessor::class,
             ]
-        ]);
-        $taskMock = $this->getAccessibleMockForAbstractClass(
-            AbstractTask::class,
-            [],
-            '',
-            false,
-            false,
-            false,
-            ['getType', 'getName']
-        );
-        $taskMock->expects(self::once())
-            ->method('getType')
-            ->willReturn('Image');
-        $taskMock->expects(self::once())
-            ->method('getName')
-            ->willReturn('CropScaleMask');
+        ];
+        $subject = new ProcessorRegistry();
+        $taskMock = $this->prophesize(AbstractTask::class);
+        $taskMock->getType()->willReturn('Image');
+        $taskMock->getName()->willReturn('CropScaleMask');
 
-        $processor = $subject->getProcessorByTask($taskMock);
+        $processor = $subject->getProcessorByTask($taskMock->reveal());
 
         self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }
@@ -65,42 +48,21 @@ class ProcessorRegistryTest extends UnitTestCase
     /**
      * @test
      */
-    public function getProcessorWhenNoneIsRegistered()
+    public function getProcessorWhenNoneIsRegistered(): void
     {
         $this->expectExceptionCode(1560876294);
 
-        $subject = $this->getAccessibleMockForAbstractClass(
-            ProcessorRegistry::class,
-            [],
-            '',
-            false,
-            false,
-            false
-        );
-        $taskMock = $this->getAccessibleMockForAbstractClass(
-            AbstractTask::class,
-            [],
-            '',
-            false,
-            false,
-            false
-        );
-
+        $subject = new ProcessorRegistry();
+        $taskMock = $this->prophesize(AbstractTask::class)->reveal();
         $subject->getProcessorByTask($taskMock);
     }
 
     /**
      * @test
      */
-    public function getProcessorWhenSameProcessorIsRegisteredTwice()
+    public function getProcessorWhenSameProcessorIsRegisteredTwice(): void
     {
-        $subject = $this->getAccessibleMockForAbstractClass(
-            ProcessorRegistry::class,
-            [],
-            '',
-            false
-        );
-        $subject->_set('registeredProcessors', [
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['processors'] = [
             'LocalImageProcessor' => [
                 'className' => LocalImageProcessor::class,
             ],
@@ -108,24 +70,13 @@ class ProcessorRegistryTest extends UnitTestCase
                 'className' => LocalImageProcessor::class,
                 'after' => 'LocalImageProcessor',
             ],
-        ]);
-        $taskMock = $this->getAccessibleMockForAbstractClass(
-            AbstractTask::class,
-            [],
-            '',
-            false,
-            false,
-            false,
-            ['getType', 'getName']
-        );
-        $taskMock->expects(self::once())
-            ->method('getType')
-            ->willReturn('Image');
-        $taskMock->expects(self::once())
-            ->method('getName')
-            ->willReturn('CropScaleMask');
+        ];
+        $subject =  new ProcessorRegistry();
+        $taskMock = $this->prophesize(AbstractTask::class);
+        $taskMock->getType()->willReturn('Image');
+        $taskMock->getName()->willReturn('CropScaleMask');
 
-        $processor = $subject->getProcessorByTask($taskMock);
+        $processor = $subject->getProcessorByTask($taskMock->reveal());
 
         self::assertInstanceOf(LocalImageProcessor::class, $processor);
     }

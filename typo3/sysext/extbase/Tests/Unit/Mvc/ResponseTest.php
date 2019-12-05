@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Mvc\Response;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -24,56 +25,56 @@ class ResponseTest extends UnitTestCase
     /**
      * @var \TYPO3\CMS\Extbase\Mvc\Response|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
-    protected $mockResponse;
+    protected $response;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mockResponse = $this->getAccessibleMock(\TYPO3\CMS\Extbase\Mvc\Response::class, ['dummy']);
+        $this->response = new Response();
     }
 
     /**
      * @test
      */
-    public function propertyContentInitiallyIsNull()
+    public function propertyContentInitiallyIsNull(): void
     {
-        self::assertNull($this->mockResponse->_get('content'));
+        self::assertNull($this->response->getContent());
     }
 
     /**
      * @test
      */
-    public function setContentSetsContentCorrectly()
+    public function setContentSetsContentCorrectly(): void
     {
-        $this->mockResponse->setContent('foo');
-        self::assertSame('foo', $this->mockResponse->_get('content'));
+        $this->response->setContent('foo');
+        self::assertSame('foo', $this->response->getContent());
     }
 
     /**
      * @test
      */
-    public function appendContentAppendsContentCorrectly()
+    public function appendContentAppendsContentCorrectly(): void
     {
-        $this->mockResponse->_set('content', 'foo');
-        $this->mockResponse->appendContent('bar');
-        self::assertSame('foobar', $this->mockResponse->_get('content'));
+        $this->response->setContent('foo');
+        $this->response->appendContent('bar');
+        self::assertSame('foobar', $this->response->getContent());
     }
 
     /**
      * @test
      */
-    public function getContentReturnsContentCorrectly()
+    public function getContentReturnsContentCorrectly(): void
     {
-        $this->mockResponse->_set('content', 'foo');
-        self::assertSame('foo', $this->mockResponse->getContent());
+        $this->response->setContent('foo');
+        self::assertSame('foo', $this->response->getContent());
     }
 
     /**
      * @test
      */
-    public function __toStringReturnsActualContent()
+    public function __toStringReturnsActualContent(): void
     {
-        $this->mockResponse->_set('content', 'foo');
-        self::assertSame('foo', (string)$this->mockResponse);
+        $this->response->setContent('foo');
+        self::assertSame('foo', (string)$this->response);
     }
 }

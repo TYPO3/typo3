@@ -18,14 +18,16 @@ use TYPO3\CMS\Core\LinkHandling\FolderLinkHandler;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FolderLinkHandlerTest extends UnitTestCase
 {
-
-    /**
-     * testing folders
-     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->resetSingletonInstances = true;
+    }
 
     /**
      * Data provider for pointing to files
@@ -34,7 +36,7 @@ class FolderLinkHandlerTest extends UnitTestCase
      *
      * @return array
      */
-    public function resolveParametersForFilesDataProvider()
+    public function resolveParametersForFilesDataProvider(): array
     {
         return [
             'folder without FAL - cool style' => [
@@ -65,13 +67,12 @@ class FolderLinkHandlerTest extends UnitTestCase
      *
      * @test
      *
-     * @param string $input
+     * @param array $input
      * @param array  $expected
-     * @param string $finalString
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function resolveFileReferencesToSplitParameters($input, $expected, $finalString)
+    public function resolveFileReferencesToSplitParameters(array $input, array $expected): void
     {
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
@@ -86,10 +87,10 @@ class FolderLinkHandlerTest extends UnitTestCase
         $factory->expects(self::once())->method('getFolderObjectFromCombinedIdentifier')->with($expected['folder'])
             ->willReturn($folderObject);
         $expected['folder'] = $folderObject;
+        GeneralUtility::setSingletonInstance(ResourceFactory::class, $factory);
 
-        /** @var FolderLinkHandler|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
-        $subject = $this->getAccessibleMock(FolderLinkHandler::class, ['dummy']);
-        $subject->_set('resourceFactory', $factory);
+        $subject = new FolderLinkHandler();
+
         self::assertEquals($expected, $subject->resolveHandlerData($input));
     }
 
@@ -98,16 +99,16 @@ class FolderLinkHandlerTest extends UnitTestCase
      *
      * @test
      *
-     * @param string $input
+     * @param array $input
      * @param array  $parameters
      * @param string $expected
      *
      * @dataProvider resolveParametersForFilesDataProvider
      */
-    public function splitParametersToUnifiedIdentifierForFiles($input, $parameters, $expected)
+    public function splitParametersToUnifiedIdentifierForFiles(array $input, array $parameters, string $expected): void
     {
         $folderObject = $this->getMockBuilder(Folder::class)
-            ->setMethods(['getCombinedIdentifier', 'getStorage', 'getIdentifier'])
+            ->onlyMethods(['getCombinedIdentifier', 'getStorage', 'getIdentifier'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -118,8 +119,8 @@ class FolderLinkHandlerTest extends UnitTestCase
             ->disableOriginalConstructor()
             ->getMock(['getUid']);
         $storage->method('getUid')->willReturn($folderData[0]);
-        $folderObject->expects(self::any())->method('getStorage')->willReturn($storage);
-        $folderObject->expects(self::any())->method('getIdentifier')->willReturn($folderData[1]);
+        $folderObject->method('getStorage')->willReturn($storage);
+        $folderObject->method('getIdentifier')->willReturn($folderData[1]);
         $parameters['folder'] = $folderObject;
 
         $subject = new FolderLinkHandler();

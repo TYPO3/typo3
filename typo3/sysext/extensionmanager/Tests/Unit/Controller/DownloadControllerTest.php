@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  */
 
 use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -25,14 +26,14 @@ class DownloadControllerTest extends UnitTestCase
     /**
      * @test
      */
-    public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown()
+    public function installFromTerReturnsArrayWithBooleanResultAndErrorArrayWhenExtensionManagerExceptionIsThrown(): void
     {
         $dummyExceptionMessage = 'exception message';
         $dummyException = new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($dummyExceptionMessage, 1476108614);
 
         $dummyExtensionName = 'dummy_extension';
-        $dummyExtension = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension::class)->getMock();
-        $dummyExtension->expects(self::any())->method('getExtensionKey')->willReturn($dummyExtensionName);
+        $dummyExtension = new Extension();
+        $dummyExtension->setExtensionKey($dummyExtensionName);
 
         /** @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility|MockObject $downloadUtilityMock */
         $downloadUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility::class)->getMock();

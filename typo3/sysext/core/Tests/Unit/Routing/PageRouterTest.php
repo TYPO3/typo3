@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Routing\PageSlugCandidateProvider;
 use TYPO3\CMS\Core\Routing\RouteNotFoundException;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageRouterTest extends UnitTestCase
@@ -36,7 +37,7 @@ class PageRouterTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchRequestThrowsExceptionIfNoPreviousResultGiven()
+    public function matchRequestThrowsExceptionIfNoPreviousResultGiven(): void
     {
         $this->expectException(RouteNotFoundException::class);
         $this->expectExceptionCode(1555303496);
@@ -49,7 +50,7 @@ class PageRouterTest extends UnitTestCase
     /**
      * @test
      */
-    public function properSiteConfigurationFindsRoute()
+    public function properSiteConfigurationFindsRoute(): void
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom';
         $pageRecord = ['uid' => 13, 'l10n_parent' => 0, 'slug' => '/mr-magpie/bloom'];
@@ -67,12 +68,11 @@ class PageRouterTest extends UnitTestCase
 
         $pageSlugCandidateProvider = $this->prophesize(PageSlugCandidateProvider::class);
         $pageSlugCandidateProvider->getCandidatesForPath('/mr-magpie/bloom', $language)->willReturn([$pageRecord]);
+        GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider->reveal());
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom');
-        $subject = $this->getAccessibleMock(PageRouter::class, ['getSlugCandidateProvider'], [$site, []]);
-        $subject->expects(self::once())->method('getSlugCandidateProvider')->willReturn($pageSlugCandidateProvider->reveal());
-        $routeResult = $subject->matchRequest($request, $previousResult);
+        $routeResult = (new PageRouter($site))->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new PageArguments(13, '0', [], [], []);
         self::assertEquals($expectedRouteResult, $routeResult);
@@ -99,12 +99,11 @@ class PageRouterTest extends UnitTestCase
         $language = $site->getDefaultLanguage();
         $pageSlugCandidateProvider = $this->prophesize(PageSlugCandidateProvider::class);
         $pageSlugCandidateProvider->getCandidatesForPath(Argument::cetera())->willReturn([$pageRecord]);
+        GeneralUtility::addInstance(PageSlugCandidateProvider::class, $pageSlugCandidateProvider->reveal());
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $previousResult = new SiteRouteResult($request->getUri(), $site, $language, '/mr-magpie/bloom/');
-        $subject = $this->getAccessibleMock(PageRouter::class, ['getSlugCandidateProvider'], [$site, []]);
-        $subject->expects(self::once())->method('getSlugCandidateProvider')->willReturn($pageSlugCandidateProvider->reveal());
-        $routeResult = $subject->matchRequest($request, $previousResult);
+        $routeResult = (new PageRouter($site))->matchRequest($request, $previousResult);
 
         $expectedRouteResult = new PageArguments((int)$pageRecord['uid'], '0', []);
         self::assertEquals($expectedRouteResult, $routeResult);
