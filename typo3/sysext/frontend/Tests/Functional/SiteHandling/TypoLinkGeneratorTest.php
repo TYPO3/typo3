@@ -32,7 +32,7 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequestCon
 /**
  * Test case for build URLs with TypoLink via Frontend Request.
  */
-class TypoLinkTest extends AbstractTestCase
+class TypoLinkGeneratorTest extends AbstractTestCase
 {
     /**
      * @var string
