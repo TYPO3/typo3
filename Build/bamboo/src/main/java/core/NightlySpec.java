@@ -47,7 +47,7 @@ public class NightlySpec extends AbstractCoreSpec {
     private static int numberOfFunctionalSqliteJobs = 6;
     private static int numberOfUnitRandomOrderJobs = 2;
 
-    private String[] phpVersions = {"PHP72", "PHP73"};
+    private String[] phpVersions = {"PHP72", "PHP73", "PHP74"};
     private String[] mySqlPdoVersions = {"5.5", "5.6", "5.7"};
     private String[] mySqlVersions = {"5.5", "5.6", "5.7"};
     private String[] mariaDbPdoVersions = {"5.5", "10.0", "10.1", "10.3"};
