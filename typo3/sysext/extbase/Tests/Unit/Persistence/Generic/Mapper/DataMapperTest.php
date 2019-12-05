@@ -19,7 +19,10 @@ use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -142,6 +145,43 @@ class DataMapperTest extends UnitTestCase
         $dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
         $result = $dataMapper->_call('fetchRelatedEager', $this->createMock(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity::class), 'SomeName', '');
         $this->assertEquals([], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function thawPropertiesThrowsExceptionOnUnknownPropertyType(): void
+    {
+        $className = Fixture\DummyEntity::class;
+        $object = new Fixture\DummyEntity();
+        $row = [
+            'uid' => '1234',
+            'unknownType' => 'What am I?'
+        ];
+        $columnMaps = [
+            'unknownType' => new ColumnMap('unknownType', 'unknownType'),
+        ];
+        $dataMap = $this->getAccessibleMock(DataMap::class, ['dummy'], [$className, $className]);
+        $dataMap->_set('columnMaps', $columnMaps);
+        $dataMaps = [
+            $className => $dataMap
+        ];
+        /** @var AccessibleObjectInterface|\TYPO3\CMS\Extbase\Reflection\ClassSchema $classSchema */
+        $classSchema = new ClassSchema($className);
+        $mockReflectionService = $this->getMockBuilder(\TYPO3\CMS\Extbase\Reflection\ReflectionService::class)
+            ->setMethods(['getClassSchema'])
+            ->getMock();
+        $mockReflectionService->method('getClassSchema')->willReturn($classSchema);
+        $dataMapFactory = $this->getAccessibleMock(DataMapFactory::class, ['dummy'], [], '', false);
+        $dataMapFactory->_set('dataMaps', $dataMaps);
+        $dataMapper = $this->getAccessibleMock(
+            DataMapper::class,
+            ['dummy']
+        );
+        $dataMapper->injectReflectionService($mockReflectionService);
+        $dataMapper->injectDataMapFactory($dataMapFactory);
+        $this->expectException(UnknownPropertyTypeException::class);
+        $dataMapper->_call('thawProperties', $object, $row);
     }
 
     /**

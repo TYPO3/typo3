@@ -39,4 +39,9 @@ class DummyEntity extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var bool
      */
     public $fourthProperty;
+
+    /**
+     * no var here :(
+     */
+    public $unknownType;
 }

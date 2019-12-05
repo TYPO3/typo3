@@ -21,6 +21,7 @@ use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
 /**
@@ -249,6 +250,8 @@ class DataMapper
      *
      * @param DomainObjectInterface $object The object to set properties on
      * @param array $row
+     * @throws Exception\NonExistentPropertyException
+     * @throws Exception\UnknownPropertyTypeException
      */
     protected function thawProperties(DomainObjectInterface $object, array $row)
     {
@@ -275,10 +278,30 @@ class DataMapper
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
             $columnName = $columnMap->getColumnName();
-            $propertyData = $classSchema->getProperty($propertyName);
+
+            $property = $classSchema->getProperty($propertyName);
+            if (empty($property)) {
+                throw new Exception\NonExistentPropertyException(
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, ' .
+                    'as property ' . $propertyName . ' is unknown to the ' . ClassSchema::class . ' instance of class .' .
+                    $className . '. Please make sure said property exists and that you cleared all caches to trigger' .
+                    'a new build of said ' . ClassSchema::class . ' instance.',
+                    1580056272
+                );
+            }
+
+            $propertyType = $property['type'] ?? null;
+            if ($propertyType === null) {
+                throw new Exception\UnknownPropertyTypeException(
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
+                    var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via php doc blocks. ' .
+                    'Make sure the property has a valid @var tag set which defines the type.',
+                    1579965021
+                );
+            }
             $propertyValue = null;
             if (isset($row[$columnName])) {
-                switch ($propertyData['type']) {
+                switch ($propertyType) {
                     case 'integer':
                         $propertyValue = (int)$row[$columnName];
                         break;
@@ -302,16 +325,16 @@ class DataMapper
                             $this->fetchRelated($object, $propertyName, $row[$columnName])
                         );
                         break;
-                    case is_subclass_of($propertyData['type'], \DateTimeInterface::class):
+                    case is_subclass_of($propertyType, \DateTimeInterface::class):
                             $propertyValue = $this->mapDateTime(
                                 $row[$columnName],
                                 $columnMap->getDateTimeStorageFormat(),
-                                $propertyData['type']
+                                $propertyType
                             );
                         break;
                     default:
-                        if (TypeHandlingUtility::isCoreType($propertyData['type'])) {
-                            $propertyValue = $this->mapCoreType($propertyData['type'], $row[$columnName]);
+                        if (TypeHandlingUtility::isCoreType($propertyType)) {
+                            $propertyValue = $this->mapCoreType($propertyType, $row[$columnName]);
                         } else {
                             $propertyValue = $this->mapObjectToClassProperty(
                                 $object,
