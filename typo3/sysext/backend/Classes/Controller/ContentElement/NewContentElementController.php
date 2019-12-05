@@ -270,7 +270,7 @@ class NewContentElementController
 
             foreach ($wizardItems as $wizardKey => $wInfo) {
                 $wizardOnClick = '';
-                if ($wInfo['header']) {
+                if (isset($wInfo['header'])) {
                     $menuItems[] = [
                         'label' => $wInfo['header'] ?: '-',
                         'content' => ''
