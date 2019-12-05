@@ -22,6 +22,7 @@ use TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException;
 use TYPO3\CMS\Extbase\Persistence;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ClassSchema;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 
@@ -204,6 +205,8 @@ class DataMapper
      *
      * @param DomainObjectInterface $object The object to set properties on
      * @param array $row
+     * @throws Exception\NonExistentPropertyException
+     * @throws Exception\UnknownPropertyTypeException
      */
     protected function thawProperties(DomainObjectInterface $object, array $row)
     {
@@ -230,7 +233,28 @@ class DataMapper
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
             $columnName = $columnMap->getColumnName();
-            $propertyType = $classSchema->getProperty($propertyName)->getType();
+
+            try {
+                $property = $classSchema->getProperty($propertyName);
+            } catch (NoSuchPropertyException $e) {
+                throw new Exception\NonExistentPropertyException(
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, ' .
+                    'as property ' . $propertyName . ' is unknown to the ' . ClassSchema::class . ' instance of class .' .
+                    $className . '. Please make sure said property exists and that you cleared all caches to trigger' .
+                    'a new build of said ' . ClassSchema::class . ' instance.',
+                    1580056272
+                );
+            }
+
+            $propertyType = $property->getType();
+            if ($propertyType === null) {
+                throw new Exception\UnknownPropertyTypeException(
+                    'The type of property ' . $className . '::' . $propertyName . ' could not be identified, therefore the desired value (' .
+                    var_export($propertyValue, true) . ') cannot be mapped onto it. The type of a class property is usually defined via php doc blocks. ' .
+                    'Make sure the property has a valid @var tag set which defines the type.',
+                    1579965021
+                );
+            }
             $propertyValue = null;
             if (isset($row[$columnName])) {
                 switch ($propertyType) {
