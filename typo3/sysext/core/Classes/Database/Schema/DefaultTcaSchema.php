@@ -314,6 +314,7 @@ class DefaultTcaSchema
                         'unsigned' => true,
                     ]
                 );
+                $tables[$tablePosition]->addIndex([$tableDefinition['ctrl']['translationSource']], 'translation_source');
             }
 
             // l10n_state column
