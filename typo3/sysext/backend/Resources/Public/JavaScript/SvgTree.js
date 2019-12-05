@@ -258,31 +258,32 @@ define(
           return;
         }
         e.preventDefault();
+        var parentDomNode = e.target.parentNode;
         switch (e.keyCode) {
           case keyTypesEnum.END:
             // scroll to end, select last node
-            var parent = e.target.parentNode;
             this.scrollTop = this.wrapper[0].lastElementChild.scrollHeight + this.settings.nodeHeight - this.viewportHeight;
             this.wrapper.scrollTop(this.scrollTop);
             this.updateScrollPosition();
             this.update();
-            this.switchFocus(parent.lastElementChild);
+            this.switchFocus(parentDomNode.lastElementChild);
             break;
           case keyTypesEnum.HOME:
             // scroll to top, select first node
-            var parent = e.target.parentNode;
             this.scrollTop = this.nodes[0].y;
             this.wrapper.scrollTop(this.scrollTop);
             this.update();
-            this.switchFocus(parent.firstElementChild);
+            this.switchFocus(parentDomNode.firstElementChild);
             break;
           case keyTypesEnum.LEFT:
             if (currentNode.expanded) {
-              // collapse node
-              this.hideChildren(currentNode);
-              this.prepareDataForVisibleNodes();
-              this.update();
-            } else {
+              // collapse node if collapsible
+              if (currentNode.canToggle) {
+                this.hideChildren(currentNode);
+                this.prepareDataForVisibleNodes();
+                this.update();
+              }
+            } else if (currentNode.parents.length > 0) {
               // go to parent node
               var parentNode = this.nodes[currentNode.parents[0]];
               this.scrollNodeIntoVisibleArea(parentNode, 'up');
