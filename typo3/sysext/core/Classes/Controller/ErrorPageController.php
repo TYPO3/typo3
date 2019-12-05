@@ -19,8 +19,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContext;
-use TYPO3Fluid\Fluid\View\TemplatePaths;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
 /**
@@ -47,14 +45,11 @@ class ErrorPageController
     public function __construct()
     {
         $this->view = GeneralUtility::makeInstance(TemplateView::class);
-        $context = new RenderingContext($this->view);
-        $context->setControllerName('ErrorPage');
-        $context->setTemplatePaths(new TemplatePaths([
-            'templateRootPaths' => [
-                Environment::getFrameworkBasePath() . '/core/Resources/Private/Templates/ErrorPage/'
-            ]
-        ]));
-        $this->view->setRenderingContext($context);
+        $this->view->getRenderingContext()
+            ->getTemplatePaths()
+            ->setTemplatePathAndFilename(
+                Environment::getFrameworkBasePath() . '/core/Resources/Private/Templates/ErrorPage/Error.html'
+            );
     }
 
     /**
@@ -89,6 +84,6 @@ class ErrorPageController
         $this->view->assign('logo', PathUtility::getAbsoluteWebPath(Environment::getFrameworkBasePath() . '/backend/Resources/Public/Images/typo3_orange.svg'));
         $this->view->assign('cssFile', PathUtility::getAbsoluteWebPath(Environment::getFrameworkBasePath() . '/core/Resources/Public/Css/errorpage.css'));
         $this->view->assign('copyrightYear', TYPO3_copyright_year);
-        return $this->view->render('Error');
+        return $this->view->render();
     }
 }
