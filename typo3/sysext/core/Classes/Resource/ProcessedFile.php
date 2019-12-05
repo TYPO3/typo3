@@ -183,7 +183,7 @@ class ProcessedFile extends AbstractFile
      */
     public function updateWithLocalFile($filePath)
     {
-        if ($this->identifier === null) {
+        if (empty($this->identifier)) {
             throw new \RuntimeException('Cannot update original file!', 1350582054);
         }
         $processingFolder = $this->originalFile->getStorage()->getProcessingFolder($this->originalFile);
@@ -420,7 +420,7 @@ class ProcessedFile extends AbstractFile
      */
     public function usesOriginalFile()
     {
-        return $this->identifier === null || $this->identifier === $this->originalFile->getIdentifier();
+        return empty($this->identifier) || $this->identifier === $this->originalFile->getIdentifier();
     }
 
     /**
