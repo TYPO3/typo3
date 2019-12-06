@@ -156,6 +156,7 @@ class PersistentObjectConverter extends ObjectConverter
             }
             $object = $this->fetchObjectFromPersistence($source, $targetType);
         } else {
+            // todo: this case is impossible as this converter is never called with a source that is not an integer, a string or an array
             throw new \InvalidArgumentException('Only integers, strings and arrays are accepted.', 1305630314);
         }
         foreach ($convertedChildProperties as $propertyName => $propertyValue) {

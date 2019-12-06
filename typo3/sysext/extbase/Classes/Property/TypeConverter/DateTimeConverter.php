@@ -95,6 +95,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     public function canConvertFrom($source, string $targetType): bool
     {
         if (!is_callable([$targetType, 'createFromFormat'])) {
+            // todo: this check does not make sense as this converter is only called on \DateTime targets
             return false;
         }
         if (is_array($source)) {
@@ -145,6 +146,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
             return null;
         }
         if (ctype_digit($dateAsString) && $configuration === null && (!is_array($source) || !isset($source['dateFormat']))) {
+            // todo: type converters are never called without a property mapping configuration
             $dateFormat = 'U';
         }
         if (is_array($source) && isset($source['timezone']) && (string)$source['timezone'] !== '') {
@@ -190,6 +192,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
     protected function getDefaultDateFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = null): string
     {
         if ($configuration === null) {
+            // todo: type converters are never called without a property mapping configuration
             return self::DEFAULT_DATE_FORMAT;
         }
         $dateFormat = $configuration->getConfigurationValue(DateTimeConverter::class, self::CONFIGURATION_DATE_FORMAT);

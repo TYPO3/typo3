@@ -159,6 +159,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         $targetType = $typeConverter->getTargetTypeForSource($source, $targetType, $configuration);
 
         if (!is_object($typeConverter) || !$typeConverter instanceof \TYPO3\CMS\Extbase\Property\TypeConverterInterface) {
+            // todo: this Exception is never thrown as findTypeConverter returns an object or throws an Exception.
             throw new Exception\TypeConverterException(
                 'Type converter for "' . $source . '" -> "' . $targetType . '" not found.',
                 1476045062
@@ -295,6 +296,9 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
         if (isset($convertersForSource['object'])) {
             return $this->findEligibleConverterWithHighestPriority($convertersForSource['object'], $source, $targetClass);
         }
+
+        // todo: this case is impossible because at this point there must be an ObjectConverter
+        // todo: which allowed the processing up to this point.
         return null;
     }
 
@@ -307,6 +311,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface
     protected function findEligibleConverterWithHighestPriority($converters, $source, $targetType)
     {
         if (!is_array($converters)) {
+            // todo: this case is impossible as initializeObject always defines an array.
             return null;
         }
         krsort($converters, SORT_NUMERIC);

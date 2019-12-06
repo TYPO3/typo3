@@ -192,6 +192,7 @@ class ObjectConverter extends AbstractTypeConverter
             $targetType = $source['__type'];
 
             if ($configuration === null) {
+                // todo: this is impossible to achieve since this methods is always called via (convert -> doMapping -> getTargetTypeForSource) and convert and doMapping create configuration objects if missing.
                 throw new \InvalidArgumentException('A property mapping configuration must be given, not NULL.', 1326277369);
             }
             if ($configuration->getConfigurationValue(\TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter::class, self::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED) !== true) {
