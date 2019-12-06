@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use TYPO3\CMS\Core\Console\CommandRegistry;
@@ -36,6 +37,16 @@ class ExecuteSchedulableCommandTask extends AbstractTask
      * @var array
      */
     protected $arguments = [];
+
+    /**
+     * @var array
+     */
+    protected $options = [];
+
+    /**
+     * @var array
+     */
+    protected $optionValues = [];
 
     /**
      * @var array
@@ -85,7 +96,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
             );
         }
 
-        $input = new ArrayInput($this->getArguments(), $schedulableCommand->getDefinition());
+        $input = new ArrayInput($this->getParameters(false), $schedulableCommand->getDefinition());
         $output = new NullOutput();
 
         return $schedulableCommand->run($input, $output) === 0;
@@ -111,12 +122,18 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         }
 
         try {
-            $input = new ArrayInput($this->getArguments(), $schedulableCommand->getDefinition());
+            $input = new ArrayInput($this->getParameters(true), $schedulableCommand->getDefinition());
             $arguments = $input->__toString();
         } catch (\Symfony\Component\Console\Exception\RuntimeException $e) {
             return $label . "\n"
                 . sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingArguments'),
+                    $e->getMessage()
+                );
+        } catch (InvalidOptionException $e) {
+            return $label . "\n"
+                . sprintf(
+                    $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingOptions'),
                     $e->getMessage()
                 );
         }
@@ -127,20 +144,34 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         return $label;
     }
 
-    /**
-     * @return array
-     */
     public function getArguments(): array
     {
         return $this->arguments;
     }
 
-    /**
-     * @param array $arguments
-     */
     public function setArguments(array $arguments)
     {
         $this->arguments = $arguments;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+    }
+
+    public function getOptionValues(): array
+    {
+        return $this->optionValues;
+    }
+
+    public function setOptionValues(array $optionValues)
+    {
+        $this->optionValues = $optionValues;
     }
 
     /**
@@ -161,5 +192,17 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     public function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    private function getParameters(bool $forDisplay): array
+    {
+        $options = [];
+        foreach ($this->options as $name => $enabled) {
+            if ($enabled) {
+                $value = $this->optionValues[$name] ?? null;
+                $options['--' . $name] = ($forDisplay && $value === true) ? '' : $value;
+            }
+        }
+        return array_merge($this->arguments, $options);
     }
 }
