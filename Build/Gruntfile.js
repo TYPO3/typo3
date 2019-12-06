@@ -442,12 +442,8 @@ module.exports = function (grunt) {
           */
           'broadcastchannel-polyfill.js': 'broadcastchannel-polyfill/index.js',
           'bootstrap-slider.min.js': 'bootstrap-slider/dist/bootstrap-slider.min.js',
-          /* disabled until events are not bound to document only
-                       see https://github.com/claviska/jquery-minicolors/issues/192
-                       see https://github.com/claviska/jquery-minicolors/issues/206
-                       'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
-                       '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png'
-                     */
+          'jquery.minicolors.js': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.min.js',
+          '../../Images/colorpicker/jquery.minicolors.png': '../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png',
           /* disabled until autocomplete formatGroup is fixed to pass on the index too
                        'jquery.autocomplete.js': '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
                      */

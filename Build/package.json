@@ -12,7 +12,7 @@
     "yarn": "^1.10.0"
   },
   "devDependencies": {
-    "@claviska/jquery-minicolors": "^2.2.6",
+    "@claviska/jquery-minicolors": "^2.3.4",
     "@types/bootstrap": "^3.3.34",
     "@types/chosen-js": "^1.8.1",
     "@types/chrome": "^0.0.69",

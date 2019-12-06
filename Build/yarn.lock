@@ -90,12 +90,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@claviska/jquery-minicolors@^2.2.6":
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/@claviska/jquery-minicolors/-/jquery-minicolors-2.2.6.tgz#00b4c1e4e31e4da483501785d5c2ed3fccfdedc9"
-  integrity sha1-ALTB5OMeTaSDUBeF1cLtP8z97ck=
-  dependencies:
-    jquery ">= 1.7.x"
+"@claviska/jquery-minicolors@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@claviska/jquery-minicolors/-/jquery-minicolors-2.3.4.tgz#8f5c4af3e7d55396890288b357742711b368f75a"
+  integrity sha512-YSa2enAGxtPNGqI86a49XY3BO+dkEaX0XA6dBpk2+OG60zwNdDmbsoiaQ39dS48jdIEmNTYigw3Kt1YiWc1Q3A==
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -5150,7 +5148,7 @@ jpegtran-bin@^4.0.0:
   version "1.11.4"
   resolved "https://codeload.github.com/jquery/jquery-ui/tar.gz/d6713024e16de90ea71dc0544ba34e1df01b4d8a"
 
-"jquery@>= 1.7.x", "jquery@>= 1.9.1", jquery@>=1.7, "jquery@^1.8.3 || ^2.0 || ^3.0":
+"jquery@>= 1.9.1", jquery@>=1.7, "jquery@^1.8.3 || ^2.0 || ^3.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
   integrity sha1-XE2d5lKvbNCncBVKYxu6ErAVx4c=
