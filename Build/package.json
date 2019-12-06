@@ -78,7 +78,7 @@
     "postcss-banner": "^3.0.1",
     "postcss-clean": "^1.1.0",
     "requirejs": "^2.3.3",
-    "sortablejs": "^1.9.0",
+    "sortablejs": "^1.10.1",
     "stylefmt": "^6.0.0",
     "taboverride": "^4.0.3",
     "tagsort": "1.4.0",
