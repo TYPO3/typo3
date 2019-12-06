@@ -48,4 +48,7 @@ entities:
         - self: {id: 1300, title: 'EN: Products', slug: '/products'}
           languageVariants:
             - self: {id: 1302, title: 'DE-CH: Produkte', language: 2, slug: '/produkte'}
-        - self: {id: 1400, title: 'EN: Shortcut to welcome', slug: '/shortcut-to-welcome', type: *pageShortcut, shortcut: 1100, l18n_cfg: 0}
+        - self: {id: 1400, title: 'EN: Shortcut to welcome', slug: '/shortcut-to-welcome', type: *pageShortcut, shortcut: 1100, l18n_cfg: 0, l10n_state: '{"shortcut":"custom"}'}
+        - self: {id: 1500, title: 'EN: Company', slug: '/company'}
+          languageVariants:
+            - self: {id: 1501, title: 'DE: Unternehmen', language: 1, slug: '/shortcut-to-about', type: *pageShortcut, shortcut: 1200, shortcut_mode: 0, l18n_cfg: 0, l10n_state: '{"shortcut":"custom","shortcut_mode":"custom"}'}
