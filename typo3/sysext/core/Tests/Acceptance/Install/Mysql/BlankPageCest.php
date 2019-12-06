@@ -68,7 +68,6 @@ class BlankPageCest
         $I->click('#t3-login-submit-section > button');
         $I->waitForElement('.nav', 30);
         $I->waitForElement('.scaffold-content iframe', 30);
-        $I->seeCookie('be_lastLoginProvider');
         $I->seeCookie('be_typo_user');
 
         // Verify default frontend is rendered

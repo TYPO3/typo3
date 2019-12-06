@@ -570,28 +570,31 @@ class LoginController implements LoggerAwareInterface
         if ((empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) && !empty($_COOKIE['be_lastLoginProvider'])) {
             $loginProvider = $_COOKIE['be_lastLoginProvider'];
         }
+        reset($this->loginProviders);
+        $primaryLoginProvider = (string)key($this->loginProviders);
         if (empty($loginProvider) || !isset($this->loginProviders[$loginProvider])) {
-            reset($this->loginProviders);
-            $loginProvider = key($this->loginProviders);
+            $loginProvider = $primaryLoginProvider;
         }
-        // Use the secure option when the current request is served by a secure connection
-        /** @var NormalizedParams $normalizedParams */
-        $normalizedParams = $request->getAttribute('normalizedParams');
-        $isHttps = $normalizedParams->isHttps();
-        $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && $isHttps;
-        $cookie = new Cookie(
-            'be_lastLoginProvider',
-            (string)$loginProvider,
-            $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
-            $normalizedParams->getSitePath() . TYPO3_mainDir,
-            '',
-            $cookieSecure,
-            true,
-            false,
-            Cookie::SAMESITE_STRICT
-        );
-        header('Set-Cookie: ' . $cookie->__toString(), false);
 
+        if ($loginProvider !== $primaryLoginProvider) {
+            // Use the secure option when the current request is served by a secure connection
+            /** @var NormalizedParams $normalizedParams */
+            $normalizedParams = $request->getAttribute('normalizedParams');
+            $isHttps = $normalizedParams->isHttps();
+            $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && $isHttps;
+            $cookie = new Cookie(
+                'be_lastLoginProvider',
+                $loginProvider,
+                $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
+                $normalizedParams->getSitePath() . TYPO3_mainDir,
+                '',
+                $cookieSecure,
+                true,
+                false,
+                Cookie::SAMESITE_STRICT
+            );
+            header('Set-Cookie: ' . $cookie->__toString(), false);
+        }
         return (string)$loginProvider;
     }
 
