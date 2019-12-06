@@ -15,7 +15,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\DependencyInjection\FailsafeContainer;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
@@ -93,10 +92,10 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
-        $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
-        GeneralUtility::setContainer(new FailsafeContainer([], [
-            DatabaseTreeDataProvider::class => $treeDataProvider->reveal()
-        ]));
+        if ($tcaConfiguration['internal_type'] === 'db' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
+            $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
+            GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider->reveal());
+        }
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode($expectedExceptionCode);
