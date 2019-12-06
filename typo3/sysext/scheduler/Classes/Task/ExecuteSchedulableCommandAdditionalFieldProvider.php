@@ -19,6 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputOption;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -87,6 +88,8 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $fields['description'] = $this->getCommandDescriptionField($command->getDescription());
             $argumentFields = $this->getCommandArgumentFields($command->getDefinition());
             $fields = array_merge($fields, $argumentFields);
+            $optionFields = $this->getCommandOptionFields($command->getDefinition());
+            $fields = array_merge($fields, $optionFields);
             $this->task->save(); // todo: this seems to be superfluous
         }
 
@@ -136,6 +139,36 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
                 }
             }
         }
+
+        foreach ($command->getDefinition()->getOptions() as $optionDefinition) {
+            $optionEnabled = $submittedData['task_executeschedulablecommand']['options'][$optionDefinition->getName()] ?? false;
+            $optionValue = $submittedData['task_executeschedulablecommand']['option_values'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
+            if ($optionEnabled && $optionDefinition->isValueRequired()) {
+                if ($optionDefinition->isArray()) {
+                    $testValues = is_array($optionValue) ? $optionValue : GeneralUtility::trimExplode(',', $optionValue, false);
+                } else {
+                    $testValues = [$optionValue];
+                }
+
+                foreach ($testValues as $testValue) {
+                    if ($testValue === null || trim($testValue) === '') {
+                        // An option that requires a value is used with an empty value
+                        $flashMessageService->getMessageQueueByIdentifier()->addMessage(
+                            new FlashMessage(
+                                sprintf(
+                                    $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.mandatoryArgumentMissing'),
+                                    $optionDefinition->getName()
+                                ),
+                                $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.updateError'),
+                                FlashMessage::ERROR
+                            )
+                        );
+                        $hasErrors = true;
+                    }
+                }
+            }
+        }
+
         return $hasErrors === false;
     }
 
@@ -168,7 +201,30 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $arguments[$argumentName] = $argumentValue;
         }
 
+        $options = [];
+        $optionValues = [];
+        foreach ($command->getDefinition()->getOptions() as $optionDefinition) {
+            $optionEnabled = $submittedData['task_executeschedulablecommand']['options'][$optionDefinition->getName()] ?? false;
+            $options[$optionDefinition->getName()] = (bool)$optionEnabled;
+
+            if ($optionDefinition->isValueRequired() || $optionDefinition->isValueOptional() || $optionDefinition->isArray()) {
+                $optionValue = $submittedData['task_executeschedulablecommand']['option_values'][$optionDefinition->getName()] ?? $optionDefinition->getDefault();
+                if ($optionDefinition->isArray() && !is_array($optionValue)) {
+                    // Do not remove empty array values.
+                    // One empty array element indicates the existence of one occurence of an array option (InputOption::VALUE_IS_ARRAY) without a value.
+                    // Empty array elements are also required for command options like "-vvv" (can be entered as ",,").
+                    $optionValue = GeneralUtility::trimExplode(',', $optionValue, false);
+                }
+            } else {
+                // boolean flag: option value must be true if option is added or false otherwise
+                $optionValue = (bool)$optionEnabled;
+            }
+            $optionValues[$optionDefinition->getName()] = $optionValue;
+        }
+
         $task->setArguments($arguments);
+        $task->setOptions($options);
+        $task->setOptionValues($optionValues);
         return true;
     }
 
@@ -227,8 +283,41 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             }
 
             $fields[$name] = [
-                'code' => $this->renderField($argument, (string)$value),
+                'code' => $this->renderArgumentField($argument, (string)$value),
                 'label' => $this->getArgumentLabel($argument)
+            ];
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Gets a set of fields covering options which can or must be used.
+     * Also registers the default values of those fields with the Task, allowing
+     * them to be read upon execution.
+     *
+     * @param InputDefinition $inputDefinition
+     * @return array
+     */
+    protected function getCommandOptionFields(InputDefinition $inputDefinition): array
+    {
+        $fields = [];
+        $enabledOptions = $this->task->getOptions();
+        $optionValues = $this->task->getOptionValues();
+        foreach ($inputDefinition->getOptions() as $option) {
+            $name = $option->getName();
+            $defaultValue = $option->getDefault();
+            $this->task->addDefaultValue($name, $defaultValue);
+            $enabled = $enabledOptions[$name] ?? false;
+            $value = $optionValues[$name] ?? $defaultValue;
+
+            if (is_array($value) && $option->isArray()) {
+                $value = implode(',', $value);
+            }
+
+            $fields[$name] = [
+                'code' => $this->renderOptionField($option, (bool)$enabled, (string)$value),
+                'label' => $this->getOptionLabel($option)
             ];
         }
 
@@ -244,6 +333,17 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     protected function getArgumentLabel(InputArgument $argument): string
     {
         return 'Argument: ' . $argument->getName() . '. <em>' . htmlspecialchars($argument->getDescription()) . '</em>';
+    }
+
+    /**
+     * Get a human-readable label for a command option
+     *
+     * @param InputOption $option
+     * @return string
+     */
+    protected function getOptionLabel(InputOption $option): string
+    {
+        return 'Option: ' . htmlspecialchars($option->getName()) . '. <em>' . htmlspecialchars($option->getDescription()) . '</em>';
     }
 
     /**
@@ -286,7 +386,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      * @param mixed $currentValue
      * @return string
      */
-    protected function renderField(InputArgument $argument, string $currentValue): string
+    protected function renderArgumentField(InputArgument $argument, string $currentValue): string
     {
         $name = $argument->getName();
         $fieldName = 'tx_scheduler[task_executeschedulablecommand][arguments][' . $name . ']';
@@ -299,6 +399,46 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $inputTag->addAttribute('class', 'form-control');
 
         return $inputTag->render();
+    }
+
+    /**
+     * Renders a field for defining an option's value
+     *
+     * @param InputOption $option
+     * @param mixed $currentValue
+     * @return string
+     */
+    protected function renderOptionField(InputOption $option, bool $enabled, string $currentValue): string
+    {
+        $name = $option->getName();
+
+        $checkboxFieldName = 'tx_scheduler[task_executeschedulablecommand][options][' . $name . ']';
+        $checkboxId = 'tx_scheduler_task_executeschedulablecommand_options_' . $name;
+        $checkboxTag = new TagBuilder();
+        $checkboxTag->setTagName('input');
+        $checkboxTag->addAttribute('id', $checkboxId);
+        $checkboxTag->addAttribute('name', $checkboxFieldName);
+        $checkboxTag->addAttribute('type', 'checkbox');
+        if ($enabled) {
+            $checkboxTag->addAttribute('checked', 'checked');
+        }
+        $html = '<label for="' . $checkboxId . '">'
+            . $checkboxTag->render()
+            . ' ' . $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.addOptionToCommand')
+            . '</label>';
+
+        if ($option->isValueRequired() || $option->isValueOptional() || $option->isArray()) {
+            $valueFieldName = 'tx_scheduler[task_executeschedulablecommand][option_values][' . $name . ']';
+            $inputTag = new TagBuilder();
+            $inputTag->setTagName('input');
+            $inputTag->addAttribute('name', $valueFieldName);
+            $inputTag->addAttribute('type', 'text');
+            $inputTag->addAttribute('value', $currentValue);
+            $inputTag->addAttribute('class', 'form-control');
+            $html .=  $inputTag->render();
+        }
+
+        return $html;
     }
 
     /**
