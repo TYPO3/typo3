@@ -274,16 +274,16 @@ BE:
         lockIP:
             type: int
             allowedValues:
-              '0': 'Do not lock Backend User sessions to their IP address at all'
+              '0': 'Default: Do not lock Backend User sessions to their IP address at all'
               '1': 'Use the first part of the editors'' IPv4 address (e.g. "192.") as part of the session locking of Backend Users'
               '2': 'Use the first two parts of the editors'' IPv4 address (e.g. "192.168") as part of the session locking of Backend Users'
               '3': 'Use the first three parts of the editors'' IPv4 address (e.g. "192.168.13") as part of the session locking of Backend Users'
-              '4': 'Default: Use the editors'' full IPv4 address (e.g. "192.168.13.84") as part of the session locking of Backend Users (highest security)'
+              '4': 'Use the editors'' full IPv4 address (e.g. "192.168.13.84") as part of the session locking of Backend Users (highest security)'
             description: 'Session IP locking for backend users. See <a href="#FE-lockIP">[FE][lockIP]</a> for details.'
         lockIPv6:
             type: int
             allowedValues:
-              '0': 'Do not lock Backend User sessions to their IP address at all'
+              '0': 'Default: Do not lock Backend User sessions to their IP address at all'
               '1': 'Use the first block (16 bits) of the editors'' IPv6 address (e.g. "2001:") as part of the session locking of Backend Users'
               '2': 'Use the first two blocks (32 bits) of the editors'' IPv6 address (e.g. "2001:0db8") as part of the session locking of Backend Users'
               '3': 'Use the first three blocks (48 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3") as part of the session locking of Backend Users'
@@ -291,7 +291,7 @@ BE:
               '5': 'Use the first five blocks (80 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319") as part of the session locking of Backend Users'
               '6': 'Use the first six blocks (96 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e") as part of the session locking of Backend Users'
               '7': 'Use the first seven blocks (112 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370") as part of the session locking of Backend Users'
-              '8': 'Default: Use the editors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
+              '8': 'Use the editors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
             description: 'Session IPv6 locking for backend users. See <a href="#FE-lockIPv6">[FE][lockIPv6]</a> for details.'
         sessionTimeout:
             type: int
@@ -410,16 +410,16 @@ FE:
         lockIP:
             type: int
             allowedValues:
-              '0': 'Do not lock Frontend User sessions to their IP address at all'
+              '0': 'Default: Do not lock Frontend User sessions to their IP address at all'
               '1': 'Use the first part of the visitors'' IPv4 address (e.g. "192.") as part of the session locking of Frontend Users'
-              '2': 'Default - Use the first two parts of the visitors'' IPv4 address (e.g. "192.168") as part of the session locking of Frontend Users'
+              '2': 'Use the first two parts of the visitors'' IPv4 address (e.g. "192.168") as part of the session locking of Frontend Users'
               '3': 'Use the first three parts of the visitors'' IPv4 address (e.g. "192.168.13") as part of the session locking of Frontend Users'
               '4': 'Use the visitors'' full IPv4 address (e.g. "192.168.13.84") as part of the session locking of Frontend Users (highest security)'
             description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv4-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for session (next to the user agent).'
         lockIPv6:
             type: int
             allowedValues:
-              '0': 'Do not lock Backend User sessions to their IP address at all'
+              '0': 'Default: Do not lock Backend User sessions to their IP address at all'
               '1': 'Use the first block (16 bits) of the editors'' IPv6 address (e.g. "2001:") as part of the session locking of Backend Users'
               '2': 'Use the first two blocks (32 bits) of the editors'' IPv6 address (e.g. "2001:0db8") as part of the session locking of Backend Users'
               '3': 'Use the first three blocks (48 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3") as part of the session locking of Backend Users'
@@ -427,7 +427,7 @@ FE:
               '5': 'Use the first five blocks (80 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319") as part of the session locking of Backend Users'
               '6': 'Use the first six blocks (96 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e") as part of the session locking of Backend Users'
               '7': 'Use the first seven blocks (112 bits) of the editors'' IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370") as part of the session locking of Backend Users'
-              '8': 'Default: Use the visitors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
+              '8': 'Use the visitors'' full IPv6 address (e.g. "2001:0db8:85a3:08d3:1319:8a2e:0370:7344") as part of the session locking of Backend Users (highest security)'
             description: 'If activated, Frontend Users are locked to (a part of) their public IP (<code>$_SERVER[''REMOTE_ADDR'']</code>) for their session, if REMOTE_ADDR is an IPv6-address. Enhances security but may throw off users that may change IP during their session (in which case you can lower it). The integer indicates how many parts of the IP address to include in the check for session (next to the user agent).'
         loginSecurityLevel:
             type: text
