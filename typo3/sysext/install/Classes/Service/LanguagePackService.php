@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Service;
 
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
@@ -43,10 +44,16 @@ class LanguagePackService
      */
     protected $registry;
 
+    /**
+     * @var RequestFactory
+     */
+    protected $requestFactory;
+
     public function __construct()
     {
         $this->locales = GeneralUtility::makeInstance(Locales::class);
         $this->registry = GeneralUtility::makeInstance(Registry::class);
+        $this->requestFactory = GeneralUtility::makeInstance(RequestFactory::class);
     }
 
     /**
@@ -172,12 +179,15 @@ class LanguagePackService
      */
     public function updateMirrorBaseUrl(): string
     {
+        $repositoryUrl = 'https://repositories.typo3.org/mirrors.xml.gz';
         $downloadBaseUrl = false;
         try {
-            $xmlContent = GeneralUtility::getUrl('https://repositories.typo3.org/mirrors.xml.gz');
-            $xmlContent = GeneralUtility::xml2array(@gzdecode($xmlContent));
-            if (!empty($xmlContent['mirror']['host']) && !empty($xmlContent['mirror']['path'])) {
-                $downloadBaseUrl = 'https://' . $xmlContent['mirror']['host'] . $xmlContent['mirror']['path'];
+            $response = $this->requestFactory->request($repositoryUrl);
+            if ($response->getStatusCode() === 200) {
+                $xmlContent = @gzdecode($response->getBody()->getContents());
+                if (!empty($xmlContent['mirror']['host']) && !empty($xmlContent['mirror']['path'])) {
+                    $downloadBaseUrl = 'https://' . $xmlContent['mirror']['host'] . $xmlContent['mirror']['path'];
+                }
             }
         } catch (\Exception $e) {
             // Catch generic exception, fallback handled below
@@ -256,19 +266,22 @@ class LanguagePackService
 
         $operationResult = false;
         try {
-            $languagePackContent = GeneralUtility::getUrl($languagePackBaseUrl . $packageUrl);
-            if (!empty($languagePackContent)) {
-                $operationResult = true;
-                if ($packExists) {
-                    $operationResult = GeneralUtility::rmdir($absoluteExtractionPath, true);
-                }
-                if ($operationResult) {
-                    GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
-                    $operationResult = GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $languagePackContent) === null;
-                }
-                $this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath);
-                if ($operationResult) {
-                    $operationResult = unlink($absolutePathToZipFile);
+            $response = $this->requestFactory->request($languagePackBaseUrl . $packageUrl);
+            if ($response->getStatusCode() === 200) {
+                $languagePackContent = $response->getBody()->getContents();
+                if (!empty($languagePackContent)) {
+                    $operationResult = true;
+                    if ($packExists) {
+                        $operationResult = GeneralUtility::rmdir($absoluteExtractionPath, true);
+                    }
+                    if ($operationResult) {
+                        GeneralUtility::mkdir_deep(Environment::getVarPath() . '/transient/');
+                        $operationResult = GeneralUtility::writeFileToTypo3tempDir($absolutePathToZipFile, $languagePackContent) === null;
+                    }
+                    $this->unzipTranslationFile($absolutePathToZipFile, $absoluteLanguagePath);
+                    if ($operationResult) {
+                        $operationResult = unlink($absolutePathToZipFile);
+                    }
                 }
             }
         } catch (\Exception $e) {
