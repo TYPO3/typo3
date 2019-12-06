@@ -61,7 +61,6 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
         (data: any, responseBody: any): void => {
           expect(typeof data === 'string').toBeTruthy();
           expect(data).toEqual(responseBody);
-          expect(window.fetch).toHaveBeenCalledWith(jasmine.any(String), jasmine.objectContaining({method: 'GET'}));
         }
       ];
       yield [
@@ -71,7 +70,6 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
         (data: any, responseBody: any): void => {
           expect(typeof data === 'object').toBeTruthy();
           expect(JSON.stringify(data)).toEqual(responseBody);
-          expect(window.fetch).toHaveBeenCalledWith(jasmine.any(String), jasmine.objectContaining({method: 'GET'}));
         }
       ];
       yield [
@@ -81,7 +79,6 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
         (data: any, responseBody: any): void => {
           expect(typeof data === 'object').toBeTruthy();
           expect(JSON.stringify(data)).toEqual(responseBody);
-          expect(window.fetch).toHaveBeenCalledWith(jasmine.any(String), jasmine.objectContaining({method: 'GET'}));
         }
       ];
     }
@@ -94,9 +91,59 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
 
         (new AjaxRequest('https://example.com')).get().then(async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
+          expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'GET'}));
           onfulfill(data, responseText);
           done();
         })
+      });
+    }
+  });
+
+  describe('send requests with different input urls', (): void => {
+    function* urlInputDataProvider(): any {
+      yield [
+        'absolute url with domain',
+        'https://example.com',
+        {},
+        'https://example.com/',
+      ];
+      yield [
+        'absolute url with domain, with query parameter',
+        'https://example.com',
+        {foo: 'bar', bar: {baz: 'bencer'}},
+        'https://example.com/?foo=bar&bar[baz]=bencer',
+      ];
+      yield [
+        'absolute url without domain',
+        '/foo/bar',
+        {},
+        window.location.origin + '/foo/bar',
+      ];
+      yield [
+        'absolute url without domain, with query parameter',
+        '/foo/bar',
+        {foo: 'bar', bar: {baz: 'bencer'}},
+        window.location.origin + '/foo/bar?foo=bar&bar[baz]=bencer',
+      ];
+      yield [
+        'relative url without domain',
+        'foo/bar',
+        {},
+        window.location.origin + '/foo/bar',
+      ];
+      yield [
+        'relative url without domain, with query parameter',
+        'foo/bar',
+        {foo: 'bar', bar: {baz: 'bencer'}},
+        window.location.origin + '/foo/bar?foo=bar&bar[baz]=bencer',
+      ];
+    }
+
+    for (let providedData of urlInputDataProvider()) {
+      let [name, input, queryParameter, expected] = providedData;
+      it('with ' + name, (): void => {
+        (new AjaxRequest(input)).withQueryArguments(queryParameter).get();
+        expect(window.fetch).toHaveBeenCalledWith(expected, jasmine.objectContaining({method: 'GET'}));
       });
     }
   });
@@ -128,7 +175,7 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
     for (let providedData of queryArgumentsDataProvider()) {
       let [name, input, expected] = providedData;
       it('with ' + name, (): void => {
-        (new AjaxRequest('https://example.com')).withQueryArguments(input).get();
+        (new AjaxRequest('https://example.com/')).withQueryArguments(input).get();
         expect(window.fetch).toHaveBeenCalledWith(expected, jasmine.objectContaining({method: 'GET'}));
       });
     }

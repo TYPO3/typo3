@@ -198,7 +198,7 @@ class AjaxRequest {
    */
   private async send(init: RequestInit = {}): Promise<Response> {
     // Sanitize URL into a generic format, e.g. ensure a domain only url contains a trailing slash
-    let url = new URL(this.url).toString();
+    let url = new URL(this.url, window.location.origin).toString();
     if (this.queryArguments !== '') {
       const delimiter = !this.url.includes('?') ? '?' : '&';
       url += delimiter + this.queryArguments;
