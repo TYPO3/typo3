@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import ModuleMenu = require('TYPO3/CMS/Backend/ModuleMenu');
 import Viewport = require('TYPO3/CMS/Backend/Viewport');
 
@@ -124,39 +126,35 @@ class WorkspacesMenu {
   }
 
   private switchWorkspace(workspaceId: number): void {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.workspace_switch,
-      type: 'post',
-      data: {
-        workspaceId: workspaceId,
-        pageId: top.fsMod.recentIds.web,
-      },
-      success: (response: any): void => {
-        if (!response.workspaceId) {
-          response.workspaceId = 0;
-        }
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_switch)).post({
+      workspaceId: workspaceId,
+      pageId: top.fsMod.recentIds.web
+    }).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      if (!data.workspaceId) {
+        data.workspaceId = 0;
+      }
 
-        this.performWorkspaceSwitch(parseInt(response.workspaceId, 10), response.title);
+      this.performWorkspaceSwitch(parseInt(data.workspaceId, 10), data.title);
 
-        // append the returned page ID to the current module URL
-        if (response.pageId) {
-          top.fsMod.recentIds.web = response.pageId;
-          let url = TYPO3.Backend.ContentContainer.getUrl();
-          url += (!url.includes('?') ? '?' : '&') + '&id=' + response.pageId;
-          WorkspacesMenu.refreshPageTree();
-          Viewport.ContentContainer.setUrl(url);
+      // append the returned page ID to the current module URL
+      if (data.pageId) {
+        top.fsMod.recentIds.web = data.pageId;
+        let url = TYPO3.Backend.ContentContainer.getUrl();
+        url += (!url.includes('?') ? '?' : '&') + '&id=' + data.pageId;
+        WorkspacesMenu.refreshPageTree();
+        Viewport.ContentContainer.setUrl(url);
 
-          // when in web module reload, otherwise send the user to the web module
-        } else if (top.currentModuleLoaded.startsWith('web_')) {
-          WorkspacesMenu.refreshPageTree();
-          ModuleMenu.App.reloadFrames();
-        } else if (TYPO3.configuration.pageModule) {
-          ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
-        }
+        // when in web module reload, otherwise send the user to the web module
+      } else if (top.currentModuleLoaded.startsWith('web_')) {
+        WorkspacesMenu.refreshPageTree();
+        ModuleMenu.App.reloadFrames();
+      } else if (TYPO3.configuration.pageModule) {
+        ModuleMenu.App.showModule(TYPO3.configuration.pageModule);
+      }
 
-        // reload the module menu
-        ModuleMenu.App.refreshMenu();
-      },
+      // reload the module menu
+      ModuleMenu.App.refreshMenu();
     });
   }
 }

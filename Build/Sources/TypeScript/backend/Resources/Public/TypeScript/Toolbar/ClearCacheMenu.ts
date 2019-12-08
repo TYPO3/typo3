@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Icons = require('../Icons');
 import Notification = require('../Notification');
 import Viewport = require('../Viewport');
@@ -63,23 +65,20 @@ class ClearCacheMenu {
       $toolbarItemIcon.replaceWith(spinner);
     });
 
-    $.ajax({
-      url: ajaxUrl,
-      type: 'post',
-      cache: false,
-      success: (data: any): void => {
+    (new AjaxRequest(ajaxUrl)).post({}).then(
+      async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           Notification.success(data.title, data.message);
         } else if (data.success === false) {
           Notification.error(data.title, data.message);
         }
       },
-      error: (): void => {
+      (): void => {
         Notification.error(TYPO3.lang['flushCaches.error'], TYPO3.lang['flushCaches.error.description']);
       },
-      complete: (): void => {
-        $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
-      }
+    ).finally((): void => {
+      $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
     });
   }
 }

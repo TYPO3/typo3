@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Icons = require('../Icons');
 import PersistentStorage = require('../Storage/Persistent');
 import Viewport = require('../Viewport');
@@ -70,19 +72,12 @@ class SystemInformationMenu {
       $toolbarItemIcon.replaceWith(spinner);
     });
 
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.systeminformation_render,
-      type: 'post',
-      cache: false,
-      success: (data: string): void => {
-        $menuContainer.html(data);
-        SystemInformationMenu.updateCounter();
-        $(Identifiers.moduleLinks).on('click', this.openModule);
-      },
-      complete: (): void => {
-        $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
-      },
-    }).done((): void => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.systeminformation_render)).get().then(async (response: AjaxResponse): Promise<any> => {
+      $menuContainer.html(await response.resolve());
+      SystemInformationMenu.updateCounter();
+      $(Identifiers.moduleLinks).on('click', this.openModule);
+    }).finally((): void => {
+      $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
       // reload error data every five minutes
       this.timer = setTimeout(
         this.updateMenu,

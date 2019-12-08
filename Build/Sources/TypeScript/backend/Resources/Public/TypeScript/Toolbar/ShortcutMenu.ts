@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Icons = require('../Icons');
 import Modal = require('../Modal');
 import Notification = require('../Notification');
@@ -71,17 +73,12 @@ class ShortcutMenu {
           $toolbarItemIcon.replaceWith(spinner);
         });
 
-        $.ajax({
-          url: TYPO3.settings.ajaxUrls.shortcut_create,
-          type: 'post',
-          data: {
-            module: moduleName,
-            url: url,
-            motherModName: motherModule,
-            displayName: displayName,
-          },
-          cache: false,
-        }).done((): void => {
+        (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_create)).post({
+          module: moduleName,
+          url: url,
+          motherModName: motherModule,
+          displayName: displayName,
+        }).then((): void => {
           this.refreshMenu();
           $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
           if (typeof shortcutButton === 'object') {
@@ -136,14 +133,9 @@ class ShortcutMenu {
   private deleteShortcut($shortcutRecord: JQuery): void {
     Modal.confirm(TYPO3.lang['bookmark.delete'], TYPO3.lang['bookmark.confirmDelete'])
       .on('confirm.button.ok', (e: JQueryEventObject): void => {
-        $.ajax({
-          url: TYPO3.settings.ajaxUrls.shortcut_remove,
-          data: {
-            shortcutId: $shortcutRecord.data('shortcutid'),
-          },
-          type: 'post',
-          cache: false,
-        }).done((): void => {
+        (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_remove)).post({
+          shortcutId: $shortcutRecord.data('shortcutid'),
+        }).then((): void => {
           // a reload is used in order to restore the original behaviour
           // e.g. remove groups that are now empty because the last one in the group
           // was removed
@@ -163,15 +155,11 @@ class ShortcutMenu {
    */
   private editShortcut($shortcutRecord: JQuery): void {
     // load the form
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.shortcut_editform,
-      data: {
-        shortcutId: $shortcutRecord.data('shortcutid'),
-        shortcutGroup: $shortcutRecord.data('shortcutgroup'),
-      },
-      cache: false,
-    }).done((data: string): void => {
-      $(Identifiers.containerSelector).find(Identifiers.toolbarMenuSelector).html(data);
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_editform)).withQueryArguments({
+      shortcutId: $shortcutRecord.data('shortcutid'),
+      shortcutGroup: $shortcutRecord.data('shortcutgroup'),
+    }).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
+      $(Identifiers.containerSelector).find(Identifiers.toolbarMenuSelector).html(await response.resolve());
     });
   }
 
@@ -181,16 +169,11 @@ class ShortcutMenu {
    * @param {JQuery} $shortcutForm
    */
   private saveShortcutForm($shortcutForm: JQuery): void {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.shortcut_saveform,
-      data: {
-        shortcutId: $shortcutForm.data('shortcutid'),
-        shortcutTitle: $shortcutForm.find(Identifiers.shortcutFormTitleSelector).val(),
-        shortcutGroup: $shortcutForm.find(Identifiers.shortcutFormGroupSelector).val(),
-      },
-      type: 'post',
-      cache: false,
-    }).done((): void => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_saveform)).post({
+      shortcutId: $shortcutForm.data('shortcutid'),
+      shortcutTitle: $shortcutForm.find(Identifiers.shortcutFormTitleSelector).val(),
+      shortcutGroup: $shortcutForm.find(Identifiers.shortcutFormGroupSelector).val(),
+    }).then((): void => {
       Notification.success(TYPO3.lang['bookmark.savedTitle'], TYPO3.lang['bookmark.savedMessage']);
       this.refreshMenu();
     });
@@ -200,12 +183,8 @@ class ShortcutMenu {
    * Reloads the menu after an update
    */
   private refreshMenu(): void {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.shortcut_list,
-      type: 'get',
-      cache: false,
-    }).done((data: string): void => {
-      $(Identifiers.toolbarMenuSelector, Identifiers.containerSelector).html(data);
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.shortcut_list)).get({cache: 'no-cache'}).then(async (response: AjaxResponse): Promise<any> => {
+      $(Identifiers.toolbarMenuSelector, Identifiers.containerSelector).html(await response.resolve());
     });
   }
 }
