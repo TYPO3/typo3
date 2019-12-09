@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\Tests\Functional\Domain\Repository;
+namespace TYPO3\CMS\Redirects\Tests\Functional\Service;
 
 /*
  * This file is part of the TYPO3 CMS project.

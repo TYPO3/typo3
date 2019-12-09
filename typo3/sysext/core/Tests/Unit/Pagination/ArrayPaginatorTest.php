@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Extbase\Tests\Unit\Pagination;
+namespace TYPO3\CMS\Core\Tests\Unit\Pagination;
 
 /*
  * This file is part of the TYPO3 CMS project.

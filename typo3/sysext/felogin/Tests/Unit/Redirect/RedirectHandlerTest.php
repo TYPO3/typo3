@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Controller;
+namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Redirect;
 
 /*
  * This file is part of the TYPO3 CMS project.

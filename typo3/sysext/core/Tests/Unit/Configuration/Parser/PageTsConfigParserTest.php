@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Loader;
+namespace TYPO3\CMS\Core\Tests\Unit\Configuration\Parser;
 
 /*
  * This file is part of the TYPO3 CMS project.

@@ -111,6 +111,10 @@
 	"autoload-dev": {
 		"psr-4": {
 			"TYPO3\\CMS\\Core\\Tests\\": "Tests/"
-		}
+		},
+		"classmap": [
+			"Tests/Unit/Core/Fixtures/test_extension/",
+			"Tests/Functional/Fixtures/"
+		]
 	}
 }

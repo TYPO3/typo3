@@ -11,6 +11,16 @@ parameters:
   auto_import_names: false
   paths:
     - 'typo3/sysext/*/Classes/'
+    - 'typo3/sysext/*/Tests/Unit/'
+    - 'typo3/sysext/*/Tests/Functional/'
+  exclude_paths:
+      - 'typo3/sysext/*/Configuration/'
+      - 'typo3/sysext/core/Tests/Unit/Configuration/TypoScript/ConditionMatching/Fixtures/ConditionMatcherUserFuncs.php'
+      - 'typo3/sysext/*/Tests/Unit/Acceptance'
+      - 'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/ClassNameMatcherFixture.php'
+      - 'typo3/sysext/install/Tests/Unit/ExtensionScanner/Php/Matcher/Fixtures/PropertyExistsStaticMatcherFixture.php'
+      - 'ClassAliasMap.php'
+      - 'class.ext_update.php'
   sets:
     - 'php53'
     - 'php54'

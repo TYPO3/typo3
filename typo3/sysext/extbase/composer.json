@@ -53,6 +53,9 @@
 		"classmap": [
 			"Tests/Unit/Object/Container/Fixtures/",
 			"Tests/Functional/Fixtures/"
+		],
+		"files": [
+			"Tests/Fixture/TxClassWithGettersAndSetters.php"
 		]
 	}
 }

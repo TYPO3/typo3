@@ -1,10 +1,11 @@
 <?php
 declare(strict_types = 1);
 
-namespace TYPO3\CMS\Core\TypoScript\Parser;
+namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Parser;
 
 use TYPO3\CMS\Core\Core\ApplicationContext;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\TypoScript\Parser\ConstantConfigurationParser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ConstantConfigurationParserTest extends UnitTestCase

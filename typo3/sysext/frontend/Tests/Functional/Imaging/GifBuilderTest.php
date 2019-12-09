@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
+namespace TYPO3\CMS\Frontend\Tests\Functional\Imaging;
 
 /*
  * This file is part of the TYPO3 CMS project.

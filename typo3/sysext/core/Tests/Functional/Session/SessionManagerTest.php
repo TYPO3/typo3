@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Core\Tests\Functional\Service;
+namespace TYPO3\CMS\Core\Tests\Functional\Session;
 
 /*
  * This file is part of the TYPO3 CMS project.
