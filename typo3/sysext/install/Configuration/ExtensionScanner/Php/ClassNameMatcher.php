@@ -1352,4 +1352,19 @@ return [
             'Deprecation-90421-DocumentTemplate.rst',
         ],
     ],
+    'TYPO3\CMS\Felogin\Hooks\CmsLayout' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    'TYPO3\CMS\Felogin\Controller\FrontendLoginController' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    'TYPO3\CMS\FrontendLogin\Hooks\CmsLayout' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
 ];

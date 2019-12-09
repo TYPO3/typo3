@@ -331,4 +331,44 @@ return [
             'Important-89645-RemovedSystemLogOptions.rst',
         ],
     ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'beforeRedirect\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'postProcContent\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'forgotPasswordMail\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'password_changed\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'login_confirmed\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'login_error\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'logout_confirmed\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
+    '$GLOBALS[\'TYPO3_CONF_VARS\'][\'EXTCONF\'][\'felogin\'][\'loginFormOnSubmitFuncs\']' => [
+        'restFiles' => [
+            'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
+        ],
+    ],
 ];

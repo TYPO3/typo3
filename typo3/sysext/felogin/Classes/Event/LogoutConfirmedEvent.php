@@ -17,9 +17,9 @@ namespace TYPO3\CMS\FrontendLogin\Event;
  */
 
 /**
- * A notification when a log in has successfully arrived at the plugin, via the view and the controller, multiple
+ * A notification when a log out has successfully arrived at the plugin, via the view and the controller, multiple
  * information can be overridden in Event Listeners.
  */
-final class LoginConfirmedEvent extends AbstractConfirmedEvent
+final class LogoutConfirmedEvent extends AbstractConfirmedEvent
 {
 }
