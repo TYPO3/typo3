@@ -26,7 +26,7 @@
 	"config": {
 		"bin-dir": "bin",
 		"platform": {
-			"php": "7.2.0"
+			"php": "7.2.5"
 		},
 		"sort-packages": true
 	},
