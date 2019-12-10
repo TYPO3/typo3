@@ -27,7 +27,7 @@
 		"optimize-autoloader": true,
 		"bin-dir": "bin",
 		"platform": {
-			"php": "7.0.0"
+			"php": "7.0.8"
 		},
 		"sort-packages": true
 	},
