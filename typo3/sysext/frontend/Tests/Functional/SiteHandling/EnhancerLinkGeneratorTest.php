@@ -134,8 +134,8 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 ];
             }
         }
-        $templatePrefix = isset($templateOptions['prefix']) ? $templateOptions['prefix'] : '';
-        $templateSuffix = isset($templateOptions['suffix']) ? $templateOptions['suffix'] : '';
+        $templatePrefix = $templateOptions['prefix'] ?? '';
+        $templateSuffix = $templateOptions['suffix'] ?? '';
         return $this->keysFromTemplate(
             $dataSet,
             $templatePrefix . 'enhancer:%1$s, lang:%3$d' . $templateSuffix,

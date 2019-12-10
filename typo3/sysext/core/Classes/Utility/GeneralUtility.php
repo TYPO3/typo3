@@ -3275,7 +3275,7 @@ class GeneralUtility
             $tempFileName = $temporaryPath . PathUtility::basename(tempnam($temporaryPath, $filePrefix));
         } else {
             do {
-                $tempFileName = $temporaryPath . $filePrefix . mt_rand(1, PHP_INT_MAX) . $fileSuffix;
+                $tempFileName = $temporaryPath . $filePrefix . random_int(1, PHP_INT_MAX) . $fileSuffix;
             } while (file_exists($tempFileName));
             touch($tempFileName);
             clearstatcache(null, $tempFileName);

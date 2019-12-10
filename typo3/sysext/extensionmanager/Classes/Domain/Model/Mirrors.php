@@ -75,7 +75,7 @@ class Mirrors extends AbstractEntity
         $sumMirrors = count($this->mirrors);
         if ($sumMirrors > 0) {
             if (!is_int($this->currentMirror)) {
-                $this->currentMirror = rand(0, $sumMirrors - 1);
+                $this->currentMirror = random_int(0, $sumMirrors - 1);
             }
             return $this->mirrors[$this->currentMirror];
         }

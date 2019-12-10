@@ -81,7 +81,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface
      */
     public function store(\TYPO3\CMS\Fluid\Core\Widget\WidgetContext $widgetContext)
     {
-        $ajaxWidgetId = md5(uniqid(mt_rand(), true));
+        $ajaxWidgetId = md5(uniqid(random_int(0, mt_getrandmax()), true));
         $widgetContext->setAjaxWidgetIdentifier($ajaxWidgetId);
         $this->widgetContexts[$ajaxWidgetId] = $widgetContext;
         $this->storeWidgetContexts();

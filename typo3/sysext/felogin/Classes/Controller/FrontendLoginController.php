@@ -979,7 +979,7 @@ class FrontendLoginController extends AbstractPlugin
     {
         $pass = '';
         while ($len--) {
-            $char = rand(0, 35);
+            $char = random_int(0, 35);
             if ($char < 10) {
                 $pass .= '' . $char;
             } else {

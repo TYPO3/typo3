@@ -225,7 +225,7 @@ class TreelistCacheUpdateHooks
         }
         // From time to time clean the cache from expired entries
         // (theoretically every 1000 calls)
-        $randomNumber = rand(1, 1000);
+        $randomNumber = random_int(1, 1000);
         if ($randomNumber === 500) {
             $this->removeExpiredCacheEntries();
         }

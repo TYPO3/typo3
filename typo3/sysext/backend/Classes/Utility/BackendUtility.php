@@ -2021,7 +2021,7 @@ class BackendUtility
         // If this field is a password field, then hide the password by changing it to a random number of asterisk (*)
         if (!empty($theColConf['eval']) && stripos($theColConf['eval'], 'password') !== false) {
             $l = '';
-            $randomNumber = rand(5, 12);
+            $randomNumber = random_int(5, 12);
             for ($i = 0; $i < $randomNumber; $i++) {
                 $l .= '*';
             }

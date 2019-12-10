@@ -2788,7 +2788,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     protected function initializeSearchWordData($searchWords)
     {
         $this->sWordRegEx = '';
-        $this->sWordList = $searchWords === null ? '' : $searchWords;
+        $this->sWordList = $searchWords ?? '';
         if (is_array($this->sWordList)) {
             $space = !empty($this->config['config']['sword_standAlone'] ?? null) ? '[[:space:]]' : '';
             $regexpParts = [];

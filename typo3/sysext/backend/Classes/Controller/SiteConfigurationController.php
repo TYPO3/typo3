@@ -357,7 +357,7 @@ class SiteConfigurationController
                 $this->siteFinder->getSiteByIdentifier($identifier);
                 // Force this identifier to be unique
                 $originalIdentifier = $identifier;
-                $identifier = $identifier . '-' . str_replace('.', '', uniqid((string)mt_rand(), true));
+                $identifier = $identifier . '-' . str_replace('.', '', uniqid((string)random_int(0, mt_getrandmax()), true));
                 $message = sprintf(
                     $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:validation.identifierRenamed.message'),
                     $originalIdentifier,

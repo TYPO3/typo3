@@ -950,7 +950,7 @@ abstract class ImportExport
     {
         $temporaryPath = Environment::getVarPath() . '/transient/';
         do {
-            $temporaryFolderName = $temporaryPath . 'export_temp_files_' . mt_rand(1, PHP_INT_MAX);
+            $temporaryFolderName = $temporaryPath . 'export_temp_files_' . random_int(1, PHP_INT_MAX);
         } while (is_dir($temporaryFolderName));
         GeneralUtility::mkdir($temporaryFolderName);
         return $temporaryFolderName;

@@ -14,8 +14,10 @@ parameters:
       - 'class.ext_update.php'
   exclude_rectors:
     - Rector\Php55\Rector\String_\StringClassNameToClassConstantRector
+    - Rector\Php70\Rector\List_\ListSwapArrayOrderRector
   sets:
     - 'php53'
     - 'php54'
     - 'php55'
     - 'php56'
+    - 'php70'

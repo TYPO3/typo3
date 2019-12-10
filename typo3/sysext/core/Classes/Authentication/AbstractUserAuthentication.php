@@ -380,7 +380,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             GeneralUtility::callUserFunction($funcName, $_params, $this);
         }
         // If we're lucky we'll get to clean up old sessions
-        if (rand() % 100 <= $this->gc_probability) {
+        if (random_int(0, mt_getrandmax()) % 100 <= $this->gc_probability) {
             $this->gc();
         }
     }

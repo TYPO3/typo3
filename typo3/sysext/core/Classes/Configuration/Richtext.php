@@ -128,7 +128,7 @@ class Richtext
                 }
                 $typoScriptArray[$key . '.'] = $this->convertPlainArrayToTypoScriptArray($value);
             } else {
-                $typoScriptArray[$key] = $value === null ? '' : $value;
+                $typoScriptArray[$key] = $value ?? '';
             }
         }
         return $typoScriptArray;

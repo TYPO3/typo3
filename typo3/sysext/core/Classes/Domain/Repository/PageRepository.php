@@ -925,7 +925,7 @@ class PageRepository implements LoggerAwareInterface
                 $pageArray = $this->getMenu($idArray[0] ?: $thisUid, '*', 'sorting', 'AND pages.doktype<199 AND pages.doktype!=' . self::DOKTYPE_BE_USER_SECTION);
                 $pO = 0;
                 if ($shortcutMode == self::SHORTCUT_MODE_RANDOM_SUBPAGE && !empty($pageArray)) {
-                    $pO = (int)rand(0, count($pageArray) - 1);
+                    $pO = (int)random_int(0, count($pageArray) - 1);
                 }
                 $c = 0;
                 $page = [];

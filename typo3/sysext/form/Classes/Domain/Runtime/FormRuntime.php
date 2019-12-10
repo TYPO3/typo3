@@ -349,15 +349,15 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
             }
 
             $elementsCount = count($this->currentPage->getElements());
-            $randomElementNumber = mt_rand(0, $elementsCount - 1);
-            $honeypotName = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, mt_rand(5, 26));
+            $randomElementNumber = random_int(0, $elementsCount - 1);
+            $honeypotName = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, random_int(5, 26));
 
             $referenceElement = $this->currentPage->getElements()[$randomElementNumber];
             $honeypotElement = $this->currentPage->createElement($honeypotName, $renderingOptions['honeypot']['formElementToUse']);
             $validator = $this->objectManager->get(EmptyValidator::class);
 
             $honeypotElement->addValidator($validator);
-            if (mt_rand(0, 1) === 1) {
+            if (random_int(0, 1) === 1) {
                 $this->currentPage->moveElementAfter($honeypotElement, $referenceElement);
             } else {
                 $this->currentPage->moveElementBefore($honeypotElement, $referenceElement);

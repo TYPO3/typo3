@@ -195,7 +195,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface, 
         $ret = '';
         $strlen = strlen($base);
         for ($i = 0; $i < $count; ++$i) {
-            $ret .= $base[((int)rand(0, $strlen - 1))];
+            $ret .= $base[((int)random_int(0, $strlen - 1))];
         }
 
         return $ret;

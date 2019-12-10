@@ -1607,7 +1607,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypePage(): void
     {
-        $uid = mt_rand();
+        $uid = random_int(0, mt_getrandmax());
         $GLOBALS['TSFE']->page['uid'] = $uid;
         self::assertEquals($uid, $this->subject->getData('page:uid'));
     }
@@ -1758,7 +1758,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeParentRecordNumber(): void
     {
-        $recordNumber = mt_rand();
+        $recordNumber = random_int(0, mt_getrandmax());
         $this->subject->parentRecordNumber = $recordNumber;
         self::assertEquals($recordNumber, $this->subject->getData('cobj:parentRecordNumber'));
     }
@@ -1854,7 +1854,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugPage(): void
     {
-        $uid = mt_rand();
+        $uid = random_int(0, mt_getrandmax());
         $GLOBALS['TSFE']->page = ['uid' => $uid];
 
         $expectedResult = 'array(1item)uid=>' . $uid . '(integer)';

@@ -710,7 +710,7 @@ class UpgradeController extends AbstractController
         $preparedMatches = [];
         foreach ($matches as $match) {
             $preparedHit = [];
-            $preparedHit['uniqueId'] = str_replace('.', '', uniqid((string)mt_rand(), true));
+            $preparedHit['uniqueId'] = str_replace('.', '', uniqid((string)random_int(0, mt_getrandmax()), true));
             $preparedHit['message'] = $match['message'];
             $preparedHit['line'] = $match['line'];
             $preparedHit['indicator'] = $match['indicator'];
@@ -739,7 +739,7 @@ class UpgradeController extends AbstractController
                 array_pop($version);
                 // something like "8.2" .. "8.7" .. "master"
                 $parsedRestFile['version'] = array_pop($version);
-                $parsedRestFile['uniqueId'] = str_replace('.', '', uniqid((string)mt_rand(), true));
+                $parsedRestFile['uniqueId'] = str_replace('.', '', uniqid((string)random_int(0, mt_getrandmax()), true));
                 $preparedHit['restFiles'][] = $parsedRestFile;
             }
             $preparedMatches[] = $preparedHit;

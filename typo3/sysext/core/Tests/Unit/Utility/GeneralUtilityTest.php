@@ -3203,7 +3203,7 @@ class GeneralUtilityTest extends UnitTestCase
 
         // set random values for mtime
         foreach ($structure as $structureLevel1Key => $structureLevel1Content) {
-            $newMtime = rand();
+            $newMtime = random_int(0, mt_getrandmax());
             if (is_array($structureLevel1Content)) {
                 foreach ($structureLevel1Content as $structureLevel2Key => $structureLevel2Content) {
                     touch($vfsUrl . '/' . $structureLevel1Key . '/' . $structureLevel2Key, $newMtime);

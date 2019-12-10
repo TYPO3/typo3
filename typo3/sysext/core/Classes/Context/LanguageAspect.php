@@ -90,7 +90,7 @@ class LanguageAspect implements AspectInterface
     {
         $this->overlayType = $overlayType;
         $this->id = $id;
-        $this->contentId = $contentId === null ? $this->id : $contentId;
+        $this->contentId = $contentId ?? $this->id;
         $this->fallbackChain = $fallbackChain;
     }
 

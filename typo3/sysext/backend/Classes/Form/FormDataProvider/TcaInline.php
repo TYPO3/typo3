@@ -99,7 +99,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
             // If the parent is a page, use the uid(!) of the (new?) page as pid for the child records:
             if ($table === 'pages') {
                 $liveVersionId = BackendUtility::getLiveVersionIdOfRecord('pages', $row['uid']);
-                $pid = $liveVersionId === null ? $row['uid'] : $liveVersionId;
+                $pid = $liveVersionId ?? $row['uid'];
             } elseif ($row['pid'] < 0) {
                 $prevRec = BackendUtility::getRecord($table, abs($row['pid']));
                 $pid = $prevRec['pid'];

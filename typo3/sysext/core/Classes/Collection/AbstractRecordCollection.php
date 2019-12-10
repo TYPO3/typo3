@@ -354,7 +354,7 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      */
     public function persist()
     {
-        $uid = $this->getIdentifier() == 0 ? 'NEW' . rand(100000, 999999) : $this->getIdentifier();
+        $uid = $this->getIdentifier() == 0 ? 'NEW' . random_int(100000, 999999) : $this->getIdentifier();
         $data = [
             trim(static::$storageTableName) => [
                 $uid => $this->getPersistableDataArray()
