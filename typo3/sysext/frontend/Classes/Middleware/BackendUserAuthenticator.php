@@ -18,13 +18,9 @@ namespace TYPO3\CMS\Frontend\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -38,18 +34,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * page due to rights management. As this can only happen once the page ID is resolved, this will happen
  * after the routing middleware.
  */
-class BackendUserAuthenticator implements MiddlewareInterface
+class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
 {
-    /**
-     * @var Context
-     */
-    protected $context;
-
-    public function __construct(Context $context)
-    {
-        $this->context = $context;
-    }
-
     /**
      * Creates a backend user authentication object, tries to authenticate a user
      *
@@ -77,7 +63,13 @@ class BackendUserAuthenticator implements MiddlewareInterface
             $this->setBackendUserAspect($GLOBALS['BE_USER']);
         }
 
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+
+        // If, when building the response, the user is still available, then ensure that the headers are sent properly
+        if ($this->context->getAspect('backend.user')->isLoggedIn()) {
+            return $this->applyHeadersToResponse($response);
+        }
+        return $response;
     }
 
     /**
@@ -122,16 +114,5 @@ class BackendUserAuthenticator implements MiddlewareInterface
             return false;
         }
         return $user->backendCheckLogin();
-    }
-
-    /**
-     * Register the backend user as aspect
-     *
-     * @param BackendUserAuthentication|null $user
-     */
-    protected function setBackendUserAspect(BackendUserAuthentication $user)
-    {
-        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
     }
 }

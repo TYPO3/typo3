@@ -17,12 +17,8 @@ namespace TYPO3\CMS\Backend\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\UserAspect;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class BackendUserAuthenticator implements MiddlewareInterface
+class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAuthenticator
 {
     /**
      * List of requests that don't need a valid BE user
@@ -51,16 +47,6 @@ class BackendUserAuthenticator implements MiddlewareInterface
     ];
 
     /**
-     * @var Context
-     */
-    protected $context;
-
-    public function __construct(Context $context)
-    {
-        $this->context = $context;
-    }
-
-    /**
      * Calls the bootstrap process to set up $GLOBALS['BE_USER'] AND $GLOBALS['LANG']
      *
      * @param ServerRequestInterface $request
@@ -71,14 +57,21 @@ class BackendUserAuthenticator implements MiddlewareInterface
     {
         $pathToRoute = $request->getAttribute('routePath', '/login');
 
-        Bootstrap::initializeBackendUser();
+        // The global must be available very early, because methods below
+        // might trigger code which relies on it. See: #45625
+        $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
+        $GLOBALS['BE_USER']->start();
         // @todo: once this logic is in this method, the redirect URL should be handled as response here
-        Bootstrap::initializeBackendAuthentication($this->isLoggedInBackendUserRequired($pathToRoute));
+        $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($pathToRoute));
         $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
         // Register the backend user as aspect
         $this->setBackendUserAspect($GLOBALS['BE_USER']);
 
-        return $handler->handle($request);
+        $response = $handler->handle($request);
+
+        // Additional headers to never cache any PHP request should be sent at any time when
+        // accessing the TYPO3 Backend
+        return $this->applyHeadersToResponse($response);
     }
 
     /**
@@ -91,16 +84,5 @@ class BackendUserAuthenticator implements MiddlewareInterface
     protected function isLoggedInBackendUserRequired(string $routePath): bool
     {
         return in_array($routePath, $this->publicRoutes, true);
-    }
-
-    /**
-     * Register the backend user as aspect
-     *
-     * @param BackendUserAuthentication $user
-     */
-    protected function setBackendUserAspect(BackendUserAuthentication $user)
-    {
-        $this->context->setAspect('backend.user', GeneralUtility::makeInstance(UserAspect::class, $user));
-        $this->context->setAspect('workspace', GeneralUtility::makeInstance(WorkspaceAspect::class, $user->workspace));
     }
 }
