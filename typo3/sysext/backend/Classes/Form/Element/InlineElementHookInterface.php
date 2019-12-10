@@ -27,7 +27,7 @@ interface InlineElementHookInterface
      * @param array $childRecord The current record of that foreign_table
      * @param array $childConfig TCA configuration of the current field of the child record
      * @param bool $isVirtual Defines whether the current records is only virtually shown and not physically part of the parent record
-     * @param array &$enabledControls (reference) Associative array with the enabled control items
+     * @param array $enabledControls (reference) Associative array with the enabled control items
      */
     public function renderForeignRecordHeaderControl_preProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$enabledControls);
 
@@ -39,7 +39,7 @@ interface InlineElementHookInterface
      * @param array $childRecord The current record of that foreign_table
      * @param array $childConfig TCA configuration of the current field of the child record
      * @param bool $isVirtual Defines whether the current records is only virtually shown and not physically part of the parent record
-     * @param array &$controlItems (reference) Associative array with the currently available control items
+     * @param array $controlItems (reference) Associative array with the currently available control items
      */
     public function renderForeignRecordHeaderControl_postProcess($parentUid, $foreignTable, array $childRecord, array $childConfig, $isVirtual, array &$controlItems);
 }

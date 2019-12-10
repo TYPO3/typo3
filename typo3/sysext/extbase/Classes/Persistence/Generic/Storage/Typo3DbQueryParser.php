@@ -989,9 +989,9 @@ class Typo3DbQueryParser
      * adds a union statement to the query, mostly for tables referenced in the where condition.
      * The property for which the union statement is generated will be appended.
      *
-     * @param string &$className The name of the parent class, will be set to the child class after processing.
-     * @param string &$tableName The name of the parent table, will be set to the table alias that is used in the union statement.
-     * @param string &$propertyPath The remaining property path, will be cut of by one part during the process.
+     * @param string $className The name of the parent class, will be set to the child class after processing.
+     * @param string $tableName The name of the parent table, will be set to the table alias that is used in the union statement.
+     * @param string $propertyPath The remaining property path, will be cut of by one part during the process.
      * @param string $fullPropertyPath The full path the the current property, will be used to make table names unique.
      * @throws Exception
      * @throws InvalidRelationConfigurationException

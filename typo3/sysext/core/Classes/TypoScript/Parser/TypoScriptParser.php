@@ -977,8 +977,8 @@ class TypoScriptParser
      *
      * @param string $filename Full absolute path+filename to the typoscript file to be included
      * @param int $cycleCounter Counter for detecting endless loops
-     * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
-     * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+     * @param bool $returnFiles When set, filenames of included files will be prepended to the array $includedFiles
+     * @param array $includedFiles Array to which the filenames of included files will be prepended (referenced)
      * @return string the unparsed TypoScript content from external files
      */
     protected static function importExternalTypoScriptFile($filename, $cycleCounter, $returnFiles, array &$includedFiles)
@@ -1077,9 +1077,9 @@ class TypoScriptParser
      *
      * @param string $filename Relative path to the typoscript file to be included
      * @param int $cycle_counter Counter for detecting endless loops
-     * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
-     * @param string &$newString The output string to which the content of the file will be prepended (referenced
-     * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+     * @param bool $returnFiles When set, filenames of included files will be prepended to the array $includedFiles
+     * @param string $newString The output string to which the content of the file will be prepended (referenced
+     * @param array $includedFiles Array to which the filenames of included files will be prepended (referenced)
      * @param string $optionalProperties
      * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
      * @static
@@ -1134,9 +1134,9 @@ class TypoScriptParser
      *
      * @param string $dirPath Relative path to the directory to be included
      * @param int $cycle_counter Counter for detecting endless loops
-     * @param bool $returnFiles When set, filenames of included files will be prepended to the array &$includedFiles
-     * @param string &$newString The output string to which the content of the file will be prepended (referenced)
-     * @param array &$includedFiles Array to which the filenames of included files will be prepended (referenced)
+     * @param bool $returnFiles When set, filenames of included files will be prepended to the array $includedFiles
+     * @param string $newString The output string to which the content of the file will be prepended (referenced)
+     * @param array $includedFiles Array to which the filenames of included files will be prepended (referenced)
      * @param string $optionalProperties
      * @param string $parentFilenameOrPath The parent file (with absolute path) or path for relative includes
      * @static

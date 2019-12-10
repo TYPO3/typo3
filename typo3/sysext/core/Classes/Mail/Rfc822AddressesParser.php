@@ -367,7 +367,7 @@ class Rfc822AddressesParser
      *
      * @internal
      * @param string $string The string to check.
-     * @param int &$num	The number of occurrences.
+     * @param int $num	The number of occurrences.
      * @param string $char   The character to count.
      * @return int The number of occurrences of $char in $string, adjusted for backslashes.
      */
@@ -541,7 +541,7 @@ class Rfc822AddressesParser
      * mailbox =   addr-spec		 ; simple address
      * phrase route-addr ; name and route-addr
      *
-     * @param string &$mailbox The string to check.
+     * @param string $mailbox The string to check.
      * @return bool Success or failure.
      */
     protected function validateMailbox(&$mailbox)

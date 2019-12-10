@@ -239,7 +239,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
      * If called by \TYPO3\CMS\Extbase\Configuration\FrontendConfigurationManager::overrideSwitchableControllerActionsFromFlexForm,
      * $switchableControllerActions may contain an alternative controller configuration defined via plugin flexform.
      *
-     * @param array &$frameworkConfiguration
+     * @param array $frameworkConfiguration
      * @param array $switchableControllerActions
      * @deprecated since TYPO3 v10, will be removed in one of the next major versions of TYPO3, probably version 11.0 or 12.0.
      */

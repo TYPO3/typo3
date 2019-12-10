@@ -66,7 +66,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Render additional information fields within the scheduler backend.
      *
-     * @param array &$taskInfo Array information of task to return
+     * @param array $taskInfo Array information of task to return
      * @param AbstractTask|null $task When editing, reference to the current task. NULL when adding.
      * @param SchedulerModuleController $schedulerModule Reference to the calling object (BE module of the Scheduler)
      * @return array Additional fields
@@ -96,7 +96,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * Validates additional selected fields
      *
-     * @param array &$submittedData
+     * @param array $submittedData
      * @param SchedulerModuleController $schedulerModule
      * @return bool
      */

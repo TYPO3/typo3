@@ -649,7 +649,7 @@ class ExtendedTemplateService extends TemplateService
      * and turns it into a hierarchical array to show dependencies (used by TemplateAnalyzer)
      *
      * @param array $depthDataArr (empty array on external call)
-     * @param int &$pointer Element number (1! to count()) of $this->hierarchyInfo that should be processed.
+     * @param int $pointer Element number (1! to count()) of $this->hierarchyInfo that should be processed.
      * @return array Processed hierachyInfo.
      */
     public function ext_process_hierarchyInfo(array $depthDataArr, &$pointer)

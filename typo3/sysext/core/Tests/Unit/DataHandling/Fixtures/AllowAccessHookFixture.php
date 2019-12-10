@@ -25,7 +25,7 @@ class AllowAccessHookFixture implements DataHandlerCheckModifyAccessListHookInte
     /**
      *  Check modify access list
      *
-     * @param bool &$accessAllowed
+     * @param bool $accessAllowed
      * @param string $table
      * @param DataHandler $parent
      */

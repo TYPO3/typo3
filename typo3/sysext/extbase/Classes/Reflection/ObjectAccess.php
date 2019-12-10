@@ -158,7 +158,7 @@ class ObjectAccess
      * on it without checking if it existed.
      * - else, return FALSE
      *
-     * @param mixed &$subject The target object or array
+     * @param mixed $subject The target object or array
      * @param string $propertyName Name of the property to set
      * @param mixed $propertyValue Value of the property
      * @param bool $forceDirectAccess directly access property using reflection(!)

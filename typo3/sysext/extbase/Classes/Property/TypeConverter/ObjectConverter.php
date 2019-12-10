@@ -211,7 +211,7 @@ class ObjectConverter extends AbstractTypeConverter
      * constructor argument values are missing from the given array the method
      * looks for a default value in the constructor signature. Furthermore, the constructor arguments are removed from $possibleConstructorArgumentValues
      *
-     * @param array &$possibleConstructorArgumentValues
+     * @param array $possibleConstructorArgumentValues
      * @param string $objectType
      * @return object The created instance
      * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException if a required constructor argument is missing

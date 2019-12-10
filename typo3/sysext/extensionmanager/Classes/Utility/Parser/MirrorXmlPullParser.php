@@ -116,7 +116,7 @@ class MirrorXmlPullParser extends AbstractMirrorXmlParser
      * Method will read until it finds the end of the given element.
      * If element has no value, method returns NULL.
      *
-     * @param string &$elementName name of element to retrieve it's value from
+     * @param string $elementName name of element to retrieve it's value from
      * @return string an element's value if it has a value, otherwise NULL
      */
     protected function getElementValue(&$elementName)

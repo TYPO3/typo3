@@ -409,7 +409,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage The object storage to be persisted.
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object. One of the properties holds the object storage.
      * @param string $propertyName The name of the property holding the object storage.
-     * @param array &$row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
+     * @param array $row The row array of the parent object to be persisted. It's passed by reference and gets filled with either a comma separated list of uids (csv) or the number of contained objects.
      */
     protected function persistObjectStorage(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $objectStorage, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, array &$row)
     {
@@ -939,7 +939,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Adds common database fields to a row
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param array &$row
+     * @param array $row
      */
     protected function addCommonFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row)
     {
@@ -957,7 +957,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
      * Adjusts the common date fields of the given row to the current time
      *
      * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-     * @param array &$row The row to be updated
+     * @param array $row The row to be updated
      */
     protected function addCommonDateFieldsToRow(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, array &$row)
     {

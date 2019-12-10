@@ -26,8 +26,8 @@ class CheckFlexFormValue
      * Check flexform value before merge
      *
      * @param DataHandler $dataHander
-     * @param array &$currentValue
-     * @param array &$newValue
+     * @param array $currentValue
+     * @param array $newValue
      */
     public function checkFlexFormValue_beforeMerge(DataHandler $dataHander, array &$currentValue, array &$newValue)
     {
