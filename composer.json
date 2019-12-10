@@ -59,7 +59,7 @@
 	"require-dev": {
 		"codeception/codeception": "^2.3",
 		"fiunchinho/phpunit-randomizer": "~3.0.0",
-		"friendsofphp/php-cs-fixer": "^2.0",
+		"friendsofphp/php-cs-fixer": "^2.16.1",
 		"typo3/cms-styleguide": "~8.0.15",
 		"typo3/testing-framework": "~1.3.2"
 	},
