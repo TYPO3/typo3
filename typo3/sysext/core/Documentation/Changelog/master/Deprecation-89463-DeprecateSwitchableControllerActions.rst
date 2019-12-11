@@ -73,7 +73,7 @@ Example:
 
 This configuration would lead to the creation configuration of two different plugins like this:
 
-.. code-block: php
+.. code-block:: php
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
         'extension',
