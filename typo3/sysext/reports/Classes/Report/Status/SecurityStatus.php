@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Reports\Report\Status;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -49,6 +50,7 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
             'adminUserAccount' => $this->getAdminAccountStatus(),
             'fileDenyPattern' => $this->getFileDenyPatternStatus(),
             'htaccessUpload' => $this->getHtaccessUploadStatus(),
+            'exceptionHandler' => $this->getExceptionHandlerStatus()
         ];
 
         if ($request !== null) {
@@ -236,6 +238,25 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_htaccessUploadProtection'), $value, $message, $severity);
+    }
+
+    protected function getExceptionHandlerStatus(): ReportStatus
+    {
+        $value = $this->getLanguageService()->getLL('status_ok');
+        $message = '';
+        $severity = ReportStatus::OK;
+        if (
+            strpos($GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'], 'Debug') !== false ||
+            (Environment::getContext()->isProduction() && (int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1)
+        ) {
+            $value = $this->getLanguageService()->getLL('status_insecure');
+            $severity = ReportStatus::ERROR;
+            $message = $this->getLanguageService()->getLL('status_exceptionHandler_errorMessage');
+        } elseif ((int)$GLOBALS['TYPO3_CONF_VARS']['SYS']['displayErrors'] === 1) {
+            $severity = ReportStatus::WARNING;
+            $message = $this->getLanguageService()->getLL('status_exceptionHandler_warningMessage');
+        }
+        return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->getLL('status_exceptionHandler'), $value, $message, $severity);
     }
 
     /**
