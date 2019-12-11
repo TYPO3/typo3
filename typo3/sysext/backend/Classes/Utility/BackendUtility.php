@@ -1264,10 +1264,10 @@ class BackendUtility
                 foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
                     if (strpos($includeTsConfigFile, 'EXT:') === 0) {
                         list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
-                                '/',
-                                substr($includeTsConfigFile, 4),
-                                2
-                            );
+                            '/',
+                            substr($includeTsConfigFile, 4),
+                            2
+                        );
                         if ((string)$includeTsConfigFileExtensionKey !== ''
                             && ExtensionManagementUtility::isLoaded($includeTsConfigFileExtensionKey)
                             && (string)$includeTsConfigFilename !== ''
@@ -4115,7 +4115,6 @@ class BackendUtility
                         $queryBuilder->createNamedParameter($domain . '/', \PDO::PARAM_STR)
                     )
                 )
-
             )
             ->execute()
             ->fetch();

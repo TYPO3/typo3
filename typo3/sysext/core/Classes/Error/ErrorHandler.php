@@ -153,11 +153,11 @@ class ErrorHandler implements ErrorHandlerInterface
         if ($this->debugMode) {
             /** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
             $flashMessage = GeneralUtility::makeInstance(
-                        \TYPO3\CMS\Core\Messaging\FlashMessage::class,
-                        $message,
-                        $errorLevels[$errorLevel],
-                        $flashMessageSeverity
-                    );
+                \TYPO3\CMS\Core\Messaging\FlashMessage::class,
+                $message,
+                $errorLevels[$errorLevel],
+                $flashMessageSeverity
+            );
             /** @var $flashMessageService \TYPO3\CMS\Core\Messaging\FlashMessageService */
             $flashMessageService = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageService::class);
             /** @var $defaultFlashMessageQueue \TYPO3\CMS\Core\Messaging\FlashMessageQueue */

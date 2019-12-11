@@ -147,7 +147,6 @@ class PresetRepository
                         'preset_data' => serialize($inData)
                     ],
                     ['preset_data' => Connection::PARAM_LOB]
-
                 );
 
                 $msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';

@@ -67,8 +67,8 @@ class BackendModuleController
             $view = GeneralUtility::makeInstance(StandaloneView::class);
             $view->setTemplatePathAndFilename(
                 GeneralUtility::getFileAbsFileName(
-                'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html'
-            )
+                    'EXT:install/Resources/Private/Templates/BackendModule/ShowEnableInstallToolButton.html'
+                )
             );
             $token = $formProtection->generateToken('installTool');
             $view->assign('installToolEnableToken', $token);

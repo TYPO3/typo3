@@ -199,9 +199,9 @@ abstract class AbstractTypolinkBuilder
             // However, this is added to avoid any exceptions when trying to create a link
             $GLOBALS['TSFE'] = GeneralUtility::makeInstance(
                 TypoScriptFrontendController::class,
-                    [],
-                    (int)GeneralUtility::_GP('id'),
-                    (int)GeneralUtility::_GP('type')
+                [],
+                (int)GeneralUtility::_GP('id'),
+                (int)GeneralUtility::_GP('type')
             );
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
             $GLOBALS['TSFE']->sys_page->init(false);

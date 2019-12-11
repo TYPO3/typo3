@@ -176,7 +176,7 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
                                 'function' => $controller
                             ]
                         ]
-                        )
+                    )
                 )
                 ->setTitle($title);
             if ($controller === $this->MOD_SETTINGS['function']) {

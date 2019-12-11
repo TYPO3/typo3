@@ -1960,11 +1960,11 @@ class EditDocumentController extends AbstractModule
                     // The input record was online and an offline version must be found or made:
                     // Look for version of this workspace:
                     $versionRec = BackendUtility::getWorkspaceVersionOfRecord(
-                            $this->getBackendUser()->workspace,
-                            $table,
-                            $reqRecord['uid'],
-                            'uid,pid,t3ver_oid'
-                        );
+                        $this->getBackendUser()->workspace,
+                        $table,
+                        $reqRecord['uid'],
+                        'uid,pid,t3ver_oid'
+                    );
                     return is_array($versionRec) ? $versionRec : $reqRecord;
                 }
                 // This means that editing cannot occur on this record because it was not supporting versioning

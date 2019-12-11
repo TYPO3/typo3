@@ -356,10 +356,10 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface
             // Forcibly set the disable flag to 1 in the database,
             // so that the task does not come up again and again for execution
             $connectionPool->getConnectionForTable('tx_scheduler_task')->update(
-                    'tx_scheduler_task',
-                    ['disable' => 1],
-                    ['uid' => (int)$row['uid']]
-                );
+                'tx_scheduler_task',
+                ['disable' => 1],
+                ['uid' => (int)$row['uid']]
+            );
             // Throw an exception to raise the problem
             throw new \UnexpectedValueException('Could not unserialize task', 1255083671);
         }

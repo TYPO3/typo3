@@ -2423,9 +2423,9 @@ This is a dump of the failures:
                 while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
                     $theData = unserialize($row['log_data']);
                     $email_body .= date(
-                            $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
-                            $row['tstamp']
-                        ) . ':  ' . @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
+                        $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
+                        $row['tstamp']
+                    ) . ':  ' . @sprintf($row['details'], (string)$theData[0], (string)$theData[1], (string)$theData[2]);
                     $email_body .= LF;
                 }
                 /** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */

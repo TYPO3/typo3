@@ -116,9 +116,9 @@ class TemplateServiceTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $GLOBALS['TYPO3_LOADED_EXT'] = [
             $identifier => [
                 'ext_typoscript_setup.txt' => ExtensionManagementUtility::extPath(
-                        'core',
+                    'core',
                     'Tests/Unit/TypoScript/Fixtures/ext_typoscript_setup.txt'
-                    ),
+                ),
                 'ext_typoscript_constants.txt' => ''
             ],
         ];

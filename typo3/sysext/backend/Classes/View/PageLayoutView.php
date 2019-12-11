@@ -995,10 +995,10 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                                 $element = $defLangBinding[$cKey][$lP][$defUid] ?? '';
                             }
                             $cCont[] = $element . $this->newLanguageButton(
-                                    $this->getNonTranslatedTTcontentUids([$defUid], $id, $lP),
-                                    $lP,
-                                    $cKey
-                                );
+                                $this->getNonTranslatedTTcontentUids([$defUid], $id, $lP),
+                                $lP,
+                                $cKey
+                            );
                         }
                         $out .= '
                         <tr>
@@ -1888,8 +1888,8 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
                         $out .= '<strong>' . $this->getLanguageService()->getLL('noPluginSelected') . '</strong>';
                     }
                     $out .= htmlspecialchars($this->getLanguageService()->sL(
-                            BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages'])
-                        )) . '<br />';
+                        BackendUtility::getLabelFromItemlist('tt_content', 'pages', $row['pages'])
+                    )) . '<br />';
                     break;
                 default:
                     $contentType = $this->CType_labels[$row['CType']];

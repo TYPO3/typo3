@@ -1272,7 +1272,7 @@ class RelationHandler
             $theRow = $this->results[$val['table']][$val['id']];
             if ($theRow && is_array($GLOBALS['TCA'][$val['table']])) {
                 $label = GeneralUtility::fixed_lgd_cs(strip_tags(
-                        BackendUtility::getRecordTitle($val['table'], $theRow)
+                    BackendUtility::getRecordTitle($val['table'], $theRow)
                 ), $titleLen);
                 $label = $label ? $label : '[...]';
                 $output[] = str_replace(',', '', $val['table'] . '_' . $val['id'] . '|' . rawurlencode($label));

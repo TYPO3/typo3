@@ -60,7 +60,7 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
         $this->frontendControllerMock =
             $this->getAccessibleMock(
                 TypoScriptFrontendController::class,
-            ['dummy'],
+                ['dummy'],
                 [],
                 '',
                 false

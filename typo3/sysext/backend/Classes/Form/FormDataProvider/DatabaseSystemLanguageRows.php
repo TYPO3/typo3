@@ -105,10 +105,10 @@ class DatabaseSystemLanguageRows implements FormDataProviderInterface
                 );
                 /** @var FlashMessage $flashMessage */
                 $flashMessage = GeneralUtility::makeInstance(
-                        FlashMessage::class,
-                        $message,
-                        '',
-                        FlashMessage::ERROR
+                    FlashMessage::class,
+                    $message,
+                    '',
+                    FlashMessage::ERROR
                 );
                 /** @var $flashMessageService FlashMessageService */
                 $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);

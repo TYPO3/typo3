@@ -220,7 +220,7 @@ class FileTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
             'name' => $originalFilename,
             'identifier' => '/' . $originalFilename
         ],
-        $this->storageMock
+            $this->storageMock
         );
         $this->assertSame($expectedBasename, $fixture->getNameWithoutExtension());
     }

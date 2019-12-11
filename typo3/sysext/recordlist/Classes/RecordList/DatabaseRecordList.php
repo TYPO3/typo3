@@ -1631,8 +1631,8 @@ class DatabaseRecordList extends AbstractDatabaseRecordList
                         ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.referencesToRecord'),
                         $this->getReferenceCount($table, $row['uid'])
                     ) . BackendUtility::translationCount(
-                            $table,
-                            $row['uid'],
+                        $table,
+                        $row['uid'],
                         ' ' . $this->getLanguageService()->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.translationsOfRecord')
                     );
                 }

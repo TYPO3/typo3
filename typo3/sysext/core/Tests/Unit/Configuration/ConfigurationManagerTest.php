@@ -138,7 +138,7 @@ class ConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                     [
                     'path' => 'value',
                 ]
-            ));
+                ));
 
         $this->assertSame('value', $this->subject->getDefaultConfigurationValueByPath('path'));
     }
@@ -159,7 +159,7 @@ class ConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                     [
                     'path' => 'value',
                 ]
-            ));
+                ));
 
         $this->assertSame('value', $this->subject->getLocalConfigurationValueByPath('path'));
     }
@@ -181,14 +181,14 @@ class ConfigurationManagerTest extends \TYPO3\TestingFramework\Core\Unit\UnitTes
                     [
                     'path' => 'value',
                 ]
-            ));
+                ));
         $this->subject->expects($this->once())
                 ->method('getLocalConfiguration')
                 ->will($this->returnValue(
                     [
                     'path' => 'valueOverride',
                 ]
-            ));
+                ));
 
         $this->assertSame('valueOverride', $this->subject->getConfigurationValueByPath('path'));
     }

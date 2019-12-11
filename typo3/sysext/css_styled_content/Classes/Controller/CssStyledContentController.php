@@ -111,10 +111,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
         reset($rows);
         // Find number of columns to render:
         $cols = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(
-                $this->cObj->data['cols'] ? $this->cObj->data['cols'] : count(str_getcsv(current($rows), $delimiter, $quotedInput)),
-                0,
-                100
-            );
+            $this->cObj->data['cols'] ? $this->cObj->data['cols'] : count(str_getcsv(current($rows), $delimiter, $quotedInput)),
+            0,
+            100
+        );
         // Traverse rows (rendering the table here)
         $rCount = count($rows);
         foreach ($rows as $k => $v) {

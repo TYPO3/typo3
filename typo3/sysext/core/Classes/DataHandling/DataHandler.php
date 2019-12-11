@@ -3671,9 +3671,9 @@ class DataHandler
                         ->from($table)
                         ->where(
                             $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
-                        )
+                                'pid',
+                                $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                            )
                         );
                     if ($isTableWorkspaceEnabled && (int)$this->BE_USER->workspace === 0) {
                         // Table is workspace enabled, user is in default ws -> add t3ver_wsid=0 restriction
@@ -4014,7 +4014,7 @@ class DataHandler
         $conf,
         $realDestPid,
         $language,
-                                                array $workspaceOptions,
+        array $workspaceOptions,
         $localizationMode,
         $inlineSubType
     ) {
@@ -6712,7 +6712,7 @@ class DataHandler
     {
         $cacheId = md5('doesRecordExist_pageLookUp' . '_' . $id . '_' . $perms . '_' . implode(
             '_',
-                $columns
+            $columns
         ) . '_' . (string)$this->admin);
 
         // If result is cached, return it

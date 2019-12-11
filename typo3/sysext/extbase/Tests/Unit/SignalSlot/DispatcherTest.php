@@ -130,10 +130,10 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $firstMockSlot->expects($this->once())
             ->method('slot')
             ->will($this->returnCallback(
-                        function ($foo, $baz) {
-                            return ['modified_' . $foo, 'modified_' . $baz];
-                        }
-                    ));
+                function ($foo, $baz) {
+                    return ['modified_' . $foo, 'modified_' . $baz];
+                }
+            ));
 
         $secondMockSlot = $this->createMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
         $secondMockSlot->expects($this->once())
@@ -157,10 +157,10 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $firstMockSlot->expects($this->once())
             ->method('slot')
             ->will($this->returnCallback(
-                        function ($foo, $baz) {
-                            return ['modified_' . $foo, 'modified_' . $baz];
-                        }
-                    ));
+                function ($foo, $baz) {
+                    return ['modified_' . $foo, 'modified_' . $baz];
+                }
+            ));
 
         $secondMockSlot = $this->createMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
         $secondMockSlot->expects($this->once())
@@ -184,10 +184,10 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $firstMockSlot->expects($this->once())
             ->method('slot')
             ->will($this->returnCallback(
-                        function ($foo, $baz) {
-                            return ['modified_' . $foo, 'modified_' . $baz];
-                        }
-                    ));
+                function ($foo, $baz) {
+                    return ['modified_' . $foo, 'modified_' . $baz];
+                }
+            ));
 
         $secondMockSlot = $this->createMock(\TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture::class);
         $secondMockSlot->expects($this->once())
@@ -218,10 +218,10 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $mockSlot->expects($this->once())
             ->method('slot')
             ->will($this->returnCallback(
-                        function () {
-                            return 'string';
-                        }
-                    ));
+                function () {
+                    return 'string';
+                }
+            ));
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);
@@ -240,10 +240,10 @@ class DispatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         $mockSlot->expects($this->once())
             ->method('slot')
             ->will($this->returnCallback(
-                        function () {
-                            return [1, 2, 3];
-                        }
-                    ));
+                function () {
+                    return [1, 2, 3];
+                }
+            ));
 
         $this->signalSlotDispatcher->connect('Foo', 'emitBar', $mockSlot, 'slot', false);
         $this->signalSlotDispatcher->dispatch('Foo', 'emitBar', ['bar', 'quux']);

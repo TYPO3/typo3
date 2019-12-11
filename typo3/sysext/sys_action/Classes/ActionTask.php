@@ -249,7 +249,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface
                     $actionRow['description']
                         ? '<p>' . nl2br(htmlspecialchars($actionRow['description'])) . '</p>'
                         : ''
-                    ) . $editActionLink,
+                ) . $editActionLink,
                 'link' => $this->moduleUrl
                     . '&SET[function]=sys_action.'
                     . self::class

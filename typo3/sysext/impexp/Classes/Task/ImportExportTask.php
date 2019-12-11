@@ -127,7 +127,7 @@ class ImportExportTask implements TaskInterface
                     if ($configuration['pagetree']['id']) {
                         $description[] = $lang->getLL('task.page') . ': ' . $configuration['pagetree']['id'];
                         $description[] = $lang->getLL('task.path') . ': ' . htmlspecialchars(
-                                BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20)
+                            BackendUtility::getRecordPath($configuration['pagetree']['id'], $clause, 20)
                         );
                     } else {
                         $description[] = $lang->getLL('single-record');

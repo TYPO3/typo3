@@ -299,8 +299,8 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask
             return 'fe_users';
         }
         throw new \InvalidArgumentException(
-                'Invalid mode "' . $mode . '" for salted passwords bulk update',
-                1465392861
-            );
+            'Invalid mode "' . $mode . '" for salted passwords bulk update',
+            1465392861
+        );
     }
 }

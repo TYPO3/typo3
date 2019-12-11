@@ -833,7 +833,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
                     <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-insert-record" data-identifier="actions-insert-record">
                         <span class="icon-markup">' . $this->iconFactory->getIcon(
                 'actions-insert-record',
-                    Icon::SIZE_SMALL
+                Icon::SIZE_SMALL
             )->render() . '</span>
                     </span>
                 </a><span id="page_' . $fieldID . '">&nbsp;' . htmlspecialchars($fieldInfo['pageTitle']) . '</span></div>';

@@ -133,7 +133,7 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
         $this->frontendControllerMock =
             $this->getAccessibleMock(
                 TypoScriptFrontendController::class,
-            ['dummy'],
+                ['dummy'],
                 [],
                 '',
                 false
@@ -3459,9 +3459,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
     public function caseshift($expect, $content, $case)
     {
         $this->assertSame(
-             $expect,
-             $this->subject->caseshift($content, $case)
-         );
+            $expect,
+            $this->subject->caseshift($content, $case)
+        );
     }
 
     /**
@@ -5065,9 +5065,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
              ->with($content, $conf['encapsLines.'])
              ->willReturn($return);
         $this->assertSame(
-             $return,
-             $subject->stdWrap_encapsLines($content, $conf)
-         );
+            $return,
+            $subject->stdWrap_encapsLines($content, $conf)
+        );
     }
 
     /**
@@ -7243,9 +7243,9 @@ class ContentObjectRendererTest extends \TYPO3\TestingFramework\Core\Unit\UnitTe
              ->with($content, $conf['split.'])
              ->willReturn($return);
         $this->assertSame(
-             $return,
-             $subject->stdWrap_split($content, $conf)
-         );
+            $return,
+            $subject->stdWrap_split($content, $conf)
+        );
     }
 
     /**

@@ -100,8 +100,8 @@ class PlatformInformation
             return 'sqlite';
         }
         throw new \RuntimeException(
-                'Unsupported Databaseplatform "' . get_class($platform) . '" detected in PlatformInformation',
-                1500958070
-            );
+            'Unsupported Databaseplatform "' . get_class($platform) . '" detected in PlatformInformation',
+            1500958070
+        );
     }
 }

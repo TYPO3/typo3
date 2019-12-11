@@ -7346,10 +7346,10 @@ class ContentObjectRenderer
             $knownAliases[$tableReference] = true;
 
             $fromClauses[$tableReference] = $tableSql . $this->getQueryArrayJoinHelper(
-                    $tableReference,
-                    $queryBuilder->getQueryPart('join'),
-                    $knownAliases
-                );
+                $tableReference,
+                $queryBuilder->getQueryPart('join'),
+                $knownAliases
+            );
         }
 
         $queryParts['SELECT'] = implode(', ', $queryBuilder->getQueryPart('select'));

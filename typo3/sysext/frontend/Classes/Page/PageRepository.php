@@ -1809,8 +1809,8 @@ class PageRepository
             // OK, so no workspace version was found. Then check if online version can be
             // selected with full enable fields and if so, return 1:
             $queryBuilder->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
-                );
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT))
+            );
             if ($bypassEnableFieldsCheck || $queryBuilder->execute()->fetchColumn()) {
                 // Means search was done, but no version found.
                 return 1;

@@ -118,11 +118,11 @@ class DataHandlerHook
                             $table,
                             $elementId,
                             $value['stageId'],
-                                $comment,
-                                true,
-                                $dataHandler,
-                                $notificationAlternativeRecipients
-                            );
+                            $comment,
+                            true,
+                            $dataHandler,
+                            $notificationAlternativeRecipients
+                        );
                     }
                     break;
                 default:
@@ -1103,18 +1103,18 @@ class DataHandlerHook
         // Update relations for both (workspace/versioning) sites:
         if (count($liveRelations->itemArray)) {
             $dataHandler->addRemapAction(
-                    $tableName,
+                $tableName,
                 $liveData['uid'],
-                    [$this, 'updateInlineForeignFieldSorting'],
-                    [$tableName, $liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace]
+                [$this, 'updateInlineForeignFieldSorting'],
+                [$tableName, $liveData['uid'], $foreignTable, $liveRelations->tableArray[$foreignTable], $configuration, $dataHandler->BE_USER->workspace]
             );
         }
         if (count($versionRelations->itemArray)) {
             $dataHandler->addRemapAction(
-                    $tableName,
+                $tableName,
                 $liveData['uid'],
-                    [$this, 'updateInlineForeignFieldSorting'],
-                    [$tableName, $liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0]
+                [$this, 'updateInlineForeignFieldSorting'],
+                [$tableName, $liveData['uid'], $foreignTable, $versionRelations->tableArray[$foreignTable], $configuration, 0]
             );
         }
     }

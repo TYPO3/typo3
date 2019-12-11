@@ -185,13 +185,13 @@ class MetaDataRepository implements SingletonInterface
                 }
             }
             $connection->update(
-                    $this->tableName,
-                    $updateRow,
-                    [
+                $this->tableName,
+                $updateRow,
+                [
                         'uid' => (int)$row['uid']
                     ],
-                    $types
-                );
+                $types
+            );
 
             $this->emitRecordUpdatedSignal(array_merge($row, $updateRow));
         }
