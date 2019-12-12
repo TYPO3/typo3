@@ -349,7 +349,7 @@ If you enter this string in the 'TSConfig' field, the 'Web&gt;Page' Module will 
 				<source>Affect availability of pages in the various languages.</source>
 			</trans-unit>
 			<trans-unit id="l18n_cfg.details" resname="l18n_cfg.details" xml:space="preserve">
-				<source>&lt;b&gt;Hide default translation of page&lt;/b&gt;
+				<source>&lt;b&gt;Hide default language of page&lt;/b&gt;
 If set, the page is only available in translated versions and not in the default language. Any attempt to access the page in the default language will result in an error message.
 
 &lt;b&gt;Hide page if no translation for current language exists&lt;/b&gt;

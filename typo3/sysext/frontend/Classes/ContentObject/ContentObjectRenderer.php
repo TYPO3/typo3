@@ -7046,7 +7046,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             // Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
             // OVERLAY the records with localized versions!
             $languageQuery = $expressionBuilder->in($languageField, [0, -1]);
-            // Use this option to include records that don't have a default translation ("free mode")
+            // Use this option to include records that don't have a default language counterpart ("free mode")
             // (originalpointerfield is 0 and the language field contains the requested language)
             if (isset($conf['includeRecordsWithoutDefaultTranslation']) || $conf['includeRecordsWithoutDefaultTranslation.']) {
                 $includeRecordsWithoutDefaultTranslation = isset($conf['includeRecordsWithoutDefaultTranslation.']) ?

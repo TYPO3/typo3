@@ -2849,7 +2849,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Setting sys_language_uid inside sys-page by creating a new page repository
         $this->sys_page = GeneralUtility::makeInstance(PageRepository::class, $this->context);
-        // If default translation is not available:
+        // If default language is not available:
         if ((!$languageAspect->getContentId() || !$languageAspect->getId())
             && GeneralUtility::hideIfDefaultLanguage($this->page['l18n_cfg'] ?? 0)
         ) {

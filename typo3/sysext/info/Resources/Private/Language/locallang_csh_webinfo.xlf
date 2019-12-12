@@ -85,7 +85,7 @@ Here you see the "TSconfig" column. The overview exposes that these two pages in
 &lt;b&gt;Gray background (not available for default language):&lt;/b&gt; Page will fall back to the specified fallback mode for content. Depends on configuration. (sys_language_mode = content_fallback is recommended for most flexible fallback, sys_language_mode = strict will prevent this and issue an error instead!)
 
 &lt;b&gt;The pages "Localization settings:"&lt;/b&gt;
-It is the "Localization settings" of the page record that determines the modes above. In the column of the default translation each of these settings are represented by a "N" (Hide page if no translation for current language exists) or a "D" (Hide default translation of page).
+It is the "Localization settings" of the page record that determines the modes above. In the column of the default language each of these settings are represented by a "N" (Hide page if no translation for current language exists) or a "D" (Hide default language of page).
 As you can see the page "Startpage" has the N flag set and therefore any access to the german version of that page will be blocked with an error message because there is no translation in german. By default "german access" to a non-translated page will just show the english content.
 There is also a page with the D flag ("[Dummy]"). The D flag means that the page is only available in one of the translations, in this case Danish. So any attempt to access the page in the default language or german will show an error message.
 
