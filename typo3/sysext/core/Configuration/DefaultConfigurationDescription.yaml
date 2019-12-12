@@ -486,7 +486,7 @@ FE:
                   description: 'Configure Parameters that require a cHash. If no cHash is given but one of the parameters are set, then TYPO3 triggers the configured cHash Error behaviour'
               excludedParameters:
                   type: array
-                  description: 'The the given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]'
+                  description: 'The given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]'
               excludedParametersIfEmpty:
                   type: array
                   description: 'Configure Parameters that are only relevant for the cHash if there''s an associated value available. Set excludeAllEmptyParameters to true to skip all empty parameters.'
