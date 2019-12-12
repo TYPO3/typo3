@@ -1293,10 +1293,10 @@ chokidar@^3.0.0:
   optionalDependencies:
     fsevents "^2.0.6"
 
-chosen-js@^1.7.0:
-  version "1.8.5"
-  resolved "https://registry.yarnpkg.com/chosen-js/-/chosen-js-1.8.5.tgz#5863f8ba590afa317e77e1745e0348a7290c32f3"
-  integrity sha512-XkFqu0N5O5SbUWh/J4gcB7wOPBLMZbLibWryYmrCRfILUNQEIZwdoN8BZUkUoANmVa9aRs4mTSiDeRy4/eUWqg==
+chosen-js@^1.8.7:
+  version "1.8.7"
+  resolved "https://registry.yarnpkg.com/chosen-js/-/chosen-js-1.8.7.tgz#9bfa5597f5081d602ff4ae904af9aef33265bb1d"
+  integrity sha512-eVdrZJ2U5ISdObkgsi0od5vIJdLwq1P1Xa/Vj/mgxkMZf14DlgobfB6nrlFi3kW4kkvKLsKk4NDqZj1MU1DCpw==
 
 chownr@^1.0.1, chownr@^1.1.1:
   version "1.1.1"
