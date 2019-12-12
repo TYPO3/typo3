@@ -370,7 +370,7 @@
 				<source>Localization</source>
 			</trans-unit>
 			<trans-unit id="pages.l18n_cfg.I.1" resname="pages.l18n_cfg.I.1">
-				<source>Hide default translation of page</source>
+				<source>Hide default language of page</source>
 			</trans-unit>
 			<trans-unit id="pages.l18n_cfg.I.2" resname="pages.l18n_cfg.I.2">
 				<source>Hide page if no translation for current language exists</source>

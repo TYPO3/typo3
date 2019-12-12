@@ -832,7 +832,7 @@ class Typo3DbQueryParser
         $andConditions = [];
         // records in language 'all'
         $andConditions[] = $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, -1);
-        // translated records where a default translation exists
+        // translated records where a default language exists
         $andConditions[] = $this->queryBuilder->expr()->andX(
             $this->queryBuilder->expr()->eq($tableAlias . '.' . $languageField, (int)$querySettings->getLanguageUid()),
             $this->queryBuilder->expr()->in(
@@ -842,7 +842,7 @@ class Typo3DbQueryParser
         );
         if ($mode !== 'hideNonTranslated') {
             // $mode = TRUE
-            // returns records from current language which have default translation
+            // returns records from current language which have default language
             // together with not translated default language records
             $translatedOnlyTableAlias = $tableAlias . '_to';
             $queryBuilderForSubselect = $this->queryBuilder->getConnection()->createQueryBuilder();

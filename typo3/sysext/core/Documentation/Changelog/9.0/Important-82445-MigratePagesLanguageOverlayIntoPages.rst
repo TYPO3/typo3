@@ -40,7 +40,7 @@ Definitions:
 **The following details apply**
 
 - Any TCA-based records (= subpages, content elements) still ALWAYS contain the pid to the *Original Language Page*, a DataHandler restriction ensures this constraint.
-- Backend: All UI elements like Element Browser, Page Browser etc. are restricted to only show the *Default Translation Pages* to be selected (one can not link to a specific Translated Page).
+- Backend: All UI elements like Element Browser, Page Browser etc. are restricted to only show the *Default Language Pages* to be selected (one can not link to a specific Translated Page).
 - Permissions are always fetched from the "Original Language Page"
 - DataHandler: Moving or deleting of a *Default Language Page* always moves/deletes the associated *Translated Page* records as well.
 - DataHandler: "sorting" and "pid" parameters of translations are always kept in sync one-to-one for translated pages. Translated pages cannot be moved themselves.
@@ -48,6 +48,6 @@ Definitions:
 - Permissions: All existing "pages_language_overlay" permissions are merged into "pages" options for all records - when a Backend User/Group is limited to only certain languages (and not the default language) this , the . If a Backend User/Group does have permission on "pages_language_overlay" but not "pages", the Backend User/Group has automatically assigned all translations (sys_language_uid) as language limitations.
 - Frontend: Requesting a page can be done with ?id=originalpage&L=1 or ?id=translatedpage where "?id=translatedpage" internally resolves the "id" parameter to the uid of the Original Language Page and the "L" parameter resolved to the "sys_language_uid" corresponding in the TypoScript options.
 - Frontend: All "pid" checks are always done against the Original Language Page, as all records still sit on that page.
-- Frontend: Generating a link to a *Default Translation Page* with a current Translated Page generated, will exchange the target on link creation to the targeted Translated Page automatically.
+- Frontend: Generating a link to a *Default Language Page* with a current Translated Page generated, will exchange the target on link creation to the targeted Translated Page automatically.
 
 .. index:: Database, PHP-API
