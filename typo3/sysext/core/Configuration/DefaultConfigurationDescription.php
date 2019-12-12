@@ -161,7 +161,7 @@ return [
         'enable_mount_pids' => 'Boolean: If set to "1", the mount_pid feature allowing \'symlinks\' in the page tree (for frontend operation) is allowed.',
         'hidePagesIfNotTranslatedByDefault' => 'Boolean: If TRUE, pages that has no translation will be hidden by default. Basically this will inverse the effect of the page localization setting "Hide page if no translation for current language exists" to "Show page even if no translation exists"',
         'disableNoCacheParameter' => 'Boolean: If set, the no_cache request parameter will become ineffective. This is currently still an experimental feature and will require a website only with plugins that don\'t use this parameter. However, using "&amp;no_cache=1" should be avoided anyway because there are better ways to disable caching for a certain part of the website (see COA_INT/USER_INT documentation in TSref).',
-        'cHashExcludedParameters' => 'String: The the given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]',
+        'cHashExcludedParameters' => 'String: The given parameters will be ignored in the cHash calculation. Example: L,tx_search_pi1[query]',
         'cHashOnlyForParameters' => 'String: Only the given parameters will be evaluated in the cHash calculation. Example: tx_news_pi1[uid]',
         'cHashRequiredParameters' => 'Optional: Configure Parameters that require a cHash. If no cHash is given but one of the parameters are set, then TYPO3 triggers the configured cHash Error behaviour',
         'cHashExcludedParametersIfEmpty' => 'Optional: Configure Parameters that are only relevant for the chash if there\'s an associated value available. And asterisk "*" can be used to skip all empty parameters.',
