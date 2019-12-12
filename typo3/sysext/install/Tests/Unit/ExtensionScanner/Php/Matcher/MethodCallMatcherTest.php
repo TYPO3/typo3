@@ -51,10 +51,10 @@ class MethodCallMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
+            26,
             28,
-            30,
+            31,
             33,
-            35,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {

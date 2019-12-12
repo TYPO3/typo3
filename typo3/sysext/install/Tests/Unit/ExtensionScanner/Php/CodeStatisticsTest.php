@@ -41,6 +41,6 @@ class CodeStatisticsTest extends UnitTestCase
 
         $this->assertTrue($subject->isFileIgnored());
         $this->assertEquals(2, $subject->getNumberOfIgnoredLines());
-        $this->assertEquals(7, $subject->getNumberOfEffectiveCodeLines());
+        $this->assertEquals(6, $subject->getNumberOfEffectiveCodeLines());
     }
 }

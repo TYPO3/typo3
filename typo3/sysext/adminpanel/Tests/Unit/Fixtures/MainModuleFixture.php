@@ -16,7 +16,7 @@ namespace TYPO3\CMS\Adminpanel\Tests\Unit\Fixtures;
  * The TYPO3 project - inspiring people to share!
  */
 
-use     Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ConfigurableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;

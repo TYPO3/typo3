@@ -51,8 +51,8 @@ class MethodArgumentRequiredMatcherTest extends UnitTestCase
         $traverser->addVisitor($subject);
         $traverser->traverse($statements);
         $expectedHitLineNumbers = [
-            28,
-            29,
+            26,
+            27,
         ];
         $actualHitLineNumbers = [];
         foreach ($subject->getMatches() as $hit) {
