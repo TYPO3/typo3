@@ -207,6 +207,7 @@ class FrontendLoginController extends AbstractPlugin
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] ?? [] as $_funcRef) {
             $content = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            $_params['content'] = $content;
         }
         return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;
     }
