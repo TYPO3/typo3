@@ -92,6 +92,7 @@
 	},
 	"conflict": {
 		"hoa/core": "*",
+		"guzzlehttp/guzzle": ">= 6.5.0",
 		"phpdocumentor/reflection-docblock": ">= 4.3.2"
 	},
 	"provide": {
