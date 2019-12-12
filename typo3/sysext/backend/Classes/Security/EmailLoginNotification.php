@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\Security;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

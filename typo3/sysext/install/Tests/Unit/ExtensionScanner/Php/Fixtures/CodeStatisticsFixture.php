@@ -2,8 +2,6 @@
 declare(strict_types = 1);
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Fixtures;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * @extensionScannerIgnoreFile
  */
