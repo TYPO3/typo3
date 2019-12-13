@@ -479,4 +479,86 @@ class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         self::assertEquals($expected, $subject->migrate($input));
     }
+
+    /**
+     * @test
+     */
+    public function removeExcludeFieldForTransOrigPointerFieldIsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                  'transOrigPointerField' => 'l10n_parent'
+                ],
+                'columns' => [
+                    'l10n_parent' => [
+                        'exclude' => true,
+                        'config' => [
+                            'type' => 'select'
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'ctrl' => [
+                    'transOrigPointerField' => 'l10n_parent'
+                ],
+                'columns' => [
+                    'l10n_parent' => [
+                        'config' => [
+                            'type' => 'select'
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'l10n_parent' => [
+                        'exclude' => true,
+                        'config' => [
+                            'type' => 'select'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                    'transOrigPointerField' => 'l10n_parent'
+                ],
+                'columns' => [
+                    'l10n_parent' => [
+                        'config' => [
+                            'type' => 'select'
+                        ]
+                    ]
+                ]
+            ],
+            'bTable' => [
+                'ctrl' => [
+                    'transOrigPointerField' => 'l10n_parent'
+                ],
+                'columns' => [
+                    'l10n_parent' => [
+                        'config' => [
+                            'type' => 'select'
+                        ]
+                    ]
+                ]
+            ],
+            'cTable' => [
+                'columns' => [
+                    'l10n_parent' => [
+                        'exclude' => true,
+                        'config' => [
+                            'type' => 'select'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
 }

@@ -53,6 +53,7 @@ class TcaMigration
         $tca = $this->removeSetToDefaultOnCopy($tca);
         $tca = $this->sanitizeControlSectionIntegrity($tca);
         $tca = $this->removeEnableMultiSelectFilterTextfieldConfiguration($tca);
+        $tca = $this->removeExcludeFieldForTransOrigPointerField($tca);
 
         return $tca;
     }
@@ -270,6 +271,29 @@ class TcaMigration
                 ];
             }
         }
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA[$mytable][columns][_transOrigPointerField_][exclude] if defined
+     *
+     * @param array $tca
+     *
+     * @return array
+     */
+    protected function removeExcludeFieldForTransOrigPointerField(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (isset($configuration['ctrl']['transOrigPointerField'],
+                $configuration['columns'][$configuration['ctrl']['transOrigPointerField']]['exclude'])
+            ) {
+                $this->messages[] = 'The \'' . $table . '\' TCA tables transOrigPointerField '
+                    . '\'' . $configuration['ctrl']['transOrigPointerField'] . '\' is defined '
+                    . ' as excluded field which is no longer needed and should therefore be removed. ';
+                unset($configuration['columns'][$configuration['ctrl']['transOrigPointerField']]['exclude']);
+            }
+        }
+
         return $tca;
     }
 }
