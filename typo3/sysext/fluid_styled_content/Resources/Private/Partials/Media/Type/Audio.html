@@ -5,7 +5,7 @@
     </div>
     <f:if condition="{file.description}">
         <figcaption class="audio-caption">
-            {file.description}
+            {file.description -> f:format.nl2br()}
         </figcaption>
     </f:if>
 </figure>
