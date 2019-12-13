@@ -764,7 +764,7 @@ abstract class ImportExport
                 $fileProcObj = $this->getFileProcObj();
                 if ($fileProcObj->actionPerms['addFile']) {
                     $testFI = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fI['relFileName']);
-                    if (!$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
+                    if (!GeneralUtility::verifyFilenameAgainstDenyPattern($testFI['file'])) {
                         $pInfo['msg'] .= 'File extension was not allowed!';
                     }
                 } else {
