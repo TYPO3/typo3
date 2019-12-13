@@ -29,6 +29,9 @@ services:
       ACCEPT_EULA: Y
       SA_PASSWORD: Test1234!
       MSSQL_PID: Developer
+      MSSQL_MEMORY_LIMIT_MB: 3584
+    tmpfs:
+      - /var/lib/mssql:rw,noexec,nosuid
     volumes:
       - /etc/passwd:/etc/passwd,ro
     networks:
