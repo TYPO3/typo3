@@ -206,22 +206,33 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if ($pageType) {
                 $queryParameters['type'] = (int)$pageType;
             }
-            // Generate the URL
-            $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $sectionMark, $conf);
 
             $treatAsExternalLink = true;
-            // no scheme => always not external
-            if (!$url->getScheme() || !$url->getHost()) {
-                $treatAsExternalLink = false;
-            } else {
-                // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
-                // is on the same site pagetree. If this is the case, we'll treat it as internal
-                if ($currentSite instanceof Site && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
-                    $treatAsExternalLink = false;
+            // External links are resolved via calling Typolink again (could be anything, really)
+            if ((int)$page['doktype'] === PageRepository::DOKTYPE_LINK) {
+                $conf['parameter'] = $page['url'];
+                unset($conf['parameter.']);
+                $this->contentObjectRenderer->typoLink($linkText, $conf);
+                $target = $this->contentObjectRenderer->lastTypoLinkTarget;
+                $url = $this->contentObjectRenderer->lastTypoLinkUrl;
+                if (empty($url)) {
+                    throw new UnableToLinkException('Link to external page "' . $page['uid'] . '" does not have a proper target URL, so "' . $linkText . '" was not linked.', 1551621999, null, $linkText);
                 }
+            } else {
+                // Generate the URL
+                $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $sectionMark, $conf);
+                // no scheme => always not external
+                if (!$url->getScheme() || !$url->getHost()) {
+                    $treatAsExternalLink = false;
+                } else {
+                    // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
+                    // is on the same site pagetree. If this is the case, we'll treat it as internal
+                    if ($currentSite instanceof Site && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
+                        $treatAsExternalLink = false;
+                    }
+                }
+                $url = (string)$url;
             }
-
-            $url = (string)$url;
             if ($treatAsExternalLink) {
                 $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', false, $tsfe->extTarget);
             } else {

@@ -1,5 +1,6 @@
 __variables:
   - &pageStandard 0
+  - &pageLink 3
   - &pageShortcut 4
 
 entitySettings:
@@ -33,6 +34,7 @@ entities:
               - self: {title: 'EN: Content Element #1'}
               - self: {title: 'EN: Content Element #2'}
         - self: {id: 1200, title: 'EN: Features', slug: '/features'}
+        - self: {id: 1300, title: 'Go to TYPO3.org', type: *pageLink, slug: '/external', url: 'typo3.org' }
         - self: {id: 9911, title: '<good>', slug: '/test/good'}
         - self: {id: 9912, title: '<good a="a/" b="thing(1)">', slug: '/test/good-a-b-spaced'}
         - self: {id: 9913, title: '<good%20a="a/"%20b="thing(1)">', slug: '/test/good-a-b-enc-a'}

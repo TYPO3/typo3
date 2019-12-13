@@ -187,6 +187,10 @@ class TypoLinkGeneratorTest extends AbstractTestCase
                 '<a href="/features?param-a=a&amp;param-b=b&amp;type=1&amp;cHash=92aa5284d0ad18f7934fe94b52f6c1a5#fragment">EN: Features</a>',
             ],
             [
+                't3://page?uid=1300&additional=1&param-a=a#fragment',
+                '<a href="http://typo3.org">Go to TYPO3.org</a>',
+            ],
+            [
                 't3://record?identifier=content&uid=10001&other=other#fragment',
                 '<a href="/features#c10001">EN: Features</a>',
             ],
