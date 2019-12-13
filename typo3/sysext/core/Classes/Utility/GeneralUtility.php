@@ -3817,6 +3817,11 @@ class GeneralUtility
     public static function getApplicationContext()
     {
         trigger_error('GeneralUtility::getApplicationContext() has been superseded by Environment API. This method will be removed in TYPO3 v11. Use Environment::getContext() instead.', E_USER_DEPRECATED);
+        // Implicitly setting the application context here, but only if it is used, otherwise this does not
+        // need to be populated.
+        if (static::$applicationContext === null) {
+            static::$applicationContext = Environment::getContext();
+        }
         return static::$applicationContext;
     }
 

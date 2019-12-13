@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -322,7 +321,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
      */
     protected function getGitRevision()
     {
-        if (!StringUtility::endsWith(TYPO3_version, '-dev') || SystemEnvironmentBuilder::isFunctionDisabled('exec')) {
+        if (!StringUtility::endsWith(TYPO3_version, '-dev') || $this->isFunctionDisabled('exec')) {
             return;
         }
         // check if git exists
@@ -385,6 +384,21 @@ class SystemInformationToolbarItem implements ToolbarItemInterface
 
         $view->getRequest()->setControllerExtensionName('Backend');
         return $view;
+    }
+
+    /**
+     * Check if the given PHP function is disabled in the system
+     *
+     * @param string $functionName
+     * @return bool
+     */
+    protected function isFunctionDisabled(string $functionName): bool
+    {
+        $disabledFunctions = GeneralUtility::trimExplode(',', ini_get('disable_functions'));
+        if (!empty($disabledFunctions)) {
+            return in_array($functionName, $disabledFunctions, true);
+        }
+        return false;
     }
 
     /**

@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * This class does not use any TYPO3 instance specific configuration, it only
  * sets up things based on the server environment and core code. Even with a
- * missing typo3conf/localconf.php this script will be successful.
+ * missing typo3conf/LocalConfiguration.php this script will be successful.
  *
  * The script aborts execution with an error message if
  * some part fails or conditions are not met.
@@ -65,15 +65,8 @@ class SystemEnvironmentBuilder
     ];
 
     /**
-     * An array of disabled methods
-     *
-     * @var string[]
-     */
-    protected static $disabledFunctions;
-
-    /**
      * Run base setup.
-     * This entry method is used in all scopes (FE, BE, eid, ajax, ...)
+     * This entry method is used in all scopes (FE, BE, Install Tool and CLI)
      *
      * @internal This method should not be used by 3rd party code. It will change without further notice.
      * @param int $entryPointLevel Number of subdirectories where the entry script is located under the document root
@@ -91,16 +84,12 @@ class SystemEnvironmentBuilder
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
         self::initializeBasicErrorReporting();
-
-        $applicationContext = static::createApplicationContext();
-        self::initializeEnvironment($applicationContext, $requestType, $scriptPath, $rootPath);
-        GeneralUtility::presetApplicationContext($applicationContext);
+        self::initializeEnvironment($requestType, $scriptPath, $rootPath);
     }
 
     protected static function createApplicationContext(): ApplicationContext
     {
         $applicationContext = getenv('TYPO3_CONTEXT') ?: (getenv('REDIRECT_TYPO3_CONTEXT') ?: 'Production');
-
         return new ApplicationContext($applicationContext);
     }
 
@@ -230,12 +219,11 @@ class SystemEnvironmentBuilder
     /**
      * Initialize the Environment class
      *
-     * @param ApplicationContext $context
      * @param int $requestType
      * @param string $scriptPath
      * @param string $sitePath
      */
-    protected static function initializeEnvironment(ApplicationContext $context, int $requestType, string $scriptPath, string $sitePath)
+    protected static function initializeEnvironment(int $requestType, string $scriptPath, string $sitePath)
     {
         if (getenv('TYPO3_PATH_ROOT')) {
             $rootPathFromEnvironment = rtrim(GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_ROOT')), '/');
@@ -251,7 +239,7 @@ class SystemEnvironmentBuilder
         $projectRootPath = GeneralUtility::fixWindowsFilePath(getenv('TYPO3_PATH_APP'));
         $isDifferentRootPath = ($projectRootPath && $projectRootPath !== $sitePath);
         Environment::initialize(
-            $context,
+            static::createApplicationContext(),
             self::isCliRequestType($requestType),
             self::usesComposerClassLoading(),
             $isDifferentRootPath ? $projectRootPath : $sitePath,
@@ -259,7 +247,7 @@ class SystemEnvironmentBuilder
             $isDifferentRootPath ? $projectRootPath . '/var'    : $sitePath . '/typo3temp/var',
             $isDifferentRootPath ? $projectRootPath . '/config' : $sitePath . '/typo3conf',
             $scriptPath,
-            self::getTypo3Os() === 'WIN' ? 'WINDOWS' : 'UNIX'
+            self::isRunningOnWindows() ? 'WINDOWS' : 'UNIX'
         );
     }
 
@@ -278,17 +266,13 @@ class SystemEnvironmentBuilder
     }
 
     /**
-     * Determine the operating system TYPO3 is running on.
-     *
-     * @return string Either 'WIN' if running on Windows, else empty string
+     * Determine if the operating system TYPO3 is running on is windows.
      */
-    protected static function getTypo3Os()
+    protected static function isRunningOnWindows(): bool
     {
-        $typoOs = '';
-        if (stripos(PHP_OS, 'darwin') === false && stripos(PHP_OS, 'cygwin') === false && stripos(PHP_OS, 'win') !== false) {
-            $typoOs = 'WIN';
-        }
-        return $typoOs;
+        return stripos(PHP_OS, 'darwin') === false
+            && stripos(PHP_OS, 'cygwin') === false
+            && stripos(PHP_OS, 'win') !== false;
     }
 
     /**
@@ -323,22 +307,11 @@ class SystemEnvironmentBuilder
      */
     protected static function getPathThisScriptNonCli()
     {
-        $cgiPath = '';
-        if (isset($_SERVER['ORIG_PATH_TRANSLATED'])) {
-            $cgiPath = $_SERVER['ORIG_PATH_TRANSLATED'];
-        } elseif (isset($_SERVER['PATH_TRANSLATED'])) {
-            $cgiPath = $_SERVER['PATH_TRANSLATED'];
-        }
+        $cgiPath = $_SERVER['ORIG_PATH_TRANSLATED'] ?? $_SERVER['PATH_TRANSLATED'] ?? '';
         if ($cgiPath && in_array(PHP_SAPI, self::$supportedCgiServerApis, true)) {
-            $scriptPath = $cgiPath;
-        } else {
-            if (isset($_SERVER['ORIG_SCRIPT_FILENAME'])) {
-                $scriptPath = $_SERVER['ORIG_SCRIPT_FILENAME'];
-            } else {
-                $scriptPath = $_SERVER['SCRIPT_FILENAME'];
-            }
+            return $cgiPath;
         }
-        return $scriptPath;
+        return $_SERVER['ORIG_SCRIPT_FILENAME'] ?? $_SERVER['SCRIPT_FILENAME'];
     }
 
     /**
@@ -352,31 +325,19 @@ class SystemEnvironmentBuilder
     protected static function getPathThisScriptCli()
     {
         // Possible relative path of the called script
-        if (isset($_SERVER['argv'][0])) {
-            $scriptPath = $_SERVER['argv'][0];
-        } elseif (isset($_ENV['_'])) {
-            $scriptPath = $_ENV['_'];
-        } else {
-            $scriptPath = $_SERVER['_'];
-        }
+        $scriptPath = $_SERVER['argv'][0] ?? $_ENV['_'] ?? $_SERVER['_'];
         // Find out if path is relative or not
         $isRelativePath = false;
-        if (self::getTypo3Os() === 'WIN') {
+        if (self::isRunningOnWindows()) {
             if (!preg_match('/^([a-zA-Z]:)?\\\\/', $scriptPath)) {
                 $isRelativePath = true;
             }
-        } else {
-            if ($scriptPath[0] !== '/') {
-                $isRelativePath = true;
-            }
+        } elseif ($scriptPath[0] !== '/') {
+            $isRelativePath = true;
         }
         // Concatenate path to current working directory with relative path and remove "/./" constructs
         if ($isRelativePath) {
-            if (isset($_SERVER['PWD'])) {
-                $workingDirectory = $_SERVER['PWD'];
-            } else {
-                $workingDirectory = getcwd();
-            }
+            $workingDirectory = $_SERVER['PWD'] ?? getcwd();
             $scriptPath = $workingDirectory . '/' . preg_replace('/\\.\\//', '', $scriptPath);
         }
         return $scriptPath;
@@ -406,44 +367,6 @@ class SystemEnvironmentBuilder
             $rootPath = $entryScriptDirectory;
         }
         return $rootPath;
-    }
-
-    /**
-     * Send http headers, echo out a text message and exit with error code
-     *
-     * @param string $message
-     */
-    protected static function exitWithMessage($message)
-    {
-        $headers = [
-            \TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500,
-            'Content-Type: text/plain'
-        ];
-        if (!headers_sent()) {
-            foreach ($headers as $header) {
-                header($header);
-            }
-        }
-        echo $message . LF;
-        exit(1);
-    }
-
-    /**
-     * Check if the given function is disabled in the system
-     *
-     * @param string $function
-     * @return bool
-     */
-    public static function isFunctionDisabled($function)
-    {
-        if (static::$disabledFunctions === null) {
-            static::$disabledFunctions = GeneralUtility::trimExplode(',', ini_get('disable_functions'));
-        }
-        if (!empty(static::$disabledFunctions)) {
-            return in_array($function, static::$disabledFunctions, true);
-        }
-
-        return false;
     }
 
     /**
