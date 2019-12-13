@@ -27,6 +27,6 @@ Instances using the property.
 Migration
 =========
 
-Please use the new TitleTag API to alter the title tag.
+Please use the new PageTitle API to alter the title tag.
 
 .. index:: TypoScript, NotScanned
