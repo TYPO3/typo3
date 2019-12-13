@@ -19,8 +19,8 @@ Impact
 
 Because of the new location the namespace of the class :php:`ServicesListReport` has been
 changed from :php:`TYPO3\CMS\Sv\Report` to :php:`TYPO3\CMS\Reports\Report`. Additionally the
-relevant language file has been moved from :file:`EXT:/sv/Resources/Private/Language/locallang.xlf`
-to :file:`EXT:/reports/Resources/Private/Language/serviceReport.xlf`.
+relevant language file has been moved from :file:`EXT:sv/Resources/Private/Language/locallang.xlf`
+to :file:`EXT:reports/Resources/Private/Language/serviceReport.xlf`.
 
 
 Affected Installations
