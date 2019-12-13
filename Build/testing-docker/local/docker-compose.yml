@@ -23,8 +23,9 @@ services:
       ACCEPT_EULA: Y
       SA_PASSWORD: "Test1234!"
       MSSQL_PID: Developer
-    # No tmpfs setup here since mssql fails on tmpfs o_direct.
-    # This makes mssql sloooow for functionals.
+      MSSQL_MEMORY_LIMIT_MB: 3584
+    tmpfs:
+      - /var/lib/mssql:rw,noexec,nosuid
 
   mssql2017latest:
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
@@ -32,6 +33,9 @@ services:
       ACCEPT_EULA: Y
       SA_PASSWORD: "Test1234!"
       MSSQL_PID: Developer
+      MSSQL_MEMORY_LIMIT_MB: 3584
+    tmpfs:
+      - /var/lib/mssql:rw,noexec,nosuid
 
   postgres10:
     image: postgres:10
