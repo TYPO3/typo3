@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Information\Typo3Copyright;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,15 +49,16 @@ class AboutController
      * @var Typo3Version
      */
     protected $version;
-    /**
-     * @var \TYPO3\CMS\Core\Information\Typo3Copyright
-     */
-    private $copyright;
 
-    public function __construct(Typo3Version $version, Typo3Copyright $copyright)
+    /**
+     * @var Typo3Information
+     */
+    protected $typo3Information;
+
+    public function __construct(Typo3Version $version, Typo3Information $typo3Information)
     {
         $this->version = $version;
-        $this->copyright = $copyright;
+        $this->typo3Information = $typo3Information;
     }
 
     /**
@@ -79,11 +80,11 @@ class AboutController
         }
 
         $this->view->assignMultiple([
-            'copyrightYear' => $this->copyright->getCopyrightYear(),
-            'donationUrl' => TYPO3_URL_DONATE,
+            'copyrightYear' => $this->typo3Information->getCopyrightYear(),
+            'donationUrl' => $this->typo3Information::URL_DONATE,
             'currentVersion' => $this->version->getVersion(),
             'loadedExtensions' => $this->getLoadedExtensions(),
-            'copyRightNotice' => $this->copyright->getCopyrightNotice(),
+            'copyRightNotice' => $this->typo3Information->getCopyrightNotice(),
             'warnings' => $warnings,
             'modules' => $this->getModulesData()
         ]);

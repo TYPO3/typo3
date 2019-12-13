@@ -32,8 +32,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class PageArgumentValidatorTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
-     * @var CacheHashCaluclator
+     * @var CacheHashCalculator
      */
     protected $cacheHashCalculator;
 
@@ -56,7 +58,7 @@ class PageArgumentValidatorTest extends UnitTestCase
     {
         parent::setUp();
         $this->timeTrackerStub = new TimeTracker(false);
-        $this->cacheHashCalculator = new CacheHashCalculator;
+        $this->cacheHashCalculator = new CacheHashCalculator();
 
         // A request handler which only runs through
         $this->responseOutputHandler = new class implements RequestHandlerInterface {

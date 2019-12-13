@@ -21,6 +21,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class ProductionExceptionHandlerTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit\Framework\MockObject\MockObject
      */

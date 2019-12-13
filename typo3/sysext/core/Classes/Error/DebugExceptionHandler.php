@@ -15,6 +15,8 @@ namespace TYPO3\CMS\Core\Error;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Information\Typo3Information;
+
 /**
  * A basic but solid exception handler which catches everything which
  * falls through the other exception handlers and provides useful debugging
@@ -95,7 +97,7 @@ HTML;
 
         $exceptionInfo = '';
         if ($throwable->getCode() > 0) {
-            $wikiLink = TYPO3_URL_EXCEPTION . 'debug/' . $throwable->getCode();
+            $wikiLink = Typo3Information::URL_EXCEPTION . 'debug/' . $throwable->getCode();
             $exceptionInfo = <<<INFO
             <div class="container">
                 <div class="callout">

@@ -23,6 +23,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -374,11 +375,7 @@ class RequestHandler implements RequestHandlerInterface
         $pageRenderer->setHeadTag($headTag);
         // Setting charset meta tag:
         $pageRenderer->setCharSet($theCharset);
-        $pageRenderer->addInlineComment('	This website is powered by TYPO3 - inspiring people to share!
-	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
-	TYPO3 is copyright ' . TYPO3_copyright_year . ' of Kasper Skaarhoj. Extensions are copyright of their respective owners.
-	Information and contribution at ' . TYPO3_URL_GENERAL . '
-');
+        $pageRenderer->addInlineComment(GeneralUtility::makeInstance(Typo3Information::class)->getInlineHeaderComment());
         if ($controller->baseUrl) {
             $pageRenderer->setBaseUrl($controller->baseUrl);
         }

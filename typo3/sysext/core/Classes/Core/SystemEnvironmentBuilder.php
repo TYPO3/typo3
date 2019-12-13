@@ -100,18 +100,9 @@ class SystemEnvironmentBuilder
     {
         // Check one of the constants and return early if already defined,
         // needed if multiple requests are handled in one process, for instance in functional testing.
-        if (defined('TYPO3_copyright_year')) {
+        if (defined('FILE_DENY_PATTERN_DEFAULT')) {
             return;
         }
-
-        define('TYPO3_copyright_year', '1998-' . date('Y'));
-
-        // TYPO3 external links
-        define('TYPO3_URL_GENERAL', 'https://typo3.org/');
-        define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
-        define('TYPO3_URL_EXCEPTION', 'https://typo3.org/go/exception/CMS/');
-        define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
-        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
 
         // A linefeed, a carriage return, a CR-LF combination
         defined('LF') ?: define('LF', chr(10));
@@ -127,6 +118,31 @@ class SystemEnvironmentBuilder
         if (!defined('TYPO3_mainDir')) {
             define('TYPO3_mainDir', 'typo3/');
         }
+
+        /**
+         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('TYPO3_copyright_year', '1998-' . date('Y'));
+        /**
+         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('TYPO3_URL_GENERAL', 'https://typo3.org/');
+        /**
+         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('TYPO3_URL_LICENSE', 'https://typo3.org/typo3-cms/overview/licenses/');
+        /**
+         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('TYPO3_URL_EXCEPTION', 'https://typo3.org/go/exception/CMS/');
+        /**
+         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('TYPO3_URL_DONATE', 'https://typo3.org/community/contribute/donate/');
+        /**
+         * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('TYPO3_URL_WIKI_OPCODECACHE', 'https://wiki.typo3.org/Opcode_Cache');
     }
 
     /**

@@ -31,7 +31,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Information\Typo3Copyright;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -105,14 +105,14 @@ class LoginController implements LoggerAwareInterface
     protected $eventDispatcher;
 
     /**
-     * @var Typo3Copyright
+     * @var Typo3Information
      */
-    private $copyright;
+    private $typo3Information;
 
-    public function __construct(Typo3Copyright $copyright, EventDispatcherInterface $eventDispatcher)
+    public function __construct(Typo3Information $typo3Information, EventDispatcherInterface $eventDispatcher)
     {
+        $this->typo3Information = $typo3Information;
         $this->eventDispatcher = $eventDispatcher;
-        $this->copyright = $copyright;
     }
 
     /**
@@ -293,7 +293,7 @@ class LoginController implements LoggerAwareInterface
                 'capslock' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/icon_capslock.svg'),
                 'typo3' => $this->getUriForFileName('EXT:backend/Resources/Public/Images/typo3_orange.svg'),
             ],
-            'copyright' => $this->copyright->getCopyrightNotice(),
+            'copyright' => $this->typo3Information->getCopyrightNotice(),
             'redirectUrl' => $this->redirectUrl,
             'loginRefresh' => $this->loginRefresh,
             'loginNewsItems' => $this->getSystemNews(),

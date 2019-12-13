@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
@@ -192,7 +193,7 @@ class SetupCheck implements CheckInterface
     protected function checkSomePhpOpcodeCacheIsLoaded()
     {
         // Link to our wiki page, so we can update opcode cache issue information independent of TYPO3 CMS releases.
-        $wikiLink = 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.';
+        $wikiLink = 'For more information take a look in our wiki ' . Typo3Information::URL_OPCACHE . '.';
         $opcodeCaches = GeneralUtility::makeInstance(OpcodeCacheService::class)->getAllActive();
         if (empty($opcodeCaches)) {
             // Set status to notice. It needs to be notice so email won't be triggered.

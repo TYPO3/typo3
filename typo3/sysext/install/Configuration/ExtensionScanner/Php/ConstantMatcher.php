@@ -190,4 +190,34 @@ return [
             'Deprecation-90007-GlobalConstantsTYPO3_versionAndTYPO3_branch.rst'
         ]
     ],
+    'TYPO3_copyright_year' => [
+        'restFiles' => [
+            'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
+        ]
+    ],
+    'TYPO3_URL_GENERAL' => [
+        'restFiles' => [
+            'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
+        ]
+    ],
+    'TYPO3_URL_LICENSE' => [
+        'restFiles' => [
+            'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
+        ]
+    ],
+    'TYPO3_URL_EXCEPTION' => [
+        'restFiles' => [
+            'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
+        ]
+    ],
+    'TYPO3_URL_DONATE' => [
+        'restFiles' => [
+            'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
+        ]
+    ],
+    'TYPO3_URL_WIKI_OPCODECACHE' => [
+        'restFiles' => [
+            'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
+        ]
+    ],
 ];

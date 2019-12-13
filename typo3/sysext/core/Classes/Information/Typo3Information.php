@@ -15,13 +15,20 @@ namespace TYPO3\CMS\Core\Information;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Psr\Http\Message\UriInterface;
-use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class Typo3Copyright
+/**
+ * Contains information and links, or copyright information for the project.
+ */
+class Typo3Information
 {
+    public const URL_COMMUNITY = 'https://typo3.org/';
+    public const URL_LICENSE = 'https://typo3.org/typo3-cms/overview/licenses/';
+    public const URL_EXCEPTION = 'https://typo3.org/go/exception/CMS/';
+    public const URL_DONATE = 'https://typo3.org/community/contribute/donate/';
+    public const URL_OPCACHE = 'https://wiki.typo3.org/Opcode_Cache';
+
     /**
      * @var LanguageService
      */
@@ -41,17 +48,31 @@ class Typo3Copyright
 
     public function getCopyrightYear(): string
     {
-        return TYPO3_copyright_year;
+        return '1998-' . date('Y');
     }
 
-    public function getCommunityWebsiteUrl(): UriInterface
+    /**
+     * Used for any backend rendering in the <meta generator> tag when rendering HTML.
+     *
+     * @return string
+     */
+    public function getHtmlGeneratorTagContent(): string
     {
-        return new Uri(TYPO3_URL_GENERAL);
+        return 'TYPO3 CMS, ' . static::URL_COMMUNITY . ', &#169; Kasper Sk&#229;rh&#248;j ' . $this->getCopyrightYear() . ', extensions are copyright of their respective owners.';
     }
 
-    public function getLicenseUrl(): UriInterface
+    /**
+     * Used for any frontend rendering in the <head> tag when rendering HTML.
+     *
+     * @return string
+     */
+    public function getInlineHeaderComment(): string
     {
-        return new Uri(TYPO3_URL_LICENSE);
+        return '	This website is powered by TYPO3 - inspiring people to share!
+	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+	TYPO3 is copyright ' . $this->getCopyrightYear() . ' of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	Information and contribution at ' . static::URL_COMMUNITY . '
+';
     }
 
     /**
@@ -82,23 +103,23 @@ class Typo3Copyright
         } else {
             $warrantyNote = sprintf(
                 $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:no.warranty'),
-                '<a href="' . htmlspecialchars((string)$this->getLicenseUrl()) . '" target="_blank" rel="noreferrer">',
+                '<a href="' . htmlspecialchars(static::URL_LICENSE) . '" target="_blank" rel="noreferrer">',
                 '</a>'
             );
         }
-        return '<a href="' . htmlspecialchars((string)$this->getCommunityWebsiteUrl()) . '" target="_blank" rel="noreferrer">' .
+        return '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">' .
             $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:typo3.cms') . '</a>. ' .
             $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:copyright') . ' &copy; '
             . htmlspecialchars($this->getCopyrightYear()) . ' Kasper Sk&aring;rh&oslash;j. ' .
             $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:extension.copyright') . ' ' .
             sprintf(
                 $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:details.link'),
-                '<a href="' . htmlspecialchars((string)$this->getCommunityWebsiteUrl()) . '" target="_blank" rel="noreferrer">' . htmlspecialchars((string)$this->getCommunityWebsiteUrl()) . '</a>'
+                '<a href="' . htmlspecialchars(static::URL_COMMUNITY) . '" target="_blank" rel="noreferrer">' . htmlspecialchars(static::URL_COMMUNITY) . '</a>'
             ) . ' ' .
             strip_tags($warrantyNote, '<a>') . ' ' .
             sprintf(
                 $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:free.software'),
-                '<a href="' . htmlspecialchars((string)$this->getLicenseUrl()) . '" target="_blank" rel="noreferrer">',
+                '<a href="' . htmlspecialchars(static::URL_LICENSE) . '" target="_blank" rel="noreferrer">',
                 '</a> '
             )
             . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:keep.notice');

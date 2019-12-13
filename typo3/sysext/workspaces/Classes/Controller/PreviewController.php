@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -187,7 +188,7 @@ class PreviewController
         $this->moduleTemplate->getPageRenderer()->addInlineSetting('Workspaces', 'id', $this->pageId);
 
         $this->view->assignMultiple([
-            'logoLink' => TYPO3_URL_GENERAL,
+            'logoLink' => Typo3Information::URL_COMMUNITY,
             'liveUrl' => $liveUrl ?? false,
             'wsUrl' => $wsUrl,
             'wsSettingsUrl' => $wsSettingsUrl,

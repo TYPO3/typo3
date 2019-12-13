@@ -39,7 +39,7 @@ use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
-use TYPO3\CMS\Core\Information\Typo3Copyright;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -3824,8 +3824,8 @@ class BackendUtility
      */
     public static function TYPO3_copyRightNotice()
     {
-        trigger_error('BackendUtility::TYPO3_copyRightNotice() will be removed in TYPO3 v11.0, use the Typo3Copyright PHP class instead.', E_USER_DEPRECATED);
-        $copyrightGenerator = GeneralUtility::makeInstance(Typo3Copyright::class, static::getLanguageService());
+        trigger_error('BackendUtility::TYPO3_copyRightNotice() will be removed in TYPO3 v11.0, use the Typo3Information PHP class instead.', E_USER_DEPRECATED);
+        $copyrightGenerator = GeneralUtility::makeInstance(Typo3Information::class, static::getLanguageService());
         return $copyrightGenerator->getCopyrightNotice();
     }
 

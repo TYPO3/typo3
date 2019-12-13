@@ -36,6 +36,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class RequestHandlerTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     public function generateHtmlTagIncludesAllPossibilitiesDataProvider()
     {
         return [

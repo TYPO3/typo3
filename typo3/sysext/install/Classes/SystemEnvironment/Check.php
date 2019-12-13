@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 
@@ -609,7 +610,7 @@ class Check implements CheckInterface
                     . '* The PHP extension eaccelerator is known to break this if'
                     . ' it is compiled without --with-eaccelerator-doc-comment-inclusion flag.'
                     . ' This compile flag must be specified, otherwise TYPO3 CMS will not work.' . LF
-                    . 'For more information take a look in our wiki ' . TYPO3_URL_WIKI_OPCODECACHE . '.',
+                    . 'For more information take a look in our wiki ' . Typo3Information::URL_OPCACHE . '.',
                 'PHP Doc comment reflection broken',
                 FlashMessage::ERROR
             ));
