@@ -62,16 +62,6 @@ interface BackendInterface
     public function removeRow(string $tableName, array $where, bool $isRelation = false): void;
 
     /**
-     * Fetches maximal value for given table column
-     *
-     * @param string $tableName The database table name
-     * @param array $where An array of where array('fieldname' => value). This array will be transformed to a WHERE clause
-     * @param string $columnName column name to get the max value from
-     * @return mixed the max value
-     */
-    public function getMaxValueFromTable(string $tableName, array $where, string $columnName);
-
-    /**
      * Returns the number of items matching the query.
      *
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query

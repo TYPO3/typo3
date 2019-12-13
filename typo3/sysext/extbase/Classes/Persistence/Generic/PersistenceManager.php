@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -223,17 +222,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     }
 
     /**
-     * Injects the Extbase settings, called by Extbase.
-     *
-     * @param array $settings
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-     */
-    public function injectSettings(array $settings)
-    {
-        throw new NotImplementedException(__METHOD__, 1476108078);
-    }
-
-    /**
      * Initializes the persistence manager, called by Extbase.
      * @internal only to be used within Extbase, not part of TYPO3 Core API.
      */
@@ -287,30 +275,6 @@ class PersistenceManager implements PersistenceManagerInterface, SingletonInterf
     {
         $identifier = $this->getIdentifierByObject($object);
         $this->newObjects[$identifier] = $object;
-    }
-
-    /**
-     * Converts the given object into an array containing the identity of the domain object.
-     *
-     * @param object $object The object to be converted
-     * @throws Exception\NotImplementedException
-     */
-    public function convertObjectToIdentityArray($object)
-    {
-        throw new NotImplementedException(__METHOD__, 1476108103);
-    }
-
-    /**
-     * Recursively iterates through the given array and turns objects
-     * into arrays containing the identity of the domain object.
-     *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException
-     * @param array $array The array to be iterated over
-     * @see convertObjectToIdentityArray()
-     */
-    public function convertObjectsToIdentityArrays(array $array)
-    {
-        throw new NotImplementedException(__METHOD__, 1476108111);
     }
 
     /**

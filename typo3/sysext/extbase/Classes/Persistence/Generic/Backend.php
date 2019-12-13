@@ -34,7 +34,6 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
-use TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory;
 use TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -85,11 +84,6 @@ class Backend implements BackendInterface, SingletonInterface
     protected $reflectionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-     */
-    protected $qomFactory;
-
-    /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface
      */
     protected $storageBackend;
@@ -127,7 +121,6 @@ class Backend implements BackendInterface, SingletonInterface
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      * @param Session $session
      * @param \TYPO3\CMS\Extbase\Reflection\ReflectionService $reflectionService
-     * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory $qomFactory
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory $dataMapFactory
      * @param EventDispatcherInterface $eventDispatcher
@@ -136,7 +129,6 @@ class Backend implements BackendInterface, SingletonInterface
         ConfigurationManagerInterface $configurationManager,
         Session $session,
         ReflectionService $reflectionService,
-        QueryObjectModelFactory $qomFactory,
         \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend,
         DataMapFactory $dataMapFactory,
         EventDispatcherInterface $eventDispatcher
@@ -144,7 +136,6 @@ class Backend implements BackendInterface, SingletonInterface
         $this->configurationManager = $configurationManager;
         $this->session = $session;
         $this->reflectionService = $reflectionService;
-        $this->qomFactory = $qomFactory;
         $this->storageBackend = $storageBackend;
         $this->dataMapFactory = $dataMapFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -161,36 +152,6 @@ class Backend implements BackendInterface, SingletonInterface
     public function setPersistenceManager(PersistenceManagerInterface $persistenceManager)
     {
         $this->persistenceManager = $persistenceManager;
-    }
-
-    /**
-     * Returns the repository session
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Session
-     */
-    public function getSession()
-    {
-        return $this->session;
-    }
-
-    /**
-     * Returns the current QOM factory
-     *
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory
-     */
-    public function getQomFactory()
-    {
-        return $this->qomFactory;
-    }
-
-    /**
-     * Returns the reflection service
-     *
-     * @return \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    public function getReflectionService()
-    {
-        return $this->reflectionService;
     }
 
     /**
@@ -811,62 +772,6 @@ class Backend implements BackendInterface, SingletonInterface
         }
         $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
         return true;
-    }
-
-    /**
-     * Fetches maximal value currently used for sorting field in parent table
-     *
-     * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The parent object
-     * @param string $parentPropertyName The name of the parent object's property where the related objects are stored in
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException
-     * @return mixed the max value
-     */
-    protected function fetchMaxSortingFromParentTable(DomainObjectInterface $parentObject, $parentPropertyName)
-    {
-        $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
-        $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_MANY) {
-            $tableName = $parentColumnMap->getChildTableName();
-            $sortByFieldName = $parentColumnMap->getChildSortByFieldName();
-
-            if (empty($sortByFieldName)) {
-                return false;
-            }
-            $matchFields = [];
-            $parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-            if ($parentKeyFieldName !== null) {
-                $matchFields[$parentKeyFieldName] = $parentObject->getUid();
-                $parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-                if ($parentTableFieldName !== null) {
-                    $matchFields[$parentTableFieldName] = $parentDataMap->getTableName();
-                }
-            }
-
-            if (empty($matchFields)) {
-                return false;
-            }
-        } elseif ($parentColumnMap->getTypeOfRelation() === ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
-            $tableName = $parentColumnMap->getRelationTableName();
-            $sortByFieldName = $parentColumnMap->getChildSortByFieldName();
-
-            $matchFields = [
-                $parentColumnMap->getParentKeyFieldName() => (int)$parentObject->getUid()
-            ];
-
-            $relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
-            if (is_array($relationTableMatchFields)) {
-                $matchFields = array_merge($relationTableMatchFields, $matchFields);
-            }
-        } else {
-            throw new IllegalRelationTypeException('Unexpected parent column relation type: ' . $parentColumnMap->getTypeOfRelation(), 1345368106);
-        }
-
-        $result = $this->storageBackend->getMaxValueFromTable(
-            $tableName,
-            $matchFields,
-            $sortByFieldName
-        );
-        return $result;
     }
 
     /**

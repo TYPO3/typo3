@@ -71,18 +71,6 @@ class Session implements SingletonInterface
     }
 
     /**
-     * Replace a reconstituted object, leaves the clean data unchanged.
-     *
-     * @param object $oldEntity
-     * @param object $newEntity
-     */
-    public function replaceReconstitutedEntity($oldEntity, $newEntity)
-    {
-        $this->reconstitutedEntities->detach($oldEntity);
-        $this->reconstitutedEntities->attach($newEntity);
-    }
-
-    /**
      * Unregisters data for a reconstituted object
      *
      * @param object $entity
@@ -102,17 +90,6 @@ class Session implements SingletonInterface
     public function getReconstitutedEntities()
     {
         return $this->reconstitutedEntities;
-    }
-
-    /**
-     * Tells whether the given object is a reconstituted entity.
-     *
-     * @param object $entity
-     * @return bool
-     */
-    public function isReconstitutedEntity($entity)
-    {
-        return $this->reconstitutedEntities->contains($entity);
     }
 
     // @todo implement the is dirty checking behaviour of the Flow persistence session here

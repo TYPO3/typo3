@@ -623,20 +623,6 @@ class DataMapper
     }
 
     /**
-     * Delegates the call to the Data Map.
-     * Returns TRUE if the property is persistable (configured in $TCA)
-     *
-     * @param string $className The property name
-     * @param string $propertyName The property name
-     * @return bool TRUE if the property is persistable (configured in $TCA)
-     */
-    public function isPersistableProperty($className, $propertyName)
-    {
-        $dataMap = $this->getDataMap($className);
-        return $dataMap->isPersistableProperty($propertyName);
-    }
-
-    /**
      * Returns a data map for a given class name
      *
      * @param string $className The class name you want to fetch the Data Map for

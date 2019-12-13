@@ -4718,4 +4718,74 @@ return [
             'Breaking-93108-ReworkedInternalUserGroupFetchingForFrontendUsers.rst'
         ],
     ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->setLanguageMode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-89938-DeprecatedLanguageModeInTypo3QuerySettings.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings->getLanguageMode' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-89938-DeprecatedLanguageModeInTypo3QuerySettings.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Backend->getSession' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Backend->getQomFactory' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Backend->getReflectionService' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper->isPersistableProperty' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Session->replaceReconstitutedEntity' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Session->isReconstitutedEntity' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend->getMaxValueFromTable' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
+    'TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbBackend->getRowByIdentifier' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Important-89938-RemovedDeadCodeFromExtbasePersistence.rst',
+        ],
+    ],
 ];

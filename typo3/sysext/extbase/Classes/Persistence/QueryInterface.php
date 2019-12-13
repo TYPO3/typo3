@@ -334,16 +334,6 @@ interface QueryInterface
     public function getConstraint();
 
     /**
-     * Returns an "isEmpty" criterion used for matching objects against a query.
-     * It matches if the multivalued property contains no values or is NULL.
-     *
-     * @param string $propertyName The name of the multivalued property to compare against
-     * @return bool
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException if used on a single-valued property
-     */
-    public function isEmpty($propertyName);
-
-    /**
      * Sets the source to fetch the result from
      *
      * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source

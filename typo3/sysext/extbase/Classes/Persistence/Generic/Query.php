@@ -19,7 +19,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidNumberOfConstraintsException;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
@@ -643,17 +642,5 @@ class Query implements QueryInterface
     public function count()
     {
         return $this->execute()->count();
-    }
-
-    /**
-     * Returns an "isEmpty" criterion used for matching objects against a query.
-     * It matches if the multivalued property contains no values or is NULL.
-     *
-     * @param string $propertyName The name of the multivalued property to compare against
-     * @throws Exception\NotImplementedException
-     */
-    public function isEmpty($propertyName)
-    {
-        throw new NotImplementedException(__METHOD__, 1476122265);
     }
 }
