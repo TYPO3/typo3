@@ -221,6 +221,7 @@ class LinkAnalyzer
                 $record['record_pid'] = $entryValue['row']['pid'];
                 $record['record_uid'] = $entryValue['uid'];
                 $record['table_name'] = $table;
+                $record['link_type'] = $key;
                 $record['link_title'] = $entryValue['link_title'];
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
@@ -232,28 +233,25 @@ class LinkAnalyzer
                 } else {
                     $url = $entryValue['substr']['tokenValue'];
                 }
+                $record['url'] = $url;
                 $this->linkCounts[$table]++;
                 $checkUrl = $hookObj->checkLink($url, $entryValue, $this);
 
                 // Broken link found
                 if (!$checkUrl) {
-                    $response = [];
-                    $response['valid'] = false;
-                    $response['errorParams'] = $hookObj->getErrorParams();
+                    $response = [
+                        'valid' => false,
+                        'errorParams' => $hookObj->getErrorParams()
+                    ];
                     $this->brokenLinkCounts[$table]++;
-                    $record['link_type'] = $key;
-                    $record['url'] = $url;
-                    $record['url_response'] = serialize($response);
+                    $record['url_response'] = json_encode($response);
                     GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getConnectionForTable('tx_linkvalidator_link')
                         ->insert('tx_linkvalidator_link', $record);
                 } elseif (GeneralUtility::_GP('showalllinks')) {
-                    $response = [];
-                    $response['valid'] = true;
+                    $response = ['valid' => true];
                     $this->brokenLinkCounts[$table]++;
-                    $record['url'] = $url;
-                    $record['link_type'] = $key;
-                    $record['url_response'] = serialize($response);
+                    $record['url_response'] = json_encode($response);
                     GeneralUtility::makeInstance(ConnectionPool::class)
                         ->getConnectionForTable('tx_linkvalidator_link')
                         ->insert('tx_linkvalidator_link', $record);

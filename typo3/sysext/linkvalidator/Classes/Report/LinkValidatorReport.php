@@ -667,7 +667,11 @@ class LinkValidatorReport
         $markerArray['element'] = $element;
         $markerArray['headlink'] = htmlspecialchars($row['link_title']);
         $markerArray['linktarget'] = htmlspecialchars($hookObj->getBrokenUrl($row));
-        $response = unserialize($row['url_response']);
+        $response = json_decode($row['url_response'], true);
+        // Fallback mechansim to still support the old serialized data, could be removed in TYPO3 v12 or later
+        if ($response === null) {
+            $response = unserialize($row['url_response'], ['allowed_classes' => false]);
+        }
         if ($response['valid']) {
             $linkMessage = '<span class="valid">' . htmlspecialchars($languageService->getLL('list.msg.ok')) . '</span>';
         } else {
