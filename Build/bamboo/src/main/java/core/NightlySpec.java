@@ -28,6 +28,7 @@ import com.atlassian.bamboo.specs.api.builders.task.Task;
 import com.atlassian.bamboo.specs.builders.notification.PlanCompletedNotification;
 import com.atlassian.bamboo.specs.builders.trigger.ScheduledTrigger;
 import com.atlassian.bamboo.specs.util.BambooServer;
+import core.utilities.LimitedChunker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +60,7 @@ public class NightlySpec extends AbstractCoreSpec {
     private String[] sqLiteVersions = {"3.15", "3.20", "3.25", "3.30"};
     private String[] postGreSqlVersions = {"9.3", "9.4", "9.5", "9.6", "10.11", "11.6", "12.1"};
 
-    private int jobListSize = 50;
+    private int totalJobsPerStage = 50;
     private int mssqlJobsPerStage = 25;
 
     /**
@@ -107,50 +108,23 @@ public class NightlySpec extends AbstractCoreSpec {
         stages.add(stagePreparation);
         stages.add(stageIntegrity);
 
-        int otherJobsStages = jobs.size() / (jobListSize - mssqlJobsPerStage);
-        int mssqlJobsStages = mssqlJobs.size() / mssqlJobsPerStage;
-        int handledJobs = 0;
-        int jobCount = 0;
-        int mssqlCount = 0;
-        int otherCount = 0;
-        for (int i = 0; i < Math.max(otherJobsStages, mssqlJobsStages); i++) {
-            List<Job> mssqlJobsChunk = new ArrayList<Job>();
-            int chunkMinIndex = i * mssqlJobsPerStage;
-            int chunkMaxIndex = (i + 1) * mssqlJobsPerStage;
+        LimitedChunker<Job> chunker = new LimitedChunker<>(mssqlJobsPerStage, totalJobsPerStage);
+        List<List<Job>> chunks = chunker.chunk(mssqlJobs, jobs);
 
-            if (mssqlJobs.size() >= chunkMaxIndex) {
-                mssqlJobsChunk = mssqlJobs.subList(chunkMinIndex, chunkMaxIndex);
-            } else {
-                if (mssqlJobs.size() >= chunkMinIndex) {
-                    mssqlJobsChunk = mssqlJobs.subList(chunkMinIndex, mssqlJobs.size());
-                }
-            }
+        int totalNumberOfJobs = jobs.size() + mssqlJobs.size();
+        int stageIndex = 0;
+        for (List<Job> chunk : chunks) {
+            int firstJobIndex = totalJobsPerStage * stageIndex + 1;
+            int lastJobIndex = totalJobsPerStage * (stageIndex + 1);
+            lastJobIndex = Math.min(lastJobIndex, totalNumberOfJobs);
 
-            List<Job> otherJobsChunk;
-            chunkMinIndex = handledJobs;
-            chunkMaxIndex = (jobListSize - mssqlJobsChunk.size() + handledJobs);
-            if (jobs.size() >= chunkMaxIndex) {
-                otherJobsChunk = jobs.subList(chunkMinIndex, chunkMaxIndex);
-            } else {
-                otherJobsChunk = jobs.subList(chunkMinIndex, jobs.size());
-            }
-            handledJobs = handledJobs + otherJobsChunk.size();
-
-            ArrayList<Job> stagingJobs = new ArrayList<Job>();
-            stagingJobs.addAll(mssqlJobsChunk);
-            stagingJobs.addAll(otherJobsChunk);
-            otherCount = otherCount + otherJobsChunk.size();
-            mssqlCount = mssqlCount + mssqlJobsChunk.size();
-            jobCount = jobCount + otherJobsChunk.size() + mssqlJobsChunk.size();
-            if (stagingJobs.size() > 0) {
-                Collections.shuffle(stagingJobs);
-                Stage stage = new Stage("Stage " + (i + 1) + ", Jobs " + (i * jobListSize) + " - " + (((i + 1) * jobListSize) - 1));
-                System.out.println("Stage " + (i + 1) + " got " + stagingJobs.size() + " Jobs, " + otherJobsChunk.size() + " jobs and " + mssqlJobsChunk.size() + " mssql jobs");
-                stage.jobs(stagingJobs.toArray(new Job[stagingJobs.size()]));
-                stages.add(stage);
-            }
+            Collections.shuffle(chunk);
+            Stage stage = new Stage("Stage " + (stageIndex + 1) + ", Jobs " + firstJobIndex + " - " + lastJobIndex);
+            stage.jobs(chunk.toArray(new Job[chunk.size()]));
+            stages.add(stage);
+            System.out.println("Stage " + (stageIndex + 1) + " got " + chunk.size() + " Jobs");
+            stageIndex++;
         }
-        System.out.println("deployed " + jobCount + " (" + mssqlCount + " mssql and " + otherCount + " other) " + " out of " + (jobs.size() + mssqlJobs.size()) + " Jobs (" + mssqlJobs.size() + " mssql and " + jobs.size() + " other) in " + (stages.size() - 2) + " Stages");
 
         // Compile plan
         return new Plan(project(), planName, planKey).description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
