@@ -32,6 +32,7 @@ import com.atlassian.bamboo.specs.model.task.ScriptTaskProperties;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Core 8.7 nightly test plan.
@@ -49,6 +50,8 @@ public class NightlySpec extends AbstractCoreSpec {
     private static int numberOfUnitRandomOrderJobs = 2;
 
     private String[] phpVersions = {"PHP70", "PHP71", "PHP72", "PHP73"};
+
+    private int jobListSize = 50;
 
     /**
      * Run main to publish plan on Bamboo
@@ -75,28 +78,38 @@ public class NightlySpec extends AbstractCoreSpec {
 
         Stage stageIntegrity = getIntegrityStage();
 
-        Stage stageAcceptance = getAcceptanceStage();
+        ArrayList<Job> jobs = new ArrayList<Job>();
+        jobs.addAll(getAcceptanceJobs());
+        jobs.addAll(getFunctionalMySqlJobs());
+        jobs.addAll(getFunctionalPgSqlJobs());
+        jobs.addAll(getFunctionalMsSqlJobs());
+        jobs.addAll(getUnitJobs());
 
-        Stage stageFunctionalMySql = getFunctionalMySqlStage();
-        Stage stageFunctionalPgSql = getFunctionalPgSqlStage();
-        Stage stageFunctionalMsSql = getFunctionalMsSqlStage();
-
-        Stage unitStage = getUnitStage();
-
+        ArrayList<Stage> stages = new ArrayList<Stage>();
+        stages.add(stagePreparation);
+        stages.add(stageIntegrity);
+        ListIterator<Job> jobIterator = jobs.listIterator();
+        Stage stage = new Stage("Jobs " + (jobIterator.nextIndex()) + " - " + (jobIterator.nextIndex() - 1 + jobListSize));
+        ArrayList<Job> chunkedJobs = new ArrayList<Job>();
+        while (jobIterator.hasNext()) {
+            chunkedJobs.add(jobIterator.next());
+            if ((jobIterator.nextIndex() % jobListSize) == 0) {
+                stage.jobs(chunkedJobs.toArray(new Job[chunkedJobs.size()]));
+                stages.add(stage);
+                stage = new Stage("Jobs " + (jobIterator.nextIndex()) + " - " + (jobIterator.nextIndex() - 1 + jobListSize));
+                chunkedJobs.clear();
+            }
+            if (!jobIterator.hasNext()) {
+                stage.jobs(chunkedJobs.toArray(new Job[chunkedJobs.size()]));
+                stages.add(stage);
+            }
+        }
 
         // Compile plan
         return new Plan(project(), planName, planKey)
                 .description("Execute TYPO3 core 8.7 nightly tests. Auto generated! See Build/bamboo of core git repository.")
                 .pluginConfigurations(this.getDefaultPlanPluginConfiguration())
-                .stages(
-                        stagePreparation,
-                        stageIntegrity,
-                        unitStage,
-                        stageAcceptance,
-                        stageFunctionalMySql,
-                        stageFunctionalPgSql,
-                        stageFunctionalMsSql
-                )
+                .stages(stages.toArray(new Stage[stages.size()]))
                 .linkedRepositories("github TYPO3 TYPO3.CMS 8.7")
                 .triggers(
                         new ScheduledTrigger()
@@ -124,23 +137,20 @@ public class NightlySpec extends AbstractCoreSpec {
     /**
      * all unit tests, for all php versions
      */
-    private Stage getUnitStage() {
+    private ArrayList<Job> getUnitJobs() {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (String phpVersion : phpVersions) {
             jobs.add(this.getJobUnitPhp(phpVersion, false));
             jobs.addAll(this.getJobUnitPhpRandom(numberOfUnitRandomOrderJobs, phpVersion, false));
         }
-
-
-        return new Stage("Unit Tests")
-                .jobs(jobs.toArray(new Job[jobs.size()]));
+        return jobs;
     }
 
     /**
      * all acceptance tests, for all relevant php versions
      */
-    private Stage getAcceptanceStage() {
+    private ArrayList<Job> getAcceptanceJobs() {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         jobs.add(this.getJobAcceptanceTestInstallMysql(phpVersions[2], false));
@@ -152,47 +162,43 @@ public class NightlySpec extends AbstractCoreSpec {
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(numberOfAcceptanceTestJobs, phpVersions[2], false));
         jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(numberOfAcceptanceTestJobs, phpVersions[3], false));
 
-        return new Stage("Acceptance")
-                .jobs(jobs.toArray(new Job[jobs.size()]));
+        return jobs;
     }
 
     /**
      * all functional tests on MsSQL, for all  php versions
      */
-    private Stage getFunctionalMsSqlStage() {
+    private ArrayList<Job> getFunctionalMsSqlJobs() {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (String phpVersion : phpVersions) {
             jobs.addAll(this.getJobsFunctionalTestsMssql(numberOfFunctionalMssqlJobs, phpVersion, false));
         }
-        return new Stage("Functional MsSQL")
-                .jobs(jobs.toArray(new Job[jobs.size()]));
+        return jobs;
     }
 
     /**
      * all functional tests on MySQL, for all  php versions
      */
-    private Stage getFunctionalMySqlStage() {
+    private ArrayList<Job> getFunctionalMySqlJobs() {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (String phpVersion : phpVersions) {
             jobs.addAll(this.getJobsFunctionalTestsMysql(numberOfFunctionalMysqlJobs, phpVersion, false));
         }
-        return new Stage("Functional MySQL")
-                .jobs(jobs.toArray(new Job[jobs.size()]));
+        return jobs;
     }
 
     /**
      * all functional tests on PostGreSql, for all  php versions
      */
-    private Stage getFunctionalPgSqlStage() {
+    private ArrayList<Job> getFunctionalPgSqlJobs() {
         ArrayList<Job> jobs = new ArrayList<Job>();
 
         for (String phpVersion : phpVersions) {
             jobs.addAll(this.getJobsFunctionalTestsPgsql(numberOfFunctionalPgsqlJobs, phpVersion, false));
         }
-        return new Stage("Functional PgSql")
-                .jobs(jobs.toArray(new Job[jobs.size()]));
+        return jobs;
     }
 
     /**
