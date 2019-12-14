@@ -11,15 +11,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AbstractInteractableModule} from '../AbstractInteractableModule';
-import * as $ from 'jquery';
 import 'bootstrap';
-import Router = require('../../Router');
-import ProgressBar = require('../../Renderable/ProgressBar');
-import InfoBox = require('../../Renderable/InfoBox');
-import Severity = require('../../Renderable/Severity');
+import * as $ from 'jquery';
+import {AbstractInteractableModule} from '../AbstractInteractableModule';
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import InfoBox = require('../../Renderable/InfoBox');
+import ProgressBar = require('../../Renderable/ProgressBar');
+import Severity = require('../../Renderable/Severity');
+import Router = require('../../Router');
+
+interface BrokenExtension {
+  name: string;
+  isProtected: boolean;
+}
 
 /**
  * Module: TYPO3/CMS/Install/Module/ExtensionCompatTester
@@ -47,7 +52,6 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     this.findInModal(this.selectorCheckTrigger).addClass('disabled').prop('disabled', true);
     this.findInModal('.modal-loading').hide();
     const modalContent = this.getModalBody();
-    const modalFooter = this.getModalFooter();
     const $outputContainer = this.findInModal(this.selectorOutputContainer);
     const message = ProgressBar.render(Severity.loading, 'Loading...', '');
     $outputContainer.append(message);
@@ -62,43 +66,27 @@ class ExtensionCompatTester extends AbstractInteractableModule {
         const progressBar = ProgressBar.render(Severity.loading, 'Loading...', '');
         $innerOutputContainer.append(progressBar);
 
-        if (data.success === true && Array.isArray(data.extensions)) {
-          const loadExtLocalconf = (): void => {
-            const promises: Array<any> = [];
-            data.extensions.forEach((extension: any): void => {
-              promises.push(this.loadExtLocalconf(extension));
-            });
-            return $.when.apply($, promises).done((): void => {
-              const aMessage = InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', '');
-              $innerOutputContainer.append(aMessage);
-            });
-          };
-
-          const loadExtTables = (): void => {
-            const promises: Array<any> = [];
-            data.extensions.forEach((extension: any): void => {
-              promises.push(this.loadExtTables(extension));
-            });
-            return $.when.apply($, promises).done((): void => {
-              const aMessage = InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', '');
-              $innerOutputContainer.append(aMessage);
-            });
-          };
-
-          $.when(loadExtLocalconf(), loadExtTables()).fail((response: any): void => {
-            const aMessage = InfoBox.render(
-              Severity.error,
-              'Loading ' + response.scope + ' of extension "' + response.extension + '" failed',
+        if (data.success === true) {
+          this.loadExtLocalconf().done((): void => {
+            $innerOutputContainer.append(
+              InfoBox.render(Severity.ok, 'ext_localconf.php of all loaded extensions successfully loaded', ''),
             );
-            $innerOutputContainer.append(aMessage);
-            modalFooter.find(this.selectorUninstallTrigger)
-              .text('Unload extension "' + response.extension + '"')
-              .attr('data-extension', response.extension)
-              .removeClass('hidden');
-          }).always((): void => {
-            $innerOutputContainer.find('.alert-loading').remove();
-            this.findInModal(this.selectorCheckTrigger).removeClass('disabled').prop('disabled', false);
-          });
+            this.loadExtTables().done((): void => {
+              $innerOutputContainer.append(
+                InfoBox.render(Severity.ok, 'ext_tables.php of all loaded extensions successfully loaded', ''),
+              );
+            }).fail((xhr: JQueryXHR): void => {
+              this.renderFailureMessages('ext_tables.php', xhr.responseJSON.brokenExtensions, $innerOutputContainer);
+            }).always((): void => {
+              this.unlockModal();
+            })
+          }).fail((xhr: JQueryXHR): void => {
+            this.renderFailureMessages('ext_localconf.php', xhr.responseJSON.brokenExtensions, $innerOutputContainer);
+            $innerOutputContainer.append(
+              InfoBox.render(Severity.notice, 'Skipped scanning ext_tables.php files due to previous errors', ''),
+            );
+            this.unlockModal();
+          })
         } else {
           Notification.error('Something went wrong');
         }
@@ -109,9 +97,35 @@ class ExtensionCompatTester extends AbstractInteractableModule {
     });
   }
 
-  private loadExtLocalconf(extension: string): JQueryPromise<{}> {
+  private unlockModal(): void {
+    this.findInModal(this.selectorOutputContainer).find('.alert-loading').remove();
+    this.findInModal(this.selectorCheckTrigger).removeClass('disabled').prop('disabled', false);
+  }
+
+  private renderFailureMessages(scope: string, brokenExtensions: Array<BrokenExtension>, $outputContainer: JQuery): void {
+    for (let extension of brokenExtensions) {
+      let uninstallAction;
+      if (!extension.isProtected) {
+        uninstallAction = $('<button />', {'class': 'btn btn-danger t3js-extensionCompatTester-uninstall'})
+          .attr('data-extension', extension.name)
+          .text('Uninstall extension "' + extension.name + '"');
+      }
+      $outputContainer.append(
+        InfoBox.render(
+          Severity.error,
+          'Loading ' + scope + ' of extension "' + extension.name + '" failed',
+          (extension.isProtected ? 'Extension is mandatory and cannot be uninstalled.' : ''),
+        ),
+        uninstallAction,
+      );
+    }
+
+    this.unlockModal();
+  }
+
+  private loadExtLocalconf(): JQueryPromise<JQueryXHR> {
     const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_localconf-token');
-    const $ajax = $.ajax({
+    return $.ajax({
       url: Router.getUrl(),
       method: 'POST',
       cache: false,
@@ -119,22 +133,14 @@ class ExtensionCompatTester extends AbstractInteractableModule {
         'install': {
           'action': 'extensionCompatTesterLoadExtLocalconf',
           'token': executeToken,
-          'extension': extension,
         },
       },
     });
-
-    return $ajax.promise().then(null, (): any => {
-      throw {
-        scope: 'ext_localconf.php',
-        extension: extension,
-      };
-    });
   }
 
-  private loadExtTables(extension: string): JQueryPromise<{}> {
+  private loadExtTables(): JQueryPromise<JQueryXHR> {
     const executeToken = this.getModuleContent().data('extension-compat-tester-load-ext_tables-token');
-    const $ajax = $.ajax({
+    return $.ajax({
       url: Router.getUrl(),
       method: 'POST',
       cache: false,
@@ -142,16 +148,8 @@ class ExtensionCompatTester extends AbstractInteractableModule {
         'install': {
           'action': 'extensionCompatTesterLoadExtTables',
           'token': executeToken,
-          'extension': extension,
         },
       },
-    });
-
-    return $ajax.promise().then(null, (): any => {
-      throw {
-        scope: 'ext_tables.php',
-        extension: extension,
-      };
     });
   }
 
