@@ -30,7 +30,8 @@ import com.atlassian.bamboo.specs.builders.trigger.ScheduledTrigger;
 import com.atlassian.bamboo.specs.util.BambooServer;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Core master nightly test plan.
@@ -59,6 +60,7 @@ public class NightlySpec extends AbstractCoreSpec {
     private String[] postGreSqlVersions = {"9.3", "9.4", "9.5", "9.6", "10.11", "11.6", "12.1"};
 
     private int jobListSize = 50;
+    private int mssqlJobsPerStage = 25;
 
     /**
      * Run main to publish plan on Bamboo
@@ -86,36 +88,69 @@ public class NightlySpec extends AbstractCoreSpec {
 
         Stage stageIntegrity = getIntegrityStage();
         ArrayList<Job> jobs = new ArrayList<Job>();
+        ArrayList<Job> mssqlJobs = new ArrayList<Job>();
         jobs.addAll(getUnitTestJobs());
         jobs.addAll(getCodeceptionMySqlJobs());
         jobs.addAll(getCodeceptionSqLiteJobs());
         jobs.addAll(getCodeceptionPgSqlJobs());
         jobs.addAll(getFunctionalMySqlJobs());
         jobs.addAll(getFunctionalMySqlPdoJobs());
-        jobs.addAll(getFunctionalMsSqlJobs());
-        jobs.addAll(getFunctionalMsSqlPdoJobs());
         jobs.addAll(getFunctionalPGSqlJobs());
         jobs.addAll(getFunctionalSqliteJobs());
+        mssqlJobs.addAll(getFunctionalMsSqlJobs());
+        mssqlJobs.addAll(getFunctionalMsSqlPdoJobs());
+
+        Collections.shuffle(jobs);
+        Collections.shuffle(mssqlJobs);
 
         ArrayList<Stage> stages = new ArrayList<Stage>();
         stages.add(stagePreparation);
         stages.add(stageIntegrity);
-        ListIterator<Job> jobIterator = jobs.listIterator();
-        Stage stage = new Stage("Jobs " + (jobIterator.nextIndex()) + " - " + (jobIterator.nextIndex() - 1 + jobListSize));
-        ArrayList<Job> chunkedJobs = new ArrayList<Job>();
-        while (jobIterator.hasNext()) {
-            chunkedJobs.add(jobIterator.next());
-            if ((jobIterator.nextIndex() % jobListSize) == 0) {
-                stage.jobs(chunkedJobs.toArray(new Job[chunkedJobs.size()]));
-                stages.add(stage);
-                stage = new Stage("Jobs " + (jobIterator.nextIndex()) + " - " + (jobIterator.nextIndex() - 1 + jobListSize));
-                chunkedJobs.clear();
+
+        int otherJobsStages = jobs.size() / (jobListSize - mssqlJobsPerStage);
+        int mssqlJobsStages = mssqlJobs.size() / mssqlJobsPerStage;
+        int handledJobs = 0;
+        int jobCount = 0;
+        int mssqlCount = 0;
+        int otherCount = 0;
+        for (int i = 0; i < Math.max(otherJobsStages, mssqlJobsStages); i++) {
+            List<Job> mssqlJobsChunk = new ArrayList<Job>();
+            int chunkMinIndex = i * mssqlJobsPerStage;
+            int chunkMaxIndex = (i + 1) * mssqlJobsPerStage;
+
+            if (mssqlJobs.size() >= chunkMaxIndex) {
+                mssqlJobsChunk = mssqlJobs.subList(chunkMinIndex, chunkMaxIndex);
+            } else {
+                if (mssqlJobs.size() >= chunkMinIndex) {
+                    mssqlJobsChunk = mssqlJobs.subList(chunkMinIndex, mssqlJobs.size());
+                }
             }
-            if (!jobIterator.hasNext()) {
-                stage.jobs(chunkedJobs.toArray(new Job[chunkedJobs.size()]));
+
+            List<Job> otherJobsChunk;
+            chunkMinIndex = handledJobs;
+            chunkMaxIndex = (jobListSize - mssqlJobsChunk.size() + handledJobs);
+            if (jobs.size() >= chunkMaxIndex) {
+                otherJobsChunk = jobs.subList(chunkMinIndex, chunkMaxIndex);
+            } else {
+                otherJobsChunk = jobs.subList(chunkMinIndex, jobs.size());
+            }
+            handledJobs = handledJobs + otherJobsChunk.size();
+
+            ArrayList<Job> stagingJobs = new ArrayList<Job>();
+            stagingJobs.addAll(mssqlJobsChunk);
+            stagingJobs.addAll(otherJobsChunk);
+            otherCount = otherCount + otherJobsChunk.size();
+            mssqlCount = mssqlCount + mssqlJobsChunk.size();
+            jobCount = jobCount + otherJobsChunk.size() + mssqlJobsChunk.size();
+            if (stagingJobs.size() > 0) {
+                Collections.shuffle(stagingJobs);
+                Stage stage = new Stage("Stage " + (i + 1) + ", Jobs " + (i * jobListSize) + " - " + (((i + 1) * jobListSize) - 1));
+                System.out.println("Stage " + (i + 1) + " got " + stagingJobs.size() + " Jobs, " + otherJobsChunk.size() + " jobs and " + mssqlJobsChunk.size() + " mssql jobs");
+                stage.jobs(stagingJobs.toArray(new Job[stagingJobs.size()]));
                 stages.add(stage);
             }
         }
+        System.out.println("deployed " + jobCount + " (" + mssqlCount + " mssql and " + otherCount + " other) " + " out of " + (jobs.size() + mssqlJobs.size()) + " Jobs (" + mssqlJobs.size() + " mssql and " + jobs.size() + " other) in " + (stages.size() - 2) + " Stages");
 
         // Compile plan
         return new Plan(project(), planName, planKey).description("Execute TYPO3 core master nightly tests. Auto generated! See Build/bamboo of core git repository.")
@@ -129,8 +164,7 @@ public class NightlySpec extends AbstractCoreSpec {
             .planBranchManagement(new PlanBranchManagement().delete(new BranchCleanup())
                 .notificationForCommitters())
             .notifications(new Notification().type(new PlanCompletedNotification())
-                .recipients(new AnyNotificationRecipient(new AtlassianModule("com.atlassian.bamboo.plugins.bamboo-slack:recipient.slack"))
-                    .recipientString("https://intercept.typo3.com/bamboo")));
+                .recipients(new AnyNotificationRecipient(new AtlassianModule("com.atlassian.bamboo.plugins.bamboo-slack:recipient.slack")).recipientString("https://intercept.typo3.com/bamboo")));
     }
 
     /**
