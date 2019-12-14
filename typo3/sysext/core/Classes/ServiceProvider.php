@@ -65,10 +65,12 @@ class ServiceProvider extends AbstractServiceProvider
         $defaultCaches = [
             $container->get('cache.core'),
             $container->get('cache.assets'),
+            $container->get('cache.di'),
         ];
 
         $cacheManager = self::new($container, Cache\CacheManager::class, [$disableCaching]);
         $cacheManager->setCacheConfigurations($cacheConfigurations);
+        $cacheConfigurations['di']['groups'] = ['system'];
         foreach ($defaultCaches as $cache) {
             $cacheManager->registerCache($cache, $cacheConfigurations[$cache->getIdentifier()]['groups'] ?? ['all']);
         }

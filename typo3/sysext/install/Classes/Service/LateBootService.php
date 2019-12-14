@@ -69,15 +69,12 @@ class LateBootService
     private function prepareContainer(): ContainerInterface
     {
         $packageManager = $this->failsafeContainer->get(PackageManager::class);
-
-        // Use caching for the full boot – uncached symfony autowiring for every install-tool lateboot request would be too slow.
-        $disableCaching = false;
-        $coreCache = Bootstrap::createCache('core', $disableCaching);
+        $dependencyInjectionContainerCache = $this->failsafeContainer->get('cache.di');
 
         $failsafe = false;
 
         // Build a non-failsafe container which is required for loading ext_localconf
-        return $this->container = $this->containerBuilder->createDependencyInjectionContainer($packageManager, $coreCache, $failsafe);
+        return $this->container = $this->containerBuilder->createDependencyInjectionContainer($packageManager, $dependencyInjectionContainerCache, $failsafe);
     }
 
     /**

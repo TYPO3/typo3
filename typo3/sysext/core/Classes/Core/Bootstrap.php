@@ -26,8 +26,10 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Exception\InvalidBackendException;
 use TYPO3\CMS\Core\Cache\Exception\InvalidCacheException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\DependencyInjection\Cache\ContainerBackend;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
@@ -111,6 +113,7 @@ class Bootstrap
         static::setMemoryLimit();
 
         $assetsCache = static::createCache('assets', $disableCaching);
+        $dependencyInjectionContainerCache = static::createCache('di');
 
         $bootState = new \stdClass;
         $bootState->done = false;
@@ -121,6 +124,7 @@ class Bootstrap
             ApplicationContext::class => Environment::getContext(),
             ConfigurationManager::class => $configurationManager,
             LogManager::class => $logManager,
+            'cache.di' => $dependencyInjectionContainerCache,
             'cache.core' => $coreCache,
             'cache.assets' => $assetsCache,
             PackageManager::class => $packageManager,
@@ -129,7 +133,7 @@ class Bootstrap
             'boot.state' => $bootState,
         ]);
 
-        $container = $builder->createDependencyInjectionContainer($packageManager, $coreCache, $failsafe);
+        $container = $builder->createDependencyInjectionContainer($packageManager, $dependencyInjectionContainerCache, $failsafe);
 
         // Push the container to GeneralUtility as we want to make sure its
         // makeInstance() method creates classes using the container from now on.
@@ -310,7 +314,11 @@ class Bootstrap
      */
     public static function createCache(string $identifier, bool $disableCaching = false): FrontendInterface
     {
-        $configuration = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'][$identifier] ?? [];
+        $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
+        $cacheConfigurations['di']['frontend'] = PhpFrontend::class;
+        $cacheConfigurations['di']['backend'] = ContainerBackend::class;
+        $cacheConfigurations['di']['options'] = [];
+        $configuration = $cacheConfigurations[$identifier] ?? [];
 
         $frontend = $configuration['frontend'] ?? VariableFrontend::class;
         $backend = $configuration['backend'] ?? Typo3DatabaseBackend::class;

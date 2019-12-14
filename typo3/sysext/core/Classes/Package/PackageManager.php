@@ -139,9 +139,10 @@ class PackageManager implements SingletonInterface
     }
 
     /**
-     * @return string
+     * @internal
+     * @return string | null
      */
-    protected function getCacheIdentifier()
+    public function getCacheIdentifier()
     {
         if ($this->cacheIdentifier === null) {
             $mTime = @filemtime($this->packageStatesPathAndFilename);

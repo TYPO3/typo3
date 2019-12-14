@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -24,6 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ClearCacheService
 {
+    private const legacyDatabaseCacheTables = [
+        'cache_treelist',
+    ];
+
     /**
      * @var LateBootService
      */
@@ -49,41 +52,47 @@ class ClearCacheService
      */
     public function clearAll()
     {
-        // Delete typo3temp/Cache
-        GeneralUtility::flushDirectory(Environment::getVarPath() . '/cache', true, true);
-
-        // Get all table names from Default connection starting with 'cf_' and truncate them
+        // Low level flush of legacy database cache tables
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionByName('Default');
-        $tableNames = $connection->getSchemaManager()->listTableNames();
-        foreach ($tableNames as $tableName) {
-            if (strpos($tableName, 'cf_') === 0 || $tableName === 'cache_treelist') {
-                $connection->truncate($tableName);
-            }
+        foreach (self::legacyDatabaseCacheTables as $tableName) {
+            $connection = $connectionPool->getConnectionForTable($tableName);
+            $connection->truncate($tableName);
         }
 
-        // check tables on other connections
-        $remappedTables = isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
-            ? array_keys((array)$GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'])
-            : [];
-        foreach ($remappedTables as $tableName) {
-            if (strpos((string)$tableName, 'cf_') === 0 || $tableName === 'cache_treelist') {
-                $connectionPool->getConnectionForTable($tableName)->truncate($tableName);
-            }
-        }
+        // Flush all caches defined in TYPO3_CONF_VARS, but not the ones defined by extensions in ext_localconf.php
+        $baseCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
+        $this->flushCaches($baseCaches);
+
+        // Remove DI container cache (this might be removed in preference of functionality to rebuild this cache)
+        // We need to remove using the remove method because the DI cache backend disables the flush method
+        $container = $this->lateBootService->getContainer();
+        $container->get('cache.di')->remove(get_class($container));
 
         // From this point on, the code may fatal, if some broken extension is loaded.
         $this->lateBootService->loadExtLocalconfDatabaseAndExtTables();
 
-        // The cache manager is already instantiated in the install tool
-        // (both in the failsafe and the late boot container), but
-        // with some hacked settings to disable caching of extbase and fluid.
-        // We want a "fresh" object here to operate on a different cache setup.
-        // cacheManager implements SingletonInterface, so the only way to get a "fresh"
-        // instance is by circumventing makeInstance and/or the objectManager and
-        // using new directly!
+        $extensionCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
+        // Loose comparison on purpose to allow changed ordering of the array
+        if ($baseCaches != $extensionCaches) {
+            // When configuration has changed during loading of extensions (due to ext_localconf.php), flush all caches again
+            $this->flushCaches($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        }
+    }
+
+    /**
+     * The cache manager is already instantiated in the install tool
+     * (both in the failsafe and the late boot container), but
+     * with settings to disable caching (all caches using NullBackend).
+     * We want a "fresh" object here to operate with the really configured cache backends.
+     * CacheManager implements SingletonInterface, so the only way to get a "fresh"
+     * instance is by circumventing makeInstance and using new directly!
+     *
+     * @param array $cacheConfiguration
+     */
+    private function flushCaches(array $cacheConfiguration): void
+    {
         $cacheManager = new \TYPO3\CMS\Core\Cache\CacheManager();
-        $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+        $cacheManager->setCacheConfigurations($cacheConfiguration);
         $cacheManager->flushCaches();
     }
 }

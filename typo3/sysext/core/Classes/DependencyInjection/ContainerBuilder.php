@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -62,6 +63,9 @@ class ContainerBuilder
      */
     public function createDependencyInjectionContainer(PackageManager $packageManager, FrontendInterface $cache, bool $failsafe = false): ContainerInterface
     {
+        if (!$cache instanceof PhpFrontend) {
+            throw new \RuntimeException('Cache must be instance of PhpFrontend', 1582022226);
+        }
         $serviceProviderRegistry = new ServiceProviderRegistry($packageManager, $failsafe);
 
         if ($failsafe) {
@@ -70,29 +74,16 @@ class ContainerBuilder
 
         $container = null;
 
-        $cacheIdentifier = $this->getCacheIdentifier();
+        $cacheIdentifier = $this->getCacheIdentifier($packageManager);
         $containerClassName = $cacheIdentifier;
 
         $hasCache = $cache->requireOnce($cacheIdentifier) !== false;
         if (!$hasCache) {
             $containerBuilder = $this->buildContainer($packageManager, $serviceProviderRegistry);
-            $code = $this->dumpContainer($containerBuilder, $cache);
-
-            // In theory we could use the $containerBuilder directly as $container,
-            // but as we patch the compiled source to use
-            // GeneralUtility::makeInstanceForDi, we need to use the compiled container.
-            // Once we remove support for singletons configured in ext_localconf.php
-            // and $GLOBALS['TYPO_CONF_VARS']['SYS']['Objects'], we can remove this,
-            // and use `$container = $containerBuilder` directly
-            $hasCache = $cache->requireOnce($cacheIdentifier) !== false;
-            if (!$hasCache) {
-                // $cacheIdentifier may be unavailable if the 'core' cache iis configured to
-                // use the NullBackend
-                eval($code);
-            }
+            $this->dumpContainer($containerBuilder, $cache, $cacheIdentifier);
+            $cache->requireOnce($cacheIdentifier);
         }
-        $fullyQualifiedContainerClassName = '\\' . $containerClassName;
-        $container = new $fullyQualifiedContainerClassName();
+        $container = new $containerClassName();
 
         foreach ($this->defaultServices as $id => $service) {
             $container->set('_early.' . $id, $service);
@@ -129,7 +120,7 @@ class ContainerBuilder
         // Store defaults entries in the DIC container
         // We need to use a workaround using aliases for synthetic services
         // But that's common in symfony (same technique is used to provide the
-        // symfony container interface as well.
+        // Symfony container interface as well).
         foreach (array_keys($this->defaultServices) as $id) {
             $syntheticId = '_early.' . $id;
             $containerBuilder->register($syntheticId)->setSynthetic(true)->setPublic(true);
@@ -144,11 +135,11 @@ class ContainerBuilder
     /**
      * @param SymfonyContainerBuilder $containerBuilder
      * @param FrontendInterface $cache
+     * @param string $cacheIdentifier
      * @return string
      */
-    protected function dumpContainer(SymfonyContainerBuilder $containerBuilder, FrontendInterface $cache): string
+    protected function dumpContainer(SymfonyContainerBuilder $containerBuilder, FrontendInterface $cache, string $cacheIdentifier): string
     {
-        $cacheIdentifier = $this->getCacheIdentifier();
         $containerClassName = $cacheIdentifier;
 
         $phpDumper = new PhpDumper($containerBuilder);
@@ -165,18 +156,20 @@ class ContainerBuilder
     }
 
     /**
+     * @param PackageManager $packageManager
      * @return string
      */
-    protected function getCacheIdentifier(): string
+    protected function getCacheIdentifier(PackageManager $packageManager): string
     {
-        return $this->cacheIdentifier ?? $this->createCacheIdentifier();
+        return $this->cacheIdentifier ?? $this->createCacheIdentifier($packageManager->getCacheIdentifier());
     }
 
     /**
+     * @param string|null $additionalIdentifier
      * @return string
      */
-    protected function createCacheIdentifier(): string
+    protected function createCacheIdentifier(string $additionalIdentifier = null): string
     {
-        return $this->cacheIdentifier = 'DependencyInjectionContainer_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'DependencyInjectionContainer');
+        return $this->cacheIdentifier = 'DependencyInjectionContainer_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . ($additionalIdentifier ?? '') . 'DependencyInjectionContainer');
     }
 }
