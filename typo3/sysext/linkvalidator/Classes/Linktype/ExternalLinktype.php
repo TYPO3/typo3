@@ -272,6 +272,7 @@ class ExternalLinktype extends AbstractLinktype
      */
     protected function preprocessUrl(string $url): string
     {
+        $url = html_entity_decode($url);
         $parts = parse_url($url);
         $newDomain = (string)HttpUtility::idn_to_ascii($parts['host']);
         if (strcmp($parts['host'], $newDomain) !== 0) {

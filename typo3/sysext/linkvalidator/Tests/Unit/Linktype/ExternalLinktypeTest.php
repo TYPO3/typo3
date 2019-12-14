@@ -129,6 +129,16 @@ class ExternalLinktypeTest extends UnitTestCase
 
     public function preprocessUrlsDataProvider()
     {
+        // regression tests for issues #89488, #89682
+        yield 'URL with query parameter and ampersand' => [
+            'https://standards.cen.eu/dyn/www/f?p=204:6:0::::FSP_ORG_ID,FSP_LANG_ID:,22&cs=1A3FFBC44FAB6B2A181C9525249C3A829',
+            'https://standards.cen.eu/dyn/www/f?p=204:6:0::::FSP_ORG_ID,FSP_LANG_ID:,22&cs=1A3FFBC44FAB6B2A181C9525249C3A829'
+        ];
+        yield 'URL with query parameter and ampersand with HTML entities' => [
+            'https://standards.cen.eu/dyn/www/f?p=204:6:0::::FSP_ORG_ID,FSP_LANG_ID:,22&amp;cs=1A3FFBC44FAB6B2A181C9525249C3A829',
+            'https://standards.cen.eu/dyn/www/f?p=204:6:0::::FSP_ORG_ID,FSP_LANG_ID:,22&cs=1A3FFBC44FAB6B2A181C9525249C3A829'
+        ];
+
         // regression tests for #89378
         yield 'URL with path with dashes' => [
                 'https://example.com/Unternehmen/Ausbildung-Qualifikation/Weiterbildung-in-Niedersachsen/',
@@ -142,9 +152,9 @@ class ExternalLinktypeTest extends UnitTestCase
             'http://example.com/universitaet/die-uni-im-ueberblick/lageplan/gebaeude/building/120',
             'http://example.com/universitaet/die-uni-im-ueberblick/lageplan/gebaeude/building/120'
             ];
-        yield 'URL with path and query parameters' => [
+        yield 'URL with path and query parameters (including &, ~,; etc.)' => [
             'http://example.com/tv?bcpid=1701167454001&amp;amp;amp;bckey=AQ~~,AAAAAGL7LqU~,aXlKNnCf9d9Tmck-kOc4PGFfCgHjM5JR&amp;amp;amp;bctid=1040702768001',
-            'http://example.com/tv?bcpid=1701167454001&amp;amp;amp;bckey=AQ~~,AAAAAGL7LqU~,aXlKNnCf9d9Tmck-kOc4PGFfCgHjM5JR&amp;amp;amp;bctid=1040702768001'
+            'http://example.com/tv?bcpid=1701167454001&amp;amp;bckey=AQ~~,AAAAAGL7LqU~,aXlKNnCf9d9Tmck-kOc4PGFfCgHjM5JR&amp;amp;bctid=1040702768001'
         ];
 
         // make sure we correctly handle URLs with query parameters and fragment etc.
