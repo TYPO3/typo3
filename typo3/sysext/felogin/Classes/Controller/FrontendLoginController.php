@@ -335,7 +335,13 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
             $user = $this->pi_getRecord('fe_users', (int)$uid);
             $userHash = $user['felogin_forgotHash'];
             $compareHash = explode('|', $userHash);
-            if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() || $hash[0] != $compareHash[0] || md5($hash[1]) != $compareHash[1]) {
+            if (strlen($compareHash[1]) === 40) {
+                $hashEquals = hash_equals($compareHash[1], GeneralUtility::hmac((string)$hash[1]));
+            } else {
+                // backward-compatibility for previous MD5 hashes
+                $hashEquals = hash_equals($compareHash[1], md5($hash[1]));
+            }
+            if (!$compareHash || !$compareHash[1] || $compareHash[0] < time() || !hash_equals($compareHash[0], $hash[0]) || !$hashEquals) {
                 $markerArray['###STATUS_MESSAGE###'] = $this->getDisplayText(
                     'change_password_notvalid_message',
                     $this->conf['changePasswordNotValidMessage_stdWrap.']
@@ -443,7 +449,7 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         $validEndString = date($this->conf['dateFormat'], $validEnd);
         $hash = md5(GeneralUtility::makeInstance(Random::class)->generateRandomBytes(64));
         $randHash = $validEnd . '|' . $hash;
-        $randHashDB = $validEnd . '|' . md5($hash);
+        $randHashDB = $validEnd . '|' . GeneralUtility::hmac($hash);
 
         // Write hash to DB
         $userTable = $this->frontendController->fe_user->user_table;
