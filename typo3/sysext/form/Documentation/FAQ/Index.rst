@@ -191,12 +191,12 @@ form templates, or language files you may wonder how the perfect folder
 structure within your site package could look like.
 We recommend the following structure:
 
-* Custom form configuration: ``EXT:/my_site_package/Configuration/Form/``
-* Form definitions: ``EXT:/my_site_package/Resources/Private/Forms/``
+* Custom form configuration: ``EXT:my_site_package/Configuration/Form/``
+* Form definitions: ``EXT:my_site_package/Resources/Private/Forms/``
 * Custom form templates:
-   * Templates ``EXT:/my_site_package/Resources/Private/Templates/Form/``
-   * Partials ``EXT:/my_site_package/Resources/Private/Partials/Form/``
-   * Layouts ``EXT:/my_site_package/Resources/Private/Layouts/Form/``
+   * Templates ``EXT:my_site_package/Resources/Private/Templates/Form/``
+   * Partials ``EXT:my_site_package/Resources/Private/Partials/Form/``
+   * Layouts ``EXT:my_site_package/Resources/Private/Layouts/Form/``
    * Keep in mind that form comes with templates for both the frontend
      (this is your website) and the TYPO3 backend. Therefore, we recommend
      splitting the templates in subfolders called ``Frontend/`` and
