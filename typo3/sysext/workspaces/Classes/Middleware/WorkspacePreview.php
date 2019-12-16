@@ -276,13 +276,14 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected function renderPreviewInfo(TypoScriptFrontendController $tsfe, NormalizedParams $normalizedParams): string
     {
+        $content = '';
         if (!isset($tsfe->config['config']['disablePreviewNotification']) || (int)$tsfe->config['config']['disablePreviewNotification'] !== 1) {
             // get the title of the current workspace
             $currentWorkspaceId = $tsfe->whichWorkspace();
             $currentWorkspaceTitle = $this->getWorkspaceTitle($currentWorkspaceId);
             $currentWorkspaceTitle = htmlspecialchars($currentWorkspaceTitle);
             if ($tsfe->config['config']['message_preview_workspace']) {
-                $content .= sprintf(
+                $content = sprintf(
                     $tsfe->config['config']['message_preview_workspace'],
                     $currentWorkspaceTitle,
                     $currentWorkspaceId ?? -99
@@ -314,7 +315,7 @@ class WorkspacePreview implements MiddlewareInterface
                 $styles[] = 'pointer-events: none';
                 $styles[] = 'text-align: center';
                 $styles[] = 'border-radius: 2px';
-                $content .= '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . $text . '</div>';
+                $content = '<div id="typo3-preview-info" style="' . implode(';', $styles) . '">' . $text . '</div>';
             }
         }
         return $content;
@@ -341,7 +342,7 @@ class WorkspacePreview implements MiddlewareInterface
             )
             ->execute()
             ->fetchColumn();
-        return $title !== false ? $title : '';
+        return (string)($title !== false ? $title : '');
     }
 
     /**
