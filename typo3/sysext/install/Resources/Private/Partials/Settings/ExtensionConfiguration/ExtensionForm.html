@@ -1,5 +1,4 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-        xmlns:i="http://typo3.org/ns/TYPO3/CMS/Install/ViewHelpers"
         xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
         data-namespace-typo3-fluid="true">
 
@@ -19,7 +18,7 @@
                     <f:for each="{extensionData.configuration}" as="category" key="categoryName" iteration="iteration">
                         <f:if condition="{categoryName}">
                             <li role="presentation" class="{f:if(condition:'{iteration.isFirst}', then:'active')}">
-                                <a class="text-capitalize" href="#{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
+                                <a class="text-capitalize" href="#category-{extensionKey}-{categoryName}" aria-controls="category-{extensionKey}-{categoryName}" role="tab" data-toggle="tab">{categoryName}</a>
                             </li>
                         </f:if>
                     </f:for>
@@ -28,38 +27,36 @@
                 <form action="#" name="configurationform" autocomplete="off" class="t3js-extensionConfiguration-form extensionConfiguration-form" data-extensionKey="{extensionKey}">
                     <div class="tab-content">
                         <f:for each="{extensionData.configuration}" as="subcategories" key="categoryName" iteration="iteration">
-                            <f:if condition="{categoryName}">
-                                <div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="{i:format.noSpace(value:'category-{extensionKey}-{categoryName}')}">
-                                    <f:for each="{subcategories}" as="subcategory">
-                                        <div class="form-section">
-                                            <f:for each="{subcategory}" as="configurationItem" iteration="itemIterator">
-                                                <f:if condition="{itemIterator.isFirst}">
-                                                    <h2 class="h4 form-section-headline">{configurationItem.subcat_label}</h2>
-                                                </f:if>
-                                                <div class="form-group form-group-dashed">
-                                                    <label for="em-{configurationItem.extensionKey}-{configurationItem.name}">
-                                                        {configurationItem.labels.0}
-                                                    </label>
-                                                    <p>
-                                                        {categoryName}.{configurationItem.name}
-                                                        <f:if condition="{configurationItem.type} != 'user'">
-                                                            <f:if condition="{configurationItem.type}">
-                                                                ({configurationItem.type})
-                                                            </f:if>
+                            <div role="tabpanel" class="tab-pane {f:if(condition:'{iteration.isFirst}', then:'active')}" id="category-{extensionKey}-{categoryName}">
+                                <f:for each="{subcategories}" as="subcategory">
+                                    <div class="form-section">
+                                        <f:for each="{subcategory}" as="configurationItem" iteration="itemIterator">
+                                            <f:if condition="{itemIterator.isFirst}">
+                                                <h2 class="h4 form-section-headline">{configurationItem.subcat_label}</h2>
+                                            </f:if>
+                                            <div class="form-group form-group-dashed">
+                                                <label for="em-{configurationItem.extensionKey}-{configurationItem.name}">
+                                                    {configurationItem.labels.0}
+                                                </label>
+                                                <p>
+                                                    {categoryName}.{configurationItem.name}
+                                                    <f:if condition="{configurationItem.type} != 'user'">
+                                                        <f:if condition="{configurationItem.type}">
+                                                            ({configurationItem.type})
                                                         </f:if>
-                                                    </p>
-                                                    <div class="form-control-wrap">
-                                                        <core:form.typoScriptConstants configuration="{configurationItem}"/>
-                                                    </div>
-                                                    <f:if condition="{configurationItem.labels.1}">
-                                                        <div class="help-block">{configurationItem.labels.1 -> f:format.nl2br()}</div>
                                                     </f:if>
+                                                </p>
+                                                <div class="form-control-wrap">
+                                                    <core:form.typoScriptConstants configuration="{configurationItem}"/>
                                                 </div>
-                                            </f:for>
-                                        </div>
-                                    </f:for>
-                                </div>
-                            </f:if>
+                                                <f:if condition="{configurationItem.labels.1}">
+                                                    <div class="help-block">{configurationItem.labels.1 -> f:format.nl2br()}</div>
+                                                </f:if>
+                                            </div>
+                                        </f:for>
+                                    </div>
+                                </f:for>
+                            </div>
                         </f:for>
                     </div>
                     <button type="submit" class="btn btn-default" name="save">Save "{extensionKey}" configuration</button>
