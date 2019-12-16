@@ -51,7 +51,7 @@ public class NightlySpec extends AbstractCoreSpec {
     private static int numberOfFunctionalPgsqlJobs = 6;
     private static int numberOfUnitRandomOrderJobs = 2;
 
-    private String[] phpVersions = {"PHP70", "PHP71", "PHP72", "PHP73"};
+    private String[] phpVersions = {"PHP70", "PHP71", "PHP72", "PHP73", "PHP74"};
 
     private int totalJobsPerStage = 50;
     private int mssqlJobsPerStage = 25;
@@ -122,7 +122,7 @@ public class NightlySpec extends AbstractCoreSpec {
                 .linkedRepositories("github TYPO3 TYPO3.CMS 8.7")
                 .triggers(new ScheduledTrigger().name("Scheduled")
                         .description("once a day")
-                        .cronExpression("0 22 0 ? * *"))
+                        .cronExpression("0 0 20 ? * *"))
                 .variables(new Variable("changeUrl", ""), new Variable("patchset", ""))
                 .planBranchManagement(new PlanBranchManagement().delete(new BranchCleanup())
                         .notificationForCommitters())
@@ -148,16 +148,14 @@ public class NightlySpec extends AbstractCoreSpec {
      */
     private ArrayList<Job> getAcceptanceJobs() {
         ArrayList<Job> jobs = new ArrayList<Job>();
-
-        jobs.add(this.getJobAcceptanceTestInstallMysql(phpVersions[2], false));
-        jobs.add(this.getJobAcceptanceTestInstallMysql(phpVersions[3], false));
-
-        jobs.add(this.getJobAcceptanceTestInstallPgsql(phpVersions[2], false));
-        jobs.add(this.getJobAcceptanceTestInstallPgsql(phpVersions[3], false));
-
-        jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(numberOfAcceptanceTestJobs, phpVersions[2], false));
-        jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(numberOfAcceptanceTestJobs, phpVersions[3], false));
-
+        for (String phpVersion : phpVersions) {
+            jobs.add(this.getJobAcceptanceTestInstallMysql(phpVersion, false));
+            jobs.add(this.getJobAcceptanceTestInstallPgsql(phpVersion, false));
+            // no Acceptance Tests for PHP 7.0
+            if (phpVersion != "PHP70") {
+                jobs.addAll(this.getJobsAcceptanceTestsBackendMysql(numberOfAcceptanceTestJobs, phpVersion, false));
+            }
+        }
         return jobs;
     }
 

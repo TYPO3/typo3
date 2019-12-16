@@ -34,7 +34,7 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
     private static int numberOfUnitRandomOrderJobs = 1;
     private static int numberOfFunctionalMssqlJobs = 10;
     Boolean isSecurity = true;
-    private String[] phpVersions = {"PHP70", "PHP71", "PHP72", "PHP73"};
+    private String[] phpVersions = {"PHP70", "PHP71", "PHP72", "PHP73", "PHP74"};
 
     /**
      * Core 8.7 plans are in "TYPO3 core" project of bamboo
@@ -47,29 +47,25 @@ abstract class AbstractPreMergeSpec extends AbstractCoreSpec {
         ArrayList<Job> jobsMainStage = new ArrayList<Job>();
 
         jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(phpVersions[3], isSecurity));
+        jobsMainStage.add(this.getJobAcceptanceTestInstallMysql(phpVersions[4], isSecurity));
         jobsMainStage.add(this.getJobAcceptanceTestInstallPgsql(phpVersions[2], isSecurity));
 
         jobsMainStage.addAll(this.getJobsAcceptanceTestsBackendMysql(numberOfAcceptanceTestJobs, phpVersions[2], isSecurity));
 
         jobsMainStage.add(this.getJobIntegrationVarious(phpVersions[2], isSecurity));
 
-        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(numberOfFunctionalMysqlJobs, phpVersions[3], isSecurity));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(numberOfFunctionalMysqlJobs, phpVersions[2], isSecurity));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsMysql(numberOfFunctionalMysqlJobs, phpVersions[4], isSecurity));
         // mssql functionals are not executed as pre-merge
         // jobsMainStage.addAll(this.getJobsFunctionalTestsMssql(this.numberOfFunctionalMssqlJobs, "PHP72", isSecurity));
-        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(numberOfFunctionalPgsqlJobs, "PHP70", isSecurity));
+        jobsMainStage.addAll(this.getJobsFunctionalTestsPgsql(numberOfFunctionalPgsqlJobs, phpVersions[3], isSecurity));
 
         jobsMainStage.add(this.getJobUnitJavaScript(phpVersions[2], isSecurity));
-
-        for (String phpVersion : phpVersions) {
-            jobsMainStage.add(this.getJobLintPhp(phpVersion, isSecurity));
-        }
-
         jobsMainStage.add(this.getJobLintScssTs(phpVersions[2], isSecurity));
 
         for (String phpVersion : phpVersions) {
+            jobsMainStage.add(this.getJobLintPhp(phpVersion, isSecurity));
             jobsMainStage.add(this.getJobUnitPhp(phpVersion, isSecurity));
-        }
-        for (String phpVersion : phpVersions) {
             jobsMainStage.addAll(this.getJobUnitPhpRandom(numberOfUnitRandomOrderJobs, phpVersion, isSecurity));
         }
 
