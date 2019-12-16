@@ -40,10 +40,8 @@ import java.util.List;
 @BambooSpec
 public class NightlySpec extends AbstractCoreSpec {
 
-    private static String planName = "Test Core 9.5 nightly";
-    private static String planKey = "TL2";
-//    private static String planName = "Core 9.5 nightly";
-//    private static String planKey = "GTN95";
+    private static String planName = "Core 9.5 nightly";
+    private static String planKey = "GTN95";
 
     private static int numberOfAcceptanceTestJobs = 8;
     private static int numberOfFunctionalMysqlJobs = 6;
