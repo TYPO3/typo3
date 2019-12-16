@@ -24,7 +24,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 /**
  * Test case for build URLs with TypoLink via Frontend Request.
  */
-class TypoLinkTest extends FunctionalTestCase
+class TypoLinkGeneratorTest extends FunctionalTestCase
 {
     /**
      * @var string[]
