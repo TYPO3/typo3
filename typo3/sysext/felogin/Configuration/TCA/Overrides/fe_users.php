@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-call_user_func(function () {
+call_user_func(static function () {
 
     // Adds the redirect field and the forgotHash field to the fe_users-table
     $additionalColumns = [

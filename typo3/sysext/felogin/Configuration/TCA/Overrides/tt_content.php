@@ -1,7 +1,7 @@
 <?php
 defined('TYPO3_MODE') or die();
 
-(static function (): void {
+call_user_func(static function () {
     $feloginExtbase = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\Features::class)
         ->isFeatureEnabled('felogin.extbase');
 
@@ -84,4 +84,4 @@ defined('TYPO3_MODE') or die();
             rowDescription,
         --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
     ';
-})();
+});

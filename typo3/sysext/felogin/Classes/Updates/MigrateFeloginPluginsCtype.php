@@ -28,7 +28,7 @@ use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 /**
  * @internal this is a concrete TYPO3 implementation and solely used for EXT:felogin and not part of TYPO3's Core API.
  */
-class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableInterface
+final class MigrateFeloginPluginsCtype implements UpgradeWizardInterface, RepeatableInterface
 {
     protected const CTYPE_PIBASE = 'login';
     protected const CTYPE_EXTBASE = 'felogin_login';
