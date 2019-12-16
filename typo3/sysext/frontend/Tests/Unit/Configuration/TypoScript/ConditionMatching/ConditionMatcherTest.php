@@ -47,6 +47,7 @@ class ConditionMatcherTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCas
             1 => ['uid' => 111, 'pid' => 101],
             0 => ['uid' => 101, 'pid' => 0]
         ];
+        $GLOBALS['TSFE']->fe_user = new \stdClass();
         $this->matchCondition = GeneralUtility::makeInstance(ConditionMatcher::class);
     }
 
