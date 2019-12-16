@@ -142,19 +142,13 @@ class ExtensionConfiguration
      *   ->set() call and values may not end up as expected.
      *
      * @param string $extension Extension name
-     * @param string $path Configuration path to set - eg. "featureCategory/coolThingIsEnabled"
      * @param mixed|null $value The value. If null, unset the path
      * @internal
      */
-    public function set(string $extension, string $path = '', $value = null): void
+    public function set(string $extension, $value = null): void
     {
         if (empty($extension)) {
             throw new \RuntimeException('extension name must not be empty', 1509715852);
-        }
-        if (!empty($path)) {
-            // @todo: this functionality can be removed once EXT:bootstrap_package is adapted to the new API.
-            $extensionConfiguration = $this->get($extension);
-            $value = ArrayUtility::setValueByPath($extensionConfiguration, $path, $value);
         }
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
         if ($value === null) {
@@ -237,7 +231,7 @@ class ExtensionConfiguration
         ArrayUtility::mergeRecursiveWithOverrule($extConfTemplateConfiguration, $currentLocalConfiguration);
         // Write new config if changed. Loose array comparison to not write if only array key order is different
         if ($extConfTemplateConfiguration != $currentLocalConfiguration) {
-            $this->set($extensionKey, '', $extConfTemplateConfiguration);
+            $this->set($extensionKey, $extConfTemplateConfiguration);
         }
     }
 

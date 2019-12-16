@@ -447,7 +447,7 @@ class SettingsController extends AbstractController
         foreach ($configuration as $configKey => $value) {
             $nestedConfiguration = ArrayUtility::setValueByPath($nestedConfiguration, $configKey, $value, '.');
         }
-        (new ExtensionConfiguration())->set($extensionKey, '', $nestedConfiguration);
+        (new ExtensionConfiguration())->set($extensionKey, $nestedConfiguration);
         $messages = [
             new FlashMessage(
                 'Successfully saved configuration for extension "' . $extensionKey . '".',

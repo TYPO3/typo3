@@ -101,6 +101,6 @@ class ExtensionConfigurationTest extends UnitTestCase
         GeneralUtility::addInstance(ConfigurationManager::class, $configurationManagerProphecy->reveal());
         $configurationManagerProphecy->setLocalConfigurationValueByPath(Argument::cetera())->shouldBeCalled();
         $configurationManagerProphecy->setLocalConfigurationValueByPath('EXTENSIONS/foo', ['bar' => 'baz'])->shouldBeCalled();
-        (new ExtensionConfiguration())->set('foo', '', ['bar' => 'baz']);
+        (new ExtensionConfiguration())->set('foo', ['bar' => 'baz']);
     }
 }
