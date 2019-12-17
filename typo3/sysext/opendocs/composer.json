@@ -13,7 +13,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "9.5.13"
+		"typo3/cms-core": "9.5.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
