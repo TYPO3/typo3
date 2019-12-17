@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Lang\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Exception\Archive\ExtractException;
+use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,8 +30,10 @@ use TYPO3\CMS\Lang\Exception\XmlParser as XmlParserException;
  * Extends of extensionmanager ter connection to enrich with translation
  * related methods
  */
-class TerService extends TerUtility implements SingletonInterface
+class TerService extends TerUtility implements SingletonInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Fetches extensions translation status
      *
@@ -207,41 +213,21 @@ class TerService extends TerUtility implements SingletonInterface
      */
     protected function unzipTranslationFile($file, $path)
     {
-        $zip = zip_open($file);
-        if (is_resource($zip)) {
-            $result = true;
-            if (!is_dir($path)) {
-                GeneralUtility::mkdir_deep($path);
-            }
-            while (($zipEntry = zip_read($zip)) !== false) {
-                $zipEntryName = zip_entry_name($zipEntry);
-                if (strpos($zipEntryName, '/') !== false) {
-                    $zipEntryPathSegments =  explode('/', $zipEntryName);
-                    $fileName = array_pop($zipEntryPathSegments);
-                    // It is a folder, because the last segment is empty, let's create it
-                    if (empty($fileName)) {
-                        GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
-                    } else {
-                        $absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
-                        if (trim($absoluteTargetPath) !== '') {
-                            $return = GeneralUtility::writeFile(
-                                $absoluteTargetPath,
-                                zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
-                            );
-                            if ($return === false) {
-                                throw new LanguageException('Could not write file ' . $zipEntryName, 1345304560);
-                            }
-                        } else {
-                            throw new LanguageException('Could not write file ' . $zipEntryName, 1352566904);
-                        }
-                    }
-                } else {
-                    throw new LanguageException('Extension directory missing in zip file!', 1352566905);
-                }
-            }
-        } else {
-            throw new LanguageException('Unable to open zip file ' . $file, 1345304561);
+        if (!is_dir($path)) {
+            GeneralUtility::mkdir_deep($path);
         }
-        return $result;
+
+        try {
+            $zipService = GeneralUtility::makeInstance(ZipService::class);
+            if ($zipService->verify($file)) {
+                $zipService->extract($file, $path);
+            }
+        } catch (ExtractException $e) {
+            $this->logger->error('Extracting the language archive failed', ['exception' => $e]);
+            throw new LanguageException('Extracting the language archive failed: ' . $e->getMessage(), 1576247863, $e);
+        }
+        GeneralUtility::fixPermissions($path, true);
+
+        return true;
     }
 }

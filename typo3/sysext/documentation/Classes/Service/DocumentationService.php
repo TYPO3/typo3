@@ -14,7 +14,11 @@ namespace TYPO3\CMS\Documentation\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Documentation\Exception\Document;
@@ -24,8 +28,10 @@ use TYPO3\CMS\Lang\Exception\XmlParser;
 /**
  * Service class to connect to docs.typo3.org.
  */
-class DocumentationService
+class DocumentationService implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * Returns the list of official documents on docs.typo3.org.
      *
@@ -283,44 +289,21 @@ class DocumentationService
      */
     protected function unzipDocumentPackage($file, $path)
     {
-        $zip = zip_open($file);
-        if (is_resource($zip)) {
-            $result = true;
-
-            if (!is_dir($path)) {
-                GeneralUtility::mkdir_deep($path);
-            }
-
-            while (($zipEntry = zip_read($zip)) !== false) {
-                $zipEntryName = zip_entry_name($zipEntry);
-                if (strpos($zipEntryName, '/') !== false) {
-                    $zipEntryPathSegments =  explode('/', $zipEntryName);
-                    $fileName = array_pop($zipEntryPathSegments);
-                    // It is a folder, because the last segment is empty, let's create it
-                    if (empty($fileName)) {
-                        GeneralUtility::mkdir_deep($path, implode('/', $zipEntryPathSegments));
-                    } else {
-                        $absoluteTargetPath = GeneralUtility::getFileAbsFileName($path . implode('/', $zipEntryPathSegments) . '/' . $fileName);
-                        if (trim($absoluteTargetPath) !== '') {
-                            $return = GeneralUtility::writeFile(
-                                $absoluteTargetPath,
-                                zip_entry_read($zipEntry, zip_entry_filesize($zipEntry))
-                            );
-                            if ($return === false) {
-                                throw new Document('Could not write file ' . $zipEntryName, 1374161546);
-                            }
-                        } else {
-                            throw new Document('Could not write file ' . $zipEntryName, 1374161532);
-                        }
-                    }
-                } else {
-                    throw new Document('Extension directory missing in zip file!', 1374161519);
-                }
-            }
-        } else {
-            throw new Document('Unable to open zip file ' . $file, 1374161508);
+        if (!is_dir($path)) {
+            GeneralUtility::mkdir_deep($path);
         }
 
-        return $result;
+        try {
+            $zipService = GeneralUtility::makeInstance(ZipService::class);
+            if ($zipService->verify($file)) {
+                $zipService->extract($file, $path);
+            }
+        } catch (ExtractException $e) {
+            $this->logger->error('Extracting the documentation archive failed', ['exception' => $e]);
+            throw new Document('Extracting the documentation archive failed: ' . $e->getMessage(), 1576247962, $e);
+        }
+        GeneralUtility::fixPermissions($path, true);
+
+        return true;
     }
 }
