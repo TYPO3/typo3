@@ -38,6 +38,61 @@
         <shortcut_mode>0</shortcut_mode>
         <title>EN: Features</title>
     </pages>
+    <pages>
+        <uid>9911</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title><![CDATA[<good>]]></title>
+    </pages>
+    <pages>
+        <uid>9912</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title><![CDATA[<good a="a/" b="thing(1)">]]></title>
+    </pages>
+    <pages>
+        <uid>9913</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title><![CDATA[<good%20a="a/"%20b="thing(1)">]]></title>
+    </pages>
+    <pages>
+        <uid>9914</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title><![CDATA[<good/a="a/"/b="thing(1)">]]></title>
+    </pages>
+    <pages>
+        <uid>9921</uid>
+        <pid>1000</pid>
+        <deleted>0</deleted>
+        <hidden>0</hidden>
+        <doktype>0</doktype>
+        <is_siteroot>0</is_siteroot>
+        <shortcut>0</shortcut>
+        <shortcut_mode>0</shortcut_mode>
+        <title><![CDATA[<bad>]]></title>
+    </pages>
     <tt_content>
         <uid>10001</uid>
         <pid>1100</pid>

@@ -1,0 +1,23 @@
+lib.parseFunc {
+  makelinks = 1
+  makelinks {
+    http {
+      keep = path
+      extTarget = _blank
+    }
+    mailto {
+      keep = path
+    }
+  }
+  allowTags = good
+  denyTags = *
+  constants = 1
+  nonTypoTagStdWrap {
+    HTMLparser = 1
+    HTMLparser {
+      tags.good.allowedAttribs = 0
+      keepNonMatchedTags = 1
+      htmlSpecialChars = 2
+    }
+  }
+}
