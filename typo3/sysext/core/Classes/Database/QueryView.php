@@ -254,7 +254,7 @@ class QueryView
             }
             // Show query
             if ($saveArr['queryTable']) {
-                /** @var \TYPO3\CMS\Core\Database\QueryGenerator */
+                /** @var $queryGenerator \TYPO3\CMS\Core\Database\QueryGenerator */
                 $queryGenerator = GeneralUtility::makeInstance(QueryGenerator::class);
                 $queryGenerator->init('queryConfig', $saveArr['queryTable']);
                 $queryGenerator->makeSelectorTable($saveArr);
