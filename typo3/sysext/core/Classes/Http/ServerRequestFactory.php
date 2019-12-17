@@ -98,6 +98,9 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     {
         $headers = [];
         foreach ($server as $key => $value) {
+            if (!is_string($key)) {
+                continue;
+            }
             if (strpos($key, 'HTTP_COOKIE') === 0) {
                 // Cookies are handled using the $_COOKIE superglobal
                 continue;
