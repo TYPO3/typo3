@@ -117,6 +117,20 @@ abstract class AbstractTypolinkBuilder
     }
 
     /**
+     * Determines whether lib.parseFunc is defined.
+     *
+     * @return bool
+     */
+    protected function isLibParseFuncDefined(): bool
+    {
+        $configuration = $this->contentObjectRenderer->mergeTSRef(
+            ['parseFunc' => '< lib.parseFunc'],
+            'parseFunc'
+        );
+        return !empty($configuration['parseFunc.']) && is_array($configuration['parseFunc.']);
+    }
+
+    /**
      * Helper method to a fallback method parsing HTML out of it
      *
      * @param string $originalLinkText the original string, if empty, the fallback link text
@@ -125,10 +139,29 @@ abstract class AbstractTypolinkBuilder
      */
     protected function parseFallbackLinkTextIfLinkTextIsEmpty(string $originalLinkText, string $fallbackLinkText): string
     {
-        if ($originalLinkText === '') {
+        if ($originalLinkText !== '') {
+            return $originalLinkText;
+        }
+        if ($this->isLibParseFuncDefined()) {
             return $this->contentObjectRenderer->parseFunc($fallbackLinkText, ['makelinks' => 0], '< lib.parseFunc');
         }
-        return $originalLinkText;
+        // encode in case `lib.parseFunc` is not configured
+        return $this->encodeFallbackLinkTextIfLinkTextIsEmpty($originalLinkText, $fallbackLinkText);
+    }
+
+    /**
+     * Helper method to a fallback method properly encoding HTML.
+     *
+     * @param string $originalLinkText the original string, if empty, the fallback link text
+     * @param string $fallbackLinkText the string to be used.
+     * @return string the final text
+     */
+    protected function encodeFallbackLinkTextIfLinkTextIsEmpty(string $originalLinkText, string $fallbackLinkText): string
+    {
+        if ($originalLinkText !== '') {
+            return $originalLinkText;
+        }
+        return htmlspecialchars($fallbackLinkText, ENT_QUOTES);
     }
 
     /**

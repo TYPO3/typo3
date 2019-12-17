@@ -47,7 +47,7 @@ class FileOrFolderLinkBuilder extends AbstractTypolinkBuilder
             $linkLocation = '';
         }
         // Setting title if blank value to link
-        $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
+        $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
         if (strpos($linkLocation, '/') !== 0
             && parse_url($linkLocation, PHP_URL_SCHEME) === null
         ) {
