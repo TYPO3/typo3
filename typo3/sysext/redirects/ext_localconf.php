@@ -1,7 +1,5 @@
 <?php
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-
 defined('TYPO3_MODE') or die();
 
 // Rebuild cache in DataHandler on changing / inserting / adding redirect records
@@ -29,6 +27,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals'][\TYPO3\CMS\Redirec
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess'][]
     = \TYPO3\CMS\Redirects\Hooks\BackendControllerHook::class . '->registerClientSideEventHandler';
 
-if (ExtensionManagementUtility::isLoaded('reports')) {
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('reports')) {
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['LLL:EXT:redirects/Resources/Private/Language/locallang_reports.xlf:statusProvider'][] = \TYPO3\CMS\Redirects\Report\Status\RedirectStatus::class;
 }
