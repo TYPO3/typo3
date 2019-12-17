@@ -667,7 +667,7 @@ class FileList extends AbstractRecordList
                         $theData[$field] = '' . (!$fileObject->checkActionPermission('read') ? ' ' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('read')) . '</strong>') . (!$fileObject->checkActionPermission('write') ? '' : '<strong class="text-danger">' . htmlspecialchars($this->getLanguageService()->getLL('write')) . '</strong>');
                         break;
                     case 'fileext':
-                        $theData[$field] = strtoupper($ext);
+                        $theData[$field] = htmlspecialchars(strtoupper($ext));
                         break;
                     case 'tstamp':
                         $theData[$field] = BackendUtility::date($fileObject->getModificationTime());
