@@ -33,7 +33,7 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
             $linkDetails['type'] = LinkService::TYPE_FILE;
             $linkLocation = $linkDetails['file'];
             // Setting title if blank value to link
-            $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
+            $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, rawurldecode($linkLocation));
             $linkLocation = (strpos($linkLocation, '/') !== 0 ? $tsfe->absRefPrefix : '') . $linkLocation;
             $url = $this->processUrl(UrlProcessorInterface::CONTEXT_FILE, $linkLocation, $conf);
             $url = $this->forceAbsoluteUrl($url, $conf);
@@ -41,7 +41,7 @@ class LegacyLinkBuilder extends AbstractTypolinkBuilder
         } elseif ($linkDetails['url']) {
             $linkDetails['type'] = LinkService::TYPE_URL;
             $target = $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $tsfe->extTarget);
-            $linkText = $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
+            $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']);
             $url = $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf);
         } else {
             throw new UnableToLinkException('Unknown link detected, so ' . $linkText . ' was not linked.', 1490990031, null, $linkText);

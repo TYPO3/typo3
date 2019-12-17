@@ -5349,7 +5349,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 // Resource was not found
                 return $linkText;
             }
-        } elseif (in_array(strtolower(trim($linkHandlerKeyword)), ['javascript', 'data'], true)) {
+        } elseif (in_array(strtolower(preg_replace('#\s|[[:cntrl:]]#', '', $linkHandlerKeyword)), ['javascript', 'data'], true)) {
             // Disallow insecure scheme's like javascript: or data:
             return $linkText;
         } else {

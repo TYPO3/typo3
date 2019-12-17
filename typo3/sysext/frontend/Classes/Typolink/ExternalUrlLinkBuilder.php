@@ -28,7 +28,7 @@ class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
     {
         return [
             $this->processUrl(UrlProcessorInterface::CONTEXT_EXTERNAL, $linkDetails['url'], $conf),
-            $this->parseFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']),
+            $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $linkDetails['url']),
             $target ?: $this->resolveTargetAttribute($conf, 'extTarget', true, $this->getTypoScriptFrontendController()->extTarget)
         ];
     }
