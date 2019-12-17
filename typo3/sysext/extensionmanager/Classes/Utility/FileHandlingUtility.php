@@ -14,8 +14,12 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Exception\Archive\ExtractException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Service\Archive\ZipService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -26,8 +30,10 @@ use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
  * Utility for dealing with files and folders
  * @internal This class is a specific ExtensionManager implementation and is not part of the Public TYPO3 API.
  */
-class FileHandlingUtility implements SingletonInterface
+class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var EmConfUtility
      */
@@ -415,29 +421,18 @@ class FileHandlingUtility implements SingletonInterface
     public function unzipExtensionFromFile($file, $fileName, $pathType = 'Local')
     {
         $extensionDir = $this->makeAndClearExtensionDir($fileName, $pathType);
-        $zip = zip_open($file);
-        if (is_resource($zip)) {
-            while (($zipEntry = zip_read($zip)) !== false) {
-                if (strpos(zip_entry_name($zipEntry), '/') !== false) {
-                    $last = strrpos(zip_entry_name($zipEntry), '/');
-                    $dir = substr(zip_entry_name($zipEntry), 0, $last);
-                    $file = substr(zip_entry_name($zipEntry), strrpos(zip_entry_name($zipEntry), '/') + 1);
-                    if (!is_dir($extensionDir . $dir)) {
-                        GeneralUtility::mkdir_deep($extensionDir . $dir);
-                    }
-                    if (trim($file) !== '') {
-                        $return = GeneralUtility::writeFile($extensionDir . $dir . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
-                        if ($return === false) {
-                            throw new ExtensionManagerException('Could not write file ' . $this->getRelativePath($file), 1344691048);
-                        }
-                    }
-                } else {
-                    GeneralUtility::writeFile($extensionDir . zip_entry_name($zipEntry), zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
-                }
+
+        try {
+            $zipService = GeneralUtility::makeInstance(ZipService::class);
+            if ($zipService->verify($file)) {
+                $zipService->extract($file, $extensionDir);
             }
-        } else {
-            throw new ExtensionManagerException('Unable to open zip file ' . $this->getRelativePath($file), 1344691049);
+        } catch (ExtractException $e) {
+            $this->logger->error('Extracting the extension archive failed', ['exception' => $e]);
+            throw new ExtensionManagerException('Extracting the extension archive failed: ' . $e->getMessage(), 1565777179, $e);
         }
+
+        GeneralUtility::fixPermissions($extensionDir, true);
     }
 
     /**
