@@ -173,7 +173,7 @@ class QueryView
         $storeArray = [
             '0' => '[New]'
         ];
-        $savedStoreArray = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeArray']);
+        $savedStoreArray = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeArray'], ['allowed_classes' => false]);
         if (is_array($savedStoreArray)) {
             $storeArray = array_merge($storeArray, $savedStoreArray);
         }
@@ -294,7 +294,7 @@ class QueryView
     public function procesStoreControl()
     {
         $storeArray = $this->initStoreArray();
-        $storeQueryConfigs = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeQueryConfigs']);
+        $storeQueryConfigs = unserialize($GLOBALS['SOBE']->MOD_SETTINGS['storeQueryConfigs'], ['allowed_classes' => false]);
         $storeControl = GeneralUtility::_GP('storeControl');
         $storeIndex = (int)$storeControl['STORE'];
         $saveStoreArray = 0;
@@ -312,7 +312,7 @@ class QueryView
                 } elseif ($storeIndex < 0 && ExtensionManagementUtility::isLoaded('sys_action')) {
                     $actionRecord = BackendUtility::getRecord('sys_action', abs($storeIndex));
                     if (is_array($actionRecord)) {
-                        $dA = unserialize($actionRecord['t2_data']);
+                        $dA = unserialize($actionRecord['t2_data'], ['allowed_classes' => false]);
                         $dbSC = [];
                         if (is_array($dA['qC'])) {
                             $dbSC[0] = $dA['qC'];
