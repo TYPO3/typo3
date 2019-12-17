@@ -1213,6 +1213,19 @@ class PageLayoutController
     }
 
     /**
+     * Check if page can be edited by current user
+     *
+     * @return bool
+     */
+    protected function pageIsNotLockedForEditors(): bool
+    {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
+        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::PAGE_EDIT);
+    }
+
+    /**
      * Check if content can be edited by current user
      *
      * @param int $languageId
@@ -1227,6 +1240,19 @@ class PageLayoutController
         return !$this->pageinfo['editlock']
             && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
             && $this->getBackendUser()->checkLanguageAccess($languageId);
+    }
+
+    /**
+     * Check if content can be edited by current user
+     *
+     * @return bool
+     */
+    protected function contentIsNotLockedForEditors(): bool
+    {
+        if ($this->getBackendUser()->isAdmin()) {
+            return true;
+        }
+        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
     }
 
     /**
