@@ -1303,14 +1303,18 @@ class QueryGenerator
         $prefix = $this->enablePrefix ? $this->table . '.' : '';
         if (!$first) {
             // Is it OK to insert the AND operator if none is set?
-            $qs .= trim($conf['operator'] ?: 'AND') . ' ';
+            $operator = strtoupper(trim($conf['operator']));
+            if (!in_array($operator, ['AND', 'OR'], true)) {
+                $operator = 'AND';
+            }
+            $qs .= $operator . ' ';
         }
         $qsTmp = str_replace('#FIELD#', $prefix . trim(substr($conf['type'], 6)), $this->compSQL[$conf['comparison']]);
         $inputVal = $this->cleanInputVal($conf);
         if ($conf['comparison'] === 68 || $conf['comparison'] === 69) {
             $inputVal = explode(',', $inputVal);
             foreach ($inputVal as $key => $fileName) {
-                $inputVal[$key] = '\'' . $fileName . '\'';
+                $inputVal[$key] = $queryBuilder->quote($fileName);
             }
             $inputVal = implode(',', $inputVal);
             $qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
