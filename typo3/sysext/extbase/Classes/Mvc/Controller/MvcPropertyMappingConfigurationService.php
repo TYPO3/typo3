@@ -126,7 +126,7 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
         }
 
         $serializedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
-        $trustedProperties = unserialize($serializedTrustedProperties);
+        $trustedProperties = unserialize($serializedTrustedProperties, ['allowed_classes' => false]);
         foreach ($trustedProperties as $propertyName => $propertyConfiguration) {
             if (!$controllerArguments->hasArgument($propertyName)) {
                 continue;
