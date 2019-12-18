@@ -133,11 +133,11 @@ class RouteDispatcherTest extends UnitTestCase
         $containerProphecy = $this->prophesize(ContainerInterface::class);
         $containerProphecy->has(Argument::any())->willReturn(false);
 
-        $target = function (ServerRequestInterface $request) {
+        $target = static function (ServerRequestInterface $request) {
             throw new \RuntimeException('I have been called. Good!', 1520756466);
         };
         $routeProphecy->getOption('target')->willReturn($target);
-        $requestProphecy->withAttribute('target', $target)->willReturn($requestProphecy->reveal());
+        $requestProphecy->withAttribute('target', Argument::type(\Closure::class))->willReturn($requestProphecy->reveal());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756466);
