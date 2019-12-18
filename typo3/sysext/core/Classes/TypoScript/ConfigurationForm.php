@@ -149,8 +149,8 @@ class ConfigurationForm extends ExtendedTemplateService
     {
         $out = '';
         if ($this->helpConfig['description'] || $this->helpConfig['header']) {
-            $out = ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<br />') . '<br />' : '')
-                . ($this->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $this->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>');
+            $out = ($this->helpConfig['description'] ? implode('<br />', explode('//', $this->helpConfig['description'])) . '<br />' : '')
+                . ($this->helpConfig['bulletlist'] ? '<ul><li>' . implode('<li>', explode('//', $this->helpConfig['bulletlist'])) . '</ul>' : '<BR>');
         }
         return $out;
     }

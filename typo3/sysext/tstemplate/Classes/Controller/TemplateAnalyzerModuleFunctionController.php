@@ -131,12 +131,12 @@ class TemplateAnalyzerModuleFunctionController extends AbstractFunctionModule
         $this->templateService->clearList_setup_temp = array_flip($this->templateService->clearList_setup);
         $pointer = count($this->templateService->hierarchyInfo);
         $hierarchyInfo = $this->templateService->ext_process_hierarchyInfo([], $pointer);
-        $assigns['hierarchy'] = implode(array_reverse($this->templateService->ext_getTemplateHierarchyArr(
+        $assigns['hierarchy'] = implode('', array_reverse($this->templateService->ext_getTemplateHierarchyArr(
             $hierarchyInfo,
             '',
             [],
             1
-        )), '');
+        )));
 
         $urlParameters = [
             'id' => $this->pObj->id,
