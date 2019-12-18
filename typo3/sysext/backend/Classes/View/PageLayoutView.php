@@ -1401,8 +1401,8 @@ class PageLayoutView implements LoggerAwareInterface
 					<td class="t3-page-column t3-page-lang-label nowrap">' . $lPLabel . '</td>';
             }
             // Add headers:
-            $out .= '<tr>' . implode($cCont) . '</tr>';
-            $out .= '<tr>' . implode($sCont) . '</tr>';
+            $out .= '<tr>' . implode('', $cCont) . '</tr>';
+            $out .= '<tr>' . implode('', $sCont) . '</tr>';
             unset($cCont, $sCont);
 
             // Traverse previously built content for the columns:

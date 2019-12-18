@@ -391,7 +391,7 @@ class TimeTracker implements SingletonInterface
             if (!$flag_tree && $data['stackPointer']) {
                 $temp = [];
                 foreach ($data['tsStack'] as $k => $v) {
-                    $temp[] = GeneralUtility::fixed_lgd_cs(implode($v, $k ? '.' : '/'), -$keyLgd);
+                    $temp[] = GeneralUtility::fixed_lgd_cs(implode($k ? '.' : '/', $v), -$keyLgd);
                 }
                 array_pop($temp);
                 $temp = array_reverse($temp);
