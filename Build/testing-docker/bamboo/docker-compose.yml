@@ -169,7 +169,7 @@ services:
         echo Waiting for database start
         COUNT=0
         while ! nc -z mssql2017cu17 1433; do
-          if [ "$${COUNT}" -ge "60" ]; then
+          if [ "$${COUNT}" -ge "120" ]; then
             echo Database did not come up
             exit 1
           fi
