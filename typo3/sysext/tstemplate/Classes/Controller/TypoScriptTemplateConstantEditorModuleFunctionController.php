@@ -192,7 +192,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController
                 if ($this->templateService->changed) {
                     // Set the data to be saved
                     $recData = [];
-                    $recData['sys_template'][$saveId]['constants'] = implode($this->templateService->raw, LF);
+                    $recData['sys_template'][$saveId]['constants'] = implode(LF, $this->templateService->raw);
                     // Create new  tce-object
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->start($recData, []);

@@ -825,7 +825,7 @@ class ExtendedTemplateService extends TemplateService
                 }
             }
         }
-        $output = implode($cArr, '<br />') . '<br />';
+        $output = implode('<br />', $cArr) . '<br />';
         return $output;
     }
 
@@ -1399,7 +1399,7 @@ class ExtendedTemplateService extends TemplateService
             if (count($parts) === 2) {
                 $parts[1] = $theValue;
             }
-            $this->raw[$lineNum] = implode($parts, '=');
+            $this->raw[$lineNum] = implode('=', $parts);
         } else {
             $this->raw[] = $key . ' =' . $theValue;
         }
