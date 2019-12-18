@@ -19,7 +19,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Finder\Finder;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Http\Uri;
@@ -61,8 +60,9 @@ class LanguagePackService implements LoggerAwareInterface
      */
     protected $requestFactory;
 
-    private const DEFAULT_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
-    private const BETA_LANGUAGE_PACK_URL = 'https://localize.typo3.org/fileadmin/ter/';
+    private const OLD_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
+    private const OLD_BETA_LANGUAGE_PACK_URL = 'https://beta-translation.typo3.org/fileadmin/ter/';
+    private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/fileadmin/ter/';
 
     public function __construct(EventDispatcherInterface $eventDispatcher = null, RequestFactory $requestFactory = null)
     {
@@ -218,7 +218,7 @@ class LanguagePackService implements LoggerAwareInterface
         }
         if (empty($downloadBaseUrl)) {
             // Hard coded fallback if something went wrong fetching & parsing mirror list
-            $downloadBaseUrl = self::DEFAULT_LANGUAGE_PACK_URL;
+            $downloadBaseUrl = self::LANGUAGE_PACK_URL;
         }
         $this->registry->set('languagePacks', 'baseUrl', $downloadBaseUrl);
         return $downloadBaseUrl;
@@ -258,9 +258,8 @@ class LanguagePackService implements LoggerAwareInterface
             throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
         }
 
-        if ($languagePackBaseUrl === self::DEFAULT_LANGUAGE_PACK_URL
-            && GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('betaTranslationServer')) {
-            $languagePackBaseUrl = self::BETA_LANGUAGE_PACK_URL;
+        if ($languagePackBaseUrl === self::OLD_LANGUAGE_PACK_URL || $languagePackBaseUrl === self::OLD_BETA_LANGUAGE_PACK_URL) {
+            $languagePackBaseUrl = self::LANGUAGE_PACK_URL;
         }
 
         // Allow to modify the base url on the fly

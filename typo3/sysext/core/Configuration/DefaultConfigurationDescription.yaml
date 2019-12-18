@@ -217,9 +217,6 @@ SYS:
               rearrangedRedirectMiddlewares:
                 type: bool
                 description: 'If on, the middlewares "base redirect" and "redirects" are switched, so that "redirects" (if ext:redirects is installed) is executed before "base redirect". The new ordering aims to be a better default shipped by the TYPO3 core.'
-              betaTranslationServer:
-                type: bool
-                description: 'If on, the new translation server is used which is filled by exports of https://crowdin.com/project/typo3-cms. This setting will be removed as soon as the new integration is stable.'
               felogin.extbase:
                 type: bool
                 description: 'If activated, and if extension "felogin" is loaded, extbase based code will be used instead of pibase version'
