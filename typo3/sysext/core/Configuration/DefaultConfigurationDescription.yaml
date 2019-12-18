@@ -230,6 +230,9 @@ SYS:
               security.frontend.keepSessionDataOnLogout:
                 type: bool
                 description: 'If on, session data is kept in an anonymous session after frontend user logged out. As this is a potential security risk, it is recommended to disable this option if not specifically needed.'
+              newTranslationServer:
+                type: bool
+                description: 'If on, the new translation server is used which is filled by exports of https://crowdin.com/project/typo3-cms.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in LocalConfiguration.php.'

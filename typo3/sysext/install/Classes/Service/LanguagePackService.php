@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use Symfony\Component\Finder\Finder;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -49,6 +50,9 @@ class LanguagePackService
      * @var RequestFactory
      */
     protected $requestFactory;
+
+    private const DEFAULT_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
+    private const NEW_LANGUAGE_PACK_URL = 'https://localize.typo3.org/fileadmin/ter/';
 
     public function __construct()
     {
@@ -195,7 +199,7 @@ class LanguagePackService
         }
         if (empty($downloadBaseUrl)) {
             // Hard coded fallback if something went wrong fetching & parsing mirror list
-            $downloadBaseUrl = 'https://typo3.org/fileadmin/ter/';
+            $downloadBaseUrl = self::DEFAULT_LANGUAGE_PACK_URL;
         }
         $this->registry->set('languagePacks', 'baseUrl', $downloadBaseUrl);
         return $downloadBaseUrl;
@@ -234,6 +238,12 @@ class LanguagePackService
         if (empty($languagePackBaseUrl)) {
             throw new \RuntimeException('Language pack baseUrl not found', 1520169691);
         }
+
+        if ($languagePackBaseUrl === self::DEFAULT_LANGUAGE_PACK_URL
+            && GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('newTranslationServer')) {
+            $languagePackBaseUrl = self::NEW_LANGUAGE_PACK_URL;
+        }
+
         // Allow to modify the base url on the fly by calling a signal
         $signalSlotDispatcher = GeneralUtility::makeInstance(Dispatcher::class);
         $signalSlotDispatcher->dispatch(

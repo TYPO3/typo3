@@ -77,6 +77,7 @@ return [
             'TypoScript.strictSyntax' => true,
             'simplifiedControllerActionDispatching' => false,
             'security.frontend.keepSessionDataOnLogout' => false,
+            'newTranslationServer' => false,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
