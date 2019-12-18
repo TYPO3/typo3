@@ -62,7 +62,7 @@ class LanguagePackService implements LoggerAwareInterface
     protected $requestFactory;
 
     private const DEFAULT_LANGUAGE_PACK_URL = 'https://typo3.org/fileadmin/ter/';
-    private const BETA_LANGUAGE_PACK_URL = 'https://beta-translation.typo3.org/fileadmin/ter/';
+    private const BETA_LANGUAGE_PACK_URL = 'https://localize.typo3.org/fileadmin/ter/';
 
     public function __construct(EventDispatcherInterface $eventDispatcher = null, RequestFactory $requestFactory = null)
     {
