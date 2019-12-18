@@ -425,7 +425,7 @@ class TimeTracker implements SingletonInterface
                 $temp = array_reverse($temp);
                 array_pop($temp);
                 if (!empty($temp)) {
-                    $keyLabel = '<br /><span style="color:#999999;">' . implode($temp, '<br />') . '</span>';
+                    $keyLabel = '<br /><span style="color:#999999;">' . implode('<br />', $temp) . '</span>';
                 }
             }
             if ($flag_tree) {
@@ -469,7 +469,7 @@ class TimeTracker implements SingletonInterface
                 $msgArr[] = nl2br($data['content']);
             }
             if (!empty($msgArr)) {
-                $msg = implode($msgArr, '<hr />');
+                $msg = implode('<hr />', $msgArr);
             }
             $item .= '<td class="typo3-adminPanel-table-cell-content">' . $this->fw($msg) . '</td>';
             $out .= '<tr>' . $item . '</tr>';

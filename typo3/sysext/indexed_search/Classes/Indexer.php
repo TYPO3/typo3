@@ -1102,7 +1102,7 @@ class Indexer
                             $this->log_pull();
                             if (is_array($contentParts)) {
                                 // Calculating a hash over what is to be the actual content. (see indexTypo3PageContent())
-                                $content_md5h = IndexedSearchUtility::md5inthash(implode($contentParts, ''));
+                                $content_md5h = IndexedSearchUtility::md5inthash(implode('', $contentParts));
                                 if ($this->checkExternalDocContentHash($phash_arr['phash_grouping'], $content_md5h) || $force) {
                                     // Increment counter:
                                     $this->externalFileCounter++;
