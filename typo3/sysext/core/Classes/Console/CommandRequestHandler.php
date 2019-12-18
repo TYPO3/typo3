@@ -23,6 +23,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -46,7 +47,7 @@ class CommandRequestHandler implements RequestHandlerInterface
         trigger_error('CommandRequestHandler will be removed in TYPO3 v11.0, as CLI is executed inside the CommandApplication directly.', E_USER_DEPRECATED);
         $this->application = new Application('TYPO3 CMS', sprintf(
             '%s (Application Context: <comment>%s</comment>)',
-            TYPO3_version,
+            (new Typo3Version())->getVersion(),
             Environment::getContext()
         ));
     }

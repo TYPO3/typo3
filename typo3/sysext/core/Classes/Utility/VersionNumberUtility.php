@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Information\Typo3Version;
+
 /**
  * Class with helper functions for version number handling
  */
@@ -119,7 +121,7 @@ class VersionNumberUtility
      */
     public static function getCurrentTypo3Version()
     {
-        return TYPO3_version;
+        return (string)GeneralUtility::makeInstance(Typo3Version::class);
     }
 
     /**

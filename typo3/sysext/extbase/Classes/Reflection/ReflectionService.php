@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -68,7 +69,7 @@ class ReflectionService implements SingletonInterface
             $this->cachingEnabled = true;
             $this->dataCache = $cacheManager->getCache('extbase');
 
-            static::$cacheEntryIdentifier = 'ClassSchemata_' . sha1(TYPO3_version . Environment::getProjectPath());
+            static::$cacheEntryIdentifier = 'ClassSchemata_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
             if (($classSchemata = $this->dataCache->get(static::$cacheEntryIdentifier)) !== false) {
                 $this->classSchemata = $classSchemata;
             }

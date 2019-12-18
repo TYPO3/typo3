@@ -19,6 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -143,7 +144,7 @@ class PackageManager implements SingletonInterface
         if ($this->cacheIdentifier === null) {
             $mTime = @filemtime($this->packageStatesPathAndFilename);
             if ($mTime !== false) {
-                $this->cacheIdentifier = md5(TYPO3_version . $this->packageStatesPathAndFilename . $mTime);
+                $this->cacheIdentifier = md5((string)(new Typo3Version()) . $this->packageStatesPathAndFilename . $mTime);
             } else {
                 $this->cacheIdentifier = null;
             }

@@ -179,5 +179,15 @@ return [
             'Deprecation-85285-DeprecatedSystemConstants.rst',
             'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ]
-    ]
+    ],
+    'TYPO3_version' => [
+        'restFiles' => [
+            'Deprecation-90007-GlobalConstantsTYPO3_versionAndTYPO3_branch.rst'
+        ]
+    ],
+    'TYPO3_branch' => [
+        'restFiles' => [
+            'Deprecation-90007-GlobalConstantsTYPO3_versionAndTYPO3_branch.rst'
+        ]
+    ],
 ];

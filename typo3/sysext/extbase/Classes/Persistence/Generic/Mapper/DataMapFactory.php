@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
@@ -102,7 +103,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface
             return $this->dataMaps[$className];
         }
         $cacheIdentifierClassName = str_replace('\\', '', $className);
-        $cacheIdentifier = 'DataMap_' . $cacheIdentifierClassName . '_' . sha1(TYPO3_version . Environment::getProjectPath());
+        $cacheIdentifier = 'DataMap_' . $cacheIdentifierClassName . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
         $dataMap = $this->dataMapCache->get($cacheIdentifier);
         if ($dataMap === false) {
             $dataMap = $this->buildDataMapInternal($className);

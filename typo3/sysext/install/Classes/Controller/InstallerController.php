@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageInterface;
@@ -71,7 +72,7 @@ class InstallerController
     {
         $bust = $GLOBALS['EXEC_TIME'];
         if (!Environment::getContext()->isDevelopment()) {
-            $bust = GeneralUtility::hmac(TYPO3_version . Environment::getProjectPath());
+            $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
         }
         $view = $this->initializeStandaloneView('Installer/Init.html');
         $view->assign('bust', $bust);

@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Report;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception;
@@ -195,13 +196,14 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
      */
     protected function getNewVersionStatus()
     {
+        $typoVersion = GeneralUtility::makeInstance(Typo3Version::class);
         $languageService = $this->getLanguageService();
         /** @var \TYPO3\CMS\Install\Service\CoreVersionService $coreVersionService */
         $coreVersionService = GeneralUtility::makeInstance(\TYPO3\CMS\Install\Service\CoreVersionService::class);
 
         // No updates for development versions
         if (!$coreVersionService->isInstalledVersionAReleasedVersion()) {
-            return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), Status::NOTICE);
+            return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $languageService->sL('LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_isDevelopmentVersion'), Status::NOTICE);
         }
 
         try {
@@ -211,7 +213,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             return GeneralUtility::makeInstance(
                 Status::class,
                 'TYPO3',
-                TYPO3_version,
+                $typoVersion->getVersion(),
                 $languageService->sL(
                     'LLL:EXT:install/Resources/Private/Language/Report/locallang.xlf:status_remoteFetchException'
                 ),
@@ -239,7 +241,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface
             $status = Status::ERROR;
         }
 
-        return GeneralUtility::makeInstance(Status::class, 'TYPO3', TYPO3_version, $message, $status);
+        return GeneralUtility::makeInstance(Status::class, 'TYPO3', $typoVersion->getVersion(), $message, $status);
     }
 
     /**

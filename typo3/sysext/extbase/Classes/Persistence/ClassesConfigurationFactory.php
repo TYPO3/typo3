@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -61,7 +62,7 @@ final class ClassesConfigurationFactory implements SingletonInterface
      */
     public function createClassesConfiguration(): ClassesConfiguration
     {
-        $cacheEntryIdentifier = 'PersistenceClasses_' . sha1(TYPO3_version . Environment::getProjectPath());
+        $cacheEntryIdentifier = 'PersistenceClasses_' . sha1((new Typo3Version())->getVersion() . Environment::getProjectPath());
 
         if ($this->cacheFrontend->has($cacheEntryIdentifier)) {
             return new ClassesConfiguration($this->cacheFrontend->get($cacheEntryIdentifier));

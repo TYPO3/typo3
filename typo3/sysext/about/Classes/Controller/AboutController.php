@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Information\Typo3Copyright;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -43,13 +44,19 @@ class AboutController
      * @var ViewInterface
      */
     protected $view;
+
+    /**
+     * @var Typo3Version
+     */
+    protected $version;
     /**
      * @var \TYPO3\CMS\Core\Information\Typo3Copyright
      */
     private $copyright;
 
-    public function __construct(Typo3Copyright $copyright)
+    public function __construct(Typo3Version $version, Typo3Copyright $copyright)
     {
+        $this->version = $version;
         $this->copyright = $copyright;
     }
 
@@ -74,7 +81,7 @@ class AboutController
         $this->view->assignMultiple([
             'copyrightYear' => $this->copyright->getCopyrightYear(),
             'donationUrl' => TYPO3_URL_DONATE,
-            'currentVersion' => TYPO3_version,
+            'currentVersion' => $this->version->getVersion(),
             'loadedExtensions' => $this->getLoadedExtensions(),
             'copyRightNotice' => $this->copyright->getCopyrightNotice(),
             'warnings' => $warnings,

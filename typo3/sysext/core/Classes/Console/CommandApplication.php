@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -52,7 +53,7 @@ class CommandApplication implements ApplicationInterface
         $this->checkEnvironmentOrDie();
         $this->application = new Application('TYPO3 CMS', sprintf(
             '%s (Application Context: <comment>%s</comment>)',
-            TYPO3_version,
+            (new Typo3Version())->getVersion(),
             Environment::getContext()
         ));
         $this->application->setAutoExit(false);

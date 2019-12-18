@@ -100,13 +100,10 @@ class SystemEnvironmentBuilder
     {
         // Check one of the constants and return early if already defined,
         // needed if multiple requests are handled in one process, for instance in functional testing.
-        if (defined('TYPO3_version')) {
+        if (defined('TYPO3_copyright_year')) {
             return;
         }
 
-        // This version, branch and copyright
-        define('TYPO3_version', '10.3.0-dev');
-        define('TYPO3_branch', '10.3');
         define('TYPO3_copyright_year', '1998-' . date('Y'));
 
         // TYPO3 external links

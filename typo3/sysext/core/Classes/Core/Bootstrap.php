@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
@@ -535,7 +536,7 @@ class Bootstrap
     public static function initializeBackendRouter()
     {
         // See if the Routes.php from all active packages have been built together already
-        $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1(TYPO3_version . Environment::getProjectPath() . 'BackendRoutesFromPackages');
+        $cacheIdentifier = 'BackendRoutesFromPackages_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutesFromPackages');
 
         /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
         $codeCache = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Cache\CacheManager::class)->getCache('core');

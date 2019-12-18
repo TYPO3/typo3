@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -503,7 +504,7 @@ class IconRegistry implements SingletonInterface
      */
     protected function getCachedBackendIcons()
     {
-        $cacheIdentifier = 'BackendIcons_' . sha1(TYPO3_version . Environment::getProjectPath() . 'BackendIcons');
+        $cacheIdentifier = 'BackendIcons_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendIcons');
         /** @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend $assetsCache */
         $assetsCache = static::$cache ?? GeneralUtility::makeInstance(CacheManager::class)->getCache('assets');
         $cacheEntry = $assetsCache->get($cacheIdentifier);

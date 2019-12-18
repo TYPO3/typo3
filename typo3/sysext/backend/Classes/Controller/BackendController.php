@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -89,6 +90,11 @@ class BackendController
     protected $iconFactory;
 
     /**
+     * @var Typo3Version
+     */
+    protected $typo3Version;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -98,6 +104,7 @@ class BackendController
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
         // Set debug flag for BE development only
         $this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
         // Initializes the backend modules structure for use later.
@@ -219,7 +226,8 @@ class BackendController
         $this->generateJavascript();
 
         // Set document title:
-        $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 CMS ' . TYPO3_version . ']' : 'TYPO3 CMS ' . TYPO3_version;
+        $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
+        $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
         // Renders the module page
         $this->content = GeneralUtility::makeInstance(DocumentTemplate::class)->render($title, $view->render());
         $hookConfiguration = ['content' => &$this->content];
@@ -266,7 +274,7 @@ class BackendController
         $view->assign('logoUrl', PathUtility::getAbsoluteWebPath($logoPath));
         $view->assign('logoWidth', $logoWidth);
         $view->assign('logoHeight', $logoHeight);
-        $view->assign('applicationVersion', TYPO3_version);
+        $view->assign('applicationVersion', $this->typo3Version->getVersion());
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $view->assign('toolbar', $this->renderToolbar());
 
@@ -379,7 +387,7 @@ class BackendController
             navFrameHighlightedID: [],		// used by navigation frames to track which row id was highlighted last time
             currentBank: "0"
         };
-    
+
         top.goToModule = function(modName, cMR_flag, addGetVars) {
             TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
         }

@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
@@ -45,7 +46,7 @@ class LayoutController extends AbstractController
     {
         $bust = $GLOBALS['EXEC_TIME'];
         if (!Environment::getContext()->isDevelopment()) {
-            $bust = GeneralUtility::hmac(TYPO3_version . Environment::getProjectPath());
+            $bust = GeneralUtility::hmac((string)(new Typo3Version()) . Environment::getProjectPath());
         }
         $view = $this->initializeStandaloneView($request, 'Layout/Init.html');
         $view->assignMultiple([

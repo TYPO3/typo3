@@ -16,9 +16,9 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Core version service
@@ -80,7 +80,7 @@ class CoreVersionService
      */
     public function getInstalledVersion(): string
     {
-        return VersionNumberUtility::getCurrentTypo3Version();
+        return (string)GeneralUtility::makeInstance(Typo3Version::class);
     }
 
     /**
@@ -165,19 +165,7 @@ class CoreVersionService
      */
     protected function getInstalledMajorVersion(): string
     {
-        return $this->getMajorVersion($this->getInstalledVersion());
-    }
-
-    /**
-     * Get 'major version' of version, e.g., '7' from '7.3.0'
-     *
-     * @param string $version to check
-     * @return string Major version, e.g., '7'
-     */
-    protected function getMajorVersion(string $version): string
-    {
-        $explodedVersion = explode('.', $version);
-        return $explodedVersion[0];
+        return (string)GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
     }
 
     /**

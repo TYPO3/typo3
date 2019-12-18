@@ -23,6 +23,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\PackageManager;
 
 /**
@@ -178,6 +179,6 @@ class ContainerBuilder
      */
     protected function createCacheIdentifier(): string
     {
-        return $this->cacheIdentifier = 'DependencyInjectionContainer_' . sha1(TYPO3_version . Environment::getProjectPath() . 'DependencyInjectionContainer');
+        return $this->cacheIdentifier = 'DependencyInjectionContainer_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'DependencyInjectionContainer');
     }
 }

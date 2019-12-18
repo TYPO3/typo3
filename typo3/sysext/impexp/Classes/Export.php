@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Html\HtmlParser;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -184,7 +185,7 @@ class Export extends ImportExport
             'packager_username' => $packager_username,
             'packager_name' => $packager_name,
             'packager_email' => $packager_email,
-            'TYPO3_version' => TYPO3_version,
+            'TYPO3_version' => (string)GeneralUtility::makeInstance(Typo3Version::class),
             'created' => strftime('%A %e. %B %Y', $GLOBALS['EXEC_TIME'])
         ];
     }

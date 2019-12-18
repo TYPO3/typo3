@@ -19,6 +19,7 @@ use ArrayObject;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend as PhpFrontendCache;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 
 /**
@@ -130,6 +131,6 @@ class MiddlewareStackResolver
      */
     protected function getCacheIdentifier(string $stackName): string
     {
-        return 'middlewares_' . $stackName . '_' . sha1(TYPO3_version . Environment::getProjectPath());
+        return 'middlewares_' . $stackName . '_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
     }
 }
