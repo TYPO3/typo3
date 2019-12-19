@@ -89,14 +89,50 @@ TCEMAIN.permissions.everybody = show,delete
     }
 
     /**
+     * @test
+     */
+    public function newPageReceivesOverriddenPageTsPermissionSetFromParent()
+    {
+        $this->backendUser->user['uid'] = 13;
+        $this->backendUser->firstMainGroup = 14;
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions'] = [
+            'user' => 'show,editcontent,edit,delete',
+            'group' => 'show,editcontent,new',
+            'everybody' => 'show',
+        ];
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] = '
+TCEMAIN.permissions.userid = 12
+TCEMAIN.permissions.groupid = 42
+TCEMAIN.permissions.user = show,edit
+TCEMAIN.permissions.group = show,delete
+TCEMAIN.permissions.everybody = show,delete
+';
+        $parent = $this->insertPage(88, [
+            'title' => 'Test page',
+            'TSconfig' => '
+TCEMAIN.permissions.userid = copyFromParent
+TCEMAIN.permissions.groupid = copyFromParent
+TCEMAIN.permissions.user = copyFromParent
+TCEMAIN.permissions.group = copyFromParent
+TCEMAIN.permissions.everybody = copyFromParent
+            ',
+        ]);
+
+        $record = $this->insertPage((int)$parent['uid']);
+        self::assertEquals(12, $record['perms_userid']);
+        self::assertEquals(42, $record['perms_groupid']);
+        self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_EDIT, $record['perms_user']);
+        self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_DELETE, $record['perms_group']);
+        self::assertEquals(Permission::PAGE_SHOW + Permission::PAGE_DELETE, $record['perms_everybody']);
+    }
+
+    /**
      * @return array
      */
-    protected function insertPage(): array
+    protected function insertPage(int $pageId = 88, array $fields = ['title' => 'Test page'])
     {
         // pid 88 comes from ImportDefault
-        $result = $this->actionService->createNewRecord('pages', 88, [
-            'title' => 'Test page',
-        ]);
+        $result = $this->actionService->createNewRecord('pages', $pageId, $fields);
         $recordUid = $result['pages'][0];
         return BackendUtility::getRecord('pages', $recordUid);
     }

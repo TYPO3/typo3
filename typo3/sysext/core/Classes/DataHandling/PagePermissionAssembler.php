@@ -91,20 +91,39 @@ class PagePermissionAssembler
      */
     protected function setTSconfigPermissions(array $fieldArray, array $tsconfig): array
     {
-        if ((string)($tsconfig['userid'] ?? '') !== '') {
-            $fieldArray['perms_userid'] = (int)$tsconfig['userid'];
+        $parentPermissions = [];
+        if (in_array('copyFromParent', $tsconfig, true)) {
+            $parentPermissions = BackendUtility::getRecordWSOL('pages', $fieldArray['pid'], 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody') ?? [];
         }
-        if ((string)($tsconfig['groupid'] ?? '') !== '') {
-            $fieldArray['perms_groupid'] = (int)$tsconfig['groupid'];
+        if (
+            (string)($tsconfig['userid'] ?? '') !== ''
+            && ($tsconfig['userid'] !== 'copyFromParent' || isset($parentPermissions['perms_userid']))
+        ) {
+            $fieldArray['perms_userid'] = $tsconfig['userid'] === 'copyFromParent' ? (int)$parentPermissions['perms_userid'] : (int)$tsconfig['userid'];
         }
-        if ((string)($tsconfig['user'] ?? '') !== '') {
-            $fieldArray['perms_user'] = $this->assemblePermissions($tsconfig['user']);
+        if (
+            (string)($tsconfig['groupid'] ?? '') !== ''
+            && ($tsconfig['groupid'] !== 'copyFromParent' || isset($parentPermissions['perms_groupid']))
+        ) {
+            $fieldArray['perms_groupid'] = $tsconfig['groupid'] === 'copyFromParent' ? (int)$parentPermissions['perms_groupid'] : (int)$tsconfig['groupid'];
         }
-        if ((string)($tsconfig['group'] ?? '') !== '') {
-            $fieldArray['perms_group'] = $this->assemblePermissions($tsconfig['group']);
+        if (
+            (string)($tsconfig['user'] ?? '') !== ''
+            && ($tsconfig['user'] !== 'copyFromParent' || isset($parentPermissions['perms_user']))
+        ) {
+            $fieldArray['perms_user'] = $tsconfig['user'] === 'copyFromParent' ? (int)$parentPermissions['perms_user'] : $this->assemblePermissions($tsconfig['user']);
         }
-        if ((string)($tsconfig['everybody'] ?? '') !== '') {
-            $fieldArray['perms_everybody'] = $this->assemblePermissions($tsconfig['everybody']);
+        if (
+            (string)($tsconfig['group'] ?? '') !== ''
+            && ($tsconfig['group'] !== 'copyFromParent' || isset($parentPermissions['perms_group']))
+        ) {
+            $fieldArray['perms_group'] = $tsconfig['group'] === 'copyFromParent' ? (int)$parentPermissions['perms_group'] : $this->assemblePermissions($tsconfig['group']);
+        }
+        if (
+            (string)($tsconfig['everybody'] ?? '') !== ''
+            && ($tsconfig['everybody'] !== 'copyFromParent' || isset($parentPermissions['perms_everybody']))
+        ) {
+            $fieldArray['perms_everybody'] = $tsconfig['everybody'] === 'copyFromParent' ? (int)$parentPermissions['perms_everybody'] : $this->assemblePermissions($tsconfig['everybody']);
         }
         return $fieldArray;
     }
