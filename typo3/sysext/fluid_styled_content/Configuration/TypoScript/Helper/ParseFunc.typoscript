@@ -31,7 +31,9 @@ lib.parseFunc {
                 target.ifEmpty.data = parameters:target
                 # the target attribute takes precedence over the constant (styles.content.links.extTarget)
                 # which takes precedence over config.extTarget
-                extTarget.ifEmpty =< config.extTarget
+                # do not pass extTarget as reference, as it might not be set resulting in the string being
+                # written to the target attribute
+                extTarget.ifEmpty < config.extTarget
                 extTarget.ifEmpty.override = {$styles.content.links.extTarget}
                 extTarget.override.data = parameters:target
             }
