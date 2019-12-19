@@ -987,7 +987,7 @@ class ExtendedTemplateService extends TemplateService
                     $p_field = '';
                     $raname = substr(md5($params['name']), 0, 10);
                     $aname = '\'' . $raname . '\'';
-                    list($fN, $fV, $params, $idName) = $this->ext_fNandV($params);
+                    [$fN, $fV, $params, $idName] = $this->ext_fNandV($params);
                     $idName = htmlspecialchars($idName);
                     $hint = '';
                     switch ($typeDat['type']) {
@@ -1327,7 +1327,7 @@ class ExtendedTemplateService extends TemplateService
                     // If checkbox is set, update the value
                     if ($this->ext_dontCheckIssetValues || isset($check[$key])) {
                         // Exploding with linebreak, just to make sure that no multiline input is given!
-                        list($var) = explode(LF, $var);
+                        [$var] = explode(LF, $var);
                         $typeDat = $this->ext_getTypeData($theConstants[$key]['type']);
                         switch ($typeDat['type']) {
                             case 'int':

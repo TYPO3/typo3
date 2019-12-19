@@ -51,7 +51,7 @@ class LinkHandler extends AbstractLinktype
             return $response;
         }
 
-        list(, $tableName, $rowid) = $parts;
+        [, $tableName, $rowid] = $parts;
         $rowid = (int)$rowid;
 
         $row = null;

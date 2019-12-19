@@ -1018,11 +1018,7 @@ class ExtendedFileUtility extends BasicFileUtility
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::USER_ERROR, 100, 'File "%s" was not saved! Write-permission problem?', [$fileObject->getIdentifier()]);
             $this->addMessageToFlashMessageQueue('FileUtility.FileWasNotSaved', [$fileObject->getIdentifier()]);
             return false;
-        } catch (IllegalFileExtensionException $e) {
-            $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::USER_ERROR, 100, 'File "%s" was not saved! File extension rejected!', [$fileObject->getIdentifier()]);
-            $this->addMessageToFlashMessageQueue('FileUtility.FileWasNotSaved', [$fileObject->getIdentifier()]);
-            return false;
-        } catch (\RuntimeException $e) {
+        } catch (IllegalFileExtensionException|\RuntimeException $e) {
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::USER_ERROR, 100, 'File "%s" was not saved! File extension rejected!', [$fileObject->getIdentifier()]);
             $this->addMessageToFlashMessageQueue('FileUtility.FileWasNotSaved', [$fileObject->getIdentifier()]);
             return false;

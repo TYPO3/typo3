@@ -895,8 +895,8 @@ class EnvironmentController extends AbstractController
         $string = $result[0];
         $version = '';
         if (!empty($string)) {
-            list(, $version) = explode('Magick', $string);
-            list($version) = explode(' ', trim($version));
+            [, $version] = explode('Magick', $string);
+            [$version] = explode(' ', trim($version));
             $version = trim($version);
         }
         return $version;

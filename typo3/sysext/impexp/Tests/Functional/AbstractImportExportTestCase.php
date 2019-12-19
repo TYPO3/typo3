@@ -134,7 +134,7 @@ abstract class AbstractImportExportTestCase extends FunctionalTestCase
                         );
 
                     foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
-                        list($fieldName, $order) = $orderPair;
+                        [$fieldName, $order] = $orderPair;
                         $queryBuilder->addOrderBy($fieldName, $order);
                     }
                     $queryBuilder->addOrderBy('uid', 'ASC');

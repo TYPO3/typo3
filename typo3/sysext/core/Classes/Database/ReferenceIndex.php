@@ -594,7 +594,7 @@ class ReferenceIndex implements LoggerAwareInterface
                     if (is_array($el['subst'])) {
                         switch ((string)$el['subst']['type']) {
                             case 'db':
-                                list($referencedTable, $referencedUid) = explode(':', $el['subst']['recordRef']);
+                                [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
                                 $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $deleted, $referencedTable, (int)$referencedUid, '', -1, $spKey, $subKey);
                                 break;
                             case 'string':
@@ -710,7 +710,7 @@ class ReferenceIndex implements LoggerAwareInterface
         $structurePath = substr($structurePath, 5) . '/';
         $dsConf = $dsArr['TCEforms']['config'];
         // Implode parameter values:
-        list($table, $uid, $field) = [
+        [$table, $uid, $field] = [
             $PA['table'],
             $PA['uid'],
             $PA['field']
@@ -934,7 +934,7 @@ class ReferenceIndex implements LoggerAwareInterface
             if ($newValue === null) {
                 unset($itemArray[$refRec['sorting']]);
             } else {
-                list($itemArray[$refRec['sorting']]['table'], $itemArray[$refRec['sorting']]['id']) = explode(':', $newValue);
+                [$itemArray[$refRec['sorting']]['table'], $itemArray[$refRec['sorting']]['id']] = explode(':', $newValue);
             }
             // Traverse and compile new list of records:
             $saveValue = [];

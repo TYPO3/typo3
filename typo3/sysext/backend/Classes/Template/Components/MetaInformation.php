@@ -69,8 +69,7 @@ class MetaInformation
                 $resourceObject = ResourceFactory::getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
                 $title = $resourceObject->getStorage()->getName() . ':';
                 $title .= $resourceObject->getParentFolder()->getReadablePath();
-            } catch (ResourceDoesNotExistException $e) {
-            } catch (InsufficientFolderAccessPermissionsException $e) {
+            } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
             }
         }
         // Setting the path of the page

@@ -69,7 +69,7 @@ class IconController
         $queryParams = $request->getQueryParams();
         $requestedIcon = json_decode($parsedBody['icon'] ?? $queryParams['icon'], true);
 
-        list($identifier, $size, $overlayIdentifier, $iconState, $alternativeMarkupIdentifier) = $requestedIcon;
+        [$identifier, $size, $overlayIdentifier, $iconState, $alternativeMarkupIdentifier] = $requestedIcon;
 
         if (empty($overlayIdentifier)) {
             $overlayIdentifier = null;

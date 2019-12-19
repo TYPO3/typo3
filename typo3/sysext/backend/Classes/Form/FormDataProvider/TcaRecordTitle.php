@@ -197,7 +197,7 @@ class TcaRecordTitle implements FormDataProviderInterface
             return '';
         }
         foreach ($fieldConfig['items'] as $item) {
-            list($itemLabel, $itemValue) = $item;
+            [$itemLabel, $itemValue] = $item;
             if ((string)$value === (string)$itemValue) {
                 return $itemLabel;
             }

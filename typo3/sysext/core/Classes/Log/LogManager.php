@@ -140,9 +140,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
                     /** @var \TYPO3\CMS\Core\Log\Writer\WriterInterface $logWriter */
                     $logWriter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
                     $logger->addWriter($severityLevel, $logWriter);
-                } catch (\Psr\Log\InvalidArgumentException $e) {
-                    $logger->warning('Instantiation of LogWriter "' . $logWriterClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
-                } catch (\TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException $e) {
+                } catch (\Psr\Log\InvalidArgumentException|\TYPO3\CMS\Core\Log\Exception\InvalidLogWriterConfigurationException $e) {
                     $logger->warning('Instantiation of LogWriter "' . $logWriterClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
                 }
             }
@@ -163,9 +161,7 @@ class LogManager implements SingletonInterface, LogManagerInterface
                     /** @var \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $logProcessor */
                     $logProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logProcessorClassName, $logProcessorOptions);
                     $logger->addProcessor($severityLevel, $logProcessor);
-                } catch (\Psr\Log\InvalidArgumentException $e) {
-                    $logger->warning('Instantiation of LogProcessor "' . $logProcessorClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
-                } catch (\TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException $e) {
+                } catch (\Psr\Log\InvalidArgumentException|\TYPO3\CMS\Core\Log\Exception\InvalidLogProcessorConfigurationException $e) {
                     $logger->warning('Instantiation of LogProcessor "' . $logProcessorClassName . '" failed for logger ' . $logger->getName() . ' (' . $e->getMessage() . ')');
                 }
             }

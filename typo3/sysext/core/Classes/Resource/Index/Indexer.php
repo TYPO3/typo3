@@ -329,7 +329,7 @@ class Indexer implements LoggerAwareInterface
      */
     protected function getFileType($mimeType)
     {
-        list($fileType) = explode('/', $mimeType);
+        [$fileType] = explode('/', $mimeType);
         switch (strtolower($fileType)) {
             case 'text':
                 $type = File::FILETYPE_TEXT;

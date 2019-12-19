@@ -471,7 +471,7 @@ class RootlineUtility
     {
         $mountPoints = GeneralUtility::trimExplode(',', $this->mountPointParameter);
         foreach ($mountPoints as $mP) {
-            list($mountedPageUid, $mountPageUid) = GeneralUtility::intExplode('-', $mP);
+            [$mountedPageUid, $mountPageUid] = GeneralUtility::intExplode('-', $mP);
             $this->parsedMountPointParameters[$mountedPageUid] = $mountPageUid;
         }
     }

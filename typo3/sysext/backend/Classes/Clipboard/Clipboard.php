@@ -377,7 +377,7 @@ class Clipboard
         if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
-                    list($table, $uid) = explode('|', $k);
+                    [$table, $uid] = explode('|', $k);
                     // Rendering files/directories on the clipboard
                     if ($table === '_FILE') {
                         $fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($v);
@@ -662,7 +662,7 @@ class Clipboard
         // All records
         $elements = $this->elFromTable('');
         foreach ($elements as $tP => $value) {
-            list($table, $uid) = explode('|', $tP);
+            [$table, $uid] = explode('|', $tP);
             $parameters['edit[' . $table . '][' . $uid . ']'] = 'edit';
         }
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -761,7 +761,7 @@ class Clipboard
         if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
-                    list($table, $uid) = explode('|', $k);
+                    [$table, $uid] = explode('|', $k);
                     // Rendering files/directories on the clipboard
                     if ($table === '_FILE') {
                         $file = ResourceFactory::getInstance()->getObjectFromCombinedIdentifier($v);
@@ -826,7 +826,7 @@ class Clipboard
     {
         if (is_array($this->clipData[$this->current]['el'] ?? false)) {
             foreach ($this->clipData[$this->current]['el'] as $k => $v) {
-                list($table, $uid) = explode('|', $k);
+                [$table, $uid] = explode('|', $k);
                 if ($table !== '_FILE') {
                     if (!$v || !is_array(BackendUtility::getRecord($table, $uid, 'uid'))) {
                         unset($this->clipData[$this->current]['el'][$k]);
@@ -863,7 +863,7 @@ class Clipboard
         if (is_array($this->clipData[$pad]['el'] ?? false)) {
             foreach ($this->clipData[$pad]['el'] as $k => $v) {
                 if ($v) {
-                    list($table, $uid) = explode('|', $k);
+                    [$table, $uid] = explode('|', $k);
                     if ($table !== '_FILE') {
                         if ((!$matchTable || (string)$table == (string)$matchTable) && $GLOBALS['TCA'][$table]) {
                             $list[$k] = $pad === 'normal' ? $v : $uid;
@@ -907,7 +907,7 @@ class Clipboard
         if (!$table && !$uid) {
             $elArr = $this->elFromTable('');
             reset($elArr);
-            list($table, $uid) = explode('|', key($elArr));
+            [$table, $uid] = explode('|', key($elArr));
         }
         if ($this->isSelected($table, $uid)) {
             $selRec = BackendUtility::getRecordWSOL($table, $uid);
@@ -947,7 +947,7 @@ class Clipboard
      */
     public function makePasteCmdArray($ref, $CMD, array $update = null)
     {
-        list($pTable, $pUid) = explode('|', $ref);
+        [$pTable, $pUid] = explode('|', $ref);
         $pUid = (int)$pUid;
         // pUid must be set and if pTable is not set (that means paste ALL elements)
         // the uid MUST be positive/zero (pointing to page id)
@@ -958,7 +958,7 @@ class Clipboard
             $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
             // Traverse elements and make CMD array
             foreach ($elements as $tP => $value) {
-                list($table, $uid) = explode('|', $tP);
+                [$table, $uid] = explode('|', $tP);
                 if (!is_array($CMD[$table])) {
                     $CMD[$table] = [];
                 }
@@ -991,7 +991,7 @@ class Clipboard
         // all records
         $elements = $this->elFromTable('');
         foreach ($elements as $tP => $value) {
-            list($table, $uid) = explode('|', $tP);
+            [$table, $uid] = explode('|', $tP);
             if (!is_array($CMD[$table])) {
                 $CMD[$table] = [];
             }
@@ -1017,7 +1017,7 @@ class Clipboard
      */
     public function makePasteCmdArray_file($ref, $FILE)
     {
-        list($pTable, $pUid) = explode('|', $ref);
+        [$pTable, $pUid] = explode('|', $ref);
         $elements = $this->elFromTable('_FILE');
         $mode = $this->currentMode() === 'copy' ? 'copy' : 'move';
         // Traverse elements and make CMD array

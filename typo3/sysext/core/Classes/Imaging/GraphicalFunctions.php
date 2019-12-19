@@ -578,7 +578,7 @@ class GraphicalFunctions
     public function makeText(&$im, $conf, $workArea)
     {
         // Spacing
-        list($spacing, $wordSpacing) = $this->calcWordSpacing($conf);
+        [$spacing, $wordSpacing] = $this->calcWordSpacing($conf);
         // Position
         $txtPos = $this->txtPosition($conf, $workArea, $conf['BBOX']);
         $theText = $conf['text'];
@@ -729,7 +729,7 @@ class GraphicalFunctions
     public function calcBBox($conf)
     {
         $sF = $this->getTextScalFactor($conf);
-        list($spacing, $wordSpacing) = $this->calcWordSpacing($conf, $sF);
+        [$spacing, $wordSpacing] = $this->calcWordSpacing($conf, $sF);
         $theText = $conf['text'];
         $charInf = $this->ImageTTFBBoxWrapper($conf['fontSize'], $conf['angle'], $conf['fontFile'], $theText, $conf['splitRendering.'], $sF);
         $theBBoxInfo = $charInf;
@@ -901,7 +901,7 @@ class GraphicalFunctions
     {
         // You have to use +calc options like [10.h] in 'offset' to get the right position of your text-image, if you use +calc in XY height!!!!
         $maxWidth = (int)$conf['maxWidth'];
-        list($spacing, $wordSpacing) = $this->calcWordSpacing($conf);
+        [$spacing, $wordSpacing] = $this->calcWordSpacing($conf);
         if ($maxWidth) {
             // If any kind of spacing applys, we use this function:
             if ($spacing || $wordSpacing) {

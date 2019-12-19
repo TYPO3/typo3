@@ -76,7 +76,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $userTsConfig = $this->getBackendUser()->getTSConfig();
 
         $this->setTemporaryDbMounts();
-        list(, , , $allowedTables) = explode('|', $this->bparams);
+        [, , , $allowedTables] = explode('|', $this->bparams);
 
         // Making the browsable pagetree:
         $pageTree = GeneralUtility::makeInstance(ElementBrowserPageTreeView::class);
@@ -229,7 +229,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         $dbList->tableList = implode(',', $tablesArr);
 
         // a string like "data[pages][79][storage_pid]"
-        list($fieldPointerString) = explode('|', $this->bparams);
+        [$fieldPointerString] = explode('|', $this->bparams);
         // parts like: data, pages], 79], storage_pid]
         $fieldPointerParts = explode('[', $fieldPointerString);
         $relatingTableName = substr($fieldPointerParts[1], 0, -1);

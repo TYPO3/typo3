@@ -125,7 +125,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
             $task = $this->scheduler->fetchTask($taskUid);
         } else {
             $whereClause = 'uid = ' . (int)$taskUid . ' AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'];
-            list($task) = $this->scheduler->fetchTasksWithCondition($whereClause);
+            [$task] = $this->scheduler->fetchTasksWithCondition($whereClause);
         }
 
         return $task;

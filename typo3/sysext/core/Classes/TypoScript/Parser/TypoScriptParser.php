@@ -628,7 +628,7 @@ class TypoScriptParser
             return '';
         }
 
-        list($key, $remainingKey) = $this->parseNextKeySegment($string);
+        [$key, $remainingKey] = $this->parseNextKeySegment($string);
         $key .= '.';
         if (!isset($setup[$key])) {
             $setup[$key] = [];
@@ -653,7 +653,7 @@ class TypoScriptParser
             return [];
         }
 
-        list($key, $remainingKey) = $this->parseNextKeySegment($string);
+        [$key, $remainingKey] = $this->parseNextKeySegment($string);
         $subKey = $key . '.';
         if ($remainingKey === '') {
             $retArr = [];
@@ -686,7 +686,7 @@ class TypoScriptParser
             return;
         }
 
-        list($key, $remainingKey) = $this->parseNextKeySegment($string);
+        [$key, $remainingKey] = $this->parseNextKeySegment($string);
         $subKey = $key . '.';
         if ($remainingKey === '') {
             if ($value === 'UNSET') {
@@ -773,7 +773,7 @@ class TypoScriptParser
             $keySegment = str_replace('\\.', '.', $keySegment);
         } else {
             // no backslash in the key, we're fine off
-            list($keySegment, $remainingKey) = explode('.', $key, 2);
+            [$keySegment, $remainingKey] = explode('.', $key, 2);
         }
         return [$keySegment, $remainingKey];
     }
@@ -907,7 +907,7 @@ class TypoScriptParser
                     $filePointerPathParts = explode('/', substr($filename, 4));
 
                     // remove file part, determine whether to load setup or constants
-                    list($includeType, ) = explode('.', array_pop($filePointerPathParts));
+                    [$includeType, ] = explode('.', array_pop($filePointerPathParts));
 
                     if (in_array($includeType, ['setup', 'constants'])) {
                         // adapt extension key to required format (no underscores)
@@ -1050,7 +1050,7 @@ class TypoScriptParser
             if (strpos(strtoupper($filename), 'EXT:') === 0) {
                 $filePointerPathParts = explode('/', substr($filename, 4));
                 // remove file part, determine whether to load setup or constants
-                list($includeType) = explode('.', array_pop($filePointerPathParts));
+                [$includeType] = explode('.', array_pop($filePointerPathParts));
 
                 if (in_array($includeType, ['setup', 'constants'], true)) {
                     // adapt extension key to required format (no underscores)

@@ -446,7 +446,7 @@ class CharsetConverter implements SingletonInterface
                             $hexbyte = '';
                             $utf8 = '';
                             if ($detectedType === 'ms-token') {
-                                list($hexbyte, $utf8) = preg_split('/[=:]/', $value, 3);
+                                [$hexbyte, $utf8] = preg_split('/[=:]/', $value, 3);
                             } elseif ($detectedType === 'whitespaced') {
                                 $regA = [];
                                 preg_match('/[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+/', $value, $regA);
@@ -512,7 +512,7 @@ class CharsetConverter implements SingletonInterface
         while (!feof($fh)) {
             $line = fgets($fh, 4096);
             // Has a lot of info
-            list($char, $name, $cat, , , $decomp, , , $num) = explode(';', rtrim($line));
+            [$char, $name, $cat, , , $decomp, , , $num] = explode(';', rtrim($line));
             $ord = hexdec($char);
             if ($ord > 65535) {
                 // Only process the BMP
@@ -578,7 +578,7 @@ class CharsetConverter implements SingletonInterface
                         continue;
                     }
                     if ($line[0] !== '#' && trim($line) !== '') {
-                        list($char, $translit) = GeneralUtility::trimExplode(';', $line);
+                        [$char, $translit] = GeneralUtility::trimExplode(';', $line);
                         if (!$translit) {
                             $omit['U+' . $char] = 1;
                         }

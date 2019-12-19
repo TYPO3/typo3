@@ -105,7 +105,7 @@ class ArrayBrowser
             if (is_object($value) && !$value instanceof \Traversable) {
                 $value = (array)$value;
             }
-            $isArray = is_array($value) || $value instanceof \Traversable;
+            $isArray = is_iterable($value);
             $isResult = (bool)$this->searchKeys[$depth];
             $isExpanded = $isArray && ($this->depthKeys[$depth] || $this->expAll);
             $output .= '<li' . ($isResult ? ' class="active"' : '') . '>';

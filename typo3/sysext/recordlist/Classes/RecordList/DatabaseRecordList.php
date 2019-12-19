@@ -1321,7 +1321,7 @@ class DatabaseRecordList
             } elseif ($fCol === '_CLIPBOARD_') {
                 $theData[$fCol] = $this->makeClip($table, $row);
             } elseif ($fCol === '_LOCALIZATION_') {
-                list($lC1, $lC2) = $this->makeLocalizationPanel($table, $row);
+                [$lC1, $lC2] = $this->makeLocalizationPanel($table, $row);
                 $theData[$fCol] = $lC1;
                 $theData[$fCol . 'b'] = '<div class="btn-group">' . $lC2 . '</div>';
             } elseif ($fCol === '_LOCALIZATION_b') {

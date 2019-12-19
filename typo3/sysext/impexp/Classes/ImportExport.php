@@ -635,7 +635,7 @@ abstract class ImportExport
                 $lines[] = $pInfo;
                 // Add relations:
                 if ($info['subst']['type'] === 'db') {
-                    list($tempTable, $tempUid) = explode(':', $info['subst']['recordRef']);
+                    [$tempTable, $tempUid] = explode(':', $info['subst']['recordRef']);
                     $this->addRelations([['table' => $tempTable, 'id' => $tempUid, 'tokenID' => $info['subst']['tokenID']]], $lines, $preCode_B, [], '');
                 }
                 // Add files:

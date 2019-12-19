@@ -177,7 +177,7 @@ class DeletedRecords
                 ->fetchColumn(0);
 
             // split the limit
-            list($offset, $rowCount) = GeneralUtility::intExplode(',', $this->limit, true);
+            [$offset, $rowCount] = GeneralUtility::intExplode(',', $this->limit, true);
             // subtract the number of deleted records from the limit's offset
             $result = $offset - $deletedCount;
             // if the result is >= 0
@@ -357,7 +357,7 @@ class DeletedRecords
             $tce->start([], []);
             $tce->disableDeleteClause();
             foreach ($recordsArray as $record) {
-                list($table, $uid) = explode(':', $record);
+                [$table, $uid] = explode(':', $record);
                 $tce->deleteEl($table, (int)$uid, true, true);
             }
             return true;
@@ -385,7 +385,7 @@ class DeletedRecords
             $this->deletedRows = [];
             $cmd = [];
             foreach ($recordsArray as $record) {
-                list($table, $uid) = explode(':', $record);
+                [$table, $uid] = explode(':', $record);
                 // get all parent pages and cover them
                 $pid = RecyclerUtility::getPidOfUid($uid, $table);
                 if ($pid > 0) {

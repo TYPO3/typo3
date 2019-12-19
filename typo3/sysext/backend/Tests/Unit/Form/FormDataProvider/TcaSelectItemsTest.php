@@ -131,7 +131,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     protected function mockDatabaseConnectionForProcessSelectField()
     {
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection('foreignTable');
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection('foreignTable');
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
@@ -1670,7 +1670,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $fileRepositoryProphecy->findByRelation(Argument::cetera())->shouldNotBeCalled();
         GeneralUtility::setSingletonInstance(FileRepository::class, $fileRepositoryProphecy->reveal());
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
@@ -1766,7 +1766,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
@@ -1832,7 +1832,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
@@ -1916,7 +1916,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);
@@ -2015,7 +2015,7 @@ class TcaSelectItemsTest extends UnitTestCase
         $GLOBALS['BE_USER'] = $backendUserProphecy->reveal();
         $backendUserProphecy->getPagePermsClause(1)->shouldBeCalled()->willReturn(' 1=1');
 
-        list($queryBuilderProphet, $connectionPoolProphet) = $this->mockDatabaseConnection();
+        [$queryBuilderProphet, $connectionPoolProphet] = $this->mockDatabaseConnection();
 
         /** @var Statement|ObjectProphecy $statementProphet */
         $statementProphet = $this->prophesize(Statement::class);

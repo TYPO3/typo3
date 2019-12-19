@@ -249,7 +249,7 @@ class HtmlParser
      */
     public function get_tag_attributes($tag, $deHSC = false)
     {
-        list($components, $metaC) = $this->split_tag_attributes($tag);
+        [$components, $metaC] = $this->split_tag_attributes($tag);
         // Attribute name is stored here
         $name = '';
         $valuemode = false;

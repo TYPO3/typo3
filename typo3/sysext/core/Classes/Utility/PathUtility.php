@@ -311,7 +311,7 @@ class PathUtility
         // @todo do we really need this? Probably only in testing context for vfs?
         $protocol = '';
         if (strpos($path, '://') !== false) {
-            list($protocol, $path) = explode('://', $path);
+            [$protocol, $path] = explode('://', $path);
             $protocol .= '://';
         }
 

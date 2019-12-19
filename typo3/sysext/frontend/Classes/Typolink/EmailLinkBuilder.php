@@ -25,7 +25,7 @@ class EmailLinkBuilder extends AbstractTypolinkBuilder
      */
     public function build(array &$linkDetails, string $linkText, string $target, array $conf): array
     {
-        list($url, $linkText) = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
+        [$url, $linkText] = $this->contentObjectRenderer->getMailTo($linkDetails['email'], $linkText);
         return [$url, $linkText, $target];
     }
 }

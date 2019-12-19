@@ -2152,7 +2152,7 @@ class EditDocumentController
             return null;
         }
 
-        list($table, $origUid, $language) = explode(':', $justLocalized);
+        [$table, $origUid, $language] = explode(':', $justLocalized);
 
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']

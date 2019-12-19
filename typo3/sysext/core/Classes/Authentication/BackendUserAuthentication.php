@@ -1710,7 +1710,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
             // If userHomePath is set, we attempt to mount it
             if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
-                list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
+                [$userHomeStorageUid, $userHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
                 $userHomeStorageUid = (int)$userHomeStorageUid;
                 $userHomeFilter = '/' . ltrim($userHomeFilter, '/');
                 if ($userHomeStorageUid > 0) {
@@ -1738,7 +1738,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Mount group home-dirs
             if ((is_array($this->user) && $this->user['options'] & Permission::PAGE_EDIT) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
                 // If groupHomePath is set, we attempt to mount it
-                list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
+                [$groupHomeStorageUid, $groupHomeFilter] = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
                 $groupHomeStorageUid = (int)$groupHomeStorageUid;
                 $groupHomeFilter = '/' . ltrim($groupHomeFilter, '/');
                 if ($groupHomeStorageUid > 0) {

@@ -132,8 +132,8 @@ class PreviewController
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
-        list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
+        [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
+        [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         $availableWorkspaces = $this->workspaceService->getAvailableWorkspaces();
         $activeWorkspace = $this->getBackendUser()->workspace;
         if ($previewWS !== null && array_key_exists($previewWS, $availableWorkspaces) && $activeWorkspace != $previewWS) {

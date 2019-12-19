@@ -362,7 +362,7 @@ class SystemEnvironmentBuilder
     {
         $entryScriptDirectory = PathUtility::dirnameDuringBootstrap($scriptPath);
         if ($entryPointLevel > 0) {
-            list($rootPath) = GeneralUtility::revExplode('/', $entryScriptDirectory, $entryPointLevel + 1);
+            [$rootPath] = GeneralUtility::revExplode('/', $entryScriptDirectory, $entryPointLevel + 1);
         } else {
             $rootPath = $entryScriptDirectory;
         }

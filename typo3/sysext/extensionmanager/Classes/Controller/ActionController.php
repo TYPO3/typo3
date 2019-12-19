@@ -102,9 +102,7 @@ class ActionController extends AbstractController
                     $this->redirect('unresolvedDependencies', 'List', null, ['extensionKey' => $extensionKey]);
                 }
             }
-        } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-            $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-        } catch (\TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException $e) {
+        } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException|\TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException $e) {
             $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
         }
         $this->redirect('index', 'List', null, [
@@ -143,9 +141,7 @@ class ActionController extends AbstractController
                     ]
                 )
             );
-        } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
-            $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
-        } catch (\TYPO3\CMS\Core\Package\Exception $e) {
+        } catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException|\TYPO3\CMS\Core\Package\Exception $e) {
             $this->addFlashMessage($e->getMessage(), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
         }
 

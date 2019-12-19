@@ -592,7 +592,7 @@ class CrawlerHook
     public function checkUrl($url, $urlLog, $baseUrl)
     {
         $url = preg_replace('/\\/\\/$/', '/', $url);
-        list($url) = explode('#', $url);
+        [$url] = explode('#', $url);
         if (strpos($url, '../') === false) {
             if (GeneralUtility::isFirstPartOfStr($url, $baseUrl)) {
                 if (!in_array($url, $urlLog)) {

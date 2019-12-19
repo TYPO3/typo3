@@ -178,7 +178,7 @@ class TableManualRepository
     protected function getTableFieldLabel($key, $field = '', $mergeToken = ': ')
     {
         // Get table / field parts
-        list($tableName, $fieldName) = $this->getTableFieldNames($key, $field);
+        [$tableName, $fieldName] = $this->getTableFieldNames($key, $field);
         // Create label
         return $this->getLanguageService()->sL($tableName) . ($field ? $mergeToken . rtrim(trim($this->getLanguageService()->sL($fieldName)), ':') : '');
     }

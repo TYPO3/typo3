@@ -3196,7 +3196,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // Set additional headers if any have been configured via TypoScript
         $additionalHeaders = $this->getAdditionalHeaders();
         foreach ($additionalHeaders as $headerConfig) {
-            list($header, $value) = GeneralUtility::trimExplode(':', $headerConfig['header'], false, 2);
+            [$header, $value] = GeneralUtility::trimExplode(':', $headerConfig['header'], false, 2);
             if ($headerConfig['statusCode']) {
                 $response = $response->withStatus((int)$headerConfig['statusCode']);
             }
@@ -3695,7 +3695,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     {
         $now = (int)$now;
         $result = PHP_INT_MAX;
-        list($tableName, $pid) = GeneralUtility::trimExplode(':', $tableDef);
+        [$tableName, $pid] = GeneralUtility::trimExplode(':', $tableDef);
         if (empty($tableName) || empty($pid)) {
             throw new \InvalidArgumentException('Unexpected value for parameter $tableDef. Expected <tablename>:<pid>, got \'' . htmlspecialchars($tableDef) . '\'.', 1307190365);
         }

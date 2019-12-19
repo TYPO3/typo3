@@ -445,7 +445,7 @@ class FileList
             $iOut = '';
             // Directories are added
             $this->eCounter = $this->firstElementNumber;
-            list(, $code) = $this->fwd_rwd_nav();
+            [, $code] = $this->fwd_rwd_nav();
             $iOut .= $code;
 
             $iOut .= $this->formatDirList($folders);
@@ -455,7 +455,7 @@ class FileList
             $this->eCounter = $this->firstElementNumber + $this->iLimit < $this->totalItems
                 ? $this->firstElementNumber + $this->iLimit
                 : -1;
-            list(, $code) = $this->fwd_rwd_nav();
+            [, $code] = $this->fwd_rwd_nav();
             $iOut .= $code;
 
             // Header line is drawn

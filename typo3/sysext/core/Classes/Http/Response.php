@@ -141,7 +141,7 @@ class Response extends Message implements ResponseInterface
         $this->statusCode = (int)$statusCode;
 
         $this->reasonPhrase = $reasonPhrase === '' ? $this->availableStatusCodes[$this->statusCode] : $reasonPhrase;
-        list($this->lowercasedHeaderNames, $headers) = $this->filterHeaders($headers);
+        [$this->lowercasedHeaderNames, $headers] = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;
     }

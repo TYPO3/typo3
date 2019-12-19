@@ -47,8 +47,8 @@ class ResourceUtility
                 $result = -1;
             } else {
                 // both elements are directories => we have to recursively sort here
-                list($pathPartA, $elementA) = explode('/', $elementA, 2);
-                list($pathPartB, $elementB) = explode('/', $elementB, 2);
+                [$pathPartA, $elementA] = explode('/', $elementA, 2);
+                [$pathPartB, $elementB] = explode('/', $elementB, 2);
 
                 if ($pathPartA === $pathPartB) {
                     // same directory => sort by subpaths

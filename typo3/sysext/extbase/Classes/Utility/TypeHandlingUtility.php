@@ -150,7 +150,7 @@ class TypeHandlingUtility
      */
     public static function isValidTypeForMultiValueComparison($value): bool
     {
-        return is_array($value) || $value instanceof \Traversable;
+        return is_iterable($value);
     }
 
     /**

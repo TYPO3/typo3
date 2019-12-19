@@ -103,7 +103,7 @@ class DataProviderCollection implements \TYPO3\CMS\Core\SingletonInterface
             $dataProviderIdentifier = 'default';
             $backendLayoutIdentifier = $combinedIdentifier;
         } else {
-            list($dataProviderIdentifier, $backendLayoutIdentifier) = explode('__', $combinedIdentifier, 2);
+            [$dataProviderIdentifier, $backendLayoutIdentifier] = explode('__', $combinedIdentifier, 2);
         }
 
         if (isset($this->dataProviders[$dataProviderIdentifier])) {

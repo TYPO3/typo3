@@ -55,7 +55,7 @@ class TemplateContentObject extends AbstractContentObject
         if (!$markerWrap) {
             $markerWrap = '### | ###';
         }
-        list($PRE, $POST) = explode('|', $markerWrap);
+        [$PRE, $POST] = explode('|', $markerWrap);
         $POST = trim($POST);
         $PRE = trim($PRE);
         // Getting the content

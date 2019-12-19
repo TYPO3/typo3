@@ -95,7 +95,7 @@ class FileIndexRepository implements SingletonInterface
      */
     public function findOneByCombinedIdentifier($combinedIdentifier)
     {
-        list($storageUid, $identifier) = GeneralUtility::trimExplode(':', $combinedIdentifier, false, 2);
+        [$storageUid, $identifier] = GeneralUtility::trimExplode(':', $combinedIdentifier, false, 2);
         return $this->findOneByStorageUidAndIdentifier($storageUid, $identifier);
     }
 

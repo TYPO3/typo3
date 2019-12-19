@@ -81,7 +81,7 @@ class Dispatcher implements DispatcherInterface
 
         // Check if the target is a concatenated string of "className::actionMethod"
         if (is_string($target) && strpos($target, '::') !== false) {
-            list($className, $methodName) = explode('::', $target, 2);
+            [$className, $methodName] = explode('::', $target, 2);
             $targetObject = $this->container->has($className) ? $this->container->get($className) : GeneralUtility::makeInstance($className);
             return [$targetObject, $methodName];
         }

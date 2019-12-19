@@ -624,7 +624,7 @@ class FrontendLoginController extends AbstractPlugin
         }
         $_params = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] ?? [] as $funcRef) {
-            list($onSub, $hid) = GeneralUtility::callUserFunction($funcRef, $_params, $this);
+            [$onSub, $hid] = GeneralUtility::callUserFunction($funcRef, $_params, $this);
             $onSubmitAr[] = $onSub;
             $extraHiddenAr[] = $hid;
         }

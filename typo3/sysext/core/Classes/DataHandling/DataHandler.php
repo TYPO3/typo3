@@ -1054,7 +1054,7 @@ class DataHandler implements LoggerAwareInterface
                 }
 
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-                list($tscPID) = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: $fieldArray['pid']);
+                [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: $fieldArray['pid']);
                 if ($status === 'new' && $table === 'pages') {
                     $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
                     if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
@@ -2160,11 +2160,7 @@ class DataHandler implements LoggerAwareInterface
                 );
 
                 $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-            } catch (InvalidParentRowException $e) {
-            } catch (InvalidParentRowLoopException $e) {
-            } catch (InvalidParentRowRootException $e) {
-            } catch (InvalidPointerFieldValueException $e) {
-            } catch (InvalidIdentifierException $e) {
+            } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException $e) {
             }
 
             // Get current value array:
@@ -2275,7 +2271,7 @@ class DataHandler implements LoggerAwareInterface
      */
     public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, array $additionalData = null)
     {
-        list($table, $id, , $status) = $PP;
+        [$table, $id, , $status] = $PP;
         $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData);
     }
 
@@ -2904,7 +2900,7 @@ class DataHandler implements LoggerAwareInterface
                         }
                     } else {
                         // Default
-                        list($CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID) = $pParams;
+                        [$CVtable, $CVid, $CVcurValue, $CVstatus, $CVrealPid, $CVrecFID, $CVtscPID] = $pParams;
 
                         $additionalData = [
                             'flexFormId' => $CVrecFID,
@@ -3778,7 +3774,7 @@ class DataHandler implements LoggerAwareInterface
     public function copyRecord_flexFormCallBack($pParams, $dsConf, $dataValue, $_1, $_2, $_3, $workspaceOptions)
     {
         // Extract parameters:
-        list($table, $uid, $field, $realDestPid) = $pParams;
+        [$table, $uid, $field, $realDestPid] = $pParams;
         // If references are set for this field, set flag so they can be corrected later (in ->remapListedDBRecords())
         if (($this->isReferenceField($dsConf) || $this->getInlineFieldType($dsConf) !== false) && (string)$dataValue !== '') {
             $dataValue = $this->copyRecord_procBasedOnFieldType($table, $uid, $field, $dataValue, [], $dsConf, $realDestPid, 0, $workspaceOptions);
@@ -4034,7 +4030,7 @@ class DataHandler implements LoggerAwareInterface
         if ($destPid >= 0) {
             if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
                 // Clear cache before moving
-                list($parentUid) = BackendUtility::getTSCpid($table, $uid, '');
+                [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
                 $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
                 // Setting PID
                 $updateFields['pid'] = $destPid;
@@ -4379,7 +4375,7 @@ class DataHandler implements LoggerAwareInterface
             // Check if we are just prefixing:
             if ($fCfg['l10n_mode'] === 'prefixLangTitle') {
                 if (($fCfg['config']['type'] === 'text' || $fCfg['config']['type'] === 'input') && (string)$row[$fN] !== '') {
-                    list($tscPID) = BackendUtility::getTSCpid($table, $uid, '');
+                    [$tscPID] = BackendUtility::getTSCpid($table, $uid, '');
                     $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
                     $tE = $this->getTableEntries($table, $TSConfig);
                     if (!empty($TSConfig['translateToMessage']) && !$tE['disablePrependAtCopy']) {
@@ -4724,7 +4720,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
-        list($parentUid) = BackendUtility::getTSCpid($table, $uid, '');
+        [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
         $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
         $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
         $databaseErrorMessage = '';
@@ -5332,7 +5328,7 @@ class DataHandler implements LoggerAwareInterface
     public function version_remapMMForVersionSwap_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
     {
         // Extract parameters:
-        list($table, $uid, $field) = $pParams;
+        [$table, $uid, $field] = $pParams;
         if ($this->isReferenceField($dsConf)) {
             $allowedTables = $dsConf['type'] === 'group' ? $dsConf['allowed'] : $dsConf['foreign_table'];
             $prependName = $dsConf['type'] === 'group' ? $dsConf['prepend_tname'] : '';
@@ -5474,7 +5470,7 @@ class DataHandler implements LoggerAwareInterface
     public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2)
     {
         // Extract parameters:
-        list($table, $uid, $field) = $pParams;
+        [$table, $uid, $field] = $pParams;
         // If references are set for this field, set flag so they can be corrected later:
         if ($this->isReferenceField($dsConf) && (string)$dataValue !== '') {
             $vArray = $this->remapListedDBRecords_procDBRefs($dsConf, $dataValue, $uid, $table);
@@ -5777,7 +5773,7 @@ class DataHandler implements LoggerAwareInterface
      */
     protected function updateFlexFormData($flexFormId, array $modifications)
     {
-        list($table, $uid, $field) = explode(':', $flexFormId, 3);
+        [$table, $uid, $field] = explode(':', $flexFormId, 3);
 
         if (!MathUtility::canBeInterpretedAsInteger($uid) && !empty($this->substNEWwithIDs[$uid])) {
             $uid = $this->substNEWwithIDs[$uid];
@@ -7371,7 +7367,7 @@ class DataHandler implements LoggerAwareInterface
         if (isset(self::$recordPidsForDeletedRecords[$table][$uid])) {
             return self::$recordPidsForDeletedRecords[$table][$uid];
         }
-        list($parentUid) = BackendUtility::getTSCpid($table, $uid, '');
+        [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
         return [$parentUid];
     }
 
@@ -7870,7 +7866,7 @@ class DataHandler implements LoggerAwareInterface
                 // For move commands we may get more then 1 parent.
                 $pageUids = $this->getOriginalParentOfRecord($table, $uid);
                 foreach ($pageUids as $originalParent) {
-                    list($tagsToClearFromPrepare, $clearCacheCommandsFromPrepare)
+                    [$tagsToClearFromPrepare, $clearCacheCommandsFromPrepare]
                         = $this->prepareCacheFlush($table, $uid, $originalParent);
                     $tagsToClear = array_merge($tagsToClear, $tagsToClearFromPrepare);
                     $clearCacheCommands = array_merge($clearCacheCommands, $clearCacheCommandsFromPrepare);

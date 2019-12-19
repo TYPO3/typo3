@@ -174,7 +174,7 @@ class ModuleLoader
         // Check if this is a submodule
         $mainModule = '';
         if (strpos($name, '_') !== false) {
-            list($mainModule, ) = explode('_', $name, 2);
+            [$mainModule, ] = explode('_', $name, 2);
         }
 
         // check if there is a navigation component (like the pagetree)

@@ -368,7 +368,7 @@ class CommandUtility
                 if (trim($val) === '') {
                     continue;
                 }
-                list($cmd, $cmdPath) = GeneralUtility::trimExplode('=', $val, true, 2);
+                [$cmd, $cmdPath] = GeneralUtility::trimExplode('=', $val, true, 2);
                 $cmdArr[$cmd]['app'] = PathUtility::basename($cmdPath);
                 $cmdArr[$cmd]['path'] = PathUtility::dirname($cmdPath) . '/';
                 $cmdArr[$cmd]['valid'] = true;

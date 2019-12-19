@@ -609,7 +609,7 @@ function jumpToUrl(URL) {
                 foreach ($skinStylesheetDirs as $stylesheetDir) {
                     // for EXT:myskin/stylesheets/ syntax
                     if (strpos($stylesheetDir, 'EXT:') === 0) {
-                        list($extKey, $path) = explode('/', substr($stylesheetDir, 4), 2);
+                        [$extKey, $path] = explode('/', substr($stylesheetDir, 4), 2);
                         if (!empty($extKey) && ExtensionManagementUtility::isLoaded($extKey) && !empty($path)) {
                             $stylesheetDirectories[] = ExtensionManagementUtility::extPath($extKey) . $path;
                         }

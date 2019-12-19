@@ -475,7 +475,7 @@ class FileContentParser
                     $pdfInfo = $this->splitPdfInfo($res);
                     unset($res);
                     if ((int)$pdfInfo['pages']) {
-                        list($low, $high) = explode('-', $cPKey);
+                        [$low, $high] = explode('-', $cPKey);
                         // Get pdf content:
                         $tempFileName = GeneralUtility::tempnam('Typo3_indexer');
                         // Create temporary name

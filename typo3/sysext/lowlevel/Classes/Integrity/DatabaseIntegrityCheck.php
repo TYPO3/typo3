@@ -586,7 +586,7 @@ class DatabaseIntegrityCheck
         $fileFields = $this->getDBFields($searchTable);
         $theRecordList = [];
         foreach ($fileFields as $info) {
-            list($table, $field) = $info;
+            [$table, $field] = $info;
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             $queryResult = $queryBuilder

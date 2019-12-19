@@ -168,7 +168,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
                     $server = substr($server, 6);
                 }
                 if (strpos($server, ':') !== false) {
-                    list($host, $port) = explode(':', $server, 2);
+                    [$host, $port] = explode(':', $server, 2);
                 } else {
                     $host = $server;
                     $port = $defaultPort;
@@ -284,7 +284,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
     {
         $value = $this->memcache->get($this->identifierPrefix . $entryIdentifier);
         if (is_string($value) && strpos($value, 'TYPO3*chunked:') === 0) {
-            list(, $chunkCount) = explode(':', $value);
+            [, $chunkCount] = explode(':', $value);
             $value = '';
             for ($chunkNumber = 1; $chunkNumber < $chunkCount; $chunkNumber++) {
                 $value .= $this->memcache->get($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber);

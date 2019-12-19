@@ -49,7 +49,7 @@ class QueryParser
      */
     protected function extractKeyFromQuery($query)
     {
-        list($this->commandKey) = explode(':', substr($query, 1));
+        [$this->commandKey] = explode(':', substr($query, 1));
     }
 
     /**

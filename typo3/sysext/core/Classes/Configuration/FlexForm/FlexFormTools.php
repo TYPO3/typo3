@@ -372,7 +372,7 @@ class FlexFormTools
                     1464116002
                 );
             }
-            list($foreignTableName, $foreignFieldName) = GeneralUtility::trimExplode(':', $fieldTca['config']['ds_tableField']);
+            [$foreignTableName, $foreignFieldName] = GeneralUtility::trimExplode(':', $fieldTca['config']['ds_tableField']);
             $dataStructureIdentifier = [
                 'type' => 'record',
                 'tableName' => $foreignTableName,
@@ -779,11 +779,7 @@ class FlexFormTools
         try {
             $dataStructureIdentifier = $this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row);
             $dataStructureArray = $this->parseDataStructureByIdentifier($dataStructureIdentifier);
-        } catch (InvalidParentRowException $e) {
-        } catch (InvalidParentRowLoopException $e) {
-        } catch (InvalidParentRowRootException $e) {
-        } catch (InvalidPointerFieldValueException $e) {
-        } catch (InvalidIdentifierException $e) {
+        } catch (InvalidParentRowException|InvalidParentRowLoopException|InvalidParentRowRootException|InvalidPointerFieldValueException|InvalidIdentifierException $e) {
         }
 
         // Get flexform XML data

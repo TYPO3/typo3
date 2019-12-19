@@ -79,12 +79,12 @@ class LegacyLinkNotationConverter
             $result['telephone'] = $linkParameter;
         } elseif (strpos($linkParameter, ':') !== false) {
             // Check for link-handler keyword
-            list($linkHandlerKeyword, $linkHandlerValue) = explode(':', $linkParameter, 2);
+            [$linkHandlerKeyword, $linkHandlerValue] = explode(':', $linkParameter, 2);
             $result['type'] = strtolower(trim($linkHandlerKeyword));
             $result['url'] = $linkParameter;
             $result['value'] = $linkHandlerValue;
             if ($result['type'] === LinkService::TYPE_RECORD) {
-                list($a['identifier'], $tableAndUid) = explode(':', $linkHandlerValue, 2);
+                [$a['identifier'], $tableAndUid] = explode(':', $linkHandlerValue, 2);
                 $tableAndUid = explode(':', $tableAndUid);
                 if (count($tableAndUid) > 1) {
                     $a['table'] = $tableAndUid[0];
@@ -112,7 +112,7 @@ class LegacyLinkNotationConverter
             $containsSlash = false;
             if (!$isIdOrAlias) {
                 // Detects if a file is found in site-root and if so it will be treated like a normal file.
-                list($rootFileDat) = explode('?', rawurldecode($linkParameter));
+                [$rootFileDat] = explode('?', rawurldecode($linkParameter));
                 $containsSlash = strpos($rootFileDat, '/') !== false;
                 $pathInfo = pathinfo($rootFileDat);
                 $fileExtension = strtolower($pathInfo['extension'] ?? '');
@@ -164,13 +164,13 @@ class LegacyLinkNotationConverter
     {
         $result = ['type' => LinkService::TYPE_PAGE];
         if (strpos($data, '#') !== false) {
-            list($data, $result['fragment']) = explode('#', $data, 2);
+            [$data, $result['fragment']] = explode('#', $data, 2);
         }
         // check for additional parameters
         if (strpos($data, '?') !== false) {
-            list($data, $result['parameters']) = explode('?', $data, 2);
+            [$data, $result['parameters']] = explode('?', $data, 2);
         } elseif (strpos($data, '&') !== false) {
-            list($data, $result['parameters']) = explode('&', $data, 2);
+            [$data, $result['parameters']] = explode('&', $data, 2);
         }
         if (empty($data)) {
             $result['pageuid'] = 'current';
@@ -179,7 +179,7 @@ class LegacyLinkNotationConverter
             $result['fragment'] = substr($data, 1);
         } elseif (strpos($data, ',') !== false) {
             $data = rtrim($data, ',');
-            list($result['pageuid'], $result['pagetype']) = explode(',', $data, 2);
+            [$result['pageuid'], $result['pagetype']] = explode(',', $data, 2);
         } elseif (strpos($data, '/') !== false) {
             $data = explode('/', trim($data, '/'));
             $result['pageuid'] = array_shift($data);

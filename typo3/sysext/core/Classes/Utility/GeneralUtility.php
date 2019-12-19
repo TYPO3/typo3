@@ -263,7 +263,7 @@ class GeneralUtility
             foreach ($values as $test) {
                 $testList = explode('/', $test);
                 if (count($testList) === 2) {
-                    list($test, $mask) = $testList;
+                    [$test, $mask] = $testList;
                 } else {
                     $mask = false;
                 }
@@ -311,7 +311,7 @@ class GeneralUtility
         foreach ($values as $test) {
             $testList = explode('/', $test);
             if (count($testList) === 2) {
-                list($test, $mask) = $testList;
+                [$test, $mask] = $testList;
             } else {
                 $mask = false;
             }
@@ -1151,7 +1151,7 @@ class GeneralUtility
         $p = explode('&', $string);
         foreach ($p as $v) {
             if ($v !== '') {
-                list($pK, $pV) = explode('=', $v, 2);
+                [$pK, $pV] = explode('=', $v, 2);
                 $output[rawurldecode($pK)] = rawurldecode($pV);
             }
         }
@@ -2684,7 +2684,7 @@ class GeneralUtility
                 // Typical application of REQUEST_URI is return urls, forms submitting to itself etc. Example: returnUrl='.rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))
                 if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar'])) {
                     // This is for URL rewriters that store the original URI in a server variable (eg ISAPI_Rewriter for IIS: HTTP_X_REWRITE_URL)
-                    list($v, $n) = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
+                    [$v, $n] = explode('|', $GLOBALS['TYPO3_CONF_VARS']['SYS']['requestURIvar']);
                     $retVal = $GLOBALS[$v][$n];
                 } elseif (empty($_SERVER['REQUEST_URI'])) {
                     // This is for ISS/CGI which does not have the REQUEST_URI available.
@@ -3009,7 +3009,7 @@ class GeneralUtility
         }
         // Extension
         if (strpos($filename, 'EXT:') === 0) {
-            list($extKey, $local) = explode('/', substr($filename, 4), 2);
+            [$extKey, $local] = explode('/', substr($filename, 4), 2);
             $filename = '';
             if ((string)$extKey !== '' && ExtensionManagementUtility::isLoaded($extKey) && (string)$local !== '') {
                 $filename = ExtensionManagementUtility::extPath($extKey) . $local;

@@ -369,15 +369,7 @@ class PackageManager implements SingletonInterface
             try {
                 $packagePath = PathUtility::sanitizeTrailingSeparator($this->packagesBasePath . $stateConfiguration['packagePath']);
                 $package = new Package($this, $packageKey, $packagePath);
-            } catch (Exception\InvalidPackagePathException $exception) {
-                $this->unregisterPackageByPackageKey($packageKey);
-                $packageStatesHasChanged = true;
-                continue;
-            } catch (Exception\InvalidPackageKeyException $exception) {
-                $this->unregisterPackageByPackageKey($packageKey);
-                $packageStatesHasChanged = true;
-                continue;
-            } catch (Exception\InvalidPackageManifestException $exception) {
+            } catch (Exception\InvalidPackagePathException|Exception\InvalidPackageKeyException|Exception\InvalidPackageManifestException $exception) {
                 $this->unregisterPackageByPackageKey($packageKey);
                 $packageStatesHasChanged = true;
                 continue;

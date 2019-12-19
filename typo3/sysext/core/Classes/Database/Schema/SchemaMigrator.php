@@ -197,7 +197,7 @@ class SchemaMigrator
             // Only handle insert statements and extract the table at the same time. Extracting
             // the table name is required to perform the inserts on the right connection.
             if (preg_match('/^INSERT\s+INTO\s+`?(\w+)`?(.*)/i', $statement, $matches)) {
-                list(, $tableName, $sqlFragment) = $matches;
+                [, $tableName, $sqlFragment] = $matches;
                 $insertStatements[$tableName][] = sprintf(
                     'INSERT INTO %s %s',
                     $connectionPool->getConnectionForTable($tableName)->quoteIdentifier($tableName),

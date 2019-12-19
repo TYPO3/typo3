@@ -227,7 +227,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
             $fileToDelete = GeneralUtility::getFileAbsFileName($persistenceIdentifier);
             unlink($fileToDelete);
         } else {
-            list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
+            [$storageUid, $fileIdentifier] = explode(':', $persistenceIdentifier, 2);
             $storage = $this->getStorageByUid((int)$storageUid);
             $file = $storage->getFile($fileIdentifier);
             if (!$storage->checkFileActionPermission('delete', $file)) {
@@ -253,7 +253,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     $exists = file_exists(GeneralUtility::getFileAbsFileName($persistenceIdentifier));
                 }
             } else {
-                list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
+                [$storageUid, $fileIdentifier] = explode(':', $persistenceIdentifier, 2);
                 $storage = $this->getStorageByUid((int)$storageUid);
                 $exists = $storage->hasFile($fileIdentifier);
             }
@@ -605,7 +605,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
      */
     protected function getOrCreateFile(string $persistenceIdentifier): File
     {
-        list($storageUid, $fileIdentifier) = explode(':', $persistenceIdentifier, 2);
+        [$storageUid, $fileIdentifier] = explode(':', $persistenceIdentifier, 2);
         $storage = $this->getStorageByUid((int)$storageUid);
         $pathinfo = PathUtility::pathinfo($fileIdentifier);
 

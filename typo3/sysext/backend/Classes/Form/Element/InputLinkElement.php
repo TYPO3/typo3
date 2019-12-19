@@ -329,13 +329,7 @@ class InputLinkElement extends AbstractFormElement
 
         try {
             $linkData = $linkService->resolve($linkParts['url']);
-        } catch (FileDoesNotExistException $e) {
-            return $data;
-        } catch (FolderDoesNotExistException $e) {
-            return $data;
-        } catch (UnknownLinkHandlerException $e) {
-            return $data;
-        } catch (InvalidPathException $e) {
+        } catch (FileDoesNotExistException|FolderDoesNotExistException|UnknownLinkHandlerException|InvalidPathException $e) {
             return $data;
         }
 

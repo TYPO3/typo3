@@ -484,7 +484,7 @@ class ShortcutRepository
         while ($row = $result->fetch()) {
             $shortcut = ['raw' => $row];
 
-            list($row['module_name'], $row['M_module_name']) = explode('|', $row['module_name']);
+            [$row['module_name'], $row['M_module_name']] = explode('|', $row['module_name']);
 
             $queryParts = parse_url($row['url']);
             // Explode GET vars recursively
@@ -662,7 +662,7 @@ class ShortcutRepository
                 $moduleName = $row['module_name'];
 
                 if (strpos($moduleName, '_') !== false) {
-                    list($mainModule, $subModule) = explode('_', $moduleName, 2);
+                    [$mainModule, $subModule] = explode('_', $moduleName, 2);
                     $iconIdentifier = $this->moduleLoader->modules[$mainModule]['sub'][$subModule]['iconIdentifier'];
                 } elseif (!empty($moduleName)) {
                     $iconIdentifier = $this->moduleLoader->modules[$moduleName]['iconIdentifier'];
@@ -693,7 +693,7 @@ class ShortcutRepository
         if (strpos($moduleName, 'xMOD_') === 0) {
             $title = substr($moduleName, 5);
         } else {
-            list($mainModule, $subModule) = explode('_', $moduleName);
+            [$mainModule, $subModule] = explode('_', $moduleName);
             $mainModuleLabels = $this->moduleLoader->getLabelsForModule($mainModule);
             $title = $languageService->sL($mainModuleLabels['title']);
 

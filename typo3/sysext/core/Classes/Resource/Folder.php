@@ -223,7 +223,7 @@ class Folder implements FolderInterface
             $useFilters = false;
             $backedUpFilters = [];
         } else {
-            list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
+            [$backedUpFilters, $useFilters] = $this->prepareFiltersInStorage($filterMode);
         }
 
         $fileObjects = $this->storage->getFilesInFolder($this, $start, $numberOfItems, $useFilters, $recursive, $sort, $sortRev);
@@ -243,7 +243,7 @@ class Folder implements FolderInterface
      */
     public function searchFiles(FileSearchDemand $searchDemand, int $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS): FileSearchResultInterface
     {
-        list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
+        [$backedUpFilters, $useFilters] = $this->prepareFiltersInStorage($filterMode);
         $searchResult = $this->storage->searchFiles($searchDemand, $this, $useFilters);
         $this->restoreBackedUpFiltersInStorage($backedUpFilters);
 
@@ -290,7 +290,7 @@ class Folder implements FolderInterface
      */
     public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false)
     {
-        list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
+        [$backedUpFilters, $useFilters] = $this->prepareFiltersInStorage($filterMode);
         $folderObjects = $this->storage->getFoldersInFolder($this, $start, $numberOfItems, $useFilters, $recursive);
         $this->restoreBackedUpFiltersInStorage($backedUpFilters);
         return $folderObjects;

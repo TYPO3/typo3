@@ -883,7 +883,7 @@ abstract class AbstractTreeView
                 );
 
         foreach (QueryHelper::parseOrderBy($this->orderByFields) as $orderPair) {
-            list($fieldName, $order) = $orderPair;
+            [$fieldName, $order] = $orderPair;
             $queryBuilder->addOrderBy($fieldName, $order);
         }
 

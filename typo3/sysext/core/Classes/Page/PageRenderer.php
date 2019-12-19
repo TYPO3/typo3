@@ -1653,7 +1653,7 @@ class PageRenderer implements SingletonInterface
     public function render($part = self::PART_COMPLETE)
     {
         $this->prepareRendering();
-        list($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
+        [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss();
         $metaTags = implode(LF, array_merge($this->metaTags, $this->renderMetaTagsFromAPI()));
         $markerArray = $this->getPreparedMarkerArray($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs, $metaTags);
         $template = $this->getTemplateForPart($part);
@@ -1713,7 +1713,7 @@ class PageRenderer implements SingletonInterface
     public function renderJavaScriptAndCssForProcessingOfUncachedContentObjects($cachedPageContent, $substituteHash)
     {
         $this->prepareRendering();
-        list($jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs) = $this->renderJavaScriptAndCss();
+        [$jsLibs, $jsFiles, $jsFooterFiles, $cssLibs, $cssFiles, $jsInline, $cssInline, $jsFooterInline, $jsFooterLibs] = $this->renderJavaScriptAndCss();
         $title = $this->title ? str_replace('|', htmlspecialchars($this->title), $this->titleTag) : '';
         $markerArray = [
             '<!-- ###TITLE' . $substituteHash . '### -->' => $title,
@@ -1775,9 +1775,9 @@ class PageRenderer implements SingletonInterface
         $cssLibs = $this->renderCssLibraries();
         $cssFiles = $this->renderCssFiles();
         $cssInline = $this->renderCssInline();
-        list($jsLibs, $jsFooterLibs) = $this->renderAdditionalJavaScriptLibraries();
-        list($jsFiles, $jsFooterFiles) = $this->renderJavaScriptFiles();
-        list($jsInline, $jsFooterInline) = $this->renderInlineJavaScript();
+        [$jsLibs, $jsFooterLibs] = $this->renderAdditionalJavaScriptLibraries();
+        [$jsFiles, $jsFooterFiles] = $this->renderJavaScriptFiles();
+        [$jsInline, $jsFooterInline] = $this->renderInlineJavaScript();
         $jsLibs = $mainJsLibs . $jsLibs;
         if ($this->moveJsFromHeaderToFooter) {
             $jsFooterLibs = $jsLibs . LF . $jsFooterLibs;

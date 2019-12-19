@@ -127,9 +127,9 @@ class NormalizeCommand
             $fieldArray = [];
             foreach ($listOfCommaValues as $listElement) {
                 if (strpos($listElement, '/') !== false) {
-                    list($left, $right) = explode('/', $listElement);
+                    [$left, $right] = explode('/', $listElement);
                     if (strpos($left, '-') !== false) {
-                        list($leftBound, $rightBound) = explode('-', $left);
+                        [$leftBound, $rightBound] = explode('-', $left);
                         $leftBound = self::normalizeMonthAndWeekday($leftBound, $isMonthField);
                         $rightBound = self::normalizeMonthAndWeekday($rightBound, $isMonthField);
                         $left = $leftBound . '-' . $rightBound;
@@ -140,7 +140,7 @@ class NormalizeCommand
                     }
                     $fieldArray[] = $left . '/' . $right;
                 } elseif (strpos($listElement, '-') !== false) {
-                    list($left, $right) = explode('-', $listElement);
+                    [$left, $right] = explode('-', $listElement);
                     $left = self::normalizeMonthAndWeekday($left, $isMonthField);
                     $right = self::normalizeMonthAndWeekday($right, $isMonthField);
                     $fieldArray[] = $left . '-' . $right;
@@ -171,7 +171,7 @@ class NormalizeCommand
             $fieldArray = [];
             foreach ($listOfCommaValues as $listElement) {
                 if (strpos($listElement, '/') !== false) {
-                    list($left, $right) = explode('/', $listElement);
+                    [$left, $right] = explode('/', $listElement);
                     if ((string)$left === '*') {
                         $leftList = self::convertRangeToListOfValues($lowerBound . '-' . $upperBound);
                     } else {

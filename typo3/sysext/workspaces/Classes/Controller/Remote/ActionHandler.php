@@ -756,7 +756,7 @@ class ActionHandler
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list($currentStage, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
+        [$currentStage, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
@@ -790,7 +790,7 @@ class ActionHandler
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list($currentStage, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
+        [$currentStage, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
         // get only the relevant items for processing
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace(
             $this->stageService->getWorkspaceId(),
@@ -826,8 +826,8 @@ class ActionHandler
             $recursionLevel = 0,
             $selectionType = 'tables_modify'
         );
-        list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
-        list(, $previousStage) = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
+        [, $nextStage] = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
+        [, $previousStage] = $this->stageService->getPreviousStageForElementCollection($workspaceItemsArray);
 
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $extensionPath = ExtensionManagementUtility::extPath('workspaces');

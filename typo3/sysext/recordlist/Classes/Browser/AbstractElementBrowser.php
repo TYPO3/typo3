@@ -144,7 +144,7 @@ abstract class AbstractElementBrowser
      */
     protected function getBParamDataAttributes()
     {
-        list($fieldRef, $rteParams, $rteConfig, , $irreObjectId) = explode('|', $this->bparams);
+        [$fieldRef, $rteParams, $rteConfig, , $irreObjectId] = explode('|', $this->bparams);
 
         return [
             'data-this-script-url' => strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&',

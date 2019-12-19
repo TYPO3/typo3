@@ -84,9 +84,9 @@ class ImageMagick6Preset extends AbstractImagePreset
                 $firstResultLine = array_shift($executingResult);
                 // Example: "Version: ImageMagick 6.6.0-4 2012-05-02 Q16 http://www.imagemagick.org"
                 if (strpos($firstResultLine, 'ImageMagick') !== false) {
-                    list(, $version) = explode('ImageMagick', $firstResultLine);
+                    [, $version] = explode('ImageMagick', $firstResultLine);
                     // Example: "6.6.0-4"
-                    list($version) = explode(' ', trim($version));
+                    [$version] = explode(' ', trim($version));
                     if (version_compare($version, '6.0.0') >= 0) {
                         $this->foundPath = $path;
                         $result = true;

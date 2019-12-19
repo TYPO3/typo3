@@ -459,7 +459,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
             return $this->getFileObject($input);
         }
         if (strpos($input, ':') > 0) {
-            list($prefix) = explode(':', $input);
+            [$prefix] = explode(':', $input);
             if (MathUtility::canBeInterpretedAsInteger($prefix)) {
                 // path or folder in a valid storageUID
                 return $this->getObjectFromCombinedIdentifier($input);
@@ -538,7 +538,7 @@ class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\Singl
      */
     public function getObjectFromCombinedIdentifier($identifier)
     {
-        list($storageId, $objectIdentifier) = GeneralUtility::trimExplode(':', $identifier);
+        [$storageId, $objectIdentifier] = GeneralUtility::trimExplode(':', $identifier);
         $storage = $this->getStorageObject($storageId);
         if ($storage->hasFile($objectIdentifier)) {
             return $storage->getFile($objectIdentifier);

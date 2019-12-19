@@ -53,9 +53,7 @@ class FileLinktype extends AbstractLinktype
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         try {
             $file = $resourceFactory->retrieveFileOrFolderObject($url);
-        } catch (FileDoesNotExistException $e) {
-            return false;
-        } catch (FolderDoesNotExistException $e) {
+        } catch (FileDoesNotExistException|FolderDoesNotExistException $e) {
             return false;
         }
 

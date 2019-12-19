@@ -91,7 +91,7 @@ class OpenDocumentService
      */
     protected function storeOpenDocuments(array $openDocuments): void
     {
-        list(, $lastOpenDocumentIdentifier) = $this->backendUser->getModuleData('FormEngine', 'ses');
+        [, $lastOpenDocumentIdentifier] = $this->backendUser->getModuleData('FormEngine', 'ses');
         $this->backendUser->pushModuleData('FormEngine', [$openDocuments, $lastOpenDocumentIdentifier]);
     }
 

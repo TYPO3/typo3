@@ -730,7 +730,7 @@ class PageLayoutView implements LoggerAwareInterface
             // Items
             $this->eCounter = $this->firstElementNumber;
             // Creating elements:
-            list($flag, $code) = $this->fwd_rwd_nav();
+            [$flag, $code] = $this->fwd_rwd_nav();
             $out .= $code;
             $editUids = [];
             if ($flag) {
@@ -1500,7 +1500,7 @@ class PageLayoutView implements LoggerAwareInterface
         while ($row = $result->fetch()) {
             BackendUtility::workspaceOL($table, $row);
             if (is_array($row)) {
-                list($flag, $code) = $this->fwd_rwd_nav();
+                [$flag, $code] = $this->fwd_rwd_nav();
                 $out .= $code;
                 if ($flag) {
                     $Nrow = [];

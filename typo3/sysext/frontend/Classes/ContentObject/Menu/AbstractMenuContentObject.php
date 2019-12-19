@@ -867,7 +867,7 @@ abstract class AbstractMenuContentObject
     {
         $tsfe = $this->getTypoScriptFrontendController();
         $menuItems = [];
-        list($specialValue) = GeneralUtility::intExplode(',', $specialValue);
+        [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
             $specialValue = $tsfe->page['uid'];
         }
@@ -918,7 +918,7 @@ abstract class AbstractMenuContentObject
         // Which field is for keywords
         $kfield = 'keywords';
         if ($this->conf['special.']['keywordsField']) {
-            list($kfield) = explode(' ', trim($this->conf['special.']['keywordsField']));
+            [$kfield] = explode(' ', trim($this->conf['special.']['keywordsField']));
         }
         // If there are keywords and the startuid is present
         if ($kw && $startUid) {
@@ -1057,7 +1057,7 @@ abstract class AbstractMenuContentObject
     protected function prepareMenuItemsForBrowseMenu($specialValue, $sortingField, $additionalWhere)
     {
         $menuItems = [];
-        list($specialValue) = GeneralUtility::intExplode(',', $specialValue);
+        [$specialValue] = GeneralUtility::intExplode(',', $specialValue);
         if (!$specialValue) {
             $specialValue = $this->getTypoScriptFrontendController()->page['uid'];
         }

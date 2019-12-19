@@ -310,7 +310,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected function runHtmlParserIfConfigured($content, $configurationDirective)
     {
         if (!empty($this->procOptions[$configurationDirective])) {
-            list($keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration) = $this->HTMLparserConfig($this->procOptions[$configurationDirective . '.']);
+            [$keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration] = $this->HTMLparserConfig($this->procOptions[$configurationDirective . '.']);
             $content = $this->HTMLcleaner($content, $keepTags, $keepNonMatchedTags, $hscMode, $additionalConfiguration);
         }
         return $content;
@@ -337,7 +337,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $blockSplit = $this->splitIntoBlock('A', $value);
         foreach ($blockSplit as $k => $v) {
             if ($k % 2) {
-                list($tagAttributes) = $this->get_tag_attributes($this->getFirstTag($v), true);
+                [$tagAttributes] = $this->get_tag_attributes($this->getFirstTag($v), true);
 
                 // Anchors would not have an href attribute
                 if (!isset($tagAttributes['href'])) {
@@ -540,7 +540,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 case 'rte':
                     // Transforming keepTags array so it can be understood by the HTMLcleaner function.
                     // This basically converts the format of the array from TypoScript (having dots) to plain multi-dimensional array.
-                    list($keepTags) = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'] ?? [], $keepTags);
+                    [$keepTags] = $this->HTMLparserConfig($this->procOptions['HTMLparser_rte.'] ?? [], $keepTags);
                     break;
                 case 'db':
                     // Setting up span tags if they are allowed:
@@ -567,7 +567,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                         $TSc['noAttrib'] = 'b,i,u,br,center,hr,sub,sup,strong,em,li,ul,ol,blockquote,strike';
                     }
                     // Transforming the array from TypoScript to regular array:
-                    list($keepTags) = $this->HTMLparserConfig($TSc, $keepTags);
+                    [$keepTags] = $this->HTMLparserConfig($TSc, $keepTags);
                     break;
             }
             // Caching (internally, in object memory) the result
@@ -695,7 +695,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $fTag = $this->getFirstTag($fullContentWithTag);
         // Check which attributes of the <p> tag to keep attributes
         if (!empty($this->allowedAttributesForParagraphTags)) {
-            list($tagAttributes) = $this->get_tag_attributes($fTag);
+            [$tagAttributes] = $this->get_tag_attributes($fTag);
             // Make sure the tag attributes only contain the ones that are defined to be allowed
             $tagAttributes = array_intersect_key($tagAttributes, array_flip($this->allowedAttributesForParagraphTags));
 
@@ -813,7 +813,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             if ($position % 2 === 0) {
                 continue;
             }
-            list($attributes) = $this->get_tag_attributes($this->getFirstTag($value), true);
+            [$attributes] = $this->get_tag_attributes($this->getFirstTag($value), true);
             if (empty($attributes['href'])) {
                 continue;
             }
@@ -848,7 +848,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
             if ($position % 2 === 0) {
                 continue;
             }
-            list($attributes) = $this->get_tag_attributes($this->getFirstTag($value), true);
+            [$attributes] = $this->get_tag_attributes($this->getFirstTag($value), true);
             if (empty($attributes['href'])) {
                 continue;
             }

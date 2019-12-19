@@ -108,7 +108,7 @@ class Request extends Message implements RequestInterface
         $this->method = $method;
         $this->uri    = $uri;
         $this->body   = $body;
-        list($this->lowercasedHeaderNames, $headers) = $this->filterHeaders($headers);
+        [$this->lowercasedHeaderNames, $headers] = $this->filterHeaders($headers);
         $this->assertHeaders($headers);
         $this->headers = $headers;
     }

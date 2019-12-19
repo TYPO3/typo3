@@ -1663,7 +1663,7 @@ class ResourceStorage implements ResourceStorageInterface
             foreach ($allStorages as $storage) {
                 // To circumvent the permission check of the folder, we use the factory to create it "manually" instead of directly using $storage->getProcessingFolder()
                 // See #66695 for details
-                list($storageUid, $processingFolderIdentifier) = array_pad(GeneralUtility::trimExplode(':', $storage->getStorageRecord()['processingfolder']), 2, null);
+                [$storageUid, $processingFolderIdentifier] = array_pad(GeneralUtility::trimExplode(':', $storage->getStorageRecord()['processingfolder']), 2, null);
                 if (empty($processingFolderIdentifier) || (int)$storageUid !== $this->getUid()) {
                     continue;
                 }
@@ -2724,7 +2724,7 @@ class ResourceStorage implements ResourceStorageInterface
             }
             try {
                 if (strpos($processingFolder, ':') !== false) {
-                    list($storageUid, $processingFolderIdentifier) = explode(':', $processingFolder, 2);
+                    [$storageUid, $processingFolderIdentifier] = explode(':', $processingFolder, 2);
                     $storage = $this->getResourceFactoryInstance()->getStorageObject($storageUid);
                     if ($storage->hasFolder($processingFolderIdentifier)) {
                         $this->processingFolder = $storage->getFolder($processingFolderIdentifier);
@@ -2762,14 +2762,7 @@ class ResourceStorage implements ResourceStorageInterface
                         $this->processingFolder = $this->getResourceFactoryInstance()->createFolderObject($this, $data['identifier'], $data['name']);
                     }
                 }
-            } catch (Exception\InsufficientFolderWritePermissionsException $e) {
-                $this->processingFolder = GeneralUtility::makeInstance(
-                    InaccessibleFolder::class,
-                    $this,
-                    $processingFolder,
-                    $processingFolder
-                );
-            } catch (Exception\ResourcePermissionsUnavailableException $e) {
+            } catch (Exception\InsufficientFolderWritePermissionsException|Exception\ResourcePermissionsUnavailableException $e) {
                 $this->processingFolder = GeneralUtility::makeInstance(
                     InaccessibleFolder::class,
                     $this,

@@ -788,7 +788,7 @@ class TemplateService
             // Traversing list
             foreach ($include_static_fileArr as $ISF_file) {
                 if (strpos($ISF_file, 'EXT:') === 0) {
-                    list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
+                    [$ISF_extKey, $ISF_localPath] = explode('/', substr($ISF_file, 4), 2);
                     if ((string)$ISF_extKey !== '' && ExtensionManagementUtility::isLoaded($ISF_extKey) && (string)$ISF_localPath !== '') {
                         $ISF_localPath = rtrim($ISF_localPath, '/') . '/';
                         $ISF_filePath = ExtensionManagementUtility::extPath($ISF_extKey) . $ISF_localPath;

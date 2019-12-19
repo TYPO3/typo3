@@ -1081,9 +1081,9 @@ class AbstractPlugin
             $queryBuilder->getRestrictions()->removeAll();
 
             // Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
-            list($tableListFragment, $whereFragment) = preg_split('/WHERE/i', trim($query), 2);
+            [$tableListFragment, $whereFragment] = preg_split('/WHERE/i', trim($query), 2);
             foreach (QueryHelper::parseTableList($tableListFragment) as $tableNameAndAlias) {
-                list($tableName, $tableAlias) = $tableNameAndAlias;
+                [$tableName, $tableAlias] = $tableNameAndAlias;
                 $queryBuilder->from($tableName, $tableAlias);
             }
             $queryBuilder->where(QueryHelper::stripLogicalOperatorPrefix($whereFragment));
@@ -1118,7 +1118,7 @@ class AbstractPlugin
                 }
             } elseif ($orderBy) {
                 foreach (QueryHelper::parseOrderBy($orderBy) as $fieldNameAndSorting) {
-                    list($fieldName, $sorting) = $fieldNameAndSorting;
+                    [$fieldName, $sorting] = $fieldNameAndSorting;
                     $queryBuilder->addOrderBy($fieldName, $sorting);
                 }
             }
@@ -1223,7 +1223,7 @@ class AbstractPlugin
 
         if (!empty($orderBy)) {
             foreach (QueryHelper::parseOrderBy($orderBy) as $fieldNameAndSorting) {
-                list($fieldName, $sorting) = $fieldNameAndSorting;
+                [$fieldName, $sorting] = $fieldNameAndSorting;
                 $queryBuilder->addOrderBy($fieldName, $sorting);
             }
         }

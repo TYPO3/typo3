@@ -15,9 +15,14 @@ parameters:
   exclude_rectors:
     - Rector\Php55\Rector\String_\StringClassNameToClassConstantRector
     - Rector\Php70\Rector\List_\ListSwapArrayOrderRector
+    - Rector\Php71\Rector\Assign\AssignArrayToStringRector # this rector does not detect class properties right and changes them
+    - Rector\Php71\Rector\BinaryOp\BinaryOpBetweenNumberAndStringRector # this rector is currently broken, bug report: https://github.com/rectorphp/rector/issues/2454
+    - Rector\Php71\Rector\FuncCall\CountOnNullRector # can be enabled again if min php version is and actives sets include php73 as that version introduced "is_countable"
+    - Rector\Php71\Rector\FuncCall\RemoveExtraParametersRector # this breaks tests (prophecies)
   sets:
     - 'php53'
     - 'php54'
     - 'php55'
     - 'php56'
     - 'php70'
+    - 'php71'

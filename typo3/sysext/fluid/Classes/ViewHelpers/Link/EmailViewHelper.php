@@ -80,7 +80,7 @@ class EmailViewHelper extends AbstractTagBasedViewHelper
         $email = $this->arguments['email'];
 
         if ($this->isFrontendAvailable()) {
-            list($linkHref, $linkText) = $GLOBALS['TSFE']->cObj->getMailTo($email, '');
+            [$linkHref, $linkText] = $GLOBALS['TSFE']->cObj->getMailTo($email, '');
             $escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
         } else {
             $linkHref = 'mailto:' . $email;

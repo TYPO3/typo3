@@ -72,7 +72,7 @@ class Lexer
         $words = [];
         $this->debugString = '';
         while (1) {
-            list($start, $len) = $this->get_word($wordString, $pos);
+            [$start, $len] = $this->get_word($wordString, $pos);
             if ($len) {
                 $this->addWords($words, $wordString, $start, $len);
                 if ($this->debug) {
@@ -111,7 +111,7 @@ class Lexer
         // Get next chars unicode number and find type:
         $bc = 0;
         $cp = $this->utf8_ord($theWord, $bc);
-        list($cType) = $this->charType($cp);
+        [$cType] = $this->charType($cp);
         // If string is a CJK sequence we follow this algorithm:
         /*
         DESCRIPTION OF (CJK) ALGORITHMContinuous letters and numbers make up words. Spaces and symbols
@@ -233,7 +233,7 @@ class Lexer
             $pos += $bc;
             // Determine the type:
             $cType_prev = $cType;
-            list($cType) = $this->charType($cp);
+            [$cType] = $this->charType($cp);
             if ($cType) {
                 continue;
             }

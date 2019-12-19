@@ -122,7 +122,7 @@ class TableController extends AbstractWizardController
 
         $normalizedParams = $request->getAttribute('normalizedParams');
         $requestUri = $normalizedParams->getRequestUri();
-        list($rUri) = explode('#', $requestUri);
+        [$rUri] = explode('#', $requestUri);
         $content = '<form action="' . htmlspecialchars($rUri) . '" method="post" id="TableController" name="wizardForm">';
         if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
             $tableWizard = $this->renderTableWizard($request);

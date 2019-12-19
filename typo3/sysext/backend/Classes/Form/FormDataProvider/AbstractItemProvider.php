@@ -1001,7 +1001,7 @@ abstract class AbstractItemProvider
 
         if (!empty($foreignTableClauseArray['ORDERBY'])) {
             foreach ($foreignTableClauseArray['ORDERBY'] as $orderPair) {
-                list($fieldName, $order) = $orderPair;
+                [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
         }

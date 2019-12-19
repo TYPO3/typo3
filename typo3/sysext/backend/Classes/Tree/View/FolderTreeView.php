@@ -474,7 +474,7 @@ class FolderTreeView extends AbstractTreeView
         $out = '<ul class="list-tree list-tree-root">';
         // Evaluate AJAX request
         if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-            list(, $expandCollapseCommand, $expandedFolderHash, ) = $this->evaluateExpandCollapseParameter();
+            [, $expandCollapseCommand, $expandedFolderHash, ] = $this->evaluateExpandCollapseParameter();
             if ($expandCollapseCommand == 1) {
                 $doExpand = true;
             } else {
@@ -594,7 +594,7 @@ class FolderTreeView extends AbstractTreeView
         // (If a plus/minus icon has been clicked,
         // the PM GET var is sent and we must update the stored positions in the tree):
         // 0: mount key, 1: set/clear boolean, 2: item ID (cannot contain "_"), 3: treeName
-        list($storageHashNumber, $doExpand, $numericFolderHash, $treeName) = $this->evaluateExpandCollapseParameter();
+        [$storageHashNumber, $doExpand, $numericFolderHash, $treeName] = $this->evaluateExpandCollapseParameter();
         if ($treeName && $treeName == $this->treeName) {
             if (in_array($storageHashNumber, $this->storageHashNumbers)) {
                 if ($doExpand == 1) {
@@ -665,9 +665,9 @@ class FolderTreeView extends AbstractTreeView
             }
         }
         // Take the first three parameters
-        list($mountKey, $doExpand, $folderIdentifier) = array_pad(explode('_', $PM, 3), 3, null);
+        [$mountKey, $doExpand, $folderIdentifier] = array_pad(explode('_', $PM, 3), 3, null);
         // In case the folder identifier contains "_", we just need to get the fourth/last parameter
-        list($folderIdentifier, $treeName) = array_pad(GeneralUtility::revExplode('_', $folderIdentifier, 2), 2, null);
+        [$folderIdentifier, $treeName] = array_pad(GeneralUtility::revExplode('_', $folderIdentifier, 2), 2, null);
         return [
             $mountKey,
             $doExpand,

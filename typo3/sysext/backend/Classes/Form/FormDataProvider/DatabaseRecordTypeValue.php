@@ -70,7 +70,7 @@ class DatabaseRecordTypeValue implements FormDataProviderInterface
                 // a foreign table. localField then point to a group or select field in the own table,
                 // this points to a record in a foreign table and the value of foreignField is then
                 // used as type field. This was introduced for some FAL scenarios.
-                list($pointerField, $foreignTableTypeField) = explode(':', $tcaTypeField);
+                [$pointerField, $foreignTableTypeField] = explode(':', $tcaTypeField);
 
                 $relationType = $result['processedTca']['columns'][$pointerField]['config']['type'];
                 if ($relationType !== 'select' && $relationType !== 'group') {

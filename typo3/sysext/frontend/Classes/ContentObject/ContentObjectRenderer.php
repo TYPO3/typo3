@@ -499,7 +499,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $this->typoScriptFrontendController = $GLOBALS['TSFE'];
         }
         if ($this->currentFile !== null && is_string($this->currentFile)) {
-            list($objectType, $identifier) = explode(':', $this->currentFile, 2);
+            [$objectType, $identifier] = explode(':', $this->currentFile, 2);
             try {
                 if ($objectType === 'File') {
                     $this->currentFile = ResourceFactory::getInstance()->retrieveFileOrFolderObject($identifier);
@@ -707,7 +707,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
                 // $name and $conf is loaded with the referenced values.
                 $confOverride = is_array($conf) ? $conf : [];
-                list($name, $conf) = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
+                [$name, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
                 $conf = array_replace_recursive(is_array($conf) ? $conf : [], $confOverride);
                 // Getting the cObject
                 $timeTracker->incStackPointer();
@@ -4029,7 +4029,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $tagName = '';
             if (isset($l[0]) && $l[0] === '<' && substr($l, -1) === '>') {
                 $fwParts = explode('>', substr($l, 1), 2);
-                list($tagName) = explode(' ', $fwParts[0], 2);
+                [$tagName] = explode(' ', $fwParts[0], 2);
                 if (!$fwParts[1]) {
                     if (substr($tagName, -1) === '/') {
                         $tagName = substr($tagName, 0, -1);
@@ -4212,7 +4212,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $parts[0] = substr($textpieces[$i], 0, $len);
                 $parts[1] = substr($textpieces[$i], $len);
                 $linktxt = preg_replace('/\\?.*/', '', $parts[0]);
-                list($mailToUrl, $linktxt) = $this->getMailTo($parts[0], $linktxt);
+                [$mailToUrl, $linktxt] = $this->getMailTo($parts[0], $linktxt);
                 $mailToUrl = $tsfe->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
                 $res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
                 $wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
@@ -4676,7 +4676,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         break;
                     case 'context':
                         $context = GeneralUtility::makeInstance(Context::class);
-                        list($aspectName, $propertyName) = GeneralUtility::trimExplode(':', $key, true, 2);
+                        [$aspectName, $propertyName] = GeneralUtility::trimExplode(':', $key, true, 2);
                         $retVal = $context->getPropertyFromAspect($aspectName, $propertyName, '');
                         if (is_array($retVal)) {
                             $retVal = implode(',', $retVal);
@@ -4731,7 +4731,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getFileDataKey($key)
     {
-        list($fileUidOrCurrentKeyword, $requestedFileInformationKey) = explode(':', $key, 3);
+        [$fileUidOrCurrentKeyword, $requestedFileInformationKey] = explode(':', $key, 3);
         try {
             if ($fileUidOrCurrentKeyword === 'current') {
                 $fileObject = $this->getCurrentFile();
@@ -5005,7 +5005,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 $tsfe
             );
             try {
-                list($this->lastTypoLinkUrl, $linkText, $target) = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
+                [$this->lastTypoLinkUrl, $linkText, $target] = $linkBuilder->build($linkDetails, $linkText, $target, $conf);
                 $this->lastTypoLinkTarget = htmlspecialchars($target);
                 $this->lastTypoLinkLD['target'] = htmlspecialchars($target);
                 $this->lastTypoLinkLD['totalUrl'] = $this->lastTypoLinkUrl;
@@ -5060,7 +5060,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $JSwindow_tempParamsArr = GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), true);
             $JSwindow_paramsArr = [];
             foreach ($JSwindow_tempParamsArr as $JSv) {
-                list($JSp, $JSv) = explode('=', $JSv, 2);
+                [$JSp, $JSv] = explode('=', $JSv, 2);
                 $JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
             }
             // Add width/height:
@@ -5798,7 +5798,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $cF = GeneralUtility::makeInstance(TypoScriptParser::class);
             // $name and $conf is loaded with the referenced values.
             $old_conf = $confArr[$prop . '.'];
-            list(, $conf) = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
+            [, $conf] = $cF->getVal($key, $this->getTypoScriptFrontendController()->tmpl->setup);
             if (is_array($old_conf) && !empty($old_conf)) {
                 $conf = is_array($conf) ? array_replace_recursive($conf, $old_conf) : $old_conf;
             }
@@ -6892,7 +6892,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             $checkEditAccessInternals = true;
         }
-        list($table, $uid) = explode(':', $currentRecord);
+        [$table, $uid] = explode(':', $currentRecord);
         // Page ID for new records, 0 if not specified
         $newRecordPid = (int)$conf['newRecordInPid'];
         $newUid = null;
@@ -6948,8 +6948,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $dataArray = $this->data;
         }
         // Check incoming params:
-        list($currentRecordTable, $currentRecordUID) = explode(':', $currentRecord);
-        list($fieldList, $table) = array_reverse(GeneralUtility::trimExplode(':', $params, true));
+        [$currentRecordTable, $currentRecordUID] = explode(':', $currentRecord);
+        [$fieldList, $table] = array_reverse(GeneralUtility::trimExplode(':', $params, true));
         // Reverse the array because table is optional
         if (!$table) {
             $table = $currentRecordTable;

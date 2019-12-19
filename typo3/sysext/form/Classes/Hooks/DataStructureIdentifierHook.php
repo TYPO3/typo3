@@ -184,10 +184,7 @@ class DataStructureIdentifierHook
                         );
                     }
                 }
-            } catch (NoSuchFileException $e) {
-                $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
-                $this->addInvalidFrameworkConfigurationFlashMessage($e);
-            } catch (ParseErrorException $e) {
+            } catch (NoSuchFileException|ParseErrorException $e) {
                 $dataStructure = $this->addSelectedPersistenceIdentifier($identifier['ext-form-persistenceIdentifier'], $dataStructure);
                 $this->addInvalidFrameworkConfigurationFlashMessage($e);
             }

@@ -492,7 +492,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
         if ($defaultMountPoints) {
             $defaultMountPoints = GeneralUtility::trimExplode('|', $defaultMountPoints, true);
             foreach ($defaultMountPoints as $temp_p) {
-                list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
+                [$temp_idP, $temp_MPp] = explode(':', $temp_p, 2);
                 $temp_ids = GeneralUtility::intExplode(',', $temp_idP);
                 foreach ($temp_ids as $temp_id) {
                     $mountPointMap[$temp_id] = trim($temp_MPp);

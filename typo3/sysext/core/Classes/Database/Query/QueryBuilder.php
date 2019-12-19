@@ -984,7 +984,7 @@ class QueryBuilder
     public function quoteIdentifiersForSelect(array $input): array
     {
         foreach ($input as &$select) {
-            list($fieldName, $alias, $suffix) = array_pad(
+            [$fieldName, $alias, $suffix] = array_pad(
                 GeneralUtility::trimExplode(
                     ' AS ',
                     str_ireplace(' as ', ' AS ', $select),

@@ -122,13 +122,13 @@ abstract class AbstractXmlParser implements LocalizationParserInterface
         }
         if ($validatedPrefix) {
             // Divide file reference into extension key, directory (if any) and base name:
-            list($extensionKey, $file_extPath) = explode('/', substr($fileRef, strlen($validatedPrefix)), 2);
+            [$extensionKey, $file_extPath] = explode('/', substr($fileRef, strlen($validatedPrefix)), 2);
             $temp = GeneralUtility::revExplode('/', $file_extPath, 2);
             if (count($temp) === 1) {
                 array_unshift($temp, '');
             }
             // Add empty first-entry if not there.
-            list($file_extPath, $file_fileName) = $temp;
+            [$file_extPath, $file_fileName] = $temp;
             // The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
             return Environment::getLabelsPath() . '/' . $language . '/' . $extensionKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
         }

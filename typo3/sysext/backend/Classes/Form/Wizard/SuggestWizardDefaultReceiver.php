@@ -335,7 +335,7 @@ class SuggestWizardDefaultReceiver
             $this->queryBuilder->addOrderBy($GLOBALS['TCA'][$this->table]['ctrl']['label']);
         } else {
             foreach (QueryHelper::parseOrderBy($this->config['orderBy']) as $orderPair) {
-                list($fieldName, $order) = $orderPair;
+                [$fieldName, $order] = $orderPair;
                 $this->queryBuilder->addOrderBy($fieldName, $order);
             }
         }

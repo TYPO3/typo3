@@ -307,7 +307,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     }
                     $namedConditionArray['operand'] = (int)$operand;
                 } elseif ($namedConditionArray['operator'] === '-' || $namedConditionArray['operator'] === '!-') {
-                    list($minimum, $maximum) = GeneralUtility::trimExplode('-', $operand);
+                    [$minimum, $maximum] = GeneralUtility::trimExplode('-', $operand);
                     if (!MathUtility::canBeInterpretedAsInteger($minimum) || !MathUtility::canBeInterpretedAsInteger($maximum)) {
                         throw new \RuntimeException(
                             'Field condition "' . $conditionString . '" with comparison operator ' . $namedConditionArray['operator']

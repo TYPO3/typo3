@@ -242,7 +242,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
         $switchableControllerActionPartsFromFlexForm = GeneralUtility::trimExplode(',', str_replace(';', ',', $flexFormConfiguration['switchableControllerActions']), true);
         $overriddenControllerConfiguration = [];
         foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
-            list($controller, $action) = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
+            [$controller, $action] = GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
             if (empty($controller) || empty($action)) {
                 throw new \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
             }

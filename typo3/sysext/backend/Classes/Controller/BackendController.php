@@ -459,7 +459,7 @@ class BackendController
             // check if the start module has additional parameters, so a redirect to a specific
             // action is possible
             if (strpos($startModule, '->') !== false) {
-                list($startModule, $startModuleParameters) = explode('->', $startModule, 2);
+                [$startModule, $startModuleParameters] = explode('->', $startModule, 2);
             }
         }
 

@@ -446,7 +446,7 @@ class Export extends ImportExport
                             foreach ($subList['keys'] as $spKey => $elements) {
                                 foreach ($elements as $el) {
                                     if ($el['subst']['type'] === 'db' && $this->includeSoftref($el['subst']['tokenID'])) {
-                                        list($tempTable, $tempUid) = explode(':', $el['subst']['recordRef']);
+                                        [$tempTable, $tempUid] = explode(':', $el['subst']['recordRef']);
                                         $fI = [
                                             'table' => $tempTable,
                                             'id' => $tempUid
@@ -463,7 +463,7 @@ class Export extends ImportExport
                     foreach ($vR['softrefs']['keys'] as $spKey => $elements) {
                         foreach ($elements as $el) {
                             if ($el['subst']['type'] === 'db' && $this->includeSoftref($el['subst']['tokenID'])) {
-                                list($tempTable, $tempUid) = explode(':', $el['subst']['recordRef']);
+                                [$tempTable, $tempUid] = explode(':', $el['subst']['recordRef']);
                                 $fI = [
                                     'table' => $tempTable,
                                     'id' => $tempUid

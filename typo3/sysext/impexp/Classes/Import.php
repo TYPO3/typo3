@@ -1208,7 +1208,7 @@ class Import extends ImportExport
     public function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
     {
         // Extract parameters:
-        list(, , , $config) = $pParams;
+        [, , , $config] = $pParams;
         // In case the $path is used as index without a trailing slash we will remove that
         if (!is_array($config['flexFormRels']['db'][$path]) && is_array($config['flexFormRels']['db'][rtrim($path, '/')])) {
             $path = rtrim($path, '/');
@@ -1325,7 +1325,7 @@ class Import extends ImportExport
     public function processSoftReferences_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path)
     {
         // Extract parameters:
-        list($table, $origUid, $field, $softRefCfgs) = $pParams;
+        [$table, $origUid, $field, $softRefCfgs] = $pParams;
         if (is_array($softRefCfgs)) {
             // First, find all soft reference configurations for this structure path (they are listed flat in the header):
             $thisSoftRefCfgList = [];
@@ -1383,11 +1383,11 @@ class Import extends ImportExport
                         case 'db':
                         default:
                             // Trying to map database element if found in the mapID array:
-                            list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
+                            [$tempTable, $tempUid] = explode(':', $cfg['subst']['recordRef']);
                             if (isset($this->import_mapId[$tempTable][$tempUid])) {
                                 $insertValue = BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
                                 if (strpos($cfg['subst']['tokenValue'], ':') !== false) {
-                                    list($tokenKey) = explode(':', $cfg['subst']['tokenValue']);
+                                    [$tokenKey] = explode(':', $cfg['subst']['tokenValue']);
                                     $insertValue = $tokenKey . ':' . $insertValue;
                                 }
                             }

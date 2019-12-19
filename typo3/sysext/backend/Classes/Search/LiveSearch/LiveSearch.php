@@ -198,7 +198,7 @@ class LiveSearch
 
             $orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
             foreach (QueryHelper::parseOrderBy((string)$orderBy) as $orderPair) {
-                list($fieldName, $order) = $orderPair;
+                [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
 

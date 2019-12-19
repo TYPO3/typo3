@@ -4492,7 +4492,7 @@ class ContentObjectRendererTest extends UnitTestCase
             CacheManager::class,
             $cacheManager
         );
-        list($countCalls, $test) = [0, $this];
+        [$countCalls, $test] = [0, $this];
         $closure = function ($par1, $par2) use (
             $test,
             $subject,

@@ -236,7 +236,7 @@ class Locales implements SingletonInterface
         foreach ($preferredLanguages as $preferredLanguage) {
             $quality = 1.0;
             if (strpos($preferredLanguage, ';q=') !== false) {
-                list($preferredLanguage, $quality) = explode(';q=', $preferredLanguage);
+                [$preferredLanguage, $quality] = explode(';q=', $preferredLanguage);
             }
             $sortedPreferredLanguages[$preferredLanguage] = $quality;
         }
@@ -248,7 +248,7 @@ class Locales implements SingletonInterface
                 break;
             }
             // Strip the country code from the end
-            list($preferredLanguage, ) = explode('-', $preferredLanguage);
+            [$preferredLanguage, ] = explode('-', $preferredLanguage);
             if (isset($allLanguageCodesFromLocales[$preferredLanguage])) {
                 $selectedLanguage = $allLanguageCodesFromLocales[$preferredLanguage];
                 break;

@@ -144,7 +144,7 @@ class ConfigurationStatus implements StatusProviderInterface
                         $testServer = substr($testServer, 6);
                     }
                     if (strpos($testServer, ':') !== false) {
-                        list($host, $port) = explode(':', $testServer, 2);
+                        [$host, $port] = explode(':', $testServer, 2);
                     } else {
                         $host = $testServer;
                         $port = $defaultMemcachedPort;

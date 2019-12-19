@@ -49,7 +49,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     protected function renderInline(array $conf): string
     {
         $src = $this->resolveAbsoluteSourcePath($conf);
-        list($width, $height, $isDefaultWidth, $isDefaultHeight) = $this->getDimensions($conf);
+        [$width, $height, $isDefaultWidth, $isDefaultHeight] = $this->getDimensions($conf);
 
         $content = '';
         if (file_exists($src)) {
@@ -94,7 +94,7 @@ class ScalableVectorGraphicsContentObject extends AbstractContentObject
     protected function renderObject(array $conf): string
     {
         $src = $this->resolveAbsoluteSourcePath($conf);
-        list($width, $height) = $this->getDimensions($conf);
+        [$width, $height] = $this->getDimensions($conf);
 
         $src = $src === '' ? null : PathUtility::getAbsoluteWebPath($src);
 

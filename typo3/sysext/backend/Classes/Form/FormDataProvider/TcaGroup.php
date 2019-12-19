@@ -106,7 +106,7 @@ class TcaGroup implements FormDataProviderInterface
                     foreach ($allowed as $tablename) {
                         $elementValue = key($clipboard->elFromTable($tablename));
                         if ($elementValue) {
-                            list($elementTable, $elementUid) = explode('|', $elementValue);
+                            [$elementTable, $elementUid] = explode('|', $elementValue);
                             $record = BackendUtility::getRecordWSOL($elementTable, $elementUid);
                             $sanitizedClipboardElements[] = [
                                 'title' => BackendUtility::getRecordTitle($elementTable, $record),
@@ -118,7 +118,7 @@ class TcaGroup implements FormDataProviderInterface
                     // All tables allowed for relation:
                     $clipboardElements = array_keys($clipboard->elFromTable(''));
                     foreach ($clipboardElements as $elementValue) {
-                        list($elementTable, $elementUid) = explode('|', $elementValue);
+                        [$elementTable, $elementUid] = explode('|', $elementValue);
                         $record = BackendUtility::getRecordWSOL($elementTable, $elementUid);
                         $sanitizedClipboardElements[] = [
                             'title' => BackendUtility::getRecordTitle($elementTable, $record),

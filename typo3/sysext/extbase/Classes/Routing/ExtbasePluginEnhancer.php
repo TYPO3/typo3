@@ -188,7 +188,7 @@ class ExtbasePluginEnhancer extends PluginEnhancer
             return false;
         }
         $controller = $route->getDefault('_controller');
-        list($controllerName, $actionName) = explode('::', $controller);
+        [$controllerName, $actionName] = explode('::', $controller);
         if ($controllerName !== $parameters[$this->namespace]['controller']) {
             return false;
         }
@@ -220,7 +220,7 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         if (strpos($controllerActionValue, '::') === false) {
             return;
         }
-        list($controllerName, $actionName) = explode('::', $controllerActionValue, 2);
+        [$controllerName, $actionName] = explode('::', $controllerActionValue, 2);
         // use default action name if controller matches
         if ($tryUpdate && empty($target['action']) && $controllerName === ($target['controller'] ?? null)) {
             $target['action'] = $actionName;

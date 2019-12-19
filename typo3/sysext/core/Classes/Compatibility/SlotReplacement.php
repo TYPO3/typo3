@@ -221,7 +221,7 @@ class SlotReplacement
 
     public function onResourceStorageEmitSanitizeFileNameSignal(SanitizeFileNameEvent $event): void
     {
-        list($fileName) = $this->signalSlotDispatcher->dispatch(
+        [$fileName] = $this->signalSlotDispatcher->dispatch(
             ResourceStorage::class,
             ResourceStorage::SIGNAL_SanitizeFileName,
             [
@@ -635,7 +635,7 @@ class SlotReplacement
 
     public function onExtensionManagementUtilityTcaIsBeingBuilt(AfterTcaCompilationEvent $event): void
     {
-        list($tca) = $this->signalSlotDispatcher->dispatch(
+        [$tca] = $this->signalSlotDispatcher->dispatch(
             ExtensionManagementUtility::class,
             'tcaIsBeingBuilt',
             [

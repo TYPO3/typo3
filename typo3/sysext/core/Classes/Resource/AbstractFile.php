@@ -293,7 +293,7 @@ abstract class AbstractFile implements FileInterface
         // we don't need to make an SQL statement like EXT:media does currently
         if (!$this->properties['type']) {
             $mimeType = $this->getMimeType();
-            list($fileType) = explode('/', $mimeType);
+            [$fileType] = explode('/', $mimeType);
             switch (strtolower($fileType)) {
                 case 'text':
                     $this->properties['type'] = self::FILETYPE_TEXT;

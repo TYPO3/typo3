@@ -73,7 +73,7 @@ class LocalCropScaleMaskHelper
                 $crop = $configuration['crop'];
             }
 
-            list($offsetLeft, $offsetTop, $newWidth, $newHeight) = explode(',', $crop, 4);
+            [$offsetLeft, $offsetTop, $newWidth, $newHeight] = explode(',', $crop, 4);
 
             $backupPrefix = $gifBuilder->filenamePrefix;
             $gifBuilder->filenamePrefix = 'crop_';

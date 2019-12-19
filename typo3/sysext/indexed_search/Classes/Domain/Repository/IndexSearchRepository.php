@@ -916,7 +916,7 @@ class IndexSearchRepository
             // Default value to protect against empty array.
             $list = [-99];
             foreach ($refs as $ref) {
-                list($table, $uid) = GeneralUtility::revExplode('_', $ref, 2);
+                [$table, $uid] = GeneralUtility::revExplode('_', $ref, 2);
                 $uid = (int)$uid;
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                     ->getQueryBuilderForTable('index_config');

@@ -667,7 +667,7 @@ class NormalizedParams
             // This is for URL rewriter that store the original URI in a server
             // variable (e.g. ISAPI Rewriter for IIS: HTTP_X_REWRITE_URL), a config then looks like:
             // requestURIvar = '_SERVER|HTTP_X_REWRITE_URL' which will access $GLOBALS['_SERVER']['HTTP_X_REWRITE_URL']
-            list($firstLevel, $secondLevel) = GeneralUtility::trimExplode('|', $configuration['requestURIvar'], true);
+            [$firstLevel, $secondLevel] = GeneralUtility::trimExplode('|', $configuration['requestURIvar'], true);
             $requestUri = $GLOBALS[$firstLevel][$secondLevel];
         } elseif (empty($serverParams['REQUEST_URI'])) {
             // This is for ISS/CGI which does not have the REQUEST_URI available.

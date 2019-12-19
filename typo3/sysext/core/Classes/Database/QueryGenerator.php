@@ -1645,7 +1645,7 @@ class QueryGenerator
         }
         if ($this->extFieldLists['queryOrder']) {
             foreach (QueryHelper::parseOrderBy($this->extFieldLists['queryOrder_SQL']) as $orderPair) {
-                list($fieldName, $order) = $orderPair;
+                [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
         }

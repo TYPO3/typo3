@@ -501,7 +501,7 @@ class RelationHandler
                         )
                     );
                 foreach (QueryHelper::parseOrderBy((string)$sortby) as $orderPair) {
-                    list($fieldName, $order) = $orderPair;
+                    [$fieldName, $order] = $orderPair;
                     $queryBuilder->addOrderBy($fieldName, $order);
                 }
                 $statement = $queryBuilder->execute();
@@ -1007,7 +1007,7 @@ class RelationHandler
 
         if (!empty($sortby)) {
             foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
-                list($fieldName, $sorting) = $orderPair;
+                [$fieldName, $sorting] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $sorting);
             }
         }
@@ -1118,7 +1118,7 @@ class RelationHandler
                         } else {
                             $tempSortBy = [];
                             foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
-                                list($fieldName, $order) = $orderPair;
+                                [$fieldName, $order] = $orderPair;
                                 if ($order !== null) {
                                     $tempSortBy[] = implode(' ', $orderPair);
                                 } else {

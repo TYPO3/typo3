@@ -120,7 +120,7 @@ class ElementBrowserController
 
             $backendUser = $this->getBackendUser();
             $modData = $backendUser->getModuleData('browse_links.php', 'ses');
-            list($modData) = $browser->processSessionData($modData);
+            [$modData] = $browser->processSessionData($modData);
             $backendUser->pushModuleData('browse_links.php', $modData);
 
             $content = $browser->render();

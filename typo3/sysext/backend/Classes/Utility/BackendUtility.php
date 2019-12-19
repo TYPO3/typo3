@@ -199,7 +199,7 @@ class BackendUtility
      */
     public static function splitTable_Uid($str)
     {
-        list($uid, $table) = explode('_', strrev($str), 2);
+        [$uid, $table] = explode('_', strrev($str), 2);
         return [strrev($table), strrev($uid)];
     }
 
@@ -583,7 +583,7 @@ class BackendUtility
                     self::workspaceOL('pages', $pageinfo);
                     if (is_array($pageinfo)) {
                         self::fixVersioningPid('pages', $pageinfo);
-                        list($pageinfo['_thePath'], $pageinfo['_thePathFull']) = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
+                        [$pageinfo['_thePath'], $pageinfo['_thePathFull']] = self::getRecordPath((int)$pageinfo['uid'], $perms_clause, 15, 1000);
                         return $pageinfo;
                     }
                 }
@@ -614,7 +614,7 @@ class BackendUtility
         if ($GLOBALS['TCA'][$table]) {
             $field = $GLOBALS['TCA'][$table]['ctrl']['type'];
             if (strpos($field, ':') !== false) {
-                list($pointerField, $foreignTableTypeField) = explode(':', $field);
+                [$pointerField, $foreignTableTypeField] = explode(':', $field);
                 // Get field value from database if field is not in the $row array
                 if (!isset($row[$pointerField])) {
                     $localRow = self::getRecord($table, $row['uid'], $pointerField);
@@ -743,7 +743,7 @@ class BackendUtility
                 // Traversing list
                 foreach ($includeTsConfigFileList as $key => $includeTsConfigFile) {
                     if (strpos($includeTsConfigFile, 'EXT:') === 0) {
-                        list($includeTsConfigFileExtensionKey, $includeTsConfigFilename) = explode(
+                        [$includeTsConfigFileExtensionKey, $includeTsConfigFilename] = explode(
                             '/',
                             substr($includeTsConfigFile, 4),
                             2
@@ -1462,7 +1462,7 @@ class BackendUtility
             if ($label === null) {
                 // Otherwise lookup the label in TCA items list
                 foreach ($GLOBALS['TCA'][$table]['columns'][$column]['config']['items'] as $itemConfiguration) {
-                    list($currentLabel, $currentKey) = $itemConfiguration;
+                    [$currentLabel, $currentKey] = $itemConfiguration;
                     if ((string)$key === (string)$currentKey) {
                         $label = $currentLabel;
                         break;
@@ -1907,7 +1907,7 @@ class BackendUtility
                             if (MathUtility::canBeInterpretedAsInteger($explodedValue)) {
                                 $relationTableNameForField = $relationTableName;
                             } else {
-                                list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+                                [$relationTableNameForField, $explodedValue] = self::splitTable_Uid($explodedValue);
                             }
 
                             $relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
@@ -3037,7 +3037,7 @@ class BackendUtility
         self::fixVersioningPid($table, $row);
         $res = [];
         // Get main config for the table
-        list($TScID, $cPid) = self::getTSCpid($table, $row['uid'], $row['pid']);
+        [$TScID, $cPid] = self::getTSCpid($table, $row['uid'], $row['pid']);
         if ($TScID >= 0) {
             $tsConfig = static::getPagesTSconfig($TScID)['TCEFORM.'][$table . '.'] ?? [];
             $typeVal = self::getTCAtypeValue($table, $row);

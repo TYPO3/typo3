@@ -175,7 +175,7 @@ class DownloadController extends AbstractController
      */
     public function installFromTerAction(Extension $extension, $downloadPath = 'Local')
     {
-        list($result, $errorMessages) = $this->installFromTer($extension, $downloadPath);
+        [$result, $errorMessages] = $this->installFromTer($extension, $downloadPath);
         $isAutomaticInstallationEnabled = (bool)GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('extensionmanager', 'automaticInstallation');
         $this->view
             ->assign('result', $result)
@@ -207,7 +207,7 @@ class DownloadController extends AbstractController
         if (!\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('impexp')) {
             $this->forward('distributions', 'List');
         }
-        list($result, $errorMessages) = $this->installFromTer($extension);
+        [$result, $errorMessages] = $this->installFromTer($extension);
         if ($errorMessages) {
             foreach ($errorMessages as $extensionKey => $messages) {
                 foreach ($messages as $message) {

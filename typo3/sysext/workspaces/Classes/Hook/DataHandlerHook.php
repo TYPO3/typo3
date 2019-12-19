@@ -496,7 +496,7 @@ class DataHandlerHook
                             $allElements = explode(',', $elementName);
                             // Traverse them, and find the history of each
                             foreach ($allElements as $elRef) {
-                                list($eTable, $eUid) = explode(':', $elRef);
+                                [$eTable, $eUid] = explode(':', $elRef);
 
                                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                                     ->getQueryBuilderForTable('sys_log');
@@ -559,7 +559,7 @@ class DataHandlerHook
         if (!empty($emails)) {
             $previewUriBuilder = GeneralUtility::makeInstance(PreviewUriBuilder::class);
             // Path to record is found:
-            list($elementTable, $elementUid) = explode(':', $elementName);
+            [$elementTable, $elementUid] = explode(':', $elementName);
             $elementUid = (int)$elementUid;
             $elementRecord = BackendUtility::getRecord($elementTable, $elementUid);
             $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);

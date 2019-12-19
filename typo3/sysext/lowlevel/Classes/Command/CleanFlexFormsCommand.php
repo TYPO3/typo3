@@ -261,7 +261,7 @@ class CleanFlexFormsCommand extends Command
 
         // Loop through all tables and their records
         foreach ($records as $recordIdentifier => $fullRecord) {
-            list($table, $uid, $field) = explode(':', $recordIdentifier);
+            [$table, $uid, $field] = explode(':', $recordIdentifier);
             if ($io->isVerbose()) {
                 $io->writeln('Cleaning FlexForm XML in "' . $recordIdentifier . '"');
             }

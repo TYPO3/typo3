@@ -682,7 +682,7 @@ class Indexer
         if (!$isTagInText) {
             return false;
         }
-        list($paramList, $isTagInText) = explode('>', substr($isTagInText, strlen($startTag)), 2);
+        [$paramList, $isTagInText] = explode('>', substr($isTagInText, strlen($startTag)), 2);
         $afterTagInText = stristr($isTagInText, $endTag);
         if ($afterTagInText) {
             $stringBefore = substr($string, 0, strpos(strtolower($string), strtolower($startTag)));
@@ -904,7 +904,7 @@ class Indexer
                 if (trim($line) === '') {
                     break;
                 }
-                list($headKey, $headValue) = explode(':', $line, 2);
+                [$headKey, $headValue] = explode(':', $line, 2);
                 $retVal[$headKey] = $headValue;
             }
             return $retVal;

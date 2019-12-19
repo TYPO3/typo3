@@ -282,7 +282,7 @@ class RedirectService implements LoggerAwareInterface
             if ($redirectRecord['keep_query_parameters']) {
                 $configuration['additionalParams'] = HttpUtility::buildQueryString($queryParams, '&');
             }
-            list($url) = $linkBuilder->build($linkDetails, '', '', $configuration);
+            [$url] = $linkBuilder->build($linkDetails, '', '', $configuration);
             return new Uri($url);
         } catch (UnableToLinkException $e) {
             // This exception is also thrown by the DatabaseRecordTypolinkBuilder

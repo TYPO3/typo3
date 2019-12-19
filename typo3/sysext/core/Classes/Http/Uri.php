@@ -677,7 +677,7 @@ class Uri implements UriInterface
 
         $parts = explode('&', $query);
         foreach ($parts as $index => $part) {
-            list($key, $value) = $this->splitQueryValue($part);
+            [$key, $value] = $this->splitQueryValue($part);
             if ($value === null) {
                 $parts[$index] = $this->sanitizeQueryOrFragment($key);
                 continue;

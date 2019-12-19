@@ -213,7 +213,7 @@ class ExtensionManagementUtility
             return;
         }
         if ($position !== '') {
-            list($positionIdentifier, $entityName) = GeneralUtility::trimExplode(':', $position);
+            [$positionIdentifier, $entityName] = GeneralUtility::trimExplode(':', $position);
         } else {
             $positionIdentifier = '';
             $entityName = '';
@@ -578,7 +578,7 @@ class ExtensionManagementUtility
         $list = $newList = trim($list, ", \t\n\r\0\x0B");
 
         if ($insertionPosition !== '') {
-            list($location, $positionName) = GeneralUtility::trimExplode(':', $insertionPosition, false, 2);
+            [$location, $positionName] = GeneralUtility::trimExplode(':', $insertionPosition, false, 2);
         } else {
             $location = '';
             $positionName = '';
@@ -763,7 +763,7 @@ class ExtensionManagementUtility
         // If there is already a main module by this name:
         // Adding the submodule to the correct position:
         if (isset($GLOBALS['TBE_MODULES'][$main]) && $sub) {
-            list($place, $modRef) = array_pad(GeneralUtility::trimExplode(':', $position, true), 2, null);
+            [$place, $modRef] = array_pad(GeneralUtility::trimExplode(':', $position, true), 2, null);
             $modules = ',' . $GLOBALS['TBE_MODULES'][$main] . ',';
             if ($place === null || ($modRef !== null && !GeneralUtility::inList($modules, $modRef))) {
                 $place = 'bottom';
