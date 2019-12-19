@@ -134,6 +134,7 @@ class PopulatePageSlugs implements UpgradeWizardInterface
         }
 
         $fieldConfig = $GLOBALS['TCA'][$this->table]['columns'][$this->fieldName]['config'];
+        $fieldConfig['generatorOptions']['fields'] = ['tx_realurl_pathsegment,title'];
         $evalInfo = !empty($fieldConfig['eval']) ? GeneralUtility::trimExplode(',', $fieldConfig['eval'], true) : [];
         $hasToBeUniqueInSite = in_array('uniqueInSite', $evalInfo, true);
         $hasToBeUniqueInPid = in_array('uniqueInPid', $evalInfo, true);
