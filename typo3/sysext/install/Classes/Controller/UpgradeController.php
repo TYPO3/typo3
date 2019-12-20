@@ -31,8 +31,10 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Migrations\TcaMigration;
 use TYPO3\CMS\Core\Package\Package;
+use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\ExtensionScanner\Php\CodeStatistics;
@@ -57,6 +59,7 @@ use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyExistsStaticMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyProtectedMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\Matcher\PropertyPublicMatcher;
 use TYPO3\CMS\Install\ExtensionScanner\Php\MatcherFactory;
+use TYPO3\CMS\Install\Service\ClearCacheService;
 use TYPO3\CMS\Install\Service\CoreUpdateService;
 use TYPO3\CMS\Install\Service\CoreVersionService;
 use TYPO3\CMS\Install\Service\LoadTcaService;
@@ -385,7 +388,6 @@ class UpgradeController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-            'extensions' => array_keys($this->packageManager->getActivePackages()),
             'html' => $view->render(),
         ]);
     }
@@ -398,16 +400,20 @@ class UpgradeController extends AbstractController
      */
     public function extensionCompatTesterLoadExtLocalconfAction(ServerRequestInterface $request): ResponseInterface
     {
-        $extension = $request->getParsedBody()['install']['extension'];
+        $brokenExtensions = [];
         foreach ($this->packageManager->getActivePackages() as $package) {
-            $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
-            if ($package->getPackageKey() === $extension) {
-                break;
+            try {
+                $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
+            } catch (\Throwable $e) {
+                $brokenExtensions[] = [
+                    'name' => $package->getPackageKey(),
+                    'isProtected' => $package->isProtected()
+                ];
             }
         }
         return new JsonResponse([
-            'success' => true,
-        ]);
+            'brokenExtensions' => $brokenExtensions,
+        ], empty($brokenExtensions) ? 200 : 500);
     }
 
     /**
@@ -418,21 +424,25 @@ class UpgradeController extends AbstractController
      */
     public function extensionCompatTesterLoadExtTablesAction(ServerRequestInterface $request): ResponseInterface
     {
-        $extension = $request->getParsedBody()['install']['extension'];
+        $brokenExtensions = [];
         $activePackages = $this->packageManager->getActivePackages();
         foreach ($activePackages as $package) {
             // Load all ext_localconf files first
             $this->extensionCompatTesterLoadExtLocalconfForExtension($package);
         }
         foreach ($activePackages as $package) {
-            $this->extensionCompatTesterLoadExtTablesForExtension($package);
-            if ($package->getPackageKey() === $extension) {
-                break;
+            try {
+                $this->extensionCompatTesterLoadExtTablesForExtension($package);
+            } catch (\Throwable $e) {
+                $brokenExtensions[] = [
+                    'name' => $package->getPackageKey(),
+                    'isProtected' => $package->isProtected()
+                ];
             }
         }
         return new JsonResponse([
-            'success' => true,
-        ]);
+            'brokenExtensions' => $brokenExtensions,
+        ], empty($brokenExtensions) ? 200 : 500);
     }
 
     /**
@@ -455,6 +465,9 @@ class UpgradeController extends AbstractController
         if (ExtensionManagementUtility::isLoaded($extension)) {
             try {
                 ExtensionManagementUtility::unloadExtension($extension);
+                GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
+                GeneralUtility::makeInstance(OpcodeCacheService::class)->clearAllActive();
+
                 $messageQueue->enqueue(new FlashMessage(
                     'Extension "' . $extension . '" unloaded.',
                     '',
@@ -1108,9 +1121,9 @@ class UpgradeController extends AbstractController
      * Loads ext_localconf.php for a single extension. Method is a modified copy of
      * the original bootstrap method.
      *
-     * @param Package $package
+     * @param PackageInterface $package
      */
-    protected function extensionCompatTesterLoadExtLocalconfForExtension(Package $package)
+    protected function extensionCompatTesterLoadExtLocalconfForExtension(PackageInterface $package)
     {
         $extLocalconfPath = $package->getPackagePath() . 'ext_localconf.php';
         // This is the main array meant to be manipulated in the ext_localconf.php files
@@ -1131,9 +1144,9 @@ class UpgradeController extends AbstractController
      * Loads ext_tables.php for a single extension. Method is a modified copy of
      * the original bootstrap method.
      *
-     * @param Package $package
+     * @param PackageInterface $package
      */
-    protected function extensionCompatTesterLoadExtTablesForExtension(Package $package)
+    protected function extensionCompatTesterLoadExtTablesForExtension(PackageInterface $package)
     {
         $extTablesPath = $package->getPackagePath() . 'ext_tables.php';
         // In general it is recommended to not rely on it to be globally defined in that
