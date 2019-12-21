@@ -109,8 +109,16 @@ class ExecuteSchedulableCommandTask extends AbstractTask
             );
         }
 
-        $input = new ArrayInput($this->getArguments(), $schedulableCommand->getDefinition());
-        $arguments = $input->__toString();
+        try {
+            $input = new ArrayInput($this->getArguments(), $schedulableCommand->getDefinition());
+            $arguments = $input->__toString();
+        } catch (\Symfony\Component\Console\Exception\RuntimeException $e) {
+            return $label . "\n"
+                . sprintf(
+                    $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingArguments'),
+                    $e->getMessage()
+                );
+        }
         if ($arguments !== '') {
             $label .= ' ' . $arguments;
         }

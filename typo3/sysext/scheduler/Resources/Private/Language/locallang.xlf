@@ -333,6 +333,9 @@
 			<trans-unit id="msg.unregisteredCommand" resname="msg.unregisteredCommand">
 				<source>Command with identifier "%s" has not been registered.</source>
 			</trans-unit>
+			<trans-unit id="msg.errorParsingArguments" resname="msg.errorParsingArguments">
+				<source>Error parsing current set of arguments: "%s".</source>
+			</trans-unit>
 			<trans-unit id="msg.mandatoryArgumentMissing" resname="msg.mandatoryArgumentMissing">
 				<source>Argument "%s" is mandatory</source>
 			</trans-unit>
