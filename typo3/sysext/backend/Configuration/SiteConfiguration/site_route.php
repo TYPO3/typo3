@@ -64,7 +64,7 @@ Allow: /typo3/sysext/frontend/Resources/Public/*
                 'fieldControl' => [
                     'linkPopup' => [
                         'options' => [
-                            'blindLinkOptions' => 'mail,spec,folder',
+                            'blindLinkOptions' => 'mail,telephone,spec,folder',
                         ]
                     ]
                 ],

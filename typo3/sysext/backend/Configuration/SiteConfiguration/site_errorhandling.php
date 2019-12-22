@@ -92,7 +92,7 @@ return [
                 'fieldControl' => [
                     'linkPopup' => [
                         'options' => [
-                            'blindLinkOptions' => 'file,mail,spec,folder',
+                            'blindLinkOptions' => 'file,telephone,mail,spec,folder',
                         ]
                     ]
                 ],
