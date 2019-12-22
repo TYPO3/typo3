@@ -151,6 +151,7 @@ class CharsetConverter implements SingletonInterface
                 $ord = ord($chr);
                 // If the charset has two bytes per char
                 if (isset($this->twoByteSets[$charset])) {
+                    // TYPO3 cannot convert from ucs-2 as the according conversion table is not present
                     $ord2 = ord($str[$a + 1]);
                     // Assume big endian
                     $ord = $ord << 8 | $ord2;
