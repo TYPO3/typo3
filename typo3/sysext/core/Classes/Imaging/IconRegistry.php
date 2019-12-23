@@ -808,7 +808,7 @@ class IconRegistry implements SingletonInterface
             'HK', 'HM', 'HN', 'HR', 'HT', 'HU',
             'ID', 'IE', 'IL', 'IM', 'IN', 'IO', 'IQ', 'IR', 'IS', 'IT',
             'JE', 'JM', 'JO', 'JP',
-            'KE', 'KG', 'KH', 'KI', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ',
+            'KE', 'KG', 'KH', 'KI', 'KL', 'KM', 'KN', 'KP', 'KR', 'KW', 'KY', 'KZ',
             'LA', 'LB', 'LC', 'LI', 'LK', 'LR', 'LS', 'LT', 'LU', 'LV', 'LY',
             'MA', 'MC', 'MD', 'ME', 'MF', 'MG', 'MH', 'MI', 'MK', 'ML', 'MM', 'MN', 'MO', 'MP', 'MQ', 'MR', 'MS', 'MT', 'MU', 'MV', 'MW', 'MX', 'MY', 'MZ',
             'NA', 'NC', 'NE', 'NF', 'NG', 'NI', 'NL', 'NO', 'NP', 'NR', 'NU', 'NZ',

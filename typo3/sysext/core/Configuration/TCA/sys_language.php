@@ -191,6 +191,7 @@ return [
                     ['kg', 'kg', 'flags-kg'],
                     ['kh', 'kh', 'flags-kh'],
                     ['ki', 'ki', 'flags-ki'],
+                    ['kl', 'kl', 'flags-kl'],
                     ['km', 'km', 'flags-km'],
                     ['kn', 'kn', 'flags-kn'],
                     ['kp', 'kp', 'flags-kp'],
