@@ -40,6 +40,8 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\PharStreamWrapper\Behavior;
+use TYPO3\PharStreamWrapper\Interceptor\ConjunctionInterceptor;
+use TYPO3\PharStreamWrapper\Interceptor\PharMetaDataInterceptor;
 use TYPO3\PharStreamWrapper\Manager;
 use TYPO3\PharStreamWrapper\PharStreamWrapper;
 
@@ -425,7 +427,10 @@ class Bootstrap
             Manager::destroy();
             Manager::initialize(
                 (new Behavior())
-                    ->withAssertion(new PharStreamWrapperInterceptor())
+                    ->withAssertion(new ConjunctionInterceptor([
+                        new PharStreamWrapperInterceptor(),
+                        new PharMetaDataInterceptor()
+                    ]))
             );
 
             stream_wrapper_unregister('phar');
