@@ -300,6 +300,47 @@ class TypolinkViewHelperTest extends FunctionalTestCase
                 'expected' => 'http://typo3.org/foo/?foo=bar http://typo3.org/foo/?foo=bar',
                 'template' => 'uri_typolink_viewhelper',
             ],
+
+            'page with complex title and extended parameters' => [
+                'parameter' => '1 - - "a \\"link\\" title with \\\\" &x=y',
+                'addQueryString' => false,
+                'addQueryStringMethod' => '',
+                'addQueryStringExclude' => '',
+                'expected' => '<a href="/en/?x=y&amp;cHash=fcdb7fbded8dc9d683ea83aee9909d99" title="a &quot;link&quot; title with \">This is a testlink</a> <a href="/en/?x=y&amp;cHash=fcdb7fbded8dc9d683ea83aee9909d99" title="a &quot;link&quot; title with \">This is a testlink</a>',
+                'template' => 'link_typolink_viewhelper',
+            ],
+            'full parameter usage' => [
+                '1 _blank css-class "testtitle with whitespace" &X=y',
+                'addQueryString' => false,
+                'addQueryStringMethod' => '',
+                'addQueryStringExclude' => '',
+                'expected' => '<a href="/en/?X=y&amp;cHash=b8582914879e1ee43c72a4d26e4a4d98" title="testtitle with whitespace" target="_blank" class="css-class">This is a testlink</a> <a href="/en/?X=y&amp;cHash=b8582914879e1ee43c72a4d26e4a4d98" title="testtitle with whitespace" target="_blank" class="css-class">This is a testlink</a>',
+                'template' => 'link_typolink_viewhelper',
+            ],
+            't3:// with extended class' => [
+                't3://url?url=https://example.org?param=1&other=dude - css-class',
+                'addQueryString' => false,
+                'addQueryStringMethod' => '',
+                'addQueryStringExclude' => '',
+                'expected' => '<a href="https://example.org?param=1" class="css-class">This is a testlink</a> <a href="https://example.org?param=1" class="css-class">This is a testlink</a>',
+                'template' => 'link_typolink_viewhelper',
+            ],
+            't3:// with complex title and extended parameters' => [
+                't3://url?url=https://example.org?param=1&other=dude - - "a \\"link\\" title with \\\\" &x=y',
+                'addQueryString' => false,
+                'addQueryStringMethod' => '',
+                'addQueryStringExclude' => '',
+                'expected' => '<a href="https://example.org?param=1" title="a &quot;link&quot; title with \">This is a testlink</a> <a href="https://example.org?param=1" title="a &quot;link&quot; title with \">This is a testlink</a>',
+                'template' => 'link_typolink_viewhelper',
+            ],
+            't3:// with complex title and extended parameters & correctly encoded other parameter' => [
+                't3://url?url=https://example.org?param=1%26other=dude - - "a \\"link\\" title with \\\\" &x=y',
+                'addQueryString' => false,
+                'addQueryStringMethod' => '',
+                'addQueryStringExclude' => '',
+                'expected' => '<a href="https://example.org?param=1&amp;other=dude" title="a &quot;link&quot; title with \">This is a testlink</a> <a href="https://example.org?param=1&amp;other=dude" title="a &quot;link&quot; title with \">This is a testlink</a>',
+                'template' => 'link_typolink_viewhelper',
+            ],
         ];
     }
 }

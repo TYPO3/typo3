@@ -22,93 +22,174 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
  */
 class TypolinkViewHelperTest extends ViewHelperBaseTestcase
 {
-    /**
-     * @return array
-     */
-    public function typoScriptConfigurationData()
+    public function plainDecodedConfigurationDataProvider(): array
     {
         return [
             'empty input' => [
-                '', // input from link field
-                '', // additional parameters from fluid
-                '', //expected typolink
+                [], // TypoLinkCodecService::decode() result of input value from link field
             ],
             'simple id input' => [
-                19,
-                '',
-                '19',
+                [
+                    'url' => 19,
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '',
+                ],
             ],
             'external url with target' => [
-                'www.web.de _blank',
-                '',
-                'www.web.de _blank',
+                [
+                    'url' => 'www.web.de',
+                    'target' => '_blank',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '',
+                ],
             ],
             'page with class' => [
-                '42 - css-class',
-                '',
-                '42 - css-class',
+                [
+                    'url' => 'www.web.de',
+                    'target' => '',
+                    'class' => 'css-class',
+                    'title' => '',
+                    'additionalParams' => '',
+                ],
             ],
             'page with title' => [
-                '42 - - "a link title"',
-                '',
-                '42 - - "a link title"',
+                [
+                    'url' => 'www.web.de',
+                    'target' => '',
+                    'class' => '',
+                    'title' => 'a link title',
+                    'additionalParams' => '',
+                ],
             ],
             'page with title and parameters' => [
-                '42 - - "a link title" &x=y',
-                '',
-                '42 - - "a link title" &x=y',
-            ],
-            'page with title and extended parameters' => [
-                '42 - - "a link title" &x=y',
-                '&a=b',
-                '42 - - "a link title" &x=y&a=b',
-            ],
-            'only page id and overwrite' => [
-                '42',
-                '&a=b',
-                '42 - - - &a=b',
-            ],
-            't3:// with class' => [
-                't3://url?url=https://example.org?param=1&other=dude - css-class',
-                '',
-                't3://url?url=https://example.org?param=1&other=dude - css-class',
-            ],
-            't3:// with title' => [
-                't3://url?url=https://example.org?param=1&other=dude - - "a link title"',
-                '',
-                't3://url?url=https://example.org?param=1&other=dude - - "a link title"',
-            ],
-            't3:// with title and parameters' => [
-                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y',
-                '',
-                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y',
-            ],
-            't3:// with title and extended parameters' => [
-                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y',
-                '&a=b',
-                't3://url?url=https://example.org?param=1&other=dude - - "a link title" &x=y&a=b',
-            ],
-            't3:// and overwrite' => [
-                't3://url?url=https://example.org?param=1&other=dude',
-                '&a=b',
-                't3://url?url=https://example.org?param=1&other=dude - - - &a=b',
+                [
+                    'url' => 'www.web.de',
+                    'target' => '',
+                    'class' => '',
+                    'title' => 'a link title',
+                    'additionalParams' => '&x=y',
+                ],
             ],
         ];
     }
 
     /**
+     * @param array $decodedConfiguration
+     *
      * @test
-     * @dataProvider typoScriptConfigurationData
-     * @param string $input
-     * @param string $additionalParametersFromFluid
-     * @param string $expected
-     * @throws \InvalidArgumentException
+     * @dataProvider plainDecodedConfigurationDataProvider
      */
-    public function createTypolinkParameterFromArgumentsReturnsExpectedArray($input, $additionalParametersFromFluid, $expected)
+    public function mergeTypoLinkConfigurationDoesNotModifyData(array $decodedConfiguration)
     {
-        /** @var \TYPO3\CMS\Fluid\ViewHelpers\Uri\TypolinkViewHelper|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
-        $result = $subject->_call('createTypolinkParameterFromArguments', $input, $additionalParametersFromFluid);
+        $result = $subject->_call('mergeTypoLinkConfiguration', $decodedConfiguration, []);
+        self::assertSame($decodedConfiguration, $result);
+    }
+
+    public function decodedConfigurationAndFluidArgumentDataProvider(): array
+    {
+        return [
+            'empty input' => [
+                [], // TypoLinkCodecService::decode() result of input value from link field
+                [], // ViewHelper arguments
+                [], // expected typolink configuration
+            ],
+            'page with title and extended parameters' => [
+                [
+                    'url' => 42,
+                    'target' => '',
+                    'class' => '',
+                    'title' => 'a link title',
+                    'additionalParams' => '&x=y',
+                ],
+                [
+                    'additionalParams' => '&a=b',
+                ],
+                [
+                    'url' => 42,
+                    'target' => '',
+                    'class' => '',
+                    'title' => 'a link title',
+                    'additionalParams' => '&x=y&a=b',
+                ],
+            ],
+            'only page id and overwrite' => [
+                [
+                    'url' => 42,
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '',
+                ],
+                [
+                    'additionalParams' => '&a=b',
+                ],
+                [
+                    'url' => 42,
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '&a=b',
+                ],
+            ],
+            't3:// with title and extended parameters' => [
+                [
+                    'url' => 't3://url?url=https://example.org?param=1&other=dude',
+                    'target' => '',
+                    'class' => '',
+                    'title' => 'a link title',
+                    'additionalParams' => '&x=y',
+                ],
+                [
+                    'additionalParams' => '&a=b',
+                ],
+                [
+                    'url' => 't3://url?url=https://example.org?param=1&other=dude',
+                    'target' => '',
+                    'class' => '',
+                    'title' => 'a link title',
+                    'additionalParams' => '&x=y&a=b',
+                ],
+            ],
+            't3:// and overwrite' => [
+                [
+                    'url' => 't3://url?url=https://example.org?param=1&other=dude',
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '',
+                ],
+                [
+                    'additionalParams' => '&a=b',
+                ],
+                [
+                    'url' => 't3://url?url=https://example.org?param=1&other=dude',
+                    'target' => '',
+                    'class' => '',
+                    'title' => '',
+                    'additionalParams' => '&a=b',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @param array $decodedConfiguration
+     * @param array $viewHelperArguments
+     * @param array $expected
+     *
+     * @test
+     * @dataProvider decodedConfigurationAndFluidArgumentDataProvider
+     */
+    public function mergeTypoLinkConfigurationMergesData(array $decodedConfiguration, array $viewHelperArguments, array $expected)
+    {
+        /** @var \TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
+        $subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['dummy']);
+        $result = $subject->_call('mergeTypoLinkConfiguration', $decodedConfiguration, $viewHelperArguments);
         self::assertSame($expected, $result);
     }
 }

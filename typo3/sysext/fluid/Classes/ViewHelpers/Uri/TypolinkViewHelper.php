@@ -66,7 +66,7 @@ class TypolinkViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('parameter', 'string', 'stdWrap.typolink style parameter string', true);
         $this->registerArgument('additionalParams', 'string', 'stdWrap.typolink additionalParams', false, '');
-        // @deprecated
+        // @deprecated useCacheHash
         $this->registerArgument('useCacheHash', 'bool', 'Deprecated: You should not need this.', false);
         $this->registerArgument('addQueryString', 'bool', '', false, false);
         $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
@@ -78,7 +78,6 @@ class TypolinkViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     *
      * @return string
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
@@ -87,49 +86,62 @@ class TypolinkViewHelper extends AbstractViewHelper
             trigger_error('Using the argument "noCacheHash" in <f:uri.typolink> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
         }
         $parameter = $arguments['parameter'];
-        $additionalParams = $arguments['additionalParams'];
-        $addQueryString = $arguments['addQueryString'];
-        $addQueryStringMethod = $arguments['addQueryStringMethod'];
-        $addQueryStringExclude = $arguments['addQueryStringExclude'];
-        $absolute = $arguments['absolute'];
+
+        $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
+        $typoLinkConfiguration = $typoLinkCodec->decode($parameter);
+        $mergedTypoLinkConfiguration = static::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
+        $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
 
         $content = '';
         if ($parameter) {
-            $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
-            $content = $contentObject->typoLink_URL(
-                [
-                    'parameter' => self::createTypolinkParameterFromArguments($parameter, $additionalParams),
-                    'addQueryString' => $addQueryString,
-                    'addQueryString.' => [
-                        'method' => $addQueryStringMethod,
-                        'exclude' => $addQueryStringExclude
-                    ],
-                    'forceAbsoluteUrl' => $absolute
-                ]
-            );
+            $content = static::invokeContentObjectRenderer($arguments, $typoLinkParameter);
         }
-
         return $content;
     }
 
-    /**
-     * Transforms ViewHelper arguments to typo3link.parameters.typoscript option as array.
-     *
-     * @param string $parameter Example: 19 _blank - "testtitle with whitespace" &X=y
-     * @param string $additionalParameters
-     *
-     * @return string The final TypoLink string
-     */
-    protected static function createTypolinkParameterFromArguments($parameter, $additionalParameters = '')
+    protected static function invokeContentObjectRenderer(array $arguments, string $typoLinkParameter): string
     {
-        $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
-        $typolinkConfiguration = $typoLinkCodec->decode($parameter);
+        $addQueryString = $arguments['addQueryString'] ?? false;
+        $addQueryStringMethod = $arguments['addQueryStringMethod'] ?? 'GET';
+        $addQueryStringExclude = $arguments['addQueryStringExclude'] ?? '';
+        $absolute = $arguments['absolute'] ?? false;
+
+        $instructions = [
+            'parameter' => $typoLinkParameter,
+            'forceAbsoluteUrl' => $absolute,
+        ];
+        if ($addQueryString) {
+            $instructions['addQueryString'] = $addQueryString;
+            $instructions['addQueryString.'] = [
+                'method' => $addQueryStringMethod,
+                'exclude' => $addQueryStringExclude,
+            ];
+        }
+
+        $contentObject = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        return $contentObject->typoLink_URL($instructions);
+    }
+
+    /**
+     * Merges view helper arguments with typolink parts.
+     *
+     * @param array $typoLinkConfiguration
+     * @param array $arguments
+     * @return array
+     */
+    protected static function mergeTypoLinkConfiguration(array $typoLinkConfiguration, array $arguments): array
+    {
+        if ($typoLinkConfiguration === []) {
+            return $typoLinkConfiguration;
+        }
+
+        $additionalParameters = $arguments['additionalParams'] ?? '';
 
         // Combine additionalParams
         if ($additionalParameters) {
-            $typolinkConfiguration['additionalParams'] .= $additionalParameters;
+            $typoLinkConfiguration['additionalParams'] .= $additionalParameters;
         }
 
-        return $typoLinkCodec->encode($typolinkConfiguration);
+        return $typoLinkConfiguration;
     }
 }
