@@ -810,7 +810,7 @@ class DataHandlerHook
             $dataHandler->newlog('Records in workspace #' . $swapVersion['t3ver_wsid'] . ' can only be published when in "Publish" stage.', SystemLogErrorClassification::USER_ERROR);
             return;
         }
-        if (!($dataHandler->doesRecordExist($table, $swapWith, 'show') && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
+        if (!($dataHandler->doesRecordExist($table, $swapWith, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
             $dataHandler->newlog('You cannot publish a record you do not have edit and show permissions for', SystemLogErrorClassification::USER_ERROR);
             return;
         }

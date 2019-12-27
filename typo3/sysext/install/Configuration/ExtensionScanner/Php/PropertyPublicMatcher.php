@@ -646,4 +646,14 @@ return [
             'Deprecation-89868-RemoveReqCHashFunctionalityForPlugins.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->defaultPermissions' => [
+        'restFiles' => [
+            'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->pMap' => [
+        'restFiles' => [
+            'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
+        ],
+    ],
 ];

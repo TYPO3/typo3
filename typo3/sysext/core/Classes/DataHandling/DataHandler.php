@@ -363,12 +363,18 @@ class DataHandler implements LoggerAwareInterface
      * Can be overridden from $GLOBALS['TYPO3_CONF_VARS']
      *
      * @var array
+     * @deprecated will be removed in TYPO3 11. use PagePermissionAssembler instead.
      */
     public $defaultPermissions = [
         'user' => 'show,edit,delete,new,editcontent',
         'group' => 'show,edit,new,editcontent',
         'everybody' => ''
     ];
+
+    /**
+     * @var PagePermissionAssembler
+     */
+    protected $pagePermissionAssembler;
 
     /**
      * The list of <table>-<fields> that cannot be edited by user. This is compiled from TCA/exclude-flag combined with non_exclude_fields for the user.
@@ -418,6 +424,7 @@ class DataHandler implements LoggerAwareInterface
      * Permission mapping
      *
      * @var array
+     * @deprecated will be removed in TYPO3 11. use PagePermissionAssembler instead.
      */
     public $pMap = [
         'show' => 1,
@@ -632,6 +639,7 @@ class DataHandler implements LoggerAwareInterface
         $this->checkStoredRecords = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecords'];
         $this->checkStoredRecords_loose = (bool)$GLOBALS['TYPO3_CONF_VARS']['BE']['checkStoredRecordsLoose'];
         $this->runtimeCache = $this->getRuntimeCache();
+        $this->pagePermissionAssembler = GeneralUtility::makeInstance(PagePermissionAssembler::class, $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPermissions']);
     }
 
     /**
@@ -1056,10 +1064,12 @@ class DataHandler implements LoggerAwareInterface
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                 [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: $fieldArray['pid']);
                 if ($status === 'new' && $table === 'pages') {
-                    $TSConfig = BackendUtility::getPagesTSconfig($tscPID)['TCEMAIN.'] ?? [];
-                    if (isset($TSConfig['permissions.']) && is_array($TSConfig['permissions.'])) {
-                        $fieldArray = $this->setTSconfigPermissions($fieldArray, $TSConfig['permissions.']);
-                    }
+                    $fieldArray = $this->pagePermissionAssembler->applyDefaults(
+                        $fieldArray,
+                        (int)$tscPid,
+                        (int)$this->userid,
+                        (int)$this->BE_USER->firstMainGroup
+                    );
                 }
                 // Processing of all fields in incomingFieldArray and setting them in $fieldArray
                 $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
@@ -3153,7 +3163,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Fetch record with permission check
-        $row = $this->recordInfoWithPermissionCheck($table, $uid, 'show');
+        $row = $this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_SHOW);
 
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
@@ -3478,7 +3488,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Fetch record with permission check
-        $row = $this->recordInfoWithPermissionCheck($table, $uid, 'show');
+        $row = $this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_SHOW);
 
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
@@ -3937,7 +3947,7 @@ class DataHandler implements LoggerAwareInterface
             // Edit rights for the record...
             $mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
         } else {
-            $mayMoveAccess = $this->doesRecordExist($table, $uid, 'delete');
+            $mayMoveAccess = $this->doesRecordExist($table, $uid, Permission::PAGE_DELETE);
         }
         // Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new),
         // unless the pages are moved on the same pid, then edit-rights are checked
@@ -4302,7 +4312,7 @@ class DataHandler implements LoggerAwareInterface
             return false;
         }
 
-        if (!$this->doesRecordExist($table, $uid, 'show')) {
+        if (!$this->doesRecordExist($table, $uid, Permission::PAGE_SHOW)) {
             $this->newlog('Attempt to localize record ' . $table . ':' . $uid . ' without permission.', SystemLogErrorClassification::USER_ERROR);
             return false;
         }
@@ -4715,7 +4725,7 @@ class DataHandler implements LoggerAwareInterface
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
             return;
         }
-        if (!$noRecordCheck && !$this->doesRecordExist($table, $uid, 'delete')) {
+        if (!$noRecordCheck && !$this->doesRecordExist($table, $uid, Permission::PAGE_DELETE)) {
             return;
         }
 
@@ -4950,16 +4960,16 @@ class DataHandler implements LoggerAwareInterface
         // Because it is currently only deleting the translation
         $defaultLanguagePageId = $this->getDefaultLanguagePageId($uid);
         if ($defaultLanguagePageId !== $uid) {
-            if ($this->doesRecordExist('pages', (int)$defaultLanguagePageId, 'delete')) {
+            if ($this->doesRecordExist('pages', (int)$defaultLanguagePageId, Permission::PAGE_DELETE)) {
                 $isTranslatedPage = true;
             } else {
                 return 'Attempt to delete page without permissions';
             }
-        } elseif (!$this->doesRecordExist('pages', $uid, 'delete')) {
+        } elseif (!$this->doesRecordExist('pages', $uid, Permission::PAGE_DELETE)) {
             return 'Attempt to delete page without permissions';
         }
 
-        $pageIdsInBranch = $this->doesBranchExist('', $uid, $this->pMap['delete'], true);
+        $pageIdsInBranch = $this->doesBranchExist('', $uid, Permission::PAGE_DELETE, true);
 
         if ($this->deleteTree) {
             if ($pageIdsInBranch === -1) {
@@ -5003,7 +5013,7 @@ class DataHandler implements LoggerAwareInterface
             $res = $this->canDeletePage($id);
             return is_array($res) ? false : $res;
         }
-        return $this->doesRecordExist($table, $id, 'delete') ? false : 'No permission to delete record';
+        return $this->doesRecordExist($table, $id, Permission::PAGE_DELETE) ? false : 'No permission to delete record';
     }
 
     /**
@@ -5183,7 +5193,7 @@ class DataHandler implements LoggerAwareInterface
         }
 
         // Fetch record with permission check
-        $row = $this->recordInfoWithPermissionCheck($table, $id, 'show');
+        $row = $this->recordInfoWithPermissionCheck($table, $id, Permission::PAGE_SHOW);
 
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
@@ -5984,7 +5994,13 @@ class DataHandler implements LoggerAwareInterface
                 return $cachedValue;
             }
 
-            if ($this->doesRecordExist($table, $id, 'edit')) {
+            if ($table === 'pages' || ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap))) {
+                // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
+                $perms = Permission::PAGE_EDIT;
+            } else {
+                $perms = Permission::CONTENT_EDIT;
+            }
+            if ($this->doesRecordExist($table, $id, $perms)) {
                 $res = 1;
             }
             // Cache the result
@@ -6015,12 +6031,12 @@ class DataHandler implements LoggerAwareInterface
 
         $res = false;
         if ($insertTable === 'pages') {
-            $perms = $this->pMap['new'];
+            $perms = Permission::PAGE_NEW;
         } elseif (($insertTable === 'sys_file_reference') && array_key_exists('pages', $this->datamap)) {
             // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
-            $perms = $this->pMap['edit'];
+            $perms = Permission::PAGE_EDIT;
         } else {
-            $perms = $this->pMap['editcontent'];
+            $perms = Permission::CONTENT_EDIT;
         }
         $pageExists = (bool)$this->doesRecordExist('pages', $pid, $perms);
         // If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
@@ -6080,13 +6096,16 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record table name
      * @param int $id Record UID
-     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
+     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array. Only integers are supported starting with TYPO3 v11.
      * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
      *
      * @throws \RuntimeException
      */
     public function doesRecordExist($table, $id, $perms)
     {
+        if (!MathUtility::canBeInterpretedAsInteger($perms)) {
+            trigger_error('Support for handing in permissions as string into "doesRecordExist" will be not be supported with TYPO3 v11 anymore. Use the Permission BitSet class instead.', E_USER_DEPRECATED);
+        }
         return $this->recordInfoWithPermissionCheck($table, $id, $perms, 'uid, pid') !== false;
     }
 
@@ -6379,7 +6398,7 @@ class DataHandler implements LoggerAwareInterface
      *
      * @param string $table Record table name
      * @param int $id Record UID
-     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array
+     * @param int|string $perms Permission restrictions to observe: Either an integer that will be bitwise AND'ed or a string, which points to a key in the ->pMap array. With TYPO3 v11, only integers are allowed
      * @param string $fieldList - fields - default is '*'
      * @throws \RuntimeException
      * @return array|bool Row if exists and accessible, false otherwise
@@ -6402,12 +6421,11 @@ class DataHandler implements LoggerAwareInterface
         }
         // Processing the incoming $perms (from possible string to integer that can be AND'ed)
         if (!MathUtility::canBeInterpretedAsInteger($perms)) {
+            trigger_error('Support for handing in permissions as string into "recordInfoWithPermissionCheck" will be not be supported with TYPO3 v11 anymore. Use the Permission BitSet class instead.', E_USER_DEPRECATED);
             if ($table !== 'pages') {
                 switch ($perms) {
                     case 'edit':
-
                     case 'delete':
-
                     case 'new':
                         // This holds it all in case the record is not page!!
                         if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
@@ -6418,7 +6436,7 @@ class DataHandler implements LoggerAwareInterface
                         break;
                 }
             }
-            $perms = (int)$this->pMap[$perms];
+            $perms = (int)(Permission::getMap()[$perms] ?? 0);
         } else {
             $perms = (int)$perms;
         }
@@ -7084,9 +7102,11 @@ class DataHandler implements LoggerAwareInterface
      * @param array $fieldArray Field Array, returned with modifications
      * @param array $TSConfig_p TSconfig properties
      * @return array Modified Field Array
+     * @deprecated will be removed in TYPO3 v11.0 - Use PagePermissionAssembler instead.
      */
     public function setTSconfigPermissions($fieldArray, $TSConfig_p)
     {
+        trigger_error('DataHandler->setTSconfigPermissions will be removed in TYPO3 v11.0. Use the PagePermissionAssembler API instead.', E_USER_DEPRECATED);
         if ((string)$TSConfig_p['userid'] !== '') {
             $fieldArray['perms_userid'] = (int)$TSConfig_p['userid'];
         }
@@ -7123,14 +7143,6 @@ class DataHandler implements LoggerAwareInterface
                     $fieldArray[$field] = $content['config']['default'];
                 }
             }
-        }
-        // Set default permissions for a page.
-        if ($table === 'pages') {
-            $fieldArray['perms_userid'] = $this->userid;
-            $fieldArray['perms_groupid'] = (int)$this->BE_USER->firstMainGroup;
-            $fieldArray['perms_user'] = $this->assemblePermissions($this->defaultPermissions['user']);
-            $fieldArray['perms_group'] = $this->assemblePermissions($this->defaultPermissions['group']);
-            $fieldArray['perms_everybody'] = $this->assemblePermissions($this->defaultPermissions['everybody']);
         }
         return $fieldArray;
     }
@@ -7282,14 +7294,17 @@ class DataHandler implements LoggerAwareInterface
      * @return int Integer mask
      * @see setTSconfigPermissions()
      * @see newFieldArray()
+     * @deprecated will be removed in TYPO3 v11.0 - Use PagePermissionAssembler instead.
      */
     public function assemblePermissions($string)
     {
+        trigger_error('DataHandler->assemblePermissions will be removed in TYPO3 v11.0. Use the PagePermissionAssembler API instead.', E_USER_DEPRECATED);
         $keyArr = GeneralUtility::trimExplode(',', $string, true);
         $value = 0;
+        $permissionMap = Permission::getMap();
         foreach ($keyArr as $key) {
-            if ($key && isset($this->pMap[$key])) {
-                $value |= $this->pMap[$key];
+            if ($key && isset($permissionMap[$key])) {
+                $value |= $permissionMap[$key];
             }
         }
         return $value;
@@ -7443,7 +7458,7 @@ class DataHandler implements LoggerAwareInterface
                 ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, \PDO::PARAM_INT)))
                 ->orderBy('sorting', 'DESC');
             if (!$this->admin) {
-                $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($this->pMap['show']));
+                $queryBuilder->andWhere($this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW));
             }
             if ((int)$this->BE_USER->workspace === 0) {
                 $queryBuilder->andWhere(
