@@ -23,7 +23,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * Contains functions for management, validation etc of files in TYPO3.
  *
- * Note: All methods in this class should not be used anymore since TYPO3 6.0.
+ * @internal All methods in this class should not be used anymore since TYPO3 6.0, this class is therefore marked
+ * as internal.
  * Please use corresponding \TYPO3\CMS\Core\Resource\ResourceStorage
  * (fetched via BE_USERS->getFileStorages()), as all functions should be
  * found there (in a cleaner manner).
@@ -49,16 +50,6 @@ class BasicFileUtility
      */
     public $uniquePrecision = 6;
 
-    /**
-     * Allowed and denied file extensions
-     * @var array
-     */
-    protected $fileExtensionPermissions = [
-        'allow' => '*',
-        'deny' => PHP_EXTENSIONS_DEFAULT
-
-    ];
-
     /**********************************
      *
      * Checking functions
@@ -73,54 +64,7 @@ class BasicFileUtility
      */
     public function setFileExtensionPermissions($allowedFilePermissions, $deniedFilePermissions)
     {
-        $this->fileExtensionPermissions['allow'] = GeneralUtility::uniqueList(strtolower($allowedFilePermissions));
-        $this->fileExtensionPermissions['deny'] = GeneralUtility::uniqueList(strtolower($deniedFilePermissions));
-    }
-
-    /**
-     * Checks if a $fileExtension is allowed according to $this->fileExtensionPermissions.
-     *
-     * @param string $fileExtension The extension to check, eg. "php" or "html" etc.
-     * @return bool TRUE if file extension is allowed.
-     */
-    protected function is_allowed($fileExtension)
-    {
-        $fileExtension = strtolower($fileExtension);
-        if ($fileExtension) {
-            // If the extension is found amongst the allowed types, we return TRUE immediately
-            if ($this->fileExtensionPermissions['allow'] === '*' || GeneralUtility::inList($this->fileExtensionPermissions['allow'], $fileExtension)) {
-                return true;
-            }
-            // If the extension is found amongst the denied types, we return FALSE immediately
-            if ($this->fileExtensionPermissions['deny'] === '*' || GeneralUtility::inList($this->fileExtensionPermissions['deny'], $fileExtension)) {
-                return false;
-            }
-        } else {
-            // If no extension
-            if ($this->fileExtensionPermissions['allow'] === '*') {
-                return true;
-            }
-            if ($this->fileExtensionPermissions['deny'] === '*') {
-                return false;
-            }
-        }
-        // If no match we return TRUE
-        return true;
-    }
-
-    /**
-     * If the filename is given, check it against the TYPO3_CONF_VARS[BE][fileDenyPattern] +
-     * Checks if the $ext fileextension is allowed
-     *
-     * @param string $ext File extension, eg. "php" or "html
-     * @param string $_ not in use anymore
-     * @param string $filename Filename to check against TYPO3_CONF_VARS[BE][fileDenyPattern]
-     * @return bool TRUE if extension/filename is allowed
-     * @internal May be removed without further notice. Method has been marked as deprecated for various versions but is still used in core.
-     */
-    public function checkIfAllowed($ext, $_, $filename = '')
-    {
-        return GeneralUtility::verifyFilenameAgainstDenyPattern($filename) && $this->is_allowed($ext);
+        trigger_error('BasicFileUtility->setFileExtensionPermissions() serves no purpose anymore. Any usages can be removed, as the FAL API is handling file permissions.', E_USER_DEPRECATED);
     }
 
     /**
@@ -128,15 +72,16 @@ class BasicFileUtility
      *
      * @param string $theDir Directory path to check
      * @return bool|string Returns the cleaned up directory name if OK, otherwise FALSE.
+     * @todo: should go into the LocalDriver in a protected way (not important to the outside world)
      */
-    protected function is_directory($theDir)
+    protected function sanitizeFolderPath($theDir)
     {
-        // @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-        if (GeneralUtility::validPathStr($theDir)) {
-            $theDir = PathUtility::getCanonicalPath($theDir);
-            if (@is_dir($theDir)) {
-                return $theDir;
-            }
+        if (!GeneralUtility::validPathStr($theDir)) {
+            return false;
+        }
+        $theDir = PathUtility::getCanonicalPath($theDir);
+        if (@is_dir($theDir)) {
+            return $theDir;
         }
         return false;
     }
@@ -150,17 +95,16 @@ class BasicFileUtility
      * @param string $theDest The directory for which to return a unique filename for $theFile. $theDest MUST be a valid directory. Should be absolute.
      * @param bool $dontCheckForUnique If set the filename is returned with the path prepended without checking whether it already existed!
      * @return string The destination absolute filepath (not just the name!) of a unique filename/foldername in that path.
-     * @see \TYPO3\CMS\Core\DataHandling\DataHandler::checkValue()
      * @internal May be removed without further notice. Method has been marked as deprecated for various versions but is still used in core.
+     * @todo: should go into the LocalDriver in a protected way (not important to the outside world)
      */
     public function getUniqueName($theFile, $theDest, $dontCheckForUnique = false)
     {
-        // @todo: should go into the LocalDriver in a protected way (not important to the outside world)
-        $theDest = $this->is_directory($theDest);
         // $theDest is cleaned up
-        $origFileInfo = GeneralUtility::split_fileref($theFile);
-        // Fetches info about path, name, extension of $theFile
+        $theDest = $this->sanitizeFolderPath($theDest);
         if ($theDest) {
+            // Fetches info about path, name, extension of $theFile
+            $origFileInfo = GeneralUtility::split_fileref($theFile);
             // Check if the file exists and if not - return the filename...
             $fileInfo = $origFileInfo;
             $theDestFile = $theDest . '/' . $fileInfo['file'];

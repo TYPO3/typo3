@@ -55,12 +55,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This class contains functions primarily used by tce_file.php (TYPO3 Core Engine for file manipulation)
  * Functions include copying, moving, deleting, uploading and so on...
  *
- * Important internal variables:
+ * All fileoperations must be within the filemount paths of the user.
  *
- * $fileExtensionPermissions (see basicFileFunctions)
- *
- * All fileoperations must be within the filemount paths of the user. Further the fileextension
- * MUST validate TRUE with the fileExtensionPermissions array
+ * @internal Since TYPO3 v10, this class should not be used anymore outside of TYPO3 Core, and is considered internal,
+ * as the FAL API should be used instead.
  */
 class ExtendedFileUtility extends BasicFileUtility
 {

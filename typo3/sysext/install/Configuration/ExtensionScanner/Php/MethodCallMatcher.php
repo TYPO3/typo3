@@ -4392,4 +4392,11 @@ return [
             'Deprecation-90019-ExtractionOfDataHandlerPagePermissionLogic.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\File\BasicFileUtility->setFileExtensionPermissions' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Important-90020-LegacyBasicFileUtilityAndExtendedFileUtilityClassesMarkedAsInternal.rst',
+        ],
+    ],
 ];
