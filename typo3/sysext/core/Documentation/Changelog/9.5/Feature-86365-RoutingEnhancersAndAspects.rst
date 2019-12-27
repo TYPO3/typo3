@@ -186,7 +186,7 @@ And generate the following URLs
        routes:
          - { routePath: '/list/{page}', _controller: 'News::list', _arguments: {'page': '@widget_0/currentPage'} }
          - { routePath: '/tag/{tag_name}', _controller: 'News::list', _arguments: {'tag_name': 'overwriteDemand/tags'}}
-         - { routePath: '/blog/{news_title}', _controller: 'News::detail', _arguments: {'news_title': 'news'} }
+         - { routePath: '/detail/{news_title}', _controller: 'News::detail', _arguments: {'news_title': 'news'} }
          - { routePath: '/archive/{year}/{month}', _controller: 'News::archive' }
        defaultController: 'News::list'
        defaults:
