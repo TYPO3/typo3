@@ -9,7 +9,7 @@ See :issue:`89929`
 Description
 ===========
 
-When adding a new language to a site or the system (`sys_language`) the Galacian flag (ISO-639-1 Code "gl") is now available for selection.
+When adding a new language to a site or the system (`sys_language`) the Galician flag (ISO-639-1 Code "gl") is now available for selection.
 
 
 Impact
