@@ -61,7 +61,7 @@ abstract public class AbstractCoreSpec {
                     " typo3DatabaseHost=\"localhost\"" +
                     " typo3DatabasePort=\"5433\"" +
                     " typo3InstallToolPassword=\"klaus\"";
-    private String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=8.7.29";
+    private String composerRootVersionEnvironment = "COMPOSER_ROOT_VERSION=8.7.30";
     private String testingFrameworkBuildPath = "vendor/typo3/testing-framework/Resources/Core/Build/";
 
     /**
