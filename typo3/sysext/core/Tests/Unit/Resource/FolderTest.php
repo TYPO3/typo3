@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -48,8 +49,8 @@ class FolderTest extends UnitTestCase
      */
     public function constructorArgumentsAreAvailableAtRuntime()
     {
-        $path = $this->getUniqueId();
-        $name = $this->getUniqueId();
+        $path = StringUtility::getUniqueId('path_');
+        $name = StringUtility::getUniqueId('name_');
         $mockedStorage = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
         $fixture = $this->createFolderFixture($path, $name, $mockedStorage);
         self::assertSame($mockedStorage, $fixture->getStorage());

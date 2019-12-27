@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\EmConfUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
@@ -41,7 +42,7 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     protected function createFakeExtension($extkeyOnly = false)
     {
-        $extKey = strtolower($this->getUniqueId('testing'));
+        $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/ext-' . $extKey . '/';
         $relPath = 'typo3temp/var/tests/ext-' . $extKey . '/';
         $this->fakedExtensions[$extKey] = [
@@ -155,7 +156,7 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     public function addDirectoryAddsDirectory()
     {
-        $extDirPath = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test-extensions-');
+        $extDirPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test-extensions-');
         $this->testFilesToDelete[] = $extDirPath;
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('addDirectory', $extDirPath);
@@ -167,7 +168,7 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     public function removeDirectoryRemovesDirectory()
     {
-        $extDirPath = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test-extensions-');
+        $extDirPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test-extensions-');
         @mkdir($extDirPath);
         $fileHandlerMock = $this->getAccessibleMock(FileHandlingUtility::class, ['dummy']);
         $fileHandlerMock->_call('removeDirectory', $extDirPath);
@@ -179,8 +180,8 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     public function removeDirectoryRemovesSymlink()
     {
-        $absoluteSymlinkPath = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_symlink_');
-        $absoluteFilePath = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_file_');
+        $absoluteSymlinkPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_symlink_');
+        $absoluteFilePath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_file_');
         touch($absoluteFilePath);
         $this->testFilesToDelete[] = $absoluteFilePath;
         symlink($absoluteFilePath, $absoluteSymlinkPath);
@@ -194,9 +195,9 @@ class FileHandlingUtilityTest extends UnitTestCase
      */
     public function removeDirectoryDoesNotRemoveContentOfSymlinkedTargetDirectory()
     {
-        $absoluteSymlinkPath = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_symlink_');
-        $absoluteDirectoryPath = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_dir_') . '/';
-        $relativeFilePath = $this->getUniqueId('test_file_');
+        $absoluteSymlinkPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_symlink_');
+        $absoluteDirectoryPath = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_dir_') . '/';
+        $relativeFilePath = StringUtility::getUniqueId('test_file_');
 
         mkdir($absoluteDirectoryPath);
         touch($absoluteDirectoryPath . $relativeFilePath);

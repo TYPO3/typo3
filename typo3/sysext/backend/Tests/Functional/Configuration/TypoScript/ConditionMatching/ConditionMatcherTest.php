@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -267,7 +268,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function genericGetVariablesSucceedsWithNamespaceENV(): void
     {
-        $testKey = $this->getUniqueId('test');
+        $testKey = StringUtility::getUniqueId('test');
         putenv($testKey . '=testValue');
         self::assertTrue($this->subject->match('[getenv("' . $testKey . '") == "testValue"]'));
     }

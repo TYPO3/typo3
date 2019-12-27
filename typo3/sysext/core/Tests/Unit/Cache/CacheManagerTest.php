@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendDefaultFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendIdentifierFixture;
 use TYPO3\CMS\Core\Tests\Unit\Cache\Fixtures\FrontendInitializeObjectFixture;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -317,7 +318,7 @@ class CacheManagerTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
-        $cacheIdentifier = $this->getUniqueId('Test');
+        $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
             $cacheIdentifier => [
                 'backend' => BackendFixture::class,
@@ -343,7 +344,7 @@ class CacheManagerTest extends UnitTestCase
     {
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface|CacheManager $manager */
         $manager = $this->getAccessibleMock(CacheManager::class, ['dummy'], [], '', false);
-        $cacheIdentifier = $this->getUniqueId('Test');
+        $cacheIdentifier = StringUtility::getUniqueId('Test');
         $configuration = [
             $cacheIdentifier => [
                 'frontend' => FrontendFixture::class,

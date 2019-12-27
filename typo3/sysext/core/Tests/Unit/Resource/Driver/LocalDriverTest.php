@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test case
@@ -86,7 +87,7 @@ class LocalDriverTest extends BaseTestCase
      */
     protected function createRealTestdir(): string
     {
-        $basedir = Environment::getVarPath() . '/tests/' . $this->getUniqueId('fal-test-');
+        $basedir = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('fal-test-');
         mkdir($basedir);
         $this->testDirs[] = $basedir;
         return $basedir;
@@ -534,7 +535,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function getPublicUrlReturnsCorrectUriForConfiguredBaseUri(): void
     {
-        $baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
+        $baseUri = 'http://example.org/foobar/' . StringUtility::getUniqueId('uri_');
         $this->addToMount([
             'file.ext' => 'asdf',
             'subfolder' => [
@@ -570,7 +571,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function getPublicUrlReturnsValidUrlContainingSpecialCharacters(string $fileIdentifier): void
     {
-        $baseUri = 'http://example.org/foobar/' . $this->getUniqueId();
+        $baseUri = 'http://example.org/foobar/' . StringUtility::getUniqueId('uri_');
         $subject = $this->createDriver([
             'baseUri' => $baseUri
         ]);
@@ -936,7 +937,7 @@ class LocalDriverTest extends BaseTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1304964032);
         $subject = $this->createDriver();
-        $subject->hash('/hashFile', $this->getUniqueId());
+        $subject->hash('/hashFile', StringUtility::getUniqueId('uri_'));
     }
 
     /**
@@ -1158,7 +1159,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function filesCanBeCopiedWithinStorage(): void
     {
-        $fileContents = $this->getUniqueId();
+        $fileContents = StringUtility::getUniqueId('content_');
         $this->addToMount([
             'someFile' => $fileContents,
             'targetFolder' => []
@@ -1176,7 +1177,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function filesCanBeMovedWithinStorage(): void
     {
-        $fileContents = $this->getUniqueId();
+        $fileContents = StringUtility::getUniqueId('content_');
         $this->addToMount([
             'targetFolder' => [],
             'someFile' => $fileContents
@@ -1193,7 +1194,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function fileMetadataIsChangedAfterMovingFile(): void
     {
-        $fileContents = $this->getUniqueId();
+        $fileContents = StringUtility::getUniqueId('content_');
         $this->addToMount([
             'targetFolder' => [],
             'someFile' => $fileContents
@@ -1406,7 +1407,7 @@ class LocalDriverTest extends BaseTestCase
      */
     public function foldersCanBeMovedWithinStorage(): void
     {
-        $fileContents = $this->getUniqueId();
+        $fileContents = StringUtility::getUniqueId('content_');
         $this->addToMount([
             'sourceFolder' => [
                 'file' => $fileContents,
@@ -1451,7 +1452,7 @@ class LocalDriverTest extends BaseTestCase
     {
         $this->addToMount([
             'sourceFolder' => [
-                'file' => $this->getUniqueId(),
+                'file' => StringUtility::getUniqueId('content_'),
             ],
             'targetFolder' => [],
         ]);
@@ -1467,7 +1468,7 @@ class LocalDriverTest extends BaseTestCase
     {
         $this->addToMount([
             'sourceFolder' => [
-                'file' => $this->getUniqueId(),
+                'file' => StringUtility::getUniqueId('name_'),
             ],
             'targetFolder' => [],
         ]);
@@ -1497,7 +1498,7 @@ class LocalDriverTest extends BaseTestCase
         [$basePath, $subject] = $this->prepareRealTestEnvironment();
         GeneralUtility::mkdir_deep($basePath . '/sourceFolder/subFolder');
         GeneralUtility::mkdir_deep($basePath . '/targetFolder');
-        file_put_contents($basePath . '/sourceFolder/subFolder/file', $this->getUniqueId());
+        file_put_contents($basePath . '/sourceFolder/subFolder/file', StringUtility::getUniqueId('content_'));
         GeneralUtility::fixPermissions($basePath . '/sourceFolder/subFolder/file');
 
         $subject->copyFolderWithinStorage('/sourceFolder/', '/targetFolder/', 'newFolderName');

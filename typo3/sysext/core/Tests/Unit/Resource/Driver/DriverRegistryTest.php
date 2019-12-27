@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
 use TYPO3\CMS\Core\Resource\Driver\AbstractDriver;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -60,7 +61,7 @@ class DriverRegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314979197);
-        $this->subject->registerDriverClass($this->getUniqueId());
+        $this->subject->registerDriverClass(StringUtility::getUniqueId('class_'));
     }
 
     /**
@@ -83,7 +84,7 @@ class DriverRegistryTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1314085990);
-        $this->subject->getDriverClass($this->getUniqueId());
+        $this->subject->getDriverClass(StringUtility::getUniqueId('class_'));
     }
 
     /**
@@ -102,7 +103,7 @@ class DriverRegistryTest extends UnitTestCase
     public function driverRegistryIsInitializedWithPreconfiguredDrivers(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
-        $shortName = $this->getUniqueId();
+        $shortName = StringUtility::getUniqueId('class_');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
                 'class' => $className
@@ -118,7 +119,7 @@ class DriverRegistryTest extends UnitTestCase
     public function driverExistsReturnsTrueForAllExistingDrivers(): void
     {
         $className = get_class($this->getMockForAbstractClass(AbstractDriver::class));
-        $shortName = $this->getUniqueId();
+        $shortName = StringUtility::getUniqueId('class_');
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [
             $shortName => [
                 'class' => $className
@@ -126,7 +127,7 @@ class DriverRegistryTest extends UnitTestCase
         ];
         $this->initializeSubject();
         self::assertTrue($this->subject->driverExists($shortName));
-        self::assertFalse($this->subject->driverExists($this->getUniqueId()));
+        self::assertFalse($this->subject->driverExists(StringUtility::getUniqueId('class')));
     }
 
     /**
@@ -136,6 +137,6 @@ class DriverRegistryTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = [];
         $this->initializeSubject();
-        self::assertFalse($this->subject->driverExists($this->getUniqueId()));
+        self::assertFalse($this->subject->driverExists(StringUtility::getUniqueId('class_')));
     }
 }

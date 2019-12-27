@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\TextExtraction;
 
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorInterface;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -49,7 +50,7 @@ class TextExtractorRegistryTest extends UnitTestCase
      */
     public function registeredTextExtractorClassCanBeRetrieved()
     {
-        $textExtractorClass = $this->getUniqueId('myTextExtractor');
+        $textExtractorClass = StringUtility::getUniqueId('myTextExtractor');
         $textExtractorInstance = $this->getMockBuilder(TextExtractorInterface::class)
             ->setMockClassName($textExtractorClass)
             ->getMock();
@@ -69,7 +70,7 @@ class TextExtractorRegistryTest extends UnitTestCase
         $this->expectExceptionCode(1422906893);
 
         $textExtractorRegistry = $this->getTextExtractorRegistry();
-        $textExtractorRegistry->registerTextExtractor($this->getUniqueId());
+        $textExtractorRegistry->registerTextExtractor(StringUtility::getUniqueId());
     }
 
     /**

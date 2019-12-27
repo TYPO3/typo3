@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Log\Writer\FileWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -54,7 +55,7 @@ class FileWriterTest extends UnitTestCase
     protected function createLogger($name = ''): Logger
     {
         if (empty($name)) {
-            $name = $this->getUniqueId('test.core.log.');
+            $name = StringUtility::getUniqueId('test.core.log.');
         }
         GeneralUtility::makeInstance(LogManager::class)->registerLogger($name);
         /** @var Logger $logger */
@@ -130,8 +131,8 @@ class FileWriterTest extends UnitTestCase
      */
     public function logsToFileDataProvider(): array
     {
-        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
-        $recordWithData = GeneralUtility::makeInstance(LogRecord::class, $this->getUniqueId('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
+        $simpleRecord = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.simpleRecord.'), \TYPO3\CMS\Core\Log\LogLevel::INFO, 'test record');
+        $recordWithData = GeneralUtility::makeInstance(LogRecord::class, StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'), \TYPO3\CMS\Core\Log\LogLevel::ALERT, 'test record with data', ['foo' => ['bar' => 'baz']]);
         return [
             'simple record' => [$simpleRecord, trim((string)$simpleRecord)],
             'record with data' => [$recordWithData, trim((string)$recordWithData)]
@@ -161,7 +162,7 @@ class FileWriterTest extends UnitTestCase
 
         $recordWithData = GeneralUtility::makeInstance(
             LogRecord::class,
-            $this->getUniqueId('test.core.log.fileWriter.recordWithData.'),
+            StringUtility::getUniqueId('test.core.log.fileWriter.recordWithData.'),
             \TYPO3\CMS\Core\Log\LogLevel::INFO,
             'test record with unicode and slash in data to encode',
             ['foo' => ['bar' => 'I paid 0.00€ for open source projects/code']]
@@ -212,7 +213,7 @@ class FileWriterTest extends UnitTestCase
 
         $secondWriter->expects(self::never())->method('createLogFile');
 
-        $logFilePrefix = $this->getUniqueId('unique');
+        $logFilePrefix = StringUtility::getUniqueId('unique');
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
         $secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
     }
@@ -234,7 +235,7 @@ class FileWriterTest extends UnitTestCase
         $firstWriter->expects(self::never())->method('closeLogFile');
         $secondWriter->expects(self::once())->method('closeLogFile');
 
-        $logFilePrefix = $this->getUniqueId('unique');
+        $logFilePrefix = StringUtility::getUniqueId('unique');
         $firstWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
         $secondWriter->setLogFile($this->getDefaultFileName($logFilePrefix));
         $firstWriter->__destruct();

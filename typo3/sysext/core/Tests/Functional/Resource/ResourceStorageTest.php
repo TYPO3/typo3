@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -169,7 +170,7 @@ class ResourceStorageTest extends FunctionalTestCase
      */
     public function getRoleReturnsDefaultForRegularFolders()
     {
-        $folderIdentifier = $this->getUniqueId();
+        $folderIdentifier = StringUtility::getUniqueId();
         $this->importDataSet('PACKAGE:typo3/testing-framework/Resources/Core/Functional/Fixtures/sys_file_storage.xml');
         $this->setUpBackendUserFromFixture(1);
 
@@ -197,7 +198,7 @@ class ResourceStorageTest extends FunctionalTestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325842622);
-        $subject->replaceFile($file, Environment::getPublicPath() . '/' . $this->getUniqueId());
+        $subject->replaceFile($file, Environment::getPublicPath() . '/' . StringUtility::getUniqueId());
     }
 
     /**

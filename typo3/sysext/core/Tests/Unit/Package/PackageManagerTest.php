@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\Package;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -124,10 +125,10 @@ class PackageManagerTest extends UnitTestCase
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds(): void
     {
         $expectedPackageKeys = [
-            $this->getUniqueId('TYPO3.CMS'),
-            $this->getUniqueId('TYPO3.CMS.Test'),
-            $this->getUniqueId('TYPO3.YetAnotherTestPackage'),
-            $this->getUniqueId('Lolli.Pop.NothingElse')
+            StringUtility::getUniqueId('TYPO3.CMS'),
+            StringUtility::getUniqueId('TYPO3.CMS.Test'),
+            StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage'),
+            StringUtility::getUniqueId('Lolli.Pop.NothingElse')
         ];
 
         foreach ($expectedPackageKeys as $packageKey) {
@@ -155,10 +156,10 @@ class PackageManagerTest extends UnitTestCase
     public function scanAvailablePackagesKeepsExistingPackageConfiguration(): void
     {
         $expectedPackageKeys = [
-            $this->getUniqueId('TYPO3.CMS'),
-            $this->getUniqueId('TYPO3.CMS.Test'),
-            $this->getUniqueId('TYPO3.YetAnotherTestPackage'),
-            $this->getUniqueId('Lolli.Pop.NothingElse')
+            StringUtility::getUniqueId('TYPO3.CMS'),
+            StringUtility::getUniqueId('TYPO3.CMS.Test'),
+            StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage'),
+            StringUtility::getUniqueId('Lolli.Pop.NothingElse')
         ];
 
         $packagePaths = [];
@@ -199,9 +200,9 @@ class PackageManagerTest extends UnitTestCase
     public function packageStatesConfigurationContainsRelativePaths(): void
     {
         $packageKeys = [
-            $this->getUniqueId('Lolli.Pop.NothingElse'),
-            $this->getUniqueId('TYPO3.Package'),
-            $this->getUniqueId('TYPO3.YetAnotherTestPackage')
+            StringUtility::getUniqueId('Lolli.Pop.NothingElse'),
+            StringUtility::getUniqueId('TYPO3.Package'),
+            StringUtility::getUniqueId('TYPO3.YetAnotherTestPackage')
         ];
 
         $packagePaths = [];

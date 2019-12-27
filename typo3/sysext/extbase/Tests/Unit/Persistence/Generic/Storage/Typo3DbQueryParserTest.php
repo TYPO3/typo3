@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InconsistentQuerySettingsException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
@@ -344,7 +345,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksForDefaultLanguage()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
@@ -363,7 +364,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksForNonDefaultLanguage()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
@@ -385,7 +386,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksInBackendContextWithNoGlobalTypoScriptFrontendControllerAvailable()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
@@ -403,7 +404,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksForDefaultLanguageWithoutDeleteStatementReturned()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
             'delete' => 'deleted'
@@ -423,7 +424,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksForForeignLanguageWithoutSubselection()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid'
         ];
@@ -442,7 +443,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent'
@@ -465,7 +466,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionTakesDeleteStatementIntoAccountIfNecessary()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         $GLOBALS['TCA'][$table]['ctrl'] = [
             'languageField' => 'sys_language_uid',
             'transOrigPointerField' => 'l10n_parent',
@@ -761,7 +762,7 @@ class Typo3DbQueryParserTest extends UnitTestCase
      */
     public function providerForAddPageIdStatementData()
     {
-        $table = $this->getUniqueId('tx_coretest_table');
+        $table = StringUtility::getUniqueId('tx_coretest_table');
         return [
             'set Pid to zero if rootLevel = 1' => [
                 '1',

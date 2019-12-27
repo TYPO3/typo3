@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\MetaDataAspect;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -63,7 +64,7 @@ class FileTest extends UnitTestCase
     public function commonPropertiesAreAvailableWithOwnGetters(): void
     {
         $properties = [
-            'name' => $this->getUniqueId(),
+            'name' => StringUtility::getUniqueId('name_'),
             'storage' => $this->storageMock,
             'size' => 1024
         ];
@@ -89,7 +90,7 @@ class FileTest extends UnitTestCase
      */
     public function updatePropertiesUpdatesFileProperties(): void
     {
-        $identifier = '/' . $this->getUniqueId();
+        $identifier = '/' . StringUtility::getUniqueId('identifier_');
         $fixture = new File(['uid' => 1, 'identifier' => '/test'], $this->storageMock);
         $fixture->updateProperties(['identifier' => $identifier]);
         self::assertEquals($identifier, $fixture->getIdentifier());

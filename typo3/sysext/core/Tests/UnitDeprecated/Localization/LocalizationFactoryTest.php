@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\LocalizationFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -50,7 +51,7 @@ class LocalizationFactoryTest extends UnitTestCase
 
         $subject = new LocalizationFactory;
 
-        $unique = 'locallangXMLOverrideTest' . substr($this->getUniqueId(), 0, 10);
+        $unique = 'locallangXMLOverrideTest' . substr(StringUtility::getUniqueId(), 0, 10);
         $xml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 			<T3locallang>
 				<data type="array">

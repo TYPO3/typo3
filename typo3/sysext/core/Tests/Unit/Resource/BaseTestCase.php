@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -34,8 +35,8 @@ abstract class BaseTestCase extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->mountDir = $this->getUniqueId('mount-');
-        $this->basedir = $this->getUniqueId('base-');
+        $this->mountDir = StringUtility::getUniqueId('mount-');
+        $this->basedir = StringUtility::getUniqueId('base-');
         vfsStream::setup($this->basedir);
         // Add an entry for the mount directory to the VFS contents
         $this->vfsContents = [$this->mountDir => []];

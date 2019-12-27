@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -42,7 +43,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      */
     public function fileDenyPatternMatchesPhpExtensionDataProvider()
     {
-        $fileName = $this->getUniqueId('filename');
+        $fileName = StringUtility::getUniqueId('filename');
         $data = [];
         $phpExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'php,php3,php4,php5,php6,phpsh,phtml,pht', true);
         foreach ($phpExtensions as $extension) {
@@ -69,7 +70,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      */
     public function getPathThisScriptCliReadsLocalPartFromArgv()
     {
-        $fakedLocalPart = $this->getUniqueId('Test');
+        $fakedLocalPart = StringUtility::getUniqueId('Test');
         $GLOBALS['_SERVER']['argv'][0] = $fakedLocalPart;
         self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
     }
@@ -79,7 +80,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      */
     public function getPathThisScriptCliReadsLocalPartFromEnv()
     {
-        $fakedLocalPart = $this->getUniqueId('Test');
+        $fakedLocalPart = StringUtility::getUniqueId('Test');
         unset($GLOBALS['_SERVER']['argv']);
         $GLOBALS['_ENV']['_'] = $fakedLocalPart;
         self::assertStringEndsWith($fakedLocalPart, $this->subject->_call('getPathThisScriptCli'));
@@ -90,7 +91,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
      */
     public function getPathThisScriptCliReadsLocalPartFromServer()
     {
-        $fakedLocalPart = $this->getUniqueId('Test');
+        $fakedLocalPart = StringUtility::getUniqueId('Test');
         unset($GLOBALS['_SERVER']['argv']);
         unset($GLOBALS['_ENV']['_']);
         $GLOBALS['_SERVER']['_'] = $fakedLocalPart;
@@ -103,7 +104,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     public function getPathThisScriptCliAddsCurrentWorkingDirectoryFromServerEnvironmentToLocalPathOnUnix()
     {
         $GLOBALS['_SERVER']['argv'][0] = 'foo';
-        $fakedAbsolutePart = '/' . $this->getUniqueId('Absolute') . '/';
+        $fakedAbsolutePart = '/' . StringUtility::getUniqueId('Absolute') . '/';
         $_SERVER['PWD'] = $fakedAbsolutePart;
         self::assertStringStartsWith($fakedAbsolutePart, $this->subject->_call('getPathThisScriptCli'));
     }

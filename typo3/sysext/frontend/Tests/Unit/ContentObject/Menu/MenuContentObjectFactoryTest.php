@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\Menu\Exception\NoSuchMenuTypeException;
 use TYPO3\CMS\Frontend\ContentObject\Menu\MenuContentObjectFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -31,7 +32,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
         $this->expectException(NoSuchMenuTypeException::class);
         $this->expectExceptionCode(1363278130);
         $factory = new MenuContentObjectFactory;
-        $factory->getMenuObjectByType($this->getUniqueId('foo_'));
+        $factory->getMenuObjectByType(StringUtility::getUniqueId('foo_'));
     }
 
     /**
@@ -70,7 +71,7 @@ class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $factory = new MenuContentObjectFactory;
         $selfClassName = static::class;
-        $uniqueMenuType = $this->getUniqueId('foo_');
+        $uniqueMenuType = StringUtility::getUniqueId('foo_');
         $factory->registerMenuType($uniqueMenuType, $selfClassName);
         self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType($uniqueMenuType));
     }

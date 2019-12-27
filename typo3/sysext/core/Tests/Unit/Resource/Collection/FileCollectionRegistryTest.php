@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Collection;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Test cases for FileCollectionRegistry
  */
@@ -54,7 +56,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295613);
 
-        $this->testSubject->registerFileCollectionClass($this->getUniqueId(), substr($this->getUniqueId(), 0, 30));
+        $this->testSubject->registerFileCollectionClass(StringUtility::getUniqueId('class_'), substr(StringUtility::getUniqueId('type_'), 0, 30));
     }
 
     /**
@@ -103,7 +105,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1391295644);
 
-        $this->testSubject->getFileCollectionClass($this->getUniqueId());
+        $this->testSubject->getFileCollectionClass(StringUtility::getUniqueId());
     }
 
     /**
@@ -122,7 +124,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     public function fileCollectionRegistryIsInitializedWithPreconfiguredFileCollections()
     {
         $className = get_class($this->getMockForAbstractClass(\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection::class));
-        $type = substr($this->getUniqueId(), 0, 30);
+        $type = substr(StringUtility::getUniqueId('type_'), 0, 30);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredCollections'] = [
             $type => $className
         ];
@@ -152,7 +154,7 @@ class FileCollectionRegistryTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\Bas
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredFileCollections'] = [];
         $this->initializeTestSubject();
-        self::assertFalse($this->testSubject->fileCollectionTypeExists($this->getUniqueId()));
+        self::assertFalse($this->testSubject->fileCollectionTypeExists(StringUtility::getUniqueId('name_')));
     }
 
     /**

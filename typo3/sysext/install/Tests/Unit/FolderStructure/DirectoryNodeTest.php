@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
@@ -113,7 +114,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
     public function constructorSetsName(): void
     {
         $parent = $this->createMock(RootNodeInterface::class);
-        $name = $this->getUniqueId('test_');
+        $name = StringUtility::getUniqueId('test_');
         $node = new DirectoryNode(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
     }
@@ -328,7 +329,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
             ->disableOriginalConstructor()
             ->setMethods(['fixSelf'])
             ->getMock();
-        $uniqueReturn = [$this->getUniqueId('foo_')];
+        $uniqueReturn = [StringUtility::getUniqueId('foo_')];
         $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
@@ -340,15 +341,15 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['fixSelf'], [], '', false);
-        $uniqueReturnSelf = $this->getUniqueId('foo_');
+        $uniqueReturnSelf = StringUtility::getUniqueId('foo_');
         $node->expects(self::once())->method('fixSelf')->willReturn([$uniqueReturnSelf]);
 
         $childMock1 = $this->createMock(NodeInterface::class);
-        $uniqueReturnChild1 = $this->getUniqueId('foo_');
+        $uniqueReturnChild1 = StringUtility::getUniqueId('foo_');
         $childMock1->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild1]);
 
         $childMock2 = $this->createMock(NodeInterface::class);
-        $uniqueReturnChild2 = $this->getUniqueId('foo_');
+        $uniqueReturnChild2 = StringUtility::getUniqueId('foo_');
         $childMock2->expects(self::once())->method('fix')->willReturn([$uniqueReturnChild2]);
 
         $node->_set('children', [$childMock1, $childMock2]);
@@ -470,7 +471,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(DirectoryNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestDir('root_');
         chmod($path, 02550);
-        $subPath = $path . '/' . $this->getUniqueId('dir_');
+        $subPath = $path . '/' . StringUtility::getUniqueId('dir_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->method('getAbsolutePath')->willReturn($subPath);
         $node->method('getRelativePathBelowSiteRoot')->willReturn($subPath);
@@ -541,7 +542,7 @@ class DirectoryNodeTest extends FolderStructureTestCase
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(NodeInterface::class);
-        $childName = $this->getUniqueId('test_');
+        $childName = StringUtility::getUniqueId('test_');
         $structure = [
             'name' => 'foo',
             'type' => DirectoryNode::class,
@@ -620,11 +621,11 @@ class DirectoryNodeTest extends FolderStructureTestCase
     {
         /** @var $node DirectoryNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(DirectoryNode::class, ['getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('root_');
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $link = $this->getUniqueId('link_');
-        $dir = $this->getUniqueId('dir_');
+        $link = StringUtility::getUniqueId('link_');
+        $dir = StringUtility::getUniqueId('dir_');
         mkdir($path . '/' . $dir);
         symlink($path . '/' . $dir, $path . '/' . $link);
         $node->method('getAbsolutePath')->willReturn($path . '/' . $link);

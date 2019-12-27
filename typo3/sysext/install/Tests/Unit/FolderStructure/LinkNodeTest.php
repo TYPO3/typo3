@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\LinkNode;
 use TYPO3\CMS\Install\FolderStructure\NodeInterface;
@@ -80,7 +81,7 @@ class LinkNodeTest extends UnitTestCase
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
-        $name = $this->getUniqueId('test_');
+        $name = StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
     }
@@ -93,8 +94,8 @@ class LinkNodeTest extends UnitTestCase
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(RootNodeInterface::class);
-        $name = $this->getUniqueId('test_');
-        $target = '../' . $this->getUniqueId('test_');
+        $name = StringUtility::getUniqueId('test_');
+        $target = '../' . StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name, 'target' => $target], $parent);
         self::assertSame($target, $node->_call('getTarget'));
     }
@@ -113,7 +114,7 @@ class LinkNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as link nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         self::assertIsArray($node->getStatus());
     }
@@ -132,7 +133,7 @@ class LinkNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as link nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getPublicPath() . '/tests/' . StringUtility::getUniqueId('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::once())->method('isWindowsOs')->willReturn(true);
         $statusArray = $node->getStatus();
@@ -153,7 +154,7 @@ class LinkNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as link nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getPublicPath() . '/tests/' . StringUtility::getUniqueId('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::any())->method('isWindowsOs')->willReturn(false);
         $node->expects(self::once())->method('exists')->willReturn(false);
@@ -262,8 +263,8 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
@@ -280,7 +281,7 @@ class LinkNodeTest extends UnitTestCase
     {
         /** @var $node LinkNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(LinkNode::class, ['exists', 'getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
         touch($path);
         $this->testFilesToDelete[] = $path;
         $node->expects(self::any())->method('exists')->willReturn(true);
@@ -348,8 +349,8 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isTargetCorrectReturnsTrueIfActualTargetIsIdenticalToSpecifiedTarget()
     {
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;
@@ -375,8 +376,8 @@ class LinkNodeTest extends UnitTestCase
      */
     public function isTargetCorrectReturnsFalseIfActualTargetIsNotIdenticalToSpecifiedTarget()
     {
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
-        $target = Environment::getVarPath() . '/tests/' . $this->getUniqueId('linkTarget_');
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
+        $target = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('linkTarget_');
         touch($target);
         symlink($target, $path);
         $this->testFilesToDelete[] = $path;

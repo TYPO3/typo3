@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ReplacementClassFixture;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\TwoParametersConstructorFixture;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -112,7 +113,7 @@ class GeneralUtilityTest extends UnitTestCase
     protected function getVirtualTestDir($prefix = 'root_')
     {
         $root = vfsStream::setup();
-        $path = $root->url() . '/typo3temp/var/tests/' . $this->getUniqueId($prefix);
+        $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId($prefix);
         GeneralUtility::mkdir_deep($path);
         return $path;
     }
@@ -2114,7 +2115,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileRemovesValidFileInTypo3temp()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_') . '.gif';
+        $testFilename = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
@@ -2127,7 +2128,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileRemovesHiddenFile()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('.test_') . '.gif';
+        $testFilename = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('.test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         GeneralUtility::unlink_tempfile($testFilename);
         $fileExists = file_exists($testFilename);
@@ -2140,7 +2141,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function unlink_tempfileReturnsTrueIfFileWasRemoved()
     {
         $fixtureFile = __DIR__ . '/Fixtures/clear.gif';
-        $testFilename = Environment::getVarPath() . '/tests/' . $this->getUniqueId('test_') . '.gif';
+        $testFilename = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('test_') . '.gif';
         @copy($fixtureFile, $testFilename);
         $returnValue = GeneralUtility::unlink_tempfile($testFilename);
         self::assertTrue($returnValue);
@@ -2151,7 +2152,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function unlink_tempfileReturnsNullIfFileDoesNotExist()
     {
-        $returnValue = GeneralUtility::unlink_tempfile(Environment::getVarPath() . '/tests/' . $this->getUniqueId('i_do_not_exist'));
+        $returnValue = GeneralUtility::unlink_tempfile(Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('i_do_not_exist'));
         self::assertNull($returnValue);
     }
 
@@ -2410,7 +2411,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function minifyJavaScriptReturnsInputStringIfNoHookIsRegistered()
     {
         unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['minifyJavaScript']);
-        $testString = $this->getUniqueId('string');
+        $testString = StringUtility::getUniqueId('string');
         self::assertSame($testString, GeneralUtility::minifyJavaScript($testString));
     }
 
@@ -2427,7 +2428,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
-        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $filename = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         $currentGroupId = posix_getegid();
         // Set target group and run method
@@ -2446,7 +2447,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
-        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $filename = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         // Set target permissions and run method
@@ -2466,7 +2467,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
-        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $filename = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         // Set target permissions and run method
@@ -2486,7 +2487,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
@@ -2506,7 +2507,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
@@ -2527,7 +2528,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         // Set target permissions and run method
@@ -2548,7 +2549,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test directory and file structure
-        $baseDirectory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $baseDirectory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($baseDirectory);
         chmod($baseDirectory, 1751);
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
@@ -2599,7 +2600,7 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         // Create and prepare test file
-        $filename = Environment::getVarPath() . '/tests/../../../typo3temp/var/tests/' . $this->getUniqueId('test_');
+        $filename = Environment::getVarPath() . '/tests/../../../typo3temp/var/tests/' . StringUtility::getUniqueId('test_');
         // Set target permissions and run method
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0660';
         $fixPermissionsResult = GeneralUtility::fixPermissions($filename);
@@ -2614,7 +2615,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $filename = 'typo3temp/var/tests/' . $this->getUniqueId('test_');
+        $filename = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_');
         GeneralUtility::writeFileToTypo3tempDir(Environment::getPublicPath() . '/' . $filename, '42');
         $this->testFilesToDelete[] = Environment::getPublicPath() . '/' . $filename;
         chmod(Environment::getPublicPath() . '/' . $filename, 482);
@@ -2634,7 +2635,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $filename = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $filename = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::writeFileToTypo3tempDir($filename, '42');
         chmod($filename, 482);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']);
@@ -2652,7 +2653,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtilityFilesystemFixture::mkdir($directory);
         chmod($directory, 1551);
         unset($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']);
@@ -2670,7 +2671,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirCreatesDirectory()
     {
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
@@ -2682,7 +2683,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirCreatesHiddenDirectory()
     {
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('.test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('.test_');
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
@@ -2694,7 +2695,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirCreatesDirectoryWithTrailingSlash()
     {
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_') . '/';
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_') . '/';
         $mkdirResult = GeneralUtilityFilesystemFixture::mkdir($directory);
         clearstatcache();
         self::assertTrue($mkdirResult);
@@ -2709,7 +2710,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
         GeneralUtilityFilesystemFixture::mkdir($directory);
@@ -2727,7 +2728,7 @@ class GeneralUtilityTest extends UnitTestCase
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('mkdirtest_');
+            $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('mkdirtest_');
             GeneralUtilityFilesystemFixture::mkdir($directory);
             clearstatcache();
             $resultDirectoryGroup = filegroup($directory);
@@ -2862,7 +2863,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirDeepCreatesDirectory()
     {
-        $directory = $this->getVirtualTestDir() . '/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId('test_');
         GeneralUtility::mkdir_deep($directory);
         self::assertTrue(is_dir($directory));
     }
@@ -2872,7 +2873,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function mkdirDeepCreatesSubdirectoriesRecursive()
     {
-        $directory = $this->getVirtualTestDir() . 'typo3temp/var/tests/' . $this->getUniqueId('test_');
+        $directory = $this->getVirtualTestDir() . 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_');
         $subDirectory = $directory . '/foo';
         GeneralUtility::mkdir_deep($subDirectory);
         self::assertTrue(is_dir($subDirectory));
@@ -2909,7 +2910,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $directory = $this->getUniqueId('mkdirdeeptest_');
+        $directory = StringUtility::getUniqueId('mkdirdeeptest_');
         $oldUmask = umask(19);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
@@ -2927,7 +2928,7 @@ class GeneralUtilityTest extends UnitTestCase
         if (Environment::isWindows()) {
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
-        $directory = $this->getUniqueId('mkdirdeeptest_');
+        $directory = StringUtility::getUniqueId('mkdirdeeptest_');
         $subDirectory = $directory . '/bar';
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0777';
         $oldUmask = umask(19);
@@ -2947,8 +2948,8 @@ class GeneralUtilityTest extends UnitTestCase
             self::markTestSkipped(self::NO_FIX_PERMISSIONS_ON_WINDOWS);
         }
         $baseDirectory = Environment::getVarPath() . '/tests/';
-        $existingDirectory = $this->getUniqueId('test_existing_') . '/';
-        $newSubDirectory = $this->getUniqueId('test_new_');
+        $existingDirectory = StringUtility::getUniqueId('test_existing_') . '/';
+        $newSubDirectory = StringUtility::getUniqueId('test_new_');
         @mkdir($baseDirectory . $existingDirectory);
         $this->testFilesToDelete[] = $baseDirectory . $existingDirectory;
         chmod($baseDirectory . $existingDirectory, 482);
@@ -2964,7 +2965,7 @@ class GeneralUtilityTest extends UnitTestCase
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = $this->getUniqueId('mkdirdeeptest_');
+            $directory = StringUtility::getUniqueId('mkdirdeeptest_');
             GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $directory);
             $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
             clearstatcache();
@@ -2981,7 +2982,7 @@ class GeneralUtilityTest extends UnitTestCase
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = $this->getUniqueId('mkdirdeeptest_');
+            $directory = StringUtility::getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
             GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
             $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
@@ -2999,7 +3000,7 @@ class GeneralUtilityTest extends UnitTestCase
         $swapGroup = $this->checkGroups(__FUNCTION__);
         if ($swapGroup !== false) {
             $GLOBALS['TYPO3_CONF_VARS']['SYS']['createGroup'] = $swapGroup;
-            $directory = $this->getUniqueId('mkdirdeeptest_');
+            $directory = StringUtility::getUniqueId('mkdirdeeptest_');
             $subDirectory = $directory . '/bar';
             GeneralUtility::mkdir_deep(Environment::getVarPath() . '/tests/' . $subDirectory);
             $this->testFilesToDelete[] = Environment::getVarPath() . '/tests/' . $directory;
@@ -3015,7 +3016,7 @@ class GeneralUtilityTest extends UnitTestCase
     public function mkdirDeepCreatesDirectoryInVfsStream()
     {
         vfsStreamWrapper::register();
-        $baseDirectory = $this->getUniqueId('test_');
+        $baseDirectory = StringUtility::getUniqueId('test_');
         vfsStreamWrapper::setRoot(new vfsStreamDirectory($baseDirectory));
         GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/sub');
         self::assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
@@ -3052,7 +3053,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesFile()
     {
-        $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
+        $file = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
         touch($file);
         GeneralUtility::rmdir($file);
         self::assertFalse(file_exists($file));
@@ -3063,7 +3064,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirReturnTrueIfFileWasRemoved()
     {
-        $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
+        $file = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
         touch($file);
         self::assertTrue(GeneralUtility::rmdir($file));
     }
@@ -3073,7 +3074,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirReturnFalseIfNoFileWasRemoved()
     {
-        $file = Environment::getVarPath() . '/tests/' . $this->getUniqueId('file_');
+        $file = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('file_');
         self::assertFalse(GeneralUtility::rmdir($file));
     }
 
@@ -3082,7 +3083,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDirectory()
     {
-        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_');
+        $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_');
         mkdir($directory);
         GeneralUtility::rmdir($directory);
         self::assertFalse(file_exists($directory));
@@ -3093,7 +3094,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDirectoryWithTrailingSlash()
     {
-        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
+        $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_') . '/';
         mkdir($directory);
         GeneralUtility::rmdir($directory);
         self::assertFalse(file_exists($directory));
@@ -3104,9 +3105,9 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirDoesNotRemoveDirectoryWithFilesAndReturnsFalseIfRecursiveDeletionIsOff()
     {
-        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
+        $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_') . '/';
         mkdir($directory);
-        $file = $this->getUniqueId('file_');
+        $file = StringUtility::getUniqueId('file_');
         touch($directory . $file);
         $this->testFilesToDelete[] = $directory;
         $return = GeneralUtility::rmdir($directory);
@@ -3120,7 +3121,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDirectoriesRecursiveAndReturnsTrue()
     {
-        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_') . '/';
+        $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_') . '/';
         mkdir($directory);
         mkdir($directory . 'sub/');
         touch($directory . 'sub/file');
@@ -3134,10 +3135,10 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesLinkToDirectory()
     {
-        $existingDirectory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_') . '/';
+        $existingDirectory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('notExists_') . '/';
         mkdir($existingDirectory);
         $this->testFilesToDelete[] = $existingDirectory;
-        $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $symlinkName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
         symlink($existingDirectory, $symlinkName);
         GeneralUtility::rmdir($symlinkName, true);
         self::assertFalse(is_link($symlinkName));
@@ -3148,8 +3149,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDeadLinkToDirectory()
     {
-        $notExistingDirectory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_') . '/';
-        $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $notExistingDirectory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('notExists_') . '/';
+        $symlinkName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
         mkdir($notExistingDirectory);
         symlink($notExistingDirectory, $symlinkName);
         rmdir($notExistingDirectory);
@@ -3163,8 +3164,8 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function rmdirRemovesDeadLinkToFile()
     {
-        $notExistingFile = Environment::getVarPath() . '/tests/' . $this->getUniqueId('notExists_');
-        $symlinkName = Environment::getVarPath() . '/tests/' . $this->getUniqueId('link_');
+        $notExistingFile = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('notExists_');
+        $symlinkName = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('link_');
         touch($notExistingFile);
         symlink($notExistingFile, $symlinkName);
         unlink($notExistingFile);
@@ -3390,7 +3391,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function splitFileRefReturnsFileTypeNotForFolders()
     {
-        $directoryName = $this->getUniqueId('test_') . '.com';
+        $directoryName = StringUtility::getUniqueId('test_') . '.com';
         $directoryPath = Environment::getVarPath() . '/tests/';
         $directory = $directoryPath . $directoryName;
         mkdir($directory, octdec($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']));
@@ -4126,12 +4127,12 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function copyDirectoryCopiesFilesAndDirectoriesWithRelativePaths()
     {
-        $sourceDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
+        $sourceDirectory = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_') . '/';
         $absoluteSourceDirectory = Environment::getPublicPath() . '/' . $sourceDirectory;
         $this->testFilesToDelete[] = $absoluteSourceDirectory;
         GeneralUtility::mkdir($absoluteSourceDirectory);
 
-        $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
+        $targetDirectory = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_') . '/';
         $absoluteTargetDirectory = Environment::getPublicPath() . '/' . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
 
@@ -4150,12 +4151,12 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function copyDirectoryCopiesFilesAndDirectoriesWithAbsolutePaths()
     {
-        $sourceDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
+        $sourceDirectory = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_') . '/';
         $absoluteSourceDirectory = Environment::getPublicPath() . '/' . $sourceDirectory;
         $this->testFilesToDelete[] = $absoluteSourceDirectory;
         GeneralUtility::mkdir($absoluteSourceDirectory);
 
-        $targetDirectory = 'typo3temp/var/tests/' . $this->getUniqueId('test_') . '/';
+        $targetDirectory = 'typo3temp/var/tests/' . StringUtility::getUniqueId('test_') . '/';
         $absoluteTargetDirectory = Environment::getPublicPath() . '/' . $targetDirectory;
         $this->testFilesToDelete[] = $absoluteTargetDirectory;
 
@@ -4271,7 +4272,7 @@ class GeneralUtilityTest extends UnitTestCase
      */
     public function getAllFilesAndFoldersInPathReturnsArrayWithMd5Keys()
     {
-        $directory = Environment::getVarPath() . '/tests/' . $this->getUniqueId('directory_');
+        $directory = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('directory_');
         mkdir($directory);
         $filesAndDirectories = GeneralUtility::getAllFilesAndFoldersInPath([], $directory, '', true);
         $check = true;

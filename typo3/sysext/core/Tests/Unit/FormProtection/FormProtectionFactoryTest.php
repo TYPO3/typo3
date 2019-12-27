@@ -65,7 +65,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     public function getForTypeBackEndWithExistingBackEndReturnsBackEndFormProtection()
     {
         $userMock = $this->createMock(BackendUserAuthentication::class);
-        $userMock->user = ['uid' => $this->getUniqueId()];
+        $userMock->user = ['uid' => 4711];
         self::assertInstanceOf(
             BackendFormProtection::class,
             FormProtectionFactory::get(
@@ -82,7 +82,7 @@ class FormProtectionFactoryTest extends UnitTestCase
     public function getForTypeBackEndCalledTwoTimesReturnsTheSameInstance()
     {
         $userMock = $this->createMock(BackendUserAuthentication::class);
-        $userMock->user = ['uid' => $this->getUniqueId()];
+        $userMock->user = ['uid' => 4711];
         $arguments = [
             BackendFormProtection::class,
             $userMock,

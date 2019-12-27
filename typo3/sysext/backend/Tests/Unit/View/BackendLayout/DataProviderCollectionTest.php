@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -42,7 +43,7 @@ class DataProviderCollectionTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597629);
-        $identifier = $this->getUniqueId('identifier__');
+        $identifier = StringUtility::getUniqueId('identifier__');
         $dataProviderMock = $this->getMockBuilder('stdClass')->getMock();
 
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
@@ -55,7 +56,7 @@ class DataProviderCollectionTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381269811);
-        $identifier = $this->getUniqueId('identifier');
+        $identifier = StringUtility::getUniqueId('identifier');
         $dataProviderMock = $this->getMockBuilder('stdClass')->getMock();
 
         $this->dataProviderCollection->add($identifier, get_class($dataProviderMock));
@@ -66,7 +67,7 @@ class DataProviderCollectionTest extends UnitTestCase
      */
     public function defaultBackendLayoutIsFound()
     {
-        $backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
         $dataProviderMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class)
             ->setMethods(['getBackendLayout'])
@@ -91,8 +92,8 @@ class DataProviderCollectionTest extends UnitTestCase
      */
     public function providedBackendLayoutIsFound()
     {
-        $dataProviderIdentifier = $this->getUniqueId('custom');
-        $backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $dataProviderIdentifier = StringUtility::getUniqueId('custom');
+        $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
 
         $dataProviderMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\DefaultDataProvider::class)
             ->setMethods(['getBackendLayout'])

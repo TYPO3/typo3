@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -126,7 +127,7 @@ class FileReferenceTest extends UnitTestCase
         $this->expectExceptionCode(1314226805);
 
         $fixture = $this->prepareFixture($fileReferenceProperties, $originalFileProperties);
-        $fixture->getProperty($this->getUniqueId('nothingHere'));
+        $fixture->getProperty(StringUtility::getUniqueId('nothingHere'));
     }
 
     /**

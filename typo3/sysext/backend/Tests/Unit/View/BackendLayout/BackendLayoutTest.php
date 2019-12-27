@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,9 +29,9 @@ class BackendLayoutTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597630);
-        $identifier = $this->getUniqueId('identifier__');
-        $title = $this->getUniqueId('title');
-        $configuration = $this->getUniqueId('configuration');
+        $identifier = StringUtility::getUniqueId('identifier__');
+        $title = StringUtility::getUniqueId('title');
+        $configuration = StringUtility::getUniqueId('configuration');
         new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
     }
 
@@ -39,9 +40,9 @@ class BackendLayoutTest extends UnitTestCase
      */
     public function objectIsCreated()
     {
-        $identifier = $this->getUniqueId('identifier');
-        $title = $this->getUniqueId('title');
-        $configuration = $this->getUniqueId('configuration');
+        $identifier = StringUtility::getUniqueId('identifier');
+        $title = StringUtility::getUniqueId('title');
+        $configuration = StringUtility::getUniqueId('configuration');
         $backendLayout = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
 
         self::assertEquals($identifier, $backendLayout->getIdentifier());

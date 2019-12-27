@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -28,7 +29,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597631);
-        $identifier = $this->getUniqueId('identifier__');
+        $identifier = StringUtility::getUniqueId('identifier__');
         new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
     }
 
@@ -37,7 +38,7 @@ class BackendLayoutCollectionTest extends UnitTestCase
      */
     public function objectIsCreated()
     {
-        $identifier = $this->getUniqueId('identifier');
+        $identifier = StringUtility::getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
 
         self::assertEquals($identifier, $backendLayoutCollection->getIdentifier());
@@ -50,9 +51,9 @@ class BackendLayoutCollectionTest extends UnitTestCase
     {
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1381597628);
-        $identifier = $this->getUniqueId('identifier');
+        $identifier = StringUtility::getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-        $backendLayoutIdentifier = $this->getUniqueId('identifier__');
+        $backendLayoutIdentifier = StringUtility::getUniqueId('identifier__');
         $backendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
@@ -69,9 +70,9 @@ class BackendLayoutCollectionTest extends UnitTestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionCode(1381559376);
-        $identifier = $this->getUniqueId('identifier');
+        $identifier = StringUtility::getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-        $backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
         $firstBackendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()
@@ -92,9 +93,9 @@ class BackendLayoutCollectionTest extends UnitTestCase
      */
     public function backendLayoutCanBeFetched()
     {
-        $identifier = $this->getUniqueId('identifier');
+        $identifier = StringUtility::getUniqueId('identifier');
         $backendLayoutCollection = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayoutCollection($identifier);
-        $backendLayoutIdentifier = $this->getUniqueId('identifier');
+        $backendLayoutIdentifier = StringUtility::getUniqueId('identifier');
         $backendLayoutMock = $this->getMockBuilder(\TYPO3\CMS\Backend\View\BackendLayout\BackendLayout::class)
             ->setMethods(['getIdentifier'])
             ->disableOriginalConstructor()

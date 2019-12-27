@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\Processor\NullProcessor;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -56,7 +57,7 @@ class LogManagerTest extends UnitTestCase
      */
     public function managerReturnsSameLoggerOnRepeatedRequest()
     {
-        $loggerName = $this->getUniqueId('test.core.log');
+        $loggerName = StringUtility::getUniqueId('test.core.log');
         $logger = new LogManager();
         $logger->registerLogger($loggerName);
         $logger1 = $logger->getLogger($loggerName);

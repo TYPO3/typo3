@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Tests\Unit;
  */
 
 use org\bovigo\vfs\vfsStream;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -31,7 +32,7 @@ abstract class FolderStructureTestCase extends UnitTestCase
     protected function getVirtualTestDir($prefix = 'root_')
     {
         $root = vfsStream::setup();
-        $path = $root->url() . '/typo3temp/var/tests/' . $this->getUniqueId($prefix);
+        $path = $root->url() . '/typo3temp/var/tests/' . StringUtility::getUniqueId($prefix);
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         return $path;
     }
@@ -44,6 +45,6 @@ abstract class FolderStructureTestCase extends UnitTestCase
      */
     protected function getVirtualTestFilePath($prefix = 'file_')
     {
-        return $this->getVirtualTestDir() . '/' . $this->getUniqueId($prefix);
+        return $this->getVirtualTestDir() . '/' . StringUtility::getUniqueId($prefix);
     }
 }

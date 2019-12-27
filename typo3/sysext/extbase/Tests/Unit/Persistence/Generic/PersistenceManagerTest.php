@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use Prophecy\Argument;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\Container\Container;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -322,7 +323,7 @@ class PersistenceManagerTest extends UnitTestCase
      */
     public function updateSchedulesAnObjectForPersistence(): void
     {
-        $className = $this->getUniqueId('BazFixture');
+        $className = StringUtility::getUniqueId('BazFixture');
         eval('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\' . AbstractEntity::class . ' {
@@ -424,7 +425,7 @@ class PersistenceManagerTest extends UnitTestCase
      */
     public function persistAllAddsNamespacedReconstitutedObjectFromSessionToBackendsAggregateRootObjects(): void
     {
-        $className = $this->getUniqueId('BazFixture');
+        $className = StringUtility::getUniqueId('BazFixture');
         eval('
 			namespace ' . __NAMESPACE__ . '\\Domain\\Model;
 			class ' . $className . ' extends \\' . AbstractEntity::class . ' {}

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
  */
 
 use TYPO3\CMS\Core\Category\CategoryRegistry;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -43,8 +44,8 @@ class CategoryRegistryTest extends UnitTestCase
         $GLOBALS['TCA']['pages']['columns'] = [];
         $this->subject = new CategoryRegistry();
         $this->tables = [
-            'first' => $this->getUniqueId('first'),
-            'second' => $this->getUniqueId('second')
+            'first' => StringUtility::getUniqueId('first'),
+            'second' => StringUtility::getUniqueId('second')
         ];
         foreach ($this->tables as $tableName) {
             $GLOBALS['TCA'][$tableName] = [

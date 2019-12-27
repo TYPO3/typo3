@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Collection\RecordCollectionRepository;
 use TYPO3\CMS\Core\Collection\StaticRecordCollection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
@@ -45,7 +46,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\TestingFramework\Core\Functi
         $this->subject = $this->getMockBuilder(RecordCollectionRepository::class)
             ->setMethods(['getEnvironmentMode'])
             ->getMock();
-        $this->testTableName = $this->getUniqueId('tx_testtable');
+        $this->testTableName = StringUtility::getUniqueId('tx_testtable');
     }
 
     protected function tearDown(): void

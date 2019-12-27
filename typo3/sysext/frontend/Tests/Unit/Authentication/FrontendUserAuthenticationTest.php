@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -50,7 +51,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function userFieldIsNotSetForAnonymousSessions()
     {
-        $uniqueSessionId = $this->getUniqueId('test');
+        $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
 
         // This setup fakes the "getAuthInfoArray() db call
@@ -133,7 +134,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function canSetAndUnsetSessionKey()
     {
-        $uniqueSessionId = $this->getUniqueId('test');
+        $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
 
         // This setup fakes the "getAuthInfoArray() db call
@@ -182,7 +183,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function canSetSessionDataForAnonymousUser()
     {
-        $uniqueSessionId = $this->getUniqueId('test');
+        $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
         $GLOBALS['TYPO3_CONF_VARS']['FE']['lockIP'] = 0;
         $currentTime = $GLOBALS['EXEC_TIME'];
@@ -250,7 +251,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
      */
     public function canLoadExistingAuthenticatedSession()
     {
-        $uniqueSessionId = $this->getUniqueId('test');
+        $uniqueSessionId = StringUtility::getUniqueId('test');
         $_COOKIE['fe_typo_user'] = $uniqueSessionId;
         $currentTime = $GLOBALS['EXEC_TIME'];
 

@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\Exception;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\FileNode;
@@ -95,7 +96,7 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
-        $name = $this->getUniqueId('test_');
+        $name = StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], $parent);
         self::assertSame($name, $node->getName());
     }
@@ -126,7 +127,7 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
-        $targetContent = $this->getUniqueId('content_');
+        $targetContent = StringUtility::getUniqueId('content_');
         $structure = [
             'name' => 'foo',
             'targetContent' => $targetContent,
@@ -144,7 +145,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['dummy'], [], '', false);
         $parent = $this->createMock(\TYPO3\CMS\Install\FolderStructure\RootNodeInterface::class);
         $targetFile = $this->getVirtualTestFilePath('test_');
-        $targetContent = $this->getUniqueId('content_');
+        $targetContent = StringUtility::getUniqueId('content_');
         file_put_contents($targetFile, $targetContent);
         $structure = [
             'name' => 'foo',
@@ -201,7 +202,7 @@ class FileNodeTest extends FolderStructureTestCase
             false
         );
         // do not use var path here, as file nodes explicitly check for public path
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         $node->expects(self::any())->method('exists')->willReturn(true);
         $node->expects(self::any())->method('isFile')->willReturn(true);
@@ -379,7 +380,7 @@ class FileNodeTest extends FolderStructureTestCase
             '',
             false
         );
-        $uniqueReturn = [$this->getUniqueId('foo_')];
+        $uniqueReturn = [StringUtility::getUniqueId('foo_')];
         $node->expects(self::once())->method('fixSelf')->willReturn($uniqueReturn);
         self::assertSame($uniqueReturn, $node->fix());
     }
@@ -589,7 +590,7 @@ class FileNodeTest extends FolderStructureTestCase
         $node = $this->getAccessibleMock(FileNode::class, ['exists', 'getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $path = $this->getVirtualTestDir();
         chmod($path, 02550);
-        $subPath = $path . '/' . $this->getUniqueId('file_');
+        $subPath = $path . '/' . StringUtility::getUniqueId('file_');
         $node->expects(self::once())->method('exists')->willReturn(false);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($subPath);
         $node->expects(self::any())->method('getRelativePathBelowSiteRoot')->willReturn($subPath);
@@ -632,7 +633,7 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
-        $content = $this->getUniqueId('content_');
+        $content = StringUtility::getUniqueId('content_');
         file_put_contents($path, $content);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         $node->_set('targetContent', $content);
@@ -647,8 +648,8 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
         $path = $this->getVirtualTestFilePath('file_');
-        $content = $this->getUniqueId('content1_');
-        $targetContent = $this->getUniqueId('content2_');
+        $content = StringUtility::getUniqueId('content1_');
+        $targetContent = StringUtility::getUniqueId('content2_');
         file_put_contents($path, $content);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
         $node->_set('targetContent', $targetContent);
@@ -715,7 +716,7 @@ class FileNodeTest extends FolderStructureTestCase
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
-        $targetContent = $this->getUniqueId('content_');
+        $targetContent = StringUtility::getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
         $node->_call('setContent');
         $resultContent = file_get_contents($path);
@@ -732,7 +733,7 @@ class FileNodeTest extends FolderStructureTestCase
         $path = $this->getVirtualTestFilePath('file_');
         touch($path);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
-        $targetContent = $this->getUniqueId('content_');
+        $targetContent = StringUtility::getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
         self::assertSame(FlashMessage::OK, $node->_call('setContent')->getSeverity());
     }
@@ -748,11 +749,11 @@ class FileNodeTest extends FolderStructureTestCase
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath', 'getRelativePathBelowSiteRoot'], [], '', false);
         $dir = $this->getVirtualTestDir('dir_');
-        $file = $dir . '/' . $this->getUniqueId('file_');
+        $file = $dir . '/' . StringUtility::getUniqueId('file_');
         touch($file);
         chmod($file, 0440);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($file);
-        $targetContent = $this->getUniqueId('content_');
+        $targetContent = StringUtility::getUniqueId('content_');
         $node->_set('targetContent', $targetContent);
         self::assertSame(FlashMessage::ERROR, $node->_call('setContent')->getSeverity());
     }
@@ -778,11 +779,11 @@ class FileNodeTest extends FolderStructureTestCase
     {
         /** @var $node FileNode|AccessibleObjectInterface|\PHPUnit\Framework\MockObject\MockObject */
         $node = $this->getAccessibleMock(FileNode::class, ['getAbsolutePath'], [], '', false);
-        $path = Environment::getVarPath() . '/tests/' . $this->getUniqueId('root_');
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
         \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
-        $link = $this->getUniqueId('link_');
-        $file = $this->getUniqueId('file_');
+        $link = StringUtility::getUniqueId('link_');
+        $file = StringUtility::getUniqueId('file_');
         touch($path . '/' . $file);
         symlink($path . '/' . $file, $path . '/' . $link);
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path . '/' . $link);

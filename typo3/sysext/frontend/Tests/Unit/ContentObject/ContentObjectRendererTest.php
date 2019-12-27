@@ -44,6 +44,7 @@ use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\ContentObject\AbstractContentObject;
 use TYPO3\CMS\Frontend\ContentObject\CaseContentObject;
@@ -223,7 +224,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->expects(self::any())->method('getResourceFactory')->willReturn($resourceFactory);
 
-        $className = $this->getUniqueId('tx_coretest');
+        $className = StringUtility::getUniqueId('tx_coretest');
         $getImgResourceHookMock = $this->getMockBuilder(ContentObjectGetImageResourceHookInterface::class)
             ->setMethods(['getImgResourcePostProcess'])
             ->setMockClassName($className)
@@ -1354,8 +1355,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeGetenv(): void
     {
-        $envName = $this->getUniqueId('frontendtest');
-        $value = $this->getUniqueId('someValue');
+        $envName = StringUtility::getUniqueId('frontendtest');
+        $value = StringUtility::getUniqueId('someValue');
         putenv($envName . '=' . $value);
         self::assertEquals($value, $this->subject->getData('getenv:' . $envName));
     }
@@ -1408,7 +1409,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeFileReturnsUidOfFileObject(): void
     {
-        $uid = $this->getUniqueId();
+        $uid = StringUtility::getUniqueId();
         $file = $this->createMock(File::class);
         $file->expects(self::once())->method('getUid')->willReturn($uid);
         $this->subject->setCurrentFile($file);
@@ -1422,8 +1423,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeParameters(): void
     {
-        $key = $this->getUniqueId('someKey');
-        $value = $this->getUniqueId('someValue');
+        $key = StringUtility::getUniqueId('someKey');
+        $value = StringUtility::getUniqueId('someValue');
         $this->subject->parameters[$key] = $value;
 
         self::assertEquals($value, $this->subject->getData('parameters:' . $key));
@@ -1436,8 +1437,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeRegister(): void
     {
-        $key = $this->getUniqueId('someKey');
-        $value = $this->getUniqueId('someValue');
+        $key = StringUtility::getUniqueId('someKey');
+        $value = StringUtility::getUniqueId('someValue');
         $GLOBALS['TSFE']->register[$key] = $value;
 
         self::assertEquals($value, $this->subject->getData('register:' . $key));
@@ -1619,8 +1620,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeCurrent(): void
     {
-        $key = $this->getUniqueId('someKey');
-        $value = $this->getUniqueId('someValue');
+        $key = StringUtility::getUniqueId('someKey');
+        $value = StringUtility::getUniqueId('someValue');
         $this->subject->data[$key] = $value;
         $this->subject->currentValKey = $key;
         self::assertEquals($value, $this->subject->getData('current'));
@@ -1649,8 +1650,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeLll(): void
     {
-        $key = $this->getUniqueId('someKey');
-        $value = $this->getUniqueId('someValue');
+        $key = StringUtility::getUniqueId('someKey');
+        $value = StringUtility::getUniqueId('someValue');
         $GLOBALS['TSFE']->expects(self::once())->method('sL')->with('LLL:' . $key)->willReturn($value);
         self::assertEquals($value, $this->subject->getData('lll:' . $key));
     }
@@ -1814,8 +1815,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugData(): void
     {
-        $key = $this->getUniqueId('someKey');
-        $value = $this->getUniqueId('someValue');
+        $key = StringUtility::getUniqueId('someKey');
+        $value = StringUtility::getUniqueId('someValue');
         $this->subject->data = [$key => $value];
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
@@ -1834,8 +1835,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getDataWithTypeDebugRegister(): void
     {
-        $key = $this->getUniqueId('someKey');
-        $value = $this->getUniqueId('someValue');
+        $key = StringUtility::getUniqueId('someKey');
+        $value = StringUtility::getUniqueId('someValue');
         $GLOBALS['TSFE']->register = [$key => $value];
 
         $expectedResult = 'array(1item)' . $key . '=>"' . $value . '"(' . strlen($value) . 'chars)';
@@ -2270,7 +2271,7 @@ class ContentObjectRendererTest extends UnitTestCase
         $resourceFactory = $this->createMock(ResourceFactory::class);
         $this->subject->expects(self::any())->method('getResourceFactory')->willReturn($resourceFactory);
 
-        $className = $this->getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
+        $className = StringUtility::getUniqueId('tx_coretest_getImageSourceCollectionHookCalled');
         $getImageSourceCollectionHookMock = $this->getMockBuilder(
             ContentObjectOneSourceCollectionHookInterface::class
         )
@@ -2303,7 +2304,7 @@ class ContentObjectRendererTest extends UnitTestCase
             ],
         ];
 
-        $result = $this->subject->getImageSourceCollection('data', $configuration, $this->getUniqueId('testImage-'));
+        $result = $this->subject->getImageSourceCollection('data', $configuration, StringUtility::getUniqueId('testImage-'));
 
         self::assertSame($result, 'isGetOneSourceCollectionCalledCallback');
     }
@@ -3324,12 +3325,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function calculateCacheKeyDataProvider(): array
     {
-        $value = $this->getUniqueId('value');
-        $wrap = [$this->getUniqueId('wrap')];
+        $value = StringUtility::getUniqueId('value');
+        $wrap = [StringUtility::getUniqueId('wrap')];
         $valueConf = ['key' => $value];
         $wrapConf = ['key.' => $wrap];
         $conf = array_merge($valueConf, $wrapConf);
-        $will = $this->getUniqueId('stdWrap');
+        $will = StringUtility::getUniqueId('stdWrap');
 
         return [
             'no conf' => [
@@ -3401,7 +3402,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function getFromCacheDtataProvider(): array
     {
-        $conf = [$this->getUniqueId('conf')];
+        $conf = [StringUtility::getUniqueId('conf')];
         return [
             'empty cache key' => [
                 false,
@@ -3597,7 +3598,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function HTMLcaseshiftDataProvider(): array
     {
-        $case = $this->getUniqueId('case');
+        $case = StringUtility::getUniqueId('case');
         return [
             'simple text' => [
                 'TEXT',
@@ -3805,10 +3806,10 @@ class ContentObjectRendererTest extends UnitTestCase
         string $stdWrapMethod,
         string $hookObjectCall
     ): void {
-        $conf = [$this->getUniqueId('conf')];
-        $content = $this->getUniqueId('content');
-        $processed1 = $this->getUniqueId('processed1');
-        $processed2 = $this->getUniqueId('processed2');
+        $conf = [StringUtility::getUniqueId('conf')];
+        $content = StringUtility::getUniqueId('content');
+        $processed1 = StringUtility::getUniqueId('processed1');
+        $processed2 = StringUtility::getUniqueId('processed2');
         $hookObject1 = $this->createMock(
             ContentObjectStdWrapHookInterface::class
         );
@@ -3838,8 +3839,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_HTMLparserDataProvider(): array
     {
-        $content = $this->getUniqueId('content');
-        $parsed = $this->getUniqueId('parsed');
+        $content = StringUtility::getUniqueId('content');
+        $parsed = StringUtility::getUniqueId('parsed');
         return [
             'no config' => [
                 $content,
@@ -3966,8 +3967,8 @@ class ContentObjectRendererTest extends UnitTestCase
     {
         $now = 10;
         $content = '9';
-        $conf = ['age' => $this->getUniqueId('age')];
-        $return = $this->getUniqueId('return');
+        $conf = ['age' => StringUtility::getUniqueId('age')];
+        $return = StringUtility::getUniqueId('return');
         $difference = $now - (int)$content;
         $GLOBALS['EXEC_TIME'] = $now;
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
@@ -3996,12 +3997,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_append(): void
     {
         $debugKey = '/stdWrap/.append';
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'append' => $this->getUniqueId('append'),
-            'append.' => [$this->getUniqueId('append.')],
+            'append' => StringUtility::getUniqueId('append'),
+            'append.' => [StringUtility::getUniqueId('append.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
@@ -4204,12 +4205,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_cObject(): void
     {
         $debugKey = '/stdWrap/.cObject';
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'cObject' => $this->getUniqueId('cObject'),
-            'cObject.' => [$this->getUniqueId('cObject.')],
+            'cObject' => StringUtility::getUniqueId('cObject'),
+            'cObject.' => [StringUtility::getUniqueId('cObject.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
@@ -4230,8 +4231,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_orderedStdWrapDataProvider(): array
     {
-        $confA = [$this->getUniqueId('conf A')];
-        $confB = [$this->getUniqueId('conf B')];
+        $confA = [StringUtility::getUniqueId('conf A')];
+        $confB = [StringUtility::getUniqueId('conf B')];
         return [
             'standard case: order 1, 2' => [
                 $confA,
@@ -4285,9 +4286,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_orderedStdWrap($firstConf, array $secondConf, array $conf): void
     {
-        $content = $this->getUniqueId('content');
-        $between = $this->getUniqueId('between');
-        $expect = $this->getUniqueId('expect');
+        $content = StringUtility::getUniqueId('content');
+        $between = StringUtility::getUniqueId('between');
+        $expect = StringUtility::getUniqueId('expect');
         $conf['orderedStdWrap.'] = $conf;
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap'])->getMock();
@@ -4309,7 +4310,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_cacheReadDataProvider(): array
     {
-        $cacheConf = [$this->getUniqueId('cache.')];
+        $cacheConf = [StringUtility::getUniqueId('cache.')];
         $conf = ['cache.' => $cacheConf];
         return [
             'no conf' => [
@@ -4393,8 +4394,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_cacheStoreDataProvider(): array
     {
-        $confCache = [$this->getUniqueId('cache.')];
-        $key = [$this->getUniqueId('key')];
+        $confCache = [StringUtility::getUniqueId('cache.')];
+        $key = [StringUtility::getUniqueId('key')];
         return [
             'Return immediate with no conf' => [
                 null,
@@ -4444,11 +4445,11 @@ class ContentObjectRendererTest extends UnitTestCase
         $key,
         int $times
     ): void {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [];
         $conf['cache.'] = $confCache;
-        $tags = [$this->getUniqueId('tags')];
-        $lifetime = $this->getUniqueId('lifetime');
+        $tags = [StringUtility::getUniqueId('tags')];
+        $lifetime = StringUtility::getUniqueId('lifetime');
         $params = [
             'key' => $key,
             'content' => $content,
@@ -4529,12 +4530,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_case(): void
     {
-        $content = $this->getUniqueId();
+        $content = StringUtility::getUniqueId();
         $conf = [
-            'case' => $this->getUniqueId('used'),
-            'case.' => [$this->getUniqueId('discarded')],
+            'case' => StringUtility::getUniqueId('used'),
+            'case.' => [StringUtility::getUniqueId('discarded')],
         ];
-        $return = $this->getUniqueId();
+        $return = StringUtility::getUniqueId();
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['HTMLcaseshift'])->getMock();
         $subject
@@ -4574,12 +4575,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_crop(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'crop' => $this->getUniqueId('crop'),
-            'crop.' => $this->getUniqueId('not used'),
+            'crop' => StringUtility::getUniqueId('crop'),
+            'crop.' => StringUtility::getUniqueId('not used'),
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['crop'])->getMock();
         $subject
@@ -4607,12 +4608,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_cropHTML(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'cropHTML' => $this->getUniqueId('cropHTML'),
-            'cropHTML.' => $this->getUniqueId('not used'),
+            'cropHTML' => StringUtility::getUniqueId('cropHTML'),
+            'cropHTML.' => StringUtility::getUniqueId('not used'),
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cropHTML'])->getMock();
         $subject
@@ -4724,8 +4725,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_dataDataProvider(): array
     {
-        $data = [$this->getUniqueId('data')];
-        $alt = [$this->getUniqueId('alternativeData')];
+        $data = [StringUtility::getUniqueId('data')];
+        $alt = [StringUtility::getUniqueId('alternativeData')];
         return [
             'default' => [$data, $data, ''],
             'alt is array' => [$alt, $data, $alt],
@@ -4757,8 +4758,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_data(array $expect, array $data, $alt): void
     {
-        $conf = ['data' => $this->getUniqueId('conf.data')];
-        $return = $this->getUniqueId('return');
+        $conf = ['data' => StringUtility::getUniqueId('conf.data')];
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getAccessibleMock(
             ContentObjectRenderer::class,
             ['getData']
@@ -4788,12 +4789,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_dataWrap(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'dataWrap' => $this->getUniqueId('dataWrap'),
-            'dataWrap.' => [$this->getUniqueId('not used')],
+            'dataWrap' => StringUtility::getUniqueId('dataWrap'),
+            'dataWrap.' => [StringUtility::getUniqueId('not used')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['dataWrap'])->getMock();
         $subject
@@ -4908,10 +4909,10 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_debugData(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
-        $content = $this->getUniqueId('content');
-        $key = $this->getUniqueId('key');
-        $value = $this->getUniqueId('value');
-        $altValue = $this->getUniqueId('value alt');
+        $content = StringUtility::getUniqueId('content');
+        $key = StringUtility::getUniqueId('key');
+        $value = StringUtility::getUniqueId('value');
+        $altValue = StringUtility::getUniqueId('value alt');
         $this->subject->data = [$key => $value];
         // Without alternative data only data is returned.
         ob_start();
@@ -4969,7 +4970,7 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_debugFunc(bool $expectArray, $confDebugFunc): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'] = '*';
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = ['debugFunc' => $confDebugFunc];
         ob_start();
         $result = $this->subject->stdWrap_debugFunc($content, $conf);
@@ -5065,10 +5066,10 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_editIconsDataProvider(): array
     {
-        $content = $this->getUniqueId('content');
-        $editIcons = $this->getUniqueId('editIcons');
-        $editIconsArray = [$this->getUniqueId('editIcons.')];
-        $will = $this->getUniqueId('will');
+        $content = StringUtility::getUniqueId('content');
+        $editIcons = StringUtility::getUniqueId('editIcons');
+        $editIconsArray = [StringUtility::getUniqueId('editIcons.')];
+        $will = StringUtility::getUniqueId('will');
         return [
             'standard case calls edit icons' => [
                 $will,
@@ -5196,12 +5197,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_encapsLines(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'encapsLines' => [$this->getUniqueId('not used')],
-            'encapsLines.' => [$this->getUniqueId('encapsLines.')],
+            'encapsLines' => [StringUtility::getUniqueId('not used')],
+            'encapsLines.' => [StringUtility::getUniqueId('encapsLines.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['encaps_lineSplit'])->getMock();
         $subject
@@ -5341,8 +5342,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_editPanelDataProvider(): array
     {
-        $content = $this->getUniqueId('content');
-        $will = $this->getUniqueId('will');
+        $content = StringUtility::getUniqueId('content');
+        $will = StringUtility::getUniqueId('will');
         return [
             'standard case calls edit icons' => [
                 $will,
@@ -5396,7 +5397,7 @@ class ContentObjectRendererTest extends UnitTestCase
         } else {
             GeneralUtility::makeInstance(Context::class)->setAspect('backend.user', new UserAspect());
         }
-        $conf = ['editPanel.' => [$this->getUniqueId('editPanel.')]];
+        $conf = ['editPanel.' => [StringUtility::getUniqueId('editPanel.')]];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['editPanel'])->getMock();
         $subject
@@ -5512,8 +5513,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_field(): void
     {
-        $expect = $this->getUniqueId('expect');
-        $conf = ['field' => $this->getUniqueId('field')];
+        $expect = StringUtility::getUniqueId('expect');
+        $conf = ['field' => StringUtility::getUniqueId('field')];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['getFieldVal'])->getMock();
         $subject
@@ -5534,7 +5535,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_fieldRequiredDataProvider(): array
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         return [
             // resulting in boolean false
             'false is false' => [
@@ -5757,8 +5758,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_ifDataProvider(): array
     {
-        $content = $this->getUniqueId('content');
-        $conf = ['if.' => [$this->getUniqueId('if.')]];
+        $content = StringUtility::getUniqueId('content');
+        $conf = ['if.' => [StringUtility::getUniqueId('if.')]];
         return [
             // evals to true
             'empty config' => [
@@ -5873,7 +5874,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_ifBlankDataProvider(): array
     {
-        $alt = $this->getUniqueId('alternative content');
+        $alt = StringUtility::getUniqueId('alternative content');
         $conf = ['ifBlank' => $alt];
         return [
             // blank cases
@@ -5919,7 +5920,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_ifEmptyDataProvider(): array
     {
-        $alt = $this->getUniqueId('alternative content');
+        $alt = StringUtility::getUniqueId('alternative content');
         $conf = ['ifEmpty' => $alt];
         return [
             // empty cases
@@ -5973,7 +5974,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_ifNullDataProvider(): array
     {
-        $alt = $this->getUniqueId('alternative content');
+        $alt = StringUtility::getUniqueId('alternative content');
         $conf = ['ifNull' => $alt];
         return [
             'only null is null' => [$alt, null, $conf],
@@ -6133,9 +6134,9 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_insertData(): void
     {
-        $content = $this->getUniqueId('content');
-        $conf = [$this->getUniqueId('conf not used')];
-        $return = $this->getUniqueId('return');
+        $content = StringUtility::getUniqueId('content');
+        $conf = [StringUtility::getUniqueId('conf not used')];
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['insertData'])->getMock();
         $subject->expects(self::once())->method('insertData')
@@ -6381,14 +6382,14 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_listNum(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'listNum' => $this->getUniqueId('listNum'),
+            'listNum' => StringUtility::getUniqueId('listNum'),
             'listNum.' => [
-                'splitChar' => $this->getUniqueId('splitChar')
+                'splitChar' => StringUtility::getUniqueId('splitChar')
             ],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['listNum'])->getMock();
         $subject
@@ -6506,8 +6507,8 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_numRows(): void
     {
         $conf = [
-            'numRows' => $this->getUniqueId('numRows'),
-            'numRows.' => [$this->getUniqueId('numRows')],
+            'numRows' => StringUtility::getUniqueId('numRows'),
+            'numRows.' => [StringUtility::getUniqueId('numRows')],
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['numRows'])->getMock();
@@ -6533,12 +6534,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_numberFormat(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'numberFormat' => $this->getUniqueId('not used'),
-            'numberFormat.' => [$this->getUniqueId('numberFormat.')],
+            'numberFormat' => StringUtility::getUniqueId('not used'),
+            'numberFormat.' => [StringUtility::getUniqueId('numberFormat.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['numberFormat'])->getMock();
         $subject
@@ -6711,12 +6712,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_parseFunc(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'parseFunc' => $this->getUniqueId('parseFunc'),
-            'parseFunc.' => [$this->getUniqueId('parseFunc.')],
+            'parseFunc' => StringUtility::getUniqueId('parseFunc'),
+            'parseFunc.' => [StringUtility::getUniqueId('parseFunc.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['parseFunc'])->getMock();
         $subject
@@ -6746,12 +6747,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_postCObject(): void
     {
         $debugKey = '/stdWrap/.postCObject';
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'postCObject' => $this->getUniqueId('postCObject'),
-            'postCObject.' => [$this->getUniqueId('postCObject.')],
+            'postCObject' => StringUtility::getUniqueId('postCObject'),
+            'postCObject.' => [StringUtility::getUniqueId('postCObject.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
@@ -6778,12 +6779,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_postUserFunc(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'postUserFunc' => $this->getUniqueId('postUserFunc'),
-            'postUserFunc.' => [$this->getUniqueId('postUserFunc.')],
+            'postUserFunc' => StringUtility::getUniqueId('postUserFunc'),
+            'postUserFunc.' => [StringUtility::getUniqueId('postUserFunc.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['callUserFunction'])->getMock();
         $subject
@@ -6817,12 +6818,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_postUserFuncInt(): void
     {
-        $uniqueHash = $this->getUniqueId('uniqueHash');
+        $uniqueHash = StringUtility::getUniqueId('uniqueHash');
         $substKey = 'INT_SCRIPT.' . $uniqueHash;
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'postUserFuncInt' => $this->getUniqueId('function'),
-            'postUserFuncInt.' => [$this->getUniqueId('function array')],
+            'postUserFuncInt' => StringUtility::getUniqueId('function'),
+            'postUserFuncInt.' => [StringUtility::getUniqueId('function array')],
         ];
         $expect = '<!--' . $substKey . '-->';
         $frontend = $this->getMockBuilder(TypoScriptFrontendController::class)
@@ -6869,12 +6870,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_preCObject(): void
     {
         $debugKey = '/stdWrap/.preCObject';
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'preCObject' => $this->getUniqueId('preCObject'),
-            'preCObject.' => [$this->getUniqueId('preCObject.')],
+            'preCObject' => StringUtility::getUniqueId('preCObject'),
+            'preCObject.' => [StringUtility::getUniqueId('preCObject.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
@@ -6903,14 +6904,14 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_preIfEmptyListNum(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'preIfEmptyListNum' => $this->getUniqueId('preIfEmptyListNum'),
+            'preIfEmptyListNum' => StringUtility::getUniqueId('preIfEmptyListNum'),
             'preIfEmptyListNum.' => [
-                'splitChar' => $this->getUniqueId('splitChar')
+                'splitChar' => StringUtility::getUniqueId('splitChar')
             ],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['listNum'])->getMock();
         $subject
@@ -6935,10 +6936,10 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_prefixCommentDataProvider(): array
     {
-        $content = $this->getUniqueId('content');
-        $will = $this->getUniqueId('will');
+        $content = StringUtility::getUniqueId('content');
+        $will = StringUtility::getUniqueId('will');
         $conf = [];
-        $conf['prefixComment'] = $this->getUniqueId('prefixComment');
+        $conf['prefixComment'] = StringUtility::getUniqueId('prefixComment');
         $emptyConf1 = [];
         $emptyConf2 = [];
         $emptyConf2['prefixComment'] = '';
@@ -7013,12 +7014,12 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_prepend(): void
     {
         $debugKey = '/stdWrap/.prepend';
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'prepend' => $this->getUniqueId('prepend'),
-            'prepend.' => [$this->getUniqueId('prepend.')],
+            'prepend' => StringUtility::getUniqueId('prepend'),
+            'prepend.' => [StringUtility::getUniqueId('prepend.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['cObjGetSingle'])->getMock();
         $subject
@@ -7089,10 +7090,10 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_preUserFunc(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'preUserFunc' => $this->getUniqueId('preUserFunc'),
-            'preUserFunc.' => [$this->getUniqueId('preUserFunc.')],
+            'preUserFunc' => StringUtility::getUniqueId('preUserFunc'),
+            'preUserFunc.' => [StringUtility::getUniqueId('preUserFunc.')],
         ];
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['callUserFunction'])->getMock();
@@ -7154,12 +7155,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_replacement(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'replacement' => $this->getUniqueId('not used'),
-            'replacement.' => [$this->getUniqueId('replacement.')],
+            'replacement' => StringUtility::getUniqueId('not used'),
+            'replacement.' => [StringUtility::getUniqueId('replacement.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['replacement'])->getMock();
         $subject
@@ -7235,12 +7236,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_round(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'round' => $this->getUniqueId('not used'),
-            'round.' => [$this->getUniqueId('round.')],
+            'round' => StringUtility::getUniqueId('not used'),
+            'round.' => [StringUtility::getUniqueId('round.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['round'])->getMock();
         $subject
@@ -7258,7 +7259,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_setContentToCurrent(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         self::assertNotSame($content, $this->subject->getData('current'));
         self::assertSame(
             $content,
@@ -7339,12 +7340,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_split(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'split' => $this->getUniqueId('not used'),
-            'split.' => [$this->getUniqueId('split.')],
+            'split' => StringUtility::getUniqueId('not used'),
+            'split.' => [StringUtility::getUniqueId('split.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['splitObj'])->getMock();
         $subject
@@ -7371,12 +7372,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_stdWrap(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'stdWrap' => $this->getUniqueId('not used'),
-            'stdWrap.' => [$this->getUniqueId('stdWrap.')],
+            'stdWrap' => StringUtility::getUniqueId('not used'),
+            'stdWrap.' => [StringUtility::getUniqueId('stdWrap.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['stdWrap'])->getMock();
         $subject
@@ -7716,12 +7717,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_substring(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'substring' => $this->getUniqueId('substring'),
-            'substring.' => $this->getUniqueId('not used'),
+            'substring' => StringUtility::getUniqueId('substring'),
+            'substring.' => StringUtility::getUniqueId('not used'),
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['substring'])->getMock();
         $subject
@@ -7812,12 +7813,12 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function stdWrap_typolink(): void
     {
-        $content = $this->getUniqueId('content');
+        $content = StringUtility::getUniqueId('content');
         $conf = [
-            'typolink' => $this->getUniqueId('not used'),
-            'typolink.' => [$this->getUniqueId('typolink.')],
+            'typolink' => StringUtility::getUniqueId('not used'),
+            'typolink.' => [StringUtility::getUniqueId('typolink.')],
         ];
-        $return = $this->getUniqueId('return');
+        $return = StringUtility::getUniqueId('return');
         $subject = $this->getMockBuilder(ContentObjectRenderer::class)
             ->setMethods(['typolink'])->getMock();
         $subject
@@ -8028,8 +8029,8 @@ class ContentObjectRendererTest extends UnitTestCase
     public function stdWrap_wrapAlignDataProvider(): array
     {
         $format = '<div style="text-align:%s;">%s</div>';
-        $content = $this->getUniqueId('content');
-        $wrapAlign = $this->getUniqueId('wrapAlign');
+        $content = StringUtility::getUniqueId('content');
+        $wrapAlign = StringUtility::getUniqueId('wrapAlign');
         $expect = sprintf($format, $wrapAlign, $content);
         return [
             'standard case' => [$expect, $content, $wrapAlign],
@@ -8096,7 +8097,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function linkWrapDataProvider(): array
     {
-        $content = $this->getUniqueId();
+        $content = StringUtility::getUniqueId();
         return [
             'Handles a tag as wrap.' => [
                 '<tag>' . $content . '</tag>',
@@ -8164,8 +8165,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function prefixCommentDataProvider(): array
     {
-        $comment = $this->getUniqueId();
-        $content = $this->getUniqueId();
+        $comment = StringUtility::getUniqueId();
+        $content = StringUtility::getUniqueId();
         $format = '%s';
         $format .= '%%s<!-- %%s [begin] -->%s';
         $format .= '%%s%s%%s%s';
@@ -8261,8 +8262,8 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function setCurrentVal_getCurrentVal(): void
     {
-        $key = $this->getUniqueId();
-        $value = $this->getUniqueId();
+        $key = StringUtility::getUniqueId();
+        $value = StringUtility::getUniqueId();
         $this->subject->currentValKey = $key;
         $this->subject->setCurrentVal($value);
         self::assertEquals($value, $this->subject->getCurrentVal());
@@ -8276,7 +8277,7 @@ class ContentObjectRendererTest extends UnitTestCase
      */
     public function setUserObjectType_getUserObjectType(): void
     {
-        $value = $this->getUniqueId();
+        $value = StringUtility::getUniqueId();
         $this->subject->setUserObjectType($value);
         self::assertEquals($value, $this->subject->getUserObjectType());
     }

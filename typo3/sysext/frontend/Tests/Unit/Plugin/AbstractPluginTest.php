@@ -19,6 +19,7 @@ use Prophecy\Argument;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\TextContentObject;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -201,42 +202,42 @@ class AbstractPluginTest extends UnitTestCase
     {
         return [
             'Result browser returning false' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => false,
                 'expected' => ''
             ],
             'Result browser returning null' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => null,
                 'expected' => ''
             ],
             'Result browser returning whitespace string' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => '   ',
                 'expected' => ''
             ],
             'Result browser returning HTML' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => '<div><a href="index.php?id=1&pointer=1">1</a><a href="index.php?id=1&pointer=2">2</a><a href="index.php?id=1&pointer=3">3</a><a href="index.php?id=1&pointer=4">4</a></div>',
                 'expected' => '<div><a href="index.php?id=1&pointer=1">1</a><a href="index.php?id=1&pointer=2">2</a><a href="index.php?id=1&pointer=3">3</a><a href="index.php?id=1&pointer=4">4</a></div>'
             ],
             'Result browser returning a truthy integer as string' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => '1',
                 'expected' => '1'
             ],
             'Result browser returning a falsy integer' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => 0,
                 'expected' => ''
             ],
             'Result browser returning a truthy integer' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => 1,
                 'expected' => ''
             ],
             'Result browser returning a positive integer' => [
-                'className' => $this->getUniqueId('tx_coretest'),
+                'className' => StringUtility::getUniqueId('tx_coretest'),
                 'returnValue' => 42,
                 'expected' => ''
             ]

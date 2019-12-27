@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test case for ResourceStorage class
@@ -601,7 +602,7 @@ class ResourceStorageTest extends BaseTestCase
         $mockedFile->expects(self::any())->method('getUpdatedProperties')->willReturn(array_keys($newProperties));
         // do not update directly; that's up to the indexer
         $indexFileRepositoryMock->expects(self::never())->method('update');
-        $this->subject->setFileContents($mockedFile, $this->getUniqueId());
+        $this->subject->setFileContents($mockedFile, StringUtility::getUniqueId('content_'));
     }
 
     /**

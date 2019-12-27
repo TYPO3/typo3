@@ -41,6 +41,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -1194,7 +1195,7 @@ class TcaSelectItemsTest extends UnitTestCase
      */
     public function addDataAddsFileItemsWithConfiguredFileFolder()
     {
-        $directory = $this->getUniqueId('test-') . '/';
+        $directory = StringUtility::getUniqueId('test-') . '/';
         $input = [
             'tableName' => 'aTable',
             'databaseRow' => [],

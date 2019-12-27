@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Page;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test case
@@ -34,7 +35,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $prologueString = $expectedPrologueString = '<?xml version="1.0" encoding="utf-8" ?>';
         $subject->setXmlPrologAndDocType($prologueString);
 
-        $title = $this->getUniqueId('aTitle-');
+        $title = StringUtility::getUniqueId('aTitle-');
         $subject->setTitle($title);
         $expectedTitleString = '<title>' . $title . '</title>';
 
@@ -62,7 +63,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->setMetaTag('NaMe', 'randomTag', 'foobar');
         $subject->removeMetaTag('name', 'RanDoMtAg');
 
-        $inlineComment = $this->getUniqueId('comment');
+        $inlineComment = StringUtility::getUniqueId('comment');
         $subject->addInlineComment($inlineComment);
         $expectedInlineCommentString = '<!-- ' . LF . $inlineComment . '-->';
 
@@ -87,10 +88,10 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addJsFile('fileadmin/test-plain.js', '', false, false, 'wrapBeforeXwrapAfter', false, 'X');
         $expectedJsFileWithoutTypeRegExp = '#wrapBefore<script src="fileadmin/test-plain\\.(js|\\d+\\.js|js\\?\\d+)"></script>wrapAfter#';
 
-        $jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . $this->getUniqueId('jsInline-') . '"';
-        $subject->addJsInlineCode($this->getUniqueId(), $jsInlineCode);
+        $jsInlineCode = $expectedJsInlineCodeString = 'var x = "' . StringUtility::getUniqueId('jsInline-') . '"';
+        $subject->addJsInlineCode(StringUtility::getUniqueId(), $jsInlineCode);
 
-        $cssFile = $this->getUniqueId('cssFile-');
+        $cssFile = StringUtility::getUniqueId('cssFile-');
         $expectedCssFileString = 'wrapBefore<link rel="stylesheet" type="text/css" href="' . $cssFile . '" media="print" />wrapAfter';
         $subject->addCssFile($cssFile, 'stylesheet', 'print', '', true, false, 'wrapBeforeXwrapAfter', false, 'X');
 
@@ -98,7 +99,7 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
         $subject->addCssInlineBlock('general2', 'body {margin:20px;}');
         $subject->addCssInlineBlock('general3', 'h1 {margin:20px;}', null, true);
 
-        $expectedBodyContent = $this->getUniqueId('ABCDE-');
+        $expectedBodyContent = StringUtility::getUniqueId('ABCDE-');
         $subject->setBodyContent($expectedBodyContent);
 
         $renderedString = $subject->render();
@@ -165,8 +166,8 @@ class PageRendererTest extends \TYPO3\TestingFramework\Core\Functional\Functiona
             'X'
         );
 
-        $jsFooterInlineCode = $expectedJsFooterInlineCodeString = 'var x = "' . $this->getUniqueId('jsFooterInline-') . '"';
-        $subject->addJsFooterInlineCode($this->getUniqueId(), $jsFooterInlineCode);
+        $jsFooterInlineCode = $expectedJsFooterInlineCodeString = 'var x = "' . StringUtility::getUniqueId('jsFooterInline-') . '"';
+        $subject->addJsFooterInlineCode(StringUtility::getUniqueId(), $jsFooterInlineCode);
 
         // Bunch of label tests
         $subject->addInlineLanguageLabel('myKey', 'myValue');

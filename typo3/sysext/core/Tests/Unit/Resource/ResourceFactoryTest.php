@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -68,8 +69,8 @@ class ResourceFactoryTest extends UnitTestCase
     public function createStorageCollectionObjectCreatesCollectionWithCorrectArguments()
     {
         $mockedMount = $this->createMock(\TYPO3\CMS\Core\Resource\ResourceStorage::class);
-        $path = $this->getUniqueId();
-        $name = $this->getUniqueId();
+        $path = StringUtility::getUniqueId('path_');
+        $name = StringUtility::getUniqueId('name_');
         $storageCollection = $this->subject->createFolderObject($mockedMount, $path, $name, 0);
         self::assertSame($mockedMount, $storageCollection->getStorage());
         self::assertEquals($path, $storageCollection->getIdentifier());

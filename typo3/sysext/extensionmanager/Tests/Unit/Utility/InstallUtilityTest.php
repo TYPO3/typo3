@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
@@ -125,7 +126,7 @@ class InstallUtilityTest extends UnitTestCase
      */
     protected function createFakeExtension(): string
     {
-        $extKey = strtolower($this->getUniqueId('testing'));
+        $extKey = strtolower(StringUtility::getUniqueId('testing'));
         $absExtPath = Environment::getVarPath() . '/tests/' . $extKey;
         $relativeVarPath = ltrim(str_replace(Environment::getProjectPath(), '', Environment::getVarPath()), '/');
         $relPath = $relativeVarPath . '/tests/' . $extKey . '/';

@@ -19,6 +19,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\Frontend\Typolink\AbstractTypolinkBuilder;
@@ -235,9 +236,9 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
      */
     public function resolveTargetAttributeDataProvider(): array
     {
-        $targetName = $this->getUniqueId('name_');
-        $target = $this->getUniqueId('target_');
-        $fallback = $this->getUniqueId('fallback_');
+        $targetName = StringUtility::getUniqueId('name_');
+        $target = StringUtility::getUniqueId('target_');
+        $fallback = StringUtility::getUniqueId('fallback_');
         return [
             'Take target from $conf, if $conf[$targetName] is set.' =>
                 [

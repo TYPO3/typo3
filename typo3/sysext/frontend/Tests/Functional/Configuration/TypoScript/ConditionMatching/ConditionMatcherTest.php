@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\TemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
@@ -317,7 +318,7 @@ class ConditionMatcherTest extends FunctionalTestCase
      */
     public function genericGetVariablesSucceedsWithNamespaceENV(): void
     {
-        $testKey = $this->getUniqueId('test');
+        $testKey = StringUtility::getUniqueId('test');
         putenv($testKey . '=testValue');
         self::assertTrue($this->getConditionMatcher()->match('[getenv("' . $testKey . '") == "testValue"]'));
     }

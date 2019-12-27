@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Install\FolderStructure\DirectoryNode;
 use TYPO3\CMS\Install\FolderStructure\Exception\InvalidArgumentException;
 use TYPO3\CMS\Install\FolderStructure\Exception\RootNodeException;
@@ -124,7 +125,7 @@ class RootNodeTest extends UnitTestCase
             ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
-        $childName = $this->getUniqueId('test_');
+        $childName = StringUtility::getUniqueId('test_');
         $structure = [
             'name' => '/foo',
             'children' => [
@@ -173,7 +174,7 @@ class RootNodeTest extends UnitTestCase
             ->expects(self::any())
             ->method('isWindowsOs')
             ->willReturn(false);
-        $name = '/' . $this->getUniqueId('test_');
+        $name = '/' . StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name], null);
         self::assertSame($name, $node->getName());
     }
@@ -192,7 +193,7 @@ class RootNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as root nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);
@@ -218,7 +219,7 @@ class RootNodeTest extends UnitTestCase
             false
         );
         // do not use var path here, as root nodes get checked for public path as first part
-        $path = Environment::getPublicPath() . '/typo3temp/tests/' . $this->getUniqueId('dir_');
+        $path = Environment::getPublicPath() . '/typo3temp/tests/' . StringUtility::getUniqueId('dir_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         $node->expects(self::any())->method('getAbsolutePath')->willReturn($path);

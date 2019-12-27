@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -81,7 +82,7 @@ class AbstractControllerTest extends UnitTestCase
     {
         $flashMessageQueue = $this->getMockBuilder(\TYPO3\CMS\Core\Messaging\FlashMessageQueue::class)
             ->setMethods(['enqueue'])
-            ->setConstructorArgs([$this->getUniqueId('identifier_')])
+            ->setConstructorArgs([StringUtility::getUniqueId('identifier_')])
             ->getMock();
 
         $flashMessageQueue->expects(self::once())->method('enqueue')->with(self::equalTo($expectedMessage));

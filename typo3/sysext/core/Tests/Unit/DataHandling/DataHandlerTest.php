@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\AllowAccessHookFixture;
 use TYPO3\CMS\Core\Tests\Unit\DataHandling\Fixtures\InvalidHookFixture;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -133,7 +134,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function nonAdminWithTableModifyAccessIsNotAllowedToModifyAdminTable()
     {
-        $tableName = $this->getUniqueId('aTable');
+        $tableName = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'] = [
             $tableName => [
                 'ctrl' => [
@@ -383,7 +384,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function doesCheckModifyAccessListHookGetsCalled()
     {
-        $hookClass = $this->getUniqueId('tx_coretest');
+        $hookClass = StringUtility::getUniqueId('tx_coretest');
         $hookMock = $this->getMockBuilder(\TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface::class)
             ->setMethods(['checkModifyAccessList'])
             ->setMockClassName($hookClass)
@@ -501,7 +502,7 @@ class DataHandlerTest extends UnitTestCase
      */
     public function doesCheckFlexFormValueHookGetsCalled()
     {
-        $hookClass = $this->getUniqueId('tx_coretest');
+        $hookClass = StringUtility::getUniqueId('tx_coretest');
         $hookMock = $this->getMockBuilder($hookClass)
             ->setMethods(['checkFlexFormValue_beforeMerge'])
             ->getMock();
@@ -551,7 +552,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->BE_USER = $backendUser;
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
-        $logDetailsUnique = $this->getUniqueId('details');
+        $logDetailsUnique = StringUtility::getUniqueId('details');
         $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, $logDetailsUnique);
         self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
@@ -565,7 +566,7 @@ class DataHandlerTest extends UnitTestCase
         $this->subject->BE_USER = $backendUser;
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
-        $logDetails = $this->getUniqueId('details');
+        $logDetails = StringUtility::getUniqueId('details');
         $this->subject->log('', 23, SystemLogGenericAction::UNDEFINED, 42, SystemLogErrorClassification::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         self::assertStringEndsWith($expected, $this->subject->errorLog[0]);
@@ -853,10 +854,10 @@ class DataHandlerTest extends UnitTestCase
      */
     public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete()
     {
-        $table = $this->getUniqueId('foo_');
+        $table = StringUtility::getUniqueId('foo_');
         $conf = [
             'type' => 'inline',
-            'foreign_table' => $this->getUniqueId('foreign_foo_'),
+            'foreign_table' => StringUtility::getUniqueId('foreign_foo_'),
             'behaviour' => [
                 'enableCascadingDelete' => 0,
             ]
@@ -865,7 +866,7 @@ class DataHandlerTest extends UnitTestCase
         /** @var \TYPO3\CMS\Core\Database\RelationHandler $mockRelationHandler */
         $mockRelationHandler = $this->createMock(\TYPO3\CMS\Core\Database\RelationHandler::class);
         $mockRelationHandler->itemArray = [
-            '1' => ['table' => $this->getUniqueId('bar_'), 'id' => 67]
+            '1' => ['table' => StringUtility::getUniqueId('bar_'), 'id' => 67]
         ];
 
         /** @var DataHandler|\PHPUnit\Framework\MockObject\MockObject|AccessibleObjectInterface $mockDataHandler */

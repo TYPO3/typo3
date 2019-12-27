@@ -16,6 +16,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
  */
 
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -35,7 +36,7 @@ class IndexerTest extends UnitTestCase
      */
     public function extractHyperLinksDoesNotReturnNonExistingLocalPath()
     {
-        $html = 'test <a href="' . $this->getUniqueId() . '">test</a> test';
+        $html = 'test <a href="' . StringUtility::getUniqueId() . '">test</a> test';
         $subject = new Indexer();
         $result = $subject->extractHyperLinks($html);
         self::assertEquals(1, count($result));
@@ -84,7 +85,7 @@ class IndexerTest extends UnitTestCase
      */
     public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix()
     {
-        $absRefPrefix = '/' . $this->getUniqueId();
+        $absRefPrefix = '/' . StringUtility::getUniqueId();
         $html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
         $GLOBALS['TSFE'] = $this->createMock(TypoScriptFrontendController::class);
         $config = [

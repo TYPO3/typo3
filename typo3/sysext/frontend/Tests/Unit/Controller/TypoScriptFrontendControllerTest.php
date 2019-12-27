@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -125,7 +126,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
      */
     public function localizationReturnsUnchangedStringIfNotLocallangLabel()
     {
-        $string = $this->getUniqueId();
+        $string = StringUtility::getUniqueId();
         $this->subject->page = [];
         $this->subject->_call('setOutputLanguage');
         self::assertEquals($string, $this->subject->sL($string));

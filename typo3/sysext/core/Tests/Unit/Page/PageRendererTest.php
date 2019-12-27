@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  */
 
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -66,9 +67,9 @@ class PageRendererTest extends UnitTestCase
     {
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
-        $fileReference = $this->getUniqueId('file_');
-        $selectionPrefix = $this->getUniqueId('prefix_');
-        $stripFromSelectionName = $this->getUniqueId('strip_');
+        $fileReference = StringUtility::getUniqueId('file_');
+        $selectionPrefix = StringUtility::getUniqueId('prefix_');
+        $stripFromSelectionName = StringUtility::getUniqueId('strip_');
 
         $expectedInlineLanguageLabelFile = [
             'fileRef' => $fileReference,
@@ -89,17 +90,17 @@ class PageRendererTest extends UnitTestCase
     {
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
-        $fileReference1 = $this->getUniqueId('file1_');
-        $selectionPrefix1 = $this->getUniqueId('prefix1_');
-        $stripFromSelectionName1 = $this->getUniqueId('strip1_');
+        $fileReference1 = StringUtility::getUniqueId('file1_');
+        $selectionPrefix1 = StringUtility::getUniqueId('prefix1_');
+        $stripFromSelectionName1 = StringUtility::getUniqueId('strip1_');
         $expectedInlineLanguageLabelFile1 = [
             'fileRef' => $fileReference1,
             'selectionPrefix' => $selectionPrefix1,
             'stripFromSelectionName' => $stripFromSelectionName1
         ];
-        $fileReference2 = $this->getUniqueId('file2_');
-        $selectionPrefix2 = $this->getUniqueId('prefix2_');
-        $stripFromSelectionName2 = $this->getUniqueId('strip2_');
+        $fileReference2 = StringUtility::getUniqueId('file2_');
+        $selectionPrefix2 = StringUtility::getUniqueId('prefix2_');
+        $stripFromSelectionName2 = StringUtility::getUniqueId('strip2_');
         $expectedInlineLanguageLabelFile2 = [
             'fileRef' => $fileReference2,
             'selectionPrefix' => $selectionPrefix2,
@@ -121,9 +122,9 @@ class PageRendererTest extends UnitTestCase
     {
         /** @var PageRenderer|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface $subject */
         $subject = $this->getAccessibleMock(PageRenderer::class, ['dummy'], [], '', false);
-        $fileReference = $this->getUniqueId('file2_');
-        $selectionPrefix = $this->getUniqueId('prefix2_');
-        $stripFromSelectionName = $this->getUniqueId('strip2_');
+        $fileReference = StringUtility::getUniqueId('file2_');
+        $selectionPrefix = StringUtility::getUniqueId('prefix2_');
+        $stripFromSelectionName = StringUtility::getUniqueId('strip2_');
 
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);
         $subject->addInlineLanguageLabelFile($fileReference, $selectionPrefix, $stripFromSelectionName);

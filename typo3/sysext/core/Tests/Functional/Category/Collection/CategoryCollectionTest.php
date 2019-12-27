@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  */
 
 use TYPO3\CMS\Core\Category\Collection\CategoryCollection;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
@@ -42,8 +43,8 @@ class CategoryCollectionTest extends FunctionalTestCase
         parent::setUp();
         $this->collectionRecord = [
             'uid' => 0,
-            'title' => $this->getUniqueId('title'),
-            'description' => $this->getUniqueId('description'),
+            'title' => StringUtility::getUniqueId('title'),
+            'description' => StringUtility::getUniqueId('description'),
             'table_name' => 'tx_test_test',
         ];
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/categoryRelations.csv');
@@ -141,7 +142,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         $fakeRecord = [
             'uid' => 6,
             'pid' => 0,
-            'title' => $this->getUniqueId('title'),
+            'title' => StringUtility::getUniqueId('title'),
             'categories' => 0
         ];
         // Check the number of records
@@ -159,7 +160,7 @@ class CategoryCollectionTest extends FunctionalTestCase
         $fakeRecord = [
             'uid' => 6,
             'pid' => 0,
-            'title' => $this->getUniqueId('title'),
+            'title' => StringUtility::getUniqueId('title'),
             'categories' => 0
         ];
         // Check the number of records
@@ -185,7 +186,7 @@ class CategoryCollectionTest extends FunctionalTestCase
     {
         // Remove one relation
         $fakeName = [
-            'tablenames' => $this->getUniqueId('name')
+            'tablenames' => StringUtility::getUniqueId('name')
         ];
         $this->getConnectionPool()
             ->getConnectionForTable('sys_category_record_mm')

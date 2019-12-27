@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
 /**
  * Test case
@@ -427,7 +428,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function enableFieldsHidesVersionedRecordsAndPlaceholders()
     {
-        $table = $this->getUniqueId('aTable');
+        $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
             'ctrl' => [
                 'versioningWS' => true
@@ -456,7 +457,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function enableFieldsDoesNotHidePlaceholdersInPreview()
     {
-        $table = $this->getUniqueId('aTable');
+        $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
             'ctrl' => [
                 'versioningWS' => true
@@ -487,7 +488,7 @@ class PageRepositoryTest extends \TYPO3\TestingFramework\Core\Functional\Functio
      */
     public function enableFieldsDoesFilterToCurrentAndLiveWorkspaceForRecordsInPreview()
     {
-        $table = $this->getUniqueId('aTable');
+        $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = [
             'ctrl' => [
                 'versioningWS' => true

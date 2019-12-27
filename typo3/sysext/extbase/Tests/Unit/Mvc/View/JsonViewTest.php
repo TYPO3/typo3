@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
@@ -256,7 +257,7 @@ class JsonViewTest extends UnitTestCase
      */
     public function exposeClassNameSettingsAndResults(): array
     {
-        $className = $this->getUniqueId('DummyClass');
+        $className = StringUtility::getUniqueId('DummyClass');
         $namespace = 'TYPO3\CMS\Extbase\Tests\Unit\Mvc\View\\' . $className;
         return [
             [

@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -63,7 +64,7 @@ class ProcessedFileTest extends UnitTestCase
         $this->databaseRow = [
             'uid' => '1234567',
             'identifier' => 'dummy.txt',
-            'name' => $this->getUniqueId('dummy_'),
+            'name' => StringUtility::getUniqueId('dummy_'),
             'storage' => $this->storageMock->getUid(),
             'configuration' => null,
             'originalfilesha1' => null,
