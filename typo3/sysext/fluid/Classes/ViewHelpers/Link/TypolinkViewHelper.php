@@ -100,6 +100,7 @@ class TypolinkViewHelper extends AbstractViewHelper
         $this->registerArgument('addQueryStringMethod', 'string', '', false, 'GET');
         $this->registerArgument('addQueryStringExclude', 'string', '', false, '');
         $this->registerArgument('absolute', 'bool', 'Ensure the resulting URL is an absolute URL', false, false);
+        $this->registerArgument('parts-as', 'string', 'Variable name containing typoLink parts (if any)', false, 'typoLinkParts');
     }
 
     /**
@@ -118,6 +119,7 @@ class TypolinkViewHelper extends AbstractViewHelper
             trigger_error('Using the argument "useCacheHash" in <f:link.typolink> ViewHelper has no effect anymore. Remove the argument in your fluid template, as it will result in a fatal error.', E_USER_DEPRECATED);
         }
         $parameter = $arguments['parameter'] ?? '';
+        $partsAs = $arguments['parts-as'] ?? 'typoLinkParts';
 
         $typoLinkCodec = GeneralUtility::makeInstance(TypoLinkCodecService::class);
         $typoLinkConfiguration = $typoLinkCodec->decode($parameter);
@@ -125,8 +127,14 @@ class TypolinkViewHelper extends AbstractViewHelper
         $mergedTypoLinkConfiguration = static::mergeTypoLinkConfiguration($typoLinkConfiguration, $arguments);
         $typoLinkParameter = $typoLinkCodec->encode($mergedTypoLinkConfiguration);
 
+        // expose internal typoLink configuration to Fluid child context
+        $variableProvider = $renderingContext->getVariableProvider();
+        $variableProvider->add($partsAs, $typoLinkConfiguration);
         // If no link has to be rendered, the inner content will be returned as such
         $content = (string)$renderChildrenClosure();
+        // clean up exposed variables
+        $variableProvider->remove($partsAs);
+
         if ($parameter) {
             $content = static::invokeContentObjectRenderer($arguments, $typoLinkParameter, $content);
         }

@@ -343,4 +343,33 @@ class TypolinkViewHelperTest extends FunctionalTestCase
             ],
         ];
     }
+
+    public function typoLinkPartsAreRenderedDataProvider(): array
+    {
+        return [
+            [
+                'http://typo3.org/ "_self" "<CSS>" "<Title>"',
+                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="_self" class="&lt;CSS&gt;">Individual _self &lt;CSS&gt; &lt;Title&gt;</a>',
+            ],
+            [
+                'http://typo3.org/ "<Target>" "<CSS>" "<Title>"', // target does not point to "self", adds noreferrer relationship
+                '<a href="http://typo3.org/" title="&lt;Title&gt;" target="&lt;Target&gt;" class="&lt;CSS&gt;" rel="noreferrer">Individual &lt;Target&gt; &lt;CSS&gt; &lt;Title&gt;</a>',
+            ],
+        ];
+    }
+
+    /**
+     * @param string $parameter
+     * @param string $expectation
+     *
+     * @test
+     * @dataProvider typoLinkPartsAreRenderedDataProvider
+     */
+    public function typoLinkPartsAreRendered(string $parameter, string $expectation): void
+    {
+        $view = new StandaloneView();
+        $view->setTemplatePathAndFilename('typo3/sysext/fluid/Tests/Functional/ViewHelpers/Fixtures/link_typolink_parts.html');
+        $view->assignMultiple(['parameter' => $parameter]);
+        self::assertSame($expectation, trim($view->render()));
+    }
 }

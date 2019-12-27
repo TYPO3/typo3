@@ -15,11 +15,13 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Link;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContext;
 use TYPO3\CMS\Fluid\ViewHelpers\Link\TypolinkViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
+use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
 
 /**
  * Class TypolinkViewHelperTest
@@ -27,7 +29,7 @@ use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 class TypolinkViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var TypolinkViewHelper|\PHPUnit\Framework\MockObject\MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
+     * @var TypolinkViewHelper|MockObject|\TYPO3\TestingFramework\Core\AccessibleObjectInterface
      */
     protected $subject;
 
@@ -37,8 +39,11 @@ class TypolinkViewHelperTest extends ViewHelperBaseTestcase
     protected function setUp(): void
     {
         $this->subject = $this->getAccessibleMock(TypolinkViewHelper::class, ['renderChildren']);
-        /** @var RenderingContext $renderingContext */
+        /** @var VariableProviderInterface|MockObject $variableProvider */
+        $variableProvider = $this->getMockBuilder(VariableProviderInterface::class)->getMock();
+        /** @var RenderingContext|MockObject $renderingContext */
         $renderingContext = $this->getMockBuilder(RenderingContext::class)->disableOriginalConstructor()->getMock();
+        $renderingContext->expects(self::any())->method('getVariableProvider')->willReturn($variableProvider);
         $this->subject->setRenderingContext($renderingContext);
     }
 
