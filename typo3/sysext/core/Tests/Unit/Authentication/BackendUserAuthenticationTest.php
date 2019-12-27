@@ -98,7 +98,7 @@ class BackendUserAuthenticationTest extends UnitTestCase
 
         $GLOBALS['BE_USER'] = $this->getMockBuilder(BackendUserAuthentication::class)->getMock();
         $GLOBALS['BE_USER']->user = [
-            'uid' => $this->getUniqueId(),
+            'uid' => 4711,
             'ses_backuserid' => 0,
         ];
         $GLOBALS['BE_USER']->setLogger(new NullLogger());
