@@ -66,10 +66,7 @@ public class PreMergeSpec extends AbstractPreMergeSpec {
                         stageMainStage
                 )
                 .linkedRepositories("github TYPO3 TYPO3.CMS 8.7")
-                .triggers(
-                        new RepositoryPollingTrigger()
-                                .name("Repository polling for post-merge builds"),
-                        getGerritTrigger())
+                .triggers(getGerritTrigger())
                 .variables(
                         new Variable("changeUrl", ""),
                         new Variable("patchset", "")
