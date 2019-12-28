@@ -22,7 +22,6 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,12 +56,18 @@ class Mailer implements MailerInterface
     protected $mailerHeader = 'TYPO3';
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * When constructing, also initializes the Symfony Transport like configured
      *
      * @param TransportInterface|null $transport optionally pass a transport to the constructor.
+     * @param EventDispatcherInterface|null $eventDispatcher
      * @throws CoreException
      */
-    public function __construct(TransportInterface $transport = null)
+    public function __construct(TransportInterface $transport = null, EventDispatcherInterface $eventDispatcher = null)
     {
         if ($transport !== null) {
             $this->transport = $transport;
@@ -76,7 +81,10 @@ class Mailer implements MailerInterface
                 throw new CoreException($e->getMessage(), 1291068569);
             }
         }
-        $this->getEventDispatcher()->dispatch(new AfterMailerInitializationEvent($this));
+        if ($eventDispatcher !== null) {
+            $this->eventDispatcher = $eventDispatcher;
+            $this->eventDispatcher->dispatch(new AfterMailerInitializationEvent($this));
+        }
     }
 
     /**
@@ -181,13 +189,5 @@ class Mailer implements MailerInterface
     protected function getTransportFactory(): TransportFactory
     {
         return GeneralUtility::makeInstance(TransportFactory::class);
-    }
-
-    /**
-     * Emits a signal after mailer initialization
-     */
-    protected function getEventDispatcher(): EventDispatcherInterface
-    {
-        return GeneralUtility::makeInstance(EventDispatcher::class);
     }
 }
