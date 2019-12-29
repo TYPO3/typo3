@@ -72,6 +72,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
      *
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @return int
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -98,6 +99,7 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
         } else {
             $this->loopTasks();
         }
+        return 0;
     }
 
     /**
