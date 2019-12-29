@@ -66,7 +66,7 @@ class RedirectHandler implements MiddlewareInterface, LoggerAwareInterface
 
         // If the matched redirect is found, resolve it, and check further
         if (is_array($matchedRedirect)) {
-            $url = $this->redirectService->getTargetUrl($matchedRedirect, $request->getQueryParams(), $request->getAttribute('frontend.user'), $request->getAttribute('site'));
+            $url = $this->redirectService->getTargetUrl($matchedRedirect, $request->getQueryParams(), $request->getAttribute('frontend.user'), $request->getUri(), $request->getAttribute('site'));
             if ($url instanceof UriInterface) {
                 $this->logger->debug('Redirecting', ['record' => $matchedRedirect, 'uri' => $url]);
                 $response = $this->buildRedirectResponse($url, $matchedRedirect);

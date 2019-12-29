@@ -193,10 +193,11 @@ class RedirectService implements LoggerAwareInterface
      * @param array $matchedRedirect
      * @param array $queryParams
      * @param FrontendUserAuthentication $frontendUserAuthentication
+     * @param UriInterface $uri
      * @param SiteInterface|null $site
      * @return UriInterface|null
      */
-    public function getTargetUrl(array $matchedRedirect, array $queryParams, FrontendUserAuthentication $frontendUserAuthentication, ?SiteInterface $site = null): ?UriInterface
+    public function getTargetUrl(array $matchedRedirect, array $queryParams, FrontendUserAuthentication $frontendUserAuthentication, UriInterface $uri, ?SiteInterface $site = null): ?UriInterface
     {
         $this->logger->debug('Found a redirect to process', $matchedRedirect);
         $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode((string)$matchedRedirect['target']);
@@ -211,6 +212,10 @@ class RedirectService implements LoggerAwareInterface
         }
         // Do this for files, folders, external URLs
         if (!empty($linkDetails['url'])) {
+            if ($matchedRedirect['is_regexp']) {
+                $linkDetails = $this->replaceRegExpCaptureGroup($matchedRedirect, $uri, $linkDetails);
+            }
+
             $url = new Uri($linkDetails['url']);
             if ($matchedRedirect['force_https']) {
                 $url = $url->withScheme('https');
@@ -336,5 +341,22 @@ class RedirectService implements LoggerAwareInterface
             $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         }
         return $controller;
+    }
+
+    /**
+     * @param array $matchedRedirect
+     * @param UriInterface $uri
+     * @param array $linkDetails
+     * @return array
+     */
+    protected function replaceRegExpCaptureGroup(array $matchedRedirect, UriInterface $uri, array $linkDetails): array
+    {
+        $matchResult = @preg_match($matchedRedirect['source_path'], $uri->getPath(), $matches);
+        if ($matchResult > 0) {
+            foreach ($matches as $key => $val) {
+                $linkDetails['url'] = str_replace('$' . $key, $val, $linkDetails['url']);
+            }
+        }
+        return $linkDetails;
     }
 }
