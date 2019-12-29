@@ -43,6 +43,11 @@ class RedirectServiceTest extends UnitTestCase
     protected $redirectCacheServiceProphecy;
 
     /**
+     * @var LinkService|ObjectProphecy
+     */
+    protected $linkServiceProphecy;
+
+    /**
      * @var RedirectService
      */
     protected $redirectService;
@@ -52,6 +57,7 @@ class RedirectServiceTest extends UnitTestCase
         parent::setUp();
         $loggerProphecy = $this->prophesize(LoggerInterface::class);
         $this->redirectCacheServiceProphecy = $this->prophesize(RedirectCacheService::class);
+        $this->linkServiceProphecy = $this->prophesize(LinkService::class);
         $this->redirectService = new RedirectService();
         $this->redirectService->setLogger($loggerProphecy->reveal());
 
@@ -441,7 +447,7 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve(Argument::any())->willThrow(new InvalidPathException('', 1516531195));
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], [], new Site('dummy', 13, []));
+        $result = $this->redirectService->getTargetUrl(['target' => 'invalid'], [], new Uri(), new Site('dummy', 13, []));
 
         self::assertNull($result);
     }
@@ -464,7 +470,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
+        $source = new Uri('https://example.com');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], $source, new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/');
         self::assertEquals($uri, $result);
@@ -490,7 +497,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
+        $source = new Uri('https://example.com');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], $source, new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/file.txt');
         self::assertEquals($uri, $result);
@@ -517,7 +525,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
+        $source = new Uri('https://example.com/');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], $source, new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/folder/');
         self::assertEquals($uri, $result);
@@ -541,7 +550,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], new Site('dummy', 13, []));
+        $source = new Uri('https://example.com');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], $source, new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com');
         self::assertEquals($uri, $result);
@@ -565,7 +575,8 @@ class RedirectServiceTest extends UnitTestCase
         $linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
         GeneralUtility::setSingletonInstance(LinkService::class, $linkServiceProphecy->reveal());
 
-        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, ['bar' => 3, 'baz' => 4], new Site('dummy', 13, []));
+        $source = new Uri('https://example.com/?bar=2&baz=4&foo=1');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, ['bar' => 3, 'baz' => 4], $source, new Site('dummy', 13, []));
 
         $uri = new Uri('https://example.com/?bar=2&baz=4&foo=1');
         self::assertEquals($uri, $result);
@@ -607,8 +618,33 @@ class RedirectServiceTest extends UnitTestCase
         $redirectService->expects($this->once())->method('getUriFromCustomLinkDetails')
             ->with($redirectTargetMatch, $site, $linkDetails, $queryParams)
             ->willReturn($uri);
-        $result = $redirectService->getTargetUrl($redirectTargetMatch, [], $site);
+        $result = $redirectService->getTargetUrl($redirectTargetMatch, [], $uri, $site);
 
+        self::assertEquals($uri, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getTargetUrlReplaceRegExpCaptureGroup()
+    {
+        $redirectTargetMatch = [
+            'source_path' => '#^/foo/(.*)#',
+            'target' => 'https://anotherdomain.com/$1',
+            'force_https' => '0',
+            'keep_query_parameters' => '1',
+            'is_regexp' => 1
+        ];
+        $linkDetails = [
+            'type' => LinkService::TYPE_URL,
+            'url' => 'https://anotherdomain.com/$1'
+        ];
+        $this->linkServiceProphecy->resolve($redirectTargetMatch['target'])->willReturn($linkDetails);
+
+        $source = new Uri('https://example.com/foo/bar');
+        $result = $this->redirectService->getTargetUrl($redirectTargetMatch, [], $source, new Site('dummy', 13, []));
+
+        $uri = new Uri('https://anotherdomain.com/bar');
         self::assertEquals($uri, $result);
     }
 }
