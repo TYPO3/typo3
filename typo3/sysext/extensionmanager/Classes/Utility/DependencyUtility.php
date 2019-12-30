@@ -483,7 +483,10 @@ class DependencyUtility implements SingletonInterface
     protected function isAvailableVersionCompatible(Dependency $dependency)
     {
         $this->setAvailableExtensions();
-        $extensionData = $this->emConfUtility->includeEmConf($this->availableExtensions[$dependency->getIdentifier()]);
+        $extensionData = $this->emConfUtility->includeEmConf(
+            $dependency->getIdentifier(),
+            $this->availableExtensions[$dependency->getIdentifier()]
+        );
         return $this->isVersionCompatible($extensionData['version'], $dependency);
     }
 

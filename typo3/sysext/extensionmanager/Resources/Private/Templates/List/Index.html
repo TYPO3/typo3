@@ -64,8 +64,8 @@
                     <em:toggleExtensionInstallationState extension="{extension}" />
                 </td>
                 <td>
-                    <f:if condition="{extension.ext_icon}">
-                        <img class="ext-icon" src="../{extension.siteRelPath}{extension.ext_icon}" alt="{extension.title}" />
+                    <f:if condition="{extension.icon}">
+                        <img class="ext-icon" src="{extension.icon}" alt="{extension.title}" />
                     </f:if>
                     <span title="{extension.description}">{extension.title}</span>
                 </td>

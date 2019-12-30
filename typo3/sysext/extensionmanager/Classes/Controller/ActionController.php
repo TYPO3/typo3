@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
 use TYPO3\CMS\Extensionmanager\Utility\ExtensionModelUtility;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
@@ -156,7 +157,22 @@ class ActionController extends AbstractController
     protected function downloadExtensionZipAction($extension)
     {
         $fileName = $this->fileHandlingUtility->createZipFileFromExtension($extension);
-        $this->fileHandlingUtility->sendZipFileToBrowserAndDelete($fileName);
+        $this->sendZipFileToBrowserAndDelete($fileName);
+    }
+
+    /**
+     * Sends a zip file to the browser and deletes it afterwards
+     *
+     * @param string $fileName
+     */
+    protected function sendZipFileToBrowserAndDelete(string $fileName): void
+    {
+        header('Content-Type: application/zip');
+        header('Content-Length: ' . filesize($fileName));
+        header('Content-Disposition: attachment; filename="' . PathUtility::basename($fileName) . '"');
+        readfile($fileName);
+        unlink($fileName);
+        die;
     }
 
     /**

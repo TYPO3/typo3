@@ -269,8 +269,9 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         $emConfFileData = [];
         if (file_exists($rootPath . 'ext_emconf.php')) {
             $emConfFileData = $this->emConfUtility->includeEmConf(
+                $extensionData['extKey'],
                 [
-                    'key' => $extensionData['extKey'],
+                    'packagePath' => $rootPath,
                     'siteRelPath' => PathUtility::stripPathSitePrefix($rootPath)
                 ]
             );
@@ -319,7 +320,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
      * @param string $absolutePath
      * @return string
      */
-    protected function getRelativePath($absolutePath)
+    protected function getRelativePath(string $absolutePath): string
     {
         return PathUtility::stripPathSitePrefix($absolutePath);
     }
@@ -327,43 +328,41 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
     /**
      * Get extension path for an available or installed extension
      *
-     * @param string $extension
+     * @param string $extensionKey
      * @return string
      */
-    public function getAbsoluteExtensionPath($extension)
+    public function getAbsoluteExtensionPath(string $extensionKey): string
     {
-        $extension = $this->installUtility->enrichExtensionWithDetails($extension);
-        $absolutePath = $this->getAbsolutePath($extension['siteRelPath']);
-        return $absolutePath;
+        $extension = $this->installUtility->enrichExtensionWithDetails($extensionKey);
+        return $this->getAbsolutePath($extension['siteRelPath']);
     }
 
     /**
      * Get version of an available or installed extension
      *
-     * @param string $extension
+     * @param string $extensionKey
      * @return string
      */
-    public function getExtensionVersion($extension)
+    protected function getExtensionVersion(string $extensionKey): string
     {
-        $extensionData = $this->installUtility->enrichExtensionWithDetails($extension);
-        $version = $extensionData['version'];
-        return $version;
+        $extensionData = $this->installUtility->enrichExtensionWithDetails($extensionKey);
+        return (string)$extensionData['version'];
     }
 
     /**
      * Create a zip file from an extension
      *
-     * @param array $extension
+     * @param string $extensionKey
      * @return string Name and path of create zip file
      */
-    public function createZipFileFromExtension($extension)
+    public function createZipFileFromExtension($extensionKey): string
     {
-        $extensionPath = $this->getAbsoluteExtensionPath($extension);
+        $extensionPath = $this->getAbsoluteExtensionPath($extensionKey);
 
         // Add trailing slash to the extension path, getAllFilesAndFoldersInPath explicitly requires that.
         $extensionPath = PathUtility::sanitizeTrailingSeparator($extensionPath);
 
-        $version = $this->getExtensionVersion($extension);
+        $version = $this->getExtensionVersion($extensionKey);
         if (empty($version)) {
             $version = '0.0.0';
         }
@@ -372,7 +371,7 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         if (!@is_dir($temporaryPath)) {
             GeneralUtility::mkdir($temporaryPath);
         }
-        $fileName = $temporaryPath . $extension . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
+        $fileName = $temporaryPath . $extensionKey . '_' . $version . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
 
         $zip = new \ZipArchive();
         $zip->open($fileName, \ZipArchive::CREATE);
@@ -433,25 +432,6 @@ class FileHandlingUtility implements SingletonInterface, LoggerAwareInterface
         }
 
         GeneralUtility::fixPermissions($extensionDir, true);
-    }
-
-    /**
-     * Sends a zip file to the browser and deletes it afterwards
-     *
-     * @param string $fileName
-     * @param string $downloadName
-     */
-    public function sendZipFileToBrowserAndDelete($fileName, $downloadName = '')
-    {
-        if ($downloadName === '') {
-            $downloadName = PathUtility::basename($fileName);
-        }
-        header('Content-Type: application/zip');
-        header('Content-Length: ' . filesize($fileName));
-        header('Content-Disposition: attachment; filename="' . $downloadName . '"');
-        readfile($fileName);
-        unlink($fileName);
-        die;
     }
 
     /**

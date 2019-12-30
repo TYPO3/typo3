@@ -17,9 +17,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Type\File\ImageInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
@@ -116,12 +116,12 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
             $this->availableExtensions = [];
             $this->emitPackagesMayHaveChangedSignal();
             foreach ($this->packageManager->getAvailablePackages() as $package) {
-                $installationType = $this->getInstallTypeForPackage($package);
                 $this->availableExtensions[$package->getPackageKey()] = [
+                    'packagePath' => $package->getPackagePath(),
                     'siteRelPath' => str_replace(Environment::getPublicPath() . '/', '', $package->getPackagePath()),
-                    'type' => $installationType,
+                    'type' => $this->getInstallTypeForPackage($package),
                     'key' => $package->getPackageKey(),
-                    'ext_icon' => ExtensionManagementUtility::getExtensionIcon($package->getPackagePath()),
+                    'icon' => PathUtility::getAbsoluteWebPath($package->getPackagePath() . ExtensionManagementUtility::getExtensionIcon($package->getPackagePath())),
                 ];
             }
         }
@@ -198,7 +198,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function enrichExtensionsWithEmConfInformation(array $extensions)
     {
         foreach ($extensions as $extensionKey => $properties) {
-            $emconf = $this->emConfUtility->includeEmConf($properties);
+            $emconf = $this->emConfUtility->includeEmConf($extensionKey, $properties);
             if ($emconf) {
                 $extensions[$extensionKey] = array_merge($emconf, $properties);
             } else {
@@ -265,29 +265,6 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * Adds information about icon size to the extension information
-     *
-     * @param array $extensions
-     * @return array
-     */
-    public function enrichExtensionsWithIconInformation(array $extensions)
-    {
-        foreach ($extensions as &$properties) {
-            $extIconPath = Environment::getPublicPath() . '/' . $properties['siteRelPath'] . $properties['ext_icon'];
-            if (@is_file($extIconPath)) {
-                $imageInfo = GeneralUtility::makeInstance(ImageInfo::class, $extIconPath);
-                $properties['ext_icon_width'] = $imageInfo->getWidth();
-                $properties['ext_icon_height'] = $imageInfo->getHeight();
-            } else {
-                $properties['ext_icon_width'] = 0;
-                $properties['ext_icon_height'] = 0;
-            }
-        }
-        unset($properties);
-        return $extensions;
-    }
-
-    /**
      * Gets all available and installed extension with additional information
      * from em_conf and TER (if available)
      *
@@ -297,7 +274,6 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         $availableExtensions = $this->getAvailableExtensions();
         $availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
-        $availableAndInstalledExtensions = $this->enrichExtensionsWithIconInformation($availableAndInstalledExtensions);
         return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
     }
 }
