@@ -13,6 +13,7 @@
 
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import * as $ from 'jquery';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Md5 = require('TYPO3/CMS/Backend/Hashing/Md5');
 
@@ -110,36 +111,62 @@ class ContextMenuActions {
 
   public static copyFile(table: string, uid: string): void {
     const shortMD5 = Md5.hash(uid).substring(0, 10);
-    let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
-    url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + encodeURIComponent(uid) + '&CB[setCopyMode]=1';
-    $.ajax(url).always((): void => {
+    const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
+    const queryArguments = {
+      CB: {
+        el: {
+          ['_FILE%7C' + shortMD5]: uid
+        },
+        setCopyMode: '1'
+      }
+    };
+    (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
       top.TYPO3.Backend.ContentContainer.refresh(true);
     });
   }
 
   public static copyReleaseFile(table: string, uid: string): void {
     const shortMD5 = Md5.hash(uid).substring(0, 10);
-    let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
-    url += '&CB[el][_FILE%7C' + shortMD5 + ']=0&CB[setCopyMode]=1';
-    $.ajax(url).always((): void => {
+    const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
+    const queryArguments = {
+      CB: {
+        el: {
+          ['_FILE%7C' + shortMD5]: '0'
+        },
+        setCopyMode: '1'
+      }
+    };
+    (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
       top.TYPO3.Backend.ContentContainer.refresh(true);
     });
   }
 
   public static cutFile(table: string, uid: string): void {
     const shortMD5 = Md5.hash(uid).substring(0, 10);
-    let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
-    url += '&CB[el][_FILE%7C' + shortMD5 + ']=' + encodeURIComponent(uid);
-    $.ajax(url).always((): void => {
+    const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
+    const queryArguments = {
+      CB: {
+        el: {
+          ['_FILE%7C' + shortMD5]: uid
+        }
+      }
+    };
+    (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
       top.TYPO3.Backend.ContentContainer.refresh(true);
     });
   }
 
   public static cutReleaseFile(table: string, uid: string): void {
     const shortMD5 = Md5.hash(uid).substring(0, 10);
-    let url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
-    url += '&CB[el][_FILE%7C' + shortMD5 + ']=0';
-    $.ajax(url).always((): void => {
+    const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard;
+    const queryArguments = {
+      CB: {
+        el: {
+          ['_FILE%7C' + shortMD5]: '0'
+        }
+      }
+    };
+    (new AjaxRequest(url)).withQueryArguments(queryArguments).get().finally((): void => {
       top.TYPO3.Backend.ContentContainer.refresh(true);
     });
   }

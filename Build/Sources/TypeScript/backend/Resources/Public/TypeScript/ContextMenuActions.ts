@@ -11,14 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {SeverityEnum} from './Enum/Severity';
 import * as $ from 'jquery';
 import AjaxDataHandler = require('./AjaxDataHandler');
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import InfoWindow = require('./InfoWindow');
 import Modal = require('./Modal');
 import ModuleMenu = require('./ModuleMenu');
-import Viewport = require('./Viewport');
 import Notification = require('TYPO3/CMS/Backend/Notification');
+import Viewport = require('./Viewport');
 
 /**
  * @exports TYPO3/CMS/Backend/ContextMenuActions
@@ -252,7 +254,7 @@ class ContextMenuActions {
       + '&CB[el][' + table + '%7C' + uid + ']=1'
       + '&CB[setCopyMode]=1';
 
-    $.ajax(url).always((): void => {
+    (new AjaxRequest(url)).get().finally((): void => {
       ContextMenuActions.triggerRefresh(Viewport.ContentContainer.get().location.href);
     });
   }
@@ -265,7 +267,7 @@ class ContextMenuActions {
     const url = TYPO3.settings.ajaxUrls.contextmenu_clipboard
       + '&CB[el][' + table + '%7C' + uid + ']=0';
 
-    $.ajax(url).always((): void => {
+    (new AjaxRequest(url)).get().finally((): void => {
       ContextMenuActions.triggerRefresh(Viewport.ContentContainer.get().location.href);
     });
   }
@@ -279,7 +281,7 @@ class ContextMenuActions {
       + '&CB[el][' + table + '%7C' + uid + ']=1'
       + '&CB[setCopyMode]=0';
 
-    $.ajax(url).always((): void => {
+    (new AjaxRequest(url)).get().finally((): void => {
       ContextMenuActions.triggerRefresh(Viewport.ContentContainer.get().location.href);
     });
   }
@@ -300,23 +302,21 @@ class ContextMenuActions {
    * @param {number} uid uid of the page
    */
   public static clearCache(table: string, uid: number): void {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.web_list_clearpagecache + '&id=' + uid,
-      cache: false,
-      dataType: 'json',
-      success: (data: any): void => {
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.web_list_clearpagecache)).withQueryArguments({id: uid}).get({cache: 'no-cache'}).then(
+      async (response: AjaxResponse): Promise<any> => {
+        const data = await response.resolve();
         if (data.success === true) {
           Notification.success(data.title, data.message, 1);
         } else {
           Notification.error(data.title, data.message, 1);
         }
       },
-      error: (): void => {
+      (): void => {
         Notification.error(
           'Clearing page caches went wrong on the server side.',
         );
-      },
-    });
+      }
+    );
   }
 
   /**

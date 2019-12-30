@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import ContextMenuActions = require('./ContextMenuActions');
 
 interface MousePosition {
@@ -156,12 +158,10 @@ class ContextMenu {
    */
   private fetch(parameters: string): void {
     let url = TYPO3.settings.ajaxUrls.contextmenu;
-    if (parameters) {
-      url += (!url.includes('?') ? '?' : '&') + parameters;
-    }
-    $.ajax(url).done((response: MenuItems): void => {
+    (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<any> => {
+      const data: MenuItems = await response.resolve();
       if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
-        this.populateData(response, 0);
+        this.populateData(data, 0);
       }
     });
   }
