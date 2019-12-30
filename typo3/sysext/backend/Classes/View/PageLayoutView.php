@@ -2216,20 +2216,6 @@ class PageLayoutView implements LoggerAwareInterface
                         $out .= $this->linkEditContent($this->getThumbCodeUnlinked($row, 'tt_content', 'media'), $row) . '<br />';
                     }
                     break;
-                case 'menu':
-                    $contentType = $this->CType_labels[$row['CType']];
-                    $out .= $this->linkEditContent('<strong>' . htmlspecialchars($contentType) . '</strong>', $row) . '<br />';
-                    // Add Menu Type
-                    $menuTypeLabel = $this->getLanguageService()->sL(
-                        BackendUtility::getLabelFromItemListMerged($row['pid'], 'tt_content', 'menu_type', $row['menu_type'])
-                    );
-                    $menuTypeLabel = $menuTypeLabel ?: 'invalid menu type';
-                    $out .= $this->linkEditContent($menuTypeLabel, $row);
-                    if ($row['menu_type'] !== '2' && ($row['pages'] || $row['selected_categories'])) {
-                        // Show pages if menu type is not "Sitemap"
-                        $out .= ':' . $this->linkEditContent($this->generateListForCTypeMenu($row), $row) . '<br />';
-                    }
-                    break;
                 case 'shortcut':
                     if (!empty($row['records'])) {
                         $shortcutContent = [];
@@ -2312,34 +2298,6 @@ class PageLayoutView implements LoggerAwareInterface
             return '<span class="text-muted">' . $out . '</span>';
         }
         return $out;
-    }
-
-    /**
-     * Generates a list of selected pages or categories for the CType menu
-     *
-     * @param array $row row from pages
-     * @return string
-     */
-    protected function generateListForCTypeMenu(array $row)
-    {
-        $table = 'pages';
-        $field = 'pages';
-        // get categories instead of pages
-        if (strpos($row['menu_type'], 'categorized_') !== false) {
-            $table = 'sys_category';
-            $field = 'selected_categories';
-        }
-        if (trim($row[$field]) === '') {
-            return '';
-        }
-        $content = '';
-        $uidList = explode(',', $row[$field]);
-        foreach ($uidList as $uid) {
-            $uid = (int)$uid;
-            $record = BackendUtility::getRecord($table, $uid, 'title');
-            $content .= '<br>' . $record['title'] . ' (' . $uid . ')';
-        }
-        return $content;
     }
 
     /**

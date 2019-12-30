@@ -552,7 +552,6 @@
         'maxWInText': kw('maxWInText'),
         'media': B,
         'menu': B,
-        'menu_type': kw('menu_type'),
         'menuHeight': kw('menuHeight'),
         'menuName': kw('menuName'),
         'menuOffset': kw('menuOffset'),

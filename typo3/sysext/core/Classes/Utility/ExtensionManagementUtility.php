@@ -1203,7 +1203,6 @@ class ExtensionManagementUtility
      *
      * $type determines the type of frontend plugin:
      * + list_type (default) - the good old "Insert plugin" entry
-     * + menu_type - a "Menu/Sitemap" entry
      * + CType - a new content element type
      * + header_layout - an additional header type (added to the selection of layout1-5)
      * + includeLib - just includes the library for manual use somewhere in TypoScript.
@@ -1231,9 +1230,6 @@ plugin.' . $cN . $suffix . '.userFunc = ' . $cN . $suffix . '->main
         switch ($type) {
             case 'list_type':
                 $addLine = 'tt_content.list.20.' . $key . $suffix . ' = < plugin.' . $cN . $suffix;
-                break;
-            case 'menu_type':
-                $addLine = 'tt_content.menu.20.' . $key . $suffix . ' = < plugin.' . $cN . $suffix;
                 break;
             case 'CType':
                 $addLine = trim('

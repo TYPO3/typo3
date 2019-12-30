@@ -372,45 +372,6 @@
 			<trans-unit id="recursive.I.5" resname="recursive.I.5">
 				<source>Infinite</source>
 			</trans-unit>
-			<trans-unit id="menu_type" resname="menu_type">
-				<source>Menu Type</source>
-			</trans-unit>
-			<trans-unit id="menu_type_formlabel" resname="menu_type_formlabel">
-				<source>Menu Type</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.0" resname="menu_type.I.0">
-				<source>Menu of selected pages</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.1" resname="menu_type.I.1">
-				<source>Menu of subpages of selected pages</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.2" resname="menu_type.I.2">
-				<source>Menu of subpages of selected pages including abstracts</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.3" resname="menu_type.I.3">
-				<source>Menu of subpages of selected pages including sections</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.4" resname="menu_type.I.4">
-				<source>Sitemap</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.5" resname="menu_type.I.5">
-				<source>Section index (page content marked for section menus)</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.6" resname="menu_type.I.6">
-				<source>Recently updated pages</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.7" resname="menu_type.I.7">
-				<source>Related pages (based on keywords)</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.8" resname="menu_type.I.8">
-				<source>Sitemaps of selected pages</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.categorized_pages" resname="menu_type.I.categorized_pages">
-				<source>Pages for selected categories</source>
-			</trans-unit>
-			<trans-unit id="menu_type.I.categorized_content" resname="menu_type.I.categorized_content">
-				<source>Content elements for selected categories</source>
-			</trans-unit>
 			<trans-unit id="list_type" resname="list_type">
 				<source>Plugin</source>
 			</trans-unit>

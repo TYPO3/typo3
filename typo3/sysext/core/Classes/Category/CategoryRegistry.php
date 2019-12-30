@@ -145,19 +145,9 @@ class CategoryRegistry implements SingletonInterface
     public function getCategoryFieldsForTable(array &$configuration)
     {
         $table = $configuration['config']['itemsProcConfig']['table'] ?? '';
-        // Lookup table for legacy menu content element
-        if (empty($table)) {
-            $menuType = $configuration['row']['menu_type'][0] ?? '';
-            // Define the table being looked up from the type of menu
-            if ($menuType === 'categorized_pages') {
-                $table = 'pages';
-            } elseif ($menuType === 'categorized_content') {
-                $table = 'tt_content';
-            }
-        }
         // Return early if no table is defined
         if (empty($table)) {
-            throw new \UnexpectedValueException('The given menu_type is not supported.', 1381823570);
+            throw new \UnexpectedValueException('No table is given.', 1381823570);
         }
         // Loop on all registries and find entries for the correct table
         foreach ($this->registry as $tableName => $fields) {

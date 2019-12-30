@@ -479,10 +479,6 @@ tt_content:sectionIndex</source>
 			<trans-unit id="sectionIndex.details" resname="sectionIndex.details">
 				<source>See more details about Section Menus by clicking below.</source>
 			</trans-unit>
-			<trans-unit id="_sectionIndex.seeAlso" resname="_sectionIndex.seeAlso">
-				<source>tt_content:menu_type</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
 			<trans-unit id="linkToTop.description" resname="linkToTop.description">
 				<source>If checked, a small  "To Top" link will be added after the Content Element, linking back to the top of the page.</source>
 			</trans-unit>
