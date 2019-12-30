@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 interface FieldOptions {
   pageId: number;
@@ -66,7 +68,7 @@ class SlugElement {
   private $readOnlyField: JQuery = null;
   private $inputField: JQuery = null;
   private $hiddenField: JQuery = null;
-  private xhr: JQueryXHR = null;
+  private request: AjaxRequest = null;
   private readonly fieldsToListenOn: { [key: string]: string } = {};
 
   constructor(selector: string, options: FieldOptions) {
@@ -158,45 +160,44 @@ class SlugElement {
     } else {
       input.manual = this.$inputField.val();
     }
-    if (this.xhr !== null && this.xhr.readyState !== 4) {
-      this.xhr.abort();
+    if (this.request instanceof AjaxRequest) {
+      this.request.getAbort().abort();
     }
-    this.xhr = $.post(
-      TYPO3.settings.ajaxUrls.record_slug_suggest,
-      {
-        values: input,
-        mode: mode,
-        tableName: this.options.tableName,
-        pageId: this.options.pageId,
-        parentPageId: this.options.parentPageId,
-        recordId: this.options.recordId,
-        language: this.options.language,
-        fieldName: this.options.fieldName,
-        command: this.options.command,
-        signature: this.options.signature,
-      },
-      (response: Response): void => {
-        if (response.hasConflicts) {
-          this.$fullElement.find('.t3js-form-proposal-accepted').addClass('hidden');
-          this.$fullElement.find('.t3js-form-proposal-different').removeClass('hidden').find('span').text(response.proposal);
-        } else {
-          this.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(response.proposal);
-          this.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
-        }
-        const isChanged = this.$hiddenField.val() !== response.proposal;
-        if (isChanged) {
-          this.$fullElement.find('input').trigger('change');
-        }
-        if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
-          this.$readOnlyField.val(response.proposal);
-          this.$hiddenField.val(response.proposal);
-          this.$inputField.val(response.proposal);
-        } else {
-          this.$hiddenField.val(response.proposal);
-        }
-      },
-      'json',
-    );
+    this.request = (new AjaxRequest(TYPO3.settings.ajaxUrls.record_slug_suggest));
+    this.request.post({
+      values: input,
+      mode: mode,
+      tableName: this.options.tableName,
+      pageId: this.options.pageId,
+      parentPageId: this.options.parentPageId,
+      recordId: this.options.recordId,
+      language: this.options.language,
+      fieldName: this.options.fieldName,
+      command: this.options.command,
+      signature: this.options.signature,
+    }).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      if (data.hasConflicts) {
+        this.$fullElement.find('.t3js-form-proposal-accepted').addClass('hidden');
+        this.$fullElement.find('.t3js-form-proposal-different').removeClass('hidden').find('span').text(data.proposal);
+      } else {
+        this.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(data.proposal);
+        this.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
+      }
+      const isChanged = this.$hiddenField.val() !== data.proposal;
+      if (isChanged) {
+        this.$fullElement.find('input').trigger('change');
+      }
+      if (mode === ProposalModes.AUTO || mode === ProposalModes.RECREATE) {
+        this.$readOnlyField.val(data.proposal);
+        this.$hiddenField.val(data.proposal);
+        this.$inputField.val(data.proposal);
+      } else {
+        this.$hiddenField.val(data.proposal);
+      }
+    }).finally((): void => {
+      this.request = null;
+    });
   }
 
   /**

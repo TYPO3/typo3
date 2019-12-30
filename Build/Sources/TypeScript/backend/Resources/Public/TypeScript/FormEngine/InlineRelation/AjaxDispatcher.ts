@@ -11,9 +11,15 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import {AjaxRequest} from './AjaxRequest';
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import Notification = require('../../Notification');
+
+interface Context {
+  config: Object;
+  hmac: string;
+}
 
 export class AjaxDispatcher {
   private readonly objectGroup: string = null;
@@ -23,7 +29,7 @@ export class AjaxDispatcher {
   }
 
   public newRequest(endpoint: string): AjaxRequest {
-    return new AjaxRequest(endpoint, this.objectGroup);
+    return new AjaxRequest(endpoint);
   }
 
   /**
@@ -37,21 +43,41 @@ export class AjaxDispatcher {
     throw 'Undefined endpoint for route "' + routeName + '"';
   }
 
-  public send(request: AjaxRequest): JQueryXHR {
-    const xhr = $.ajax(request.getEndpoint(), request.getOptions());
-
-    xhr.done((): void => {
-      this.processResponse(xhr);
-    }).fail((): void => {
-      Notification.error('Error ' + xhr.status, xhr.statusText);
+  public send(request: AjaxRequest, params: Array<string>): Promise<any> {
+    const sentRequest = request.post(this.createRequestBody(params)).then(async (response: AjaxResponse): Promise<any> => {
+      return this.processResponse(await response.resolve());
+    });
+    sentRequest.catch((reason: Error): void => {
+      Notification.error('Error ' + reason.message);
     });
 
-    return xhr;
+    return sentRequest;
   }
 
-  private processResponse(xhr: JQueryXHR): void {
-    const json = xhr.responseJSON;
+  private createRequestBody(input: Array<string>): { [key: string]: string } {
+    const body: { [key: string]: string } = {};
+    for (let i = 0; i < input.length; i++) {
+      body['ajax[' + i + ']'] = input[i];
+    }
 
+    body['ajax[context]'] = JSON.stringify(this.getContext());
+
+    return body;
+  }
+
+  private getContext(): Context {
+    let context: Context;
+
+    if (typeof TYPO3.settings.FormEngineInline.config[this.objectGroup] !== 'undefined'
+      && typeof TYPO3.settings.FormEngineInline.config[this.objectGroup].context !== 'undefined'
+    ) {
+      context = TYPO3.settings.FormEngineInline.config[this.objectGroup].context;
+    }
+
+    return context;
+  }
+
+  private processResponse(json: { [key: string]: any }): { [key: string]: any } {
     if (json.hasErrors) {
       $.each(json.messages, (position: number, message: { [key: string]: string }): void => {
         Notification.error(message.title, message.message);
@@ -90,5 +116,7 @@ export class AjaxDispatcher {
         eval(value);
       });
     }
+
+    return json;
   }
 }

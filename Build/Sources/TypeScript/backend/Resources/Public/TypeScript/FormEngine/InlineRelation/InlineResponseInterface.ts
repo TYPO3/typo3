@@ -13,11 +13,28 @@
 
 export interface InlineResponseInterface {
   data: string;
-  inlineData: {
-    config: { [key: string]: Object },
-    map: { [key: string]: Array<string> }
-    nested: { [key: string]: Array<Array<string>> },
-  };
-  scriptCall: Array<string>;
-  stylesheetFiles: Array<string>;
+  inlineData?: InlineData;
+  scriptCall?: Array<string>;
+  stylesheetFiles?: Array<string>;
+  compilerInput?: CompilerInput,
+}
+
+interface InlineData {
+  config: { [key: string]: Object };
+  map: { [key: string]: Array<string> };
+  nested: { [key: string]: Array<Array<string>> };
+}
+
+interface CompilerInput {
+  uid: string;
+  childChildUid: string;
+  parentConfig: { [key: string]: any };
+  delete?: Array<string>;
+  localize?: Array<LocalizeItem>;
+}
+
+interface LocalizeItem {
+  uid: string;
+  selectedValue: string;
+  remove?: number;
 }

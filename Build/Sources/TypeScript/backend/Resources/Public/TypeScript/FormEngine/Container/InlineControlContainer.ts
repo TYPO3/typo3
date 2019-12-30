@@ -11,19 +11,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import * as $ from 'jquery';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
+import {MessageUtility} from '../../Utility/MessageUtility';
 import {AjaxDispatcher} from './../InlineRelation/AjaxDispatcher';
 import {InlineResponseInterface} from './../InlineRelation/InlineResponseInterface';
-import {MessageUtility} from '../../Utility/MessageUtility';
-import * as $ from 'jquery';
+import NProgress = require('nprogress');
+import Sortable = require('Sortable');
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import FormEngineValidation = require('TYPO3/CMS/Backend/FormEngineValidation');
 import Icons = require('../../Icons');
 import InfoWindow = require('../../InfoWindow');
 import Modal = require('../../Modal');
 import Notification = require('../../Notification');
-import NProgress = require('nprogress');
 import Severity = require('../../Severity');
-import Sortable = require('Sortable');
 import Utility = require('../../Utility');
 
 enum Selectors {
@@ -55,8 +56,8 @@ enum SortDirections {
   UP = 'up',
 }
 
-interface XhrQueue {
-  [key: string]: JQueryXHR;
+interface RequestQueue {
+  [key: string]: AjaxRequest;
 }
 
 interface ProgressQueue {
@@ -92,7 +93,7 @@ class InlineControlContainer {
   private container: HTMLElement = null;
   private ajaxDispatcher: AjaxDispatcher = null;
   private appearance: Appearance = null;
-  private xhrQueue: XhrQueue = {};
+  private requestQueue: RequestQueue = {};
   private progessQueue: ProgressQueue = {};
   private noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
 
@@ -128,10 +129,7 @@ class InlineControlContainer {
    */
   private static registerInfoButton(e: Event): void {
     let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(
-      e.target,
-      Selectors.infoWindowButton)
-    ) === null) {
+    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.infoWindowButton)) === null) {
       return;
     }
 
@@ -313,10 +311,7 @@ class InlineControlContainer {
    */
   private registerSort(e: Event): void {
     let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(
-      e.target,
-      Selectors.controlSectionSelector + ' [data-action="sort"]')
-    ) === null) {
+    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.controlSectionSelector + ' [data-action="sort"]')) === null) {
       return;
     }
 
@@ -421,14 +416,11 @@ class InlineControlContainer {
    * @param {Array} params
    * @param {string} afterUid
    */
-  private importRecord(params: Array<any>, afterUid?: string): void {
-    const xhr = this.ajaxDispatcher.send(
-      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_create'))
-        .withContext()
-        .withParams(params),
-    );
-
-    xhr.done((response: { [key: string]: any }): void => {
+  private async importRecord(params: Array<any>, afterUid?: string): Promise<any> {
+    this.ajaxDispatcher.send(
+      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_create')),
+      params,
+    ).then(async (response: InlineResponseInterface): Promise<any> => {
       if (this.isBelowMax()) {
         this.createRecord(
           response.compilerInput.uid,
@@ -493,10 +485,7 @@ class InlineControlContainer {
    */
   private registerDeleteButton(e: Event): void {
     let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(
-      e.target,
-      Selectors.deleteRecordButtonSelector)
-    ) === null) {
+    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.deleteRecordButtonSelector)) === null) {
       return;
     }
 
@@ -537,13 +526,10 @@ class InlineControlContainer {
       return;
     }
 
-    const xhr = this.ajaxDispatcher.send(
-      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize'))
-        .withContext()
-        .withParams([this.container.dataset.objectGroup, target.dataset.type]),
-    );
-
-    xhr.done((response: { [key: string]: any }): void => {
+    this.ajaxDispatcher.send(
+      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
+      [this.container.dataset.objectGroup, target.dataset.type],
+    ).then(async (response: InlineResponseInterface): Promise<any> => {
       document.querySelector('#' + this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
 
       const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
@@ -602,20 +588,18 @@ class InlineControlContainer {
    */
   private loadRecordDetails(objectId: string): void {
     const recordFieldsContainer = document.querySelector('#' + objectId + '_fields');
-    const isLoading = typeof this.xhrQueue[objectId] !== 'undefined';
+    const isLoading = typeof this.requestQueue[objectId] !== 'undefined';
     const isLoaded = recordFieldsContainer !== null && recordFieldsContainer.innerHTML.substr(0, 16) !== '<!--notloaded-->';
 
     if (!isLoaded) {
       const progress = this.getProgress(objectId);
 
       if (!isLoading) {
-        const xhr = this.ajaxDispatcher.send(
-          this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_details'))
-            .withContext()
-            .withParams([objectId]),
-        );
-        xhr.done((response: InlineResponseInterface): void => {
-          delete this.xhrQueue[objectId];
+        const ajaxRequest = this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_details'));
+        const request = this.ajaxDispatcher.send(ajaxRequest, [objectId]);
+
+        request.then(async (response: InlineResponseInterface): Promise<any> => {
+          delete this.requestQueue[objectId];
           delete this.progessQueue[objectId];
 
           recordFieldsContainer.innerHTML = response.data;
@@ -633,12 +617,12 @@ class InlineControlContainer {
           }
         });
 
-        this.xhrQueue[objectId] = xhr;
+        this.requestQueue[objectId] = ajaxRequest;
         progress.start();
       } else {
         // Abort loading if collapsed again
-        this.xhrQueue[objectId].abort();
-        delete this.xhrQueue[objectId];
+        this.requestQueue[objectId].getAbort().abort();
+        delete this.requestQueue[objectId];
         delete this.progessQueue[objectId];
         progress.done();
       }
@@ -677,9 +661,8 @@ class InlineControlContainer {
     }
 
     this.ajaxDispatcher.send(
-      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_expandcollapse'))
-        .withContext()
-        .withParams([objectId, expand.join(','), collapse.join(',')]),
+      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_expandcollapse')),
+      [objectId, expand.join(','), collapse.join(',')]
     );
   }
 

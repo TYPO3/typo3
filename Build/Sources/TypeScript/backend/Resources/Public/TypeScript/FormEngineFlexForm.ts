@@ -23,7 +23,8 @@
 
 import * as $ from 'jquery';
 import 'jquery-ui/sortable';
-
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {FlexFormElementOptions} from './FormEngine/FlexForm/FlexFormElementOptions';
 import FormEngine = require('TYPO3/CMS/Backend/FormEngine');
 import Modal = require('TYPO3/CMS/Backend/Modal');
@@ -89,7 +90,7 @@ class FlexFormElement {
     this.initializeEvents();
 
     // generate the preview text if a section is hidden on load
-    this.$el.find(this.opts.sectionSelector).each(function(this: HTMLElement): void {
+    this.$el.find(this.opts.sectionSelector).each(function (this: HTMLElement): void {
       that.generateSectionPreview($(this));
     });
 
@@ -133,7 +134,7 @@ class FlexFormElement {
         evt.preventDefault();
         const $sectionEl = $(evt.currentTarget).closest(this.opts.sectionSelector);
         this.toggleSection($sectionEl);
-      }).on('click', this.opts.sectionToggleButtonSelector + ' .form-irre-header-control', function(evt: Event): void {
+      }).on('click', this.opts.sectionToggleButtonSelector + ' .form-irre-header-control', function (evt: Event): void {
         evt.stopPropagation();
       });
     }
@@ -161,7 +162,7 @@ class FlexFormElement {
   private setActionStatus(): void {
     const that = this;
     // Traverse and find how many sections are open or closed, and save the value accordingly
-    this.$el.find(this.opts.sectionActionInputFieldSelector).each(function(this: HTMLElement, index: number): void {
+    this.$el.find(this.opts.sectionActionInputFieldSelector).each(function (this: HTMLElement, index: number): void {
       const actionValue = ($(this).parents(that.opts.sectionSelector).hasClass(that.opts.sectionDeletedClass) ? 'DELETE' : index);
       $(this).val(actionValue);
     });
@@ -200,7 +201,7 @@ class FlexFormElement {
     let previewContent = '';
 
     if (!$contentEl.is(':visible')) {
-      $contentEl.find('input[type=text], textarea').each(function(this: HTMLElement): void {
+      $contentEl.find('input[type=text], textarea').each(function (this: HTMLElement): void {
         let content = $($.parseHTML($(this).val())).text();
         if (content.length > 50) {
           content = content.substring(0, 50) + '...';
@@ -220,62 +221,56 @@ class FlexFormElement {
 }
 
 
-
 // register the flex functions as jQuery Plugin
-$.fn.t3FormEngineFlexFormElement = function(options: FlexFormElementOptions): JQuery {
+$.fn.t3FormEngineFlexFormElement = function (options: FlexFormElementOptions): JQuery {
   // apply all util functions to ourself (for use in templates, etc.)
-  return this.each(function(this: HTMLElement): void {
+  return this.each(function (this: HTMLElement): void {
     new FlexFormElement(this, options);
   });
 };
 
 // Initialization Code
-$(function(): void {
+$(function (): void {
   // run the flexform functions on all containers (which contains one or more sections)
   $('.t3-flex-container').t3FormEngineFlexFormElement();
 
   // Add handler to fetch container data on click on "add container" buttons
-  $(document).on('click', '.t3js-flex-container-add', function(this: HTMLElement, e: Event): void {
+  $(document).on('click', '.t3js-flex-container-add', function (this: HTMLElement, e: Event): void {
     const me = $(this);
     e.preventDefault();
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.record_flex_container_add,
-      type: 'POST',
-      cache: false,
-      data: {
-        vanillaUid: me.data('vanillauid'),
-        databaseRowUid: me.data('databaserowuid'),
-        command: me.data('command'),
-        tableName: me.data('tablename'),
-        fieldName: me.data('fieldname'),
-        recordTypeValue: me.data('recordtypevalue'),
-        dataStructureIdentifier: me.data('datastructureidentifier'),
-        flexFormSheetName: me.data('flexformsheetname'),
-        flexFormFieldName: me.data('flexformfieldname'),
-        flexFormContainerName: me.data('flexformcontainername'),
-      },
-      success: function(response: any): void {
-        me.closest('.t3-form-field-container').find('.t3-flex-container').append(response.html);
-        $('.t3-flex-container').t3FormEngineFlexFormElement();
-        if (response.scriptCall && response.scriptCall.length > 0) {
-          $.each(response.scriptCall, function(index: number, value: string): void {
-            // eslint-disable-next-line no-eval
-            eval(value);
-          });
-        }
-        if (response.stylesheetFiles && response.stylesheetFiles.length > 0) {
-          $.each(response.stylesheetFiles, function(index: number, stylesheetFile: string): void {
-            let element = document.createElement('link');
-            element.rel = 'stylesheet';
-            element.type = 'text/css';
-            element.href = stylesheetFile;
-            document.head.appendChild(element);
-          });
-        }
-        FormEngine.reinitialize();
-        FormEngine.Validation.initializeInputFields();
-        FormEngine.Validation.validate();
-      },
+    (new AjaxRequest(TYPO3.settings.ajaxUrls.record_flex_container_add)).post({
+      vanillaUid: me.data('vanillauid'),
+      databaseRowUid: me.data('databaserowuid'),
+      command: me.data('command'),
+      tableName: me.data('tablename'),
+      fieldName: me.data('fieldname'),
+      recordTypeValue: me.data('recordtypevalue'),
+      dataStructureIdentifier: me.data('datastructureidentifier'),
+      flexFormSheetName: me.data('flexformsheetname'),
+      flexFormFieldName: me.data('flexformfieldname'),
+      flexFormContainerName: me.data('flexformcontainername'),
+    }).then(async (response: AjaxResponse): Promise<any> => {
+      const data = await response.resolve();
+      me.closest('.t3-form-field-container').find('.t3-flex-container').append(data.html);
+      $('.t3-flex-container').t3FormEngineFlexFormElement();
+      if (data.scriptCall && data.scriptCall.length > 0) {
+        $.each(data.scriptCall, function (index: number, value: string): void {
+          // eslint-disable-next-line no-eval
+          eval(value);
+        });
+      }
+      if (data.stylesheetFiles && data.stylesheetFiles.length > 0) {
+        $.each(data.stylesheetFiles, function (index: number, stylesheetFile: string): void {
+          let element = document.createElement('link');
+          element.rel = 'stylesheet';
+          element.type = 'text/css';
+          element.href = stylesheetFile;
+          document.head.appendChild(element);
+        });
+      }
+      FormEngine.reinitialize();
+      FormEngine.Validation.initializeInputFields();
+      FormEngine.Validation.validate();
     });
   });
 
