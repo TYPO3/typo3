@@ -95,6 +95,25 @@ class Localization {
             );
           }
 
+          if ($triggerButton.data('allowTranslate') === 0 && $triggerButton.data('allowCopy') === 0) {
+            actions.push(
+              '<div class="row">'
+              + '<div class="col-sm-12">'
+              + '<div class="alert alert-warning">'
+              + '<div class="media">'
+              + '<div class="media-left">'
+              + '<span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-exclamation fa-stack-1x"></i></span>'
+              + '</div>'
+              + '<div class="media-body">'
+              + '<p class="alert-message">' + TYPO3.lang['localize.educate.mixedmode'] + '</p>'
+              + '</div>'
+              + '</div>'
+              + '</div>'
+              + '</div>'
+              + '</div>',
+            );
+          }
+
           slideStep1 += '<div data-toggle="buttons">' + actions.join('<hr>') + '</div>';
           Wizard.addSlide(
             'localize-choose-action',

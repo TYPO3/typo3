@@ -378,6 +378,11 @@
 					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
 				</source>
 			</trans-unit>
+			<trans-unit id="localize.educate.mixedmode" resname="localize.educate.mixedmode" xml:space="preserve">
+				<source>Using the translation wizard is not possible, because the translated page is in "mixed mode". This means that both translated records that have a source language and "free mode" records without a parent, are present.&lt;br&gt;
+					We highlighted the problematic records for you.
+				</source>
+			</trans-unit>
 			<trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout">
 				<source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
 			</trans-unit>
