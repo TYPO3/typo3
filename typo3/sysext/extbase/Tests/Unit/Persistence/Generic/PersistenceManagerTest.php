@@ -349,7 +349,7 @@ class PersistenceManagerTest extends UnitTestCase
         $repository = $this->getAccessibleMock($repositorClassNameWithNamespace, ['dummy'], [$this->mockObjectManager]);
         $repository->_set('objectType', get_class($entity1));
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
-        $mockBackend = $this->getMockBuilder($this->buildAccessibleProxy(Backend::class))
+        $mockBackend = $this->getMockBuilder(Backend::class)
             ->setMethods(['commit', 'setChangedEntities'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -439,7 +439,7 @@ class PersistenceManagerTest extends UnitTestCase
         $entity1 = new $classNameWithNamespace();
         $aggregateRootObjects->attach($entity1);
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Backend|MockObject $mockBackend */
-        $mockBackend = $this->getMockBuilder($this->buildAccessibleProxy(Backend::class))
+        $mockBackend = $this->getMockBuilder(Backend::class)
             ->setMethods(['commit', 'setAggregateRootObjects', 'setDeletedEntities'])
             ->disableOriginalConstructor()
             ->getMock();

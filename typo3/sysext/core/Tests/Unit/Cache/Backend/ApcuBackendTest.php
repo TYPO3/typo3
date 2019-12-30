@@ -279,8 +279,7 @@ class ApcuBackendTest extends UnitTestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|FrontendInterface $cache */
         $cache = $this->createMock(FrontendInterface::class);
         if ($accessible) {
-            $accessibleClassName = $this->buildAccessibleProxy(ApcuBackend::class);
-            $backend = new $accessibleClassName('Testing');
+            $backend = $this->getAccessibleMock(ApcuBackend::class, ['dummy'], ['Testing']);
         } else {
             $backend = new ApcuBackend('Testing');
         }

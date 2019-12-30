@@ -48,8 +48,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['TYPO3_REQUEST'] = new ServerRequest('https://www.example.com', 'GET');
-        $proxyClassName = $this->buildAccessibleProxy(AbstractMenuContentObject::class);
-        $this->subject = $this->getMockForAbstractClass($proxyClassName);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class);
         $site = new Site('test', 1, [
             'base' => 'https://www.example.com',
             'languages' => [
@@ -360,8 +359,7 @@ class AbstractMenuContentObjectTest extends UnitTestCase
         $runtimeCacheMock->expects(self::once())->method('get')->with(self::anything())->willReturn(false);
         $runtimeCacheMock->expects(self::once())->method('set')->with(self::anything(), ['result' => $expectedResult]);
 
-        $proxyClassName = $this->buildAccessibleProxy(AbstractMenuContentObject::class);
-        $this->subject = $this->getMockForAbstractClass($proxyClassName, [], '', true, true, true, ['getRuntimeCache']);
+        $this->subject = $this->getAccessibleMockForAbstractClass(AbstractMenuContentObject::class, [], '', true, true, true, ['getRuntimeCache']);
         $this->subject->expects(self::once())->method('getRuntimeCache')->willReturn($runtimeCacheMock);
         $this->prepareSectionIndexTest();
 

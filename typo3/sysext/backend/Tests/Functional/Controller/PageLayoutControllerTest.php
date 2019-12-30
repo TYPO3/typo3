@@ -18,7 +18,6 @@ use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
@@ -62,8 +61,7 @@ class PageLayoutControllerTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $className = $this->buildAccessibleProxy(PageLayoutController::class);
-        $this->subject = GeneralUtility::makeInstance($className);
+        $this->subject = $this->getAccessibleMock(PageLayoutController::class, ['dummy']);
         $this->backendUser = $this->setUpBackendUserFromFixture(1);
 
         $this->withDatabaseSnapshot(function () {

@@ -353,14 +353,15 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         GeneralUtility::addInstance(Random::class, $randomProphecy->reveal());
 
         // Mock the login data and auth services here since fully prophesize this is a lot of hassle
-        $subject = $this->getMockBuilder($this->buildAccessibleProxy(FrontendUserAuthentication::class))
-            ->setMethods([
+        $subject = $this->getAccessibleMock(
+            FrontendUserAuthentication::class,
+            [
                 'getLoginFormData',
                 'getAuthServices',
                 'createUserSession',
                 'getCookie',
-            ])
-            ->getMock();
+            ]
+        );
         $subject->setLogger(new NullLogger());
         $subject->gc_probability = -1;
 
@@ -388,7 +389,7 @@ class FrontendUserAuthenticationTest extends UnitTestCase
         $subject->method('getCookie')->willReturn(null);
 
         $subject->start();
-        self::assertFalse($subject->_get('loginFailure'));
+        self::assertFalse($subject->loginFailure);
         self::assertEquals('existingUserName', $subject->user['username']);
     }
 

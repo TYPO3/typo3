@@ -264,8 +264,7 @@ class WincacheBackendTest extends UnitTestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache */
         $cache = $this->createMock(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface::class);
         if ($accessible) {
-            $accessibleClassName = $this->buildAccessibleProxy(WincacheBackend::class);
-            $backend = new $accessibleClassName('Testing');
+            $backend = $this->getAccessibleMock(WincacheBackend::class, ['dummy'], ['Testing']);
         } else {
             $backend = new WincacheBackend('Testing');
         }

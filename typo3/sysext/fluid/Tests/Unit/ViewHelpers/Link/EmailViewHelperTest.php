@@ -26,7 +26,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 class EmailViewHelperTest extends ViewHelperBaseTestcase
 {
     /**
-     * @var \TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper
+     * @var EmailViewHelper
      */
     protected $viewHelper;
 
@@ -40,9 +40,7 @@ class EmailViewHelperTest extends ViewHelperBaseTestcase
         parent::setUp();
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = $this->createMock(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
-        $this->viewHelper = $this->getMockBuilder($this->buildAccessibleProxy(\TYPO3\CMS\Fluid\ViewHelpers\Link\EmailViewHelper::class))
-            ->setMethods(['renderChildren'])
-            ->getMock();
+        $this->viewHelper = $this->getAccessibleMock(EmailViewHelper::class, ['renderChildren']);
         $this->injectDependenciesIntoViewHelper($this->viewHelper);
     }
 
