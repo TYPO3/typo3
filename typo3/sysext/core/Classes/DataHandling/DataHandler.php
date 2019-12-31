@@ -1066,7 +1066,7 @@ class DataHandler implements LoggerAwareInterface
                 if ($status === 'new' && $table === 'pages') {
                     $fieldArray = $this->pagePermissionAssembler->applyDefaults(
                         $fieldArray,
-                        (int)$tscPid,
+                        (int)$tscPID,
                         (int)$this->userid,
                         (int)$this->BE_USER->firstMainGroup
                     );
