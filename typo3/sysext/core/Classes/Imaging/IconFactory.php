@@ -165,20 +165,32 @@ class IconFactory
             // and to give root-pages an own icon
             if ($table === 'pages') {
                 if ((int)$row['nav_hide'] > 0) {
-                    $recordType[2] = $recordType[1] . '-hideinmenu';
+                    $recordType[2] = $this->getRecordTypeForPageType(
+                        $recordType[1],
+                        'hideinmenu',
+                        $table
+                    );
                 }
                 if ((int)$row['is_siteroot'] > 0) {
-                    $recordType[3] = $recordType[1] . '-root';
+                    $recordType[3] = $this->getRecordTypeForPageType(
+                        $recordType[1],
+                        'root',
+                        $table
+                    );
                 }
                 if (!empty($row['module'])) {
                     $recordType[4] = 'contains-' . $row['module'];
                 }
                 if ((int)$row['content_from_pid'] > 0) {
                     if ($row['is_siteroot']) {
-                        $recordType[4] = 'page-contentFromPid-root';
+                        $recordType[4] = $this->getRecordTypeForPageType(
+                            $recordType[1],
+                            'contentFromPid-root',
+                            $table
+                        );
                     } else {
-                        $recordType[4] = (int)$row['nav_hide'] === 0
-                            ? 'page-contentFromPid' : 'page-contentFromPid-hideinmenu';
+                        $suffix = (int)$row['nav_hide'] === 0 ? 'contentFromPid' : 'contentFromPid-hideinmenu';
+                        $recordType[4] = $this->getRecordTypeForPageType($recordType[1], $suffix, $table);
                     }
                 }
             }
@@ -231,6 +243,25 @@ class IconFactory
         }
 
         return $this->iconRegistry->getDefaultIconIdentifier();
+    }
+
+    /**
+     * Returns recordType for icon based on a typeName and a suffix.
+     * Fallback to page as typeName if resulting type is not configured.
+     * @param  string  $typeName
+     * @param  string  $suffix
+     * @param  string  $table
+     * @return string
+     */
+    protected function getRecordTypeForPageType(string $typeName, string $suffix, string $table): string
+    {
+        $recordType = $typeName . '-' . $suffix;
+
+        // Check if typeicon class exists. If not fallback to page as typeName
+        if (!isset($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$recordType])) {
+            $recordType = 'page-' . $suffix;
+        }
+        return $recordType;
     }
 
     /**
