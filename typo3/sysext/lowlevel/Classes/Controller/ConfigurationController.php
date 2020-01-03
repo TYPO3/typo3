@@ -26,8 +26,12 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManager;
+use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Lowlevel\Utility\ArrayBrowser;
 
 /**
@@ -169,6 +173,13 @@ class ConfigurationController
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
+        if (ExtensionManagementUtility::isLoaded('form')) {
+            $this->treeSetup['formYamlConfiguration'] = [
+                'label' => 'formYamlConfiguration',
+                'type' => 'formYamlConfiguration',
+            ];
+        }
+
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
 
@@ -245,6 +256,9 @@ class ConfigurationController
             $sortKeysByName = false;
             $listenerProvider = $this->container->get(ListenerProvider::class);
             $renderArray = $listenerProvider->getAllListenerDefinitions();
+        } elseif ($selectedTreeDetails['type'] === 'formYamlConfiguration') {
+            $formConfigurationManager = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManager::class);
+            $renderArray = $formConfigurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'form');
         } else {
             throw new \RuntimeException('Unknown array type "' . $selectedTreeDetails['type'] . '"', 1507845662);
         }

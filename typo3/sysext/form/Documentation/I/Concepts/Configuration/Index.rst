@@ -63,6 +63,13 @@ module.
    This will make your life easier if you want to customize EXT:form
    heavily in order to suit the customer's needs.
 
+.. tip::
+
+   For debugging purposes or for getting an overview about the available
+   configuration use the :guilabel:`SYSTEM > Configuration` module. Select in
+   the menu the :guilabel:`Form: YAML Configuration` item to display the
+   parsed YAML form setup. If the module is not available install the lowlevel
+   system extension.
 
 .. _concepts-configuration-yamlregistration-frontend:
 
