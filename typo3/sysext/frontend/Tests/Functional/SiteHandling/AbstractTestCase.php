@@ -259,18 +259,4 @@ abstract class AbstractTestCase extends FunctionalTestCase
             $menu
         );
     }
-
-    /**
-     * @param array $keys
-     * @param mixed $payload
-     * @return array
-     */
-    protected function populateToKeys(array $keys, $payload): array
-    {
-        $result = [];
-        foreach ($keys as $key) {
-            $result[$key] = $payload;
-        }
-        return $result;
-    }
 }
