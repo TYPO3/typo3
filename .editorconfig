@@ -23,6 +23,7 @@ indent_style = tab
 # ReST-Files
 [*.rst]
 indent_size = 3
+max_line_length = 80
 
 # YAML-Files
 [*.{yaml,yml}]
