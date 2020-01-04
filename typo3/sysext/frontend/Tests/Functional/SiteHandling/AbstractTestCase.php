@@ -71,26 +71,11 @@ abstract class AbstractTestCase extends FunctionalTestCase
      * @param callable $finalCallback Callback being executed on last multiplier
      * @param string $prefix Prefix containing concatenated previous values
      * @return array
+     * @todo Replace all calls with PermutationUtility::meltStringItems()
      */
     protected function meltStrings(array $arrays, callable $finalCallback = null, string $prefix = ''): array
     {
-        $results = [];
-        $array = array_shift($arrays);
-        foreach ($array as $item) {
-            $resultItem = $prefix . $item;
-            if (count($arrays) > 0) {
-                $results = array_merge(
-                    $results,
-                    $this->meltStrings($arrays, $finalCallback, $resultItem)
-                );
-                continue;
-            }
-            if ($finalCallback !== null) {
-                $resultItem = call_user_func($finalCallback, $resultItem);
-            }
-            $results[] = $resultItem;
-        }
-        return $results;
+        return \TYPO3\CMS\Core\Utility\PermutationUtility::meltStringItems($arrays);
     }
 
     /**
