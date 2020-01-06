@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -112,7 +113,7 @@ class SiteRequestTest extends AbstractTestCase
 
         return $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries])
             )
         );
     }
@@ -219,7 +220,7 @@ class SiteRequestTest extends AbstractTestCase
                 return [$uri, $expectedPageTitle];
             },
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $languagePaths, $queries])
+                PermutationUtility::meltStringItems([$domainPaths, $languagePaths, $queries])
             )
         );
     }
@@ -297,7 +298,7 @@ class SiteRequestTest extends AbstractTestCase
                 return [$uri, $expectedPageTitle];
             },
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries])
             )
         );
     }
@@ -595,7 +596,7 @@ class SiteRequestTest extends AbstractTestCase
 
         return $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $customQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
     }
@@ -722,7 +723,7 @@ class SiteRequestTest extends AbstractTestCase
 
         $dataSet = $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $customQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
 

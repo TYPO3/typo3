@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -715,7 +716,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         return $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $customQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
     }
@@ -860,7 +861,7 @@ class SlugSiteRequestTest extends AbstractTestCase
 
         $dataSet = $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $customQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
 
