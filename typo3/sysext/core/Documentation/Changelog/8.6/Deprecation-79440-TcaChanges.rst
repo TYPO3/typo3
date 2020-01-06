@@ -248,7 +248,7 @@ Example after:
 Link browser
 ^^^^^^^^^^^^
 
-The link browser icon wizard has been embedded in new :code:renderType=`inputLink` directly. The parameters
+The link browser icon wizard has been embedded in new :code:`'renderType' => 'inputLink'` directly. The parameters
 :code:`blindLinkOptions`, :code:`blindLinkFields` and :code:`allowedExtensions` are now all optional and options of
 section :code:`fieldControl`.
 
