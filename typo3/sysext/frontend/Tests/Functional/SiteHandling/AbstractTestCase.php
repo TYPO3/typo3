@@ -61,24 +61,6 @@ abstract class AbstractTestCase extends FunctionalTestCase
     ];
 
     /**
-     * Combines string values of multiple array as cross-product into flat items.
-     *
-     * Example:
-     * + meltStrings(['a','b'], ['c','e'], ['f','g'])
-     * + results into ['acf', 'acg', 'aef', 'aeg', 'bcf', 'bcg', 'bef', 'beg']
-     *
-     * @param array $arrays Distinct array that should be melted
-     * @param callable $finalCallback Callback being executed on last multiplier
-     * @param string $prefix Prefix containing concatenated previous values
-     * @return array
-     * @todo Replace all calls with PermutationUtility::meltStringItems()
-     */
-    protected function meltStrings(array $arrays, callable $finalCallback = null, string $prefix = ''): array
-    {
-        return \TYPO3\CMS\Core\Utility\PermutationUtility::meltStringItems($arrays);
-    }
-
-    /**
      * @param array $array
      * @return array
      */

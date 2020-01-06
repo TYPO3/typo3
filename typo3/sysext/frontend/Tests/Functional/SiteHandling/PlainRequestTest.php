@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
+use TYPO3\CMS\Core\Utility\PermutationUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerWriter;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
@@ -125,7 +126,7 @@ class PlainRequestTest extends AbstractTestCase
 
         return $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries])
             )
         );
     }
@@ -218,7 +219,7 @@ class PlainRequestTest extends AbstractTestCase
                 return [$uri, $expectedPageTitle];
             },
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $languageQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $languageQueries])
             )
         );
     }
@@ -475,7 +476,7 @@ class PlainRequestTest extends AbstractTestCase
 
         return $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $customQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
     }
@@ -557,7 +558,7 @@ class PlainRequestTest extends AbstractTestCase
 
         $dataSet = $this->wrapInArray(
             $this->keysFromValues(
-                $this->meltStrings([$domainPaths, $queries, $customQueries])
+                PermutationUtility::meltStringItems([$domainPaths, $queries, $customQueries])
             )
         );
 
