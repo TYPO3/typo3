@@ -80,11 +80,6 @@ class RelationHandler
     public $checkIfDeleted = true;
 
     /**
-     * @var array
-     */
-    public $dbPaths = [];
-
-    /**
      * Will contain the first table name in the $tablelist (for positive ids)
      *
      * @var string
