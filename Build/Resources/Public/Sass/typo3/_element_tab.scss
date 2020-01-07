@@ -81,21 +81,3 @@
         }
     }
 }
-
-//
-// Hotfix display tab-panes always to prevent RTE initialisation problems
-//
-.tab-content {
-    > .tab-pane {
-        display: block;
-        height: 0;
-        width: 0;
-        overflow: hidden;
-
-        &.active {
-            height: auto;
-            width: auto;
-            overflow: visible;
-        }
-    }
-}
