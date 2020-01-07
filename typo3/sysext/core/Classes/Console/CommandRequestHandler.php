@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -64,7 +65,7 @@ class CommandRequestHandler implements RequestHandlerInterface
         Bootstrap::loadExtTables();
         // create the BE_USER object (not logged in yet)
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
         // Make sure output is not buffered, so command-line output and interaction can take place
         ob_clean();
 

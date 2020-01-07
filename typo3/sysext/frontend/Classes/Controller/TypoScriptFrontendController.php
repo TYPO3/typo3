@@ -705,7 +705,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->initPageRenderer();
         $this->initCaches();
         // Initialize LLL behaviour
-        $this->setOutputLanguage($this->language->getTypo3Language());
+        $this->setOutputLanguage();
     }
 
     /**
@@ -3598,15 +3598,12 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     /**
      * Sets all internal measures what language the page should be rendered.
      * This is not for records, but rather the HTML / charset and the locallang labels
-     *
-     * @param string $language - usually set via Site Handling
      */
-    protected function setOutputLanguage($language = 'default')
+    protected function setOutputLanguage()
     {
-        $this->languageService = GeneralUtility::makeInstance(LanguageService::class);
+        $this->languageService = LanguageService::createFromSiteLanguage($this->language);
         // Always disable debugging for TSFE
         $this->languageService->debugKey = false;
-        $this->languageService->init($language);
     }
 
     /**

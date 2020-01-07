@@ -128,6 +128,7 @@ class TypoScriptFrontendControllerTest extends UnitTestCase
     {
         $string = StringUtility::getUniqueId();
         $this->subject->page = [];
+        $this->subject->language = new SiteLanguage(0, 'fr', new Uri('/'), ['typo3Language' => 'fr']);
         $this->subject->_call('setOutputLanguage');
         self::assertEquals($string, $this->subject->sL($string));
     }

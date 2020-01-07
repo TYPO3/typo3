@@ -14,16 +14,29 @@ namespace TYPO3\CMS\Core\Localization;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Contains the TYPO3 Backend Language class
+ * Main API to fetch labels from XLF (label files) based on the current system
+ * language of TYPO3. It is able to resolve references to files + their pointers to the
+ * proper language. If you see something about "LLL", this class does the trick for you. It
+ * is not related for language handling of content, but rather of labels for plugins.
+ *
+ * Usually this is injected into $GLOBALS['LANG'] when in backend or CLI context, and
+ * populated by the current backend user. Don't rely on $GLOBAL['LANG'] in frontend, as it is only
+ * available in certain circumstances!
+ * In Frontend, this is also used to translate "labels", see TypoScriptFrontendController->sL()
+ * for that.
+ *
+ * As TYPO3 internally does not match the proper ISO locale standard, the "locale" here
+ * is actually a list of supported language keys, (see Locales class), whereas "english"
+ * has the language key "default".
+ *
  * For detailed information about how localization is handled,
  * please refer to the 'Inside TYPO3' document which describes this.
- * This class is normally instantiated as the global variable $GLOBALS['LANG']
- * It's only available in the backend and under certain circumstances in the frontend
- * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
  */
 class LanguageService
 {
@@ -374,6 +387,7 @@ class LanguageService
      * @param string $prefix Prefix to select the correct labels
      * @param string $strip Sub-prefix to be removed from label names in the result
      * @return array Processed labels
+     * @todo: deprecate
      */
     public function getLabelsWithPrefix($prefix, $strip = '')
     {
@@ -393,5 +407,31 @@ class LanguageService
             }
         }
         return $extraction;
+    }
+
+    /**
+     * Factory method to create a language service object.
+     *
+     * @param string $locale the locale (= the TYPO3-internal locale given)
+     * @return static
+     */
+    public static function create(string $locale): self
+    {
+        $obj = GeneralUtility::makeInstance(LanguageService::class);
+        $obj->init($locale);
+        return $obj;
+    }
+
+    public static function createFromUserPreferences(?AbstractUserAuthentication $user): self
+    {
+        if ($user && ($user->uc['lang'] ?? false)) {
+            return static::create($user->uc['lang']);
+        }
+        return static::create('default');
+    }
+
+    public static function createFromSiteLanguage(SiteLanguage $language): self
+    {
+        return static::create($language->getTypo3Language());
     }
 }

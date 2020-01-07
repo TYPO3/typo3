@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\IO\PharStreamWrapperInterceptor;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -618,7 +619,6 @@ class Bootstrap
     public static function initializeLanguageObject()
     {
         /** @var $GLOBALS['LANG'] \TYPO3\CMS\Core\Localization\LanguageService */
-        $GLOBALS['LANG'] = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-        $GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
+        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
     }
 }

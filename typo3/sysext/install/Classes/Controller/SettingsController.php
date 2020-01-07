@@ -20,7 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
@@ -28,6 +27,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\FormProtection\InstallToolFormProtection;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -377,7 +377,7 @@ class SettingsController extends AbstractController
     public function extensionConfigurationGetContentAction(ServerRequestInterface $request): ResponseInterface
     {
         // Extension configuration needs initialized $GLOBALS['LANG']
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = LanguageService::create('default');
         $extensionConfigurationService = new ExtensionConfigurationService();
         $extensionsWithConfigurations = [];
         $activePackages = GeneralUtility::makeInstance(PackageManager::class)->getActivePackages();

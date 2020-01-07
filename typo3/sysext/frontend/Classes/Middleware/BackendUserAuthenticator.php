@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -70,7 +71,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
         // like $GLOBALS['LANG'] for labels in the language of the BE User, the router, and ext_tables.php for all modules
         // So things like Frontend Editing and Admin Panel can use this for generating links to the TYPO3 Backend.
         if ($GLOBALS['BE_USER'] instanceof FrontendBackendUserAuthentication) {
-            Bootstrap::initializeLanguageObject();
+            $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
             Bootstrap::initializeBackendRouter();
             Bootstrap::loadExtTables();
             $this->setBackendUserAspect($GLOBALS['BE_USER']);

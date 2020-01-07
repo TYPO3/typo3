@@ -37,7 +37,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
     /**
      * TYPO3 language code of the content language
      *
-     * @var int
+     * @var string
      */
     protected $contentsLanguage;
 
@@ -124,7 +124,7 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $this->contentsLanguage = $queryParameters['contentsLanguage'];
         $this->RTEtsConfigParams = $queryParameters['RTEtsConfigParams'] ?? null;
 
-        $this->contentLanguageService->init($this->contentsLanguage);
+        $this->contentLanguageService = LanguageService::create($this->contentsLanguage);
 
         $tcaFieldConf = ['enableRichtext' => true];
         if (!empty($queryParameters['P']['richtextConfigurationName'])) {

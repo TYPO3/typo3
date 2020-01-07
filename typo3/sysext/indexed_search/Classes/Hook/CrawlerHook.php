@@ -15,7 +15,6 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -50,17 +49,6 @@ class CrawlerHook
      * @var string
      */
     public $callBack = self::class;
-
-    /**
-     * The constructor
-     */
-    public function __construct()
-    {
-        // To make sure the backend charset is available:
-        if (!is_object($GLOBALS['LANG'])) {
-            Bootstrap::initializeLanguageObject();
-        }
-    }
 
     /**
      * Initialization of crawler hook.

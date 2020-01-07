@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -73,7 +74,7 @@ class BackendUserAuthenticator implements MiddlewareInterface
         Bootstrap::initializeBackendUser();
         // @todo: once this logic is in this method, the redirect URL should be handled as response here
         Bootstrap::initializeBackendAuthentication($this->isLoggedInBackendUserRequired($pathToRoute));
-        Bootstrap::initializeLanguageObject();
+        $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
         // Register the backend user as aspect
         $this->setBackendUserAspect($GLOBALS['BE_USER']);
 
