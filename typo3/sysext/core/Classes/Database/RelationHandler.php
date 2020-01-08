@@ -118,9 +118,9 @@ class RelationHandler
     /**
      * Only set if MM_is_foreign is set
      *
-     * @var string
+     * @var array
      */
-    public $MM_oppositeFieldConf = '';
+    public $MM_oppositeFieldConf = [];
 
     /**
      * Is empty by default; if MM_is_foreign is set and there is more than one table
@@ -270,13 +270,11 @@ class RelationHandler
             $this->MM_oppositeUsage = $conf['MM_oppositeUsage'];
         }
         if ($this->MM_is_foreign) {
-            $tmp = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
+            $allowedTableList = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
             // Normally, $conf['allowed'] can contain a list of tables,
             // but as we are looking at a MM relation from the foreign side,
             // it only makes sense to allow one one table in $conf['allowed']
-            $tmp = GeneralUtility::trimExplode(',', $tmp);
-            $this->MM_oppositeTable = $tmp[0];
-            unset($tmp);
+            [$this->MM_oppositeTable] = GeneralUtility::trimExplode(',', $allowedTableList);
             // Only add the current table name if there is more than one allowed field
             // We must be sure this has been done at least once before accessing the "columns" part of TCA for a table.
             $this->MM_oppositeFieldConf = $GLOBALS['TCA'][$this->MM_oppositeTable]['columns'][$this->MM_oppositeField]['config'];
@@ -389,8 +387,8 @@ class RelationHandler
             // Changed to trimExplode 31/3 04; HMENU special type "list" didn't work
             // if there were spaces in the list... I suppose this is better overall...
             foreach ($tempItemArray as $key => $val) {
-                // Will be set to "1" if the entry was a real table/id:
-                $isSet = 0;
+                // Will be set to "true" if the entry was a real table/id
+                $isSet = false;
                 // Extract table name and id. This is un the formular [tablename]_[id]
                 // where table name MIGHT contain "_", hence the reversion of the string!
                 $val = strrev($val);
@@ -416,8 +414,8 @@ class RelationHandler
                         $this->itemArray[$key]['id'] = $theID;
                         $this->itemArray[$key]['table'] = $theTable;
                         $this->tableArray[$theTable][] = $theID;
-                        // Set update-flag:
-                        $isSet = 1;
+                        // Set update-flag
+                        $isSet = true;
                     }
                 }
                 // If it turns out that the value from the list was NOT a valid reference to a table-record,
@@ -1321,14 +1319,13 @@ class RelationHandler
      */
     public function convertItemArray()
     {
-        $hasBeenConverted = false;
-
         // conversion is only required in a workspace context
         // (the case that version ids are submitted in a live context are rare)
         if ($this->getWorkspaceId() === 0) {
-            return $hasBeenConverted;
+            return false;
         }
 
+        $hasBeenConverted = false;
         foreach ($this->tableArray as $tableName => $ids) {
             if (empty($ids) || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
                 continue;

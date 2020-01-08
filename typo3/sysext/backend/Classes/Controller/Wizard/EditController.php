@@ -149,11 +149,10 @@ class EditController extends AbstractWizardController
             // MULTIPLE VALUES:
             // Init settings:
             $allowedTables = $config['type'] === 'group' ? $config['allowed'] : $config['foreign_table'];
-            $prependName = 1;
             // Selecting selected values into an array:
             $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
             $relationHandler->start($this->P['currentSelectedValues'], $allowedTables);
-            $value = $relationHandler->getValueArray($prependName);
+            $value = $relationHandler->getValueArray(true);
             // Traverse that array and make parameters for FormEngine
             foreach ($value as $rec) {
                 $recTableUidParts = GeneralUtility::revExplode('_', $rec, 2);
