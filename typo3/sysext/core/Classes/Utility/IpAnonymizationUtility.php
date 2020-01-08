@@ -72,7 +72,10 @@ class IpAnonymizationUtility
             return '';
         }
 
-        $packedAddress = inet_pton($address);
+        $packedAddress = @inet_pton($address);
+        if ($packedAddress === false) {
+            return '';
+        }
         $length = strlen($packedAddress);
 
         if ($length === 4) {

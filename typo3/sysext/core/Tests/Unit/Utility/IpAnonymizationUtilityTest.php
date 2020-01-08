@@ -43,6 +43,8 @@ class IpAnonymizationUtilityTest extends UnitTestCase
             'IPv6 address with fallback' => ['2002:6dcd:8c74:6501:fb2:61c:ac98:6bea', null, '2002:6dcd:8c74:6501::'],
             'IPv4-Embedded IPv6 Address' => ['::ffff:18.52.86.120', 1, '::'],
             'anonymized IPv4 address' => ['192.158.0.0', 1, '192.158.0.0'],
+            'invalid IPv4 address given' => ['127.0.01', 1, ''],
+            'invalid IPv6 address given' => ['ffff18.52.86.120', 1, ''],
         ];
     }
 
