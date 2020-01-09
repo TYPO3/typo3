@@ -85,6 +85,9 @@ services:
   TYPO3\CMS\Core\Mail\Mailer:
     public: true
 
+  TYPO3\CMS\Core\Controller\FileDumpController:
+    public: true
+
   TYPO3\CMS\Core\Core\ClassLoadingInformation:
     public: false
     tags:

@@ -176,7 +176,10 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function setCompatibilityValues(ProcessedFile $processedImage): void
     {
-        if ($this->environmentService->isEnvironmentInFrontendMode()) {
+        if (
+            $this->environmentService->isEnvironmentInFrontendMode()
+            && is_object($GLOBALS['TSFE'])
+        ) {
             $GLOBALS['TSFE']->lastImageInfo = $this->getCompatibilityImageResourceValues($processedImage);
             $GLOBALS['TSFE']->imagesOnPage[] = $processedImage->getPublicUrl();
         }
