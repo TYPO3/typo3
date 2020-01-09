@@ -2692,7 +2692,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         // No cache
         // Set $this->no_cache TRUE if the config.no_cache value is set!
         if ($this->config['config']['no_cache']) {
-            $this->set_no_cache('config.no_cache is set');
+            $this->set_no_cache('config.no_cache is set', true);
         }
         // Merge GET with defaultGetVars
         // Please note that this code will get removed in TYPO3 v10.0 as it is done in the PSR-15 middleware.
@@ -4504,7 +4504,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $trigger = $file . ' on line ' . $line;
             $warning = '$GLOBALS[\'TSFE\']->set_no_cache() was triggered by ' . $trigger . '.';
         }
-        if ($GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
+        if (!$internal && $GLOBALS['TYPO3_CONF_VARS']['FE']['disableNoCacheParameter']) {
             $warning .= ' However, $TYPO3_CONF_VARS[\'FE\'][\'disableNoCacheParameter\'] is set, so it will be ignored!';
             $this->getTimeTracker()->setTSlogMessage($warning, 2);
         } else {
