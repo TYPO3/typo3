@@ -47,7 +47,7 @@ class OptimizeDatabaseTableTask extends AbstractTask
 
             if (strpos($connection->getServerVersion(), 'MySQL') === 0) {
                 try {
-                    $connection->exec('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
+                    $connection->query('OPTIMIZE TABLE ' . $connection->quoteIdentifier($tableName));
                 } catch (DBALException $e) {
                     throw new \RuntimeException(
                         TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
