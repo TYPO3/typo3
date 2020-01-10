@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
 use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -73,15 +72,8 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         // Test run
         $this->controller->processRequest($this->request, $this->response);
 
-        // Open arguments property
-        $reflectionClass = new \ReflectionClass($this->controller);
-        $argumentsProperty = $reflectionClass->getProperty('arguments');
-        $argumentsProperty->setAccessible(true);
-
         // Assertions
-
-        /** @var Arguments $arguments */
-        $arguments = $argumentsProperty->getValue($this->controller);
+        $arguments = $this->controller->getControllerContext()->getArguments();
         $argument = $arguments->getArgument('barParam');
 
         /** @var ConjunctionValidator $validator */
@@ -108,15 +100,8 @@ class ActionControllerTest extends \TYPO3\TestingFramework\Core\Functional\Funct
         // Test run
         $this->controller->processRequest($this->request, $this->response);
 
-        // Open arguments property
-        $reflectionClass = new \ReflectionClass($this->controller);
-        $argumentsProperty = $reflectionClass->getProperty('arguments');
-        $argumentsProperty->setAccessible(true);
-
         // Assertions
-
-        /** @var Arguments $arguments */
-        $arguments = $argumentsProperty->getValue($this->controller);
+        $arguments = $this->controller->getControllerContext()->getArguments();
         $argument = $arguments->getArgument('bazParam');
 
         /** @var ConjunctionValidator $validator */
