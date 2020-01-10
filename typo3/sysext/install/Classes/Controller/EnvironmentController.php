@@ -72,6 +72,7 @@ class EnvironmentController extends AbstractController
             'systemInformationCgiDetected' => GeneralUtility::isRunningOnCgiServerApi(),
             'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
             'systemInformationOperatingSystem' => Environment::isWindows() ? 'Windows' : 'Unix',
+            'phpVersion' => PHP_VERSION,
         ]);
         return new JsonResponse([
             'success' => true,
