@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Core;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -92,6 +93,7 @@ class SystemEnvironmentBuilder
     {
         // Check one of the constants and return early if already defined,
         // needed if multiple requests are handled in one process, for instance in functional testing.
+        // This check can be removed in TYPO3 v11.0.
         if (defined('FILE_DENY_PATTERN_DEFAULT')) {
             return;
         }
@@ -101,16 +103,19 @@ class SystemEnvironmentBuilder
         defined('CR') ?: define('CR', chr(13));
         defined('CRLF') ?: define('CRLF', CR . LF);
 
-        // Security related constant: Default value of fileDenyPattern
-        define('FILE_DENY_PATTERN_DEFAULT', '\\.(php[3-8]?|phpsh|phtml|pht|phar|shtml|cgi)(\\..*)?$|\\.pl$|^\\.htaccess$');
-        // Security related constant: List of file extensions that should be registered as php script file extensions
-        define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,php8,phpsh,inc,phtml,pht,phar');
-
         // Relative path from document root to typo3/ directory, hardcoded to "typo3/"
         if (!defined('TYPO3_mainDir')) {
             define('TYPO3_mainDir', 'typo3/');
         }
 
+        /**
+         * @deprecated use FileNameAccess class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('FILE_DENY_PATTERN_DEFAULT', FileNameValidator::DEFAULT_FILE_DENY_PATTERN);
+        /**
+         * @deprecated use FILE_DENY_PATTERN and FileNameAccess class to retrieve this information, will be removed in TYPO3 v11.0
+         */
+        define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,php7,php8,phpsh,inc,phtml,pht,phar');
         /**
          * @deprecated use Typo3Information class to retrieve this information, will be removed in TYPO3 v11.0
          */

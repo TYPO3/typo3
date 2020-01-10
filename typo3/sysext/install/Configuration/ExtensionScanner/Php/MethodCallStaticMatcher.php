@@ -973,4 +973,11 @@ return [
             'Deprecation-90800-GeneralUtilityisRunningOnCgiServerApi.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::verifyFilenameAgainstDenyPattern' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-90147-UnifiedFileNameValidator.rst'
+        ],
+    ],
 ];

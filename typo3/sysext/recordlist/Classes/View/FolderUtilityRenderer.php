@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Recordlist\Tree\View\LinkParameterProviderInterface;
@@ -124,8 +125,9 @@ class FolderUtilityRenderer
         $lang = $this->getLanguageService();
         // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
         $fileExtList = [];
+        $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
         foreach ($allowedExtensions as $fileExt) {
-            if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
+            if ($fileNameVerifier->isValid('.' . $fileExt)) {
                 $fileExtList[] = '<span class="label label-success">'
                     . strtoupper(htmlspecialchars($fileExt)) . '</span>';
             }
@@ -185,7 +187,7 @@ class FolderUtilityRenderer
         $fileExtList = [];
         $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
         foreach ($onlineMediaFileExt as $fileExt) {
-            if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)
+            if ($fileNameVerifier->isValid('.' . $fileExt)
                 && (empty($allowedExtensions) || in_array($fileExt, $allowedExtensions, true))
             ) {
                 $fileExtList[] = '<span class="label label-success">'

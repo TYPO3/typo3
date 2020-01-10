@@ -220,4 +220,14 @@ return [
             'Deprecation-89866-Global-TYPO3-information-related-constants.rst'
         ]
     ],
+    'FILE_DENY_PATTERN_DEFAULT' => [
+        'restFiles' => [
+            'Deprecation-90147-UnifiedFileNameValidator.rst'
+        ]
+    ],
+    'PHP_EXTENSIONS_DEFAULT' => [
+        'restFiles' => [
+            'Deprecation-90147-UnifiedFileNameValidator.rst'
+        ]
+    ],
 ];

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -3060,14 +3061,12 @@ class GeneralUtility
      *
      * @param string $filename File path to evaluate
      * @return bool
+     * @deprecated will be removed in TYPO3 v11.0. Use the new FileNameValidator API instead.
      */
     public static function verifyFilenameAgainstDenyPattern($filename)
     {
-        $pattern = '/[[:cntrl:]]/';
-        if ((string)$filename !== '' && (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] !== '') {
-            $pattern = '/(?:[[:cntrl:]]|' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . ')/iu';
-        }
-        return preg_match($pattern, $filename) === 0;
+        trigger_error('GeneralUtility::verifyFilenameAgainstDenyPattern() will be removed in TYPO3 v11.0. Use FileNameValidator->isValid($filename) instead.', E_USER_DEPRECATED);
+        return self::makeInstance(FileNameValidator::class)->isValid((string)$filename);
     }
 
     /**

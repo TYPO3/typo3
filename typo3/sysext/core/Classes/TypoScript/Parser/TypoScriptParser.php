@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatche
 use TYPO3\CMS\Core\Configuration\TypoScript\ConditionMatching\AbstractConditionMatcher;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1034,7 +1035,7 @@ class TypoScriptParser
             $readableFileName = rtrim($readableFilePrefix, '/') . '/' . $fileObject->getFilename();
             $content .= LF . '### @import \'' . $readableFileName . '\' begin ###' . LF;
             // Check for allowed files
-            if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fileObject->getFilename())) {
+            if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($fileObject->getFilename())) {
                 $content .= self::typoscriptIncludeError('File "' . $readableFileName . '" was not included since it is not allowed due to fileDenyPattern.');
             } else {
                 $includedFiles[] = $fileObject->getPathname();
@@ -1105,7 +1106,7 @@ class TypoScriptParser
         if ((string)$filename !== '') {
             // Must exist and must not contain '..' and must be relative
             // Check for allowed files
-            if (!GeneralUtility::verifyFilenameAgainstDenyPattern($absfilename)) {
+            if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($absfilename)) {
                 $newString .= self::typoscriptIncludeError('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern.');
             } else {
                 $fileExists = false;
@@ -1294,7 +1295,7 @@ class TypoScriptParser
 
                     if ($inIncludePart === 'FILE') {
                         // Some file checks
-                        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($realFileName)) {
+                        if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($realFileName)) {
                             throw new \UnexpectedValueException(sprintf('File "%s" was not included since it is not allowed due to fileDenyPattern.', $fileName), 1382651858);
                         }
                         if (empty($realFileName)) {

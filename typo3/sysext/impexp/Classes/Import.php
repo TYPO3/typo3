@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1544,7 +1545,7 @@ class Import extends ImportExport
             }
         }
         $fI = GeneralUtility::split_fileref($fileName);
-        if (!GeneralUtility::verifyFilenameAgainstDenyPattern($fI['file'])) {
+        if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($fI['file'])) {
             $this->error('ERROR: Filename "' . $fileName . '" failed against extension check or deny-pattern!');
             return false;
         }

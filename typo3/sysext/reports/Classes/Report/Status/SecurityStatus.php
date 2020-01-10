@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Reports\RequestAwareStatusProviderInterface;
 use TYPO3\CMS\Reports\Status as ReportStatus;
@@ -202,16 +203,14 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         $value = $this->getLanguageService()->getLL('status_ok');
         $message = '';
         $severity = ReportStatus::OK;
-        $defaultParts = GeneralUtility::trimExplode('|', FILE_DENY_PATTERN_DEFAULT, true);
-        $givenParts = GeneralUtility::trimExplode('|', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], true);
-        $result = array_intersect($defaultParts, $givenParts);
 
-        if ($defaultParts !== $result) {
+        $fileAccessCheck = GeneralUtility::makeInstance(FileNameValidator::class);
+        if ($fileAccessCheck->missingImportantPatterns()) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
             $message = sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_pattern_partsNotPresent'),
-                '<br /><pre>' . htmlspecialchars(FILE_DENY_PATTERN_DEFAULT) . '</pre><br />'
+                '<br /><pre>' . htmlspecialchars($fileAccessCheck::DEFAULT_FILE_DENY_PATTERN) . '</pre><br />'
             );
         }
 
@@ -230,8 +229,9 @@ class SecurityStatus implements RequestAwareStatusProviderInterface
         $message = '';
         $severity = ReportStatus::OK;
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] != FILE_DENY_PATTERN_DEFAULT
-            && GeneralUtility::verifyFilenameAgainstDenyPattern('.htaccess')) {
+        $fileNameAccess = GeneralUtility::makeInstance(FileNameValidator::class);
+        if ($fileNameAccess->customFileDenyPatternConfigured()
+            && $fileNameAccess->isValid('.htaccess')) {
             $value = $this->getLanguageService()->getLL('status_insecure');
             $severity = ReportStatus::ERROR;
             $message = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_deny_htaccess');

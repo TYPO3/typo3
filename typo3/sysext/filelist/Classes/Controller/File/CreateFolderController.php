@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -208,8 +209,9 @@ class CreateFolderController
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
             $onlineMediaFileExt = OnlineMediaHelperRegistry::getInstance()->getSupportedFileExtensions();
+            $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
             foreach ($onlineMediaFileExt as $fileExt) {
-                if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
+                if ($fileNameVerifier->isValid('.' . $fileExt)) {
                     $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
                 }
             }
@@ -221,7 +223,7 @@ class CreateFolderController
             $fileExtList = [];
             $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
             foreach ($textFileExt as $fileExt) {
-                if (GeneralUtility::verifyFilenameAgainstDenyPattern('.' . $fileExt)) {
+                if ($fileNameVerifier->isValid('.' . $fileExt)) {
                     $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
                 }
             }

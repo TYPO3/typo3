@@ -61,6 +61,7 @@ use TYPO3\CMS\Core\Resource\Search\Result\DriverFilteredSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\EmptyFileSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -832,7 +833,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected function checkFileExtensionPermission($fileName)
     {
         $fileName = $this->driver->sanitizeFileName($fileName);
-        return GeneralUtility::verifyFilenameAgainstDenyPattern($fileName);
+        return GeneralUtility::makeInstance(FileNameValidator::class)->isValid($fileName);
     }
 
     /**

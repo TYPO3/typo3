@@ -1,5 +1,7 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Utility;
+declare(strict_types = 1);
+
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Security;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,79 +16,12 @@ namespace TYPO3\CMS\Core\Tests\UnitDeprecated\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use PHPUnit\Framework\TestCase;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Utility\StringUtility;
 
-/**
- * Test case
- */
-class GeneralUtilityTest extends UnitTestCase
+class FileNameValidatorTest extends TestCase
 {
-    /**
-     * @var bool Reset singletons created by subject
-     */
-    protected $resetSingletonInstances = true;
-
-    /**
-     * @test
-     * @dataProvider idnaEncodeDataProvider
-     * @param $actual
-     * @param $expected
-     */
-    public function idnaEncodeConvertsUnicodeCharsToASCIIString($actual, $expected)
-    {
-        $result = GeneralUtility::idnaEncode($actual);
-        self::assertSame($expected, $result);
-    }
-
-    /**
-     * Data provider for method idnaEncode in GeneralUtility class.
-     * IDNA converter has to convert special chars (UTF-8) to ASCII compatible chars.
-     *
-     * @returns array
-     */
-    public function idnaEncodeDataProvider()
-    {
-        return [
-            'empty string' => [
-                '',
-                ''
-            ],
-            'null value' => [
-                null,
-                ''
-            ],
-            'string with ascii chars' => [
-                'example',
-                'example'
-            ],
-            'domain (1) with utf8 chars' => [
-                'dömäin.example',
-                'xn--dmin-moa0i.example'
-            ],
-            'domain (2) with utf8 chars' => [
-                'äaaa.example',
-                'xn--aaa-pla.example'
-            ],
-            'domain (3) with utf8 chars' => [
-                'déjà.vu.example',
-                'xn--dj-kia8a.vu.example'
-            ],
-            'domain (4) with utf8 chars' => [
-                'foo.âbcdéf.example',
-                'foo.xn--bcdf-9na9b.example'
-            ],
-            'domain with utf8 char (german umlaut)' => [
-                'exömple.com',
-                'xn--exmple-xxa.com'
-            ],
-            'email with utf8 char (german umlaut)' => [
-                'joe.doe@dömäin.de',
-                'joe.doe@xn--dmin-moa0i.de'
-            ]
-        ];
-    }
-
     /**
      * @return array
      */
@@ -101,16 +36,20 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether verifyFilenameAgainstDenyPattern detects files with nul character without file deny pattern.
+     * Tests whether validator detects files with nul character without file deny pattern.
      *
      * @param string $deniedFile
      * @test
      * @dataProvider deniedFilesWithoutDenyPatternDataProvider
      */
-    public function verifyNulCharacterFilesAgainstPatternWithoutFileDenyPattern(string $deniedFile)
+    public function verifyNulCharacterFilesAgainstPatternWithoutFileDenyPattern(string $deniedFile): void
     {
+        $subject = new FileNameValidator('');
+        self::assertFalse($subject->isValid($deniedFile));
+
         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '';
-        self::assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
+        $subject = new FileNameValidator();
+        self::assertFalse($subject->isValid($deniedFile));
     }
 
     /**
@@ -127,7 +66,7 @@ class GeneralUtilityTest extends UnitTestCase
             'Upper umlaut .php file' => ['fileWithÜ', '.php'],
             'invalid UTF-8-sequence' => ["\xc0" . 'file', '.php'],
             'Could be overlong NUL in some UTF-8 implementations, invalid in RFC3629' => ["\xc0\x80" . 'file', '.php'],
-            'Regular .php file' => ['file' , '.php'],
+            'Regular .php file' => ['file', '.php'],
             'Regular .php3 file' => ['file', '.php3'],
             'Regular .php5 file' => ['file', '.php5'],
             'Regular .php7 file' => ['file', '.php7'],
@@ -179,15 +118,40 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether verifyFilenameAgainstDenyPattern detects denied files.
+     * Tests whether the basic FILE_DENY_PATTERN detects denied files.
      *
      * @param string $deniedFile
      * @test
      * @dataProvider deniedFilesWithDefaultDenyPatternDataProvider
      */
-    public function verifyFilenameAgainstDenyPatternDetectsNotAllowedFiles($deniedFile)
+    public function isValidDetectsNotAllowedFiles(string $deniedFile): void
     {
-        self::assertFalse(GeneralUtility::verifyFilenameAgainstDenyPattern($deniedFile));
+        $subject = new FileNameValidator();
+        self::assertFalse($subject->isValid($deniedFile));
+    }
+
+    /**
+     * @return array
+     */
+    public function insecureFilesDataProvider(): array
+    {
+        return [
+            'Classic php file' => ['user.php'],
+            'A random .htaccess file' => ['.htaccess'],
+            'Wrapped .php file' => ['file.php.txt'],
+        ];
+    }
+
+    /**
+     * @param string $fileName
+     * @test
+     * @dataProvider insecureFilesDataProvider
+     */
+    public function isValidAcceptsNotAllowedFilesDueToInsecureSetting(string $fileName): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '\\.phc$';
+        $subject = new FileNameValidator();
+        self::assertTrue($subject->isValid($fileName));
     }
 
     /**
@@ -207,14 +171,85 @@ class GeneralUtilityTest extends UnitTestCase
     }
 
     /**
-     * Tests whether verifyFilenameAgainstDenyPattern accepts allowed files.
+     * Tests whether the basic file deny pattern accepts allowed files.
      *
      * @param string $allowedFile
      * @test
      * @dataProvider allowedFilesDataProvider
      */
-    public function verifyFilenameAgainstDenyPatternAcceptAllowedFiles(string $allowedFile)
+    public function isValidAcceptAllowedFiles(string $allowedFile): void
     {
-        self::assertTrue(GeneralUtility::verifyFilenameAgainstDenyPattern($allowedFile));
+        $subject = new FileNameValidator();
+        self::assertTrue($subject->isValid($allowedFile));
+    }
+
+    /**
+     * @test
+     */
+    public function isCustomDenyPatternConfigured(): void
+    {
+        $subject = new FileNameValidator('nothing-really');
+        self::assertTrue($subject->customFileDenyPatternConfigured());
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = 'something-else';
+        $subject = new FileNameValidator();
+        self::assertTrue($subject->customFileDenyPatternConfigured());
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = FileNameValidator::DEFAULT_FILE_DENY_PATTERN;
+        $subject = new FileNameValidator();
+        self::assertFalse($subject->customFileDenyPatternConfigured());
+        $subject = new FileNameValidator(FileNameValidator::DEFAULT_FILE_DENY_PATTERN);
+        self::assertFalse($subject->customFileDenyPatternConfigured());
+    }
+
+    /**
+     * @test
+     */
+    public function customFileDenyPatternFindsMissingImportantParts(): void
+    {
+        $subject = new FileNameValidator('\\.php$|.php8$');
+        self::assertTrue($subject->missingImportantPatterns());
+        $subject = new FileNameValidator(FileNameValidator::DEFAULT_FILE_DENY_PATTERN);
+        self::assertFalse($subject->missingImportantPatterns());
+    }
+
+    /**
+     * Data provider for 'defaultFileDenyPatternMatchesPhpExtension' test case.
+     *
+     * @return array
+     */
+    public function phpExtensionDataProvider(): array
+    {
+        $data = [];
+        $fileName = StringUtility::getUniqueId('filename');
+        $phpExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'phpsh', 'phtml', 'pht'];
+        foreach ($phpExtensions as $extension) {
+            $data[] = [$fileName . '.' . $extension];
+            $data[] = [$fileName . '.' . $extension . '.txt'];
+        }
+        return $data;
+    }
+
+    /**
+     * Tests whether an accordant PHP extension is denied.
+     *
+     * @test
+     * @dataProvider phpExtensionDataProvider
+     * @param string $fileName
+     */
+    public function defaultFileDenyPatternMatchesPhpExtension(string $fileName): void
+    {
+        self::assertGreaterThan(0, preg_match('/' . FileNameValidator::DEFAULT_FILE_DENY_PATTERN . '/', $fileName), $fileName);
+    }
+
+    /**
+     * Tests whether an accordant PHP extension is denied.
+     *
+     * @test
+     * @dataProvider phpExtensionDataProvider
+     * @param string $fileName
+     */
+    public function invalidPhpExtensionIsDetected(string $fileName): void
+    {
+        $subject = new FileNameValidator();
+        self::assertFalse($subject->isValid($fileName));
     }
 }
