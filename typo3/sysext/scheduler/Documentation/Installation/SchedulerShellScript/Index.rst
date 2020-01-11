@@ -52,6 +52,6 @@ To run a task even if it is disabled, you need to provide the force option
 
 ::
 
-   /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run --task=8 -f
+   /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run --task=8 --force
 
 This will also run the task with uid 8 if it is disabled.
