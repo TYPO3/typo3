@@ -15,6 +15,12 @@
 			<trans-unit id="clearcache.message.error" resname="clearcache.message.error">
 				<source>Page cache could not cleared</source>
 			</trans-unit>
+			<trans-unit id="create_folder.title" resname="create_folder.title">
+				<source>Create new folder</source>
+			</trans-unit>
+			<trans-unit id="create_folder.submit" resname="create_folder.submit">
+				<source>Create folder</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

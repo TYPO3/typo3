@@ -69,7 +69,7 @@ class FolderUtilityRenderer
         $markup = [];
         $markup[] = '<form action="' . htmlspecialchars($formAction)
             . '" method="post" name="editform" enctype="multipart/form-data">';
-        $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:create_folder.title')) . ':</h3>';
+        $markup[] = '<h3>' . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:create_folder.title')) . ':</h3>';
         $markup[] = '<p><strong>' . htmlspecialchars($lang->getLL('path')) . ':</strong>'
             . htmlspecialchars($folderObject->getIdentifier()) . '</p>';
 
@@ -79,7 +79,7 @@ class FolderUtilityRenderer
         $markup[] = '<input class="form-control" type="text" name="data[newfolder][' . $a . '][data]" />';
         $markup[] = '<span class="input-group-btn">';
         $markup[] = '<input class="btn btn-default" type="submit" name="submit" value="'
-            . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:create_folder.submit')) . '" />';
+            . htmlspecialchars($lang->sL('LLL:EXT:recordlist/Resources/Private/Language/locallang.xlf:create_folder.submit')) . '" />';
         $markup[] = '</span>';
         $markup[] = '</div>';
         $markup[] = '<input type="hidden" name="data[newfolder][' . $a . '][target]" value="'
