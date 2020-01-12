@@ -51,6 +51,12 @@ Here are some examples to understand the power of the expression language:
    # This condition matches if current request is **not** https
    [END]
 
+   [request.getPageArguments().get('foo_id') > 0]
+   # This condition matches if the GET parameter foo_id is greater than 0.
+   # getPageArguments() contains resolved route parts from enhancers which
+   # request.getQueryParams() does not contain.
+   [END]
+
    [traverse(request.getQueryParams(), 'tx_news_pi/news') > 0]
    # This condition matches if current query parameters have tx_news_pi[news] set to a value greater than zero
    [END]
@@ -124,7 +130,7 @@ The following functions are available in **any** context:
 +------------------------+-----------------------+-------------------------------------------------------------------------+
 | Function               | Parameter             | Description                                                             |
 +========================+=======================+=========================================================================+
-| request                | Custom Object         | This object provides 4 methods                                          |
+| request                | Custom Object         | This object provides 6 methods                                          |
 |                        |                       |                                                                         |
 | .getQueryParams()      |                       | `[request.getQueryParams()['foo'] == 1]`                                |
 |                        |                       |                                                                         |
@@ -135,6 +141,8 @@ The following functions are available in **any** context:
 | .getCookieParams()     |                       | `[request.getCookieParams()['foo'] == 1]`                               |
 |                        |                       |                                                                         |
 | .getNormalizedParams() |                       | `[request.getNormalizedParams().isHttps()]`                             |
+|                        |                       |                                                                         |
+| .getPageArguments()    |                       | `[request.getPageArguments().get('foo_id') > 0]`                        |
 +------------------------+-----------------------+-------------------------------------------------------------------------+
 | date                   | String                | Get current date in given format.                                       |
 |                        |                       | Examples:                                                               |
