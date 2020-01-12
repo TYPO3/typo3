@@ -3089,7 +3089,7 @@ class TcaSelectItemsTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestCase
         ];
 
         $expected = $input;
-        $expected['databaseRow']['aField'] = ['foo', 1];
+        $expected['databaseRow']['aField'] = [1, 'foo'];
 
         $this->assertEquals($expected, $this->subject->addData($input));
     }
