@@ -1248,6 +1248,7 @@ abstract class AbstractItemProvider
                     $result['tableName'],
                     $fieldConfig['config']
                 );
+                $newDatabaseValueArray = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
             } else {
                 // Non MM relation
                 // If not dealing with MM relations, use default live uid, not versioned uid for record relations
@@ -1259,8 +1260,10 @@ abstract class AbstractItemProvider
                     $result['tableName'],
                     $fieldConfig['config']
                 );
+                $databaseIds = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
+                // remove all items from the current DB values if not available as relation or static value anymore
+                $newDatabaseValueArray = array_values(array_intersect($currentDatabaseValueArray, $databaseIds));
             }
-            $newDatabaseValueArray = array_merge($newDatabaseValueArray, $relationHandler->getValueArray());
         }
 
         if ($fieldConfig['config']['multiple'] ?? false) {
