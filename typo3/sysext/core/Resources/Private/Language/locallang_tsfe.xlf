@@ -24,36 +24,6 @@
 			<trans-unit id="publish_doit" resname="publish_doit">
 				<source>Publish now!</source>
 			</trans-unit>
-			<trans-unit id="edit" resname="edit">
-				<source>Editing</source>
-			</trans-unit>
-			<trans-unit id="edit_editFormsOnPage" resname="edit_editFormsOnPage">
-				<source>Editforms on page</source>
-			</trans-unit>
-			<trans-unit id="edit_editNoPopup" resname="edit_editNoPopup">
-				<source>No popup window</source>
-			</trans-unit>
-			<trans-unit id="edit_recordHistory" resname="edit_recordHistory">
-				<source>View record change history</source>
-			</trans-unit>
-			<trans-unit id="edit_newContentElement" resname="edit_newContentElement">
-				<source>Create new content element</source>
-			</trans-unit>
-			<trans-unit id="edit_move_page" resname="edit_move_page">
-				<source>Move page</source>
-			</trans-unit>
-			<trans-unit id="edit_newPage" resname="edit_newPage">
-				<source>Create new page</source>
-			</trans-unit>
-			<trans-unit id="edit_editPageProperties" resname="edit_editPageProperties">
-				<source>Edit page properties</source>
-			</trans-unit>
-			<trans-unit id="edit_editPageOverlay" resname="edit_editPageOverlay">
-				<source>Edit properties of translated page</source>
-			</trans-unit>
-			<trans-unit id="edit_db_list" resname="edit_db_list">
-				<source>Web&gt;List module</source>
-			</trans-unit>
 			<trans-unit id="tsdebug" resname="tsdebug">
 				<source>TypoScript</source>
 			</trans-unit>
