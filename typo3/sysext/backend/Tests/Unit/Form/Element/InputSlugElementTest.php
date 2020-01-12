@@ -62,11 +62,8 @@ class InputSlugElementTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPrefixThrowsInvalidArgumentExceptionForUndefinedLanguages(): void
+    public function getPrefixReturnsEmptyStringForUndefinedLanguages(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionCode(1522960188);
-
         $site = new Site('www.foo.de', 0, []);
 
         $subject = $this->getAccessibleMock(
@@ -77,6 +74,6 @@ class InputSlugElementTest extends UnitTestCase
             false
         );
 
-        $subject->_call('getPrefix', $site, 99);
+        self::assertSame('', $subject->_call('getPrefix', $site, 99));
     }
 }

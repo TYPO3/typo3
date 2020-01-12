@@ -620,6 +620,15 @@ class DatabaseRecordList
     protected $showOnlyTranslatedRecords = false;
 
     /**
+     * All languages that are included in the site configuration
+     * for the current page. New records can only be created in those
+     * languages.
+     *
+     * @var array
+     */
+    protected $systemLanguagesOnPage;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -1501,7 +1510,7 @@ class DatabaseRecordList
             } elseif ($fCol === '_CLIPBOARD_') {
                 $theData[$fCol] = $this->makeClip($table, $row);
             } elseif ($fCol === '_LOCALIZATION_') {
-                list($lC1, $lC2) = $this->makeLocalizationPanel($table, $row);
+                [$lC1, $lC2] = $this->makeLocalizationPanel($table, $row);
                 $theData[$fCol] = $lC1;
                 $theData[$fCol . 'b'] = '<div class="btn-group">' . $lC2 . '</div>';
             } elseif ($fCol === '_LOCALIZATION_b') {
@@ -2493,10 +2502,10 @@ class DatabaseRecordList
         $translations = $this->translateTools->translationInfo($table, $row['uid'], 0, $row, $this->selFieldList);
         if (is_array($translations)) {
             $this->translations = $translations['translations'];
-            // Traverse page translations and add icon for each language that does NOT yet exist:
+            // Traverse page translations and add icon for each language that does NOT yet exist and is included in site configuration:
             $lNew = '';
             foreach ($this->pageOverlays as $lUid_OnPage => $lsysRec) {
-                if ($this->isEditable($table) && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
+                if (isset($this->systemLanguagesOnPage[$lUid_OnPage]) && $this->isEditable($table) && !isset($translations['translations'][$lUid_OnPage]) && $this->getBackendUserAuthentication()->checkLanguageAccess($lUid_OnPage)) {
                     $url = $this->listURL();
                     $href = BackendUtility::getLinkToDataHandlerAction(
                         '&cmd[' . $table . '][' . $row['uid'] . '][localize]=' . $lUid_OnPage,
@@ -2966,6 +2975,8 @@ class DatabaseRecordList
         // Setting internal variables:
         // sets the parent id
         $this->id = (int)$id;
+        // Store languages that are included in the site configuration for the current page.
+        $this->systemLanguagesOnPage = $this->translateTools->getSystemLanguages($this->id);
         if ($GLOBALS['TCA'][$table]) {
             // Setting single table mode, if table exists:
             $this->table = $table;
@@ -3457,7 +3468,7 @@ class DatabaseRecordList
         if (!empty($parameters['orderBy'])) {
             $this->logDeprecation('orderBy');
             foreach ($parameters['orderBy'] as $fieldNameAndSorting) {
-                list($fieldName, $sorting) = $fieldNameAndSorting;
+                [$fieldName, $sorting] = $fieldNameAndSorting;
                 $queryBuilder->addOrderBy($fieldName, $sorting);
             }
         }
@@ -3917,7 +3928,7 @@ class DatabaseRecordList
      */
     public function localizationRedirect($justLocalized)
     {
-        list($table, $orig_uid, $language) = explode(':', $justLocalized);
+        [$table, $orig_uid, $language] = explode(':', $justLocalized);
         if ($GLOBALS['TCA'][$table]
             && $GLOBALS['TCA'][$table]['ctrl']['languageField']
             && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
