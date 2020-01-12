@@ -1,0 +1,26 @@
+parameters:
+  level: 0
+
+  paths:
+    - %currentWorkingDirectory%/typo3/sysext/
+
+  excludes_analyse:
+    - %currentWorkingDirectory%/typo3/sysext/*/Tests/*
+    - %currentWorkingDirectory%/typo3/sysext/*/Documentation/*
+    - %currentWorkingDirectory%/typo3/sysext/*/Resources/*
+    - %currentWorkingDirectory%/typo3/sysext/*/Configuration/*
+
+  ignoreErrors:
+    - '#Undefined variable: \$_EXTKEY#'
+    -
+      message: '#Instantiated class Composer\\Util\\Filesystem not found\.#'
+      path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Composer/CliEntryPoint.php
+    -
+      message: '#Parameter \$event of method [\w\\]+::\w+\(\) has invalid typehint type Composer\\Script\\Event\.#'
+      path: %currentWorkingDirectory%/typo3/sysext/*/Classes/Composer/*
+    -
+      message: '#Access to undefined constant PDO::PGSQL_.+#'
+      path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Database/Driver/PDOPgSql/Driver.php
+    -
+      message: '#Access to undefined constant PDO::SQLSRV_.+#'
+      path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Database/Driver/PDOSqlsrv/Statement.php
