@@ -8,21 +8,28 @@
         <div class="element-browser-body">
             <f:if condition="{selectedFolder}">
                 <h3><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:folders" /></h3>
-                <span class="{f:if(condition: '{selectedFolder.combinedIdentifier} == {currentIdentifier}', then: 'bg-success')}" title="{selectedFolder.identifier}">
-                    {selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
+                <span class="{f:if(condition: '{selectedFolder.combinedIdentifier} == {currentIdentifier}', then: 'bg-success')}">
+                    <f:if condition="{selectedFolderUrl}">
+                        <f:then>
+                            <a href="{selectedFolderUrl}" class="t3js-fileLink list-tree-group" title="{selectedFolder.identifier}">{selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}</a>
+                        </f:then>
+                        <f:else>
+                            {selectedFolderIcon -> f:format.raw()} {selectedFolderTitle}
+                        </f:else>
+                    </f:if>
                 </span>
                 <f:if condition="{itemsInSelectedFolder}">
                     <ul class="list-tree">
                         <f:for each="{itemsInSelectedFolder}" as="folder">
                             <li{f:if(condition: '{folder.identifier} == {currentIdentifier}', then: ' class="active"')}>
                                 <span class="list-tree-group">
-                                        <a href="{folder.url}" class="t3js-fileLink list-tree-group" title="{folder.name}">
-                                            <span class="list-tree-icon">
-                                                <span title="{folder.name}">{folder.icon -> f:format.raw()}</span>
-                                            </span>
-                                            <span class="list-tree-title">{folder.title}</span>
-                                        </a>
-                                    </span>
+                                    <a href="{folder.url}" class="t3js-fileLink list-tree-group" title="{folder.name}">
+                                        <span class="list-tree-icon">
+                                            <span title="{folder.name}">{folder.icon -> f:format.raw()}</span>
+                                        </span>
+                                        <span class="list-tree-title">{folder.title}</span>
+                                    </a>
+                                </span>
                             </li>
                         </f:for>
                     </ul>

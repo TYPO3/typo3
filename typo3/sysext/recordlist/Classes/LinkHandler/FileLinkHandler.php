@@ -151,6 +151,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $folderIcon = $this->iconFactory->getIconForResource($folder, Icon::SIZE_SMALL)->render();
         $this->view->assign('selectedFolderIcon', $folderIcon);
         $this->view->assign('selectedFolderTitle', GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), (int)$this->getBackendUser()->uc['titleLen']));
+        $this->view->assign('selectedFolderUrl', GeneralUtility::makeInstance(LinkService::class)->asString(['type' => LinkService::TYPE_FOLDER, 'folder' => $folder]));
         if ($this->mode === 'file') {
             $this->view->assign('currentIdentifier', !empty($this->linkParts) ? $this->linkParts['url']['file']->getUid() : '');
         } else {
