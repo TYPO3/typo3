@@ -3012,7 +3012,7 @@ class TcaSelectItemsTest extends UnitTestCase
         ];
 
         $expected = $input;
-        $expected['databaseRow']['aField'] = ['foo', 1];
+        $expected['databaseRow']['aField'] = [1, 'foo'];
 
         self::assertEquals($expected, (new TcaSelectItems)->addData($input));
     }
