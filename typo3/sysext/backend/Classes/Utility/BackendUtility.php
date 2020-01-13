@@ -414,43 +414,51 @@ class BackendUtility
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
-            $queryBuilder = static::getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $statement = $runtimeCache->get('getPageForRootlineStatement');
+            if (!$statement) {
+                $queryBuilder = static::getQueryBuilderForTable('pages');
+                $queryBuilder->getRestrictions()
+                             ->removeAll()
+                             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-            $row = $queryBuilder
-                ->select(
-                    'pid',
-                    'uid',
-                    'title',
-                    'doktype',
-                    'slug',
-                    'tsconfig_includes',
-                    'TSconfig',
-                    'is_siteroot',
-                    't3ver_oid',
-                    't3ver_wsid',
-                    't3ver_state',
-                    't3ver_stage',
-                    'backend_layout_next_level',
-                    'hidden',
-                    'starttime',
-                    'endtime',
-                    'fe_group',
-                    'nav_hide',
-                    'content_from_pid',
-                    'module',
-                    'extendToSubpages',
-                    ...$additionalFields
-                )
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)),
-                    QueryHelper::stripLogicalOperatorPrefix($clause)
-                )
-                ->execute()
-                ->fetch();
+                $queryBuilder
+                    ->select(
+                        'pid',
+                        'uid',
+                        'title',
+                        'doktype',
+                        'slug',
+                        'tsconfig_includes',
+                        'TSconfig',
+                        'is_siteroot',
+                        't3ver_oid',
+                        't3ver_wsid',
+                        't3ver_state',
+                        't3ver_stage',
+                        'backend_layout_next_level',
+                        'hidden',
+                        'starttime',
+                        'endtime',
+                        'fe_group',
+                        'nav_hide',
+                        'content_from_pid',
+                        'module',
+                        'extendToSubpages',
+                        ...$additionalFields
+                    )
+                    ->from('pages')
+                    ->where(
+                        $queryBuilder->expr()->eq('uid', $queryBuilder->createPositionalParameter($uid, \PDO::PARAM_INT)),
+                        QueryHelper::stripLogicalOperatorPrefix($clause)
+                    );
+                $statement = $queryBuilder->execute();
+                $runtimeCache->set('getPageForRootlineStatement', $statement);
+            } else {
+                $statement->bindValue(1, (int)$uid);
+                $statement->execute();
+            }
+            $row = $statement->fetch();
+            $statement->closeCursor();
 
             if ($row) {
                 $newLocation = false;
