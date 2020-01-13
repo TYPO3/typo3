@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Mail;
 
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use TYPO3\CMS\Core\Exception\InvalidArgumentException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -310,7 +309,7 @@ class MailMessage extends Email
     protected function checkArguments($addresses, string $name = null): void
     {
         if ($name !== null && !is_string($addresses)) {
-            throw new InvalidArgumentException('The combination of a name and an array of addresses is invalid.', 1570543657);
+            throw new \InvalidArgumentException('The combination of a name and an array of addresses is invalid.', 1570543657);
         }
     }
 }

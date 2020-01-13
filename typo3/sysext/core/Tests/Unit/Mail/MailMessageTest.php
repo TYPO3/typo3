@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  */
 
 use Symfony\Component\Mime\Address;
-use TYPO3\CMS\Core\Exception\InvalidArgumentException;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -300,7 +299,7 @@ class MailMessageTest extends UnitTestCase
      */
     public function exceptionIsThrownForInvalidArgumentCombinations(string $method): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1570543657);
         $this->subject->{$method}(['foo@example.com'], 'A name');
     }
