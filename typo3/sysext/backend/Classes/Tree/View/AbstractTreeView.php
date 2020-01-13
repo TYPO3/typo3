@@ -768,8 +768,7 @@ abstract class AbstractTreeView
         $idH = [];
         // Traverse the records:
         while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
-            $pageUid = ($this->table === 'pages') ? $row['uid'] : $row['pid'];
-            if (!$this->getBackendUser()->isInWebMount($pageUid)) {
+            if (!$this->getBackendUser()->isInWebMount($this->table === 'pages' ? $row : $row['pid'])) {
                 // Current record is not within web mount => skip it
                 continue;
             }

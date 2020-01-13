@@ -804,7 +804,7 @@ class ElementInformationController
     protected function canAccessPage(string $tableName, array $record): bool
     {
         $recordPid = (int)($tableName === 'pages' ? $record['uid'] : $record['pid']);
-        return $this->getBackendUser()->isInWebMount($recordPid)
+        return $this->getBackendUser()->isInWebMount($tableName === 'pages' ? $record : $record['pid'])
             || $recordPid === 0 && !empty($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction']);
     }
 

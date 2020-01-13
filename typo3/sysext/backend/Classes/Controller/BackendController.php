@@ -482,7 +482,7 @@ class BackendController
                 }
             }
             // If the page was accessible, then let the user edit it.
-            if (is_array($editRecord) && $beUser->isInWebMount($editRecord['uid'])) {
+            if (is_array($editRecord) && $beUser->isInWebMount($editRecord)) {
                 // Setting JS code to open editing:
                 $this->js .= '
 		// Load page to edit:
