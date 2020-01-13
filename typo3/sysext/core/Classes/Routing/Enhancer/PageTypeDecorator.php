@@ -218,7 +218,7 @@ class PageTypeDecorator extends AbstractEnhancer implements DecoratingEnhancerIn
         if (!empty($regularItems) && !empty($this->index)) {
             $name = $useNames ? '?P<indexItems>' : '';
             $indexPattern = $this->quoteForRegularExpressionPattern($this->index);
-            $patterns[] = '(' . $name . $indexPattern . '(?:' . implode('|', $regularItems) . '))';
+            $patterns[] = $indexPattern . '(' . $name . '(?:' . implode('|', $regularItems) . '))';
         }
         if (!empty($regularItems)) {
             $name = $useNames ? '?P<regularItems>' : '';
