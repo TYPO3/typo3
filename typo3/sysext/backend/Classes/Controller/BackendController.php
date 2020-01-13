@@ -414,7 +414,7 @@ class BackendController
                 $editRecord = BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
             }
             // If the page was accessible, then let the user edit it.
-            if (is_array($editRecord) && $beUser->isInWebMount($editRecord['uid'])) {
+            if (is_array($editRecord) && $beUser->isInWebMount($editRecord)) {
                 // Checking page edit parameter:
                 if (!($userTsConfig['options.']['bookmark_onEditId_dontSetPageTree'] ?? false)) {
                     $bookmarkKeepExpanded = (bool)($userTsConfig['options.']['bookmark_onEditId_keepExistingExpanded'] ?? false);
