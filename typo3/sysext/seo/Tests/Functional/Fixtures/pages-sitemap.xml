@@ -126,4 +126,44 @@
         <sys_language_uid>1</sys_language_uid>
         <l10n_parent>1</l10n_parent>
     </pages>
+    <pages>
+        <uid>102</uid>
+        <pid>1</pid>
+        <title>Dummy 1-2 fr</title>
+        <tstamp>1491811200</tstamp>
+        <slug>/dummy-1-2-fr</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>1</sys_language_uid>
+        <l10n_parent>2</l10n_parent>
+    </pages>
+    <pages>
+        <uid>103</uid>
+        <pid>1</pid>
+        <title>Dummy 1-3 fr</title>
+        <SYS_LASTCHANGED>1535657401</SYS_LASTCHANGED>
+        <slug>/dummy-1-3-fr</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>1</sys_language_uid>
+        <l10n_parent>3</l10n_parent>
+    </pages>
+    <pages>
+        <uid>200</uid>
+        <pid>0</pid>
+        <title>Root DE</title>
+        <is_siteroot>1</is_siteroot>
+        <slug>/</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>2</sys_language_uid>
+        <l10n_parent>1</l10n_parent>
+    </pages>
+    <pages>
+        <uid>204</uid>
+        <pid>1</pid>
+        <title>Dummy 1-4 de</title>
+        <tstamp>1491811200</tstamp>
+        <slug>/dummy-1-4-de</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>2</sys_language_uid>
+        <l10n_parent>4</l10n_parent>
+    </pages>
 </dataset>
