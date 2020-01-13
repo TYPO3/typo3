@@ -25,6 +25,16 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
  */
 class XmlSitemapPagesTest extends AbstractTestCase
 {
+
+    /**
+     * @var array
+     */
+    protected const LANGUAGE_PRESETS = [
+        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
+        'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
+        'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
+    ];
+
     /**
      * @var string[]
      */
@@ -36,11 +46,6 @@ class XmlSitemapPagesTest extends AbstractTestCase
      * @var string
      */
     protected $body;
-
-    /**
-     * @var InternalResponse
-     */
-    protected $response;
 
     protected function setUp(): void
     {
@@ -58,16 +63,10 @@ class XmlSitemapPagesTest extends AbstractTestCase
             'website-local',
             $this->buildSiteConfiguration(1, 'http://localhost/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/')
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', '/fr/'),
+                $this->buildLanguageConfiguration('DE', '/de/', ['FR'])
             ]
-        );
-
-        $this->response = $this->executeFrontendRequest(
-            (new InternalRequest('http://localhost/'))->withQueryParameters([
-                'id' => 1,
-                'type' => 1533906435,
-                'sitemap' => 'pages'
-            ])
         );
     }
 
@@ -78,14 +77,16 @@ class XmlSitemapPagesTest extends AbstractTestCase
      */
     public function checkIfPagesSiteMapContainsExpectedEntries($urlPattern): void
     {
-        $this->assertEquals(200, $this->response->getStatusCode());
-        $this->assertArrayHasKey('Content-Length', $this->response->getHeaders());
-        $this->assertGreaterThan(0, $this->response->getHeader('Content-Length')[0]);
-        $this->assertArrayHasKey('Content-Type', $this->response->getHeaders());
-        $this->assertEquals('application/xml;charset=utf-8', $this->response->getHeader('Content-Type')[0]);
-        $this->assertArrayHasKey('X-Robots-Tag', $this->response->getHeaders());
-        $this->assertEquals('noindex', $this->response->getHeader('X-Robots-Tag')[0]);
-        $this->assertRegExp($urlPattern, (string)$this->response->getBody());
+        $response = $this->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('Content-Length', $response->getHeaders());
+        $this->assertGreaterThan(0, $response->getHeader('Content-Length')[0]);
+        $this->assertArrayHasKey('Content-Type', $response->getHeaders());
+        $this->assertEquals('application/xml;charset=utf-8', $response->getHeader('Content-Type')[0]);
+        $this->assertArrayHasKey('X-Robots-Tag', $response->getHeaders());
+        $this->assertEquals('noindex', $response->getHeader('X-Robots-Tag')[0]);
+
+        $this->assertRegExp($urlPattern, (string)$response->getBody());
     }
 
     /**
@@ -95,7 +96,7 @@ class XmlSitemapPagesTest extends AbstractTestCase
     {
         self::assertStringNotContainsString(
             '<loc>http://localhost/canonicalized-page</loc>',
-            (string)$this->response->getBody()
+            (string)$this->getResponse()->getBody()
         );
     }
 
@@ -106,7 +107,47 @@ class XmlSitemapPagesTest extends AbstractTestCase
     {
         // This is just a part of the entries that will be checked in v10
         return [
-            'complete-entry' => ['/<url>\s+<loc>http:\/\/localhost\/complete\-entry<\/loc>\s+<lastmod>2017-04-10T08:00:00\+00:00<\/lastmod>\s+<\/url>/'],
+            'complete-entry' => ['#<url>\s+<loc>http://localhost/complete\-entry</loc>\s+<lastmod>\d+-\d+-\d+T\d+:\d+:\d+\+\d+:\d+</lastmod>\s+</url>#'],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function pagesSitemapContainsTranslatedPages(): void
+    {
+        $xml = new \SimpleXMLElement((string)$this->getResponse('http://localhost/fr/')->getBody());
+        $this->assertEquals(3, $xml->count());
+    }
+
+    /**
+     * @test
+     */
+    public function pagesSitemapDoesNotContainsUntranslatedPages(): void
+    {
+        $this->assertStringNotContainsString(
+            '<loc>http://localhost/dummy-1-4</loc>',
+            (string)$this->getResponse('http://localhost/fr/')->getBody()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function pagesSitemapRespectFallbackStrategy(): void
+    {
+        $xml = new \SimpleXMLElement((string)$this->getResponse('http://localhost/de/')->getBody());
+        $this->assertEquals(4, $xml->count());
+    }
+
+    protected function getResponse(string $uri = 'http://localhost/'): InternalResponse
+    {
+        return $this->executeFrontendRequest(
+            (new InternalRequest($uri))->withQueryParameters([
+                'id' => 1,
+                'type' => 1533906435,
+                'sitemap' => 'pages'
+            ])
+        );
     }
 }
