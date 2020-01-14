@@ -51,7 +51,7 @@ class FolderRestriction extends AbstractRestrictionContainer
             $this->add($this->createFolderRestriction());
             return;
         }
-        if ($this->folder->getIdentifier() === $storage->getRootLevelFolder()->getIdentifier()) {
+        if ($this->folder->getIdentifier() === $storage->getRootLevelFolder(false)->getIdentifier()) {
             return;
         }
         if ($storage->hasHierarchicalIdentifiers()) {
