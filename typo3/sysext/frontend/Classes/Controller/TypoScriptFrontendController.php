@@ -619,7 +619,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * The page cache object, use this to save pages to the cache and to
      * retrieve them again
      *
-     * @var \TYPO3\CMS\Core\Cache\Backend\AbstractBackend
+     * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
      */
     protected $pageCache;
 
