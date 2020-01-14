@@ -301,11 +301,11 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://acme.us/', 1100, 1411, 0, 'https://acme.fr/acme-dans-votre-region/groupes'],
             ['https://acme.us/', 1100, 1412, 0, 'https://acme.ca/acme-dans-votre-quebec/groupes'],
             // acme.com -> archive (outside site)
-            ['https://acme.us/', 1100, 3100, 0, 'https://archive.acme.com/archive/statistics'],
-            ['https://acme.us/', 1100, 3100, 1, 'https://archive.acme.com/fr/archive/statistics'],
-            ['https://acme.us/', 1100, 3100, 2, 'https://archive.acme.com/ca/archive/statistics'],
-            ['https://acme.us/', 1100, 3101, 0, 'https://archive.acme.com/fr/archive/statistics'],
-            ['https://acme.us/', 1100, 3102, 0, 'https://archive.acme.com/ca/archive/statistics'],
+            ['https://acme.us/', 1100, 3100, 0, 'https://archive.acme.com/statistics'],
+            ['https://acme.us/', 1100, 3100, 1, 'https://archive.acme.com/fr/statistics'],
+            ['https://acme.us/', 1100, 3100, 2, 'https://archive.acme.com/ca/statistics'],
+            ['https://acme.us/', 1100, 3101, 0, 'https://archive.acme.com/fr/statistics'],
+            ['https://acme.us/', 1100, 3102, 0, 'https://archive.acme.com/ca/statistics'],
             // blog.acme.com -> acme.com (different site)
             ['https://blog.acme.com/', 2100, 1100, 0, 'https://acme.us/welcome'],
             ['https://blog.acme.com/', 2100, 1100, 1, 'https://acme.fr/bienvenue'],
@@ -313,11 +313,11 @@ class SlugLinkGeneratorTest extends AbstractTestCase
             ['https://blog.acme.com/', 2100, 1101, 0, 'https://acme.fr/bienvenue'],
             ['https://blog.acme.com/', 2100, 1102, 0, 'https://acme.ca/bienvenue'],
             // blog.acme.com -> archive (outside site)
-            ['https://blog.acme.com/', 2100, 3100, 0, 'https://archive.acme.com/archive/statistics'],
-            ['https://blog.acme.com/', 2100, 3100, 1, 'https://archive.acme.com/fr/archive/statistics'],
-            ['https://blog.acme.com/', 2100, 3100, 2, 'https://archive.acme.com/ca/archive/statistics'],
-            ['https://blog.acme.com/', 2100, 3101, 0, 'https://archive.acme.com/fr/archive/statistics'],
-            ['https://blog.acme.com/', 2100, 3102, 0, 'https://archive.acme.com/ca/archive/statistics'],
+            ['https://blog.acme.com/', 2100, 3100, 0, 'https://archive.acme.com/statistics'],
+            ['https://blog.acme.com/', 2100, 3100, 1, 'https://archive.acme.com/fr/statistics'],
+            ['https://blog.acme.com/', 2100, 3100, 2, 'https://archive.acme.com/ca/statistics'],
+            ['https://blog.acme.com/', 2100, 3101, 0, 'https://archive.acme.com/fr/statistics'],
+            ['https://blog.acme.com/', 2100, 3102, 0, 'https://archive.acme.com/ca/statistics'],
             // blog.acme.com -> products.acme.com (different sub-site)
             ['https://blog.acme.com/', 2100, 1300, 0, 'https://products.acme.com/products'],
             ['https://blog.acme.com/', 2100, 1310, 0, 'https://products.acme.com/products/planets'],
