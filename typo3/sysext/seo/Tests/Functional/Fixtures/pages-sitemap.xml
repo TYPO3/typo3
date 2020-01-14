@@ -117,6 +117,22 @@
         <canonical_link>https://www.typo3.org</canonical_link>
     </pages>
     <pages>
+        <uid>16</uid>
+        <pid>1</pid>
+        <title>Hidden in Default</title>
+        <slug>/hidden-in-default</slug>
+        <deleted>0</deleted>
+        <l18n_cfg>1</l18n_cfg>
+    </pages>
+    <pages>
+        <uid>17</uid>
+        <pid>1</pid>
+        <title>No Index</title>
+        <slug>/no-index</slug>
+        <deleted>0</deleted>
+        <no_index>1</no_index>
+    </pages>
+    <pages>
         <uid>100</uid>
         <pid>0</pid>
         <title>Root FR</title>
@@ -145,6 +161,16 @@
         <deleted>0</deleted>
         <sys_language_uid>1</sys_language_uid>
         <l10n_parent>3</l10n_parent>
+    </pages>
+    <pages>
+        <uid>105</uid>
+        <pid>2</pid>
+        <title>Dummy 1-2-5 fr</title>
+        <slug>/dummy-1-2-5-fr</slug>
+        <deleted>0</deleted>
+        <sys_language_uid>1</sys_language_uid>
+        <l10n_parent>5</l10n_parent>
+        <l18n_cfg>2</l18n_cfg>
     </pages>
     <pages>
         <uid>200</uid>

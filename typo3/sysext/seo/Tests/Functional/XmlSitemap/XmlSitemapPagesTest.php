@@ -16,59 +16,11 @@ namespace TYPO3\CMS\Seo\Tests\Functional\XmlSitemap;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
-use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
-
 /**
  * Contains functional tests for the XmlSitemap Index
  */
-class XmlSitemapPagesTest extends AbstractTestCase
+class XmlSitemapPagesTest extends AbstractXmlSitemapPagesTest
 {
-
-    /**
-     * @var array
-     */
-    protected const LANGUAGE_PRESETS = [
-        'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8', 'iso' => 'en', 'hrefLang' => 'en-US', 'direction' => ''],
-        'FR' => ['id' => 1, 'title' => 'French', 'locale' => 'fr_FR.UTF8', 'iso' => 'fr', 'hrefLang' => 'fr-FR', 'direction' => ''],
-        'DE' => ['id' => 2, 'title' => 'German', 'locale' => 'de_DE.UTF8', 'iso' => 'de', 'hrefLang' => 'de-DE', 'direction' => ''],
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected $coreExtensionsToLoad = [
-        'core', 'frontend', 'seo'
-    ];
-
-    /**
-     * @var string
-     */
-    protected $body;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importDataSet('EXT:seo/Tests/Functional/Fixtures/pages-sitemap.xml');
-        $this->setUpFrontendRootPage(
-            1,
-            [
-                'constants' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'],
-                'setup' => ['EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript']
-            ]
-        );
-
-        $this->writeSiteConfiguration(
-            'website-local',
-            $this->buildSiteConfiguration(1, 'http://localhost/'),
-            [
-                $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('FR', '/fr/'),
-                $this->buildLanguageConfiguration('DE', '/de/', ['FR'])
-            ]
-        );
-    }
 
     /**
      * @param string $urlPattern
@@ -101,6 +53,43 @@ class XmlSitemapPagesTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function pagesSitemapDoesNotContainUrlWithNoIndexSet(): void
+    {
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/no-index</loc>',
+            (string)$this->getResponse()->getBody()
+        );
+    }
+
+    /**
+     * Tests for exclusion depending on the l18n_cfg field
+     *
+     * @test
+     */
+    public function pagesSitemapInDefaultLanguageDoesNotContainSiteThatIsHiddenInDefaultLanguage(): void
+    {
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/hidden-in-default</loc>',
+            (string)$this->getResponse()->getBody()
+        );
+    }
+
+    /**
+     * Tests for exclusion depending on the l18n_cfg field
+     *
+     * @test
+     */
+    public function pagesSitemapInAlternativeLanguageDoesNotContainSiteThatIsHiddenIfNotTranslated(): void
+    {
+        self::assertStringNotContainsString(
+            '<loc>http://localhost/de/dummy-1-2-5-fr</loc>',
+            (string)$this->getResponse('http://localhost/de/')->getBody()
+        );
+    }
+
+    /**
      * @return array
      */
     public function pagesToCheckDataProvider(): array //18-03-2019 21:24:07
@@ -117,14 +106,16 @@ class XmlSitemapPagesTest extends AbstractTestCase
      */
     public function pagesSitemapContainsTranslatedPages(): void
     {
-        $xml = new \SimpleXMLElement((string)$this->getResponse('http://localhost/fr/')->getBody());
-        self::assertEquals(3, $xml->count());
+        self::assertEquals(
+            4,
+            (new \SimpleXMLElement((string)$this->getResponse('http://localhost/fr/')->getBody()))->count()
+        );
     }
 
     /**
      * @test
      */
-    public function pagesSitemapDoesNotContainsUntranslatedPages(): void
+    public function pagesSitemapDoesNotContainUntranslatedPages(): void
     {
         self::assertStringNotContainsString(
             '<loc>http://localhost/dummy-1-4</loc>',
@@ -137,18 +128,9 @@ class XmlSitemapPagesTest extends AbstractTestCase
      */
     public function pagesSitemapRespectFallbackStrategy(): void
     {
-        $xml = new \SimpleXMLElement((string)$this->getResponse('http://localhost/de/')->getBody());
-        self::assertEquals(4, $xml->count());
-    }
-
-    protected function getResponse(string $uri = 'http://localhost/'): InternalResponse
-    {
-        return $this->executeFrontendRequest(
-            (new InternalRequest($uri))->withQueryParameters([
-                'id' => 1,
-                'type' => 1533906435,
-                'sitemap' => 'pages'
-            ])
+        self::assertStringContainsString(
+            '<loc>http://localhost/de/dummy-1-3-fr</loc>',
+            (string)$this->getResponse('http://localhost/de/')->getBody()
         );
     }
 }
