@@ -325,7 +325,7 @@ class TranslationStatusController
                     } else {
                         $status = GeneralUtility::hideIfNotTranslated($data['row']['l18n_cfg']) || GeneralUtility::hideIfDefaultLanguage($data['row']['l18n_cfg']) ? 'danger' : '';
                         $info = '<div class="btn-group"><label class="btn btn-default btn-checkbox">';
-                        $info .= '<input type="checkbox" data-lang="' . $languageId . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" value="1" />';
+                        $info .= '<input type="checkbox" data-lang="' . $languageId . '" data-uid="' . (int)$data['row']['uid'] . '" name="newOL[' . $languageId . '][' . $data['row']['uid'] . ']" value="1" />';
                         $info .= '<span class="t3-icon fa"></span></label></div>';
                         $newOL_js[$languageId] .=
                             ' +(document.webinfoForm['
@@ -396,18 +396,22 @@ class TranslationStatusController
                     $editButton = '';
                 }
                 // Create new overlay records:
-                $params = '&columnsOnly=title,hidden,sys_language_uid&overrideVals[pages][sys_language_uid]=' . $languageId;
-                $onClick = BackendUtility::editOnClick($params);
-                if (!empty($newOL_js[$languageId])) {
-                    $onClickArray = explode('?', $onClick, 2);
-                    $lastElement = array_pop($onClickArray);
-                    $onClickArray[] = '\'' . $newOL_js[$languageId] . ' + \'&' . $lastElement;
-                    $onClick = implode('?', $onClickArray);
-                }
-                $newButton = '<a href="#" class="btn btn-default disabled t3js-language-new-' . $languageId . '" onclick="' . htmlspecialchars($onClick)
-                    . '" title="' . $lang->sL(
-                        'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
-                    ) . '">' . $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() . '</a>';
+                $createLink = (string)$uriBuilder->buildUriFromRoute('tce_db', [
+                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                ]);
+                $newButton = '<a href="' .
+                             htmlspecialchars($createLink) .
+                             '" data-edit-url="' .
+                             htmlspecialchars($createLink) .
+                             '" class="btn btn-default disabled t3js-language-new-' .
+                             $languageId .
+                             '" title="' .
+                             $lang->sL(
+                                 'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
+                             ) .
+                             '">' .
+                             $this->iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render() .
+                             '</a>';
 
                 $tCells[] = '<td class="btn-group">' . $editButton . $newButton . '</td>';
                 $tCells[] = '<td>&nbsp;</td>';
