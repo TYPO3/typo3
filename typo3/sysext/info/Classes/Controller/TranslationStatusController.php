@@ -346,14 +346,8 @@ class TranslationStatusController
                     $editButton = '';
                 }
                 // Create new overlay records:
-                $createLink = (string)$uriBuilder->buildUriFromRoute('record_edit', [
-                    'columnsOnly' => 'title,hidden,sys_language_uid',
-                    'overrideVals' => [
-                        'pages' => [
-                            'sys_language_uid' => $languageId,
-                        ],
-                    ],
-                    'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
+                $createLink = (string)$uriBuilder->buildUriFromRoute('tce_db', [
+                    'redirect' => GeneralUtility::getIndpEnv('REQUEST_URI')
                 ]);
                 $newButton = '<a href="' . htmlspecialchars($createLink) . '" data-edit-url="' . htmlspecialchars($createLink) . '" class="btn btn-default disabled t3js-language-new-' . $languageId . '" title="' . $lang->sL(
                     'LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:lang_getlangsta_createNewTranslationHeaders'
