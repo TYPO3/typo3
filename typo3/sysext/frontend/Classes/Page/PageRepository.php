@@ -602,7 +602,7 @@ class PageRepository implements LoggerAwareInterface
      * @param array $page the page translation record or the page in the default language
      * @param LanguageAspect $languageAspect
      * @return bool true if the given page translation record is suited for the given language ID
-     * @internal only in use for HMENU generation for now
+     * @internal
      */
     public function isPageSuitableForLanguage(array $page, LanguageAspect $languageAspect): bool
     {
