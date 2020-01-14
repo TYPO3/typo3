@@ -229,11 +229,24 @@ class PageRouter implements RouterInterface
         $context->setAspect('language', LanguageAspectFactory::createFromSiteLanguage($language));
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $page = $pageRepository->getPage($pageId, true);
-        $pagePath = ltrim($page['slug'] ?? '', '/');
+        $pagePath = $page['slug'] ?? '';
+
+        if ($parameters['MP'] ?? false) {
+            $pagePath = $this->resolveMountPointParameterIntoPageSlug(
+                $pageId,
+                $pagePath,
+                explode(',', $parameters['MP']),
+                $pageRepository
+            );
+            // Store the MP parameter in the page record, so it could be used for any enhancers
+            $page['MPvar'] = $parameters['MP'];
+            unset($parameters['MP']);
+        }
+
         $originalParameters = $parameters;
         $collection = new RouteCollection();
         $defaultRouteForPage = new Route(
-            '/' . $pagePath,
+            '/' . ltrim($pagePath, '/'),
             [],
             [],
             ['utf8' => true, '_page' => $page]
@@ -327,6 +340,59 @@ class PageRouter implements RouterInterface
     }
 
     /**
+     * When a MP parameter is given, the mount point parameter is resolved, and the slug of the new page
+     * is added while the same parts of the original pagePath is removed (before).
+     * This way, the subpage to a mounted page has now a different "base" (= prefixed with the slug of the
+     * mount point).
+     *
+     * This is done recursively when multiple mount point parameter pairs
+     *
+     * @param int $pageId
+     * @param string $pagePath the original path of the page
+     * @param array $mountPointPairs an array with MP pairs (like ['13-3', '4-2'] for recursive mount points)
+     * @param PageRepository $pageRepository
+     * @return string
+     */
+    protected function resolveMountPointParameterIntoPageSlug(
+        int $pageId,
+        string $pagePath,
+        array $mountPointPairs,
+        PageRepository $pageRepository
+    ): string {
+        // Handle recursive mount points
+        $prefixesToRemove = [];
+        $slugPrefixesToAdd = [];
+        foreach ($mountPointPairs as $mountPointPair) {
+            [$mountRoot, $mountedPage] = GeneralUtility::intExplode('-', $mountPointPair);
+            $mountPageInformation = $pageRepository->getMountPointInfo($mountedPage);
+            if ($mountPageInformation) {
+                if ($pageId === $mountedPage) {
+                    continue;
+                }
+                // Get slugs in the translated page
+                $mountedPage = $pageRepository->getPage($mountedPage);
+                $mountRoot = $pageRepository->getPage($mountRoot);
+                $slugPrefix = $mountedPage['slug'] ?? '';
+                $prefixToRemove = $mountRoot['slug'] ?? '';
+                $prefixesToRemove[] = $prefixToRemove;
+                $slugPrefixesToAdd[] = $slugPrefix;
+            }
+        }
+        $slugPrefixesToAdd = array_reverse($slugPrefixesToAdd);
+        $prefixesToRemove = array_reverse($prefixesToRemove);
+        foreach ($prefixesToRemove as $prefixToRemove) {
+            // Slug prefixes are taken from the beginning of the array, where as the parts to be removed
+            // Are taken from the end.
+            $replacement = array_shift($slugPrefixesToAdd);
+            if (strpos($pagePath, $prefixToRemove) === 0) {
+                $pagePath = substr($pagePath, strlen($prefixToRemove));
+            }
+            $pagePath = $replacement . '/' . ltrim($pagePath, '/');
+        }
+        return $pagePath;
+    }
+
+    /**
      * Fetch possible enhancers + aspects based on the current page configuration and the site configuration put
      * into "routeEnhancers"
      *
@@ -414,6 +480,10 @@ class PageRouter implements RouterInterface
         $page = $route->getOption('_page');
         $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $type = $this->resolveType($route, $remainingQueryParameters);
+        // See PageSlugCandidateProvider where this is added.
+        if ($page['MPvar']) {
+            $routeArguments['MP'] = $page['MPvar'];
+        }
         return new PageArguments($pageId, $type, $routeArguments, [], $remainingQueryParameters);
     }
 

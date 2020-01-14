@@ -105,10 +105,11 @@ class SiteFinder
      *
      * @param int $pageId
      * @param array $rootLine
+     * @param string|null $mountPointParameter
      * @return Site
      * @throws SiteNotFoundException
      */
-    public function getSiteByPageId(int $pageId, array $rootLine = null): Site
+    public function getSiteByPageId(int $pageId, array $rootLine = null, string $mountPointParameter = null): Site
     {
         if ($pageId === 0) {
             // page uid 0 has no root line. We don't need to ask the root line resolver to know that.
@@ -116,7 +117,7 @@ class SiteFinder
         }
         if (!is_array($rootLine)) {
             try {
-                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId)->get();
+                $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, $mountPointParameter)->get();
             } catch (PageNotFoundException $e) {
                 // Usually when a page was hidden or disconnected
                 // This could be improved by handing in a Context object and decide whether hidden pages

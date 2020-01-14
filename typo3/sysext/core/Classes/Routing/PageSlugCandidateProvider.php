@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * Provides possible pages (from the database) that _could_ match a certain URL path,
@@ -198,7 +199,7 @@ class PageSlugCandidateProvider
             ->add(GeneralUtility::makeInstance(FrontendWorkspaceRestriction::class, null, null, $searchLiveRecordsOnly));
 
         $statement = $queryBuilder
-            ->select('uid', 'l10n_parent', 'pid', 'slug')
+            ->select('uid', 'l10n_parent', 'pid', 'slug', 'mount_pid', 'mount_pid_ol', 't3ver_state', 'doktype')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
@@ -223,13 +224,136 @@ class PageSlugCandidateProvider
         while ($row = $statement->fetch()) {
             $pageRepository->fixVersioningPid('pages', $row);
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
+            $mountPageInformation = $pageRepository->getMountPointInfo($pageIdInDefaultLanguage, $row);
+            if ($mountPageInformation) {
+                // Add the MPvar to the row, so it can be used later-on in the PageRouter / PageArguments
+                $row['MPvar'] = $mountPageInformation['MPvar'];
+            }
+
             try {
-                if ($siteFinder->getSiteByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId()) {
+                $isOnSameSite = $siteFinder->getSiteByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId();
+                if ($isOnSameSite && !$row['mount_pid_ol']) {
                     $pages[] = $row;
                 }
             } catch (SiteNotFoundException $e) {
                 // Page is not in a site, so it's not considered
             }
+
+            if ($mountPageInformation) {
+                $mountedPage = $pageRepository->getPage_noCheck($mountPageInformation['mount_pid_rec']['uid']);
+                // Ensure to fetch the slug in the translated page
+                $mountedPage = $pageRepository->getPageOverlay($mountedPage, $languageId);
+                // Mount wasn't connected properly, so it is skipped
+                if (!$mountedPage) {
+                    continue;
+                }
+
+                $siteOfMountedPage = $siteFinder->getSiteByPageId((int)$mountedPage['uid']);
+                $morePageCandidates = $this->findPageCandidatesOfMountPoint(
+                    $row,
+                    $mountedPage,
+                    $siteOfMountedPage,
+                    $languageId,
+                    $slugCandidates
+                );
+                foreach ($morePageCandidates as $candidate) {
+                    $pages[] = $candidate;
+                }
+            }
+        }
+        return $pages;
+    }
+
+    /**
+     * Check if the page candidate is a mount point, if so, we need to
+     * re-start the slug candidates procedure with the mount point as a prefix (= context of the subpage).
+     *
+     * Before doing the slugCandidates are adapted to remove the slug of the mount point (actively moving the pointer
+     * of the path to strip away the existing prefix), then checking for more pages.
+     *
+     * Once possible candidates are found, the slug prefix needs to be re-added so the PageRouter finds the page,
+     * with an additional 'MPvar' attribute.
+     * However, all page candidates needs to be checked if they are connected in the proper mount page.
+     *
+     * @param array $mountPointPage the page with doktype=7
+     * @param array $mountedPage the target page where the mountpoint is pointing to
+     * @param Site $siteOfMountedPage the site of the target page, which could be different from the current page
+     * @param int $languageId the current language id
+     * @param array $slugCandidates the existing slug candidates that were looked for previously
+     * @return array more candidates
+     */
+    protected function findPageCandidatesOfMountPoint(
+        array $mountPointPage,
+        array $mountedPage,
+        Site $siteOfMountedPage,
+        int $languageId,
+        array $slugCandidates
+    ): array {
+        $pages = [];
+        $slugOfMountPoint = $mountPointPage['slug'] ?? '';
+        $commonSlugPrefixOfMountedPage = rtrim($mountedPage['slug'] ?? '', '/');
+        $narrowedDownSlugPrefixes = [];
+        foreach ($slugCandidates as $slugCandidate) {
+            // Remove the mount point prefix (that we just found) from the slug candidates
+            if (strpos($slugCandidate, $slugOfMountPoint) === 0) {
+                // Find pages without the common prefix
+                $narrowedDownSlugPrefix = '/' . trim(substr($slugCandidate, strlen($slugOfMountPoint)), '/');
+                $narrowedDownSlugPrefixes[] = $narrowedDownSlugPrefix;
+                $narrowedDownSlugPrefixes[] = $narrowedDownSlugPrefix . '/';
+                // Find pages with the prefix of the mounted page as well
+                if ($commonSlugPrefixOfMountedPage) {
+                    $narrowedDownSlugPrefix = $commonSlugPrefixOfMountedPage . $narrowedDownSlugPrefix;
+                    $narrowedDownSlugPrefixes[] = $narrowedDownSlugPrefix;
+                    $narrowedDownSlugPrefixes[] = $narrowedDownSlugPrefix . '/';
+                }
+            }
+        }
+        $trimmedSlugPrefixes = [];
+        $narrowedDownSlugPrefixes = array_unique($narrowedDownSlugPrefixes);
+        foreach ($narrowedDownSlugPrefixes as $narrowedDownSlugPrefix) {
+            $narrowedDownSlugPrefix = trim($narrowedDownSlugPrefix, '/');
+            $trimmedSlugPrefixes[] = '/' . $narrowedDownSlugPrefix;
+            if (!empty($narrowedDownSlugPrefix)) {
+                $trimmedSlugPrefixes[] = '/' . $narrowedDownSlugPrefix . '/';
+            }
+        }
+        $slugProviderForMountPage = GeneralUtility::makeInstance(static::class, $this->context, $siteOfMountedPage, $this->enhancerFactory);
+        // Find the right pages for which have been matched
+        $pageCandidates = $slugProviderForMountPage->getPagesFromDatabaseForCandidates(
+            $trimmedSlugPrefixes,
+            $languageId
+        );
+        // Depending on the "mount_pid_ol" parameter, the mountedPage or the mounted page is in the rootline
+        $pageWhichMustBeInRootLine = (int)($mountPointPage['mount_pid_ol'] ? $mountedPage['uid'] : $mountPointPage['uid']);
+        foreach ($pageCandidates as $pageCandidate) {
+            $pageCandidate['MPvar'] = $mountPointPage['MPvar'] . ($pageCandidate['MPvar'] ? ',' . $pageCandidate['MPvar'] : '');
+            // In order to avoid the possibility that any random page like /about-us which is not connected to the mount
+            // point is not possible to be called via /my-mount-point/about-us, let's check the
+            $pageCandidateIsConnectedInMountPoint = false;
+            $rootLine = GeneralUtility::makeInstance(
+                RootlineUtility::class,
+                $pageCandidate['uid'],
+                $pageCandidate['MPvar'],
+                $this->context
+            )->get();
+            foreach ($rootLine as $pageInRootLine) {
+                if ((int)$pageInRootLine['uid'] === $pageWhichMustBeInRootLine) {
+                    $pageCandidateIsConnectedInMountPoint = true;
+                    break;
+                }
+            }
+            if ($pageCandidateIsConnectedInMountPoint === false) {
+                continue;
+            }
+            // Rewrite the slug of the subpage to match the PageRouter matching again
+            // This is done by first removing the "common" prefix possibly provided by the Mounted Page
+            // But more importantly adding the $slugOfMountPoint of the MountPoint Page
+            $slugOfSubpage = $pageCandidate['slug'];
+            if ($commonSlugPrefixOfMountedPage && strpos($slugOfSubpage, $commonSlugPrefixOfMountedPage) === 0) {
+                $slugOfSubpage = substr($slugOfSubpage, strlen($commonSlugPrefixOfMountedPage));
+            }
+            $pageCandidate['slug'] = $slugOfMountPoint . ($slugOfSubpage ? '/' . trim($slugOfSubpage, '/') : '');
+            $pages[] = $pageCandidate;
         }
         return $pages;
     }

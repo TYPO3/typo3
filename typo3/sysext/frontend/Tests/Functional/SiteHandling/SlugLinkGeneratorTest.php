@@ -691,15 +691,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'Markets',
-                                'link' => 'https://common.acme.com/common/markets?MP=7100-1700',
+                                'link' => '/news/common/markets',
                             ],
                             [
                                 'title' => 'Products',
-                                'link' => 'https://common.acme.com/common/products?MP=7100-1700',
+                                'link' => '/news/common/products',
                             ],
                             [
                                 'title' => 'Partners',
-                                'link' => 'https://common.acme.com/common/partners?MP=7100-1700',
+                                'link' => '/news/common/partners',
                             ],
                         ],
                     ],
@@ -732,15 +732,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             'children' => [
                                 [
                                     'title' => 'Markets',
-                                    'link' => 'https://common.acme.com/common/markets?MP=7100-2700',
+                                    'link' => '/news/common/markets',
                                 ],
                                 [
                                     'title' => 'Products',
-                                    'link' => 'https://common.acme.com/common/products?MP=7100-2700',
+                                    'link' => '/news/common/products',
                                 ],
                                 [
                                     'title' => 'Partners',
-                                    'link' => 'https://common.acme.com/common/partners?MP=7100-2700',
+                                    'link' => '/news/common/partners',
                                 ],
                             ],
                         ],
