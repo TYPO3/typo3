@@ -77,6 +77,16 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             ]
         );
 
+        $this->writeSiteConfiguration(
+            'archive-acme-com',
+            $this->buildSiteConfiguration(3000, 'https://archive.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', 'https://archive.acme.com/fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN'])
+            ]
+        );
+
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
@@ -105,6 +115,17 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 'sitetitle' => $this->siteTitle,
             ]
         );
+
+        $this->setUpFrontendRootPage(
+            3000,
+            [
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript',
+            ],
+            [
+                'title' => 'ACME Archive',
+                'sitetitle' => $this->siteTitle,
+            ]
+        );
     }
 
     protected function tearDown()
@@ -130,13 +151,22 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $enhancers = $builder->declareEnhancers();
         $variableContexts = [
             VariablesContext::create(
-                Variables::create(['cHash' => '46227b4ce096dc78a4e71463326c9020'])
+                Variables::create([
+                    'cHash' => '46227b4ce096dc78a4e71463326c9020',
+                    'cHash2' => 'f80d112e877175ce8e7d54c35bebe12c'
+                ])
             )->withRequiredApplicables($enhancers['Simple']),
             VariablesContext::create(
-                Variables::create(['cHash' => 'e24d3d2d5503baba670d827c3b9470c8'])
+                Variables::create([
+                    'cHash' => 'e24d3d2d5503baba670d827c3b9470c8',
+                    'cHash2' => '54f45ea94a5e812fbae944792dac940d'
+                ])
             )->withRequiredApplicables($enhancers['Plugin']),
             VariablesContext::create(
-                Variables::create(['cHash' => 'eef21771ab3c3dac3514b4479eedd5ff'])
+                Variables::create([
+                    'cHash' => 'eef21771ab3c3dac3514b4479eedd5ff',
+                    'cHash2' => 'c822555d4ebd106b0d1687e43a4db9c9'
+                ])
             )->withRequiredApplicables($enhancers['Extbase']),
         ];
         return Permutation::create($variables)
@@ -156,6 +186,24 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                     ->withUrl(
                         VariableValue::create(
                             'https://acme.fr/bienvenue/augmenter/[[value]][[pathSuffix]]?cHash=[[cHash]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/enhance/[[value]][[pathSuffix]]?cHash=[[cHash2]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(1))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/fr/augmenter/[[value]][[pathSuffix]]?cHash=[[cHash2]]',
                             Variables::create(['pathSuffix' => ''])
                         )
                     )
@@ -462,8 +510,21 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             $testSet = TestSet::create()
                 ->withMergedApplicables($pageTypeDeclaration)
                 ->withVariables($pageTypeDeclaration->getVariables());
+
+            $testSetWithoutEnhancers =
+                TestSet::create($testSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/[[index]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => '', 'index' => ''])
+                        )
+                    )
+            ;
             $testSets = array_merge(
                 $testSets,
+                [$testSetWithoutEnhancers->describe() => [$testSetWithoutEnhancers]],
                 $this->localeModifierDataProvider($testSet),
                 $this->persistedAliasMapperDataProvider($testSet),
                 $this->persistedPatternMapperDataProvider($testSet),
@@ -491,12 +552,16 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $expectedLanguageId = $languageContext->getLanguageId();
         $expectation = $builder->compileResolveArguments($testSet);
 
-        $this->mergeSiteConfiguration('acme-com', [
+        $overrides = [
             'routeEnhancers' => [
-                'Enhancer' => $enhancerConfiguration,
                 'PageType' => $pageTypeConfiguration,
             ]
-        ]);
+        ];
+        if ($enhancerConfiguration) {
+            $overrides['routeEnhancers']['Enhancer'] = $enhancerConfiguration;
+        }
+        $this->mergeSiteConfiguration('acme-com', $overrides);
+        $this->mergeSiteConfiguration('archive-acme-com', $overrides);
 
         $allParameters = array_replace_recursive(
             $expectation['dynamicArguments'],
@@ -708,12 +773,15 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $this->mergeSiteConfiguration('acme-com', [
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
+        $this->mergeSiteConfiguration('archive-acme-com', [
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+        ]);
 
         $allParameters = array_replace_recursive(
             $expectation['dynamicArguments'],
             $expectation['staticArguments']
         );
-        $expectation['pageId'] = 1100;
+        $expectation['pageId'] = $testSet->getTargetPageId();
         $expectation['pageType'] = '0';
         $expectation['languageId'] = $expectedLanguageId;
         $expectation['requestQueryParams'] = $allParameters;

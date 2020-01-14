@@ -75,6 +75,16 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ]
         );
 
+        $this->writeSiteConfiguration(
+            'archive-acme-com',
+            $this->buildSiteConfiguration(3000, 'https://archive.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('FR', 'https://archive.acme.com/fr/', ['EN']),
+                $this->buildLanguageConfiguration('FR-CA', 'https://archive.acme.com/ca/', ['FR', 'EN'])
+            ]
+        );
+
         $this->withDatabaseSnapshot(function () {
             $this->setUpDatabase();
         });
@@ -143,6 +153,24 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                             'https://acme.fr/bienvenue/augmenter/[[value]][[pathSuffix]]?cHash=',
                             Variables::create(['pathSuffix' => ''])
                         )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/enhance/[[value]][[pathSuffix]]?cHash=',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(1))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/fr/augmenter/[[value]][[pathSuffix]]?cHash=',
+                            Variables::create(['pathSuffix' => ''])
+                        )
                     )
             )
             ->withApplicableItems($builder->declareEnhancers())
@@ -181,6 +209,9 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         $expectation = $builder->compileUrl($testSet);
 
         $this->mergeSiteConfiguration('acme-com', [
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+        ]);
+        $this->mergeSiteConfiguration('archive-acme-com', [
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
@@ -319,6 +350,24 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                             'https://acme.fr/bienvenue/enhance/salut-et-bienvenue-[[value]][[pathSuffix]]',
                             Variables::create(['pathSuffix' => ''])
                         )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/enhance/hello-and-welcome-[[value]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(1))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/fr/enhance/salut-et-bienvenue-[[value]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
                     )
             )
             ->withApplicableItems($builder->declareEnhancers())
@@ -355,13 +404,16 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         $this->mergeSiteConfiguration('acme-com', [
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
+        $this->mergeSiteConfiguration('archive-acme-com', [
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+        ]);
 
         $response = $this->executeFrontendRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
-                        'parameter' => 1100,
+                        'parameter' => $testSet->getTargetPageId(),
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
@@ -403,6 +455,24 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                     ->withUrl(
                         VariableValue::create(
                             'https://acme.fr/bienvenue/enhance/cent[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/enhance/hundred[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(1))
+                    ->withTargetPageId(3000)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://archive.acme.com/fr/enhance/cent[[pathSuffix]]',
                             Variables::create(['pathSuffix' => ''])
                         )
                     )
@@ -449,13 +519,16 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
         $this->mergeSiteConfiguration('acme-com', [
             'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
+        $this->mergeSiteConfiguration('archive-acme-com', [
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
+        ]);
 
         $response = $this->executeFrontendRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
-                        'parameter' => 1100,
+                        'parameter' => $testSet->getTargetPageId(),
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
@@ -550,7 +623,7 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
-                        'parameter' => 1100,
+                        'parameter' => $testSet->getTargetPageId(),
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,
@@ -611,12 +684,19 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
             ]
         ]);
 
+        $this->mergeSiteConfiguration('archive-acme-com', [
+            'routeEnhancers' => [
+                'Enhancer' => $enhancerConfiguration,
+                'PageType' => $pageTypeConfiguration,
+            ]
+        ]);
+
         $response = $this->executeFrontendRequest(
             (new InternalRequest('https://acme.us/'))
                 ->withPageId(1100)
                 ->withInstructions([
                     $this->createTypoLinkUrlInstruction([
-                        'parameter' => 1100,
+                        'parameter' => $testSet->getTargetPageId(),
                         'language' => $targetLanguageId,
                         'additionalParams' => $additionalParameters,
                         'forceAbsoluteUrl' => 1,

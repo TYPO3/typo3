@@ -107,6 +107,7 @@ class Builder
             'map' => [
                 '.html' =>  0,
                 'menu.json' =>  10,
+                '.xml' => 20
             ],
         ];
         $singleTypeConfiguration = [
@@ -122,26 +123,31 @@ class Builder
             PageTypeDeclaration::create('null ".html"')
                 ->withConfiguration($multipleTypesConfiguration)
                 ->withResolveArguments(['pageType' => 0])
-                ->withVariables(Variables::create(['pathSuffix' => '.html'])),
+                ->withVariables(Variables::create(['pathSuffix' => '.html', 'index' => 'index'])),
             PageTypeDeclaration::create('0 ".html"')
                 ->withConfiguration($multipleTypesConfiguration)
                 ->withGenerateParameters(['&type=0'])
                 ->withResolveArguments(['pageType' => 0])
-                ->withVariables(Variables::create(['pathSuffix' => '.html'])),
+                ->withVariables(Variables::create(['pathSuffix' => '.html', 'index' => 'index'])),
             PageTypeDeclaration::create('10 "/menu.json"')
                 ->withConfiguration($multipleTypesConfiguration)
                 ->withGenerateParameters(['&type=10'])
                 ->withResolveArguments(['pageType' => 10])
-                ->withVariables(Variables::create(['pathSuffix' => '/menu.json'])),
+                ->withVariables(Variables::create(['pathSuffix' => '/menu.json', 'index' => ''])),
+            PageTypeDeclaration::create('20 ".xml"')
+                ->withConfiguration($multipleTypesConfiguration)
+                ->withGenerateParameters(['&type=20'])
+                ->withResolveArguments(['pageType' => 20])
+                ->withVariables(Variables::create(['pathSuffix' => '.xml', 'index' => 'index'])),
             PageTypeDeclaration::create('null "/"')
                 ->withConfiguration($singleTypeConfiguration)
                 ->withResolveArguments(['pageType' => 0])
-                ->withVariables(Variables::create(['pathSuffix' => '/'])),
+                ->withVariables(Variables::create(['pathSuffix' => '/', 'index' => ''])),
             PageTypeDeclaration::create('0 "/"')
                 ->withConfiguration($singleTypeConfiguration)
                 ->withGenerateParameters(['&type=0'])
                 ->withResolveArguments(['pageType' => 0])
-                ->withVariables(Variables::create(['pathSuffix' => '/'])),
+                ->withVariables(Variables::create(['pathSuffix' => '/', 'index' => ''])),
         ];
     }
 

@@ -126,20 +126,23 @@ entities:
                 - self: {id: 2121, title: 'About', slug: '/about-jane'}
         - self: {id: 2700, title: 'Announcements & News', type: *pageMount, mount: 7100, slug: '/news'}
         - self: {id: 2930, title: 'ACME Inc', type: *pageShortcut, shortcut: 1000, slug: '/acme'}
-    - self: {id: 3000, title: 'ACME Archive', type: *pageShortcut, shortcut: 'first', root: true, slug: '/archive'}
+    - self: {id: 3000, title: 'ACME Archive', root: true, slug: '/'}
+      languageVariants:
+        - self: {id: 3001, title: 'FR: Archive', language: 1, slug: '/'}
+        - self: {id: 3002, title: 'FR-CA: Archive', language: 2, slug: '/'}
       children:
-        - self: {id: 3100, title: 'EN: Statistics', slug: '/archive/statistics'}
+        - self: {id: 3100, title: 'EN: Statistics', slug: '/statistics'}
           languageVariants:
-            - self: {id: 3101, title: 'FR: Statistics', language: 1, slug: '/archive/statistics'}
-            - self: {id: 3102, title: 'FR-CA: Statistics', language: 2, slug: '/archive/statistics'}
+            - self: {id: 3101, title: 'FR: Statistics', language: 1, slug: '/statistics'}
+            - self: {id: 3102, title: 'FR-CA: Statistics', language: 2, slug: '/statistics'}
           children:
-            - self: {id: 3110, title: 'EN: Markets', slug: '/archive/markets'}
-            - self: {id: 3120, title: 'EN: Products', slug: '/archive/products'}
-            - self: {id: 3130, title: 'EN: Partners', slug: '/archive/partners'}
+            - self: {id: 3110, title: 'EN: Markets', slug: '/markets'}
+            - self: {id: 3120, title: 'EN: Products', slug: '/products'}
+            - self: {id: 3130, title: 'EN: Partners', slug: '/partners'}
       entities:
         domain:
           - self: {domainName: 'archive.acme.com'}
-    - self: {id: 7000, title: 'Common Collection', type: *pageFolder, slug: '/common'}
+    - self: {id: 7000, title: 'Common Collection', type: *pageFolder, root: true, slug: '/common'}
       children:
         - self: {id: 7100, title: 'Announcements & News', slug: '/common/news'}
           children:

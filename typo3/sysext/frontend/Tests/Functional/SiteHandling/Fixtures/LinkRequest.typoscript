@@ -22,3 +22,8 @@ menu < page
 menu {
   typeNum = 10
 }
+
+xml < page
+xml {
+  typeNum = 20
+}
