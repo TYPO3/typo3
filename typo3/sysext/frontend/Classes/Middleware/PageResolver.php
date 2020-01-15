@@ -127,6 +127,7 @@ class PageResolver implements MiddlewareInterface
 
             $this->controller->id = $pageArguments->getPageId();
             $this->controller->type = $pageArguments->getPageType() ?? $this->controller->type;
+            $this->controller->MP = $pageArguments->getArguments()['MP'] ?? $this->controller->MP;
             $request = $request->withAttribute('routing', $pageArguments);
             // stop in case arguments are dirty (=defined twice in route and GET query parameters)
             if ($pageArguments->areDirty()) {

@@ -706,15 +706,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'Markets',
-                                'link' => '/index.php?id=7110&MP=7100-1700',
+                                'link' => '/news/common/markets',
                             ],
                             [
                                 'title' => 'Products',
-                                'link' => '/index.php?id=7120&MP=7100-1700',
+                                'link' => '/news/common/products',
                             ],
                             [
                                 'title' => 'Partners',
-                                'link' => '/index.php?id=7130&MP=7100-1700',
+                                'link' => '/news/common/partners',
                             ],
                         ],
                     ],
@@ -747,15 +747,15 @@ class SlugLinkGeneratorTest extends AbstractTestCase
                             'children' => [
                                 [
                                     'title' => 'Markets',
-                                    'link' => '/index.php?id=7110&MP=7100-2700',
+                                    'link' => '/news/common/markets',
                                 ],
                                 [
                                     'title' => 'Products',
-                                    'link' => '/index.php?id=7120&MP=7100-2700',
+                                    'link' => '/news/common/products',
                                 ],
                                 [
                                     'title' => 'Partners',
-                                    'link' => '/index.php?id=7130&MP=7100-2700',
+                                    'link' => '/news/common/partners',
                                 ],
                             ],
                         ],
