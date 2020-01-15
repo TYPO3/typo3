@@ -212,7 +212,7 @@ class RedirectService implements LoggerAwareInterface
         }
         // Do this for files, folders, external URLs
         if (!empty($linkDetails['url'])) {
-            if ($matchedRedirect['is_regexp']) {
+            if ($matchedRedirect['is_regexp'] ?? false) {
                 $linkDetails = $this->replaceRegExpCaptureGroup($matchedRedirect, $uri, $linkDetails);
             }
 
