@@ -19,7 +19,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -61,11 +60,13 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         // might trigger code which relies on it. See: #45625
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->start();
+        // Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
+        $GLOBALS['BE_USER']->setWorkspace($GLOBALS['BE_USER']->user['workspace_id']);
+        // Register the backend user as aspect
+        $this->setBackendUserAspect($GLOBALS['BE_USER']);
         // @todo: once this logic is in this method, the redirect URL should be handled as response here
         $GLOBALS['BE_USER']->backendCheckLogin($this->isLoggedInBackendUserRequired($pathToRoute));
         $GLOBALS['LANG'] = LanguageService::createFromUserPreferences($GLOBALS['BE_USER']);
-        // Register the backend user as aspect
-        $this->setBackendUserAspect($GLOBALS['BE_USER']);
 
         $response = $handler->handle($request);
 

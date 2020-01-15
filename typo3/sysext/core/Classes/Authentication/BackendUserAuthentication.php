@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Core\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1442,7 +1443,8 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('hash');
         if (!($this->userTS = $cache->get($hash))) {
             $parseObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-            $parseObj->parse($userTS_text);
+            $conditionMatcher = GeneralUtility::makeInstance(ConditionMatcher::class);
+            $parseObj->parse($userTS_text, $conditionMatcher);
             $this->userTS = $parseObj->setup;
             $cache->set($hash, $this->userTS, ['UserTSconfig'], 0);
             // Ensure to update UC later
