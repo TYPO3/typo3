@@ -132,7 +132,9 @@ class FrontendLoginController extends AbstractPlugin
         $this->pi_initPIflexForm();
         $this->mergeflexFormValuesIntoConf();
         // Get storage PIDs:
-        if ($this->conf['storagePid']) {
+        if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
+            $this->spid = 0;
+        } elseif ($this->conf['storagePid']) {
             if ((int)$this->conf['recursive']) {
                 $this->spid = $this->pi_getPidList($this->conf['storagePid'], (int)$this->conf['recursive']);
             } else {
