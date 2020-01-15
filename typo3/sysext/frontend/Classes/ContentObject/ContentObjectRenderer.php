@@ -3951,6 +3951,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                             unset($contentAccum[$contentAccumP - 1]);
                             $contentAccumP -= 2;
                         }
+                        $currentTag = '';
                         $treated = true;
                     }
                     // other tags

@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -578,6 +579,36 @@ class ContentObjectRendererTest extends FunctionalTestCase
     }
 
     /**
+     * @test
+     */
+    public function libParseFuncProperlyKeepsTagsUnescaped()
+    {
+        $tsfe = $this->getMockBuilder(TypoScriptFrontendController::class)->disableOriginalConstructor()->getMock();
+        $subject = new ContentObjectRenderer($tsfe);
+        $subject->setLogger(new NullLogger());
+        $input = 'This is a simple inline text, no wrapping configured';
+        $result = $subject->parseFunc($input, $this->getLibParseFunc());
+        self::assertEquals($input, $result);
+
+        $input = '<p>A one liner paragraph</p>';
+        $result = $subject->parseFunc($input, $this->getLibParseFunc());
+        self::assertEquals($input, $result);
+
+        $input = 'A one liner paragraph
+And another one';
+        $result = $subject->parseFunc($input, $this->getLibParseFunc());
+        self::assertEquals($input, $result);
+
+        $input = '<p>A one liner paragraph</p><p>And another one and the spacing is kept</p>';
+        $result = $subject->parseFunc($input, $this->getLibParseFunc());
+        self::assertEquals($input, $result);
+
+        $input = '<p>text to a <a href="https://www.example.com">an external page</a>.</p>';
+        $result = $subject->parseFunc($input, $this->getLibParseFunc());
+        self::assertEquals($input, $result);
+    }
+
+    /**
      * @return array
      */
     protected function getLibParseFunc()
@@ -593,7 +624,7 @@ class ContentObjectRendererTest extends FunctionalTestCase
                     ],
                 ],
             ],
-            'tags' => [
+            'tags.' => [
                 'link' => 'TEXT',
                 'link.' => [
                     'current' => '1',
@@ -604,6 +635,15 @@ class ContentObjectRendererTest extends FunctionalTestCase
                     ],
                     'parseFunc.' => [
                         'constants' => '1',
+                    ],
+                ],
+                'a' => 'TEXT',
+                'a.' => [
+                    'current' => '1',
+                    'typolink.' => [
+                        'parameter.' => [
+                            'data' => 'parameters:href',
+                        ],
                     ],
                 ],
             ],
