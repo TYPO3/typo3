@@ -137,7 +137,9 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
         $this->pi_initPIflexForm();
         $this->mergeflexFormValuesIntoConf();
         // Get storage PIDs:
-        if ($this->conf['storagePid']) {
+        if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false) === false) {
+            $this->spid = 0;
+        } elseif ($this->conf['storagePid']) {
             if ((int)$this->conf['recursive']) {
                 $this->spid = $this->pi_getPidList($this->conf['storagePid'], (int)$this->conf['recursive']);
             } else {
@@ -234,28 +236,33 @@ class FrontendLoginController extends AbstractPlugin implements LoggerAwareInter
                 $userTable = $this->frontendController->fe_user->user_table;
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($userTable);
                 $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+                $constraints = [
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->eq(
+                            'email',
+                            $queryBuilder->createNamedParameter($this->piVars['forgot_email'], \PDO::PARAM_STR)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            'username',
+                            $queryBuilder->createNamedParameter($this->piVars['forgot_email'], \PDO::PARAM_STR)
+                        )
+                    )
+                ];
+
+                if ((bool)($GLOBALS['TYPO3_CONF_VARS']['FE']['checkFeUserPid'] ?? false)) {
+                    $constraints[] = $queryBuilder->expr()->in(
+                        'pid',
+                        $queryBuilder->createNamedParameter(
+                            GeneralUtility::intExplode(',', $this->spid),
+                            Connection::PARAM_INT_ARRAY
+                        )
+                    );
+                }
+
                 $row = $queryBuilder
                     ->select('*')
                     ->from($userTable)
-                    ->where(
-                        $queryBuilder->expr()->orX(
-                            $queryBuilder->expr()->eq(
-                                'email',
-                                $queryBuilder->createNamedParameter($this->piVars['forgot_email'], \PDO::PARAM_STR)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                'username',
-                                $queryBuilder->createNamedParameter($this->piVars['forgot_email'], \PDO::PARAM_STR)
-                            )
-                        ),
-                        $queryBuilder->expr()->in(
-                            'pid',
-                            $queryBuilder->createNamedParameter(
-                                GeneralUtility::intExplode(',', $this->spid),
-                                Connection::PARAM_INT_ARRAY
-                            )
-                        )
-                    )
+                    ->where(...$constraints)
                     ->execute()
                     ->fetch();
 
