@@ -153,6 +153,7 @@ class StaticRangeMapper implements StaticMappableAspectInterface, \Countable
     {
         if (!preg_match('#^\d+$#', $this->start)
             || !preg_match('#^\d+$#', $this->end)
+            || $this->start === '0' || $this->end === '0'
             || $this->start[0] !== '0' && $this->end[0] !== '0'
         ) {
             return $range;
