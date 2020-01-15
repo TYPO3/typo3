@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Resource\Service;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * File processing service
@@ -80,6 +81,13 @@ class FileProcessingService
         // which we wouldn't if we would change the configuration later, as configuration is part of the lookup.
         if ($taskType === Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW) {
             $configuration = Resource\Processing\LocalPreviewHelper::preProcessConfiguration($configuration);
+        }
+        // Ensure that the processing configuration which is part of the hash sum is properly cast, so
+        // unnecessary duplicate images are not produced, see #80942
+        foreach ($configuration as &$value) {
+            if (MathUtility::canBeInterpretedAsInteger($value)) {
+                $value = (int)$value;
+            }
         }
 
         /** @var Resource\ProcessedFileRepository $processedFileRepository */
