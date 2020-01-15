@@ -839,7 +839,7 @@ class DatabaseRecordList
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions()) {
+            if ($localCalcPerms & Permission::PAGE_EDIT && !empty($this->id) && $this->editLockPermissions() && $backendUser->checkLanguageAccess(0)) {
                 // Edit
                 $params = '&edit[pages][' . $this->pageRow['uid'] . ']=edit';
                 $onClick = BackendUtility::editOnClick($params, '', -1);
@@ -1999,7 +1999,7 @@ class DatabaseRecordList
             $localCalcPerms = $backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid']));
         }
         $permsEdit = $table === 'pages'
-                     && $backendUser->checkLanguageAccess(0)
+                     && $backendUser->checkLanguageAccess((int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']])
                      && $localCalcPerms & Permission::PAGE_EDIT
                      || $table !== 'pages'
                         && $localCalcPerms & Permission::CONTENT_EDIT
