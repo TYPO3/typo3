@@ -120,9 +120,16 @@ class StaticRouteResolver implements MiddlewareInterface
      */
     protected function getPageUri(ServerRequestInterface $request, Site $site, array $urlParams): string
     {
+        $parameters = [];
+        // Add additional parameters, if set via TypoLink
+        if (isset($urlParams['parameters'])) {
+            parse_str($urlParams['parameters'], $parameters);
+        }
+        $parameters['type'] = $urlParams['pagetype'] ?? 0;
+        $parameters['_language'] = $request->getAttribute('language', null);
         $uri = $site->getRouter()->generateUri(
             (int)$urlParams['pageuid'],
-            ['type' => $urlParams['pagetype'] ?? 0, '_language' => $request->getAttribute('language', null)],
+            $parameters,
             '',
             RouterInterface::ABSOLUTE_URL
         );
