@@ -16,13 +16,13 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Routing\Aspect;
  * The TYPO3 project - inspiring people to share!
  */
 
+use PHPUnit\Framework\TestCase;
 use TYPO3\CMS\Core\Routing\Aspect\StaticRangeMapper;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Test case
  */
-class StaticRangeMapperTest extends UnitTestCase
+class StaticRangeMapperTest extends TestCase
 {
     public function valueSettingsDataProvider(): array
     {
@@ -65,6 +65,19 @@ class StaticRangeMapperTest extends UnitTestCase
                     'D' => null,
                 ]
             ],
+            '0-11 (no zero prefix)' => [
+                '0',
+                '11',
+                [
+                    '00' => null,
+                    '01' => null,
+                    '0' => '0',
+                    '1' => '1',
+                    '10' => '10',
+                    '11' => '11',
+                    '12' => null,
+                ]
+            ],
             '2-11 (no zero prefix)' => [
                 '2',
                 '11',
@@ -77,6 +90,17 @@ class StaticRangeMapperTest extends UnitTestCase
                     '1' => null,
                     '2' => '2',
                     '3' => '3',
+                    '10' => '10',
+                    '11' => '11',
+                    '12' => null,
+                ]
+            ],
+            '00-11 (no zero prefix)' => [
+                '00',
+                '11',
+                [
+                    '00' => '00',
+                    '01' => '01',
                     '10' => '10',
                     '11' => '11',
                     '12' => null,
