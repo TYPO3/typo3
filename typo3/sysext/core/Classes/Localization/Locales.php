@@ -76,6 +76,7 @@ class Locales implements SingletonInterface
         'pt_BR' => 'Brazilian Portuguese',
         'ro' => 'Romanian',
         'ru' => 'Russian',
+        'rw' => 'Kinyarwanda',
         'sk' => 'Slovak',
         'sl' => 'Slovenian',
         'sq' => 'Albanian',
