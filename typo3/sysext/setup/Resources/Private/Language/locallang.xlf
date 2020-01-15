@@ -168,6 +168,9 @@
 			<trans-unit id="lang_ru" resname="lang_ru">
 				<source>Russian</source>
 			</trans-unit>
+			<trans-unit id="lang_rw" resname="lang_rw">
+				<source>Kinyarwanda</source>
+			</trans-unit>
 			<trans-unit id="lang_sk" resname="lang_sk">
 				<source>Slovak</source>
 			</trans-unit>
