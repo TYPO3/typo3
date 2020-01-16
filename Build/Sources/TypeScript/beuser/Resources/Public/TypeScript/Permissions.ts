@@ -12,6 +12,8 @@
  */
 
 import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 
 declare global {
   interface Document { editform: any; }
@@ -35,7 +37,7 @@ class Permissions {
   /**
    * Changes the value of the permissions in the form
    */
-  public setCheck = (checknames: string, varname: string): void => {
+  public setCheck(checknames: string, varname: string): void {
     if (document.editform[varname]) {
       let res = document.editform[varname].value;
       for (let a = 1; a <= 5; a++) {
@@ -47,7 +49,7 @@ class Permissions {
   /**
    * checks for a change of the permissions in the form
    */
-  public checkChange = (checknames: string, varname: string): void => {
+  public checkChange(checknames: string, varname: string): void {
     let res = 0;
     for (let a = 1; a <= 5; a++) {
       if (document.editform[checknames + '[' + a + ']'].checked) {
@@ -61,24 +63,19 @@ class Permissions {
   /**
    * Changes permissions by sending an AJAX request to the server
    */
-  public setPermissions = ($element: JQuery): void => {
+  public setPermissions($element: JQuery): void {
     let page = $element.data('page');
     let who = $element.data('who');
     let elementSelector = '#' + page + '_' + who;
 
-    $.ajax({
-      url: this.ajaxUrl,
-      type: 'post',
-      dataType: 'html',
-      cache: false,
-      data: {
-        'page': page,
-        'who': who,
-        'permissions': $element.data('permissions'),
-        'mode': $element.data('mode'),
-        'bits': $element.data('bits'),
-      },
-    }).done((data: any): void => {
+    (new AjaxRequest(this.ajaxUrl)).post({
+      page: page,
+      who: who,
+      permissions: $element.data('permissions'),
+      mode: $element.data('mode'),
+      bits: $element.data('bits'),
+    }).then(async (response: AjaxResponse): Promise<void> => {
+      const data = await response.resolve();
       // Replace content
       $(elementSelector).replaceWith(data);
       // Reinitialize tooltip
@@ -89,44 +86,32 @@ class Permissions {
   /**
    * changes the flag to lock the editing on a page by sending an AJAX request
    */
-  public toggleEditLock = ($element: JQuery): void => {
+  public toggleEditLock($element: JQuery): void {
     let page = $element.data('page');
-    $.ajax({
-      url: this.ajaxUrl,
-      type: 'post',
-      dataType: 'html',
-      cache: false,
-      data: {
-        'action': 'toggle_edit_lock',
-        'page': page,
-        'editLockState': $element.data('lockstate'),
-      },
-    }).done((data: any): void => {
+    (new AjaxRequest(this.ajaxUrl)).post({
+      action: 'toggle_edit_lock',
+      page: page,
+      editLockState: $element.data('lockstate'),
+    }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#el_' + page).replaceWith(data);
+      $('#el_' + page).replaceWith(await response.resolve());
     });
   }
 
   /**
    * Owner-related: Set the new owner of a page by executing an ajax call
    */
-  public changeOwner = ($element: JQuery): void => {
+  public changeOwner($element: JQuery): void {
     let page = $element.data('page');
 
-    $.ajax({
-      url: this.ajaxUrl,
-      type: 'post',
-      dataType: 'html',
-      cache: false,
-      data: {
-        'action': 'change_owner',
-        'page': page,
-        'ownerUid': $element.data('owner'),
-        'newOwnerUid': $('#new_page_owner').val(),
-      },
-    }).done((data: any): void => {
+    (new AjaxRequest(this.ajaxUrl)).post({
+      action: 'change_owner',
+      page: page,
+      ownerUid: $element.data('owner'),
+      newOwnerUid: $('#new_page_owner').val(),
+    }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#o_' + page).replaceWith(data);
+      $('#o_' + page).replaceWith(await response.resolve());
     });
   }
 
@@ -134,30 +119,24 @@ class Permissions {
    * Owner-related: load the selector for selecting
    * the owner of a page by executing an ajax call
    */
-  public showChangeOwnerSelector = ($element: JQuery): void => {
+  public showChangeOwnerSelector($element: JQuery): void {
     let page = $element.data('page');
 
-    $.ajax({
-      url: this.ajaxUrl,
-      type: 'post',
-      dataType: 'html',
-      cache: false,
-      data: {
-        'action': 'show_change_owner_selector',
-        'page': page,
-        'ownerUid': $element.data('owner'),
-        'username': $element.data('username'),
-      },
-    }).done((data: any): void => {
+    (new AjaxRequest(this.ajaxUrl)).post({
+      action: 'show_change_owner_selector',
+      page: page,
+      ownerUid: $element.data('owner'),
+      username: $element.data('username'),
+    }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#o_' + page).replaceWith(data);
+      $('#o_' + page).replaceWith(await response.resolve());
     });
   }
 
   /**
    * Owner-related: Update the HTML view and show the original owner
    */
-  public restoreOwner = ($element: JQuery): void => {
+  public restoreOwner($element: JQuery): void {
     let page = $element.data('page');
     let username = $element.data('username');
     let usernameHtml = username;
@@ -189,53 +168,41 @@ class Permissions {
   /**
    * Group-related: Set the new group by executing an ajax call
    */
-  public changeGroup = ($element: JQuery): void => {
+  public changeGroup($element: JQuery): void {
     let page = $element.data('page');
 
-    $.ajax({
-      url: this.ajaxUrl,
-      type: 'post',
-      dataType: 'html',
-      cache: false,
-      data: {
-        'action': 'change_group',
-        'page': page,
-        'groupUid': $element.data('groupId'),
-        'newGroupUid': $('#new_page_group').val(),
-      },
-    }).done((data: any): void => {
+    (new AjaxRequest(this.ajaxUrl)).post({
+      action: 'change_group',
+      page: page,
+      groupUid: $element.data('groupId'),
+      newGroupUid: $('#new_page_group').val(),
+    }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#g_' + page).replaceWith(data);
+      $('#g_' + page).replaceWith(await response.resolve());
     });
   }
 
   /**
    * Group-related: Load the selector by executing an ajax call
    */
-  public showChangeGroupSelector = ($element: JQuery): void => {
+  public showChangeGroupSelector($element: JQuery): void {
     let page = $element.data('page');
 
-    $.ajax({
-      url: this.ajaxUrl,
-      type: 'post',
-      dataType: 'html',
-      cache: false,
-      data: {
-        'action': 'show_change_group_selector',
-        'page': page,
-        'groupUid': $element.data('groupId'),
-        'groupname': $element.data('groupname'),
-      },
-    }).done((data: any): void => {
+    (new AjaxRequest(this.ajaxUrl)).post({
+      action: 'show_change_group_selector',
+      page: page,
+      groupUid: $element.data('groupId'),
+      groupname: $element.data('groupname'),
+    }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
-      $('#g_' + page).replaceWith(data);
+      $('#g_' + page).replaceWith(await response.resolve());
     });
   }
 
   /**
    * Group-related: Update the HTML view and show the original group
    */
-  public restoreGroup = ($element: JQuery): void => {
+  public restoreGroup($element: JQuery): void {
     let page = $element.data('page');
     let groupname = $element.data('groupname');
     let groupnameHtml = groupname;
@@ -267,7 +234,7 @@ class Permissions {
    * initializes events using deferred bound to document
    * so AJAX reloads are no problem
    */
-  public initializeEvents = (): void => {
+  public initializeEvents(): void {
     // Click event to change permissions
     $(this.options.containerSelector).on('click', '.change-permission', (evt: JQueryEventObject): void => {
       evt.preventDefault();
