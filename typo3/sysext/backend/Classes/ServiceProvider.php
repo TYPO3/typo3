@@ -96,9 +96,8 @@ class ServiceProvider extends AbstractServiceProvider
         $cache = $container->get('cache.core');
 
         $cacheIdentifier = 'BackendRoutes_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath() . 'BackendRoutes');
-        if ($cache->has($cacheIdentifier)) {
-            $routesFromPackages = $cache->require($cacheIdentifier);
-        } else {
+        $routesFromPackages = $cache->require($cacheIdentifier);
+        if ($routesFromPackages === false) {
             $routesFromPackages = $container->get('backend.routes')->getArrayCopy();
             $cache->set($cacheIdentifier, 'return ' . var_export($routesFromPackages, true) . ';');
         }

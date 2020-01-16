@@ -24,9 +24,10 @@ class ProviderConfigurationLoader
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
 
-        if ($cache->has($this->cacheIdentifier)) {
-            /** @noinspection PhpUndefinedMethodInspection the method require() will be added to the interface in TYPO3 v10.0 */
-            return $cache->require($this->cacheIdentifier);
+        /** @noinspection PhpUndefinedMethodInspection the method require() will be added to the interface in TYPO3 v10.0 */
+        $providers = $cache->require($this->cacheIdentifier);
+        if ($providers !== false) {
+            return $providers;
         }
 
         $packages = $packageManager->getActivePackages();

@@ -1440,9 +1440,8 @@ tt_content.' . $key . $suffix . ' {
         if ($allowCaching) {
             $codeCache = $codeCache ?? self::getCacheManager()->getCache('core');
             $cacheIdentifier = self::getExtLocalconfCacheIdentifier();
-            if ($codeCache->has($cacheIdentifier)) {
-                $codeCache->require($cacheIdentifier);
-            } else {
+            $hasCache = $codeCache->require($cacheIdentifier) !== false;
+            if (!$hasCache) {
                 self::loadSingleExtLocalconfFiles();
                 self::createExtLocalconfCacheEntry($codeCache);
             }
@@ -1666,9 +1665,8 @@ tt_content.' . $key . $suffix . ' {
             $cacheIdentifier = self::getExtTablesCacheIdentifier();
             /** @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $codeCache */
             $codeCache = self::getCacheManager()->getCache('core');
-            if ($codeCache->has($cacheIdentifier)) {
-                $codeCache->require($cacheIdentifier);
-            } else {
+            $hasCache = $codeCache->require($cacheIdentifier) !== false;
+            if (!$hasCache) {
                 self::loadSingleExtTablesFiles();
                 self::createExtTablesCacheEntry();
             }

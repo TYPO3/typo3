@@ -667,9 +667,8 @@ class ConfigurationService implements SingletonInterface
         if (isset($this->firstLevelCache[$cacheKey])) {
             return $this->firstLevelCache[$cacheKey];
         }
-        return $this->getCacheFrontend()->has('form_' . $cacheKey)
-            ? $this->getCacheFrontend()->get('form_' . $cacheKey)
-            : null;
+        $cacheValue = $this->getCacheFrontend()->get('form_' . $cacheKey);
+        return $cacheValue === false ? null : $cacheValue;
     }
 
     /**

@@ -64,8 +64,9 @@ final class RequestHandlersConfigurationFactory implements SingletonInterface
     {
         $cacheEntryIdentifier = 'RequestHandlers_' . sha1((string)(new Typo3Version()) . Environment::getProjectPath());
 
-        if ($this->cacheFrontend->has($cacheEntryIdentifier)) {
-            return new RequestHandlersConfiguration($this->cacheFrontend->get($cacheEntryIdentifier));
+        $requestHandlersCache = $this->cacheFrontend->get($cacheEntryIdentifier);
+        if ($requestHandlersCache) {
+            return new RequestHandlersConfiguration($requestHandlersCache);
         }
 
         $classes = [];

@@ -111,17 +111,21 @@ class NullBackend extends AbstractBackend implements PhpCapableBackendInterface,
      * Does nothing
      *
      * @param string $identifier An identifier which describes the cache entry to load
+     * @return bool
      */
     public function requireOnce($identifier)
     {
+        return false;
     }
 
     /**
      * Does nothing
      *
      * @param string $identifier An identifier which describes the cache entry to load
+     * @return bool
      */
     public function require(string $identifier)
     {
+        return false;
     }
 }

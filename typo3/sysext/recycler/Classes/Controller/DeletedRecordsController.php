@@ -102,9 +102,8 @@ class DeletedRecordsController
     protected function getPageTitle($pageId)
     {
         $cacheId = 'recycler-pagetitle-' . $pageId;
-        if ($this->runtimeCache->has($cacheId)) {
-            $pageTitle = $this->runtimeCache->get($cacheId);
-        } else {
+        $pageTitle = $this->runtimeCache->get($cacheId);
+        if ($pageTitle === false) {
             if ($pageId === 0) {
                 $pageTitle = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
             } else {
@@ -128,9 +127,8 @@ class DeletedRecordsController
             return '';
         }
         $cacheId = 'recycler-user-' . $userId;
-        if ($this->runtimeCache->has($cacheId)) {
-            $username = $this->runtimeCache->get($cacheId);
-        } else {
+        $username = $this->runtimeCache->get($cacheId);
+        if ($username === false) {
             $backendUser = BackendUtility::getRecord('be_users', $userId, 'username', '', false);
             if ($backendUser === null) {
                 $username = sprintf(

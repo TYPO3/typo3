@@ -19,7 +19,6 @@ use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\Backend\NullBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface as CacheFrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -2864,8 +2863,8 @@ class ContentObjectRendererTest extends UnitTestCase
         $typoScriptFrontendControllerMockObject->tmpl = $templateServiceObjectMock;
         $GLOBALS['TSFE'] = $typoScriptFrontendControllerMockObject;
 
-        $this->cacheManager->getCache('runtime')->willReturn(new NullBackend(''));
-        $this->cacheManager->getCache('core')->willReturn(new NullFrontend(''));
+        $this->cacheManager->getCache('runtime')->willReturn(new NullFrontend('dummy'));
+        $this->cacheManager->getCache('core')->willReturn(new NullFrontend('dummy'));
 
         $this->subject->_set('typoScriptFrontendController', $typoScriptFrontendControllerMockObject);
 

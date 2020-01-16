@@ -216,11 +216,12 @@ class ReferenceIndex implements LoggerAwareInterface
 
         // Fetch tableRelationFields and save them in cache if not there yet
         $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-        if (!$this->useRuntimeCache || !$this->runtimeCache->has($cacheId)) {
+        $tableRelationFields = $this->useRuntimeCache ? $this->runtimeCache->get($cacheId) : false;
+        if ($tableRelationFields === false) {
             $tableRelationFields = $this->fetchTableRelationFields($tableName);
-            $this->runtimeCache->set($cacheId, $tableRelationFields);
-        } else {
-            $tableRelationFields = $this->runtimeCache->get($cacheId);
+            if ($this->useRuntimeCache) {
+                $this->runtimeCache->set($cacheId, $tableRelationFields);
+            }
         }
 
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -1300,13 +1301,12 @@ class ReferenceIndex implements LoggerAwareInterface
 
             // Fetch fields of the table which might contain relations
             $cacheId = static::$cachePrefixTableRelationFields . $tableName;
-            if (!$this->useRuntimeCache || !$this->runtimeCache->has($cacheId)) {
+            $tableRelationFields = $this->useRuntimeCache ? $this->runtimeCache->get($cacheId) : false;
+            if ($tableRelationFields === false) {
                 $tableRelationFields = $this->fetchTableRelationFields($tableName);
                 if ($this->useRuntimeCache) {
                     $this->runtimeCache->set($cacheId, $tableRelationFields);
                 }
-            } else {
-                $tableRelationFields = $this->runtimeCache->get($cacheId);
             }
 
             // Return if there are no fields which could contain relations

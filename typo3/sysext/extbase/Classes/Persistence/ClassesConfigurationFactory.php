@@ -64,8 +64,9 @@ final class ClassesConfigurationFactory implements SingletonInterface
     {
         $cacheEntryIdentifier = 'PersistenceClasses_' . sha1((new Typo3Version())->getVersion() . Environment::getProjectPath());
 
-        if ($this->cacheFrontend->has($cacheEntryIdentifier)) {
-            return new ClassesConfiguration($this->cacheFrontend->get($cacheEntryIdentifier));
+        $classesConfigurationCache = $this->cacheFrontend->get($cacheEntryIdentifier);
+        if ($classesConfigurationCache !== false) {
+            return new ClassesConfiguration($classesConfigurationCache);
         }
 
         $classes = [];

@@ -73,9 +73,8 @@ class ContainerBuilder
         $cacheIdentifier = $this->getCacheIdentifier();
         $containerClassName = $cacheIdentifier;
 
-        if ($cache->has($cacheIdentifier)) {
-            $cache->requireOnce($cacheIdentifier);
-        } else {
+        $hasCache = $cache->requireOnce($cacheIdentifier) !== false;
+        if (!$hasCache) {
             $containerBuilder = $this->buildContainer($packageManager, $serviceProviderRegistry);
             $code = $this->dumpContainer($containerBuilder, $cache);
 
@@ -85,9 +84,8 @@ class ContainerBuilder
             // Once we remove support for singletons configured in ext_localconf.php
             // and $GLOBALS['TYPO_CONF_VARS']['SYS']['Objects'], we can remove this,
             // and use `$container = $containerBuilder` directly
-            if ($cache->has($cacheIdentifier)) {
-                $cache->requireOnce($cacheIdentifier);
-            } else {
+            $hasCache = $cache->requireOnce($cacheIdentifier) !== false;
+            if (!$hasCache) {
                 // $cacheIdentifier may be unavailable if the 'core' cache iis configured to
                 // use the NullBackend
                 eval($code);

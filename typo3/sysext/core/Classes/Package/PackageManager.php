@@ -169,7 +169,7 @@ class PackageManager implements SingletonInterface
     protected function saveToPackageCache()
     {
         $cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-        if ($cacheEntryIdentifier !== null && !$this->coreCache->has($cacheEntryIdentifier)) {
+        if ($cacheEntryIdentifier !== null) {
             // Build cache file
             $packageCache = [
                 'packageStatesConfiguration' => $this->packageStatesConfiguration,
@@ -192,7 +192,7 @@ class PackageManager implements SingletonInterface
     protected function loadPackageManagerStatesFromCache()
     {
         $cacheEntryIdentifier = $this->getCacheEntryIdentifier();
-        if ($cacheEntryIdentifier === null || !$this->coreCache->has($cacheEntryIdentifier) || !($packageCache = $this->coreCache->require($cacheEntryIdentifier))) {
+        if ($cacheEntryIdentifier === null || ($packageCache = $this->coreCache->require($cacheEntryIdentifier)) === false) {
             throw new Exception\PackageManagerCacheUnavailableException('The package state cache could not be loaded.', 1393883342);
         }
         $this->packageStatesConfiguration = $packageCache['packageStatesConfiguration'];

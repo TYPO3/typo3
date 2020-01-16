@@ -685,8 +685,9 @@ class BackendUtility
         $id = (int)$id;
 
         $cache = self::getRuntimeCache();
-        if ($cache->has('pagesTsConfigIdToHash' . $id)) {
-            return $cache->get('pagesTsConfigHashToContent' . $cache->get('pagesTsConfigIdToHash' . $id));
+        $pagesTsConfigIdToHash = $cache->get('pagesTsConfigIdToHash' . $id);
+        if ($pagesTsConfigIdToHash !== false) {
+            return $cache->get('pagesTsConfigHashToContent' . $pagesTsConfigIdToHash);
         }
 
         $rootLine = self::BEgetRootLine($id, '', true);

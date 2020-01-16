@@ -3741,9 +3741,8 @@ class DatabaseRecordList
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $hash = 'webmounts_list' . md5($id . '-' . $depth . '-' . $perms_clause);
-        if ($runtimeCache->has($hash)) {
-            $idList = $runtimeCache->get($hash);
-        } else {
+        $idList = $runtimeCache->get($hash);
+        if ($idList === false) {
             $backendUser = $this->getBackendUserAuthentication();
             /** @var PageTreeView $tree */
             $tree = GeneralUtility::makeInstance(PageTreeView::class);

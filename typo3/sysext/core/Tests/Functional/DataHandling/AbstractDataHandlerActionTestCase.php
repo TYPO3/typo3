@@ -171,8 +171,8 @@ abstract class AbstractDataHandlerActionTestCase extends FunctionalTestCase
         GeneralUtility::writeFile($fileName, $yamlFileContents);
         // Ensure that no other site configuration was cached before
         $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('core');
-        if ($cache->has('site-configuration')) {
-            $cache->remove('site-configuration');
+        if ($cache->has('sites-configuration')) {
+            $cache->remove('sites-configuration');
         }
     }
 
