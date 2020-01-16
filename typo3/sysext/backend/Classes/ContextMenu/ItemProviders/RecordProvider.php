@@ -293,6 +293,9 @@ class RecordProvider extends AbstractProvider
         if ($itemName === 'view') {
             $attributes += $this->getViewAdditionalAttributes();
         }
+        if ($itemName === 'enable' || $itemName === 'disable') {
+            $attributes += $this->getEnableDisableAdditionalAttributes();
+        }
         if ($itemName === 'newWizard' && $this->table === 'tt_content') {
             $moduleName = BackendUtility::getPagesTSconfig($this->record['pid'])['mod.']['newContentElementWizard.']['override']
                 ?? 'new_content_element_wizard';
@@ -338,6 +341,18 @@ class RecordProvider extends AbstractProvider
             ];
         }
         return $attributes;
+    }
+
+    /**
+     * Additional attributes for the hide & unhide items
+     *
+     * @return array
+     */
+    protected function getEnableDisableAdditionalAttributes(): array
+    {
+        return [
+            'data-disable-field' => $GLOBALS['TCA'][$this->table]['ctrl']['enablecolumns']['disabled'] ?? ''
+        ];
     }
 
     /**

@@ -486,6 +486,9 @@ class PageProvider extends RecordProvider
         if ($itemName === 'view') {
             $attributes += $this->getViewAdditionalAttributes();
         }
+        if ($itemName === 'enable' || $itemName === 'disable') {
+            $attributes += $this->getEnableDisableAdditionalAttributes();
+        }
         if ($itemName === 'delete') {
             $attributes += $this->getDeleteAdditionalAttributes();
         }
