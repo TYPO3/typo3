@@ -153,9 +153,10 @@ class ContextMenuActions {
    * @param {number} uid
    */
   public static disableRecord(table: string, uid: number): void {
+    const disableFieldName = $(this).data('disable-field') || 'hidden';
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
-      + '&data[' + table + '][' + uid + '][hidden]=1'
+      + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=1'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
       Viewport.NavigationContainer.PageTree.refreshTree();
@@ -167,9 +168,10 @@ class ContextMenuActions {
    * @param {number} uid
    */
   public static enableRecord(table: string, uid: number): void {
+    const disableFieldName = $(this).data('disable-field') || 'hidden';
     Viewport.ContentContainer.setUrl(
       top.TYPO3.settings.RecordCommit.moduleUrl
-      + '&data[' + table + '][' + uid + '][hidden]=0'
+      + '&data[' + table + '][' + uid + '][' + disableFieldName + ']=0'
       + '&redirect=' + ContextMenuActions.getReturnUrl(),
     ).done((): void => {
       Viewport.NavigationContainer.PageTree.refreshTree();
