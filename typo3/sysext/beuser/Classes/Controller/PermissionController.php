@@ -18,7 +18,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -313,6 +313,8 @@ class PermissionController extends ActionController
      */
     protected function updateAction(array $data, array $mirror)
     {
+        $dataHandlerInput = [];
+        // Prepare the input data for data handler
         if (!empty($data['pages'])) {
             foreach ($data['pages'] as $pageUid => $properties) {
                 // if the owner and group field shouldn't be touched, unset the option
@@ -322,25 +324,25 @@ class PermissionController extends ActionController
                 if ((int)$properties['perms_groupid'] === -1) {
                     unset($properties['perms_groupid']);
                 }
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('pages');
-                $connection->update(
-                    'pages',
-                    $properties,
-                    ['uid' => (int)$pageUid]
-                );
-
+                $dataHandlerInput[$pageUid] = $properties;
                 if (!empty($mirror['pages'][$pageUid])) {
-                    $mirrorPages = GeneralUtility::trimExplode(',', $mirror['pages'][$pageUid]);
+                    $mirrorPages = GeneralUtility::intExplode(',', $mirror['pages'][$pageUid]);
                     foreach ($mirrorPages as $mirrorPageUid) {
-                        $connection->update(
-                            'pages',
-                            $properties,
-                            ['uid' => (int)$mirrorPageUid]
-                        );
+                        $dataHandlerInput[$mirrorPageUid] = $properties;
                     }
                 }
             }
         }
+
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start(
+            [
+                'pages' => $dataHandlerInput
+            ],
+            []
+        );
+        $dataHandler->process_datamap();
+
         $this->redirectToUri($this->returnUrl);
     }
 
