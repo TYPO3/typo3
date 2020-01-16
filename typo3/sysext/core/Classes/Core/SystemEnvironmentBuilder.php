@@ -83,7 +83,6 @@ class SystemEnvironmentBuilder
 
         self::initializeGlobalVariables();
         self::initializeGlobalTimeTrackingVariables();
-        self::initializeBasicErrorReporting();
         self::initializeEnvironment($requestType, $scriptPath, $rootPath);
     }
 
@@ -262,20 +261,6 @@ class SystemEnvironmentBuilder
             $scriptPath,
             self::isRunningOnWindows() ? 'WINDOWS' : 'UNIX'
         );
-    }
-
-    /**
-     * Initialize basic error reporting.
-     *
-     * There are a lot of extensions that have no strict / notice / deprecated free
-     * ext_localconf or ext_tables. Since the final error reporting must be set up
-     * after those extension files are read, a default configuration is needed to
-     * suppress error reporting meanwhile during further bootstrap.
-     */
-    protected static function initializeBasicErrorReporting()
-    {
-        // Core should be notice free at least until this point ...
-        error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
     }
 
     /**

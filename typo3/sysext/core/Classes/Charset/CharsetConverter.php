@@ -451,6 +451,10 @@ class CharsetConverter implements SingletonInterface
                             } elseif ($detectedType === 'whitespaced') {
                                 $regA = [];
                                 preg_match('/[[:space:]]*0x([[:xdigit:]]*)[[:space:]]+0x([[:xdigit:]]*)[[:space:]]+/', $value, $regA);
+                                if (empty($regA)) {
+                                    // No match => skip this item
+                                    continue;
+                                }
                                 $hexbyte = $regA[1];
                                 $utf8 = 'U+' . $regA[2];
                             }

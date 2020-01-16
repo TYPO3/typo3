@@ -45,7 +45,7 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         $fileName = StringUtility::getUniqueId('filename');
         $data = [];
-        $phpExtensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'php,php3,php4,php5,php6,phpsh,phtml,pht', true);
+        $phpExtensions = ['php', 'php3', 'php4', 'php5', 'php7', 'phpsh', 'phtml', 'pht'];
         foreach ($phpExtensions as $extension) {
             $data[] = [$fileName . '.' . $extension];
             $data[] = [$fileName . '.' . $extension . '.txt'];
@@ -162,41 +162,5 @@ class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         $this->subject->_call('initializeGlobalTimeTrackingVariables');
         self::assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeBasicErrorReportingExcludesStrict()
-    {
-        $backupReporting = error_reporting();
-        $this->subject->_call('initializeBasicErrorReporting');
-        $actualReporting = error_reporting();
-        error_reporting($backupReporting);
-        self::assertEquals(0, $actualReporting & E_STRICT);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeBasicErrorReportingExcludesNotice()
-    {
-        $backupReporting = error_reporting();
-        $this->subject->_call('initializeBasicErrorReporting');
-        $actualReporting = error_reporting();
-        error_reporting($backupReporting);
-        self::assertEquals(0, $actualReporting & E_NOTICE);
-    }
-
-    /**
-     * @test
-     */
-    public function initializeBasicErrorReportingExcludesDeprecated()
-    {
-        $backupReporting = error_reporting();
-        $this->subject->_call('initializeBasicErrorReporting');
-        $actualReporting = error_reporting();
-        error_reporting($backupReporting);
-        self::assertEquals(0, $actualReporting & E_DEPRECATED);
     }
 }
