@@ -176,9 +176,14 @@ and per-type basis:
   content elements with Content Type “Bullet list” (CType=bullets).
 
 Of course, any other specific option set via Yaml can be overridden via
-Page TSconfig as well.
+Page TSconfig as well:
 
-.. todo: real world example usages
+.. code-block:: typoscript
+
+   # Allow iframe tag with all attributes and all styles in bodytext field of content elements (Requires additional processing configuration)
+   RTE.config.tt_content.bodytext.editor.config.extraAllowedContent = iframe[*]{*}
+   # Restrict format_tags to h2 in bodytext field of content elements
+   RTE.config.tt_content.bodytext.editor.config.format_tags = h2
 
 For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
 
