@@ -5400,6 +5400,8 @@ class DataHandler implements LoggerAwareInterface
         // make sure the isImporting flag is transferred, so all hooks know if
         // the current process is an import process
         $copyTCE->isImporting = $this->isImporting;
+        $copyTCE->bypassAccessCheckForRecords = $this->bypassAccessCheckForRecords;
+        $copyTCE->bypassWorkspaceRestrictions = $this->bypassWorkspaceRestrictions;
         return $copyTCE;
     }
 
