@@ -1015,7 +1015,7 @@ class FileList
                         $theData[$field] = $this->makeClip($fileObject);
                         break;
                     case '_LOCALIZATION_':
-                        if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata') && !is_null($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'])) {
+                        if (!empty($systemLanguages) && $fileObject->isIndexed() && $fileObject->checkActionPermission('editMeta') && $this->getBackendUser()->check('tables_modify', 'sys_file_metadata') && !empty($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? null)) {
                             $metaDataRecord = $fileObject->getMetaData()->get();
                             $translations = $this->getTranslationsForMetaData($metaDataRecord);
                             $languageCode = '';
