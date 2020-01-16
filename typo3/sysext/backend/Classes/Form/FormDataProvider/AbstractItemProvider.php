@@ -988,7 +988,7 @@ abstract class AbstractItemProvider
             $orderByClauses = QueryHelper::parseOrderBy($GLOBALS['TCA'][$foreignTableName]['ctrl']['default_sortby']);
             foreach ($orderByClauses as $orderByClause) {
                 if (!empty($orderByClause[0])) {
-                    $queryBuilder->addOrderBy($orderByClause[0], $orderByClause[1]);
+                    $queryBuilder->addOrderBy($foreignTableName . '.' . $orderByClause[0], $orderByClause[1]);
                 }
             }
         }
