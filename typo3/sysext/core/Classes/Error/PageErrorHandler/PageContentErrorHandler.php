@@ -105,12 +105,22 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
             return $urlParams['url'];
         }
 
-        $site = $request->getAttribute('site', null);
+        // Get the site related to the configured error page
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$urlParams['pageuid']);
+        // Fall back to current request for the site
         if (!$site instanceof Site) {
-            $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$urlParams['pageuid']);
+            $site = $request->getAttribute('site', null);
         }
-        $language = $request->getAttribute('language', null);
-        if (!$language instanceof SiteLanguage || !$language->isEnabled()) {
+        /** @var SiteLanguage $requestLanguage */
+        $requestLanguage = $request->getAttribute('language', null);
+        // Try to get the current request language from the site that was found above
+        if ($requestLanguage instanceof SiteLanguage) {
+            try {
+                $language = $site->getLanguageById($requestLanguage->getLanguageId());
+            } catch (\InvalidArgumentException $e) {
+                $language = $site->getDefaultLanguage();
+            }
+        } else {
             $language = $site->getDefaultLanguage();
         }
 
