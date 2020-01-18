@@ -87,6 +87,11 @@ class IpAnonymizationTask extends AbstractTask
         if ($deleteTimestamp === false) {
             throw new \RuntimeException(self::class . ' misconfiguration: number of days could not be calculated for table ' . $table, 1524526354);
         }
+        if ($this->mask === 2) {
+            $notLikeMaskPattern = '%.0.0';
+        } else {
+            $notLikeMaskPattern = '%.0';
+        }
         try {
             $result = $queryBuilder
                 ->select('uid', $configuration['ipField'])
@@ -102,7 +107,7 @@ class IpAnonymizationTask extends AbstractTask
                     $queryBuilder->expr()->isNotNull($configuration['ipField']),
                     $queryBuilder->expr()->notLike(
                         $configuration['ipField'],
-                        $queryBuilder->createNamedParameter('%.0.0', \PDO::PARAM_STR)
+                        $queryBuilder->createNamedParameter($notLikeMaskPattern, \PDO::PARAM_STR)
                     ),
                     $queryBuilder->expr()->notLike(
                         $configuration['ipField'],
