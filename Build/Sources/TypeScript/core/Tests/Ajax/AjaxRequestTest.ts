@@ -32,7 +32,7 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
     expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'GET'}));
   });
 
-  it('sends POST request', (): void => {
+  it('sends POST request with object as payload', (): void => {
     const payload = {foo: 'bar', bar: 'baz', nested: {works: 'yes'}};
     const expected = new FormData();
     expected.set('foo', 'bar');
@@ -42,14 +42,37 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
     expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'POST', body: expected}));
   });
 
-  it('sends PUT request', (): void => {
-    (new AjaxRequest('https://example.com')).put({});
-    expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'PUT'}));
+  it('sends POST request with string as payload', (): void => {
+    const payload = JSON.stringify({foo: 'bar', bar: 'baz', nested: {works: 'yes'}});
+    (new AjaxRequest('https://example.com')).post(payload);
+    expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'POST', body: payload}));
+  });
+
+  it('sends PUT request with object as payload', (): void => {
+    const payload = {foo: 'bar', bar: 'baz', nested: {works: 'yes'}};
+    const expected = new FormData();
+    expected.set('foo', 'bar');
+    expected.set('bar', 'baz');
+    expected.set('nested[works]', 'yes');
+    (new AjaxRequest('https://example.com')).put(payload);
+    expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'PUT', body: expected}));
+  });
+
+  it('sends PUT request with string as payload', (): void => {
+    const payload = JSON.stringify({foo: 'bar', bar: 'baz', nested: {works: 'yes'}});
+    (new AjaxRequest('https://example.com')).put(payload);
+    expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'PUT', body: payload}));
   });
 
   it('sends DELETE request', (): void => {
     (new AjaxRequest('https://example.com')).delete();
     expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'DELETE'}));
+  });
+
+  it('sends DELETE request with string as payload', (): void => {
+    const payload = JSON.stringify({foo: 'bar', bar: 'baz', nested: {works: 'yes'}});
+    (new AjaxRequest('https://example.com')).delete(payload);
+    expect(window.fetch).toHaveBeenCalledWith('https://example.com/', jasmine.objectContaining({method: 'DELETE', body: payload}));
   });
 
   describe('send GET requests', (): void => {

@@ -77,7 +77,7 @@ class AjaxRequest {
         return AjaxRequest.createQueryString(val, pKey);
       }
 
-      return `${pKey}=${encodeURIComponent(`${val}`)}`
+      return `${pKey}=${encodeURIComponent(val)}`
     }).join('&')
   }
 
@@ -118,13 +118,13 @@ class AjaxRequest {
   /**
    * Executes a (by default uncached) POST request
    *
-   * @param {GenericKeyValue} data
+   * @param {string | GenericKeyValue} data
    * @param {RequestInit} init
    * @return {Promise<Response>}
    */
-  public async post(data: GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
+  public async post(data: string | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: AjaxRequest.transformToFormData(data),
+      body: typeof data === 'string' ? data : AjaxRequest.transformToFormData(data),
       cache: 'no-cache',
       method: 'POST',
     };
@@ -136,13 +136,13 @@ class AjaxRequest {
   /**
    * Executes a (by default uncached) PUT request
    *
-   * @param {GenericKeyValue} data
+   * @param {string | GenericKeyValue} data
    * @param {RequestInit} init
    * @return {Promise<Response>}
    */
-  public async put(data: GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
+  public async put(data: string | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: AjaxRequest.transformToFormData(data),
+      body: typeof data === 'string' ? data : AjaxRequest.transformToFormData(data),
       cache: 'no-cache',
       method: 'PUT',
     };
@@ -154,11 +154,11 @@ class AjaxRequest {
   /**
    * Executes a regular DELETE request
    *
-   * @param {GenericKeyValue} data
+   * @param {string | GenericKeyValue} data
    * @param {RequestInit} init
    * @return {Promise<Response>}
    */
-  public async delete(data: GenericKeyValue = {}, init: RequestInit = {}): Promise<AjaxResponse> {
+  public async delete(data: string | GenericKeyValue = {}, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
       cache: 'no-cache',
       method: 'DELETE',
@@ -166,6 +166,8 @@ class AjaxRequest {
 
     if (typeof data === 'object' && Object.keys(data).length > 0) {
       localDefaultOptions.body = AjaxRequest.transformToFormData(data);
+    } else if (typeof data === 'string') {
+      localDefaultOptions.body = data;
     }
 
     const response = await this.send({...localDefaultOptions, ...init});
