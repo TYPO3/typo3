@@ -661,6 +661,11 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 'value',
                 'test',
             ],
+            'namespace[value] ? x^30' => [
+                'namespace',
+                'value',
+                str_repeat('x', 30),
+            ],
             'namespace[value] ? x^31' => [
                 'namespace',
                 'value',
@@ -676,10 +681,10 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 'value',
                 str_repeat('x', 33),
             ],
-            'namespace[value] ? 1^32 (type-cast)' => [
+            'namespace[value] ? 1^31 (type-cast)' => [
                 'namespace',
                 'value',
-                str_repeat('1', 32),
+                str_repeat('1', 31),
             ],
             // md5('namespace__@otne3') is 60360798585102000952995164024754 (numeric)
             // md5('ximaz') is 61529519452809720693702583126814 (numeric)
@@ -710,6 +715,11 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 'namespace/other',
             ],
             // namespace[any/value]
+            'namespace[any/value] ? x^30' => [
+                'namespace',
+                'any/value',
+                str_repeat('x', 30),
+            ],
             'namespace[any/value] ? x^31' => [
                 'namespace',
                 'any/value',
@@ -742,6 +752,11 @@ class EnhancerSiteRequestTest extends AbstractTestCase
                 'namespace/any/other',
             ],
             // namespace[@any/value]
+            'namespace[@any/value] ? x^30' => [
+                'namespace',
+                '@any/value',
+                str_repeat('x', 30),
+            ],
             'namespace[@any/value] ? x^31' => [
                 'namespace',
                 '@any/value',

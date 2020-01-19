@@ -40,41 +40,93 @@ class VariableProcessorTest extends UnitTestCase
 
     public function routePathDataProvider(): array
     {
+        $plainInflatedRoutePath = '/static/{aa}/{bb}/{some_cc}/tail';
+        $enforcedInflatedRoutePath = '/static/{!aa}/{bb}/{some_cc}/tail';
+
         return [
-            'no arguments, no namespace' => [
+            'no arguments, no namespace (plain)' => [
                 null,
                 [],
+                $plainInflatedRoutePath,
                 '/static/{aa}/{bb}/{some_cc}/tail'
             ],
-            'aa -> zz, no namespace' => [
+            'no arguments, no namespace (enforced)' => [
+                null,
+                [],
+                $enforcedInflatedRoutePath,
+                '/static/{!aa}/{bb}/{some_cc}/tail'
+            ],
+            'aa -> zz, no namespace (plain)' => [
                 null,
                 ['aa' => 'zz'],
+                $plainInflatedRoutePath,
                 '/static/{zz}/{bb}/{some_cc}/tail'
             ],
-            'aa -> @any/nested, no namespace' => [
+            'aa -> zz, no namespace (enforced)' => [
+                null,
+                ['aa' => 'zz'],
+                $enforcedInflatedRoutePath,
+                '/static/{!zz}/{bb}/{some_cc}/tail'
+            ],
+            'aa -> @any/nested, no namespace (plain)' => [
                 null,
                 ['aa' => '@any/nested'],
-                '/static/{qbeced67e6b340abc67a397f6e90bb0e}/{bb}/{some_cc}/tail'
+                $plainInflatedRoutePath,
+                '/static/{qbeced67e6b340abc67a397f6e90bb0}/{bb}/{some_cc}/tail'
             ],
-            'no arguments, first' => [
+            'aa -> @any/nested, no namespace (enforced)' => [
+                null,
+                ['aa' => '@any/nested'],
+                $enforcedInflatedRoutePath,
+                '/static/{!qbeced67e6b340abc67a397f6e90bb0}/{bb}/{some_cc}/tail'
+            ],
+            'no arguments, first (plain)' => [
                 'first',
                 [],
+                $plainInflatedRoutePath,
                 '/static/{first__aa}/{first__bb}/{first__some_cc}/tail'
             ],
-            'aa -> zz, first' => [
+            'no arguments, first (enforced)' => [
+                'first',
+                [],
+                $enforcedInflatedRoutePath,
+                '/static/{!first__aa}/{first__bb}/{first__some_cc}/tail'
+            ],
+            'aa -> zz, first (plain)' => [
                 'first',
                 ['aa' => 'zz'],
+                $plainInflatedRoutePath,
                 '/static/{first__zz}/{first__bb}/{first__some_cc}/tail'
             ],
-            'aa -> any/nested, first' => [
+            'aa -> zz, first (enforced)' => [
+                'first',
+                ['aa' => 'zz'],
+                $enforcedInflatedRoutePath,
+                '/static/{!first__zz}/{first__bb}/{first__some_cc}/tail'
+            ],
+            'aa -> any/nested, first (plain)' => [
                 'first',
                 ['aa' => 'any/nested'],
+                $plainInflatedRoutePath,
                 '/static/{first__any__nested}/{first__bb}/{first__some_cc}/tail'
             ],
-            'aa -> @any/nested, first' => [
+            'aa -> any/nested, first (enforced)' => [
+                'first',
+                ['aa' => 'any/nested'],
+                $enforcedInflatedRoutePath,
+                '/static/{!first__any__nested}/{first__bb}/{first__some_cc}/tail'
+            ],
+            'aa -> @any/nested, first (plain)' => [
                 'first',
                 ['aa' => '@any/nested'],
-                '/static/{ab0ce8f9f822228b4f324ec38b9c0388}/{first__bb}/{first__some_cc}/tail'
+                $plainInflatedRoutePath,
+                '/static/{ab0ce8f9f822228b4f324ec38b9c038}/{first__bb}/{first__some_cc}/tail'
+            ],
+            'aa -> @any/nested, first (enforced)' => [
+                'first',
+                ['aa' => '@any/nested'],
+                $enforcedInflatedRoutePath,
+                '/static/{!ab0ce8f9f822228b4f324ec38b9c038}/{first__bb}/{first__some_cc}/tail'
             ],
         ];
     }
@@ -82,14 +134,14 @@ class VariableProcessorTest extends UnitTestCase
     /**
      * @param string|null $namespace
      * @param array $arguments
+     * @param string $inflatedRoutePath
      * @param string $deflatedRoutePath
      *
      * @test
      * @dataProvider routePathDataProvider
      */
-    public function isRoutePathProcessed(?string $namespace, array $arguments, string $deflatedRoutePath)
+    public function isRoutePathProcessed(?string $namespace, array $arguments, string $inflatedRoutePath, string $deflatedRoutePath)
     {
-        $inflatedRoutePath = '/static/{aa}/{bb}/{some_cc}/tail';
         self::assertSame(
             $deflatedRoutePath,
             $this->subject->deflateRoutePath($inflatedRoutePath, $namespace, $arguments)
@@ -108,15 +160,15 @@ class VariableProcessorTest extends UnitTestCase
         return [
             'no namespace, no arguments' => [
                 [],
-                ['a' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['a' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
             'no namespace, a -> newA' => [
                 ['a' => 'newA'],
-                ['newA' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['newA' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
             'no namespace, a -> @any/nested' => [
                 ['a' => '@any/nested'],
-                ['qbeced67e6b340abc67a397f6e90bb0e' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['qbeced67e6b340abc67a397f6e90bb0' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
         ];
     }
@@ -167,32 +219,32 @@ class VariableProcessorTest extends UnitTestCase
             'first, no arguments' => [
                 'first',
                 [],
-                ['a' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['a' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
             'first, aa -> newAA' => [
                 'first',
                 ['aa' => 'newAA'],
-                ['a' => 'a', 'first__newAA' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['a' => 'a', 'first__newAA' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
             'first, second -> newSecond' => [
                 'first',
                 ['second' => 'newSecond'],
-                ['a' => 'a', 'first__aa' => 'aa', 'first__newSecond__aaa' => 'aaa', 'q7aded81f5d1607191c695720db7ab23' => '@any']
+                ['a' => 'a', 'first__aa' => 'aa', 'first__newSecond__aaa' => 'aaa', 'q7aded81f5d1607191c695720db7ab2' => '@any']
             ],
             'first, aa -> any/nested' => [
                 'first',
                 ['aa' => 'any/nested'],
-                ['a' => 'a', 'first__any__nested' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['a' => 'a', 'first__any__nested' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
             'first, aa -> @any/nested' => [
                 'first',
                 ['aa' => '@any/nested'],
-                ['a' => 'a', 'ab0ce8f9f822228b4f324ec38b9c0388' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9b' => '@any']
+                ['a' => 'a', 'ab0ce8f9f822228b4f324ec38b9c038' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
             'first, aa -> newAA, second => newSecond' => [
                 'first',
                 ['aa' => 'newAA', 'second' => 'newSecond'],
-                ['a' => 'a', 'first__newAA' => 'aa', 'first__newSecond__aaa' => 'aaa', 'q7aded81f5d1607191c695720db7ab23' => '@any']
+                ['a' => 'a', 'first__newAA' => 'aa', 'first__newSecond__aaa' => 'aaa', 'q7aded81f5d1607191c695720db7ab2' => '@any']
             ],
         ];
     }
@@ -268,17 +320,17 @@ class VariableProcessorTest extends UnitTestCase
             'a -> @any/nested, no namespace' => [
                 null,
                 ['a' => '@any/nested'],
-                ['qbeced67e6b340abc67a397f6e90bb0e' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
+                ['qbeced67e6b340abc67a397f6e90bb0' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
             ],
             'a -> newA, namespace_being_longer_than_32_characters' => [
                 'namespace_being_longer_than_32_characters',
                 ['a' => 'newA'],
-                ['qaea1f31c57b9c3e78c8205838d4563c' => 'a', 'ub5e2989b61a4964ba4e06fc6de85276' => 'b', 'oabf16f448f7b02c6ecb13d155e5a4b5' => ['d' => 'd', 'e' => 'e']]
+                ['qaea1f31c57b9c3e78c8205838d4563' => 'a', 'ub5e2989b61a4964ba4e06fc6de8527' => 'b', 'oabf16f448f7b02c6ecb13d155e5a4b' => ['d' => 'd', 'e' => 'e']]
             ],
             'a -> @any/nested, first' => [
                 'first',
                 ['a' => '@any/nested'],
-                ['ab0ce8f9f822228b4f324ec38b9c0388' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']]
+                ['ab0ce8f9f822228b4f324ec38b9c038' => 'a', 'first__b' => 'b', 'first__c' => ['d' => 'd', 'e' => 'e']]
             ],
         ];
     }
