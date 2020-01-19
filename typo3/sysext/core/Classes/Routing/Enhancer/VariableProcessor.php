@@ -23,7 +23,7 @@ class VariableProcessor
 {
     protected const LEVEL_DELIMITER = '__';
     protected const ARGUMENT_SEPARATOR = '/';
-    protected const VARIABLE_PATTERN = '#\{(?P<name>[^}]+)\}#';
+    protected const VARIABLE_PATTERN = '#\{(?P<modifier>!)?(?P<name>[^}]+)\}#';
 
     /**
      * @var array
@@ -41,10 +41,11 @@ class VariableProcessor
      */
     protected function addHash(string $value): string
     {
-        if (strlen($value) < 32 && !preg_match('#[^\w]#', $value)) {
+        if (strlen($value) < 31 && !preg_match('#[^\w]#', $value)) {
             return $value;
         }
-        $hash = md5($value);
+        // removing one bit, e.g. for enforced route prefix `{!value}`
+        $hash = substr(md5($value), 0, -1);
         // Symfony Route Compiler requires first literal to be non-integer
         if ($hash[0] === (string)(int)$hash[0]) {
             $hash[0] = str_replace(
@@ -64,7 +65,7 @@ class VariableProcessor
      */
     protected function resolveHash(string $hash): string
     {
-        if (strlen($hash) < 32) {
+        if (strlen($hash) < 31) {
             return $hash;
         }
         if (!isset($this->hashes[$hash])) {
@@ -118,14 +119,13 @@ class VariableProcessor
             return $routePath;
         }
 
+        $replace = [];
         $search = array_values($matches[0]);
-        $replace = array_map(
-            function (string $name) {
-                return '{' . $name . '}';
-            },
-            $this->deflateValues($matches['name'], $namespace, $arguments)
-        );
-
+        $deflatedNames = $this->deflateValues($matches['name'], $namespace, $arguments);
+        foreach ($deflatedNames as $index => $deflatedName) {
+            $modifier = $matches['modifier'][$index] ?? '';
+            $replace[] = '{' . $modifier . $deflatedName . '}';
+        }
         return str_replace($search, $replace, $routePath);
     }
 
@@ -141,14 +141,13 @@ class VariableProcessor
             return $routePath;
         }
 
+        $replace = [];
         $search = array_values($matches[0]);
-        $replace = array_map(
-            function (string $name) {
-                return '{' . $name . '}';
-            },
-            $this->inflateValues($matches['name'], $namespace, $arguments)
-        );
-
+        $inflatedNames = $this->inflateValues($matches['name'], $namespace, $arguments);
+        foreach ($inflatedNames as $index => $inflatedName) {
+            $modifier = $matches['modifier'][$index] ?? '';
+            $replace[] = '{' . $modifier . $inflatedName . '}';
+        }
         return str_replace($search, $replace, $routePath);
     }
 
