@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Core\Service\Archive;
  */
 
 use TYPO3\CMS\Core\Exception\Archive\ExtractException;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service that handles zip creation and extraction
@@ -47,6 +48,9 @@ class ZipService
 
         $result = $zip->extractTo($directory);
         $zip->close();
+        if ($result) {
+            GeneralUtility::fixPermissions($directory, true);
+        }
         return $result;
     }
 
