@@ -3230,6 +3230,9 @@ class GeneralUtility
      */
     public static function isAbsPath($path)
     {
+        if (substr($path, 0, 6) === 'vfs://') {
+            return true;
+        }
         return isset($path[0]) && $path[0] === '/' || Environment::isWindows() && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
     }
 
@@ -3241,6 +3244,9 @@ class GeneralUtility
      */
     public static function isAllowedAbsPath($path)
     {
+        if (substr($path, 0, 6) === 'vfs://') {
+            return true;
+        }
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
         return static::isAbsPath($path) && static::validPathStr($path)
             && (
