@@ -140,27 +140,6 @@ class HelpController
         $field = $request->getQueryParams()['field'] ?? $request->getParsedBody()['field'] ?? '*';
 
         $mainKey = $table;
-        $identifierParts = GeneralUtility::trimExplode('.', $field);
-        // The field is the second one
-        if (count($identifierParts) > 1) {
-            array_shift($field);
-            // There's at least one extra part
-            $extraIdentifierInformation = [];
-            $extraIdentifierInformation[] = array_shift($identifierParts);
-            // If the ds_pointerField contains a comma, it means the choice of FlexForm DS
-            // is determined by 2 parameters. In this case we have an extra identifier part
-            if (strpos($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds_pointerField'], ',') !== false) {
-                $extraIdentifierInformation[] = array_shift($identifierParts);
-            }
-            // The remaining parts make up the FlexForm field name itself (reassembled with dots)
-            $flexFormField = implode('.', $identifierParts);
-            // Assemble a different main key and switch field to use FlexForm field name
-            $mainKey .= '.' . $field;
-            foreach ($extraIdentifierInformation as $extraKey) {
-                $mainKey .= '.' . $extraKey;
-            }
-            $field = $flexFormField;
-        }
 
         $this->view->assignMultiple([
             'table' => $table,
