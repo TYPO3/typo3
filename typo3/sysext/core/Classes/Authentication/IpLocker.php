@@ -64,7 +64,7 @@ class IpLocker
             return true;
         }
 
-        $ipToCompare = $this->isIpv6Address($sessionIpLock)
+        $ipToCompare = $this->isIpv6Address($ipAddress)
             ? $this->getIpLockPartForIpv6Address($ipAddress)
             : $this->getIpLockPartForIpv4Address($ipAddress);
         return $ipToCompare === $sessionIpLock;
