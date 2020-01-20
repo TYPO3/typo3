@@ -206,16 +206,20 @@ class RichTextElement extends AbstractFormElement
         $configuration = $this->prepareConfigurationForEditor();
 
         $externalPlugins = '';
-        foreach ($this->getExtraPlugins() as $pluginName => $config) {
-            if (!empty($config['config']) && !empty($configuration[$pluginName])) {
-                $config['config'] = array_replace_recursive($config['config'], $configuration[$pluginName]);
+        foreach ($this->getExtraPlugins() as $extraPluginName => $extraPluginConfig) {
+            $configName = $extraPluginConfig['configName'] ?? $extraPluginName;
+            if (!empty($extraPluginConfig['config']) && is_array($extraPluginConfig['config'])) {
+                if (empty($configuration[$configName])) {
+                    $configuration[$configName] = $extraPluginConfig['config'];
+                } elseif (is_array($configuration[$configName])) {
+                    $configuration[$configName] = array_replace_recursive($extraPluginConfig['config'], $configuration[$configName]);
+                }
             }
-            $configuration[$pluginName] = $config['config'];
-            $configuration['extraPlugins'] .= ',' . $pluginName;
+            $configuration['extraPlugins'] .= ',' . $extraPluginName;
 
             $externalPlugins .= 'CKEDITOR.plugins.addExternal(';
-            $externalPlugins .= GeneralUtility::quoteJSvalue($pluginName) . ',';
-            $externalPlugins .= GeneralUtility::quoteJSvalue($config['resource']) . ',';
+            $externalPlugins .= GeneralUtility::quoteJSvalue($extraPluginName) . ',';
+            $externalPlugins .= GeneralUtility::quoteJSvalue($extraPluginConfig['resource']) . ',';
             $externalPlugins .= '\'\');';
         }
 
@@ -295,8 +299,10 @@ class RichTextElement extends AbstractFormElement
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         foreach ($externalPlugins as $pluginName => $configuration) {
             $pluginConfiguration[$pluginName] = [
+                'configName' => $configuration['configName'] ?? $pluginName,
                 'resource' => $this->resolveUrlPath($configuration['resource'])
             ];
+            unset($configuration['configName']);
             unset($configuration['resource']);
 
             if ($configuration['route']) {
