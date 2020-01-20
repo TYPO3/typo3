@@ -32,6 +32,11 @@ class VariableValue
      */
     private $defaultVariables;
 
+    /**
+     * @var string[]
+     */
+    private $requiredDefinedVariableNames;
+
     public static function create(string $value, Variables $defaultVariables = null): self
     {
         return new static($value, $defaultVariables);
@@ -55,11 +60,45 @@ class VariableValue
         $this->defaultVariables = $defaultVariables;
     }
 
+    public function withRequiredDefinedVariableNames(string ...$variableNames): self
+    {
+        $target = clone $this;
+        $target->requiredDefinedVariableNames = $variableNames;
+        return $target;
+    }
+
     public function apply(Variables $variables): string
     {
         $variables = $variables->withDefined($this->defaultVariables);
+
+        $this->assertVariableNames($variables);
+        if (!$this->hasAllRequiredDefinedVariableNames($variables)) {
+            return '';
+        }
+
+        return str_replace(
+            array_map([$this, 'wrap'], $variables->keys()),
+            $variables->values(),
+            $this->value
+        );
+    }
+
+    private function hasAllRequiredDefinedVariableNames(Variables $variables): bool
+    {
+        foreach ($this->requiredDefinedVariableNames ?? [] as $variableName) {
+            if (!array_key_exists($variableName, $variables)
+                || $variables[$variableName] === null
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function assertVariableNames(Variables $variables): void
+    {
         $missingVariableNames = array_diff($this->variableNames, $variables->keys());
-        if (count($missingVariableNames) > 0) {
+        if (!empty($missingVariableNames)) {
             throw new \LogicException(
                 sprintf(
                     'Missing variable names "%s" for "%s"',
@@ -69,12 +108,6 @@ class VariableValue
                 1577789316
             );
         }
-
-        return str_replace(
-            array_map([$this, 'wrap'], $variables->keys()),
-            $variables->values(),
-            $this->value
-        );
     }
 
     private function extractVariableNames(string $value): array

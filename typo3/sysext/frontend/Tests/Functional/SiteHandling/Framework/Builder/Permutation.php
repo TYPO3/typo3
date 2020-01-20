@@ -71,18 +71,29 @@ class Permutation
     private function applyApplicables(TestSet $target, Applicable ...$applicables): TestSet
     {
         foreach ($applicables as $index => $applicable) {
-            if (!$applicable instanceof VariablesContext) {
-                continue;
-            }
-            // apply variables for matching VariableContext
-            if ($applicable->matchesRequiredApplicables(...$applicables)) {
-                $target = $target->withMergedVariables($applicable->getVariables());
-            // otherwise don't apply variables & skip this TestSet
-            } else {
-                throw new SkipException('skip', 1578162207);
-            }
+            $target = $this->withVariableContext($target, $applicable, ...$applicables);
         }
         return $target->withMergedApplicables(...$applicables);
+    }
+
+    private function withVariableContext(TestSet $target, Applicable $candidate, Applicable ...$applicables): TestSet
+    {
+        if ($candidate instanceof ApplicableConjunction) {
+            foreach ($candidate->filter(VariablesContext::class) as $variableContext) {
+                // in case SkipException is thrown, skip the whole(!) conjunction
+                // (that's why this is not caught here explicitly)
+                $target = $this->withVariableContext($target, $variableContext, ...$applicables);
+            }
+        } elseif ($candidate instanceof VariablesContext) {
+            // apply variables for matching VariableContext
+            $targetApplicables = $this->includeTargetApplicables($target, ...$applicables);
+            if ($candidate->matchesRequiredApplicables(...$targetApplicables)) {
+                return $target->withMergedVariables($candidate->getVariables());
+            }
+            // otherwise don't apply variables & skip this TestSet
+            throw new SkipException('skip', 1578162207);
+        }
+        return $target;
     }
 
     /**
@@ -127,5 +138,24 @@ class Permutation
     public function withApplicableItems(array $applicables): self
     {
         return $this->withApplicableSet(...array_values($applicables));
+    }
+
+    /**
+     * @param TestSet $target
+     * @param Applicable ...$applicables
+     * @return Applicable[]
+     */
+    private function includeTargetApplicables(TestSet $target, Applicable ...$applicables): array
+    {
+        if (empty($target->getApplicables())) {
+            return $applicables;
+        }
+        $targetApplicables = $applicables;
+        foreach ($target->getApplicables() as $targetApplicable) {
+            if (!in_array($targetApplicable, $targetApplicables, true)) {
+                $targetApplicables[] = $targetApplicable;
+            }
+        }
+        return $targetApplicables;
     }
 }

@@ -25,25 +25,30 @@ class VariableItem
     /**
      * @var array
      */
-    private $values;
+    private $value;
 
-    public static function create(string $key, array $values): self
+    public static function create(string $key, $value): self
     {
         return new static(
             VariableValue::create(sprintf('[[%s]]', $key)),
-            $values
+            $value
         );
     }
 
-    private function __construct(VariableValue $variableKey, array $values)
+    private function __construct(VariableValue $variableKey, $value)
     {
         $this->variableKey = $variableKey;
-        $this->values = $values;
+        $this->value = $value;
+    }
+
+    public function isArray(): bool
+    {
+        return is_array($this->value);
     }
 
     public function apply(Variables $variables): array
     {
-        return [$this->key($variables) => $this->values];
+        return [$this->key($variables) => $this->value];
     }
 
     public function key(Variables $variables): string

@@ -66,9 +66,20 @@ class VariablesContext implements Applicable
     {
         $items = [];
         foreach ($this->variables->getArrayCopy() as $key => $value) {
-            $items[] = sprintf('$%s=%s', $key, $value);
+            $items[] = sprintf('$%s=%s', $key, $this->asHumanReadable($value));
         }
         return implode(', ', $items);
+    }
+
+    private function asHumanReadable($value)
+    {
+        if ($value === null) {
+            return '<null>';
+        }
+        if ($value === '') {
+            return '<empty>';
+        }
+        return $value;
     }
 
     private function compareApplicables(Applicable $a, Applicable $b): int
