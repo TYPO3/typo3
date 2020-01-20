@@ -70,12 +70,15 @@ class TestSet
         if ($type === null) {
             return $this->applicables;
         }
-        return array_filter(
-            $this->applicables,
-            function (Applicable $applicable) use ($type) {
-                return is_a($applicable, $type);
+        $applicables = [];
+        foreach ($this->applicables as $applicable) {
+            if (is_a($applicable, $type)) {
+                $applicables[] = $applicable;
+            } elseif ($applicable instanceof ApplicableConjunction) {
+                $applicables = array_merge($applicables, $applicable->filter($type));
             }
-        );
+        }
+        return $applicables;
     }
 
     public function getSingleApplicable(string $type): ?Applicable

@@ -38,7 +38,8 @@ class Builder
                     '_arguments' => [],
                 ])
                 ->withGenerateParameters([
-                    VariableValue::create('&value=[[value]]'),
+                    VariableValue::create('&value=[[value]]')
+                        ->withRequiredDefinedVariableNames('value'),
                 ])
                 ->withResolveArguments([
                     VariableItem::create('inArguments', [
@@ -53,7 +54,8 @@ class Builder
                     '_arguments' => [],
                 ])
                 ->withGenerateParameters([
-                    VariableValue::create('&testing[value]=[[value]]'),
+                    VariableValue::create('&testing[value]=[[value]]')
+                        ->withRequiredDefinedVariableNames('value'),
                 ])
                 ->withResolveArguments([
                     VariableItem::create('inArguments', [
@@ -76,7 +78,8 @@ class Builder
                     'plugin' => 'link',
                 ])
                 ->withGenerateParameters([
-                    VariableValue::create('&tx_testing_link[value]=[[value]]'),
+                    VariableValue::create('&tx_testing_link[value]=[[value]]')
+                        ->withRequiredDefinedVariableNames('value'),
                     '&tx_testing_link[controller]=Link&tx_testing_link[action]=index',
                 ])
                 ->withResolveArguments([
@@ -191,12 +194,11 @@ class Builder
 
     public function compileGenerateParameters(TestSet $testSet): string
     {
-        $generateParameters = array_map(
-            function (HasGenerateParameters $applicable) {
-                return $applicable->getGenerateParameters();
-            },
-            $testSet->getApplicables(HasGenerateParameters::class)
-        );
+        $generateParameters = [];
+        /** @var HasGenerateParameters $applicable */
+        foreach ($testSet->getApplicables(HasGenerateParameters::class) as $applicable) {
+            $generateParameters[] = $applicable->getGenerateParameters();
+        }
         $generateParameters = (new VariableCompiler($generateParameters, $testSet->getVariables()))
             ->compile()
             ->getResults();
@@ -220,7 +222,6 @@ class Builder
                     ->getResults()
             );
         }
-
         $resolveArguments['staticArguments'] = $resolveArguments['staticArguments'] ?? [];
         $resolveArguments['dynamicArguments'] = $resolveArguments['dynamicArguments'] ?? [];
         $resolveArguments['queryArguments'] = $resolveArguments['queryArguments'] ?? [];

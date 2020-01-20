@@ -71,24 +71,24 @@ class EnhancerDeclaration implements Applicable, HasGenerateParameters, HasResol
         return $this->generateParameters;
     }
 
-    public function withConfiguration(array $configuration): self
+    public function withConfiguration(array $configuration, bool $merge = false): self
     {
         $target = clone $this;
-        $target->configuration = $configuration;
+        $target->configuration = $merge ? array_replace_recursive($this->configuration, $configuration) : $configuration;
         return $target;
     }
 
-    public function withResolveArguments(array $resolveArguments): self
+    public function withResolveArguments(array $resolveArguments, bool $merge = false): self
     {
         $target = clone $this;
-        $target->resolveArguments = $resolveArguments;
+        $target->resolveArguments = $merge ? array_replace_recursive($this->resolveArguments, $resolveArguments) : $resolveArguments;
         return $target;
     }
 
-    public function withGenerateParameters(array $generateParameters): self
+    public function withGenerateParameters(array $generateParameters, bool $merge = false): self
     {
         $target = clone $this;
-        $target->generateParameters = $generateParameters;
+        $target->generateParameters = $merge ? array_merge($this->generateParameters, $generateParameters) : $generateParameters;
         return $target;
     }
 
