@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from 'TYPO3/CMS/Backend/Enum/Severity';
 import * as $ from 'jquery';
 import Modal = require('TYPO3/CMS/Backend/Modal');
@@ -120,7 +122,7 @@ export default class Workspaces {
    * @param {Array} payload
    * @return {$}
    */
-  protected checkIntegrity(payload: object): JQueryXHR {
+  protected checkIntegrity(payload: object): Promise<AjaxResponse> {
     return this.sendRemoteRequest(
       this.generateRemotePayload('checkIntegrity', payload),
     );
@@ -132,14 +134,15 @@ export default class Workspaces {
    * @param {Object} payload
    * @return {$}
    */
-  protected sendRemoteRequest(payload: object): JQueryXHR {
-    return $.ajax({
-      url: TYPO3.settings.ajaxUrls.workspace_dispatch,
-      method: 'POST',
-      contentType: 'application/json; charset=utf-8',
-      dataType: 'json',
-      data: JSON.stringify(payload),
-    });
+  protected sendRemoteRequest(payload: object): Promise<AjaxResponse> {
+    return (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_dispatch)).post(
+      JSON.stringify(payload),
+      {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        }
+      }
+    );
   }
 
   /**
