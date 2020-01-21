@@ -1,0 +1,132 @@
+__variables:
+  - &pageStandard 0
+  - &pageShortcut 4
+  - &pageMount 7
+  - &pageFolder 254
+  - &contentText 'text'
+
+entitySettings:
+  '*':
+    nodeColumnName: 'pid'
+    columnNames: {id: 'uid', language: 'sys_language_uid'}
+    defaultValues: {pid: 0}
+  page:
+    isNode: true
+    tableName: 'pages'
+    parentColumnName: 'pid'
+    languageColumnNames: ['l10n_parent', 'l10n_source']
+    columnNames: {type: 'doktype', root: 'is_siteroot', mount: 'mount_pid', showContentOfMountedPage: 'mount_pid_ol', visitorGroups: 'fe_group'}
+    defaultValues: {hidden: 0, doktype: *pageStandard}
+    valueInstructions:
+      shortcut:
+        first: {shortcut: 0, shortcut_mode: 1}
+  content:
+    tableName: 'tt_content'
+    languageColumnNames: ['l18n_parent', 'l10n_source']
+    columnNames: {title: 'header', type: 'CType'}
+  language:
+    tableName: 'sys_language'
+    columnNames: {code: 'language_isocode'}
+  visitorGroup:
+    tableName: 'fe_groups'
+  visitor:
+    tableName: 'fe_users'
+    columnNames: {groups: 'usergroup'}
+  workspace:
+    tableName: 'sys_workspace'
+  typoscript:
+    tableName: 'sys_template'
+    valueInstructions:
+      type:
+        site: {root: 1, clear: 1}
+
+entities:
+  workspace:
+    - self: {id: 1, title: 'My Personal Workspace'}
+  language:
+    - self: {id: 1, title: 'French', code: 'fr'}
+    - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
+  page:
+    - self: {id: 1000, title: 'ACME Global', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
+      children:
+        - self: {id: 1100, title: 'EN: Welcome', slug: '/welcome' }
+          languageVariants:
+            - self: {id: 1101, title: 'FR: Welcome', language: 1, slug: '/bienvenue' }
+            - self: {id: 1102, title: 'FR-CA: Welcome', language: 2, slug: '/bienvenue' }
+          entities:
+            content:
+              - self: {title: 'EN: Content Element #1', type: *contentText }
+        - self: {id: 1200, title: 'EN: Features', slug: '/features'}
+          children:
+            - self: {id: 1210, title: 'EN: Frontend Editing', slug: '/features/frontend-editing'}
+        - self: {id: 1300, title: 'EN: Products', slug: '/products'}
+          entities:
+            content:
+              - self: {title: 'See all global products', type: *contentText }
+          children:
+            - self: {id: 1310, title: 'EN: Toys', slug: '/products/toys'}
+            - self: {id: 1320, title: 'EN: Card Games', slug: '/products/card-games'}
+            - self: {id: 1330, title: 'EN: Board Games', slug: '/products/board-games'}
+              children:
+                - self: {id: 1331, title: 'EN: Monopoly', slug: '/products/monopoly'}
+                - self: {id: 1332, title: 'EN: Catan', slug: '/products/board-games/catan'}
+                - self: {id: 1333, title: 'EN: Risk', slug: '/risk'}
+            - self: {id: 1340, title: 'Archived Products', slug: '/products/archive', type: *pageMount, mount: 10100 }
+              entities:
+                content:
+                  - self: {title: 'Content from MountPoint Page', type: *contentText }
+              children:
+                - self: {id: 1341, title: 'Never visible', slug: '/products/archive/never-visible' }
+        - self: {id: 1400, title: 'See our Archives', slug: '/archive', type: *pageMount, mount: 10000 }
+          children:
+            - self: {id: 1410, title: 'Never visible', slug: '/archive/never-visible' }
+        - self: {id: 1600, title: 'About us', slug: '/about'}
+        - self: {id: 404, title: 'Page not found', slug: '/404'}
+          entities:
+            content:
+              - self: {title: 'EN: Page not found', type: *contentText}
+        - self: {id: 1930, title: 'ACME in Canada', type: *pageShortcut, shortcut: 2000, slug: '/acme-in-canada' }
+    - self: {id: 2000, title: 'ACME Canada', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
+      children:
+        # This page has a trailing slash in the slug
+        - self: {id: 2100, title: 'News of Canada', slug: '/news/' }
+          entities:
+            content:
+              - self: {title: 'See a list of all games distributed in canada', type: *contentText }
+          children:
+            - self: {id: 2110, title: 'New Games in Canada 2020', slug: '/news/games-in-canada-2020' }
+            # This page has a fully different slug than the parent page - which could happen
+            - self: {id: 2120, title: 'New Games in Canada 2019', slug: '/slug-with-a-mistake-which-never-changed/games-in-canada-2019' }
+        - self: {id: 2300, title: 'Products', slug: '/products', type: *pageMount, mount: 1300 }
+        - self: {id: 2700, title: 'All News', slug: '/all-news'}
+          children:
+            - self: {id: 2710, title: 'Canadian News', slug: '/all-news/canada', type: *pageMount, mount: 2100, showContentOfMountedPage: 1 }
+              entities:
+                content:
+                  - self: {title: 'Content of MountPoint Page', type: *contentText }
+            - self: {id: 2720, title: 'Archived News', slug: '/all-news/archive', type: *pageMount, mount: 10200, showContentOfMountedPage: 0 }
+              entities:
+                content:
+                  - self: {title: 'Content of MountPoint Page', type: *contentText }
+        - self: {id: 2930, title: 'Link To Our Worldwide Site', type: *pageShortcut, shortcut: 1000, slug: '/global' }
+    - self: {id: 10000, title: 'Archive for everybody', root: true, slug: '/'}
+      languageVariants:
+        - self: {id: 10001, title: 'FR: Archive', language: 1, slug: '/'}
+        - self: {id: 10002, title: 'FR-CA: Archive', language: 2, slug: '/'}
+      entities:
+        content:
+          - self: {title: 'This is our archive', type: *contentText }
+      children:
+        - self: {id: 10100, title: 'EN: Archived Products', slug: '/products'}
+          languageVariants:
+            - self: {id: 10101, title: 'FR: Archived Products', language: 1, slug: '/produits'}
+            - self: {id: 10102, title: 'FR-CA: Archived Products', language: 2, slug: '/produits'}
+          children:
+            - self: {id: 10110, title: 'EN: Games of the 1980s', slug: '/products/games-of-the-1980s' }
+            - self: {id: 10120, title: 'EN: Games of the 1990s', slug: '/products/games-of-the-1990s' }
+            # Seems like an important landing page to have /uno so this does not inherit the slug of the parent page
+            - self: {id: 10130, title: 'Uno - The famous classic', slug: '/uno' }
+        - self: {id: 10200, title: 'EN: Archived News', slug: '/news'}
+          children:
+            - self: {id: 10210, title: 'EN: Whats new in 2020', slug: '/news/latest-releases-2020' }
+            - self: {id: 10220, title: 'EN: Whats new in 2019', slug: '/news/latest-releases-2019' }
