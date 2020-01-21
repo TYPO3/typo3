@@ -227,6 +227,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 } else {
                     // URL has a scheme, possibly because someone requested a full URL. So now lets check if the URL
                     // is on the same site pagetree. If this is the case, we'll treat it as internal
+                    // @todo: currently this does not check if the target page is a mounted page in a different site,
+                    // so it is treating this as an absolute URL, which is wrong
                     if ($currentSite instanceof Site && $currentSite->getRootPageId() === $siteOfTargetPage->getRootPageId()) {
                         $treatAsExternalLink = false;
                     }
@@ -568,7 +570,7 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryResult = $queryBuilder
-                ->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol')
+                ->select('uid', 'pid', 'doktype', 'mount_pid', 'mount_pid_ol', 't3ver_state')
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(

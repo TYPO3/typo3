@@ -25,6 +25,7 @@ use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Routing\Aspect\AspectFactory;
@@ -240,12 +241,24 @@ class PageRouter implements RouterInterface
         $pagePath = $page['slug'] ?? '';
 
         if ($parameters['MP'] ?? false) {
+            $mountPointPairs = explode(',', $parameters['MP']);
             $pagePath = $this->resolveMountPointParameterIntoPageSlug(
                 $pageId,
                 $pagePath,
-                explode(',', $parameters['MP']),
+                $mountPointPairs,
                 $pageRepository
             );
+            // If the MountPoint page has a different site, the link needs to be generated
+            // with the base of the MountPoint page, this is especially relevant for cross-domain linking
+            // Because the language contains the full base, it is retrieved in this case.
+            try {
+                [, $mountPointPage] = explode('-', reset($mountPointPairs));
+                $site = GeneralUtility::makeInstance(SiteMatcher::class)
+                    ->matchByPageId((int)$mountPointPage);
+                $language = $site->getLanguageById($language->getLanguageId());
+            } catch (SiteNotFoundException $e) {
+                // No alternative site found, use the existing one
+            }
             // Store the MP parameter in the page record, so it could be used for any enhancers
             $page['MPvar'] = $parameters['MP'];
             unset($parameters['MP']);
@@ -381,7 +394,13 @@ class PageRouter implements RouterInterface
                 $mountedPage = $pageRepository->getPage($mountedPage);
                 $mountRoot = $pageRepository->getPage($mountRoot);
                 $slugPrefix = $mountedPage['slug'] ?? '';
+                if ($slugPrefix === '/') {
+                    $slugPrefix = '';
+                }
                 $prefixToRemove = $mountRoot['slug'] ?? '';
+                if ($prefixToRemove === '/') {
+                    $prefixToRemove = '';
+                }
                 $prefixesToRemove[] = $prefixToRemove;
                 $slugPrefixesToAdd[] = $slugPrefix;
             }
@@ -395,7 +414,7 @@ class PageRouter implements RouterInterface
             if ($prefixToRemove !== '' && strpos($pagePath, $prefixToRemove) === 0) {
                 $pagePath = substr($pagePath, strlen($prefixToRemove));
             }
-            $pagePath = $replacement . '/' . ltrim($pagePath, '/');
+            $pagePath = $replacement . ($pagePath !== '/' ? '/' . ltrim($pagePath, '/') : '');
         }
         return $pagePath;
     }
