@@ -74,26 +74,44 @@ class EnhancerDeclaration implements Applicable, HasGenerateParameters, HasResol
     public function withConfiguration(array $configuration, bool $merge = false): self
     {
         $target = clone $this;
-        $target->configuration = $merge ? array_replace_recursive($this->configuration, $configuration) : $configuration;
+
+        $target->configuration = $merge ? $this->applyMergedItems($this->configuration, $configuration) : $configuration;
         return $target;
     }
 
     public function withResolveArguments(array $resolveArguments, bool $merge = false): self
     {
         $target = clone $this;
-        $target->resolveArguments = $merge ? array_replace_recursive($this->resolveArguments, $resolveArguments) : $resolveArguments;
+        $target->resolveArguments = $merge ? $this->applyMergedItems($this->resolveArguments, $resolveArguments) : $resolveArguments;
         return $target;
     }
 
     public function withGenerateParameters(array $generateParameters, bool $merge = false): self
     {
         $target = clone $this;
-        $target->generateParameters = $merge ? array_merge($this->generateParameters, $generateParameters) : $generateParameters;
+        $target->generateParameters = $merge ? $this->applyMergedItems($this->generateParameters, $generateParameters) : $generateParameters;
         return $target;
     }
 
     public function describe(): string
     {
         return $this->identifier;
+    }
+
+    private function applyMergedItems(array $currentItems, array $additionalItems): array
+    {
+        if (empty($additionalItems)) {
+            return $currentItems;
+        }
+        if ($this->hasOnlyNumericKeys($additionalItems)) {
+            return array_merge($currentItems, $additionalItems);
+        }
+        return array_replace_recursive($currentItems, $additionalItems);
+    }
+
+    private function hasOnlyNumericKeys(array $items): bool
+    {
+        $numericItems = array_filter($items, 'is_int', ARRAY_FILTER_USE_KEY);
+        return !empty($numericItems);
     }
 }

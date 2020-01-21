@@ -135,9 +135,11 @@ class Permutation
         return $target;
     }
 
-    public function withApplicableItems(array $applicables): self
+    public function withApplicableItems(array $applicableItems, Applicable ...$applicables): self
     {
-        return $this->withApplicableSet(...array_values($applicables));
+        $applicableItems = array_values($applicableItems);
+        $applicableItems = array_merge($applicableItems, $applicables);
+        return $this->withApplicableSet(...$applicableItems);
     }
 
     /**
