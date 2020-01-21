@@ -99,14 +99,15 @@ class SimpleEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $arguments = $configuration['_arguments'] ?? [];
         unset($configuration['_arguments']);
 
+        $variableProcessor = $this->getVariableProcessor();
         $routePath = $this->modifyRoutePath($configuration['routePath']);
-        $routePath = $this->getVariableProcessor()->deflateRoutePath($routePath, null, $arguments);
+        $routePath = $variableProcessor->deflateRoutePath($routePath, null, $arguments);
         $variant = clone $defaultPageRoute;
         $variant->setPath(rtrim($variant->getPath(), '/') . '/' . ltrim($routePath, '/'));
-        $variant->setDefaults($configuration['defaults'] ?? []);
-        $variant->setRequirements($configuration['requirements'] ?? []);
+        $variant->setDefaults($variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], null, $arguments));
         $variant->addOptions(['_enhancer' => $this, '_arguments' => $arguments]);
         $this->applyRouteAspects($variant, $this->aspects ?? []);
+        $this->applyRequirements($variant, $this->configuration['requirements'] ?? []);
         return $variant;
     }
 

@@ -35,7 +35,7 @@ abstract class AbstractTestCase extends FunctionalTestCase
         ],
         'FE' => [
             'cacheHash' => [
-                'requireCacheHashPresenceParameters' => ['testing[value]']
+                'requireCacheHashPresenceParameters' => ['value', 'testing[value]', 'tx_testing_link[value]']
             ],
         ]
     ];

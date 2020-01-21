@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\EnhancerDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Permutation;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
@@ -690,6 +691,225 @@ class EnhancerLinkGeneratorTest extends AbstractTestCase
                 'Enhancer' => $enhancerConfiguration,
                 'PageType' => $pageTypeConfiguration,
             ]
+        ]);
+
+        $response = $this->executeFrontendRequest(
+            (new InternalRequest('https://acme.us/'))
+                ->withPageId(1100)
+                ->withInstructions([
+                    $this->createTypoLinkUrlInstruction([
+                        'parameter' => $testSet->getTargetPageId(),
+                        'language' => $targetLanguageId,
+                        'additionalParams' => $additionalParameters,
+                        'forceAbsoluteUrl' => 1,
+                    ])
+                ]),
+            $this->internalRequestContext
+        );
+
+        self::assertStringStartsWith($expectation, (string)$response->getBody());
+    }
+
+    public function routeDefaultsForSingleParameterAreConsideredDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        $enhancerDeclarations = $builder->declareEnhancers();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+        ]);
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance[[uriValue]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => '', 'uriValue' => '/hundred'])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(1))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.fr/bienvenue/enhance[[uriValue]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => '', 'uriValue' => '/cent'])
+                        )
+                    )
+            )
+            ->withApplicableSet(
+                $enhancerDeclarations['Simple'],
+                // cannot use Plugin enhancer here - won't be used if no parameters for plugin namespace are given
+                // $enhancerDeclarations['Plugin']
+                //  ->withConfiguration(['routePath' => $routePath], true),
+                $enhancerDeclarations['Extbase']
+            )
+            ->withApplicableSet(
+                EnhancerDeclaration::create('defaults.value=100')->withConfiguration([
+                    'defaults' => ['value' => 100],
+                ])
+            )
+            ->withApplicableSet(
+                AspectDeclaration::create('StaticValueMapper')->withConfiguration([
+                    VariableItem::create('aspectName', [
+                        'type' => 'StaticValueMapper',
+                        'map' => [
+                            'hundred' => 100,
+                        ],
+                        'localeMap' => [
+                            [
+                                'locale' => 'fr_FR',
+                                'map' => [
+                                    'cent' => 100,
+                                ],
+                            ]
+                        ],
+                    ])
+                ])
+            )
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'routeParameter' => '{value}',
+                    'uriValue' => '',
+                ])),
+                VariablesContext::create(Variables::create([
+                    'routeParameter' => '{!value}',
+                ]))
+            )
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'value' => null,
+                ])),
+                VariablesContext::create(Variables::create([
+                    'value' => 100,
+                ]))
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider routeDefaultsForSingleParameterAreConsideredDataProvider
+     */
+    public function routeDefaultsForSingleParameterAreConsidered(TestSet $testSet): void
+    {
+        $this->assertGeneratedUriEquals($testSet);
+    }
+
+    public function routeDefaultsForMultipleParametersAreConsideredDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        $routePath = VariableValue::create('/[[routePrefix]]/[[routeParameter]]/{additional}');
+        $enhancerDeclarations = $builder->declareEnhancers();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+        ]);
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance/hundred/20[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(1))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.fr/bienvenue/enhance/cent/20[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    )
+            )
+            ->withApplicableSet(
+                $enhancerDeclarations['Simple']
+                    ->withConfiguration(['routePath' => $routePath], true)
+                    ->withGenerateParameters(['&additional=20'], true),
+                $enhancerDeclarations['Plugin']
+                    ->withConfiguration(['routePath' => $routePath], true)
+                    ->withGenerateParameters(['&testing[additional]=20'], true),
+                $enhancerDeclarations['Extbase']
+                    ->withConfiguration(['routes' => [0 => ['routePath' => $routePath]]], true)
+                    ->withGenerateParameters(['&tx_testing_link[additional]=20'], true)
+            )
+            ->withApplicableSet(
+                EnhancerDeclaration::create('defaults.value=100')->withConfiguration([
+                    'defaults' => ['value' => 100],
+                ])
+            )
+            ->withApplicableSet(
+                AspectDeclaration::create('StaticValueMapper')->withConfiguration([
+                    VariableItem::create('aspectName', [
+                        'type' => 'StaticValueMapper',
+                        'map' => [
+                            'hundred' => 100,
+                        ],
+                        'localeMap' => [
+                            [
+                                'locale' => 'fr_FR',
+                                'map' => [
+                                    'cent' => 100,
+                                ],
+                            ]
+                        ],
+                    ])
+                ])
+            )
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'routeParameter' => '{value}',
+                ])),
+                VariablesContext::create(Variables::create([
+                    'routeParameter' => '{!value}',
+                ]))
+            )
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'value' => null,
+                ])),
+                VariablesContext::create(Variables::create([
+                    'value' => 100,
+                ]))
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider routeDefaultsForMultipleParametersAreConsideredDataProvider
+     */
+    public function routeDefaultsForMultipleParametersAreConsidered(TestSet $testSet): void
+    {
+        $this->assertGeneratedUriEquals($testSet);
+    }
+
+    private function assertGeneratedUriEquals(TestSet $testSet): void
+    {
+        $builder = Builder::create();
+        $enhancerConfiguration = $builder->compileEnhancerConfiguration($testSet);
+        $additionalParameters = $builder->compileGenerateParameters($testSet);
+        /** @var LanguageContext $languageContext */
+        $languageContext = $testSet->getSingleApplicable(LanguageContext::class);
+        $targetLanguageId = $languageContext->getLanguageId();
+        $expectation = $builder->compileUrl($testSet);
+
+        $this->mergeSiteConfiguration('acme-com', [
+            'routeEnhancers' => ['Enhancer' => $enhancerConfiguration]
         ]);
 
         $response = $this->executeFrontendRequest(

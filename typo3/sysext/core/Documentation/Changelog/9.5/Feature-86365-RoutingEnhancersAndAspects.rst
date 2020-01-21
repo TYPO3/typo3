@@ -60,7 +60,7 @@ Custom enhancers can be registered by adding an entry to an extensions :file:`ex
 Within a configuration, an enhancer always evaluates the following properties:
 
 * `type` - the short name of the enhancer as registered within :php:`$TYPO3_CONF_VARS`. This is mandatory.
-* `limitToPages` - an array of page IDs where this enhancer should be called. This is optional. This property (array)
+* `limitToPages` - an array of page IDs where this enhancer should be called. This is **optional**. This property (array)
   evaluates to only trigger an enhancer for specific pages. In case of special plugin pages it is
   useful to only enhance pages with IDs, to speed up performance for building page routes of all other pages.
 
@@ -116,7 +116,9 @@ Plugin Enhancer
 The Plugin Enhancer works with plugins on a page that are commonly known as `Pi-Based Plugins`, where previously
 the following GET/POST variables were used:
 
-   `index.php?id=13&tx_felogin_pi1[forgot]=1&&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=ABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
+   * `index.php?id=13&tx_felogin_pi1[forgot]=1` (form to request token)
+   * `index.php?id=13&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
+     (form to actually recover password, `%7C` is URL-encoded pipe character `|`)
 
 The base for the plugin enhancer is to configure a so-called "namespace", in this case `tx_felogin_pi1` - the plugin's
 namespace.
@@ -127,20 +129,30 @@ we would need to set up multiple configurations of Plugin Enhancer for forgot an
 .. code-block:: yaml
 
    routeEnhancers:
-     ForgotPassword:
+     ForgotPasswordForm:
        type: Plugin
        limitToPages: [13]
-       routePath: '/forgot-password/{user}/{hash}'
+       routePath: '/forgot-password/{forgot}'
        namespace: 'tx_felogin_pi1'
        defaults:
-         forgot: "1"
+         forgot: '1'
        requirements:
-         user: '[0-9]{1..3}'
-         hash: '^[a-zA-Z0-9]{32}$'
+         forgot: '1'
+     ForgotPasswordRecover:
+       type: Plugin
+       limitToPages: [13]
+       routePath: '/forgot-password/{user}/{forgothash}'
+       namespace: 'tx_felogin_pi1'
+       requirements:
+         user: '[0-9]{1,3}'
+         forgothash: '\d+\|[[:xdigit:]]{32}'
 
-If a URL is generated with the given parameters to link to a page, the result will look like this:
+If URLs are generated with the given parameters to link to a page, the results will look like this:
 
-   `https://www.example.com/path-to/my-page/forgot-password/82/ABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
+   * `https://www.example.com/path-to/my-page/forgot-password`
+     (for `index.php?id=13&tx_felogin_pi1[forgot]=1`)
+   * `https://www.example.com/path-to/my-page/forgot-password/82/12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`
+     (for `index.php?id=13&tx_felogin_pi1[user]=82&tx_felogin_pi1[hash]=12345679%7CABCDEFGHIJKLMNOPQRSTUVWXYZ012345`)
 
 If the input given to generate the URL does not meet the requirements, the route enhancer does not offer the
 variant and the parameters are added to the URL as regular query parameters. If e.g. the user parameter would be more
@@ -190,7 +202,7 @@ And generate the following URLs
          - { routePath: '/archive/{year}/{month}', _controller: 'News::archive' }
        defaultController: 'News::list'
        defaults:
-         page: '0'
+         page: '1'
        requirements:
          page: '\d+'
 
@@ -213,6 +225,15 @@ the terms "Mapper" and "Modifier" will pop up, depending on the different cases.
 
 Aspects are registered within one single enhancer configuration with the option `aspects` and can be used with any
 enhancer.
+
+.. note::
+   Values in `defaults` and `requirements` always focus on corresponding internal raw values and not and
+   generated route values.
+
+.. note::
+   `requirements` are ignored for route variables having a corresponding setting in `aspects`. Imagine there
+   would be an aspect that is mapping internal value `1` to route value `one` and vice verse - it is not possible
+   to explicitly define the `requirements` for this case - which is why `aspects` take precedence.
 
 Let's start with some simpler examples first:
 

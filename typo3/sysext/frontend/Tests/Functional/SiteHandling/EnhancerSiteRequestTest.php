@@ -16,9 +16,13 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling;
  */
 
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ApplicableConjunction;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\AspectDeclaration;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Builder;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\EnhancerDeclaration;
+use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\ExceptionExpectation;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\LanguageContext;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\Permutation;
 use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder\TestSet;
@@ -658,6 +662,262 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         self::assertEquals($expectation, $pageArguments);
     }
 
+    public function routeDefaultsAreConsideredDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'uriValue' => '',
+            'resolveValue' => 100,
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+            'inArguments' => 'staticArguments', // either 'dynamicArguments' or 'staticArguments'
+            'otherInArguments' => null,
+        ]);
+        $enhancerDeclarations = $builder->declareEnhancers();
+        $englishLanguage = LanguageContext::create(0);
+        $frenchLanguage = LanguageContext::create(1);
+        $plainRouteParameter = VariablesContext::create(Variables::create(['routeParameter' => '{value}']));
+        $enforcedRouteParameter = VariablesContext::create(Variables::create(['routeParameter' => '{!value}']));
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables($englishLanguage)
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance[[uriValue]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => '', 'uriValue' => '/hundred'])
+                        )
+                    ),
+                TestSet::create($parentSet)
+                    ->withMergedApplicables($frenchLanguage)
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.fr/bienvenue/enhance[[uriValue]][[pathSuffix]]',
+                            Variables::create(['pathSuffix' => '', 'uriValue' => '/cent'])
+                        )
+                    )
+            )
+            ->withApplicableItems($builder->declareEnhancers())
+            ->withApplicableSet(
+                EnhancerDeclaration::create('defaults.value=100')->withConfiguration([
+                    'defaults' => [
+                        'value' => 100,
+                        // it's expected that `other` is NOT applied in page arguments
+                        // since it is not used as `{other}` in `routePath`
+                        'other' => 200,
+                    ]
+                ])
+            )
+            ->withApplicableSet(
+                AspectDeclaration::create('StaticValueMapper')->withConfiguration([
+                    VariableItem::create('aspectName', [
+                        'type' => 'StaticValueMapper',
+                        'map' => [
+                            'hundred' => 100,
+                        ],
+                        'localeMap' => [
+                            [
+                                'locale' => 'fr_FR',
+                                'map' => [
+                                    'cent' => 100,
+                                ],
+                            ]
+                        ],
+                    ])
+                ])
+            )
+            ->withApplicableSet($plainRouteParameter, $enforcedRouteParameter)
+            ->withApplicableSet(
+                // @todo Default route not resolved having enforced route parameter `{!value}`
+                VariablesContext::create(Variables::create([
+                    'uriValue' => null,
+                ]))->withRequiredApplicables($plainRouteParameter),
+                VariablesContext::create(Variables::create([
+                    'uriValue' => '/hundred',
+                ]))->withRequiredApplicables($englishLanguage),
+                VariablesContext::create(Variables::create([
+                    'uriValue' => '/cent',
+                ]))->withRequiredApplicables($frenchLanguage)
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider routeDefaultsAreConsideredDataProvider
+     */
+    public function routeDefaultsAreConsidered(TestSet $testSet): void
+    {
+        $this->assertPageArgumentsEquals($testSet);
+    }
+
+    public function routeRequirementsAreSkippedHavingAspectsDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'resolveValue' => 100,
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+            'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
+        ]);
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance/hundred[[pathSuffix]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    )
+            )
+            ->withApplicableItems($builder->declareEnhancers())
+            ->withApplicableSet(
+                AspectDeclaration::create('StaticValueMapper')->withConfiguration([
+                    VariableItem::create('aspectName', [
+                        'type' => 'StaticValueMapper',
+                        'map' => [
+                            'hundred' => 100,
+                        ],
+                    ])
+                ])
+            )
+            ->withApplicableSet(
+                EnhancerDeclaration::create('requirements.value=not-match-when-having-aspect')->withConfiguration([
+                    'requirements' => [
+                        'value' => 'not-match-when-having-aspect',
+                    ]
+                ])
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider routeRequirementsAreSkippedHavingAspectsDataProvider
+     */
+    public function routeRequirementsAreSkippedHavingAspects(TestSet $testSet): void
+    {
+        $this->assertPageArgumentsEquals($testSet);
+    }
+
+    public function routeRequirementsAreConsideredDataProvider($parentSet = null): array
+    {
+        $builder = Builder::create();
+        // variables (applied when invoking expectations)
+        $variables = Variables::create()->define([
+            'resolveValue' => 100,
+            'routePrefix' => 'enhance',
+            'aspectName' => 'value',
+            'inArguments' => 'dynamicArguments' // either 'dynamicArguments' or 'staticArguments'
+        ]);
+        $enhancers = $builder->declareEnhancers();
+        $variableContexts = [
+            VariablesContext::create(
+                Variables::create([
+                    'cHash' => '46227b4ce096dc78a4e71463326c9020',
+                ])
+            )->withRequiredApplicables($enhancers['Simple']),
+            VariablesContext::create(
+                Variables::create([
+                    'cHash' => 'e24d3d2d5503baba670d827c3b9470c8',
+                ])
+            )->withRequiredApplicables($enhancers['Plugin']),
+            VariablesContext::create(
+                Variables::create([
+                    'cHash' => 'eef21771ab3c3dac3514b4479eedd5ff',
+                ])
+            )->withRequiredApplicables($enhancers['Extbase']),
+        ];
+        return Permutation::create($variables)
+            ->withTargets(
+                TestSet::create($parentSet)
+                    ->withMergedApplicables(LanguageContext::create(0))
+                    ->withTargetPageId(1100)
+                    ->withUrl(
+                        VariableValue::create(
+                            'https://acme.us/welcome/enhance/[[uriValue]][[pathSuffix]]?cHash=[[cHash]]',
+                            Variables::create(['pathSuffix' => ''])
+                        )
+                    )
+            )
+            ->withApplicableItems($enhancers)
+            ->withApplicableItems($variableContexts)
+            ->withApplicableSet(
+                VariablesContext::create(Variables::create([
+                    'uriValue' => 100,
+                ])),
+                ApplicableConjunction::create(
+                    VariablesContext::create(Variables::create([
+                        'uriValue' => 100,
+                        'cHash' => ''
+                    ])),
+                    ExceptionExpectation::create('Missing cHash')
+                        ->withClassName(PageNotFoundException::class)
+                        ->withMessage('Request parameters could not be validated (&cHash empty)')
+                        ->withCode(1518472189)
+                ),
+                ApplicableConjunction::create(
+                    VariablesContext::create(Variables::create([
+                        'uriValue' => 99,
+                    ])),
+                    ExceptionExpectation::create('too short')
+                        ->withClassName(PageNotFoundException::class)
+                        ->withMessage('The requested page does not exist')
+                        ->withCode(1518472189)
+                ),
+                ApplicableConjunction::create(
+                    VariablesContext::create(Variables::create([
+                        'uriValue' => 99999,
+                    ])),
+                    ExceptionExpectation::create('too long')
+                        ->withClassName(PageNotFoundException::class)
+                        ->withMessage('The requested page does not exist')
+                        ->withCode(1518472189)
+                ),
+                ApplicableConjunction::create(
+                    VariablesContext::create(Variables::create([
+                        'uriValue' => 'NaN',
+                    ])),
+                    ExceptionExpectation::create('NaN')
+                        ->withClassName(PageNotFoundException::class)
+                        ->withMessage('The requested page does not exist')
+                        ->withCode(1518472189)
+                )
+            )
+            ->withApplicableSet(
+                EnhancerDeclaration::create('requirements.value=\\d{3}')->withConfiguration([
+                    'requirements' => [
+                        'value' => '\\d{3}',
+                    ]
+                ])
+            )
+            ->permute()
+            ->getTargetsForDataProvider();
+    }
+
+    /**
+     * @param TestSet $testSet
+     *
+     * @test
+     * @dataProvider routeRequirementsAreConsideredDataProvider
+     */
+    public function routeRequirementsAreConsidered(TestSet $testSet): void
+    {
+        $this->assertPageArgumentsEquals($testSet);
+    }
+
     public function routeIdentifiersAreResolvedDataProvider(): array
     {
         return [
@@ -882,7 +1142,19 @@ class EnhancerSiteRequestTest extends AbstractTestCase
             true
         );
 
-        $pageArguments = json_decode((string)$response->getBody(), true);
-        self::assertEquals($expectation, $pageArguments);
+        /** @var ExceptionExpectation $exceptionDeclaration */
+        $exceptionDeclaration = $testSet->getSingleApplicable(ExceptionExpectation::class);
+        if ($exceptionDeclaration !== null) {
+            // @todo This part is "ugly"...
+            self::assertSame(404, $response->getStatusCode());
+            self::assertStringContainsString(
+                // searching in HTML content...
+                htmlspecialchars($exceptionDeclaration->getMessage()),
+                (string)$response->getBody()
+            );
+        } else {
+            $pageArguments = json_decode((string)$response->getBody(), true);
+            self::assertEquals($expectation, $pageArguments);
+        }
     }
 }
