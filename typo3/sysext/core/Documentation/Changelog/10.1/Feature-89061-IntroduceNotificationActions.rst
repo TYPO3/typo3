@@ -86,7 +86,7 @@ Example:
 
    const anotherDeferredActionCallback = new DeferredAction(function () {
      // do some old-fashioned jQuery stuff
-     return $.ajax(/* AJAX configuration */);
+     return Promise.resolve($.ajax(/* AJAX configuration */));
    });
 
 

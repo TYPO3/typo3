@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {AbstractAction} from './ActionButton/AbstractAction';
 import {SeverityEnum} from './Enum/Severity';
 import 'bootstrap';
 import * as $ from 'jquery';
@@ -57,6 +58,7 @@ interface Button {
   trigger: (e: JQueryEventObject) => {};
   dataAttributes: { [key: string]: string };
   icon: string;
+  action: AbstractAction;
 }
 
 interface Configuration {
@@ -291,8 +293,9 @@ class Modal {
    * @param {Array<Button>} buttons
    */
   public setButtons(buttons: Array<Button>): JQuery {
+    const modalFooter = this.currentModal.find(Identifiers.footer);
     if (buttons.length > 0) {
-      this.currentModal.find(Identifiers.footer).empty();
+      modalFooter.empty();
 
       for (let i = 0; i < buttons.length; i++) {
         const button = buttons[i];
@@ -307,7 +310,14 @@ class Modal {
         if (button.name !== '') {
           $button.attr('name', button.name);
         }
-        if (button.trigger) {
+        if (button.action) {
+          $button.on('click', (): void => {
+            modalFooter.find('button').not($button).addClass('disabled');
+            button.action.execute($button.get(0)).then((): void => {
+              this.currentModal.modal('hide');
+            });
+          });
+        } else if (button.trigger) {
           $button.on('click', button.trigger);
         }
         if (button.dataAttributes) {
@@ -320,16 +330,15 @@ class Modal {
         if (button.icon) {
           $button.prepend('<span class="t3js-modal-icon-placeholder" data-icon="' + button.icon + '"></span>');
         }
-        this.currentModal.find(Identifiers.footer).append($button);
+        modalFooter.append($button);
       }
-      this.currentModal.find(Identifiers.footer).show();
-      this.currentModal
-        .find(Identifiers.footer).find('button')
+      modalFooter.show();
+      modalFooter.find('button')
         .on('click', (e: JQueryEventObject): void => {
           $(e.currentTarget).trigger('button.clicked');
         });
     } else {
-      this.currentModal.find(Identifiers.footer).hide();
+      modalFooter.hide();
     }
 
     return this.currentModal;

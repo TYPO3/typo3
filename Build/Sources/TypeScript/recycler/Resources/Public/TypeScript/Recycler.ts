@@ -14,6 +14,7 @@
 import * as $ from 'jquery';
 import * as NProgress from 'nprogress';
 import 'TYPO3/CMS/Backend/Input/Clearable';
+import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 import Modal = require('TYPO3/CMS/Backend/Modal');
 import Notification = require('TYPO3/CMS/Backend/Notification');
 import Severity = require('TYPO3/CMS/Backend/Severity');
@@ -383,9 +384,9 @@ class Recycler {
       }, {
         text: TYPO3.lang['button.delete'],
         btnClass: 'btn-danger',
-        trigger: () => {
-          this.callAjaxAction('delete', records, isMassDelete);
-        },
+        action: new DeferredAction(() => {
+          return Promise.resolve(this.callAjaxAction('delete', records, isMassDelete));
+        }),
       },
     ]);
   }
@@ -441,14 +442,14 @@ class Recycler {
       }, {
         text: TYPO3.lang['button.undo'],
         btnClass: 'btn-success',
-        trigger: () => {
-          this.callAjaxAction(
+        action: new DeferredAction(() => {
+          return Promise.resolve(this.callAjaxAction(
             'undo',
             typeof records === 'object' ? records : [records],
             isMassUndo,
             $message.find('#undo-recursive').prop('checked'),
-          );
-        },
+          ));
+        }),
       },
     ]);
   }
@@ -459,7 +460,7 @@ class Recycler {
    * @param {boolean} isMassAction
    * @param {boolean} recursive
    */
-  private callAjaxAction(action: string, records: Object, isMassAction: boolean, recursive: boolean = false): void {
+  private callAjaxAction(action: string, records: Object, isMassAction: boolean, recursive: boolean = false): JQueryXHR|void {
     let data: any = {
       records: records,
       action: '',
@@ -475,7 +476,7 @@ class Recycler {
       return;
     }
 
-    $.ajax({
+    return $.ajax({
       url: TYPO3.settings.ajaxUrls.recycler,
       type: 'POST',
       dataType: 'json',
@@ -508,7 +509,6 @@ class Recycler {
         });
       },
       complete: () => {
-        Modal.dismiss();
         NProgress.done();
       },
     });
