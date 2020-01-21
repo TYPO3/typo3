@@ -143,6 +143,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         // variables (applied when invoking expectations)
         $variables = Variables::create()->define([
             'value' => 100,
+            'resolveValue' => 100,
             'routePrefix' => '{enhance_name}',
             'aspectName' => 'enhance_name',
             'inArguments' => 'dynamicArguments' // either 'dynamicArguments' or 'staticArguments'
@@ -248,6 +249,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         // variables (applied when invoking expectations)
         $variables = Variables::create()->define([
             'value' => 1100,
+            'resolveValue' => 1100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
             'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
@@ -309,6 +311,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         // variables (applied when invoking expectations)
         $variables = Variables::create()->define([
             'value' => 1100,
+            'resolveValue' => 1100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
             'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
@@ -370,6 +373,7 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         // variables (applied when invoking expectations)
         $variables = Variables::create()->define([
             'value' => 100,
+            'resolveValue' => 100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
             'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'
@@ -438,7 +442,10 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $variableContexts = array_map(
             function ($value) {
                 return VariablesContext::create(
-                    Variables::create(['value' => $value])
+                    Variables::create([
+                        'value' => $value,
+                        'resolveValue' => $value,
+                    ])
                 );
             },
             range(10, 100, 30)
@@ -447,7 +454,6 @@ class EnhancerSiteRequestTest extends AbstractTestCase
         $builder = Builder::create();
         // variables (applied when invoking expectations)
         $variables = Variables::create()->define([
-            'value' => 1100,
             'routePrefix' => 'enhance',
             'aspectName' => 'value',
             'inArguments' => 'staticArguments' // either 'dynamicArguments' or 'staticArguments'

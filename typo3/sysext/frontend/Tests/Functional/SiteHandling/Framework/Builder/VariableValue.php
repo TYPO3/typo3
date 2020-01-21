@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class VariableValue
 {
+    use VariablesTrait;
+
     /**
      * @var string
      */
@@ -60,13 +62,6 @@ class VariableValue
         $this->defaultVariables = $defaultVariables;
     }
 
-    public function withRequiredDefinedVariableNames(string ...$variableNames): self
-    {
-        $target = clone $this;
-        $target->requiredDefinedVariableNames = $variableNames;
-        return $target;
-    }
-
     public function apply(Variables $variables): string
     {
         $variables = $variables->withDefined($this->defaultVariables);
@@ -81,18 +76,6 @@ class VariableValue
             $variables->values(),
             $this->value
         );
-    }
-
-    private function hasAllRequiredDefinedVariableNames(Variables $variables): bool
-    {
-        foreach ($this->requiredDefinedVariableNames ?? [] as $variableName) {
-            if (!array_key_exists($variableName, $variables)
-                || $variables[$variableName] === null
-            ) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private function assertVariableNames(Variables $variables): void

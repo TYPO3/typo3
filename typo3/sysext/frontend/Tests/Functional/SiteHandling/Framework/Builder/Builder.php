@@ -27,8 +27,11 @@ class Builder
      */
     public function declareEnhancers(): array
     {
-        $routePath = VariableValue::create('/[[routePrefix]]/{value}');
-        $value = Variable::create('value', Variable::CAST_STRING);
+        $routePath = VariableValue::create(
+            '/[[routePrefix]]/[[routeParameter]]',
+            Variables::create(['routeParameter' => '{value}'])
+        );
+        $resolveValue = Variable::create('resolveValue', Variable::CAST_STRING);
 
         return [
             'Simple' => EnhancerDeclaration::create('Simple')
@@ -43,7 +46,7 @@ class Builder
                 ])
                 ->withResolveArguments([
                     VariableItem::create('inArguments', [
-                        'value' => $value
+                        'value' => $resolveValue
                     ]),
                 ]),
             'Plugin' => EnhancerDeclaration::create('Plugin')
@@ -60,7 +63,7 @@ class Builder
                 ->withResolveArguments([
                     VariableItem::create('inArguments', [
                         'testing' => [
-                            'value' => $value,
+                            'value' => $resolveValue,
                         ],
                     ]),
                 ]),
@@ -85,7 +88,7 @@ class Builder
                 ->withResolveArguments([
                     VariableItem::create('inArguments', [
                         'tx_testing_link' => [
-                            'value' => $value,
+                            'value' => $resolveValue,
                         ],
                     ]),
                     'staticArguments' => [

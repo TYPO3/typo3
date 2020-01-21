@@ -70,25 +70,12 @@ class TestSet
         if ($type === null) {
             return $this->applicables;
         }
-        $applicables = [];
-        foreach ($this->applicables as $applicable) {
-            if (is_a($applicable, $type)) {
-                $applicables[] = $applicable;
-            } elseif ($applicable instanceof ApplicableConjunction) {
-                $applicables = array_merge($applicables, $applicable->filter($type));
-            }
-        }
-        return $applicables;
+        return $this->filterApplicables($type);
     }
 
     public function getSingleApplicable(string $type): ?Applicable
     {
-        $applicables = array_filter(
-            $this->applicables,
-            function (Applicable $applicable) use ($type) {
-                return is_a($applicable, $type);
-            }
-        );
+        $applicables = $this->filterApplicables($type);
         if (count($applicables) > 1) {
             throw new \LogicException(
                 sprintf('Got %dx %s, expected one', count($applicables), $type),
@@ -154,5 +141,22 @@ class TestSet
             $this->applicables
         );
         return 'pid: ' . $this->targetPageId . ' | ' . implode(' | ', $descriptions);
+    }
+
+    /**
+     * @param string $type
+     * @return Applicable[]
+     */
+    private function filterApplicables(string $type): array
+    {
+        $applicables = [];
+        foreach ($this->applicables as $applicable) {
+            if (is_a($applicable, $type)) {
+                $applicables[] = $applicable;
+            } elseif ($applicable instanceof ApplicableConjunction) {
+                $applicables = array_merge($applicables, $applicable->filter($type));
+            }
+        }
+        return $applicables;
     }
 }

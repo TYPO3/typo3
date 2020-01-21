@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class VariableItem
 {
+    use VariablesTrait;
+
     /**
      * @var VariableValue
      */
@@ -26,6 +28,11 @@ class VariableItem
      * @var array
      */
     private $value;
+
+    /**
+     * @var string[]
+     */
+    private $requiredDefinedVariableNames;
 
     public static function create(string $key, $value): self
     {
@@ -48,11 +55,17 @@ class VariableItem
 
     public function apply(Variables $variables): array
     {
+        if (!$this->hasAllRequiredDefinedVariableNames($variables)) {
+            return [];
+        }
         return [$this->key($variables) => $this->value];
     }
 
-    public function key(Variables $variables): string
+    public function key(Variables $variables): ?string
     {
+        if (!$this->hasAllRequiredDefinedVariableNames($variables)) {
+            return null;
+        }
         return $this->variableKey->apply($variables);
     }
 }
