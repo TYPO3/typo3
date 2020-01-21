@@ -111,14 +111,17 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
         $arguments = $configuration['_arguments'] ?? [];
         unset($configuration['_arguments']);
 
+        $variableProcessor = $this->getVariableProcessor();
         $routePath = $this->modifyRoutePath($configuration['routePath']);
-        $routePath = $this->getVariableProcessor()->deflateRoutePath($routePath, $this->namespace, $arguments);
+        $routePath = $variableProcessor->deflateRoutePath($routePath, $this->namespace, $arguments);
         $variant = clone $defaultPageRoute;
         $variant->setPath(rtrim($variant->getPath(), '/') . '/' . ltrim($routePath, '/'));
         $variant->addOptions(['_enhancer' => $this, '_arguments' => $arguments]);
-        $variant->setDefaults($configuration['defaults'] ?? []);
-        $variant->setRequirements($this->getNamespacedRequirements());
+        $variant->setDefaults(
+            $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], $this->namespace, $arguments)
+        );
         $this->applyRouteAspects($variant, $this->aspects ?? [], $this->namespace);
+        $this->applyRequirements($variant, $this->configuration['requirements'] ?? [], $this->namespace);
         return $variant;
     }
 
@@ -150,6 +153,7 @@ class PluginEnhancer extends AbstractEnhancer implements RoutingEnhancerInterfac
      * Add the namespace of the plugin to all requirements, so they are unique for this plugin.
      *
      * @return array
+     * @deprecated Since TYPO3 v10.3, will be removed in TYPO3 v11.0. Use AbstractEnhancer::applyRequirements() instead.
      */
     protected function getNamespacedRequirements(): array
     {

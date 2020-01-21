@@ -132,7 +132,12 @@ class PageUriMatcher
             unset($defaults['_canonical_route']);
         }
         $attributes['_route'] = $name;
-
+        // store applied default values in route options
+        $relevantDefaults = array_intersect_key($defaults, array_flip($route->compile()->getPathVariables()));
+        // option '_appliedDefaults' contains internal(!) values (default values are not mapped when resolving)
+        // (keys used are deflated and need to be inflated later using VariableProcessor)
+        $route->setOption('_appliedDefaults', array_diff_key($relevantDefaults, $attributes));
+        // side note: $defaults can contain e.g. '_controller'
         return $this->mergeDefaults($attributes, $defaults);
     }
 

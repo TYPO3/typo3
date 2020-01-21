@@ -82,23 +82,20 @@ class ExtbasePluginEnhancer extends PluginEnhancer
         $arguments = $configuration['_arguments'] ?? [];
         unset($configuration['_arguments']);
 
-        $namespacedRequirements = $this->getNamespacedRequirements();
+        $variableProcessor = $this->getVariableProcessor();
         $routePath = $this->modifyRoutePath($configuration['routePath']);
-        $routePath = $this->getVariableProcessor()->deflateRoutePath($routePath, $this->namespace, $arguments);
+        $routePath = $variableProcessor->deflateRoutePath($routePath, $this->namespace, $arguments);
         unset($configuration['routePath']);
-        $defaults = array_merge_recursive($defaultPageRoute->getDefaults(), $configuration);
+        $defaults = array_merge_recursive(
+            $defaultPageRoute->getDefaults(),
+            $variableProcessor->deflateKeys($this->configuration['defaults'] ?? [], $this->namespace, $arguments),
+            // apply '_controller' to route defaults
+            array_intersect_key($configuration, ['_controller' => true])
+        );
         $options = array_merge($defaultPageRoute->getOptions(), ['_enhancer' => $this, 'utf8' => true, '_arguments' => $arguments]);
         $route = new Route(rtrim($defaultPageRoute->getPath(), '/') . '/' . ltrim($routePath, '/'), $defaults, [], $options);
         $this->applyRouteAspects($route, $this->aspects ?? [], $this->namespace);
-        if ($namespacedRequirements) {
-            $compiledRoute = $route->compile();
-            $variables = $compiledRoute->getPathVariables();
-            $variables = array_flip($variables);
-            $requirements = array_filter($namespacedRequirements, function ($key) use ($variables) {
-                return isset($variables[$key]);
-            }, ARRAY_FILTER_USE_KEY);
-            $route->setRequirements($requirements);
-        }
+        $this->applyRequirements($route, $this->configuration['requirements'] ?? [], $this->namespace);
         return $route;
     }
 

@@ -21,7 +21,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
@@ -304,6 +303,7 @@ class PageRouter implements RouterInterface
             $scheme === 'https' ? $language->getBase()->getPort() ?? 443 : 443
         );
         $generator = new UrlGenerator($collection, $context);
+        $generator->injectMappableProcessor($mappableProcessor);
         $allRoutes = $collection->all();
         $allRoutes = array_reverse($allRoutes, true);
         $matchedRoute = null;
@@ -327,12 +327,15 @@ class PageRouter implements RouterInterface
                 $uri = new Uri($urlAsString);
                 /** @var Route $matchedRoute */
                 $matchedRoute = $collection->get($routeName);
+                // fetch potential applied defaults for later cHash generation
+                // (even if not applied in route, it will be exposed during resolving)
+                $appliedDefaults = $matchedRoute->getOption('_appliedDefaults') ?? [];
                 parse_str($uri->getQuery() ?? '', $remainingQueryParameters);
                 $enhancer = $route->getEnhancer();
                 if ($enhancer instanceof InflatableEnhancerInterface) {
                     $remainingQueryParameters = $enhancer->inflateParameters($remainingQueryParameters);
                 }
-                $pageRouteResult = $this->buildPageArguments($route, $parameters, $remainingQueryParameters);
+                $pageRouteResult = $this->buildPageArguments($route, array_merge($appliedDefaults, $parameters), $remainingQueryParameters);
                 break;
             } catch (MissingMandatoryParametersException $e) {
                 // no match
@@ -817,6 +820,10 @@ class PageRouter implements RouterInterface
      */
     protected function assertMaximumStaticMappableAmount(Route $route, array $variableNames = [])
     {
+        // empty when only values of route defaults where used
+        if (empty($variableNames)) {
+            return;
+        }
         $mappers = $route->filterAspects(
             [StaticMappableAspectInterface::class, \Countable::class],
             $variableNames
