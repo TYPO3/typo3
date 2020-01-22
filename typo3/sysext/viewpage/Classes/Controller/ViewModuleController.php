@@ -31,11 +31,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -174,7 +170,14 @@ class ViewModuleController
             $defaultFlashMessageQueue->enqueue($flashMessage);
         } else {
             $languageId = $this->getCurrentLanguage($pageId, $request->getParsedBody()['language'] ?? $request->getQueryParams()['language'] ?? null);
-            $targetUrl = $this->getTargetUrl($pageId, $languageId);
+            $targetUrl = BackendUtility::getPreviewUrl(
+                $pageId,
+                '',
+                null,
+                '',
+                '',
+                $this->getTypeParameterIfSet($pageId) . '&L=' . $languageId
+            );
             $this->registerDocHeader($pageId, $languageId, $targetUrl);
 
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -205,71 +208,6 @@ class ViewModuleController
 
         $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
-    }
-
-    /**
-     * Determine the url to view
-     *
-     * @param int $pageId
-     * @param int $languageId
-     * @return string
-     */
-    protected function getTargetUrl(int $pageId, int $languageId): string
-    {
-        $permissionClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $pageRecord = BackendUtility::readPageAccess($pageId, $permissionClause);
-        if ($pageRecord) {
-            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($pageRecord);
-            $rootLine = BackendUtility::BEgetRootLine($pageId);
-            // Mount point overlay: Set new target page id and mp parameter
-            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-            $additionalGetVars = $this->getAdminCommand($pageId);
-            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-            try {
-                $site = $siteFinder->getSiteByPageId($pageId, $rootLine);
-            } catch (SiteNotFoundException $e) {
-                $site = new NullSite();
-            }
-            $finalPageIdToShow = $pageId;
-            $mountPointInformation = $pageRepository->getMountPointInfo($pageId);
-            if ($mountPointInformation && $mountPointInformation['overlay']) {
-                // New page id
-                $finalPageIdToShow = $mountPointInformation['mount_pid'];
-                $additionalGetVars .= '&MP=' . $mountPointInformation['MPvar'];
-            }
-            $additionalGetVars .= $this->getTypeParameterIfSet($finalPageIdToShow);
-            if ($site instanceof Site) {
-                $additionalQueryParams = [];
-                parse_str($additionalGetVars, $additionalQueryParams);
-                $additionalQueryParams['_language'] = $site->getLanguageById($languageId);
-                try {
-                    $uri = (string)$site->getRouter()->generateUri($finalPageIdToShow, $additionalQueryParams);
-                } catch (InvalidRouteArgumentsException $e) {
-                    return '#';
-                }
-            } else {
-                $uri = BackendUtility::getPreviewUrl($finalPageIdToShow, '', $rootLine, '', '', $additionalGetVars);
-            }
-            return $uri;
-        }
-        return '#';
-    }
-
-    /**
-     * Get admin command
-     *
-     * @param int $pageId
-     * @return string
-     */
-    protected function getAdminCommand(int $pageId): string
-    {
-        // The page will show only if there is a valid page and if this page may be viewed by the user
-        $pageinfo = BackendUtility::readPageAccess($pageId, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        $addCommand = '';
-        if (is_array($pageinfo)) {
-            $addCommand = '&ADMCMD_editIcons=1' . BackendUtility::ADMCMD_previewCmds($pageinfo);
-        }
-        return $addCommand;
     }
 
     /**
