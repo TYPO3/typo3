@@ -1,4 +1,5 @@
-import * as $ from 'jquery';
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import NotificationService = require('TYPO3/CMS/Backend/Notification');
 import DeferredAction = require('TYPO3/CMS/Backend/ActionButton/DeferredAction');
 
@@ -46,22 +47,23 @@ class EventHandler {
     );
   }
 
-  private revert(correlationIds: string[]): void {
-    $.ajax({
-      url: TYPO3.settings.ajaxUrls.redirects_revert_correlation,
-      data: {
-        correlation_ids: correlationIds,
-      },
-    }).done((json: any) => {
+  private revert(correlationIds: string[]): Promise<AjaxResponse> {
+    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.redirects_revert_correlation).withQueryArguments({
+      correlation_ids: correlationIds
+    }).get();
+
+    request.then(async (response: AjaxResponse): Promise<void> => {
+      const json = await response.resolve();
       if (json.status === 'ok') {
         NotificationService.success(json.title, json.message);
       }
       if (json.status === 'error') {
         NotificationService.error(json.title, json.message);
       }
-    }).fail(() => {
+    }).catch((): void => {
       NotificationService.error(TYPO3.lang.redirects_error_title, TYPO3.lang.redirects_error_message);
     });
+    return request;
   }
 }
 
