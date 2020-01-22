@@ -25,8 +25,7 @@
 		"typo3/cms-scheduler": "Additional scheduler tasks"
 	},
 	"conflict": {
-		"typo3/cms": "*",
-		"phpdocumentor/reflection-docblock": ">= 4.3.2"
+		"typo3/cms": "*"
 	},
 	"extra": {
 		"branch-alias": {
