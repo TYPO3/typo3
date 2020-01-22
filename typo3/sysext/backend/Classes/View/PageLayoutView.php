@@ -1048,8 +1048,7 @@ class PageLayoutView implements LoggerAwareInterface
                                 '-' . StringUtility::getUniqueId() . '">';
                             // Add icon "new content element below"
                             if (!$disableMoveAndNewButtons
-                                && $this->isContentEditable()
-                                && $this->getBackendUser()->checkLanguageAccess($lP)
+                                && $this->isContentEditable($lP)
                                 && (!$this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP))
                                 && $columnId !== 'unused'
                             ) {
@@ -1967,7 +1966,7 @@ class PageLayoutView implements LoggerAwareInterface
         // If show info is set...;
         if ($this->tt_contentConfig['showInfo'] && $backendUser->recordEditAccessInternals('tt_content', $row)) {
             // Render control panel for the element:
-            if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
+            if ($this->tt_contentConfig['showCommands'] && $this->isContentEditable($row['sys_language_uid'])) {
                 // Edit content element:
                 $urlParameters = [
                     'edit' => [
@@ -4492,14 +4491,17 @@ class PageLayoutView implements LoggerAwareInterface
     /**
      * Check if content can be edited by current user
      *
+     * @param int|null $languageId
      * @return bool
      */
-    protected function isContentEditable()
+    protected function isContentEditable(?int $languageId = null)
     {
         if ($this->getBackendUser()->isAdmin()) {
             return true;
         }
-        return !$this->pageinfo['editlock'] && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT);
+        return !$this->pageinfo['editlock']
+            && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
+            && ($languageId === null || $this->getBackendUser()->checkLanguageAccess($languageId));
     }
 
     /**
