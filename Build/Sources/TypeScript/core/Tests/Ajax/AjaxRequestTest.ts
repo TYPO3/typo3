@@ -192,7 +192,43 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
         'array of arguments',
         ['foo=bar', 'husel=pusel'],
         'https://example.com/?foo=bar&husel=pusel',
-      ]
+      ];
+      yield [
+        'object with array',
+        {foo: ['bar', 'baz']},
+        'https://example.com/?foo[0]=bar&foo[1]=baz',
+      ];
+      yield [
+        'complex object',
+        {
+          foo: 'bar',
+          nested: {
+            husel: 'pusel',
+            bar: 'baz',
+            array: ['5', '6']
+          },
+          array: ['1', '2']
+        },
+        'https://example.com/?foo=bar&nested[husel]=pusel&nested[bar]=baz&nested[array][0]=5&nested[array][1]=6&array[0]=1&array[1]=2',
+      ];
+      yield [
+        'complex, deeply nested object',
+        {
+          foo: 'bar',
+          nested: {
+            husel: 'pusel',
+            bar: 'baz',
+            array: ['5', '6'],
+            deep_nested: {
+              husel: 'pusel',
+              bar: 'baz',
+              array: ['5', '6']
+            },
+          },
+          array: ['1', '2']
+        },
+        'https://example.com/?foo=bar&nested[husel]=pusel&nested[bar]=baz&nested[array][0]=5&nested[array][1]=6&nested[deep_nested][husel]=pusel&nested[deep_nested][bar]=baz&nested[deep_nested][array][0]=5&nested[deep_nested][array][1]=6&array[0]=1&array[1]=2',
+      ];
     }
 
     for (let providedData of queryArgumentsDataProvider()) {
