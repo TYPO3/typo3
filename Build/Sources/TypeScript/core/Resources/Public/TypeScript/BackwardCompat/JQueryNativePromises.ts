@@ -11,8 +11,10 @@
 * The TYPO3 project - inspiring people to share!
 */
 
+import {ResponseError} from '../Ajax/ResponseError';
+
 /**
- * Introduces a polyfill to support jQuery callbacks in native promises. This approach has been adopted from
+ * Introduces a polyfill to support jQuery callbacks in native promises.
  */
 /*! Based on https://www.promisejs.org/polyfills/promise-done-7.0.4.js */
 export default class JQueryNativePromises {
@@ -25,15 +27,31 @@ export default class JQueryNativePromises {
 
     if (typeof Promise.prototype.fail !== 'function') {
       Promise.prototype.fail = function (onRejected: Function): Promise<any> {
-        const self = arguments.length ? this.catch.apply(this, arguments) : Promise.prototype.catch;
-        self.catch(function (err: string) {
-          setTimeout(function () {
-            throw err
-          }, 0)
+        this.catch(async (err: ResponseError): Promise<void> => {
+          const response = err.response;
+          onRejected(await JQueryNativePromises.createFakeXhrObject(response), 'error', response.statusText);
         });
 
-        return self;
+        return this;
       };
     }
+  }
+
+  private static async createFakeXhrObject(response: Response): Promise<any> {
+    const xhr: { [key: string ]: any } = {};
+    xhr.readyState = 4;
+    xhr.responseText = await response.text();
+    xhr.responseURL = response.url;
+    xhr.status = response.status;
+    xhr.statusText = response.statusText;
+
+    if (response.headers.has('Content-Type') && response.headers.get('Content-Type').includes('application/json')) {
+      xhr.responseType = 'json';
+      xhr.contentJSON = await response.json();
+    } else {
+      xhr.responseType = 'text';
+    }
+
+    return xhr;
   }
 }
