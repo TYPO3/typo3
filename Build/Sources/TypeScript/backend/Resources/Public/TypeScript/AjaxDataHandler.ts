@@ -11,6 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {SeverityEnum} from './Enum/Severity';
 import MessageInterface from './AjaxDataHandler/MessageInterface';
 import ResponseInterface from './AjaxDataHandler/ResponseInterface';
@@ -41,6 +43,19 @@ class AjaxDataHandler {
     }
   }
 
+  /**
+   * AJAX call to record_process route (SimpleDataHandlerController->processAjaxRequest)
+   * returns a jQuery Promise to work with
+   *
+   * @param {string | object} params
+   * @returns {Promise<any>}
+   */
+  private static call(params: string | object): Promise<ResponseInterface> {
+    return (new AjaxRequest(TYPO3.settings.ajaxUrls.record_process)).withQueryArguments(params).get().then(async (response: AjaxResponse): Promise<ResponseInterface> => {
+      return await response.resolve();
+    });
+  }
+
   constructor() {
     $((): void => {
       this.initialize();
@@ -53,11 +68,14 @@ class AjaxDataHandler {
    * @param {Object} parameters
    * @returns {JQueryPromise<any>}
    */
-  public process(parameters: Object): JQueryPromise<any> {
-    return this._call(parameters).done((result: ResponseInterface): void => {
+  public process(parameters: string | object): Promise<any> {
+    const promise = AjaxDataHandler.call(parameters);
+    return promise.then((result: ResponseInterface): ResponseInterface => {
       if (result.hasErrors) {
         this.handleErrors(result);
       }
+
+      return result;
     });
   }
 
@@ -74,7 +92,7 @@ class AjaxDataHandler {
       this._showSpinnerIcon($iconElement);
 
       // make the AJAX call to toggle the visibility
-      this._call(params).done((result: ResponseInterface): void => {
+      AjaxDataHandler.call(params).then((result: ResponseInterface): void => {
         // print messages on errors
         if (result.hasErrors) {
           this.handleErrors(result);
@@ -184,7 +202,7 @@ class AjaxDataHandler {
     this._showSpinnerIcon($iconElement);
 
     // make the AJAX call to toggle the visibility
-    this._call(params).done((result: ResponseInterface): void => {
+    AjaxDataHandler.call(params).then((result: ResponseInterface): void => {
       // revert to the old class
       Icons.getIcon('actions-edit-delete', Icons.sizes.small).done((icon: string): void => {
         $iconElement = $anchorElement.find(Identifiers.icon);
@@ -232,17 +250,6 @@ class AjaxDataHandler {
     $.each(result.messages, (position: number, message: MessageInterface): void => {
       Notification.error(message.title, message.message);
     });
-  }
-
-  /**
-   * AJAX call to record_process route (SimpleDataHandlerController->processAjaxRequest)
-   * returns a jQuery Promise to work with
-   *
-   * @param {Object} params
-   * @returns {JQueryXHR}
-   */
-  private _call(params: Object): JQueryXHR {
-    return $.getJSON(TYPO3.settings.ajaxUrls.record_process, params);
   }
 
   /**

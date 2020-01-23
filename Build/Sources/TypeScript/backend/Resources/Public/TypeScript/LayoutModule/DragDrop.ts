@@ -233,7 +233,7 @@ class DragDrop {
    * @private
    */
   public static ajaxAction($droppableElement: JQuery, $draggableElement: JQuery, parameters: Parameters, copyAction: boolean): void {
-    DataHandler.process(parameters).done(function(result: ResponseInterface): void {
+    DataHandler.process(parameters).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
         return;
       }

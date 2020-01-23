@@ -172,12 +172,12 @@ class Paste {
       },
     };
 
-    DataHandler.process(parameters).done((result: ResponseInterface): void => {
+    DataHandler.process(parameters).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
         return;
       }
 
-      window.location.reload(true);
+      window.location.reload();
     });
   }
 }

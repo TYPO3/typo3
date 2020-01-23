@@ -212,12 +212,12 @@ class PageActions {
     parameters.data.pages[recordUid] = {title: $field.val()};
 
     require(['TYPO3/CMS/Backend/AjaxDataHandler'], (DataHandler: any): void => {
-      DataHandler.process(parameters).done((): void => {
+      DataHandler.process(parameters).then((): void => {
         $inputFieldWrap.find('[data-action=cancel]').trigger('click');
         this.$pageTitle.text($field.val());
         this.initializePageTitleRenaming();
         top.TYPO3.Backend.NavigationContainer.PageTree.refreshTree();
-      }).fail((): void => {
+      }).catch((): void => {
         $inputFieldWrap.find('[data-action=cancel]').trigger('click');
       });
     });
