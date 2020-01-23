@@ -98,7 +98,7 @@ class DocumentSaveActions {
             $affectedButton = $me;
           }
 
-          Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done((markup: string): void => {
+          Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((markup: string): void => {
             $affectedButton.find('.t3js-icon').replaceWith(markup);
           });
 

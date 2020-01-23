@@ -166,14 +166,14 @@ class AjaxDataHandler {
     });
 
     const $iconElement = $anchorElement.find(Identifiers.icon);
-    Icons.getIcon(iconName, Icons.sizes.small).done((icon: string): void => {
+    Icons.getIcon(iconName, Icons.sizes.small).then((icon: string): void => {
       $iconElement.replaceWith(icon);
     });
 
     // Set overlay for the record icon
     const $recordIcon = $rowElement.find('.col-icon ' + Identifiers.icon);
     if (nextState === 'hidden') {
-      Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').done((icon: string): void => {
+      Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').then((icon: string): void => {
         $recordIcon.append($(icon).find('.icon-overlay'));
       });
     } else {
@@ -204,7 +204,7 @@ class AjaxDataHandler {
     // make the AJAX call to toggle the visibility
     AjaxDataHandler.call(params).then((result: ResponseInterface): void => {
       // revert to the old class
-      Icons.getIcon('actions-edit-delete', Icons.sizes.small).done((icon: string): void => {
+      Icons.getIcon('actions-edit-delete', Icons.sizes.small).then((icon: string): void => {
         $iconElement = $anchorElement.find(Identifiers.icon);
         $iconElement.replaceWith(icon);
       });
@@ -259,7 +259,7 @@ class AjaxDataHandler {
    * @private
    */
   private _showSpinnerIcon($iconElement: JQuery): void {
-    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).done((icon: string): void => {
+    Icons.getIcon('spinner-circle-dark', Icons.sizes.small).then((icon: string): void => {
       $iconElement.replaceWith(icon);
     });
   }

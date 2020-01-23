@@ -108,19 +108,19 @@ define(['jquery',
       this.tree = this.$treeWrapper.data('svgtree');
       var $toolbar = this.$template.clone().insertBefore(this.$treeWrapper);
 
-      Icons.getIcon('actions-filter', Icons.sizes.small).done(function(icon) {
+      Icons.getIcon('actions-filter', Icons.sizes.small).then(function(icon) {
         $toolbar.find('.filter').append(icon);
       });
 
-      Icons.getIcon('apps-pagetree-category-expand-all', Icons.sizes.small).done(function(icon) {
+      Icons.getIcon('apps-pagetree-category-expand-all', Icons.sizes.small).then(function(icon) {
         $toolbar.find('.expand-all-btn').append(icon);
       });
 
-      Icons.getIcon('apps-pagetree-category-collapse-all', Icons.sizes.small).done(function(icon) {
+      Icons.getIcon('apps-pagetree-category-collapse-all', Icons.sizes.small).then(function(icon) {
         $toolbar.find('.collapse-all-btn').append(icon);
       });
 
-      Icons.getIcon('apps-pagetree-category-toggle-hide-checked', Icons.sizes.small).done(function(icon) {
+      Icons.getIcon('apps-pagetree-category-toggle-hide-checked', Icons.sizes.small).then(function(icon) {
         $toolbar.find('.hide-unchecked-btn').append(icon);
       });
 

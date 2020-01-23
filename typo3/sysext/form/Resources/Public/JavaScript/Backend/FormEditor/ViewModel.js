@@ -1690,7 +1690,7 @@ define(['jquery',
      * @return void
      */
     function showSaveButtonSpinnerIcon() {
-      Icons.getIcon(getHelper().getDomElementDataAttributeValue('iconSaveSpinner'), Icons.sizes.small).done(function(markup) {
+      Icons.getIcon(getHelper().getDomElementDataAttributeValue('iconSaveSpinner'), Icons.sizes.small).then(function(markup) {
         $(getHelper().getDomElementDataIdentifierSelector('iconSave')).replaceWith($(markup));
       });
     };
@@ -1701,7 +1701,7 @@ define(['jquery',
      * @return void
      */
     function showSaveButtonSaveIcon() {
-      Icons.getIcon(getHelper().getDomElementDataAttributeValue('iconSave'), Icons.sizes.small).done(function(markup) {
+      Icons.getIcon(getHelper().getDomElementDataAttributeValue('iconSave'), Icons.sizes.small).then(function(markup) {
         $(getHelper().getDomElementDataIdentifierSelector('iconSaveSpinner')).replaceWith($(markup));
       });
     };

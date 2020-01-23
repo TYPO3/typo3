@@ -916,7 +916,7 @@ define(['jquery',
         null,
         Icons.states.default,
         Icons.markupIdentifiers.inline
-      ).done(function(icon) {
+      ).then(function(icon) {
         $(getHelper().getDomElementDataIdentifierSelector('formElementIcon'), template)
           .append($(icon).addClass(getHelper().getDomElementClassName('icon')));
       });
@@ -983,7 +983,7 @@ define(['jquery',
               null,
               Icons.states.default,
               Icons.markupIdentifiers.inline
-            ).done(function(icon) {
+            ).then(function(icon) {
               $(getHelper().getDomElementDataIdentifierSelector('validatorIcon'), $(template))
                 .append($(icon).addClass(getHelper().getDomElementClassName('icon')));
             });

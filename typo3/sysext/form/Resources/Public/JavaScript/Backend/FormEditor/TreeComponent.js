@@ -238,7 +238,7 @@ define(['jquery',
       expanderItem = $('<span></span>').attr('data-identifier', getHelper().getDomElementDataAttributeValue('expander'));
       listItemContent.prepend(expanderItem);
 
-      Icons.getIcon(getFormElementDefinition(formElement, 'iconIdentifier'), Icons.sizes.small, null, Icons.states.default).done(function(icon) {
+      Icons.getIcon(getFormElementDefinition(formElement, 'iconIdentifier'), Icons.sizes.small, null, Icons.states.default).then(function(icon) {
         expanderItem.after(
           $(icon).addClass(getHelper().getDomElementClassName('icon'))
             .tooltip({
@@ -249,7 +249,7 @@ define(['jquery',
 
         if (getFormElementDefinition(formElement, '_isCompositeFormElement')) {
           if (formElement.get('renderables') && formElement.get('renderables').length > 0) {
-            Icons.getIcon(getHelper().getDomElementDataAttributeValue('collapse'), Icons.sizes.small).done(function(icon) {
+            Icons.getIcon(getHelper().getDomElementDataAttributeValue('collapse'), Icons.sizes.small).then(function(icon) {
               expanderItem.before(_getLinkSvg('angle')).html($(icon));
               listItem.addClass(getHelper().getDomElementClassName('hasChildren'));
             });

@@ -1119,7 +1119,7 @@ define(['jquery',
         Icons.sizes.small,
         null,
         Icons.states.default
-      ).done(function(icon) {
+      ).then(function(icon) {
         getHelper().getTemplatePropertyDomElement('header-label', editorHtml)
           .append($(icon).addClass(getHelper().getDomElementClassName('icon')))
           .append(buildTitleByFormElement());
@@ -1168,7 +1168,7 @@ define(['jquery',
           null,
           Icons.states.default,
           Icons.markupIdentifiers.inline
-        ).done(function(icon) {
+        ).then(function(icon) {
           var iconWrap;
           iconWrap = $('<a></a>')
             .attr('href', _getCollectionElementId(collectionName, collectionElementIdentifier, true))
@@ -1191,7 +1191,7 @@ define(['jquery',
           Icons.sizes.small,
           null,
           Icons.states.default
-        ).done(function(icon) {
+        ).then(function(icon) {
           setData(icon);
         });
       } else {
@@ -1200,7 +1200,7 @@ define(['jquery',
           Icons.sizes.small,
           null,
           Icons.states.default
-        ).done(function(icon) {
+        ).then(function(icon) {
           setData(icon);
         });
       }
@@ -2394,7 +2394,7 @@ define(['jquery',
 
       $('form', $(editorHtml)).prop('name', editorConfiguration['propertyPath']);
 
-      Icons.getIcon(editorConfiguration['iconIdentifier'], Icons.sizes.small).done(function(icon) {
+      Icons.getIcon(editorConfiguration['iconIdentifier'], Icons.sizes.small).then(function(icon) {
         getHelper().getTemplatePropertyDomElement('image', editorHtml).append($(icon));
       });
 
@@ -2516,7 +2516,7 @@ define(['jquery',
             Icons.sizes.small,
             null,
             Icons.states.default
-          ).done(function(icon) {
+          ).then(function(icon) {
             itemTemplate = $('<li data-no-sorting>'
               + '<a href="#"></a>'
               + '</li>');
@@ -2533,7 +2533,7 @@ define(['jquery',
               Icons.sizes.small,
               null,
               Icons.states.default
-            ).done(function(icon) {
+            ).then(function(icon) {
               itemTemplate = $('<li data-no-sorting>'
                 + '<a href="#" data-formelement-identifier="' + nonCompositeNonToplevelFormElement.get('identifier') + '">'
                 + '</a>'

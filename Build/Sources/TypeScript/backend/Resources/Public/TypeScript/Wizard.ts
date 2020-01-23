@@ -78,14 +78,14 @@ class Wizard {
     return this;
   }
 
-  public addFinalProcessingSlide(callback?: Function): JQueryPromise<any> {
+  public addFinalProcessingSlide(callback?: Function): Promise<void> {
     if (!callback) {
       callback = (): void => {
         this.dismiss();
       };
     }
 
-    return Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).done((markup: string) => {
+    return Icons.getIcon('spinner-circle-dark', Icons.sizes.large, null, null).then((markup: string) => {
       let $processingSlide = $('<div />', {class: 'text-center'}).append(markup);
       this.addSlide(
         'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],

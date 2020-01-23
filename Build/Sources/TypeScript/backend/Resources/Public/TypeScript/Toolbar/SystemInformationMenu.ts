@@ -68,7 +68,7 @@ class SystemInformationMenu {
       this.timer = null;
     }
 
-    Icons.getIcon('spinner-circle-light', Icons.sizes.small).done((spinner: string): void => {
+    Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
       $toolbarItemIcon.replaceWith(spinner);
     });
 

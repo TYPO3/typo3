@@ -69,7 +69,7 @@ class ShortcutMenu {
         const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
         const $existingIcon = $toolbarItemIcon.clone();
 
-        Icons.getIcon('spinner-circle-light', Icons.sizes.small).done((spinner: string): void => {
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
           $toolbarItemIcon.replaceWith(spinner);
         });
 
@@ -82,7 +82,7 @@ class ShortcutMenu {
           this.refreshMenu();
           $(Identifiers.toolbarIconSelector, Identifiers.containerSelector).replaceWith($existingIcon);
           if (typeof shortcutButton === 'object') {
-            Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).done((icon: string): void => {
+            Icons.getIcon('actions-system-shortcut-active', Icons.sizes.small).then((icon: string): void => {
               $(shortcutButton).html(icon);
             });
             $(shortcutButton).addClass('active');

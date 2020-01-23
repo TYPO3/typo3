@@ -57,11 +57,11 @@ define(['jquery',
         var tree = new PageTree();
         $element.append(PageTreeElement.template);
 
-        Icons.getIcon('spinner-circle-light', Icons.sizes.small).done(function(spinner) {
+        Icons.getIcon('spinner-circle-light', Icons.sizes.small).then(function(spinner) {
           $('.node-loader').append(spinner);
         });
 
-        Icons.getIcon('spinner-circle-light', Icons.sizes.large).done(function(spinner) {
+        Icons.getIcon('spinner-circle-light', Icons.sizes.large).then(function(spinner) {
           $('.svg-tree-loader').append(spinner);
         });
 

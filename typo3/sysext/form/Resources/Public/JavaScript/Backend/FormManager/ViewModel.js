@@ -86,8 +86,8 @@ define(['jquery',
          * Wizard step 1
          */
         MultiStepWizard.addSlide('new-form-step-1', TYPO3.lang['formManager.newFormWizard.step1.title'], '', Severity.info, null, function(slide) {
-          Icons.getIcon('actions-document-duplicates-select', Icons.sizes.large).done(function (duplicateIconMarkup) {
-            Icons.getIcon('actions-document-new', Icons.sizes.large).done(function (blankIconMarkup) {
+          Icons.getIcon('actions-document-duplicates-select', Icons.sizes.large).then(function (duplicateIconMarkup) {
+            Icons.getIcon('actions-document-new', Icons.sizes.large).then(function (blankIconMarkup) {
               var advandecWizardHasOptions, folders, html, modal, cancelButton, nextButton, prototypes,
                 templates;
 
@@ -158,7 +158,7 @@ define(['jquery',
               });
 
               nextButton.on('click', function() {
-                Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done(function(markup) {
+                Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
                   slide.html($('<div />', {class: 'text-center'}).append(markup));
                 });
               });
@@ -337,7 +337,7 @@ define(['jquery',
 
           nextButton.on('click', function() {
             MultiStepWizard.setup.forceSelection = false;
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done(function(markup) {
+            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               slide.html($('<div />', {class: 'text-center'}).append(markup));
             });
           });
@@ -415,7 +415,7 @@ define(['jquery',
 
           nextButton.on('click', function(e) {
             MultiStepWizard.setup.forceSelection = false;
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done(function(markup) {
+            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               slide.html($('<div />', {class: 'text-center'}).append(markup));
             });
           });
@@ -535,7 +535,7 @@ define(['jquery',
           slide.html(html);
 
           nextButton.on('click', function() {
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done(function(markup) {
+            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               slide.html($('<div />', {class: 'text-center'}).append(markup));
             });
           });
@@ -593,7 +593,7 @@ define(['jquery',
           });
 
           nextButton.on('click', function(e) {
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done(function(markup) {
+            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               MultiStepWizard.set('confirmationDuplicateFormName', that.data('formName'));
               MultiStepWizard.set('savePath', $(getDomElementIdentifier('duplicateFormSavePath') + ' option:selected', modal).val());
 
@@ -662,7 +662,7 @@ define(['jquery',
           slide.html(html);
 
           nextButton.on('click', function(e) {
-            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done(function(markup) {
+            Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
               slide.html($('<div />', {class: 'text-center'}).append(markup));
             });
           });

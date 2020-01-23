@@ -229,7 +229,7 @@ class ImageManipulation {
     const payload: object = this.trigger.data('payload');
     const initCropperModal: ()  => void = this.initializeCropperModal.bind(this);
 
-    Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done((icon: string): void => {
+    Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
       /**
        * Open modal with image to crop
        */

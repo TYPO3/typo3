@@ -61,7 +61,7 @@ class ClearCacheMenu {
     const $toolbarItemIcon = $(Identifiers.toolbarIconSelector, Identifiers.containerSelector);
     const $existingIcon = $toolbarItemIcon.clone();
 
-    Icons.getIcon('spinner-circle-light', Icons.sizes.small).done((spinner: string): void => {
+    Icons.getIcon('spinner-circle-light', Icons.sizes.small).then((spinner: string): void => {
       $toolbarItemIcon.replaceWith(spinner);
     });
 

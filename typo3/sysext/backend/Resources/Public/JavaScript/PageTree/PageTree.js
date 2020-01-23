@@ -111,7 +111,7 @@ define(['jquery',
       _this.wrapper.parent().find('.node-mount-point [data-tree-icon]').each(function() {
         var $this = $(this);
 
-        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small, null, null, 'inline').done(function(icon) {
+        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small, null, null, 'inline').then(function(icon) {
           $this.append(icon);
         });
       });

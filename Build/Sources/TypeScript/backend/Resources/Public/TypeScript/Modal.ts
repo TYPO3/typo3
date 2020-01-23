@@ -404,7 +404,7 @@ class Modal {
     if (configuration.type === 'ajax') {
       const contentTarget = configuration.ajaxTarget ? configuration.ajaxTarget : Identifiers.body;
       const $loaderTarget = currentModal.find(contentTarget);
-      Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).done((icon: string): void => {
+      Icons.getIcon('spinner-circle', Icons.sizes.default, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
         $loaderTarget.html('<div class="modal-loading">' + icon + '</div>');
         $.get(
           <string>configuration.content,
@@ -448,7 +448,7 @@ class Modal {
       $me.find(Identifiers.footer).find('.t3js-active').first().focus();
       // Get Icons
       $me.find(Identifiers.iconPlaceholder).each((index: number, elem: Element): void => {
-        Icons.getIcon($(elem).data('icon'), Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).done((icon: string): void => {
+        Icons.getIcon($(elem).data('icon'), Icons.sizes.small, null, null, Icons.markupIdentifiers.inline).then((icon: string): void => {
           this.currentModal.find(Identifiers.iconPlaceholder + '[data-icon=' + $(icon).data('identifier') + ']').replaceWith(icon);
         });
       });

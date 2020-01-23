@@ -130,7 +130,7 @@ class LiveSearch {
             '',
             Icons.states.default,
             Icons.markupIdentifiers.inline,
-          ).done((markup: string): void => {
+          ).then((markup: string): void => {
             $toolbarItem.find('.icon-apps-toolbar-menu-search').replaceWith(markup);
           });
         }
@@ -150,7 +150,7 @@ class LiveSearch {
             '',
             Icons.states.default,
             Icons.markupIdentifiers.inline,
-          ).done((markup: string): void => {
+          ).then((markup: string): void => {
             $toolbarItem.find('.icon-spinner-circle-light').replaceWith(markup);
           });
         }

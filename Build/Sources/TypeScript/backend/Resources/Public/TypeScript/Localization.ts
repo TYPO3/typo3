@@ -52,8 +52,8 @@ class Localization {
 
   private initialize(): void {
     const me = this;
-    Icons.getIcon('actions-localize', Icons.sizes.large).done((localizeIconMarkup: string): void => {
-      Icons.getIcon('actions-edit-copy', Icons.sizes.large).done((copyIconMarkup: string): void => {
+    Icons.getIcon('actions-localize', Icons.sizes.large).then((localizeIconMarkup: string): void => {
+      Icons.getIcon('actions-edit-copy', Icons.sizes.large).then((copyIconMarkup: string): void => {
         $(me.triggerButton).removeClass('disabled');
 
         $(document).on('click', me.triggerButton, (e: JQueryEventObject): void => {
@@ -129,7 +129,7 @@ class Localization {
             '',
             SeverityEnum.info,
             ($slide: JQuery): void => {
-              Icons.getIcon('spinner-circle-dark', Icons.sizes.large).done((markup: string): void => {
+              Icons.getIcon('spinner-circle-dark', Icons.sizes.large).then((markup: string): void => {
                 $slide.html('<div class="text-center">' + markup + '</div>');
 
                 this.loadAvailableLanguages(
@@ -183,7 +183,7 @@ class Localization {
             TYPO3.lang['localize.view.summary'],
             '',
             SeverityEnum.info, ($slide: JQuery): void => {
-              Icons.getIcon('spinner-circle-dark', Icons.sizes.large).done((markup: string): void => {
+              Icons.getIcon('spinner-circle-dark', Icons.sizes.large).then((markup: string): void => {
                 $slide.html('<div class="text-center">' + markup + '</div>');
               });
               this.getSummary(

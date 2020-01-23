@@ -605,7 +605,7 @@ define(
             identifier: iconName,
             icon: ''
           };
-          Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').done(function(icon) {
+          Icons.getIcon(iconName, Icons.sizes.small, null, null, 'inline').then(function(icon) {
             var result = icon.match(/<svg[\s\S]*<\/svg>/i);
 
             // Check if the icon is from the Bitmap Icon Provider (see PHP class for the inline rendering)

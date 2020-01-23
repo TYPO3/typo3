@@ -102,16 +102,16 @@ class MultiStepWizard {
    * Add the final processing slide as the last step
    *
    * @param {Function} callback
-   * @returns {JQueryPromise<any>}
+   * @returns {Promise<string>}
    */
-  public addFinalProcessingSlide(callback?: Function): JQueryPromise<any> {
+  public addFinalProcessingSlide(callback?: Function): Promise<void> {
     if (!callback) {
       callback = (): void => {
         this.dismiss();
       };
     }
 
-    return Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).done((markup: string) => {
+    return Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then((markup: string) => {
       let $processingSlide = $('<div />', {class: 'text-center'}).append(markup);
       this.addSlide(
         'final-processing-slide', top.TYPO3.lang['wizard.processing.title'],

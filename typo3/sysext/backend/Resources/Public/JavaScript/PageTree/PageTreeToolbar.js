@@ -157,7 +157,7 @@ define(['jquery',
       $toolbar.find('[data-tree-icon]').each(function() {
         var $this = $(this);
 
-        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small).done(function(icon) {
+        Icons.getIcon($this.attr('data-tree-icon'), Icons.sizes.small).then(function(icon) {
           $this.append(icon);
         });
       });

@@ -475,7 +475,7 @@ class InlineControlContainer {
       recordContainer.classList.add(hiddenClass);
     }
 
-    Icons.getIcon(toggleIcon, Icons.sizes.small).done((markup: string): void => {
+    Icons.getIcon(toggleIcon, Icons.sizes.small).then((markup: string): void => {
       target.replaceChild(document.createRange().createContextualFragment(markup), target.querySelector('.t3js-icon'));
     });
   }
@@ -918,7 +918,7 @@ class InlineControlContainer {
         } else {
           sortUp.classList.remove('disabled');
         }
-        Icons.getIcon(iconIdentifier, Icons.sizes.small).done((markup: string): void => {
+        Icons.getIcon(iconIdentifier, Icons.sizes.small).then((markup: string): void => {
           sortUp.replaceChild(document.createRange().createContextualFragment(markup), sortUp.querySelector('.t3js-icon'));
         });
       }
@@ -932,7 +932,7 @@ class InlineControlContainer {
         } else {
           sortDown.classList.remove('disabled');
         }
-        Icons.getIcon(iconIdentifier, Icons.sizes.small).done((markup: string): void => {
+        Icons.getIcon(iconIdentifier, Icons.sizes.small).then((markup: string): void => {
           sortDown.replaceChild(document.createRange().createContextualFragment(markup), sortDown.querySelector('.t3js-icon'));
         });
       }
