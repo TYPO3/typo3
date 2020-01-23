@@ -483,7 +483,7 @@ module.exports = function (grunt) {
     terser: {
       options: {
         output: {
-          ecma: 6
+          ecma: 8
         }
       },
       thirdparty: {

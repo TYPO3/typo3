@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __awaiter=this&&this.__awaiter||function(t,e,n,i){return new(n||(n=Promise))((function(c,r){function a(t){try{u(i.next(t))}catch(t){r(t)}}function o(t){try{u(i.throw(t))}catch(t){r(t)}}function u(t){var e;t.done?c(t.value):(e=t.value,e instanceof n?e:new n((function(t){t(e)}))).then(a,o)}u((i=i.apply(t,e||[])).next())}))};define(["require","exports","./AbstractAction","../Icons"],(function(t,e,n,i){"use strict";class c extends n.AbstractAction{execute(t){return __awaiter(this,void 0,void 0,(function*(){return i.getIcon("spinner-circle-light",i.sizes.small).then(e=>{t.innerHTML=e}),yield this.executeCallback()}))}executeCallback(){return __awaiter(this,void 0,void 0,(function*(){return yield this.callback()}))}}return c}));
+define(["require","exports","./AbstractAction","../Icons"],(function(e,t,c,n){"use strict";class s extends c.AbstractAction{async execute(e){return n.getIcon("spinner-circle-light",n.sizes.small).then(t=>{e.innerHTML=t}),await this.executeCallback()}async executeCallback(){return await this.callback()}}return s}));
