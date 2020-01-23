@@ -20,6 +20,7 @@ ignoreFiles+="sysext/extbase/Classes/Core/Bootstrap.php"
 ignoreFiles+="sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php"
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOStatement.php"
 ignoreFiles+="sysext/core/Classes/Database/Driver/PDOConnection.php"
+ignoreFiles+="sysext/frontend/Classes/Typolink/PageLinkBuilder.php"
 
 # both ActionController and AbstractController throw the same exceptions
 # until AbstractController is removed
