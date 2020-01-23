@@ -179,7 +179,11 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         // Link to a page that has a site configuration
         if ($siteOfTargetPage !== null) {
-            $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
+            try {
+                $siteLanguageOfTargetPage = $this->getSiteLanguageOfTargetPage($siteOfTargetPage, (string)($conf['language'] ?? 'current'));
+            } catch (UnableToLinkException $e) {
+                throw new UnableToLinkException($e->getMessage(), $e->getCode(), $e, $linkText);
+            }
             $languageAspect = LanguageAspectFactory::createFromSiteLanguage($siteLanguageOfTargetPage);
 
             // Now overlay the page in the target language, in order to have valid title attributes etc.
