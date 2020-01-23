@@ -65,7 +65,6 @@ class ZipServiceTest extends FunctionalTestCase
             __DIR__ . '/Fixtures/malicious.zip',
             $extensionDirectory
         );
-        GeneralUtility::fixPermissions($extensionDirectory, true);
 
         self::assertFileNotExists($extensionDirectory . '/../tool.php');
         self::assertFileExists($extensionDirectory . '/tool.php');
@@ -86,11 +85,35 @@ class ZipServiceTest extends FunctionalTestCase
             __DIR__ . '/Fixtures/my_extension.zip',
             $extensionDirectory
         );
-        GeneralUtility::fixPermissions($extensionDirectory, true);
 
         self::assertDirectoryExists($extensionDirectory . '/Classes');
         self::assertFileExists($extensionDirectory . '/Resources/Public/Css/empty.css');
         self::assertFileExists($extensionDirectory . '/ext_emconf.php');
+    }
+
+    /**
+     * @test
+     */
+    public function fileContentIsExtractedAsExpectedAndSetsPermissions()
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'] = '0777';
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'] = '0772';
+        $extensionDirectory = $this->directory . '/my_extension';
+        GeneralUtility::mkdir($extensionDirectory);
+
+        (new ZipService())->extract(
+            __DIR__ . '/Fixtures/my_extension.zip',
+            $extensionDirectory
+        );
+
+        self::assertDirectoryExists($extensionDirectory . '/Classes');
+        self::assertFileExists($extensionDirectory . '/Resources/Public/Css/empty.css');
+        self::assertFileExists($extensionDirectory . '/ext_emconf.php');
+
+        $filePerms = fileperms($extensionDirectory . '/Resources/Public/Css/empty.css');
+        $folderPerms = fileperms($extensionDirectory . '/Classes');
+        self::assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask'], substr(sprintf('%o', $filePerms), -4));
+        self::assertEquals($GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask'], substr(sprintf('%o', $folderPerms), -4));
     }
 
     /**

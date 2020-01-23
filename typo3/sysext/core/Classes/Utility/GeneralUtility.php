@@ -3380,6 +3380,9 @@ class GeneralUtility
      */
     public static function isAbsPath($path)
     {
+        if (substr($path, 0, 6) === 'vfs://') {
+            return true;
+        }
         return $path[0] === '/' || TYPO3_OS === 'WIN' && (strpos($path, ':/') === 1 || strpos($path, ':\\') === 1);
     }
 
@@ -3391,6 +3394,9 @@ class GeneralUtility
      */
     public static function isAllowedAbsPath($path)
     {
+        if (substr($path, 0, 6) === 'vfs://') {
+            return true;
+        }
         $lockRootPath = $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'];
         return static::isAbsPath($path) && static::validPathStr($path)
             && (static::isFirstPartOfStr($path, PATH_site)
