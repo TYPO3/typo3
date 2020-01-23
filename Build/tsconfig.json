@@ -10,6 +10,8 @@
             "es2018",
             "es2019"
         ],
+        "incremental": true,
+        "tsBuildInfoFile": "./.cache/tsconfig.tsbuildinfo",
         "module": "amd",
         "sourceMap": false,
         "removeComments": false,

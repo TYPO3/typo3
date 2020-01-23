@@ -187,6 +187,8 @@ module.exports = function (grunt) {
     },
     eslint: {
       options: {
+        cache: true,
+        cacheLocation: './.cache/eslintcache/',
         configFile: 'eslintrc.js'
       },
       files: {
@@ -633,27 +635,39 @@ module.exports = function (grunt) {
   grunt.registerTask('update', ['exec:yarn-install', 'npmcopy']);
 
   /**
+   * grunt compile-typescript task
+   *
+   * call "$ grunt compile-typescript"
+   *
+   * This task does the following things:
+   * - 1) Check all TypeScript files (*.ts) with ESLint which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
+   * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
+   */
+  grunt.registerTask('compile-typescript', ['tsconfig', 'eslint', 'exec:ts']);
+
+  /**
    * grunt scripts task
    *
    * call "$ grunt scripts"
    *
    * this task does the following things:
-   * - 1) Check all TypeScript files (*.ts) with ESLint which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
-   * - 2) Compiles all TypeScript files (*.ts) which are located in sysext/<EXTKEY>/Resources/Private/TypeScript/*.ts
-   * - 3) Copy all generated JavaScript and Map files to public folders
+   * - 1) Compiles TypeScript (see compile-typescript)
+   * - 2) Copy all generated JavaScript files to public folders
+   * - 3) Minify build
    */
-  grunt.registerTask('scripts', ['tsconfig', 'eslint', 'tsclean', 'exec:ts', 'copy:ts_files', 'terser:typescript']);
+  grunt.registerTask('scripts', ['compile-typescript', 'copy:ts_files', 'terser:typescript']);
 
   /**
-   * grunt tsclean task
+   * grunt clear-build task
    *
-   * call "$ grunt tsclean"
+   * call "$ grunt clear-build"
    *
-   * Clean the JavaScript output folder before building
+   * Removes all build-related assets, e.g. cache and built files
    */
-  grunt.task.registerTask('tsclean', function () {
+  grunt.registerTask('clear-build', function () {
     grunt.option('force');
-    grunt.file.delete("JavaScript");
+    grunt.file.delete('.cache');
+    grunt.file.delete('JavaScript');
   });
 
   /**
@@ -693,5 +707,5 @@ module.exports = function (grunt) {
    * - minifies svg files
    * - compiles TypeScript files
    */
-  grunt.registerTask('build', ['update', 'scripts', 'copy', 'format', 'css', 'terser', 'imagemin']);
+  grunt.registerTask('build', ['clear-build', 'update', 'compile-typescript', 'copy', 'format', 'css', 'terser', 'imagemin']);
 };
