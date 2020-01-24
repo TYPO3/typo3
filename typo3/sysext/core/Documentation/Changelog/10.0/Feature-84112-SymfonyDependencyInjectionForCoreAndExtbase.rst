@@ -115,7 +115,7 @@ having to write some boilerplate.
          $siteConfiguration: '@TYPO3\CMS\Core\Configuration\SiteConfiguration'
 
       # Example Extbase controller
-      Your\Namespace\Controller\ExampleController
+      Your\Namespace\Controller\ExampleController:
        # mark public to be dispatchable
        public: true
        # Defining to be a prototype, as Extbase controllers are stateful (i. e. could not be defined as singleton)
