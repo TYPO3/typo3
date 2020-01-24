@@ -398,6 +398,11 @@ module.exports = function (grunt) {
         ]
       }
     },
+    newer: {
+      options: {
+        cache: './.cache/grunt-newer/'
+      }
+    },
     npmcopy: {
       options: {
         clean: false,
@@ -578,6 +583,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-stylelint');
   grunt.loadNpmTasks('grunt-lintspaces');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-newer');
 
   /**
    * grunt default task
@@ -621,7 +627,7 @@ module.exports = function (grunt) {
    * - sass
    * - postcss
    */
-  grunt.registerTask('css', ['formatsass', 'sass', 'postcss']);
+  grunt.registerTask('css', ['newer:formatsass', 'newer:sass', 'newer:postcss']);
 
   /**
    * grunt update task
@@ -655,7 +661,7 @@ module.exports = function (grunt) {
    * - 2) Copy all generated JavaScript files to public folders
    * - 3) Minify build
    */
-  grunt.registerTask('scripts', ['compile-typescript', 'copy:ts_files', 'terser:typescript']);
+  grunt.registerTask('scripts', ['compile-typescript', 'newer:copy:ts_files', 'newer:terser:typescript']);
 
   /**
    * grunt clear-build task
