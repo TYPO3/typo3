@@ -471,9 +471,9 @@ class ConditionMatcherTest extends FunctionalTestCase
         $GLOBALS['TSFE']->sys_page = GeneralUtility::makeInstance(PageRepository::class);
         $GLOBALS['TSFE']->tmpl = GeneralUtility::makeInstance(TemplateService::class);
         $GLOBALS['TSFE']->tmpl->rootLine = [
-            2 => ['uid' => 3, 'pid' => 2],
+            0 => ['uid' => 1, 'pid' => 0],
             1 => ['uid' => 2, 'pid' => 1],
-            0 => ['uid' => 1, 'pid' => 0]
+            2 => ['uid' => 3, 'pid' => 2],
         ];
     }
 }
