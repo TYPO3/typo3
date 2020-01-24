@@ -143,17 +143,27 @@ class AjaxRequest {
    * @return {Promise<Response>}
    */
   private async send(init: RequestInit = {}): Promise<Response> {
-    // Sanitize URL into a generic format, e.g. ensure a domain only url contains a trailing slash
-    let url = new URL(this.url, window.location.origin).toString();
-    if (this.queryArguments !== '') {
-      const delimiter = !this.url.includes('?') ? '?' : '&';
-      url += delimiter + this.queryArguments;
-    }
-    const response = await fetch(url, this.getMergedOptions(init));
+    const response = await fetch(this.composeRequestUrl(), this.getMergedOptions(init));
     if (!response.ok) {
       throw new ResponseError(response);
     }
     return response;
+  }
+
+  private composeRequestUrl(): string {
+    let url = this.url;
+    if (url.charAt(0) === '?') {
+      // URL is a search string only, prepend current location
+      url = window.location.origin + window.location.pathname + url;
+    }
+    url = new URL(url, window.location.origin).toString();
+
+    if (this.queryArguments !== '') {
+      const delimiter = !this.url.includes('?') ? '?' : '&';
+      url += delimiter + this.queryArguments;
+    }
+
+    return url;
   }
 
   /**

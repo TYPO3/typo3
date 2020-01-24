@@ -90,8 +90,8 @@ class Router {
     if (typeof TYPO3.settings === 'undefined') {
       TYPO3.settings = {
         ajaxUrls: {
-          icons: '?install[controller]=icon&install[action]=getIcon',
-          icons_cache: '?install[controller]=icon&install[action]=getCacheIdentifier',
+          icons: window.location.origin + window.location.pathname + '?install[controller]=icon&install[action]=getIcon',
+          icons_cache: window.location.origin + window.location.pathname + '?install[controller]=icon&install[action]=getCacheIdentifier',
         },
       };
     }

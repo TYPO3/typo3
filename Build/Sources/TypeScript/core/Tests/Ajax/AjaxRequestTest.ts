@@ -160,6 +160,12 @@ describe('TYPO3/CMS/Core/Ajax/AjaxRequest', (): void => {
         {foo: 'bar', bar: {baz: 'bencer'}},
         window.location.origin + '/foo/bar?foo=bar&bar[baz]=bencer',
       ];
+      yield [
+        'fallback to current script if not defined',
+        '?foo=bar&baz=bencer',
+        {},
+        window.location.origin + window.location.pathname + '?foo=bar&baz=bencer',
+      ];
     }
 
     for (let providedData of urlInputDataProvider()) {
