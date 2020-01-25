@@ -443,7 +443,8 @@ class ValidatorTask extends AbstractTask
                 'pObj' => &$this,
                 'markerArray' => $markerArray
             ];
-            $newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $this);
+            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+            $newMarkers = GeneralUtility::callUserFunction($userFunc, $params, $ref);
             if (is_array($newMarkers)) {
                 $markerArray = $newMarkers + $markerArray;
             }

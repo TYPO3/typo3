@@ -234,7 +234,8 @@ class CrawlerHook
                             $hookObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]);
                             $this->pObj = $pObj;
                             // For addQueueEntryForHook()
-                            $hookObj->indexOperation($cfgRec, $session_data, $params, $this);
+                            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+                            $hookObj->indexOperation($cfgRec, $session_data, $params, $ref);
                         }
                 }
                 // Save process data which might be modified:

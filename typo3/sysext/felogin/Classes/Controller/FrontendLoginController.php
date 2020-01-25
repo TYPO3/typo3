@@ -197,7 +197,8 @@ class FrontendLoginController extends AbstractPlugin
                 ];
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['beforeRedirect'] ?? [] as $_funcRef) {
                     if ($_funcRef) {
-                        GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                        $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+                        GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
                     }
                 }
                 \TYPO3\CMS\Core\Utility\HttpUtility::redirect($this->redirectUrl);
@@ -208,7 +209,8 @@ class FrontendLoginController extends AbstractPlugin
             $_params = [
                 'content' => $content
             ];
-            $content = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+            $content = GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
         }
         return $this->conf['wrapContentInBaseClass'] ? $this->pi_wrapInBaseClass($content) : $content;
     }
@@ -830,7 +832,8 @@ class FrontendLoginController extends AbstractPlugin
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['logout_confirmed'] ?? [] as $_funcRef) {
                         $_params = [];
                         if ($_funcRef) {
-                            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+                            GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
                         }
                     }
                     switch ($redirMethod) {

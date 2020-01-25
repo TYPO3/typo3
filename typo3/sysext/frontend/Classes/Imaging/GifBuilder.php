@@ -125,7 +125,8 @@ class GifBuilder extends GraphicalFunctions
             // line as TEXT obj, see extension julle_gifbconf
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] ?? [] as $_funcRef) {
                 $_params = $this->setup;
-                $this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+                $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+                $this->setup = GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
             }
             // Initializing global Char Range Map
             $this->charRangeMap = [];

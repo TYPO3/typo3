@@ -2898,7 +2898,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 'lifetime' => $lifetime,
                 'tags' => $tags
             ];
-            GeneralUtility::callUserFunction($_funcRef, $params, $this);
+            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+            GeneralUtility::callUserFunction($_funcRef, $params, $ref);
         }
         $cacheFrontend->set($key, $content, $tags, $lifetime);
         return $content;
@@ -4716,7 +4717,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 if (!$hookObject instanceof ContentObjectGetDataHookInterface) {
                     throw new \UnexpectedValueException('$hookObject must implement interface ' . ContentObjectGetDataHookInterface::class, 1195044480);
                 }
-                $retVal = $hookObject->getDataExtension($string, $fieldArray, $secVal, $retVal, $this);
+                $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+                $retVal = $hookObject->getDataExtension($string, $fieldArray, $secVal, $retVal, $ref);
             }
         }
         return $retVal;
@@ -5125,7 +5127,8 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'tagAttributes' => &$tagAttributes
         ];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typoLink_PostProc'] ?? [] as $_funcRef) {
-            GeneralUtility::callUserFunction($_funcRef, $_params, $this);
+            $ref = $this; // introduced for phpstan to not lose type information when passing $this into callUserFunction
+            GeneralUtility::callUserFunction($_funcRef, $_params, $ref);
         }
 
         // If flag "returnLastTypoLinkUrl" set, then just return the latest URL made:
