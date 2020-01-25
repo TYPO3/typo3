@@ -60,9 +60,16 @@ class ConditionMatcher extends AbstractConditionMatcher
         $frontend->user->userId = $frontendUserAspect->get('id');
         $frontend->user->userGroupList = implode(',', $frontendUserAspect->get('groupIds'));
 
+        $workspaceAspect = $this->context->getAspect('workspace');
+        $workspace = new \stdClass();
+        $workspace->workspaceId = $workspaceAspect->get('id');
+        $workspace->isLive = $workspaceAspect->get('isLive');
+        $workspace->isOffline = $workspaceAspect->get('isOffline');
+
         $this->expressionLanguageResolverVariables = [
             'tree' => $tree,
             'frontend' => $frontend,
+            'workspace' => $workspace,
             'page' => $GLOBALS['TSFE']->page ?? [],
         ];
     }

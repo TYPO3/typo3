@@ -111,6 +111,14 @@ The following variables are available. The values are context related.
 |                     |            |                                                                              |
 | .user.userGroupList | String     | comma list of group UIDs                                                     |
 +---------------------+------------+------------------------------------------------------------------------------+
+| workspace           | Object     | object with workspace information                                            |
+|                     |            |                                                                              |
+| .workspaceId        | Integer    | id of current workspace                                                      |
+|                     |            |                                                                              |
+| .isLive             | Boolean    | true if current workspace is live                                            |
+|                     |            |                                                                              |
+| .isOffline          | Boolean    | true if current workspace is offline                                         |
++---------------------+------------+------------------------------------------------------------------------------+
 | typo3               | Object     | object with TYPO3 related information                                        |
 |                     |            |                                                                              |
 | .version            | String     | TYPO3_version (e.g. 9.4.0-dev)                                               |

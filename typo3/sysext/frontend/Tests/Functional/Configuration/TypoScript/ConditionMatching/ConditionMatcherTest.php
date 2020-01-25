@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Configuration\TypoScript\Condition
 use Prophecy\Argument;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Log\Logger;
@@ -157,6 +158,53 @@ class ConditionMatcherTest extends FunctionalTestCase
         $subject = $this->getConditionMatcher();
         self::assertTrue($subject->match('[loginUser(\'*\') == false]'));
         self::assertTrue($subject->match('[loginUser("*") == false]'));
+    }
+
+    /**
+     * Tests whether checking for workspace id matches current workspace id
+     *
+     * @test
+     */
+    public function workspaceIdConditionMatchesCurrentWorkspaceId(): void
+    {
+        $this->setUpWorkspaceAspect(0);
+        $subject = $this->getConditionMatcher();
+        self::assertTrue($subject->match('[workspace.workspaceId === 0]'));
+        self::assertTrue($subject->match('[workspace.workspaceId == 0]'));
+        self::assertTrue($subject->match('[workspace.workspaceId == "0"]'));
+        self::assertTrue($subject->match('[workspace.workspaceId == \'0\']'));
+    }
+
+    /**
+     * Tests whether checking if workspace is live matches
+     *
+     * @test
+     */
+    public function workspaceIsLiveMatchesCorrectWorkspaceState(): void
+    {
+        $this->setUpWorkspaceAspect(1);
+        $subject = $this->getConditionMatcher();
+        self::assertFalse($subject->match('[workspace.isLive]'));
+        self::assertFalse($subject->match('[workspace.isLive === true]'));
+        self::assertFalse($subject->match('[workspace.isLive == true]'));
+        self::assertFalse($subject->match('[workspace.isLive !== false]'));
+        self::assertFalse($subject->match('[workspace.isLive != false]'));
+    }
+
+    /**
+     * Tests whether checking if workspace is offline matches
+     *
+     * @test
+     */
+    public function workspaceIsOfflineMatchesCorrectWorkspaceState(): void
+    {
+        $this->setUpWorkspaceAspect(1);
+        $subject = $this->getConditionMatcher();
+        self::assertTrue($subject->match('[workspace.isOffline]'));
+        self::assertTrue($subject->match('[workspace.isOffline === true]'));
+        self::assertTrue($subject->match('[workspace.isOffline == true]'));
+        self::assertTrue($subject->match('[workspace.isOffline !== false]'));
+        self::assertTrue($subject->match('[workspace.isOffline != false]'));
     }
 
     /**
@@ -450,6 +498,16 @@ class ConditionMatcherTest extends FunctionalTestCase
         $frontendUser->groupData['uid'] = $groups;
 
         GeneralUtility::makeInstance(Context::class)->setAspect('frontend.user', new UserAspect($frontendUser, $groups));
+    }
+
+    /**
+     * Set up workspace aspect.
+     *
+     * @param int $workspaceId
+     */
+    protected function setUpWorkspaceAspect(int $workspaceId): void
+    {
+        GeneralUtility::makeInstance(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 
     /**
