@@ -89,7 +89,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function renderAddsObjectToViewHelperVariableContainer()
     {
         $formObject = new \stdClass();
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderRequestHashField', 'addFormObjectNameToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectNameFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderAdditionalIdentityFields', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'addFormObjectNameToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectNameFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['object' => $formObject]);
         $this->viewHelperVariableContainer->add(FormViewHelper::class, 'formObject', $formObject);
@@ -106,7 +106,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function renderAddsObjectNameToTemplateVariableContainer()
     {
         $objectName = 'someObjectName';
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'renderRequestHashField', 'addFormObjectToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderHiddenSecuredReferrerField', 'addFormObjectToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['name' => $objectName]);
         $this->viewHelperVariableContainer->add(FormViewHelper::class, 'formObjectName', $objectName);
@@ -121,7 +121,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function formObjectNameArgumentOverrulesNameArgument()
     {
         $objectName = 'someObjectName';
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderRequestHashField', 'addFormObjectToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'addFormObjectToViewHelperVariableContainer', 'addFieldNamePrefixToViewHelperVariableContainer', 'removeFormObjectFromViewHelperVariableContainer', 'removeFieldNamePrefixFromViewHelperVariableContainer', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['name' => 'formName', 'objectName' => $objectName]);
         $this->viewHelperVariableContainer->add(FormViewHelper::class, 'formObjectName', $objectName);
@@ -135,7 +135,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderCallsRenderHiddenReferrerFields()
     {
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderRequestHashField', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenReferrerFields', 'renderTrustedPropertiesField'], [], '', false);
         $viewHelper->expects(self::once())->method('renderHiddenReferrerFields');
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setTagBuilder($this->tagBuilder);
@@ -148,7 +148,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function renderCallsRenderHiddenIdentityField()
     {
         $object = new \stdClass();
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderRequestHashField', 'renderHiddenReferrerFields', 'renderHiddenIdentityField', 'getFormObjectName', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenReferrerFields', 'renderHiddenIdentityField', 'getFormObjectName', 'renderTrustedPropertiesField'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['object' => $object]);
         $viewHelper->expects(self::atLeastOnce())->method('getFormObjectName')->willReturn('MyName');
@@ -162,7 +162,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
      */
     public function renderCallsRenderAdditionalIdentityFields()
     {
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderRequestHashField', 'renderHiddenReferrerFields', 'renderAdditionalIdentityFields', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenReferrerFields', 'renderAdditionalIdentityFields', 'renderTrustedPropertiesField'], [], '', false);
         $viewHelper->expects(self::once())->method('renderAdditionalIdentityFields');
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setTagBuilder($this->tagBuilder);
@@ -262,7 +262,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function renderAddsSpecifiedPrefixToTemplateVariableContainer()
     {
         $prefix = 'somePrefix';
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderRequestHashField', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
         $this->injectDependenciesIntoViewHelper($viewHelper);
         $viewHelper->setArguments(['fieldNamePrefix' => $prefix]);
         $this->viewHelperVariableContainer->add(FormViewHelper::class, 'fieldNamePrefix', $prefix);
@@ -277,7 +277,7 @@ class FormViewHelperTest extends ViewHelperBaseTestcase
     public function renderAddsDefaultFieldNamePrefixToTemplateVariableContainerIfNoPrefixIsSpecified()
     {
         $expectedPrefix = 'tx_someextension_someplugin';
-        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'renderRequestHashField', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
+        $viewHelper = $this->getAccessibleMock(FormViewHelper::class, ['renderChildren', 'renderHiddenIdentityField', 'renderHiddenReferrerFields', 'addFormFieldNamesToViewHelperVariableContainer', 'removeFormFieldNamesFromViewHelperVariableContainer', 'renderTrustedPropertiesField'], [], '', false);
         $mockExtensionService = $this->createMock(ExtensionService::class);
         $mockExtensionService->expects(self::once())->method('getPluginNamespace')->with('SomeExtension', 'SomePlugin')->willReturn('tx_someextension_someplugin');
         $viewHelper->injectExtensionService($mockExtensionService);
