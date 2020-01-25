@@ -92,7 +92,7 @@ class ConstantConfigurationParser
                 }
                 unset($subcatConfigurationArray);
             }
-            unset($tempConfiguration, $catConfigurationArray);
+            unset($catConfigurationArray);
             $resultArray = $hierarchicConfiguration;
         }
         return $resultArray;

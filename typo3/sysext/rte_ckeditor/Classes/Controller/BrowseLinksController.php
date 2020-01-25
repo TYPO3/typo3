@@ -122,7 +122,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $this->currentLinkParts = $queryParameters['P']['curUrl'] ?? [];
         $this->editorId = $queryParameters['editorId'];
         $this->contentsLanguage = $queryParameters['contentsLanguage'];
-        $this->RTEtsConfigParams = $queryParameters['RTEtsConfigParams'] ?? null;
 
         $this->contentLanguageService = LanguageService::create($this->contentsLanguage);
 

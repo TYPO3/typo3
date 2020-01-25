@@ -36,6 +36,7 @@ class LinkBrowserController extends AbstractLinkBrowserController
     protected function initCurrentUrl()
     {
         $currentLink = isset($this->parameters['currentValue']) ? trim($this->parameters['currentValue']) : '';
+        /** @var array<string,string> $currentLinkParts */
         $currentLinkParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode($currentLink);
         $currentLinkParts['params'] = $currentLinkParts['additionalParams'];
         unset($currentLinkParts['additionalParams']);

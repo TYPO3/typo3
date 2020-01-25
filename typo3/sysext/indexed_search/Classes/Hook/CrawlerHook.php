@@ -51,6 +51,11 @@ class CrawlerHook
     public $callBack = self::class;
 
     /**
+     * @var object
+     */
+    private $pObj;
+
+    /**
      * Initialization of crawler hook.
      * This function is asked for each instance of the crawler and we must check if something is timed to happen and if so put entry(s) in the crawlers log to start processing.
      * In reality we select indexing configurations and evaluate if any of them needs to run.
@@ -59,6 +64,8 @@ class CrawlerHook
      */
     public function crawler_init(&$pObj)
     {
+        $this->pObj = $pObj;
+
         $message = null;
         // Select all indexing configuration which are waiting to be activated:
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('index_config');
