@@ -723,4 +723,25 @@ class ResourceCompressorTest extends BaseTestCase
         self::assertArrayNotHasKey($concatenatedFileName, $result);
         self::assertTrue($result[$fileName]['nomodule']);
     }
+
+    /**
+     * @test
+     */
+    public function deferJavascriptIsNotConcatenated(): void
+    {
+        $fileName = 'fooFile.js';
+        $concatenatedFileName = 'merged_' . $fileName;
+        $testFileFixture = [
+            $fileName => [
+                'file' => $fileName,
+                'defer' => true,
+                'section' => 'top',
+            ]
+        ];
+
+        $result = $this->subject->concatenateJsFiles($testFileFixture);
+
+        self::assertArrayNotHasKey($concatenatedFileName, $result);
+        self::assertTrue($result[$fileName]['defer']);
+    }
 }
