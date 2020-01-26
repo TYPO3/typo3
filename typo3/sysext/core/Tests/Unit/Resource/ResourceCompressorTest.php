@@ -685,4 +685,25 @@ class ResourceCompressorTest extends BaseTestCase
         $relativeToRootPath = $subject->_call('getFilenameFromMainDir', $filename);
         self::assertSame($expected, $relativeToRootPath);
     }
+
+    /**
+     * @test
+     */
+    public function deferJavascriptIsNotConcatenated(): void
+    {
+        $fileName = 'fooFile.js';
+        $concatenatedFileName = 'merged_' . $fileName;
+        $testFileFixture = [
+            $fileName => [
+                'file' => $fileName,
+                'defer' => true,
+                'section' => 'top',
+            ]
+        ];
+
+        $result = $this->subject->concatenateJsFiles($testFileFixture);
+
+        self::assertArrayNotHasKey($concatenatedFileName, $result);
+        self::assertTrue($result[$fileName]['defer']);
+    }
 }
