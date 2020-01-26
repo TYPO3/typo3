@@ -34,6 +34,9 @@
 			<trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries">
 				<source>No log entries.</source>
 			</trans-unit>
+			<trans-unit id="submodule.events.label" resname="submodule.events.label">
+				<source>Events</source>
+			</trans-unit>
 			<trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label">
 				<source>Query Information</source>
 			</trans-unit>

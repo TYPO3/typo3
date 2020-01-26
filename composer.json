@@ -67,6 +67,7 @@
 		"symfony/property-access": "^4.4 || ^5.0",
 		"symfony/property-info": "^4.4 || ^5.0",
 		"symfony/routing": "^4.4 || ^5.0",
+		"symfony/var-dumper": "^4.4 || ^5.0",
 		"symfony/yaml": "^4.4 || ^5.0",
 		"typo3/class-alias-loader": "^1.0",
 		"typo3/cms-cli": "^2.0",

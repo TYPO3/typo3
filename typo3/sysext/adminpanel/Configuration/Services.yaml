@@ -11,3 +11,9 @@ services:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['adminpanel_requestcache']
+
+
+  Psr\EventDispatcher\EventDispatcherInterface:
+    alias: TYPO3\CMS\Adminpanel\Service\EventDispatcher
+    public: true
+  Psr\EventDispatcher\ListenerProviderInterface: '@TYPO3\CMS\Core\EventDispatcher\ListenerProvider'

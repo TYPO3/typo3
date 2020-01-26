@@ -50,6 +50,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] = [
             ],
             'pageTitle' => [
                 'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\PageTitle::class,
+            ],
+            'events' => [
+                'module' => \TYPO3\CMS\Adminpanel\Modules\Debug\Events::class,
             ]
         ],
     ],
