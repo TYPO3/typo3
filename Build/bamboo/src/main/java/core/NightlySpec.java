@@ -295,6 +295,7 @@ public class NightlySpec extends AbstractCoreSpec {
         ArrayList<Job> jobs = new ArrayList<Job>();
         jobs.add(this.getJobIntegrationAnnotations(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
         jobs.add(this.getJobCglCheckFullCore(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
+        jobs.add(this.getJobIntegrationPhpStan(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
         jobs.add(this.getJobIntegrationDocBlocks(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
         jobs.add(this.getJobIntegrationVarious(phpVersionForIntegrityStage, this.getTaskComposerInstall(phpVersionForIntegrityStage), false));
         jobs.add(this.getJobLintScssTs("JS", false));

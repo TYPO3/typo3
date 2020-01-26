@@ -1028,6 +1028,47 @@ abstract class AbstractCoreSpec {
     }
 
     /**
+     * Job with integration test checking the source code with phpstan/phpstan
+     *
+     * @param String requirementIdentifier
+     * @param Task composerTask
+     * @param Boolean isSecurity
+     */
+    protected Job getJobIntegrationPhpStan(String requirementIdentifier, Task composerTask, Boolean isSecurity) {
+        return new Job("Integration phpstan", new BambooKey("PHPSTAN"))
+            .description("Check source code via phpstan")
+            .pluginConfigurations(this.getDefaultJobPluginConfiguration())
+            .tasks(
+                this.getTaskGitCloneRepository(),
+                this.getTaskGitCherryPick(isSecurity),
+                this.getTaskStopDanglingContainers(),
+                composerTask,
+                new ScriptTask()
+                    .description("Run phpstan")
+                    .interpreter(ScriptTaskProperties.Interpreter.BINSH_OR_CMDEXE)
+                    .inlineBody(
+                        this.getScriptTaskBashInlineBody() +
+                            "function phpstan() {\n" +
+                            "    docker run \\\n" +
+                            "        -u ${HOST_UID} \\\n" +
+                            "        -v /bamboo-data/${BAMBOO_COMPOSE_PROJECT_NAME}/passwd:/etc/passwd \\\n" +
+                            "        -v ${BAMBOO_COMPOSE_PROJECT_NAME}_bamboo-data:/srv/bamboo/xml-data/build-dir/ \\\n" +
+                            "        --name ${BAMBOO_COMPOSE_PROJECT_NAME}sib_adhoc \\\n" +
+                            "        --rm \\\n" +
+                            "        typo3gmbh/" + requirementIdentifier.toLowerCase() + ":latest \\\n" +
+                            "        bin/bash -c \"cd ${PWD}; ./bin/phpstan analyse --no-progress --no-interaction $*\"\n" +
+                            "}\n" +
+                            "\n" +
+                            "phpstan"
+                    )
+            )
+            .requirements(
+                this.getRequirementDocker10()
+            )
+            .cleanWorkingDirectory(true);
+    }
+
+    /**
      * Job with various smaller script tests
      */
     Job getJobIntegrationVarious(String requirementIdentifier, Task composerTask, Boolean isSecurity) {

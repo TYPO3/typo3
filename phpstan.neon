@@ -5,6 +5,9 @@ includes:
 parameters:
   level: 0
 
+  # Set to true during local runs to find unmatched ignored errors. bamboo needs this to be set to false.
+  reportUnmatchedIgnoredErrors: false
+
   paths:
     - %currentWorkingDirectory%/typo3/sysext/
 
@@ -54,3 +57,11 @@ parameters:
       message: "#^Unsafe usage of new static\\(\\)\\.$#"
       count: 1
       path: typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
+    -
+      message: "#^Class TYPO3Fluid\\\\Fluid\\\\Core\\\\Parser\\\\TemplateParser does not have a constructor and must be instantiated without any parameters\\.$#"
+      count: 1
+      path: typo3/sysext/fluid/Classes/Core/Rendering/RenderingContext.php
+    -
+      message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\Rendering\\\\RenderingContext\\:\\:getParserConfiguration\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/fluid/Classes/Core/Rendering/RenderingContext.php
