@@ -26,7 +26,7 @@ class PageLayoutViewDrawEmptyColposContent
     {
         if (
             !isset($event->getColumnConfig()['colPos'])
-            || trim($event->getColumnConfig()['colPos']) === ''
+            || trim((string)$event->getColumnConfig()['colPos']) === ''
         ) {
             $content = $event->getContent();
             $content .= <<<EOD
