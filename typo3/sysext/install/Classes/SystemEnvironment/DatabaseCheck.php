@@ -94,6 +94,9 @@ class DatabaseCheck implements CheckInterface
         TYPO3PDOSqliteDriver::class => DatabaseCheckPlatformSqlite::class,
     ];
 
+    /**
+     * @var string[]
+     */
     private static $driverMap = [
         'pdo_mysql' => TYPO3PDOMySqlDriver::class,
         'pdo_sqlite' => TYPO3PDOSqliteDriver::class,
@@ -109,7 +112,9 @@ class DatabaseCheck implements CheckInterface
     ];
 
     /**
-     * @var CheckInterface[]
+     * List of database driver to check
+     *
+     * @var string[]
      */
     private $databaseDriverCheckMap = [
         DoctrineMysqliDriver::class => DatabaseCheckDriverMysqli::class,
