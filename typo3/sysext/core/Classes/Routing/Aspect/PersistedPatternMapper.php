@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Routing\Legacy\PersistedPatternMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -50,6 +51,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class PersistedPatternMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface, SiteLanguageAwareInterface
 {
     use SiteLanguageAwareTrait;
+    use PersistedPatternMapperLegacyTrait;
 
     protected const PATTERN_RESULT = '#\{(?P<fieldName>[^}]+)\}#';
 
@@ -77,11 +79,6 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
      * @var string[]
      */
     protected $routeFieldResultNames;
-
-    /**
-     * @var PersistenceDelegate
-     */
-    protected $persistenceDelegate;
 
     /**
      * @var string|null
@@ -127,9 +124,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
      */
     public function generate(string $value): ?string
     {
-        $result = $this->getPersistenceDelegate()->generate([
-            'uid' => $value
-        ]);
+        $result = $this->findByIdentifier($value);
         $result = $this->resolveOverlay($result);
         return $this->createRouteResult($result);
     }
@@ -143,7 +138,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
             return null;
         }
         $values = $this->filterNamesKeys($matches);
-        $result = $this->getPersistenceDelegate()->resolve($values);
+        $result = $this->findByRouteFieldValues($values);
         if ($result[$this->languageParentFieldName] ?? null > 0) {
             return (string)$result[$this->languageParentFieldName];
         }
@@ -193,51 +188,46 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         );
     }
 
-    /**
-     * @return PersistenceDelegate
-     */
-    protected function getPersistenceDelegate(): PersistenceDelegate
+    protected function findByIdentifier(string $value): ?array
     {
-        if ($this->persistenceDelegate !== null) {
-            return $this->persistenceDelegate;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+            ->select('*')
+            ->where($queryBuilder->expr()->eq(
+                'uid',
+                $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
+            ))
+            ->execute()
+            ->fetch();
+        return $result !== false ? $result : null;
+    }
+
+    protected function findByRouteFieldValues(array $values): ?array
+    {
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+            ->select('*')
+            ->where(...$this->createRouteFieldConstraints($queryBuilder, $values))
+            ->execute()
+            ->fetch();
+        return $result !== false ? $result : null;
+    }
+
+    protected function createQueryBuilder(): QueryBuilder
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->tableName)
             ->from($this->tableName);
-        // @todo Restrictions (Hidden? Workspace?)
-
-        $resolveModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select('*')->where(
-                ...$this->createFieldConstraints($queryBuilder, $values, true)
-            );
-        };
-        $generateModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select('*')->where(
-                ...$this->createFieldConstraints($queryBuilder, $values)
-            );
-        };
-
-        return $this->persistenceDelegate = new PersistenceDelegate(
-            $queryBuilder,
-            $resolveModifier,
-            $generateModifier
-        );
     }
 
     /**
      * @param QueryBuilder $queryBuilder
      * @param array $values
-     * @param bool $resolveExpansion
      * @return array
      */
-    protected function createFieldConstraints(
-        QueryBuilder $queryBuilder,
-        array $values,
-        bool $resolveExpansion = false
-    ): array {
-        $languageExpansion = $this->languageParentFieldName
-            && $resolveExpansion
-            && isset($values['uid']);
+    protected function createRouteFieldConstraints(QueryBuilder $queryBuilder, array $values): array
+    {
+        $languageExpansion = $this->languageParentFieldName && isset($values['uid']);
 
         $constraints = [];
         foreach ($values as $fieldName => $fieldValue) {

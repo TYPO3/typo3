@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 /**
  * Delegate implementation in order to retrieve and generate values
  * using a database connection.
+ *
+ * @deprecated since TYPO3 v10.3, will be removed in TYPO3 v11.0
  */
 class PersistenceDelegate implements DelegateInterface
 {

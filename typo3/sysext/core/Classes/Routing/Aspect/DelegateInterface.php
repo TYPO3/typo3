@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 /**
  * Interface that describes delegations of tasks to different processors
  * when resolving or generating parameters for URLs.
+ *
+ * @deprecated since TYPO3 v10.3, will be removed in TYPO3 v11.0
  */
 interface DelegateInterface
 {
