@@ -103,15 +103,6 @@ class ReferenceIndex implements LoggerAwareInterface
     public $temp_flexRelations = [];
 
     /**
-     * This variable used to indicate whether referencing should take workspace overlays into account
-     * It is not used since commit 0c34dac08605ba from 10.04.2006, the bug is investigated in https://forge.typo3.org/issues/65725
-     *
-     * @var bool
-     * @see getRelations()
-     */
-    public $WSOL = false;
-
-    /**
      * An index of all found references of a single record created in createEntryData() and accumulated in generateRefIndexData()
      *
      * @var array
@@ -207,10 +198,6 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     public function updateRefIndexTable($tableName, $uid, $testOnly = false)
     {
-        // First, secure that the index table is not updated with workspace tainted relations:
-        $this->WSOL = false;
-
-        // Init:
         $result = [
             'keptNodes' => 0,
             'deletedNodes' => 0,
@@ -322,7 +309,7 @@ class ReferenceIndex implements LoggerAwareInterface
 
     /**
      * Returns array of arrays with an index of all references found in record from table/uid
-     * If the result is used to update the sys_refindex table then ->WSOL must NOT be TRUE (no workspace overlay anywhere!)
+     * If the result is used to update the sys_refindex table then no workspaces must be applied (no workspace overlay anywhere!)
      *
      * @param string $tableName Table name from $GLOBALS['TCA']
      * @param int $uid Record UID

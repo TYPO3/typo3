@@ -304,8 +304,6 @@ class Export extends ImportExport
                     // Initialize reference index object:
                     $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                     $refIndexObj->enableRuntimeCache();
-                    // Yes to workspace overlays for exporting....
-                    $refIndexObj->WSOL = true;
                     $relations = $refIndexObj->getRelations($table, $row);
                     $relations = $this->fixFileIDsInRelations($relations);
                     $relations = $this->removeSoftrefsHavingTheSameDatabaseRelation($relations);
