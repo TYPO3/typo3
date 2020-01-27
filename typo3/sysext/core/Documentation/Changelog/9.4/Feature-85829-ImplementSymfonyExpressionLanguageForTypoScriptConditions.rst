@@ -87,7 +87,9 @@ The following variables are available. The values are context related.
 |                     |            |                                                                              |
 | .rootLine           | Array      | array of arrays with uid and pid                                             |
 |                     |            |                                                                              |
-| .rootLineIds        | Array      | an array with UIDs of the rootline                                           |
+| .rootLineIds        | Array      | an array with UIDs of the root line                                          |
+|                     |            |                                                                              |
+| .rootLineParentIds  | Array      | an array with parent UIDs of the root line                                   |
 +---------------------+------------+------------------------------------------------------------------------------+
 | backend             | Object     | object with backend information (available in BE only)                       |
 |                     |            |                                                                              |
@@ -125,7 +127,7 @@ The following variables are available. The values are context related.
 |                     |            |                                                                              |
 | .branch             | String     | TYPO3_branch (e.g. 9.4)                                                      |
 |                     |            |                                                                              |
-| .devIpMask          | String     | :php`$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']`                        |
+| .devIpMask          | String     | :php:`$GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']`                       |
 +---------------------+------------+------------------------------------------------------------------------------+
 
 
@@ -184,7 +186,7 @@ The following functions are available in **any** context:
 |                        |                       | * `[loginUser('1,3,5')]` // user 1, 3 or 5                              |
 |                        |                       | * `[loginUser('*') == false]` // not logged in                          |
 +------------------------+-----------------------+-------------------------------------------------------------------------+
-| getTSFE                | Object                | TypoScriptFrontendController (`$GLOBALS['TSFE']`)                       |
+| getTSFE                | Object                | TypoScriptFrontendController (:php:`$GLOBALS['TSFE']`)                  |
 |                        |                       |                                                                         |
 |                        |                       | Conditions based on `getTSFE()` used in a context where                 |
 |                        |                       | TSFE is not available will always evaluate to false.                    |
