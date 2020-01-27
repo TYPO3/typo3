@@ -5899,6 +5899,40 @@ class ContentObjectRendererTest extends UnitTestCase
     }
 
     /**
+     * Data provider for checkIf.
+     *
+     * @return array [$expect, $conf]
+     */
+    public function checkIfDataProvider(): array
+    {
+        return [
+            'true bitAnd the same' => [true, ['bitAnd' => '4', 'value' => '4']],
+            'true bitAnd included' => [true, ['bitAnd' => '6', 'value' => '4']],
+            'false bitAnd' => [false, ['bitAnd' => '4', 'value' => '3']],
+            'negate true bitAnd the same' => [false, ['bitAnd' => '4', 'value' => '4', 'negate' => '1']],
+            'negate true bitAnd included' => [false, ['bitAnd' => '6', 'value' => '4', 'negate' => '1']],
+            'negate false bitAnd' => [true, ['bitAnd' => '3', 'value' => '4', 'negate' => '1']],
+        ];
+    }
+
+    /**
+     * Check if checkIf works properly.
+     *
+     * @test
+     * @dataProvider checkIfDataProvider
+     * @param bool $expect Whether result should be true or false.
+     * @param array $conf TypoScript configuration to pass into checkIf
+     */
+    public function checkIf(bool $expect, array $conf)
+    {
+        $subject = $this->getAccessibleMock(
+            ContentObjectRenderer::class,
+            ['stdWrap']
+        );
+        self::assertSame($expect, $subject->checkIf($conf));
+    }
+
+    /**
      * Data provider for stdWrap_ifBlank.
      *
      * @return array [$expect, $content, $conf]

@@ -52,6 +52,7 @@ use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
+use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -3073,6 +3074,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
             if (isset($conf['isInList']) || isset($conf['isInList.'])) {
                 $number = isset($conf['isInList.']) ? trim($this->stdWrap($conf['isInList'], $conf['isInList.'])) : trim($conf['isInList']);
                 if (!GeneralUtility::inList($value, $number)) {
+                    $flag = false;
+                }
+            }
+            if (isset($conf['bitAnd']) || isset($conf['bitAnd.'])) {
+                $number = isset($conf['bitAnd.']) ? trim($this->stdWrap($conf['bitAnd'], $conf['bitAnd.'])) : trim($conf['bitAnd']);
+                if ((new BitSet($number))->get($value) === false) {
                     $flag = false;
                 }
             }
