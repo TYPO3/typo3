@@ -28,6 +28,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SqlSrv extends AbstractPlatform
 {
     /**
+     * https://docs.microsoft.com/en-us/sql/relational-databases/databases/database-identifiers
+     *
+     * @var int The maximum length of the schema name
+     */
+    protected const SCHEMA_NAME_MAX_LENGTH = 128;
+
+    /**
      * SQL Server has a more complex naming schema for the collation.
      * For more information visit:
      * https://docs.microsoft.com/en-us/sql/relational-databases/collations/collation-and-unicode-support
@@ -138,5 +145,47 @@ class SqlSrv extends AbstractPlatform
                 ));
             }
         }
+    }
+
+    /**
+     * Validate the database name
+     * https://docs.microsoft.com/en-us/sql/relational-databases/databases/database-identifiers
+     *
+     * Examples:
+     *
+     * valid:
+     *      _foo
+     *      @foo
+     *      #foo
+     *      _floo1äea
+     *      @foo111111111kemcie_l#@
+     *
+     * not valid:
+     *      @@thisShouldNotBeValid
+     *
+     *
+     * @param string $databaseName
+     * @return bool
+     */
+    public static function isValidDatabaseName(string $databaseName): bool
+    {
+        return strlen($databaseName) <= static::SCHEMA_NAME_MAX_LENGTH && preg_match('/^(?!@@)[a-zA-Z0-9\$_@#\p{L}]*$/u', $databaseName);
+    }
+
+    protected function checkDatabaseName(Connection $connection): void
+    {
+        if (static::isValidDatabaseName($connection->getDatabase())) {
+            return;
+        }
+
+        $this->messageQueue->enqueue(
+            new FlashMessage(
+                'The given database name must not be longer than ' . static::SCHEMA_NAME_MAX_LENGTH . ' characters'
+                . ' and consist solely of basic latin letters (a-z), unicode characters, digits (0-9), dollar signs ($),'
+                . ' symbol @, underscores (_) and does not start with "@@".',
+                'Database name not valid',
+                FlashMessage::ERROR
+            )
+        );
     }
 }

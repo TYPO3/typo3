@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -66,5 +67,34 @@ class Sqlite extends AbstractPlatform
     public function checkDefaultDatabaseServerCharset(Connection $connection): void
     {
         // TODO: Implement getDefaultDatabaseServerCharset() method.
+    }
+
+    /**
+     * Validate the database name
+     * SQLite does not have any limitation for the length of the database name,
+     * but must start with a letter or _
+     *
+     * @param string $databaseName
+     * @return bool
+     */
+    public static function isValidDatabaseName(string $databaseName): bool
+    {
+        return (bool)preg_match('/^[A-Za-z_\/][a-zA-Z0-9\$\/_.-]*$/', $databaseName);
+    }
+
+    protected function checkDatabaseName(Connection $connection): void
+    {
+        if (static::isValidDatabaseName($connection->getDatabase())) {
+            return;
+        }
+
+        $this->messageQueue->enqueue(
+            new FlashMessage(
+                'The given database name must consist solely of basic latin letters (a-z), digits (0-9)'
+                . ' and underscores (_).',
+                'Database name not valid',
+                FlashMessage::ERROR
+            )
+        );
     }
 }

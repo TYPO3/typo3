@@ -205,4 +205,32 @@ class PostgreSql extends AbstractPlatform
             ));
         }
     }
+
+    /**
+     * Validate the database name
+     *
+     * @param string $databaseName
+     * @return bool
+     */
+    public static function isValidDatabaseName(string $databaseName): bool
+    {
+        return strlen($databaseName) <= static::SCHEMA_NAME_MAX_LENGTH && preg_match('/^(?!pg_)[a-zA-Z0-9\$_]*$/', $databaseName);
+    }
+
+    protected function checkDatabaseName(Connection $connection): void
+    {
+        if (static::isValidDatabaseName($connection->getDatabase())) {
+            return;
+        }
+
+        $this->messageQueue->enqueue(
+            new FlashMessage(
+                'The given database name must not be longer than ' . static::SCHEMA_NAME_MAX_LENGTH . ' characters'
+                . ' and consist solely of basic latin letters (a-z), digits (0-9), dollar signs ($)'
+                . ' and underscores (_) and does not start with "pg_".',
+                'Database name not valid',
+                FlashMessage::ERROR
+            )
+        );
+    }
 }

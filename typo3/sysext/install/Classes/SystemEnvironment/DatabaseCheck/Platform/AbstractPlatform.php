@@ -30,6 +30,11 @@ abstract class AbstractPlatform implements PlatformCheckInterface
      */
     protected $messageQueue;
 
+    /**
+     * @var int The maximum length of the schema name
+     */
+    protected const SCHEMA_NAME_MAX_LENGTH = 64;
+
     public function __construct()
     {
         $this->messageQueue = new FlashMessageQueue('install-database-check-platform');
@@ -58,7 +63,7 @@ abstract class AbstractPlatform implements PlatformCheckInterface
      */
     public static function isValidDatabaseName(string $databaseName): bool
     {
-        return strlen($databaseName) <= 50 && preg_match('/^[a-zA-Z0-9\$_]*$/', $databaseName);
+        return strlen($databaseName) <= static::SCHEMA_NAME_MAX_LENGTH && preg_match('/^[a-zA-Z0-9\$_]*$/', $databaseName);
     }
 
     protected function checkDatabaseName(Connection $connection): void
@@ -69,7 +74,7 @@ abstract class AbstractPlatform implements PlatformCheckInterface
 
         $this->messageQueue->enqueue(
             new FlashMessage(
-                'Given database name must be shorter than fifty characters'
+                'The given database name must not be longer than ' . static::SCHEMA_NAME_MAX_LENGTH . ' characters'
                 . ' and consist solely of basic latin letters (a-z), digits (0-9), dollar signs ($)'
                 . ' and underscores (_).',
                 'Database name not valid',
