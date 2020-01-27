@@ -176,11 +176,12 @@ class SlugElement {
         signature: this.options.signature,
       },
       (response: Response): void => {
+        const visualProposal = '/' + response.proposal.replace(/^\//, '');
         if (response.hasConflicts) {
           this.$fullElement.find('.t3js-form-proposal-accepted').addClass('hidden');
-          this.$fullElement.find('.t3js-form-proposal-different').removeClass('hidden').find('span').text(response.proposal);
+          this.$fullElement.find('.t3js-form-proposal-different').removeClass('hidden').find('span').text(visualProposal);
         } else {
-          this.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(response.proposal);
+          this.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(visualProposal);
           this.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
         }
         const isChanged = this.$hiddenField.val() !== response.proposal;
