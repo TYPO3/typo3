@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Routing\Legacy\PersistedAliasMapperLegacyTrait;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Page\PageRepository;
@@ -46,6 +47,7 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMappableAspectInterface
 {
     use SiteLanguageAwareTrait;
+    use PersistedAliasMapperLegacyTrait;
 
     /**
      * @var array
@@ -68,14 +70,14 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     protected $routeValuePrefix;
 
     /**
-     * @var PersistenceDelegate
-     */
-    protected $persistenceDelegate;
-
-    /**
      * @var string[]
      */
     protected $persistenceFieldNames;
+
+    /**
+     * @var string|null
+     */
+    protected $languageFieldName;
 
     /**
      * @var string|null
@@ -115,8 +117,9 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $this->tableName = $tableName;
         $this->routeFieldName = $routeFieldName;
         $this->routeValuePrefix = $routeValuePrefix;
-        $this->persistenceFieldNames = $this->buildPersistenceFieldNames();
+        $this->languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
         $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
+        $this->persistenceFieldNames = $this->buildPersistenceFieldNames();
     }
 
     /**
@@ -124,9 +127,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
      */
     public function generate(string $value): ?string
     {
-        $result = $this->getPersistenceDelegate()->generate([
-            'uid' => $value
-        ]);
+        $result = $this->findByIdentifier($value);
         $result = $this->resolveOverlay($result);
         if (!isset($result[$this->routeFieldName])) {
             return null;
@@ -142,9 +143,7 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
     public function resolve(string $value): ?string
     {
         $value = $this->routeValuePrefix . $this->purgeRouteValuePrefix($value);
-        $result = $this->getPersistenceDelegate()->resolve([
-            $this->routeFieldName => $value
-        ]);
+        $result = $this->findByRouteFieldValue($value);
         if ($result[$this->languageParentFieldName] ?? null > 0) {
             return (string)$result[$this->languageParentFieldName];
         }
@@ -163,8 +162,8 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
             'uid',
             'pid',
             $this->routeFieldName,
-            $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null,
-            $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null,
+            $this->languageFieldName,
+            $this->languageParentFieldName,
         ]);
     }
 
@@ -180,55 +179,39 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         return ltrim($value, $this->routeValuePrefix);
     }
 
-    /**
-     * @return PersistenceDelegate
-     */
-    protected function getPersistenceDelegate(): PersistenceDelegate
+    protected function findByIdentifier(string $value): ?array
     {
-        if ($this->persistenceDelegate !== null) {
-            return $this->persistenceDelegate;
-        }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($this->tableName)
-            ->from($this->tableName);
-        // @todo Restrictions (Hidden? Workspace?)
-
-        $resolveModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select(...$this->persistenceFieldNames)->where(
-                ...$this->createFieldConstraints($queryBuilder, $values)
-            );
-        };
-        $generateModifier = function (QueryBuilder $queryBuilder, array $values) {
-            return $queryBuilder->select(...$this->persistenceFieldNames)->where(
-                ...$this->createFieldConstraints($queryBuilder, $values)
-            );
-        };
-
-        return $this->persistenceDelegate = new PersistenceDelegate(
-            $queryBuilder,
-            $resolveModifier,
-            $generateModifier
-        );
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+            ->select(...$this->persistenceFieldNames)
+            ->where($queryBuilder->expr()->eq(
+                'uid',
+                $queryBuilder->createNamedParameter($value, \PDO::PARAM_INT)
+            ))
+            ->execute()
+            ->fetch();
+        return $result !== false ? $result : null;
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param array $values
-     * @return array
-     */
-    protected function createFieldConstraints(QueryBuilder $queryBuilder, array $values): array
+    protected function findByRouteFieldValue(string $value): ?array
     {
-        $constraints = [];
-        foreach ($values as $fieldName => $fieldValue) {
-            $constraints[] = $queryBuilder->expr()->eq(
-                $fieldName,
-                $queryBuilder->createNamedParameter(
-                    $fieldValue,
-                    \PDO::PARAM_STR
-                )
-            );
-        }
-        return $constraints;
+        $queryBuilder = $this->createQueryBuilder();
+        $result = $queryBuilder
+            ->select(...$this->persistenceFieldNames)
+            ->where($queryBuilder->expr()->eq(
+                $this->routeFieldName,
+                $queryBuilder->createNamedParameter($value, \PDO::PARAM_STR)
+            ))
+            ->execute()
+            ->fetch();
+        return $result !== false ? $result : null;
+    }
+
+    protected function createQueryBuilder(): QueryBuilder
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable($this->tableName)
+            ->from($this->tableName);
     }
 
     /**
