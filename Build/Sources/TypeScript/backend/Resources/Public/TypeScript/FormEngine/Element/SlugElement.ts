@@ -177,11 +177,12 @@ class SlugElement {
       signature: this.options.signature,
     }).then(async (response: AjaxResponse): Promise<any> => {
       const data = await response.resolve();
+      const visualProposal = '/' + data.proposal.replace(/^\//, '');
       if (data.hasConflicts) {
         this.$fullElement.find('.t3js-form-proposal-accepted').addClass('hidden');
-        this.$fullElement.find('.t3js-form-proposal-different').removeClass('hidden').find('span').text(data.proposal);
+        this.$fullElement.find('.t3js-form-proposal-different').removeClass('hidden').find('span').text(visualProposal);
       } else {
-        this.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(data.proposal);
+        this.$fullElement.find('.t3js-form-proposal-accepted').removeClass('hidden').find('span').text(visualProposal);
         this.$fullElement.find('.t3js-form-proposal-different').addClass('hidden');
       }
       const isChanged = this.$hiddenField.val() !== data.proposal;
