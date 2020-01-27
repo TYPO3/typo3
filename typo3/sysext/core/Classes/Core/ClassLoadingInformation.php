@@ -16,6 +16,8 @@ namespace TYPO3\CMS\Core\Core;
 
 use Composer\Autoload\ClassLoader;
 use TYPO3\ClassAliasLoader\ClassAliasMap;
+use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
+use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -99,6 +101,30 @@ class ClassLoadingInformation
 
         $classAliasMapFile = $generator->buildClassAliasMapFile();
         GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
+    }
+
+    /**
+     * @param AfterPackageDeactivationEvent $event
+     * @internal
+     */
+    public static function updateClassLoadingInformationAfterPackageDeactivation(AfterPackageDeactivationEvent $event): void
+    {
+        if (Environment::isComposerMode()) {
+            return;
+        }
+        static::dumpClassLoadingInformation();
+    }
+
+    /**
+     * @param AfterPackageActivationEvent $event
+     * @internal
+     */
+    public static function updateClassLoadingInformationAfterPackageActivation(AfterPackageActivationEvent $event): void
+    {
+        if (Environment::isComposerMode()) {
+            return;
+        }
+        static::dumpClassLoadingInformation();
     }
 
     /**

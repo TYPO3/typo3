@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Finder\Finder;
@@ -24,13 +25,17 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
+use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
+use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Impexp\Import;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
@@ -74,14 +79,19 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     protected $cacheManager;
 
     /**
-     * @var Dispatcher
-     */
-    protected $signalSlotDispatcher;
-
-    /**
      * @var \TYPO3\CMS\Core\Registry
      */
     protected $registry;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @param \TYPO3\CMS\Extensionmanager\Utility\DependencyUtility $dependencyUtility
@@ -132,14 +142,6 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * @param Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
-    }
-
-    /**
      * @param \TYPO3\CMS\Core\Registry $registry
      */
     public function injectRegistry(\TYPO3\CMS\Core\Registry $registry)
@@ -176,7 +178,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
 
         foreach ($extensionKeys as $extensionKey) {
             $this->processExtensionSetup($extensionKey);
-            $this->emitAfterExtensionInstallSignal($extensionKey);
+            $this->eventDispatcher->dispatch(new AfterPackageActivationEvent($extensionKey, 'typo3-cms-extension', $this));
         }
     }
 
@@ -187,8 +189,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     {
         $extension = $this->enrichExtensionWithDetails($extensionKey, false);
         $this->importInitialFiles($extension['siteRelPath'] ?? '', $extensionKey);
-        $this->importStaticSqlFile($extension['siteRelPath']);
-        $import = $this->importT3DFile($extension['siteRelPath']);
+        $this->importStaticSqlFile($extensionKey, $extension['siteRelPath']);
+        $import = $this->importT3DFile($extensionKey, $extension['siteRelPath']);
         $this->importSiteConfiguration($extension['siteRelPath'], $import);
     }
 
@@ -251,28 +253,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     protected function unloadExtension($extensionKey)
     {
         $this->packageManager->deactivatePackage($extensionKey);
-        $this->emitAfterExtensionUninstallSignal($extensionKey);
+        $this->eventDispatcher->dispatch(new AfterPackageDeactivationEvent($extensionKey, 'typo3-cms-extension', $this));
         $this->cacheManager->flushCachesInGroup('system');
-    }
-
-    /**
-     * Emits a signal after an extension has been installed
-     *
-     * @param string $extensionKey
-     */
-    protected function emitAfterExtensionInstallSignal($extensionKey)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionInstall', [$extensionKey, $this]);
-    }
-
-    /**
-     * Emits a signal after an extension has been uninstalled
-     *
-     * @param string $extensionKey
-     */
-    protected function emitAfterExtensionUninstallSignal($extensionKey)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionUninstall', [$extensionKey, $this]);
     }
 
     /**
@@ -476,10 +458,11 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
      * Uses the export import extension to import a T3D or XML file to PID 0
      * Execution state is saved in the this->registry, so it only happens once
      *
+     * @param string $extensionKey
      * @param string $extensionSiteRelPath
      * @return Import|null
      */
-    protected function importT3DFile($extensionSiteRelPath): ?Import
+    protected function importT3DFile($extensionKey, $extensionSiteRelPath): ?Import
     {
         $registryKeysToCheck = [
             $extensionSiteRelPath . 'Initialisation/data.t3d',
@@ -507,7 +490,7 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
             try {
                 $importResult = $importExportUtility->importT3DFile(Environment::getPublicPath() . '/' . $importFileToUse, 0);
                 $this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
-                $this->emitAfterExtensionT3DImportSignal($importFileToUse, $importResult);
+                $this->eventDispatcher->dispatch(new AfterExtensionDatabaseContentHasBeenImportedEvent($extensionKey, $importFileToUse, $importResult, $this));
                 return $importExportUtility->getImport();
             } catch (\ErrorException $e) {
                 $this->logger->warning($e->getMessage(), ['exception' => $e]);
@@ -517,23 +500,13 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
     }
 
     /**
-     * Emits a signal after a t3d file was imported
-     *
-     * @param string $importFileToUse
-     * @param int $importResult
-     */
-    protected function emitAfterExtensionT3DImportSignal($importFileToUse, $importResult)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionT3DImport', [$importFileToUse, $importResult, $this]);
-    }
-
-    /**
      * Imports a static tables SQL File (ext_tables_static+adt)
      * Execution state is saved in the this->registry, so it only happens once
      *
+     * @param string $extensionKey
      * @param string $extensionSiteRelPath
      */
-    protected function importStaticSqlFile($extensionSiteRelPath)
+    protected function importStaticSqlFile(string $extensionKey, $extensionSiteRelPath)
     {
         $extTablesStaticSqlRelFile = $extensionSiteRelPath . 'ext_tables_static+adt.sql';
         if (!$this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile)) {
@@ -545,18 +518,8 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
                 $this->importStaticSql($extTablesStaticSqlContent);
             }
             $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $shortFileHash);
-            $this->emitAfterExtensionStaticSqlImportSignal($extTablesStaticSqlRelFile);
+            $this->eventDispatcher->dispatch(new AfterExtensionStaticDatabaseContentHasBeenImportedEvent($extensionKey, $extTablesStaticSqlRelFile, $this));
         }
-    }
-
-    /**
-     * Emits a signal after a static sql file was imported
-     *
-     * @param string $extTablesStaticSqlRelFile
-     */
-    protected function emitAfterExtensionStaticSqlImportSignal($extTablesStaticSqlRelFile)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionStaticSqlImport', [$extTablesStaticSqlRelFile, $this]);
     }
 
     /**
@@ -581,19 +544,9 @@ class InstallUtility implements SingletonInterface, LoggerAwareInterface
                 }
                 GeneralUtility::copyDirectory($importRelFolder, $destinationRelPath);
                 $this->registry->set('extensionDataImport', $importRelFolder, 1);
-                $this->emitAfterExtensionFileImportSignal($destinationAbsolutePath);
+                $this->eventDispatcher->dispatch(new AfterExtensionFilesHaveBeenImportedEvent($extensionKey, $destinationAbsolutePath, $this));
             }
         }
-    }
-
-    /**
-     * Emits a signal after extension files were imported
-     *
-     * @param string $destinationAbsolutePath
-     */
-    protected function emitAfterExtensionFileImportSignal($destinationAbsolutePath)
-    {
-        $this->signalSlotDispatcher->dispatch(__CLASS__, 'afterExtensionFileImport', [$destinationAbsolutePath, $this]);
     }
 
     /**

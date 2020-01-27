@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Extensionmanager\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Package\PackageInterface;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -56,14 +58,19 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     protected $packageManager;
 
     /**
-     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-     */
-    protected $signalSlotDispatcher;
-
-    /**
      * @var array
      */
     protected $availableExtensions;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @param EmConfUtility $emConfUtility
@@ -98,14 +105,6 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher
-     */
-    public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher)
-    {
-        $this->signalSlotDispatcher = $signalSlotDispatcher;
-    }
-
-    /**
      * Returns the list of available, but not necessarily loaded extensions
      *
      * @return array[] All extensions with info
@@ -114,7 +113,7 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     {
         if ($this->availableExtensions === null) {
             $this->availableExtensions = [];
-            $this->emitPackagesMayHaveChangedSignal();
+            $this->eventDispatcher->dispatch(new PackagesMayHaveChangedEvent());
             foreach ($this->packageManager->getAvailablePackages() as $package) {
                 $this->availableExtensions[$package->getPackageKey()] = [
                     'packagePath' => $package->getPackagePath(),
@@ -147,14 +146,6 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     public function getExtension($extensionKey)
     {
         return $this->packageManager->getPackage($extensionKey);
-    }
-
-    /**
-     * Emits packages may have changed signal
-     */
-    protected function emitPackagesMayHaveChangedSignal()
-    {
-        $this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
     }
 
     /**

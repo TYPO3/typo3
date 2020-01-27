@@ -14,11 +14,13 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Dependency;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
+use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -311,9 +313,11 @@ class DependencyUtilityTest extends UnitTestCase
             'foo' => [],
             'bar' => []
         ];
-        $listUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
+        $listUtilityMock = $this->getMockBuilder(ListUtility::class)
             ->setMethods(['getAvailableExtensions'])
             ->getMock();
+        $listUtilityMock->injectEventDispatcher($eventDispatcher);
         $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->willReturn($availableExtensions);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('listUtility', $listUtilityMock);
@@ -331,9 +335,11 @@ class DependencyUtilityTest extends UnitTestCase
             'foo' => [],
             'bar' => []
         ];
-        $listUtilityMock = $this->getMockBuilder(\TYPO3\CMS\Extensionmanager\Utility\ListUtility::class)
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
+        $listUtilityMock = $this->getMockBuilder(ListUtility::class)
             ->setMethods(['getAvailableExtensions'])
             ->getMock();
+        $listUtilityMock->injectEventDispatcher($eventDispatcher);
         $listUtilityMock->expects(self::atLeastOnce())->method('getAvailableExtensions')->willReturn($availableExtensions);
         $dependencyUtility = $this->getAccessibleMock(DependencyUtility::class, ['dummy']);
         $dependencyUtility->_set('listUtility', $listUtilityMock);

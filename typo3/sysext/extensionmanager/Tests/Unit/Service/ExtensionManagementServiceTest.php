@@ -16,9 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Service;
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
@@ -45,9 +43,7 @@ class ExtensionManagementServiceTest extends UnitTestCase
         parent::setUp();
         $this->resetSingletonInstances = true;
         $this->managementService = new ExtensionManagementService();
-        $objectManager = $this->prophesize(ObjectManager::class);
-        $objectManager->get(Dispatcher::class)->willReturn($this->prophesize(Dispatcher::class)->reveal());
-        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManager->reveal());
+        $this->managementService->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
 
         $this->downloadUtilityProphecy = $this->prophesize(DownloadUtility::class);
         $this->dependencyUtilityProphecy = $this->prophesize(DependencyUtility::class);

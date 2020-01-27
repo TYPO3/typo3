@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
@@ -680,5 +681,10 @@ class SlotReplacement
                 [$event->getProvider(), $event->getTreeData()]
             );
         }
+    }
+
+    public function packagesMayHaveChanged(PackagesMayHaveChangedEvent $event): void
+    {
+        $this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
     }
 }

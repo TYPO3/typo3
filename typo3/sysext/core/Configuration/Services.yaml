@@ -16,6 +16,11 @@ services:
 
   TYPO3\CMS\Core\Package\PackageManager:
     autoconfigure: false
+    tags:
+      - name: event.listener
+        identifier: 'typo3-core'
+        method: 'packagesMayHaveChanged'
+        event: TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent
 
   TYPO3\CMS\Core\Package\FailsafePackageManager:
     autoconfigure: false
@@ -37,6 +42,18 @@ services:
 
   TYPO3\CMS\Core\Mail\Mailer:
     public: true
+
+  TYPO3\CMS\Core\Core\ClassLoadingInformation:
+    public: false
+    tags:
+      - name: event.listener
+        identifier: 'non-composer-class-loader'
+        method: 'updateClassLoadingInformationAfterPackageActivation'
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent
+      - name: event.listener
+        identifier: 'non-composer-class-loader'
+        method: 'updateClassLoadingInformationAfterPackageDeactivation'
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent
 
   TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider:
     shared: false
@@ -235,6 +252,10 @@ services:
         identifier: 'legacy-slot'
         method: 'onDatabaseTreeDataProviderEmitPostProcessTreeDataSignal'
         event: TYPO3\CMS\Core\Tree\Event\ModifyTreeDataEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'packagesMayHaveChanged'
+        event: TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent
 
   # FAL security checks for backend users
   TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:

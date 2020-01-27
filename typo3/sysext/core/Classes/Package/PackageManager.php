@@ -20,6 +20,8 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\ClassLoadingInformation;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
+use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -289,6 +291,23 @@ class PackageManager implements SingletonInterface
         $this->availablePackagesScanned = true;
         $registerOnlyNewPackages = !empty($this->packages);
         $this->registerPackagesFromConfiguration($packages, $registerOnlyNewPackages);
+    }
+
+    /**
+     * Event listener to retrigger scanning of available packages.
+     *
+     * @param PackagesMayHaveChangedEvent $event
+     */
+    public function packagesMayHaveChanged(PackagesMayHaveChangedEvent $event): void
+    {
+        $this->scanAvailablePackages();
+    }
+
+    public function beforeInstallationEventListener(BeforePackageActivationEvent $event): void
+    {
+        if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_BE) {
+            $this->scanAvailablePackages();
+        }
     }
 
     /**

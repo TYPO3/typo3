@@ -9,3 +9,34 @@ services:
     # Tasks require EXT:scheduler, reports require
     # EXT:reports to be installed, ignore for now.
     exclude: '../Classes/{Task,Report}'
+
+  TYPO3\CMS\Extensionmanager\Compatibility\SlotReplacement:
+    tags:
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitWillInstallExtensionsSignal'
+        event: TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'afterExtensionInstallSlot'
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'afterExtensionUninstallSlot'
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterExtensionT3DImportSignal'
+        event: TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterExtensionStaticSqlImportSignal'
+        event: TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitAfterExtensionFileImportSignal'
+        event: TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'emitProcessActionsSignal'
+        event: TYPO3\CMS\Extensionmanager\Event\AvailableActionsForExtensionEvent

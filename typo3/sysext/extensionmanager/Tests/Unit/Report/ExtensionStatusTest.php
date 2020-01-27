@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Report;
  */
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -273,8 +274,10 @@ class ExtensionStatusTest extends UnitTestCase
                 'terObject' => $mockTerObject,
             ],
         ];
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class)->reveal();
         /** @var $mockListUtility ListUtility|\PHPUnit\Framework\MockObject\MockObject */
         $mockListUtility = $this->getMockBuilder(ListUtility::class)->getMock();
+        $mockListUtility->injectEventDispatcher($eventDispatcher);
         $mockListUtility
             ->expects(self::once())
             ->method('getAvailableAndInstalledExtensionsWithAdditionalInformation')

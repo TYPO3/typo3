@@ -35,6 +35,10 @@ use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
+use TYPO3\CMS\Core\Package\Event\AfterPackageDeactivationEvent;
+use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
+use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileContentsSetEvent;
@@ -99,6 +103,13 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionFilesHaveBeenImportedEvent;
+use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
+use TYPO3\CMS\Extensionmanager\Event\AvailableActionsForExtensionEvent;
+use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
+use TYPO3\CMS\Extensionmanager\ViewHelpers\ProcessAvailableActionsViewHelper;
 
 /**
  * A dispatcher which dispatches signals by calling its registered slot methods
@@ -250,6 +261,22 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
             'generateDataArray.postProcess' => 'TYPO3\\CMS\\Workspaces\\Event\\AfterDataGeneratedForWorkspaceEvent',
             'getDataArray.postProcess' => 'TYPO3\\CMS\\Workspaces\\Event\\GetVersionedDataEvent',
             'sortDataArray.postProcess' => 'TYPO3\\CMS\\Workspaces\\Event\\SortVersionedDataEvent',
+        ],
+        'PackageManagement' => [
+            'packagesMayHaveChanged' => PackagesMayHaveChangedEvent::class,
+        ],
+        InstallUtility::class => [
+            'afterExtensionInstall' => AfterPackageActivationEvent::class,
+            'afterExtensionUninstall' => AfterPackageDeactivationEvent::class,
+            'afterExtensionT3DImport' => AfterExtensionDatabaseContentHasBeenImportedEvent::class,
+            'afterExtensionStaticSqlImport' => AfterExtensionStaticDatabaseContentHasBeenImportedEvent::class,
+            'afterExtensionFileImport' => AfterExtensionFilesHaveBeenImportedEvent::class,
+        ],
+        ExtensionManagementService::class => [
+            'willInstallExtensions' => BeforePackageActivationEvent::class
+        ],
+        ProcessAvailableActionsViewHelper::class => [
+            'processActions' => AvailableActionsForExtensionEvent::class
         ]
     ];
 

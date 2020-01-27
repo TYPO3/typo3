@@ -14,10 +14,10 @@ namespace TYPO3\CMS\Extensionmanager\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Package\Event\BeforePackageActivationEvent;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extensionmanager\Domain\Model\DownloadQueue;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\CMS\Extensionmanager\Utility\DependencyUtility;
@@ -64,6 +64,16 @@ class ExtensionManagementService implements SingletonInterface
      * @var bool
      */
     protected $skipDependencyCheck = false;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    public function injectEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @param DownloadQueue $downloadQueue
@@ -369,7 +379,7 @@ class ExtensionManagementService implements SingletonInterface
         if (empty($installQueue)) {
             return [];
         }
-        $this->emitWillInstallExtensionsSignal($installQueue);
+        $this->eventDispatcher->dispatch(new BeforePackageActivationEvent($installQueue));
         $resolvedDependencies = [];
         $this->installUtility->install(...array_keys($installQueue));
         foreach ($installQueue as $extensionKey => $_) {
@@ -431,27 +441,5 @@ class ExtensionManagementService implements SingletonInterface
         if ($extension->getUid()) {
             $this->downloadUtility->download($extension);
         }
-    }
-
-    /**
-     * @param array $installQueue
-     */
-    protected function emitWillInstallExtensionsSignal(array $installQueue)
-    {
-        $this->getSignalSlotDispatcher()->dispatch(__CLASS__, 'willInstallExtensions', [$installQueue]);
-    }
-
-    /**
-     * Get the SignalSlot dispatcher
-     *
-     * @return Dispatcher
-     */
-    protected function getSignalSlotDispatcher()
-    {
-        if (!isset($this->signalSlotDispatcher)) {
-            $this->signalSlotDispatcher = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(Dispatcher::class);
-        }
-        return $this->signalSlotDispatcher;
     }
 }

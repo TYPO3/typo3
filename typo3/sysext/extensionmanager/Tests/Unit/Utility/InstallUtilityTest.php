@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  */
 
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -80,12 +81,9 @@ class InstallUtilityTest extends UnitTestCase
                 'getExtensionArray',
                 'enrichExtensionWithDetails',
                 'importInitialFiles',
-                'emitAfterExtensionInstallSignal',
-            ],
-            [],
-            '',
-            false
+            ]
         );
+        $this->installMock->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
         $dependencyUtility = $this->getMockBuilder(DependencyUtility::class)->getMock();
         $this->installMock->_set('dependencyUtility', $dependencyUtility);
         $this->installMock->expects(self::any())
@@ -284,7 +282,7 @@ class InstallUtilityTest extends UnitTestCase
         $installMock->_set('dependencyUtility', $dependencyUtility);
         $installMock->_set('registry', $registryMock);
         $installMock->expects(self::never())->method('getImportExportUtility');
-        $installMock->_call('importT3DFile', $this->fakedExtensions[$extKey]['siteRelPath']);
+        $installMock->_call('importT3DFile', $extKey, $this->fakedExtensions[$extKey]['siteRelPath']);
     }
 
     /**
@@ -301,7 +299,9 @@ class InstallUtilityTest extends UnitTestCase
         file_put_contents($absPath . 'Initialisation/Site/' . $siteIdentifier . '/config.yaml', $config);
 
         $subject = new InstallUtility();
+        $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
         $listUtility = $this->prophesize(ListUtility::class);
+        $listUtility->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
         $subject->injectListUtility($listUtility->reveal());
 
         $availableExtensions = [
@@ -365,7 +365,9 @@ class InstallUtilityTest extends UnitTestCase
         file_put_contents($configDir . '/' . $existingSiteConfig, $config);
 
         $subject = new InstallUtility();
+        $subject->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
         $listUtility = $this->prophesize(ListUtility::class);
+        $listUtility->injectEventDispatcher($this->prophesize(EventDispatcherInterface::class)->reveal());
         $subject->injectListUtility($listUtility->reveal());
 
         $availableExtensions = [
