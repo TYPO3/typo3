@@ -25,7 +25,7 @@ rte_ckeditor
    sysext, rte, ckeditor, cke4
 
 :Copyright:
-   2019
+   2019-2020
 
 :Author:
    Initial version by Benni Mack, updated and maintained by the TYPO3 community
