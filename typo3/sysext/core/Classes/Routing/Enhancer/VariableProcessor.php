@@ -280,6 +280,7 @@ class VariableProcessor
             return $values;
         }
         $namespacePrefix = $namespace ? $namespace . static::LEVEL_DELIMITER : '';
+        $arguments = array_map('strval', $arguments);
         return array_map(
             function (string $value) use ($arguments, $namespacePrefix, $hash) {
                 $value = $arguments[$value] ?? $value;
@@ -308,6 +309,7 @@ class VariableProcessor
         if (empty($values) || empty($arguments) && empty($namespace)) {
             return $values;
         }
+        $arguments = array_map('strval', $arguments);
         $namespacePrefix = $namespace ? $namespace . static::LEVEL_DELIMITER : '';
         return array_map(
             function (string $value) use ($arguments, $namespacePrefix, $hash) {
@@ -318,7 +320,7 @@ class VariableProcessor
                     $value = substr($value, strlen($namespacePrefix));
                 }
                 $value = $this->resolveNestedValue($value);
-                $index = array_search($value, $arguments);
+                $index = array_search($value, $arguments, true);
                 return $index !== false ? $index : $value;
             },
             $values
@@ -342,7 +344,7 @@ class VariableProcessor
         $result = [];
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $result = array_merge(
+                $result = array_replace(
                     $result,
                     $this->deflateArray(
                         $value,
@@ -369,8 +371,8 @@ class VariableProcessor
     {
         $result = [];
         foreach ($array as $key => $value) {
-            $inflatedKey = $this->resolveHash($key);
-            // inflate nested values `namespace__any__neste` -> `namespace__any/nested`
+            $inflatedKey = $this->resolveHash((string)$key);
+            // inflate nested values `namespace__any__nested` -> `namespace__any/nested`
             $inflatedKey = $this->inflateNestedValue($inflatedKey, $namespace, $arguments);
             $steps = explode(static::LEVEL_DELIMITER, $inflatedKey);
             $pointer = &$result;
@@ -395,9 +397,10 @@ class VariableProcessor
         if (!empty($namespace) && strpos($value, $namespacePrefix) !== 0) {
             return $value;
         }
+        $arguments = array_map('strval', $arguments);
         $possibleNestedValueKey = substr($value, strlen($namespacePrefix));
         $possibleNestedValue = $this->nestedValues[$possibleNestedValueKey] ?? null;
-        if (!$possibleNestedValue || !in_array($possibleNestedValue, $arguments, true)) {
+        if ($possibleNestedValue === null || !in_array($possibleNestedValue, $arguments, true)) {
             return $value;
         }
         return $namespacePrefix . $possibleNestedValue;
