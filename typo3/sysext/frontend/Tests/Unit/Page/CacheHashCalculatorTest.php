@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  */
 
 use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
+use TYPO3\CMS\Frontend\Page\CacheHashConfiguration;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
@@ -43,7 +44,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $this->subject = new CacheHashCalculator($this->configuration);
+        $this->subject = new CacheHashCalculator(new CacheHashConfiguration($this->configuration));
     }
 
     protected function tearDown(): void
@@ -201,10 +202,9 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function canWhitelistParameters($params, $expected)
     {
-        $configuration = array_merge($this->configuration, [
-            'cachedParametersWhiteList' => ['whitep1', 'whitep2']
+        $this->subject->setConfiguration([
+            'cachedParametersWhiteList' => ['whitep1', 'whitep2'],
         ]);
-        $this->subject = new CacheHashCalculator($configuration);
         self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
@@ -246,12 +246,12 @@ class CacheHashCalculatorTest extends UnitTestCase
                 ['excludedParametersIfEmpty' => [], 'excludeAllEmptyParameters' => false],
                 ['encryptionKey', 'id', 'key1', 'key2', 'key3']
             ],
-            'Due to the empty value, "key2" should be skipped(with equals sign' => [
+            'Due to the empty value, "key2" should be skipped (with equals sign)' => [
                 '&id=42&key1=v&key2=&key3=',
                 ['excludedParametersIfEmpty' => ['key2'], 'excludeAllEmptyParameters' => false],
                 ['encryptionKey', 'id', 'key1', 'key3']
             ],
-            'Due to the empty value, "key2" should be skipped(without equals sign)' => [
+            'Due to the empty value, "key2" should be skipped (without equals sign)' => [
                 '&id=42&key1=v&key2&key3',
                 ['excludedParametersIfEmpty' => ['key2'], 'excludeAllEmptyParameters' => false],
                 ['encryptionKey', 'id', 'key1', 'key3']
@@ -260,7 +260,12 @@ class CacheHashCalculatorTest extends UnitTestCase
                 '&id=42&key1=v&key2=&key3=',
                 ['excludedParametersIfEmpty' => [], 'excludeAllEmptyParameters' => true],
                 ['encryptionKey', 'id', 'key1']
-            ]
+            ],
+            'Due to the empty value, "key1", "key2" and "key3" should be skipped (starting with "key")' => [
+                '&id=42&key1=v&key2=&key3=',
+                ['excludedParametersIfEmpty' => ['^key'], 'excludeAllEmptyParameters' => false],
+                ['encryptionKey', 'id', 'key1']
+            ],
         ];
     }
 }
