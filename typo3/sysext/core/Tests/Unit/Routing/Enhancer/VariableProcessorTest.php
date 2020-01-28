@@ -56,6 +56,12 @@ class VariableProcessorTest extends UnitTestCase
                 $enforcedInflatedRoutePath,
                 '/static/{!aa}/{bb}/{some_cc}/tail'
             ],
+            'aa -> 1, no namespace (plain)' => [
+                null,
+                ['aa' => 1],
+                $plainInflatedRoutePath,
+                '/static/{1}/{bb}/{some_cc}/tail'
+            ],
             'aa -> zz, no namespace (plain)' => [
                 null,
                 ['aa' => 'zz'],
@@ -166,6 +172,10 @@ class VariableProcessorTest extends UnitTestCase
                 ['a' => 'newA'],
                 ['newA' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
             ],
+            'no namespace, a -> 1' => [
+                ['a' => 1],
+                [1 => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
+            ],
             'no namespace, a -> @any/nested' => [
                 ['a' => '@any/nested'],
                 ['qbeced67e6b340abc67a397f6e90bb0' => 'a', 'first__aa' => 'aa', 'first__second__aaa' => 'aaa', 'a9d66412d169b85537e11d9e49b75f9' => '@any']
@@ -203,6 +213,11 @@ class VariableProcessorTest extends UnitTestCase
             'no namespace, no arguments' => [
                 '',
                 [],
+                ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]]
+            ],
+            'no namespace, a -> 1' => [
+                '',
+                ['a' => 1],
                 ['a' => 'a', 'first' => ['aa' => 'aa', 'second' => ['aaa' => 'aaa', '@any' => '@any']]]
             ],
             'no namespace, a -> newA' => [
@@ -285,6 +300,11 @@ class VariableProcessorTest extends UnitTestCase
                 null,
                 [],
                 ['a' => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
+            ],
+            'a -> 1, no namespace' => [
+                null,
+                ['a' => 1],
+                [1 => 'a', 'b' => 'b', 'c' => ['d' => 'd', 'e' => 'e']]
             ],
             'a -> newA, no namespace' => [
                 null,
