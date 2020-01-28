@@ -24,23 +24,31 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class CacheHashCalculatorTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator
+     * @var CacheHashCalculator
      */
     protected $subject;
+
+    /**
+     * @var array
+     */
+    protected $configuration = [
+        'excludedParameters' => ['exclude1', 'exclude2'],
+        'cachedParametersWhiteList' => [],
+        'requireCacheHashPresenceParameters' => ['req1', 'req2'],
+        'excludedParametersIfEmpty' => [],
+        'excludeAllEmptyParameters' => false
+    ];
 
     protected function setUp()
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $this->subject = $this->getMockBuilder(CacheHashCalculator::class)
-            ->setMethods(['foo'])
-            ->getMock();
-        $this->subject->setConfiguration([
-            'excludedParameters' => ['exclude1', 'exclude2'],
-            'cachedParametersWhiteList' => [],
-            'requireCacheHashPresenceParameters' => ['req1', 'req2'],
-            'excludedParametersIfEmpty' => [],
-            'excludeAllEmptyParameters' => false
-        ]);
+        $this->subject = new CacheHashCalculator($this->configuration);
+    }
+
+    protected function tearDown()
+    {
+        unset($this->subject);
+        parent::tearDown();
     }
 
     /**
@@ -49,7 +57,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function cacheHashCalculationWorks($params, $expected)
     {
-        $this->assertEquals($expected, $this->subject->calculateCacheHash($params));
+        self::assertEquals($expected, $this->subject->calculateCacheHash($params));
     }
 
     /**
@@ -87,7 +95,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     public function getRelevantParametersWorks($params, $expected)
     {
         $actual = $this->subject->getRelevantParameters($params);
-        $this->assertEquals($expected, array_keys($actual));
+        self::assertEquals($expected, array_keys($actual));
     }
 
     /**
@@ -126,7 +134,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function canGenerateForParameters($params, $expected)
     {
-        $this->assertEquals($expected, $this->subject->generateForParameters($params));
+        self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
     /**
@@ -166,7 +174,7 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function parametersRequireCacheHashWorks($params, $expected)
     {
-        $this->assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
+        self::assertEquals($expected, $this->subject->doParametersRequireCacheHash($params));
     }
 
     /**
@@ -192,10 +200,11 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function canWhitelistParameters($params, $expected)
     {
-        $method = new \ReflectionMethod(CacheHashCalculator::class, 'setCachedParametersWhiteList');
-        $method->setAccessible(true);
-        $method->invoke($this->subject, ['whitep1', 'whitep2']);
-        $this->assertEquals($expected, $this->subject->generateForParameters($params));
+        $configuration = array_merge($this->configuration, [
+            'cachedParametersWhiteList' => ['whitep1', 'whitep2']
+        ]);
+        $this->subject = new CacheHashCalculator($configuration);
+        self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
     /**
@@ -222,7 +231,7 @@ class CacheHashCalculatorTest extends UnitTestCase
     {
         $this->subject->setConfiguration($settings);
         $actual = $this->subject->getRelevantParameters($params);
-        $this->assertEquals($expected, array_keys($actual));
+        self::assertEquals($expected, array_keys($actual));
     }
 
     /**
