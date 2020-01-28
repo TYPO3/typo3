@@ -92,7 +92,7 @@ class BrokenLinkRepository
 
         $result = [];
         while ($row = $statement->fetch()) {
-            $result[$row['link_type']] = $result['amount'];
+            $result[$row['link_type']] = $row['amount'];
         }
         return $result;
     }
