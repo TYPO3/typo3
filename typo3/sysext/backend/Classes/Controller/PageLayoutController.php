@@ -26,10 +26,8 @@ use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -71,27 +69,6 @@ class PageLayoutController
      * @var string
      */
     protected $imagemode;
-
-    /**
-     * Search-fields
-     *
-     * @var string
-     */
-    protected $search_field;
-
-    /**
-     * Search-levels
-     *
-     * @var int
-     */
-    protected $search_levels;
-
-    /**
-     * Show-limit
-     *
-     * @var int
-     */
-    protected $showLimit;
 
     /**
      * Return URL
@@ -284,23 +261,14 @@ class PageLayoutController
         // Setting module configuration / page select clause
         $this->MCONF['name'] = $this->moduleName;
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        // Get session data
-        $sessionData = $this->getBackendUser()->getSessionData(__CLASS__);
-        $this->search_field = !empty($sessionData['search_field']) ? $sessionData['search_field'] : '';
 
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
         $this->pointer = $parsedBody['pointer'] ?? $queryParams['pointer'] ?? null;
         $this->imagemode = $parsedBody['imagemode'] ?? $queryParams['imagemode'] ?? null;
         $this->popView = $parsedBody['popView'] ?? $queryParams['popView'] ?? null;
-        $this->search_field = $parsedBody['search_field'] ?? $queryParams['search_field'] ?? null;
-        $this->search_levels = $parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? null;
-        $this->showLimit = $parsedBody['showLimit'] ?? $queryParams['showLimit'] ?? null;
         $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? null;
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($returnUrl);
 
-        $sessionData['search_field'] = $this->search_field;
-        // Store session data
-        $this->getBackendUser()->setAndSaveSessionData(__CLASS__, $sessionData);
         // Load page info array:
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause);
         // Initialize menu
@@ -820,7 +788,7 @@ class PageLayoutController
             }
             // Start the dblist object:
             $dbList->itemsLimitSingleTable = 1000;
-            $dbList->start($this->id, $table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
+            $dbList->start($this->id, $table, $this->pointer);
             $dbList->counter = $CMcounter;
             $dbList->ext_function = $this->MOD_SETTINGS['function'];
             // Generate the list of elements here:
@@ -846,15 +814,17 @@ class PageLayoutController
             $content .= $output;
         }
         // Making search form:
-        if (!$this->modTSconfig['properties']['disableSearchBox'] && ($dbList->counter > 0 || $this->currentPageHasSubPages())) {
-            $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
-            $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
-                ->setClasses('t3js-toggle-search-toolbox')
-                ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
-                ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
-                ->setHref('#');
-            $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
-            $this->searchContent = $dbList->getSearchBox();
+        if (!$this->modTSconfig['properties']['disableSearchBox']) {
+            $this->searchContent = $this->getSearchBox();
+            if ($this->searchContent) {
+                $this->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ToggleSearchToolbox');
+                $toggleSearchFormButton = $this->buttonBar->makeLinkButton()
+                    ->setClasses('t3js-toggle-search-toolbox')
+                    ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchIcon'))
+                    ->setIcon($this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL))
+                    ->setHref('#');
+                $this->buttonBar->addButton($toggleSearchFormButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
+            }
         }
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'] ?? [] as $hook) {
@@ -919,9 +889,6 @@ class PageLayoutController
                 'edit_record',
                 'pointer',
                 'new_unique_uid',
-                'search_field',
-                'search_levels',
-                'showLimit'
             ])
             ->setSetVariables(array_keys($this->MOD_MENU));
         $this->buttonBar->addButton($shortcutButton);
@@ -1201,35 +1168,6 @@ class PageLayoutController
     }
 
     /**
-     * Checks whether the current page has sub pages
-     *
-     * @return bool
-     */
-    protected function currentPageHasSubPages(): bool
-    {
-        // get workspace id
-        $workspaceId = (int)$this->getBackendUser()->workspace;
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspaceId));
-
-        $count = $queryBuilder
-            ->count('uid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT))
-            )
-            ->execute()
-            ->fetchColumn(0);
-
-        return (bool)$count;
-    }
-
-    /**
      * Returns the target page if visible
      *
      * @param array $targetPage
@@ -1239,5 +1177,75 @@ class PageLayoutController
     protected function getTargetPageIfVisible(array $targetPage): array
     {
         return !(bool)($targetPage['hidden'] ?? false) ? $targetPage : [];
+    }
+
+    /**
+     * Creates the search box
+     *
+     * @return string HTML for the search box
+     */
+    protected function getSearchBox(): string
+    {
+        if (!$this->getBackendUser()->check('modules', 'web_list')) {
+            return '';
+        }
+        $lang = $this->getLanguageService();
+        $listModule = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute('web_list', ['id' => $this->id]);
+        // Make level selector:
+        $opt = [];
+
+        // "New" generation of search levels ... based on TS config
+        $config = BackendUtility::getPagesTSconfig($this->id);
+        $searchLevelsFromTSconfig = $config['mod.']['web_list.']['searchLevel.']['items.'];
+        $searchLevelItems = [];
+
+        // get translated labels for search levels from pagets
+        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
+            $label = $lang->sL('LLL:' . $labelConfigured);
+            if ($label === '') {
+                $label = $labelConfigured;
+            }
+            $searchLevelItems[$keySearchLevel] = $label;
+        }
+
+        foreach ($searchLevelItems as $kv => $label) {
+            $opt[] = '<option value="' . $kv . '"' . ($kv === 0 ? ' selected="selected"' : '') . '>'
+                . htmlspecialchars($label)
+                . '</option>';
+        }
+        $searchLevelLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels');
+        $searchStringLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString');
+        $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars($searchLevelLabel) . '" id="search_levels">' . implode('', $opt) . '</select>';
+        return '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: none;">
+			<form action="' . htmlspecialchars((string)$listModule) . '" method="post">
+                <div id="typo3-dblist-search">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <label for="search_field">' . htmlspecialchars($searchStringLabel) . ': </label>
+									<input class="form-control" type="search" placeholder="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')) . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')) . '" name="search_field" id="search_field" value="" />
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+									<label for="search_levels">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')) . ': </label>
+									' . $lMenu . '
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-6">
+									<label for="showLimit">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')) . ': </label>
+									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')) . '" name="showLimit" id="showLimit" value="" />
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <div class="form-control-wrap">
+                                        <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')) . '">
+                                            ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render() . ' ' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')) . '
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>';
     }
 }

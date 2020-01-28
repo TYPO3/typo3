@@ -23,7 +23,6 @@ use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
@@ -49,7 +48,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -158,34 +156,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $itemLabels = [];
 
     /**
-     * Number of records to show
-     *
-     * @var int
-     */
-    public $showLimit = 0;
-
-    /**
-     * Containing which fields to display in extended mode
-     *
-     * @var string[]
-     */
-    public $displayFields;
-
-    /**
-     * Field, to sort list by
-     *
-     * @var string
-     */
-    public $sortField;
-
-    /**
-     * default Max items shown per table in "multi-table mode", may be overridden by tables.php
-     *
-     * @var int
-     */
-    public $itemsLimitPerTable = 20;
-
-    /**
      * Page select permissions
      *
      * @var string
@@ -212,13 +182,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var int
      */
     public $calcPerms = 0;
-
-    /**
-     * Levels to search down.
-     *
-     * @var int
-     */
-    public $searchLevels = '';
 
     /**
      * "LIMIT " in SQL...
@@ -263,25 +226,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $eCounter = 0;
 
     /**
-     * Search string
-     *
-     * @var string
-     */
-    public $searchString = '';
-
-    /**
      * default Max items shown per table in "single-table mode", may be overridden by tables.php
      *
      * @var int
      */
     public $itemsLimitSingleTable = 100;
-
-    /**
-     * Field, indicating to sort in reverse order.
-     *
-     * @var bool
-     */
-    public $sortRev;
 
     /**
      * Specify a list of tables which are the only ones allowed to be displayed.
@@ -2696,12 +2645,9 @@ class PageLayoutView implements LoggerAwareInterface
      * @param int $id Page id for which the list is rendered. Must be >= 0
      * @param string $table Tablename - if extended mode where only one table is listed at a time.
      * @param int $pointer Browsing pointer.
-     * @param string $search Search word, if any
-     * @param int $levels Number of levels to search down the page tree
-     * @param int $showLimit Limit of records to be listed.
      * @throws SiteNotFoundException
      */
-    public function start($id, $table, $pointer, $search = '', $levels = 0, $showLimit = 0)
+    public function start($id, $table, $pointer)
     {
         $this->resolveSiteLanguages((int)$id);
         $backendUser = $this->getBackendUser();
@@ -2713,13 +2659,6 @@ class PageLayoutView implements LoggerAwareInterface
             $this->table = $table;
         }
         $this->firstElementNumber = $pointer;
-        $this->searchString = trim($search);
-        $this->searchLevels = (int)$levels;
-        $this->showLimit = MathUtility::forceIntegerInRange($showLimit, 0, 10000);
-        // Setting GPvars:
-        $this->sortField = GeneralUtility::_GP('sortField');
-        $this->sortRev = GeneralUtility::_GP('sortRev');
-        $this->displayFields = GeneralUtility::_GP('displayFields');
         // Init dynamic vars:
         $this->counter = 0;
         $this->HTMLcode = '';
@@ -2820,132 +2759,12 @@ class PageLayoutView implements LoggerAwareInterface
                 }
                 $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'])
                     ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']
-                    : $this->itemsLimitPerTable;
-            }
-            if ($this->showLimit) {
-                $this->iLimit = $this->showLimit;
+                    : 20;
             }
 
             // Finally, render the list:
             $this->HTMLcode .= $this->getTable($tableName, $this->id);
         }
-    }
-
-    /**
-     * Creates the search box
-     *
-     * @param bool $formFields If TRUE, the search box is wrapped in its own form-tags
-     * @return string HTML for the search box
-     */
-    public function getSearchBox($formFields = true)
-    {
-        $lang = $this->getLanguageService();
-        // Setting form-elements, if applicable:
-        $formElements = ['', ''];
-        if ($formFields) {
-            $formElements = [
-                '<form action="' . htmlspecialchars(
-                    $this->listURL('', '-1', 'firstElementNumber,search_field')
-                ) . '" method="post">',
-                '</form>'
-            ];
-        }
-        // Make level selector:
-        $opt = [];
-
-        // "New" generation of search levels ... based on TS config
-        $config = BackendUtility::getPagesTSconfig($this->id);
-        $searchLevelsFromTSconfig = $config['mod.']['web_list.']['searchLevel.']['items.'];
-        $searchLevelItems = [];
-
-        // get translated labels for search levels from pagets
-        foreach ($searchLevelsFromTSconfig as $keySearchLevel => $labelConfigured) {
-            $label = $lang->sL('LLL:' . $labelConfigured);
-            if ($label === '') {
-                $label = $labelConfigured;
-            }
-            $searchLevelItems[$keySearchLevel] = $label;
-        }
-
-        foreach ($searchLevelItems as $kv => $label) {
-            $opt[] = '<option value="' . $kv . '"' . ($kv === $this->searchLevels ? ' selected="selected"' : '') . '>' . htmlspecialchars(
-                $label
-            ) . '</option>';
-        }
-        $lMenu = '<select class="form-control" name="search_levels" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search_levels')
-        ) . '" id="search_levels">' . implode('', $opt) . '</select>';
-        // Table with the search box:
-        $content = '<div class="db_list-searchbox-form db_list-searchbox-toolbar module-docheader-bar module-docheader-bar-search t3js-module-docheader-bar t3js-module-docheader-bar-search" id="db_list-searchbox-toolbar" style="display: ' . ($this->searchString == '' ? 'none' : 'block') . ';">
-			' . $formElements[0] . '
-                <div id="typo3-dblist-search">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="form-group col-xs-12">
-                                    <label for="search_field">' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.searchString')
-        ) . ': </label>
-									<input class="form-control" type="search" placeholder="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enterSearchString')
-        ) . '" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.searchString')
-        ) . '" name="search_field" id="search_field" value="' . htmlspecialchars($this->searchString) . '" />
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-									<label for="search_levels">' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.search_levels')
-        ) . ': </label>
-									' . $lMenu . '
-                                </div>
-                                <div class="form-group col-xs-12 col-sm-6">
-									<label for="showLimit">' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.label.limit')
-        ) . ': </label>
-									<input class="form-control" type="number" min="0" max="10000" placeholder="10" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.limit')
-        ) . '" name="showLimit" id="showLimit" value="' . htmlspecialchars(
-            ($this->showLimit ?: '')
-        ) . '" />
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <div class="form-control-wrap">
-                                        <button type="submit" class="btn btn-default" name="search" title="' . htmlspecialchars(
-            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.title.search')
-        ) . '">
-                                            ' . $this->iconFactory->getIcon('actions-search', Icon::SIZE_SMALL)->render(
-            ) . ' ' . htmlspecialchars(
-                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.search')
-            ) . '
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-			' . $formElements[1] . '</div>';
-        return $content;
-    }
-
-    /**
-     * Setting the field names to display in extended list.
-     * Sets the internal variable $this->setFields
-     */
-    public function setDispFields()
-    {
-        $backendUser = $this->getBackendUser();
-        // Getting from session:
-        $dispFields = $backendUser->getModuleData('list/displayFields');
-        // If fields has been inputted, then set those as the value and push it to session variable:
-        if (is_array($this->displayFields)) {
-            reset($this->displayFields);
-            $tKey = key($this->displayFields);
-            $dispFields[$tKey] = $this->displayFields[$tKey];
-            $backendUser->pushModuleData('list/displayFields', $dispFields);
-        }
-        // Setting result:
-        $this->setFields = $dispFields;
     }
 
     /**
@@ -2962,8 +2781,7 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Returns a QueryBuilder configured to select $fields from $table where the pid is restricted
-     * depending on the current searchlevel setting.
+     * Returns a QueryBuilder configured to select $fields from $table where the pid is restricted.
      *
      * @param string $table Table name
      * @param int $pageId Page id Only used to build the search constraints, getPageIdConstraint() used for restrictions
@@ -3011,8 +2829,8 @@ class PageLayoutView implements LoggerAwareInterface
     protected function prepareQueryBuilder(
         string $table,
         int $pageId,
-        array $fieldList = ['*'],
-        array $additionalConstraints = [],
+        array $fieldList,
+        array $additionalConstraints,
         QueryBuilder $queryBuilder,
         bool $addSorting = true
     ): QueryBuilder {
@@ -3029,24 +2847,8 @@ class PageLayoutView implements LoggerAwareInterface
             $queryBuilder->setMaxResults($this->iLimit);
         }
 
-        if ($addSorting) {
-            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table))) {
-                $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
-            } else {
-                $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
-                $orderBys = QueryHelper::parseOrderBy((string)$orderBy);
-                foreach ($orderBys as $orderBy) {
-                    $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);
-                }
-            }
-        }
-
         // Build the query constraints
         $queryBuilder = $this->addPageIdConstraint($table, $queryBuilder);
-        $searchWhere = $this->makeSearchString($table, $pageId);
-        if (!empty($searchWhere)) {
-            $queryBuilder->andWhere($searchWhere);
-        }
 
         // Filtering on displayable pages (permissions):
         if ($table === 'pages' && $this->perms_clause) {
@@ -3105,139 +2907,12 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Creates part of query for searching after a word ($this->searchString)
-     * fields in input table.
-     *
-     * @param string $table Table, in which the fields are being searched.
-     * @param int $currentPid Page id for the possible search limit. -1 only if called from an old XCLASS.
-     * @return string Returns part of WHERE-clause for searching, if applicable.
-     */
-    public function makeSearchString($table, $currentPid = -1)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $expressionBuilder = $queryBuilder->expr();
-        $constraints = [];
-        $currentPid = (int)$currentPid;
-        $tablePidField = $table === 'pages' ? 'uid' : 'pid';
-        // Make query only if table is valid and a search string is actually defined
-        if (empty($this->searchString)) {
-            return '';
-        }
-
-        $searchableFields = $this->getSearchFields($table);
-        if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
-            $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
-            foreach ($searchableFields as $fieldName) {
-                if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-                $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?: '';
-                if ($fieldType === 'input' && $evalRules && GeneralUtility::inList($evalRules, 'int')) {
-                    if (!isset($fieldConfig['search']['pidonly'])
-                        || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
-                    ) {
-                        $constraints[] = $expressionBuilder->andX(
-                            $expressionBuilder->eq($fieldName, (int)$this->searchString),
-                            $expressionBuilder->eq($tablePidField, (int)$currentPid)
-                        );
-                    }
-                } elseif ($fieldType === 'text'
-                    || $fieldType === 'flex'
-                    || ($fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules)))
-                ) {
-                    $constraints[] = $expressionBuilder->like(
-                        $fieldName,
-                        $queryBuilder->quote('%' . (int)$this->searchString . '%')
-                    );
-                }
-            }
-        } elseif (!empty($searchableFields)) {
-            $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
-            foreach ($searchableFields as $fieldName) {
-                if (!isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
-                $fieldType = $fieldConfig['type'];
-                $evalRules = $fieldConfig['eval'] ?: '';
-                $searchConstraint = $expressionBuilder->andX(
-                    $expressionBuilder->comparison(
-                        'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
-                        'LIKE',
-                        'LOWER(' . $like . ')'
-                    )
-                );
-                if (is_array($fieldConfig['search'])) {
-                    $searchConfig = $fieldConfig['search'];
-                    if (in_array('case', $searchConfig)) {
-                        // Replace case insensitive default constraint
-                        $searchConstraint = $expressionBuilder->andX($expressionBuilder->like($fieldName, $like));
-                    }
-                    if (in_array('pidonly', $searchConfig) && $currentPid > 0) {
-                        $searchConstraint->add($expressionBuilder->eq($tablePidField, (int)$currentPid));
-                    }
-                    if ($searchConfig['andWhere']) {
-                        $searchConstraint->add(
-                            QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere'])
-                        );
-                    }
-                }
-                if ($fieldType === 'text'
-                    || $fieldType === 'flex'
-                    || $fieldType === 'input' && (!$evalRules || !preg_match('/\b(?:date|time|int)\b/', $evalRules))
-                ) {
-                    if ($searchConstraint->count() !== 0) {
-                        $constraints[] = $searchConstraint;
-                    }
-                }
-            }
-        }
-        // If no search field conditions have been built ensure no results are returned
-        if (empty($constraints)) {
-            return '0=1';
-        }
-
-        return $expressionBuilder->orX(...$constraints);
-    }
-
-    /**
-     * Fetches a list of fields to use in the Backend search for the given table.
-     *
-     * @param string $tableName
-     * @return string[]
-     */
-    protected function getSearchFields($tableName)
-    {
-        $fieldArray = [];
-        $fieldListWasSet = false;
-        // Get fields from ctrl section of TCA first
-        if (isset($GLOBALS['TCA'][$tableName]['ctrl']['searchFields'])) {
-            $fieldArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$tableName]['ctrl']['searchFields'], true);
-            $fieldListWasSet = true;
-        }
-        // Call hook to add or change the list
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['mod_list']['getSearchFieldList'] ?? [] as $hookFunction) {
-            $hookParameters = [
-                'tableHasSearchConfiguration' => $fieldListWasSet,
-                'tableName' => $tableName,
-                'searchFields' => &$fieldArray,
-                'searchString' => $this->searchString
-            ];
-            GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this);
-        }
-        return $fieldArray;
-    }
-
-    /**
      * Creates the URL to this script, including all relevant GPvars
-     * Fixed GPvars are id, table, imagemode, returnUrl, search_field, search_levels and showLimit
-     * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
+     * Fixed GPvars are id, table, imagemode
      *
      * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
      * @param string $table Table name to display. Enter "-1" for the current table.
-     * @param string $exclList Comma separated list of fields NOT to include ("sortField", "sortRev" or "firstElementNumber")
+     * @param string $exclList Comma separated list of fields NOT to include ("firstElementNumber")
      * @return string URL
      */
     public function listURL($altId = '', $table = '-1', $exclList = '')
@@ -3256,23 +2931,8 @@ class PageLayoutView implements LoggerAwareInterface
         if ($this->thumbs) {
             $urlParameters['imagemode'] = $this->thumbs;
         }
-        if ((!$exclList || !GeneralUtility::inList($exclList, 'search_field')) && $this->searchString) {
-            $urlParameters['search_field'] = $this->searchString;
-        }
-        if ($this->searchLevels) {
-            $urlParameters['search_levels'] = $this->searchLevels;
-        }
-        if ($this->showLimit) {
-            $urlParameters['showLimit'] = $this->showLimit;
-        }
         if ((!$exclList || !GeneralUtility::inList($exclList, 'firstElementNumber')) && $this->firstElementNumber) {
             $urlParameters['pointer'] = $this->firstElementNumber;
-        }
-        if ((!$exclList || !GeneralUtility::inList($exclList, 'sortField')) && $this->sortField) {
-            $urlParameters['sortField'] = $this->sortField;
-        }
-        if ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
-            $urlParameters['sortRev'] = $this->sortRev;
         }
 
         if ($routePath = GeneralUtility::_GP('route')) {
@@ -3339,57 +2999,8 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * @return array
-     */
-    public function getOverridePageIdList(): array
-    {
-        return $this->overridePageIdList;
-    }
-
-    /**
-     * @param int[]|array $overridePageIdList
-     */
-    public function setOverridePageIdList(array $overridePageIdList)
-    {
-        $this->overridePageIdList = array_map('intval', $overridePageIdList);
-    }
-
-    /**
-     * Get all allowed mount pages to be searched in.
-     *
-     * @param int $id Page id
-     * @param int $depth Depth to go down
-     * @param string $perms_clause select clause
-     * @return int[]
-     */
-    protected function getSearchableWebmounts($id, $depth, $perms_clause)
-    {
-        $backendUser = $this->getBackendUser();
-        /** @var PageTreeView $tree */
-        $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $tree->init('AND ' . $perms_clause);
-        $tree->makeHTML = 0;
-        $tree->fieldArray = ['uid', 'php_tree_stop'];
-        $idList = [];
-
-        $allowedMounts = !$backendUser->isAdmin() && $id === 0
-            ? $backendUser->returnWebmounts()
-            : [$id];
-
-        foreach ($allowedMounts as $allowedMount) {
-            $idList[] = $allowedMount;
-            if ($depth) {
-                $tree->getTree($allowedMount, $depth, '');
-            }
-            $idList = array_merge($idList, $tree->ids);
-        }
-
-        return $idList;
-    }
-
-    /**
      * Add conditions to the QueryBuilder object ($queryBuilder) to limit a
-     * query to a list of page IDs based on the current search level setting.
+     * query to a list of page IDs
      *
      * @param string $tableName
      * @param QueryBuilder $queryBuilder
@@ -3397,41 +3008,12 @@ class PageLayoutView implements LoggerAwareInterface
      */
     protected function addPageIdConstraint(string $tableName, QueryBuilder $queryBuilder): QueryBuilder
     {
-        // Set search levels:
-        $searchLevels = $this->searchLevels;
-
-        // Set search levels to 999 instead of -1 as the following methods
-        // do not support -1 as valid value for infinite search.
-        if ($searchLevels === -1) {
-            $searchLevels = 999;
-        }
-
-        if ($searchLevels === 0) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq(
-                    $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
-                )
-            );
-        } elseif ($searchLevels > 0) {
-            $allowedMounts = $this->getSearchableWebmounts($this->id, $searchLevels, $this->perms_clause);
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($allowedMounts, Connection::PARAM_INT_ARRAY)
-                )
-            );
-        }
-
-        if (!empty($this->getOverridePageIdList())) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    $tableName . '.pid',
-                    $queryBuilder->createNamedParameter($this->getOverridePageIdList(), Connection::PARAM_INT_ARRAY)
-                )
-            );
-        }
-
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->eq(
+                $tableName . '.pid',
+                $queryBuilder->createNamedParameter($this->id, \PDO::PARAM_INT)
+            )
+        );
         return $queryBuilder;
     }
 
