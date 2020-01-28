@@ -24,24 +24,32 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class CacheHashCalculatorTest extends UnitTestCase
 {
     /**
-     * @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator
+     * @var CacheHashCalculator
      */
     protected $subject;
+
+    /**
+     * @var array
+     */
+    protected $configuration = [
+        'excludedParameters' => ['exclude1', 'exclude2'],
+        'cachedParametersWhiteList' => [],
+        'requireCacheHashPresenceParameters' => ['req1', 'req2'],
+        'excludedParametersIfEmpty' => [],
+        'excludeAllEmptyParameters' => false
+    ];
 
     protected function setUp(): void
     {
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
-        $this->subject = $this->getMockBuilder(CacheHashCalculator::class)
-            ->setMethods(['foo'])
-            ->getMock();
-        $this->subject->setConfiguration([
-            'excludedParameters' => ['exclude1', 'exclude2'],
-            'cachedParametersWhiteList' => [],
-            'requireCacheHashPresenceParameters' => ['req1', 'req2'],
-            'excludedParametersIfEmpty' => [],
-            'excludeAllEmptyParameters' => false
-        ]);
+        $this->subject = new CacheHashCalculator($this->configuration);
+    }
+
+    protected function tearDown(): void
+    {
+        unset($this->subject);
+        parent::tearDown();
     }
 
     /**
@@ -193,9 +201,10 @@ class CacheHashCalculatorTest extends UnitTestCase
      */
     public function canWhitelistParameters($params, $expected)
     {
-        $method = new \ReflectionMethod(CacheHashCalculator::class, 'setCachedParametersWhiteList');
-        $method->setAccessible(true);
-        $method->invoke($this->subject, ['whitep1', 'whitep2']);
+        $configuration = array_merge($this->configuration, [
+            'cachedParametersWhiteList' => ['whitep1', 'whitep2']
+        ]);
+        $this->subject = new CacheHashCalculator($configuration);
         self::assertEquals($expected, $this->subject->generateForParameters($params));
     }
 
