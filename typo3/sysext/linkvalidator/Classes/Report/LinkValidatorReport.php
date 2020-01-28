@@ -505,28 +505,32 @@ class LinkValidatorReport
         if (!$rootLineHidden || (bool)$this->modTS['checkhidden']) {
             $pageList = $this->getPageList();
             $result = false;
+            $items = [];
             if (!empty($linkTypes)) {
                 $result = $this->getLinkValidatorBrokenLinks($pageList, $linkTypes);
+                if ($result) {
+                    // Display table with broken links
+                    $brokenLinksItemTemplate = $this->templateService->getSubpart(
+                        $this->doc->moduleTemplate,
+                        '###BROKENLINKS_ITEM###'
+                    );
+
+                    // Table rows containing the broken links
+                    while ($row = $result->fetch()) {
+                        $items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
+                    }
+
+                    if (!empty($items)) {
+                        $brokenLinksTemplate = $this->templateService->getSubpart(
+                            $this->doc->moduleTemplate,
+                            '###BROKENLINKS_CONTENT###'
+                        );
+                        $brokenLinkItems = implode(LF, $items);
+                    }
+                }
             }
 
-            if ($result && $result->rowCount()) {
-                // Display table with broken links
-                $brokenLinksTemplate = $this->templateService->getSubpart(
-                    $this->doc->moduleTemplate,
-                    '###BROKENLINKS_CONTENT###'
-                );
-                $brokenLinksItemTemplate = $this->templateService->getSubpart(
-                    $this->doc->moduleTemplate,
-                    '###BROKENLINKS_ITEM###'
-                );
-
-                // Table rows containing the broken links
-                $items = [];
-                while ($row = $result->fetch()) {
-                    $items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
-                }
-                $brokenLinkItems = implode(LF, $items);
-            } else {
+            if (empty($items)) {
                 $brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
             }
         } else {
