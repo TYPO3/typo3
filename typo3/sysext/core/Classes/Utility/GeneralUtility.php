@@ -4061,7 +4061,7 @@ class GeneralUtility
      */
     public static function deprecationLog($msg)
     {
-        static::writeDeprecationLogFileEntry('GeneralUtility::deprecationLog() will be removed in TYPO3 v10.0, use "trigger_error("Given reason", E_USER_DEPRECATED);" to log deprecations.');
+        trigger_error('GeneralUtility::deprecationLog() will be removed in TYPO3 v10.0, use "trigger_error("Given reason", E_USER_DEPRECATED);" to log deprecations.', E_USER_DEPRECATED);
         trigger_error($msg, E_USER_DEPRECATED);
     }
 
@@ -4092,7 +4092,7 @@ class GeneralUtility
      */
     public static function logDeprecatedViewHelperAttribute(string $property, RenderingContextInterface $renderingContext, string $additionalMessage = '')
     {
-        static::writeDeprecationLogFileEntry('GeneralUtility::logDeprecatedViewHelperAttribute() will be removed in TYPO3 v10.0.');
+        trigger_error('GeneralUtility::logDeprecatedViewHelperAttribute() will be removed in TYPO3 v10.0.');
         $template = $renderingContext->getTemplatePaths()->resolveTemplateFileForControllerAndActionAndFormat(
             $renderingContext->getControllerName(),
             $renderingContext->getControllerAction()
@@ -4114,7 +4114,7 @@ class GeneralUtility
      */
     public static function getDeprecationLogFileName()
     {
-        static::writeDeprecationLogFileEntry('GeneralUtility::getDeprecationLogFileName() will be removed in TYPO3 v10.0.');
+        trigger_error('GeneralUtility::getDeprecationLogFileName() will be removed in TYPO3 v10.0.');
         return Environment::getVarPath() . '/log/deprecation_' . self::shortMD5(Environment::getProjectPath() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . '.log';
     }
 
@@ -4125,7 +4125,7 @@ class GeneralUtility
      */
     public static function logDeprecatedFunction()
     {
-        static::writeDeprecationLogFileEntry('GeneralUtility::logDeprecatedFunction() will be removed in TYPO3 v10.0.');
+        trigger_error('GeneralUtility::logDeprecatedFunction() will be removed in TYPO3 v10.0.');
         $trail = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
         if ($trail[1]['type']) {
             $function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
