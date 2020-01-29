@@ -745,20 +745,13 @@ class PageLayoutController
      */
     protected function renderContent(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
         $dbList->thumbs = $this->imagemode;
         $dbList->no_noWrap = 1;
-        $dbList->descrTable = $this->descrTable;
         $this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
-        $dbList->script = (string)$uriBuilder->buildUriFromRoute($this->moduleName);
-        $dbList->showIcon = 0;
-        $dbList->setLMargin = 0;
         $dbList->doEdit = $this->EDIT_CONTENT;
         $dbList->ext_CALC_PERMS = $this->CALC_PERMS;
-        $dbList->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
         $dbList->id = $this->id;
         $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
         $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
@@ -771,7 +764,6 @@ class PageLayoutController
         $dbList->getTableMenu($this->id);
         // Initialize other variables:
         $tableOutput = [];
-        $tableJSOutput = [];
         $CMcounter = 0;
         // Traverse the list of table names which has records on this page (that array is populated
         // by the $dblist object during the function getTableMenu()):
@@ -833,13 +825,10 @@ class PageLayoutController
             $dbList->generateList();
             // Adding the list content to the tableOutput variable:
             $tableOutput[$table] = $h_func . $dbList->HTMLcode . $h_func_b;
-            // ... and any accumulated JavaScript goes the same way!
-            $tableJSOutput[$table] = $dbList->JScode;
             // Increase global counter:
             $CMcounter += $dbList->counter;
             // Reset variables after operation:
             $dbList->HTMLcode = '';
-            $dbList->JScode = '';
         }
         // END: traverse tables
         // For Context Sensitive Menus:

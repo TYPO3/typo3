@@ -19,6 +19,7 @@ use Doctrine\DBAL\Driver\Statement;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
 use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -41,7 +42,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -63,25 +63,11 @@ class PageLayoutView implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * If TRUE, users/groups are shown in the page info box.
-     *
-     * @var bool
-     */
-    public $pI_showUser = false;
-
-    /**
      * The number of successive records to edit when showing content elements.
      *
      * @var int
      */
     public $nextThree = 3;
-
-    /**
-     * If TRUE, disables the edit-column icon for tt_content elements
-     *
-     * @var bool
-     */
-    public $pages_noEditColumns = false;
 
     /**
      * If TRUE, new-wizards are linked to rather than the regular new-element list.
@@ -105,25 +91,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $doEdit = true;
 
     /**
-     * Age prefixes for displaying times. May be set externally to localized values.
-     *
-     * @var string
-     */
-    public $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year';
-
-    /**
      * Array of tables to be listed by the Web > Page module in addition to the default tables.
      *
      * @var array
      */
     public $externalTables = [];
-
-    /**
-     * "Pseudo" Description -table name
-     *
-     * @var string
-     */
-    public $descrTable;
 
     /**
      * If set TRUE, the language mode of tt_content elements will be rendered with hard binding between
@@ -186,13 +158,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $itemLabels = [];
 
     /**
-     * Indicates if all available fields for a user should be selected or not.
-     *
-     * @var int
-     */
-    public $allFields = 0;
-
-    /**
      * Number of records to show
      *
      * @var int
@@ -200,46 +165,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $showLimit = 0;
 
     /**
-     * Shared module configuration, used by localization features
-     *
-     * @var array
-     */
-    public $modSharedTSconfig = [];
-
-    /**
-     * Tables which should not get listed
-     *
-     * @var string
-     */
-    public $hideTables = '';
-
-    /**
      * Containing which fields to display in extended mode
      *
      * @var string[]
      */
     public $displayFields;
-
-    /**
-     * Tables which should not list their translations
-     *
-     * @var string
-     */
-    public $hideTranslations = '';
-
-    /**
-     * If set, csvList is outputted.
-     *
-     * @var bool
-     */
-    public $csvOutput = false;
-
-    /**
-     * Cache for record path
-     *
-     * @var mixed[]
-     */
-    public $recPath_cache = [];
 
     /**
      * Field, to sort list by
@@ -270,13 +200,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $id;
 
     /**
-     * Return URL
-     *
-     * @var string
-     */
-    public $returnUrl = '';
-
-    /**
      * Tablename if single-table mode
      *
      * @var string
@@ -289,13 +212,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var int
      */
     public $calcPerms = 0;
-
-    /**
-     * Mode for what happens when a user clicks the title of a record.
-     *
-     * @var string
-     */
-    public $clickTitleMode = '';
 
     /**
      * Levels to search down.
@@ -319,13 +235,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $totalItems = '';
 
     /**
-     * TSconfig which overwrites TCA-Settings
-     *
-     * @var mixed[][]
-     */
-    public $tableTSconfigOverTCA = [];
-
-    /**
      * Loaded with page record with version overlay if any.
      *
      * @var string[]
@@ -333,39 +242,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $pageRecord = [];
 
     /**
-     * Used for tracking duplicate values of fields
-     *
-     * @var string[]
-     */
-    public $duplicateStack = [];
-
-    /**
      * Fields to display for the current table
      *
      * @var string[]
      */
     public $setFields = [];
-
-    /**
-     * Current script name
-     *
-     * @var string
-     */
-    public $script = 'index.php';
-
-    /**
-     * If TRUE, records are listed only if a specific table is selected.
-     *
-     * @var bool
-     */
-    public $listOnlyInSingleTableMode = false;
-
-    /**
-     * JavaScript code accumulation
-     *
-     * @var string
-     */
-    public $JScode = '';
 
     /**
      * Pointer for browsing list
@@ -403,13 +284,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $sortRev;
 
     /**
-     * String, can contain the field name from a table which must have duplicate values marked.
-     *
-     * @var string
-     */
-    public $duplicateField;
-
-    /**
      * Specify a list of tables which are the only ones allowed to be displayed.
      *
      * @var string
@@ -422,11 +296,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var int[][]
      */
     public $tablesCollapsed = [];
-
-    /**
-     * @var array[] Module configuration
-     */
-    public $modTSconfig;
 
     /**
      * HTML output
@@ -450,25 +319,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $currentTable = [];
 
     /**
-     * OBSOLETE - NOT USED ANYMORE. leftMargin
-     *
-     * @var int
-     */
-    public $leftMargin = 0;
-
-    /**
      * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
      *
      * @var array
      */
     public $fieldArray = [];
-
-    /**
-     * Set to zero, if you don't want a left-margin with addElement function
-     *
-     * @var int
-     */
-    public $setLMargin = 1;
 
     /**
      * Contains page translation languages
@@ -492,28 +347,6 @@ class PageLayoutView implements LoggerAwareInterface
     protected $siteLanguages = [];
 
     /**
-     * Script URL
-     *
-     * @var string
-     */
-    public $thisScript = '';
-
-    /**
-     * If set this is <td> CSS-classname for odd columns in addElement. Used with db_layout / pages section
-     *
-     * @var string
-     */
-    public $oddColumnsCssClass = '';
-
-    /**
-     * Not used in this class - but maybe extension classes...
-     * Max length of strings
-     *
-     * @var int
-     */
-    public $fixedL = 30;
-
-    /**
      * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
      *
      * @var array
@@ -526,11 +359,6 @@ class PageLayoutView implements LoggerAwareInterface
     public $no_noWrap = 0;
 
     /**
-     * @var int
-     */
-    public $showIcon = 1;
-
-    /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
      *
      * @var array
@@ -538,7 +366,7 @@ class PageLayoutView implements LoggerAwareInterface
     public $addElement_tdCssClass = [];
 
     /**
-     * @var \TYPO3\CMS\Backend\Clipboard\Clipboard
+     * @var Clipboard
      */
     protected $clipboard;
 
@@ -555,13 +383,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var array
      */
     protected $pageinfo;
-
-    /**
-     * Caches the available languages in a colPos
-     *
-     * @var array
-     */
-    protected $languagesInColumnCache = [];
 
     /**
      * Caches the amount of content elements as a matrix
@@ -596,24 +417,6 @@ class PageLayoutView implements LoggerAwareInterface
     protected $overridePageIdList = [];
 
     /**
-     * Override/add urlparameters in listUrl() method
-     *
-     * @var string[]
-     */
-    protected $overrideUrlParameters = [];
-
-    /**
-     * Array with before/after setting for tables
-     * Structure:
-     * 'tableName' => [
-     *    'before' => ['A', ...]
-     *    'after' => []
-     *  ]
-     * @var array[]
-     */
-    protected $tableDisplayOrder = [];
-
-    /**
      * Cache the number of references to a record
      *
      * @var array
@@ -627,11 +430,7 @@ class PageLayoutView implements LoggerAwareInterface
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
-        if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
-            $this->fixedL = $GLOBALS['BE_USER']->uc['titleLen'];
-        }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->determineScriptUrl();
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
@@ -763,7 +562,6 @@ class PageLayoutView implements LoggerAwareInterface
                 if ($editIdList
                     && isset($GLOBALS['TCA']['pages']['columns'][$field])
                     && $field !== 'uid'
-                    && !$this->pages_noEditColumns
                 ) {
                     $iTitle = sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
@@ -909,7 +707,7 @@ class PageLayoutView implements LoggerAwareInterface
             $backendLayout = $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
             $columns = $backendLayout['__colPosList'];
             // Select content records per column
-            $contentRecordsPerColumn = $this->getContentRecordsPerColumn('table', $id, $columns, $showLanguage);
+            $contentRecordsPerColumn = $this->getContentRecordsPerColumn($id, $columns, $showLanguage);
             $cList = array_keys($contentRecordsPerColumn);
             // For each column, render the content into a variable:
             foreach ($cList as $columnId) {
@@ -1010,7 +808,6 @@ class PageLayoutView implements LoggerAwareInterface
                             $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0 && $this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP);
                             $singleElementHTML .= $this->tt_content_drawHeader(
                                 $row,
-                                $this->tt_contentConfig['showInfo'] ? 15 : 5,
                                 $disableMoveAndNewButtons,
                                 true,
                                 $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
@@ -1346,7 +1143,7 @@ class PageLayoutView implements LoggerAwareInterface
 
                     $localizationButtons = [];
                     $localizationButtons[] = $this->newLanguageButton(
-                        $this->getNonTranslatedTTcontentUids($defaultLanguageElements, $id, $lP),
+                        $this->getNonTranslatedTTcontentUids($defaultLanguageElements, $lP),
                         $lP
                     );
 
@@ -1482,8 +1279,7 @@ class PageLayoutView implements LoggerAwareInterface
         // Set fields
         $out = '';
         $this->fieldArray = GeneralUtility::trimExplode(',', '__cmds__,' . $fList . ',__editIconLink__', true);
-        $theData = [];
-        $theData = $this->headerFields($this->fieldArray, $table, $theData);
+        $theData = $this->headerFields($this->fieldArray, $table);
         // Title row
         $localizedTableTitle = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
         $out .= '<tr><th class="col-icon"></th>'
@@ -1627,12 +1423,12 @@ class PageLayoutView implements LoggerAwareInterface
      *
      * @param array $fieldArr Field names
      * @param string $table The table name
-     * @param array $out Array to which the headers are added.
-     * @return array $out returned after addition of the header fields.
+     * @return array returned after addition of the header fields.
      * @see makeOrdinaryList()
      */
-    public function headerFields($fieldArr, $table, $out = [])
+    public function headerFields($fieldArr, $table)
     {
+        $out = [];
         foreach ($fieldArr as $fieldName) {
             $ll = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']));
             $out[$fieldName] = $ll ?: '&nbsp;';
@@ -1644,13 +1440,12 @@ class PageLayoutView implements LoggerAwareInterface
      * Gets content records per column.
      * This is required for correct workspace overlays.
      *
-     * @param string $table UNUSED (will always be queried from tt_content)
      * @param int $id Page Id to be used (not used at all, but part of the API, see $this->pidSelect)
      * @param array $columns colPos values to be considered to be shown
      * @param string $additionalWhereClause Additional where clause for database select
      * @return array Associative array for each column (colPos)
      */
-    protected function getContentRecordsPerColumn($table, $id, array $columns, $additionalWhereClause = '')
+    protected function getContentRecordsPerColumn($id, array $columns, $additionalWhereClause = '')
     {
         $contentRecordsPerColumn = array_fill_keys($columns, []);
         $columns = array_flip($columns);
@@ -1951,13 +1746,12 @@ class PageLayoutView implements LoggerAwareInterface
      * Draw the header for a single tt_content element
      *
      * @param array $row Record array
-     * @param int $space Amount of pixel space above the header. UNUSED
      * @param bool $disableMoveAndNewButtons If set the buttons for creating new elements and moving up and down are not shown.
      * @param bool $langMode If set, we are in language mode and flags will be shown for languages
      * @param bool $dragDropEnabled If set the move button must be hidden
      * @return string HTML table with the record header.
      */
-    public function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = false, $langMode = false, $dragDropEnabled = false)
+    public function tt_content_drawHeader($row, $disableMoveAndNewButtons = false, $langMode = false, $dragDropEnabled = false)
     {
         $backendUser = $this->getBackendUser();
         $out = '';
@@ -2320,11 +2114,10 @@ class PageLayoutView implements LoggerAwareInterface
      * for translations and original but this may be a conceptual error (?)
      *
      * @param array $defaultLanguageUids Numeric array with uids of tt_content elements in the default language
-     * @param int $id Page pid
      * @param int $lP Sys language UID
      * @return array Modified $defLanguageCount
      */
-    public function getNonTranslatedTTcontentUids($defaultLanguageUids, $id, $lP)
+    public function getNonTranslatedTTcontentUids($defaultLanguageUids, $lP)
     {
         if ($lP && !empty($defaultLanguageUids)) {
             // Select all translations here:
@@ -2563,7 +2356,7 @@ class PageLayoutView implements LoggerAwareInterface
     protected function initializeClipboard()
     {
         // Start clipboard
-        $this->clipboard = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Clipboard\Clipboard::class);
+        $this->clipboard = GeneralUtility::makeInstance(Clipboard::class);
 
         // Initialize - reads the clipboard content from the user session
         $this->clipboard->initializeClipboard();
@@ -2661,10 +2454,9 @@ class PageLayoutView implements LoggerAwareInterface
      *
      * @param string $table Table name
      * @param array $row Record array
-     * @param string $enabledClickMenuItems Passthrough to wrapClickMenuOnIcon
      * @return string HTML for the icon
      */
-    public function getIcon($table, $row, $enabledClickMenuItems = '')
+    public function getIcon($table, $row)
     {
         // Initialization
         $toolTip = BackendUtility::getRecordToolTip($row, 'tt_content');
@@ -2719,12 +2511,11 @@ class PageLayoutView implements LoggerAwareInterface
      * Basically, the point is to signal that this record could have had an edit link if
      * the circumstances were right. A placeholder for the regular edit icon...
      *
-     * @param string $label Label key from LOCAL_LANG
      * @return string IMG tag for icon.
      */
-    public function noEditIcon($label = 'noEditItems')
+    public function noEditIcon()
     {
-        $title = htmlspecialchars($this->getLanguageService()->getLL($label));
+        $title = htmlspecialchars($this->getLanguageService()->getLL('noEditItems'));
         return '<span title="' . $title . '">' . $this->iconFactory->getIcon('status-edit-read-only', Icon::SIZE_SMALL)->render() . '</span>';
     }
 
@@ -2926,30 +2717,12 @@ class PageLayoutView implements LoggerAwareInterface
         $this->searchLevels = (int)$levels;
         $this->showLimit = MathUtility::forceIntegerInRange($showLimit, 0, 10000);
         // Setting GPvars:
-        $this->csvOutput = (bool)GeneralUtility::_GP('csv');
         $this->sortField = GeneralUtility::_GP('sortField');
         $this->sortRev = GeneralUtility::_GP('sortRev');
         $this->displayFields = GeneralUtility::_GP('displayFields');
-        $this->duplicateField = GeneralUtility::_GP('duplicateField');
         // Init dynamic vars:
         $this->counter = 0;
-        $this->JScode = '';
         $this->HTMLcode = '';
-        // Limits
-        if (isset($this->modTSconfig['properties']['itemsLimitPerTable'])) {
-            $this->itemsLimitPerTable = MathUtility::forceIntegerInRange(
-                (int)$this->modTSconfig['properties']['itemsLimitPerTable'],
-                1,
-                10000
-            );
-        }
-        if (isset($this->modTSconfig['properties']['itemsLimitSingleTable'])) {
-            $this->itemsLimitSingleTable = MathUtility::forceIntegerInRange(
-                (int)$this->modTSconfig['properties']['itemsLimitSingleTable'],
-                1,
-                10000
-            );
-        }
 
         // $table might be NULL at this point in the code. As the expressionBuilder
         // is used to limit returned records based on the page permissions and the
@@ -2996,7 +2769,6 @@ class PageLayoutView implements LoggerAwareInterface
     {
         // Set page record in header
         $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
-        $hideTablesArray = GeneralUtility::trimExplode(',', $this->hideTables);
 
         $backendUser = $this->getBackendUser();
 
@@ -3014,35 +2786,17 @@ class PageLayoutView implements LoggerAwareInterface
                 $hideTable = true;
             }
 
-            if (!$hideTable) {
-                // Don't show table if hidden by TCA ctrl section
-                // Don't show table if hidden by pageTSconfig mod.web_list.hideTables
-                $hideTable = $hideTable
-                    || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'])
-                    || in_array($tableName, $hideTablesArray, true)
-                    || in_array('*', $hideTablesArray, true);
-                // Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table
-                if (isset($this->tableTSconfigOverTCA[$tableName . '.']['hideTable'])) {
-                    $hideTable = (bool)$this->tableTSconfigOverTCA[$tableName . '.']['hideTable'];
-                }
-            }
+            // Don't show table if hidden by TCA ctrl section
+            $hideTable = $hideTable || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable']);
             if ($hideTable) {
                 unset($tableNames[$tableName]);
             } else {
-                if (isset($this->tableDisplayOrder[$tableName])) {
-                    // Copy display order information
-                    $tableNames[$tableName] = $this->tableDisplayOrder[$tableName];
-                } else {
-                    $tableNames[$tableName] = [];
-                }
+                $tableNames[$tableName] = [];
             }
         }
         unset($config);
 
-        $orderedTableNames = GeneralUtility::makeInstance(DependencyOrderingService::class)
-            ->orderByDependencies($tableNames);
-
-        foreach ($orderedTableNames as $tableName => $_) {
+        foreach ($tableNames as $tableName => $_) {
             // check if we are in single- or multi-table mode
             if ($this->table) {
                 $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'])
@@ -3071,24 +2825,9 @@ class PageLayoutView implements LoggerAwareInterface
             if ($this->showLimit) {
                 $this->iLimit = $this->showLimit;
             }
-            // Setting fields to select:
-            if ($this->allFields) {
-                $fields = $this->makeFieldList($tableName);
-                $fields[] = 'tstamp';
-                $fields[] = 'crdate';
-                $fields[] = '_PATH_';
-                $fields[] = '_CONTROL_';
-                if (is_array($this->setFields[$tableName])) {
-                    $fields = array_intersect($fields, $this->setFields[$tableName]);
-                } else {
-                    $fields = [];
-                }
-            } else {
-                $fields = [];
-            }
 
             // Finally, render the list:
-            $this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
+            $this->HTMLcode .= $this->getTable($tableName, $this->id);
         }
     }
 
@@ -3291,7 +3030,7 @@ class PageLayoutView implements LoggerAwareInterface
         }
 
         if ($addSorting) {
-            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table, 1))) {
+            if ($this->sortField && in_array($this->sortField, $this->makeFieldList($table))) {
                 $queryBuilder->orderBy($this->sortField, $this->sortRev ? 'DESC' : 'ASC');
             } else {
                 $orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ?: $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
@@ -3312,18 +3051,6 @@ class PageLayoutView implements LoggerAwareInterface
         // Filtering on displayable pages (permissions):
         if ($table === 'pages' && $this->perms_clause) {
             $queryBuilder->andWhere($this->perms_clause);
-        }
-
-        // Filter out records that are translated, if TSconfig mod.web_list.hideTranslations is set
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'])
-            && (GeneralUtility::inList($this->hideTranslations, $table) || $this->hideTranslations === '*')
-        ) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                    0
-                )
-            );
         }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageLayoutView::class]['modifyQuery'] ?? [] as $className) {
@@ -3504,28 +3231,6 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Wrapping input code in link to URL or email if $testString is either.
-     *
-     * @param string $code code to wrap
-     * @param string $testString String which is tested for being a URL or email and which will be used for the link if so.
-     * @return string Link-Wrapped $code value, if $testString was URL or email.
-     */
-    public function linkUrlMail($code, $testString)
-    {
-        // Check for URL:
-        $scheme = parse_url($testString, PHP_URL_SCHEME);
-        if ($scheme === 'http' || $scheme === 'https' || $scheme === 'ftp') {
-            return '<a href="' . htmlspecialchars($testString) . '" target="_blank">' . $code . '</a>';
-        }
-        // Check for email:
-        if (GeneralUtility::validEmail($testString)) {
-            return '<a href="mailto:' . htmlspecialchars($testString) . '" target="_blank">' . $code . '</a>';
-        }
-        // Return if nothing else...
-        return $code;
-    }
-
-    /**
      * Creates the URL to this script, including all relevant GPvars
      * Fixed GPvars are id, table, imagemode, returnUrl, search_field, search_levels and showLimit
      * The GPvars "sortField" and "sortRev" are also included UNLESS they are found in the $exclList variable.
@@ -3551,9 +3256,6 @@ class PageLayoutView implements LoggerAwareInterface
         if ($this->thumbs) {
             $urlParameters['imagemode'] = $this->thumbs;
         }
-        if ($this->returnUrl) {
-            $urlParameters['returnUrl'] = $this->returnUrl;
-        }
         if ((!$exclList || !GeneralUtility::inList($exclList, 'search_field')) && $this->searchString) {
             $urlParameters['search_field'] = $this->searchString;
         }
@@ -3572,8 +3274,6 @@ class PageLayoutView implements LoggerAwareInterface
         if ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
             $urlParameters['sortRev'] = $this->sortRev;
         }
-
-        $urlParameters = array_merge_recursive($urlParameters, $this->overrideUrlParameters);
 
         if ($routePath = GeneralUtility::_GP('route')) {
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -3597,110 +3297,45 @@ class PageLayoutView implements LoggerAwareInterface
      * Makes the list of fields to select for a table
      *
      * @param string $table Table name
-     * @param bool $dontCheckUser If set, users access to the field (non-exclude-fields) is NOT checked.
-     * @param bool $addDateFields If set, also adds crdate and tstamp fields (note: they will also be added if user is admin or dontCheckUser is set)
      * @return string[] Array, where values are fieldnames to include in query
      */
-    public function makeFieldList($table, $dontCheckUser = false, $addDateFields = false)
+    public function makeFieldList($table)
     {
-        $backendUser = $this->getBackendUser();
         // Init fieldlist array:
         $fieldListArr = [];
         // Check table:
-        if (is_array($GLOBALS['TCA'][$table]) && isset($GLOBALS['TCA'][$table]['columns']) && is_array(
-            $GLOBALS['TCA'][$table]['columns']
-        )) {
-            if (isset($GLOBALS['TCA'][$table]['columns']) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-                // Traverse configured columns and add them to field array, if available for user.
-                foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-                    if ($dontCheckUser || (!$fieldValue['exclude'] || $backendUser->check(
-                        'non_exclude_fields',
-                        $table . ':' . $fN
-                    )) && $fieldValue['config']['type'] !== 'passthrough') {
-                        $fieldListArr[] = $fN;
-                    }
+        if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
+            // Traverse configured columns and add them to field array, if available for user.
+            foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
+                if ($fieldValue['config']['type'] !== 'passthrough') {
+                    $fieldListArr[] = $fN;
                 }
+            }
 
-                $fieldListArr[] = 'uid';
-                $fieldListArr[] = 'pid';
+            $fieldListArr[] = 'uid';
+            $fieldListArr[] = 'pid';
 
-                // Add date fields
-                if ($dontCheckUser || $backendUser->isAdmin() || $addDateFields) {
-                    if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
-                    }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
-                    }
-                }
-                // Add more special fields:
-                if ($dontCheckUser || $backendUser->isAdmin()) {
-                    if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
-                    }
-                    if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-                        $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-                    }
-                    if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                        $fieldListArr[] = 't3ver_oid';
-                        $fieldListArr[] = 't3ver_state';
-                        $fieldListArr[] = 't3ver_wsid';
-                    }
-                }
-            } else {
-                $this->logger->error('TCA is broken for the table "' . $table . '": no required "columns" entry in TCA.');
+            // Add date fields
+            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
+                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
+            }
+            if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
+                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
+            }
+            // Add more special fields:
+            if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
+                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
+            }
+            if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
+            }
+            if (BackendUtility::isTableWorkspaceEnabled($table)) {
+                $fieldListArr[] = 't3ver_oid';
+                $fieldListArr[] = 't3ver_state';
+                $fieldListArr[] = 't3ver_wsid';
             }
         }
         return $fieldListArr;
-    }
-
-    /**
-     * Set URL parameters to override or add in the listUrl() method.
-     *
-     * @param string[] $urlParameters
-     */
-    public function setOverrideUrlParameters(array $urlParameters)
-    {
-        $this->overrideUrlParameters = $urlParameters;
-    }
-
-    /**
-     * Set table display order information
-     *
-     * Structure of $orderInformation:
-     *   'tableName' => [
-     *      'before' => // comma-separated string list or array of table names
-     *      'after' => // comma-separated string list or array of table names
-     * ]
-     *
-     * @param array $orderInformation
-     * @throws \UnexpectedValueException
-     */
-    public function setTableDisplayOrder(array $orderInformation)
-    {
-        foreach ($orderInformation as $tableName => &$configuration) {
-            if (isset($configuration['before'])) {
-                if (is_string($configuration['before'])) {
-                    $configuration['before'] = GeneralUtility::trimExplode(',', $configuration['before'], true);
-                } elseif (!is_array($configuration['before'])) {
-                    throw new \UnexpectedValueException(
-                        'The specified "before" order configuration for table "' . $tableName . '" is invalid.',
-                        1504870805
-                    );
-                }
-            }
-            if (isset($configuration['after'])) {
-                if (is_string($configuration['after'])) {
-                    $configuration['after'] = GeneralUtility::trimExplode(',', $configuration['after'], true);
-                } elseif (!is_array($configuration['after'])) {
-                    throw new \UnexpectedValueException(
-                        'The specified "after" order configuration for table "' . $tableName . '" is invalid.',
-                        1504870806
-                    );
-                }
-            }
-        }
-        $this->tableDisplayOrder = $orderInformation;
     }
 
     /**
@@ -3801,19 +3436,6 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * Sets the script url depending on being a module or script request
-     */
-    protected function determineScriptUrl()
-    {
-        if ($routePath = GeneralUtility::_GP('route')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->thisScript = (string)$uriBuilder->buildUriFromRoutePath($routePath);
-        } else {
-            $this->thisScript = GeneralUtility::getIndpEnv('SCRIPT_NAME');
-        }
-    }
-
-    /**
      * Returns a table-row with the content from the fields in the input data array.
      * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
      *
@@ -3836,24 +3458,6 @@ class PageLayoutView implements LoggerAwareInterface
         $out = '
 		<!-- Element, begin: -->
 		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $l10nParent . '">';
-        // Show icon and lines
-        if ($this->showIcon) {
-            $out .= '
-			<' . $colType . ' class="col-icon nowrap">';
-            if (!$h) {
-                $out .= '&nbsp;';
-            } else {
-                for ($a = 0; $a < $h; $a++) {
-                    if (!$a) {
-                        if ($icon) {
-                            $out .= $icon;
-                        }
-                    }
-                }
-            }
-            $out .= '</' . $colType . '>
-			';
-        }
         // Init rendering.
         $colsp = '';
         $lastKey = '';
@@ -3870,9 +3474,6 @@ class PageLayoutView implements LoggerAwareInterface
             if (isset($data[$vKey])) {
                 if ($lastKey) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey];
-                    if ($this->oddColumnsCssClass && $ccount % 2 == 0) {
-                        $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
-                    }
                     $out .= '
 						<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
                 }
@@ -3893,9 +3494,6 @@ class PageLayoutView implements LoggerAwareInterface
         }
         if ($lastKey) {
             $cssClass = $this->addElement_tdCssClass[$lastKey];
-            if ($this->oddColumnsCssClass) {
-                $cssClass = implode(' ', [$this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass]);
-            }
             $out .= '
 				<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
         }
@@ -3972,14 +3570,6 @@ class PageLayoutView implements LoggerAwareInterface
                 break;
         }
         return $content;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getThisScript()
-    {
-        return strpos($this->thisScript, '?') === false ? $this->thisScript . '?' : $this->thisScript . '&';
     }
 
     /**

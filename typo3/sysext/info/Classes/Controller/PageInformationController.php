@@ -65,15 +65,7 @@ class PageInformationController
         $languageService = $this->getLanguageService();
         $theOutput = '<h1>' . htmlspecialchars($languageService->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
-        $dblist->descrTable = '_MOD_web_info';
         $dblist->thumbs = 0;
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        $dblist->script = (string)$uriBuilder->buildUriFromRoute('web_info');
-        $dblist->showIcon = 0;
-        $dblist->setLMargin = 0;
-        $dblist->agePrefixes = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears');
-        $dblist->pI_showUser = true;
 
         if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {
             $dblist->fieldArray = $this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']]['fields'];
@@ -90,7 +82,7 @@ class PageInformationController
         $theOutput .= '<div class="form-inline form-inline-spaced">'
             . $h_func
             . '<div class="form-group">'
-            . BackendUtility::cshItem($dblist->descrTable, 'func_' . $this->pObj->MOD_SETTINGS['pages'], null, '<span class="btn btn-default btn-sm">|</span>')
+            . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], null, '<span class="btn btn-default btn-sm">|</span>')
             . '</div>'
             . '</div>'
             . $dblist->HTMLcode;
