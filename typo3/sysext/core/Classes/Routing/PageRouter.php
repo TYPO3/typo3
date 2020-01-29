@@ -239,7 +239,7 @@ class PageRouter implements RouterInterface
         $page = $pageRepository->getPage($pageId, true);
         $pagePath = $page['slug'] ?? '';
 
-        if ($parameters['MP'] ?? false) {
+        if ($parameters['MP'] ?? '') {
             $mountPointPairs = explode(',', $parameters['MP']);
             $pagePath = $this->resolveMountPointParameterIntoPageSlug(
                 $pageId,
@@ -511,7 +511,7 @@ class PageRouter implements RouterInterface
         $pageId = (int)($page['l10n_parent'] > 0 ? $page['l10n_parent'] : $page['uid']);
         $type = $this->resolveType($route, $remainingQueryParameters);
         // See PageSlugCandidateProvider where this is added.
-        if ($page['MPvar']) {
+        if ($page['MPvar'] ?? '') {
             $routeArguments['MP'] = $page['MPvar'];
         }
         return new PageArguments($pageId, $type, $routeArguments, [], $remainingQueryParameters);

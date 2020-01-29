@@ -103,7 +103,7 @@ class EmailLoginNotification
     {
         return sprintf(
             'User "%s" logged in from %s at "%s" (%s)',
-            $user['username'],
+            $user['username'] ?? 'unknown',
             $ipAddress,
             $siteName,
             $httpHost

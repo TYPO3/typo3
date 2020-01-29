@@ -316,7 +316,10 @@ class ExtensionManagementService implements SingletonInterface
     protected function setInExtensionRepository($extensionKey)
     {
         $paths = Extension::returnInstallPaths();
-        $path = $paths[$this->downloadUtility->getDownloadPath()];
+        $path = $paths[$this->downloadUtility->getDownloadPath()] ?? '';
+        if (empty($path)) {
+            return;
+        }
         $localExtensionStorage = $path . $extensionKey . '/Initialisation/Extensions/';
         $this->dependencyUtility->setLocalExtensionStorage($localExtensionStorage);
     }

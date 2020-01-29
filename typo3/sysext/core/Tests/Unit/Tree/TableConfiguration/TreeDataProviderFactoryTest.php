@@ -92,7 +92,7 @@ class TreeDataProviderFactoryTest extends UnitTestCase
      */
     public function factoryThrowsExceptionIfInvalidConfigurationIsGiven(array $tcaConfiguration, int $expectedExceptionCode): void
     {
-        if ($tcaConfiguration['internal_type'] === 'db' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
+        if (($tcaConfiguration['internal_type'] ?? '') === 'db' && is_array($tcaConfiguration['treeConfig'] ?? null)) {
             $treeDataProvider = $this->prophesize(DatabaseTreeDataProvider::class);
             GeneralUtility::addInstance(DatabaseTreeDataProvider::class, $treeDataProvider->reveal());
         }

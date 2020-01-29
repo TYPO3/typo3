@@ -486,11 +486,15 @@ class ResourceStorageTest extends BaseTestCase
 
         $folderStub = new Folder($this->subject, '/foo/', 'foo');
         $resourceFactory->createFolderObject(Argument::cetera())->willReturn($folderStub);
-        $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
+        $fileStub = new File(['identifier' => '/foo/bar.jpg', 'name' => 'bar.jpg'], $this->subject);
         $driverMock->expects(self::once())
             ->method('isWithin')
             ->with($folderStub->getIdentifier(), $fileStub->getIdentifier())
             ->willReturn(true);
+        $driverMock->expects(self::once())
+            ->method('getFolderInfoByIdentifier')
+            ->with($folderStub->getIdentifier())
+            ->willReturn(['identifier' => $folderStub->getIdentifier(), 'name' => $folderStub->getName()]);
 
         $this->subject->setEvaluatePermissions(true);
         $this->subject->addFileMount('/foo/', [
@@ -510,13 +514,17 @@ class ResourceStorageTest extends BaseTestCase
         $resourceFactory = $this->prophesize(ResourceFactory::class);
         $this->prepareSubject([], false, $driverMock, $resourceFactory->reveal(), [], ['isWithinProcessingFolder']);
 
-        $fileStub = new File(['identifier' => '/foo/bar.jpg'], $this->subject);
+        $fileStub = new File(['identifier' => '/foo/bar.jpg', 'name' => 'bar.jpg'], $this->subject);
         $folderStub = new Folder($this->subject, '/foo/', 'foo');
         $resourceFactory->createFolderObject(Argument::cetera())->willReturn($folderStub);
         $driverMock->expects(self::once())
             ->method('isWithin')
             ->with($folderStub->getIdentifier(), $fileStub->getIdentifier())
             ->willReturn(true);
+        $driverMock->expects(self::once())
+            ->method('getFolderInfoByIdentifier')
+            ->with($folderStub->getIdentifier())
+            ->willReturn(['identifier' => $folderStub->getIdentifier(), 'name' => $folderStub->getName()]);
 
         $this->subject->setEvaluatePermissions(true);
         $this->subject->addFileMount('/foo/', [

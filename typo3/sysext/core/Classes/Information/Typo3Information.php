@@ -37,7 +37,7 @@ class Typo3Information
     {
         if ($languageService) {
             $this->languageService = $languageService;
-        } elseif ($GLOBALS['LANG'] instanceof LanguageService) {
+        } elseif (($GLOBALS['LANG'] ?? null) instanceof LanguageService) {
             $this->languageService = $GLOBALS['LANG'];
         } else {
             $this->languageService = LanguageService::create('default');

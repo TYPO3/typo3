@@ -57,8 +57,8 @@ class EmConfUtilityTest extends UnitTestCase
             ],
         ];
         $subject = new EmConfUtility();
-        $_EXTKEY = 'test';
-        $result = $subject->constructEmConf(['EM_CONF' => $input]);
+        $_EXTKEY = 'seminars';
+        $result = $subject->constructEmConf(['EM_CONF' => $input, 'extKey' => $_EXTKEY]);
         eval(substr($result, 7));
         $result = $EM_CONF[$_EXTKEY];
         self::assertEquals($expected, $result);
@@ -86,8 +86,8 @@ class EmConfUtilityTest extends UnitTestCase
         ];
         $subject = new EmConfUtility();
 
-        $_EXTKEY = 'test';
-        $result = $subject->constructEmConf(['EM_CONF' => $input]);
+        $_EXTKEY = 'seminars';
+        $result = $subject->constructEmConf(['EM_CONF' => $input, 'extKey' => $_EXTKEY]);
         eval(substr($result, 7));
         $result = $EM_CONF[$_EXTKEY];
         self::assertEquals($expected, $result);
