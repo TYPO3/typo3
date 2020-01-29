@@ -88,14 +88,11 @@ class TcaTextTest extends UnitTestCase
                     'enableRichtext' => true,
                 ]
             )
-            ->willReturn([ 'aConfig' => 'option' ]);
-        $rteHtmlParserPropehy->init('aTable:aField', 42)->shouldBeCalled();
+            ->willReturn([ 'aConfig' => 'option']);
         $rteHtmlParserPropehy
-            ->RTE_transform(
+            ->transformTextForRichTextEditor(
                 'notProcessedContent',
-                [],
-                'rte',
-                [ 'aConfig' => 'option']
+                []
             )
             ->willReturn('processedContent');
 

@@ -108,8 +108,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
     }
 
     /**
@@ -185,8 +184,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
     /**
@@ -374,8 +372,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
     }
 
     /**
@@ -475,8 +472,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($content, $this->procOptions));
     }
 
     /**
@@ -628,8 +624,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 
     /**
@@ -667,8 +662,7 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($content, [], 'db', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForPersistence($content, $this->procOptions));
     }
 
     /**
@@ -706,7 +700,6 @@ class RteHtmlParserTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $subject = new RteHtmlParser($eventDispatcher);
-        $thisConfig = ['proc.' => $this->procOptions];
-        self::assertEquals($expectedResult, $subject->RTE_transform($subject->RTE_transform($content, [], 'db', $thisConfig), [], 'rte', $thisConfig));
+        self::assertEquals($expectedResult, $subject->transformTextForRichTextEditor($subject->transformTextForPersistence($content, $this->procOptions), $this->procOptions));
     }
 }

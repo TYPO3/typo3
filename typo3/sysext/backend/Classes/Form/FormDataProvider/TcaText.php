@@ -56,14 +56,8 @@ class TcaText implements FormDataProviderInterface
                 // If eval=null is set for field, value might be null ... don't transform anything in this case.
                 if ($result['databaseRow'][$fieldName] !== null) {
                     // Process "from-db-to-rte" on current value
-                    $parseHTML = GeneralUtility::makeInstance(RteHtmlParser::class);
-                    $parseHTML->init($result['tableName'] . ':' . $fieldName, $result['effectivePid']);
-                    $result['databaseRow'][$fieldName] = $parseHTML->RTE_transform(
-                        $result['databaseRow'][$fieldName],
-                        [],
-                        'rte',
-                        $richtextConfiguration
-                    );
+                    $richTextParser = GeneralUtility::makeInstance(RteHtmlParser::class);
+                    $result['databaseRow'][$fieldName] = $richTextParser->transformTextForRichTextEditor($result['databaseRow'][$fieldName], $richtextConfiguration['proc.'] ?? []);
                 }
             }
         }

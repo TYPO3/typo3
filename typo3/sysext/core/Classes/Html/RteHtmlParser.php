@@ -47,27 +47,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
     protected $defaultAllowedTagsList = 'b,i,u,a,img,br,div,center,pre,font,hr,sub,sup,p,strong,em,li,ul,ol,blockquote,strike,span,abbr,acronym,dfn';
 
     /**
-     * Set this to the pid of the record manipulated by the class.
-     *
-     * @var int
-     */
-    protected $recPid = 0;
-
-    /**
-     * Element reference [table]:[field], eg. "tt_content:bodytext"
-     *
-     * @var string
-     */
-    protected $elRef = '';
-
-    /**
-     * Current Page TSconfig
-     *
-     * @var array
-     */
-    protected $tsConfig = [];
-
-    /**
      * Set to the TSconfig options coming from Page TSconfig
      *
      * @var array
@@ -149,32 +128,22 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      *
      * @param string $elRef Element reference, eg "tt_content:bodytext
      * @param int $recPid PID of the record (page id)
+     * @deprecated will be removed in TYPO3 v11.0, as it serves no purpose anymore
      */
     public function init($elRef = '', $recPid = 0)
     {
-        $this->recPid = $recPid;
-        $this->elRef = $elRef;
+        trigger_error('RteHtmlParser->init() is not needed anymore for RTE transformation, and will be removed in TYPO3 v11.0.', E_USER_DEPRECATED);
     }
 
-    /**********************************************
-     *
-     * Main function
-     *
-     **********************************************/
     /**
-     * Transform value for RTE based on specConf in the direction specified by $direction (rte/db)
-     * This is the main function called from DataHandler and transfer data classes
+     * Sanitize and streamline given options (usually from RichTextConfiguration results "proc."
+     * and set them to the respective properties.
      *
-     * @param string $value Input value
-     * @param null $_ unused
-     * @param string $direction Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
-     * @param array $thisConfig Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
-     * @return string Output value
+     * @param array $processingConfiguration
      */
-    public function RTE_transform($value, $_ = null, $direction = 'rte', $thisConfig = [])
+    protected function setProcessingConfiguration(array $processingConfiguration): void
     {
-        $this->tsConfig = $thisConfig;
-        $this->procOptions = (array)$thisConfig['proc.'];
+        $this->procOptions = $processingConfiguration;
         if (isset($this->procOptions['allowedClasses.'])) {
             $this->allowedClasses = (array)$this->procOptions['allowedClasses.'];
         } else {
@@ -198,77 +167,131 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 $this->allowedTagsOutsideOfParagraphs = (array)$this->procOptions['allowTagsOutside.'];
             }
         }
+    }
 
-        // Setting modes / transformations to be called
-        if ((string)$this->procOptions['overruleMode'] !== '') {
-            $modes = GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']);
-        } else {
-            $modes = [$this->procOptions['mode']];
-        }
-        $modes = $this->resolveAppliedTransformationModes($direction, $modes);
-
+    /**
+     * Main entry point for transforming RTE content in the database so the Rich Text Editor can deal with
+     * e.g. links.
+     *
+     * @param string $value
+     * @param array $processingConfiguration
+     * @return string
+     */
+    public function transformTextForRichTextEditor(string $value, array $processingConfiguration): string
+    {
+        $this->setProcessingConfiguration($processingConfiguration);
+        $modes = $this->resolveAppliedTransformationModes('rte');
         $value = $this->streamlineLineBreaksForProcessing($value);
-
         // If an entry HTML cleaner was configured, pass the content through the HTMLcleaner
-        $value = $this->runHtmlParserIfConfigured($value, 'entryHTMLparser_' . $direction);
-
+        $value = $this->runHtmlParserIfConfigured($value, 'entryHTMLparser_rte');
         // Traverse modes
         foreach ($modes as $cmd) {
-            if ($direction === 'db') {
-                // Checking for user defined transformation:
-                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
-                    $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
-                    $_procObj->pObj = $this;
-                    $_procObj->transformationKey = $cmd;
-                    $value = $_procObj->transform_db($value, $this);
-                } else {
-                    // ... else use defaults:
-                    switch ($cmd) {
-                        case 'detectbrokenlinks':
-                            $value = $this->removeBrokenLinkMarkers($value);
-                            break;
-                        case 'ts_links':
-                            $value = $this->TS_links_db($value);
-                            break;
-                        case 'css_transform':
-                            // Transform empty paragraphs into spacing paragraphs
-                            $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
-                            // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
-                            $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value);
-                            $value = $this->TS_transform_db($value);
-                            break;
-                        default:
-                            // Do nothing
-                    }
-                }
-            } elseif ($direction === 'rte') {
-                // Checking for user defined transformation:
-                if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
-                    $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
-                    $_procObj->pObj = $this;
-                    $value = $_procObj->transform_rte($value, $this);
-                } else {
-                    // ... else use defaults:
-                    switch ($cmd) {
-                        case 'detectbrokenlinks':
-                            $value = $this->markBrokenLinks($value);
-                            break;
-                        case 'css_transform':
-                            $value = $this->TS_transform_rte($value);
-                            break;
-                        default:
-                            // Do nothing
-                    }
+            // Checking for user defined transformation:
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
+                $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
+                $_procObj->pObj = $this;
+                $value = $_procObj->transform_rte($value, $this);
+            } else {
+                // ... else use defaults:
+                switch ($cmd) {
+                    case 'detectbrokenlinks':
+                        $value = $this->markBrokenLinks($value);
+                        break;
+                    case 'css_transform':
+                        $value = $this->TS_transform_rte($value);
+                        break;
+                    default:
+                        // Do nothing
                 }
             }
         }
-
         // If an exit HTML cleaner was configured, pass the content through the HTMLcleaner
-        $value = $this->runHtmlParserIfConfigured($value, 'exitHTMLparser_' . $direction);
-
+        $value = $this->runHtmlParserIfConfigured($value, 'exitHTMLparser_rte');
         // Final clean up of linebreaks
         $value = $this->streamlineLineBreaksAfterProcessing($value);
+        return $value;
+    }
 
+    /**
+     * Called to process HTML content before it is stored in the database.
+     *
+     * @param string $value
+     * @param array $processingConfiguration
+     * @return string
+     */
+    public function transformTextForPersistence(string $value, array $processingConfiguration): string
+    {
+        $this->setProcessingConfiguration($processingConfiguration);
+        $modes = $this->resolveAppliedTransformationModes('db');
+        $value = $this->streamlineLineBreaksForProcessing($value);
+        // If an entry HTML cleaner was configured, pass the content through the HTMLcleaner
+        $value = $this->runHtmlParserIfConfigured($value, 'entryHTMLparser_db');
+        // Traverse modes
+        foreach ($modes as $cmd) {
+            // Checking for user defined transformation:
+            if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd])) {
+                $_procObj = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_parsehtml_proc.php']['transformation'][$cmd]);
+                $_procObj->pObj = $this;
+                $_procObj->transformationKey = $cmd;
+                $value = $_procObj->transform_db($value, $this);
+            } else {
+                // ... else use defaults:
+                switch ($cmd) {
+                    case 'detectbrokenlinks':
+                        $value = $this->removeBrokenLinkMarkers($value);
+                        break;
+                    case 'ts_links':
+                        $value = $this->TS_links_db($value);
+                        break;
+                    case 'css_transform':
+                        // Transform empty paragraphs into spacing paragraphs
+                        $value = str_replace('<p></p>', '<p>&nbsp;</p>', $value);
+                        // Double any trailing spacing paragraph so that it does not get removed by divideIntoLines()
+                        $value = preg_replace('/<p>&nbsp;<\/p>$/', '<p>&nbsp;</p><p>&nbsp;</p>', $value);
+                        $value = $this->TS_transform_db($value);
+                        break;
+                    default:
+                        // Do nothing
+                }
+            }
+        }
+        // If an exit HTML cleaner was configured, pass the content through the HTMLcleaner
+        $value = $this->runHtmlParserIfConfigured($value, 'exitHTMLparser_db');
+        // Final clean up of linebreaks
+        $value = $this->streamlineLineBreaksAfterProcessing($value);
+        return $value;
+    }
+
+    /**********************************************
+     *
+     * Main function
+     *
+     **********************************************/
+    /**
+     * Transform value for RTE based on specConf in the direction specified by $direction (rte/db)
+     * This is the main function called from DataHandler and transfer data classes, but has been superseded
+     * by the methods
+     * - transformTextForRichTextEditor()
+     * - transformTextForPersistence()
+     * to avoid the $direction argument.
+     * Please use the new methods for TYPO3 v10+ - only code
+     *
+     * @param string $value Input value
+     * @param null $_ unused
+     * @param string $direction Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
+     * @param array $thisConfig Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
+     * @return string Output value
+     * @deprecated will be removed in TYPO3 v11.0, use the transformText* methods instead.
+     */
+    public function RTE_transform($value, $_ = null, $direction = 'rte', $thisConfig = [])
+    {
+        trigger_error('RteHtmlParser->RTE_transform() will be removed in TYPO3 v11.0. Use the transformTextFor* methods in the same class instead', E_USER_DEPRECATED);
+        if ($direction === 'rte') {
+            return $this->transformTextForRichTextEditor($value, $thisConfig['proc.'] ?? []);
+        }
+        if ($direction === 'db') {
+            return $this->transformTextForPersistence($value, $thisConfig['proc.'] ?? []);
+        }
         return $value;
     }
 
@@ -276,11 +299,17 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
      * Ensures what transformation modes should be executed, and that they are only executed once.
      *
      * @param string $direction
-     * @param array $modes
      * @return array the resolved transformation modes
      */
-    protected function resolveAppliedTransformationModes(string $direction, array $modes)
+    protected function resolveAppliedTransformationModes(string $direction): array
     {
+        // Setting modes / transformations to be called
+        if ((string)$this->procOptions['overruleMode'] !== '') {
+            $modes = GeneralUtility::trimExplode(',', $this->procOptions['overruleMode']);
+        } else {
+            $modes = [$this->procOptions['mode']];
+        }
+
         $modeList = implode(',', $modes);
 
         // Replace the shortcut "default" with all custom modes
@@ -731,37 +760,6 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
         $content = str_replace(LF . LF, LF, $content);
         $content = preg_replace('/(^' . LF . ')|(' . LF . '$)/i', '', $content);
         return $content;
-    }
-
-    /**
-     * Finds width and height from attrib-array
-     * If the width and height is found in the style-attribute, use that!
-     *
-     * @param array $attribArray Array of attributes from tag in which to search. More specifically the content of the key "style" is used to extract "width:xxx / height:xxx" information
-     * @return array Integer w/h in key 0/1. Zero is returned if not found.
-     */
-    protected function getWHFromAttribs($attribArray)
-    {
-        $style = trim($attribArray['style']);
-        $w = 0;
-        $h = 0;
-        if ($style) {
-            $regex = '[[:space:]]*:[[:space:]]*([0-9]*)[[:space:]]*px';
-            // Width
-            $reg = [];
-            preg_match('/width' . $regex . '/i', $style, $reg);
-            $w = (int)$reg[1];
-            // Height
-            preg_match('/height' . $regex . '/i', $style, $reg);
-            $h = (int)$reg[1];
-        }
-        if (!$w) {
-            $w = $attribArray['width'];
-        }
-        if (!$h) {
-            $h = $attribArray['height'];
-        }
-        return [(int)$w, (int)$h];
     }
 
     /**

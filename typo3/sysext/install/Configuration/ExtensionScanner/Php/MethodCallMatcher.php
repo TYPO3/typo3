@@ -4405,5 +4405,19 @@ return [
         'restFiles' => [
             'Deprecation-89870-NewPSR-14EventsForExtbase-relatedSignals.rst',
         ],
-    ]
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->init' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-90258-SimplifiedRTEParserAPI.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Html\RteHtmlParser->RTE_transform' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 4,
+        'restFiles' => [
+            'Deprecation-90258-SimplifiedRTEParserAPI.rst',
+        ],
+    ],
 ];
