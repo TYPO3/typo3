@@ -159,6 +159,11 @@ class LanguagePackService implements LoggerAwareInterface
                 $EM_CONF = [];
                 include $path . 'ext_emconf.php';
                 $title = $EM_CONF[$key]['title'] ?? $title;
+
+                $state = $EM_CONF[$key]['state'] ?? '';
+                if ($state === 'excludeFromUpdates') {
+                    continue;
+                }
             }
             $extension = [
                 'key' => $key,
