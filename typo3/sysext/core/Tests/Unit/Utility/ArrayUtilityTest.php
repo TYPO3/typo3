@@ -291,6 +291,15 @@ class ArrayUtilityTest extends UnitTestCase
                 'foo/bar/baz',
                 false
             ],
+            'last segment is not an array' => [
+                [
+                    'foo' => [
+                        'baz' => 42
+                    ],
+                ],
+                'foo/baz/baz',
+                false
+            ],
             // Negative test: This could be improved and the test moved to
             // the valid data provider if the method supports this
             'doubletick encapsulated quoted doubletick does not work' => [
