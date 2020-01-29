@@ -192,7 +192,7 @@ class ArrayUtility
         // Loop through each part and extract its value
         $value = $array;
         foreach ($path as $segment) {
-            if (array_key_exists($segment, $value)) {
+            if (is_array($value) && array_key_exists($segment, $value)) {
                 // Replace current value with child
                 $value = $value[$segment];
             } else {
