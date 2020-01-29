@@ -404,13 +404,13 @@ class ExtendedTemplateService extends TemplateService
                             $ln = '';
                         }
                         if ($this->tsbrowser_searchKeys[$depth] & 4) {
+                            // The key has matched the search string
                             $label = '<strong class="text-danger">' . $label . '</strong>';
                         }
-                        // The key has matched the search string
-                        $label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($ln) . '">' . $label . '</a>';
+                        $label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($depth_in . $key . ' ' . $ln) . '">' . $label . '</a>';
                     }
                 }
-                $HTML .= '<span class="list-tree-label">[' . $label . ']</span>';
+                $HTML .= '<span class="list-tree-label" title="' . htmlspecialchars($depth_in . $key) . '">[' . $label . ']</span>';
                 if (isset($arr[$key])) {
                     $theValue = $arr[$key];
                     // The value has matched the search string
