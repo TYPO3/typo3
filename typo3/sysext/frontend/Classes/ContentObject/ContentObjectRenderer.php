@@ -502,9 +502,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             [$objectType, $identifier] = explode(':', $this->currentFile, 2);
             try {
                 if ($objectType === 'File') {
-                    $this->currentFile = ResourceFactory::getInstance()->retrieveFileOrFolderObject($identifier);
+                    $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($identifier);
                 } elseif ($objectType === 'FileReference') {
-                    $this->currentFile = ResourceFactory::getInstance()->getFileReferenceObject($identifier);
+                    $this->currentFile = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($identifier);
                 }
             } catch (ResourceDoesNotExistException $e) {
                 $this->currentFile = null;
@@ -1294,9 +1294,9 @@ class ContentObjectRenderer implements LoggerAwareInterface
             $file = $imageFile->getOriginalFile();
         } else {
             if (MathUtility::canBeInterpretedAsInteger($imageFile)) {
-                $file = ResourceFactory::getInstance()->getFileObject((int)$imageFile);
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$imageFile);
             } else {
-                $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($imageFile);
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($imageFile);
             }
         }
 
@@ -7001,7 +7001,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     protected function getResourceFactory()
     {
-        return ResourceFactory::getInstance();
+        return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**

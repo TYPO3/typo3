@@ -322,7 +322,7 @@ class ImportController extends ImportExportController
     protected function getFile(string $combinedIdentifier): ?File
     {
         try {
-            $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
+            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier($combinedIdentifier);
         } catch (\Exception $exception) {
             $file = null;
         }

@@ -189,7 +189,7 @@ class ElementInformationController
      */
     protected function initFileOrFolderRecord()
     {
-        $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->uid);
+        $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->uid);
 
         if ($fileOrFolderObject instanceof Folder) {
             $this->folderObject = $fileOrFolderObject;

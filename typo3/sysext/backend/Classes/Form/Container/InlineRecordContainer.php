@@ -351,7 +351,7 @@ class InlineRecordContainer extends AbstractContainer
 
             if (!empty($fileUid)) {
                 try {
-                    $fileObject = ResourceFactory::getInstance()->getFileObject($fileUid);
+                    $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
                 } catch (\InvalidArgumentException $e) {
                     $fileObject = null;
                 }

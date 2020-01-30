@@ -217,7 +217,7 @@ class Import extends ImportExport
 
         $defaultStorageUid = null;
         // get default storage
-        $defaultStorage = ResourceFactory::getInstance()->getDefaultStorage();
+        $defaultStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getDefaultStorage();
         if ($defaultStorage !== null) {
             $defaultStorageUid = $defaultStorage->getUid();
         }
@@ -244,7 +244,7 @@ class Import extends ImportExport
             && (bool)$storageObject->isWritable() === (bool)$storageRecord['is_writable']
             && (bool)$storageObject->isOnline() === (bool)$storageRecord['is_online']
         ) {
-            $storageRecordConfiguration = ResourceFactory::getInstance()->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
+            $storageRecordConfiguration = GeneralUtility::makeInstance(ResourceFactory::class)->convertFlexFormDataToConfigurationArray($storageRecord['configuration']);
             $storageObjectConfiguration = $storageObject->getConfiguration();
             // compare the properties: pathType and basePath
             if ($storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
@@ -303,7 +303,7 @@ class Import extends ImportExport
                         // storage object will check whether the target folder exists and set the
                         // isOnline flag depending on the outcome.
                         $storageRecord['uid'] = 0;
-                        $resourceStorage = ResourceFactory::getInstance()->createStorageObject($storageRecord);
+                        $resourceStorage = GeneralUtility::makeInstance(ResourceFactory::class)->createStorageObject($storageRecord);
                         if (!$resourceStorage->isOnline()) {
                             $configuration = $resourceStorage->getConfiguration();
                             $messages['resourceStorageFolderMissing_' . $storageRecordUid] =
@@ -333,7 +333,7 @@ class Import extends ImportExport
         // fetch fresh storage records from database
         $storageRecords = $this->fetchStorageRecords();
 
-        $defaultStorage = ResourceFactory::getInstance()->getDefaultStorage();
+        $defaultStorage = GeneralUtility::makeInstance(ResourceFactory::class)->getDefaultStorage();
 
         $sanitizedFolderMappings = [];
 
@@ -377,9 +377,9 @@ class Import extends ImportExport
             // mapping. Only in this case we could be sure, that it's a local, online and writable storage.
             if ($useStorageFromStorageRecords && isset($storageRecords[$fileRecord['storage']])) {
                 /** @var \TYPO3\CMS\Core\Resource\ResourceStorage $storage */
-                $storage = ResourceFactory::getInstance()->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
+                $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($fileRecord['storage'], $storageRecords[$fileRecord['storage']]);
             } elseif ($this->isFallbackStorage($fileRecord['storage'])) {
-                $storage = ResourceFactory::getInstance()->getStorageObject(0);
+                $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject(0);
             } elseif ($defaultStorage !== null) {
                 $storage = $defaultStorage;
             } else {
@@ -1055,7 +1055,7 @@ class Import extends ImportExport
                     // Fallback value
                     $value = 'file:' . $fileUid;
                     try {
-                        $file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
+                        $file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
                     } catch (\Exception $e) {
                         $file = null;
                     }
@@ -1536,7 +1536,7 @@ class Import extends ImportExport
         // Just for security, check again. Should actually not be necessary.
         if (!$bypassMountCheck) {
             try {
-                ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier(PathUtility::dirname($fileName));
+                GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier(PathUtility::dirname($fileName));
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 $this->error('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
                 return false;

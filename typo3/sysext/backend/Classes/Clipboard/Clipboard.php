@@ -380,7 +380,7 @@ class Clipboard
                     [$table, $uid] = explode('|', $k);
                     // Rendering files/directories on the clipboard
                     if ($table === '_FILE') {
-                        $fileObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($v);
+                        $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($v);
                         if ($fileObject) {
                             $thumb = [];
                             $folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
@@ -764,7 +764,7 @@ class Clipboard
                     [$table, $uid] = explode('|', $k);
                     // Rendering files/directories on the clipboard
                     if ($table === '_FILE') {
-                        $file = ResourceFactory::getInstance()->getObjectFromCombinedIdentifier($v);
+                        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getObjectFromCombinedIdentifier($v);
                         if ($file instanceof AbstractFile) {
                             $params['tx_impexp']['record'][] = 'sys_file:' . $file->getUid();
                         }
@@ -838,7 +838,7 @@ class Clipboard
                         $this->changed = 1;
                     } else {
                         try {
-                            ResourceFactory::getInstance()->retrieveFileOrFolderObject($v);
+                            GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($v);
                         } catch (\TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException $e) {
                             // The file has been deleted in the meantime, so just remove it silently
                             unset($this->clipData[$this->current]['el'][$k]);

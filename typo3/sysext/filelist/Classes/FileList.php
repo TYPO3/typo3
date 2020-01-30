@@ -319,7 +319,7 @@ class FileList
         // Setting the maximum length of the filenames to the user's settings or minimum 30 (= $this->fixedL)
         $this->fixedL = max($this->fixedL, $this->getBackendUser()->uc['titleLen']);
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_common.xlf');
-        $this->resourceFactory = ResourceFactory::getInstance();
+        $this->resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**

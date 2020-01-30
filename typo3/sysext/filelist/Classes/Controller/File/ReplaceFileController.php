@@ -95,7 +95,7 @@ class ReplaceFileController
 
         // Cleaning and checking uid
         if ($this->uid > 0) {
-            $this->fileOrFolderObject = ResourceFactory::getInstance()
+            $this->fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)
                 ->retrieveFileOrFolderObject('file:' . $this->uid);
         }
         if (!$this->fileOrFolderObject) {

@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A file reference object (File Abstraction Layer)
  *
@@ -45,7 +48,7 @@ class FileReference extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
     {
         if ($this->originalResource === null) {
             $uid = $this->_localizedUid;
-            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($uid);
+            $this->originalResource = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($uid);
         }
 
         return $this->originalResource;

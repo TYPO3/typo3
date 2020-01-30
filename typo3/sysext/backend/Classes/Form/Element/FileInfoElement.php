@@ -48,7 +48,7 @@ class FileInfoElement extends AbstractFormElement
 
         $fileObject = null;
         if ($fileUid > 0) {
-            $fileObject = ResourceFactory::getInstance()->getFileObject($fileUid);
+            $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
         }
         $resultArray['html'] = $this->renderFileInformationContent($fileObject);
         return $resultArray;

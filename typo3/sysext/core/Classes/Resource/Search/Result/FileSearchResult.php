@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\Search\FileSearchQuery;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Represents a search result for a given search query
@@ -121,7 +122,7 @@ class FileSearchResult implements FileSearchResultInterface
         $this->resultCount = count($this->result);
         $this->result = array_map(
             function (array $fileRow) {
-                return ResourceFactory::getInstance()->getFileObject($fileRow['uid'], $fileRow);
+                return GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileRow['uid'], $fileRow);
             },
             $this->result
         );

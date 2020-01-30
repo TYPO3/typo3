@@ -161,7 +161,7 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         ) {
             return false;
         }
-        if (ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === null) {
+        if (GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) === null) {
             return false;
         }
         if (!MathUtility::isIntegerInRange($submittedData['scheduler_fileStorageIndexing_fileCount'], 1, 9999)) {

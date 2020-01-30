@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Scheduler\Task;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Additional BE fields for tasks which indexes files in a storage
  * @internal This class is a specific scheduler task implementation is not considered part of the Public TYPO3 API.
@@ -87,7 +90,7 @@ class FileStorageIndexingAdditionalFieldProvider implements \TYPO3\CMS\Scheduler
         if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($value)) {
             return false;
         }
-        if (\TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) !== null) {
+        if (GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject($submittedData['scheduler_fileStorageIndexing_storage']) !== null) {
             return true;
         }
         return false;

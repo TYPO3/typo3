@@ -59,7 +59,7 @@ class UserSysFileStorageIsPublicElement extends AbstractFormElement
             $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
             $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
             try {
-                $storage = ResourceFactory::getInstance()->getStorageObject((int)$row['uid']);
+                $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject((int)$row['uid']);
                 $storageRecord = $storage->getStorageRecord();
                 $isPublic = $storage->isPublic() && $storageRecord['is_public'];
 

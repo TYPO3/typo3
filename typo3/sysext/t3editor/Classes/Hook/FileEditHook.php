@@ -47,7 +47,7 @@ class FileEditHook
             $target = $parameters['target'];
         }
 
-        $fileExtension = ResourceFactory::getInstance()->retrieveFileOrFolderObject($target)->getExtension();
+        $fileExtension = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($target)->getExtension();
         $modeRegistry = GeneralUtility::makeInstance(ModeRegistry::class);
         try {
             $mode = $modeRegistry->getByFileExtension($fileExtension);

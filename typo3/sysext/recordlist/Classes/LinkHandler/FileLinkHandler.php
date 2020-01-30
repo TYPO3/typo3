@@ -269,7 +269,7 @@ class FileLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
         $selectedFolder = false;
         if ($folderIdentifier) {
             try {
-                $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($folderIdentifier);
+                $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($folderIdentifier);
                 if ($fileOrFolderObject instanceof Folder) {
                     // It's a folder
                     $selectedFolder = $fileOrFolderObject;

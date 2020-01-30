@@ -41,6 +41,7 @@ class ServiceProvider extends AbstractServiceProvider
             Http\MiddlewareStackResolver::class => [ static::class, 'getMiddlewareStackResolver' ],
             Service\DependencyOrderingService::class => [ static::class, 'getDependencyOrderingService' ],
             Crypto\PasswordHashing\PasswordHashFactory::class => [ static::class, 'getPasswordHashFactory' ],
+            Resource\ResourceFactory::class => [ static::class, 'getResourceFactory' ],
             'middlewares' => [ static::class, 'getMiddlewares' ],
         ];
     }
@@ -113,6 +114,13 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\DependencyOrderingService::class),
             $container->get('cache.core')
         );
+    }
+
+    public static function getResourceFactory(ContainerInterface $container): Resource\ResourceFactory
+    {
+        return self::new($container, Resource\ResourceFactory::class, [
+            $container->get(EventDispatcherInterface::class)
+        ]);
     }
 
     public static function getMiddlewares(ContainerInterface $container): ArrayObject

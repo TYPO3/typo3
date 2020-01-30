@@ -159,7 +159,7 @@ class SlotReplacement
         [, $uid, $recordData, $fileIdentifier] = $this->signalSlotDispatcher->dispatch(
             ResourceFactory::class,
             'preProcessStorage',
-            [ResourceFactory::getInstance(), $event->getStorageUid(), $event->getRecord(), $event->getFileIdentifier()]
+            [GeneralUtility::makeInstance(ResourceFactory::class), $event->getStorageUid(), $event->getRecord(), $event->getFileIdentifier()]
         );
         $event->setStorageUid($uid);
         $event->setRecord($recordData);
@@ -171,7 +171,7 @@ class SlotReplacement
         $this->signalSlotDispatcher->dispatch(
             ResourceFactory::class,
             'postProcessStorage',
-            [ResourceFactory::getInstance(), $event->getStorage()]
+            [GeneralUtility::makeInstance(ResourceFactory::class), $event->getStorage()]
         );
     }
 

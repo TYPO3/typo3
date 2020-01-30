@@ -19,6 +19,7 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
@@ -162,7 +163,7 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
             if (strpos($file, 'sys_file_') !== false) {
                 $file = substr($file, strlen('sys_file_'));
             }
-            $fileObject = ResourceFactory::getInstance()->getFileObject((int)$file);
+            $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$file);
             $accessAllowed = $fileObject->checkActionPermission('editMeta');
         }
         return $accessAllowed;

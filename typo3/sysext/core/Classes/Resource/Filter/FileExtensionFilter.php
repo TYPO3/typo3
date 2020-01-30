@@ -64,7 +64,7 @@ class FileExtensionFilter
                 $parts = GeneralUtility::revExplode('_', $value, 2);
                 $fileReferenceUid = $parts[count($parts) - 1];
                 try {
-                    $fileReference = ResourceFactory::getInstance()->getFileReferenceObject($fileReferenceUid);
+                    $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject($fileReferenceUid);
                     $file = $fileReference->getOriginalFile();
                     if ($this->isAllowed($file->getExtension())) {
                         $cleanValues[] = $value;

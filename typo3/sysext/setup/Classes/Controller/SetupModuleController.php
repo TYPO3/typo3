@@ -889,7 +889,7 @@ class SetupModuleController
 
             // Get file object
             try {
-                $file = ResourceFactory::getInstance()->getFileObject($fileUid);
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
             } catch (FileDoesNotExistException $e) {
                 $file = false;
             }

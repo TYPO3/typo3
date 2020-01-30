@@ -42,7 +42,7 @@ class DefaultAvatarProvider implements AvatarProviderInterface
         }
         // Get file object
         try {
-            $file = ResourceFactory::getInstance()->getFileObject($fileUid);
+            $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
             $processedImage = $file->process(
                 ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
                 ['width' => $size . 'c', 'height' => $size . 'c']

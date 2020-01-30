@@ -2874,7 +2874,7 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getResourceFactoryInstance(): ResourceFactory
     {
-        return ResourceFactory::getInstance();
+        return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**

@@ -85,7 +85,7 @@ class FolderBrowser extends AbstractElementBrowser implements ElementBrowserInte
     {
         $selectedFolder = null;
         if ($this->expandFolder) {
-            $selectedFolder = ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+            $selectedFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($this->expandFolder);
         }
 
         // Create folder tree:

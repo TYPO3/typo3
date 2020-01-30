@@ -23,23 +23,25 @@ use TYPO3\CMS\Core\Resource\Event\AfterResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Event\BeforeResourceStorageInitializationEvent;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Service\FlexFormService;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Factory class for FAL objects
- * @todo implement constructor-level caching
  */
-class ResourceFactory implements ResourceFactoryInterface, \TYPO3\CMS\Core\SingletonInterface
+class ResourceFactory implements ResourceFactoryInterface, SingletonInterface
 {
     /**
      * Gets a singleton instance of this class.
      *
      * @return ResourceFactory
+     * @deprecated use regular DI or - if not possible - GeneralUtility::makeInstance instead, as this Factory does not serve any purpose
      */
     public static function getInstance()
     {
+        trigger_error('ResourceFactory::getInstance() will be removed in TYPO3 v11.0. Use constructor-level Dependency Injection or GeneralUtility::makeInstance(ResourceFactory::class) instead.', E_USER_DEPRECATED);
         return GeneralUtility::makeInstance(__CLASS__);
     }
 

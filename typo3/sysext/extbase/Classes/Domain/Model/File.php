@@ -14,6 +14,9 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * A file object (File Abstraction Layer)
  *
@@ -27,7 +30,7 @@ class File extends \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder
     public function getOriginalResource()
     {
         if ($this->originalResource === null) {
-            $this->originalResource = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObject($this->getUid());
+            $this->originalResource = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($this->getUid());
         }
 
         return $this->originalResource;

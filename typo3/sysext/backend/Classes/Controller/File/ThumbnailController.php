@@ -86,7 +86,7 @@ class ThumbnailController
      */
     protected function generateThumbnail($fileId, array $configuration): ResponseInterface
     {
-        $file = ResourceFactory::getInstance()->getFileObject($fileId);
+        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileId);
         if ($file === null || $file->isMissing()) {
             return $this->generateNotFoundResponse();
         }

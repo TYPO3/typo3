@@ -120,7 +120,7 @@ class OnlineMediaController
         $targetFolder = null;
         if ($targetFolderIdentifier) {
             try {
-                $targetFolder = ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($targetFolderIdentifier);
+                $targetFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($targetFolderIdentifier);
             } catch (\Exception $e) {
                 $targetFolder = null;
             }

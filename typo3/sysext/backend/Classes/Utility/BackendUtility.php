@@ -1068,7 +1068,7 @@ class BackendUtility
 
         foreach ($referenceUids as $referenceUid) {
             try {
-                $fileReference = ResourceFactory::getInstance()->getFileReferenceObject(
+                $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject(
                     $referenceUid,
                     [],
                     $workspaceId === 0

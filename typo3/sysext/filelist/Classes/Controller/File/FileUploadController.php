@@ -104,7 +104,7 @@ class FileUploadController
         }
         // Create the folder object
         if ($this->target) {
-            $this->folderObject = ResourceFactory::getInstance()
+            $this->folderObject = GeneralUtility::makeInstance(ResourceFactory::class)
                 ->retrieveFileOrFolderObject($this->target);
         }
         if ($this->folderObject->getStorage()->getUid() === 0) {

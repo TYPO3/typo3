@@ -111,7 +111,7 @@ class CreateFolderController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // create the folder object
         if ($combinedIdentifier) {
-            $this->folderObject = ResourceFactory::getInstance()
+            $this->folderObject = GeneralUtility::makeInstance(ResourceFactory::class)
                 ->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
         }
         // Cleaning and checking target directory

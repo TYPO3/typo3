@@ -921,7 +921,7 @@ abstract class ImportExport
     {
         // Check the absolute path for public web path, if the user has access - no problem
         try {
-            ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($dirPrefix);
+            GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($dirPrefix);
             return $dirPrefix;
         } catch (InsufficientFolderAccessPermissionsException $e) {
             // Check all storages available for the user as alternative

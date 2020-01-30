@@ -959,4 +959,11 @@ return [
             'Deprecation-89756-BackendUtilityTYPO3_copyRightNotice.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\ResourceFactory::getInstance' => [
+        'numberOfMandatoryArguments' => 0,
+        'maximumNumberOfArguments' => 0,
+        'restFiles' => [
+            'Deprecation-90260-ResourceFactorygetInstancePseudo-factory.rst',
+        ],
+    ],
 ];

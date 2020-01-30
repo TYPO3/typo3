@@ -149,7 +149,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             // Try to fetch the folder the user had open the last time he browsed files
             // Fallback to the default folder in case the last used folder is not existing
             try {
-                $fileOrFolderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+                $fileOrFolderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($this->expandFolder);
             } catch (Exception $accessException) {
                 // We're just catching the exception here, nothing to be done if folder does not exist or is not accessible.
             } catch (\InvalidArgumentException $driverMissingExecption) {

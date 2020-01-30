@@ -82,7 +82,7 @@ class CategoryBasedFileCollection extends AbstractFileCollection
                 )
             )
             ->execute();
-        $resourceFactory = ResourceFactory::getInstance();
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         while ($record = $statement->fetch()) {
             $this->add($resourceFactory->getFileObject((int)$record['file']));
         }

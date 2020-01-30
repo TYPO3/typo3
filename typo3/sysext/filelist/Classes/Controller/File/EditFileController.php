@@ -123,7 +123,7 @@ class EditFileController
         $this->returnUrl = GeneralUtility::sanitizeLocalUrl($parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '');
         // create the file object
         if ($this->target) {
-            $this->fileObject = ResourceFactory::getInstance()
+            $this->fileObject = GeneralUtility::makeInstance(ResourceFactory::class)
                 ->retrieveFileOrFolderObject($this->target);
         }
         // Cleaning and checking target directory

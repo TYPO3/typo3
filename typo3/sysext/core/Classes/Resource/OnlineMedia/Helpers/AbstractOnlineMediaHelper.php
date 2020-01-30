@@ -146,6 +146,6 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
      */
     protected function getResourceFactory()
     {
-        return ResourceFactory::getInstance();
+        return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 }

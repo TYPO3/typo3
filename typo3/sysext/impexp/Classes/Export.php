@@ -380,7 +380,7 @@ class Export extends ImportExport
                         if (isset($newRelation['softrefs']['keys']['typolink'])) {
                             foreach ($newRelation['softrefs']['keys']['typolink'] as $softrefKey => $softRefData) {
                                 if ($softRefData['subst']['type'] === 'file') {
-                                    $file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($softRefData['subst']['relFileName']);
+                                    $file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($softRefData['subst']['relFileName']);
                                     if ($file instanceof File) {
                                         if ($file->getUid() == $dbRelationData['id']) {
                                             unset($newRelation['softrefs']['keys']['typolink'][$softrefKey]);
@@ -630,7 +630,7 @@ class Export extends ImportExport
         }
         foreach ($this->dat['header']['records']['sys_file'] as $sysFileUid => $_) {
             $recordData = $this->dat['records']['sys_file:' . $sysFileUid]['data'];
-            $file = ResourceFactory::getInstance()->createFileObject($recordData);
+            $file = GeneralUtility::makeInstance(ResourceFactory::class)->createFileObject($recordData);
             $this->export_addSysFile($file);
         }
     }

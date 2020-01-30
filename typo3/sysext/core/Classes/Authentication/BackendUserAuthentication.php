@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Login as SystemLogLoginAction;
@@ -1943,7 +1944,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
     {
         $uploadFolder = $this->getTSConfig()['options.']['defaultUploadFolder'] ?? '';
         if ($uploadFolder) {
-            $uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
+            $uploadFolder = GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($uploadFolder);
         } else {
             foreach ($this->getFileStorages() as $storage) {
                 if ($storage->isDefault() && $storage->isWritable()) {

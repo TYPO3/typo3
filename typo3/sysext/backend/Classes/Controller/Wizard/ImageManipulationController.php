@@ -63,7 +63,7 @@ class ImageManipulationController
             $image = null;
             if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
                 try {
-                    $image = ResourceFactory::getInstance()->getFileObject($fileUid);
+                    $image = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
                 } catch (FileDoesNotExistException $e) {
                 }
             }

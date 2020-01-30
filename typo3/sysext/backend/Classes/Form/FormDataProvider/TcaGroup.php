@@ -134,7 +134,7 @@ class TcaGroup implements FormDataProviderInterface
                         continue;
                     }
                     try {
-                        $folderObject = ResourceFactory::getInstance()->retrieveFileOrFolderObject($folder);
+                        $folderObject = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($folder);
                         if ($folderObject instanceof Folder) {
                             $items[] = [
                                 'folder' => $folder,

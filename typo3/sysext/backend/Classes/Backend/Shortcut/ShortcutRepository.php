@@ -233,7 +233,7 @@ class ShortcutRepository
         // Check if given id is a combined identifier
         if (!empty($queryParameters['id']) && preg_match('/^[\d]+:/', $queryParameters['id'])) {
             try {
-                $resourceFactory = ResourceFactory::getInstance();
+                $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
                 $resource = $resourceFactory->getObjectFromCombinedIdentifier($queryParameters['id']);
                 $title = trim(sprintf(
                     '%s (%s)',

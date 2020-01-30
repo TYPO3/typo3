@@ -55,7 +55,7 @@ class ResourceStorageTest extends FunctionalTestCase
         file_put_contents(Environment::getPublicPath() . '/fileadmin/adirectory/bar.txt', 'myData');
         clearstatcache();
         $subject->addFileMount('/adirectory/', ['read_only' => false]);
-        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/adirectory/bar.txt');
+        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/adirectory/bar.txt');
 
         $rootProcessingFolder = $subject->getProcessingFolder();
         $processingFolder = $subject->getProcessingFolder($file);
@@ -90,7 +90,7 @@ class ResourceStorageTest extends FunctionalTestCase
         }
         file_put_contents(Environment::getPublicPath() . '/fileadmin/' . $targetDirectory . '/' . $fileName, 'myData');
         clearstatcache();
-        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
+        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/' . $targetDirectory . '/' . $fileName);
 
         $subject = (new StorageRepository())->findByUid(1);
         $subject->setEvaluatePermissions(true);
@@ -194,7 +194,7 @@ class ResourceStorageTest extends FunctionalTestCase
         GeneralUtility::mkdir_deep(Environment::getPublicPath() . '/fileadmin/foo');
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
         clearstatcache();
-        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325842622);
@@ -229,7 +229,7 @@ class ResourceStorageTest extends FunctionalTestCase
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
         clearstatcache();
 
-        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
         self::assertTrue(file_exists(Environment::getPublicPath() . '/fileadmin/_recycler_/bar.txt'));
@@ -249,7 +249,7 @@ class ResourceStorageTest extends FunctionalTestCase
         file_put_contents(Environment::getPublicPath() . '/fileadmin/foo/bar.txt', 'myData');
         clearstatcache();
 
-        $file = ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
+        $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectFromCombinedIdentifier('1:/foo/bar.txt');
         $subject->deleteFile($file);
 
         self::assertFalse(file_exists(Environment::getPublicPath() . '/fileadmin/foo/bar.txt'));
@@ -403,7 +403,7 @@ class ResourceStorageTest extends FunctionalTestCase
             file_put_contents(Environment::getPublicPath() . '/fileadmin/bar/blupp.txt', 'myData');
             clearstatcache();
 
-            $folder = $searchFolder ? ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier('1:' . $searchFolder) : null;
+            $folder = $searchFolder ? GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier('1:' . $searchFolder) : null;
             $search = FileSearchDemand::createForSearchTerm($searchTerm);
             if ($recursive) {
                 $search = $search->withRecursive();

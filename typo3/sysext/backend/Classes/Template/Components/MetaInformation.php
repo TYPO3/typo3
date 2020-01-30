@@ -66,7 +66,7 @@ class MetaInformation
             }
         } elseif (!empty($pageRecord['combined_identifier'])) {
             try {
-                $resourceObject = ResourceFactory::getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
+                $resourceObject = GeneralUtility::makeInstance(ResourceFactory::class)->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
                 $title = $resourceObject->getStorage()->getName() . ':';
                 $title .= $resourceObject->getParentFolder()->getReadablePath();
             } catch (ResourceDoesNotExistException|InsufficientFolderAccessPermissionsException $e) {
@@ -194,7 +194,7 @@ class MetaInformation
         } elseif (is_array($pageRecord) && !empty($pageRecord['combined_identifier'])) {
             // If the module is about a FAL resource
             try {
-                $resourceObject = ResourceFactory::getInstance()->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
+                $resourceObject = GeneralUtility::makeInstance(ResourceFactory::class)->getObjectFromCombinedIdentifier($pageRecord['combined_identifier']);
                 $fileMountTitle = $resourceObject->getStorage()->getFileMounts()[$resourceObject->getIdentifier()]['title'] ?? '';
                 $title = $fileMountTitle ?: $resourceObject->getName();
                 // If this is a folder but not in within file mount boundaries this is the root folder

@@ -170,7 +170,7 @@ class ExtendedFileUtility extends BasicFileUtility
     public function start($fileCmds)
     {
         // Initialize Object Factory
-        $this->fileFactory = ResourceFactory::getInstance();
+        $this->fileFactory = GeneralUtility::makeInstance(ResourceFactory::class);
         // Initializing file processing commands:
         $this->fileCmdMap = $fileCmds;
     }
@@ -1086,7 +1086,7 @@ class ExtendedFileUtility extends BasicFileUtility
             try {
                 /** @var File $fileObject */
                 $fileObject = $targetFolderObject->addUploadedFile($fileInfo, (string)$this->existingFilesConflictMode);
-                $fileObject = ResourceFactory::getInstance()->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
+                $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObjectByStorageAndIdentifier($targetFolderObject->getStorage()->getUid(), $fileObject->getIdentifier());
                 if ($this->existingFilesConflictMode->equals(DuplicationBehavior::REPLACE)) {
                     $this->getIndexer($fileObject->getStorage())->updateIndexEntry($fileObject);
                 }

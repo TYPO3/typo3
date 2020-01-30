@@ -49,7 +49,7 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
     public function __construct(EnvironmentService $environmentService = null, ResourceFactory $resourceFactory = null)
     {
         $this->environmentService = $environmentService ?? GeneralUtility::makeInstance(EnvironmentService::class);
-        $this->resourceFactory = $resourceFactory ?? ResourceFactory::getInstance();
+        $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**

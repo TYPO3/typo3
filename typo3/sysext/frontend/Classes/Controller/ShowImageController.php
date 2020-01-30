@@ -134,9 +134,9 @@ EOF;
         }
 
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
-            $this->file = ResourceFactory::getInstance()->getFileObject((int)$fileUid);
+            $this->file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$fileUid);
         } else {
-            $this->file = ResourceFactory::getInstance()->retrieveFileOrFolderObject($fileUid);
+            $this->file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($fileUid);
         }
         $this->frame = $this->request->getQueryParams()['frame'] ?? null;
     }

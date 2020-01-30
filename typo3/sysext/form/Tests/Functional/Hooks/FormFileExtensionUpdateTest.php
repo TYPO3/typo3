@@ -79,7 +79,7 @@ class FormFileExtensionUpdateTest extends FunctionalTestCase
         Bootstrap::initializeLanguageObject();
 
         $folderIdentifier = 'form_definitions';
-        $storage = ResourceFactory::getInstance()->getStorageObject(1);
+        $storage = GeneralUtility::makeInstance(ResourceFactory::class)->getStorageObject(1);
 
         if ($storage->hasFolder($folderIdentifier)) {
             $storage->getFolder($folderIdentifier)->delete(true);

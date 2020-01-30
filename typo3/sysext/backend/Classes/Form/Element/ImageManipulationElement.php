@@ -224,7 +224,7 @@ class ImageManipulationElement extends AbstractFormElement
         }
         if (MathUtility::canBeInterpretedAsInteger($fileUid)) {
             try {
-                $file = ResourceFactory::getInstance()->getFileObject($fileUid);
+                $file = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject($fileUid);
             } catch (FileDoesNotExistException|\InvalidArgumentException $e) {
             }
         }
