@@ -3334,8 +3334,15 @@ class GeneralUtility
      * @return mixed Content from method/function call
      * @throws \InvalidArgumentException
      */
-    public static function callUserFunction($funcName, &$params, &$ref)
+    public static function callUserFunction($funcName, &$params, &$ref = null)
     {
+        if (!($ref === null || is_object($ref))) {
+            trigger_error(
+                sprintf('Argument "$ref" is of type "%s" which is deprecated since TYPO3 10.3. "$ref" must be of type "object" or null as of version 11.0', gettype($ref)),
+                E_USER_DEPRECATED
+            );
+        }
+
         // Check if we're using a closure and invoke it directly.
         if (is_object($funcName) && is_a($funcName, \Closure::class)) {
             return call_user_func_array($funcName, [&$params, &$ref]);
