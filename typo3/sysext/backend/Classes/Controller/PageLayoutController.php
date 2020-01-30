@@ -680,7 +680,8 @@ class PageLayoutController
             ');
 
             // Find backend layout / columns
-            $backendLayout = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getSelectedBackendLayout', $this->id, $this);
+            $backendLayoutContainer = GeneralUtility::makeInstance(BackendLayoutView::class);
+            $backendLayout = $backendLayoutContainer->getSelectedBackendLayout($this->id);
             if (!empty($backendLayout['__colPosList'])) {
                 $this->colPosList = implode(',', $backendLayout['__colPosList']);
             }
@@ -765,6 +766,8 @@ class PageLayoutController
         // Initialize other variables:
         $tableOutput = [];
         $CMcounter = 0;
+        $backendLayoutContainer = GeneralUtility::makeInstance(BackendLayoutView::class);
+        $tcaItems = $backendLayoutContainer->getColPosListItemsParsed($this->id);
         // Traverse the list of table names which has records on this page (that array is populated
         // by the $dblist object during the function getTableMenu()):
         foreach ($dbList->activeTables as $table => $value) {
@@ -778,7 +781,6 @@ class PageLayoutController
                 // Setting up the tt_content columns to show:
                 if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
                     $colList = [];
-                    $tcaItems = GeneralUtility::callUserFunction(BackendLayoutView::class . '->getColPosListItemsParsed', $this->id, $this);
                     foreach ($tcaItems as $temp) {
                         $colList[] = $temp[1];
                     }
