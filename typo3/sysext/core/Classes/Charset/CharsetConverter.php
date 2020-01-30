@@ -442,7 +442,7 @@ class CharsetConverter implements SingletonInterface
                             // Detect type if not done yet: (Done on first real line)
                             // The "whitespaced" type is on the syntax 	"0x0A	0x000A	#LINE FEED" 	while 	"ms-token" is like 		"B9 = U+00B9 : SUPERSCRIPT ONE"
                             if (!$detectedType) {
-                                $detectedType = preg_match('/[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+/', $value) ? 'whitespaced' : 'ms-token';
+                                $detectedType = preg_match('/[[:space:]]*0x([[:xdigit:]]*)[[:space:]]+0x([[:xdigit:]]*)[[:space:]]+/', $value) ? 'whitespaced' : 'ms-token';
                             }
                             $hexbyte = '';
                             $utf8 = '';
@@ -450,7 +450,7 @@ class CharsetConverter implements SingletonInterface
                                 [$hexbyte, $utf8] = preg_split('/[=:]/', $value, 3);
                             } elseif ($detectedType === 'whitespaced') {
                                 $regA = [];
-                                preg_match('/[[:space:]]*0x([[:alnum:]]*)[[:space:]]+0x([[:alnum:]]*)[[:space:]]+/', $value, $regA);
+                                preg_match('/[[:space:]]*0x([[:xdigit:]]*)[[:space:]]+0x([[:xdigit:]]*)[[:space:]]+/', $value, $regA);
                                 $hexbyte = $regA[1];
                                 $utf8 = 'U+' . $regA[2];
                             }
