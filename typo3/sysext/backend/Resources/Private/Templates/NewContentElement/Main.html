@@ -3,10 +3,10 @@
 	<f:then>
 		<f:form action="" name="editForm" id="NewContentElementController">
 			<f:form.hidden name="defValues" value="" />
-			<f:if condition="{onClickEvent}">
+			<f:if condition="{hasClickEvent}">
 				<f:then>
 					<script type="text/javascript">
-						function goToalt_doc() {<f:format.raw>{onClickEvent}</f:format.raw>}
+						{onClickEvent -> f:format.raw()}
 					</script>
 					{renderedTabs -> f:format.raw()}
 				</f:then>
