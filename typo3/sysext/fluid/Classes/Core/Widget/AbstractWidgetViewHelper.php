@@ -14,8 +14,10 @@ namespace TYPO3\CMS\Fluid\Core\Widget;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Component\ComponentInterface;
 use TYPO3Fluid\Fluid\Core\Compiler\TemplateCompiler;
 use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * @api
@@ -114,6 +116,38 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
         $this->initialize();
         $this->initializeWidgetContext();
         return $this->callRenderMethod();
+    }
+
+    /**
+     * Initialize the arguments of the ViewHelper, and call the render() method of the ViewHelper.
+     *
+     * @param RenderingContextInterface $renderingContext
+     * @return string the rendered ViewHelper.
+     * @internal
+     */
+    public function evaluate(RenderingContextInterface $renderingContext)
+    {
+        $this->renderingContext = $renderingContext;
+        $this->getArguments()->setRenderingContext($renderingContext);
+        $this->initializeWidgetContext();
+        return $this->callRenderMethod();
+    }
+
+    /**
+     * Stores the syntax tree child nodes in the Widget Context, so they can be
+     * rendered with <f:widget.renderChildren> lateron.
+     *
+     * @param RenderingContextInterface $renderingContext
+     * @return ComponentInterface
+     * @internal
+     */
+    public function onClose(RenderingContextInterface $renderingContext): ComponentInterface
+    {
+        $node = parent::onClose($renderingContext);
+        $rootNode = $this->objectManager->get(\TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\RootNode::class);
+        $rootNode->setChildren($this->getChildren());
+        $this->widgetContext->setViewHelperChildNodes($rootNode, $renderingContext);
+        return $node;
     }
 
     /**
