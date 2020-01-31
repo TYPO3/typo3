@@ -33,12 +33,13 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
      */
     public function getDocInstance()
     {
-        if ($this->viewHelperVariableContainer->exists(self::class, 'DocumentTemplate')) {
-            $doc = $this->viewHelperVariableContainer->get(self::class, 'DocumentTemplate');
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        if ($viewHelperVariableContainer->exists(self::class, 'DocumentTemplate')) {
+            $doc = $viewHelperVariableContainer->get(self::class, 'DocumentTemplate');
         } else {
             /** @var $doc DocumentTemplate */
             $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-            $this->viewHelperVariableContainer->add(self::class, 'DocumentTemplate', $doc);
+            $viewHelperVariableContainer->add(self::class, 'DocumentTemplate', $doc);
         }
 
         return $doc;
@@ -52,12 +53,13 @@ abstract class AbstractBackendViewHelper extends AbstractViewHelper
      */
     public function getPageRenderer()
     {
-        if ($this->viewHelperVariableContainer->exists(self::class, 'PageRenderer')) {
-            $pageRenderer = $this->viewHelperVariableContainer->get(self::class, 'PageRenderer');
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        if ($viewHelperVariableContainer->exists(self::class, 'PageRenderer')) {
+            $pageRenderer = $viewHelperVariableContainer->get(self::class, 'PageRenderer');
         } else {
             /** @var $doc DocumentTemplate */
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-            $this->viewHelperVariableContainer->add(self::class, 'PageRenderer', $pageRenderer);
+            $viewHelperVariableContainer->add(self::class, 'PageRenderer', $pageRenderer);
         }
 
         return $pageRenderer;

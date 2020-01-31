@@ -299,8 +299,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
     protected function renderHiddenFieldForEmptyValue($configuration)
     {
         $hiddenFieldNames = [];
-        if ($this->viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
-            $hiddenFieldNames = $this->viewHelperVariableContainer->get(FormViewHelper::class, 'renderedHiddenFields');
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+        if ($viewHelperVariableContainer->exists(FormViewHelper::class, 'renderedHiddenFields')) {
+            $hiddenFieldNames = $viewHelperVariableContainer->get(FormViewHelper::class, 'renderedHiddenFields');
         }
         $fieldName = $this->getName($configuration);
         if (substr($fieldName, -2) === '[]') {
@@ -308,7 +309,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
         }
         if (!in_array($fieldName, $hiddenFieldNames)) {
             $hiddenFieldNames[] = $fieldName;
-            $this->viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'renderedHiddenFields', $hiddenFieldNames);
+            $viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'renderedHiddenFields', $hiddenFieldNames);
             return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="0" />';
         }
         return '';

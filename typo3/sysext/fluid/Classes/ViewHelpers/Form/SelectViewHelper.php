@@ -126,6 +126,8 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->tag->addAttribute('name', $name);
         $options = $this->getOptions();
 
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
+
         $this->addAdditionalIdentityPropertiesIfNeeded();
         $this->setErrorClassAttribute();
         $content = '';
@@ -139,8 +141,9 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
             }
             // save the parent field name so that any child f:form.select.option
             // tag will know to call registerFieldNameForFormTokenGeneration
-            $this->viewHelperVariableContainer->addOrUpdate(
-                static::class,
+            // this is the reason why "self::class" is used instead of static::class (no LSB)
+            $viewHelperVariableContainer->addOrUpdate(
+                self::class,
                 'registerFieldNameForFormTokenGeneration',
                 $name
             );
@@ -148,12 +151,12 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
             $this->registerFieldNameForFormTokenGeneration($name);
         }
 
-        $this->viewHelperVariableContainer->addOrUpdate(static::class, 'selectedValue', $this->getSelectedValue());
+        $viewHelperVariableContainer->addOrUpdate(static::class, 'selectedValue', $this->getSelectedValue());
         $prependContent = $this->renderPrependOptionTag();
         $tagContent = $this->renderOptionTags($options);
         $childContent = $this->renderChildren();
-        $this->viewHelperVariableContainer->remove(static::class, 'selectedValue');
-        $this->viewHelperVariableContainer->remove(static::class, 'registerFieldNameForFormTokenGeneration');
+        $viewHelperVariableContainer->remove(static::class, 'selectedValue');
+        $viewHelperVariableContainer->remove(static::class, 'registerFieldNameForFormTokenGeneration');
         if ($this->arguments['optionsAfterContent']) {
             $tagContent = $childContent . $tagContent;
         } else {
