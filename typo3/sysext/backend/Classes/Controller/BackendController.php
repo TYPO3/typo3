@@ -16,16 +16,17 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Domain\Repository\Module\BackendModuleRepository;
-use TYPO3\CMS\Backend\Module\ModuleLoader;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -42,22 +43,12 @@ class BackendController
     /**
      * @var string
      */
-    protected $content = '';
-
-    /**
-     * @var string
-     */
     protected $css = '';
 
     /**
      * @var array
      */
     protected $toolbarItems = [];
-
-    /**
-     * @var bool
-     */
-    protected $debug;
 
     /**
      * @var string
@@ -75,11 +66,6 @@ class BackendController
     protected $backendModuleRepository;
 
     /**
-     * @var ModuleLoader Object for loading backend modules
-     */
-    protected $moduleLoader;
-
-    /**
      * @var PageRenderer
      */
     protected $pageRenderer;
@@ -95,51 +81,37 @@ class BackendController
     protected $typo3Version;
 
     /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->getLanguageService()->includeLLFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
-
         $this->backendModuleRepository = GeneralUtility::makeInstance(BackendModuleRepository::class);
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-        // Set debug flag for BE development only
-        $this->debug = (int)$GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] === 1;
-        // Initializes the backend modules structure for use later.
-        $this->moduleLoader = GeneralUtility::makeInstance(ModuleLoader::class);
-        $this->moduleLoader->load($GLOBALS['TBE_MODULES']);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         // Add default BE javascript
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/md5.js');
         $this->pageRenderer->addJsFile('EXT:backend/Resources/Public/JavaScript/backend.js');
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LoginRefresh', 'function(LoginRefresh) {
 			LoginRefresh.setIntervalTime(' . MathUtility::forceIntegerInRange((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['sessionTimeout'] - 60, 60) . ');
-			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('login_frameset')) . ');
-			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue((string)$uriBuilder->buildUriFromRoute('logout')) . ');
+			LoginRefresh.setLoginFramesetUrl(' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('login_frameset')) . ');
+			LoginRefresh.setLogoutUrl(' . GeneralUtility::quoteJSvalue((string)$this->uriBuilder->buildUriFromRoute('logout')) . ');
 			LoginRefresh.initialize();
 		}');
 
-        // load BroadcastService
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/BroadcastService', 'function(service) { service.listen(); }');
-
-        // load module menu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ModuleMenu');
-
-        // load Toolbar class
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Toolbar');
-
-        // load Notification functionality
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Notification');
-
-        // load Modals
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-
-        // load InfoWindow
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/InfoWindow');
-
-        // load ContextMenu
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
 
         // load the storage API and fill the UC into the PersistentStorage, so no additional AJAX call is needed
@@ -147,24 +119,22 @@ class BackendController
             PersistentStorage.load(' . json_encode($this->getBackendUser()->uc) . ');
         }');
 
-        // load debug console
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DebugConsole');
 
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf');
-
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/debugger.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/wizard.xlf');
 
-        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('show_item'));
-        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_history'));
-        $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('db_new'));
-        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('record_edit'));
-        $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_db'));
-        $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('tce_file'));
-        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('web_layout'));
+        $this->pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('show_item'));
+        $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
+        $this->pageRenderer->addInlineSetting('NewRecord', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('db_new'));
+        $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
+        $this->pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
+        $this->pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
+        $this->pageRenderer->addInlineSetting('WebLayout', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('web_layout'));
 
         $this->initializeToolbarItems();
         $this->executeHook('constructPostProcess');
@@ -214,8 +184,10 @@ class BackendController
         $this->executeHook('renderPreProcess');
 
         // Prepare the scaffolding, at this point extension may still add javascript and css
-        $view = $this->getFluidTemplateObject($this->templatePath . 'Backend/Main.html');
-
+        $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $view = $moduleTemplate->getView();
+        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($this->templatePath . 'Backend/Main.html'));
         $view->assign('moduleMenuCollapsed', $this->getCollapseStateOfMenu());
         $view->assign('moduleMenu', $this->generateModuleMenu());
         $view->assign('topbar', $this->renderTopbar());
@@ -225,14 +197,15 @@ class BackendController
         }
         $this->generateJavascript();
 
-        // Set document title:
+        // Set document title
         $typo3Version = 'TYPO3 CMS ' . $this->typo3Version->getVersion();
         $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [' . $typo3Version . ']' : $typo3Version;
-        // Renders the module page
-        $this->content = GeneralUtility::makeInstance(DocumentTemplate::class)->render($title, $view->render());
-        $hookConfiguration = ['content' => &$this->content];
-        $this->executeHook('renderPostProcess', $hookConfiguration);
-        return new HtmlResponse($this->content);
+        $moduleTemplate->setTitle($title);
+
+        // Renders the backend scaffolding
+        $content = $moduleTemplate->renderContent();
+        $this->executeHook('renderPostProcess', ['content' => &$content]);
+        return new HtmlResponse($content);
     }
 
     /**
@@ -290,7 +263,7 @@ class BackendController
     {
         $toolbar = [];
         foreach ($this->toolbarItems as $toolbarItem) {
-            /** @var \TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface $toolbarItem */
+            /** @var ToolbarItemInterface $toolbarItem */
             if ($toolbarItem->checkAccess()) {
                 $hasDropDown = (bool)$toolbarItem->hasDropDown();
                 $additionalAttributes = (array)$toolbarItem->getAdditionalAttributes();
@@ -360,7 +333,7 @@ class BackendController
         if (!$beUser->check('modules', $pageModule)) {
             $pageModule = '';
         } else {
-            $pageModuleUrl = (string)GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute($pageModule);
+            $pageModuleUrl = (string)$this->uriBuilder->buildUriFromRoute($pageModule);
         }
         $t3Configuration = [
             'username' => htmlspecialchars($beUser->user['username']),
@@ -582,7 +555,7 @@ class BackendController
     /**
      * Returns LanguageService
      *
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {
@@ -592,7 +565,7 @@ class BackendController
     /**
      * Returns the current BE user.
      *
-     * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+     * @return BackendUserAuthentication
      */
     protected function getBackendUser()
     {

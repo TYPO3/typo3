@@ -18,6 +18,7 @@ use TYPO3\CMS\Backend\Backend\Shortcut\ShortcutRepository;
 use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
@@ -331,6 +333,7 @@ class ModuleTemplate
         $this->pageRenderer->setCharSet('utf-8');
         $this->pageRenderer->setLanguage($this->getLanguageService()->lang);
         $this->pageRenderer->setMetaTag('name', 'viewport', 'width=device-width, initial-scale=1');
+        $this->pageRenderer->setFavIcon($this->getBackendFavicon());
         $this->pageRenderer->enableConcatenateCss();
         $this->pageRenderer->enableConcatenateJavascript();
         $this->pageRenderer->enableCompressCss();
@@ -611,6 +614,48 @@ class ModuleTemplate
             ['SET' => GeneralUtility::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS)]
         );
         return HttpUtility::buildQueryString($storeArray, '&');
+    }
+
+    /**
+     * Retrieves configured favicon for backend (with fallback)
+     *
+     * @return string
+     */
+    protected function getBackendFavicon()
+    {
+        $backendFavicon = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('backend', 'backendFavicon');
+        if (!empty($backendFavicon)) {
+            $path = $this->getUriForFileName($backendFavicon);
+        } else {
+            $path = ExtensionManagementUtility::extPath('backend') . 'Resources/Public/Icons/favicon.ico';
+        }
+        return PathUtility::getAbsoluteWebPath($path);
+    }
+
+    /**
+     * Returns the uri of a relative reference, resolves the "EXT:" prefix
+     * (way of referring to files inside extensions) and checks that the file is inside
+     * the project root of the TYPO3 installation
+     *
+     * @param string $filename The input filename/filepath to evaluate
+     * @return string Returns the filename of $filename if valid, otherwise blank string.
+     */
+    protected function getUriForFileName($filename)
+    {
+        if (strpos($filename, '://')) {
+            return $filename;
+        }
+        $urlPrefix = '';
+        if (strpos($filename, 'EXT:') === 0) {
+            $absoluteFilename = GeneralUtility::getFileAbsFileName($filename);
+            $filename = '';
+            if ($absoluteFilename !== '') {
+                $filename = PathUtility::getAbsoluteWebPath($absoluteFilename);
+            }
+        } elseif (strpos($filename, '/') !== 0) {
+            $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_PATH');
+        }
+        return $urlPrefix . $filename;
     }
 
     /**
