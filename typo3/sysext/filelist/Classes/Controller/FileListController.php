@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Filelist\Controller;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -39,6 +40,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Filelist\Configuration\ThumbnailConfiguration;
+use TYPO3\CMS\Filelist\FileFacade;
 use TYPO3\CMS\Filelist\FileList;
 
 /**
@@ -338,10 +340,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $userTsConfig = $this->getBackendUser()->getTSConfig();
             $this->filelist = GeneralUtility::makeInstance(FileList::class);
             $this->filelist->thumbs = $GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $this->MOD_SETTINGS['displayThumbs'];
-            // Create clipboard object and initialize that
-            $this->filelist->clipObj = GeneralUtility::makeInstance(Clipboard::class);
-            $this->filelist->clipObj->fileMode = true;
-            $this->filelist->clipObj->initializeClipboard();
             $CB = GeneralUtility::_GET('CB');
             if ($this->cmd === 'setCB') {
                 $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(
@@ -375,17 +373,25 @@ class FileListController extends ActionController implements LoggerAwareInterfac
                 }
             }
             // Start up filelisting object, include settings.
-            $this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
             $this->filelist->start(
                 $this->folderObject,
-                $this->pointer,
+                MathUtility::forceIntegerInRange($this->pointer, 0, 100000),
                 $this->MOD_SETTINGS['sort'],
-                $this->MOD_SETTINGS['reverse'],
-                $this->MOD_SETTINGS['clipBoard'],
-                $this->MOD_SETTINGS['bigControlPanel']
+                (bool)$this->MOD_SETTINGS['reverse'],
+                (bool)$this->MOD_SETTINGS['clipBoard'],
+                (bool)$this->MOD_SETTINGS['bigControlPanel']
             );
-            // Generate the list
-            $this->filelist->generateList();
+            // Generate the list, if accessible
+            if ($this->folderObject->getStorage()->isBrowsable()) {
+                $this->view->assign('listHtml', $this->filelist->getTable());
+            } else {
+                $this->addFlashMessage(
+                    $this->getLanguageService()->getLL('storageNotBrowsableMessage'),
+                    $this->getLanguageService()->getLL('storageNotBrowsableTitle'),
+                    FlashMessage::INFO
+                );
+            }
+
             // Set top JavaScript:
             $this->view->getModuleTemplate()->addJavaScriptCode(
                 'FileListIndex',
@@ -418,7 +424,6 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($pageRecord);
 
             $this->view->assign('headline', $this->getModuleHeadline());
-            $this->view->assign('listHtml', $this->filelist->HTMLcode);
 
             $this->view->assign('checkboxes', [
                 'bigControlPanel' => [
@@ -524,12 +529,11 @@ class FileListController extends ActionController implements LoggerAwareInterfac
             );
         } else {
             foreach ($files as $file) {
-                $fileFacades[] = new \TYPO3\CMS\Filelist\FileFacade($file);
+                $fileFacades[] = new FileFacade($file);
             }
         }
 
-        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         $pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
         $pageRenderer->addInlineSetting('ShowItem', 'moduleUrl', (string)$uriBuilder->buildUriFromRoute('show_item'));
@@ -606,7 +610,7 @@ class FileListController extends ActionController implements LoggerAwareInterfac
 
         $lang = $this->getLanguageService();
 
-        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
 
         // Refresh page
         $refreshLink = GeneralUtility::linkThisScript(
