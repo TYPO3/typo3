@@ -6,7 +6,7 @@
             <f:if condition="{onClickEvent}">
                 <f:then>
                     <script>
-                        function goToalt_doc() {<f:format.raw>{onClickEvent}</f:format.raw>}
+                        {onClickEvent -> f:format.raw()}
                     </script>
                     {renderedTabs -> f:format.raw()}
                 </f:then>
