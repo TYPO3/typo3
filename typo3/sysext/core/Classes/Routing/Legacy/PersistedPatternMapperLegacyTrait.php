@@ -54,7 +54,7 @@ trait PersistedPatternMapperLegacyTrait
      * @return array
      * @deprecated since TYPO3 v10.3, will be removed in TYPO3 v11.0
      */
-    protected function createRouteFieldConstraints(
+    protected function createFieldConstraints(
         QueryBuilder $queryBuilder,
         array $values,
         bool $resolveExpansion = false
