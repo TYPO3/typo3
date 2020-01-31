@@ -57,13 +57,6 @@ class PageLayoutController
     public $id;
 
     /**
-     * Pointer - for browsing list of records.
-     *
-     * @var int
-     */
-    protected $pointer;
-
-    /**
      * Thumbnails or not
      *
      * @var string
@@ -126,20 +119,6 @@ class PageLayoutController
      * @var string
      */
     protected $colPosList;
-
-    /**
-     * Flag: If content can be edited or not.
-     *
-     * @var bool
-     */
-    protected $EDIT_CONTENT;
-
-    /**
-     * Users permissions integer for this page.
-     *
-     * @var int
-     */
-    protected $CALC_PERMS;
 
     /**
      * Currently selected language for editing content elements
@@ -263,7 +242,6 @@ class PageLayoutController
         $this->perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
 
         $this->id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
-        $this->pointer = $parsedBody['pointer'] ?? $queryParams['pointer'] ?? null;
         $this->imagemode = $parsedBody['imagemode'] ?? $queryParams['imagemode'] ?? null;
         $this->popView = $parsedBody['popView'] ?? $queryParams['popView'] ?? null;
         $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? null;
@@ -626,10 +604,6 @@ class PageLayoutController
         // Content
         $content = '';
         if ($this->id && $access) {
-            // Initialize permission settings:
-            $this->CALC_PERMS = $this->getBackendUser()->calcPerms($this->pageinfo);
-            $this->EDIT_CONTENT = $this->isContentEditable($this->current_sys_language);
-
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
 
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
@@ -674,13 +648,11 @@ class PageLayoutController
             $content .= $this->getHeaderFlashMessagesForCurrentPid();
 
             // Render the primary module content:
-            if ($this->MOD_SETTINGS['function'] == 1 || $this->MOD_SETTINGS['function'] == 2) {
-                $content .= '<form action="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'imagemode' => $this->imagemode])) . '" id="PageLayoutController" method="post">';
-                // Page title
-                $content .= '<h1 class="' . ($this->isPageEditable($this->current_sys_language) ? 't3js-title-inlineedit' : '') . '">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
-                // All other listings
-                $content .= $this->renderContent();
-            }
+            $content .= '<form action="' . htmlspecialchars((string)$uriBuilder->buildUriFromRoute($this->moduleName, ['id' => $this->id, 'imagemode' => $this->imagemode])) . '" id="PageLayoutController" method="post">';
+            // Page title
+            $content .= '<h1 class="' . ($this->isPageEditable($this->current_sys_language) ? 't3js-title-inlineedit' : '') . '">' . htmlspecialchars($this->getLocalizedPageTitle()) . '</h1>';
+            // All other listings
+            $content .= $this->renderContent();
             $content .= '</form>';
             $content .= $this->searchContent;
             // Setting up the buttons for the docheader
@@ -716,92 +688,60 @@ class PageLayoutController
     {
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
-        $dbList->thumbs = $this->imagemode;
-        $dbList->no_noWrap = 1;
-        $this->pointer = MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
-        $dbList->doEdit = $this->EDIT_CONTENT;
-        $dbList->ext_CALC_PERMS = $this->CALC_PERMS;
+        $dbList->doEdit = $this->isContentEditable($this->current_sys_language);
         $dbList->id = $this->id;
-        $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 0, 10);
+        $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 1, 10);
         $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
         $dbList->defLangBinding = !empty($this->modTSconfig['properties']['defLangBinding']);
-        if (!$dbList->nextThree) {
-            $dbList->nextThree = 1;
-        }
-        // Create menu for selecting a table to jump to (this is, if more than just pages/tt_content elements are found on the page!)
-        // also fills $dbList->activeTables
-        $dbList->getTableMenu($this->id);
-        // Initialize other variables:
-        $tableOutput = [];
-        $CMcounter = 0;
+        $tableOutput = '';
         $backendLayoutContainer = GeneralUtility::makeInstance(BackendLayoutView::class);
         $tcaItems = $backendLayoutContainer->getColPosListItemsParsed($this->id);
-        // Traverse the list of table names which has records on this page (that array is populated
-        // by the $dblist object during the function getTableMenu()):
-        foreach ($dbList->activeTables as $table => $value) {
-            $h_func = '';
+        $pageRenderer = $this->getPageRenderer();
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
+        if ($this->getBackendUser()->check('tables_select', 'tt_content')) {
             $h_func_b = '';
-            if (!isset($dbList->externalTables[$table])) {
-                // Boolean: Display up/down arrows and edit icons for tt_content records
-                $dbList->tt_contentConfig['showCommands'] = 1;
-                // Boolean: Display info-marks or not
-                $dbList->tt_contentConfig['showInfo'] = 1;
-                // Setting up the tt_content columns to show:
-                if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
-                    $colList = [];
-                    foreach ($tcaItems as $temp) {
-                        $colList[] = $temp[1];
-                    }
-                } else {
-                    // ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
-                    $colList = ['1', '0', '2', '3'];
-                }
-                if ($this->colPosList !== '') {
-                    $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
-                }
-                // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
-                $dbList->tt_contentConfig['cols'] = implode(',', $colList);
-                $dbList->tt_contentConfig['activeCols'] = $this->activeColPosList;
-                $dbList->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
-                $dbList->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
-                // If the function menu is set to "Language":
-                if ($this->MOD_SETTINGS['function'] == 2) {
-                    $dbList->tt_contentConfig['languageMode'] = 1;
-                    $dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
-                    $dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
-                }
-                // Toggle hidden ContentElements
-                $numberOfHiddenElements = $this->getNumberOfHiddenElements($dbList->tt_contentConfig);
-                if ($numberOfHiddenElements > 0) {
-                    $h_func_b = '
-                        <div class="checkbox">
-                            <label for="checkTt_content_showHidden">
-                                <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
-                                ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
-                            </label>
-                        </div>';
+            // Setting up the tt_content columns to show:
+            if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
+                $colList = [];
+                foreach ($tcaItems as $temp) {
+                    $colList[] = $temp[1];
                 }
             } else {
-                if (isset($this->MOD_SETTINGS) && isset($this->MOD_MENU)) {
-                    $h_func = BackendUtility::getFuncMenu($this->id, 'SET[' . $table . ']', $this->MOD_SETTINGS[$table], $this->MOD_MENU[$table], '', '');
-                }
+                // ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
+                $colList = ['1', '0', '2', '3'];
+            }
+            if ($this->colPosList !== '') {
+                $colList = array_intersect(GeneralUtility::intExplode(',', $this->colPosList), $colList);
+            }
+            // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
+            $dbList->tt_contentConfig['cols'] = implode(',', $colList);
+            $dbList->tt_contentConfig['activeCols'] = $this->activeColPosList;
+            $dbList->tt_contentConfig['showHidden'] = $this->MOD_SETTINGS['tt_content_showHidden'];
+            $dbList->tt_contentConfig['sys_language_uid'] = (int)$this->current_sys_language;
+            // If the function menu is set to "Language":
+            if ($this->MOD_SETTINGS['function'] == 2) {
+                $dbList->tt_contentConfig['languageMode'] = 1;
+                $dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
+                $dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
+            }
+            // Toggle hidden ContentElements
+            $numberOfHiddenElements = $this->getNumberOfHiddenElements($dbList->tt_contentConfig);
+            if ($numberOfHiddenElements > 0) {
+                $h_func_b = '
+                    <div class="checkbox">
+                        <label for="checkTt_content_showHidden">
+                            <input type="checkbox" id="checkTt_content_showHidden" class="checkbox" name="SET[tt_content_showHidden]" value="1" ' . ($this->MOD_SETTINGS['tt_content_showHidden'] ? 'checked="checked"' : '') . ' />
+                            ' . htmlspecialchars($this->getLanguageService()->getLL('hiddenCE')) . ' (<span class="t3js-hidden-counter">' . $numberOfHiddenElements . '</span>)
+                        </label>
+                    </div>';
             }
             // Start the dblist object:
-            $dbList->itemsLimitSingleTable = 1000;
-            $dbList->start($this->id, $table, $this->pointer);
-            $dbList->counter = $CMcounter;
-            $dbList->ext_function = $this->MOD_SETTINGS['function'];
+            $dbList->start($this->id);
             // Generate the list of elements here:
-            $dbList->generateList();
-            // Adding the list content to the tableOutput variable:
-            $tableOutput[$table] = $h_func . $dbList->HTMLcode . $h_func_b;
-            // Increase global counter:
-            $CMcounter += $dbList->counter;
-            // Reset variables after operation:
-            $dbList->HTMLcode = '';
+            $tableOutput = $dbList->getTable_tt_content($this->id) . $h_func_b;
         }
-        // END: traverse tables
-        // For Context Sensitive Menus:
         // Init the content
         $content = '';
         // Additional header content
@@ -809,10 +749,7 @@ class PageLayoutController
             $params = [];
             $content .= GeneralUtility::callUserFunction($hook, $params, $this);
         }
-        // Add the content for each table we have rendered (traversing $tableOutput variable)
-        foreach ($tableOutput as $table => $output) {
-            $content .= $output;
-        }
+        $content .= $tableOutput;
         // Making search form:
         if (!$this->modTSconfig['properties']['disableSearchBox']) {
             $this->searchContent = $this->getSearchBox();

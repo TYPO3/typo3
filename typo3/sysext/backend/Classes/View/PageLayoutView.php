@@ -21,7 +21,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Controller\Page\LocalizationController;
-use TYPO3\CMS\Backend\Controller\PageLayoutController;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
@@ -30,10 +29,10 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -47,7 +46,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -75,25 +73,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $option_newWizard = true;
 
     /**
-     * If set to "1", will link a big button to content element wizard.
-     *
-     * @var int
-     */
-    public $ext_function = 0;
-
-    /**
      * If TRUE, elements will have edit icons (probably this is whether the user has permission to edit the page content). Set externally.
      *
      * @var bool
      */
     public $doEdit = true;
-
-    /**
-     * Array of tables to be listed by the Web > Page module in addition to the default tables.
-     *
-     * @var array
-     */
-    public $externalTables = [];
 
     /**
      * If set TRUE, the language mode of tt_content elements will be rendered with hard binding between
@@ -109,10 +93,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var array
      */
     public $tt_contentConfig = [
-        // Boolean: Display info-marks or not
-        'showInfo' => 1,
-        // Boolean: Display up/down arrows and edit icons for tt_content records
-        'showCommands' => 1,
         'languageCols' => 0,
         'languageMode' => 0,
         'languageColsPointer' => 0,
@@ -121,16 +101,9 @@ class PageLayoutView implements LoggerAwareInterface
         'sys_language_uid' => 0,
         // Which language
         'cols' => '1,0,2,3',
-        'activeCols' => '1,0,2,3'
         // Which columns can be accessed by current BE user
+        'activeCols' => '1,0,2,3'
     ];
-
-    /**
-     * Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
-     *
-     * @var array
-     */
-    public $activeTables = [];
 
     /**
      * @var array
@@ -156,25 +129,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $itemLabels = [];
 
     /**
-     * Page select permissions
-     *
-     * @var string
-     */
-    public $perms_clause = '';
-
-    /**
      * Page id
      *
      * @var int
      */
     public $id;
-
-    /**
-     * Tablename if single-table mode
-     *
-     * @var string
-     */
-    public $table = '';
 
     /**
      * Some permissions...
@@ -184,88 +143,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $calcPerms = 0;
 
     /**
-     * "LIMIT " in SQL...
-     *
-     * @var int
-     */
-    public $iLimit = 0;
-
-    /**
-     * Set to the total number of items for a table when selecting.
-     *
-     * @var string
-     */
-    public $totalItems = '';
-
-    /**
      * Loaded with page record with version overlay if any.
      *
      * @var string[]
      */
     public $pageRecord = [];
-
-    /**
-     * Fields to display for the current table
-     *
-     * @var string[]
-     */
-    public $setFields = [];
-
-    /**
-     * Pointer for browsing list
-     *
-     * @var int
-     */
-    public $firstElementNumber = 0;
-
-    /**
-     * Counting the elements no matter what...
-     *
-     * @var int
-     */
-    public $eCounter = 0;
-
-    /**
-     * default Max items shown per table in "single-table mode", may be overridden by tables.php
-     *
-     * @var int
-     */
-    public $itemsLimitSingleTable = 100;
-
-    /**
-     * Specify a list of tables which are the only ones allowed to be displayed.
-     *
-     * @var string
-     */
-    public $tableList = '';
-
-    /**
-     * Array of collapsed / uncollapsed tables in multi table view
-     *
-     * @var int[][]
-     */
-    public $tablesCollapsed = [];
-
-    /**
-     * HTML output
-     *
-     * @var string
-     */
-    public $HTMLcode = '';
-
-    /**
-     * Thumbnails on records containing files (pictures)
-     *
-     * @var bool
-     */
-    public $thumbs = 0;
-
-    /**
-     * Used for tracking next/prev uids
-     *
-     * @var int[][]
-     */
-    public $currentTable = [];
 
     /**
      * Decides the columns shown. Filled with values that refers to the keys of the data-array. $this->fieldArray[0] is the title column.
@@ -282,30 +164,11 @@ class PageLayoutView implements LoggerAwareInterface
     public $pageOverlays = [];
 
     /**
-     * Counter increased for each element. Used to index elements for the JavaScript-code that transfers to the clipboard
-     *
-     * @var int
-     */
-    public $counter = 0;
-
-    /**
      * Contains site languages for this page ID
      *
      * @var SiteLanguage[]
      */
     protected $siteLanguages = [];
-
-    /**
-     * Keys are fieldnames and values are td-parameters to add in addElement(), please use $addElement_tdCSSClass for CSS-classes;
-     *
-     * @var array
-     */
-    public $addElement_tdParams = [];
-
-    /**
-     * @var int
-     */
-    public $no_noWrap = 0;
 
     /**
      * Keys are fieldnames and values are td-css-classes to add in addElement();
@@ -318,13 +181,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @var Clipboard
      */
     protected $clipboard;
-
-    /**
-     * User permissions
-     *
-     * @var int
-     */
-    public $ext_CALC_PERMS;
 
     /**
      * Current ids page record
@@ -359,13 +215,6 @@ class PageLayoutView implements LoggerAwareInterface
     protected $localizationController;
 
     /**
-     * Override the page ids taken into account by getPageIdConstraint()
-     *
-     * @var array
-     */
-    protected $overridePageIdList = [];
-
-    /**
      * Cache the number of references to a record
      *
      * @var array
@@ -393,115 +242,50 @@ class PageLayoutView implements LoggerAwareInterface
      * Renderings
      *
      *****************************************/
-    /**
-     * Adds the code of a single table
-     *
-     * @param string $table Table name
-     * @param int $id Current page id
-     * @param string $fields
-     * @return string HTML for listing.
-     */
-    public function getTable($table, $id, $fields = '')
-    {
-        if (isset($this->externalTables[$table])) {
-            return $this->getExternalTables($id, $table);
-        }
-        // Branch out based on table name:
-        switch ($table) {
-                case 'pages':
-                    return $this->getTable_pages($id);
-                case 'tt_content':
-                    return $this->getTable_tt_content($id);
-                default:
-                    return '';
-            }
-    }
-
-    /**
-     * Renders an external table from page id
-     *
-     * @param int $id Page id
-     * @param string $table Name of the table
-     * @return string HTML for the listing
-     */
-    public function getExternalTables($id, $table)
-    {
-        $this->pageinfo = BackendUtility::readPageAccess($id, '');
-        $type = $this->getPageLayoutController()->MOD_SETTINGS[$table];
-        if (!isset($type)) {
-            $type = 0;
-        }
-        // eg. "name;title;email;company,image"
-        $fList = $this->externalTables[$table][$type]['fList'];
-        // The columns are separated by comma ','.
-        // Values separated by semicolon ';' are shown in the same column.
-        $icon = $this->externalTables[$table][$type]['icon'];
-        $addWhere = $this->externalTables[$table][$type]['addWhere'];
-        // Create listing
-        $out = $this->makeOrdinaryList($table, $id, $fList, $icon, $addWhere);
-        return $out;
-    }
 
     /**
      * Renders records from the pages table from page id
      * (Used to get information about the page tree content by "Web>Info"!)
      *
      * @param int $id Page id
+     * @param int $depth
      * @return string HTML for the listing
      */
-    public function getTable_pages($id)
+    public function getTable_pages($id, int $depth = 0)
     {
-        // Initializing:
         $out = '';
         $lang = $this->getLanguageService();
-        // Select current page:
-        if (!$id) {
-            // The root has a pseudo record in pageinfo...
-            $row = $this->getPageLayoutController()->pageinfo;
-        } else {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $row = $queryBuilder
-                ->select('*')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
-                    $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
-                )
-                ->execute()
-                ->fetch();
-            BackendUtility::workspaceOL('pages', $row);
-        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $row = $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)),
+                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+            )
+            ->execute()
+            ->fetch();
+        BackendUtility::workspaceOL('pages', $row);
         // If there was found a page:
         if (is_array($row)) {
-            // Getting select-depth:
-            $depth = (int)$this->getPageLayoutController()->MOD_SETTINGS['pages_levels'];
-            // Overriding a few things:
-            $this->no_noWrap = 0;
-            // Items
-            $this->eCounter = $this->firstElementNumber;
-            // Creating elements:
-            [$flag, $code] = $this->fwd_rwd_nav();
-            $out .= $code;
+            // Creating elements
             $editUids = [];
-            if ($flag) {
-                // Getting children:
-                $theRows = $this->getPageRecordsRecursive($row['uid'], $depth);
-                if ($this->getBackendUser()->doesUserHaveAccess($row, 2) && $row['uid'] > 0) {
-                    $editUids[] = $row['uid'];
+            // Getting children
+            $theRows = $this->getPageRecordsRecursive($row['uid'], $depth);
+            if ($this->getBackendUser()->doesUserHaveAccess($row, Permission::PAGE_EDIT) && $row['uid'] > 0) {
+                $editUids[] = $row['uid'];
+            }
+            $out .= $this->pages_drawItem($row, $this->fieldArray);
+            // Traverse all pages selected:
+            foreach ($theRows as $sRow) {
+                if ($this->getBackendUser()->doesUserHaveAccess($sRow, Permission::PAGE_EDIT)) {
+                    $editUids[] = $sRow['uid'];
                 }
-                $out .= $this->pages_drawItem($row, $this->fieldArray);
-                // Traverse all pages selected:
-                foreach ($theRows as $sRow) {
-                    if ($this->getBackendUser()->doesUserHaveAccess($sRow, 2)) {
-                        $editUids[] = $sRow['uid'];
-                    }
-                    $out .= $this->pages_drawItem($sRow, $this->fieldArray);
-                }
-                $this->eCounter++;
+                $out .= $this->pages_drawItem($sRow, $this->fieldArray);
             }
             // Header line is drawn
             $theData = [];
@@ -563,7 +347,7 @@ class PageLayoutView implements LoggerAwareInterface
             $out = '<div class="table-fit">'
                 . '<table class="table table-striped table-hover typo3-page-pages">'
                     . '<thead>'
-                            . $this->addElement(1, '', $theData)
+                            . $this->addElement($theData)
                     . '</thead>'
                     . '<tbody>'
                         . $out
@@ -586,14 +370,8 @@ class PageLayoutView implements LoggerAwareInterface
             ->getConnectionForTable('tt_content')
             ->getExpressionBuilder();
         $this->pageinfo = BackendUtility::readPageAccess($this->id, '');
-        $this->initializeLanguages();
-        $this->initializeClipboard();
         $pageTitleParamForAltDoc = '&recTitle=' . rawurlencode(BackendUtility::getRecordTitle('pages', BackendUtility::getRecordWSOL('pages', $id), true));
-        /** @var PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
         $pageActionsCallback = null;
         if ($this->isPageEditable()) {
             $languageOverlayId = 0;
@@ -996,7 +774,6 @@ class PageLayoutView implements LoggerAwareInterface
                 top.pasteIntoLinkTemplate = \'\';
                 top.pasteAfterLinkTemplate = \'\';';
         }
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addJsInlineCode('pasteLinkTemplates', $addExtOnReadyCode);
         // If language mode, then make another presentation:
         // Notice that THIS presentation will override the value of $out!
@@ -1039,7 +816,7 @@ class PageLayoutView implements LoggerAwareInterface
 
                 // "View page" icon is added:
                 $viewLink = '';
-                if (!VersionState::cast($this->getPageLayoutController()->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
+                if (!VersionState::cast($this->pageinfo['t3ver_state'])->equals(VersionState::DELETE_PLACEHOLDER)) {
                     $onClick = BackendUtility::viewOnClick(
                         $this->id,
                         '',
@@ -1198,193 +975,6 @@ class PageLayoutView implements LoggerAwareInterface
      * Generic listing of items
      *
      **********************************/
-    /**
-     * Creates a standard list of elements from a table.
-     *
-     * @param string $table Table name
-     * @param int $id Page id.
-     * @param string $fList Comma list of fields to display
-     * @param bool $icon If TRUE, icon is shown
-     * @param string $addWhere Additional WHERE-clauses.
-     * @return string HTML table
-     */
-    public function makeOrdinaryList($table, $id, $fList, $icon = false, $addWhere = '')
-    {
-        // Initialize
-        $addWhere = empty($addWhere) ? [] : [QueryHelper::stripLogicalOperatorPrefix($addWhere)];
-        $queryBuilder = $this->getQueryBuilder($table, $id, $addWhere);
-        $this->setTotalItems($table, $id, $addWhere);
-        $dbCount = 0;
-        $result = false;
-        // Make query for records if there were any records found in the count operation
-        if ($this->totalItems) {
-            $result = $queryBuilder->execute();
-            // Will return FALSE, if $result is invalid
-            $dbCount = $queryBuilder->count('uid')->execute()->fetchColumn(0);
-        }
-        // If records were found, render the list
-        if (!$dbCount) {
-            return '';
-        }
-        // Set fields
-        $out = '';
-        $this->fieldArray = GeneralUtility::trimExplode(',', '__cmds__,' . $fList . ',__editIconLink__', true);
-        $theData = $this->headerFields($this->fieldArray, $table);
-        // Title row
-        $localizedTableTitle = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
-        $out .= '<tr><th class="col-icon"></th>'
-            . '<th colspan="' . (count($theData) - 2) . '"><span class="c-table">'
-            . $localizedTableTitle . '</span> (' . $dbCount . ')</td><td class="col-icon"></td>'
-            . '</tr>';
-        // Column's titles
-        if ($this->doEdit) {
-            $urlParameters = [
-                'edit' => [
-                    $table => [
-                        $this->id => 'new'
-                    ]
-                ],
-                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-            ];
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-            $title = htmlspecialchars($this->getLanguageService()->getLL('new'));
-            $theData['__cmds__'] = '<a href="' . htmlspecialchars($url) . '" class="' . ($this->option_newWizard ? 't3js-toggle-new-content-element-wizard' : '') . '" '
-                . 'title="' . $title . '"'
-                . 'data-title="' . $title . '">'
-                . $this->iconFactory->getIcon('actions-add', Icon::SIZE_SMALL)->render() . '</a>';
-        }
-        $out .= $this->addElement(1, '', $theData, ' class="c-headLine"', 15, '', 'th');
-        // Render Items
-        $this->eCounter = $this->firstElementNumber;
-        while ($row = $result->fetch()) {
-            BackendUtility::workspaceOL($table, $row);
-            if (is_array($row)) {
-                [$flag, $code] = $this->fwd_rwd_nav();
-                $out .= $code;
-                if ($flag) {
-                    $Nrow = [];
-                    // Setting icons links
-                    if ($icon) {
-                        $Nrow['__cmds__'] = $this->getIcon($table, $row);
-                    }
-                    // Get values:
-                    $Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
-                    // Attach edit icon
-                    if ($this->doEdit) {
-                        $urlParameters = [
-                            'edit' => [
-                                $table => [
-                                    $row['uid'] => 'edit'
-                                ]
-                            ],
-                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI')
-                        ];
-                        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                        $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                        $Nrow['__editIconLink__'] = '<a class="btn btn-default" href="' . htmlspecialchars($url)
-                            . '" title="' . htmlspecialchars($this->getLanguageService()->getLL('edit')) . '">'
-                            . $this->iconFactory->getIcon('actions-open', Icon::SIZE_SMALL)->render() . '</a>';
-                    } else {
-                        $Nrow['__editIconLink__'] = $this->noEditIcon();
-                    }
-                    $out .= $this->addElement(1, '', $Nrow);
-                }
-                $this->eCounter++;
-            }
-        }
-        // Wrap it all in a table:
-        $out = '
-			<!--
-				Standard list of table "' . $table . '"
-			-->
-			<div class="table-fit"><table class="table table-hover table-striped">
-				' . $out . '
-			</table></div>';
-        return $out;
-    }
-
-    /**
-     * Adds content to all data fields in $out array
-     *
-     * Each field name in $fieldArr has a special feature which is that the field name can be specified as more field names.
-     * Eg. "field1,field2;field3".
-     * Field 2 and 3 will be shown in the same cell of the table separated by <br /> while field1 will have its own cell.
-     *
-     * @param array $fieldArr Array of fields to display
-     * @param string $table Table name
-     * @param array $row Record array
-     * @param array $out Array to which the data is added
-     * @return array $out array returned after processing.
-     * @see makeOrdinaryList()
-     */
-    public function dataFields($fieldArr, $table, $row, $out = [])
-    {
-        // Check table validity
-        if (!isset($GLOBALS['TCA'][$table])) {
-            return $out;
-        }
-
-        $thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
-        // Traverse fields
-        foreach ($fieldArr as $fieldName) {
-            if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
-                // Each field has its own cell (if configured in TCA)
-                // If the column is a thumbnail column:
-                if ($fieldName == $thumbsCol) {
-                    $out[$fieldName] = $this->thumbCode($row, $table, $fieldName);
-                } else {
-                    // ... otherwise just render the output:
-                    $out[$fieldName] = nl2br(htmlspecialchars(trim(GeneralUtility::fixed_lgd_cs(
-                        BackendUtility::getProcessedValue($table, $fieldName, $row[$fieldName], 0, 0, 0, $row['uid']),
-                        250
-                    ))));
-                }
-            } else {
-                // Each field is separated by <br /> and shown in the same cell (If not a TCA field, then explode
-                // the field name with ";" and check each value there as a TCA configured field)
-                $theFields = explode(';', $fieldName);
-                // Traverse fields, separated by ";" (displayed in a single cell).
-                foreach ($theFields as $fName2) {
-                    if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
-                        $out[$fieldName] .= '<strong>' . htmlspecialchars($this->getLanguageService()->sL(
-                            $GLOBALS['TCA'][$table]['columns'][$fName2]['label']
-                        )) . '</strong>&nbsp;&nbsp;' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(
-                            BackendUtility::getProcessedValue($table, $fName2, $row[$fName2], 0, 0, 0, $row['uid']),
-                            25
-                        )) . '<br />';
-                    }
-                }
-            }
-            // If no value, add a nbsp.
-            if (!$out[$fieldName]) {
-                $out[$fieldName] = '&nbsp;';
-            }
-            // Wrap in dimmed-span tags if record is "disabled"
-            if ($this->isDisabled($table, $row)) {
-                $out[$fieldName] = '<span class="text-muted">' . $out[$fieldName] . '</span>';
-            }
-        }
-        return $out;
-    }
-
-    /**
-     * Header fields made for the listing of records
-     *
-     * @param array $fieldArr Field names
-     * @param string $table The table name
-     * @return array returned after addition of the header fields.
-     * @see makeOrdinaryList()
-     */
-    public function headerFields($fieldArr, $table)
-    {
-        $out = [];
-        foreach ($fieldArr as $fieldName) {
-            $ll = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']));
-            $out[$fieldName] = $ll ?: '&nbsp;';
-        }
-        return $out;
-    }
 
     /**
      * Gets content records per column.
@@ -1508,8 +1098,6 @@ class PageLayoutView implements LoggerAwareInterface
     public function pages_drawItem($row, $fieldArr)
     {
         $userTsConfig = $this->getBackendUser()->getTSConfig();
-
-        // Initialization
         $theIcon = $this->getIcon('pages', $row);
         // Preparing and getting the data-array
         $theData = [];
@@ -1556,7 +1144,7 @@ class PageLayoutView implements LoggerAwareInterface
                     break;
                 case 'shortcut':
                 case 'shortcut_mode':
-                    if ((int)$row['doktype'] === \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT) {
+                    if ((int)$row['doktype'] === PageRepository::DOKTYPE_SHORTCUT) {
                         $theData[$field] = $this->getPagesTableFieldValue($field, $row);
                     }
                     break;
@@ -1572,8 +1160,8 @@ class PageLayoutView implements LoggerAwareInterface
                     }
             }
         }
-        $this->addElement_tdParams['title'] = $row['_CSSCLASS'] ? ' class="' . $row['_CSSCLASS'] . '"' : '';
-        return $this->addElement(1, '', $theData);
+        $this->addElement_tdCssClass['title'] = $row['_CSSCLASS'] ?? '';
+        return $this->addElement($theData);
     }
 
     /**
@@ -1603,28 +1191,20 @@ class PageLayoutView implements LoggerAwareInterface
      */
     public function tt_content_drawColHeader($colName, $editParams = '')
     {
-        $iconsArr = [];
-        // Create command links:
-        if ($this->tt_contentConfig['showCommands']) {
-            // Edit whole of column:
-            if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT) && $this->getBackendUser()->checkLanguageAccess(0)) {
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                $link = $uriBuilder->buildUriFromRoute('record_edit') . $editParams . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
-                $iconsArr['edit'] = '<a href="' . htmlspecialchars($link) . '"  title="'
-                    . htmlspecialchars($this->getLanguageService()->getLL('editColumn')) . '">'
-                    . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
-            }
-        }
         $icons = '';
-        if (!empty($iconsArr)) {
-            $icons = '<div class="t3-page-column-header-icons">' . implode('', $iconsArr) . '</div>';
+        // Edit whole of column:
+        if ($editParams && $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT) && $this->getBackendUser()->checkLanguageAccess(0)) {
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $link = $uriBuilder->buildUriFromRoute('record_edit') . $editParams . '&returnUrl=' . rawurlencode(GeneralUtility::getIndpEnv('REQUEST_URI'));
+            $icons = '<a href="' . htmlspecialchars($link) . '"  title="'
+                . htmlspecialchars($this->getLanguageService()->getLL('editColumn')) . '">'
+                . $this->iconFactory->getIcon('actions-document-open', Icon::SIZE_SMALL)->render() . '</a>';
+            $icons = '<div class="t3-page-column-header-icons">' . $icons . '</div>';
         }
-        // Create header row:
-        $out = '<div class="t3-page-column-header">
+        return '<div class="t3-page-column-header">
 					' . $icons . '
 					<div class="t3-page-column-header-label">' . htmlspecialchars($colName) . '</div>
 				</div>';
-        return $out;
     }
 
     /**
@@ -1686,7 +1266,6 @@ class PageLayoutView implements LoggerAwareInterface
 				' . implode('<br>', $info) . '
 				</div>';
         }
-        // Wrap it
         if (!empty($content)) {
             $content = '<div class="t3-page-ce-footer">' . $content . '</div>';
         }
@@ -1707,10 +1286,9 @@ class PageLayoutView implements LoggerAwareInterface
     {
         $backendUser = $this->getBackendUser();
         $out = '';
-        // If show info is set...;
-        if ($this->tt_contentConfig['showInfo'] && $backendUser->recordEditAccessInternals('tt_content', $row)) {
+        if ($backendUser->recordEditAccessInternals('tt_content', $row)) {
             // Render control panel for the element:
-            if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
+            if ($this->doEdit) {
                 // Edit content element:
                 $urlParameters = [
                     'edit' => [
@@ -2274,15 +1852,14 @@ class PageLayoutView implements LoggerAwareInterface
      * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
      *
      * @param Statement $result DBAL Statement
-     * @param string $table Table name defaulting to tt_content
      * @return array The selected rows returned in this array.
      */
-    public function getResult(Statement $result, string $table = 'tt_content'): array
+    public function getResult(Statement $result): array
     {
         $output = [];
         // Traverse the result:
         while ($row = $result->fetch()) {
-            BackendUtility::workspaceOL($table, $row, -99, true);
+            BackendUtility::workspaceOL('tt_content', $row, -99, true);
             if ($row) {
                 // Add the row to the array:
                 $output[] = $row;
@@ -2412,9 +1989,8 @@ class PageLayoutView implements LoggerAwareInterface
     public function getIcon($table, $row)
     {
         // Initialization
-        $toolTip = BackendUtility::getRecordToolTip($row, 'tt_content');
+        $toolTip = BackendUtility::getRecordToolTip($row, $table);
         $icon = '<span ' . $toolTip . '>' . $this->iconFactory->getIconForRecord($table, $row, Icon::SIZE_SMALL)->render() . '</span>';
-        $this->counter++;
         // The icon with link
         if ($this->getBackendUser()->recordEditAccessInternals($table, $row)) {
             $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid']);
@@ -2459,94 +2035,11 @@ class PageLayoutView implements LoggerAwareInterface
             || $enableCols['endtime'] && $row[$enableCols['endtime']] && $row[$enableCols['endtime']] < $GLOBALS['EXEC_TIME'];
     }
 
-    /**
-     * Returns icon for "no-edit" of a record.
-     * Basically, the point is to signal that this record could have had an edit link if
-     * the circumstances were right. A placeholder for the regular edit icon...
-     *
-     * @return string IMG tag for icon.
-     */
-    public function noEditIcon()
-    {
-        $title = htmlspecialchars($this->getLanguageService()->getLL('noEditItems'));
-        return '<span title="' . $title . '">' . $this->iconFactory->getIcon('status-edit-read-only', Icon::SIZE_SMALL)->render() . '</span>';
-    }
-
     /*****************************************
      *
      * External renderings
      *
      *****************************************/
-
-    /**
-     * Creates a menu of the tables that can be listed by this function
-     * Only tables which has records on the page will be included.
-     * Notice: The function also fills in the internal variable $this->activeTables with icon/titles.
-     *
-     * @param int $id Page id from which we are listing records (the function will look up if there are records on the page)
-     * @return string HTML output.
-     */
-    public function getTableMenu($id)
-    {
-        // Initialize:
-        $this->activeTables = [];
-        $theTables = ['tt_content'];
-        // External tables:
-        if (is_array($this->externalTables)) {
-            $theTables = array_unique(array_merge($theTables, array_keys($this->externalTables)));
-        }
-        $out = '';
-        // Traverse tables to check:
-        foreach ($theTables as $tName) {
-            // Check access and whether the proper extensions are loaded:
-            if ($this->getBackendUser()->check('tables_select', $tName)
-                && (
-                    isset($this->externalTables[$tName])
-                    || $tName === 'fe_users' || $tName === 'tt_content'
-                    || \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($tName)
-                )
-            ) {
-                // Make query to count records from page:
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($tName);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-                $count = $queryBuilder->count('uid')
-                    ->from($tName)
-                    ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT)))
-                    ->execute()
-                    ->fetchColumn();
-                // If records were found (or if "tt_content" is the table...):
-                if ($count || $tName === 'tt_content') {
-                    // Add row to menu:
-                    $out .= '
-					<td><a href="#' . $tName . '" title="' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title'])) . '"></a>'
-                        . $this->iconFactory->getIconForRecord($tName, [], Icon::SIZE_SMALL)->render()
-                        . '</td>';
-                    // ... and to the internal array, activeTables we also add table icon and title (for use elsewhere)
-                    $title = htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title']))
-                        . ': ' . $count . ' ' . htmlspecialchars($this->getLanguageService()->getLL('records'));
-                    $this->activeTables[$tName] = '<span title="' . $title . '">'
-                        . $this->iconFactory->getIconForRecord($tName, [], Icon::SIZE_SMALL)->render()
-                        . '</span>'
-                        . '&nbsp;' . htmlspecialchars($this->getLanguageService()->sL($GLOBALS['TCA'][$tName]['ctrl']['title']));
-                }
-            }
-        }
-        // Wrap cells in table tags:
-        $out = '
-            <!--
-                Menu of tables on the page (table menu)
-            -->
-            <table border="0" cellpadding="0" cellspacing="0" id="typo3-page-tblMenu">
-				<tr>' . $out . '
-                </tr>
-			</table>';
-        // Return the content:
-        return $out;
-    }
 
     /**
      * Create thumbnail code for record/field but not linked
@@ -2636,139 +2129,17 @@ class PageLayoutView implements LoggerAwareInterface
     }
 
     /**
-     * @return PageLayoutController
-     */
-    protected function getPageLayoutController()
-    {
-        return $GLOBALS['SOBE'];
-    }
-
-    /**
      * Initializes the list generation
      *
-     * @param int $id Page id for which the list is rendered. Must be >= 0
-     * @param string $table Tablename - if extended mode where only one table is listed at a time.
-     * @param int $pointer Browsing pointer.
-     * @throws SiteNotFoundException
+     * @param int $id Page id for which the list is rendered.
      */
-    public function start($id, $table, $pointer)
+    public function start($id)
     {
         $this->resolveSiteLanguages((int)$id);
-        $backendUser = $this->getBackendUser();
-        // Setting internal variables:
-        // sets the parent id
         $this->id = (int)$id;
-        if ($GLOBALS['TCA'][$table]) {
-            // Setting single table mode, if table exists:
-            $this->table = $table;
-        }
-        $this->firstElementNumber = $pointer;
-        // Init dynamic vars:
-        $this->counter = 0;
-        $this->HTMLcode = '';
-
-        // $table might be NULL at this point in the code. As the expressionBuilder
-        // is used to limit returned records based on the page permissions and the
-        // uid field of the pages it can hardcoded to work on the pages table.
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages')
-            ->expr();
-        $permsClause = $expressionBuilder->andX($backendUser->getPagePermsClause(Permission::PAGE_SHOW));
-        // This will hide records from display - it has nothing to do with user rights!!
-        $pidList = GeneralUtility::intExplode(',', $backendUser->getTSConfig()['options.']['hideRecords.']['pages'] ?? '', true);
-        if (!empty($pidList)) {
-            $permsClause->add($expressionBuilder->notIn('pages.uid', $pidList));
-        }
-        $this->perms_clause = (string)$permsClause;
-
-        // Get configuration of collapsed tables from user uc and merge with sanitized GP vars
-        $this->tablesCollapsed = is_array($backendUser->uc['moduleData']['list'])
-            ? $backendUser->uc['moduleData']['list']
-            : [];
-        $collapseOverride = GeneralUtility::_GP('collapse');
-        if (is_array($collapseOverride)) {
-            foreach ($collapseOverride as $collapseTable => $collapseValue) {
-                if (is_array($GLOBALS['TCA'][$collapseTable]) && ($collapseValue == 0 || $collapseValue == 1)) {
-                    $this->tablesCollapsed[$collapseTable] = $collapseValue;
-                }
-            }
-            // Save modified user uc
-            $backendUser->uc['moduleData']['list'] = $this->tablesCollapsed;
-            $backendUser->writeUC($backendUser->uc);
-            $returnUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('returnUrl'));
-            if ($returnUrl !== '') {
-                HttpUtility::redirect($returnUrl);
-            }
-        }
-        $this->initializeLanguages();
-    }
-
-    /**
-     * Traverses the table(s) to be listed and renders the output code for each:
-     * The HTML is accumulated in $this->HTMLcode
-     * Finishes off with a stopper-gif
-     */
-    public function generateList()
-    {
-        // Set page record in header
         $this->pageRecord = BackendUtility::getRecordWSOL('pages', $this->id);
-
-        $backendUser = $this->getBackendUser();
-
-        // pre-process tables and add sorting instructions
-        $tableNames = array_flip(array_keys($GLOBALS['TCA']));
-        foreach ($tableNames as $tableName => &$config) {
-            $hideTable = false;
-
-            // Checking if the table should be rendered:
-            // Checks that we see only permitted/requested tables:
-            if ($this->table && $tableName !== $this->table
-                || $this->tableList && !GeneralUtility::inList($this->tableList, $tableName)
-                || !$backendUser->check('tables_select', $tableName)
-            ) {
-                $hideTable = true;
-            }
-
-            // Don't show table if hidden by TCA ctrl section
-            $hideTable = $hideTable || !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable']);
-            if ($hideTable) {
-                unset($tableNames[$tableName]);
-            } else {
-                $tableNames[$tableName] = [];
-            }
-        }
-        unset($config);
-
-        foreach ($tableNames as $tableName => $_) {
-            // check if we are in single- or multi-table mode
-            if ($this->table) {
-                $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems'])
-                    ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxSingleDBListItems']
-                    : $this->itemsLimitSingleTable;
-            } else {
-                // if there are no records in table continue current foreach
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getQueryBuilderForTable($tableName);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                    ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-                $queryBuilder = $this->addPageIdConstraint($tableName, $queryBuilder);
-                $firstRow = $queryBuilder->select('uid')
-                    ->from($tableName)
-                    ->execute()
-                    ->fetch();
-                if (!is_array($firstRow)) {
-                    continue;
-                }
-                $this->iLimit = isset($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'])
-                    ? (int)$GLOBALS['TCA'][$tableName]['interface']['maxDBListItems']
-                    : 20;
-            }
-
-            // Finally, render the list:
-            $this->HTMLcode .= $this->getTable($tableName, $this->id);
-        }
+        $this->initializeLanguages();
+        $this->initializeClipboard();
     }
 
     /**
@@ -2827,7 +2198,6 @@ class PageLayoutView implements LoggerAwareInterface
      * @param string[] $fieldList List of fields to select from the table
      * @param string[] $additionalConstraints Additional part for where clause
      * @param QueryBuilder $queryBuilder
-     * @param bool $addSorting
      * @return QueryBuilder
      */
     protected function prepareQueryBuilder(
@@ -2835,29 +2205,17 @@ class PageLayoutView implements LoggerAwareInterface
         int $pageId,
         array $fieldList,
         array $additionalConstraints,
-        QueryBuilder $queryBuilder,
-        bool $addSorting = true
+        QueryBuilder $queryBuilder
     ): QueryBuilder {
         $parameters = [
             'table' => $table,
             'fields' => $fieldList,
             'groupBy' => null,
-            'orderBy' => null,
-            'firstResult' => $this->firstElementNumber ?: null,
-            'maxResults' => $this->iLimit ?: null
+            'orderBy' => null
         ];
-
-        if ($this->iLimit > 0) {
-            $queryBuilder->setMaxResults($this->iLimit);
-        }
 
         // Build the query constraints
         $queryBuilder = $this->addPageIdConstraint($table, $queryBuilder);
-
-        // Filtering on displayable pages (permissions):
-        if ($table === 'pages' && $this->perms_clause) {
-            $queryBuilder->andWhere($this->perms_clause);
-        }
 
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][PageLayoutView::class]['modifyQuery'] ?? [] as $className) {
             $hookObject = GeneralUtility::makeInstance($className);
@@ -2874,132 +2232,6 @@ class PageLayoutView implements LoggerAwareInterface
         }
 
         return $queryBuilder;
-    }
-
-    /**
-     * Executed a query to set $this->totalItems to the number of total
-     * items, eg. for pagination
-     *
-     * @param string $table Table name
-     * @param int $pageId Only used to build the search constraints, $this->pidList is used for restrictions
-     * @param array $constraints Additional constraints for where clause
-     */
-    public function setTotalItems(string $table, int $pageId, array $constraints)
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table);
-
-        $queryBuilder->getRestrictions()
-            ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-        $queryBuilder
-            ->from($table);
-
-        if (!empty($constraints)) {
-            $queryBuilder->andWhere(...$constraints);
-        }
-
-        $queryBuilder = $this->prepareQueryBuilder($table, $pageId, ['*'], $constraints, $queryBuilder, false);
-        // Reset limit and offset for full count query
-        $queryBuilder->setFirstResult(0);
-        $queryBuilder->setMaxResults(1);
-
-        $this->totalItems = (int)$queryBuilder->count('*')
-            ->execute()
-            ->fetchColumn();
-    }
-
-    /**
-     * Creates the URL to this script, including all relevant GPvars
-     * Fixed GPvars are id, table, imagemode
-     *
-     * @param string $altId Alternative id value. Enter blank string for the current id ($this->id)
-     * @param string $table Table name to display. Enter "-1" for the current table.
-     * @param string $exclList Comma separated list of fields NOT to include ("firstElementNumber")
-     * @return string URL
-     */
-    public function listURL($altId = '', $table = '-1', $exclList = '')
-    {
-        $urlParameters = [];
-        if ((string)$altId !== '') {
-            $urlParameters['id'] = $altId;
-        } else {
-            $urlParameters['id'] = $this->id;
-        }
-        if ($table === '-1') {
-            $urlParameters['table'] = $this->table;
-        } else {
-            $urlParameters['table'] = $table;
-        }
-        if ($this->thumbs) {
-            $urlParameters['imagemode'] = $this->thumbs;
-        }
-        if ((!$exclList || !GeneralUtility::inList($exclList, 'firstElementNumber')) && $this->firstElementNumber) {
-            $urlParameters['pointer'] = $this->firstElementNumber;
-        }
-
-        if ($routePath = GeneralUtility::_GP('route')) {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $url = (string)$uriBuilder->buildUriFromRoutePath($routePath, $urlParameters);
-        } else {
-            $url = GeneralUtility::getIndpEnv('SCRIPT_NAME') . HttpUtility::buildQueryString($urlParameters, '?');
-        }
-        return $url;
-    }
-
-    /**
-     * Returns "requestUri" - which is basically listURL
-     * @return string Content of ->listURL()
-     */
-    public function requestUri()
-    {
-        return $this->listURL();
-    }
-
-    /**
-     * Makes the list of fields to select for a table
-     *
-     * @param string $table Table name
-     * @return string[] Array, where values are fieldnames to include in query
-     */
-    public function makeFieldList($table)
-    {
-        // Init fieldlist array:
-        $fieldListArr = [];
-        // Check table:
-        if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'])) {
-            // Traverse configured columns and add them to field array, if available for user.
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $fN => $fieldValue) {
-                if ($fieldValue['config']['type'] !== 'passthrough') {
-                    $fieldListArr[] = $fN;
-                }
-            }
-
-            $fieldListArr[] = 'uid';
-            $fieldListArr[] = 'pid';
-
-            // Add date fields
-            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp']) {
-                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['tstamp'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['crdate']) {
-                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['crdate'];
-            }
-            // Add more special fields:
-            if ($GLOBALS['TCA'][$table]['ctrl']['cruser_id']) {
-                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['cruser_id'];
-            }
-            if ($GLOBALS['TCA'][$table]['ctrl']['sortby']) {
-                $fieldListArr[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-            }
-            if (BackendUtility::isTableWorkspaceEnabled($table)) {
-                $fieldListArr[] = 't3ver_oid';
-                $fieldListArr[] = 't3ver_state';
-                $fieldListArr[] = 't3ver_wsid';
-            }
-        }
-        return $fieldListArr;
     }
 
     /**
@@ -3025,25 +2257,15 @@ class PageLayoutView implements LoggerAwareInterface
      * Returns a table-row with the content from the fields in the input data array.
      * OBS: $this->fieldArray MUST be set! (represents the list of fields to display)
      *
-     * @param int $h Is an integer >=0 and denotes how tall an element is. Set to '0' makes a half line, -1 = full line, set to 1 makes a 'join' and above makes 'line'
-     * @param string $icon Is the <img>+<a> of the record. If not supplied the first 'join'-icon will be a 'line' instead
      * @param array $data Is the data array, record with the fields. Notice: These fields are (currently) NOT htmlspecialchar'ed before being wrapped in <td>-tags
-     * @param string $rowParams Is insert in the <tr>-tags. Must carry a ' ' as first character
-     * @param string $_ OBSOLETE - NOT USED ANYMORE. $lMargin is the leftMargin (int)
-     * @param string $_2 OBSOLETE - NOT USED ANYMORE. Is the HTML <img>-tag for an alternative 'gfx/ol/line.gif'-icon (used in the top)
-     * @param string $colType Defines the tag being used for the columns. Default is td.
-     *
      * @return string HTML content for the table row
      */
-    public function addElement($h, $icon, $data, $rowParams = '', $_ = '', $_2 = '', $colType = 'td')
+    public function addElement($data)
     {
-        $colType = ($colType === 'th') ? 'th' : 'td';
-        $noWrap = $this->no_noWrap ? '' : ' nowrap';
         // Start up:
         $l10nParent = isset($data['_l10nparent_']) ? (int)$data['_l10nparent_'] : 0;
         $out = '
-		<!-- Element, begin: -->
-		<tr ' . $rowParams . ' data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $l10nParent . '">';
+		<tr data-uid="' . (int)$data['uid'] . '" data-l10nparent="' . $l10nParent . '">';
         // Init rendering.
         $colsp = '';
         $lastKey = '';
@@ -3052,7 +2274,7 @@ class PageLayoutView implements LoggerAwareInterface
         // __label is used as the label key to circumvent problems with uid used as label (see #67756)
         // as it was introduced later on, check if it really exists before using it
         $fields = $this->fieldArray;
-        if ($colType === 'td' && array_key_exists('__label', $data)) {
+        if (array_key_exists('__label', $data)) {
             $fields[0] = '__label';
         }
         // Traverse field array which contains the data to present:
@@ -3061,7 +2283,7 @@ class PageLayoutView implements LoggerAwareInterface
                 if ($lastKey) {
                     $cssClass = $this->addElement_tdCssClass[$lastKey];
                     $out .= '
-						<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+						<td class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</td>';
                 }
                 $lastKey = $vKey;
                 $c = 1;
@@ -3081,81 +2303,10 @@ class PageLayoutView implements LoggerAwareInterface
         if ($lastKey) {
             $cssClass = $this->addElement_tdCssClass[$lastKey];
             $out .= '
-				<' . $colType . ' class="' . $cssClass . $noWrap . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</' . $colType . '>';
+				<td class="' . $cssClass . ' nowrap"' . $colsp . '>' . $data[$lastKey] . '</td>';
         }
-        // End row
-        $out .= '
-		</tr>';
-        // Return row.
+        $out .= '</tr>';
         return $out;
-    }
-
-    /**
-     * Dummy function, used to write the top of a table listing.
-     */
-    public function writeTop()
-    {
-    }
-
-    /**
-     * Creates a forward/reverse button based on the status of ->eCounter, ->firstElementNumber, ->iLimit
-     *
-     * @param string $table Table name
-     * @return array array([boolean], [HTML]) where [boolean] is 1 for reverse element, [HTML] is the table-row code for the element
-     */
-    public function fwd_rwd_nav($table = '')
-    {
-        $code = '';
-        if ($this->eCounter >= $this->firstElementNumber && $this->eCounter < $this->firstElementNumber + $this->iLimit) {
-            if ($this->firstElementNumber && $this->eCounter == $this->firstElementNumber) {
-                // Reverse
-                $theData = [];
-                $titleCol = $this->fieldArray[0];
-                $theData[$titleCol] = $this->fwd_rwd_HTML('fwd', $this->eCounter, $table);
-                $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
-            }
-            return [1, $code];
-        }
-        if ($this->eCounter == $this->firstElementNumber + $this->iLimit) {
-            // Forward
-            $theData = [];
-            $titleCol = $this->fieldArray[0];
-            $theData[$titleCol] = $this->fwd_rwd_HTML('rwd', $this->eCounter, $table);
-            $code = $this->addElement(1, '', $theData, 'class="fwd_rwd_nav"');
-        }
-        return [0, $code];
-    }
-
-    /**
-     * Creates the button with link to either forward or reverse
-     *
-     * @param string $type Type: "fwd" or "rwd
-     * @param int $pointer Pointer
-     * @param string $table Table name
-     * @return string
-     * @internal
-     */
-    public function fwd_rwd_HTML($type, $pointer, $table = '')
-    {
-        $content = '';
-        $tParam = $table ? '&table=' . rawurlencode($table) : '';
-        switch ($type) {
-            case 'fwd':
-                $href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-up',
-                    Icon::SIZE_SMALL
-                )->render() . '</a> <i>[' . (max(0, $pointer - $this->iLimit) + 1) . ' - ' . $pointer . ']</i>';
-                break;
-            case 'rwd':
-                $href = $this->listURL() . '&pointer=' . $pointer . $tParam;
-                $content = '<a href="' . htmlspecialchars($href) . '">' . $this->iconFactory->getIcon(
-                    'actions-move-down',
-                    Icon::SIZE_SMALL
-                )->render() . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
-                break;
-        }
-        return $content;
     }
 
     /**
@@ -3226,36 +2377,6 @@ class PageLayoutView implements LoggerAwareInterface
             $site = new NullSite();
         }
         $this->siteLanguages = $site->getAvailableLanguages($this->getBackendUser(), false, $pageId);
-    }
-
-    /**
-     * Generates HTML code for a Reference tooltip out of
-     * sys_refindex records you hand over
-     *
-     * @param int $references number of records from sys_refindex table
-     * @param string $launchViewParameter JavaScript String, which will be passed as parameters to top.TYPO3.InfoWindow.showItem
-     * @return string
-     */
-    protected function generateReferenceToolTip($references, $launchViewParameter = '')
-    {
-        if (!$references) {
-            $htmlCode = '-';
-        } else {
-            $htmlCode = '<a href="#"';
-            if ($launchViewParameter !== '') {
-                $htmlCode .= ' onclick="' . htmlspecialchars(
-                    'top.TYPO3.InfoWindow.showItem(' . $launchViewParameter . '); return false;'
-                ) . '"';
-            }
-            $htmlCode .= ' title="' . htmlspecialchars(
-                $this->getLanguageService()->sL(
-                    'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:show_references'
-                ) . ' (' . $references . ')'
-            ) . '">';
-            $htmlCode .= $references;
-            $htmlCode .= '</a>';
-        }
-        return $htmlCode;
     }
 
     /**

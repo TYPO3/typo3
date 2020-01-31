@@ -65,19 +65,14 @@ class PageInformationController
         $languageService = $this->getLanguageService();
         $theOutput = '<h1>' . htmlspecialchars($languageService->sL('LLL:EXT:info/Resources/Private/Language/locallang_webinfo.xlf:page_title')) . '</h1>';
         $dblist = GeneralUtility::makeInstance(PageLayoutView::class);
-        $dblist->thumbs = 0;
 
         if (isset($this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']])) {
             $dblist->fieldArray = $this->fieldConfiguration[$this->pObj->MOD_SETTINGS['pages']]['fields'];
         }
 
-        // PAGES:
-        $this->pObj->MOD_SETTINGS['pages_levels'] = $this->pObj->MOD_SETTINGS['depth'];
-        // ONLY for the sake of dblist module which uses this value.
         $h_func = BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
         $h_func .= BackendUtility::getDropdownMenu($this->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages']);
-        $dblist->start($this->id, 'pages', 0);
-        $dblist->generateList();
+        $dblist->start($this->id);
 
         $theOutput .= '<div class="form-inline form-inline-spaced">'
             . $h_func
@@ -85,7 +80,7 @@ class PageInformationController
             . BackendUtility::cshItem('_MOD_web_info', 'func_' . $this->pObj->MOD_SETTINGS['pages'], null, '<span class="btn btn-default btn-sm">|</span>')
             . '</div>'
             . '</div>'
-            . $dblist->HTMLcode;
+            . $dblist->getTable_pages($this->id, (int)$this->pObj->MOD_SETTINGS['depth']);
 
         // Additional footer content
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'] ?? [] as $hook) {
