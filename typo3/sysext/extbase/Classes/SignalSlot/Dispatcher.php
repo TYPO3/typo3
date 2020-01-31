@@ -115,6 +115,8 @@ use TYPO3\CMS\Extensionmanager\ViewHelpers\ProcessAvailableActionsViewHelper;
  * A dispatcher which dispatches signals by calling its registered slot methods
  * and passing them the method arguments which were originally passed to the
  * signal method.
+ *
+ * @deprecated will be removed in TYPO3 v12.0. Use PSR-14 based events and EventDispatcherInterface instead.
  */
 class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface
 {

@@ -1,6 +1,6 @@
 <?php
 declare(strict_types = 1);
-namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\SignalSlot;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,8 +22,8 @@ use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException;
 use TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException;
 use TYPO3\CMS\Extbase\Tests\Fixture\SlotFixture;
-use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\OnlyClassNameSpecifiedFixture;
-use TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures\SlotMethodDoesNotExistFixture;
+use TYPO3\CMS\Extbase\Tests\UnitDeprecated\SignalSlot\Fixtures\OnlyClassNameSpecifiedFixture;
+use TYPO3\CMS\Extbase\Tests\UnitDeprecated\SignalSlot\Fixtures\SlotMethodDoesNotExistFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**

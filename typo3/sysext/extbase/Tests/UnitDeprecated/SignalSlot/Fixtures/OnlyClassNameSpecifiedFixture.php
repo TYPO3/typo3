@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures;
+namespace TYPO3\CMS\Extbase\Tests\UnitDeprecated\SignalSlot\Fixtures;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\SignalSlot\Fixtures;
 /**
  * Fixture
  */
-class SlotMethodDoesNotExistFixture
+class OnlyClassNameSpecifiedFixture
 {
     /**
      * @var array

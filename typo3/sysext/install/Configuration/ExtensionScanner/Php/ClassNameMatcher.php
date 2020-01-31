@@ -1367,4 +1367,9 @@ return [
             'Deprecation-88740-DeprecateFeloginPibasePlugin.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\SignalSlot\Dispatcher' => [
+        'restFiles' => [
+            'Deprecation-90625-ExtbaseSignalSlotDispatcher.rst',
+        ],
+    ],
 ];
