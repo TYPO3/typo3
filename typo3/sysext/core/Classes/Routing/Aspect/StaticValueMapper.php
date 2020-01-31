@@ -36,6 +36,18 @@ use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
  *           2k17: '2017'
  *           2k18: '2018'
  *           next: '2019'
+ *         # (optional)
+ *         localeMap:
+ *           - locale: 'en_US.*|en_GB.*'
+ *             map:
+ *               twenty-seventeen: '2017'
+ *               twenty-eighteen: '2018'
+ *               next: '2019'
+ *           - locale: 'fr_FR'
+ *             map:
+ *               vingt-dix-sept: '2017'
+ *               vingt-dix-huit: '2018'
+ *               prochain: '2019'
  */
 class StaticValueMapper implements StaticMappableAspectInterface, \Countable
 {
