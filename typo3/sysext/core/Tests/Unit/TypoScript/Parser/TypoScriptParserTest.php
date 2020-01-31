@@ -385,6 +385,33 @@ class TypoScriptParserTest extends UnitTestCase
         $this->assertEquals($expected, $this->typoScriptParser->errors[0][0]);
     }
 
+    public function invalidConditionsDataProvider(): array
+    {
+        return [
+            '[1 == 1]a' => ['[1 == 1]a', false],
+            '[1 == 1] # a comment' => ['[1 == 1] # a comment', false],
+            '[1 == 1]' => ['[1 == 1]', true],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidConditionsDataProvider
+     * @param string $condition
+     * @param bool $isValid
+     */
+    public function invalidConditionsAreReported(string $condition, bool $isValid): void
+    {
+        $timeTrackerProphecy = $this->prophesize(TimeTracker::class);
+        GeneralUtility::setSingletonInstance(TimeTracker::class, $timeTrackerProphecy->reveal());
+
+        $this->typoScriptParser->parse($condition);
+        if (!$isValid) {
+            $expected = 'Line 0: Invalid condition found, any condition must end with "]": ' . $condition;
+            self::assertEquals($expected, $this->typoScriptParser->errors[0][0]);
+        }
+    }
+
     /**
      * @test
      */
