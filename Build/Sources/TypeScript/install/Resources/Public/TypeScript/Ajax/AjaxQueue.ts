@@ -26,33 +26,35 @@ interface Payload {
  * Module: TYPO3/CMS/Install/Module/AjaxQueue
  */
 class AjaxQueue {
+  private requests: Array<AjaxRequest> = [];
   private requestCount: number = 0;
-  private threshold: number = 10;
+  private threshold: number = 5;
   private queue: Array<Payload> = [];
 
-  public async add(payload: Payload): Promise<any> {
-    const oldFinally = payload.finally;
-    if (this.queue.length > 0 && this.requestCount <= this.threshold) {
+  public add(payload: Payload): void {
+    this.queue.push(payload);
+    this.handleNext();
+  }
+
+  public flush(): void {
+    this.queue = [];
+    this.requests.map((request: AjaxRequest): void => {
+      request.abort();
+    });
+    this.requests = [];
+  }
+
+  private handleNext(): void {
+    if (this.queue.length > 0 && this.requestCount < this.threshold) {
+      this.incrementRequestCount();
       this.sendRequest(this.queue.shift()).finally((): void => {
         this.decrementRequestCount();
+        this.handleNext();
       });
-    } else {
-      this.decrementRequestCount();
-    }
-
-    if (oldFinally) {
-      oldFinally(...arguments);
-    }
-
-    if (this.requestCount >= this.threshold) {
-      this.queue.push(payload);
-    } else {
-      this.incrementRequestCount();
-      this.sendRequest(payload);
     }
   }
 
-  private async sendRequest(payload: Payload): Promise<any> {
+  private async sendRequest(payload: Payload): Promise<void> {
     const request = new AjaxRequest(payload.url);
     let response: any;
     if (typeof payload.method !== 'undefined' && payload.method.toUpperCase() === 'POST') {
@@ -61,7 +63,11 @@ class AjaxQueue {
       response = request.withQueryArguments(payload.data || {}).get();
     }
 
-    return response.then(payload.onfulfilled, payload.onrejected);
+    this.requests.push(request);
+    return response.then(payload.onfulfilled, payload.onrejected).then((): void => {
+      const idx = this.requests.indexOf(request);
+      delete this.requests[idx];
+    });
   }
 
   private incrementRequestCount(): void {

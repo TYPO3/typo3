@@ -13,6 +13,7 @@
 
 import 'bootstrap';
 import * as $ from 'jquery';
+import AjaxRequest = require('TYPO3/CMS/Core/Ajax/AjaxRequest');
 import {AjaxResponse} from 'TYPO3/CMS/Core/Ajax/AjaxResponse';
 import {ResponseError} from 'TYPO3/CMS/Core/Ajax/ResponseError';
 import {AbstractInteractableModule} from '../AbstractInteractableModule';
@@ -67,6 +68,8 @@ class ExtensionScanner extends AbstractInteractableModule {
         this.scanSingleExtension(extension);
         $me.data('scanned', true);
       }
+    }).on('hide.bs.modal', (): void => {
+      AjaxQueue.flush();
     }).on('click', this.selectorScanSingleTrigger, (e: JQueryEventObject): void => {
       // Scan a single extension by clicking "Rescan"
       e.preventDefault();
@@ -83,9 +86,8 @@ class ExtensionScanner extends AbstractInteractableModule {
 
   private getData(): void {
     const modalContent = this.getModalBody();
-    AjaxQueue.add({
-      url: Router.getUrl('extensionScannerGetData'),
-      onfulfilled: async (response: AjaxResponse): Promise<any> => {
+    (new AjaxRequest(Router.getUrl('extensionScannerGetData'))).get().then(
+      async (response: AjaxResponse): Promise<any> => {
         const data = await response.resolve();
         if (data.success === true) {
           modalContent.empty().append(data.html);
@@ -94,10 +96,10 @@ class ExtensionScanner extends AbstractInteractableModule {
           Notification.error('Something went wrong');
         }
       },
-      onrejected: (error: ResponseError): void => {
+      (error: ResponseError): void => {
         Router.handleAjaxError(error, modalContent);
-      },
-    });
+      }
+    );
   }
 
   private getExtensionSelector(extension: string): string {
@@ -157,26 +159,24 @@ class ExtensionScanner extends AbstractInteractableModule {
     if (numberOfScannedExtensions === numberOfExtensions) {
       this.findInModal(this.selectorExtensionScanButton).removeClass('disabled').prop('disabled', false);
       Notification.success('Scan finished', 'All extensions have been scanned');
-      AjaxQueue.add({
-        url: Router.getUrl(),
-        method: 'POST',
-        data: {
-          install: {
-            action: 'extensionScannerMarkFullyScannedRestFiles',
-            token: this.getModuleContent().data('extension-scanner-mark-fully-scanned-rest-files-token'),
-            hashes: this.uniqueArray(this.listOfAffectedRestFileHashes),
-          },
+
+      (new AjaxRequest(Router.getUrl())).post({
+        install: {
+          action: 'extensionScannerMarkFullyScannedRestFiles',
+          token: this.getModuleContent().data('extension-scanner-mark-fully-scanned-rest-files-token'),
+          hashes: this.uniqueArray(this.listOfAffectedRestFileHashes),
         },
-        onfulfilled: async (response: AjaxResponse): Promise<any> => {
+      }).then(
+        async (response: AjaxResponse): Promise<any> => {
           const data = await response.resolve();
           if (data.success === true) {
             Notification.success('Marked not affected files', 'Marked ' + data.markedAsNotAffected + ' ReST files as not affected.');
           }
         },
-        onrejected: (error: ResponseError): void => {
+        (error: ResponseError): void => {
           Router.handleAjaxError(error, modalContent);
-        },
-      });
+        }
+      );
     }
   }
 
@@ -206,139 +206,136 @@ class ExtensionScanner extends AbstractInteractableModule {
     $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-files').empty().text('0');
     $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').empty().text('0');
     this.setProgressForAll();
-    AjaxQueue.add({
-      url: Router.getUrl(),
-      method: 'POST',
-      data: {
-        install: {
-          action: 'extensionScannerFiles',
-          token: executeToken,
-          extension: extension,
-        },
+    (new AjaxRequest(Router.getUrl())).post({
+      install: {
+        action: 'extensionScannerFiles',
+        token: executeToken,
+        extension: extension,
       },
-      onfulfilled: async (response: AjaxResponse): Promise<any> => {
+    }).then(
+      async (response: AjaxResponse): Promise<any> => {
         const data = await response.resolve();
         if (data.success === true && Array.isArray(data.files)) {
           const numberOfFiles = data.files.length;
-          if (numberOfFiles > 0) {
-            this.setStatusMessageForScan(extension, 0, numberOfFiles);
-            $extensionContainer.find('.t3js-extensionScanner-extension-body').text('');
-            let doneFiles = 0;
-            data.files.forEach((file: string): void => {
-              AjaxQueue.add({
-                method: 'POST',
-                data: {
-                  install: {
-                    action: 'extensionScannerScanFile',
-                    token: this.getModuleContent().data('extension-scanner-scan-file-token'),
-                    extension: extension,
-                    file: file,
-                  },
+          if (numberOfFiles <= 0) {
+            Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
+            return;
+          }
+
+          this.setStatusMessageForScan(extension, 0, numberOfFiles);
+          $extensionContainer.find('.t3js-extensionScanner-extension-body').text('');
+          let doneFiles = 0;
+          data.files.forEach((file: string): void => {
+            AjaxQueue.add({
+              method: 'POST',
+              data: {
+                install: {
+                  action: 'extensionScannerScanFile',
+                  token: this.getModuleContent().data('extension-scanner-scan-file-token'),
+                  extension: extension,
+                  file: file,
                 },
-                url: Router.getUrl(),
-                onfulfilled: async (response: AjaxResponse): Promise<any> => {
-                  const fileData: FileData = await response.resolve();
-                  doneFiles++;
-                  this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
-                  this.setProgressForScan(extension, doneFiles, numberOfFiles);
-                  if (fileData.success && $.isArray(fileData.matches)) {
-                    fileData.matches.forEach((match: Match): void => {
-                      hitFound = true;
-                      const aMatch: any = modalContent.find(hitTemplate).clone();
-                      aMatch.find('.t3js-extensionScanner-hit-file-panel-head').attr('href', '#collapse' + match.uniqueId);
-                      aMatch.find('.t3js-extensionScanner-hit-file-panel-body').attr('id', 'collapse' + match.uniqueId);
-                      aMatch.find('.t3js-extensionScanner-hit-filename').text(file);
-                      aMatch.find('.t3js-extensionScanner-hit-message').text(match.message);
-                      if (match.indicator === 'strong') {
-                        aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
-                          .append('<span class="badge" title="Reliable match, false positive unlikely">strong</span>');
-                      } else {
-                        aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
-                          .append('<span class="badge" title="Probable match, but can be a false positive">weak</span>');
-                      }
-                      if (match.silenced === true) {
-                        aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
-                          .append('<span class="badge" title="Match has been annotated by extension author' +
-                            ' as false positive match">silenced</span>');
-                      }
-                      aMatch.find('.t3js-extensionScanner-hit-file-lineContent').empty().text(match.lineContent);
-                      aMatch.find('.t3js-extensionScanner-hit-file-line').empty().text(match.line + ': ');
-                      if ($.isArray(match.restFiles)) {
-                        match.restFiles.forEach((restFile: RestFile): void => {
-                          const aRest = modalContent.find(restTemplate).clone();
-                          aRest.find('.t3js-extensionScanner-hit-rest-panel-head').attr('href', '#collapse' + restFile.uniqueId);
-                          aRest.find('.t3js-extensionScanner-hit-rest-panel-head .badge').empty().text(restFile.version);
-                          aRest.find('.t3js-extensionScanner-hit-rest-panel-body').attr('id', 'collapse' + restFile.uniqueId);
-                          aRest.find('.t3js-extensionScanner-hit-rest-headline').text(restFile.headline);
-                          aRest.find('.t3js-extensionScanner-hit-rest-body').text(restFile.content);
-                          aRest.addClass('panel-' + restFile.class);
-                          aMatch.find('.t3js-extensionScanner-hit-file-rest-container').append(aRest);
-                          this.listOfAffectedRestFileHashes.push(restFile.file_hash);
-                        });
-                      }
-                      const panelClass =
-                        aMatch.find('.panel-breaking', '.t3js-extensionScanner-hit-file-rest-container').length > 0
-                          ? 'panel-danger'
-                          : 'panel-warning';
-                      aMatch.addClass(panelClass);
-                      $extensionContainer.find('.t3js-extensionScanner-extension-body').removeClass('hide').append(aMatch);
-                      if (panelClass === 'panel-danger') {
-                        $extensionContainer.removeClass('panel-warning').addClass(panelClass);
-                      }
-                      if (panelClass === 'panel-warning' && !$extensionContainer.hasClass('panel-danger')) {
-                        $extensionContainer.addClass(panelClass);
-                      }
-                    });
-                  }
-                  if (fileData.success) {
-                    const currentLinesOfCode = parseInt($extensionContainer.find('.t3js-extensionScanner-extension-body-loc').text(), 10);
-                    $extensionContainer.find('.t3js-extensionScanner-extension-body-loc').empty()
-                      .text(currentLinesOfCode + fileData.effectiveCodeLines);
-                    if (fileData.isFileIgnored) {
-                      const currentIgnoredFiles = parseInt(
-                        $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-files').text(),
-                        10,
-                      );
-                      $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-files').empty().text(currentIgnoredFiles + 1);
+              },
+              url: Router.getUrl(),
+              onfulfilled: async (response: AjaxResponse): Promise<void> => {
+                const fileData: FileData = await response.resolve();
+                doneFiles++;
+                this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
+                this.setProgressForScan(extension, doneFiles, numberOfFiles);
+                if (fileData.success && $.isArray(fileData.matches)) {
+                  fileData.matches.forEach((match: Match): void => {
+                    hitFound = true;
+                    const aMatch: any = modalContent.find(hitTemplate).clone();
+                    aMatch.find('.t3js-extensionScanner-hit-file-panel-head').attr('href', '#collapse' + match.uniqueId);
+                    aMatch.find('.t3js-extensionScanner-hit-file-panel-body').attr('id', 'collapse' + match.uniqueId);
+                    aMatch.find('.t3js-extensionScanner-hit-filename').text(file);
+                    aMatch.find('.t3js-extensionScanner-hit-message').text(match.message);
+                    if (match.indicator === 'strong') {
+                      aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
+                        .append('<span class="badge" title="Reliable match, false positive unlikely">strong</span>');
+                    } else {
+                      aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
+                        .append('<span class="badge" title="Probable match, but can be a false positive">weak</span>');
                     }
-                    const currentIgnoredLines = parseInt(
-                      $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').text(),
+                    if (match.silenced === true) {
+                      aMatch.find('.t3js-extensionScanner-hit-file-panel-head .badges')
+                        .append('<span class="badge" title="Match has been annotated by extension author' +
+                          ' as false positive match">silenced</span>');
+                    }
+                    aMatch.find('.t3js-extensionScanner-hit-file-lineContent').empty().text(match.lineContent);
+                    aMatch.find('.t3js-extensionScanner-hit-file-line').empty().text(match.line + ': ');
+                    if ($.isArray(match.restFiles)) {
+                      match.restFiles.forEach((restFile: RestFile): void => {
+                        const aRest = modalContent.find(restTemplate).clone();
+                        aRest.find('.t3js-extensionScanner-hit-rest-panel-head').attr('href', '#collapse' + restFile.uniqueId);
+                        aRest.find('.t3js-extensionScanner-hit-rest-panel-head .badge').empty().text(restFile.version);
+                        aRest.find('.t3js-extensionScanner-hit-rest-panel-body').attr('id', 'collapse' + restFile.uniqueId);
+                        aRest.find('.t3js-extensionScanner-hit-rest-headline').text(restFile.headline);
+                        aRest.find('.t3js-extensionScanner-hit-rest-body').text(restFile.content);
+                        aRest.addClass('panel-' + restFile.class);
+                        aMatch.find('.t3js-extensionScanner-hit-file-rest-container').append(aRest);
+                        this.listOfAffectedRestFileHashes.push(restFile.file_hash);
+                      });
+                    }
+                    const panelClass =
+                      aMatch.find('.panel-breaking', '.t3js-extensionScanner-hit-file-rest-container').length > 0
+                        ? 'panel-danger'
+                        : 'panel-warning';
+                    aMatch.addClass(panelClass);
+                    $extensionContainer.find('.t3js-extensionScanner-extension-body').removeClass('hide').append(aMatch);
+                    if (panelClass === 'panel-danger') {
+                      $extensionContainer.removeClass('panel-warning').addClass(panelClass);
+                    }
+                    if (panelClass === 'panel-warning' && !$extensionContainer.hasClass('panel-danger')) {
+                      $extensionContainer.addClass(panelClass);
+                    }
+                  });
+                }
+                if (fileData.success) {
+                  const currentLinesOfCode = parseInt($extensionContainer.find('.t3js-extensionScanner-extension-body-loc').text(), 10);
+                  $extensionContainer.find('.t3js-extensionScanner-extension-body-loc').empty()
+                    .text(currentLinesOfCode + fileData.effectiveCodeLines);
+                  if (fileData.isFileIgnored) {
+                    const currentIgnoredFiles = parseInt(
+                      $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-files').text(),
                       10,
                     );
-                    $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').empty()
-                      .text(currentIgnoredLines + fileData.ignoredLines);
+                    $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-files').empty().text(currentIgnoredFiles + 1);
                   }
-                  if (doneFiles === numberOfFiles) {
-                    if (!hitFound) {
-                      $extensionContainer.addClass('panel-success');
-                    }
-                    $extensionContainer.addClass('t3js-extensionscan-finished');
-                    this.setProgressForAll();
-                    $extensionContainer.find('.t3js-extensionScanner-scan-single').text('Rescan').attr('disabled', null);
+                  const currentIgnoredLines = parseInt(
+                    $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').text(),
+                    10,
+                  );
+                  $extensionContainer.find('.t3js-extensionScanner-extension-body-ignored-lines').empty()
+                    .text(currentIgnoredLines + fileData.ignoredLines);
+                }
+                if (doneFiles === numberOfFiles) {
+                  if (!hitFound) {
+                    $extensionContainer.addClass('panel-success');
                   }
-                },
-                onrejected: (reason: string): void => {
-                  doneFiles = doneFiles + 1;
-                  this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
-                  this.setProgressForScan(extension, doneFiles, numberOfFiles);
+                  $extensionContainer.addClass('t3js-extensionscan-finished');
                   this.setProgressForAll();
-                  Notification.error('Oops, an error occurred', 'Please look at the console output for details');
-                  console.error(reason);
-                },
-              });
+                  $extensionContainer.find('.t3js-extensionScanner-scan-single').text('Rescan').attr('disabled', null);
+                }
+              },
+              onrejected: (reason: string): void => {
+                doneFiles = doneFiles + 1;
+                this.setStatusMessageForScan(extension, doneFiles, numberOfFiles);
+                this.setProgressForScan(extension, doneFiles, numberOfFiles);
+                this.setProgressForAll();
+                console.error(reason);
+              },
             });
-          } else {
-            Notification.warning('No files found', 'The extension EXT:' + extension + ' contains no files we can scan');
-          }
+          });
         } else {
           Notification.error('Oops, an error occurred', 'Please look at the console output for details');
           console.error(data);
         }
       },
-      onrejected: (error: ResponseError): void => {
+      (error: ResponseError): void => {
         Router.handleAjaxError(error, modalContent);
-      },
-    });
+      }
+    );
   }
 }
 
