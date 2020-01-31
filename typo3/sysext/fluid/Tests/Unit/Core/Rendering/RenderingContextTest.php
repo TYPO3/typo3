@@ -109,14 +109,14 @@ class RenderingContextTest extends UnitTestCase
             ->addMethods(['dummy'])
             ->disableOriginalConstructor()
             ->getMock();
-        $request = $this->getMockBuilder(Request::class)->setMethods(['setControllerActionName'])->getMock();
-        $request->expects(self::at(0))->method('setControllerActionName')->with('index');
-        $request->expects(self::at(1))->method('setControllerActionName')->with(lcfirst($expected));
+        $request = $this->getMockBuilder(Request::class)->getMock();
+        $request->expects(self::exactly(2))->method('setControllerActionName')->with(lcfirst($expected));
+        $request->expects(self::exactly(2))->method('getControllerActionName')->willReturn(lcfirst($expected));
         $controllerContext = $this->getMockBuilder(ControllerContext::class)->setMethods(['getRequest'])->getMock();
         $controllerContext->expects(self::atLeastOnce())->method('getRequest')->willReturn($request);
         $subject->setControllerContext($controllerContext);
         $subject->setControllerAction($input);
-        self::assertEquals($expected, $subject->getControllerAction());
+        self::assertSame(lcfirst($expected), $subject->getControllerAction());
     }
 
     /**
