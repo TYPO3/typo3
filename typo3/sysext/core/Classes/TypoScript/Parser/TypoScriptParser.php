@@ -355,6 +355,10 @@ class TypoScriptParser
                         $this->multiLineValue[] = $this->raw[$this->rawP - 1];
                     }
                 } elseif ($this->inBrace === 0 && $line[0] === '[') {
+                    if (substr(trim($line), -1, 1) !== ']') {
+                        $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Invalid condition found, any condition must end with "]": ' . $line);
+                        return $line;
+                    }
                     // Beginning of condition (only on level zero compared to brace-levels
                     if ($this->syntaxHighLight) {
                         $this->regHighLight('condition', $lineP);
