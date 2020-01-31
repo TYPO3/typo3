@@ -49,7 +49,7 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->tag->setContent($childContent);
         $value = $this->arguments['value'] ?? $childContent;
         $this->tag->addAttribute('value', $value);
-        $parentRequestedFormTokenFieldName = $this->viewHelperVariableContainer->get(
+        $parentRequestedFormTokenFieldName = $this->renderingContext->getViewHelperVariableContainer()->get(
             SelectViewHelper::class,
             'registerFieldNameForFormTokenGeneration'
         );
@@ -68,7 +68,7 @@ class OptionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
      */
     protected function isValueSelected($value)
     {
-        $selectedValue = $this->viewHelperVariableContainer->get(SelectViewHelper::class, 'selectedValue');
+        $selectedValue = $this->renderingContext->getViewHelperVariableContainer()->get(SelectViewHelper::class, 'selectedValue');
         if (is_array($selectedValue)) {
             return in_array($value, $selectedValue);
         }
