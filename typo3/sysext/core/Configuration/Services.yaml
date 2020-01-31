@@ -60,12 +60,6 @@ services:
     public: true
 
   # EventListeners
-  TYPO3\CMS\Core\Compatibility\Slot\PostInitializeMailer:
-    tags:
-      - { name: event.listener,
-          identifier: 'legacy-slot',
-          event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent }
-
   TYPO3\CMS\Core\Compatibility\SlotReplacement:
     tags:
       - name: event.listener
@@ -256,6 +250,10 @@ services:
         identifier: 'legacy-slot'
         method: 'packagesMayHaveChanged'
         event: TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent
+      - name: event.listener
+        identifier: 'legacy-slot'
+        method: 'postInitializeMailer'
+        event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent
 
   # FAL security checks for backend users
   TYPO3\CMS\Core\Resource\Security\StoragePermissionsAspect:

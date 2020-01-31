@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\DataHandling\Event\AppendLinkHandlerElementsEvent;
 use TYPO3\CMS\Core\DataHandling\Event\IsTableExcludedFromReferenceIndexEvent;
 use TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Package\Event\PackagesMayHaveChangedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileAddedToIndexEvent;
@@ -686,5 +688,12 @@ class SlotReplacement
     public function packagesMayHaveChanged(PackagesMayHaveChangedEvent $event): void
     {
         $this->signalSlotDispatcher->dispatch('PackageManagement', 'packagesMayHaveChanged');
+    }
+
+    public function postInitializeMailer(AfterMailerInitializationEvent $event): void
+    {
+        if ($event->getMailer() instanceof Mailer) {
+            $this->signalSlotDispatcher->dispatch(Mailer::class, 'postInitializeMailer', [$event->getMailer()]);
+        }
     }
 }
