@@ -656,7 +656,7 @@ class PageLayoutView implements LoggerAwareInterface
             $backendLayout = $this->getBackendLayoutView()->getSelectedBackendLayout($this->id);
             $columns = $backendLayout['__colPosList'];
             // Select content records per column
-            $contentRecordsPerColumn = $this->getContentRecordsPerColumn($id, $columns, $showLanguage);
+            $contentRecordsPerColumn = $this->getContentRecordsPerColumn('tt_content', $id, $columns, $showLanguage);
             $cList = array_keys($contentRecordsPerColumn);
             // For each column, render the content into a variable:
             foreach ($cList as $columnId) {
@@ -757,6 +757,7 @@ class PageLayoutView implements LoggerAwareInterface
                             $disableMoveAndNewButtons = $this->defLangBinding && $lP > 0 && $this->checkIfTranslationsExistInLanguage($contentRecordsPerColumn, $lP);
                             $singleElementHTML .= $this->tt_content_drawHeader(
                                 $row,
+                                0,
                                 $disableMoveAndNewButtons,
                                 true,
                                 $this->getBackendUser()->doesUserHaveAccess($this->pageinfo, Permission::CONTENT_EDIT)
@@ -1092,7 +1093,7 @@ class PageLayoutView implements LoggerAwareInterface
 
                     $localizationButtons = [];
                     $localizationButtons[] = $this->newLanguageButton(
-                        $this->getNonTranslatedTTcontentUids($defaultLanguageElements, $lP),
+                        $this->getNonTranslatedTTcontentUids($defaultLanguageElements, $id, $lP),
                         $lP
                     );
 
@@ -1389,17 +1390,18 @@ class PageLayoutView implements LoggerAwareInterface
      * Gets content records per column.
      * This is required for correct workspace overlays.
      *
+     * @param string $table Name of table storing content records, by default tt_content
      * @param int $id Page Id to be used (not used at all, but part of the API, see $this->pidSelect)
      * @param array $columns colPos values to be considered to be shown
      * @param string $additionalWhereClause Additional where clause for database select
      * @return array Associative array for each column (colPos)
      */
-    protected function getContentRecordsPerColumn($id, array $columns, $additionalWhereClause = '')
+    protected function getContentRecordsPerColumn($table, $id, array $columns, $additionalWhereClause = '')
     {
         $contentRecordsPerColumn = array_fill_keys($columns, []);
         $columns = array_flip($columns);
         $queryBuilder = $this->getQueryBuilder(
-            'tt_content',
+            $table,
             $id,
             [
                 $additionalWhereClause
@@ -1695,12 +1697,13 @@ class PageLayoutView implements LoggerAwareInterface
      * Draw the header for a single tt_content element
      *
      * @param array $row Record array
+     * @param int $space Amount of pixel space above the header. UNUSED
      * @param bool $disableMoveAndNewButtons If set the buttons for creating new elements and moving up and down are not shown.
      * @param bool $langMode If set, we are in language mode and flags will be shown for languages
      * @param bool $dragDropEnabled If set the move button must be hidden
      * @return string HTML table with the record header.
      */
-    public function tt_content_drawHeader($row, $disableMoveAndNewButtons = false, $langMode = false, $dragDropEnabled = false)
+    public function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = false, $langMode = false, $dragDropEnabled = false)
     {
         $backendUser = $this->getBackendUser();
         $out = '';
@@ -2063,10 +2066,11 @@ class PageLayoutView implements LoggerAwareInterface
      * for translations and original but this may be a conceptual error (?)
      *
      * @param array $defaultLanguageUids Numeric array with uids of tt_content elements in the default language
+     * @param int $id The page UID from which to fetch untranslated records (unused, remains in place for compatibility)
      * @param int $lP Sys language UID
      * @return array Modified $defLanguageCount
      */
-    public function getNonTranslatedTTcontentUids($defaultLanguageUids, $lP)
+    public function getNonTranslatedTTcontentUids($defaultLanguageUids, $id, $lP)
     {
         if ($lP && !empty($defaultLanguageUids)) {
             // Select all translations here:
