@@ -70,10 +70,11 @@ class RenderViewHelper extends AbstractViewHelper
         }
 
         $content = '';
+        $viewHelperVariableContainer = $this->renderingContext->getViewHelperVariableContainer();
         if ($partial !== null) {
-            $content = $this->viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments, $optional);
+            $content = $viewHelperVariableContainer->getView()->renderPartial($partial, $section, $arguments, $optional);
         } elseif ($section !== null) {
-            $content = $this->viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
+            $content = $viewHelperVariableContainer->getView()->renderSection($section, $arguments, $optional);
         }
         // Replace empty content with default value. If default is
         // not set, NULL is returned and cast to a new, empty string
