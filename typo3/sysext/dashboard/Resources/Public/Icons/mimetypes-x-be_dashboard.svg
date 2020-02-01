@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <path fill="#A4276A" d="M0 0h64v64H0z"/>
+  <path opacity=".5" fill="#FFF" d="M40 16h10v-1c0-.5-.5-1-1-1h-9v2z"/>
+  <path opacity=".75" fill="#FFF" d="M28 14h10v2H28z"/>
+  <path fill="#FFF" d="M 44.111 13.557 L 24.667 13.557 L 24.667 8 L 9.389 8 C 8.694 8 8 8.694 8 9.389 L 8 56.611 C 8 57.307 8.694 58 9.389 58 L 56.611 58 C 57.307 58 58 57.307 58 56.611 L 58 13.557 L 44.111 13.557 Z" bx:origin="0.48 0.48"/>
+  <path fill="#A4276A" d="M38 22h8v14h-8z"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" fill="#A4276A" d="M18 22h18v14H18z"/>
+  <path opacity=".5" fill="#FFF" d="M38 24h8v12h-8z"/>
+  <path opacity=".5" fill-rule="evenodd" clip-rule="evenodd" fill="#FFF" d="M36 36H18v-4l6-2 4 2 4-2 4-6z"/>
+  <path fill="#A4276A" d="M28 40h18v2H28zM28 44h10v2H28zM18 40h8v6h-8z"/>
+  <path opacity=".5" fill="#FFF" d="M18 42h8v4h-8z"/>
+</svg>

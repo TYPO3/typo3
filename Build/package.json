@@ -73,6 +73,7 @@
     "karma-safari-launcher": "^1.0.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",
+    "muuri": "^0.8.0",
     "node-sass": "^4.13.0",
     "npm-font-source-sans-pro": "^1.0.2",
     "nprogress": "^0.2.0",
@@ -97,6 +98,7 @@
   "dependencies": {
     "anymatch": "^1.3.0",
     "broadcastchannel-polyfill": "^1.0.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "web-animations-js": "^2.3.2"
   }
 }

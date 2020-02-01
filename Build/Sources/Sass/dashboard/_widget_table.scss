@@ -1,0 +1,71 @@
+// Table
+.widget-table {
+    width: 100%;
+    color: $widget-table-color;
+
+    thead tr {
+        background-color: $widget-table-head-background;
+    }
+
+    tr {
+        &:nth-child(odd) {
+            background-color: $widget-table-odd-background;
+        }
+
+        &:nth-child(even) {
+            background-color: $widget-table-even-background;
+        }
+    }
+
+    tbody {
+        th,
+        td {
+            border-top: 1px solid $widget-table-border-color;
+        }
+    }
+
+    tbody:first-child {
+        tr:first-child {
+            th,
+            td {
+                border-top: none;
+            }
+        }
+    }
+
+    th,
+    td {
+        padding: $widget-table-padding;
+
+        > *:first-child {
+            margin-top: 0;
+        }
+
+        > *:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    th {
+        font-weight: bold;
+    }
+}
+
+.widget-content-main {
+    .widget-table-wrapper {
+        margin-top: -($widget-padding - $widget-table-padding);
+        margin-left: -($widget-padding);
+        margin-right: -($widget-padding);
+
+        th,
+        td {
+            &:first-child {
+                padding-left: $widget-padding;
+            }
+
+            &:last-child {
+                padding-right: $widget-padding;
+            }
+        }
+    }
+}

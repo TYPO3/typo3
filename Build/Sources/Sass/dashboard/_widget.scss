@@ -1,0 +1,123 @@
+// Main
+.widget {
+    height: 100%;
+    border-radius: $widget-border-radius;
+    overflow: hidden;
+    background-color: $widget-background;
+    box-shadow: $widget-shadow;
+    color: $widget-color;
+
+    &:hover {
+        .widget-actions {
+            opacity: 1;
+        }
+    }
+}
+
+// Content
+.widget-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.widget-content-title {
+    padding: ($widget-padding / 2) $widget-padding;
+    padding-right: $widget-action-size * 2 + $widget-padding;
+    border-bottom: 1px solid $gray-light;
+    font-family: $widget-title-font-family;
+    font-size: $widget-title-size;
+    font-weight: $widget-title-weight;
+    line-height: $widget-title-line-height;
+
+    span {
+        overflow: hidden;
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
+
+.widget-content-main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: $widget-padding;
+}
+
+.widget-content-footer {
+    padding: $widget-padding;
+    padding-top: 0;
+}
+
+// Actions
+.widget-actions {
+    position: absolute;
+    display: flex;
+    top: calc(((#{$widget-title-size} * #{$widget-title-line-height}) / 2) + (#{$widget-padding} / 2));
+    right: ($widget-padding / 2);
+    transform: translate(0, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.widget-action {
+    width: $widget-action-size;
+    height: $widget-action-size;
+    position: relative;
+    color: $gray;
+    text-align: center;
+
+    &:hover,
+    &:focus {
+        color: #ff8700;
+    }
+
+    .icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.widget-action-move {
+    cursor: grab;
+}
+
+// Misc
+.widget-waiting {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    line-height: 300px;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.widget-error {
+    padding: $widget-padding;
+    position: absolute;
+    top: 50%;
+    text-align: center;
+    transform: translateY(-50%);
+    color: $state-danger-text;
+}
+
+.widget-chart {
+    width: 100%;
+    height: 100%;
+}
+
+.widget-edit {
+    width: 45px;
+    text-align: center;
+}
+
+.widget-editIcon {
+    color: $text-color;
+
+    &:hover,
+    &:focus {
+        color: #ff8700;
+    }
+}

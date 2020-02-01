@@ -1,0 +1,56 @@
+.dashboard-modal-tabpanel {
+    .nav {
+        margin: -15px -15px 0;
+        padding: 15px 15px 0;
+    }
+}
+
+.dashboard-modal-items {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: -($dashboard-column-gutter / 2);
+    margin-right: -($dashboard-column-gutter / 2);
+}
+
+.dashboard-modal-item {
+    position: relative;
+    width: 100%;
+    padding: $dashboard-column-gutter / 2;
+
+    @media screen and (min-width: 768px) {
+        width: 50%;
+    }
+}
+
+.dashboard-modal-item-block {
+    display: flex;
+    font-weight: inherit;
+    align-items: center;
+    height: 100%;
+    padding: $dashboard-modal-block-padding;
+    border: $dashboard-modal-block-border;
+    background-color: $dashboard-modal-block-background;
+    box-shadow: $dashboard-modal-block-shadow;
+    cursor: pointer;
+}
+
+.dashboard-modal-item-checkBox {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    cursor: pointer;
+
+    &:checked ~ .dashboard-modal-item-block {
+        border: $dashboard-modal-block-checked-border;
+    }
+}
+
+.dashboard-modal-item-icon {
+    margin-right: 20px;
+}
+
+.dashboard-modal-item-title {
+    display: block;
+    font-weight: bold;
+}

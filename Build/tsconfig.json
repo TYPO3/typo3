@@ -38,6 +38,10 @@
                 "../typo3/sysext/core/Resources/Public/JavaScript/*",
                 "core/Resources/Public/TypeScript/*"
             ],
+            "TYPO3/CMS/Dashboard/*": [
+                "../typo3/sysext/dashboard/Resources/Public/JavaScript/*",
+                "dashboard/Resources/Public/TypeScript/*"
+            ],
             "TYPO3/CMS/Extensionmanager/*": [
                 "../typo3/sysext/extensionmanager/Resources/Public/JavaScript/*",
                 "extensionmanager/Resources/Public/TypeScript/*"

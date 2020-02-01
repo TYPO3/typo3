@@ -1,0 +1,70 @@
+// Header
+.dashboard-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin: (- $module-body-padding-vertical) (- $module-body-padding-horizontal) $module-body-padding-vertical;
+    padding: $module-body-padding-vertical $module-body-padding-horizontal 0;
+    background: $dashboard-header-background;
+    border-bottom: 1px solid darken($dashboard-header-background, 5%);
+}
+
+.dashboard-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.dashboard-tab {
+    border-radius: $dashboard-header-tab-border-radius $dashboard-header-tab-border-radius 0 0;
+    display: inline-block;
+    padding: $dashboard-header-tab-padding;
+    margin-right: 2px;
+    background: $dashboard-header-tab-background;
+    color: $dashboard-header-tab-color;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        background: darken($dashboard-header-tab-background, 5%);
+        color: darken($dashboard-header-tab-color, 5%);
+    }
+}
+
+.dashboard-tab--active {
+    background: $dashboard-header-tab-active-background;
+    color: $dashboard-header-tab-active-color;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        background: darken($dashboard-header-tab-active-background, 5%);
+        color: darken($dashboard-header-tab-active-color, 5%);
+    }
+}
+
+.dashboard-button-tab-add {
+    margin: 5px;
+}
+
+.dashboard-configuration {
+    padding: 10px 0;
+}
+
+.dashboard-configuration-button {
+    margin-left: 10px;
+    color: $gray;
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+        color: #ff8700;
+        text-decoration: none;
+    }
+
+    &:active {
+        color: $text-color;
+        text-decoration: none;
+    }
+}

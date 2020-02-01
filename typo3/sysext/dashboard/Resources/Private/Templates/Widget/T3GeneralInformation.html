@@ -1,0 +1,24 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Widget/Widget" />
+<f:section name="main">
+
+    <div class="row">
+        <div class="col-sm-8">
+            <p>
+                {f:translate(key: 'LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:cms_description',
+                arguments: '{
+                0: currentVersion,
+                1: "&copy; {copyrightYear}",
+                2: "Kasper Sk&aring;rh&oslash;j"
+                }') -> f:format.raw()}
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <img src="{f:uri.resource(path: 'Images/typo3_orange.svg', extensionName: 'backend')}"
+                class="widget-t3information-logo"
+                alt="{f:translate(key:'LLL:EXT:about/Resources/Private/Language/Modules/about.xlf:typo3_logo')}"/>
+        </div>
+    </div>
+
+</f:section>
+</html>

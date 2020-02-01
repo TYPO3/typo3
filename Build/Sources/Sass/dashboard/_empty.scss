@@ -1,0 +1,29 @@
+// Empty
+.dashboard-empty {
+    position: relative;
+}
+
+.dashboard-empty-content {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 2px dashed rgba(0, 0, 0, 0.15);
+    padding: 2.5em;
+    text-align: center;
+
+    h3 {
+        font-size: 1.5em;
+        margin-bottom: 0.5em;
+    }
+
+    p {
+        font-size: 1.25em;
+        margin-bottom: 1em;
+    }
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}

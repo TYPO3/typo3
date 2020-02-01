@@ -1,0 +1,47 @@
+{
+	"name": "typo3/cms-dashboard",
+	"type": "typo3-cms-framework",
+	"description": "Dashboard for TYPO3.",
+	"homepage": "https://typo3.org",
+	"license": ["GPL-2.0-or-later"],
+	"authors": [{
+		"name": "TYPO3 Core Team",
+		"email": "typo3cms@typo3.org",
+		"role": "Developer"
+	}],
+	"config": {
+		"sort-packages": true
+	},
+	"require": {
+		"typo3/cms-core": "10.3.*@dev",
+		"typo3/cms-frontend": "10.3.*@dev",
+		"typo3/cms-backend": "10.3.*@dev",
+		"typo3/cms-fluid": "10.3.*@dev",
+		"typo3/cms-extbase": "10.3.*@dev"
+	},
+	"conflict": {
+		"typo3/cms": "*"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "10.3.x-dev"
+		},
+		"typo3/cms": {
+			"extension-key": "dashboard",
+			"Package": {
+				"serviceProvider": "TYPO3\\CMS\\Dashboard\\ServiceProvider",
+				"partOfFactoryDefault": true
+			}
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"TYPO3\\CMS\\Dashboard\\": "Classes/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"TYPO3\\CMS\\Dashboard\\Tests\\": "Tests/"
+		}
+	}
+}

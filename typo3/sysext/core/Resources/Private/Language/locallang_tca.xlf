@@ -21,6 +21,9 @@
 			<trans-unit id="userMods" resname="userMods">
 				<source>Modules</source>
 			</trans-unit>
+			<trans-unit id="availableWidgets" resname="userMods">
+				<source>Dashboard widgets</source>
+			</trans-unit>
 			<trans-unit id="allowed_languages" resname="allowed_languages">
 				<source>Limit to languages</source>
 			</trans-unit>

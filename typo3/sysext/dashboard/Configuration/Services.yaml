@@ -1,0 +1,38 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Dashboard\:
+    resource: '../Classes/*'
+
+  TYPO3\CMS\Dashboard\Controller\DashboardController:
+    public: true
+
+  TYPO3\CMS\Dashboard\Controller\WidgetAjaxController:
+    public: true
+
+  TYPO3\CMS\Dashboard\DasboardRegistry:
+    public: true
+
+  TYPO3\CMS\Dashboard\Widgets\DocumentationGettingStartedWidget:
+    arguments: ['docGettingStarted']
+    tags:
+      - name: dashboard.widget
+        identifier: docGettingStarted
+        widgetGroups: 'typo3'
+
+  TYPO3\CMS\Dashboard\Widgets\T3GeneralInformation:
+    arguments: ['t3information']
+    tags:
+      - name: dashboard.widget
+        identifier: t3information
+        widgetGroups: 'general'
+
+  t3news:
+    class: TYPO3\CMS\Dashboard\Widgets\T3NewsWidget
+    arguments: ['t3news']
+    tags:
+      - name: dashboard.widget
+        widgetGroups: 'typo3'

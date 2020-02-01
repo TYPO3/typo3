@@ -1,0 +1,26 @@
+.widget-cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $widget-cta-background;
+    color: $widget-cta-color;
+    border-radius: $widget-cta-border-radius;
+    padding: $widget-cta-padding;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        background: $widget-cta-hover-background;
+        color: $widget-cta-hover-color;
+    }
+}
+
+.widget-cta-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    color: $widget-cta-color;
+}

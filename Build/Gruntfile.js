@@ -54,6 +54,7 @@ module.exports = function (grunt) {
       typescript: '<%= paths.sources %>/TypeScript/',
       sysext: '<%= paths.root %>typo3/sysext/',
       form: '<%= paths.sysext %>form/Resources/',
+      dashboard: '<%= paths.sysext %>dashboard/Resources/',
       frontend: '<%= paths.sysext %>frontend/Resources/',
       adminpanel: '<%= paths.sysext %>adminpanel/Resources/',
       install: '<%= paths.sysext %>install/Resources/',
@@ -107,6 +108,16 @@ module.exports = function (grunt) {
       form: {
         files: {
           "<%= paths.form %>Public/Css/form.css": "<%= paths.sass %>form.scss"
+        }
+      },
+      dashboard: {
+        files: {
+          "<%= paths.dashboard %>Public/Css/dashboard.css": "<%= paths.sass %>dashboard.scss"
+        }
+      },
+      dashboard_modal: {
+        files: {
+          "<%= paths.dashboard %>Public/Css/Modal/style.css": "<%= paths.sass %>dashboard_modal.scss"
         }
       },
       adminpanel: {
@@ -167,6 +178,12 @@ module.exports = function (grunt) {
       },
       core: {
         src: '<%= paths.core %>Public/Css/*.css'
+      },
+      dashboard: {
+        src: '<%= paths.dashboard %>Public/Css/*.css'
+      },
+      dashboard_modal: {
+        src: '<%= paths.dashboard %>Public/Css/Modal/*.css'
       },
       form: {
         src: '<%= paths.form %>Public/Css/*.css'
@@ -430,6 +447,16 @@ module.exports = function (grunt) {
           'wordcount/css/': 'ckeditor-wordcount-plugin/wordcount/css/',
         }
       },
+      dashboard: {
+        options: {
+          destPrefix: "<%= paths.dashboard %>Public/JavaScript/Contrib"
+        },
+        files: {
+          'muuri.js': 'muuri/dist/muuri.min.js',
+          'web-animations.min.js': 'web-animations-js/web-animations.min.js',
+          'web-animations.min.js.map': 'web-animations-js/web-animations.min.js.map'
+        }
+      },
       all: {
         options: {
           destPrefix: "<%= paths.core %>Public/JavaScript/Contrib"
@@ -627,7 +654,7 @@ module.exports = function (grunt) {
    * - sass
    * - postcss
    */
-  grunt.registerTask('css', ['newer:formatsass', 'newer:sass', 'newer:postcss']);
+  grunt.registerTask('css', ['formatsass', 'newer:sass', 'newer:postcss']);
 
   /**
    * grunt update task

@@ -1,0 +1,58 @@
+// General
+$dashboard-background: #eaeaea;
+$dashboard-column-gutter: 20px;
+
+// Button
+$dashboard-button-border-radius: 3px;
+$dashboard-button-background: #313131;
+$dashboard-button-color: #fff;
+$dashboard-button-hover-background: #ff8700;
+$dashboard-button-hover-color: #fff;
+$dashboard-button-padding: 8px;
+
+// Widget
+$widget-color: $text-color;
+$widget-border-radius: 2px;
+$widget-background: #fff;
+$widget-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+$widget-padding: 20px;
+$widget-height: 200px;
+$widget-title-font-family: 'Source Sans Pro', sans-serif;
+$widget-title-size: 16px;
+$widget-title-line-height: 1.25;
+$widget-title-weight: bold;
+
+// Widget Action
+$widget-action-size: 28px;
+
+// Widget CTA
+$widget-cta-border-radius: 3px;
+$widget-cta-background: #313131;
+$widget-cta-color: #fff;
+$widget-cta-hover-background: #ff8700;
+$widget-cta-hover-color: #fff;
+$widget-cta-padding: 8px;
+
+// Widget Table
+$widget-table-color: $text-color;
+$widget-table-head-background: transparent;
+$widget-table-odd-background: transparent;
+$widget-table-even-background: #f2f2f2;
+$widget-table-border-color: #e0e0e0;
+$widget-table-padding: 10px;
+
+// Modal Block
+$dashboard-modal-block-background: #fff;
+$dashboard-modal-block-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+$dashboard-modal-block-padding: 20px;
+$dashboard-modal-block-border: 1px solid #cacaca;
+$dashboard-modal-block-checked-border: 1px solid #313131;
+
+// Tabs
+$dashboard-header-background: #dadada;
+$dashboard-header-tab-border-radius: 5px;
+$dashboard-header-tab-padding: 12px;
+$dashboard-header-tab-background: #bababa;
+$dashboard-header-tab-color: $text-color;
+$dashboard-header-tab-active-background: #ff8700;
+$dashboard-header-tab-active-color: #fff;

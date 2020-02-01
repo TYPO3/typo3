@@ -12,6 +12,7 @@ CREATE TABLE be_groups (
 	tables_select text,
 	tables_modify text,
 	groupMods text,
+	availableWidgets text,
 	file_mountpoints text,
 	file_permissions text,
 	lockToDomain varchar(50) DEFAULT '' NOT NULL,

@@ -1,0 +1,16 @@
+@import "variables/main";
+@import "variables/dashboard";
+
+// BASE
+@import "dashboard/module";
+@import "dashboard/header";
+@import "dashboard/empty";
+@import "dashboard/grid";
+@import "dashboard/button";
+
+// WIDGETS
+@import "dashboard/widget";
+@import "dashboard/widget_table";
+@import "dashboard/widget_cta";
+@import "dashboard/widget_doughnut_chart";
+@import "dashboard/widget_number";

@@ -501,7 +501,7 @@ class BackendController
     protected function generateModuleMenu()
     {
         // get all modules except the user modules for the side menu
-        $moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help']);
+        $moduleStorage = $this->backendModuleRepository->loadAllowedModules(['user', 'help', 'dashboard']);
 
         $view = $this->getFluidTemplateObject($this->templatePath . 'ModuleMenu/Main.html');
         $view->assign('modules', $moduleStorage);

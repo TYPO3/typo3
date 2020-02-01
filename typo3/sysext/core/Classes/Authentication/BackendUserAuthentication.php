@@ -125,6 +125,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         'explicit_allowdeny' => '',
         'allowed_languages' => '',
         'workspace_perms' => '',
+        'available_widgets' => '',
         'custom_options' => ''
     ];
 
@@ -637,7 +638,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * If user is admin TRUE is also returned
      * Please see the document Inside TYPO3 for examples.
      *
-     * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules
+     * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules", "available_widgets"
      * @param string $value String to search for in the groupData-list
      * @return bool TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
      */
@@ -1325,6 +1326,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // Get lists for the be_user record and set them as default/primary values.
             // Enabled Backend Modules
             $this->dataLists['modList'] = $this->user['userMods'];
+            // Add available widgets
+            $this->dataLists['available_widgets'] = $this->user['available_widgets'];
             // Add Allowed Languages
             $this->dataLists['allowed_languages'] = $this->user['allowed_languages'];
             // Set user value for workspace permissions.
@@ -1343,7 +1346,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 // Refer to fetchGroups() function.
                 $this->fetchGroups($this->user[$this->usergroup_column]);
             }
-
             // Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
             $this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
             // Finally this is the list of group_uid's in the order they are parsed (including subgroups!)
@@ -1369,6 +1371,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $this->groupData['allowed_languages'] = GeneralUtility::uniqueList($this->dataLists['allowed_languages']);
             $this->groupData['custom_options'] = GeneralUtility::uniqueList($this->dataLists['custom_options']);
             $this->groupData['modules'] = GeneralUtility::uniqueList($this->dataLists['modList']);
+            $this->groupData['available_widgets'] = GeneralUtility::uniqueList($this->dataLists['available_widgets']);
             $this->groupData['file_permissions'] = GeneralUtility::uniqueList($this->dataLists['file_permissions']);
             $this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
 
@@ -1527,6 +1530,7 @@ TCAdefaults.sys_note.email = ' . $this->user['email'];
                 }
                 // The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
                 $this->dataLists['modList'] .= ',' . $row['groupMods'];
+                $this->dataLists['available_widgets'] .= ',' . $row['availableWidgets'];
                 $this->dataLists['tables_select'] .= ',' . $row['tables_select'];
                 $this->dataLists['tables_modify'] .= ',' . $row['tables_modify'];
                 $this->dataLists['pagetypes_select'] .= ',' . $row['pagetypes_select'];

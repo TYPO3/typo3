@@ -1,0 +1,33 @@
+.dashboard-button {
+    display: inline-flex;
+    align-items: center;
+    border-radius: $dashboard-button-border-radius;
+    background: $dashboard-button-background;
+    color: $dashboard-button-color;
+    padding: $dashboard-button-padding;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        text-decoration: none;
+        background: $dashboard-button-hover-background;
+        color: $dashboard-button-hover-color;
+    }
+
+    .dashboard-button-icon .icon {
+        display: block;
+    }
+
+    .dashboard-button-icon + .dashboard-button-text {
+        margin-left: 0.25em;
+        margin-right: 0.25em;
+    }
+}
+
+.dashboard-button-add {
+    position: fixed;
+    padding: $dashboard-button-padding * 2;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2;
+}

@@ -1,0 +1,11 @@
+// Module
+.module.module {
+    background-color: $dashboard-background;
+
+    h1 {
+        line-height: calc(48 / 32);
+        margin-bottom: 20px;
+        font-weight: 900;
+        font-size: 32px;
+    }
+}
