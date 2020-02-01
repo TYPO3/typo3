@@ -18,33 +18,45 @@ define(['jquery'], function($) {
   'use strict';
 
   return {
+    requests: [],
     requestCount: 0,
-    threshold: 10,
+    threshold: 5,
     queue: [],
 
     add: function(payload) {
-      var oldComplete = payload.complete;
-      var that = this;
-      payload.complete = function(jqXHR, textStatus) {
-        if (that.queue.length > 0 && that.requestCount <= that.threshold) {
-          $.ajax(that.queue.shift()).always(function() {
-            that.decrementRequestCount();
-          });
-        } else {
-          that.decrementRequestCount();
-        }
+      this.queue.push(payload);
+      this.handleNext();
+    },
 
-        if (oldComplete) {
-          oldComplete(jqXHR, textStatus);
-        }
-      };
+    flush: function() {
+      this.queue = [];
+      this.requests.map(function(request) {
+        request.abort();
+      });
+      this.requests = [];
+    },
 
-      if (this.requestCount >= this.threshold) {
-        this.queue.push(payload);
-      } else {
+    handleNext: function() {
+      if (this.queue.length > 0 && this.requestCount < this.threshold) {
+        var that = this;
         this.incrementRequestCount();
-        $.ajax(payload);
+        this.sendRequest(that.queue.shift()).always(function() {
+          that.decrementRequestCount();
+          that.handleNext();
+        });
       }
+    },
+
+    sendRequest: function(payload) {
+      var that = this;
+      var xhr = $.ajax(payload);
+      this.requests.push(xhr);
+      xhr.always(function() {
+        const idx = that.requests.indexOf(xhr);
+        delete that.requests[idx];
+      });
+
+      return xhr;
     },
 
     incrementRequestCount: function() {
