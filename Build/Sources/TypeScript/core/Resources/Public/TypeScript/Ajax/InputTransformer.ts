@@ -15,6 +15,20 @@ export type GenericKeyValue = { [key: string]: any};
 
 export class InputTransformer {
   /**
+   * Transforms data by its incoming headers
+   *
+   * @param data
+   * @param headers
+   */
+  public static byHeader(data: GenericKeyValue, headers: GenericKeyValue = {}): FormData | string {
+    if (headers.hasOwnProperty('Content-Type') && headers['Content-Type'].includes('application/json')) {
+      return JSON.stringify(data);
+    }
+
+    return InputTransformer.toFormData(data);
+  }
+
+  /**
    * Transforms the incoming object to a flat FormData object used for POST and PUT
    *
    * @param {GenericKeyValue} data

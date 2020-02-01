@@ -136,7 +136,7 @@ export default class Workspaces {
    */
   protected sendRemoteRequest(payload: object): Promise<AjaxResponse> {
     return (new AjaxRequest(TYPO3.settings.ajaxUrls.workspace_dispatch)).post(
-      JSON.stringify(payload),
+      payload,
       {
         headers: {
           'Content-Type': 'application/json; charset=utf-8'

@@ -68,7 +68,7 @@ class AjaxRequest {
    */
   public async post(data: string | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: typeof data === 'string' ? data : InputTransformer.toFormData(data),
+      body: typeof data === 'string' ? data : InputTransformer.byHeader(data, init?.headers),
       cache: 'no-cache',
       method: 'POST',
     };
@@ -86,7 +86,7 @@ class AjaxRequest {
    */
   public async put(data: string | GenericKeyValue, init: RequestInit = {}): Promise<AjaxResponse> {
     const localDefaultOptions: RequestInit = {
-      body: typeof data === 'string' ? data : InputTransformer.toFormData(data),
+      body: typeof data === 'string' ? data : InputTransformer.byHeader(data, init?.headers),
       cache: 'no-cache',
       method: 'PUT',
     };
@@ -109,8 +109,8 @@ class AjaxRequest {
     };
 
     if (typeof data === 'object' && Object.keys(data).length > 0) {
-      localDefaultOptions.body = InputTransformer.toFormData(data);
-    } else if (typeof data === 'string') {
+      localDefaultOptions.body = InputTransformer.byHeader(data, init?.headers);
+    } else if (typeof data === 'string' && data.length > 0) {
       localDefaultOptions.body = data;
     }
 
