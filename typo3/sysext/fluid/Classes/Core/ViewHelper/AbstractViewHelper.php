@@ -17,6 +17,8 @@ namespace TYPO3\CMS\Fluid\Core\ViewHelper;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Component\Argument\ArgumentCollection;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * The abstract base class for all view helpers.
@@ -56,6 +58,14 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
         }
     }
 
+    public function getArguments(): ArgumentCollection
+    {
+        if (method_exists($this, 'registerRenderMethodArguments')) {
+            $this->registerRenderMethodArguments();
+        }
+        return parent::getArguments();
+    }
+
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
@@ -75,6 +85,23 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
     }
 
     /**
+     * Initializes the view helper before invoking the render method.
+     *
+     * Override this method to solve tasks before the view helper content is rendered.
+     *
+     * @api
+     */
+    public function initialize()
+    {
+    }
+
+    public function evaluate(RenderingContextInterface $renderingContext)
+    {
+        $this->initialize();
+        return parent::evaluate($renderingContext);
+    }
+
+    /**
      * Call the render() method and handle errors.
      *
      * @return string the rendered ViewHelper
@@ -82,8 +109,11 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      */
     protected function callRenderMethod()
     {
+        if ($this->renderingContext instanceof \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext) {
+            $this->controllerContext = $this->renderingContext->getControllerContext();
+        }
         $renderMethodParameters = [];
-        foreach ($this->argumentDefinitions as $argumentName => $argumentDefinition) {
+        foreach ($this->prepareArguments() as $argumentName => $argumentDefinition) {
             if ($argumentDefinition instanceof \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition && $argumentDefinition->isMethodParameter()) {
                 $renderMethodParameters[$argumentName] = $this->arguments[$argumentName];
             }
@@ -115,7 +145,10 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
      */
     protected function registerRenderMethodArguments()
     {
-        $methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
+        $methodParameters = [];
+        if (method_exists($this, 'render')) {
+            $methodParameters = $this->reflectionService->getMethodParameters(get_class($this), 'render');
+        }
         if (count($methodParameters) === 0) {
             return;
         }
@@ -147,19 +180,27 @@ abstract class AbstractViewHelper extends \TYPO3Fluid\Fluid\Core\ViewHelper\Abst
             if (isset($parameterInfo['defaultValue'])) {
                 $defaultValue = $parameterInfo['defaultValue'];
             }
-            $this->argumentDefinitions[$parameterName] = new ArgumentDefinition($parameterName, $dataType, $description, ($parameterInfo['optional'] === false), $defaultValue, true);
+            $argumentDefinition = new ArgumentDefinition($parameterName, $dataType, $description, ($parameterInfo['optional'] === false), $defaultValue, true);
+            if ($this->arguments instanceof ArgumentCollection) {
+                $this->arguments->addDefinition($argumentDefinition);
+            } else {
+                $this->argumentDefinitions[$parameterName] = $argumentDefinition;
+            }
             $i++;
         }
     }
 
     /**
-     * @return \TYPO3Fluid\Fluid\Core\ViewHelper\ArgumentDefinition[]
+     * @return ArgumentDefinition[]
      * @throws \TYPO3Fluid\Fluid\Core\Parser\Exception
      */
     public function prepareArguments()
     {
         if (method_exists($this, 'registerRenderMethodArguments')) {
             $this->registerRenderMethodArguments();
+        }
+        if ($this->arguments instanceof ArgumentCollection) {
+            return $this->arguments->getDefinitions();
         }
         return parent::prepareArguments();
     }

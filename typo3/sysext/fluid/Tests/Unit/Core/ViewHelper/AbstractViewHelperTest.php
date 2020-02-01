@@ -112,7 +112,7 @@ class AbstractViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
         $reflectionService = $this->getMockBuilder(ReflectionService::class)
             ->setMethods(['getMethodParameters', 'getMethodTagsValues'])
             ->getMock();
-        $reflectionService->expects($this->once())->method('getMethodParameters')->willReturn(
+        $reflectionService->expects($this->atLeastOnce())->method('getMethodParameters')->willReturn(
             [
                 'param1' => [
                     'position' => 0,
@@ -140,7 +140,7 @@ class AbstractViewHelperTest extends \TYPO3\TestingFramework\Core\Unit\UnitTestC
                 ],
             ]
         );
-        $reflectionService->expects($this->once())->method('getMethodTagsValues')->willReturn(
+        $reflectionService->expects($this->atLeastOnce())->method('getMethodTagsValues')->willReturn(
             []
         );
         $fixture = $this->getAccessibleMock(TestViewHelper::class, ['render']);

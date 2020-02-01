@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+use TYPO3Fluid\Fluid\Component\Argument\ArgumentCollection;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -70,7 +71,7 @@ class CshViewHelper extends AbstractBackendViewHelper
     public function render()
     {
         return static::renderStatic(
-            $this->arguments,
+            $this->arguments instanceof ArgumentCollection ? $this->arguments->getArrayCopy() : $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );

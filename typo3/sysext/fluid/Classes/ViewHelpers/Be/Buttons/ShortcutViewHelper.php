@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
+use TYPO3Fluid\Fluid\Component\Argument\ArgumentCollection;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
@@ -73,7 +74,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
     public function render()
     {
         return static::renderStatic(
-            $this->arguments,
+            $this->arguments instanceof ArgumentCollection ? $this->arguments->getArrayCopy() : $this->arguments,
             $this->buildRenderChildrenClosure(),
             $this->renderingContext
         );
