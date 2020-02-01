@@ -161,7 +161,7 @@ class SlugElement {
       input.manual = this.$inputField.val();
     }
     if (this.request instanceof AjaxRequest) {
-      this.request.getAbort().abort();
+      this.request.abort();
     }
     this.request = (new AjaxRequest(TYPO3.settings.ajaxUrls.record_slug_suggest));
     this.request.post({

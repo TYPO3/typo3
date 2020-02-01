@@ -119,12 +119,10 @@ class AjaxRequest {
   }
 
   /**
-   * Gets an instance of AbortController used to abort the current request
-   *
-   * @return {AbortController}
+   * Aborts the current request by using the AbortController
    */
-  public getAbort(): AbortController {
-    return this.abortController;
+  public abort(): void {
+    this.abortController.abort();
   }
 
   /**

@@ -152,10 +152,10 @@ Example:
    });
 
 
-getAbort()
+abort()
 ~~~~~~~~~~
 
-Returns an instance of `AbortController`_ that can be used to abort the request.
+Aborts the request by using its instance of `AbortController`_.
 
 
 Response

@@ -621,7 +621,7 @@ class InlineControlContainer {
         progress.start();
       } else {
         // Abort loading if collapsed again
-        this.requestQueue[objectId].getAbort().abort();
+        this.requestQueue[objectId].abort();
         delete this.requestQueue[objectId];
         delete this.progessQueue[objectId];
         progress.done();
