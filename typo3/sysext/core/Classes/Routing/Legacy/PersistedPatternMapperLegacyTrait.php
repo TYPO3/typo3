@@ -31,12 +31,12 @@ trait PersistedPatternMapperLegacyTrait
 
         $resolveModifier = function (QueryBuilder $queryBuilder, array $values) {
             return $queryBuilder->select('*')->where(
-                ...$this->createRouteFieldConstraints($queryBuilder, $values, true)
+                ...$this->createFieldConstraints($queryBuilder, $values, true)
             );
         };
         $generateModifier = function (QueryBuilder $queryBuilder, array $values) {
             return $queryBuilder->select('*')->where(
-                ...$this->createRouteFieldConstraints($queryBuilder, $values)
+                ...$this->createFieldConstraints($queryBuilder, $values)
             );
         };
 
