@@ -1,0 +1,169 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Default"/>
+
+<f:section name="Buttons">
+    <be:moduleLayout.button.linkButton
+        icon="actions-add"
+        title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
+        link="{be:uri.newRecord(table: 'be_users')}"
+    />
+</f:section>
+
+<f:section name="Content">
+    <h1><f:translate key="backendUser" />: {data.user.username} [{data.user.uid}]</h1>
+
+    <f:if condition="{data.user.description}">
+        <f:be.infobox
+            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordInformation')}">
+            {data.user.description -> f:format.nl2br()}
+        </f:be.infobox>
+    </f:if>
+
+    <table class="table table-striped table-bordered table-hover">
+        <tr>
+            <th>{f:translate(key:'realName')}</th>
+            <td>
+                <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{data.user.uid}" title="id={data.user.uid}">
+                    <be:avatar backendUser="{data.user.uid}" showIcon="true"/>
+                </a>
+                {data.user.userName}
+                <be:link.editRecord class="btn btn-default pull-right" table="be_users" uid="{data.user.uid}"
+                                    title="edit">
+                    <core:icon identifier="actions-open"/>
+                </be:link.editRecord>
+            </td>
+        </tr>
+        <tr>
+            <th>{f:translate(key:'email')}</th>
+            <td>
+                <f:if condition="{data.user.email}">
+                    <f:link.email email="{data.user.email}"/>
+                </f:if>
+            </td>
+        </tr>
+        <tr>
+            <th>{f:translate(key:'startDateAndTime')}</th>
+            <td>
+                <f:if condition="{data.user.starttime}">
+                    <f:format.date format="{dateFormat} {timeFormat}">{data.user.starttime}</f:format.date>
+                </f:if>
+            </td>
+        </tr>
+    </table>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h4><f:translate key="groups" /></h4>
+            <f:render partial="BackendUser/Information" section="groups" arguments="{groups:data.groups}"/>
+        </div>
+        <div class="col-md-4">
+            <h4><f:translate key="languages" /></h4>
+            <f:render partial="BackendUser/Information" section="languages" arguments="{languages:data.languages}"/>
+        </div>
+        <div class="col-md-4">
+
+            <h4><f:translate key="dbMounts" /></h4>
+            <f:render partial="BackendUser/Information" section="dbMounts" arguments="{dbMounts:data.dbMounts}"/>
+
+            <h4><f:translate key="fileMounts" /></h4>
+            <f:render partial="BackendUser/Information" section="fileMounts" arguments="{fileMounts:data.fileMounts}"/>
+
+            <h4><f:translate key="categories" /></h4>
+            <f:render partial="BackendUser/Information" section="categories" arguments="{categories:data.categories}"/>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2><f:translate key="permissions" /></h2>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th><f:translate key="modules" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{data.modules}" as="module">
+                    <tr>
+                        <td>
+                            <core:icon identifier="{module.iconIdentifier}"></core:icon>
+                            {f:translate(key:'{module.labels}:mlang_tabs_tab')} <code>{module.name}</code>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th><f:translate key="tableModes" /></th>
+                    <th class="text-center"><f:translate key="tableModes.select" /></th>
+                    <th class="text-center"><f:translate key="tableModes.modify" /></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{data.tables.all}" key="table" as="label">
+                    <tr>
+                        <td>
+                            <f:if condition="{label}">
+                                <f:then>
+                                    {f:translate(key:label)}<code>{table}</code>
+                                </f:then>
+                                <f:else>
+                                    <code>{table}</code>
+                                </f:else>
+                            </f:if>
+                        </td>
+                        <td class="text-center">
+                            <bu:display.tableAccess table="{table}" select="{data.tables.tables_select}">
+                                <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
+                                </f:then>
+                                <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
+                            </bu:display.tableAccess>
+                        </td>
+                        <td class="text-center">
+                            <bu:display.tableAccess table="{table}" select="{data.tables.tables_select}"
+                                                    modify="{data.tables.tables_modify}">
+                                <f:then><span class="t3-icon change-permission fa fa-check text-success"></span>
+                                </f:then>
+                                <f:else><span class="t3-icon change-permission fa fa-times text-danger"></span></f:else>
+                            </bu:display.tableAccess>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h3>ACL</h3>
+            <f:for each="{data.non_exclude_fields}" key="tableName" as="table">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>{f:translate(key:table.label)} <code>{tableName}</code></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <f:for each="{table.fields}" as="label" key="field">
+                        <tr>
+                            <td>
+                                {f:translate(key:label)}
+                                <code>{field}</code>
+                            </td>
+                        </tr>
+                    </f:for>
+                    </tbody>
+                </table>
+            </f:for>
+        </div>
+    </div>
+</f:section>
+
+</html>

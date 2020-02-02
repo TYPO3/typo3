@@ -14,19 +14,19 @@
 </f:section>
 
 <f:section name="Content">
-    <h1><f:translate key="compareBackendUsers">Compare backend users</f:translate></h1>
+    <h1>{f:translate(key:'compareBackendUsers')}</h1>
     <div class="table-fit">
-        <table border="0" cellpadding="0" cellspacing="0" id="tx_beuser_compare" class="table table-striped table-bordered table-hover">
+        <table id="tx_beuser_compare" class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
                     <th></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <th>
-                            <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{compareUser.uid}" title="id={compareUser.uid}">
-                                <be:avatar backendUser="{compareUser.uid}" showIcon="true" />
+                            <a href="#" class="t3js-contextmenutrigger" data-table="be_users" data-uid="{compareUser.user.uid}" title="id={compareUser.user.uid}">
+                                <be:avatar backendUser="{compareUser.user.uid}" showIcon="true" />
                             </a>
-                            {compareUser.userName}
-                                <be:link.editRecord class="btn btn-default pull-right" table="be_users" uid="{compareUser.uid}" title="edit">
+                            {compareUser.user.username}
+                                <be:link.editRecord class="btn btn-default pull-right" table="be_users" uid="{compareUser.user.uid}" title="edit">
                                 <core:icon identifier="actions-open" />
                                 </be:link.editRecord>
                         </th>
@@ -37,20 +37,10 @@
                 <tr>
                     <th><f:translate key="realName" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
-                        <td>{compareUser.realName}</td>
-                    </f:for>
-                </tr>
-                <tr>
-                    <th><f:translate key="email" /></th>
-                    <f:for each="{compareUserList}" as="compareUser">
-                        <td>
-                            <f:if condition="{compareUser.email}">
-                                <f:then>
-                                    <f:link.email email="{compareUser.email}" />
-                                </f:then>
-                                <f:else>
-                                    -
-                                </f:else>
+                        <td>{compareUser.user.realName}
+
+                            <f:if condition="{compareUser.user.email}">
+                                (<f:link.email email="{compareUser.user.email}" />)
                             </f:if>
                         </td>
                     </f:for>
@@ -59,10 +49,7 @@
                     <th><f:translate key="admin" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.isAdministrator}">
-                                <f:then><f:translate key="yes" /></f:then>
-                                <f:else><f:translate key="no" /></f:else>
-                            </f:if>
+                            <f:render partial="BackendUser/Information" section="yesno" arguments="{value:compareUser.user.admin}" />
                         </td>
                     </f:for>
                 </tr>
@@ -70,19 +57,17 @@
                     <th><f:translate key="disable_compare" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.currentlyLoggedIn} == 0">
-                                <f:if condition="{compareUser.isDisabled} == 1">
-                                    <f:then>
-                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.uid}][disable]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.unhide')}">
-                                            <core:icon identifier="actions-edit-unhide" />
-                                        </a>
-                                    </f:then>
-                                    <f:else>
-                                        <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.uid}][disable]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.hide')}">
-                                            <core:icon identifier="actions-edit-hide" />
-                                        </a>
-                                    </f:else>
-                                </f:if>
+                            <f:if condition="{compareUser.disable}">
+                                <f:then>
+                                    <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.user.uid}][disable]=0', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.unhide')}">
+                                        <core:icon identifier="actions-edit-unhide" />
+                                    </a>
+                                </f:then>
+                                <f:else>
+                                    <a class="btn btn-default" href="{be:moduleLink(route:'tce_db', query:'data[be_users][{compareUser.user.uid}][disable]=1', currentUrlParameterName:'redirect')}" title="{f:translate(key: 'visibility.hide')}">
+                                        <core:icon identifier="actions-edit-hide" />
+                                    </a>
+                                </f:else>
                             </f:if>
                         </td>
                     </f:for>
@@ -91,9 +76,9 @@
                     <th><f:translate key="startDateAndTime" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.startDateAndTime}">
+                            <f:if condition="{compareUser.user.starttime}">
                                 <f:then>
-                                    <f:format.date format="{dateFormat} {timeFormat}">{compareUser.startDateAndTime}</f:format.date>
+                                    <f:format.date format="{dateFormat} {timeFormat}">{compareUser.user.starttime}</f:format.date>
                                 </f:then>
                                 <f:else>
                                     -
@@ -106,9 +91,9 @@
                     <th><f:translate key="endDateAndTime" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.endDateAndTime}">
+                            <f:if condition="{compareUser.user.endtime}">
                                 <f:then>
-                                    <f:format.date format="{dateFormat} {timeFormat}">{compareUser.endDateAndTime}</f:format.date>
+                                    <f:format.date format="{dateFormat} {timeFormat}">{compareUser.user.endtime}</f:format.date>
                                 </f:then>
                                 <f:else>
                                     -
@@ -121,9 +106,9 @@
                     <th><f:translate key="lastLogin" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.lastLoginDateAndTime}">
+                            <f:if condition="{compareUser.user.lastlogin}">
                                 <f:then>
-                                    <f:format.date format="{dateFormat} {timeFormat}">{compareUser.lastLoginDateAndTime}</f:format.date>
+                                    <f:format.date format="{dateFormat} {timeFormat}">{compareUser.user.lastlogin}</f:format.date>
                                 </f:then>
                                 <f:else>
                                     <f:translate key="never" />
@@ -136,12 +121,8 @@
                     <th><f:translate key="backendUserGroups" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:for each="{compareUser.BackendUserGroups}" as="backendUserGroup">
-                                <a href="#" class="t3js-contextmenutrigger" data-table="be_groups" data-uid="{backendUserGroup.uid}" title="id={backendUserGroup.uid}">
-                                    <bu:spriteIconForRecord table="be_users" object="{backendUserGroup}" />
-                                </a>
-                                {backendUserGroup.title}<br />
-                            </f:for>
+                            <f:render partial="BackendUser/Information" section="groups" arguments="{groups:compareUser.groups}" />
+
                         </td>
                     </f:for>
                 </tr>
@@ -149,14 +130,7 @@
                     <th><f:translate key="allowedLanguages" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.allowedLanguages}">
-                                <f:then>
-                                    <bu:display.sysLanguage uids="{compareUser.allowedLanguages}" />
-                                </f:then>
-                                <f:else>
-                                    -
-                                </f:else>
-                            </f:if>
+                            <f:render partial="BackendUser/Information" section="languages" arguments="{languages:compareUser.languages}" />
                         </td>
                     </f:for>
                 </tr>
@@ -164,14 +138,7 @@
                     <th><f:translate key="dbMountPoints" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.dbMountPoints}">
-                                <f:then>
-                                    <bu:display.pages uids="{compareUser.dbMountPoints}" />
-                                </f:then>
-                                <f:else>
-                                    -
-                                </f:else>
-                            </f:if>
+                            <f:render partial="BackendUser/Information" section="dbMounts" arguments="{dbMounts:compareUser.dbMounts}" />
                         </td>
                     </f:for>
                 </tr>
@@ -179,25 +146,41 @@
                     <th><f:translate key="fileMounts" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.fileMountPoints}">
-                                <f:then>
-                                    <bu:display.sysFileMounts uids="{compareUser.fileMountPoints}" />
-                                </f:then>
-                                <f:else>
-                                    -
-                                </f:else>
-                            </f:if>
+                            <f:render partial="BackendUser/Information" section="fileMounts" arguments="{fileMounts:compareUser.fileMounts}" />
                         </td>
                     </f:for>
                 </tr>
                 <tr>
+                    <th>Page types</th>
+                    <f:for each="{compareUserList}" as="compareUser">
+                        <td>
+                            <f:render partial="BackendUser/Information" section="pageTypes" arguments="{pageTypes:compareUser.pageTypes}" />
+                        </td>
+                    </f:for>
+                </tr>
+                <tr>
+                    <th>Categories</th>
+                    <f:for each="{compareUserList}" as="compareUser">
+                        <td>
+                            <f:render partial="BackendUser/Information" section="categories" arguments="{categories:compareUser.categories}"/>
+                        </td>
+                    </f:for>
+                </tr>
+                <f:if condition="{compareUserList.0.workspaces}">
+                    <tr>
+                        <th>Workspaces</th>
+                        <f:for each="{compareUserList}" as="compareUser">
+                            <td>
+                                <f:render partial="BackendUser/Information" section="workspaces" arguments="{workspaces:compareUser.workspaces}"/>
+                            </td>
+                        </f:for>
+                    </tr>
+                </f:if>
+                <tr>
                     <th><f:translate key="disableIpLock" /></th>
                     <f:for each="{compareUserList}" as="compareUser">
                         <td>
-                            <f:if condition="{compareUser.ipLockIsDisabled} == 1">
-                                <f:then><f:translate key="yes" /></f:then>
-                                <f:else><f:translate key="no" /></f:else>
-                            </f:if>
+                            <f:render partial="BackendUser/Information" section="yesno" arguments="{value:compareUser.user.disableIPlock}" />
                         </td>
                     </f:for>
                 </tr>

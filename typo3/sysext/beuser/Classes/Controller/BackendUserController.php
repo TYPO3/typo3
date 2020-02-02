@@ -1,4 +1,5 @@
 <?php
+
 namespace TYPO3\CMS\Beuser\Controller;
 
 /*
@@ -15,6 +16,11 @@ namespace TYPO3\CMS\Beuser\Controller;
  */
 
 use TYPO3\CMS\Backend\Authentication\Event\SwitchUserEvent;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
+use TYPO3\CMS\Beuser\Service\ModuleDataStorageService;
+use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -41,55 +47,42 @@ class BackendUserController extends ActionController
     protected $moduleData;
 
     /**
-     * @var \TYPO3\CMS\Beuser\Service\ModuleDataStorageService
+     * @var ModuleDataStorageService
      */
     protected $moduleDataStorageService;
 
     /**
-     * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository
+     * @var BackendUserRepository
      */
     protected $backendUserRepository;
 
     /**
-     * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository
+     * @var BackendUserGroupRepository
      */
     protected $backendUserGroupRepository;
 
     /**
-     * @var \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository
+     * @var BackendUserSessionRepository
      */
     protected $backendUserSessionRepository;
 
     /**
-     * @param \TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService
+     * @var UserInformationService
      */
-    public function injectModuleDataStorageService(\TYPO3\CMS\Beuser\Service\ModuleDataStorageService $moduleDataStorageService)
-    {
+    protected $userInformationService;
+
+    public function __construct(
+        ModuleDataStorageService $moduleDataStorageService,
+        BackendUserRepository $backendUserRepository,
+        BackendUserGroupRepository $backendUserGroupRepository,
+        BackendUserSessionRepository $backendUserSessionRepository,
+        UserInformationService $userInformationService
+    ) {
         $this->moduleDataStorageService = $moduleDataStorageService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository $backendUserRepository
-     */
-    public function injectBackendUserRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository $backendUserRepository)
-    {
         $this->backendUserRepository = $backendUserRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository
-     */
-    public function injectBackendUserGroupRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository $backendUserGroupRepository)
-    {
         $this->backendUserGroupRepository = $backendUserGroupRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository $backendUserSessionRepository
-     */
-    public function injectBackendUserSessionRepository(\TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository $backendUserSessionRepository)
-    {
         $this->backendUserSessionRepository = $backendUserSessionRepository;
+        $this->userInformationService = $userInformationService;
     }
 
     /**
@@ -187,6 +180,18 @@ class BackendUserController extends ActionController
     }
 
     /**
+     * @param int $uid
+     */
+    public function showAction(int $uid = 0): void
+    {
+        $data = $this->userInformationService->get($uid);
+        $this->view->assignMultiple([
+            'shortcutLabel' => 'showUser',
+            'data' => $data
+        ]);
+    }
+
+    /**
      * Compare backend users from demand
      */
     public function compareAction()
@@ -196,9 +201,14 @@ class BackendUserController extends ActionController
             $this->redirect('index');
         }
 
+        $compareData = [];
+        foreach ($compareUserList as $uid) {
+            $compareData[] =  $this->userInformationService->get($uid);
+        }
+
         $this->view->assignMultiple([
             'shortcutLabel' => 'compareUsers',
-            'compareUserList' => $this->backendUserRepository->findByUidList($compareUserList),
+            'compareUserList' => $compareData
         ]);
     }
 

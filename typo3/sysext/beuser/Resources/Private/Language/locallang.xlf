@@ -174,6 +174,51 @@
 			<trans-unit id="visibility.unhide" resname="visibility.unhide">
 				<source>Un-hide</source>
 			</trans-unit>
+			<trans-unit id="information.defaultLanguage" resname="information.defaultLanguage">
+				<source>Default</source>
+			</trans-unit>
+			<trans-unit id="groups" resname="groups">
+				<source>Groups</source>
+			</trans-unit>
+			<trans-unit id="information.groups.direct" resname="information.groups.direct">
+				<source>Directly assigned</source>
+			</trans-unit>
+			<trans-unit id="information.groups.inheritance" resname="information.groups.inheritance">
+				<source>Assigned through inheritance</source>
+			</trans-unit>
+			<trans-unit id="languages" resname="languages">
+				<source>Languages</source>
+			</trans-unit>
+			<trans-unit id="dbMounts" resname="dbMounts">
+				<source>DB Mounts</source>
+			</trans-unit>
+			<trans-unit id="fileMounts" resname="fileMounts">
+				<source>File Mounts</source>
+			</trans-unit>
+			<trans-unit id="categories" resname="categories">
+				<source>Categories</source>
+			</trans-unit>
+			<trans-unit id="permissions" resname="permissions">
+				<source>Permissions</source>
+			</trans-unit>
+			<trans-unit id="modules" resname="modules">
+				<source>Modules</source>
+			</trans-unit>
+			<trans-unit id="tableModes" resname="tableModes">
+				<source>Table select/modify</source>
+			</trans-unit>
+			<trans-unit id="tableModes.select" resname="tableModes.select">
+				<source>Select</source>
+			</trans-unit>
+			<trans-unit id="tableModes.modify" resname="tableModes.modify">
+				<source>Modify</source>
+			</trans-unit>
+			<trans-unit id="information.defaultWorkspace" resname="information.defaultWorkspace">
+				<source>Default workspace</source>
+			</trans-unit>
+			<trans-unit id="backendUser" resname="backendUser">
+				<source>Backend User</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
