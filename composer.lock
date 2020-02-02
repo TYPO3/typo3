@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "776eed8d0ec9365f10766d84c53d1be2",
+    "content-hash": "10987d4662e6f2d243f37617c6761d8e",
     "packages": [
         {
             "name": "cogpowered/finediff",
@@ -7587,8 +7587,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "email": "arne@blankerts.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "arne@blankerts.de"
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
@@ -7660,16 +7660,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "6.1.0",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "89e4e0dd20ba4e4f4423d16ce63d204afbc73c09"
+                "reference": "2111db60e8e1391fabdac4f2253af553f291d460"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/89e4e0dd20ba4e4f4423d16ce63d204afbc73c09",
-                "reference": "89e4e0dd20ba4e4f4423d16ce63d204afbc73c09",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/2111db60e8e1391fabdac4f2253af553f291d460",
+                "reference": "2111db60e8e1391fabdac4f2253af553f291d460",
                 "shasum": ""
             },
             "require": {
@@ -7716,7 +7716,7 @@
                 "tests",
                 "typo3"
             ],
-            "time": "2019-12-03T08:17:45+00:00"
+            "time": "2020-02-02T11:04:46+00:00"
         }
     ],
     "aliases": [],
