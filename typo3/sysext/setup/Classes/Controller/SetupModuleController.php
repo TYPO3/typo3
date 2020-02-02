@@ -574,17 +574,17 @@ class SetupModuleController
                     $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                     if ($avatarFileUid) {
                         $html .=
-                            '<a id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.clear')) . '" '
+                            '<button type="button" id="clear_button_' . htmlspecialchars($fieldName) . '" aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.clear')) . '" '
                                 . 'onclick="clearExistingImage(); return false;" class="btn btn-default">'
                                 . $iconFactory->getIcon('actions-delete', Icon::SIZE_SMALL)
-                            . '</a>';
+                            . '</button>';
                     }
                     $html .=
-                        '<a id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
+                        '<button type="button" id="add_button_' . htmlspecialchars($fieldName) . '" class="btn btn-default btn-add-avatar"'
                             . ' aria-label="' . htmlspecialchars($this->getLanguageService()->getLL('avatar.openFileBrowser')) . '"'
                             . ' onclick="openFileBrowser();return false;">'
                             . $iconFactory->getIcon('actions-insert-record', Icon::SIZE_SMALL)
-                            . '</a></div>';
+                            . '</button></div>';
 
                     $this->addAvatarButtonJs($fieldName);
                     break;
