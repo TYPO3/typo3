@@ -65,6 +65,7 @@ class Request extends Message implements RequestInterface
         'MOVE',
         'PROPFIND',
         'PROPPATCH',
+        'REPORT',
         'UNLOCK'
     ];
 
