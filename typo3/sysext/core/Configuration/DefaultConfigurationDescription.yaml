@@ -528,8 +528,8 @@ MAIL:
             type: text
             description: '<em>only with transport=smtp</em>: &lt;server:port> of mailserver to connect to. &lt;port> defaults to "25".'
         transport_smtp_encrypt:
-            type: text
-            description: '<em>only with transport=smtp</em>: Connect to the server using the specified transport protocol. Requires openssl library. Usually available: <em>ssl, sslv2, sslv3, tls</em>. Check <a href="http://www.php.net/stream_get_transports" target="_blank rel="noreferrer"">stream_get_transports()</a>.'
+            type: bool
+            description: '<em>only with transport=smtp</em>: Connect to the server using a secured transport protocol.'
         transport_smtp_username:
             type: text
             description: '<em>only with transport=smtp</em>: If your SMTP server requires authentication, enter your username here.'

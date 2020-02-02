@@ -79,7 +79,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 } else {
                     $port = (int)$port;
                 }
-                $useEncryption = ($mailSettings['transport_smtp_encrypt'] ?? '') ?: null;
+                $useEncryption = (bool)($mailSettings['transport_smtp_encrypt'] ?? false) ?: null;
                 // Create transport
                 $transport = new EsmtpTransport($host, $port, $useEncryption);
                 // Need authentication?
