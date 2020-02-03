@@ -247,18 +247,26 @@ class PageSlugCandidateProvider
 
             try {
                 $isOnSameSite = $siteFinder->getSiteByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId();
-                if ($isOnSameSite) {
-                    $pages[] = $row;
-                    $excludeUids[] = (int)$row['uid'];
-                } elseif ($mountedPage && $row['mount_pid_ol']) {
+                // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
+                // it must never be accessible directly, but only in the mountpoint context. Therefore we change
+                // the current ID and slug.
+                if ($mountedPage && PageRepository::DOKTYPE_MOUNTPOINT === (int)$row['doktype'] && $row['mount_pid_ol']) {
                     // If the mounted page was already added from above, this should not be added again (to include
                     // the mount point parameter).
                     if (in_array((int)$mountedPage['uid'], $excludeUids, true)) {
                         continue;
                     }
-                    $mountedPage['MPvar'] = $mountPageInformation['MPvar'];
-                    $pages[] = $mountedPage;
-                    $excludeUids[] = (int)$mountedPage['uid'];
+                    $pageToAdd = $mountedPage;
+                    // Make sure target page "/about-us" is replaced by "/global-site/about-us" so router works
+                    $pageToAdd['MPvar'] = $mountPageInformation['MPvar'];
+                    $pageToAdd['slug'] = $row['slug'];
+                    $pages[] = $pageToAdd;
+                    $excludeUids[] = (int)$pageToAdd['uid'];
+                    $excludeUids[] = $pageIdInDefaultLanguage;
+                }
+                if ($isOnSameSite && !in_array($pageIdInDefaultLanguage, $excludeUids, true)) {
+                    $pages[] = $row;
+                    $excludeUids[] = $pageIdInDefaultLanguage;
                 }
             } catch (SiteNotFoundException $e) {
                 // Page is not in a site, so it's not considered
