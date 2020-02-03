@@ -20,11 +20,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -41,7 +40,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
- * Script Class for rendering the login form
+ * Controller responsible for rendering the TYPO3 Backend login form
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 class LoginController implements LoggerAwareInterface
@@ -98,21 +97,30 @@ class LoginController implements LoggerAwareInterface
     protected $view;
 
     /**
-     * @var DocumentTemplate
+     * @var ModuleTemplate
      */
-    protected $documentTemplate;
+    protected $moduleTemplate;
 
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $eventDispatcher;
 
     /**
      * @var Typo3Information
      */
-    private $typo3Information;
+    protected $typo3Information;
 
-    public function __construct(Typo3Information $typo3Information, EventDispatcherInterface $eventDispatcher)
+    /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    public function __construct(Typo3Information $typo3Information, EventDispatcherInterface $eventDispatcher, UriBuilder $uriBuilder)
     {
         $this->typo3Information = $typo3Information;
         $this->eventDispatcher = $eventDispatcher;
+        $this->uriBuilder = $uriBuilder;
     }
 
     /**
@@ -158,7 +166,8 @@ class LoginController implements LoggerAwareInterface
      */
     protected function init(ServerRequestInterface $request): void
     {
-        $this->documentTemplate = GeneralUtility::makeInstance(DocumentTemplate::class);
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->setTitle('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
         $this->validateAndSortLoginProviders();
@@ -170,11 +179,8 @@ class LoginController implements LoggerAwareInterface
         // Value of "Login" button. If set, the login button was pressed.
         $this->submitValue = $parsedBody['commandLI'] ?? $queryParams['commandLI'] ?? null;
         // Try to get the preferred browser language
-        /** @var Locales $locales */
-        $locales = GeneralUtility::makeInstance(Locales::class);
         $httpAcceptLanguage = $request->getServerParams()['HTTP_ACCEPT_LANGUAGE'];
-        $preferredBrowserLanguage = $locales
-            ->getPreferredClientLanguage($httpAcceptLanguage);
+        $preferredBrowserLanguage = GeneralUtility::makeInstance(Locales::class)->getPreferredClientLanguage($httpAcceptLanguage);
 
         // If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
         // initialize $this->getLanguageService() again with $preferredBrowserLanguage
@@ -189,8 +195,7 @@ class LoginController implements LoggerAwareInterface
         if ($this->redirectUrl) {
             $this->redirectToURL = $this->redirectUrl;
         } else {
-            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-            $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
+            $this->redirectToURL = (string)$this->uriBuilder->buildUriFromRoute('main');
         }
 
         // If "L" is "OUT", then any logged in is logged out. If redirect_url is given, we redirect to it
@@ -199,7 +204,8 @@ class LoginController implements LoggerAwareInterface
             $this->redirectToUrl();
         }
 
-        $this->view = $this->getFluidTemplateObject();
+        $this->view = $this->moduleTemplate->getView();
+        $this->view->getRequest()->setControllerExtensionName('Backend');
     }
 
     /**
@@ -207,7 +213,6 @@ class LoginController implements LoggerAwareInterface
      *
      * @param ServerRequestInterface $request
      * @return string $content
-     * @throws Exception
      */
     protected function createLoginLogoutForm(ServerRequestInterface $request): string
     {
@@ -303,7 +308,15 @@ class LoginController implements LoggerAwareInterface
 
         // Initialize interface selectors:
         $this->makeInterfaceSelector($request);
+        $this->renderHtmlViaLoginProvider();
 
+        $this->moduleTemplate->setContent($this->view->render());
+        return $this->moduleTemplate->renderContent();
+    }
+
+    protected function renderHtmlViaLoginProvider(): void
+    {
+        $pageRenderer = $this->moduleTemplate->getPageRenderer();
         /** @var LoginProviderInterface $loginProvider */
         $loginProvider = GeneralUtility::makeInstance($this->loginProviders[$this->loginProviderIdentifier]['provider']);
 
@@ -316,12 +329,6 @@ class LoginController implements LoggerAwareInterface
         );
 
         $loginProvider->render($this->view, $pageRenderer, $this);
-
-        $content = $this->documentTemplate->startPage('TYPO3 CMS Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
-        $content .= $this->view->render();
-        $content .= $this->documentTemplate->endPage();
-
-        return $content;
     }
 
     /**
@@ -367,8 +374,7 @@ class LoginController implements LoggerAwareInterface
                     $this->redirectToURL = '../';
                     break;
                 case 'backend':
-                    $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-                    $this->redirectToURL = (string)$uriBuilder->buildUriFromRoute('main');
+                    $this->redirectToURL = (string)$this->uriBuilder->buildUriFromRoute('main');
                     break;
             }
         } else {
@@ -409,11 +415,10 @@ class LoginController implements LoggerAwareInterface
             $parts = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
             if (count($parts) > 1) {
                 // Only if more than one interface is defined we will show the selector
-                $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
                 $interfaces = [
                     'backend' => [
                         'label' => $this->getLanguageService()->getLL('interface.backend'),
-                        'jumpScript' => (string)$uriBuilder->buildUriFromRoute('main'),
+                        'jumpScript' => (string)$this->uriBuilder->buildUriFromRoute('main'),
                         'interface' => 'backend'
                     ],
                     'frontend' => [
@@ -496,23 +501,6 @@ class LoginController implements LoggerAwareInterface
         $queryParams = $request->getQueryParams();
         $username = $parsedBody['username'] ?? $queryParams['username'] ?? null;
         return !empty($username) || !empty($this->submitValue);
-    }
-
-    /**
-     * returns a new standalone view, shorthand function
-     *
-     * @return StandaloneView
-     */
-    protected function getFluidTemplateObject()
-    {
-        /** @var StandaloneView $view */
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $view->setLayoutRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Layouts')]);
-        $view->setPartialRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Partials')]);
-        $view->setTemplateRootPaths([GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates')]);
-
-        $view->getRequest()->setControllerExtensionName('Backend');
-        return $view;
     }
 
     /**
