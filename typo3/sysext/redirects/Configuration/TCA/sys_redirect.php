@@ -170,7 +170,7 @@ return [
                     'linkPopup' => [
                         'options' => [
                             'blindLinkOptions' => 'mail,folder,telephone',
-                            'blindLinkFields' => 'class, target'
+                            'blindLinkFields' => 'class, target, title'
                         ],
                     ],
                 ],
