@@ -50,7 +50,7 @@ define(['jquery',
         duplicateFormModalTrigger: {identifier: '[data-identifier="duplicateForm"]'},
         removeFormModalTrigger: {identifier: '[data-identifier="removeForm"]'},
 
-        newFormMode: {identifier: '[data-identifier="newFormMode"]'},
+        newFormMode: {identifier: '[data-identifier="newFormMode"]', button: '[data-identifier="newFormModeButton"]'},
         newFormName: {identifier: '[data-identifier="newFormName"]'},
         newFormSavePath: {identifier: '[data-identifier="newFormSavePath"]'},
         newFormPrototypeName: {identifier: '[data-identifier="newFormPrototypeName"]'},
@@ -128,18 +128,24 @@ define(['jquery',
               html += '<div class="row">'
                 + '<div class="col-sm-6">'
                 + '<p>'
-                + '<label class="btn btn-block btn-default btn-block btn-createform">'
+                + '<label class="label-block">'
+                + '<button class="btn btn-block btn-default btn-block btn-createform" data-identifier="newFormModeButton" type="button">'
                 + blankIconMarkup
                 + '<input type="radio" name="newformmode" id="mode_blank" value="blank" data-identifier="newFormMode" style="display: none">'
-                + '<br>' + TYPO3.lang['formManager.blankForm.label'] + '</label>'
+                + '<br>' + TYPO3.lang['formManager.blankForm.label']
+                + '</button>'
+                + '</label>'
                 + '</p>'
                 + '</div>'
                 + '<div class="col-sm-6">'
                 + '<p>'
-                + '<label class="btn btn-block btn-default btn-block btn-createform">'
+                + '<label class="label-block">'
+                + '<button class="btn btn-block btn-default btn-block btn-createform" data-identifier="newFormModeButton" type="button">'
                 + duplicateIconMarkup
                 + '<input type="radio" name="newformmode" id="mode_predefined" value="predefined" data-identifier="newFormMode" style="display: none">'
-                + '<br>' + TYPO3.lang['formManager.predefinedForm.label'] + '</label>'
+                + '<br>' + TYPO3.lang['formManager.predefinedForm.label']
+                + '</button>'
+                + '</label>'
                 + '</p>'
                 + '</div>'
                 + '</div>';
@@ -156,6 +162,12 @@ define(['jquery',
                   MultiStepWizard.unlockNextStep().trigger('click');
                 }
               });
+
+              $(getDomElementIdentifier('newFormMode', 'button'), modal).on('click', function (e) {
+                $(getDomElementIdentifier('newFormMode'), $(this)).prop('checked', true).trigger('change');
+              });
+
+              $(getDomElementIdentifier('newFormMode', 'button'), modal).first().focus();
 
               nextButton.on('click', function() {
                 Icons.getIcon('spinner-circle', Icons.sizes.default, null, null).then(function(markup) {
@@ -320,6 +332,9 @@ define(['jquery',
               $(this).removeClass('has-error');
               MultiStepWizard.unlockNextStep();
               MultiStepWizard.set('formName', $(this).val());
+              if (e.code === 'Enter') {
+                MultiStepWizard.triggerStepButton('next');
+              }
             } else {
               $(this).addClass('has-error');
               MultiStepWizard.lockNextStep();
@@ -412,6 +427,8 @@ define(['jquery',
             + '</div>';
 
           slide.html(html);
+
+          nextButton.focus();
 
           nextButton.on('click', function(e) {
             MultiStepWizard.setup.forceSelection = false;

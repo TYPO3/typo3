@@ -57,6 +57,7 @@ $tree-line-height: 20px;
         border-color: #fff;
 
         &:hover,
+        &:focus,
         &.active {
             background-color: lighten($brand-info, 30%);
         }

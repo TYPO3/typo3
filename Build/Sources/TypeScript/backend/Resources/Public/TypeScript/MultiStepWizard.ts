@@ -227,6 +227,20 @@ class MultiStepWizard {
   }
 
   /**
+   * Trigger a step button (prev or next)
+   *
+   * @param {string} direction
+   * @returns {JQuery}
+   */
+  public triggerStepButton(direction: string): JQuery {
+    let $button = this.setup.$carousel.closest('.modal').find('button[name="' + direction + '"]');
+    if ($button.length > 0 && $button.prop('disabled') !== true) {
+      $button.trigger('click');
+    }
+    return $button;
+  }
+
+  /**
    * Blur the button for the cancel step
    *
    * @returns {JQuery}
