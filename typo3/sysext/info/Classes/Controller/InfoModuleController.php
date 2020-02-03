@@ -279,7 +279,6 @@ class InfoModuleController
                 'id',
                 'edit_record',
                 'pointer',
-                'new_unique_uid',
                 'search_field',
                 'search_levels',
                 'showLimit'
