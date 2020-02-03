@@ -493,50 +493,23 @@ class MountPointTest extends AbstractTestCase
     }
 
     /**
-     * @test
-     * @group not-postgres
-     * Does not work on postres currenly due to setUpFrontendRootPage which does not work with the database snapshotting
-     */
-    public function accessingAMountPointDirectlyThatShouldNotBeAvailableTriggersARedirect()
-    {
-        $uri = 'https://acme.ca/all-news/canada';
-        $targetUrl = 'https://acme.ca/all-news/canada/all-news/canada/';
-        $this->setUpFrontendRootPage(
-            2000,
-            [
-                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkRequest.typoscript',
-            ],
-            [
-                'title' => 'ACME Root',
-                'sitetitle' => $this->siteTitle,
-            ]
-        );
-        $response = $this->executeFrontendRequest(
-            (new InternalRequest($uri)),
-            $this->internalRequestContext
-        );
-        self::assertSame(307, $response->getStatusCode());
-        self::assertSame($targetUrl, $response->getHeaderLine('Location'));
-    }
-
-    /**
      * @return array
      */
     public function mountPointPagesShowContentAsConfiguredDataProvider()
     {
         return [
-            'Show content of MountPoint page' => [
+            'Show content of MountPoint Page' => [
                 'https://acme.ca/all-news/archive',
                 'Content of MountPoint Page'
+            ],
+            'Show content of Mounted Page' => [
+                'https://acme.ca/all-news/canada',
+                'See a list of all games distributed in canada'
             ],
         ];
     }
 
     /**
-     * This test checks for "mount_pid_ol=0", whereas mount_pid_ol=1 should trigger a redirect currently.
-     * @todo: revisit the "mount_pid_ol=1" redirect, there is some truth to it, but still would
-     * remove the context, which does not make sense. Should be revisited. See test above as well.
-     *
      * @param string $uri
      * @param string $expected
      * @dataProvider mountPointPagesShowContentAsConfiguredDataProvider
