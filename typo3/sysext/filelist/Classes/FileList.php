@@ -795,7 +795,7 @@ class FileList
                                 . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing'))
                                 . '</span>';
                         // Thumbnails?
-                        } elseif ($this->thumbs && ($this->isImage($ext) || $this->isMediaFile($ext))) {
+                        } elseif ($this->thumbs && ($fileObject->isImage() || $fileObject->isMediaFile())) {
                             $imageUri = BackendUtility::getThumbnailUrl($fileObject->getUid(), [
                                 'width' => $this->thumbnailConfiguration->getWidth(),
                                 'height' => $this->thumbnailConfiguration->getHeight()
@@ -851,24 +851,26 @@ class FileList
 
     /**
      * Returns TRUE if $ext is an image-extension according to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+     * Use the AbstractFile->isImage() method if you're using File objects directly
      *
      * @param string $ext File extension
      * @return bool
      */
     public function isImage($ext)
     {
-        return GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($ext));
+        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($ext));
     }
 
     /**
      * Returns TRUE if $ext is a media-extension according to $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']
+     * Use the AbstractFile->isMediaFile() method if you're using File objects directly
      *
      * @param string $ext File extension
      * @return bool
      */
     public function isMediaFile($ext)
     {
-        return GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'], strtolower($ext));
+        return GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']), strtolower($ext));
     }
 
     /**
@@ -994,7 +996,7 @@ class FileList
         $fullIdentifier = $fileOrFolderObject->getCombinedIdentifier();
 
         // Edit file content (if editable)
-        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $fileOrFolderObject->getExtension())) {
+        if ($fileOrFolderObject instanceof File && $fileOrFolderObject->checkActionPermission('write') && $fileOrFolderObject->isTextFile()) {
             $url = (string)$this->uriBuilder->buildUriFromRoute('file_edit', ['target' => $fullIdentifier]);
             $editOnClick = 'top.list_frame.location.href=' . GeneralUtility::quoteJSvalue($url) . '+\'&returnUrl=\'+encodeURIComponent(top.list_frame.document.location.pathname+top.list_frame.document.location.search);return false;';
             $cells['edit'] = '<a href="#" class="btn btn-default" onclick="' . htmlspecialchars($editOnClick) . '" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.editcontent') . '">'

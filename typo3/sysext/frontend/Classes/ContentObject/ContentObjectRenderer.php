@@ -4359,7 +4359,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                     $processingConfiguration['stripProfile'] = $fileArray['stripProfile'];
                 }
                 // Check if we can handle this type of file for editing
-                if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+                if ($fileObject->isImage()) {
                     $maskArray = $fileArray['m.'];
                     // Must render mask images and include in hash-calculating
                     // - otherwise we cannot be sure the filename is unique for the setup!

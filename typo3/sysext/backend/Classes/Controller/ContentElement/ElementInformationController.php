@@ -310,7 +310,6 @@ class ElementInformationController
         } else {
             $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
             $fileRenderer = $rendererRegistry->getRenderer($this->fileObject);
-            $fileExtension = $this->fileObject->getExtension();
             $preview['url'] = $this->fileObject->getPublicUrl(true);
 
             $width = '590m';
@@ -327,7 +326,7 @@ class ElementInformationController
                 );
 
             // else check if we can create an Image preview
-            } elseif (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileExtension)) {
+            } elseif ($this->fileObject->isImage()) {
                 $preview['fileObject'] = $this->fileObject;
                 $preview['width'] = $width;
                 $preview['height'] = $height;

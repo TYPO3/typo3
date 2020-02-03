@@ -107,9 +107,7 @@ class LocalPreviewHelper
     protected function generatePreviewFromFile(File $file, array $configuration, $targetFilePath)
     {
         // Check file extension
-        if ($file->getType() !== File::FILETYPE_IMAGE
-            && !GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())
-        ) {
+        if ($file->getType() !== File::FILETYPE_IMAGE && !$file->isImage()) {
             // Create a default image
             $graphicalFunctions = GeneralUtility::makeInstance(GraphicalFunctions::class);
             $graphicalFunctions->getTemporaryImageWithText(

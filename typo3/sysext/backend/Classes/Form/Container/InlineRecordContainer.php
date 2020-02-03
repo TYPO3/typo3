@@ -367,8 +367,7 @@ class InlineRecordContainer extends AbstractContainer
                     }
                     $imageSetup = array_merge(['width' => '45', 'height' => '45c'], $imageSetup);
 
-                    if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']
-                        && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
+                    if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] && $fileObject->isImage()) {
                         $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, $imageSetup);
                         // Only use a thumbnail if the processing process was successful by checking if image width is set
                         if ($processedImage->getProperty('width')) {

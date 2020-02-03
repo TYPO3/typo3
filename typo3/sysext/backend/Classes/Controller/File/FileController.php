@@ -246,8 +246,7 @@ class FileController
      */
     protected function getFileEditRedirect(File $file): ?string
     {
-        $textFileExtensionList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'] ?? '';
-        if (!GeneralUtility::inList($textFileExtensionList, $file->getExtension())) {
+        if (!$file->isTextFile()) {
             return null;
         }
         $properties = $file->getProperties();
@@ -279,7 +278,7 @@ class FileController
     {
         if ($result instanceof File) {
             $thumbUrl = '';
-            if (GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $result->getExtension())) {
+            if ($result->isImage()) {
                 $processedFile = $result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, []);
                 if ($processedFile) {
                     $thumbUrl = $processedFile->getPublicUrl(true);

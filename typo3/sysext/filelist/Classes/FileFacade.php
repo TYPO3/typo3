@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\AbstractFile;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -75,7 +76,8 @@ class FileFacade
     public function getIsEditable(): bool
     {
         return $this->getIsWritable()
-            && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $this->resource->getExtension());
+            && $this->resource instanceof AbstractFile
+            && $this->resource->isTextFile();
     }
 
     /**
@@ -282,7 +284,7 @@ class FileFacade
      */
     public function getIsImage()
     {
-        return GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], strtolower($this->getExtension()));
+        return $this->resource instanceof AbstractFile && $this->resource->isImage();
     }
 
     /**

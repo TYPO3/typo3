@@ -900,7 +900,7 @@ class SetupModuleController
             }
 
             // Check if extension is allowed
-            if ($file && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $file->getExtension())) {
+            if ($file && $file->isImage()) {
 
                 // Create new file reference
                 $storeRec['sys_file_reference']['NEW1234'] = [

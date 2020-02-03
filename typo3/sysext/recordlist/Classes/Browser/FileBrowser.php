@@ -262,10 +262,9 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
 
         foreach ($files as $fileObject) {
-            $fileExtension = $fileObject->getExtension();
             // Thumbnail/size generation:
             $imgInfo = [];
-            if (!$noThumbs && GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] . ',' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext']), strtolower($fileExtension))) {
+            if (!$noThumbs && ($fileObject->isMediaFile() || $fileObject->isImage())) {
                 $processedFile = $fileObject->process(
                     ProcessedFile::CONTEXT_IMAGEPREVIEW,
                     $this->thumbnailConfiguration
@@ -295,7 +294,7 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
                 'uid' => $fileObject->getUid(),
                 'fileName' => $fileObject->getName(),
                 'filePath' => $fileObject->getUid(),
-                'fileExt' => $fileExtension,
+                'fileExt' => $fileObject->getExtension(),
                 'fileIcon' => $icon
             ];
             if ($this->fileIsSelectableInFileList($fileObject, $imgInfo)) {

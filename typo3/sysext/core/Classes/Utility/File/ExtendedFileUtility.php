@@ -989,20 +989,20 @@ class ExtendedFileUtility extends BasicFileUtility
         // for backwards compatibility: the combined file identifier was the path+filename
         $fileIdentifier = $cmds['target'];
         $fileObject = $this->getFileObject($fileIdentifier);
-        // Example identifier for $cmds['target'] => "2:targetpath/targetfolder/"
-        $content = $cmds['data'];
         if (!$fileObject instanceof File) {
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::SYSTEM_ERROR, 123, 'Target "%s" was not a file!', [$fileIdentifier]);
             $this->addMessageToFlashMessageQueue('FileUtility.TargetWasNotAFile', [$fileIdentifier]);
             return false;
         }
-        $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
-        if (!GeneralUtility::inList($extList, $fileObject->getExtension())) {
+        if (!$fileObject->isTextFile()) {
+            $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::USER_ERROR, 102, 'File extension "%s" is not a textfile format! (%s)', [$fileObject->getExtension(), $extList]);
             $this->addMessageToFlashMessageQueue('FileUtility.FileExtensionIsNotATextfileFormat', [$fileObject->getExtension(), $extList]);
             return false;
         }
         try {
+            // Example identifier for $cmds['target'] => "2:targetpath/targetfolder/"
+            $content = $cmds['data'];
             $fileObject->setContents($content);
             clearstatcache();
             $this->writeLog(SystemLogFileAction::EDIT, SystemLogErrorClassification::MESSAGE, 1, 'File saved to "%s", bytes: %s, MD5: %s ', [$fileObject->getIdentifier(), $fileObject->getSize(), md5($content)]);

@@ -182,9 +182,9 @@ class EditFileController
         $assigns['moduleUrlTceFile'] = (string)$uriBuilder->buildUriFromRoute('tce_file');
         $assigns['fileName'] = $this->fileObject->getName();
 
-        $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
         try {
-            if (!$extList || !GeneralUtility::inList($extList, $this->fileObject->getExtension())) {
+            $extList = $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'];
+            if (!$this->fileObject->isTextFile()) {
                 // @todo throw a minor exception here, not the global one
                 throw new \Exception('Files with that extension are not editable. Allowed extensions are: ' . $extList, 1476050135);
             }

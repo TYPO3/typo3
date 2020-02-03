@@ -385,13 +385,7 @@ class Clipboard
                             $thumb = [];
                             $folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
                             $size = $folder ? '' : '(' . GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
-                            if (
-                                !$folder
-                                && GeneralUtility::inList(
-                                    $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'],
-                                    $fileObject->getExtension()
-                                )
-                            ) {
+                            if (!$folder && $fileObject->isImage()) {
                                 $thumb = [
                                     'image' => $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl(true),
                                     'title' => htmlspecialchars($fileObject->getName())

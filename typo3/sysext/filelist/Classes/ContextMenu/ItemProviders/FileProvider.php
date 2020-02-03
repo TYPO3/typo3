@@ -182,7 +182,7 @@ class FileProvider extends \TYPO3\CMS\Backend\ContextMenu\ItemProviders\Abstract
     {
         return $this->isFile()
            && $this->record->checkActionPermission('write')
-           && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], $this->record->getExtension());
+           && $this->record->isTextFile();
     }
 
     /**
