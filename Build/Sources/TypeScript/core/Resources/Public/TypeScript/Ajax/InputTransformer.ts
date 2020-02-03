@@ -35,7 +35,7 @@ export class InputTransformer {
    * @return {FormData}
    */
   public static toFormData(data: GenericKeyValue): FormData {
-    const flattenedData = InputTransformer.flattenObject(data);
+    const flattenedData = InputTransformer.filter(InputTransformer.flattenObject(data));
     const formData = new FormData();
     for (const [key, value] of Object.entries(flattenedData)) {
       formData.set(key, value);
@@ -59,7 +59,7 @@ export class InputTransformer {
       return data.join('&');
     }
 
-    const flattenedData = InputTransformer.flattenObject(data);
+    const flattenedData = InputTransformer.filter(InputTransformer.flattenObject(data));
     const searchParams = new URLSearchParams();
     for (const [key, value] of Object.entries(flattenedData)) {
       searchParams.set(key, value);
@@ -79,5 +79,14 @@ export class InputTransformer {
       }
       return accumulator;
     }, {});
+  }
+
+  private static filter(obj: GenericKeyValue): GenericKeyValue {
+    Object.keys(obj).forEach((key: string): void => {
+      if (typeof obj[key] === 'undefined') {
+        delete obj[key];
+      }
+    });
+    return obj;
   }
 }
