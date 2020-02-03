@@ -169,4 +169,46 @@ class BrokenLinkRepository
             )
             ->execute();
     }
+
+    /**
+     * Prepare database query with pageList and keyOpt data.
+     *
+     * @param int[] $pageIds Pages to check for broken links
+     * @param string[] $linkTypes Link types to validate
+     * @return array
+     */
+    public function getAllBrokenLinksForPages(array $pageIds, array $linkTypes): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getQueryBuilderForTable(self::TABLE);
+        return $queryBuilder
+            ->select('*')
+            ->from(self::TABLE)
+            ->where(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_uid',
+                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in(
+                            'record_pid',
+                            $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
+                        ),
+                        $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
+                    )
+                ),
+                $queryBuilder->expr()->in(
+                    'link_type',
+                    $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
+                )
+            )
+            ->orderBy('record_uid')
+            ->addOrderBy('uid')
+            ->execute()
+            ->fetchAll();
+    }
 }

@@ -14,12 +14,10 @@ namespace TYPO3\CMS\Linkvalidator\Report;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Doctrine\DBAL\Driver\Statement;
 use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -34,6 +32,7 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
+use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 
 /**
  * Module 'Link validator' as sub module of Web -> Info
@@ -171,6 +170,11 @@ class LinkValidatorReport
     protected $pidList;
 
     /**
+     * @var BrokenLinkRepository
+     */
+    protected $brokenLinkRepository;
+
+    /**
      * Init, called from parent object
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
@@ -179,6 +183,7 @@ class LinkValidatorReport
     {
         $this->pObj = $pObj;
         $this->id = (int)GeneralUtility::_GP('id');
+        $this->brokenLinkRepository = GeneralUtility::makeInstance(BrokenLinkRepository::class);
     }
 
     /**
@@ -504,29 +509,26 @@ class LinkValidatorReport
         $rootLineHidden = $this->linkAnalyzer->getRootLineIsHidden($this->pObj->pageinfo);
         if (!$rootLineHidden || (bool)$this->modTS['checkhidden']) {
             $pageList = $this->getPageList();
-            $result = false;
             $items = [];
             if (!empty($linkTypes)) {
-                $result = $this->getLinkValidatorBrokenLinks($pageList, $linkTypes);
-                if ($result) {
-                    // Display table with broken links
-                    $brokenLinksItemTemplate = $this->templateService->getSubpart(
+                $brokenLinks = $this->brokenLinkRepository->getAllBrokenLinksForPages($pageList, $linkTypes);
+                // Display table with broken links
+                $brokenLinksItemTemplate = $this->templateService->getSubpart(
+                    $this->doc->moduleTemplate,
+                    '###BROKENLINKS_ITEM###'
+                );
+
+                // Table rows containing the broken links
+                foreach ($brokenLinks as $row) {
+                    $items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
+                }
+
+                if (!empty($items)) {
+                    $brokenLinksTemplate = $this->templateService->getSubpart(
                         $this->doc->moduleTemplate,
-                        '###BROKENLINKS_ITEM###'
+                        '###BROKENLINKS_CONTENT###'
                     );
-
-                    // Table rows containing the broken links
-                    while ($row = $result->fetch()) {
-                        $items[] = $this->renderTableRow($row['table_name'], $row, $brokenLinksItemTemplate);
-                    }
-
-                    if (!empty($items)) {
-                        $brokenLinksTemplate = $this->templateService->getSubpart(
-                            $this->doc->moduleTemplate,
-                            '###BROKENLINKS_CONTENT###'
-                        );
-                        $brokenLinkItems = implode(LF, $items);
-                    }
+                    $brokenLinkItems = implode(LF, $items);
                 }
             }
 
@@ -568,53 +570,6 @@ class LinkValidatorReport
         $pageList = $this->addPageTranslationsToPageList($pageList, $permsClause);
 
         return GeneralUtility::intExplode(',', $pageList, true);
-    }
-
-    /**
-     * Prepare database query with pageList and keyOpt data.
-     *
-     * @param int[] $pageList Pages to check for broken links
-     * @param string[] $linkTypes Link types to validate
-     * @return Statement
-     */
-    protected function getLinkValidatorBrokenLinks(array $pageList, array $linkTypes): Statement
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('tx_linkvalidator_link');
-        $queryBuilder
-            ->select('*')
-            ->from('tx_linkvalidator_link')
-            ->where(
-                $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_uid',
-                            $queryBuilder->createNamedParameter($pageList, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->eq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    ),
-                    $queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->in(
-                            'record_pid',
-                            $queryBuilder->createNamedParameter($pageList, Connection::PARAM_INT_ARRAY)
-                        ),
-                        $queryBuilder->expr()->neq('table_name', $queryBuilder->createNamedParameter('pages'))
-                    )
-                )
-            )
-            ->orderBy('record_uid')
-            ->addOrderBy('uid');
-
-        if (!empty($linkTypes)) {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    'link_type',
-                    $queryBuilder->createNamedParameter($linkTypes, Connection::PARAM_STR_ARRAY)
-                )
-            );
-        }
-
-        return $queryBuilder->execute();
     }
 
     /**
