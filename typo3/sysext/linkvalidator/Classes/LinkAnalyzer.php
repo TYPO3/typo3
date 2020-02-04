@@ -220,18 +220,6 @@ class LinkAnalyzer
     }
 
     /**
-     * Set that a recheck is necessary for recordUid / table combination in list
-     * of broken links.
-     *
-     * @param string $recordUid
-     * @param string $table
-     */
-    public function setNeedsRecheck(string $recordUid, string $table): void
-    {
-        $this->brokenLinkRepository->setNeedsRecheckForRecord($table, (int)$recordUid);
-    }
-
-    /**
      * Recheck for broken links for one field in table for record.
      *
      * @param array $checkOptions
@@ -475,13 +463,12 @@ class LinkAnalyzer
     public function getLinkCounts()
     {
         $groupedResult = $this->brokenLinkRepository->getNumberOfBrokenLinksForRecordsOnPages($this->pids);
-
-        $markerArray = [];
+        $data = [];
         foreach ($groupedResult as $linkType => $amount) {
-            $markerArray[$linkType] = $amount;
-            $markerArray['brokenlinkCount'] += $amount;
+            $data[$linkType] = $amount;
+            $data['brokenlinkCount'] += $amount;
         }
-        return $markerArray;
+        return $data;
     }
 
     /**

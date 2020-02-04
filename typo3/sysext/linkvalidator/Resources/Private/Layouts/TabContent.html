@@ -1,0 +1,39 @@
+<div class="linkvalidator-check-options">
+    <input type="hidden" name="id" value="{pageId}" />
+    <h4><f:render section="OptionsTitle" /></h4>
+    <div>
+        <table class="table table-striped table-hover" id="linkvalidator-statistics-table">
+            <thead>
+            <tr>
+                <th>{options.totalCountLabel -> f:format.raw()}</th>
+                <th class="number"><span class="badge">{options.totalCount}</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{options.optionsByType}" as="optionByType">
+                <tr>
+                    <td>{optionByType.checkbox -> f:format.raw()}{optionByType.label -> f:format.raw()}</td>
+                    <td class="number"><span class="badge">{optionByType.count}</span></td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+        <input type="hidden" name="{prefix}_values" value="1">
+    </div>
+</div>
+<div class="linkvalidator-function-menu">
+    <h4><f:render section="levelTitle" /></h4>
+    <div>
+        <select name="{prefix}_search_levels" class="form-control">
+            <option value="0"{f:if(condition: '{selectedLevel} == 0', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+            <option value="1"{f:if(condition: '{selectedLevel} == 1', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+            <option value="2"{f:if(condition: '{selectedLevel} == 2', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+            <option value="3"{f:if(condition: '{selectedLevel} == 3', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+            <option value="4"{f:if(condition: '{selectedLevel} == 4', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0" /></option>
+            <option value="999"{f:if(condition: '{selectedLevel} == 999', then: 'selected')}><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi" /></option>
+        </select>
+    </div>
+</div>
+<div class="linkvalidator-button"><f:render section="Button" /></div>
+
+<f:render section="Main" optional="true" />
