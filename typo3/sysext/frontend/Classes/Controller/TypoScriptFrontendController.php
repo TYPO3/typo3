@@ -1639,7 +1639,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                     . 'mounts a page which is not accessible (ID ' . $this->originalMountPointPage['mount_pid'] . ').';
                 throw new PageNotFoundException($message, 1402043263);
             }
-            if ($this->MP === '') {
+            // If the current page is a shortcut, the MP parameter will be replaced
+            if ($this->MP === '' || !empty($this->originalShortcutPage)) {
                 $this->MP = $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
             } else {
                 $this->MP .= ',' . $this->page['uid'] . '-' . $this->originalMountPointPage['uid'];
