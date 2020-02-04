@@ -15,9 +15,6 @@
 			<trans-unit id="noEditPage" resname="noEditPage">
 				<source>Sorry, you do not have permissions to edit this page!</source>
 			</trans-unit>
-			<trans-unit id="nextThree" resname="nextThree">
-				<source>Edit next %s records</source>
-			</trans-unit>
 			<trans-unit id="moveUp" resname="moveUp">
 				<source>Move record up</source>
 			</trans-unit>

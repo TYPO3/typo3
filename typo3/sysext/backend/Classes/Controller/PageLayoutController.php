@@ -38,7 +38,6 @@ use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
@@ -612,7 +611,6 @@ class PageLayoutController
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
         $dbList->doEdit = $this->isContentEditable($this->current_sys_language);
-        $dbList->nextThree = MathUtility::forceIntegerInRange($this->modTSconfig['properties']['editFieldsAtATime'], 1, 10);
         $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
         $dbList->defLangBinding = !empty($this->modTSconfig['properties']['defLangBinding']);
         $tableOutput = '';
@@ -657,9 +655,7 @@ class PageLayoutController
                         </label>
                     </div>';
             }
-            // Start the dblist object:
-            $dbList->start($this->id);
-            // Generate the list of elements here:
+            // Generate the list of content elements
             $tableOutput = $dbList->getTable_tt_content($this->id) . $h_func_b;
         }
         // Init the content
