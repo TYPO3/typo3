@@ -181,7 +181,7 @@ class BrokenLinkRepository
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable(self::TABLE);
-        return $queryBuilder
+        $records = $queryBuilder
             ->select('*')
             ->from(self::TABLE)
             ->where(
@@ -210,5 +210,26 @@ class BrokenLinkRepository
             ->addOrderBy('uid')
             ->execute()
             ->fetchAll();
+        foreach ($records as &$record) {
+            $response = json_decode($record['url_response'], true);
+            // Fallback mechansim to still support the old serialized data, could be removed in TYPO3 v12 or later
+            if ($response === null) {
+                $response = unserialize($record['url_response'], ['allowed_classes' => false]);
+            }
+            $record['url_response'] = $response;
+        }
+        return $records;
+    }
+
+    public function addBrokenLink($record, bool $isValid, array $errorParams = null): void
+    {
+        $response = ['valid' => $isValid];
+        if ($errorParams) {
+            $response['errorParams'] = $errorParams;
+        }
+        $record['url_response'] = json_encode($response);
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable(self::TABLE)
+            ->insert(self::TABLE, $record);
     }
 }

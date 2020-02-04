@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype;
 use TYPO3\CMS\Linkvalidator\Repository\BrokenLinkRepository;
 
 /**
@@ -76,13 +77,6 @@ class LinkAnalyzer
     protected $recordReference = '';
 
     /**
-     * Linked page together with a possible anchor, e.g. 85#c105
-     *
-     * @var string
-     */
-    protected $pageWithAnchor = '';
-
-    /**
      * The currently active TSconfig. Will be passed to the init function.
      *
      * @var array
@@ -109,14 +103,14 @@ class LinkAnalyzer
     /**
      * Store all the needed configuration values in class variables
      *
-     * @param array $searchField List of fields in which to search for links
-     * @param string $pidList List of comma separated page uids in which to search for links
+     * @param array $searchFields List of fields in which to search for links
+     * @param string|array $pidList List of comma separated page uids in which to search for links, can be an array too
      * @param array $tsConfig The currently active TSconfig.
      */
-    public function init(array $searchField, $pidList, $tsConfig)
+    public function init(array $searchFields, $pidList, $tsConfig)
     {
-        $this->searchFields = $searchField;
-        $this->pids = GeneralUtility::intExplode(',', $pidList, true);
+        $this->searchFields = $searchFields;
+        $this->pids = is_array($pidList) ? $pidList : GeneralUtility::intExplode(',', $pidList, true);
         $this->tsConfig = $tsConfig;
 
         // Hook to handle own checks
@@ -203,10 +197,9 @@ class LinkAnalyzer
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
                 $this->recordReference = $entryValue['substr']['recordRef'];
-                $this->pageWithAnchor = $entryValue['pageAndAnchor'];
-                if (!empty($this->pageWithAnchor)) {
+                if (!empty($entryValue['pageAndAnchor'] ?? '')) {
                     // Page with anchor, e.g. 18#1580
-                    $url = $this->pageWithAnchor;
+                    $url = $entryValue['pageAndAnchor'];
                 } else {
                     $url = $entryValue['substr']['tokenValue'];
                 }
@@ -216,22 +209,11 @@ class LinkAnalyzer
 
                 // Broken link found
                 if (!$checkUrl) {
-                    $response = [
-                        'valid' => false,
-                        'errorParams' => $hookObj->getErrorParams()
-                    ];
+                    $this->brokenLinkRepository->addBrokenLink($record, false, $hookObj->getErrorParams());
                     $this->brokenLinkCounts[$table]++;
-                    $record['url_response'] = json_encode($response);
-                    GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getConnectionForTable('tx_linkvalidator_link')
-                        ->insert('tx_linkvalidator_link', $record);
                 } elseif (GeneralUtility::_GP('showalllinks')) {
-                    $response = ['valid' => true];
+                    $this->brokenLinkRepository->addBrokenLink($record, true);
                     $this->brokenLinkCounts[$table]++;
-                    $record['url_response'] = json_encode($response);
-                    GeneralUtility::makeInstance(ConnectionPool::class)
-                        ->getConnectionForTable('tx_linkvalidator_link')
-                        ->insert('tx_linkvalidator_link', $record);
                 }
             }
         }
@@ -327,7 +309,6 @@ class LinkAnalyzer
 
         // Put together content of all relevant fields
         $haystack = '';
-        /** @var HtmlParser $htmlParser */
         $htmlParser = GeneralUtility::makeInstance(HtmlParser::class);
         $idRecord = $record['uid'];
         // Get all references
@@ -409,7 +390,7 @@ class LinkAnalyzer
                 continue;
             }
 
-            /** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
+            /** @var AbstractLinktype $hookObj */
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($r, $type, $keyArr);
                 // Store the type that was found
@@ -467,7 +448,7 @@ class LinkAnalyzer
                 }
                 $title = strip_tags($linkTags[$i]);
             }
-            /** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
+            /** @var AbstractLinktype $hookObj */
             foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
                 $type = $hookObj->fetchType($currentR, $type, $keyArr);
                 // Store the type that was found
@@ -513,12 +494,12 @@ class LinkAnalyzer
      *
      * @param int $id Start page id
      * @param int $depth Depth to traverse down the page tree.
-     * @param int $begin is an optional integer that determines at which
+     * @param int $begin is an optional integer that determines at which level to start. use "0" from outside usage
      * @param string $permsClause Perms clause
      * @param bool $considerHidden Whether to consider hidden pages or not
      * @return string Returns the list with a comma in the end (if any pages selected!)
      */
-    public function extGetTreeList($id, $depth, $begin = 0, $permsClause, $considerHidden = false)
+    public function extGetTreeList($id, $depth, $begin, $permsClause, $considerHidden = false)
     {
         $depth = (int)$depth;
         $begin = (int)$begin;

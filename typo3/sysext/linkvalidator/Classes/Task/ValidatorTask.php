@@ -342,12 +342,12 @@ class ValidatorTask extends AbstractTask
         if (!empty($pageIds)) {
             $processor->init($searchFields, $pageIds, $modTs);
             if (!empty($this->email)) {
-                $oldLinkCounts = $processor->getLinkCounts($page);
+                $oldLinkCounts = $processor->getLinkCounts();
                 $this->oldTotalBrokenLink += $oldLinkCounts['brokenlinkCount'];
             }
             $processor->getLinkStatistics($linkTypes, $modTs['checkhidden']);
             if (!empty($this->email)) {
-                $linkCounts = $processor->getLinkCounts($page);
+                $linkCounts = $processor->getLinkCounts();
                 $this->totalBrokenLink += $linkCounts['brokenlinkCount'];
                 $pageSections = $this->buildMail($page, $pageIds, $linkCounts, $oldLinkCounts);
             }
@@ -433,12 +433,8 @@ class ValidatorTask extends AbstractTask
     {
         $lang = $this->getLanguageService();
         $content = $this->templateService->substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
-        /** @var array $markerArray */
         $markerArray = [];
-        /** @var array $validEmailList */
         $validEmailList = [];
-        /** @var bool $sendEmail */
-        $sendEmail = true;
         $markerArray['totalBrokenLink'] = $this->totalBrokenLink;
         $markerArray['totalBrokenLink_old'] = $this->oldTotalBrokenLink;
 
