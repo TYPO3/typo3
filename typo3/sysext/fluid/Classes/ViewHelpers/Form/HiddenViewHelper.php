@@ -62,6 +62,8 @@ class HiddenViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
         $this->tag->addAttribute('name', $name);
         $this->tag->addAttribute('value', $this->getValueAttribute());
 
+        $this->addAdditionalIdentityPropertiesIfNeeded();
+
         return $this->tag->render();
     }
 }
