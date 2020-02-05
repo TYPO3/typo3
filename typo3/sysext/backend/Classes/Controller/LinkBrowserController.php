@@ -54,9 +54,6 @@ class LinkBrowserController extends AbstractLinkBrowserController
         parent::initCurrentUrl();
     }
 
-    /**
-     * Initialize document template object
-     */
     protected function initDocumentTemplate()
     {
         parent::initDocumentTemplate();

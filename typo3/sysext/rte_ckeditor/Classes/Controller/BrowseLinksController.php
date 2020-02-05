@@ -104,7 +104,6 @@ class BrowseLinksController extends AbstractLinkBrowserController
     protected function init()
     {
         parent::init();
-
         $this->contentLanguageService = GeneralUtility::makeInstance(LanguageService::class);
     }
 
@@ -142,13 +141,9 @@ class BrowseLinksController extends AbstractLinkBrowserController
         $this->buttonConfig = $this->thisConfig['buttons']['link'] ?? [];
     }
 
-    /**
-     * Initialize document template object
-     */
     protected function initDocumentTemplate()
     {
         parent::initDocumentTemplate();
-
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->loadRequireJsModule(
             'TYPO3/CMS/RteCkeditor/RteLinkBrowser',
@@ -287,19 +282,10 @@ class BrowseLinksController extends AbstractLinkBrowserController
         return $JScharCode ? GeneralUtility::quoteJSvalue($label) : $label;
     }
 
-    /**
-     * @return string
-     */
     protected function renderCurrentUrl()
     {
-        $removeLink = ' <a href="#" class="t3js-removeCurrentLink">' . htmlspecialchars($this->getLanguageService()->getLL('removeLink')) . '</a>';
-        return '
-            <div class="element-browser-panel element-browser-title">' .
-                htmlspecialchars($this->getLanguageService()->getLL('currentLink')) .
-                ': ' .
-                htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
-                '<span class="pull-right">' . $removeLink . '</span>' .
-            '</div>';
+        $this->moduleTemplate->getView()->assign('removeCurrentLink', true);
+        parent::renderCurrentUrl();
     }
 
     /**

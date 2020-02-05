@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Recordlist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -45,23 +44,11 @@ class ElementBrowserController
     protected $mode;
 
     /**
-     * Document template object
-     *
-     * @var DocumentTemplate
-     */
-    public $doc;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $GLOBALS['SOBE'] = $this;
-
-        // Creating backend template object:
-        // this might not be needed but some classes refer to $GLOBALS['SOBE']->doc, so ...
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-
         $this->init();
     }
 

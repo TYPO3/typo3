@@ -1,0 +1,33 @@
+<f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
+<f:if condition="{currentUrl}">
+    <div class="element-browser-panel element-browser-title">
+        <f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:currentLink" />: {currentUrl}
+        <f:if condition="{removeCurrentLink}">
+            <span class="pull-right">
+                <a href="#" class="t3js-removeCurrentLink"><f:translate key="LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:removeLink" /></a>
+            </span>
+        </f:if>
+    </div>
+</f:if>
+<div class="element-browser-panel element-browser-tabs">
+    <ul class="nav nav-tabs" role="tablist">
+        <f:for each="{menuItems}" as="menuItem" key="menuId">
+            <li{f:if(condition: '{menuItem.isActive}', then: ' class="active"')}>
+                <a href="{menuItem.url}" {menuItem.addParams -> f:format.raw()}>{menuItem.label}</a>
+            </li>
+        </f:for>
+    </ul>
+</div>
+<div class="element-browser-panel element-browser-attributes">
+    <f:format.raw>{linkAttributes}</f:format.raw>
+    <f:if condition="{showUpdateParametersButton}">
+        <form action="" name="lparamsform" id="lparamsform" class="form-horizontal">
+            <div class="form-group form-group-sm">
+                <div class="col-xs-12">
+                    <input class="btn btn-default t3js-linkCurrent" type="submit" value="{f:translate(key: 'LLL:EXT:recordlist/Resources/Private/Language/locallang_browse_links.xlf:update')}" />
+                </div>
+            </div>
+        </form>
+    </f:if>
+</div>
+<f:format.raw>{content}</f:format.raw>

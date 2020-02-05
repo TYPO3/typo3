@@ -193,8 +193,6 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
         }
         $displayThumbs = $_MOD_SETTINGS['displayThumbs'] ?? false;
         $noThumbs = $noThumbs ?: !$displayThumbs;
-        // Create folder tree:
-        /** @var ElementBrowserFolderTreeView $folderTree */
         $folderTree = GeneralUtility::makeInstance(ElementBrowserFolderTreeView::class);
         $folderTree->setLinkParameterProvider($this);
         $tree = $folderTree->getBrowsableTree();
@@ -204,35 +202,15 @@ class FileBrowser extends AbstractElementBrowser implements ElementBrowserInterf
             $files = '';
         }
 
-        $this->initDocumentTemplate();
-        // Starting content:
-        $content = $this->doc->startPage(htmlspecialchars($this->getLanguageService()->getLL('fileSelector')));
-
-        // Putting the parts together, side by side:
-        $markup = [];
-        $markup[] = '<!-- Wrapper table for folder tree / filelist: -->';
-        $markup[] = '<div class="element-browser">';
-        $markup[] = '   <div class="element-browser-panel element-browser-main">';
-        $markup[] = '       <div class="element-browser-main-sidebar">';
-        $markup[] = '           <div class="element-browser-body">';
-        $markup[] = '               ' . $tree;
-        $markup[] = '           </div>';
-        $markup[] = '       </div>';
-        $markup[] = '       <div class="element-browser-main-content">';
-        $markup[] = '           <div class="element-browser-body">';
-        $markup[] = '               ' . $this->doc->getFlashMessages();
-        $markup[] = '               ' . $files;
-        $markup[] = '               ' . $uploadForm;
-        $markup[] = '               ' . $createFolder;
-        $markup[] = '           </div>';
-        $markup[] = '       </div>';
-        $markup[] = '   </div>';
-        $markup[] = '</div>';
-        $content .= implode('', $markup);
-
-        // Ending page, returning content:
-        $content .= $this->doc->endPage();
-        return $this->doc->insertStylesAndJS($content);
+        $this->setBodyTagParameters();
+        $this->moduleTemplate->setTitle($this->getLanguageService()->getLL('fileSelector'));
+        $view = $this->moduleTemplate->getView();
+        $view->assignMultiple([
+            'treeEnabled' => true,
+            'tree' => $tree,
+            'content' => $files . $uploadForm . $createFolder
+        ]);
+        return $this->moduleTemplate->renderContent();
     }
 
     /**

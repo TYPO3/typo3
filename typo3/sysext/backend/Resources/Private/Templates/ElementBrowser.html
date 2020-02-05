@@ -1,0 +1,10 @@
+<f:layout name="ElementBrowser" />
+<f:section name="Tree">
+    <f:if condition="{temporaryTreeMountCancelUrl}">
+        <p><a href="{temporaryTreeMountCancelUrl}" class="btn btn-primary"><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.temporaryDBmount" /></a></p>
+    </f:if>
+    <f:format.raw>{tree}</f:format.raw>
+</f:section>
+<f:section name="Main">
+    <f:format.raw>{content}</f:format.raw>
+</f:section>

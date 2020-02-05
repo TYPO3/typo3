@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Recordlist\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
@@ -34,9 +34,9 @@ use TYPO3\CMS\Recordlist\LinkHandler\LinkHandlerInterface;
 abstract class AbstractLinkBrowserController
 {
     /**
-     * @var DocumentTemplate
+     * @var ModuleTemplate
      */
-    protected $doc;
+    protected $moduleTemplate;
 
     /**
      * @var array
@@ -118,6 +118,9 @@ abstract class AbstractLinkBrowserController
      */
     public function __construct()
     {
+        $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
+        $this->moduleTemplate->getView()->setTemplate('LinkBrowser');
         $this->initHookObjects();
         $this->init();
     }
@@ -164,31 +167,18 @@ abstract class AbstractLinkBrowserController
         $browserContent = $this->displayedLinkHandler->render($request);
 
         $this->initDocumentTemplate();
-        $content = $this->doc->startPage('Link Browser');
-        $content .= $this->doc->getFlashMessages();
+        $view = $this->moduleTemplate->getView();
+        $this->moduleTemplate->setTitle('Link Browser');
 
         if (!empty($this->currentLinkParts)) {
-            $content .= $this->renderCurrentUrl();
+            $this->renderCurrentUrl();
         }
 
-        $options = '';
-        foreach ($menuData as $id => $def) {
-            $class = $def['isActive'] ? ' class="active"' : '';
+        $view->assign('menuItems', $menuData);
+        $view->assign('linkAttributes', $renderLinkAttributeFields);
+        $view->assign('content', $browserContent);
 
-            $options .= '<li' . $class . '>'
-                . '<a href="' . htmlspecialchars($def['url']) . '" ' . $def['addParams'] . '>' . htmlspecialchars($def['label']) . '</a>'
-                . '</li>';
-        }
-
-        $content .= '<div class="element-browser-panel element-browser-tabs"><ul class="nav nav-tabs" role="tablist">' .
-            $options . '</ul></div>';
-
-        $content .= $renderLinkAttributeFields;
-
-        $content .= $browserContent;
-        $content .= $this->doc->endPage();
-
-        return new HtmlResponse($this->doc->insertStylesAndJS($content));
+        return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -312,35 +302,21 @@ abstract class AbstractLinkBrowserController
     }
 
     /**
-     * Initialize document template object
+     * Initialize body tag parameters, but can be used for other parts as well
      */
     protected function initDocumentTemplate()
     {
-        $this->doc = GeneralUtility::makeInstance(DocumentTemplate::class);
-        $this->doc->divClass = 'element-browser';
-
-        foreach ($this->getBodyTagAttributes() as $attributeName => $value) {
-            $this->doc->bodyTagAdditions .= ' ' . $attributeName . '="' . htmlspecialchars($value) . '"';
-        }
-
-        // Finally, add the accumulated JavaScript to the template object:
-        // also unset the default jumpToUrl() function before
-        unset($this->doc->JScodeArray['jumpToUrl']);
+        $bodyTag = $this->moduleTemplate->getBodyTag();
+        $bodyTag = str_replace('>', ' ' . GeneralUtility::implodeAttributes($this->getBodyTagAttributes(), true, true) . '>', $bodyTag);
+        $this->moduleTemplate->setBodyTag($bodyTag);
     }
 
     /**
-     * Render the currently set URL
-     *
-     * @return string
+     * Add the currently set URL to the view
      */
     protected function renderCurrentUrl()
     {
-        return '<!-- Print current URL -->
-            <div class="element-browser-panel element-browser-title">' .
-                htmlspecialchars($this->getLanguageService()->getLL('currentLink')) .
-                ': ' .
-                htmlspecialchars($this->currentLinkHandler->formatCurrentUrl()) .
-            '</div>';
+        $this->moduleTemplate->getView()->assign('currentUrl', $this->currentLinkHandler->formatCurrentUrl());
     }
 
     /**
@@ -462,17 +438,9 @@ abstract class AbstractLinkBrowserController
 
         // add update button if appropriate
         if (!empty($this->currentLinkParts) && $this->displayedLinkHandler === $this->currentLinkHandler && $this->currentLinkHandler->isUpdateSupported()) {
-            $content .= '
-                <form action="" name="lparamsform" id="lparamsform" class="form-horizontal">
-                    <div class="form-group form-group-sm">
-                        <div class="col-xs-12">
-                            <input class="btn btn-default t3js-linkCurrent" type="submit" value="' . htmlspecialchars($this->getLanguageService()->getLL('update')) . '" />
-                        </div>
-                    </div>
-                </form>';
+            $this->moduleTemplate->getView()->assign('showUpdateParametersButton', true);
         }
-
-        return '<div class="element-browser-panel element-browser-attributes">' . $content . '</div>';
+        return $content;
     }
 
     /**
