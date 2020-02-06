@@ -68,6 +68,7 @@ class Locales implements \TYPO3\CMS\Core\SingletonInterface
         'lt' => 'Lithuanian',
         'lv' => 'Latvian',
         'mi' => 'Maori',
+        'mk' => 'Macedonian',
         'ms' => 'Malay',
         'nl' => 'Dutch',
         'no' => 'Norwegian',
