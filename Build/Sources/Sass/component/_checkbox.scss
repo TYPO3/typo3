@@ -78,7 +78,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
             padding-left: 0;
             width: 36px;
             height: 20px;
-            background-color: darken($checkbox-bg, 20%);
+            background-color: lighten($checkbox-bg, 10%);
             border-radius: 10px;
             border: 1px solid rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease-in-out;
@@ -93,7 +93,7 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
             top: 3px;
             left: 5px;
             border-radius: 50%;
-            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
             transition: all 0.3s ease-in-out;
         }
     }
@@ -128,11 +128,12 @@ $checkbox-focus-border: 1px solid rgba(0, 0, 0, 0.45);
 
         .checkbox-input:checked + .checkbox-label {
             &:before {
-                background-color: darken($checkbox-bg, 20%);
+                background-color: lighten($checkbox-bg, 10%);
             }
 
             &:after {
                 left: 5px;
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
             }
         }
     }
