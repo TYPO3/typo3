@@ -66,6 +66,8 @@ class SiteListCommand extends Command
         foreach ($sites as $site) {
             $baseUrls = [];
             $languages = [];
+            $locales = [];
+            $status = [];
             foreach ($site->getLanguages() as $language) {
                 $baseUrls[] = (string)$language->getBase();
                 $languages[] = sprintf(
