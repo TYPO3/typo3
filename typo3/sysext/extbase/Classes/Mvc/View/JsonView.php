@@ -49,6 +49,11 @@ class JsonView extends AbstractView
     protected $variablesToRender = ['value'];
 
     /**
+     * @var string
+     */
+    protected $currentVariable = '';
+
+    /**
      * The rendering configuration for this JSON view which
      * determines which properties of each variable to render.
      *
@@ -67,7 +72,7 @@ class JsonView extends AbstractView
      *          '_exclude' => ['secretTitle'],
      *          '_descend' => [
      *              'customer' => [
-     *                  '_only' => [array(]'firstName', 'lastName']
+     *                  '_only' => ['firstName', 'lastName']
      *              ]
      *          ]
      *      ],
@@ -203,17 +208,20 @@ class JsonView extends AbstractView
     protected function renderArray()
     {
         if (count($this->variablesToRender) === 1) {
+            $firstLevel = false;
             $variableName = current($this->variablesToRender);
+            $this->currentVariable = $variableName;
             $valueToRender = $this->variables[$variableName] ?? null;
             $configuration = $this->configuration[$variableName] ?? [];
         } else {
+            $firstLevel = true;
             $valueToRender = [];
             foreach ($this->variablesToRender as $variableName) {
                 $valueToRender[$variableName] = $this->variables[$variableName] ?? null;
             }
             $configuration = $this->configuration;
         }
-        return $this->transformValue($valueToRender, $configuration);
+        return $this->transformValue($valueToRender, $configuration, $firstLevel);
     }
 
     /**
@@ -222,13 +230,17 @@ class JsonView extends AbstractView
      *
      * @param mixed $value The value to transform
      * @param array $configuration Configuration for transforming the value
+     * @param bool $firstLevel
      * @return mixed The transformed value
      */
-    protected function transformValue($value, array $configuration)
+    protected function transformValue($value, array $configuration, $firstLevel = false)
     {
         if (is_array($value) || $value instanceof \ArrayAccess) {
             $array = [];
             foreach ($value as $key => $element) {
+                if ($firstLevel) {
+                    $this->currentVariable = $key;
+                }
                 if (isset($configuration['_descendAll']) && is_array($configuration['_descendAll'])) {
                     $array[$key] = $this->transformValue($element, $configuration['_descendAll']);
                 } else {
@@ -279,6 +291,8 @@ class JsonView extends AbstractView
                 $propertiesToRender[$propertyName] = $propertyValue;
             } elseif (isset($configuration['_descend']) && array_key_exists($propertyName, $configuration['_descend'])) {
                 $propertiesToRender[$propertyName] = $this->transformValue($propertyValue, $configuration['_descend'][$propertyName]);
+            } elseif (isset($configuration['_recursive']) && in_array($propertyName, $configuration['_recursive'])) {
+                $propertiesToRender[$propertyName] = $this->transformValue($propertyValue, $this->configuration[$this->currentVariable]);
             }
         }
         if (isset($configuration['_exposeObjectIdentifier']) && $configuration['_exposeObjectIdentifier'] === true) {

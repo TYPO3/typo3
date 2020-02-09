@@ -150,12 +150,12 @@ class JsonViewTest extends UnitTestCase
         $dateTimeObject = new \DateTime('2011-02-03T03:15:23', new \DateTimeZone('UTC'));
         $configuration = [];
         $expected = '2011-02-03T03:15:23+00:00';
-        $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in UTC time zone could not be serialized.'];
+        $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in UTC time zone should not be serialized.'];
 
         $dateTimeObject = new \DateTime('2013-08-15T15:25:30', new \DateTimeZone('America/Los_Angeles'));
         $configuration = [];
         $expected = '2013-08-15T15:25:30-07:00';
-        $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in America/Los_Angeles time zone could not be serialized.'];
+        $output[] = [$dateTimeObject, $configuration, $expected, 'DateTime object in America/Los_Angeles time zone should not be serialized.'];
 
         return $output;
     }
@@ -173,6 +173,182 @@ class JsonViewTest extends UnitTestCase
         $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
+
+        self::assertSame($expected, $actual, $description);
+    }
+    /**
+     * data provider for testRecursive()
+     * @return array
+     */
+    public function jsonViewTestDataRecursive(): array
+    {
+        $object = new class('foo') {
+            private $value1 = '';
+            private $child;
+            public function __construct($value1)
+            {
+                $this->value1 = $value1;
+            }
+            public function getValue1()
+            {
+                return $this->value1;
+            }
+            public function setValue1(string $value1)
+            {
+                $this->value1 = $value1;
+            }
+            public function getChild()
+            {
+                return $this->child;
+            }
+            public function setChild($child)
+            {
+                $this->child = $child;
+            }
+        };
+
+        $child1 = clone $object;
+        $child1->setValue1('bar');
+        $child2 = clone $object;
+        $child2->setValue1('baz');
+        $child1->setChild($child2);
+        $object->setChild($child1);
+
+        $configuration = [
+            'testData' => [
+                '_recursive' => ['child']
+            ]
+        ];
+
+        $expected = [
+            'child' => [
+                'child' => [
+                    'child' => null,
+                    'value1' => 'baz'
+                ],
+                'value1' => 'bar',
+            ],
+            'value1' => 'foo',
+        ];
+
+        $output[] = [$object, $configuration, $expected, 'testData', 'Recursive rendering of defined property should be possible.'];
+
+        $object = new class('foo') {
+            private $value1 = '';
+            private $children = [];
+            private $secret = 'secret';
+            public function __construct($value1)
+            {
+                $this->value1 = $value1;
+            }
+            public function getValue1()
+            {
+                return $this->value1;
+            }
+            public function setValue1(string $value1)
+            {
+                $this->value1 = $value1;
+            }
+            public function getChildren()
+            {
+                return $this->children;
+            }
+            public function addChild($child)
+            {
+                $this->children[] = $child;
+            }
+            public function getSecret()
+            {
+                return $this->secret;
+            }
+        };
+        $child1 = clone $object;
+        $child1->setValue1('bar');
+        $child1->addChild(clone $object);
+        $child1->addChild(clone $object);
+
+        $child2 = clone $object;
+        $child2->setValue1('baz');
+        $child2->addChild(clone $object);
+        $child2->addChild(clone $object);
+
+        $object->addChild($child1);
+        $object->addChild($child2);
+        $children = [
+            clone $object,
+            clone $object
+        ];
+
+        $configuration = [
+            'testData' => [
+                '_descendAll' => [
+                    '_exclude' => ['secret'],
+                    '_recursive' => ['children']
+                ],
+            ]
+        ];
+
+        $expected = [
+            [
+                'children' => [
+                    [
+                        'children' => [
+                            ['children' => [], 'value1' => 'foo'],
+                            ['children' => [], 'value1' => 'foo']
+                        ],
+                        'value1' => 'bar'
+                    ],
+                    [
+                        'children' => [
+                            ['children' => [], 'value1' => 'foo'],
+                            ['children' => [], 'value1' => 'foo']
+                        ],
+                        'value1' => 'baz'
+                    ]
+                ],
+                'value1' => 'foo'
+            ],
+            [
+                'children' => [
+                    [
+                        'children' => [
+                            ['children' => [], 'value1' => 'foo'],
+                            ['children' => [], 'value1' => 'foo']
+                        ],
+                        'value1' => 'bar'
+                    ],
+                    [
+                        'children' => [
+                            ['children' => [], 'value1' => 'foo'],
+                            ['children' => [], 'value1' => 'foo']
+                        ],
+                        'value1' => 'baz'
+                    ]
+                ],
+                'value1' => 'foo'
+            ]
+        ];
+        $output[] = [$children, $configuration, $expected, 'testData', 'Recursive rendering of lists of defined property should be possible.'];
+
+        return $output;
+    }
+
+    /**
+     * @test
+     * @param object|array $object
+     * @param array $configuration
+     * @param array|string $expected
+     * @param string $variableToRender
+     * @param string $description
+     * @dataProvider jsonViewTestDataRecursive
+     */
+    public function testRecursive($object, array $configuration, $expected, string $variableToRender, string $description): void
+    {
+        $jsonView = $this->getAccessibleMock(JsonView::class, ['dummy'], [], '', false);
+        $jsonView->_set('configuration', $configuration);
+        $jsonView->_set('variablesToRender', [$variableToRender]);
+        $jsonView->_call('assign', $variableToRender, $object);
+        $actual = $jsonView->_call('renderArray');
 
         self::assertSame($expected, $actual, $description);
     }
