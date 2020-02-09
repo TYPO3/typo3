@@ -15,12 +15,14 @@ namespace TYPO3\CMS\Install\Authentication;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MailUtility;
+use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -35,20 +37,29 @@ class AuthenticationService
     protected $sessionService;
 
     /**
+     * @var TemplatePaths
+     */
+    protected $templatePaths;
+
+    /**
      * @param SessionService $sessionService
      */
     public function __construct(SessionService $sessionService)
     {
         $this->sessionService = $sessionService;
+        $templateConfiguration = $GLOBALS['TYPO3_CONF_VARS']['MAIL'];
+        $templateConfiguration['templateRootPaths'][20] = 'EXT:install/Resources/Private/Templates/Email/';
+        $this->templatePaths = new TemplatePaths($templateConfiguration);
     }
 
     /**
      * Checks against a given password
      *
-     * @param string $password
+     * @param string|null $password
+     * @param ServerRequestInterface $request
      * @return bool if authentication was successful, otherwise false
      */
-    public function loginWithPassword($password = null): bool
+    public function loginWithPassword($password, ServerRequestInterface $request): bool
     {
         $validPassword = false;
         if ($password !== null && $password !== '') {
@@ -61,48 +72,54 @@ class AuthenticationService
         }
         if ($validPassword) {
             $this->sessionService->setAuthorized();
-            $this->sendLoginSuccessfulMail();
+            $this->sendLoginSuccessfulMail($request);
             return true;
         }
-        $this->sendLoginFailedMail();
+        $this->sendLoginFailedMail($request);
         return false;
     }
 
     /**
      * If install tool login mail is set, send a mail for a successful login.
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function sendLoginSuccessfulMail()
+    protected function sendLoginSuccessfulMail(ServerRequestInterface $request)
     {
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         if (!$warningEmailAddress) {
             return;
         }
-        $email = GeneralUtility::makeInstance(FluidEmail::class);
+        $email = GeneralUtility::makeInstance(FluidEmail::class, $this->templatePaths);
         $email
             ->to($warningEmailAddress)
             ->subject('Install Tool Login at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
             ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
-            ->setTemplate('Security/InstallToolLogin');
+            ->setTemplate('Security/InstallToolLogin')
+            ->setRequest($request);
         GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 
     /**
      * If install tool login mail is set, send a mail for a failed login.
+     *
+     * @param ServerRequestInterface $request
      */
-    protected function sendLoginFailedMail()
+    protected function sendLoginFailedMail(ServerRequestInterface $request)
     {
         $warningEmailAddress = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
         if (!$warningEmailAddress) {
             return;
         }
         $formValues = GeneralUtility::_GP('install');
-        $email = GeneralUtility::makeInstance(FluidEmail::class);
+        $email = GeneralUtility::makeInstance(FluidEmail::class, $this->templatePaths);
         $email
             ->to($warningEmailAddress)
             ->subject('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'')
             ->from(new Address($this->getSenderEmailAddress(), $this->getSenderEmailName()))
             ->setTemplate('Security/InstallToolLoginAttempt')
-            ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5));
+            ->assign('lastCharactersOfPassword', substr(md5($formValues['password']), -5))
+            ->setRequest($request);
         GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 
