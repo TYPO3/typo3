@@ -150,6 +150,15 @@
 			<trans-unit id="extensionList.search" resname="extensionList.search">
 				<source>Search</source>
 			</trans-unit>
+			<trans-unit id="extensionList.filter.showAll" resname="extensionList.filter.showAll">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="extensionList.filter.showSystemExtensions" resname="extensionList.filter.showSystemExtensions">
+				<source>System</source>
+			</trans-unit>
+			<trans-unit id="extensionList.filter.showLocalExtensions" resname="extensionList.filter.showLocalExtensions">
+				<source>Local</source>
+			</trans-unit>
 			<trans-unit id="searchTemplate.submitButton" resname="searchTemplate.submitButton">
 				<source>Go</source>
 			</trans-unit>

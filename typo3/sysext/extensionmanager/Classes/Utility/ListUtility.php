@@ -107,21 +107,24 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns the list of available, but not necessarily loaded extensions
      *
+     * @param string
      * @return array[] All extensions with info
      */
-    public function getAvailableExtensions()
+    public function getAvailableExtensions(string $filter = ''): array
     {
         if ($this->availableExtensions === null) {
             $this->availableExtensions = [];
             $this->eventDispatcher->dispatch(new PackagesMayHaveChangedEvent());
             foreach ($this->packageManager->getAvailablePackages() as $package) {
-                $this->availableExtensions[$package->getPackageKey()] = [
-                    'packagePath' => $package->getPackagePath(),
-                    'siteRelPath' => str_replace(Environment::getPublicPath() . '/', '', $package->getPackagePath()),
-                    'type' => $this->getInstallTypeForPackage($package),
-                    'key' => $package->getPackageKey(),
-                    'icon' => PathUtility::getAbsoluteWebPath($package->getPackagePath() . ExtensionManagementUtility::getExtensionIcon($package->getPackagePath())),
-                ];
+                $installationType = $this->getInstallTypeForPackage($package);
+                if ($filter === '' || $filter === $installationType) {
+                    $this->availableExtensions[$package->getPackageKey()] = [
+                        'siteRelPath' => str_replace(Environment::getPublicPath() . '/', '', $package->getPackagePath()),
+                        'type' => $installationType,
+                        'key' => $package->getPackageKey(),
+                        'icon' => PathUtility::getAbsoluteWebPath($package->getPackagePath() . ExtensionManagementUtility::getExtensionIcon($package->getPackagePath())),
+                    ];
+                }
             }
         }
 
@@ -259,11 +262,12 @@ class ListUtility implements \TYPO3\CMS\Core\SingletonInterface
      * Gets all available and installed extension with additional information
      * from em_conf and TER (if available)
      *
+     * @param string
      * @return array
      */
-    public function getAvailableAndInstalledExtensionsWithAdditionalInformation()
+    public function getAvailableAndInstalledExtensionsWithAdditionalInformation(string $filter = ''): array
     {
-        $availableExtensions = $this->getAvailableExtensions();
+        $availableExtensions = $this->getAvailableExtensions($filter);
         $availableAndInstalledExtensions = $this->getAvailableAndInstalledExtensions($availableExtensions);
         return $this->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
     }

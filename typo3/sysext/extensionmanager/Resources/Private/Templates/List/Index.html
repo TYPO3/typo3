@@ -7,10 +7,44 @@
 
 <f:section name="content">
     <f:render partial="List/UploadForm" />
-
     <form class="form-inline">
-        <div class="form-group">
-            <f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control" />
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <f:form.textfield name="Tx_Extensionmanager_extensionkey" placeholder="{f:translate(key:'extensionList.search')}" id="Tx_Extensionmanager_extensionkey" value="{search}" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="btn-group pull-right">
+                    <f:link.action
+                        action="index"
+                        controller="List"
+                        title="{f:translate(key:'extensionList.filter.showAll')}"
+                        arguments="{filter:''}"
+                        class="btn btn-default {f:if(condition: '{backendUserFilter} == All', then: 'active')}"
+                        style="width: 80px;">
+                        <f:translate key="extensionList.filter.showAll" />
+                    </f:link.action>
+                    <f:link.action
+                        action="index"
+                        controller="List"
+                        arguments="{filter:'System'}"
+                        title="{f:translate(key:'extensionList.filter.showSystemExtensions')}"
+                        class="btn btn-default {f:if(condition: '{backendUserFilter} == System', then: 'active')}"
+                        style="width: 80px;">
+                        <f:translate key="extensionList.filter.showSystemExtensions" />
+                    </f:link.action>
+                    <f:link.action
+                        action="index"
+                        controller="List"
+                        arguments="{filter:'Local'}"
+                        title="{f:translate(key:'extensionList.filter.showLocalExtensions')}"
+                        class="btn btn-default {f:if(condition: '{backendUserFilter} == Local', then: 'active')}"
+                        style="width: 80px;">
+                        <f:translate key="extensionList.filter.showLocalExtensions" />
+                    </f:link.action>
+                </div>
+            </div>
         </div>
     </form>
     <br>
