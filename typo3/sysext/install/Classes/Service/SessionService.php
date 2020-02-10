@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\SingletonInterface;
@@ -77,6 +78,9 @@ class SessionService implements SingletonInterface
         session_save_path($sessionSavePath);
         session_name($this->cookieName);
         ini_set('session.cookie_httponly', true);
+        if (PHP_VERSION_ID >= 70300) {
+            ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
+        }
         ini_set('session.cookie_path', (string)GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
         // Always call the garbage collector to clean up stale session files
         ini_set('session.gc_probability', (string)100);
@@ -94,6 +98,42 @@ class SessionService implements SingletonInterface
             throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587486);
         }
         session_start();
+        if (PHP_VERSION_ID < 70300) {
+            $this->resendCookieHeader();
+        }
+    }
+
+    /**
+     * Since PHP < 7.3 is not capable of sending the same-site cookie information, session_start() effectively
+     * sends the Set-Cookie header. This method fetches the set-cookie headers, parses it via Symfony's Cookie
+     * object, and resends the header.
+     */
+    private function resendCookieHeader()
+    {
+        $cookies = array_filter(headers_list(), function (string $header) {
+            return stripos($header, 'Set-Cookie:') === 0;
+        });
+        $cookies = array_map(function (string $cookieHeader) {
+            $payload = ltrim(substr($cookieHeader, 11));
+            $cookie = Cookie::fromString($payload);
+            return (string)Cookie::create(
+                $cookie->getName(),
+                $cookie->getValue(),
+                $cookie->getExpiresTime(),
+                $cookie->getPath(),
+                $cookie->getDomain(),
+                $cookie->isSecure(),
+                $cookie->isHttpOnly(),
+                $cookie->isRaw(),
+                $cookie->getSameSite() ?? Cookie::SAMESITE_STRICT
+            );
+        }, $cookies);
+        if (!empty($cookies)) {
+            header_remove('Set-Cookie');
+            foreach ($cookies as $cookie) {
+                header('Set-Cookie: ' . $cookie, false);
+            }
+        }
     }
 
     /**

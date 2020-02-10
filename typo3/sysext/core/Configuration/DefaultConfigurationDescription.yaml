@@ -314,6 +314,13 @@ BE:
         cookieName:
             type: text
             description: 'Set the name for the cookie used for the back-end user session'
+        cookieSameSite:
+          type: text
+          allowedValues:
+            'lax': 'Cookies set by TYPO3 are only available for the current site, third-party integrations are not allowed to read cookies, except for links and simple HTML forms'
+            'strict': 'Cookies sent by TYPO3 are only available for the current site, never shared to other third-party packages'
+            'none': 'Allow cookies set by TYPO3 to be sent to other sites as well, please note - this only works with HTTPS connections'
+          description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Backend.'
         loginSecurityLevel:
             type: text
             description: 'Keywords that determines the security level of login to the backend. "normal" means the password from the login form is sent in clear-text. The client/server communication should be secured with HTTPS.'
@@ -447,6 +454,13 @@ FE:
         cookieName:
             type: text
             description: 'Set the name for the cookie used for the front-end user session'
+        cookieSameSite:
+          type: text
+          allowedValues:
+            'lax': 'Cookies set by TYPO3 are only available for the current site, third-party integrations are not allowed to read cookies, except for links and simple HTML forms'
+            'strict': 'Cookies sent by TYPO3 are only available for the current site, never shared to other third-party packages'
+            'none': 'Allow cookies set by TYPO3 to be sent to other sites as well, please note - this only works with HTTPS connections'
+          description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Frontend.'
         defaultUserTSconfig:
             type: multiline
             description: 'Enter lines of default frontend user/group TSconfig.'
