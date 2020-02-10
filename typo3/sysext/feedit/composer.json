@@ -25,9 +25,6 @@
 		"typo3/cms": "*"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "9.2.x-dev"
-		},
 		"typo3/cms": {
 			"extension-key": "feedit"
 		}
