@@ -25,6 +25,9 @@
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "css_styled_content"
+		},
+		"branch-alias": {
+			"dev-master": "8.7.x-dev"
 		}
 	}
 }

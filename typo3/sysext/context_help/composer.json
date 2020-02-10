@@ -22,6 +22,9 @@
 				"partOfFactoryDefault": true
 			},
 			"extension-key": "context_help"
+		},
+		"branch-alias": {
+			"dev-master": "8.7.x-dev"
 		}
 	},
 	"autoload": {

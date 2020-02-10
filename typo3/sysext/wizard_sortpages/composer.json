@@ -23,6 +23,9 @@
 				"partOfFactoryDefault": true
 			},
 			"extension-key": "wizard_sortpages"
+		},
+		"branch-alias": {
+			"dev-master": "8.7.x-dev"
 		}
 	},
 	"autoload": {

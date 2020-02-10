@@ -26,6 +26,9 @@
 				"partOfFactoryDefault": true
 			},
 			"extension-key": "info_pagetsconfig"
+		},
+		"branch-alias": {
+			"dev-master": "8.7.x-dev"
 		}
 	},
 	"autoload": {
