@@ -1,0 +1,18 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
+<f:be.pageRenderer includeRequireJsModules="{
+    0: 'TYPO3/CMS/Backend/Tooltip',
+    1: 'TYPO3/CMS/Backend/Localization',
+    2: 'TYPO3/CMS/Backend/LayoutModule/DragDrop',
+    3: 'TYPO3/CMS/Backend/Modal',
+    4: 'TYPO3/CMS/Backend/LayoutModule/Paste'
+}" />
+
+<f:if condition="{backendLayout.drawingConfiguration.languageMode}">
+    <f:then>
+        <f:render partial="PageLayout/LanguageColumns" arguments="{_all}" />
+    </f:then>
+    <f:else>
+        <f:render partial="PageLayout/Grid" arguments="{_all}" />
+    </f:else>
+</f:if>

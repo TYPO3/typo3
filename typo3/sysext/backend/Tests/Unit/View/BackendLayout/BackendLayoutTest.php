@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\View\BackendLayout;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\View\BackendLayout\BackendLayout;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -22,6 +23,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class BackendLayoutTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @test
      */
@@ -43,7 +46,7 @@ class BackendLayoutTest extends UnitTestCase
         $identifier = StringUtility::getUniqueId('identifier');
         $title = StringUtility::getUniqueId('title');
         $configuration = StringUtility::getUniqueId('configuration');
-        $backendLayout = new \TYPO3\CMS\Backend\View\BackendLayout\BackendLayout($identifier, $title, $configuration);
+        $backendLayout = $this->getMockBuilder(BackendLayout::class)->onlyMethods(['parseConfigurationStringAndSetConfigurationArray'])->setConstructorArgs([$identifier, $title, $configuration])->getMock();
 
         self::assertEquals($identifier, $backendLayout->getIdentifier());
         self::assertEquals($title, $backendLayout->getTitle());

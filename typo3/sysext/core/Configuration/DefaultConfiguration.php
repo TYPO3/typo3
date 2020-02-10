@@ -72,6 +72,7 @@ return [
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
         'features' => [
+            'fluidBasedPageModule' => true,
             'form.legacyUploadMimeTypes' => true,
             'redirects.hitCount' => false,
             'unifiedPageTranslationHandling' => false,
@@ -1074,6 +1075,7 @@ return [
     ],
     'BE' => [
         // Backend Configuration.
+        'fluidPageModule' => true,
         'languageDebug' => false,
         'fileadminDir' => 'fileadmin/',
         'lockRootPath' => '',

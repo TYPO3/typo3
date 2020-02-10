@@ -268,7 +268,7 @@ class LocalizationController
 
         return [
             'columns' => $columns,
-            'columnList' => $backendLayouts['__colPosList'],
+            'columnList' => array_values($backendLayouts['__colPosList']),
         ];
     }
 }

@@ -1,0 +1,11 @@
+<div class="t3-grid-container">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%" class="t3-page-columns t3-grid-table t3js-page-columns">
+        <f:for each="{grid.rows}" as="row">
+            <tr>
+                <f:for each="{row.columns}" as="column">
+                    <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
+                </f:for>
+            </tr>
+        </f:for>
+    </table>
+</div>

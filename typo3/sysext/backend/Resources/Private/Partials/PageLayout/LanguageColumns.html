@@ -1,0 +1,69 @@
+<f:if condition="{backendLayout.drawingConfiguration.newLanguageOptions}">
+    <div class="form-inline form-inline-spaced">
+        <div class="form-group">
+            <select class="form-control input-sm" name="createNewLanguage" onchange="window.location.href=this.options[this.selectedIndex].value">'
+                <f:for each="{backendLayout.drawingConfiguration.newLanguageOptions}" as="languageName" key="url">
+                    <option value="{url}">{languageName}</option>
+                </f:for>
+            </select>
+        </div>
+    </div>
+</f:if>
+<div class="t3-grid-container">
+    <table cellpadding="0" cellspacing="0" class="t3-page-columns t3-grid-table t3js-page-columns">
+        <tr>
+            <f:for each="{backendLayout.languageColumns}" as="languageColumn">
+                <td valign="top" class="t3-page-column t3-page-column-lang-name" data-language-uid="{languageColumn.siteLanguage.languageId}">
+                    <h2>{languageColumn.siteLanguage.title}</h2>
+                    <f:if condition="{languageColumn.languageMode}">
+                        <span class="label label-{languageColumn.languageModeLabelClass}">{languageColumn.languageMode}</span>
+                    </f:if>
+                </td>
+            </f:for>
+        </tr>
+        <tr>
+            <f:for each="{backendLayout.languageColumns}" as="languageColumn">
+                <td class="t3-page-column t3-page-lang-label nowrap">
+                    <div class="btn-group">
+                        <f:if condition="{languageColumn.allowViewPage}">
+                            <a href="#" class="btn btn-default btn-sm" onclick="{languageColumn.viewPageOnClick}" title="{languageColumn.viewPageLinkTitle}">
+                                <core:icon identifier="actions-view" />
+                            </a>
+                        </f:if>
+                        <f:if condition="{languageColumn.allowEditPage}">
+                            <a href="{languageColumn.pageEditUrl}" class="btn btn-default btn-sm" title="{languageColumn.pageEditTitle}">
+                                <core:icon identifier="actions-open" />
+                            </a>
+                        </f:if>
+                        <f:if condition="{languageColumn.allowTranslate}">
+                            <a href="#" class="btn btn-default btn-sm t3js-localize disabled"
+                                title="{languageColumn.translatePageTitle}"
+                                data-page="{languageColumn.localizedPageRecord.title}"
+                                data-has-elements="{languageColumn.translationData.hasTranslations as integer}"
+                                data-allow-copy="{languageColumn.allowTranslateCopy as integer}"
+                                data-allow-translate="{languageColumn.allowTranslate as integer}"
+                                data-table="tt_content"
+                                data-page-id="{backendLayout.drawingConfiguration.pageId}"
+                                data-language-id="{languageColumn.siteLanguage.languageId}"
+                                data-language-name="{languageColumn.siteLanguage.title}">
+                                <core:icon identifier="actions-localize" />
+                                {languageColumn.translatePageTitle}
+                            </a>
+                        </f:if>
+                    </div>
+                    {languageColumn.pageIcon -> f:format.raw()}
+                    {languageColumn.localizedPageRecord.title}
+                </td>
+            </f:for>
+        </tr>
+        <f:for each="{backendLayout.drawingConfiguration.activeColumns}" as="columnNumber">
+            <tr>
+                <f:for each="{backendLayout.languageColumns}" as="languageColumn">
+                    <f:variable name="grid" value="{languageColumn.grid}" />
+                    <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
+                    <f:render partial="PageLayout/Grid/Column" arguments="{_all}" />
+                </f:for>
+            </tr>
+        </f:for>
+    </table>
+</div>

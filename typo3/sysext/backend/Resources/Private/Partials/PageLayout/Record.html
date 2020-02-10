@@ -1,0 +1,27 @@
+{f:if(condition: '{item.disabled} && {item.backendLayout.drawingConfiguration.showHidden} == 0', then: 'display: none;') -> f:variable(name: 'style')}
+<div class="t3-page-ce {item.wrapperClassName} t3js-page-ce t3js-page-ce-sortable" id="element-tt_content-{item.record.uid}" data-table="tt_content" data-uid="{item.record.uid}" style="{style}">
+    <div class="t3-page-ce-dragitem" id="{item.uniqueId}">
+        <f:render partial="PageLayout/Record/{item.record.CType}/Header" optional="1">
+            <f:render partial="PageLayout/Record/Header" arguments="{item: item}" />
+        </f:render>
+        <div class="t3-page-ce-body">
+            <div class="t3-page-ce-body-inner">
+                <div class="{f:if(condition: item.versioned, then: 'ver-element')}">
+                    <f:render partial="PageLayout/Record/{item.record.CType}/Preview" arguments="{_all}" optional="1">
+                        {item.preview -> f:format.raw()}
+                    </f:render>
+                </div>
+            </div>
+            <f:render partial="PageLayout/Record/{item.record.CType}/Footer" optional="1">
+                <f:render partial="PageLayout/Record/Footer" arguments="{item: item}" />
+            </f:render>
+        </div>
+    </div>
+    <f:if condition="{item.column.contentEditable} && {grid.allowNewContent}">
+        <a href="{item.newContentAfterUrl}" title="{item.newContentAfterLinkTitle}" data-title="{item.newContentAfterLinkTitle}" class="btn btn-default btn-sm t3js-toggle-new-content-element-wizard">
+            <core:icon identifier="actions-add" />
+            {item.newContentAfterTitle}
+        </a>
+    </f:if>
+    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+</div>

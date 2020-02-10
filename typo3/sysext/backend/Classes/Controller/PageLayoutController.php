@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Backend\View\PageLayoutView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -609,17 +610,58 @@ class PageLayoutController
     protected function renderContent(): string
     {
         $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
-        $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
-        $dbList->doEdit = $this->isContentEditable($this->current_sys_language);
-        $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
-        $dbList->defLangBinding = !empty($this->modTSconfig['properties']['defLangBinding']);
-        $tableOutput = '';
-        $tcaItems = $this->backendLayouts->getColPosListItemsParsed($this->id);
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
-        $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
-        if ($this->getBackendUser()->check('tables_select', 'tt_content')) {
-            $h_func_b = '';
+
+        if (GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('fluidBasedPageModule')) {
+            $selectedCombinedIdentifier = $this->backendLayouts->getSelectedCombinedIdentifier($this->id);
+            // If no backend layout is selected, use default
+            if (empty($selectedCombinedIdentifier)) {
+                $selectedCombinedIdentifier = 'default';
+            }
+
+            $backendLayout = $this->backendLayouts->getDataProviderCollection()->getBackendLayout(
+                $selectedCombinedIdentifier,
+                $this->id
+            );
+
+            $configuration = $backendLayout->getDrawingConfiguration();
+            $configuration->setPageId($this->id);
+            $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
+            $configuration->setActiveColumns(GeneralUtility::trimExplode(',', $this->activeColPosList));
+            $configuration->setShowHidden((bool)$this->MOD_SETTINGS['tt_content_showHidden']);
+            $configuration->setLanguageColumns(array_combine(array_keys($this->MOD_MENU['language']), array_keys($this->MOD_MENU['language'])));
+            $configuration->setLanguageColumnsPointer((int)$this->current_sys_language);
+            if ($this->MOD_SETTINGS['function'] == 2) {
+                $configuration->setLanguageMode($this->MOD_SETTINGS['function'] == 2);
+            }
+
+            $pageLayoutDrawer = $backendLayout->getBackendLayoutRenderer();
+            $configuration->setShowNewContentWizard(empty($this->modTSconfig['properties']['disableNewContentElementWizard']));
+
+            $pageActionsCallback = null;
+            if ($configuration->isPageEditable()) {
+                $languageOverlayId = 0;
+                $pageLocalizationRecord = BackendUtility::getRecordLocalization('pages', $this->id, (int)$this->current_sys_language);
+                if (is_array($pageLocalizationRecord)) {
+                    $pageLocalizationRecord = reset($pageLocalizationRecord);
+                }
+                if (!empty($pageLocalizationRecord['uid'])) {
+                    $languageOverlayId = $pageLocalizationRecord['uid'];
+                }
+                $pageActionsCallback = 'function(PageActions) {
+                    PageActions.setPageId(' . (int)$this->id . ');
+                    PageActions.setLanguageOverlayId(' . $languageOverlayId . ');
+                }';
+            }
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/PageActions', $pageActionsCallback);
+            $numberOfHiddenElements = $this->getNumberOfHiddenElements($configuration->getLanguageColumns());
+            $tableOutput = $pageLayoutDrawer->drawContent();
+        } else {
+            $dbList = GeneralUtility::makeInstance(PageLayoutView::class);
+            $dbList->doEdit = $this->isContentEditable($this->current_sys_language);
+            $dbList->option_newWizard = empty($this->modTSconfig['properties']['disableNewContentElementWizard']);
+            $dbList->defLangBinding = !empty($this->modTSconfig['properties']['defLangBinding']);
+            $tcaItems = $this->backendLayouts->getColPosListItemsParsed($this->id);
+            $numberOfHiddenElements = $this->getNumberOfHiddenElements(is_array($dbList->tt_contentConfig['languageCols']) ? $dbList->tt_contentConfig['languageCols'] : []);
             // Setting up the tt_content columns to show:
             if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
                 $colList = [];
@@ -644,8 +686,19 @@ class PageLayoutController
                 $dbList->tt_contentConfig['languageCols'] = $this->MOD_MENU['language'];
                 $dbList->tt_contentConfig['languageColsPointer'] = $this->current_sys_language;
             }
+            $tableOutput = $dbList->getTable_tt_content($this->id);
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/DragDrop');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Modal');
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/LayoutModule/Paste');
+        }
+
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
+        if ($this->getBackendUser()->check('tables_select', 'tt_content')) {
+            $h_func_b = '';
             // Toggle hidden ContentElements
-            $numberOfHiddenElements = $this->getNumberOfHiddenElements($dbList->tt_contentConfig);
+
             if ($numberOfHiddenElements > 0) {
                 $h_func_b = '
                     <div class="checkbox">
@@ -655,9 +708,9 @@ class PageLayoutController
                         </label>
                     </div>';
             }
-            // Generate the list of content elements
-            $tableOutput = $dbList->getTable_tt_content($this->id) . $h_func_b;
         }
+        $tableOutput .= $h_func_b;
+
         // Init the content
         $content = '';
         // Additional header content
@@ -819,10 +872,10 @@ class PageLayoutController
      * Returns the number of hidden elements (including those hidden by start/end times)
      * on the current page (for the current sys_language)
      *
-     * @param array $contentConfig
+     * @param array $languageColumns
      * @return int
      */
-    protected function getNumberOfHiddenElements(array $contentConfig = []): int
+    protected function getNumberOfHiddenElements(array $languageColumns): int
     {
         $andWhere = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
@@ -841,7 +894,7 @@ class PageLayoutController
                 )
             );
 
-        if (!empty($contentConfig['languageCols']) && is_array($contentConfig['languageCols'])) {
+        if (!empty($languageColumns)) {
             // Multi-language view is active
             if ($this->current_sys_language > 0) {
                 $queryBuilder->andWhere(

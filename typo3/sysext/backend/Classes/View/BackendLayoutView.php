@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Backend\View;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -353,42 +352,7 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
             $backendLayout = $this->getDataProviderCollection()->getBackendLayout($selectedCombinedIdentifier, $pageId);
         }
 
-        if (!empty($backendLayout)) {
-            /** @var TypoScriptParser $parser */
-            $parser = GeneralUtility::makeInstance(TypoScriptParser::class);
-            /** @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher $conditionMatcher */
-            $conditionMatcher = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher::class);
-            $parser->parse(TypoScriptParser::checkIncludeLines($backendLayout->getConfiguration()), $conditionMatcher);
-
-            $backendLayoutData = [];
-            $backendLayoutData['config'] = $backendLayout->getConfiguration();
-            $backendLayoutData['__config'] = $parser->setup;
-            $backendLayoutData['__items'] = [];
-            $backendLayoutData['__colPosList'] = [];
-
-            // create items and colPosList
-            if (!empty($backendLayoutData['__config']['backend_layout.']['rows.'])) {
-                foreach ($backendLayoutData['__config']['backend_layout.']['rows.'] as $row) {
-                    if (!empty($row['columns.'])) {
-                        foreach ($row['columns.'] as $column) {
-                            if (!isset($column['colPos'])) {
-                                continue;
-                            }
-                            $backendLayoutData['__items'][] = [
-                                $this->getColumnName($column),
-                                $column['colPos'],
-                                null
-                            ];
-                            $backendLayoutData['__colPosList'][] = $column['colPos'];
-                        }
-                    }
-                }
-            }
-
-            $this->selectedBackendLayout[$pageId] = $backendLayoutData;
-        }
-
-        return $backendLayoutData;
+        return $backendLayout->getConfigurationArray();
     }
 
     /**
@@ -470,22 +434,5 @@ class BackendLayoutView implements \TYPO3\CMS\Core\SingletonInterface
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Get column name from colPos item structure
-     *
-     * @param array $column
-     * @return string
-     */
-    protected function getColumnName($column)
-    {
-        $columnName = $column['name'];
-
-        if (GeneralUtility::isFirstPartOfStr($columnName, 'LLL:')) {
-            $columnName = $this->getLanguageService()->sL($columnName);
-        }
-
-        return $columnName;
     }
 }

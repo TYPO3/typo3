@@ -52,6 +52,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Child class for the Web > Page module
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
+ * @deprecated Will be removed in TYPO3 11
  */
 class PageLayoutView implements LoggerAwareInterface
 {
@@ -200,10 +201,6 @@ class PageLayoutView implements LoggerAwareInterface
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $this->localizationController = GeneralUtility::makeInstance(LocalizationController::class);
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Tooltip');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/Localization');
         $this->eventDispatcher = $eventDispatcher;
     }
 
