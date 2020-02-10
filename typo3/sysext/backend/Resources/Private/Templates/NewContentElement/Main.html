@@ -3,7 +3,7 @@
     <f:then>
         <f:form action="" name="editForm" id="NewContentElementController">
             <f:form.hidden name="defValues" value="" />
-            <f:if condition="{onClickEvent}">
+            <f:if condition="{hasClickEvent}">
                 <f:then>
                     <script>
                         {onClickEvent -> f:format.raw()}

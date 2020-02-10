@@ -266,7 +266,10 @@ class NewContentElementController
             $cc = ($key = 0);
             $menuItems = [];
 
-            $this->view->assign('onClickEvent', 'function goToalt_doc() { ' . $this->onClickEvent . '}');
+            $this->view->assignMultiple([
+                'hasClickEvent' => $this->onClickEvent !== '',
+                'onClickEvent' => 'function goToalt_doc() { ' . $this->onClickEvent . '}',
+            ]);
 
             foreach ($wizardItems as $wizardKey => $wInfo) {
                 $wizardOnClick = '';
