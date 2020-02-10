@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderFixture;
 use TYPO3\CMS\Core\Tests\Unit\Tree\TableConfiguration\Fixtures\TreeDataProviderWithConfigurationFixture;
 use TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider;
@@ -109,6 +110,8 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     public function configuredDataProviderClassIsInstantiated(): void
     {
         $dataProviderMockClassName = TreeDataProviderFixture::class;
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher->reveal());
 
         $tcaConfiguration = [
             'treeConfig' => ['dataProvider' => $dataProviderMockClassName],
@@ -125,6 +128,8 @@ class TreeDataProviderFactoryTest extends UnitTestCase
     public function configuredDataProviderClassIsInstantiatedWithTcaConfigurationInConstructor(): void
     {
         $dataProviderMockClassName = TreeDataProviderWithConfigurationFixture::class;
+        $eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
+        GeneralUtility::addInstance(EventDispatcherInterface::class, $eventDispatcher->reveal());
 
         $tcaConfiguration = [
             'treeConfig' => [
