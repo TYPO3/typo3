@@ -83,9 +83,6 @@
 		"psr/http-message-implementation": "1.0"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "10.2.x-dev"
-		},
 		"typo3/cms": {
 			"Package": {
 				"serviceProvider": "TYPO3\\CMS\\Core\\ServiceProvider",

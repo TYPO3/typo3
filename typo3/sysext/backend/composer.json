@@ -31,9 +31,6 @@
 		"typo3/cms-wizard-sortpages": "*"
 	},
 	"extra": {
-		"branch-alias": {
-			"dev-master": "10.2.x-dev"
-		},
 		"typo3/cms": {
 			"Package": {
 				"serviceProvider": "TYPO3\\CMS\\Backend\\ServiceProvider",
