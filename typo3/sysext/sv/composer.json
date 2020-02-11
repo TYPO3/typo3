@@ -24,9 +24,6 @@
 				"partOfMinimalUsableSystem": true
 			},
 			"extension-key": "sv"
-		},
-		"branch-alias": {
-			"dev-master": "8.7.x-dev"
 		}
 	},
 	"autoload": {
