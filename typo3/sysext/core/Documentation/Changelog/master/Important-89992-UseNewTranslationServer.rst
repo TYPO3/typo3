@@ -1,7 +1,7 @@
 .. include:: ../../Includes.txt
 
 ============================================
-Feature: #89992 - Use new Translation Server
+Important: #89992 - Use new Translation Server
 ============================================
 
 See :issue:`89992`
