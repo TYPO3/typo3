@@ -1,5 +1,5 @@
 .. ==================================================
-.. FOR YOUR INFORMATION
+.. FOR YOUR INFORMATION - test for githubpr workflow
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
