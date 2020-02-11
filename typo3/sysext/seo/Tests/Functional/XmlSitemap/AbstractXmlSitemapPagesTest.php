@@ -20,7 +20,7 @@ use TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\AbstractTestCase;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalResponse;
 
-class AbstractXmlSitemapPagesTest extends AbstractTestCase
+abstract class AbstractXmlSitemapPagesTest extends AbstractTestCase
 {
     /**
      * @var array
