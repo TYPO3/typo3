@@ -70,8 +70,8 @@ abstract public class AbstractCoreSpec {
     PlanPermissions getDefaultPlanPermissions(String projectKey, String planKey) {
         return new PlanPermissions(new PlanIdentifier(projectKey, planKey))
                 .permissions(new Permissions()
-                        .groupPermissions("TYPO3 GmbH", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
-                        .groupPermissions("TYPO3 Core Team", PermissionType.VIEW, PermissionType.BUILD)
+                        .groupPermissions("t3g-team-dev", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
+                        .groupPermissions("team-core-dev", PermissionType.VIEW, PermissionType.BUILD)
                         .loggedInUserPermissions(PermissionType.VIEW)
                         .anonymousUserPermissionView()
                 );
@@ -83,7 +83,7 @@ abstract public class AbstractCoreSpec {
     PlanPermissions getSecurityPlanPermissions(String projectKey, String planKey) {
         return new PlanPermissions(new PlanIdentifier(projectKey, planKey))
                 .permissions(new Permissions()
-                        .groupPermissions("TYPO3 GmbH", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
+                        .groupPermissions("t3g-team-dev", PermissionType.ADMIN, PermissionType.VIEW, PermissionType.EDIT, PermissionType.BUILD, PermissionType.CLONE)
                 );
     }
 
