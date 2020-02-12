@@ -1,17 +1,17 @@
 <div class="element-browser">
-   <div class="element-browser-panel element-browser-main">
-       <f:if condition="{treeEnabled}">
+    <div class="element-browser-panel element-browser-main">
+        <f:if condition="{treeEnabled}">
             <div class="element-browser-main-sidebar">
                 <div class="element-browser-body">
-                    <f:render section="Tree" />
-               </div>
+                    <f:render section="Tree"/>
+                </div>
             </div>
-       </f:if>
-       <div class="element-browser-main-content">
+        </f:if>
+        <div class="element-browser-main-content">
             <div class="element-browser-body">
-                <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}" />
-                <f:render section="Main" />
+                <f:flashMessages queueIdentifier="{flashMessageQueueIdentifier}"/>
+                <f:render section="Main"/>
             </div>
-       </div>
-   </div>
+        </div>
+    </div>
 </div>

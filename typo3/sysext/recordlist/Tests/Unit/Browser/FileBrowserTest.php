@@ -17,28 +17,32 @@ namespace TYPO3\CMS\Recordlist\Tests\Unit\Browser;
  */
 
 use Prophecy\Argument;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\Components\DocHeaderComponent;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ElementBrowserFolderTreeView;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Recordlist\Browser\FileBrowser;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FileBrowserTest extends UnitTestCase
 {
-
     /**
      * @test
      */
     public function renderGetsUserDefaultUploadFolderForCurrentPageData(): void
     {
-        [$documentTemplate, $beUser] = $this->setupProphecies();
+        [$moduleTemplate, $beUser] = $this->setupProphecies();
 
         $bparams = '|||gif,png,svg|data-4-pages-4-nav_icon-sys_file_reference';
-        $fileBrowser = $this->getAccessibleMock(FileBrowser::class, ['initDocumentTemplate'], [], '', false);
+        $fileBrowser = $this->getAccessibleMock(FileBrowser::class, ['dummy'], [], '', false);
         $fileBrowser->_set('bparams', $bparams);
-        $fileBrowser->_set('doc', $documentTemplate->reveal());
+        $fileBrowser->_set('moduleTemplate', $moduleTemplate);
         $fileBrowser->render();
 
         $beUser->getTSConfig()->shouldHaveBeenCalled();
@@ -53,7 +57,14 @@ class FileBrowserTest extends UnitTestCase
         $browserFolderTreeView = $this->prophesize(ElementBrowserFolderTreeView::class);
         GeneralUtility::addInstance(ElementBrowserFolderTreeView::class, $browserFolderTreeView->reveal());
 
-        $documentTemplate = $this->prophesize(DocumentTemplate::class);
+        $flashMessageService = $this->prophesize(FlashMessageService::class);
+        $flashMessageService->getMessageQueueByIdentifier()->willReturn($this->prophesize(FlashMessageQueue::class)->reveal());
+        $moduleTemplate = $this->getAccessibleMock(ModuleTemplate::class, ['setupPage'], [], '', false);
+        $moduleTemplate->_set('flashMessageService', $flashMessageService->reveal());
+        $moduleTemplate->_set('view', $this->prophesize(StandaloneView::class)->reveal());
+        $moduleTemplate->_set('docHeaderComponent', $this->prophesize(DocHeaderComponent::class)->reveal());
+        $moduleTemplate->_set('pageRenderer', $this->prophesize(PageRenderer::class)->reveal());
+
         $lang = $this->prophesize(LanguageService::class);
         $GLOBALS['LANG'] = $lang->reveal();
 
@@ -63,6 +74,6 @@ class FileBrowserTest extends UnitTestCase
         $beUser->getModuleData(Argument::cetera())->willReturn([]);
         $beUser->getDefaultUploadFolder(Argument::cetera())->willReturn('');
         $GLOBALS['BE_USER'] = $beUser->reveal();
-        return [$documentTemplate, $beUser];
+        return [$moduleTemplate, $beUser];
     }
 }
