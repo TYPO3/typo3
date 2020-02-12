@@ -18,8 +18,7 @@
 		"symfony/dependency-injection": "^4.4 || ^5.0",
 		"symfony/property-access": "^4.4 || ^5.0",
 		"symfony/property-info": "^4.4 || ^5.0",
-		"typo3/cms-core": "10.3.*@dev",
-		"webmozart/assert": "^1.0"
+		"typo3/cms-core": "10.3.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-scheduler": "Additional scheduler tasks"
