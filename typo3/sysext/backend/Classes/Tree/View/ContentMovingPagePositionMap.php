@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Position map class for moving content elements.
  *
@@ -42,7 +44,7 @@ class ContentMovingPagePositionMap extends PagePositionMap
      */
     public function linkPageTitle($str, $rec)
     {
-        $url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $this->moveUid]);
+        $url = GeneralUtility::linkThisScript(['uid' => (int)$rec['uid'], 'moveUid' => $this->moveUid]);
         return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
     }
 

@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Position map class - generating a page tree / content element list which links for inserting (copy/move) of records.
@@ -387,7 +388,7 @@ class PagePositionMap
             while ($row = $res->fetch()) {
                 BackendUtility::workspaceOL('tt_content', $row);
                 if (is_array($row)) {
-                    $lines[$vv][] = $this->wrapRecordHeader($this->getRecordHeader($row), $row);
+                    $lines[$vv][] = $this->getRecordHeader($row);
                     $lines[$vv][] = $this->insertPositionIcon($row, $vv, $kk, $moveUid, $pid);
                 }
             }
@@ -405,7 +406,7 @@ class PagePositionMap
      */
     public function printRecordMap($lines, $colPosArray, $pid = 0)
     {
-        $count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
+        $count = MathUtility::forceIntegerInRange(count($colPosArray), 1);
         $backendLayout = GeneralUtility::callUserFunction(\TYPO3\CMS\Backend\View\BackendLayoutView::class . '->getSelectedBackendLayout', $pid, $this);
         if (isset($backendLayout['__config']['backend_layout.'])) {
             $this->getLanguageService()->includeLLFile('EXT:backend/Resources/Private/Language/locallang_layout.xlf');
@@ -449,11 +450,11 @@ class PagePositionMap
                     // Render header
                     $table .= '<p>';
                     if (isset($columnConfig['colPos']) && $head) {
-                        $table .= '<strong>' . $this->wrapColumnHeader($head, '') . '</strong>';
+                        $table .= '<strong>' . $head . '</strong>';
                     } elseif ($columnConfig['colPos']) {
-                        $table .= '<em>' . $this->wrapColumnHeader($this->getLanguageService()->getLL('noAccess'), '') . '</em>';
+                        $table .= '<em>' . $this->getLanguageService()->getLL('noAccess') . '</em>';
                     } else {
-                        $table .= '<em>' . $this->wrapColumnHeader(($this->getLanguageService()->sL($columnConfig['name']) ?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')', '') . '</em>';
+                        $table .= '<em>' . ($this->getLanguageService()->sL($columnConfig['name']) ?: '') . ' (' . $this->getLanguageService()->getLL('notAssigned') . ')' . '</em>';
                     }
                     $table .= '</p>';
                     // Render lines
@@ -475,7 +476,7 @@ class PagePositionMap
             $row = '';
             foreach ($colPosArray as $kk => $vv) {
                 $row .= '<td class="col-nowrap col-min" width="' . round(100 / $count) . '%">';
-                $row .= '<p><strong>' . $this->wrapColumnHeader(htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv))), $vv) . '</strong></p>';
+                $row .= '<p><strong>' . htmlspecialchars($this->getLanguageService()->sL(BackendUtility::getLabelFromItemlist('tt_content', 'colPos', $vv))) . '</strong></p>';
                 if (!empty($lines[$vv])) {
                     $row .= '<ul class="list-unstyled">';
                     foreach ($lines[$vv] as $line) {
@@ -499,19 +500,6 @@ class PagePositionMap
 			';
         }
         return $table;
-    }
-
-    /**
-     * Wrapping the column header
-     *
-     * @param string $str Header value
-     * @param string $vv Column info.
-     * @return string
-     * @see printRecordMap()
-     */
-    public function wrapColumnHeader($str, $vv)
-    {
-        return $str;
     }
 
     /**
@@ -566,18 +554,6 @@ class PagePositionMap
         }
         // returns to prev. page
         return $this->clientContext . '.location.href=' . GeneralUtility::quoteJSvalue((string)$location) . ';return false;';
-    }
-
-    /**
-     * Wrapping the record header  (from getRecordHeader())
-     *
-     * @param string $str HTML content
-     * @param string $row Record array.
-     * @return string HTML content
-     */
-    public function wrapRecordHeader($str, $row)
-    {
-        return $str;
     }
 
     /**

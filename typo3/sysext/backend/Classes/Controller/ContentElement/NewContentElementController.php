@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Controller\ContentElement;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -72,27 +73,6 @@ class NewContentElementController
     protected $uid_pid;
 
     /**
-     * Module TSconfig.
-     *
-     * @var array
-     */
-    protected $modTSconfig = [];
-
-    /**
-     * Used to accumulate the content of the module.
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * Access boolean.
-     *
-     * @var bool
-     */
-    protected $access;
-
-    /**
      * config of the wizard
      *
      * @var array
@@ -103,16 +83,6 @@ class NewContentElementController
      * @var array
      */
     protected $pageInfo;
-
-    /**
-     * @var string
-     */
-    protected $onClickEvent;
-
-    /**
-     * @var array
-     */
-    protected $MCONF;
 
     /**
      * @var StandaloneView
@@ -163,16 +133,11 @@ class NewContentElementController
         $colPos = $parsedBody['colPos'] ?? $queryParams['colPos'] ?? null;
         $this->colPos = $colPos === null ? null : (int)$colPos;
         $this->uid_pid = (int)($parsedBody['uid_pid'] ?? $queryParams['uid_pid'] ?? 0);
-        $this->MCONF['name'] = 'xMOD_db_new_content_el';
-        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
-        $config = BackendUtility::getPagesTSconfig($this->id);
-        $this->config = $config['mod.']['wizards.']['newContentElement.'];
+        $this->config = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.']['wizardItems.'] ?? [];
         // Setting up the context sensitive menu:
         $this->moduleTemplate->getPageRenderer()->loadRequireJsModule('TYPO3/CMS/Backend/ContextMenu');
         // Getting the current page and receiving access information (used in main())
-        $perms_clause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
-        $this->pageInfo = BackendUtility::readPageAccess($this->id, $perms_clause);
-        $this->access = is_array($this->pageInfo);
+        $this->pageInfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
     }
 
     /**
@@ -186,7 +151,7 @@ class NewContentElementController
     {
         $this->init($request);
         $this->prepareContent('window');
-        $this->moduleTemplate->setContent($this->content);
+        $this->moduleTemplate->setContent($this->view->render());
         return new HtmlResponse($this->moduleTemplate->renderContent());
     }
 
@@ -201,7 +166,26 @@ class NewContentElementController
     {
         $this->init($request);
         $this->prepareContent('list_frame');
-        return new HtmlResponse($this->content);
+        return new HtmlResponse($this->view->render());
+    }
+
+    /**
+     * Create on-click event value.
+     *
+     * @param string $clientContext
+     * @return string
+     */
+    protected function onClickInsertRecord(string $clientContext): string
+    {
+        // $this->uid_pid can be negative (= pointing to tt_content record) or positive (= "page ID")
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $location = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+            'edit[tt_content][' . $this->uid_pid . ']' => 'new',
+            'defVals[tt_content][colPos]' => $this->colPos,
+            'defVals[tt_content][sys_language_uid]' => $this->sys_language,
+            'returnUrl' => GeneralUtility::_GP('returnUrl')
+        ]);
+        return $clientContext . '.location.href=' . GeneralUtility::quoteJSvalue($location) . '+document.editForm.defValues.value; return false;';
     }
 
     /**
@@ -210,38 +194,19 @@ class NewContentElementController
      * @param string $clientContext JavaScript client context to be used
      *        + 'window', legacy if rendered in current document
      *        + 'list_frame', in case rendered in global modal
-     *
      * @throws \UnexpectedValueException
      */
     protected function prepareContent(string $clientContext): void
     {
-        $hasAccess = true;
-        if ($this->id && $this->access) {
-
-            // Init position map object:
-            $posMap = GeneralUtility::makeInstance(
-                ContentCreationPagePositionMap::class,
-                null,
-                $clientContext
-            );
-            $posMap->cur_sys_language = $this->sys_language;
-            // If a column is pre-set:
+        // Setting up the buttons for docheader
+        $this->getButtons();
+        $hasAccess = $this->id && is_array($this->pageInfo);
+        if ($hasAccess) {
+            // If a column is pre-set
             if (isset($this->colPos)) {
-                if ($this->uid_pid < 0) {
-                    $row = [];
-                    $row['uid'] = abs($this->uid_pid);
-                } else {
-                    $row = '';
-                }
-                $this->onClickEvent = $posMap->onClickInsertRecord(
-                    $row,
-                    $this->colPos,
-                    '',
-                    $this->uid_pid,
-                    $this->sys_language
-                );
+                $onClickEvent = $this->onClickInsertRecord($clientContext);
             } else {
-                $this->onClickEvent = '';
+                $onClickEvent = '';
             }
             // ***************************
             // Creating content
@@ -267,8 +232,8 @@ class NewContentElementController
             $menuItems = [];
 
             $this->view->assignMultiple([
-                'hasClickEvent' => $this->onClickEvent !== '',
-                'onClickEvent' => 'function goToalt_doc() { ' . $this->onClickEvent . '}',
+                'hasClickEvent' => $onClickEvent !== '',
+                'onClickEvent' => 'function goToalt_doc() { ' . $onClickEvent . '}',
             ]);
 
             foreach ($wizardItems as $wizardKey => $wInfo) {
@@ -280,7 +245,7 @@ class NewContentElementController
                     ];
                     $key = count($menuItems) - 1;
                 } else {
-                    if (!$this->onClickEvent) {
+                    if (!$onClickEvent) {
                         // Radio button:
                         $wizardOnClick = 'document.editForm.defValues.value=unescape(' . GeneralUtility::quoteJSvalue(rawurlencode($wInfo['params'])) . '); window.location.hash=\'#sel2\';';
                         // Onclick action for icon/title:
@@ -292,7 +257,7 @@ class NewContentElementController
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
 
                     $this->menuItemView->assignMultiple([
-                        'onClickEvent' => $this->onClickEvent,
+                        'onClickEvent' => $onClickEvent,
                         'aOnClick' => $aOnClick,
                         'wizardInformation' => $wInfo,
                         'icon' => $icon,
@@ -310,29 +275,35 @@ class NewContentElementController
             ));
 
             // If the user must also select a column:
-            if (!$this->onClickEvent) {
-
-                // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-                $colPosArray = GeneralUtility::callUserFunction(
-                    BackendLayoutView::class . '->getColPosListItemsParsed',
-                    $this->id,
-                    $this
-                );
-                $colPosIds = array_column($colPosArray, 1);
-                // Removing duplicates, if any
-                $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
-                // Finally, add the content of the column selector to the content:
-                $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI));
+            if (!$onClickEvent) {
+                $this->definePositionMapEntries($clientContext);
             }
-        } else {
-            // In case of no access:
-            $hasAccess = false;
         }
         $this->view->assign('hasAccess', $hasAccess);
+    }
 
-        $this->content = $this->view->render();
-        // Setting up the buttons and markers for docheader
-        $this->getButtons();
+    /**
+     * User must select a column as well (when in "main mode"), so the position map is initialized and assigned to
+     * the view.
+     *
+     * @param string $clientContext
+     */
+    protected function definePositionMapEntries(string $clientContext): void
+    {
+        // Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
+        $colPosArray = GeneralUtility::makeInstance(BackendLayoutView::class)->getColPosListItemsParsed((int)$this->id);
+        $colPosIds = array_column($colPosArray, 1);
+        // Removing duplicates, if any
+        $colPosList = implode(',', array_unique(array_map('intval', $colPosIds)));
+        // Finally, add the content of the column selector to the content:
+        // Init position map object
+        $posMap = GeneralUtility::makeInstance(
+            ContentCreationPagePositionMap::class,
+            null,
+            $clientContext
+        );
+        $posMap->cur_sys_language = $this->sys_language;
+        $this->view->assign('posMap', $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI));
     }
 
     /**
@@ -364,41 +335,39 @@ class NewContentElementController
     protected function getWizards(): array
     {
         $wizardItems = [];
-        if (is_array($this->config)) {
-            $wizards = $this->config['wizardItems.'] ?? [];
-            $appendWizards = $this->getAppendWizards($wizards['elements.'] ?? []);
-            if (is_array($wizards)) {
-                foreach ($wizards as $groupKey => $wizardGroup) {
-                    $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
-                    $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
-                }
-                $wizards = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizards);
+        $wizards = $this->config;
+        $appendWizards = $this->getAppendWizards($wizards['elements.'] ?? []);
+        if (is_array($wizards)) {
+            foreach ($wizards as $groupKey => $wizardGroup) {
+                $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
+                $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
+            }
+            $wizards = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizards);
 
-                foreach ($wizards as $groupKey => $wizardGroup) {
-                    $groupKey = rtrim($groupKey, '.');
-                    $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], true);
-                    $showAll = in_array('*', $showItems, true);
-                    $groupItems = [];
-                    if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
-                        $wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
-                    } else {
-                        $wizardElements = $wizardGroup['elements.'];
-                    }
-                    if (is_array($wizardElements)) {
-                        foreach ($wizardElements as $itemKey => $itemConf) {
-                            $itemKey = rtrim($itemKey, '.');
-                            if ($showAll || in_array($itemKey, $showItems)) {
-                                $tmpItem = $this->getWizardItem($itemConf);
-                                if ($tmpItem) {
-                                    $groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
-                                }
+            foreach ($wizards as $groupKey => $wizardGroup) {
+                $groupKey = rtrim($groupKey, '.');
+                $showItems = GeneralUtility::trimExplode(',', $wizardGroup['show'], true);
+                $showAll = in_array('*', $showItems, true);
+                $groupItems = [];
+                if (is_array($appendWizards[$groupKey . '.']['elements.'])) {
+                    $wizardElements = array_merge((array)$wizardGroup['elements.'], $appendWizards[$groupKey . '.']['elements.']);
+                } else {
+                    $wizardElements = $wizardGroup['elements.'];
+                }
+                if (is_array($wizardElements)) {
+                    foreach ($wizardElements as $itemKey => $itemConf) {
+                        $itemKey = rtrim($itemKey, '.');
+                        if ($showAll || in_array($itemKey, $showItems)) {
+                            $tmpItem = $this->getWizardItem($itemConf);
+                            if ($tmpItem) {
+                                $groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
                             }
                         }
                     }
-                    if (!empty($groupItems)) {
-                        $wizardItems[$groupKey] = $this->getWizardGroupHeader($wizardGroup);
-                        $wizardItems = array_merge($wizardItems, $groupItems);
-                    }
+                }
+                if (!empty($groupItems)) {
+                    $wizardItems[$groupKey] = $this->getWizardGroupHeader($wizardGroup);
+                    $wizardItems = array_merge($wizardItems, $groupItems);
                 }
             }
         }
@@ -413,9 +382,6 @@ class NewContentElementController
      */
     protected function getAppendWizards(array $wizardElements): array
     {
-        if (!is_array($wizardElements)) {
-            $wizardElements = [];
-        }
         if (is_array($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'])) {
             foreach ($GLOBALS['TBE_MODULES_EXT']['xMOD_db_new_content_el']['addElClasses'] as $class => $path) {
                 if (!class_exists($class) && file_exists($path)) {
@@ -473,8 +439,7 @@ class NewContentElementController
         $removeItems = [];
         $keepItems = [];
         // Get TCEFORM from TSconfig of current page
-        $row = ['pid' => $this->id];
-        $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', $row);
+        $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', ['pid' => $this->id]);
         $headersUsed = [];
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
@@ -582,7 +547,6 @@ class NewContentElementController
      */
     protected function getFluidTemplateObject(string $filename = 'Main.html'): StandaloneView
     {
-        /** @var StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/NewContentElement/' . $filename));
         $view->getRequest()->setControllerExtensionName('Backend');
