@@ -418,6 +418,7 @@ class RecordListController
             $pageTranslationsDatabaseRecordList->deniedNewTables = ['pages'];
             $pageTranslationsDatabaseRecordList->hideTranslations = '';
             $pageTranslationsDatabaseRecordList->iLimit = $pageTranslationsDatabaseRecordList->itemsLimitPerTable;
+            $pageTranslationsDatabaseRecordList->setLanguagesAllowedForUser($this->siteLanguages);
             $pageTranslationsDatabaseRecordList->showOnlyTranslatedRecords(true);
             $output .= $pageTranslationsDatabaseRecordList->getTable('pages', $this->id);
         }
