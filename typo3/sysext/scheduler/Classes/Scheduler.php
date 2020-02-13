@@ -127,7 +127,7 @@ class Scheduler implements SingletonInterface, LoggerAwareInterface
                 }
             }
             $executionCount = count($executions);
-            if (count($serialized_executions) !== $executionCount) {
+            if (!is_array($serialized_executions) || count($serialized_executions) !== $executionCount) {
                 if ($executionCount === 0) {
                     $value = '';
                 } else {
