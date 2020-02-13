@@ -918,7 +918,11 @@ class GeneralUtilityTest extends UnitTestCase
             'hash in local part' => ['foo#bar@example.com'],
             'dot in local part' => ['firstname.lastname@employee.2something.com'],
             'dash as local part' => ['-@foo.com'],
-            'umlauts in domain part' => ['foo@äöüfoo.com']
+            'umlauts in domain part' => ['foo@äöüfoo.com'],
+            'number as top level domain' => ['foo@bar.123'],
+            'top level domain only' => ['test@localhost'],
+            'umlauts in local part' => ['äöüfoo@bar.com'],
+            'quoted @ char' => ['"Abc@def"@example.com'],
         ];
     }
 
@@ -953,20 +957,18 @@ class GeneralUtilityTest extends UnitTestCase
             'closing parenthesis in local part' => ['foo)bar@example.com'],
             'opening square bracket in local part' => ['foo[bar@example.com'],
             'closing square bracket as local part' => [']@example.com'],
-            'top level domain only' => ['test@com'],
             'dash as second level domain' => ['foo@-.com'],
             'domain part starting with dash' => ['foo@-foo.com'],
             'domain part ending with dash' => ['foo@foo-.com'],
-            'number as top level domain' => ['foo@bar.123'],
             'dot at beginning of domain part' => ['test@.com'],
             'local part ends with dot' => ['e.x.a.m.p.l.e.@example.com'],
-            'umlauts in local part' => ['äöüfoo@bar.com'],
             'trailing whitespace' => ['test@example.com '],
             'trailing carriage return' => ['test@example.com' . CR],
             'trailing linefeed' => ['test@example.com' . LF],
             'trailing carriage return linefeed' => ['test@example.com' . CRLF],
             'trailing tab' => ['test@example.com' . "\t"],
             'prohibited input characters' => ['“mailto:test@example.com”'],
+            'escaped @ char' => ['abc\@def@example.com'], // known bug, see https://github.com/egulias/EmailValidator/issues/181
         ];
     }
 

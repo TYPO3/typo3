@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Core\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -848,16 +850,6 @@ class GeneralUtility
     /**
      * Checking syntax of input email address
      *
-     * http://tools.ietf.org/html/rfc3696
-     * International characters are allowed in email. So the whole address needs
-     * to be converted to punicode before passing it to filter_var().
-     *
-     * Also the @ sign may appear multiple times in an address. If not used as
-     * a boundary marker between the user- and domain part, it must be escaped
-     * with a backslash: \@. This mean we can not just explode on the @ sign and
-     * expect to get just two parts. So we pop off the domain and then glue the
-     * rest together again.
-     *
      * @param string $email Input string to evaluate
      * @return bool Returns TRUE if the $email address (input string) is valid
      */
@@ -867,20 +859,11 @@ class GeneralUtility
         if (!is_string($email)) {
             return false;
         }
-        $atPosition = strrpos($email, '@');
-        if (!$atPosition || $atPosition + 1 === strlen($email)) {
-            // Return if no @ found or it is placed at the very beginning or end of the email
+        if (trim($email) !== $email) {
             return false;
         }
-        $domain = substr($email, $atPosition + 1);
-        $user = substr($email, 0, $atPosition);
-        if (!preg_match('/^[a-z0-9.\\-]*$/i', $domain)) {
-            $domain = HttpUtility::idn_to_ascii($domain);
-            if ($domain === false) {
-                return false;
-            }
-        }
-        return filter_var($user . '@' . $domain, FILTER_VALIDATE_EMAIL) !== false;
+        $validator = new EmailValidator();
+        return $validator->isValid($email, new RFCValidation());
     }
 
     /**

@@ -24,6 +24,7 @@
 		"doctrine/dbal": "^2.10",
 		"doctrine/instantiator": "^1.1",
 		"doctrine/lexer": "^1.0",
+		"egulias/email-validator": "^2.1",
 		"guzzlehttp/guzzle": "^6.3.0",
 		"nikic/php-parser": "^4.3",
 		"psr/container": "^1.0",
