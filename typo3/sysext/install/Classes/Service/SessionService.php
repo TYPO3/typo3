@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Install\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SessionService implements SingletonInterface
 {
+    use CookieHeaderTrait;
+
     /**
      * The path to our var/ folder (where we can write our sessions). Set in the
      * constructor.
@@ -77,6 +81,9 @@ class SessionService implements SingletonInterface
         session_save_path($sessionSavePath);
         session_name($this->cookieName);
         ini_set('session.cookie_httponly', true);
+        if ($this->hasSameSiteCookieSupport()) {
+            ini_set('session.cookie_samesite', Cookie::SAMESITE_STRICT);
+        }
         ini_set('session.cookie_path', (string)GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
         // Always call the garbage collector to clean up stale session files
         ini_set('session.gc_probability', (string)100);
@@ -94,6 +101,9 @@ class SessionService implements SingletonInterface
             throw new \TYPO3\CMS\Install\Exception($sessionCreationError, 1294587486);
         }
         session_start();
+        if (!$this->hasSameSiteCookieSupport()) {
+            $this->resendCookieHeader([$this->cookieName]);
+        }
     }
 
     /**
@@ -194,6 +204,9 @@ class SessionService implements SingletonInterface
     private function renewSession()
     {
         session_regenerate_id();
+        if (!$this->hasSameSiteCookieSupport()) {
+            $this->resendCookieHeader([$this->cookieName]);
+        }
         return session_id();
     }
 

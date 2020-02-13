@@ -53,6 +53,7 @@
 		"symfony/console": "^4.1",
 		"symfony/expression-language": "^4.1",
 		"symfony/finder": "^4.1",
+		"symfony/http-foundation": "^4.2 || ^5.0",
 		"symfony/polyfill-intl-icu": "^1.6",
 		"symfony/polyfill-intl-idn": "^1.10",
 		"symfony/polyfill-mbstring": "^1.2",

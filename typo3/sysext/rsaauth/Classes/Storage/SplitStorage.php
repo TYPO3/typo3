@@ -14,7 +14,9 @@ namespace TYPO3\CMS\Rsaauth\Storage;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -24,6 +26,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class SplitStorage extends AbstractStorage
 {
+    use CookieHeaderTrait;
+
     /**
      * Creates an instance of this class. It checks and initializes PHP
      * sessions if necessary.
@@ -31,7 +35,17 @@ class SplitStorage extends AbstractStorage
     public function __construct()
     {
         if (session_id() === '') {
-            session_start();
+            $options = [
+                'cookie_httponly' => true,
+                'cookie_secure' => GeneralUtility::getIndpEnv('TYPO3_SSL'),
+            ];
+            if ($this->hasSameSiteCookieSupport()) {
+                $options['cookie_samesite'] = Cookie::SAMESITE_STRICT;
+            }
+            session_start($options);
+            if (!$this->hasSameSiteCookieSupport()) {
+                $this->resendCookieHeader([session_name()]);
+            }
         }
     }
 
@@ -88,7 +102,7 @@ class SplitStorage extends AbstractStorage
                     setcookie(
                         $sessionName,
                         false,
-                        $sessionCookie['lifetime'],
+                        -1,
                         $sessionCookie['path'],
                         $sessionCookie['domain'],
                         $sessionCookie['secure']
