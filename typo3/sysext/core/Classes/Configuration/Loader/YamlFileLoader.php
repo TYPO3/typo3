@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Core\Configuration\Loader;
  */
 
 use Symfony\Component\Yaml\Yaml;
+use TYPO3\CMS\Core\Configuration\Processor\PlaceholderProcessorList;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -136,27 +137,6 @@ class YamlFileLoader
     }
 
     /**
-     * Return value from environment variable
-     *
-     * Environment variables may only contain word characters and underscores (a-zA-Z0-9_)
-     * to be compatible to shell environments.
-     *
-     * @param string $value
-     * @return string
-     */
-    protected function getValueFromEnv(string $value): string
-    {
-        $matches = [];
-        preg_match_all('/%env\([\'"]?(\w+)[\'"]?\)%/', $value, $matches);
-        $envVars = array_combine($matches[0], $matches[1]);
-        foreach ($envVars as $substring => $envVarName) {
-            $envVar = getenv($envVarName);
-            $value = $envVar ? str_replace($substring, $envVar, $value) : $value;
-        }
-        return $value;
-    }
-
-    /**
      * Checks for the special "imports" key on the main level of a file,
      * which calls "load" recursively.
      * @param array $content
@@ -189,64 +169,101 @@ class YamlFileLoader
     protected function processPlaceholders(array $content, array $referenceArray): array
     {
         foreach ($content as $k => $v) {
-            if ($this->isEnvPlaceholder($v)) {
-                $content[$k] = $this->getValueFromEnv($v);
-            } elseif ($this->isPlaceholder($v)) {
-                $content[$k] = $this->getValueFromReferenceArray($v, $referenceArray);
-            } elseif (is_array($v)) {
+            if (is_array($v)) {
                 $content[$k] = $this->processPlaceholders($v, $referenceArray);
+            } elseif ($this->containsPlaceholder($v)) {
+                $content[$k] = $this->processPlaceholderLine($v, $referenceArray);
             }
         }
         return $content;
     }
 
     /**
-     * Returns the value for a placeholder as fetched from the referenceArray
-     *
-     * @param string $placeholder the string to search for
-     * @param array $referenceArray the main configuration array where to look up the data
-     *
-     * @return array|mixed|string
+     * @param string $line
+     * @param array $referenceArray
+     * @return mixed
      */
-    protected function getValueFromReferenceArray(string $placeholder, array $referenceArray)
+    protected function processPlaceholderLine(string $line, array $referenceArray)
     {
-        $pointer = trim($placeholder, '%');
-        $parts = explode('.', $pointer);
-        $referenceData = $referenceArray;
-        foreach ($parts as $part) {
-            if (isset($referenceData[$part])) {
-                $referenceData = $referenceData[$part];
+        $parts = $this->getParts($line);
+        foreach ($parts as $partKey => $part) {
+            $result = $this->processSinglePlaceholder($partKey, $part, $referenceArray);
+            // Replace whole content if placeholder is the only thing in this line
+            if ($line === $partKey) {
+                $line = $result;
+            } elseif (is_string($result) || is_numeric($result)) {
+                $line = str_replace($partKey, $result, $line);
             } else {
-                // return unsubstituted placeholder
-                return $placeholder;
+                throw new \UnexpectedValueException(
+                    'Placeholder can not be substituted if result is not string or numeric',
+                    1581502783
+                );
+            }
+            if ($result !== $partKey && $this->containsPlaceholder($line)) {
+                $line = $this->processPlaceholderLine($line, $referenceArray);
             }
         }
-        if ($this->isPlaceholder($referenceData)) {
-            $referenceData = $this->getValueFromReferenceArray($referenceData, $referenceArray);
+        return $line;
+    }
+
+    /**
+     * @param string $placeholder
+     * @param string $value
+     * @param array $referenceArray
+     * @return mixed
+     */
+    protected function processSinglePlaceholder(string $placeholder, string $value, array $referenceArray)
+    {
+        $processorList = GeneralUtility::makeInstance(
+            PlaceholderProcessorList::class,
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['yamlLoader']['placeholderProcessors']
+        );
+        foreach ($processorList->compile() as $processor) {
+            if ($processor->canProcess($placeholder, $referenceArray)) {
+                try {
+                    $result = $processor->process($value, $referenceArray);
+                } catch (\UnexpectedValueException $e) {
+                    $result = $placeholder;
+                }
+                if (is_array($result)) {
+                    $result = $this->processPlaceholders($result, $referenceArray);
+                }
+                break;
+            }
         }
-        return $referenceData;
+        return $result ?? $placeholder;
     }
 
     /**
-     * Checks if a value is a string and begins and ends with %...%
-     *
-     * @param mixed $value the probe to check for
-     * @return bool
+     * @param string $placeholders
+     * @return array
      */
-    protected function isPlaceholder($value): bool
+    protected function getParts(string $placeholders): array
     {
-        return is_string($value) && strpos($value, '%') === 0 && substr($value, -1) === '%';
+        // find occurences of placeholders like %some()% and %array.access%.
+        // Only find the innermost ones, so we can nest them.
+        preg_match_all(
+            '/%[^(%]+?\([\'"]?([^(]*?)[\'"]?\)%|%([^%()]*?)%/',
+            $placeholders,
+            $parts,
+            PREG_UNMATCHED_AS_NULL
+        );
+        $matches = array_filter(
+            array_merge($parts[1], $parts[2])
+        );
+        return array_combine($parts[0], $matches);
     }
 
     /**
-     * Checks if a value is a string and contains an env placeholder
+     * Finds possible placeholders.
+     * May find false positives for complexer structures, but they will be sorted later on.
      *
-     * @param mixed $value the probe to check for
+     * @param $value
      * @return bool
      */
-    protected function isEnvPlaceholder($value): bool
+    protected function containsPlaceholder($value): bool
     {
-        return is_string($value) && (strpos($value, '%env(') !== false);
+        return is_string($value) && substr_count($value, '%') >= 2;
     }
 
     protected function hasFlag(int $flag): bool

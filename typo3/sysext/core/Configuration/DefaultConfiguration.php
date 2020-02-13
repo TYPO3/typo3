@@ -1055,6 +1055,16 @@ return [
                 ],
             ],
         ],
+        'yamlLoader' => [
+            'placeholderProcessors' => [
+                \TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvVariableProcessor::class => [],
+                \TYPO3\CMS\Core\Configuration\Processor\Placeholder\ValueFromReferenceArrayProcessor::class => [
+                    'after' => [
+                        \TYPO3\CMS\Core\Configuration\Processor\Placeholder\EnvVariableProcessor::class
+                    ]
+                ]
+            ]
+        ]
     ],
     'EXT' => [ // Options related to the Extension Management
         'allowGlobalInstall' => false,

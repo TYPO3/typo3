@@ -129,6 +129,44 @@ options:
     - option1
     - option2
 betterthanbefore: \'%firstset.myinitialversion%\'
+muchbetterthanbefore: \'some::%options.0%::option\'
+';
+
+        $expected = [
+            'firstset' => [
+                'myinitialversion' => 13
+            ],
+            'options' => [
+                'option1',
+                'option2'
+            ],
+            'betterthanbefore' => 13,
+            'muchbetterthanbefore' => 'some::option1::option'
+        ];
+
+        // Accessible mock to $subject since getFileContents calls GeneralUtility methods
+        $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
+        $subject->expects(self::once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
+        $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
+        $output = $subject->load($fileName);
+        self::assertSame($expected, $output);
+    }
+
+    /**
+     * Method checking for nested placeholders
+     * @test
+     */
+    public function loadWithNestedPlaceholders(): void
+    {
+        $fileName = 'Berta.yml';
+        $fileContents = '
+
+firstset:
+  myinitialversion: 13
+options:
+    - option1
+    - option2
+betterthanbefore: \'%env(foo)%\'
 ';
 
         $expected = [
@@ -146,7 +184,10 @@ betterthanbefore: \'%firstset.myinitialversion%\'
         $subject = $this->getAccessibleMock(YamlFileLoader::class, ['getFileContents', 'getStreamlinedFileName']);
         $subject->expects(self::once())->method('getStreamlinedFileName')->with($fileName)->willReturn($fileName);
         $subject->expects(self::once())->method('getFileContents')->with($fileName)->willReturn($fileContents);
+
+        putenv('foo=%firstset.myinitialversion%');
         $output = $subject->load($fileName);
+        putenv('foo=');
         self::assertSame($expected, $output);
     }
 
@@ -226,6 +267,11 @@ betterthanbefore: \'%firstset.myinitialversion%\'
                 [],
                 'carl: \'%env(foo)%::%env(bar)%::%env(baz)%\'',
                 ['carl' => '%env(foo)%::%env(bar)%::%env(baz)%']
+            ],
+            'nested env variables' => [
+                ['foo=bar', 'bar=heinz'],
+                'carl: \'%env(%env(foo)%)%\'',
+                ['carl' => 'heinz']
             ],
         ];
     }
@@ -328,11 +374,11 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
             ],
             'invalid placeholder with two % but not at the end' => [
                 '%cool%again',
-                false
+                true
             ],
             'invalid placeholder with two % but not at the beginning nor end' => [
                 'did%you%know',
-                false
+                true
             ],
             'valid placeholder with just numbers' => [
                 '%13%',
@@ -352,10 +398,10 @@ betterthanbefore: \'%env(mynonexistingenv)%\'
      * @param bool $expected
      * @skip
      */
-    public function isPlaceholderTest($placeholderValue, bool $expected)
+    public function containsPlaceholderTest($placeholderValue, bool $expected)
     {
         $subject = $this->getAccessibleMock(YamlFileLoader::class, ['dummy']);
-        $output = $subject->_call('isPlaceholder', $placeholderValue);
+        $output = $subject->_call('containsPlaceholder', $placeholderValue);
         self::assertSame($expected, $output);
     }
 }
