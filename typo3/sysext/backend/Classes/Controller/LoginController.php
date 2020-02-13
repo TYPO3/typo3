@@ -16,6 +16,7 @@ namespace TYPO3\CMS\Backend\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\Exception;
 use TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -91,8 +92,6 @@ class LoginController
     {
         $this->validateAndSortLoginProviders();
 
-        // We need a PHP session session for most login levels
-        session_start();
         $this->redirectUrl = GeneralUtility::sanitizeLocalUrl(GeneralUtility::_GP('redirect_url'));
         $this->loginProviderIdentifier = $this->detectLoginProvider();
 
@@ -492,7 +491,19 @@ class LoginController
         }
         // Use the secure option when the current request is served by a secure connection:
         $cookieSecure = (bool)$GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
-        setcookie('be_lastLoginProvider', $loginProvider, $GLOBALS['EXEC_TIME'] + 7776000, null, null, $cookieSecure, true); // 90 days
+        $cookie = new Cookie(
+            'be_lastLoginProvider',
+            (string)$loginProvider,
+            $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
+            GeneralUtility::getIndpEnv('TYPO3_SITE_PATH') . TYPO3_mainDir,
+            '',
+            $cookieSecure,
+            true,
+            false,
+            Cookie::SAMESITE_STRICT
+        );
+        header('Set-Cookie: ' . $cookie->__toString(), false);
+
         return $loginProvider;
     }
 

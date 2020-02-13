@@ -14,10 +14,12 @@ namespace TYPO3\CMS\Workspaces\Hook;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -28,6 +30,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
 {
+    use CookieHeaderTrait;
+
     /**
      * the GET parameter to be used
      *
@@ -302,7 +306,24 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface
                         if (GeneralUtility::_GP($this->previewKey)) {
                             // Lifetime is 1 hour, does it matter much?
                             // Requires the user to click the link from their email again if it expires.
-                            setcookie($this->previewKey, GeneralUtility::_GP($this->previewKey), 0, GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'), null, null, true);
+                            $cookieSameSite = $this->sanitizeSameSiteCookieValue(
+                                strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
+                            );
+                            // None needs the secure option (only allowed on HTTPS)
+                            $cookieSecure = $cookieSameSite === Cookie::SAMESITE_NONE || GeneralUtility::getIndpEnv('TYPO3_SSL');
+
+                            $cookie = new Cookie(
+                                $this->previewKey,
+                                GeneralUtility::_GP($this->previewKey),
+                                0,
+                                GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'),
+                                null,
+                                $cookieSecure,
+                                true,
+                                false,
+                                $cookieSameSite
+                            );
+                            header('Set-Cookie: ' . $cookie->__toString(), false);
                         }
                         return $previewConfig;
                     }

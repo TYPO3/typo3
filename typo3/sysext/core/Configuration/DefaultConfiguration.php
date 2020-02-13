@@ -867,6 +867,7 @@ return [
         'enabledBeUserIPLock' => true,
         'cookieDomain' => '',
         'cookieName' => 'be_typo_user',
+        'cookieSameSite' => 'strict',
         'loginSecurityLevel' => '',
         'showRefreshLoginPopup' => false,
         'adminOnly' => 0,
@@ -996,6 +997,7 @@ return [
         'permalogin' => 0,
         'cookieDomain' => '',
         'cookieName' => 'fe_typo_user',
+        'cookieSameSite' => 'lax',
         'defaultUserTSconfig' => '',
         'defaultTypoScript_constants' => '',
         'defaultTypoScript_constants.' => [], // Lines of TS to include after a static template with the uid = the index in the array (Constants)
