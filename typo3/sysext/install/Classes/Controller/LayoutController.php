@@ -120,8 +120,11 @@ class LayoutController extends AbstractController
         }
         foreach ($oldExtConfSettings as $extensionName => $extensionSettings) {
             if (!array_key_exists($extensionName, $newExtensionSettings)) {
-                $newExtensionSettings = $this->removeDotsFromArrayKeysRecursive(unserialize($extensionSettings, ['allowed_classes' => false]));
-                $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extensionName, $newExtensionSettings);
+                $unserializedConfiguration = unserialize($extensionSettings, ['allowed_classes' => false]);
+                if (is_array($unserializedConfiguration)) {
+                    $newExtensionSettings = $this->removeDotsFromArrayKeysRecursive($unserializedConfiguration);
+                    $configurationManager->setLocalConfigurationValueByPath('EXTENSIONS/' . $extensionName, $newExtensionSettings);
+                }
             }
         }
         return new JsonResponse([
