@@ -150,16 +150,14 @@ class PreviewController
                 $queryParameters['_language'] = $site->getLanguageById((int)$queryParameters['L']);
                 unset($queryParameters['L']);
             }
+            $parameters = $queryParameters;
             if (!WorkspaceService::isNewPage($this->pageId)) {
-                $parameters = $queryParameters;
                 $parameters['ADMCMD_noBeUser'] = 1;
                 $parameters['ADMCMD_prev'] = 'IGNORE';
                 $liveUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
             }
 
             $parameters = $queryParameters;
-            $parameters['ADMCMD_view'] = 1;
-            $parameters['ADMCMD_editIcons'] = 1;
             $parameters['ADMCMD_prev'] = 'IGNORE';
             $wsUrl = (string)$site->getRouter()->generateUri($this->pageId, $parameters);
         } catch (SiteNotFoundException | InvalidRouteArgumentsException $e) {

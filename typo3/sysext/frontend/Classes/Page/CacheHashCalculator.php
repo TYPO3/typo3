@@ -151,16 +151,14 @@ class CacheHashCalculator implements SingletonInterface
 
     /**
      * Checks whether the given parameter is out of a known data-set starting
-     * with ADMCMD or starts with TSFE_ADMIN_PANEL.
+     * with ADMCMD.
      *
      * @param string $key
      * @return bool
      */
     protected function isAdminPanelParameter($key)
     {
-        return $key === 'ADMCMD_noBeUser' || $key === 'ADMCMD_view' || $key === 'ADMCMD_editIcons'
-            || $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime' || $key === 'ADMCMD_prev'
-            || stripos($key, 'TSFE_ADMIN_PANEL') !== false && preg_match('/TSFE_ADMIN_PANEL\\[.*?\\]/', $key);
+        return $key === 'ADMCMD_noBeUser' || $key === 'ADMCMD_simUser' || $key === 'ADMCMD_simTime' || $key === 'ADMCMD_prev';
     }
 
     /**
