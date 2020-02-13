@@ -629,6 +629,13 @@ class DatabaseRecordList
     protected $systemLanguagesOnPage;
 
     /**
+     * All languages that are allowed by the user
+     *
+     * @var array
+     */
+    protected $languagesAllowedForUser = [];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -1077,6 +1084,11 @@ class DatabaseRecordList
             }
             $hookObject->getDBlistQuery($table, $id, $addWhere, $selFieldList, $this);
         }
+
+        if ($table == 'pages' && $this->showOnlyTranslatedRecords) {
+            $addWhere .= ' AND ' . $GLOBALS['TCA']['pages']['ctrl']['languageField'] . ' IN(' . implode(',', array_keys($this->languagesAllowedForUser)) . ')';
+        }
+
         $additionalConstraints = empty($addWhere) ? [] : [QueryHelper::stripLogicalOperatorPrefix($addWhere)];
         $selFieldList = GeneralUtility::trimExplode(',', $selFieldList, true);
 
@@ -4530,5 +4542,15 @@ class DatabaseRecordList
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * @param array $languagesAllowedForUser
+     * @return DatabaseRecordList
+     */
+    public function setLanguagesAllowedForUser(array $languagesAllowedForUser): DatabaseRecordList
+    {
+        $this->languagesAllowedForUser = $languagesAllowedForUser;
+        return $this;
     }
 }
