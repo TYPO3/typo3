@@ -43,8 +43,15 @@ class SysNoteRepository
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_note');
+        $queryBuilder->getRestrictions()->removeAll();
         $res = $queryBuilder
-            ->select('sys_note.*', 'be_users.username', 'be_users.realName')
+            ->select(
+                'sys_note.*',
+                'be_users.username AS authorUsername',
+                'be_users.realName AS authorRealName',
+                'be_users.disable AS authorDisabled',
+                'be_users.deleted AS authorDeleted'
+            )
             ->from('sys_note')
             ->leftJoin(
                 'sys_note',
@@ -53,10 +60,11 @@ class SysNoteRepository
                 $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->quoteIdentifier('be_users.uid'))
             )
             ->where(
+                $queryBuilder->expr()->eq('sys_note.deleted', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_note.pid', $queryBuilder->createNamedParameter($pids, Connection::PARAM_INT_ARRAY)),
                 $queryBuilder->expr()->orX(
-                    $queryBuilder->expr()->in('sys_note.personal', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
-                    $queryBuilder->expr()->in('sys_note.cruser', $queryBuilder->createNamedParameter($author, \PDO::PARAM_INT))
+                    $queryBuilder->expr()->eq('sys_note.personal', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_note.cruser', $queryBuilder->createNamedParameter($author, \PDO::PARAM_INT))
                 )
             )
             ->orderBy('sorting', 'asc')

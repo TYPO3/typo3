@@ -18,9 +18,10 @@
 					</span>
 					<span class="author">
 						<f:translate key="author" />
-						<f:if condition="{note.realName}">
-							<f:then>{note.realName}</f:then>
-							<f:else>{note.username}</f:else>
+						<f:if condition="{note.authorDisabled} || {note.authorDeleted} || !{note.authorUsername}">
+						  <f:then>[{f:translate(key: 'author_deleted')}]</f:then>
+						  <f:else if="{note.authorRealName}">{note.authorRealName}</f:else>
+						  <f:else>{note.authorUsername}</f:else>
 						</f:if>
 					</span>
 					&nbsp; <span>&bull;</span> &nbsp;
