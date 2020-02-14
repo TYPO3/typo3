@@ -55,7 +55,7 @@ class LanguagePackCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (substr_count($input->getArgument('command'), ':') === 2) {
+        if ($input->hasArgument('command') && substr_count($input->getArgument('command'), ':') === 2) {
             $message = 'bin/typo3 lang:language:update is deprecated, use bin/typo3 language:update instead';
             $output->writeln('<error>' . $message . '</error>');
             trigger_error($message, E_USER_DEPRECATED);
