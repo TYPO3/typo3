@@ -1702,8 +1702,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function getPageAndRootlineWithDomain($rootPageId)
     {
         $this->getPageAndRootline();
-        // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's from other domains are not possible.
-        if ($rootPageId && is_array($this->rootLine) && $this->rootLine !== []) {
+        // Checks if the $domain-startpage is in the rootLine. This is necessary so that references to page-id's via ?id=123 from other sites are not possible.
+        if (is_array($this->rootLine) && $this->rootLine !== []) {
             $idFound = false;
             foreach ($this->rootLine as $key => $val) {
                 if ($val['uid'] == $rootPageId) {
@@ -2700,6 +2700,28 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
+     * Check the value of "content_from_pid" of the current page record, and see if the current request
+     * should actually show content from another page.
+     *
+     * By using $TSFE->getPageAndRootline() on the cloned object, all rootline restrictions (extendToSubPages)
+     * are evaluated as well.
+     *
+     * @return int the current page ID or another one if resolved properly - usually set to $this->contentPid
+     */
+    protected function resolveContentPid(): int
+    {
+        if (!isset($this->page['content_from_pid']) || empty($this->page['content_from_pid'])) {
+            return (int)$this->id;
+        }
+        // make REAL copy of TSFE object - not reference!
+        $temp_copy_TSFE = clone $this;
+        // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
+        $temp_copy_TSFE->id = $this->page['content_from_pid'];
+        $temp_copy_TSFE->MP = '';
+        $temp_copy_TSFE->getPageAndRootline();
+        return (int)$temp_copy_TSFE->id;
+    }
+    /**
      * Sets up TypoScript "config." options and set properties in $TSFE.
      *
      * @param ServerRequestInterface $request
@@ -2707,16 +2729,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     public function preparePageContentGeneration(ServerRequestInterface $request)
     {
         $this->getTimeTracker()->push('Prepare page content generation');
-        if (isset($this->page['content_from_pid']) && $this->page['content_from_pid'] > 0) {
-            // make REAL copy of TSFE object - not reference!
-            $temp_copy_TSFE = clone $this;
-            // Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
-            $temp_copy_TSFE->id = $this->page['content_from_pid'];
-            $temp_copy_TSFE->MP = '';
-            $temp_copy_TSFE->getPageAndRootlineWithDomain($this->config['config']['content_from_pid_allowOutsideDomain'] ? 0 : $this->site->getRootPageId());
-            $this->contentPid = (int)$temp_copy_TSFE->id;
-            unset($temp_copy_TSFE);
-        }
+        $this->contentPid = $this->resolveContentPid();
         // Global vars...
         $this->indexedDocTitle = $this->page['title'] ?? null;
         // Base url:

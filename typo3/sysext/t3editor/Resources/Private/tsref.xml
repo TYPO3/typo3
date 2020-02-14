@@ -271,11 +271,6 @@ config.cache.all = fe_users:2]]></description>
 This value is overridden by the value set in the page-record (field="cache_timeout") if this value is greater than zero.]]></description>
 			<default><![CDATA[86400 (=24H)]]></default>
 		</property>
-		<property name="content_from_pid_allowOutsideDomain" type="boolean">
-			<description><![CDATA[Using the "Show content from this page instead" feature allows you to insert content from the current domain only. Setting this option will allow content included from anywhere in the page tree!]]></description>
-			<default><![CDATA[
-]]></default>
-		</property>
 		<property name="contentObjectExceptionHandler" type="array">
 			<description><![CDATA[Exceptions which occur during rendering of content objects (typically plugins) will now be caught by default in production context and an error message is shown along with the rendered output.
 

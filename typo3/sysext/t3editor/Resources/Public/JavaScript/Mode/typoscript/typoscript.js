@@ -202,7 +202,6 @@
         'constants': kw('constants'),
         'CONTENT': kw('CONTENT'),
         'content': A,
-        'content_from_pid_allowOutsideDomain': kw('content_from_pid_allowOutsideDomain'),
         'contextMenu': kw('contextMenu'),
         'copy': A,
         'copyLevels': kw('copyLevels'),
