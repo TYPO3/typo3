@@ -296,6 +296,9 @@ class PageProvider extends RecordProvider
         ) {
             return false;
         }
+        if (!$this->backendUser->check('tables_modify', $this->table)) {
+            return false;
+        }
         return $this->hasPagePermission(Permission::PAGE_NEW);
     }
 
@@ -319,6 +322,9 @@ class PageProvider extends RecordProvider
             return true;
         }
         if (isset($GLOBALS['TCA'][$this->table]['ctrl']['adminOnly']) && $GLOBALS['TCA'][$this->table]['ctrl']['adminOnly']) {
+            return false;
+        }
+        if (!$this->backendUser->check('tables_modify', $this->table)) {
             return false;
         }
         return !$this->isRecordLocked() && $this->hasPagePermission(Permission::PAGE_EDIT);
@@ -349,6 +355,9 @@ class PageProvider extends RecordProvider
         ) {
             return false;
         }
+        if (!$this->backendUser->check('tables_modify', $this->table)) {
+            return false;
+        }
         return !$this->isWebMount()
             && $this->canBeEdited()
             && !$this->isDeletePlaceholder();
@@ -367,6 +376,9 @@ class PageProvider extends RecordProvider
         if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
             && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
         ) {
+            return false;
+        }
+        if (!$this->backendUser->check('tables_select', $this->table)) {
             return false;
         }
         return !$this->isRoot()
@@ -602,6 +614,7 @@ class PageProvider extends RecordProvider
         if (!empty($GLOBALS['TCA'][$this->table]['columns'][$fieldName]['exclude'])
             && $this->record['doktype'] <= PageRepository::DOKTYPE_SPACER
             && $this->backendUser->check('non_exclude_fields', $this->table . ':' . $fieldName)
+            && $this->backendUser->check('tables_modify', $this->table)
         ) {
             return (int)$this->record[$fieldName] === $value;
         }

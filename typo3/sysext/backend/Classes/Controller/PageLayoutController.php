@@ -817,7 +817,7 @@ class PageLayoutController
         $this->buttonBar->addButton($clearCacheButton, ButtonBar::BUTTON_POSITION_RIGHT, 1);
 
         // Edit page properties and page language overlay icons
-        if ($this->isPageEditable(0)) {
+        if ($this->isPageEditable(0) && $this->getBackendUser()->check('tables_modify', 'pages')) {
             /** @var \TYPO3\CMS\Core\Http\NormalizedParams */
             $normalizedParams = $request->getAttribute('normalizedParams');
             // Edit localized pages only when one specific language is selected

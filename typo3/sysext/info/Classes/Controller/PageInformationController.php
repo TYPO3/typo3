@@ -256,7 +256,12 @@ class PageInformationController
             // Traverse fields (as set above) in order to create header values:
             foreach ($this->fieldArray as $field) {
                 $editButton = '';
-                if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field !== 'uid') {
+                if (
+                    $editIdList
+                    && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field !== 'uid'
+                    && $this->getBackendUser()->check('tables_modify', 'pages')
+                    && $this->getBackendUser()->check('non_exclude_fields', 'pages:' . $field)
+                ) {
                     $iTitle = sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
                         rtrim(trim($lang->sL(BackendUtility::getItemLabel('pages', $field))), ':')
@@ -446,11 +451,14 @@ class PageInformationController
                             htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">' .
                             $this->iconFactory->getIcon('actions-view-page', Icon::SIZE_SMALL)->render() .
                             '</a>';
-                        $editButton .=
-                            '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
-                            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">' .
-                            $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() .
-                            '</a>';
+
+                        if ($this->getBackendUser()->check('tables_modify', 'pages')) {
+                            $editButton .=
+                                '<a class="btn btn-default" href="' . htmlspecialchars($url) . '" title="' .
+                                htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editDefaultLanguagePage')) . '">' .
+                                $this->iconFactory->getIcon('actions-page-open', Icon::SIZE_SMALL)->render() .
+                                '</a>';
+                        }
                     }
                     // Since the uid is overwritten with the edit button markup we need to store
                     // the actual uid to be able to add it as data attribute to the table data cell.

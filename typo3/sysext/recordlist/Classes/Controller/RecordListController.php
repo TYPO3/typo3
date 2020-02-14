@@ -454,7 +454,12 @@ class RecordListController
             }
             // If edit permissions are set, see
             // \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
-            if ($this->pagePermissions->editPagePermissionIsGranted() && $this->editLockPermissions() && $backendUser->checkLanguageAccess(0)) {
+            if (
+                $this->getBackendUserAuthentication()->check('tables_modify', 'pages')
+                && $this->pagePermissions->editPagePermissionIsGranted()
+                && $this->editLockPermissions()
+                && $backendUser->checkLanguageAccess(0)
+            ) {
                 // Edit
                 $editLink = $this->uriBuilder->buildUriFromRoute('record_edit', [
                     'edit' => [
