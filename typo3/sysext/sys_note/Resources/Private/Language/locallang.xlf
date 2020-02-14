@@ -30,6 +30,9 @@
 			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>
 			</trans-unit>
+			<trans-unit id="author_deleted" resname="author_deleted">
+				<source>Unknown author</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
