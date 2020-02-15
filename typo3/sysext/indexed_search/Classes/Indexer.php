@@ -733,7 +733,11 @@ class Indexer
         // Get links:
         $list = $this->extractHyperLinks($content);
         if ($this->indexerConfig['useCrawlerForExternalFiles'] && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('crawler')) {
-            $crawler = GeneralUtility::makeInstance(\tx_crawler_lib::class);
+            /**
+             * todo: remove dependency to class tx_crawler_lib
+             * @link https://forge.typo3.org/issues/83603
+             */
+            $crawler = GeneralUtility::makeInstance('tx_crawler_lib');
         }
         // Traverse links:
         foreach ($list as $linkInfo) {
