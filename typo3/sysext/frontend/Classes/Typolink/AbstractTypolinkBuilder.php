@@ -105,9 +105,14 @@ abstract class AbstractTypolinkBuilder
                 $isUrlModified = true;
             }
             // Override scheme:
-            $forceAbsoluteUrl = &$configuration['forceAbsoluteUrl.']['scheme'];
-            if (!empty($forceAbsoluteUrl) && $urlParts['scheme'] !== $forceAbsoluteUrl) {
-                $urlParts['scheme'] = $forceAbsoluteUrl;
+            $forcedScheme = $configuration['forceAbsoluteUrl.']['scheme'] ?? null;
+            if (!empty($forcedScheme) && $urlParts['scheme'] !== $forcedScheme) {
+                $urlParts['scheme'] = $forcedScheme;
+                $isUrlModified = true;
+            }
+            // Also ensure the path has a "/" at the beginning when concatenating everything else together
+            if ($urlParts['path'] !== '') {
+                $urlParts['path'] = '/' . ltrim($urlParts['path'], '/');
                 $isUrlModified = true;
             }
             // Recreate the absolute URL:
