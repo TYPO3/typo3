@@ -37,6 +37,6 @@ class RequestException extends GuzzleRequestException implements RequestExceptio
 
     public function getRequest(): RequestInterface
     {
-        parent::getRequest();
+        return parent::getRequest();
     }
 }

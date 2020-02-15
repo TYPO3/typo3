@@ -37,6 +37,6 @@ class NetworkException extends GuzzleConnectException implements NetworkExceptio
 
     public function getRequest(): RequestInterface
     {
-        parent::getRequest();
+        return parent::getRequest();
     }
 }
