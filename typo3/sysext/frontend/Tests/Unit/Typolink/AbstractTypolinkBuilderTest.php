@@ -159,7 +159,17 @@ class AbstractTypolinkBuilderTest extends UnitTestCase
                         'scheme' => 'typo3'
                     ]
                 ]
-            ]
+            ],
+            'Scheme can be forced with full URL with path' => [
+                'typo3://example.org/subfolder/file.txt',
+                'http://example.org/subfolder/file.txt',
+                [
+                    'forceAbsoluteUrl' => '1',
+                    'forceAbsoluteUrl.' => [
+                        'scheme' => 'typo3'
+                    ]
+                ]
+            ],
         ];
     }
 

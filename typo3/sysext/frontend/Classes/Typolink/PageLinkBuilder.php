@@ -416,9 +416,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             } catch (InvalidRouteArgumentsException $e) {
                 throw new UnableToLinkException('The target page could not be linked. Error: ' . $e->getMessage(), 1535472406);
             }
-            // Override scheme, but only if the site does not define a scheme yet AND the site defines a domain/host
-            if ($useAbsoluteUrl && !$uri->getScheme() && $uri->getHost()) {
-                $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? 'https';
+            // Override scheme if absoluteUrl is set, but only if the site defines a domain/host. Fall back to site scheme and else https.
+            if ($useAbsoluteUrl && $uri->getHost()) {
+                $scheme = $conf['forceAbsoluteUrl.']['scheme'] ?? ($uri->getScheme() ?: 'https');
                 $uri = $uri->withScheme($scheme);
             }
         }
