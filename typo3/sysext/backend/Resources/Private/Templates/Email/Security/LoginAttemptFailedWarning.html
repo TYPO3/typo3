@@ -1,0 +1,11 @@
+<f:layout name="SystemEmail" />
+<f:section name="Subject">TYPO3 Login Failure Warning (at {typo3.sitename})</f:section>
+<f:section name="Title">TYPO3 Login Failure Warning at {typo3.sitename}</f:section>
+<f:section name="Main">
+    <strong>There have been some attempts ({lines -> f:count()}) to login at the TYPO3 site "{typo3.sitename}" (<strong>{normalizedParams.remoteAddress}</strong>).</strong>
+    <br><br>
+    This is a dump of the failures:<br>
+<f:for each="{lines}" as="line">
+    {f:format.date(date:line.row.tstamp, format:'{typo3.formats.date} {typo3.formats.time}')}: {line.text}<br>
+</f:for>
+</f:section>
