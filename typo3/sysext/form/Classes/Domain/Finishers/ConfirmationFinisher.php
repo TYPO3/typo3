@@ -67,6 +67,11 @@ class ConfirmationFinisher extends AbstractFinisher
     protected $configurationManager;
 
     /**
+     * @var ContentObjectRenderer
+     */
+    protected $contentObjectRenderer;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
     public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
