@@ -334,7 +334,7 @@ class FileList
             if ($v === '_CLIPBOARD_') {
                 $theData[$v] = $this->renderClipboardHeaderRow(!empty($iOut));
             } elseif ($v === '_REF_') {
-                $theData[$v] = htmlspecialchars($this->getLanguageService()->getLL('c_' . $v));
+                $theData[$v] = htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_'));
             } else {
                 // Normal row
                 $theData[$v]  = $this->linkWrapSort($this->folderObject->getCombinedIdentifier(), $v);
