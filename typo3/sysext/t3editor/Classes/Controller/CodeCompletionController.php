@@ -90,8 +90,8 @@ class CodeCompletionController
             //type definition or value-assignment
             if ($dotCount === 0) {
                 if ($value != '') {
-                    if (strlen($value) > 20) {
-                        $value = substr($value, 0, 20);
+                    if (mb_strlen($value) > 20) {
+                        $value = mb_substr($value, 0, 20);
                     }
                     if (!isset($cleanedTreeBranch[$key])) {
                         $cleanedTreeBranch[$key] = [];
