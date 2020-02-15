@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Core\Routing\Aspect;
 
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
+use TYPO3\CMS\Core\Site\SiteLanguageAwareTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
