@@ -1,0 +1,26 @@
+<f:layout name="SystemEmail" />
+<f:section name="Subject">There are new changes in workspace "{workspace.title}"</f:section>
+<f:section name="Title">{affectedElements -> f:count()} items sent to stage "{nextStage}" in workspace "{workspace.title}"</f:section>
+<f:section name="Main">
+At the TYPO3 site "{typo3.sitename}" in workspace "{workspace.title}" ({workspace.uid}) the stage has changed to "{nextStage}" for the element(s):
+
+<f:for each="{affectedElements}" as="element">
+ *{element.0}:{element.1}
+</f:for>
+
+The first entry was "{recordTitle}" at location "{rootLine}" in the page tree.
+
+See the changes in the comparison view {comparisonView}.
+<f:if condition="{previewLink}">
+See a preview of the changed page here {previewLink}
+</f:if>
+
+The stage was changed by <strong>{currentUser.realName}</strong> ({currentUser.username}).
+
+<f:if condition="{additionalMessage}">
+
+Additional comment:
+
+<f:format.nl2br>{additionalMessage}</f:format.nl2br>
+</f:if>
+</f:section>

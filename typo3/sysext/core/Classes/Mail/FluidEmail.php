@@ -146,6 +146,15 @@ class FluidEmail extends Email
         if (in_array(static::FORMAT_PLAIN, $this->format, true)) {
             $this->text(trim($this->renderContent('txt')));
         }
+
+        $subjectFromTemplate = $this->view->renderSection(
+            'Subject',
+            $this->view->getRenderingContext()->getVariableProvider()->getAll(),
+            true
+        );
+        if (!empty($subjectFromTemplate)) {
+            $this->subject($subjectFromTemplate);
+        }
     }
 
     protected function renderContent(string $format): string

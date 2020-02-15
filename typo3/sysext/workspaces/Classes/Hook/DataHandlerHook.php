@@ -16,7 +16,6 @@ namespace TYPO3\CMS\Workspaces\Hook;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\SQLServerPlatform;
-use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\Environment;
@@ -29,8 +28,6 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\PlaceholderShadowColumnsResolver;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Mail\MailMessage;
-use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -39,7 +36,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
-use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
+use TYPO3\CMS\Workspaces\Notification\StageChangeNotification;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -53,7 +50,6 @@ class DataHandlerHook
     /**
      * For accumulating information about workspace stages raised
      * on elements so a single mail is sent as notification.
-     * previously called "accumulateForNotifEmail" in DataHandler
      *
      * @var array
      */
@@ -100,8 +96,8 @@ class DataHandlerHook
         }
         $commandIsProcessed = true;
         $action = (string)$value['action'];
-        $comment = !empty($value['comment']) ? $value['comment'] : '';
-        $notificationAlternativeRecipients = is_array($value['notificationAlternativeRecipients'] ?? null) ? $value['notificationAlternativeRecipients'] : [];
+        $comment = $value['comment'] ?: '';
+        $notificationAlternativeRecipients = $value['notificationAlternativeRecipients'] ?? [];
         switch ($action) {
             case 'new':
                 $dataHandler->versionizeRecord($table, $id, $value['label']);
@@ -149,16 +145,52 @@ class DataHandlerHook
      */
     public function processCmdmap_afterFinish(DataHandler $dataHandler)
     {
-        // Empty accumulation array:
-        foreach ($this->notificationEmailInfo as $notifItem) {
-            $this->notifyStageChange($notifItem['shared'][0], $notifItem['shared'][1], implode(', ', $notifItem['elements']), 0, $notifItem['shared'][2], $dataHandler, $notifItem['alternativeRecipients']);
-        }
+        // Empty accumulation array
+        $emailNotificationService = GeneralUtility::makeInstance(StageChangeNotification::class);
+        $this->sendStageChangeNotification(
+            $this->notificationEmailInfo,
+            $emailNotificationService,
+            $dataHandler
+        );
+
         // Reset notification array
         $this->notificationEmailInfo = [];
         // Reset remapped IDs
         $this->remappedIds = [];
 
         $this->flushWorkspaceCacheEntriesByWorkspaceId((int)$dataHandler->BE_USER->workspace);
+    }
+
+    protected function sendStageChangeNotification(
+        array $accumulatedNotificationInformation,
+        StageChangeNotification $notificationService,
+        DataHandler $dataHandler
+    ): void {
+        foreach ($accumulatedNotificationInformation as $groupedNotificationInformation) {
+            $emails = (array)$groupedNotificationInformation['recipients'];
+            if (empty($emails)) {
+                continue;
+            }
+            $workspaceRec = BackendUtility::getRecord('sys_workspace', $groupedNotificationInformation['shared'][0]);
+            if (!is_array($workspaceRec)) {
+                continue;
+            }
+            $notificationService->notifyStageChange(
+                $workspaceRec,
+                (int)$groupedNotificationInformation['shared'][1],
+                $groupedNotificationInformation['elements'],
+                $groupedNotificationInformation['shared'][2],
+                $emails,
+                $dataHandler->BE_USER
+            );
+
+            if ($dataHandler->enableLogging) {
+                [$elementTable, $elementUid] = reset($groupedNotificationInformation['elements']);
+                $propertyArray = $dataHandler->getRecordProperties($elementTable, $elementUid);
+                $pid = $propertyArray['pid'];
+                $dataHandler->log($elementTable, $elementUid, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "' . implode('", "', $emails) . '"', -1, [], $dataHandler->eventPid($elementTable, $elementUid, $pid));
+            }
+        }
     }
 
     /**
@@ -455,246 +487,6 @@ class DataHandlerHook
     }
 
     /****************************
-     *****  Notifications  ******
-     ****************************/
-    /**
-     * Send an email notification to users in workspace
-     *
-     * @param array $stat Workspace access array from \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::checkWorkspace()
-     * @param int $stageId New Stage number: 0 = editing, 1= just ready for review, 10 = ready for publication, -1 = rejected!
-     * @param string $table Table name of element (or list of element names if $id is zero)
-     * @param int $id Record uid of element (if zero, then $table is used as reference to element(s) alone)
-     * @param string $comment User comment sent along with action
-     * @param DataHandler $dataHandler DataHandler object
-     * @param array $notificationAlternativeRecipients List of recipients to notify instead of be_users selected by sys_workspace, list is generated by workspace extension module
-     */
-    protected function notifyStageChange(array $stat, $stageId, $table, $id, $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = []): void
-    {
-        $workspaceRec = BackendUtility::getRecord('sys_workspace', $stat['uid']);
-        // So, if $id is not set, then $table is taken to be the complete element name!
-        $elementName = $id ? $table . ':' . $id : $table;
-        if (!is_array($workspaceRec)) {
-            return;
-        }
-
-        // Get the new stage title
-        $stageService = GeneralUtility::makeInstance(StagesService::class);
-        $newStage = $stageService->getStageTitle((int)$stageId);
-        if (empty($notificationAlternativeRecipients)) {
-            // Compile list of recipients:
-            $emails = [];
-            switch ((int)$stat['stagechg_notification']) {
-                // Notify users of next stage only
-                case 1:
-                    switch ((int)$stageId) {
-                        case 1:
-                        case 10:
-                            $emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], true);
-                            break;
-                        case -1:
-                            // List of elements to reject:
-                            $allElements = explode(',', $elementName);
-                            // Traverse them, and find the history of each
-                            foreach ($allElements as $elRef) {
-                                [$eTable, $eUid] = explode(':', $elRef);
-
-                                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                                    ->getQueryBuilderForTable('sys_log');
-
-                                $queryBuilder->getRestrictions()->removeAll();
-
-                                $result = $queryBuilder
-                                    ->select('log_data', 'tstamp', 'userid')
-                                    ->from('sys_log')
-                                    ->where(
-                                        $queryBuilder->expr()->eq(
-                                            'action',
-                                            $queryBuilder->createNamedParameter(6, \PDO::PARAM_INT)
-                                        ),
-                                        $queryBuilder->expr()->eq(
-                                            'details_nr',
-                                            $queryBuilder->createNamedParameter(30, \PDO::PARAM_INT)
-                                        ),
-                                        $queryBuilder->expr()->eq(
-                                            'tablename',
-                                            $queryBuilder->createNamedParameter($eTable, \PDO::PARAM_STR)
-                                        ),
-                                        $queryBuilder->expr()->eq(
-                                            'recuid',
-                                            $queryBuilder->createNamedParameter($eUid, \PDO::PARAM_INT)
-                                        )
-                                    )
-                                    ->orderBy('uid', 'DESC')
-                                    ->execute();
-
-                                // Find all implicated since the last stage-raise from editing to review:
-                                while ($dat = $result->fetch()) {
-                                    $data = unserialize($dat['log_data']);
-                                    $emails = $this->getEmailsForStageChangeNotification($dat['userid'], true) + $emails;
-                                    if ($data['stage'] == 1) {
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case 0:
-                            $emails = $this->getEmailsForStageChangeNotification($workspaceRec['members']);
-                            break;
-                        default:
-                            $emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], true);
-                    }
-                    break;
-                // Notify all users at all changes
-                case 10:
-                    $emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], true);
-                    $emails = $this->getEmailsForStageChangeNotification($workspaceRec['members']) + $emails;
-                    break;
-                default:
-                    // Do nothing
-            }
-        } else {
-            $emails = $notificationAlternativeRecipients;
-        }
-        // prepare and then send the emails
-        if (!empty($emails)) {
-            $previewUriBuilder = GeneralUtility::makeInstance(PreviewUriBuilder::class);
-            // Path to record is found:
-            [$elementTable, $elementUid] = explode(':', $elementName);
-            $elementUid = (int)$elementUid;
-            $elementRecord = BackendUtility::getRecord($elementTable, $elementUid);
-            $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
-            if ($elementTable === 'pages') {
-                $pageUid = $elementUid;
-            } else {
-                BackendUtility::fixVersioningPid($elementTable, $elementRecord);
-                $pageUid = ($elementUid = $elementRecord['pid']);
-            }
-
-            // new way, options are
-            // pageTSconfig: tx_version.workspaces.stageNotificationEmail.subject
-            // userTSconfig: page.tx_version.workspaces.stageNotificationEmail.subject
-            $pageTsConfig = BackendUtility::getPagesTSconfig($pageUid);
-            $emailConfig = $pageTsConfig['tx_version.']['workspaces.']['stageNotificationEmail.'];
-            $markers = [
-                '###RECORD_TITLE###' => $recordTitle,
-                '###RECORD_PATH###' => BackendUtility::getRecordPath($elementUid, '', 20),
-                '###SITE_NAME###' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-                '###SITE_URL###' => GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir,
-                '###WORKSPACE_TITLE###' => $workspaceRec['title'],
-                '###WORKSPACE_UID###' => $workspaceRec['uid'],
-                '###ELEMENT_NAME###' => $elementName,
-                '###NEXT_STAGE###' => $newStage,
-                '###COMMENT###' => $comment,
-                // See: #30212 - keep both markers for compatibility
-                '###USER_REALNAME###' => $dataHandler->BE_USER->user['realName'],
-                '###USER_FULLNAME###' => $dataHandler->BE_USER->user['realName'],
-                '###USER_USERNAME###' => $dataHandler->BE_USER->user['username']
-            ];
-            // only generate the link if the marker is in the template - prevents database from getting to much entries
-            if (GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
-                $tempEmailMessage = $this->getLanguageService()->sL($emailConfig['message']);
-            } else {
-                $tempEmailMessage = $emailConfig['message'];
-            }
-            if (strpos($tempEmailMessage, '###PREVIEW_LINK###') !== false) {
-                $markers['###PREVIEW_LINK###'] = $previewUriBuilder->buildUriForPage((int)$elementUid, 0);
-            }
-            unset($tempEmailMessage);
-
-            $markers['###SPLITTED_PREVIEW_LINK###'] = (string)$previewUriBuilder->buildUriForWorkspaceSplitPreview((int)$elementUid);
-            // Hook for preprocessing of the content for formmails:
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] ?? [] as $className) {
-                $_procObj = GeneralUtility::makeInstance($className);
-                $markers = $_procObj->postModifyMarkers($markers, $this);
-            }
-            // send an email to each individual user, to ensure the
-            // multilanguage version of the email
-            $emailRecipients = [];
-            // an array of language objects that are needed
-            // for emails with different languages
-            $languageObjects = [
-                $this->getLanguageService()->lang => $this->getLanguageService()
-            ];
-            // loop through each recipient and send the email
-            foreach ($emails as $recipientData) {
-                // don't send an email twice
-                if (isset($emailRecipients[$recipientData['email']])) {
-                    continue;
-                }
-                $emailSubject = $emailConfig['subject'];
-                $emailMessage = $emailConfig['message'];
-                $emailRecipients[$recipientData['email']] = $recipientData['email'];
-                // check if the email needs to be localized
-                // in the users' language
-                if (GeneralUtility::isFirstPartOfStr($emailSubject, 'LLL:') || GeneralUtility::isFirstPartOfStr($emailMessage, 'LLL:')) {
-                    $recipientLanguage = $recipientData['lang'] ?: 'default';
-                    if (!isset($languageObjects[$recipientLanguage])) {
-                        // a LANG object in this language hasn't been
-                        // instantiated yet, so this is done here
-                        $languageObject = GeneralUtility::makeInstance(LanguageService::class);
-                        $languageObject->init($recipientLanguage);
-                        $languageObjects[$recipientLanguage] = $languageObject;
-                    } else {
-                        $languageObject = $languageObjects[$recipientLanguage];
-                    }
-                    if (GeneralUtility::isFirstPartOfStr($emailSubject, 'LLL:')) {
-                        $emailSubject = $languageObject->sL($emailSubject);
-                    }
-                    if (GeneralUtility::isFirstPartOfStr($emailMessage, 'LLL:')) {
-                        $emailMessage = $languageObject->sL($emailMessage);
-                    }
-                }
-                $templateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);
-                $emailSubject = $templateService->substituteMarkerArray($emailSubject, $markers, '', true, true);
-                $emailMessage = $templateService->substituteMarkerArray($emailMessage, $markers, '', true, true);
-                // Send an email to the recipient
-                $mail = GeneralUtility::makeInstance(MailMessage::class);
-                $recipient = new Address($recipientData['email'], $recipientData['realName']);
-                $mail->to($recipient)
-                    ->subject($emailSubject)
-                    ->html($emailMessage);
-                $mail->send();
-            }
-            $emailRecipients = implode(',', $emailRecipients);
-            if ($dataHandler->enableLogging) {
-                $propertyArray = $dataHandler->getRecordProperties($table, $id);
-                $pid = $propertyArray['pid'];
-                $dataHandler->log($table, $id, SystemLogGenericAction::UNDEFINED, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "' . $emailRecipients . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
-            }
-        }
-    }
-
-    /**
-     * Return be_users that should be notified on stage change from input list.
-     * previously called notifyStageChange_getEmails() in DataHandler
-     *
-     * @param string $listOfUsers List of backend users, on the form "be_users_10,be_users_2" or "10,2" in case noTablePrefix is set.
-     * @param bool $noTablePrefix If set, the input list are integers and not strings.
-     * @return array Array of emails
-     */
-    protected function getEmailsForStageChangeNotification($listOfUsers, bool $noTablePrefix = false): array
-    {
-        $users = GeneralUtility::trimExplode(',', $listOfUsers, true);
-        $emails = [];
-        foreach ($users as $userIdent) {
-            $table = '';
-            if ($noTablePrefix) {
-                $id = (int)$userIdent;
-            } else {
-                [$table, $id] = GeneralUtility::revExplode('_', $userIdent, 2);
-            }
-            if ($table === 'be_users' || $noTablePrefix) {
-                if ($userRecord = BackendUtility::getRecord('be_users', $id, 'uid,email,lang,realName', BackendUtility::BEenableFields('be_users'))) {
-                    if (trim($userRecord['email']) !== '') {
-                        $emails[$id] = $userRecord;
-                    }
-                }
-            }
-        }
-        return $emails;
-    }
-
-    /****************************
      *****  Stage Changes  ******
      ****************************/
     /**
@@ -713,7 +505,7 @@ class DataHandlerHook
             $dataHandler->newlog('Attempt to set stage for record failed: ' . $errorCode, SystemLogErrorClassification::USER_ERROR);
         } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
             $record = BackendUtility::getRecord($table, $id);
-            $stat = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
+            $workspaceInfo = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
             // check if the user is allowed to the current stage, so it's also allowed to send to next stage
             if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($record['t3ver_stage'])) {
                 // Set stage of record:
@@ -734,10 +526,10 @@ class DataHandlerHook
                 }
                 // TEMPORARY, except 6-30 as action/detail number which is observed elsewhere!
                 $dataHandler->log($table, $id, DatabaseAction::UPDATE, 0, SystemLogErrorClassification::MESSAGE, 'Stage raised...', 30, ['comment' => $comment, 'stage' => $stageId]);
-                if ((int)$stat['stagechg_notification'] > 0) {
-                    $this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$stat, $stageId, $comment];
-                    $this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = $table . ':' . $id;
-                    $this->notificationEmailInfo[$stat['uid'] . ':' . $stageId . ':' . $comment]['alternativeRecipients'] = $notificationAlternativeRecipients;
+                if ((int)$workspaceInfo['stagechg_notification'] > 0) {
+                    $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$workspaceInfo, $stageId, $comment];
+                    $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = [$table, $id];
+                    $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['recipients'] = $notificationAlternativeRecipients;
                 }
             } else {
                 $dataHandler->newlog('The member user tried to set a stage value "' . $stageId . '" that was not allowed', SystemLogErrorClassification::USER_ERROR);
@@ -1038,8 +830,8 @@ class DataHandlerHook
             $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
             $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
             $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
-            $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = $table . ':' . $id;
-            $this->notificationEmailInfo[$notificationEmailInfoKey]['alternativeRecipients'] = $notificationAlternativeRecipients;
+            $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
+            $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
             // Write to log with stageId -20 (STAGE_PUBLISH_EXECUTE_ID)
             if ($dataHandler->enableLogging) {
                 $propArr = $dataHandler->getRecordProperties($table, $id);

@@ -36,9 +36,6 @@ class StagesService implements SingletonInterface
     // ready to publish stage
     const STAGE_PUBLISH_ID = -10;
     const STAGE_EDIT_ID = 0;
-    const MODE_NOTIFY_SOMEONE = 0;
-    const MODE_NOTIFY_ALL = 1;
-    const MODE_NOTIFY_ALL_STRICT = 2;
 
     /**
      * Path to the locallang file
