@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotFoundException;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
@@ -49,6 +50,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractUserAuthentication implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use CookieHeaderTrait;
 
     /**
      * Session/Cookie name
@@ -452,8 +454,11 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             $cookieExpire = $isRefreshTimeBasedCookie ? $GLOBALS['EXEC_TIME'] + $this->lifetime : 0;
             // Use the secure option when the current request is served by a secure connection:
             $cookieSecure = (bool)$settings['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
-            $cookieSameSite = $this->getCookieSameSite();
-            // None needs the secure option (only allowed on HTTPS)
+            // Valid options are "strict", "lax" or "none", whereas "none" only works in HTTPS requests (default & fallback is "strict")
+            $cookieSameSite = $this->sanitizeSameSiteCookieValue(
+                strtolower($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
+            );
+            // SameSite "none" needs the secure option (only allowed on HTTPS)
             if ($cookieSameSite === Cookie::SAMESITE_NONE) {
                 $cookieSecure = true;
             }
@@ -480,24 +485,6 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 . $this->id . ($cookieDomain ? ', ' . $cookieDomain : '')
             );
         }
-    }
-
-    /**
-     * Fetches the cookie information from the current LocalConfiguration option, based on the $loginType
-     * which is either "BE" or "FE".
-     * Valid options are "strict", "lax" or "none", whereas "none" only works in HTTPS requests.
-     *
-     * If nothing is defined, or a wrong value is defined, a fallback to "strict" is put in place.
-     *
-     * @return string
-     */
-    protected function getCookieSameSite(): string
-    {
-        $cookieSameSite = strtolower($GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['cookieSameSite'] ?? Cookie::SAMESITE_STRICT);
-        if (!in_array($cookieSameSite, [Cookie::SAMESITE_STRICT, Cookie::SAMESITE_LAX, Cookie::SAMESITE_NONE], true)) {
-            $cookieSameSite = Cookie::SAMESITE_STRICT;
-        }
-        return $cookieSameSite;
     }
 
     /**

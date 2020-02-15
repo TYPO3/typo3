@@ -19,11 +19,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\CookieHeaderTrait;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Stream;
@@ -43,6 +45,8 @@ use TYPO3\CMS\Workspaces\Authentication\PreviewUserAuthentication;
  */
 class WorkspacePreview implements MiddlewareInterface
 {
+    use CookieHeaderTrait;
+
     /**
      * The GET parameter to be used (also the cookie name)
      *
@@ -221,7 +225,24 @@ class WorkspacePreview implements MiddlewareInterface
      */
     protected function setCookie(string $inputCode, NormalizedParams $normalizedParams)
     {
-        setcookie($this->previewKey, $inputCode, 0, $normalizedParams->getSitePath(), '', true, true);
+        $cookieSameSite = $this->sanitizeSameSiteCookieValue(
+            strtolower($GLOBALS['TYPO3_CONF_VARS']['BE']['cookieSameSite'] ?? Cookie::SAMESITE_STRICT)
+        );
+        // None needs the secure option (only allowed on HTTPS)
+        $cookieSecure = $cookieSameSite === Cookie::SAMESITE_NONE || $normalizedParams->isHttps();
+
+        $cookie = new Cookie(
+            $this->previewKey,
+            $inputCode,
+            0,
+            $normalizedParams->getSitePath(),
+            null,
+            $cookieSecure,
+            true,
+            false,
+            $cookieSameSite
+        );
+        header('Set-Cookie: ' . $cookie->__toString(), false);
     }
 
     /**
