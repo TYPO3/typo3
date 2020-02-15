@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -73,6 +74,7 @@ class EnvironmentController extends AbstractController
             'systemInformationCgiDetected' => GeneralUtility::isRunningOnCgiServerApi(),
             'systemInformationDatabaseConnections' => $this->getDatabaseConnectionInformation(),
             'systemInformationOperatingSystem' => Environment::isWindows() ? 'Windows' : 'Unix',
+            'systemInformationApplicationContext' => $this->getApplicationContextInformation(),
             'phpVersion' => PHP_VERSION,
         ]);
         return new JsonResponse([
@@ -988,6 +990,22 @@ class EnvironmentController extends AbstractController
             $connectionInfos[] = $connectionInfo;
         }
         return $connectionInfos;
+    }
+
+    /**
+     * Get details about the application context
+     *
+     * @return array
+     */
+    protected function getApplicationContextInformation(): array
+    {
+        $applicationContext = Environment::getContext();
+        $status = $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING;
+
+        return [
+            'context' => (string)$applicationContext,
+            'status' => $status,
+        ];
     }
 
     /**
