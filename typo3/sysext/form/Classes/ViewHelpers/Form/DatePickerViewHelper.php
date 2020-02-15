@@ -21,7 +21,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\ViewHelpers\Form;
 
-use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -71,6 +71,8 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
         $this->registerArgument('enableDatePicker', 'bool', 'Enable the Datepicker', false, true);
         $this->registerArgument('previewMode', 'bool', 'Preview mde flag', true, false);
         $this->registerArgument('dateFormat', 'string', 'The date format', false, 'Y-m-d');
+        // use the default value if custom templates have not yet adapted this property
+        $this->registerArgument('datePickerInitializationJavaScripFile', 'string', 'The JavaScript file to initialize the date picker', false, 'EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js');
         $this->registerUniversalTagAttributes();
     }
 
@@ -106,7 +108,16 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
             $this->tag->addAttribute('readonly', 'readonly');
             if (!$previewMode) {
                 $datePickerDateFormat = $this->convertDateFormatToDatePickerFormat($dateFormat);
-                $this->renderInlineJavascript($id, $datePickerDateFormat);
+                $this->tag->addAttribute('data-format', $datePickerDateFormat);
+                $this->tag->addAttribute('data-t3-form-datepicker', '');
+                if (!empty($this->arguments['datePickerInitializationJavaScripFile'])) {
+                    GeneralUtility::makeInstance(AssetCollector::class)
+                        ->addJavaScript(
+                            't3-form-datepicker',
+                            $this->arguments['datePickerInitializationJavaScripFile'],
+                            []
+                        );
+                }
             }
         }
         $date = $this->getSelectedDate();
@@ -173,38 +184,5 @@ class DatePickerViewHelper extends AbstractFormFieldViewHelper
             'y' => 'y'
         ];
         return strtr($dateFormat, $replacements);
-    }
-
-    /**
-     * @param string $uniqueIdentifier
-     * @param string $datePickerDateFormat
-     */
-    protected function renderInlineJavascript(string $uniqueIdentifier, string $datePickerDateFormat)
-    {
-        $this->getPageRenderer()->addJsFooterInlineCode(
-            'ext_form_datepicker-' . $uniqueIdentifier,
-            'if ("undefined" !== typeof $) {
-                    $(function() {
-                        $("#' . $uniqueIdentifier . '").datepicker({
-                            dateFormat: "' . $datePickerDateFormat . '"
-                        }).on("keydown", function(e) {
-                            // By using "backspace" or "delete", you can clear the datepicker again.
-                            if(e.keyCode == 8 || e.keyCode == 46) {
-                                e.preventDefault();
-                                $.datepicker._clearDate(this);
-                            }
-                        });
-                    });
-                }
-            '
-        );
-    }
-
-    /**
-     * @return PageRenderer
-     */
-    protected function getPageRenderer(): PageRenderer
-    {
-        return GeneralUtility::makeInstance(PageRenderer::class);
     }
 }

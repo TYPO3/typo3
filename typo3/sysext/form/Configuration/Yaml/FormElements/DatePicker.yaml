@@ -132,6 +132,8 @@ TYPO3:
                 timeSelectorHourLabel: ''
                 timeSelectorMinuteLabel: ''
                 dateFormat: Y-m-d
+                # consider using a different file if the backend is behind an http basic auth
+                datePickerInitializationJavaScripFile: EXT:form/Resources/Public/JavaScript/Frontend/DatePicker.js
                 enableDatePicker: true
                 displayTimeSelector: false
           formEditor:
