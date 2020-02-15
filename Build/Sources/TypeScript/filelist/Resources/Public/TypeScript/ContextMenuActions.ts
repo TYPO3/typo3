@@ -101,7 +101,7 @@ class ContextMenuActions {
       ]);
 
     $modal.on('button.clicked', (e: JQueryEventObject): void => {
-      const $element: HTMLInputElement = <HTMLInputElement>e.currentTarget;
+      const $element: HTMLInputElement = <HTMLInputElement>e.target;
       if ($element.name === 'delete') {
         performDelete();
       }
