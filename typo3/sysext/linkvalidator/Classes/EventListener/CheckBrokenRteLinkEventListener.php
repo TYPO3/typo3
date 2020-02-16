@@ -45,8 +45,7 @@ final class CheckBrokenRteLinkEventListener
         }
         $url = (string)$event->getLinkData()['url'] ?? '';
         if (!empty($url)) {
-            $count = $this->brokenLinkRepository->getNumberOfBrokenLinks($url);
-            if ($count) {
+            if ($this->brokenLinkRepository->isLinkTargetBrokenLink($url)) {
                 $event->markAsBrokenLink('External link is broken');
             }
         }
@@ -88,8 +87,7 @@ final class CheckBrokenRteLinkEventListener
             return;
         }
 
-        $count = $this->brokenLinkRepository->getNumberOfBrokenLinks('file:' . $file->getProperty('uid'));
-        if ($count) {
+        if ($this->brokenLinkRepository->isLinkTargetBrokenLink('file:' . $file->getProperty('uid'))) {
             $event->markAsBrokenLink('File with ID ' . $file->getProperty('uid') . ' not found');
         }
     }
