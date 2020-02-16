@@ -14,6 +14,10 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Error\Http\BadRequestException;
+use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
+use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
+
 /**
  * This is a Service which can generate a request hash and check whether the currently given arguments
  * fit to the request hash.
@@ -117,6 +121,7 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
      *
      * @param \TYPO3\CMS\Extbase\Mvc\Request $request
      * @param \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $controllerArguments
+     * @throws BadRequestException
      */
     public function initializePropertyMappingConfigurationFromRequest(\TYPO3\CMS\Extbase\Mvc\Request $request, \TYPO3\CMS\Extbase\Mvc\Controller\Arguments $controllerArguments)
     {
@@ -125,7 +130,11 @@ class MvcPropertyMappingConfigurationService implements \TYPO3\CMS\Core\Singleto
             return;
         }
 
-        $serializedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
+        try {
+            $serializedTrustedProperties = $this->hashService->validateAndStripHmac($trustedPropertiesToken);
+        } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
+            throw new BadRequestException('The HMAC of the form could not be validated.', 1581862822);
+        }
         $trustedProperties = unserialize($serializedTrustedProperties, ['allowed_classes' => false]);
         foreach ($trustedProperties as $propertyName => $propertyConfiguration) {
             if (!$controllerArguments->hasArgument($propertyName)) {
