@@ -160,7 +160,7 @@ The following functions are available in **any** context:
 | traverse               | Array and String      | This function has two parameters:                                       |
 |                        |                       | - first parameter is the array to traverse                              |
 |                        |                       | - second parameter is the path to traverse                              |
-|                        |                       |   Syntax: <array-key>[/<array-key>]*                                    |
+|                        |                       | Syntax: <array-key>[/<array-key>]*                                      |
 |                        |                       | Example: `[traverse(request.getQueryParams(), 'tx_news_pi/news') > 0]`  |
 +------------------------+-----------------------+-------------------------------------------------------------------------+
 | ip                     | String                | Value or Constraint, Wildcard or RegExp possible                        |

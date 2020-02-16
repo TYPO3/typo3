@@ -35,6 +35,4 @@ You need to "overwrite" the option to set `PDO::ATTR_EMULATE_PREPARES`
        ],
    ],
 
-.. Please keep in mind to update the rst file in 10.2.
-
 .. index:: Database, ext:core

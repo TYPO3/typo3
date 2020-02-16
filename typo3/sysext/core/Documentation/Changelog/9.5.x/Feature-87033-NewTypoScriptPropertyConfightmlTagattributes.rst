@@ -23,7 +23,7 @@ This property supersedes the previous :typoscript:`config.htmlTag_setParams` opt
 
 Examples:
 
-- :typoscript:`config.htmlTag.attributes.class = no-js`
+:typoscript:`config.htmlTag.attributes.class = no-js`
 
 Will result in :html:`<html lang="fr" class="no-js">`.
 
