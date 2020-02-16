@@ -9,8 +9,9 @@
 
 .. _installation:
 
-Installation
-------------
+====================
+Installation & setup
+====================
 
 
 .. toctree::
@@ -20,7 +21,6 @@ Installation
 
    Installing/Index
    SetupCheck/Index
-   SchedulerShellScript/Index
    CronJob/Index
    BaseTasks/Index
 

@@ -63,6 +63,11 @@ Save the modified crontab. Obviously the paths have to be adapted to
 your system. The above command will call up the Scheduler every 15
 minutes.
 
+.. seealso::
+
+   See :ref:`scheduler-shell-script` for more information about
+   calling the scheduler from the command line.
+
 If you are editing system crontabs (for example :code:`/etc/crontab`
 and :code:`/etc/cron.d/\*` ), there will be one additional parameter
 to enter, i.e. the user with which the job should run. Example

@@ -59,6 +59,7 @@ a GNU/GPL CMS/Framework available from `www.typo3.org
    Overview/Index
    Installation/Index
    Administration/Index
+   Installation/SchedulerShellScript/Index
    DevelopersGuide/Index
    KnownProblems/Index
    AppendixA/Index
