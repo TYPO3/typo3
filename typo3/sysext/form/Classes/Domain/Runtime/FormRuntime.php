@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Form\Domain\Runtime;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\ExpressionLanguage\Resolver;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -33,6 +34,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Response;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception as PropertyException;
+use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
+use TYPO3\CMS\Extbase\Security\Exception\InvalidHashException;
 use TYPO3\CMS\Form\Domain\Exception\RenderingException;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherContext;
 use TYPO3\CMS\Form\Domain\Finishers\FinisherInterface;
@@ -210,6 +213,7 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
 
     /**
      * Initializes the current state of the form, based on the request
+     * @throws BadRequestException
      */
     protected function initializeFormStateFromRequest()
     {
@@ -217,7 +221,11 @@ class FormRuntime implements RootRenderableInterface, \ArrayAccess
         if ($serializedFormStateWithHmac === null) {
             $this->formState = GeneralUtility::makeInstance(FormState::class);
         } else {
-            $serializedFormState = $this->hashService->validateAndStripHmac($serializedFormStateWithHmac);
+            try {
+                $serializedFormState = $this->hashService->validateAndStripHmac($serializedFormStateWithHmac);
+            } catch (InvalidHashException | InvalidArgumentForHashGenerationException $e) {
+                throw new BadRequestException('The HMAC of the form could not be validated.', 1581862823);
+            }
             $this->formState = unserialize(base64_decode($serializedFormState));
         }
     }

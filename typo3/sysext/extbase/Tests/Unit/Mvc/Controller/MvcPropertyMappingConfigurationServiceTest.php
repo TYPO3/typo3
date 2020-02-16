@@ -14,6 +14,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Extbase\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use TYPO3\CMS\Extbase\Security\Cryptography\HashService;
 use TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException;
@@ -181,6 +182,24 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
 
         $requestHashService = new MvcPropertyMappingConfigurationService;
+        $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
+    }
+
+    /**
+     * @test
+     */
+    public function initializePropertyMappingConfigurationThrowsBadRequestExceptionOnInvalidHmac()
+    {
+        $this->expectException(BadRequestException::class);
+        $this->expectExceptionCode(1581862822);
+
+        $request = $this->getMockBuilder(\TYPO3\CMS\Extbase\Mvc\Request::class)->setMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
+        $request->expects(self::any())->method('getInternalArgument')->with('__trustedProperties')->willReturn('string with less than 40 characters');
+        $arguments = new \TYPO3\CMS\Extbase\Mvc\Controller\Arguments();
+
+        $hashService = new \TYPO3\CMS\Extbase\Security\Cryptography\HashService();
+        $requestHashService = new MvcPropertyMappingConfigurationService;
+        $requestHashService->injectHashService($hashService);
         $requestHashService->initializePropertyMappingConfigurationFromRequest($request, $arguments);
     }
 
