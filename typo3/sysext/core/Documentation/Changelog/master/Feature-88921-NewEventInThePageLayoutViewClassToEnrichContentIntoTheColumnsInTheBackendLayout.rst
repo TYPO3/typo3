@@ -13,8 +13,8 @@ Two new PSR-14 events are added in the PageLayoutView class.
 Those events can be used to add content into any column of a BackendLayout.
 You can use this for example to show some content in a column without a ``colPos`` assigned.
 
-The event :php:`BeforeGeneratedColposMarkupEvent` can be used to add content above
-the content elements of the column. The event :php:`AfterGeneratedColposMarkupEvent`
+The event :php:`BeforeSectionMarkupGeneratedEvent` can be used to add content above
+the content elements of the column. The event :php:`AfterSectionMarkupGeneratedEvent`
 can be used to add content below the content elements of the column.
 
 You can use business logic to show content in specific columns.
