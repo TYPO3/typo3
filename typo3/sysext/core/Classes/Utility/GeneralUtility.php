@@ -1227,7 +1227,7 @@ class GeneralUtility
             if ($val !== '=') {
                 if ($valuemode) {
                     if ($name) {
-                        $attributes[$name] = htmlspecialchars_decode($val);
+                        $attributes[$name] = htmlspecialchars_decode($val, ENT_NOQUOTES);
                         $name = '';
                     }
                 } else {
