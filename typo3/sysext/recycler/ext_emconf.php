@@ -10,10 +10,10 @@ $EM_CONF[$_EXTKEY] = [
     'createDirs' => '',
     'clearCacheOnLoad' => 0,
     'author_company' => '',
-    'version' => '8.7.31',
+    'version' => '8.7.32',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.31',
+            'typo3' => '8.7.32',
         ],
         'conflicts' => [],
         'suggests' => [
