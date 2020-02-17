@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers\Display;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 class TableAccessViewHelper extends AbstractConditionViewHelper
@@ -27,7 +28,7 @@ class TableAccessViewHelper extends AbstractConditionViewHelper
         $this->registerArgument('modify', 'array', 'List of allowed tables to modify', false, []);
     }
 
-    protected static function evaluateCondition($arguments = null): bool
+    public static function verdict(array $arguments, RenderingContextInterface $renderingContext)
     {
         $table = $arguments['table'];
         return array_key_exists($table, $arguments['select']) || array_key_exists($table, $arguments['modify']);
