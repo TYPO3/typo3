@@ -14,8 +14,8 @@
 	},
 	"require": {
 		"php": "^7.0",
-		"typo3/cms-core": "8.7.*@dev",
-		"typo3/cms-func": "8.7.*@dev"
+		"typo3/cms-core": "8.7.31",
+		"typo3/cms-func": "8.7.31"
 	},
 	"extra": {
 		"typo3/cms": {
