@@ -1,5 +1,6 @@
 includes:
-    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+# Include bleeding edge rules if necessary but do not commit
+#    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
 parameters:
   level: 0
