@@ -74,6 +74,8 @@ class UserInformationService
         }
 
         // table permissions
+        $data['tables']['tables_select'] = [];
+        $data['tables']['tables_modify'] = [];
         foreach (['tables_select', 'tables_modify'] as $tableField) {
             $temp = GeneralUtility::trimExplode(',', $user->dataLists[$tableField], true);
             foreach ($temp as $tableName) {
