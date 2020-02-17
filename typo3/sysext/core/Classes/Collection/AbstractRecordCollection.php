@@ -341,6 +341,8 @@ abstract class AbstractRecordCollection implements RecordCollectionInterface, Pe
      */
     public static function create(array $collectionRecord, $fillItems = false)
     {
+        // [phpstan] Unsafe usage of new static()
+        // todo: Either mark this class or its constructor final or use new self instead.
         $collection = new static();
         $collection->fromArray($collectionRecord);
         if ($fillItems) {

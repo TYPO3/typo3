@@ -23,8 +23,38 @@ parameters:
       message: '#Parameter \$event of method [\w\\]+::\w+\(\) has invalid typehint type Composer\\Script\\Event\.#'
       path: %currentWorkingDirectory%/typo3/sysext/*/Classes/Composer/*
     -
-      message: '#Access to undefined constant PDO::PGSQL_.+#'
-      path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Database/Driver/PDOPgSql/Driver.php
+      message: "#^Access to undefined constant PDO\\:\\:SQLSRV_ENCODING_BINARY\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Database/Driver/PDOSqlsrv/Statement.php
     -
-      message: '#Access to undefined constant PDO::SQLSRV_.+#'
-      path: %currentWorkingDirectory%/typo3/sysext/core/Classes/Database/Driver/PDOSqlsrv/Statement.php
+      message: "#^Access to undefined constant TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\:\\:__default\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Type/Enumeration.php
+    -
+      message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Widget\\\\AbstractWidgetViewHelper\\:\\:getArguments\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/fluid/Classes/Core/Widget/AbstractWidgetViewHelper.php
+    -
+      message: "#^Call to an undefined static method TYPO3Fluid\\\\Fluid\\\\Core\\\\ViewHelper\\\\AbstractViewHelper\\:\\:onClose\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/fluid/Classes/Core/Widget/AbstractWidgetViewHelper.php
+    -
+      message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Fluid\\\\Core\\\\Widget\\\\AbstractWidgetViewHelper\\:\\:getChildren\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/fluid/Classes/Core/Widget/AbstractWidgetViewHelper.php
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Collection/AbstractRecordCollection.php
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/core/Classes/Type/Enumeration.php
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/form/Classes/Mvc/Property/Exception/TypeConverterException.php
+    -
+      message: "#^Unsafe usage of new static\\(\\)\\.$#"
+      count: 1
+      path: typo3/sysext/workspaces/Classes/Domain/Record/WorkspaceRecord.php
