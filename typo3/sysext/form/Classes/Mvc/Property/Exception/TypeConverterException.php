@@ -19,7 +19,7 @@ use TYPO3\CMS\Extbase\Error\Error;
 /**
  * A "Type Converter" Exception
  */
-class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
+final class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
 {
     /**
      * @var Error
