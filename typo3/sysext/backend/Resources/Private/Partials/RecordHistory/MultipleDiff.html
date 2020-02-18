@@ -11,18 +11,20 @@
                         {historyRow.title}
                     </h3>
                     <div>
-                        <div
-                            style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
-                            <f:if condition="{historyRow.insertDelete} == 'delete'">
-                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong><br/>
-                            </f:if>
-                            <f:if condition="{historyRow.insertDelete} == 'insert'">
-                                <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong><br/>
-                            </f:if>
-                            <f:if condition="{historyRow.differences}">
-                                <f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
-                            </f:if>
-                        </div>
+                        <f:if condition="{historyRow.insertDelete} || {historyRow.differences -> f:count()}">
+                            <div
+                                style="padding-left:10px;border-left:5px solid darkgray;border-bottom:1px dotted darkgray;padding-bottom:2px;">
+                                <f:if condition="{historyRow.insertDelete} == 'delete'">
+                                    <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:delete')}</strong><br/>
+                                </f:if>
+                                <f:if condition="{historyRow.insertDelete} == 'insert'">
+                                    <strong>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf:insert')}</strong><br/>
+                                </f:if>
+                                <f:if condition="{historyRow.differences}">
+                                    <f:render partial="RecordHistory/Diff" arguments="{differences: historyRow.differences}"/>
+                                </f:if>
+                            </div>
+                        </f:if>
                     </div>
                 </f:for>
             </div>
