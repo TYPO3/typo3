@@ -576,7 +576,7 @@ class UriBuilder
             $extensionName = $this->request->getControllerExtensionName();
         }
         if ($pluginName === null && $this->environmentService->isEnvironmentInFrontendMode()) {
-            $pluginName = $this->extensionService->getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action']);
+            $pluginName = $this->extensionService->getPluginNameByAction($extensionName, $controllerArguments['controller'], $controllerArguments['action'] ?? null);
         }
         if ($pluginName === null) {
             $pluginName = $this->request->getPluginName();

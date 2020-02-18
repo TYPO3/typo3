@@ -104,11 +104,11 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      *
      * @param string $extensionName name of the target extension (UpperCamelCase)
      * @param string $controllerName name of the target controller (UpperCamelCase)
-     * @param string $actionName name of the target action (lowerCamelCase)
+     * @param string|null $actionName name of the target action (lowerCamelCase)
      * @throws \TYPO3\CMS\Extbase\Exception
      * @return string|null name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
      */
-    public function getPluginNameByAction(string $extensionName, string $controllerName, string $actionName): ?string
+    public function getPluginNameByAction(string $extensionName, string $controllerName, ?string $actionName): ?string
     {
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         // check, whether the current plugin is configured to handle the action
