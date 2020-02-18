@@ -128,7 +128,6 @@ class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(['user' => $userData], $backendUser);
 
         $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
-        $mailMessage->subject('[AdminLoginWarning] New TYPO3 Login at "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
     }
 
     /**
@@ -158,7 +157,6 @@ class EmailLoginNotificationTest extends UnitTestCase
         $subject = new EmailLoginNotification();
         $subject->emailAtLogin(['user' => $userData], $backendUser);
 
-        $mailMessage->subject('[AdminLoginWarning] New TYPO3 Login at "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
         $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
     }
 
@@ -190,7 +188,6 @@ class EmailLoginNotificationTest extends UnitTestCase
         $subject->emailAtLogin(['user' => $userData], $backendUser);
 
         $mailMessage->to('typo3-admin@acme.com')->shouldHaveBeenCalled();
-        $mailMessage->subject('[LoginWarning] New TYPO3 Login at "My TYPO3 Inc." from 127.0.0.1')->shouldHaveBeenCalled();
     }
 
     /**
@@ -224,7 +221,6 @@ class EmailLoginNotificationTest extends UnitTestCase
     protected function setUpMailMessageProphecy()
     {
         $mailMessage = $this->prophesize(FluidEmail::class);
-        $mailMessage->subject(Argument::any())->willReturn($mailMessage->reveal());
         $mailMessage->to(Argument::any())->willReturn($mailMessage->reveal());
         $mailMessage->setTemplate(Argument::any())->willReturn($mailMessage->reveal());
         $mailMessage->from(Argument::any())->willReturn($mailMessage->reveal());

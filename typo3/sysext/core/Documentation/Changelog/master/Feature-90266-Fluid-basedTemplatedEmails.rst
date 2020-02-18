@@ -31,6 +31,8 @@ set this in your LocalConfiguration.php / AdditionalConfiguration.php file:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['templateRootPaths'][700] = 'EXT:my_site_extension/Resources/Private/Templates/Email';`
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'][700] = 'EXT:my_site_extension/Resources/Private/Layouts';`
 
+In addition, it is possible to define a section within the Fluid email,
+which - if defined - takes precedence over the :php:`subject()` method.
 
 In addition, it is possible to define a section within the Fluid email,
 which - if set - takes precedence over the :php:`subject()` method.

@@ -93,15 +93,18 @@ class EmailLoginNotification
      */
     protected function sendEmail(string $recipient, AbstractUserAuthentication $user, string $subjectPrefix = null): void
     {
-        $subject = $subjectPrefix . ' New TYPO3 Login at "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" from ' . GeneralUtility::getIndpEnv('REMOTE_ADDR');
         $headline = 'TYPO3 Backend Login notification';
         $recipients = explode(',', $recipient);
         $email = GeneralUtility::makeInstance(FluidEmail::class)
             ->to(...$recipients)
-            ->subject($subject)
             ->setRequest($this->request)
             ->setTemplate('Security/LoginNotification')
-            ->assignMultiple(['user' => $user->user, 'headline' => $headline]);
+            ->assignMultiple([
+                'user' => $user->user,
+                'prefix' => $subjectPrefix,
+                'language' => $user->uc['lang'] ?? 'default',
+                'headline' => $headline
+            ]);
         GeneralUtility::makeInstance(Mailer::class)->send($email);
     }
 }

@@ -1,4 +1,5 @@
 <f:layout name="SystemEmail" />
+<f:section name="Subject">{prefix} New Login at "{typo3.sitename}"</f:section>
 <f:section name="Title">{headline}</f:section>
 <f:section name="Main">{introduction}
 The user "{user.username}" logged in from the IP address "{normalizedParams.remoteAddress}" at the site "{typo3.sitename}".
