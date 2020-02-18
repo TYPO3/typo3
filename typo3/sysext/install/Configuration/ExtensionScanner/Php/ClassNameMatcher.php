@@ -1346,5 +1346,10 @@ return [
         'restFiles' => [
             'Deprecation-89718-LegacyPageTSconfigParsingLowlevelAPI.rst',
         ],
-    ]
+    ],
+    'TYPO3\CMS\Backend\Template\DocumentTemplate' => [
+        'restFiles' => [
+            'Deprecation-90421-DocumentTemplate.rst',
+        ],
+    ],
 ];

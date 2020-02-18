@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -35,39 +36,9 @@ use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 /**
  * A class taking care of the "outer" HTML of a module, especially
  * the doc header and other related parts.
- *
- * @internal This API is not yet carved in stone and may be adapted later.
  */
 class ModuleTemplate
 {
-    /**
-     * Error Icon Constant
-     *
-     * @internal
-     */
-    const STATUS_ICON_ERROR = 3;
-
-    /**
-     * Warning Icon Constant
-     *
-     * @internal
-     */
-    const STATUS_ICON_WARNING = 2;
-
-    /**
-     * Notification Icon Constant
-     *
-     * @internal
-     */
-    const STATUS_ICON_NOTIFICATION = 1;
-
-    /**
-     * OK Icon Constant
-     *
-     * @internal
-     */
-    const STATUS_ICON_OK = -1;
-
     /**
      * DocHeaderComponent
      *
@@ -180,7 +151,7 @@ class ModuleTemplate
     /**
      * Flash message queue
      *
-     * @var \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     * @var FlashMessageQueue
      */
     protected $flashMessageQueue;
 
@@ -296,7 +267,6 @@ class ModuleTemplate
         if (!empty($GLOBALS['TBE_STYLES']['stylesheet2'])) {
             $this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheet2']);
         }
-        // @see DocumentTemplate::addStyleSheetDirectory
         // Add all *.css files of the directory $path to the stylesheets
         foreach ($this->getRegisteredStylesheetFolders() as $folder) {
             // Read all files in directory and sort them alphabetically
@@ -748,7 +718,7 @@ class ModuleTemplate
     }
 
     /**
-     * @param \TYPO3\CMS\Core\Messaging\FlashMessageQueue $flashMessageQueue
+     * @param FlashMessageQueue $flashMessageQueue
      * @return self
      */
     public function setFlashMessageQueue($flashMessageQueue): self
@@ -758,7 +728,7 @@ class ModuleTemplate
     }
 
     /**
-     * @return \TYPO3\CMS\Core\Messaging\FlashMessageQueue
+     * @return FlashMessageQueue
      */
     protected function getFlashMessageQueue()
     {

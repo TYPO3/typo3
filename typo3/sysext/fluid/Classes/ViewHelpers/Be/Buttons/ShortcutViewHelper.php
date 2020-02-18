@@ -14,7 +14,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be\Buttons;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
@@ -64,14 +64,14 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
     {
         parent::initializeArguments();
         $this->registerArgument('getVars', 'array', 'List of GET variables to store. By default the current id, module and all module arguments will be stored', false, []);
-        $this->registerArgument('setVars', 'array', 'List of SET[] variables to store. See DocumentTemplate::makeShortcutIcon(). Normally won\'t be used by Extbase modules', false, []);
+        $this->registerArgument('setVars', 'array', 'List of SET[] variables to store. See ModuleTemplate::makeShortcutIcon(). Normally won\'t be used by Extbase modules', false, []);
     }
 
     /**
      * Renders a shortcut button as known from the TYPO3 backend
      *
      * @return string the rendered shortcut button
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::makeShortcutIcon()
+     * @see ModuleTemplate::makeShortcutIcon()
      */
     public function render()
     {
@@ -96,7 +96,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
         $mayMakeShortcut = $GLOBALS['BE_USER']->mayMakeShortcut();
 
         if ($mayMakeShortcut) {
-            $doc = GeneralUtility::makeInstance(DocumentTemplate::class);
+            $moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
             $currentRequest = $renderingContext->getControllerContext()->getRequest();
             $extensionName = $currentRequest->getControllerExtensionName();
             $moduleName = $currentRequest->getPluginName();
@@ -106,7 +106,7 @@ class ShortcutViewHelper extends AbstractBackendViewHelper
             }
             $getList = implode(',', $getVars);
             $setList = implode(',', $setVars);
-            return $doc->makeShortcutIcon($getList, $setList, $moduleName);
+            return $moduleTemplate->makeShortcutIcon($getList, $setList, $moduleName);
         }
         return '';
     }

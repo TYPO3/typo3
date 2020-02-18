@@ -49,7 +49,6 @@ class PagePathViewHelper extends AbstractBackendViewHelper
      * Renders the current page path
      *
      * @return string the rendered page path
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate::getPagePath() Note: can't call this method as it's protected!
      */
     public function render()
     {

@@ -97,10 +97,9 @@ class LanguageService
     }
 
     /**
-     * Initializes the backend language.
-     * This is for example done in \TYPO3\CMS\Backend\Template\DocumentTemplate with lines like these:
-     * $LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-     * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
+     * Initializes the language to fetch XLF labels for.
+     * $languageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+     * $languageService->init($GLOBALS['BE_USER']->uc['lang']);
      *
      * @throws \RuntimeException
      * @param string $languageKey The language key (two character string from backend users profile)

@@ -47,7 +47,6 @@ class TriggerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendV
      * menu when modules are loaded/unloaded.
      *
      * @return string This ViewHelper does not return any content
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
     public function render()

@@ -14,7 +14,6 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -69,10 +68,9 @@ class ContainerViewHelper extends AbstractBackendViewHelper
     }
 
     /**
-     * Render start page with \TYPO3\CMS\Backend\Template\DocumentTemplate and pageTitle
+     * Render start page with \TYPO3\CMS\Backend\Template\ModuleTemplate and pageTitle
      *
      * @return string
-     * @see \TYPO3\CMS\Backend\Template\DocumentTemplate
      * @see \TYPO3\CMS\Core\Page\PageRenderer
      */
     public function render()
@@ -84,8 +82,6 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         $includeRequireJsModules = $this->arguments['includeRequireJsModules'];
 
         $pageRenderer = $this->getPageRenderer();
-        $doc = $this->getDocInstance();
-        $doc->JScode .= GeneralUtility::wrapJS($doc->redirectUrls());
 
         // Include custom CSS and JS files
         if (is_array($includeCssFiles) && count($includeCssFiles) > 0) {
@@ -113,8 +109,9 @@ class ContainerViewHelper extends AbstractBackendViewHelper
         }
         // Render the content and return it
         $output = $this->renderChildren();
-        $output = $doc->startPage($pageTitle) . $output;
-        $output .= $doc->endPage();
-        return $output;
+        $moduleTemplate = $this->getModuleTemplate();
+        $moduleTemplate->setTitle($pageTitle);
+        $moduleTemplate->setContent($output);
+        return $moduleTemplate->renderContent();
     }
 }

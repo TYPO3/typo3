@@ -44,6 +44,8 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  * After this file $LANG and $TBE_TEMPLATE are global variables / instances of their respective classes.
  *
  * Please refer to Inside TYPO3 for a discussion of how to use this API.
+ *
+ * @deprecated will be removed in TYPO3 v11.0. Use ModuleTemplate and PageRenderer instead.
  */
 class DocumentTemplate implements LoggerAwareInterface
 {
@@ -226,6 +228,7 @@ function jumpToUrl(URL) {
     public function __construct()
     {
         $this->initPageRenderer();
+        trigerr_error(__CLASS__ . ' will be removed in TYPO3 v11. Use ModuleTemplate API instead.', E_USER_DEPRECATED);
 
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
