@@ -120,6 +120,7 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('image', 'object', 'a FAL object');
         $this->registerArgument('crop', 'string|bool', 'overrule cropping of image (setting to FALSE disables the cropping set in FileReference)');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
+        $this->registerArgument('fileExtension', 'string', 'Custom file extension to use');
 
         $this->registerArgument('width', 'string', 'width of the image. This can be a numeric value representing the fixed width of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('height', 'string', 'height of the image. This can be a numeric value representing the fixed height of the image in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
@@ -162,6 +163,9 @@ class ImageViewHelper extends AbstractTagBasedViewHelper
                 'maxHeight' => $this->arguments['maxHeight'],
                 'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
             ];
+            if (!empty($this->arguments['fileExtension'] ?? '')) {
+                $processingInstructions['fileExtension'] = $this->arguments['fileExtension'];
+            }
             $processedImage = $this->imageService->applyProcessingInstructions($image, $processingInstructions);
             $imageUri = $this->imageService->getImageUri($processedImage, $this->arguments['absolute']);
 

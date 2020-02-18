@@ -116,6 +116,26 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
                     'title' => 'title'
                 ]
             ],
+            [
+                [
+                    'src' => 'test',
+                    'width' => 100,
+                    'height' => 200,
+                    'minWidth' => 300,
+                    'maxWidth' => 400,
+                    'minHeight' => 500,
+                    'maxHeight' => 600,
+                    'crop' => null,
+                    'fileExtension' => 'jpg'
+                ],
+                [
+                    'src' => 'test.jpg',
+                    'width' => '100',
+                    'height' => '200',
+                    'alt' => 'alternative',
+                    'title' => 'title'
+                ]
+            ],
         ];
     }
 
@@ -157,7 +177,7 @@ class ImageViewHelperTest extends ViewHelperBaseTestcase
         $imageService = $this->createMock(ImageService::class);
         $imageService->expects(self::once())->method('getImage')->willReturn($image);
         $imageService->expects(self::once())->method('applyProcessingInstructions')->with($image, self::anything())->willReturn($processedFile);
-        $imageService->expects(self::once())->method('getImageUri')->with($processedFile)->willReturn('test.png');
+        $imageService->expects(self::once())->method('getImageUri')->with($processedFile)->willReturn($expected['src']);
 
         $this->viewHelper->injectImageService($imageService);
 

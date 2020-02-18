@@ -85,6 +85,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
         $this->registerArgument('width', 'string', 'This can be a numeric value representing the fixed width of in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('height', 'string', 'This can be a numeric value representing the fixed height in pixels. But you can also perform simple calculations by adding "m" or "c" to the value. See imgResource.width for possible options.');
         $this->registerArgument('cropVariant', 'string', 'select a cropping variant, in case multiple croppings have been specified or stored in FileReference', false, 'default');
+        $this->registerArgument('fileExtension', 'string', 'Custom file extension to use for images');
     }
 
     /**
@@ -114,7 +115,7 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
 
         // Fallback to image when no renderer is found
         if ($fileRenderer === null) {
-            return $this->renderImage($file, $width, $height);
+            return $this->renderImage($file, $width, $height, $this->arguments['fileExtension'] ?? null);
         }
         $additionalConfig = array_merge_recursive($this->arguments, $additionalConfig);
         return $fileRenderer->render($file, $width, $height, $additionalConfig);
@@ -126,9 +127,10 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
      * @param FileInterface $image
      * @param string $width
      * @param string $height
+     * @param string|null $fileExtension
      * @return string Rendered img tag
      */
-    protected function renderImage(FileInterface $image, $width, $height)
+    protected function renderImage(FileInterface $image, $width, $height, ?string $fileExtension)
     {
         $cropVariant = $this->arguments['cropVariant'] ?: 'default';
         $cropString = $image instanceof FileReference ? $image->getProperty('crop') : '';
@@ -139,6 +141,9 @@ class MediaViewHelper extends AbstractTagBasedViewHelper
             'height' => $height,
             'crop' => $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($image),
         ];
+        if (!empty($fileExtension)) {
+            $processingInstructions['fileExtension'] = $fileExtension;
+        }
         $imageService = $this->getImageService();
         $processedImage = $imageService->applyProcessingInstructions($image, $processingInstructions);
         $imageUri = $imageService->getImageUri($processedImage);
