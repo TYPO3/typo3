@@ -17,6 +17,9 @@ styles.content {
     # cat=content/parseFunc/a0; type=string; label=List of allowed HTML tags when rendering RTE content
     allowTags = a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, meta, nav, ol, p, pre, q, s, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var
 
+    # cat=content/cImage/a0; type=options[lazy,eager,auto,]; label=Default settings for browser-native image lazy loading: Can be "lazy" (browsers could choose to load images later), "eager" (load images right away) or "auto" (browser will determine whether the image should be lazy loaded or not)
+    image.lazyLoading = lazy
+
     textmedia {
         # cat=content/cTextmedia/b1; type=int+; label= Max Image/Media Width: This indicates that maximum number of pixels (width) a block of media elements inserted as content is allowed to consume
         maxW = 600
