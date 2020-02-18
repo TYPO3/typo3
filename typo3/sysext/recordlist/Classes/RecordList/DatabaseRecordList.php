@@ -2951,6 +2951,7 @@ class DatabaseRecordList
                 $queryBuilder = $this->addPageIdConstraint($tableName, $queryBuilder);
                 $firstRow = $queryBuilder->select('uid')
                     ->from($tableName)
+                    ->setMaxResults(1)
                     ->execute()
                     ->fetch();
                 if (!is_array($firstRow)) {
