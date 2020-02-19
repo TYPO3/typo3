@@ -380,22 +380,6 @@ This element inherits its definition from the ``RadioButton`` element but
 additionally ships four predefined options. Without any problems, the new
 element can be used and overridden within the ``form definition``.
 
-.. hint::
-
-   Currently, there is no built-in solution within the TYPO3 core to
-   preview the resulting/ final EXT:form YAML configuration. If you want
-   to check the configuration, there is a fishy way which you should never
-   implement on a production system.
-
-   Open the file ``typo3/sysext/form/Classes/Mvc/Configuration/ConfigurationManager.php::getConfigurationFromYamlFile()``
-   and add the following code before the ``return`` statement::
-
-      \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($yamlSettings, 'form configuration', 9999);
-
-   Now open the ``Forms`` module in the backend or navigate to a page in
-   the frontend which contains a form. The DebuggerUtility will print the
-   final configuration directly to the screen.
-
 It will probably take some time to fully understand the awesomeness of
 this operator. If you are eager to learn more about this great instrument,
 check out the unit tests defined in ``EXT:form/Tests/Unit/Mvc/Configuration/InheritancesResolverServiceTest.php``.
