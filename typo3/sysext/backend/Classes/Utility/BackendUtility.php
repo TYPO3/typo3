@@ -449,11 +449,12 @@ class BackendUtility
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('cache_runtime');
         $pageForRootlineCache = $runtimeCache->get('backendUtilityPageForRootLine') ?: [];
-        $ident = $uid . '-' . $clause . '-' . $workspaceOL . ($additionalFields ? '-' . md5(implode(',', $additionalFields)) : '');
+        $statementCacheIdent = md5($clause . ($additionalFields ? '-' . implode(',', $additionalFields) : ''));
+        $ident = $uid . '-' . $workspaceOL . '-' . $statementCacheIdent;
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
         } else {
-            $statement = $runtimeCache->get('getPageForRootlineStatement');
+            $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
             if (!$statement) {
                 $queryBuilder = static::getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
@@ -491,7 +492,7 @@ class BackendUtility
                         QueryHelper::stripLogicalOperatorPrefix($clause)
                     );
                 $statement = $queryBuilder->execute();
-                $runtimeCache->set('getPageForRootlineStatement', $statement);
+                $runtimeCache->set('getPageForRootlineStatement-' . $statementCacheIdent, $statement);
             } else {
                 $statement->bindValue(1, (int)$uid);
                 $statement->execute();
