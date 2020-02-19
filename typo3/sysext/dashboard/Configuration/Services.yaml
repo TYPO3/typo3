@@ -44,6 +44,20 @@ services:
         identifier: t3information
         widgetGroups: 'general'
 
+  TYPO3\CMS\Dashboard\Widgets\SysLogErrorsWidget:
+    arguments: ['sysLogErrors']
+    tags:
+      - name: dashboard.widget
+        identifier: sysLogErrors
+        widgetGroups: 'systemInfo'
+
+  TYPO3\CMS\Dashboard\Widgets\TypeOfUsersWidget:
+    arguments: ['typeOfUsers']
+    tags:
+      - name: dashboard.widget
+        identifier: typeOfUsers
+        widgetGroups: 'systemInfo'
+
   t3news:
     class: TYPO3\CMS\Dashboard\Widgets\T3NewsWidget
     arguments: ['t3news']

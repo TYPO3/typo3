@@ -135,6 +135,32 @@
 				<source>Some background information about TYPO3 and the version used</source>
 			</trans-unit>
 
+			<trans-unit id="widgets.sysLogErrors.title" xml:space="preserve">
+				<source>Number of errors in system log</source>
+			</trans-unit>
+			<trans-unit id="widgets.sysLogErrors.description" xml:space="preserve">
+				<source>Shows the number of errors in the sys log of the last month, grouped by date</source>
+			</trans-unit>
+			<trans-unit id="widgets.sysLogErrors.buttonText" xml:space="preserve">
+				<source>Show all errors in log</source>
+			</trans-unit>
+			<trans-unit id="widgets.sysLogErrors.chart.dataSet.0" xml:space="preserve">
+				<source>Number of errors</source>
+			</trans-unit>
+
+			<trans-unit id="widgets.typeOfUsers.title" xml:space="preserve">
+				<source>Type of backend users</source>
+			</trans-unit>
+			<trans-unit id="widgets.typeOfUsers.description" xml:space="preserve">
+				<source>Shows the amount of normal- and admin-users</source>
+			</trans-unit>
+			<trans-unit id="widgets.typeOfUsers.normalUsers" xml:space="preserve">
+				<source>Normal users</source>
+			</trans-unit>
+			<trans-unit id="widgets.typeOfUsers.adminUsers" xml:space="preserve">
+				<source>Admin users</source>
+			</trans-unit>
+
 			<trans-unit id="widget_group.general" xml:space="preserve">
 				<source>General</source>
  			</trans-unit>
@@ -143,6 +169,9 @@
  			</trans-unit>
 			<trans-unit id="widget_group.documentation" xml:space="preserve">
 				<source>Documentation</source>
+ 			</trans-unit>
+			<trans-unit id="widget_group.system" xml:space="preserve">
+				<source>System Information</source>
  			</trans-unit>
 
 			<trans-unit id="dashboard.empty.content.title" xml:space="preserve">

@@ -35,6 +35,8 @@ The following widgets are shipped by core extensions now:
 * Getting started with TYPO3: This widget will provide a link to the Getting Started Tutorial (EXT:dashboard)
 * TypoScript Template Reference: This widget will provide a link to the TypoScript Template Reference (EXT:dashboard)
 * TSconfig Reference: This widget will provide a link to the TSconfig Reference (EXT:dashboard)
+* Number of errors in system log: Shows the number of errors in the sys_log grouped by day for the last month (EXT:dashboard)
+* Type of backend users: A widget to show the different types of backend users
 
 Creating your own widget
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -45,6 +47,9 @@ do so, you can extend one of the WidgetAbstracts available in EXT:dashboard.
 * AbstractRssWidget: with this abstract it is easy to create a widget showing a RSS feed
 * AbstractListWidget: this abstract will give you an easy start to show a list of items
 * AbstractCtaButtonWidget: when you want to show a Call-To-Action button, this is the right abstract
+* AbstractChartWidget: the base of all chart widgets
+* AbstractBarChartWidget: when you want to show a widget with a bar-chart you can extend this class
+* AbstractDoughnutChartWidget: this abstract gives you the possibility to create a doughnut-chart widget
 
 By extending one of those abstracts, and provide it with the right data, you are able to
 have a new widget quite fast. The only thing that is left is to register the widget.

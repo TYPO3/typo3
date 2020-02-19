@@ -481,12 +481,14 @@ module.exports = function (grunt) {
       },
       dashboard: {
         options: {
-          destPrefix: "<%= paths.dashboard %>Public/JavaScript/Contrib"
+          destPrefix: "<%= paths.dashboard %>Public"
         },
         files: {
-          'muuri.js': 'muuri/dist/muuri.min.js',
-          'web-animations.min.js': 'web-animations-js/web-animations.min.js',
-          'web-animations.min.js.map': 'web-animations-js/web-animations.min.js.map'
+          'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js',
+          'JavaScript/Contrib/chartjs.js': 'chart.js/dist/Chart.min.js',
+          'Css/Contrib/chart.css': 'chart.js/dist/Chart.min.css',
+          'JavaScript/Contrib/web-animations.min.js': 'web-animations-js/web-animations.min.js',
+          'JavaScript/Contrib/web-animations.min.js.map': 'web-animations-js/web-animations.min.js.map'
         }
       },
       all: {
