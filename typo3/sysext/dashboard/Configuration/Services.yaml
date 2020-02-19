@@ -23,6 +23,13 @@ services:
         identifier: docGettingStarted
         widgetGroups: 'typo3'
 
+  TYPO3\CMS\Dashboard\Widgets\DocumentationTypoScriptReference:
+    arguments: ['docTypoScriptReference']
+    tags:
+      - name: dashboard.widget
+        identifier: docTypoScriptReference
+        widgetGroups: 'typo3'
+
   TYPO3\CMS\Dashboard\Widgets\DocumentationTSconfigReferenceWidget:
     arguments: ['docTSconfig']
     tags:
