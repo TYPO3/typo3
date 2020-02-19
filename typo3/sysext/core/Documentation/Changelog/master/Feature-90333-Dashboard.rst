@@ -33,6 +33,7 @@ The following widgets are shipped by core extensions now:
 * TYPO3 news: A widget showing the latest 5 news items from typo3.org (EXT:dashboard)
 * TYPO3: This widget will show you some background information about TYPO3 and shows the current version of TYPO3 installed (EXT:dashboard)
 * Getting started with TYPO3: This widget will provide a link to the Getting Started Tutorial (EXT:dashboard)
+* TSconfig Reference: This widget will provide a link to the TSconfig Reference (EXT:dashboard)
 
 Creating your own widget
 ^^^^^^^^^^^^^^^^^^^^^^^^

@@ -92,6 +92,19 @@
 				<source>Getting Started Tutorial</source>
  			</trans-unit>
 
+			<trans-unit id="widgets.documentation.TSconfigReference.title" xml:space="preserve">
+				<source>TSconfig Reference</source>
+ 			</trans-unit>
+			<trans-unit id="widgets.documentation.TSconfigReference.description" xml:space="preserve">
+				<source>Add a shortcut to the TYPO3 TSconfig Reference.</source>
+ 			</trans-unit>
+			<trans-unit id="widgets.documentation.TSconfigReference.text" xml:space="preserve">
+				<source>This document describes TSconfig and its options.</source>
+ 			</trans-unit>
+			<trans-unit id="widgets.documentation.TSconfigReference.content.label" xml:space="preserve">
+				<source>TSconfig Reference</source>
+ 			</trans-unit>
+
 			<trans-unit id="widgets.t3news.title" xml:space="preserve">
 				<source>TYPO3 news</source>
 			</trans-unit>
