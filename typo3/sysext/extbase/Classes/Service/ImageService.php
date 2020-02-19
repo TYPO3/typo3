@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Extbase\Service;
  */
 
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -183,6 +184,10 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
             $GLOBALS['TSFE']->lastImageInfo = $this->getCompatibilityImageResourceValues($processedImage);
             $GLOBALS['TSFE']->imagesOnPage[] = $processedImage->getPublicUrl();
         }
+        GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
+            $processedImage->getPublicUrl(),
+            $this->getCompatibilityImageResourceValues($processedImage)
+        );
     }
 
     /**
@@ -195,16 +200,17 @@ class ImageService implements \TYPO3\CMS\Core\SingletonInterface
      */
     protected function getCompatibilityImageResourceValues(ProcessedFile $processedImage): array
     {
+        $originalFile = $processedImage->getOriginalFile();
         return [
             0 => $processedImage->getProperty('width'),
             1 => $processedImage->getProperty('height'),
             2 => $processedImage->getExtension(),
             3 => $processedImage->getPublicUrl(),
-            'origFile' => $processedImage->getOriginalFile()->getPublicUrl(),
-            'origFile_mtime' => $processedImage->getOriginalFile()->getModificationTime(),
+            'origFile' => $originalFile->getPublicUrl(),
+            'origFile_mtime' => $originalFile->getModificationTime(),
             // This is needed by \TYPO3\CMS\Frontend\Imaging\GifBuilder,
             // in order for the setup-array to create a unique filename hash.
-            'originalFile' => $processedImage->getOriginalFile(),
+            'originalFile' => $originalFile,
             'processedFile' => $processedImage
         ];
     }

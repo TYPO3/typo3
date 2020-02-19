@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\UnknownCharsetException;
+use TYPO3\CMS\Core\Compatibility\PublicPropertyDeprecationTrait;
 use TYPO3\CMS\Core\Configuration\Loader\PageTsConfigLoader;
 use TYPO3\CMS\Core\Configuration\Parser\PageTsConfigParser;
 use TYPO3\CMS\Core\Context\Context;
@@ -50,6 +51,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\PageTitle\PageTitleProviderManager;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -93,6 +95,12 @@ use TYPO3\CMS\Frontend\Resource\FilePathSanitizer;
 class TypoScriptFrontendController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+    use PublicPropertyDeprecationTrait;
+
+    private $deprecatedPublicProperties = [
+        'imagesOnPage' => 'Using TSFE->imagesOnPage is deprecated and will no longer work with TYPO3 v11.0. Use AssetCollector()->getMedia() instead.',
+        'lastImageInfo' => 'Using TSFE->lastImageInfo is deprecated and will no longer work with TYPO3 v11.0.'
+    ];
 
     /**
      * The page id (int)
@@ -540,15 +548,17 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * Numerical array where image filenames are added if they are referenced in the
      * rendered document. This includes only TYPO3 generated/inserted images.
      * @var array
+     * @deprecated
      */
-    public $imagesOnPage = [];
+    private $imagesOnPage = [];
 
     /**
      * Is set in ContentObjectRenderer->cImage() function to the info-array of the
      * most recent rendered image. The information is used in ImageTextContentObject
      * @var array
+     * @deprecated
      */
-    public $lastImageInfo = [];
+    private $lastImageInfo = [];
 
     /**
      * Used to generate page-unique keys. Point is that uniqid() functions is very
@@ -2979,6 +2989,11 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             $pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
             $this->pageRenderer = $pageRenderer;
             GeneralUtility::setSingletonInstance(PageRenderer::class, $pageRenderer);
+        }
+        if (!empty($this->config['INTincScript_ext']['assetCollector'])) {
+            /** @var AssetCollector $assetCollectorr */
+            $assetCollector = unserialize($this->config['INTincScript_ext']['assetCollector'], ['allowed_classes' => false]);
+            GeneralUtility::setSingletonInstance(AssetCollector::class, $assetCollector);
         }
 
         $this->recursivelyReplaceIntPlaceholdersInContent();

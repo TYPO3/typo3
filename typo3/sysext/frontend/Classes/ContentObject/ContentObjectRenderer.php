@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Mail\MailMessage;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Resource\Exception;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\File;
@@ -1055,6 +1056,10 @@ class ContentObjectRenderer implements LoggerAwareInterface
         } else {
             $source = $info[3];
         }
+        GeneralUtility::makeInstance(AssetCollector::class)->addMedia(
+            $source,
+            $info ?? []
+        );
 
         $layoutKey = $this->stdWrap($conf['layoutKey'], $conf['layoutKey.']);
         $imageTagTemplate = $this->getImageTagTemplate($layoutKey, $conf);
