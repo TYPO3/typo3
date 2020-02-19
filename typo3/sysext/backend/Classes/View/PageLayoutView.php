@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -1243,11 +1244,22 @@ class PageLayoutView implements LoggerAwareInterface
                         $fluidTemplateFile,
                         $e->getMessage()
                     ));
+
+                    if ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] && $this->getBackendUser()->isAdmin()) {
+                        $view = GeneralUtility::makeInstance(StandaloneView::class);
+                        $view->assign('error', [
+                            'message' => str_replace(Environment::getProjectPath(), '', $e->getMessage()),
+                            'title' => 'Error while rendering FluidTemplate preview using ' . str_replace(Environment::getProjectPath(), '', $fluidTemplateFile),
+                        ]);
+                        $view->setTemplateSource('<f:be.infobox title="{error.title}" state="2">{error.message}</f:be.infobox>');
+                        return $view->render();
+                    }
                 }
             }
         }
         return null;
     }
+
     /**
      * Renders the preview part of a content element
      * @param array $row given tt_content database record
