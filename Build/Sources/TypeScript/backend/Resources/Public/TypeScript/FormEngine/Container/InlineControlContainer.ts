@@ -24,6 +24,7 @@ import Icons = require('../../Icons');
 import InfoWindow = require('../../InfoWindow');
 import Modal = require('../../Modal');
 import Notification = require('../../Notification');
+import RegularEvent = require('TYPO3/CMS/Core/Event/RegularEvent');
 import Severity = require('../../Severity');
 import Utility = require('../../Utility');
 
@@ -98,45 +99,11 @@ class InlineControlContainer {
   private noTitleString: string = (TYPO3.lang ? TYPO3.lang['FormEngine.noRecordTitle'] : '[No title]');
 
   /**
-   * Checks whether an event target matches the given selector and returns the matching element.
-   * May be used in conjunction with event delegation.
-   *
-   * @param {EventTarget} eventTarget
-   * @param {string} selector
-   */
-  private static getDelegatedEventTarget(eventTarget: EventTarget, selector: string): HTMLElement | null {
-    let targetElement: HTMLElement;
-
-    if ((targetElement = <HTMLElement>(<Element>eventTarget).closest(selector)) === null) {
-      if ((<Element>eventTarget).matches(selector)) {
-        targetElement = <HTMLElement>eventTarget;
-      }
-    }
-
-    return targetElement;
-  }
-
-  /**
    * @param {string} objectId
    * @return HTMLDivElement
    */
   private static getInlineRecordContainer(objectId: string): HTMLDivElement {
     return <HTMLDivElement>document.querySelector('[data-object-id="' + objectId + '"]');
-  }
-
-  /**
-   * @param {Event} e
-   */
-  private static registerInfoButton(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.infoWindowButton)) === null) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    InfoWindow.showItem(target.dataset.infoTable, target.dataset.infoUid);
   }
 
   /**
@@ -255,23 +222,19 @@ class InlineControlContainer {
   }
 
   private registerEvents(): void {
-    this.container.addEventListener('click', (e: Event): void => {
-      this.registerToggle(e);
-      this.registerSort(e);
-      this.registerCreateRecordButton(e);
-      this.registerEnableDisableButton(e);
-      InlineControlContainer.registerInfoButton(e);
-      this.registerDeleteButton(e);
-      this.registerSynchronizeLocalize(e);
-      this.registerRevertUniquenessAction(e);
-    });
+    this.registerInfoButton();
+    this.registerSort();
+    this.registerCreateRecordButton();
+    this.registerEnableDisableButton();
+    this.registerDeleteButton();
+    this.registerSynchronizeLocalize();
+    this.registerRevertUniquenessAction();
+    this.registerToggle();
 
-    this.container.addEventListener('change', (e: Event): void => {
-      this.registerCreateRecordBySelector(e);
-      this.registerUniqueSelectFieldChanged(e);
-    });
+    this.registerCreateRecordBySelector();
+    this.registerUniqueSelectFieldChanged();
 
-    window.addEventListener('message', this.handlePostMessage);
+    new RegularEvent('message', this.handlePostMessage).bindTo(window);
 
     if (this.getAppearance().useSortable) {
       const recordListContainer = <HTMLDivElement>document.querySelector('#' + this.container.getAttribute('id') + '_records');
@@ -286,82 +249,57 @@ class InlineControlContainer {
     }
   }
 
-  /**
-   * @param {Event} e
-   */
-  private registerToggle(e: Event): void {
-    if (InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.controlSectionSelector)) {
-      // Abort click event in control section
-      return;
-    }
+  private registerToggle(): void {
+    const me = this;
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.toggleSelector)) === null) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    this.loadRecordDetails(target.parentElement.dataset.objectId);
+      me.loadRecordDetails(this.parentElement.dataset.objectId);
+    }).delegateTo(this.container, Selectors.toggleSelector);
   }
 
-  /**
-   * @param {Event} e
-   */
-  private registerSort(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.controlSectionSelector + ' [data-action="sort"]')) === null) {
-      return;
-    }
+  private registerSort(): void {
+    const me = this;
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    this.changeSortingByButton(
-      (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId,
-      <SortDirections>target.dataset.direction,
-    );
+      me.changeSortingByButton(
+        (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId,
+        <SortDirections>this.dataset.direction,
+      );
+    }).delegateTo(this.container, Selectors.controlSectionSelector + ' [data-action="sort"]');
   }
 
-  /**
-   * @param {Event} e
-   */
-  private registerCreateRecordButton(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.createNewRecordButtonSelector)) === null) {
-      return;
-    }
+  private registerCreateRecordButton(): void {
+    const me = this;
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
+      if (me.isBelowMax()) {
+        let objectId = me.container.dataset.objectGroup;
+        if (typeof this.dataset.recordUid !== 'undefined') {
+          objectId += Separators.structureSeparator + this.dataset.recordUid;
+        }
 
-    if (this.isBelowMax()) {
-      let objectId = this.container.dataset.objectGroup;
-      if (typeof target.dataset.recordUid !== 'undefined') {
-        objectId += Separators.structureSeparator + target.dataset.recordUid;
+        me.importRecord([objectId], this.dataset.recordUid);
       }
-
-      this.importRecord([objectId], target.dataset.recordUid);
-    }
+    }).delegateTo(this.container, Selectors.createNewRecordButtonSelector);
   }
 
-  /**
-   * @param {Event} e
-   */
-  private registerCreateRecordBySelector(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.createNewRecordBySelectorSelector)) === null) {
-      return;
-    }
+  private registerCreateRecordBySelector(): void {
+    const me = this;
+    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
+      const selectTarget = <HTMLSelectElement>this;
+      const recordUid = selectTarget.options[selectTarget.selectedIndex].getAttribute('value');
 
-    const selectTarget = <HTMLSelectElement>target;
-    const recordUid = selectTarget.options[selectTarget.selectedIndex].getAttribute('value');
-
-    this.importRecord([this.container.dataset.objectGroup, recordUid]);
+      me.importRecord([me.container.dataset.objectGroup, recordUid]);
+    }).delegateTo(this.container, Selectors.createNewRecordBySelectorSelector);
   }
 
   /**
@@ -436,151 +374,143 @@ class InlineControlContainer {
     });
   }
 
-  /**
-   * @param {Event} e
-   */
-  private registerEnableDisableButton(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(
-      e.target,
-      Selectors.enableDisableRecordButtonSelector)
-    ) === null) {
-      return;
-    }
+  private registerEnableDisableButton(): void {
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    e.preventDefault();
-    e.stopImmediatePropagation();
+      const objectId = (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId;
+      const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
+      const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + this.dataset.hiddenField + ']';
+      const hiddenValueCheckBox = <HTMLInputElement>document.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
+      const hiddenValueInput = <HTMLInputElement>document.querySelector('[name="' + hiddenFieldName + '"');
 
-    const objectId = (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId;
-    const recordContainer = InlineControlContainer.getInlineRecordContainer(objectId);
-    const hiddenFieldName = 'data' + recordContainer.dataset.fieldName + '[' + target.dataset.hiddenField + ']';
-    const hiddenValueCheckBox = <HTMLInputElement>document.querySelector('[data-formengine-input-name="' + hiddenFieldName + '"');
-    const hiddenValueInput = <HTMLInputElement>document.querySelector('[name="' + hiddenFieldName + '"');
-
-    if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
-      hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
-      hiddenValueInput.value = hiddenValueCheckBox.checked ? '1' : '0';
-      TBE_EDITOR.fieldChanged_fName(hiddenFieldName, hiddenFieldName);
-    }
-
-    const hiddenClass = 't3-form-field-container-inline-hidden';
-    const isHidden = recordContainer.classList.contains(hiddenClass);
-    let toggleIcon: string = '';
-
-    if (isHidden) {
-      toggleIcon = 'actions-edit-hide';
-      recordContainer.classList.remove(hiddenClass);
-    } else {
-      toggleIcon = 'actions-edit-unhide';
-      recordContainer.classList.add(hiddenClass);
-    }
-
-    Icons.getIcon(toggleIcon, Icons.sizes.small).then((markup: string): void => {
-      target.replaceChild(document.createRange().createContextualFragment(markup), target.querySelector('.t3js-icon'));
-    });
-  }
-
-  /**
-   * @param {Event} e
-   */
-  private registerDeleteButton(e: Event): void {
-    let target: HTMLElement;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.deleteRecordButtonSelector)) === null) {
-      return;
-    }
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
-    const content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
-    const $modal = Modal.confirm(title, content, Severity.warning, [
-      {
-        text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
-        active: true,
-        btnClass: 'btn-default',
-        name: 'no',
-      },
-      {
-        text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
-        btnClass: 'btn-warning',
-        name: 'yes',
-      },
-    ]);
-    $modal.on('button.clicked', (modalEvent: Event): void => {
-      if ((<HTMLAnchorElement>modalEvent.target).name === 'yes') {
-        const objectId = (<HTMLDivElement>target.closest('[data-object-id]')).dataset.objectId;
-        this.deleteRecord(objectId);
+      if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
+        hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
+        hiddenValueInput.value = hiddenValueCheckBox.checked ? '1' : '0';
+        TBE_EDITOR.fieldChanged_fName(hiddenFieldName, hiddenFieldName);
       }
 
-      Modal.dismiss();
-    });
-  }
+      const hiddenClass = 't3-form-field-container-inline-hidden';
+      const isHidden = recordContainer.classList.contains(hiddenClass);
+      let toggleIcon: string = '';
 
-  /**
-   * @param {Event} e
-   */
-  private registerSynchronizeLocalize(e: Event): void {
-    let target;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.synchronizeLocalizeRecordButtonSelector)) === null) {
-      return;
-    }
-
-    this.ajaxDispatcher.send(
-      this.ajaxDispatcher.newRequest(this.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
-      [this.container.dataset.objectGroup, target.dataset.type],
-    ).then(async (response: InlineResponseInterface): Promise<any> => {
-      document.querySelector('#' + this.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
-
-      const objectIdPrefix = this.container.dataset.objectGroup + Separators.structureSeparator;
-      for (let itemUid of response.compilerInput.delete) {
-        this.deleteRecord(objectIdPrefix + itemUid, true);
+      if (isHidden) {
+        toggleIcon = 'actions-edit-hide';
+        recordContainer.classList.remove(hiddenClass);
+      } else {
+        toggleIcon = 'actions-edit-unhide';
+        recordContainer.classList.add(hiddenClass);
       }
 
-      for (let item of response.compilerInput.localize) {
-        if (typeof item.remove !== 'undefined') {
-          const removableRecordContainer = InlineControlContainer.getInlineRecordContainer(objectIdPrefix + item.remove);
-          removableRecordContainer.parentElement.removeChild(removableRecordContainer);
+      Icons.getIcon(toggleIcon, Icons.sizes.small).then((markup: string): void => {
+        this.replaceChild(document.createRange().createContextualFragment(markup), this.querySelector('.t3js-icon'));
+      });
+    }).delegateTo(this.container, Selectors.enableDisableRecordButtonSelector);
+  }
+
+  private registerInfoButton(): void {
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      InfoWindow.showItem(this.dataset.infoTable, this.dataset.infoUid);
+    }).delegateTo(this.container, Selectors.infoWindowButton);
+  }
+
+  private registerDeleteButton(): void {
+    const me = this;
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      const title = TYPO3.lang['label.confirm.delete_record.title'] || 'Delete this record?';
+      const content = TYPO3.lang['label.confirm.delete_record.content'] || 'Are you sure you want to delete this record?';
+      const $modal = Modal.confirm(title, content, Severity.warning, [
+        {
+          text: TYPO3.lang['buttons.confirm.delete_record.no'] || 'Cancel',
+          active: true,
+          btnClass: 'btn-default',
+          name: 'no',
+        },
+        {
+          text: TYPO3.lang['buttons.confirm.delete_record.yes'] || 'Yes, delete this record',
+          btnClass: 'btn-warning',
+          name: 'yes',
+        },
+      ]);
+      $modal.on('button.clicked', (modalEvent: Event): void => {
+        if ((<HTMLAnchorElement>modalEvent.target).name === 'yes') {
+          const objectId = (<HTMLDivElement>this.closest('[data-object-id]')).dataset.objectId;
+          me.deleteRecord(objectId);
         }
 
-        this.memorizeAddRecord(item.uid, null, item.selectedValue);
-      }
-    });
+        Modal.dismiss();
+      });
+    }).delegateTo(this.container, Selectors.deleteRecordButtonSelector);
   }
 
   /**
    * @param {Event} e
    */
-  private registerUniqueSelectFieldChanged(e: Event): void {
-    let target;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.uniqueValueSelectors)) === null) {
-      return;
-    }
+  private registerSynchronizeLocalize(): void {
+    const me = this;
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    const recordContainer = (<HTMLDivElement>target.closest('[data-object-id]'));
-    if (recordContainer !== null) {
-      const objectId = recordContainer.dataset.objectId;
-      const objectUid = recordContainer.dataset.objectUid;
-      this.handleChangedField(<HTMLSelectElement>target, objectId);
+      me.ajaxDispatcher.send(
+        me.ajaxDispatcher.newRequest(me.ajaxDispatcher.getEndpoint('record_inline_synchronizelocalize')),
+        [me.container.dataset.objectGroup, this.dataset.type],
+      ).then(async (response: InlineResponseInterface): Promise<any> => {
+        document.querySelector('#' + me.container.getAttribute('id') + '_records').insertAdjacentHTML('beforeend', response.data);
 
-      const formField = this.getFormFieldForElements();
-      if (formField === null) {
-        return;
-      }
-      this.updateUnique(<HTMLSelectElement>target, formField, objectUid);
-    }
+        const objectIdPrefix = me.container.dataset.objectGroup + Separators.structureSeparator;
+        for (let itemUid of response.compilerInput.delete) {
+          me.deleteRecord(objectIdPrefix + itemUid, true);
+        }
+
+        for (let item of response.compilerInput.localize) {
+          if (typeof item.remove !== 'undefined') {
+            const removableRecordContainer = InlineControlContainer.getInlineRecordContainer(objectIdPrefix + item.remove);
+            removableRecordContainer.parentElement.removeChild(removableRecordContainer);
+          }
+
+          me.memorizeAddRecord(item.uid, null, item.selectedValue);
+        }
+      });
+    }).delegateTo(this.container, Selectors.synchronizeLocalizeRecordButtonSelector);
   }
 
-  /**
-   * @param {Event} e
-   */
-  private registerRevertUniquenessAction(e: Event): void {
-    let target;
-    if ((target = InlineControlContainer.getDelegatedEventTarget(e.target, Selectors.revertUniqueness)) === null) {
-      return;
-    }
+  private registerUniqueSelectFieldChanged(): void {
+    const me = this;
+    new RegularEvent('change', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-    this.revertUnique(target.dataset.uid);
+      const recordContainer = (<HTMLDivElement>this.closest('[data-object-id]'));
+      if (recordContainer !== null) {
+        const objectId = recordContainer.dataset.objectId;
+        const objectUid = recordContainer.dataset.objectUid;
+        me.handleChangedField(<HTMLSelectElement>this, objectId);
+
+        const formField = me.getFormFieldForElements();
+        if (formField === null) {
+          return;
+        }
+        me.updateUnique(<HTMLSelectElement>this, formField, objectUid);
+      }
+    }).delegateTo(this.container, Selectors.uniqueValueSelectors);
+  }
+
+  private registerRevertUniquenessAction(): void {
+    const me = this;
+    new RegularEvent('click', function(this: HTMLElement, e: Event) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      me.revertUnique(this.dataset.uid);
+    }).delegateTo(this.container, Selectors.revertUniqueness);
   }
 
   /**
@@ -801,10 +731,10 @@ class InlineControlContainer {
       recordContainer.parentElement.insertAdjacentElement('afterbegin', deleteCommandInput);
     }
 
-    recordContainer.addEventListener('transitionend', (): void => {
+    new RegularEvent('transitionend', (): void => {
       recordContainer.parentElement.removeChild(recordContainer);
       FormEngineValidation.validate();
-    });
+    }).bindTo(recordContainer);
 
     this.revertUnique(objectUid);
     this.memorizeRemoveRecord(objectUid);
