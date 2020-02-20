@@ -102,6 +102,11 @@ class NewContentElementController
     protected $moduleTemplate;
 
     /**
+     * @var UriBuilder
+     */
+    protected $uriBuilder;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -110,6 +115,7 @@ class NewContentElementController
         $GLOBALS['SOBE'] = $this;
         $this->view = $this->getFluidTemplateObject();
         $this->menuItemView = $this->getFluidTemplateObject('MenuItem.html');
+        $this->uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
     }
 
     /**
@@ -178,8 +184,7 @@ class NewContentElementController
     protected function onClickInsertRecord(string $clientContext): string
     {
         // $this->uid_pid can be negative (= pointing to tt_content record) or positive (= "page ID")
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $location = (string)$uriBuilder->buildUriFromRoute('record_edit', [
+        $location = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
             'edit[tt_content][' . $this->uid_pid . ']' => 'new',
             'defVals[tt_content][colPos]' => $this->colPos,
             'defVals[tt_content][sys_language_uid]' => $this->sys_language,
@@ -254,6 +259,20 @@ class NewContentElementController
                         $aOnClick = "document.editForm.defValues.value=unescape('" . rawurlencode($wInfo['params']) . "');goToalt_doc();";
                     }
 
+                    // Go to DataHandler directly instead of FormEngine
+                    if ($wInfo['saveAndClose'] ?? false) {
+                        $urlParams = [];
+                        $id = uniqid('NEW');
+                        parse_str($wInfo['params'], $urlParams);
+                        $urlParams['data']['tt_content'][$id] = $urlParams['defVals']['tt_content'] ?? [];
+                        $urlParams['data']['tt_content'][$id]['colPos'] = $this->colPos;
+                        $urlParams['data']['tt_content'][$id]['pid'] = $this->uid_pid;
+                        $urlParams['data']['tt_content'][$id]['sys_language_uid'] = $this->sys_language;
+                        $urlParams['redirect'] = GeneralUtility::_GP('returnUrl');
+                        unset($urlParams['defVals']);
+                        $url = $this->uriBuilder->buildUriFromRoute('tce_db', $urlParams);
+                        $aOnClick = 'list_frame.location.href=' . GeneralUtility::quoteJSvalue((string)$url) . '; return false';
+                    }
                     $icon = $this->moduleTemplate->getIconFactory()->getIcon($wInfo['iconIdentifier'])->render();
 
                     $this->menuItemView->assignMultiple([
@@ -410,6 +429,7 @@ class NewContentElementController
     {
         $itemConf['title'] = $this->getLanguageService()->sL($itemConf['title']);
         $itemConf['description'] = $this->getLanguageService()->sL($itemConf['description']);
+        $itemConf['saveAndClose'] = (bool)$itemConf['saveAndClose'];
         $itemConf['tt_content_defValues'] = $itemConf['tt_content_defValues.'];
         unset($itemConf['tt_content_defValues.']);
         return $itemConf;

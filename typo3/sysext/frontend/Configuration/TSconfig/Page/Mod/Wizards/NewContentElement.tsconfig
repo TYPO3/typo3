@@ -192,6 +192,7 @@ mod.wizards.newContentElement.wizardItems {
             tt_content_defValues {
                 CType = div
             }
+            saveAndClose = true
         }
         shortcut {
             iconIdentifier = content-special-shortcut
