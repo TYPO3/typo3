@@ -396,7 +396,7 @@ class FileContentParser
             case 'jpg':
             case 'tif':
                 // PHP EXIF
-                return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.Images'), $extension);
+                return sprintf($this->sL('LLL:EXT:indexed_search/Resources/Private/Language/locallang_main.xlf:extension.images'), $extension);
             case 'html':
             case 'htm':
                 // PHP strip-tags()
