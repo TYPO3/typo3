@@ -18,29 +18,25 @@
 
                 <div class="card-content">
                     <div class="row">
-                        <f:if condition="{extraFields.crdate}">
-                            <div class="col-md-6">
-                                <strong>{extraFields.crdate.fieldLabel}</strong><br>
-                                {extraFields.crdate.value}
-                            </div>
-                        </f:if>
-                        <f:if condition="{extraFields.tstamp}">
-                            <div class="col-md-6">
-                                <strong>{extraFields.tstamp.fieldLabel}</strong><br>
-                                {extraFields.tstamp.value}
-                            </div>
-                        </f:if>
+                        <f:for each="{extraFields}" as="extraField">
+                            <f:if condition="{extraField.isDatetime}">
+                                <div class="col-md-6">
+                                    <strong>{extraField.fieldLabel}</strong><br>
+                                    {extraField.value}
+                                </div>
+                            </f:if>
+                        </f:for>
                     </div>
-                    <f:if condition="{extraFields.cruser_id.creatorRecord}">
+                    <f:if condition="{extraFields.creatorRecord}">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="media">
                                     <div class="media-left">
-                                        {extraFields.cruser_id.creatorRecord.icon -> f:format.raw()}
+                                        {extraFields.creatorRecord.value.icon -> f:format.raw()}
                                     </div>
                                     <div class="media-body">
-                                        <strong>{extraFields.cruser_id.creatorRecord.username}</strong><br>
-                                        {extraFields.cruser_id.creatorRecord.realName}
+                                        <strong>{extraFields.creatorRecord.value.username}</strong><br>
+                                        {extraFields.creatorRecord.value.realName}
                                     </div>
                                 </div>
                             </div>
