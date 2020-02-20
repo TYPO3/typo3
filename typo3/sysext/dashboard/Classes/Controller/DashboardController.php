@@ -173,7 +173,6 @@ class DashboardController extends AbstractController
     public function mainAction(): void
     {
         $this->view->assignMultiple([
-            'settings' => $this->settings,
             'availableDashboards' => $this->dashboardsForCurrentUser,
             'dashboardPresets' => $this->availableDashboardPresets,
             'widgetGroups' => $this->buildWidgetGroupsConfiguration(),
