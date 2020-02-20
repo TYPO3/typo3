@@ -32,6 +32,9 @@ set this in your LocalConfiguration.php / AdditionalConfiguration.php file:
 * :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['layoutRootPaths'][700] = 'EXT:my_site_extension/Resources/Private/Layouts';`
 
 
+In addition, it is possible to define a section within the Fluid email,
+which - if set - takes precedence over the :php:`subject()` method.
+
 Impact
 ======
 
@@ -50,5 +53,25 @@ It is possible to use the same API in your custom extension like this:
        ->setTemplate('TipsAndTricks')
        ->assign('mySecretIngredient', 'Tomato and TypoScript');
    GeneralUtility::makeInstance(Mailer::class)->send($email);
+
+Defining a custom email subject in a custom template:
+
+.. code-block:: html
+
+   <f:section name="Subject">New Login at "{typo3.sitename}"</f:section>
+
+Building templated emails with Fluid also allows to define the language key,
+and use this within the Fluid template:
+
+.. code-block:: php
+
+   $email = GeneralUtility::makeInstance(FluidEmail::class);
+   $email
+       ->to('contact@acme.com')
+       ->assign('language', 'de');
+
+.. code-block:: html
+
+   <f:translate languageKey="{language}" id="LLL:my_ext/Resources/Private/Language/emails.xml:subject" />
 
 .. index:: Fluid, ext:core
