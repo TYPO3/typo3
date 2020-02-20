@@ -48,7 +48,10 @@
 			<trans-unit id="delete" resname="delete">
 				<source>Delete backend user (!)</source>
 			</trans-unit>
-			<trans-unit id="info" resname="delete">
+			<trans-unit id="details" resname="details">
+				<source>Show details</source>
+			</trans-unit>
+			<trans-unit id="info" resname="info">
 				<source>Display information</source>
 			</trans-unit>
 			<trans-unit id="disable" resname="disable">
