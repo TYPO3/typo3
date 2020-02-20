@@ -47,20 +47,29 @@ final class ConsoleCommandPass implements CompilerPassInterface
             return;
         }
 
-        $unorderedEventListeners = [];
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
-            $container->findDefinition($serviceName)->setPublic(true);
+            $commandServiceDefinition = $container->findDefinition($serviceName)->setPublic(true);
+            $commandName = null;
+            $aliases = [];
             foreach ($tags as $attributes) {
                 if (!isset($attributes['command'])) {
                     continue;
                 }
-
                 $commandRegistryDefinition->addMethodCall('addLazyCommand', [
                     $attributes['command'],
                     $serviceName,
-                    (bool)($attributes['alias'] ?? false),
                     (bool)($attributes['schedulable'] ?? true)
                 ]);
+                $isAlias = isset($commandName) || ($attributes['alias'] ?? false);
+                if (!$isAlias) {
+                    $commandName = $attributes['command'];
+                } else {
+                    $aliases[] = $attributes['command'];
+                }
+            }
+            $commandServiceDefinition->addMethodCall('setName', [$commandName]);
+            if ($aliases) {
+                $commandServiceDefinition->addMethodCall('setAliases', [$aliases]);
             }
         }
     }

@@ -115,17 +115,17 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getLanguagePackCommand(ContainerInterface $container): Command\LanguagePackCommand
     {
-        return new Command\LanguagePackCommand;
+        return new Command\LanguagePackCommand('language:update');
     }
 
     public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
     {
-        return new Command\UpgradeWizardRunCommand;
+        return new Command\UpgradeWizardRunCommand('upgrade:run');
     }
 
     public static function getUpgradeWizardListCommand(ContainerInterface $container): Command\UpgradeWizardListCommand
     {
-        return new Command\UpgradeWizardListCommand;
+        return new Command\UpgradeWizardListCommand('upgrade:list');
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry

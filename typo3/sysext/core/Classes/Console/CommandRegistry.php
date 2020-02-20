@@ -112,7 +112,7 @@ class CommandRegistry implements CommandLoaderInterface, \IteratorAggregate, Sin
         $this->populateCommandsFromPackages();
         foreach ($this->commands as $commandName => $command) {
             if (is_string($command)) {
-                $command = $this->getInstance($command, $commandName);
+                $command = $this->getInstance($command);
             }
             yield $commandName => $command;
         }
@@ -129,7 +129,7 @@ class CommandRegistry implements CommandLoaderInterface, \IteratorAggregate, Sin
         foreach ($this->commands as $commandName => $command) {
             if ($this->commandConfigurations[$commandName]['schedulable'] ?? true) {
                 if (is_string($command)) {
-                    $command = $this->getInstance($command, $commandName);
+                    $command = $this->getInstance($command);
                 }
                 yield $commandName => $command;
             }
@@ -171,7 +171,7 @@ class CommandRegistry implements CommandLoaderInterface, \IteratorAggregate, Sin
 
         $command = $this->commands[$identifier] ?? null;
         if (is_string($command)) {
-            $command = $this->getInstance($command, $identifier);
+            $command = $this->getInstance($command);
         }
 
         return $command;
@@ -218,7 +218,7 @@ class CommandRegistry implements CommandLoaderInterface, \IteratorAggregate, Sin
                         if (array_key_exists($commandName, $this->lazyCommandConfigurations)) {
                             // Lazy (DI managed) commands override classic commands from Configuration/Commands.php
                             // Skip this case to allow extensions to provide commands via DI config and to allow
-                            // TYPO3 v9 backwards compatibile confguration via Configuration/Commands.php.
+                            // TYPO3 v9 backwards compatible configuration via Configuration/Commands.php.
                             // Note: Also the deprecation error is skipped on-demand as the extension has been
                             // adapted and the configuration will be ignored as of TYPO3 v11.
                             continue;
@@ -242,26 +242,18 @@ class CommandRegistry implements CommandLoaderInterface, \IteratorAggregate, Sin
         }
     }
 
-    protected function getInstance(string $class, string $commandName): Command
+    protected function getInstance(string $class): Command
     {
-        $command = $this->container->get($class);
-
-        if ($command instanceof Command) {
-            $command->setName($commandName);
-            return $command;
-        }
-
-        throw new \InvalidArgumentException('Registered console command class ' . get_class($command) . ' does not inherit from ' . Command::class, 1567966448);
+        return $this->container->get($class);
     }
 
     /**
      * @internal
      */
-    public function addLazyCommand(string $commandName, string $serviceName, bool $alias = false, bool $schedulable = true): void
+    public function addLazyCommand(string $commandName, string $serviceName, bool $schedulable = true): void
     {
         $this->lazyCommandConfigurations[$commandName] = [
             'class' => $serviceName,
-            'alias' => $alias,
             'schedulable' => $schedulable,
         ];
     }
