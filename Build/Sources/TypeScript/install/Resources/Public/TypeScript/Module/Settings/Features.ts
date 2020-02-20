@@ -74,6 +74,7 @@ class Features extends AbstractInteractableModule {
             data.status.forEach((element: any): void => {
               Notification.showMessage(element.title, element.message, element.severity);
             });
+            this.getContent();
           } else {
             Notification.error('Something went wrong');
           }

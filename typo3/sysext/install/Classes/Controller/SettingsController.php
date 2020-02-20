@@ -450,6 +450,7 @@ class SettingsController extends AbstractController
             if (isset($configurationDescription['SYS']['items']['features']['items'][$featureName]['description'])) {
                 $default = $configurationManager->getDefaultConfigurationValueByPath('SYS/features/' . $featureName);
                 $features[] = [
+                    'label' => ucfirst(str_replace(['_', '.'], ' ', strtolower(GeneralUtility::camelCaseToLowerCaseUnderscored(preg_replace('/\./', ': ', $featureName, 1))))),
                     'name' => $featureName,
                     'description' => $configurationDescription['SYS']['items']['features']['items'][$featureName]['description'],
                     'default' => $default,
