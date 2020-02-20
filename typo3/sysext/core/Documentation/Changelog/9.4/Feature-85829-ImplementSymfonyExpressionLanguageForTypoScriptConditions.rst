@@ -208,7 +208,7 @@ The following functions are only available in **frontend** context:
 |                    |            | `[session("session:foo|bar") == 1234567]`                       |
 +--------------------+------------+-----------------------------------------------------------------+
 | site               | String     | get value from site configuration, or null if                   |
-|                    |            | no site was found or property does not exists                   |
+|                    |            | no site was found or property does not exist                    |
 |                    |            |                                                                 |
 |                    |            | Example, matches if site identifier = foo                       |
 |                    |            | `[site("identifier") == "foo"]`                                 |
@@ -217,7 +217,7 @@ The following functions are only available in **frontend** context:
 |                    |            | `[site("base") == "http://localhost"]`                          |
 +--------------------+------------+-----------------------------------------------------------------+
 | siteLanguage       | String     | get value from siteLanguage configuration, or                   |
-|                    |            | null if no site was found or property not exists                |
+|                    |            | null if no site was found or property does not exist            |
 |                    |            |                                                                 |
 |                    |            | Example, match if siteLanguage locale = foo                     |
 |                    |            | `[siteLanguage("locale") == "de_CH"]`                           |

@@ -560,7 +560,7 @@ class ConfigurationService implements SingletonInterface
 
             $formElementType = $validationDto->getFormElementType();
             if (!$this->isFormElementTypeDefinedInFormSetup($validationDto)) {
-                $message = 'Form element type "%s" does not exists in prototype configuration "%s"';
+                $message = 'Form element type "%s" does not exist in prototype configuration "%s"';
                 throw new PropertyException(
                     sprintf($message, $formElementType, $validationDto->getPrototypeName()),
                     1528633967

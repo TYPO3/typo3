@@ -40,7 +40,7 @@
                 <source>"%s" (no read access).</source>
             </trans-unit>
             <trans-unit id="tt_content.preview.notExistingdPersistenceIdentifier" resname="tt_content.preview.notExistingdPersistenceIdentifier" xml:space="preserve">
-                <source>The form "%s" does not exists.</source>
+                <source>The form "%s" does not exist.</source>
             </trans-unit>
             <trans-unit id="tt_content.preview.invalidFrameworkConfiguration" resname="tt_content.preview.invalidFrameworkConfiguration" xml:space="preserve">
                 <source>"%s" (Invalid ext:form configuration).</source>

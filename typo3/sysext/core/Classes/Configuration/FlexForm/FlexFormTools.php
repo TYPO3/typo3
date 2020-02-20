@@ -500,7 +500,7 @@ class FlexFormTools
                     $dataStructureIdentifier['dataStructureKey'] = 'default';
                 } else {
                     // The value of the ds_pointerField field points to a key in the ds array that does
-                    // not exists, and there is no fallback either. This can happen if an extension brings
+                    // not exist, and there is no fallback either. This can happen if an extension brings
                     // new flex form definitions and that extension is unloaded later. "Old" records of the
                     // extension could then still point to the no longer existing key in ds. We throw a
                     // specific exception here to give controllers an opportunity to catch this case.

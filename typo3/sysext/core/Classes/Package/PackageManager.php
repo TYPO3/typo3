@@ -742,7 +742,7 @@ class PackageManager implements SingletonInterface
         $fileDescription .= "# should, however, never become necessary if you use the package commands.\n";
 
         if (!@is_writable($this->packageStatesPathAndFilename)) {
-            // If file does not exists try to create it
+            // If file does not exist, try to create it
             $fileHandle = @fopen($this->packageStatesPathAndFilename, 'x');
             if (!$fileHandle) {
                 throw new Exception\PackageStatesFileNotWritableException(
