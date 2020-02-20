@@ -228,7 +228,7 @@ function jumpToUrl(URL) {
     public function __construct()
     {
         $this->initPageRenderer();
-        trigerr_error(__CLASS__ . ' will be removed in TYPO3 v11. Use ModuleTemplate API instead.', E_USER_DEPRECATED);
+        trigger_error(__CLASS__ . ' will be removed in TYPO3 v11. Use ModuleTemplate API instead.', E_USER_DEPRECATED);
 
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
