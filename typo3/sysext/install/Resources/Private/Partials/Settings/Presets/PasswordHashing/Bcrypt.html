@@ -17,13 +17,13 @@
         <f:if condition="{preset.isAvailable}">
             <f:then>
                 bcrypt is a good password hashing algorithm. It however needs some additional quirks
-                for long passwords in PHP and should only be used if Argon2i is not available.
+                for long passwords in PHP and should only be used if Argon2id or Argon2i is not available.
             </f:then>
             <f:else>
                 bcrypt is not available on this system. TYPO3 password storage not only requires bcrypt itself,
-                but also sha384 to be availble to use this algorithm. One of these or both are missing. bcrypt however
-                can be used as a fallback if Argon2i is not available, too. Ask reach out to your hoster to fix both
-                and prefer Argon2i.
+                but also sha384 to be available to use this algorithm. One of these or both are missing.
+                bcrypt is also used as a fallback if Argon2id or Argon2i are not available.
+                Reach out to your hoster to fix these issues and prefer installation of Argon2id or Argon2i.
             </f:else>
         </f:if>
     </p>

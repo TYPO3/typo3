@@ -108,6 +108,7 @@ return [
         'reverseProxyPrefixSSL' => '',
         'availablePasswordHashAlgorithms' => [
             \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash::class,
+            \TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash::class,
             \TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash::class,
             \TYPO3\CMS\Core\Crypto\PasswordHashing\Pbkdf2PasswordHash::class,
             \TYPO3\CMS\Core\Crypto\PasswordHashing\PhpassPasswordHash::class,

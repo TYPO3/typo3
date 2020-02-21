@@ -34,6 +34,7 @@ class PasswordHashingFeature extends AbstractFeature implements FeatureInterface
      */
     protected $presetRegistry = [
         Argon2iPreset::class,
+        Argon2idPreset::class,
         BcryptPreset::class,
         Pbkdf2Preset::class,
         PhpassPreset::class,

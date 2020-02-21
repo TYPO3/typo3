@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Configuration\SiteConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
@@ -1244,7 +1245,7 @@ For each website you need a TypoScript template on the main page of your website
      *
      * This method is executed during installation *before* the preset did set up proper hash method
      * selection in LocalConfiguration. So PasswordHashFactory is not usable at this point. We thus loop through
-     * the four default hash mechanisms and select the first one that works. The preset calculation of step
+     * the default hash mechanisms and select the first one that works. The preset calculation of step
      * executeDefaultConfigurationAction() basically does the same later.
      *
      * @param string $password Plain text password
@@ -1255,6 +1256,7 @@ For each website you need a TypoScript template on the main page of your website
     {
         $okHashMethods = [
             Argon2iPasswordHash::class,
+            Argon2idPasswordHash::class,
             BcryptPasswordHash::class,
             Pbkdf2PasswordHash::class,
             PhpassPasswordHash::class,

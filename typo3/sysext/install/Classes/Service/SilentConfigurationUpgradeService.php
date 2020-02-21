@@ -15,6 +15,7 @@ namespace TYPO3\CMS\Install\Service;
  */
 
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashInterface;
@@ -1025,6 +1026,7 @@ class SilentConfigurationUpgradeService
         // Phpass is always available, so we have some last fallback if the others don't kick in
         $okHashMethods = [
             Argon2iPasswordHash::class,
+            Argon2idPasswordHash::class,
             BcryptPasswordHash::class,
             Pbkdf2PasswordHash::class,
             PhpassPasswordHash::class,

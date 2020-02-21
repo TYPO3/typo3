@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Install\Tests\Unit\Service;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2idPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\Argon2iPasswordHash;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\BcryptPasswordHash;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -924,17 +925,23 @@ class SilentConfigurationUpgradeServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2iIsNotAvailable()
+    public function migrateSaltedPasswordsSetsSpecificHashMethodIfArgon2idAndArgon2iIsNotAvailable()
     {
         $configurationManagerProphecy = $this->prophesize(ConfigurationManager::class);
         $configurationManagerProphecy->getLocalConfigurationValueByPath('EXTENSIONS/saltedpasswords')
             ->shouldBeCalled()->willReturn(['thereIs' => 'something']);
+        $argon2idBeProphecy = $this->prophesize(Argon2idPasswordHash::class);
+        $argon2idBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idBeProphecy->reveal());
         $argonBeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonBeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonBeProphecy->reveal());
         $bcryptBeProphecy = $this->prophesize(BcryptPasswordHash::class);
         $bcryptBeProphecy->isAvailable()->shouldBeCalled()->willReturn(true);
         GeneralUtility::addInstance(BcryptPasswordHash::class, $bcryptBeProphecy->reveal());
+        $argon2idFeProphecy = $this->prophesize(Argon2idPasswordHash::class);
+        $argon2idFeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
+        GeneralUtility::addInstance(Argon2idPasswordHash::class, $argon2idFeProphecy->reveal());
         $argonFeProphecy = $this->prophesize(Argon2iPasswordHash::class);
         $argonFeProphecy->isAvailable()->shouldBeCalled()->willReturn(false);
         GeneralUtility::addInstance(Argon2iPasswordHash::class, $argonFeProphecy->reveal());

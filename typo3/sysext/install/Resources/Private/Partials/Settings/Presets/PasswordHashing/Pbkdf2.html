@@ -17,13 +17,13 @@
         <f:if condition="{preset.isAvailable}">
             <f:then>
                 PBKDF2 is a key derivation function recommended by IETF in RFC 8018 as part of the PKCS series, even
-                though newer password hashing functions such as Argon2i are designed to address weaknesses of PBKDF2.
+                though newer password hashing functions such as Argon2id or Argon2i are designed to address weaknesses of PBKDF2.
                 It could be a preferred password hash algorithm if storing passwords in a FIPS compliant way is necessary.
-                Usually, selecting Argon2i as hash algorithm is good to go.
+                Usually, selecting Argon2id or Argon2i if available as hash algorithm is ideal.
             </f:then>
             <f:else>
-                PBKDF2 is not available on this system. This is very uncommon. If Argon2i and bcrypt are also not available,
-                you should seriously question the quality of your current hoster and reach them out to fix this as soon as possible.
+                PBKDF2 is not available on this system. This is very uncommon. If Argon2id, Argon2i and bcrypt are also not available,
+                you should reach out to your hoster to fix this as soon as possible.
             </f:else>
         </f:if>
     </p>

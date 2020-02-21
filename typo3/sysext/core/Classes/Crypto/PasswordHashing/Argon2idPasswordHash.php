@@ -16,24 +16,24 @@ namespace TYPO3\CMS\Core\Crypto\PasswordHashing;
  */
 
 /**
- * This class implements the 'argon2i' flavour of the php password api.
+ * This class implements the 'argon2id' flavour of the php password api.
  *
- * Hashes are identified by the prefix '$argon2i$'.
+ * Hashes are identified by the prefix '$argon2id$'.
  *
- * The length of an argon2i password hash (in the form it is received from
+ * The length of an argon2id password hash (in the form it is received from
  * PHP) depends on the environment.
  *
- * @see PASSWORD_ARGON2I in https://secure.php.net/manual/en/password.constants.php
+ * @see PASSWORD_ARGON2ID in https://secure.php.net/manual/en/password.constants.php
  */
-class Argon2iPasswordHash extends AbstractArgon2PasswordHash
+class Argon2idPasswordHash extends AbstractArgon2PasswordHash
 {
     /**
      * The password algorithm constant name.
      */
-    protected const PASSWORD_ALGORITHM_NAME = 'PASSWORD_ARGON2I';
+    protected const PASSWORD_ALGORITHM_NAME = 'PASSWORD_ARGON2ID';
 
     /**
      * Prefix for the password hash.
      */
-    protected const PREFIX = '$argon2i$';
+    protected const PREFIX = '$argon2id$';
 }
