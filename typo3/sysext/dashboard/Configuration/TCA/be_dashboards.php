@@ -2,7 +2,7 @@
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:be_dashboard',
-        'label' => 'label',
+        'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
         'cruser_id' => 'cruser_id',
@@ -18,10 +18,10 @@ return [
         'typeicon_classes' => [
             'default' => 'content-dashboard'
         ],
-        'searchFields' => 'identifier,label,configuration'
+        'searchFields' => 'identifier,title,configuration'
     ],
     'interface' => [
-        'showRecordFieldList' => 'hidden,identifier,label,configuration,starttime,endtime'
+        'showRecordFieldList' => 'hidden,identifier,title,configuration,starttime,endtime'
     ],
     'columns' => [
         'hidden' => [
@@ -69,8 +69,8 @@ return [
                 'eval' => 'required'
             ]
         ],
-        'label' => [
-            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:label',
+        'title' => [
+            'label' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_tca.xlf:title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -90,7 +90,7 @@ return [
         '1' => [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    identifier,label,configuration,
+                    identifier,title,configuration,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
                     hidden, --palette--;;timeRestriction,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,

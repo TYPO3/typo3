@@ -9,8 +9,8 @@
 			<trans-unit id="identifier" xml:space="preserve">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="label" xml:space="preserve">
-				<source>Label</source>
+			<trans-unit id="title" xml:space="preserve">
+				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="configuration" xml:space="preserve">
 				<source>Configuration</source>
