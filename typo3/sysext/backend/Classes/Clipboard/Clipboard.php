@@ -337,7 +337,7 @@ class Clipboard
             'id' => 'normal',
             'number' => 0,
             'url' => GeneralUtility::linkThisScript(['CB' => ['setP' => 'normal']]),
-            'description' => 'normal-description',
+            'description' => 'labels.normal-description',
             'label' => 'labels.normal',
             'padding' => $this->padTitle('normal')
         ];
@@ -350,7 +350,7 @@ class Clipboard
                 'id' => 'tab_' . $a,
                 'number' => $a,
                 'url' => GeneralUtility::linkThisScript(['CB' => ['setP' => 'tab_' . $a]]),
-                'description' => 'cliptabs-description',
+                'description' => 'labels.cliptabs-description',
                 'label' => 'labels.cliptabs-name',
                 'padding' => $this->padTitle('tab_' . $a)
             ];
