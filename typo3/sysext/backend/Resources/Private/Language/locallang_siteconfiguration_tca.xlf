@@ -49,6 +49,9 @@
 			<trans-unit id="site_language.ctrl.title" resname="site_language.ctrl.title">
 				<source>Language Configuration for a Site</source>
 			</trans-unit>
+			<trans-unit id="site_language.language" resname="site_language.language">
+				<source>Language</source>
+			</trans-unit>
 			<trans-unit id="site_language.languageId" resname="site_language.languageId">
 				<source>Language ID</source>
 			</trans-unit>
