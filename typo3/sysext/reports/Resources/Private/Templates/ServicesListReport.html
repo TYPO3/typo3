@@ -1,15 +1,15 @@
 <p class="lead">
-    <f:translate key="report_explanation" />
+    <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:report_explanation" />
 </p>
 <p class="help">
-    <f:translate key="externals_explanation" />
+    <f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:externals_explanation" />
 </p>
 
 <f:for each="{servicesList}" as="serviceList">
     <f:render section="ServiceTypeList" arguments="{serviceList: serviceList}" />
 </f:for>
 
-<h3><f:translate key="search_paths" /></h3>
+<h3><f:translate key="LLL:EXT:reports/Resources/Private/Language/locallang_servicereport.xlf:search_paths" /></h3>
 <f:if condition="{searchPaths}">
     <f:then>
         <table class="table table-striped table-hover tx_sv_reportlist">
