@@ -9,6 +9,11 @@
 
 <f:section name="Buttons">
     <be:moduleLayout.button.linkButton
+        icon="actions-view-go-back"
+        title="{f:translate(id: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.goBack')}"
+        link="{be:moduleLink(route: 'system_BeuserTxBeuser')}"
+    />
+    <be:moduleLayout.button.linkButton
         icon="actions-add"
         title="{f:translate(id: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newRecordGeneral')}"
         link="{be:uri.newRecord(table: 'be_users')}"
