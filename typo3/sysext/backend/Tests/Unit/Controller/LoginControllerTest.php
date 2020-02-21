@@ -241,11 +241,11 @@ class LoginControllerTest extends UnitTestCase
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         /** @var MethodProphecy $inlineCodeProphecy */
         $inlineCodeProphecy = $pageRendererProphecy->addJsInlineCode('loginRefresh', Argument::cetera());
+        $this->loginControllerMock->_set('pageRenderer', $pageRendererProphecy->reveal());
 
         $this->loginControllerMock->_call(
             'checkRedirect',
-            $this->prophesize(ServerRequest::class)->reveal(),
-            $pageRendererProphecy->reveal()
+            $this->prophesize(ServerRequest::class)->reveal()
         );
 
         $inlineCodeProphecy->shouldHaveBeenCalledTimes(1);
@@ -284,11 +284,11 @@ class LoginControllerTest extends UnitTestCase
         $pageRendererProphecy = $this->prophesize(PageRenderer::class);
         /** @var MethodProphecy $inlineCodeProphecy */
         $inlineCodeProphecy = $pageRendererProphecy->addJsInlineCode('loginRefresh', Argument::cetera());
+        $this->loginControllerMock->_set('pageRenderer', $pageRendererProphecy->reveal());
 
         $this->loginControllerMock->_call(
             'checkRedirect',
-            $this->prophesize(ServerRequest::class)->reveal(),
-            $pageRendererProphecy->reveal()
+            $this->prophesize(ServerRequest::class)->reveal()
         );
 
         $inlineCodeProphecy->shouldHaveBeenCalledTimes(1);
