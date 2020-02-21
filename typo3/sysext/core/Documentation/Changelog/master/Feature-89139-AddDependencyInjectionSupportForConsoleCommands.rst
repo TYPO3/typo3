@@ -17,19 +17,19 @@ Commands tagged with `console.command` are lazy loaded. That means they will onl
 instantiated when they are actually executed, when the `help` subcommand is executed,
 or when available schedulable commands are iterated.
 
-The legacy command definition format :php:`Confguration/Commands.php` has been deprecated.
+The legacy command definition format :php:`Configuration/Commands.php` has been deprecated.
 
 
 Impact
 ======
 
 It is recommended to configure dependency injection tags for all commands, as the legacy command
-definition format :php:`Confguration/Commands.php` has been deprecated.
+definition format :php:`Configuration/Commands.php` has been deprecated.
 
 Commands that have been configured via `console.command` tag  override legacy commands from
-:php:`Confguration/Commands.php` without throwing a deprecation error for those commands.
+:php:`Configuration/Commands.php` without throwing a deprecation error for those commands.
 Backwards compatibility with older TYPO3 version can be achieved by specifying both variants,
-legacy configuration in :php:`Confguration/Commands.php` and new configuration via
+legacy configuration in :php:`Configuration/Commands.php` and new configuration via
 `console.command` tag.
 
 
