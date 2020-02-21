@@ -167,7 +167,7 @@ class BackendUserController extends ActionController
             'demand' => $demand,
             'backendUsers' => $this->backendUserRepository->findDemanded($demand),
             'backendUserGroups' => array_merge([''], $this->backendUserGroupRepository->findAll()->toArray()),
-            'compareUserUidList' => array_combine(array_keys($compareUserList), array_fill(0, count($compareUserList), true)),
+            'compareUserUidList' => array_combine($compareUserList, $compareUserList),
             'currentUserUid' => $this->getBackendUserAuthentication()->user['uid'],
             'compareUserList' => !empty($compareUserList) ? $this->backendUserRepository->findByUidList($compareUserList) : '',
         ]);
