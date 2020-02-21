@@ -480,6 +480,10 @@ class ExtensionUtilityTest extends UnitTestCase
                 '',
                 'Foo\\Bar\\baz\\qUx\\Foocontroller',
             ],
+            'Controller in arbitrary namespace with subfolder in Controller namespace' => [
+                'Baz\\Foo',
+                'Foo\\Bar\\Controller\\Baz\\FooController',
+            ],
         ];
     }
 

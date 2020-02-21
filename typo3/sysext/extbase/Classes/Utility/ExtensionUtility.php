@@ -14,6 +14,8 @@ namespace TYPO3\CMS\Extbase\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\StringUtility;
+
 /**
  * Utilities to manage plugins and  modules of an extension. Also useful to auto-generate the autoloader registry
  * file ext_autoload.php.
@@ -310,15 +312,43 @@ tt_content.' . $pluginSignature . ' {
      */
     public static function resolveControllerAliasFromControllerClassName(string $controllerClassName): string
     {
-        if (strrpos($controllerClassName, 'Controller') === false) {
+        // This method has been adjusted for TYPO3 10.3 to mitigate the issue that controller aliases
+        // could not longer be calculated from controller classes when calling
+        // \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin().
+        //
+        // The idea for version 11 is to let the user choose a controller alias and to check for its
+        // uniqueness per plugin. That way, the core does no longer rely on the namespace of
+        // controller classes to be in a specific format.
+        //
+        // todo: Change the way plugins are registered and enforce a controller alias to be set by
+        //       the user to also free the core from guessing a simple alias by looking at the
+        //       class name. This makes it possible to choose controller class names without a
+        //       controller suffix.
+
+        $strLen = strlen('Controller');
+
+        if (!StringUtility::endsWith($controllerClassName, 'Controller')) {
             return '';
         }
 
-        return trim(substr(
-            $controllerClassName,
-            (int)strrpos($controllerClassName, '\\'),
-            -strlen('Controller')
-        ), '\\');
+        $controllerClassNameWithoutControllerSuffix = substr($controllerClassName, 0, -$strLen);
+
+        if (strrpos($controllerClassNameWithoutControllerSuffix, 'Controller\\') === false) {
+            $positionOfLastSlash = (int)strrpos($controllerClassNameWithoutControllerSuffix, '\\');
+            $positionOfLastSlash += $positionOfLastSlash === 0 ? 0 : 1;
+
+            return substr($controllerClassNameWithoutControllerSuffix, $positionOfLastSlash);
+        }
+
+        $positionOfControllerNamespacePart = (int)strrpos(
+            $controllerClassNameWithoutControllerSuffix,
+            'Controller\\'
+        );
+
+        return substr(
+            $controllerClassNameWithoutControllerSuffix,
+            $positionOfControllerNamespacePart + $strLen + 1
+        );
     }
 
     /**
