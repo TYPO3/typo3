@@ -46,6 +46,7 @@ entities:
   language:
     - self: {id: 1, title: 'French', code: 'fr'}
     - self: {id: 2, title: 'Franco-Canadian', code: 'fr'}
+    - self: {id: 3, title: 'Spanish', code: 'es'}
   page:
     - self: {id: 1000, title: 'ACME Global', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
       children:
@@ -109,6 +110,29 @@ entities:
                 content:
                   - self: {title: 'Content of MountPoint Page', type: *contentText }
         - self: {id: 2930, title: 'Link To Our Worldwide Site', type: *pageShortcut, shortcut: 1000, slug: '/global' }
+    - self: {id: 3000, title: 'ACME US', type: *pageShortcut, shortcut: 'first', root: true, slug: '/'}
+      children:
+        # This page has a trailing slash in the slug
+        - self: {id: 3100, title: 'News of US', slug: '/news/' }
+          entities:
+            content:
+              - self: {title: 'See a list of all games distributed in the US', type: *contentText }
+          children:
+            - self: {id: 3110, title: 'New Games in the US 2020', slug: '/news/games-in-us-2020' }
+            # This page has a fully different slug than the parent page - which could happen
+            - self: {id: 3120, title: 'New Games in the US 2019', slug: '/slug-with-a-mistake-which-never-changed/games-in-us-2019' }
+        - self: {id: 3300, title: 'Products', slug: '/products', type: *pageMount, mount: 1300 }
+        - self: {id: 3700, title: 'All News', slug: '/all-news'}
+          children:
+            - self: {id: 3710, title: 'US News', slug: '/all-news/us', type: *pageMount, mount: 3100, showContentOfMountedPage: 1 }
+              entities:
+                content:
+                  - self: {title: 'Content of MountPoint Page', type: *contentText }
+            - self: {id: 3720, title: 'Archived News', slug: '/all-news/archive', type: *pageMount, mount: 10200, showContentOfMountedPage: 0 }
+              entities:
+                content:
+                  - self: {title: 'Content of MountPoint Page', type: *contentText }
+        - self: {id: 3930, title: 'Link To Our Worldwide Site', type: *pageShortcut, shortcut: 1000, slug: '/global' }
     - self: {id: 10000, title: 'Archive for everybody', root: true, slug: '/'}
       languageVariants:
         - self: {id: 10001, title: 'FR: Archive', language: 1, slug: '/'}
