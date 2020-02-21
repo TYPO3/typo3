@@ -97,7 +97,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
     {
         $groupedQueries = [];
         foreach ($queries as $query) {
-            $identifier = sha1($query['sql']) . sha1(implode(',', $query['backtrace']));
+            $identifier = sha1($query['sql']) . sha1(json_encode($query['backtrace']));
             if (is_array($query['params'])) {
                 foreach ($query['params'] as $k => $param) {
                     if (is_array($param)) {
