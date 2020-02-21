@@ -26,7 +26,7 @@ abstract class AbstractCtaButtonWidget extends AbstractWidget
     protected $label = '';
     protected $text = '';
     protected $icon;
-    protected $iconIdentifier = 'dashboard-cta';
+    protected $iconIdentifier = 'content-widget-calltoaction';
     protected $templateName = 'CtaWidget';
 
     public function __construct(string $identifier)

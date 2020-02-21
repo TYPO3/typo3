@@ -299,12 +299,32 @@ module.exports = function (grunt) {
             src: '<%= paths.t3icons %>module/module-beuser.svg'
           },
           {
-            dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg',
-            src: '<%= paths.t3icons %>module/module-config.svg'
-          },
-          {
             dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-cshmanual.svg',
             src: '<%= paths.t3icons %>module/module-cshmanual.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg',
+            src: '<%= paths.t3icons %>module/module-page.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-sites.svg',
+            src: '<%= paths.t3icons %>module/module-sites.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-templates.svg',
+            src: '<%= paths.t3icons %>module/module-templates.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-urls.svg',
+            src: '<%= paths.t3icons %>module/module-urls.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-contentelements.svg',
+            src: '<%= paths.t3icons %>module/module-contentelements.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-config.svg',
+            src: '<%= paths.t3icons %>module/module-config.svg'
           },
           {
             dest: '<%= paths.sysext %>lowlevel/Resources/Public/Icons/module-dbint.svg',
@@ -335,12 +355,24 @@ module.exports = function (grunt) {
             src: '<%= paths.t3icons %>module/module-install.svg'
           },
           {
-            dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg',
-            src: '<%= paths.t3icons %>module/module-list.svg'
+            dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-environment.svg',
+            src: '<%= paths.t3icons %>module/module-install-environment.svg'
           },
           {
-            dest: '<%= paths.sysext %>backend/Resources/Public/Icons/module-page.svg',
-            src: '<%= paths.t3icons %>module/module-page.svg'
+            dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-maintenance.svg',
+            src: '<%= paths.t3icons %>module/module-install-maintenance.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-settings.svg',
+            src: '<%= paths.t3icons %>module/module-install-settings.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>install/Resources/Public/Icons/module-install-upgrade.svg',
+            src: '<%= paths.t3icons %>module/module-install-upgrade.svg'
+          },
+          {
+            dest: '<%= paths.sysext %>recordlist/Resources/Public/Icons/module-list.svg',
+            src: '<%= paths.t3icons %>module/module-list.svg'
           },
           {
             dest: '<%= paths.sysext %>beuser/Resources/Public/Icons/module-permission.svg',

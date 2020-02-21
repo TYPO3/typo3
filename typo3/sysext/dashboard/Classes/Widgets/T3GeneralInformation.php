@@ -23,7 +23,7 @@ class T3GeneralInformation extends AbstractWidget
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.title';
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.description';
     protected $templateName = 'T3GeneralInformation';
-    protected $iconIdentifier = 'dashboard-typo3';
+    protected $iconIdentifier = 'content-widget-text';
     protected $height = 4;
     protected $width = 4;
 

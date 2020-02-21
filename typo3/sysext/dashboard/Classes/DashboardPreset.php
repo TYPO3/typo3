@@ -53,14 +53,14 @@ class DashboardPreset
         string $identifier,
         string $title,
         string $description,
-        string $iconIdentifier = 'dashboard-default',
+        string $iconIdentifier = 'content-dashboard',
         array $defaultWidgets = [],
         bool $showInWizard = true
     ) {
         $this->identifier = $identifier;
         $this->title = $title;
         $this->description = $description;
-        $this->iconIdentifier = $iconIdentifier ?: 'dashboard-default';
+        $this->iconIdentifier = $iconIdentifier ?: 'content-dashboard';
         $this->defaultWidgets = $defaultWidgets;
         $this->showInWizard = $showInWizard;
     }

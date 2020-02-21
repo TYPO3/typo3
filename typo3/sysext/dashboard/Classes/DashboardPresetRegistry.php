@@ -34,7 +34,7 @@ class DashboardPresetRegistry implements SingletonInterface
                 'dashboardPreset-fallback',
                 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:dashboard.default',
                 '',
-                'dashboard-default',
+                'content-dashboard',
                 [],
                 false
             );

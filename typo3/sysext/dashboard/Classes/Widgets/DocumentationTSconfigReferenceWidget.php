@@ -26,5 +26,5 @@ class DocumentationTSconfigReferenceWidget extends AbstractCtaButtonWidget
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.description';
     protected $label = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.TSconfigReference.content.label';
     protected $link = 'https://docs.typo3.org/m/typo3/reference-tsconfig/master/en-us/Index.html';
-    protected $iconIdentifier = 'dashboard-documentation';
+    protected $iconIdentifier = 'content-widget-text';
 }

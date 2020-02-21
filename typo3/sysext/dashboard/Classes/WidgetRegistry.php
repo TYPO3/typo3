@@ -87,7 +87,7 @@ class WidgetRegistry implements SingletonInterface
             $parameters['items'][] = [
                 $widgetObject->getTitle() ,
                 $identifier,
-                $widgetObject->getIconIdentifier() ?? 'dashboard-default',
+                $widgetObject->getIconIdentifier() ?? 'content-dashboard',
                 $widgetObject->getDescription()
             ];
         }

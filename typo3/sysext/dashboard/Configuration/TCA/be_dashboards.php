@@ -16,7 +16,7 @@ return [
         ],
         'default_sortby' => 'crdate DESC',
         'typeicon_classes' => [
-            'default' => 'mimetypes-x-be_dashboard'
+            'default' => 'content-dashboard'
         ],
         'searchFields' => 'identifier,label,configuration'
     ],

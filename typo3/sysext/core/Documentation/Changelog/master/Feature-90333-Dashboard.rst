@@ -119,7 +119,7 @@ In that file you specify the information of the presets.
        'dashboardPreset-myOwnPreset' => [
            'title' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:dashboard.myOwnPreset',
            'description' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:dashboard.myOwnPreset.description',
-           'iconIdentifier' => 'dashboard-default',
+           'iconIdentifier' => 'content-dashboard',
            'defaultWidgets' => ['widget-identifier-1', 'widget-identifier-2'],
            'showInWizard' => true
        ],

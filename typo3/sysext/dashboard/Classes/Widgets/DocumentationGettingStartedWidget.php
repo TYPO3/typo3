@@ -26,5 +26,5 @@ class DocumentationGettingStartedWidget extends AbstractCtaButtonWidget
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.description';
     protected $label = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.documentation.gettingStarted.content.label';
     protected $link = 'https://docs.typo3.org/m/typo3/tutorial-getting-started/master/en-us/Index.html';
-    protected $iconIdentifier = 'dashboard-documentation';
+    protected $iconIdentifier = 'content-widget-text';
 }

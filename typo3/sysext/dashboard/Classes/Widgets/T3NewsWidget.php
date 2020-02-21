@@ -25,7 +25,7 @@ class T3NewsWidget extends AbstractRssWidget
     protected $lifeTime = 43200; // 12 hours cache
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.title';
     protected $description = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.description';
-    protected $iconIdentifier = 'dashboard-typo3';
+    protected $iconIdentifier = 'content-widget-rss';
     protected $moreItemsLink = 'https://typo3.org/project/news';
     protected $moreItemsText = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems';
 }
