@@ -7,6 +7,7 @@
 // Load Variables
 //
 @import "bootstrap/variables";
+@import "bootstrap/mixins/vendor-prefixes";
 @import "variables/main";
 
 //
@@ -80,17 +81,6 @@ $adminPanel-progress-green: #629755;
 }
 
 //
-// Font Awesome
-//
-@font-face {
-    font-family: 'TYPO3FontAwesome';
-    src: url('#{$fa-font-path}/fontawesome-webfont.eot?v=4.6.3');
-    src: url('#{$fa-font-path}/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('#{$fa-font-path}/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('#{$fa-font-path}/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('#{$fa-font-path}/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('#{$fa-font-path}/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-//
 // NoScroll
 //
 body.typo3-adminPanel-noscroll {
@@ -133,6 +123,14 @@ body.typo3-adminPanel-noscroll {
 //
 #{$adminPanel-prefix} {
     @import "component/icon";
+    @import "typo3/element_tree";
+}
+
+#{$adminPanel-prefix} {
+    .treeline-icon {
+        margin-top: -8px;
+        margin-bottom: -8px;
+    }
 }
 
 //
