@@ -31,7 +31,10 @@ use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\ResponseContent;
  * - An archive page shows all archived information (mountpoint to archive)
  *
  * The canadian website mirrors the main products area (mountpoint to products), the news
- * and shows a link to the main site
+ * and shows a link to the main site.
+ *
+ * Same goes to the US website with an other language setup and some minor other pages, but also
+ * pages with the same slug.
  *
  * The archive contains archived products and archived news.
  *
@@ -106,6 +109,14 @@ class MountPointTest extends AbstractTestCase
             ]
         );
         $this->writeSiteConfiguration(
+            'acme-us',
+            $this->buildSiteConfiguration(3000, 'https://acme.us/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                $this->buildLanguageConfiguration('ES', '/es/', ['ES']),
+            ]
+        );
+        $this->writeSiteConfiguration(
             'archive-acme-com',
             $this->buildSiteConfiguration(10000, 'https://archive.acme.com/'),
             [
@@ -149,6 +160,16 @@ class MountPointTest extends AbstractTestCase
             ],
             [
                 'title' => 'ACME Canada',
+                'sitetitle' => $this->siteTitle,
+            ]
+        );
+        $this->setUpFrontendRootPage(
+            3000,
+            [
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/LinkGenerator.typoscript',
+            ],
+            [
+                'title' => 'ACME US',
                 'sitetitle' => $this->siteTitle,
             ]
         );
@@ -506,6 +527,10 @@ class MountPointTest extends AbstractTestCase
                 'https://acme.ca/all-news/canada',
                 'See a list of all games distributed in canada'
             ],
+            'Show content of Mounted Page for second site' => [
+                'https://acme.us/all-news/us',
+                'See a list of all games distributed in the US'
+            ],
         ];
     }
 
@@ -521,6 +546,17 @@ class MountPointTest extends AbstractTestCase
     {
         $this->setUpFrontendRootPage(
             2000,
+            [
+                'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
+                'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',
+            ],
+            [
+                'title' => 'ACME Root',
+                'sitetitle' => $this->siteTitle,
+            ]
+        );
+        $this->setUpFrontendRootPage(
+            3000,
             [
                 'typo3/sysext/core/Tests/Functional/Fixtures/Frontend/JsonRenderer.typoscript',
                 'typo3/sysext/frontend/Tests/Functional/SiteHandling/Fixtures/JsonRenderer.typoscript',

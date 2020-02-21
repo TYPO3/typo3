@@ -381,7 +381,7 @@ class PageRouter implements RouterInterface
      *
      * @param array $slugCandidates
      * @param int $languageId
-     * @param string|null $excludeUids when called recursively this is the mountpoint parameter of the original prefix
+     * @param array $excludeUids when called recursively this is the mountpoint parameter of the original prefix
      * @return array
      * @throws SiteNotFoundException
      */
@@ -415,20 +415,43 @@ class PageRouter implements RouterInterface
             )
             // Exact match will be first, that's important
             ->orderBy('slug', 'desc')
+            // Sort pages that are not MountPoint pages before mount points
+            ->addOrderBy('mount_pid_ol', 'asc')
+            ->addOrderBy('mount_pid', 'asc')
             ->execute();
+        $isRecursiveCall = !empty($excludeUids);
 
         $pages = [];
         $siteMatcher = GeneralUtility::makeInstance(SiteMatcher::class);
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
 
         while ($row = $statement->fetch()) {
+            $mountPageInformation = null;
             $pageRepository->fixVersioningPid('pages', $row);
             $pageIdInDefaultLanguage = (int)($languageId > 0 ? $row['l10n_parent'] : $row['uid']);
-            // When called previously this mountpoint should be skipped
+            // When this page was added before via recursion, this page should be skipped
             if (in_array($pageIdInDefaultLanguage, $excludeUids, true)) {
                 continue;
             }
+            try {
+                $isOnSameSite = $siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId();
+            } catch (SiteNotFoundException $e) {
+                // Page is not in a site, so it's not considered
+                $isOnSameSite = false;
+            }
+
+            // If a MountPoint is found on the current site, and it hasn't been added yet by some other iteration
+            // (see below "findPageCandidatesOfMountPoint"), then let's resolve the MountPoint information now
+            if (!$isOnSameSite && $isRecursiveCall) {
+                // Not in the same site, and called recursive, should be skipped
+                continue;
+            }
             $mountPageInformation = $pageRepository->getMountPointInfo($pageIdInDefaultLanguage, $row);
+            // Mount Point Pages which are not on the same site (when not called on the first level) should be skipped
+            // As they just clutter up the queries.
+            if (!$isOnSameSite && !$isRecursiveCall && $mountPageInformation) {
+                continue;
+            }
             $mountedPage = null;
             if ($mountPageInformation) {
                 // Add the MPvar to the row, so it can be used later-on in the PageRouter / PageArguments
@@ -440,14 +463,11 @@ class PageRouter implements RouterInterface
                 if (!$mountedPage) {
                     continue;
                 }
-            }
-
-            try {
-                $isOnSameSite = $siteMatcher->matchByPageId($pageIdInDefaultLanguage)->getRootPageId() === $this->site->getRootPageId();
-                // If the page is a mountpoint which should be overlaid with the contents of the mounted page,
-                // it must never be accessible directly, but only in the mountpoint context. Therefore we change
+                // If the page is a MountPoint which should be overlaid with the contents of the mounted page,
+                // it must never be accessible directly, but only in the MountPoint context. Therefore we change
                 // the current ID and slug.
-                if ($mountedPage && PageRepository::DOKTYPE_MOUNTPOINT === (int)$row['doktype'] && $row['mount_pid_ol']) {
+                // This needs to happen before the regular case, as the $pageToAdd contains the MPvar information
+                if (PageRepository::DOKTYPE_MOUNTPOINT === (int)$row['doktype'] && $row['mount_pid_ol']) {
                     // If the mounted page was already added from above, this should not be added again (to include
                     // the mount point parameter).
                     if (in_array((int)$mountedPage['uid'], $excludeUids, true)) {
@@ -461,15 +481,16 @@ class PageRouter implements RouterInterface
                     $excludeUids[] = (int)$pageToAdd['uid'];
                     $excludeUids[] = $pageIdInDefaultLanguage;
                 }
-                if ($isOnSameSite && !in_array($pageIdInDefaultLanguage, $excludeUids, true)) {
-                    $pages[] = $row;
-                    $excludeUids[] = $pageIdInDefaultLanguage;
-                }
-            } catch (SiteNotFoundException $e) {
-                // Page is not in a site, so it's not considered
             }
 
-            // Add possible sub-pages prepended with the mountpoint page slug
+            // This is the regular "non-MountPoint page" case (must happen after the if condition so MountPoint
+            // pages that have been replaced by the Mounted Page will not be added again.
+            if ($isOnSameSite && !in_array($pageIdInDefaultLanguage, $excludeUids, true)) {
+                $pages[] = $row;
+                $excludeUids[] = $pageIdInDefaultLanguage;
+            }
+
+            // Add possible sub-pages prepended with the MountPoint page slug
             if ($mountPageInformation) {
                 $siteOfMountedPage = $siteMatcher->matchByPageId((int)$mountedPage['uid']);
                 if ($siteOfMountedPage instanceof Site) {
@@ -482,7 +503,7 @@ class PageRouter implements RouterInterface
                         $context
                     );
                     foreach ($morePageCandidates as $candidate) {
-                        // When called previously this mountpoint should be skipped
+                        // When called previously this MountPoint page should be skipped
                         if (in_array((int)$candidate['uid'], $excludeUids, true)) {
                             continue;
                         }
