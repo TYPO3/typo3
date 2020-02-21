@@ -6,4 +6,7 @@ return [
     'typo3' => [
         'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.typo3',
     ],
+    'documentation' => [
+        'title' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget_group.documentation',
+    ],
 ];

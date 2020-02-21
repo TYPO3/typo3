@@ -141,6 +141,9 @@
 			<trans-unit id="widget_group.typo3" xml:space="preserve">
 				<source>TYPO3</source>
  			</trans-unit>
+			<trans-unit id="widget_group.documentation" xml:space="preserve">
+				<source>Documentation</source>
+ 			</trans-unit>
 
 			<trans-unit id="dashboard.empty.content.title" xml:space="preserve">
 				<source>No widgets</source>

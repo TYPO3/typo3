@@ -21,21 +21,21 @@ services:
     tags:
       - name: dashboard.widget
         identifier: docGettingStarted
-        widgetGroups: 'typo3'
+        widgetGroups: 'documentation'
 
   TYPO3\CMS\Dashboard\Widgets\DocumentationTypoScriptReference:
     arguments: ['docTypoScriptReference']
     tags:
       - name: dashboard.widget
         identifier: docTypoScriptReference
-        widgetGroups: 'typo3'
+        widgetGroups: 'documentation'
 
   TYPO3\CMS\Dashboard\Widgets\DocumentationTSconfigReferenceWidget:
     arguments: ['docTSconfig']
     tags:
       - name: dashboard.widget
         identifier: docTSconfig
-        widgetGroups: 'typo3'
+        widgetGroups: 'documentation'
 
   TYPO3\CMS\Dashboard\Widgets\T3GeneralInformation:
     arguments: ['t3information']
