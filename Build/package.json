@@ -84,7 +84,7 @@
     "stylefmt": "^6.0.0",
     "taboverride": "^4.0.3",
     "tagsort": "1.4.0",
-    "typescript": "^3.7.2",
+    "typescript": "~3.8.2",
     "typescript-eslint": "^0.0.1-alpha.0"
   },
   "scripts": {

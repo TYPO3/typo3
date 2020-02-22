@@ -12,6 +12,7 @@
  */
 
 import 'bootstrap';
+import {PopoverOptions} from 'bootstrap';
 import * as $ from 'jquery';
 
 /**
