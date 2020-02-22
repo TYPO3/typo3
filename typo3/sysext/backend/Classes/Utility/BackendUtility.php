@@ -2209,7 +2209,7 @@ class BackendUtility
         }
         // Wrap description and arrow in p tag
         if ($helpTextArray['description'] !== null || $arrow) {
-            $output .= '<p class="t3-help-short">' . nl2br(htmlspecialchars($helpTextArray['description'])) . $arrow . '</p>';
+            $output .= '<p class="help-short">' . nl2br(htmlspecialchars($helpTextArray['description'])) . $arrow . '</p>';
         }
         return $output;
     }
@@ -2240,10 +2240,10 @@ class BackendUtility
             if ($text == '') {
                 $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
                 $text = $iconFactory->getIcon('actions-system-help-open', Icon::SIZE_SMALL)->render();
-                $abbrClassAdd = '-icon';
+                $abbrClassAdd = ' help-teaser-icon';
             }
-            $text = '<abbr class="t3-help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
-            $wrappedText = '<span class="t3-help-link" href="#" data-table="' . $table . '" data-field="' . $field . '"';
+            $text = '<abbr class="help-teaser' . $abbrClassAdd . '">' . $text . '</abbr>';
+            $wrappedText = '<span class="help-link" href="#" data-table="' . $table . '" data-field="' . $field . '"';
             // The overload array may provide a title and a description
             // If either one is defined, add them to the "data" attributes
             if ($hasHelpTextOverload) {

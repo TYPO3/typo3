@@ -10,19 +10,6 @@ div#typo3-docbody {
 }
 
 //
-// Context Sensitive Help (CSH)
-//
-.t3-help-link {
-    span.t3-help-inline {
-        display: none;
-    }
-
-    &:hover span.t3-help-inline {
-        display: block;
-    }
-}
-
-//
 // Print
 //
 @media print {

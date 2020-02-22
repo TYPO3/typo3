@@ -1,7 +1,8 @@
 <f:layout name="ContextSensitiveHelp" />
-
 <f:section name="content">
+
     <f:for each="{manuals}" as="manual">
         <f:render partial="ContextSensitiveHelp/Manual" arguments="{manual:manual}" />
     </f:for>
+
 </f:section>

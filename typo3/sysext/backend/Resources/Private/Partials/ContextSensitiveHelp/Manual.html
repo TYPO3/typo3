@@ -1,20 +1,15 @@
 <a id="{manual.table}{f:if(condition:manual.field,then:'.{manual.field}')}"></a>
 
 <h2>{manual.headerLine}</h2>
-
 <p>{manual.content -> f:format.raw()}</p>
 
 <f:if condition="{manual.configuration.details}">
-    <h3>
-        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" />
-    </h3>
-    {manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}
+    <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:details" /></h3>
+    <p>{manual.configuration.details -> f:format.stripTags(allowedTags:'<strong><em><b><i>') -> f:format.nl2br()}</p>
 </f:if>
 
 <f:if condition="{manual.configuration.syntax}">
-    <h3>
-        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" />
-    </h3>
+    <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:syntax" /></h3>
     {manual.configuration.syntax -> f:format.raw()}
 </f:if>
 
@@ -31,9 +26,7 @@
 </f:if>
 
 <f:if condition="{manual.seeAlso}">
-    <h3>
-        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:seeAlso" />
-    </h3>
+    <h3><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_view_help.xlf:seeAlso" /></h3>
     <ul>
         <f:for each="{manual.seeAlso}" as="link">
             <li>

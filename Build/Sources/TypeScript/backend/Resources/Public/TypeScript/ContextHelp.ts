@@ -30,7 +30,7 @@ class ContextHelp {
   private helpModuleUrl: string;
   private trigger: string = 'click';
   private placement: string = 'auto';
-  private selector: string = '.t3-help-link';
+  private selector: string = '.help-link';
 
   /**
    * @return {Window}
@@ -93,7 +93,7 @@ class ContextHelp {
       if (!$popover.find('.popover-title').is(':visible')) {
         $popover.addClass('no-title');
       }
-    }).on('click', '.tipIsLinked', (e: any): void => {
+    }).on('click', '.help-has-link', (e: any): void => {
       $('.popover').each((index: number, popover: Element): void => {
         const $popover = $(popover);
         if ($popover.has(e.target).length) {

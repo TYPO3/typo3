@@ -63,7 +63,7 @@ class ContextHelpAjaxController
         $moreIcon = $helpTextArray['moreInfo'] ? $iconFactory->getIcon('actions-view-go-forward', Icon::SIZE_SMALL)->render() : '';
         return [
             'title' => $helpTextArray['title'],
-            'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
+            'description' => '<p class="help-short' . ($moreIcon ? ' help-has-link' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
             'id' => $table . '.' . $field,
             'moreInfo' => $helpTextArray['moreInfo']
         ];
