@@ -54,6 +54,7 @@ class TcaMigration
         $tca = $this->sanitizeControlSectionIntegrity($tca);
         $tca = $this->removeEnableMultiSelectFilterTextfieldConfiguration($tca);
         $tca = $this->removeExcludeFieldForTransOrigPointerField($tca);
+        $tca = $this->removeShowRecordFieldListField($tca);
 
         return $tca;
     }
@@ -291,6 +292,30 @@ class TcaMigration
                     . '\'' . $configuration['ctrl']['transOrigPointerField'] . '\' is defined '
                     . ' as excluded field which is no longer needed and should therefore be removed. ';
                 unset($configuration['columns'][$configuration['ctrl']['transOrigPointerField']]['exclude']);
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA[$mytable]['interface']['showRecordFieldList'] and also $TCA[$mytable]['interface']
+     * if `showRecordFieldList` was the only key in the array.
+     *
+     * @param array $tca
+     * @return array
+     */
+    protected function removeShowRecordFieldListField(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (!isset($configuration['interface']['showRecordFieldList'])) {
+                continue;
+            }
+            $this->messages[] = 'The \'' . $table . '\' TCA configuration \'showRecordFieldList\''
+                . ' inside the section \'interface\' is not evaluated anymore and should therefore be removed.';
+            unset($configuration['interface']['showRecordFieldList']);
+            if ($configuration['interface'] === []) {
+                unset($configuration['interface']);
             }
         }
 

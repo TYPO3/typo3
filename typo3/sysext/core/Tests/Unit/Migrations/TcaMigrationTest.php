@@ -488,7 +488,7 @@ class TcaMigrationTest extends UnitTestCase
         $input = [
             'aTable' => [
                 'ctrl' => [
-                  'transOrigPointerField' => 'l10n_parent'
+                    'transOrigPointerField' => 'l10n_parent'
                 ],
                 'columns' => [
                     'l10n_parent' => [
@@ -555,6 +555,39 @@ class TcaMigrationTest extends UnitTestCase
                             'type' => 'select'
                         ]
                     ]
+                ]
+            ]
+        ];
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
+
+    /**
+     * @test
+     */
+    public function removeShowRecordFieldListFieldIsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'interface' => [
+                    'showRecordFieldList' => 'title,text,description',
+                ]
+            ],
+            'bTable' => [
+                'interface' => [
+                    'showRecordFieldList' => 'title,text,description',
+                    'maxDBListItems' => 30,
+                    'maxSingleDBListItems' => 50
+                ]
+            ]
+        ];
+        $expected = [
+            'aTable' => [
+            ],
+            'bTable' => [
+                'interface' => [
+                    'maxDBListItems' => 30,
+                    'maxSingleDBListItems' => 50
                 ]
             ]
         ];
