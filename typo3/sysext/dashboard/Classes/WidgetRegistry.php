@@ -80,7 +80,7 @@ class WidgetRegistry implements SingletonInterface
         return $GLOBALS['BE_USER'];
     }
 
-    public function widgetItemsProcFunc(array $parameters)
+    public function widgetItemsProcFunc(array $parameters): void
     {
         foreach ($this->widgets as $identifier => $widget) {
             $widgetObject = $this->container->get($widget);

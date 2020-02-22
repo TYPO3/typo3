@@ -20,6 +20,7 @@ use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Widgets\Interfaces\WidgetInterface;
 
 class DashboardRepository
 {
@@ -78,7 +79,7 @@ class DashboardRepository
         return $results;
     }
 
-    public function create(DashboardPreset $dashboardPreset, int $userId, string $title = '')
+    public function create(DashboardPreset $dashboardPreset, int $userId, string $title = ''): ?Dashboard
     {
         $widgets = [];
         $title = $title ?: $dashboardPreset->getTitle();
@@ -139,7 +140,7 @@ class DashboardRepository
     {
         $allowedFields = [];
         foreach ($values as $field => $value) {
-            if (!empty($value) && in_array($field, $this->allowedFields)) {
+            if (!empty($value) && in_array((string)$field, $this->allowedFields, true)) {
                 $allowedFields[$field] = $value;
             }
         }
