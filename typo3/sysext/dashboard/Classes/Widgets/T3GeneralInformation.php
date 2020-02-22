@@ -18,6 +18,9 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Information\Typo3Version;
 
+/**
+ * This widget will show general information regarding TYPO3
+ */
 class T3GeneralInformation extends AbstractWidget
 {
     protected $title = 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3information.title';

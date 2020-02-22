@@ -16,8 +16,8 @@ namespace TYPO3\CMS\Dashboard\Widgets;
  */
 
 /**
- * This class will make it possible for users to show the latest news from the TYPO3 news RSS feed right on the
- * dashboard.
+ * This widget will show the latest news from the TYPO3 news RSS feed right
+ * on the dashboard.
  */
 class T3NewsWidget extends AbstractRssWidget
 {

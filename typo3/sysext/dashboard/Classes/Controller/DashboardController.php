@@ -431,7 +431,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * Add the RequireJS modules some widgets need
+     * Add the RequireJS modules needed by some widgets
      *
      * @param RequireJsModuleInterface $widgetInstance
      */

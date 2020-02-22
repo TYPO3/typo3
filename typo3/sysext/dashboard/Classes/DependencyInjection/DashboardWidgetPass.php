@@ -51,7 +51,7 @@ final class DashboardWidgetPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds($this->tagName) as $serviceName => $tags) {
             $definition = $container->findDefinition($serviceName);
             $definition->setPublic(true);
-            // Widgets are handles like prototypes right now (will require state)
+            // Widgets are handled like prototypes right now (will require state)
             // @todo: Widgets should preferably be services, but that will require WidgetInterface
             // to change
             $definition->setShared(false);

@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Dashboard\Exception;
 use TYPO3\CMS\Core\Exception;
 
 /**
- * Exception thrown if no dashboard is available for the current user
+ * Exception is thrown if no dashboard is available for the current user
  */
 class NoDashboardAvailableException extends Exception
 {

@@ -42,7 +42,7 @@ interface WidgetInterface
     public function getWidth(): int;
 
     /**
-     * This method return the content of a widget. The returned markup will be delivered
+     * This method returns the content of a widget. The returned markup will be delivered
      * by an AJAX call and will not be escaped.
      * Be aware of XSS and ensure that the content is well encoded.
      * @return string

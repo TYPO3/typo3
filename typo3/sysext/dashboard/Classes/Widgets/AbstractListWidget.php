@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * The AbstractListWidget class is the basic widget class for structured content.
- * Is it possible to extends this class for own widgets.
+ * It is possible to extend this class for custom widgets.
  * In your class you have to set $this->items with the data to display.
  */
 abstract class AbstractListWidget extends AbstractWidget

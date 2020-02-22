@@ -1,6 +1,6 @@
 <?php
 return [
-    // Get the content of a widgets
+    // Get the content of a widget
     'ext-dashboard-get-widget-content' => [
         'path' => '/ext/dashboard/widget/content',
         'target' => TYPO3\CMS\Dashboard\Controller\WidgetAjaxController::class . '::getContent'

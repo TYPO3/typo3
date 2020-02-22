@@ -99,7 +99,7 @@ class Dashboard
 
     /**
      * This will return a list of all widgets of the current dashboard object. It will only include available
-     * widgets and will add the initialised object of the widget itself
+     * widgets and will add the initialized object of the widget itself
      */
     public function initializeWidgets(): void
     {

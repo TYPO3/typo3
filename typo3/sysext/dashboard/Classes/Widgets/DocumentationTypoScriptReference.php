@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * This widget will show a link to the documentation of TYPO3 to make it easier for people
- * to find the right documentation
+ * to find the right documentation.
  */
 class DocumentationTypoScriptReference extends AbstractCtaButtonWidget
 {

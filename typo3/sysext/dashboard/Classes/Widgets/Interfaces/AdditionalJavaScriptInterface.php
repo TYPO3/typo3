@@ -5,7 +5,7 @@ namespace TYPO3\CMS\Dashboard\Widgets\Interfaces;
 
 /**
  * Interface AdditionalJavaScriptInterface
- * In case a widget should provide additional JavaScript files, the widget must be implemented.
+ * In case a widget should provide additional JavaScript files, the widget must implement this interface.
  */
 interface AdditionalJavaScriptInterface
 {

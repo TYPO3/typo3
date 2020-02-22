@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Dashboard\Widgets;
 
 /**
  * The AbstractCtaButtonWidget class is the basic widget class for simple CTA widgets.
- * Is it possible to extends this class for own widgets.
+ * It is possible to extend this class for custom widgets.
  * Simply overwrite $this->link and $this->label to make use of this widget type.
  */
 abstract class AbstractCtaButtonWidget extends AbstractWidget

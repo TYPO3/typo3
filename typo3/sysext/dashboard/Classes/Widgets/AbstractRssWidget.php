@@ -23,7 +23,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * The AbstractRssWidget class is the basic widget class to display items from a RSS feed.
- * Is it possible to extends this class for own widgets.
+ * It is possible to extend this class for custom widgets.
  * In your class you have to set $this->rssFile with the URL to the feed.
  */
 abstract class AbstractRssWidget extends AbstractListWidget
