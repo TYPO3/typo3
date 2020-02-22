@@ -29,6 +29,6 @@ deprecated function is no longer used in the core.
 Migration
 =========
 
-Use :php:`BrokenLinkRepository::getNumberOfBrokenLinks()` instead.
+Use :php:`BrokenLinkRepository::isLinkTargetBrokenLink()` instead.
 
 .. index:: Backend, NotScanned, ext:linkvalidator
