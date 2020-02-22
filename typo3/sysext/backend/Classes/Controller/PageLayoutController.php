@@ -623,6 +623,14 @@ class PageLayoutController
                 $this->id
             );
 
+            // If backend layout is not found available anymore, use default
+            if ($backendLayout === null) {
+                $backendLayout = $this->backendLayouts->getDataProviderCollection()->getBackendLayout(
+                    'default',
+                    $this->id
+                );
+            }
+
             $configuration = $backendLayout->getDrawingConfiguration();
             $configuration->setPageId($this->id);
             $configuration->setDefaultLanguageBinding(!empty($this->modTSconfig['properties']['defLangBinding']));
