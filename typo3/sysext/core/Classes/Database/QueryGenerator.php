@@ -1003,7 +1003,7 @@ class QueryGenerator
                 $out[] = '</pre>';
             }
             if (is_array($v['sub'])) {
-                $out[] = '<div class="' . $indent . '">';
+                $out[] = '<div>';
                 $out[] = $this->printCodeArray($v['sub'], $recursionLevel + 1);
                 $out[] = '</div>';
             }
