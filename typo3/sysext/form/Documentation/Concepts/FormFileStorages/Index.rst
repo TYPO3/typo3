@@ -41,13 +41,22 @@ desired upload storage.
    In principle, files in filemounts are publicly accessible. If the
    uploaded files could contain sensitive data, you should suppress any
    HTTP access to the filemount. This may, for example, be achieved by
-   creating a .htaccess file, assuming you are using an Apache web server.
-   The directive of the .htaccess file is fairly easy:
+   creating a :file:`.htaccess` file, assuming you are using an Apache web
+   server. The directive of the :file:`.htaccess` file is fairly easy:
 
-   .. code-block:: html
+   .. code-block:: apache
 
-      Order deny,allow
-      Deny from all
+      # Apache ≥ 2.3
+      <IfModule mod_authz_core.c>
+         Require all denied
+      </IfModule>
+
+      # Apache < 2.3
+      <IfModule !mod_authz_core.c>
+         Order allow,deny
+         Deny from all
+         Satisfy All
+      </IfModule>
 
 The following code block shows you how to configure additional filemounts
 for form definitions.
