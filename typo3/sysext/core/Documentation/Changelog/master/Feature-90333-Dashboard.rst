@@ -36,7 +36,8 @@ The following widgets are shipped by core extensions now:
 * TypoScript Template Reference: This widget will provide a link to the TypoScript Template Reference (EXT:dashboard)
 * TSconfig Reference: This widget will provide a link to the TSconfig Reference (EXT:dashboard)
 * Number of errors in system log: Shows the number of errors in the sys_log grouped by day for the last month (EXT:dashboard)
-* Type of backend users: A widget to show the different types of backend users
+* Type of backend users: A widget to show the different types of backend users (EXT:dashboard)
+* Failed Logins: This widget will show you the number of failed logins during the last 24 hours (EXT:dashboard)
 
 Creating your own widget
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -50,6 +51,7 @@ do so, you can extend one of the WidgetAbstracts available in EXT:dashboard.
 * AbstractChartWidget: the base of all chart widgets
 * AbstractBarChartWidget: when you want to show a widget with a bar-chart you can extend this class
 * AbstractDoughnutChartWidget: this abstract gives you the possibility to create a doughnut-chart widget
+* AbstractNumberWithIconWidget: this abstract will give you the possibility to show a title, number and an icon
 
 By extending one of those abstracts, and provide it with the right data, you are able to
 have a new widget quite fast. The only thing that is left is to register the widget.

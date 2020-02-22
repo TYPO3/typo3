@@ -161,6 +161,16 @@
 				<source>Admin users</source>
 			</trans-unit>
 
+			<trans-unit id="widgets.failedLogins.title" xml:space="preserve">
+				<source>Failed backend logins</source>
+			</trans-unit>
+			<trans-unit id="widgets.failedLogins.subtitle" xml:space="preserve">
+				<source>In last 24 hours</source>
+			</trans-unit>
+			<trans-unit id="widgets.failedLogins.description" xml:space="preserve">
+				<source>Information about the number of failed logins during the last 24 hours.</source>
+			</trans-unit>
+
 			<trans-unit id="widget_group.general" xml:space="preserve">
 				<source>General</source>
  			</trans-unit>

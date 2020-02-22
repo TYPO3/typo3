@@ -1,4 +1,4 @@
-.dashboard-widget-number--icon {
+.widget-number-icon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,20 +7,20 @@
     color: $text-color;
 }
 
-.dashboard-widget-number--content {
+.widget-number-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.dashboard-widget-number--title {
+.widget-number-title {
     line-height: 1.3;
     margin-bottom: 5px;
     font-size: 16px;
     color: $text-color;
 }
 
-.dashboard-widget-number--number {
+.widget-number-number {
     line-height: 1.3;
     font-weight: 900;
     font-size: 24px;

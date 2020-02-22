@@ -39,6 +39,7 @@
 }
 
 .widget-content-main {
+    display: flex;
     flex-grow: 1;
     overflow-y: auto;
     padding: $widget-padding;

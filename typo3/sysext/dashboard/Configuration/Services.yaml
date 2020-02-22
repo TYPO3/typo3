@@ -58,6 +58,13 @@ services:
         identifier: typeOfUsers
         widgetGroups: 'systemInfo'
 
+  TYPO3\CMS\Dashboard\Widgets\FailedLoginsWidget:
+    arguments: ['failedLogins']
+    tags:
+      - name: dashboard.widget
+        identifier: failedLogins
+        widgetGroups: 'general'
+
   TYPO3\CMS\Dashboard\Widgets\T3NewsWidget:
     arguments: ['t3news']
     tags:
