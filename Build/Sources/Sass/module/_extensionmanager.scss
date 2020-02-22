@@ -1,0 +1,131 @@
+//
+// Extensionmanager
+//
+
+.extensionmanager-is-loading {
+    opacity: 0 !important;
+}
+
+.extensionmanager-is-hidden {
+    display: none !important;
+}
+
+.extensionmanager-is-shown {
+    display: block !important;
+}
+
+// Extension List
+.extension-list-last-updated {
+    font-weight: bold;
+    padding-right: 0.4em;
+    cursor: help;
+}
+
+.extension-list {
+    .installed td {
+        background-color: #ccdec2;
+    }
+
+    .available td {
+        background-color: #e1e1aa;
+    }
+
+    .insecure {
+        background-color: #ffd9d9;
+    }
+
+    .outdated {
+        background-color: #d1d0ff;
+    }
+
+    .inactive {
+        color: #aaa;
+    }
+}
+
+.extension-icon {
+    height: 16px;
+    width: 16px;
+}
+
+// Loader
+#terTableWrapper {
+    position: relative;
+    margin-top: 1em;
+
+    .splash-receivedata {
+        display: none;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
+}
+
+// Distributions List
+.distribution-official-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0.75em;
+    transform: translate(0, 25%);
+
+    img {
+        width: 50px;
+        display: block;
+
+        @media (min-width: $screen-sm-min) {
+            width: 64px;
+        }
+    }
+}
+
+// Distribution Detail
+.distribution-detail-previewpane {
+    margin-bottom: 2em;
+    max-width: 100%;
+
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+
+    @media (min-width: $screen-sm-min) {
+        float: left;
+        margin-right: 3em;
+    }
+}
+
+.distribution-detail-body {
+    overflow: hidden;
+    zoom: 1;
+}
+
+.distribution-detail-header {
+    h1 {
+        margin-bottom: 0.5em;
+    }
+
+    p {
+        padding: 0;
+        max-width: 500px;
+        margin-bottom: 1.25em;
+    }
+
+    margin-bottom: 2.5em;
+}
+
+.distribution-detail-actions {
+    list-style: none;
+    padding: 0;
+
+    li {
+        margin: 0.25em 0;
+    }
+}
+
+.distribution-detail-summary {
+    margin-top: 2.5em;
+    margin-bottom: 2.5em;
+}

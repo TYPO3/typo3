@@ -484,7 +484,7 @@ class QueryView
                 }
             }
         }
-        return '<div class="query-builder">' . $output . '</div>';
+        return '<div class="database-query-builder">' . $output . '</div>';
     }
 
     /**
@@ -503,7 +503,7 @@ class QueryView
         switch ($type) {
             case 'count':
                 $cPR['header'] = 'Count';
-                $cPR['content'] = '<BR><strong>' . (int)$dataRows[0] . '</strong> records selected.';
+                $cPR['content'] = '<br><strong>' . (int)$dataRows[0] . '</strong> records selected.';
                 break;
             case 'all':
                 $rowArr = [];

@@ -163,9 +163,9 @@ $state-warning-border: $brand-warning;
 $state-danger-text: $brand-danger;
 $state-danger-bg: lighten($brand-danger, 35%);
 $state-danger-border: $brand-danger;
-$state-notice-text: rgb(160, 160, 160);                            // TYPO3 SPECIFIC
+$state-notice-text: rgb(160, 160, 160);                          // TYPO3 SPECIFIC
 $state-notice-bg: lighten(rgb(160, 160, 160), 35%);              // TYPO3 SPECIFIC
-$state-notice-border: rgb(160, 160, 160);                            // TYPO3 SPECIFIC
+$state-notice-border: rgb(160, 160, 160);                        // TYPO3 SPECIFIC
 
 // Tooltips
 $tooltip-bg: #333;

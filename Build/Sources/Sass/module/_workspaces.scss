@@ -1,4 +1,4 @@
-#workspace-panel {
+.workspace-panel {
     tr.collapsing {
         transition: none;
     }
@@ -12,30 +12,28 @@
     }
 }
 
-span.item-state- {
-    &modified {
-        color: #f78f25;
-    }
-
-    &moved {
-        color: #457fb8;
-    }
-
-    &new {
-        color: #3c9934;
-    }
-
-    &hidden {
-        color: #abaaaa;
-    }
-
-    &deleted {
-        color: #000;
-        text-decoration: line-through;
-    }
+.workspace-state-modified {
+    color: #ff8700;
 }
 
-.legend {
+.workspace-state-moved {
+    color: #457fb8;
+}
+
+.workspace-state-new {
+    color: #3c9934;
+}
+
+.workspace-state-hidden {
+    color: #abaaaa;
+}
+
+.workspace-state-deleted {
+    color: #000;
+    text-decoration: line-through;
+}
+
+.workspace-legend {
     margin: 5px;
     height: 18px;
     color: #888;

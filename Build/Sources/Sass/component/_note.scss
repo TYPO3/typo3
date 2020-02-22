@@ -1,0 +1,134 @@
+//
+// Notes
+// ============
+//
+//
+// Minimal Usage
+// -------------
+//
+// <div class="note">
+//     <div class="note-header">
+//         <div class="note-header-bar">
+//             <div class="note-title">
+//                 ...
+//             </div>
+//             <div class="note-actions">
+//                 ...
+//             </div>
+//         </div>
+//     </div>
+//     <div class="note-body">
+//         <p>...</p>
+//     </div>
+// </div>
+//
+
+//
+// Variables
+//
+$note-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.25);
+$note-padding: 20px;
+$note-default-background: #fff;
+$note-notice-background: $state-notice-bg;
+$note-instruction-background: $state-info-bg;
+$note-todo-background: $state-success-bg;
+$note-template-background: $state-warning-bg;
+
+//
+// Component
+//
+.note-list {
+    margin: 1em 0;
+}
+
+.note {
+    border-radius: 2px;
+    margin-bottom: 1em;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    background-color: $note-default-background;
+    box-shadow: $note-shadow;
+}
+
+.note-header {
+    background-color: darken($note-default-background, 5%);
+    padding: ($note-padding / 2) $note-padding;
+}
+
+.note-header-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: -($note-padding / 4);
+    margin-right: -($note-padding / 4);
+
+    > * {
+        padding-left: ($note-padding / 4);
+        padding-right: ($note-padding / 4);
+    }
+}
+
+.note-actions {
+    margin-left: auto;
+}
+
+.note-body {
+    padding: $note-padding;
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+//
+// Variants
+//
+
+// Instruction
+.note-category-1 {
+    .note-header {
+        background-color: darken($note-instruction-background, 5%);
+    }
+
+    .note-body {
+        background-color: $note-instruction-background;
+    }
+}
+
+// Template
+.note-category-2 {
+    .note-header {
+        background-color: darken($note-template-background, 5%);
+    }
+
+    .note-body {
+        background-color: $note-template-background;
+    }
+}
+
+// Notice
+.note-category-3 {
+    .note-header {
+        background-color: darken($note-notice-background, 5%);
+    }
+
+    .note-body {
+        background-color: $note-notice-background;
+    }
+}
+
+// Todo
+.note-category-4 {
+    .note-header {
+        background-color: darken($note-todo-background, 5%);
+    }
+
+    .note-body {
+        background-color: $note-todo-background;
+    }
+}

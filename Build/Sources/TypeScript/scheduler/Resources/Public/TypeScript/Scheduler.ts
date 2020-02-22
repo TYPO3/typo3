@@ -163,12 +163,9 @@ class Scheduler {
       this.actOnChangeSchedulerTableGarbageCollectionTable($(evt.currentTarget));
     });
 
-    $('.taskGroup').on('click', (evt: JQueryEventObject): void => {
-      this.toggleTaskGroups($(evt.currentTarget));
-    });
-
     $('table.taskGroup-table').DataTable({
       'paging': false,
+      'info': false,
       'searching': false,
     });
 

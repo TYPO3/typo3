@@ -1,12 +1,8 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-
 <f:layout name="main" />
-
-<f:section name="headline">
-    <h1><f:translate key="installExtension">Install extension</f:translate> <small>{f:translate(key: 'downloadExtension.dependencies.errorTitle')}</small></h1>
-</f:section>
-
 <f:section name="content">
+
+    <h1><f:translate key="installExtension">Install extension</f:translate> <small>{f:translate(key: 'downloadExtension.dependencies.errorTitle')}</small></h1>
     <f:render partial="List/UnresolvedDependencies" arguments="{_all}" />
     <f:be.infobox title="{f:translate(key: 'dependencyCheck.unresolvedDependencies.title')}" state="1">
         <f:render partial="List/UnresolvedDependenciesMessage" />
@@ -17,4 +13,5 @@
     <f:link.action action="installExtensionWithoutSystemDependencyCheck" controller="Action" arguments="{extensionKey: extension.extensionKey}" class="btn btn-danger t3js-dependencies disabled onClickMaskExtensionManager">
         <f:translate key="dependencyCheck.unresolvedDependencies.proceed" />
     </f:link.action>
+
 </f:section>

@@ -11,8 +11,10 @@
                     <f:if condition="{taskGroup.groupName} == ''">
                         <f:then>
                             <f:if condition="{tasks -> f:count()}>1">
-                                <div class="panel-heading taskGroup" data-task-group-id="{groupIterator.index}">
-                                    <span title="{f:translate(key: 'label.group')}">{f:translate(id: 'label.noGroup')}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                                <div class="panel-heading" data-task-group-id="{groupIterator.index}">
+                                    <a href="#" title="{f:translate(key: 'label.group')}" class="t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-toggle="collapse" data-target="#recordlist-task-group-{groupIterator.index}">
+                                        {f:translate(id: 'label.noGroup')}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.noGroup.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                                    </a>
                                     <a href="#" class="pull-right t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-toggle="collapse" data-target="#recordlist-task-group-{groupIterator.index}">
                                         <span class="caret"></span>
                                     </a>
@@ -20,11 +22,13 @@
                             </f:if>
                         </f:then>
                         <f:else>
-                            <div class="panel-heading taskGroup" data-task-group-id="{groupIterator.index}">
-                                <span title="{f:translate(key: 'label.group')}">{taskGroup.groupName}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
-                                    <a href="#" class="pull-right t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-toggle="collapse" data-target="#recordlist-task-group-{groupIterator.index}">
-                                        <span class="caret"></span>
-                                    </a>
+                            <div class="panel-heading" data-task-group-id="{groupIterator.index}">
+                                <a href="#" title="{f:translate(key: 'label.group')}" class="t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-toggle="collapse" data-target="#recordlist-task-group-{groupIterator.index}">
+                                    {taskGroup.groupName}</span> (<span class="t3js-table-total-items" title="{f:translate(id: 'label.group.taskCount')}">{taskGroup.tasks -> f:count()}</span>)
+                                </a>
+                                <a href="#" class="pull-right t3js-toggle-recordlist" data-table="task-group-{groupIterator.index}" data-toggle="collapse" data-target="#recordlist-task-group-{groupIterator.index}">
+                                    <span class="caret"></span>
+                                </a>
                             </div>
                         </f:else>
                     </f:if>
@@ -36,6 +40,7 @@
                                     <th><span class="t-span"><a class="btn btn-default checkall" href="#" id="checkall" title="{f:translate(key:'label.checkAll')}"><core:icon identifier="actions-document-select"/></a></span></th>
                                     <th><span class="t-span"><f:translate key="label.id"/></span></th>
                                     <th><span class="t-span"><f:translate key="task"/></span></th>
+                                    <th></th>
                                     <th><span class="t-span"><f:translate key="label.type"/></span></th>
                                     <th><span class="t-span"><f:translate key="label.frequency"/></span></th>
                                     <th><span class="t-span"><f:translate key="label.parallel"/></span></th>
@@ -51,14 +56,9 @@
                                         <td class="right"><span class="t-span">{taskRecord.uid}</span></td>
                                         <td class="nowrap-disabled">
                                             <span class="t-span">
-                                                <f:for each="{taskRecord.labels}" as="label">
-                                                    <f:if condition="{taskRecord.validClass}">
-                                                        <span class="label label-{label.class} pull-right" title="{label.desciption}">{label.text}</span>
-                                                    </f:if>
-                                                </f:for>
-                                                <span class="name">
+                                                <div class="name">
                                                     <a href="{moduleUri}&CMD=edit&tx_scheduler[uid]={taskRecord.uid}">
-                                                        {taskRecord.classTitle} ({taskRecord.classExtension})
+                                                        <strong>{taskRecord.classTitle} ({taskRecord.classExtension})</strong>
                                                         <f:if condition="{taskRecord.progress}">
                                                             <div class="progress">
                                                                 <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{taskRecord.progress}" aria-valuemin="0" aria-valuemax="100" style="width: {taskRecord.progress}%;">{taskRecord.progress}%</div>
@@ -68,11 +68,18 @@
                                                             <div class="additional-information"><f:format.nl2br>{taskRecord.additionalInformation}</f:format.nl2br></div>
                                                         </f:if>
                                                     </a>
-                                                </span>
+                                                </div>
                                                 <f:if condition="{taskRecord.description} != ''">
-                                                    <span class="description"><f:format.nl2br>{taskRecord.description}</f:format.nl2br></span>
+                                                    <div class="text-muted" style="margin-top: 0.5em;"><f:format.nl2br>{taskRecord.description}</f:format.nl2br></div>
                                                 </f:if>
                                             </span>
+                                        </td>
+                                        <td>
+                                            <f:for each="{taskRecord.labels}" as="label">
+                                                <f:if condition="{taskRecord.validClass}">
+                                                    <span class="label label-{label.class}" title="{label.desciption}">{label.text}</span>
+                                                </f:if>
+                                            </f:for>
                                         </td>
                                         <td><span class="t-span">{taskRecord.execType}</span></td>
                                         <td><span class="t-span">{taskRecord.frequency}</span></td>

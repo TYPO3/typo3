@@ -1,6 +1,5 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <div class="card card-size-fixed-small">
-
     <div class="card-image">
         <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}">
             <em:distributionImage extensionkey="{distribution.extensionKey}" alt="{distribution.title}" height="225" width="300" />
@@ -20,7 +19,6 @@
             </div>
         </f:if>
     </div>
-
     <div class="card-header">
         <h3 class="card-title">
             <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}">
@@ -31,13 +29,11 @@
             {distribution.extensionKey}
         </span>
     </div>
-
     <div class="card-content">
         <p class="card-text">
             {distribution.description -> f:format.crop(maxCharacters: 150) -> f:format.raw()}
         </p>
     </div>
-
     <div class="card-footer">
         <f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="btn btn-default t3-button-action-installdistribution">
             <core:icon identifier="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
@@ -46,5 +42,4 @@
             <f:translate key="button.details">Show Details</f:translate>
         </f:link.action>
     </div>
-
 </div>

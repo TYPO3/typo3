@@ -183,21 +183,17 @@ class ExtensionManager {
       lengthChange: false,
       pageLength: 15,
       stateSave: true,
+      info: false,
       drawCallback: this.bindExtensionListActions,
       columns: [
         null,
         null,
-        {
-          type: 'extension',
-        },
+        { type: 'extension' },
         null,
-        {
-          type: 'version',
-        }, {
-          orderable: false,
-        },
+        { type: 'version' },
+        { orderable: false },
         null,
-        null,
+        { orderable: false },
       ],
     });
 

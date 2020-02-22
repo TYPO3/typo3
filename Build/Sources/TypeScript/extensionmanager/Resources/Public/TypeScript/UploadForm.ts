@@ -21,7 +21,7 @@ class UploadForm {
     // Show upload form
     $(document).on('click', '.t3js-upload', (event: JQueryEventObject): void => {
       const $me = $(event.currentTarget);
-      const $uploadForm = $('.uploadForm');
+      const $uploadForm = $('.extension-upload-form');
 
       event.preventDefault();
       if ($me.hasClass(this.expandedUploadFormClass)) {
@@ -35,7 +35,7 @@ class UploadForm {
           url: $me.attr('href'),
           dataType: 'html',
           success: (data: any): void => {
-            $uploadForm.html(data);
+            $uploadForm.find('.t3js-upload-form-target').html(data);
           },
         });
       }

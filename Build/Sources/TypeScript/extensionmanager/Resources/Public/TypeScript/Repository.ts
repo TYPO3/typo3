@@ -49,11 +49,11 @@ class Repository {
       ],
       columns: [
         {orderable: false},
-        null,
+        {orderable: false},
         {type: 'version'},
+        {orderable: false},
         null,
-        null,
-        null,
+        {orderable: false},
       ],
     });
 
@@ -61,6 +61,7 @@ class Repository {
       paging: false,
       lengthChange: false,
       stateSave: false,
+      info: false,
       searching: false,
       language: {
         search: 'Filter results:',

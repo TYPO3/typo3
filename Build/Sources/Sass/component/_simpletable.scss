@@ -1,0 +1,20 @@
+//
+// Simple Table
+//
+.simpletable {
+    padding: 0;
+    margin-bottom: 1.5em;
+
+    th,
+    td {
+        padding: 0.25em 1em;
+
+        &:first-child {
+            padding-left: 0;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+}

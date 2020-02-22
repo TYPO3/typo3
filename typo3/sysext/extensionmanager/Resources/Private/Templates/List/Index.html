@@ -1,11 +1,8 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <f:layout name="main" />
-
-<f:section name="headline">
-    <h1><f:translate key="installedExtensions" /></h1>
-</f:section>
-
 <f:section name="content">
+
+    <h1><f:translate key="installedExtensions" /></h1>
     <f:render partial="List/UploadForm" />
     <form class="form-inline">
         <div class="row">
@@ -49,38 +46,38 @@
     </form>
     <br>
     <div class="table-fit">
-        <table id="typo3-extension-list" class="table table-striped table-hover typo3-extension-list">
-        <thead>
-            <tr>
-                <th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
-                <th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
-                <th><f:translate key="extensionList.header.extensionName"/></th>
-                <th><f:translate key="extensionList.header.extensionKey"/></th>
-                <th><f:translate key="extensionList.header.extensionVersion"/></th>
-                <th><f:translate key="extensionList.header.extensionState"/></th>
-                <th><f:translate key="extensionList.header.extensionType"/></th>
-                <th><f:translate key="extensionList.header.extensionActions"/></th>
-            </tr>
-        </thead>
-        <tbody>
-            <f:for each="{extensions}" as="extension" key="extensionKey">
-                <f:if condition="{extension.terObject}">
-                    <f:then>
-                        <tr id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} == -1', then:'insecure')}{f:if(condition:'{extension.terObject.reviewState} == -2', then:'outdated')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
-                    </f:then>
-                    <f:else>
-                        <tr id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
-                    </f:else>
-                </f:if>
-                <td>
-                    <f:if condition="{extension.updateAvailable}">
-                        <f:if condition="{isComposerMode} || {settings.offlineMode} || {extension.state} == 'excludeFromUpdates'">
-                            <f:then>
-                                <span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
-                                    <core:icon identifier="actions-system-extension-update" />
-                                </span>
-                            </f:then>
-                            <f:else>
+        <table id="typo3-extension-list" class="table table-striped table-hover extension-list">
+            <thead>
+                <tr>
+                    <th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
+                    <th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
+                    <th><f:translate key="extensionList.header.extensionName"/></th>
+                    <th><f:translate key="extensionList.header.extensionKey"/></th>
+                    <th><f:translate key="extensionList.header.extensionVersion"/></th>
+                    <th><f:translate key="extensionList.header.extensionState"/></th>
+                    <th><f:translate key="extensionList.header.extensionType"/></th>
+                    <th><f:translate key="extensionList.header.extensionActions"/></th>
+                </tr>
+            </thead>
+            <tbody>
+                <f:for each="{extensions}" as="extension" key="extensionKey">
+                    <f:if condition="{extension.terObject}">
+                        <f:then>
+                            <tr id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} == -1', then:'insecure')}{f:if(condition:'{extension.terObject.reviewState} == -2', then:'outdated')} {f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
+                        </f:then>
+                        <f:else>
+                            <tr id="{extensionKey}" class="{f:if(condition:'{extension.installed}', then: '', else: 'inactive')}">
+                        </f:else>
+                    </f:if>
+                    <td>
+                        <f:if condition="{extension.updateAvailable}">
+                            <f:if condition="{isComposerMode} || {settings.offlineMode} || {extension.state} == 'excludeFromUpdates'">
+                                <f:then>
+                                    <span class="btn btn-default disabled" title="{f:translate(key:'extensionList.updateDisabled')}">
+                                        <core:icon identifier="actions-system-extension-update" />
+                                    </span>
+                                </f:then>
+                                <f:else>
                                     <f:link.action action="updateCommentForUpdatableVersions"
                                         class="btn btn-default"
                                         additionalAttributes="{data-action:'update-extension'}"
@@ -90,56 +87,49 @@
                                     >
                                         <core:icon identifier="actions-system-extension-update" />
                                     </f:link.action>
-                            </f:else>
-                        </f:if>
-                    </f:if>
-                </td>
-                <td data-order="{f:if(condition: extension.installed, then: 'active', else: 'inactive')}">
-                    <em:toggleExtensionInstallationState extension="{extension}" />
-                </td>
-                <td>
-                    <f:if condition="{extension.icon}">
-                        <img class="ext-icon" src="{extension.icon}" alt="{extension.title}" />
-                    </f:if>
-                    <span title="{extension.description}">{extension.title}</span>
-                </td>
-                <td>
-                    {extensionKey}
-                </td>
-                <td>
-                    {extension.version}
-                </td>
-                <td>
-                    <span class="label label-{extension.state}">{extension.state}</span>
-                </td>
-                <td>
-                    {extension.type}
-                </td>
-                <td>
-                    <div class="btn-group">
-                        <em:processAvailableActions extension="{extension}">
-                            <em:updateScript class="btn btn-default" extensionKey="{extension.key}" />
-                            <em:removeExtension class="btn btn-default" extension="{extension}" />
-                            <f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" title="{f:translate(key:'extensionList.downloadzip')}" class="btn btn-default">
-                                <core:icon identifier="actions-system-extension-download" />
-                            </f:link.action>
-                            <em:reloadSqlData class="btn btn-default" extension="{extension}" />
-                            <f:if condition="{extension.terObject.documentationLink}">
-                                <f:then>
-                                    <a href="{extension.terObject.documentationLink}" target="_blank" rel="noopener noreferrer" class="btn btn-default">
-                                        <core:icon identifier="actions-system-extension-documentation" size="small" />
-                                    </a>
-                                </f:then>
-                                <f:else>
-                                    <span class="btn btn-default disabled"><core:icon identifier="empty-empty" size="small" /></span>
                                 </f:else>
                             </f:if>
-                        </em:processAvailableActions>
-                    </div>
-                </td>
-                </tr>
-            </f:for>
-        </tbody>
-    </table>
+                        </f:if>
+                    </td>
+                    <td data-order="{f:if(condition: extension.installed, then: 'active', else: 'inactive')}">
+                        <em:toggleExtensionInstallationState extension="{extension}" />
+                    </td>
+                    <td>
+                        <f:if condition="{extension.icon}">
+                            <img class="extension-icon" src="{extension.icon}" alt="{extension.title}" />
+                        </f:if>
+                        <span title="{extension.description}">{extension.title}</span>
+                    </td>
+                    <td>{extensionKey}</td>
+                    <td>{extension.version}</td>
+                    <td><span class="label label-{extension.state}">{extension.state}</span></td>
+                    <td>{extension.type}</td>
+                    <td>
+                        <div class="btn-group">
+                            <em:processAvailableActions extension="{extension}">
+                                <em:updateScript class="btn btn-default" extensionKey="{extension.key}" />
+                                <em:removeExtension class="btn btn-default" extension="{extension}" />
+                                <f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" title="{f:translate(key:'extensionList.downloadzip')}" class="btn btn-default">
+                                    <core:icon identifier="actions-system-extension-download" />
+                                </f:link.action>
+                                <em:reloadSqlData class="btn btn-default" extension="{extension}" />
+                                <f:if condition="{extension.terObject.documentationLink}">
+                                    <f:then>
+                                        <a href="{extension.terObject.documentationLink}" target="_blank" rel="noopener noreferrer" class="btn btn-default">
+                                            <core:icon identifier="actions-system-extension-documentation" size="small" />
+                                        </a>
+                                    </f:then>
+                                    <f:else>
+                                        <span class="btn btn-default disabled"><core:icon identifier="empty-empty" size="small" /></span>
+                                    </f:else>
+                                </f:if>
+                            </em:processAvailableActions>
+                        </div>
+                    </td>
+                    </tr>
+                </f:for>
+            </tbody>
+        </table>
     </div>
+
 </f:section>

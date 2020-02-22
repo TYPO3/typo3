@@ -1,12 +1,8 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-
 <f:layout name="main" />
-
-<f:section name="headline">
-    <h1><f:translate key="updateScript.headline" arguments="{0: extensionKey}" /></h1>
-</f:section>
-
 <f:section name="content">
+
+    <h1><f:translate key="updateScript.headline" arguments="{0: extensionKey}" /></h1>
     <div class="update-script">
         <f:if condition="{updateScriptResult}">
             <f:then>
@@ -17,4 +13,5 @@
             </f:else>
         </f:if>
     </div>
+
 </f:section>

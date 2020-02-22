@@ -1,20 +1,8 @@
 //
 // Legend
 //
-.beuser-legend {
+.access-legend {
     margin-bottom: 18px;
-
-    .pull-left {
-        margin-right: 0.5em;
-    }
-
-    td {
-        overflow: hidden;
-    }
-
-    .t3-icon {
-        margin-right: 0;
-    }
 
     .number {
         border: 1px solid #000;
@@ -61,12 +49,4 @@
         margin-left: 6px;
         display: block;
     }
-}
-
-//
-// Icons
-//
-.col-icon img {
-    max-width: 28px;
-    max-height: 28px;
 }

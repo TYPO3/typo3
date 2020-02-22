@@ -1,12 +1,8 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
-
-<f:layout name="main"/>
-
-<f:section name="headline">
-    <h1><f:translate key="distributions">Get Distributions</f:translate></h1>
-</f:section>
-
+<f:layout name="main" />
 <f:section name="content">
+
+    <h1><f:translate key="distributions">Get Distributions</f:translate></h1>
     <f:if condition="{enableDistributionsView}">
         <f:then>
             <f:if condition="{showUnsuitableDistributions} == 0">
@@ -38,4 +34,5 @@
             </f:link.action>
         </f:else>
     </f:if>
+
 </f:section>

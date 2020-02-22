@@ -64,7 +64,7 @@ class SysNoteCest
         $I->click('a.t3js-toggle-recordlist[data-table="pages"]');
         $I->canSee('Internal notes', 'h2');
         $I->canSee('new sys_note');
-        $I->click('div.typo3-dblist-sysnotes > div > div.panel-heading.clearfix > div > a:nth-child(1)');
+        $I->click('.note-list > .note > .note-header > .note-header-bar > .note-actions a:nth-child(1)');
         $I->wait(0.2);
         $I->canSee('Edit Internal note "new sys_note"');
     }

@@ -267,6 +267,12 @@ select {
     }
 }
 
+.form-inline {
+    .form-control-clearable {
+        display: inline-block;
+    }
+}
+
 .input-group {
     .form-control-clearable {
         display: table-cell;

@@ -710,7 +710,7 @@ class QueryGenerator
                     $lineHTML[] = '</div>';
             }
             if ($fieldType !== 'ignore') {
-                $lineHTML[] = '<div class="btn-group action-button-group">';
+                $lineHTML[] = '<div class="btn-group" style="margin-top: .5em;">';
                 $lineHTML[] = $this->updateIcon();
                 if ($loopCount) {
                     $lineHTML[] = '<button class="btn btn-default" title="Remove condition" name="qG_del' . htmlspecialchars($subscript) . '"><i class="fa fa-trash fa-fw"></i></button>';
@@ -991,13 +991,10 @@ class QueryGenerator
      */
     public function printCodeArray($codeArr, $recursionLevel = 0)
     {
-        $indent = 'row-group';
-        if ($recursionLevel) {
-            $indent = 'row-group indent indent-' . (int)$recursionLevel;
-        }
         $out = [];
         foreach ($codeArr as $k => $v) {
-            $out[] = '<div class="' . $indent . '">';
+            $out[] = '<div class="card">';
+            $out[] = '<div class="card-content">';
             $out[] = $v['html'];
 
             if ($this->enableQueryParts) {
@@ -1010,7 +1007,7 @@ class QueryGenerator
                 $out[] = $this->printCodeArray($v['sub'], $recursionLevel + 1);
                 $out[] = '</div>';
             }
-
+            $out[] = '</div>';
             $out[] = '</div>';
         }
         return implode(LF, $out);
@@ -1029,10 +1026,12 @@ class QueryGenerator
     {
         $out = [];
         if ($draw) {
-            $out[] = '<select class="form-control from-control-operator' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
+            $out[] = '<div class="form-inline">';
+            $out[] = '<select class="form-control' . ($submit ? ' t3js-submit-change' : '') . '" name="' . htmlspecialchars($name) . '[operator]">';
             $out[] = '	<option value="AND"' . (!$op || $op === 'AND' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['AND']) . '</option>';
             $out[] = '	<option value="OR"' . ($op === 'OR' ? ' selected' : '') . '>' . htmlspecialchars($this->lang['OR']) . '</option>';
             $out[] = '</select>';
+            $out[] = '</div>';
         } else {
             $out[] = '<input type="hidden" value="' . htmlspecialchars($op) . '" name="' . htmlspecialchars($name) . '[operator]">';
         }
@@ -1114,12 +1113,10 @@ class QueryGenerator
     public function mkFieldToInputSelect($name, $fieldName)
     {
         $out = [];
-        $out[] = '<div class="input-group">';
-        $out[] = '	<div class="input-group-addon">';
-        $out[] = '		<span class="input-group-btn">';
+        $out[] = '<div class="input-group" style="margin-bottom: .5em;">';
+        $out[] = '	<span class="input-group-btn">';
         $out[] = $this->updateIcon();
-        $out[] = ' 		</span>';
-        $out[] = ' 	</div>';
+        $out[] = ' 	</span>';
         $out[] = '	<input type="text" class="form-control t3js-clearable" value="' . htmlspecialchars($fieldName) . '" name="' . htmlspecialchars($name) . '">';
         $out[] = '</div>';
 
@@ -1514,11 +1511,9 @@ class QueryGenerator
             if (in_array('limit', $enableArr) && !$userTsConfig['mod.']['dbint.']['disableLimit']) {
                 $limit = [];
                 $limit[] = '<div class="input-group">';
-                $limit[] = '	<div class="input-group-addon">';
-                $limit[] = '		<span class="input-group-btn">';
+                $limit[] = '	<span class="input-group-btn">';
                 $limit[] = $this->updateIcon();
-                $limit[] = '		</span>';
-                $limit[] = '	</div>';
+                $limit[] = '	</span>';
                 $limit[] = '	<input type="text" class="form-control" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit">';
                 $limit[] = '</div>';
 
@@ -1541,21 +1536,19 @@ class QueryGenerator
                     $nextButton = '<input type="button" class="btn btn-default" value="next ' . htmlspecialchars($this->limitLength) . '" data-value="' . htmlspecialchars($nextLimit . ',' . $this->limitLength) . '">';
                 }
 
-                $out[] = '<div class="form-group form-group-with-button-addon">';
+                $out[] = '<div class="form-group">';
                 $out[] = '	<label>Limit:</label>';
                 $out[] = '	<div class="form-inline">';
                 $out[] =        implode(LF, $limit);
-                $out[] = '		<div class="input-group">';
-                $out[] = '			<div class="btn-group t3js-limit-submit">';
-                $out[] =                $prevButton;
-                $out[] =                $nextButton;
-                $out[] = '			</div>';
-                $out[] = '			<div class="btn-group t3js-limit-submit">';
-                $out[] = '				<input type="button" class="btn btn-default" data-value="10" value="10">';
-                $out[] = '				<input type="button" class="btn btn-default" data-value="20" value="20">';
-                $out[] = '				<input type="button" class="btn btn-default" data-value="50" value="50">';
-                $out[] = '				<input type="button" class="btn btn-default" data-value="100" value="100">';
-                $out[] = '			</div>';
+                $out[] = '		<div class="btn-group t3js-limit-submit">';
+                $out[] =            $prevButton;
+                $out[] =            $nextButton;
+                $out[] = '		</div>';
+                $out[] = '		<div class="btn-group t3js-limit-submit">';
+                $out[] = '			<input type="button" class="btn btn-default" data-value="10" value="10">';
+                $out[] = '			<input type="button" class="btn btn-default" data-value="20" value="20">';
+                $out[] = '			<input type="button" class="btn btn-default" data-value="50" value="50">';
+                $out[] = '			<input type="button" class="btn btn-default" data-value="100" value="100">';
                 $out[] = '		</div>';
                 $out[] = '	</div>';
                 $out[] = '</div>';

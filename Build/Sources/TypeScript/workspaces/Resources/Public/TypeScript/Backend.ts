@@ -666,7 +666,7 @@ class Backend extends Workspaces {
           }).html(
             item.icon_Workspace + '&nbsp;'
             + '<a href="#" data-action="changes">'
-            + '<span class="item-state-' + item.state_Workspace + '">' + item.label_Workspace + '</span>'
+            + '<span class="workspace-state-' + item.state_Workspace + '">' + item.label_Workspace + '</span>'
             + '</a>',
           ),
           $('<td />', {class: 't3js-title-live'}).html(item.icon_Live + '&nbsp;' + item.label_Live),

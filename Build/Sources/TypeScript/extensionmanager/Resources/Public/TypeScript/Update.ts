@@ -56,15 +56,15 @@ class ExtensionManagerUpdate {
     }
 
     // Hide triggers for TER update
-    $(ExtensionManagerUpdateIdentifier.terUpdateAction).addClass('is-hidden');
+    $(ExtensionManagerUpdateIdentifier.terUpdateAction).addClass('extensionmanager-is-hidden');
 
     // Hide extension table
     $(ExtensionManagerUpdateIdentifier.extensionTable).hide();
 
     // Show loaders
-    $(ExtensionManagerUpdateIdentifier.splashscreen).addClass('is-shown');
-    $(ExtensionManagerUpdateIdentifier.terTableDataTableWrapper).addClass('is-loading');
-    $(ExtensionManagerUpdateIdentifier.pagination).addClass('is-loading');
+    $(ExtensionManagerUpdateIdentifier.splashscreen).addClass('extensionmanager-is-shown');
+    $(ExtensionManagerUpdateIdentifier.terTableDataTableWrapper).addClass('extensionmanager-is-loading');
+    $(ExtensionManagerUpdateIdentifier.pagination).addClass('extensionmanager-is-loading');
 
     let reload = false;
 
@@ -82,7 +82,7 @@ class ExtensionManagerUpdate {
         }
 
         // Message with latest updates
-        const $lastUpdate = $(ExtensionManagerUpdateIdentifier.terUpdateAction + ' .time-since-last-update');
+        const $lastUpdate = $(ExtensionManagerUpdateIdentifier.terUpdateAction + ' .extension-list-last-updated');
         $lastUpdate.text(data.timeSinceLastUpdate);
         $lastUpdate.attr(
           'title',
@@ -110,12 +110,12 @@ class ExtensionManagerUpdate {
 
         if (!reload) {
           // Hide loaders
-          $(ExtensionManagerUpdateIdentifier.splashscreen).removeClass('is-shown');
-          $(ExtensionManagerUpdateIdentifier.terTableDataTableWrapper).removeClass('is-loading');
-          $(ExtensionManagerUpdateIdentifier.pagination).removeClass('is-loading');
+          $(ExtensionManagerUpdateIdentifier.splashscreen).removeClass('extensionmanager-is-shown');
+          $(ExtensionManagerUpdateIdentifier.terTableDataTableWrapper).removeClass('extensionmanager-is-loading');
+          $(ExtensionManagerUpdateIdentifier.pagination).removeClass('extensionmanager-is-loading');
 
           // Show triggers for TER-update
-          $(ExtensionManagerUpdateIdentifier.terUpdateAction).removeClass('is-hidden');
+          $(ExtensionManagerUpdateIdentifier.terUpdateAction).removeClass('extensionmanager-is-hidden');
 
           // Show extension table
           $(ExtensionManagerUpdateIdentifier.extensionTable).show();
