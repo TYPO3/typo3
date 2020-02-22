@@ -52,8 +52,10 @@
         <ul>
             <f:for each="{dbMounts}" as="mount">
                 <li>
-                    <core:iconForRecord table="pages" row="{mount}"/>
-                    {mount.title} [{mount.uid}]
+                    <a href="#" class="t3js-contextmenutrigger" data-table="pages" data-uid="{mount.uid}" title="id={mount.uid}">
+                        <core:iconForRecord table="pages" row="{mount}"/>
+                        {mount.title} [{mount.uid}]
+                    </a>
                 </li>
             </f:for>
         </ul>
